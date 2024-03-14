@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=61.0", "versioneer[toml]"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "b2aiprep"
+dynamic = ["version"]
+authors = [
+  {name = "Rahul Brito", email = "rfbrito@mit.edu"},
+  {name = "SenseIn Group", email = "sensein-social@mit.edu" },
+]
+description = """A small package to generate features from acoustic
+recordings for the Bridge2AI voice project."""
+readme = "README.md"
+license = {file = "LICENSE"}
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "speechbrain>=1.0.0",
+    "torchaudio>=2.0.0",
+    "opensmile>=2.3.0",
+    "click"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+]
+
+[project.scripts]
+b2aiprep-cli = "b2aiprep.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/sensein/b2aiprep"
+Issues = "https://github.com/sensein/b2aiprep/issues"
+
+[tool.versioneer]
+VCS = "git"
+style = "pep440"
+versionfile_source = "src/b2aiprep/_version.py"
+versionfile_build = "b2aiprep/_version.py"
+tag_prefix = ""
+parentdir_prefix = "myproject-"
+
+[tool.black]
+line-length = 100

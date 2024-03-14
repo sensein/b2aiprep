@@ -1,0 +1,7 @@
+{
+    "onlyPublishWithReleaseLabel": true,
+    "baseBranch": "main",
+    "author": "B2AIprep Bot <sensein-social@mit.edu>",
+    "noVersionPrefix": true,
+    "plugins": ["git-tag"]
+}
