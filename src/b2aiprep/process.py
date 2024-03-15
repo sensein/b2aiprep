@@ -131,6 +131,18 @@ def to_features(
     n_coeff: int = 20,
     compute_deltas: bool = True,
 ) -> ty.Tuple[dict, Path]:
+    """Compute features from audio file
+
+    :param filename: Path to audio file
+    :param subject: Subject ID
+    :param task: Task ID
+    :param outdir: Output directory
+    :param n_mels: Number of Mel bands
+    :param n_coeff: Number of MFCC coefficients
+    :param compute_deltas: Whether to compute delta features
+    :return: Features dictionary
+    :return: Path to features
+    """
     with open(filename, "rb") as f:
         md5sum = md5(f.read()).hexdigest()
     audio = Audio.from_file(filename)
