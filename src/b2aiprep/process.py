@@ -10,7 +10,7 @@ from speechbrain.dataio.dataio import read_audio, read_audio_info
 
 
 class Audio:
-    def __init__(self, signal: torch.tensor, sample_rate: float):
+    def __init__(self, signal: torch.tensor, sample_rate: float) -> None:
         """Initialize audio object
         :param signal: is a Torch tensor
         :param sample_rate: is a float
@@ -19,7 +19,7 @@ class Audio:
         self.sample_rate = sample_rate
 
     @classmethod
-    def from_file(cls, filename: str, channel: int = 0):
+    def from_file(cls, filename: str, channel: int = 0) -> "Audio":
         """Load audio file
 
         If the file contains more than one channel of audio,
@@ -35,7 +35,7 @@ class Audio:
             signal = signal[:, [channel]]
         return cls(signal, meta.sample_rate)
 
-    def to_16khz(self):
+    def to_16khz(self) -> "Audio":
         """Resample audio to 16kHz and return new Audio object
 
         TODO: The default resampler does a poor job of taking care of
@@ -87,7 +87,7 @@ def MFCC(
     return features.squeeze()
 
 
-def resample_iir(audio: Audio, lowcut: float, new_sample_rate: int, order: int = 5):
+def resample_iir(audio: Audio, lowcut: float, new_sample_rate: int, order: int = 5) -> Audio:
     """Resample audio using IIR filter"""
     b, a = butter(order, lowcut, btype="low", fs=audio.sample_rate)
     filtered = torchaudio.functional.filtfilt(
