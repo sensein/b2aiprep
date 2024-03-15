@@ -31,8 +31,10 @@ class Audio:
         """
         signal = read_audio(filename)
         meta = read_audio_info(filename)
-        if signal.shape[-1] > 1:
+        if len(signal.shape) > 1 and signal.shape[-1] > 1:
             signal = signal[:, [channel]]
+        else:
+            signal = signal[:, None]
         return cls(signal, meta.sample_rate)
 
     def to_16khz(self) -> "Audio":
