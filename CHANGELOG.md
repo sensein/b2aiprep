@@ -1,3 +1,15 @@
+# 0.2.0 (Fri Mar 15 2024)
+
+#### 🚀 Enhancement
+
+- fix voice verification code [#11](https://github.com/sensein/b2aiprep/pull/11) ([@satra](https://github.com/satra))
+
+#### Authors: 1
+
+- Satrajit Ghosh ([@satra](https://github.com/satra))
+
+---
+
 # 0.1.2 (Fri Mar 15 2024)
 
 #### 🐛 Bug Fix
