@@ -59,10 +59,14 @@ def embed_speaker(audio: Audio, model: str, device: ty.Optional[str] = None) -> 
 
 
 def verify_speaker(
-    audio1: Audio, audio2: Audio, model: str, device: ty.Optional[str] = None
+    audio1: Audio, audio2: Audio, model: str, model_rate: int, device: ty.Optional[str] = None
 ) -> ty.Tuple[float, float]:
     from speechbrain.inference.speaker import SpeakerRecognition
 
+    if model_rate != audio1.sample_rate:
+        audio1 = resample_iir(audio1, model_rate / 2 - 100, model_rate)
+    if model_rate != audio2.sample_rate:
+        audio2 = resample_iir(audio2, model_rate / 2 - 100, model_rate)
     verification = SpeakerRecognition.from_hparams(source=model, run_opts={"device": device})
     score, prediction = verification.verify_batch(audio1.signal.T, audio2.signal.T)
     return score, prediction
@@ -71,9 +75,10 @@ def verify_speaker(
 def verify_speaker_from_files(
     file1: Path, file2: Path, model: str, device: ty.Optional[str] = None
 ) -> ty.Tuple[float, float]:
-    audio1 = Audio.from_file(file1)
-    audio2 = Audio.from_file(file2)
-    return verify_speaker(audio1, audio2, model, device=device)
+    from speechbrain.inference.speaker import SpeakerRecognition
+
+    verification = SpeakerRecognition.from_hparams(source=model, run_opts={"device": device})
+    return verification.verify_files(file1, file2)
 
 
 def specgram(
