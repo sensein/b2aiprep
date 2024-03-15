@@ -1,3 +1,15 @@
+# 0.1.1 (Fri Mar 15 2024)
+
+#### 🐛 Bug Fix
+
+- doc: update readme [#7](https://github.com/sensein/b2aiprep/pull/7) ([@satra](https://github.com/satra))
+
+#### Authors: 1
+
+- Satrajit Ghosh ([@satra](https://github.com/satra))
+
+---
+
 # 0.1.0 (Fri Mar 15 2024)
 
 #### 🚀 Enhancement
