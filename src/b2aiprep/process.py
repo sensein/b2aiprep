@@ -51,25 +51,29 @@ class Audio:
         return Audio(resampler(self.signal.unsqueeze(0)).squeeze(0), 16000)
 
 
-def embed_speaker(audio: Audio, model: str) -> torch.tensor:
+def embed_speaker(audio: Audio, model: str, device: ty.Optional[str] = None) -> torch.tensor:
     """Compute the speaker embedding of the audio signal"""
-    classifier = EncoderClassifier.from_hparams(source=model)
+    classifier = EncoderClassifier.from_hparams(source=model, run_opts={"device": device})
     embeddings = classifier.encode_batch(audio.signal.T)
     return embeddings.squeeze()
 
 
-def verify_speaker(audio1: Audio, audio2: Audio, model: str) -> ty.Tuple[float, float]:
+def verify_speaker(
+    audio1: Audio, audio2: Audio, model: str, device: ty.Optional[str] = None
+) -> ty.Tuple[float, float]:
     from speechbrain.inference.speaker import SpeakerRecognition
 
-    verification = SpeakerRecognition.from_hparams(source=model)
+    verification = SpeakerRecognition.from_hparams(source=model, run_opts={"device": device})
     score, prediction = verification.verify_batch(audio1.signal.T, audio2.signal.T)
     return score, prediction
 
 
-def verify_speaker_from_files(file1: Path, file2: Path, model: str) -> ty.Tuple[float, float]:
+def verify_speaker_from_files(
+    file1: Path, file2: Path, model: str, device: ty.Optional[str] = None
+) -> ty.Tuple[float, float]:
     audio1 = Audio.from_file(file1)
     audio2 = Audio.from_file(file2)
-    return verify_speaker(audio1, audio2, model)
+    return verify_speaker(audio1, audio2, model, device=device)
 
 
 def specgram(

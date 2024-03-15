@@ -35,6 +35,7 @@ def convert(filename, subject, task, outdir, n_mels, n_coeff, compute_deltas):
 @click.argument("file1", type=click.Path(exists=True))
 @click.argument("file2", type=click.Path(exists=True))
 @click.argument("model", type=str)
-def verify(file1, file2, model):
+@click.option("--device", type=str, default=None, show_default=True)
+def verify(file1, file2, model, device=None):
     score, prediction = verify_speaker_from_files(file1, file2, model=model)
     print(f"Score: {float(score):.2f} Prediction: {bool(prediction)}")
