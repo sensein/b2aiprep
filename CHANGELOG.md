@@ -1,3 +1,15 @@
+# 0.3.0 (Mon Mar 18 2024)
+
+#### 🚀 Enhancement
+
+- add batch processing using pydra [#12](https://github.com/sensein/b2aiprep/pull/12) ([@satra](https://github.com/satra))
+
+#### Authors: 1
+
+- Satrajit Ghosh ([@satra](https://github.com/satra))
+
+---
+
 # 0.2.0 (Fri Mar 15 2024)
 
 #### 🚀 Enhancement
