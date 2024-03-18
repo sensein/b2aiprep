@@ -8,7 +8,7 @@ A simple Python package to prepare acoustic data for the Bridge2AI voice project
 Requires a Python >= 3.10 environment
 
 ```
-pip install b2aiprep`
+pip install b2aiprep
 ```
 
 ## Usage
@@ -30,7 +30,20 @@ It will save a pytorch `.pt` file with a dictionary of features. This can be
 loaded by `torch.load()`. The file is named following a simple convention:
 `sub-<subject_id>_task-<task_name>_md5-<checksum>_features.pt`
 
-2. Verify if two audio files are from the same speaker
+2. Batch process audio files
+
+This requires a CSV file, where each line is of the form:
+path/to/audio.wav,subject_id,task_name
+
+```bash
+b2aiprep-cli batchconvert filelist.csv --plugin cf n_procs=2 --outdir out
+```
+
+The above command uses pydra under the hood to parallel process the audio files.
+All outputs are currently stored in a single directory specified by the `--outdir`
+flag.
+
+3. Verify if two audio files are from the same speaker
 
 ```bash
 b2aiprep-cli test_audio1.wav test_audio2.wav --model 'speechbrain/spkrec-ecapa-voxceleb'
