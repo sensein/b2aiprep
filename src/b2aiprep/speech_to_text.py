@@ -44,23 +44,19 @@ def transcribe_audio_whisperx(audio_file_path, model="base", device="cuda", batc
     audio = whisperx.load_audio(audio_file_path)
     result = model.transcribe(audio, batch_size=batch_size)
 
-    if not force_alignment:
-        return result
+    if force_alignment:
+	    # 2. Align whisper output
+	    model_a, metadata = whisperx.load_align_model(language_code=result["language"], device=device)
+	    result = whisperx.align(result["segments"], model_a, metadata, audio, device, return_char_alignments=False)
 
-    # 2. Align whisper output
-    model_a, metadata = whisperx.load_align_model(language_code=result["language"], device=device)
-    result = whisperx.align(result["segments"], model_a, metadata, audio, device, return_char_alignments=False)
+    if diarize:
+	    # 3. Assign speaker labels
+	    diarize_model = whisperx.DiarizationPipeline(use_auth_token=hf_token, device=device)
 
-    if not diarize:
-        return result
-    
-    # 3. Assign speaker labels
-    diarize_model = whisperx.DiarizationPipeline(use_auth_token=hf_token, device=device)
+	    # add min/max number of speakers if known
+	    diarize_segments = diarize_model(audio)
+	    # diarize_model(audio, min_speakers=min_speakers, max_speakers=max_speakers)
 
-    # add min/max number of speakers if known
-    diarize_segments = diarize_model(audio)
-    # diarize_model(audio, min_speakers=min_speakers, max_speakers=max_speakers)
-
-    result = whisperx.assign_word_speakers(diarize_segments, result)
+	    result = whisperx.assign_word_speakers(diarize_segments, result)
     return result
 
