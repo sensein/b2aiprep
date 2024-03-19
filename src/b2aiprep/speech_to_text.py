@@ -32,6 +32,9 @@ def transcribe_audio_whisperx(audio_file_path, model="base", device="cuda", batc
         batch_size (int): Batch size for transcription. Defaults to 16.
         compute_type (str): Type of computation to use. Defaults to "float16".
             Change to "int8" if low on GPU mem (may reduce accuracy)
+	force_alignment (bool): Whether or not to perform forced alignment of the speech-to-text output
+	diarize (bool): Whether or not to assign speaker labels to the text
+	hf_token (str): A Huggingface auth token, required to perform speaker diarization
     
     Returns:
         Result of the transcription.
