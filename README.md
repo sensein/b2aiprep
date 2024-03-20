@@ -61,3 +61,10 @@ programmatically.
 ```bash
 b2aiprep-cli convert-voice data/vc_source.wav data/vc_target.wav data/vc_output.wav
 ```
+
+5. Transcribe the audio
+
+```bash
+b2aiprep-cli transcribe data/vc_source.wav
+```
+
