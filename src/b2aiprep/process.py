@@ -131,6 +131,19 @@ def resample_iir(audio: Audio, lowcut: float, new_sample_rate: int, order: int =
     return Audio(resampler(filtered.unsqueeze(0)).squeeze(0), new_sample_rate)
 
 
+def extract_opensmile(
+    filename: 'str', feature_level: str = 'func'
+) -> torch.tensor: #feature_set: opensmile.FeatureSet = opensmile.FeatureSet.eGeMAPSv02
+    
+    smile = opensmile.Smile(
+        feature_set=opensmile.FeatureSet.eGeMAPSv02, #or path to conf: 'gemaps/eGeMAPSv02.conf'
+        feature_level=feature_level,
+        verbose=True,
+    )
+    
+    return smile.process_files(filename)
+
+
 def to_features(
     filename: Path,
     subject: str,
