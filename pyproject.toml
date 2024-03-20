@@ -25,7 +25,10 @@ dependencies = [
     "torchaudio>=2.0.0",
     "opensmile>=2.3.0",
     "click",
-    "pydra"
+    "pydra",
+    "TTS",
+    "accelerate",
+    "datasets"
 ]
 
 [project.optional-dependencies]

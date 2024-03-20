@@ -54,3 +54,10 @@ audio files are from the same speaker.
 
 There is a notebook in the docs directory that can be used to interact with the library
 programmatically.
+
+
+4. Convert the speaker in the source audio file (1st argument) into the speaker of the target audio file (2nd argument) and save the result in the output file (3rd argument)
+
+```bash
+b2aiprep-cli convert-voice data/vc_source.wav data/vc_target.wav data/vc_output.wav
+```

@@ -4,6 +4,7 @@ import os
 import typing as ty
 from hashlib import md5
 from pathlib import Path
+from typing import Union
 
 import speechbrain.processing.features as spf
 import torch
@@ -11,7 +12,9 @@ from scipy import signal
 from speechbrain.augment.time_domain import Resample
 from speechbrain.dataio.dataio import read_audio, read_audio_info
 from speechbrain.inference.speaker import EncoderClassifier
-
+from TTS.api import TTS
+from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
+from datasets import Dataset
 
 class Audio:
     def __init__(self, signal: torch.tensor, sample_rate: int) -> None:
@@ -139,6 +142,7 @@ def to_features(
     n_mels: int = 20,
     n_coeff: int = 20,
     compute_deltas: bool = True,
+    output_format = "pt",
 ) -> ty.Tuple[dict, Path]:
     """Compute features from audio file
 
@@ -166,6 +170,103 @@ def to_features(
         "sample_rate": audio.sample_rate,
         "checksum": md5sum,
     }
-    outfile = outdir / f"sub-{subject}_task-{task}_md5-{md5sum}_features.pt"
-    torch.save(features, outfile)
+    outfile = outdir / f"sub-{subject}_task-{task}_md5-{md5sum}_features"
+    if output_format == "pt":
+        torch.save(features, f"{outfile}.pt")
+    else:
+        data = [features]
+        # Create a Hugging Face dataset from the data
+        dataset = Dataset.from_dict(data)
+        # Save the dataset to a JSON file
+        dataset.save_to_disk(outfile)
+
     return features, outfile
+
+
+
+
+
+
+class VoiceConversion:
+    def __init__(
+            self, 
+            model_name: str = "voice_conversion_models/multilingual/vctk/freevc24",
+            progress_bar: bool = True,
+            ) -> None:
+        """
+        Initialize the Voice Conversion model.
+
+        :param model_name: Name of the model to be used for voice conversion.
+        :param use_gpu: Boolean indicating whether to use GPU for model computation.
+        """
+        use_gpu = torch.cuda.is_available()
+        self.tts = TTS(
+            model_name=model_name, 
+            progress_bar=progress_bar, 
+            gpu=use_gpu
+            )
+
+    def convert_voice(self, source_file: str, target_file: str, output_file: str) -> None:
+        """
+        Converts the voice from the source audio file to match the voice in the target audio file.
+
+        :param source_file: Path to the source audio file.
+        :param target_file: Path to the target audio file.
+        :param output_file: Path where the converted audio file will be saved.
+        """
+        if not os.path.exists(source_file):
+            raise FileNotFoundError(f"The source file {source_file} does not exist.")
+        if not os.path.exists(target_file):
+            raise FileNotFoundError(f"The target file {target_file} does not exist.")
+
+        # Perform voice conversion without modifying the source or target audio data directly.
+        with torch.no_grad():
+            self.tts.voice_conversion_to_file(source_wav=source_file, target_wav=target_file, file_path=output_file)
+
+
+
+
+
+
+class SpeechToText:
+    def __init__(
+            self, 
+            model_id: str = "openai/whisper-tiny",
+            max_new_tokens: int = 128, 
+            chunk_length_s: int = 30, 
+            batch_size: int = 16,
+            return_timestamps: Union[bool, str] = False,
+            ) -> None:
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
+
+        self.model = AutoModelForSpeechSeq2Seq.from_pretrained(
+            model_id, torch_dtype=torch_dtype, low_cpu_mem_usage=True, use_safetensors=True
+        ).to(device)
+        self.processor = AutoProcessor.from_pretrained(model_id)
+        self.device = device
+        self.torch_dtype = torch_dtype
+
+        self.pipe = pipeline(
+            "automatic-speech-recognition",
+            model=self.model,
+            tokenizer=self.processor.tokenizer,
+            feature_extractor=self.processor.feature_extractor,
+            max_new_tokens=max_new_tokens,
+            chunk_length_s=chunk_length_s,
+            batch_size=batch_size,
+            return_timestamps=return_timestamps,
+            torch_dtype=torch_dtype,
+            device=device,
+        )
+
+    def transcribe(self, audio: Audio, language: str = None):
+        # TODO: add checking the language is supported
+        # TODO: brainstorm about the outlet of the transcript (for now, just return it) 
+        audio = audio.to_16khz()
+        if language is not None:
+            return self.pipe(
+                audio.signal.squeeze().numpy(), 
+                generate_kwargs={"language": language}
+                )
+        return self.pipe(audio.signal.squeeze().numpy())

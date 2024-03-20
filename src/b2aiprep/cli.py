@@ -8,12 +8,11 @@ from pydra.mark import annotate
 from pydra.mark import task as pydratask
 
 from .process import to_features, verify_speaker_from_files
-
+from .process import VoiceConversion, SpeechToText, Audio
 
 @click.group()
 def main():
     pass
-
 
 @main.command()
 @click.argument("filename", type=click.Path(exists=True))
@@ -23,7 +22,8 @@ def main():
 @click.option("--n_mels", type=int, default=20, show_default=True)
 @click.option("--n_coeff", type=int, default=20, show_default=True)
 @click.option("--compute_deltas/--no-compute_deltas", default=True, show_default=True)
-def convert(filename, subject, task, outdir, n_mels, n_coeff, compute_deltas):
+@click.option("--output_format", type=str, default="pt", show_default=True)
+def convert(filename, subject, task, outdir, n_mels, n_coeff, compute_deltas, output_format):
     to_features(
         filename,
         subject,
@@ -32,6 +32,7 @@ def convert(filename, subject, task, outdir, n_mels, n_coeff, compute_deltas):
         n_mels=n_mels,
         n_coeff=n_coeff,
         compute_deltas=compute_deltas,
+        output_format=output_format,
     )
 
 
@@ -103,3 +104,52 @@ def batchconvert(csvfile, outdir, n_mels, n_coeff, compute_deltas, plugin, cache
 def verify(file1, file2, model, device=None):
     score, prediction = verify_speaker_from_files(file1, file2, model=model)
     print(f"Score: {float(score):.2f} Prediction: {bool(prediction)}")
+
+
+@main.command()
+@click.argument("source_file", type=click.Path(exists=True))
+@click.argument("target_voice_file", type=click.Path(exists=True))
+@click.argument("output_file", type=click.Path())
+@click.option("--model_name", type=str, default="voice_conversion_models/multilingual/vctk/freevc24", show_default=True)
+@click.option("--progress_bar", type=bool, default=True, show_default=True)
+def convert_voice(source_file, target_voice_file, output_file, model_name, progress_bar):
+    """
+    Converts the voice in the source_file to match the voice in the target_voice_file,
+    and saves the output to output_file.
+    """
+    vc = VoiceConversion(model_name=model_name, progress_bar=progress_bar)
+    vc.convert_voice(source_file, target_voice_file, output_file)
+    print(f"Conversion complete. Output saved to: {output_file}")
+
+
+@main.command()
+@click.argument("audio_file", type=click.Path(exists=True))
+@click.option("--model_id", type=str, default="openai/whisper-tiny", show_default=True)
+@click.option("--max_new_tokens", type=int, default=128, show_default=True)
+@click.option("--chunk_length_s", type=int, default=30, show_default=True)
+@click.option("--batch_size", type=int, default=16, show_default=True)
+@click.option('--return_timestamps', type=str, default='false', help="Return timestamps with the transcription. Can be 'true', 'false', or 'word'.")
+@click.option("--language", type=str, default=None, help="Language of the audio for transcription (default is multi-language).")
+def transcribe(audio_file, model_id, max_new_tokens, chunk_length_s, batch_size, return_timestamps, language):
+    """
+    Transcribes the audio_file.
+    """
+    # Convert return_timestamps to the correct type
+    if return_timestamps.lower() == 'true':
+        return_timestamps = True
+    elif return_timestamps.lower() == 'false':
+        return_timestamps = False
+    else:
+        return_timestamps = 'word'
+
+    stt = SpeechToText(
+        model_id=model_id,
+        max_new_tokens=max_new_tokens,
+        chunk_length_s=chunk_length_s,
+        batch_size=batch_size,
+        return_timestamps=return_timestamps,
+    )
+
+    audio_data = Audio.from_file(audio_file)
+    transcription = stt.transcribe(audio_data, language=language)
+    print("Transcription:", transcription)
