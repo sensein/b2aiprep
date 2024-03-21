@@ -192,14 +192,25 @@ class VoiceConversion:
             self, 
             model_name: str = "voice_conversion_models/multilingual/vctk/freevc24",
             progress_bar: bool = True,
+            device: ty.Optional[str] = None,
             ) -> None:
         """
         Initialize the Voice Conversion model.
 
         :param model_name: Name of the model to be used for voice conversion.
         :param use_gpu: Boolean indicating whether to use GPU for model computation.
+
+        TODO: Add support for multiple devices.
         """
-        use_gpu = torch.cuda.is_available()
+        use_gpu = False
+        if device is not None and "cuda" in device:
+            # If CUDA is available, set use_gpu to True
+            if torch.cuda.is_available():
+                use_gpu = True
+            # If CUDA is not available, raise an error
+            else:
+                raise ValueError("CUDA is not available. Please use CPU.")
+        
         self.tts = TTS(
             model_name=model_name, 
             progress_bar=progress_bar, 
@@ -224,11 +235,10 @@ class VoiceConversion:
             self.tts.voice_conversion_to_file(source_wav=source_file, target_wav=target_file, file_path=output_file)
 
 
-
-
-
-
 class SpeechToText:
+    """
+    A class for converting speech to text using a specified speech-to-text model.
+    """
     def __init__(
             self, 
             model_id: str = "openai/whisper-tiny",
@@ -236,9 +246,17 @@ class SpeechToText:
             chunk_length_s: int = 30, 
             batch_size: int = 16,
             return_timestamps: Union[bool, str] = False,
+            device: ty.Optional[str] = None,
             ) -> None:
-        device = "cuda" if torch.cuda.is_available() else "cpu"
-        torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
+        
+        torch_dtype = torch.float32
+        if device is not None and "cuda" in device:
+            # If CUDA is available, set use_gpu to True
+            if torch.cuda.is_available():
+                torch_dtype = torch.float16
+            # If CUDA is not available, raise an error
+            else:
+                raise ValueError("CUDA is not available. Please use CPU.")
 
         self.model = AutoModelForSpeechSeq2Seq.from_pretrained(
             model_id, torch_dtype=torch_dtype, low_cpu_mem_usage=True, use_safetensors=True
@@ -261,8 +279,22 @@ class SpeechToText:
         )
 
     def transcribe(self, audio: Audio, language: str = None):
-        # TODO: add checking the language is supported
-        # TODO: brainstorm about the outlet of the transcript (for now, just return it) 
+        """
+        Transcribes the given audio input into text.
+
+        Parameters:
+        - audio (Audio): The audio input to transcribe.
+        - language (Optional[str]): The language of the audio input. If not None, the transcription
+          will attempt to use this language. If None, the model will use its default (mulilingual).
+
+        Returns:
+        - dict: The transcription result, which includes the transcribed text. If timestamps were
+          requested during initialization, they are also included in the result.
+
+        TODO:
+        - Add checking if the specified language is supported by the model.
+        - Consider the outlet of the transcript (e.g., file, console, return object).
+        """
         audio = audio.to_16khz()
         if language is not None:
             return self.pipe(
