@@ -1,10 +1,12 @@
+import typing as ty
+
 # Transcribes speech to text using OpenAI's whisper model
-def transcribe_audio_whisper(audio_file_path, model="base"):
+def transcribe_audio_whisper(audio: Audio, model="base": str):
     """
     Transcribes audio to text using OpenAI's whisper model.
 
     Args:
-        audio_file_path (str): Path to the audio file.
+        audio (Audio). Audio object.
         model (str): Model to use for transcription. Defaults to "base". 
             See https://github.com/openai/whisper/ for a list of all available models.
     
@@ -14,18 +16,18 @@ def transcribe_audio_whisper(audio_file_path, model="base"):
     import whisper
     
     model = whisper.load_model(model)
-    result = model.transcribe(audio_file_path)
+    result = model.transcribe(audio.signal.squeeze())
     return result
 
 
 # Transcribes speech to text using the whisperX model
-def transcribe_audio_whisperx(audio_file_path, model="base", device="cuda", batch_size=16, 
-                              compute_type="float16", force_alignment=True, diarize=False, hf_token=None):
+def transcribe_audio_whisperx(audio: Audio, model="base": str, device="cuda": str, batch_size=16: int, 
+        compute_type="float16": str, force_alignment=True: bool, diarize=False: bool, hf_token=None: ty.Optional[str]):
     """
     Transcribes audio to text using OpenAI's whisper model.
 
     Args:
-        audio_file_path (str): Path to the audio file.
+        audio (audio): Audio object.
         model (str): Model to use for transcription. Defaults to "base". 
             See https://github.com/openai/whisper/ for a list of all available models.
         device (str): Device to use for computation. Defaults to "cuda".
@@ -44,7 +46,8 @@ def transcribe_audio_whisperx(audio_file_path, model="base", device="cuda", batc
     # 1. Transcribe with original whisper (batched)
     model = whisperx.load_model(model, device, compute_type=compute_type)
 
-    audio = whisperx.load_audio(audio_file_path)
+    # audio = whisperx.load_audio(audio.signal.squeeze())
+    audio = audio.signal.squeeze().numpy()
     result = model.transcribe(audio, batch_size=batch_size)
 
     if force_alignment:

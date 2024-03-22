@@ -1,0 +1,5 @@
+faster-whisper==1.0.0
+openai-whisper==20231117
+torch==2.0.1
+torchaudio==2.0.2
+whisperx @ git+https://github.com/m-bain/whisperx.git@78dcfaab51005aa703ee21375f81ed31bc248560
