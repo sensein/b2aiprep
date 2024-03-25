@@ -204,7 +204,7 @@ def to_features(
         features_specgram_log = specgram(audio, log=True)
         
         fig, ax = plt.subplots(figsize = (20,10))
-        ax.matshow(features_specgram, origin='lower', aspect=8, norm=LogNorm(vmin=0, vmax=1))
+        ax.matshow(features_specgram_log, origin='lower', aspect=8, norm=LogNorm(vmin=0, vmax=1))
         ax.axes.xaxis.set_ticks_position('bottom')
         
         fig_name = Path(f'spectrogram_' + Path(filename).stem)
