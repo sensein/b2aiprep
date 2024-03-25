@@ -15,6 +15,7 @@ from speechbrain.inference.speaker import EncoderClassifier
 from TTS.api import TTS
 from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
 from datasets import Dataset
+import opensmile
 
 class Audio:
     def __init__(self, signal: torch.tensor, sample_rate: int) -> None:
@@ -134,6 +135,19 @@ def resample_iir(audio: Audio, lowcut: float, new_sample_rate: int, order: int =
     return Audio(resampler(filtered.unsqueeze(0)).squeeze(0), new_sample_rate)
 
 
+def extract_opensmile(
+    audio: Audio,
+    feature_set: opensmile.FeatureSet = opensmile.FeatureSet.eGeMAPSv02,
+    feature_level: opensmile.FeatureLevel = opensmile.FeatureLevel.Functionals
+) -> torch.tensor: #feature_set: opensmile.FeatureSet = opensmile.FeatureSet.eGeMAPSv02
+    
+    smile = opensmile.Smile(
+        feature_set=feature_set,
+        feature_level=feature_level,
+        verbose=True,
+    )
+    return smile.process_signal(audio.signal.squeeze(), audio.sample_rate)
+
 def to_features(
     filename: Path,
     subject: str,
@@ -143,6 +157,8 @@ def to_features(
     n_coeff: int = 20,
     compute_deltas: bool = True,
     output_format = "pt",
+    opensmile_feature_set: opensmile.FeatureSet = opensmile.FeatureSet.eGeMAPSv02,
+    opensmile_feature_level: opensmile.FeatureLevel = opensmile.FeatureLevel.Functionals
 ) -> ty.Tuple[dict, Path]:
     """Compute features from audio file
 
@@ -163,10 +179,12 @@ def to_features(
     features = specgram(audio)
     features_melfilterbank = melfilterbank(features, n_mels=n_mels)
     features_mfcc = MFCC(features_melfilterbank, n_coeff=n_coeff, compute_deltas=compute_deltas)
+    features_opensmile = extract_opensmile(audio, opensmile_feature_set, opensmile_feature_level)
     features = {
         "specgram": features,
         "melfilterbank": features_melfilterbank,
         "mfcc": features_mfcc,
+        "opensmile": features_opensmile,
         "sample_rate": audio.sample_rate,
         "checksum": md5sum,
     }
