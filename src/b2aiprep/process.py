@@ -1,5 +1,9 @@
 """Functions to prepare acoustic data for the Bridge2AI voice project."""
 
+import warnings
+warnings.filterwarnings("ignore")
+
+
 import os
 import typing as ty
 from hashlib import md5
@@ -12,6 +16,11 @@ from speechbrain.augment.time_domain import Resample
 from speechbrain.dataio.dataio import read_audio, read_audio_info
 from speechbrain.inference.speaker import EncoderClassifier
 import opensmile
+
+import matplotlib
+import matplotlib.pyplot as plt
+from matplotlib.colors import LogNorm
+matplotlib.use("Agg")
 
 
 class Audio:
@@ -147,9 +156,10 @@ def extract_opensmile(
 
 def to_features(
     filename: Path,
-    subject: str,
-    task: str,
+    subject: str = None,
+    task: str = None,
     outdir: Path = Path(os.getcwd()),
+    save_figures: bool = True,
     n_mels: int = 20,
     n_coeff: int = 20,
     compute_deltas: bool = True,
@@ -172,18 +182,49 @@ def to_features(
         md5sum = md5(f.read()).hexdigest()
     audio = Audio.from_file(filename)
     audio = audio.to_16khz()
-    features = specgram(audio)
-    features_melfilterbank = melfilterbank(features, n_mels=n_mels)
+    features_specgram = specgram(audio)
+    features_melfilterbank = melfilterbank(features_specgram, n_mels=n_mels)
     features_mfcc = MFCC(features_melfilterbank, n_coeff=n_coeff, compute_deltas=compute_deltas)
     features_opensmile = extract_opensmile(audio, opensmile_feature_set, opensmile_feature_level)
+    
     features = {
-        "specgram": features,
+        "specgram": features_specgram,
         "melfilterbank": features_melfilterbank,
         "mfcc": features_mfcc,
         "opensmile": features_opensmile,
         "sample_rate": audio.sample_rate,
         "checksum": md5sum,
     }
-    outfile = outdir / f"sub-{subject}_task-{task}_md5-{md5sum}_features.pt"
+    
+    if subject is not None:
+        if task is not None:
+            prefix = f"sub-{subject}_task-{task}_md5-{md5sum}"
+        else:
+            prefix = f"sub-{subject}_md5-{md5sum}"
+    else:            
+        prefix = Path(filename).stem
+    outfile = outdir / f"{prefix}_features.pt"
+    
     torch.save(features, outfile)
-    return features, outfile
+    
+    if save_figures:
+        #save spectogram as figure
+        
+        #general log spectrogram for image
+        features_specgram_log = specgram(audio, log=True)
+        
+        fig, ax = plt.subplots()
+        ax.matshow(features_specgram_log, origin='lower', aspect = 0.1)
+        ax.axes.xaxis.set_ticks_position('bottom')
+        
+        fig_name = Path(f'spectrogram_' + Path(filename).stem)
+        plt.title(fig_name)
+        
+        os.makedirs(f"{outdir}/figures", exist_ok=True) #make figures subdir if doesn't exist
+        
+        outfig = outdir / f"figures/{fig_name}.png"
+        fig.savefig(outfig, bbox_inches='tight')
+        plt.close(fig)
+    
+    return features, outfile, features_specgram_log
+
