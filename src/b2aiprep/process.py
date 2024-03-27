@@ -190,10 +190,14 @@ def to_features(
         "checksum": md5sum,
     }
     
-    #outfile = outdir / f"sub-{subject}_task-{task}_md5-{md5sum}_features.pt"
-    #saving file with just UUID name for now. TO DO: change it back possibly
-    feat_file_name = Path(filename).stem
-    outfile = outdir / f"{feat_file_name}_features.pt"
+    if subject is not None:
+        if task is not None:
+            prefix = f"sub-{subject}_task-{task}_md5-{md5sum}"
+        else:
+            prefix = f"sub-{subject}_md5-{md5sum}"
+    else:            
+        prefix = Path(filename).stem
+    outfile = outdir / f"{prefix}_features.pt"
     
     torch.save(features, outfile)
     
