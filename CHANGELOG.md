@@ -1,3 +1,21 @@
+# 0.4.0 (Wed Mar 27 2024)
+
+#### 🚀 Enhancement
+
+- added fig generation code [#17](https://github.com/sensein/b2aiprep/pull/17) ([@Rahul-Brito](https://github.com/Rahul-Brito))
+
+#### 🐛 Bug Fix
+
+- merging main with this branch [#16](https://github.com/sensein/b2aiprep/pull/16) ([@satra](https://github.com/satra) [@Rahul-Brito](https://github.com/Rahul-Brito))
+- adding opensmile [#14](https://github.com/sensein/b2aiprep/pull/14) ([@Rahul-Brito](https://github.com/Rahul-Brito))
+
+#### Authors: 2
+
+- Rahul Brito ([@Rahul-Brito](https://github.com/Rahul-Brito))
+- Satrajit Ghosh ([@satra](https://github.com/satra))
+
+---
+
 # 0.3.0 (Mon Mar 18 2024)
 
 #### 🚀 Enhancement
