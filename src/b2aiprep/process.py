@@ -17,8 +17,10 @@ from speechbrain.dataio.dataio import read_audio, read_audio_info
 from speechbrain.inference.speaker import EncoderClassifier
 import opensmile
 
+import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.colors import LogNorm
+matplotlib.use("Agg")
 
 
 class Audio:

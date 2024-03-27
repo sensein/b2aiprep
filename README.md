@@ -51,10 +51,11 @@ flag.
 3. Generate csv file to feed to batchconvert
 
 ```bash
-b2aiprep-cli create_batch_csv input_dir outfile
+b2aiprep-cli createbatchcsv input_dir outfile
 ```
 
-The input directory should point to the location of the Production directory pulled from Wasabi e.g. `/Users/b2ai/production`
+The input directory should point to the location of the Production directory pulled from Wasabi e.g. `/Users/b2ai/production`. Don't uninclude a / at the end of your path e.g. `/Users/b2ai/production/` will throw an 
+error. This will be fixed later. 
 
 This directory is expected to have subfolders for each institution, (e.g. `production/MIT`),
 and each subdirectory is expected to have all the .wav files from each institution

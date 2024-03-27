@@ -134,13 +134,13 @@ def verify(file1, file2, model, device=None):
 @main.command()
 @click.argument("input_dir", type=str)
 @click.argument("out_file", type=str)
-def create_batch_csv(input_dir, out_file):
+def createbatchcsv(input_dir, out_file):
     
     #input_dir is the top level directory of the b2ai Production directory from Wasabi
     #it is expected to contain subfolders with each institution e.g. MIT, UCF, etc.
     
     #out_file is where a csv file will be saved and should be in the format 'path/name/csv'
-    
+    input_dir = Path(input_dir)
     audiofiles = glob(f'{input_dir}/*/*.wav')
 
     with open(out_file, 'w') as f:
