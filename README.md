@@ -12,7 +12,7 @@ pip install b2aiprep
 ```
 
 ## Usage
-Two commands are available through the CLI:
+Four commands are available through the CLI:
 
 ```bash
 b2aiprep-cli --help
@@ -33,7 +33,12 @@ loaded by `torch.load()`. The file is named following a simple convention:
 2. Batch process audio files
 
 This requires a CSV file, where each line is of the form:
+path/to/audio.wav
+
+This also supports a CSV file where each line is of the form:
 path/to/audio.wav,subject_id,task_name
+
+To generate this csv file from the Production directory pulled from wasabi, use command 3. 
 
 ```bash
 b2aiprep-cli batchconvert filelist.csv --plugin cf n_procs=2 --outdir out
@@ -43,7 +48,20 @@ The above command uses pydra under the hood to parallel process the audio files.
 All outputs are currently stored in a single directory specified by the `--outdir`
 flag.
 
-3. Verify if two audio files are from the same speaker
+3. Generate csv file to feed to batchconvert
+
+```bash
+b2aiprep-cli create_batch_csv input_dir outfile
+```
+
+The input directory should point to the location of the Production directory pulled from Wasabi e.g. `/Users/b2ai/production`
+
+This directory is expected to have subfolders for each institution, (e.g. `production/MIT`),
+and each subdirectory is expected to have all the .wav files from each institution
+
+Outfile is the path to and name of the csv file to be generated, e.g. `audiofiles.csv`
+
+4. Verify if two audio files are from the same speaker
 
 ```bash
 b2aiprep-cli test_audio1.wav test_audio2.wav --model 'speechbrain/spkrec-ecapa-voxceleb'
