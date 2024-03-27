@@ -83,7 +83,7 @@ def batchconvert(csvfile, outdir, n_mels, n_coeff, compute_deltas, plugin, cache
     with open(csvfile, "r") as f:
         reader = csv.DictReader(f)
         num_cols = len(reader.fieldnames)
-    lines = [line.strip() for line in f.readlines()]
+        lines = [line.strip() for line in f.readlines()]
 
     #parse csv file differently if it is one column 'filename'
     #or three column 'filename','subject','task'
