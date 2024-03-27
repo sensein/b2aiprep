@@ -8,6 +8,7 @@ from pydra.mark import annotate
 from pydra.mark import task as pydratask
 
 from .process import to_features, verify_speaker_from_files
+from .create_batch_csv import create_batch_csv
 
 
 @click.group()
@@ -126,3 +127,11 @@ def batchconvert(csvfile, outdir, n_mels, n_coeff, compute_deltas, plugin, cache
 def verify(file1, file2, model, device=None):
     score, prediction = verify_speaker_from_files(file1, file2, model=model)
     print(f"Score: {float(score):.2f} Prediction: {bool(prediction)}")
+
+    
+@main.command()
+@click.argument("input_dir", type=str)
+@click.argument("out_file", type=str)
+def create_batch_csv(input_dir, out_file):
+    create_batch_csv(input_dir, out_file)
+    print(f"csv of audiofiles generated at: {out_file}")
