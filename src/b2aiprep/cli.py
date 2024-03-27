@@ -23,15 +23,19 @@ def main():
 @click.option("--n_mels", type=int, default=20, show_default=True)
 @click.option("--n_coeff", type=int, default=20, show_default=True)
 @click.option("--compute_deltas/--no-compute_deltas", default=True, show_default=True)
-def convert(filename, subject, task, outdir, n_mels, n_coeff, compute_deltas):
+def convert(filename, subject, task, outdir, save_figures, 
+            n_mels, n_coeff, compute_deltas, opensmile_feature_set, opensmile_feature_level):
     to_features(
         filename,
         subject,
         task,
         outdir=Path(outdir),
+        save_figures=save_figures,
         n_mels=n_mels,
         n_coeff=n_coeff,
         compute_deltas=compute_deltas,
+        opensmile_feature_set=opensmile_feature_set,
+        opensmile_feature_level=opensmile_feature_level
     )
 
 
@@ -63,16 +67,8 @@ def batchconvert(csvfile, outdir, n_mels, n_coeff, compute_deltas, plugin, cache
         if plugin[0] == "cf" and key == "n_procs":
             value = int(value)
         plugin_args[key] = value
-    with open(csvfile, "r") as f:
-        lines = [line.strip() for line in f.readlines()]
-    filenames = []
-    subjects = []
-    tasks = []
-    for line in lines:
-        filename, subject, task = line.split(",")
-        filenames.append(Path(filename).absolute().as_posix())
-        subjects.append(subject)
-        tasks.append(task)
+    
+    
     featurize_pdt = pydratask(annotate({"return": {"features": ty.Any}})(to_features))
     Path(outdir).mkdir(exist_ok=True, parents=True)
     featurize_task = featurize_pdt(
@@ -82,12 +78,39 @@ def batchconvert(csvfile, outdir, n_mels, n_coeff, compute_deltas, plugin, cache
         compute_deltas=compute_deltas,
         cache_dir=Path(cache).absolute(),
     )
-    featurize_task.split(
+    
+    with open(csvfile, "r") as f:
+    reader = csv.DictReader(f)
+    num_cols = len(reader.fieldnames)
+    lines = [line.strip() for line in f.readlines()]
+
+    #parse csv file differently if it is one column 'filename'
+    #or three column 'filename','subject','task'
+    if num_cols == 1:
+        filenames = []
+        for line in lines:
+            filenames.append(Path(filename).absolute().as_posix())
+        featurize_task.split(
+        splitter=("filename"),
+        filename=filenames,
+        )
+
+    elif num_cols == 3:
+        filenames = []
+        subjects = []
+        tasks = []
+        for line in lines:
+            filename, subject, task = line.split(",")
+            filenames.append(Path(filename).absolute().as_posix())
+            subjects.append(subject)
+            tasks.append(task)
+            
+        featurize_task.split(
         splitter=("filename", "subject", "task"),
         filename=filenames,
         subject=subjects,
         task=tasks,
-    )
+        )
 
     cwd = os.getcwd()
     with pydra.Submitter(plugin=plugin[0], **plugin_args) as sub:
