@@ -1,5 +1,9 @@
 """Functions to prepare acoustic data for the Bridge2AI voice project."""
 
+import warnings
+warnings.filterwarnings("ignore")
+
+
 import os
 import typing as ty
 from hashlib import md5
@@ -207,8 +211,8 @@ def to_features(
         #general log spectrogram for image
         features_specgram_log = specgram(audio, log=True)
         
-        fig, ax = plt.subplots(figsize = (20,10))
-        ax.matshow(features_specgram_log, origin='lower', aspect=8)
+        fig, ax = plt.subplots()
+        ax.matshow(features_specgram_log, origin='lower', aspect = 0.1)
         ax.axes.xaxis.set_ticks_position('bottom')
         
         fig_name = Path(f'spectrogram_' + Path(filename).stem)
