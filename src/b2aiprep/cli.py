@@ -91,6 +91,7 @@ def batchconvert(csvfile, outdir, n_mels, n_coeff, compute_deltas, plugin, cache
     if num_cols == 1:
         filenames = []
         for line in lines:
+            filename = line
             filenames.append(Path(filename).absolute().as_posix())
         featurize_task.split(
         splitter=("filename"),
