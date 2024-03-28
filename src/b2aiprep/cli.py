@@ -1,5 +1,6 @@
 import csv
 import os
+import shutil
 import typing as ty
 from glob import glob
 from pathlib import Path
@@ -14,6 +15,7 @@ from .process import (
     SpeechToText,
     VoiceConversion,
     to_features,
+    to_hf_dataset,
     verify_speaker_from_files,
 )
 
@@ -25,16 +27,14 @@ def main():
 
 @main.command()
 @click.argument("filename", type=click.Path(exists=True))
-@click.argument("subject", type=str, default="unknown")
-@click.argument("task", type=str, default="unknown")
+@click.option("-s", "--subject", type=ty.Optional[str], default=None)
+@click.option("-t", "--task", type=ty.Optional[str], default=None)
 @click.option("--outdir", type=click.Path(), default=os.getcwd(), show_default=True)
+@click.option("--save_figures/--no-save_figures", default=False, show_default=True)
 @click.option("--n_mels", type=int, default=20, show_default=True)
 @click.option("--n_coeff", type=int, default=20, show_default=True)
 @click.option("--compute_deltas/--no-compute_deltas", default=True, show_default=True)
-@click.option("--output_format", type=str, default="pt", show_default=True)
-def convert(
-    filename, subject, task, outdir, save_figures, n_mels, n_coeff, compute_deltas, output_format
-):
+def convert(filename, subject, task, outdir, save_figures, n_mels, n_coeff, compute_deltas):
     to_features(
         filename,
         subject,
@@ -44,13 +44,13 @@ def convert(
         n_mels=n_mels,
         n_coeff=n_coeff,
         compute_deltas=compute_deltas,
-        output_format=output_format,
     )
 
 
 @main.command()
 @click.argument("csvfile", type=click.Path(exists=True))
 @click.option("--outdir", type=click.Path(), default=os.getcwd(), show_default=True)
+@click.option("--save_figures/--no-save_figures", default=False, show_default=True)
 @click.option("--n_mels", type=int, default=20, show_default=True)
 @click.option("--n_coeff", type=int, default=20, show_default=True)
 @click.option("--compute_deltas/--no-compute_deltas", default=True, show_default=True)
@@ -69,7 +69,10 @@ def convert(
     help="Cache dir",
     show_default=True,
 )
-def batchconvert(csvfile, outdir, n_mels, n_coeff, compute_deltas, plugin, cache):
+@click.option("--dataset/--no-dataset", type=bool, default=False, show_default=True)
+def batchconvert(
+    csvfile, outdir, save_figures, n_mels, n_coeff, compute_deltas, plugin, cache, dataset
+):
     plugin_args = dict()
     for item in plugin[1].split():
         key, value = item.split("=")
@@ -78,13 +81,12 @@ def batchconvert(csvfile, outdir, n_mels, n_coeff, compute_deltas, plugin, cache
         plugin_args[key] = value
 
     featurize_pdt = pydratask(annotate({"return": {"features": ty.Any}})(to_features))
-    Path(outdir).mkdir(exist_ok=True, parents=True)
     featurize_task = featurize_pdt(
-        outdir=Path(outdir).absolute(),
         n_mels=n_mels,
         n_coeff=n_coeff,
         compute_deltas=compute_deltas,
         cache_dir=Path(cache).absolute(),
+        save_figures=save_figures,
     )
 
     with open(csvfile, "r") as f:
@@ -103,7 +105,6 @@ def batchconvert(csvfile, outdir, n_mels, n_coeff, compute_deltas, plugin, cache
             splitter=("filename",),
             filename=filenames,
         )
-
     elif num_cols == 3:
         filenames = []
         subjects = []
@@ -113,7 +114,6 @@ def batchconvert(csvfile, outdir, n_mels, n_coeff, compute_deltas, plugin, cache
             filenames.append(Path(filename).absolute().as_posix())
             subjects.append(subject)
             tasks.append(task)
-
         featurize_task.split(
             splitter=("filename", "subject", "task"),
             filename=filenames,
@@ -125,6 +125,19 @@ def batchconvert(csvfile, outdir, n_mels, n_coeff, compute_deltas, plugin, cache
     with pydra.Submitter(plugin=plugin[0], **plugin_args) as sub:
         sub(runnable=featurize_task)
     os.chdir(cwd)
+    results = featurize_task.result()
+    Path(outdir).mkdir(exist_ok=True, parents=True)
+    for val in results:
+        shutil.copy(val.output.features[1], Path(outdir))
+        if save_figures:
+            shutil.copy(val.output.features[2], Path(outdir))
+    if dataset:
+
+        def gen():
+            for val in results:
+                yield val.output.features[0]
+
+        to_hf_dataset(gen, Path(outdir) / "hf_dataset")
 
 
 @main.command()

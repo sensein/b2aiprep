@@ -158,32 +158,34 @@ def extract_opensmile(
 
 def to_features(
     filename: Path,
-    subject: str = None,
-    task: str = None,
-    outdir: Path = Path(os.getcwd()),
-    save_figures: bool = True,
+    subject: ty.Optional[str] = None,
+    task: ty.Optional[str] = None,
+    outdir: ty.Optional[Path] = None,
+    save_figures: bool = False,
     n_mels: int = 20,
     n_coeff: int = 20,
     compute_deltas: bool = True,
-    output_format="pt",
     opensmile_feature_set: opensmile.FeatureSet = opensmile.FeatureSet.eGeMAPSv02,
     opensmile_feature_level: opensmile.FeatureLevel = opensmile.FeatureLevel.Functionals,
-) -> ty.Tuple[dict, Path]:
+) -> ty.Tuple[ty.Dict, Path, ty.Optional[Path]]:
     """Compute features from audio file
 
     :param filename: Path to audio file
     :param subject: Subject ID
     :param task: Task ID
     :param outdir: Output directory
+    :param save_figures: Whether to save figures
     :param n_mels: Number of Mel bands
     :param n_coeff: Number of MFCC coefficients
     :param compute_deltas: Whether to compute delta features
+    :param opensmile_feature_set: OpenSmile feature set
+    :param opensmile_feature_level: OpenSmile feature level
     :return: Features dictionary
     :return: Path to features
     """
     with open(filename, "rb") as f:
         md5sum = md5(f.read()).hexdigest()
-    audio = Audio.from_file(filename)
+    audio = Audio.from_file(str(filename))
     audio = audio.to_16khz()
     features_specgram = specgram(audio)
     features_melfilterbank = melfilterbank(features_specgram, n_mels=n_mels)
@@ -205,17 +207,12 @@ def to_features(
             prefix = f"sub-{subject}_md5-{md5sum}"
     else:
         prefix = Path(filename).stem
-    outfile = outdir / f"{prefix}_features"
-    if output_format == "pt":
-        torch.save(features, f"{outfile}.pt")
-    else:
-        data = [features]
-        # Create a Hugging Face dataset from the data
-        dataset = Dataset.from_dict(data)
-        # Save the dataset to a JSON file
-        dataset.save_to_disk(outfile)
+    if outdir is None:
+        outdir = Path(os.getcwd())
+    outfile = outdir / f"{prefix}_features.pt"
+    torch.save(features, outfile)
 
-    features_specgram_log = None
+    outfig = None
     if save_figures:
         # save spectogram as figure
 
@@ -226,16 +223,13 @@ def to_features(
         ax.matshow(features_specgram_log, origin="lower", aspect=0.1)
         ax.axes.xaxis.set_ticks_position("bottom")
 
-        fig_name = Path("spectrogram_" + Path(filename).stem)
-        plt.title(fig_name)
+        plt.title(prefix)
 
-        os.makedirs(f"{outdir}/figures", exist_ok=True)  # make figures subdir if doesn't exist
-
-        outfig = outdir / f"figures/{fig_name}.png"
+        outfig = outdir / f"{prefix}_specgram.png"
         fig.savefig(outfig, bbox_inches="tight")
         plt.close(fig)
 
-    return features, outfile, features_specgram_log
+    return features, outfile, outfig
 
 
 class VoiceConversion:
@@ -349,3 +343,10 @@ class SpeechToText:
         if language is not None:
             return self.pipe(audio.signal.squeeze().numpy(), generate_kwargs={"language": language})
         return self.pipe(audio.signal.squeeze().numpy())
+
+
+def to_hf_dataset(generator, outdir: Path) -> None:
+    # Create a Hugging Face dataset from the data
+    ds = Dataset.from_generator(generator)
+    # Save the dataset to a JSON file
+    ds.save_to_disk(outdir)

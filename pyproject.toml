@@ -26,7 +26,7 @@ dependencies = [
     "opensmile>=2.3.0",
     "matplotlib>=3.8.3",
     "click",
-    "pydra",
+    "pydra~=0.23",
     "TTS",
     "accelerate",
     "datasets"
