@@ -19,13 +19,14 @@ classifiers = [
     "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.10, <3.12"
 dependencies = [
     "speechbrain>=1.0.0",
     "torchaudio>=2.0.0",
     "opensmile>=2.3.0",
     "matplotlib>=3.8.3",
     "click",
+    "whisperx @ git+https://github.com/m-bain/whisperx.git@f2da2f858e99e4211fe4f64b5f2938b007827e17",
     "pydra~=0.23",
     "TTS",
     "accelerate",
@@ -35,6 +36,7 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
   "pytest",
+  "pre-commit"
 ]
 
 [project.scripts]
