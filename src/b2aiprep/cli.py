@@ -247,6 +247,6 @@ def createbatchcsv(input_dir, out_file):
         write = csv.writer(f)
 
         for item in audiofiles:
-            write.writerow([item])
+            write.writerow([Path(item).absolute().as_posix()])
 
     print(f"csv of audiofiles generated at: {out_file}")
