@@ -26,7 +26,6 @@ dependencies = [
     "opensmile>=2.3.0",
     "matplotlib>=3.8.3",
     "click",
-    "whisperx @ git+https://github.com/m-bain/whisperx.git@f2da2f858e99e4211fe4f64b5f2938b007827e17",
     "pydra~=0.23",
     "TTS",
     "accelerate",
