@@ -1,5 +1,7 @@
+import csv
 import os
 import typing as ty
+from glob import glob
 from pathlib import Path
 
 import click
@@ -7,12 +9,14 @@ import pydra
 from pydra.mark import annotate
 from pydra.mark import task as pydratask
 
-from .process import to_features, verify_speaker_from_files
-from .process import VoiceConversion, SpeechToText, Audio
+from .process import (Audio, SpeechToText, VoiceConversion, to_features,
+                      verify_speaker_from_files)
+
 
 @click.group()
 def main():
     pass
+
 
 @main.command()
 @click.argument("filename", type=click.Path(exists=True))
@@ -23,12 +27,15 @@ def main():
 @click.option("--n_coeff", type=int, default=20, show_default=True)
 @click.option("--compute_deltas/--no-compute_deltas", default=True, show_default=True)
 @click.option("--output_format", type=str, default="pt", show_default=True)
-def convert(filename, subject, task, outdir, n_mels, n_coeff, compute_deltas, output_format):
+def convert(
+    filename, subject, task, outdir, save_figures, n_mels, n_coeff, compute_deltas, output_format
+):
     to_features(
         filename,
         subject,
         task,
         outdir=Path(outdir),
+        save_figures=save_figures,
         n_mels=n_mels,
         n_coeff=n_coeff,
         compute_deltas=compute_deltas,
@@ -64,16 +71,7 @@ def batchconvert(csvfile, outdir, n_mels, n_coeff, compute_deltas, plugin, cache
         if plugin[0] == "cf" and key == "n_procs":
             value = int(value)
         plugin_args[key] = value
-    with open(csvfile, "r") as f:
-        lines = [line.strip() for line in f.readlines()]
-    filenames = []
-    subjects = []
-    tasks = []
-    for line in lines:
-        filename, subject, task = line.split(",")
-        filenames.append(Path(filename).absolute().as_posix())
-        subjects.append(subject)
-        tasks.append(task)
+
     featurize_pdt = pydratask(annotate({"return": {"features": ty.Any}})(to_features))
     Path(outdir).mkdir(exist_ok=True, parents=True)
     featurize_task = featurize_pdt(
@@ -83,12 +81,40 @@ def batchconvert(csvfile, outdir, n_mels, n_coeff, compute_deltas, plugin, cache
         compute_deltas=compute_deltas,
         cache_dir=Path(cache).absolute(),
     )
-    featurize_task.split(
-        splitter=("filename", "subject", "task"),
-        filename=filenames,
-        subject=subjects,
-        task=tasks,
-    )
+
+    with open(csvfile, "r") as f:
+        reader = csv.DictReader(f)
+        num_cols = len(reader.fieldnames)
+        lines = [line.strip() for line in f.readlines()]
+
+    # parse csv file differently if it is one column 'filename'
+    # or three column 'filename','subject','task'
+    if num_cols == 1:
+        filenames = []
+        for line in lines:
+            filename = line
+            filenames.append(Path(filename).absolute().as_posix())
+        featurize_task.split(
+            splitter=("filename"),
+            filename=filenames,
+        )
+
+    elif num_cols == 3:
+        filenames = []
+        subjects = []
+        tasks = []
+        for line in lines:
+            filename, subject, task = line.split(",")
+            filenames.append(Path(filename).absolute().as_posix())
+            subjects.append(subject)
+            tasks.append(task)
+
+        featurize_task.split(
+            splitter=("filename", "subject", "task"),
+            filename=filenames,
+            subject=subjects,
+            task=tasks,
+        )
 
     cwd = os.getcwd()
     with pydra.Submitter(plugin=plugin[0], **plugin_args) as sub:
@@ -110,8 +136,15 @@ def verify(file1, file2, model, device=None):
 @click.argument("source_file", type=click.Path(exists=True))
 @click.argument("target_voice_file", type=click.Path(exists=True))
 @click.argument("output_file", type=click.Path())
-@click.option("--model_name", type=str, default="voice_conversion_models/multilingual/vctk/freevc24", show_default=True)
-@click.option("--device", type=str, default=None, show_default=True, help="Device to use for inference.")
+@click.option(
+    "--model_name",
+    type=str,
+    default="voice_conversion_models/multilingual/vctk/freevc24",
+    show_default=True,
+)
+@click.option(
+    "--device", type=str, default=None, show_default=True, help="Device to use for inference."
+)
 @click.option("--progress_bar", type=bool, default=True, show_default=True)
 def convert_voice(source_file, target_voice_file, output_file, model_name, device, progress_bar):
     """
@@ -131,19 +164,38 @@ def convert_voice(source_file, target_voice_file, output_file, model_name, devic
 @click.option("--batch_size", type=int, default=16, show_default=True)
 @click.option("--batch_size", type=int, default=16, show_default=True)
 @click.option("--device", type=str, default=None, help="Device to use for inference.")
-@click.option('--return_timestamps', type=str, default='false', help="Return timestamps with the transcription. Can be 'true', 'false', or 'word'.")
-@click.option("--language", type=str, default=None, help="Language of the audio for transcription (default is multi-language).")
-def transcribe(audio_file, model_id, max_new_tokens, chunk_length_s, batch_size, device, return_timestamps, language):
+@click.option(
+    "--return_timestamps",
+    type=str,
+    default="false",
+    help="Return timestamps with the transcription. Can be 'true', 'false', or 'word'.",
+)
+@click.option(
+    "--language",
+    type=str,
+    default=None,
+    help="Language of the audio for transcription (default is multi-language).",
+)
+def transcribe(
+    audio_file,
+    model_id,
+    max_new_tokens,
+    chunk_length_s,
+    batch_size,
+    device,
+    return_timestamps,
+    language,
+):
     """
     Transcribes the audio_file.
     """
     # Convert return_timestamps to the correct type
-    if return_timestamps.lower() == 'true':
+    if return_timestamps.lower() == "true":
         return_timestamps = True
-    elif return_timestamps.lower() == 'false':
+    elif return_timestamps.lower() == "false":
         return_timestamps = False
     else:
-        return_timestamps = 'word'
+        return_timestamps = "word"
 
     stt = SpeechToText(
         model_id=model_id,
@@ -151,9 +203,32 @@ def transcribe(audio_file, model_id, max_new_tokens, chunk_length_s, batch_size,
         chunk_length_s=chunk_length_s,
         batch_size=batch_size,
         return_timestamps=return_timestamps,
-        device=device
+        device=device,
     )
 
     audio_data = Audio.from_file(audio_file)
     transcription = stt.transcribe(audio_data, language=language)
     print("Transcription:", transcription)
+
+
+@main.command()
+@click.argument("input_dir", type=str)
+@click.argument("out_file", type=str)
+def createbatchcsv(input_dir, out_file):
+
+    # input_dir is the top level directory of the b2ai Production directory from Wasabi
+    # it is expected to contain subfolders with each institution e.g. MIT, UCF, etc.
+
+    # out_file is where a csv file will be saved and should be in the format 'path/name/csv'
+    input_dir = Path(input_dir)
+    audiofiles = glob(f"{input_dir}/*/*.wav")
+
+    with open(out_file, "w") as f:
+
+        # using csv.writer method from CSV package
+        write = csv.writer(f)
+
+        for item in audiofiles:
+            write.writerow([item])
+
+    print(f"csv of audiofiles generated at: {out_file}")

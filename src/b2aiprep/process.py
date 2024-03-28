@@ -2,20 +2,27 @@
 
 import os
 import typing as ty
+import warnings
 from hashlib import md5
 from pathlib import Path
 from typing import Union
 
+import matplotlib
+import matplotlib.pyplot as plt
+import opensmile
 import speechbrain.processing.features as spf
 import torch
+from datasets import Dataset
 from scipy import signal
 from speechbrain.augment.time_domain import Resample
 from speechbrain.dataio.dataio import read_audio, read_audio_info
 from speechbrain.inference.speaker import EncoderClassifier
-from TTS.api import TTS
 from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
-from datasets import Dataset
-import opensmile
+from TTS.api import TTS
+
+matplotlib.use("Agg")
+warnings.filterwarnings("ignore")
+
 
 class Audio:
     def __init__(self, signal: torch.tensor, sample_rate: int) -> None:
@@ -138,9 +145,9 @@ def resample_iir(audio: Audio, lowcut: float, new_sample_rate: int, order: int =
 def extract_opensmile(
     audio: Audio,
     feature_set: opensmile.FeatureSet = opensmile.FeatureSet.eGeMAPSv02,
-    feature_level: opensmile.FeatureLevel = opensmile.FeatureLevel.Functionals
-) -> torch.tensor: #feature_set: opensmile.FeatureSet = opensmile.FeatureSet.eGeMAPSv02
-    
+    feature_level: opensmile.FeatureLevel = opensmile.FeatureLevel.Functionals,
+) -> torch.tensor:  # feature_set: opensmile.FeatureSet = opensmile.FeatureSet.eGeMAPSv02
+
     smile = opensmile.Smile(
         feature_set=feature_set,
         feature_level=feature_level,
@@ -148,17 +155,19 @@ def extract_opensmile(
     )
     return smile.process_signal(audio.signal.squeeze(), audio.sample_rate)
 
+
 def to_features(
     filename: Path,
-    subject: str,
-    task: str,
+    subject: str = None,
+    task: str = None,
     outdir: Path = Path(os.getcwd()),
+    save_figures: bool = True,
     n_mels: int = 20,
     n_coeff: int = 20,
     compute_deltas: bool = True,
-    output_format = "pt",
+    output_format="pt",
     opensmile_feature_set: opensmile.FeatureSet = opensmile.FeatureSet.eGeMAPSv02,
-    opensmile_feature_level: opensmile.FeatureLevel = opensmile.FeatureLevel.Functionals
+    opensmile_feature_level: opensmile.FeatureLevel = opensmile.FeatureLevel.Functionals,
 ) -> ty.Tuple[dict, Path]:
     """Compute features from audio file
 
@@ -176,19 +185,27 @@ def to_features(
         md5sum = md5(f.read()).hexdigest()
     audio = Audio.from_file(filename)
     audio = audio.to_16khz()
-    features = specgram(audio)
-    features_melfilterbank = melfilterbank(features, n_mels=n_mels)
+    features_specgram = specgram(audio)
+    features_melfilterbank = melfilterbank(features_specgram, n_mels=n_mels)
     features_mfcc = MFCC(features_melfilterbank, n_coeff=n_coeff, compute_deltas=compute_deltas)
     features_opensmile = extract_opensmile(audio, opensmile_feature_set, opensmile_feature_level)
+
     features = {
-        "specgram": features,
+        "specgram": features_specgram,
         "melfilterbank": features_melfilterbank,
         "mfcc": features_mfcc,
         "opensmile": features_opensmile,
         "sample_rate": audio.sample_rate,
         "checksum": md5sum,
     }
-    outfile = outdir / f"sub-{subject}_task-{task}_md5-{md5sum}_features"
+    if subject is not None:
+        if task is not None:
+            prefix = f"sub-{subject}_task-{task}_md5-{md5sum}"
+        else:
+            prefix = f"sub-{subject}_md5-{md5sum}"
+    else:
+        prefix = Path(filename).stem
+    outfile = outdir / f"{prefix}_features"
     if output_format == "pt":
         torch.save(features, f"{outfile}.pt")
     else:
@@ -198,20 +215,36 @@ def to_features(
         # Save the dataset to a JSON file
         dataset.save_to_disk(outfile)
 
-    return features, outfile
+    features_specgram_log = None
+    if save_figures:
+        # save spectogram as figure
 
+        # general log spectrogram for image
+        features_specgram_log = specgram(audio, log=True)
 
+        fig, ax = plt.subplots()
+        ax.matshow(features_specgram_log, origin="lower", aspect=0.1)
+        ax.axes.xaxis.set_ticks_position("bottom")
 
+        fig_name = Path("spectrogram_" + Path(filename).stem)
+        plt.title(fig_name)
 
+        os.makedirs(f"{outdir}/figures", exist_ok=True)  # make figures subdir if doesn't exist
+
+        outfig = outdir / f"figures/{fig_name}.png"
+        fig.savefig(outfig, bbox_inches="tight")
+        plt.close(fig)
+
+    return features, outfile, features_specgram_log
 
 
 class VoiceConversion:
     def __init__(
-            self, 
-            model_name: str = "voice_conversion_models/multilingual/vctk/freevc24",
-            progress_bar: bool = True,
-            device: ty.Optional[str] = None,
-            ) -> None:
+        self,
+        model_name: str = "voice_conversion_models/multilingual/vctk/freevc24",
+        progress_bar: bool = True,
+        device: ty.Optional[str] = None,
+    ) -> None:
         """
         Initialize the Voice Conversion model.
 
@@ -228,12 +261,8 @@ class VoiceConversion:
             # If CUDA is not available, raise an error
             else:
                 raise ValueError("CUDA is not available. Please use CPU.")
-        
-        self.tts = TTS(
-            model_name=model_name, 
-            progress_bar=progress_bar, 
-            gpu=use_gpu
-            )
+
+        self.tts = TTS(model_name=model_name, progress_bar=progress_bar, gpu=use_gpu)
 
     def convert_voice(self, source_file: str, target_file: str, output_file: str) -> None:
         """
@@ -250,23 +279,26 @@ class VoiceConversion:
 
         # Perform voice conversion without modifying the source or target audio data directly.
         with torch.no_grad():
-            self.tts.voice_conversion_to_file(source_wav=source_file, target_wav=target_file, file_path=output_file)
+            self.tts.voice_conversion_to_file(
+                source_wav=source_file, target_wav=target_file, file_path=output_file
+            )
 
 
 class SpeechToText:
     """
     A class for converting speech to text using a specified speech-to-text model.
     """
+
     def __init__(
-            self, 
-            model_id: str = "openai/whisper-tiny",
-            max_new_tokens: int = 128, 
-            chunk_length_s: int = 30, 
-            batch_size: int = 16,
-            return_timestamps: Union[bool, str] = False,
-            device: ty.Optional[str] = None,
-            ) -> None:
-        
+        self,
+        model_id: str = "openai/whisper-tiny",
+        max_new_tokens: int = 128,
+        chunk_length_s: int = 30,
+        batch_size: int = 16,
+        return_timestamps: Union[bool, str] = False,
+        device: ty.Optional[str] = None,
+    ) -> None:
+
         torch_dtype = torch.float32
         if device is not None and "cuda" in device:
             # If CUDA is available, set use_gpu to True
@@ -315,8 +347,5 @@ class SpeechToText:
         """
         audio = audio.to_16khz()
         if language is not None:
-            return self.pipe(
-                audio.signal.squeeze().numpy(), 
-                generate_kwargs={"language": language}
-                )
+            return self.pipe(audio.signal.squeeze().numpy(), generate_kwargs={"language": language})
         return self.pipe(audio.signal.squeeze().numpy())
