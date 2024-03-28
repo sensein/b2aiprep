@@ -1,3 +1,15 @@
+# 0.7.0 (Thu Mar 28 2024)
+
+#### 🚀 Enhancement
+
+- doc: fix readme numbering [#22](https://github.com/sensein/b2aiprep/pull/22) ([@satra](https://github.com/satra))
+
+#### Authors: 1
+
+- Satrajit Ghosh ([@satra](https://github.com/satra))
+
+---
+
 # 0.6.0 (Thu Mar 28 2024)
 
 #### 🚀 Enhancement
