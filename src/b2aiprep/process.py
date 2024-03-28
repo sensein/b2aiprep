@@ -2,15 +2,26 @@
 
 import os
 import typing as ty
+import warnings
 from hashlib import md5
 from pathlib import Path
+from typing import Union
 
+import matplotlib
+import matplotlib.pyplot as plt
+import opensmile
 import speechbrain.processing.features as spf
 import torch
+from datasets import Dataset
 from scipy import signal
 from speechbrain.augment.time_domain import Resample
 from speechbrain.dataio.dataio import read_audio, read_audio_info
 from speechbrain.inference.speaker import EncoderClassifier
+from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
+from TTS.api import TTS
+
+matplotlib.use("Agg")
+warnings.filterwarnings("ignore")
 
 
 class Audio:
@@ -131,41 +142,211 @@ def resample_iir(audio: Audio, lowcut: float, new_sample_rate: int, order: int =
     return Audio(resampler(filtered.unsqueeze(0)).squeeze(0), new_sample_rate)
 
 
+def extract_opensmile(
+    audio: Audio,
+    feature_set: opensmile.FeatureSet = opensmile.FeatureSet.eGeMAPSv02,
+    feature_level: opensmile.FeatureLevel = opensmile.FeatureLevel.Functionals,
+) -> torch.tensor:  # feature_set: opensmile.FeatureSet = opensmile.FeatureSet.eGeMAPSv02
+
+    smile = opensmile.Smile(
+        feature_set=feature_set,
+        feature_level=feature_level,
+        verbose=True,
+    )
+    return smile.process_signal(audio.signal.squeeze(), audio.sample_rate)
+
+
 def to_features(
     filename: Path,
-    subject: str,
-    task: str,
-    outdir: Path = Path(os.getcwd()),
+    subject: ty.Optional[str] = None,
+    task: ty.Optional[str] = None,
+    outdir: ty.Optional[Path] = None,
+    save_figures: bool = False,
     n_mels: int = 20,
     n_coeff: int = 20,
     compute_deltas: bool = True,
-) -> ty.Tuple[dict, Path]:
+    opensmile_feature_set: opensmile.FeatureSet = opensmile.FeatureSet.eGeMAPSv02,
+    opensmile_feature_level: opensmile.FeatureLevel = opensmile.FeatureLevel.Functionals,
+) -> ty.Tuple[ty.Dict, Path, ty.Optional[Path]]:
     """Compute features from audio file
 
     :param filename: Path to audio file
     :param subject: Subject ID
     :param task: Task ID
     :param outdir: Output directory
+    :param save_figures: Whether to save figures
     :param n_mels: Number of Mel bands
     :param n_coeff: Number of MFCC coefficients
     :param compute_deltas: Whether to compute delta features
+    :param opensmile_feature_set: OpenSmile feature set
+    :param opensmile_feature_level: OpenSmile feature level
     :return: Features dictionary
     :return: Path to features
     """
     with open(filename, "rb") as f:
         md5sum = md5(f.read()).hexdigest()
-    audio = Audio.from_file(filename)
+    audio = Audio.from_file(str(filename))
     audio = audio.to_16khz()
-    features = specgram(audio)
-    features_melfilterbank = melfilterbank(features, n_mels=n_mels)
+    features_specgram = specgram(audio)
+    features_melfilterbank = melfilterbank(features_specgram, n_mels=n_mels)
     features_mfcc = MFCC(features_melfilterbank, n_coeff=n_coeff, compute_deltas=compute_deltas)
+    features_opensmile = extract_opensmile(audio, opensmile_feature_set, opensmile_feature_level)
+
     features = {
-        "specgram": features,
+        "specgram": features_specgram,
         "melfilterbank": features_melfilterbank,
         "mfcc": features_mfcc,
+        "opensmile": features_opensmile,
         "sample_rate": audio.sample_rate,
         "checksum": md5sum,
     }
-    outfile = outdir / f"sub-{subject}_task-{task}_md5-{md5sum}_features.pt"
+    if subject is not None:
+        if task is not None:
+            prefix = f"sub-{subject}_task-{task}_md5-{md5sum}"
+        else:
+            prefix = f"sub-{subject}_md5-{md5sum}"
+    else:
+        prefix = Path(filename).stem
+    if outdir is None:
+        outdir = Path(os.getcwd())
+    outfile = outdir / f"{prefix}_features.pt"
     torch.save(features, outfile)
-    return features, outfile
+
+    outfig = None
+    if save_figures:
+        # save spectogram as figure
+
+        # general log spectrogram for image
+        features_specgram_log = specgram(audio, log=True)
+
+        fig, ax = plt.subplots()
+        ax.matshow(features_specgram_log, origin="lower", aspect=0.1)
+        ax.axes.xaxis.set_ticks_position("bottom")
+
+        plt.title(prefix)
+
+        outfig = outdir / f"{prefix}_specgram.png"
+        fig.savefig(outfig, bbox_inches="tight")
+        plt.close(fig)
+
+    return features, outfile, outfig
+
+
+class VoiceConversion:
+    def __init__(
+        self,
+        model_name: str = "voice_conversion_models/multilingual/vctk/freevc24",
+        progress_bar: bool = True,
+        device: ty.Optional[str] = None,
+    ) -> None:
+        """
+        Initialize the Voice Conversion model.
+
+        :param model_name: Name of the model to be used for voice conversion.
+        :param use_gpu: Boolean indicating whether to use GPU for model computation.
+
+        TODO: Add support for multiple devices.
+        """
+        use_gpu = False
+        if device is not None and "cuda" in device:
+            # If CUDA is available, set use_gpu to True
+            if torch.cuda.is_available():
+                use_gpu = True
+            # If CUDA is not available, raise an error
+            else:
+                raise ValueError("CUDA is not available. Please use CPU.")
+
+        self.tts = TTS(model_name=model_name, progress_bar=progress_bar, gpu=use_gpu)
+
+    def convert_voice(self, source_file: str, target_file: str, output_file: str) -> None:
+        """
+        Converts the voice from the source audio file to match the voice in the target audio file.
+
+        :param source_file: Path to the source audio file.
+        :param target_file: Path to the target audio file.
+        :param output_file: Path where the converted audio file will be saved.
+        """
+        if not os.path.exists(source_file):
+            raise FileNotFoundError(f"The source file {source_file} does not exist.")
+        if not os.path.exists(target_file):
+            raise FileNotFoundError(f"The target file {target_file} does not exist.")
+
+        # Perform voice conversion without modifying the source or target audio data directly.
+        with torch.no_grad():
+            self.tts.voice_conversion_to_file(
+                source_wav=source_file, target_wav=target_file, file_path=output_file
+            )
+
+
+class SpeechToText:
+    """
+    A class for converting speech to text using a specified speech-to-text model.
+    """
+
+    def __init__(
+        self,
+        model_id: str = "openai/whisper-tiny",
+        max_new_tokens: int = 128,
+        chunk_length_s: int = 30,
+        batch_size: int = 16,
+        return_timestamps: Union[bool, str] = False,
+        device: ty.Optional[str] = None,
+    ) -> None:
+
+        torch_dtype = torch.float32
+        if device is not None and "cuda" in device:
+            # If CUDA is available, set use_gpu to True
+            if torch.cuda.is_available():
+                torch_dtype = torch.float16
+            # If CUDA is not available, raise an error
+            else:
+                raise ValueError("CUDA is not available. Please use CPU.")
+
+        self.model = AutoModelForSpeechSeq2Seq.from_pretrained(
+            model_id, torch_dtype=torch_dtype, low_cpu_mem_usage=True, use_safetensors=True
+        ).to(device)
+        self.processor = AutoProcessor.from_pretrained(model_id)
+        self.device = device
+        self.torch_dtype = torch_dtype
+
+        self.pipe = pipeline(
+            "automatic-speech-recognition",
+            model=self.model,
+            tokenizer=self.processor.tokenizer,
+            feature_extractor=self.processor.feature_extractor,
+            max_new_tokens=max_new_tokens,
+            chunk_length_s=chunk_length_s,
+            batch_size=batch_size,
+            return_timestamps=return_timestamps,
+            torch_dtype=torch_dtype,
+            device=device,
+        )
+
+    def transcribe(self, audio: Audio, language: str = None):
+        """
+        Transcribes the given audio input into text.
+
+        Parameters:
+        - audio (Audio): The audio input to transcribe.
+        - language (Optional[str]): The language of the audio input. If not None, the transcription
+          will attempt to use this language. If None, the model will use its default (mulilingual).
+
+        Returns:
+        - dict: The transcription result, which includes the transcribed text. If timestamps were
+          requested during initialization, they are also included in the result.
+
+        TODO:
+        - Add checking if the specified language is supported by the model.
+        - Consider the outlet of the transcript (e.g., file, console, return object).
+        """
+        audio = audio.to_16khz()
+        if language is not None:
+            return self.pipe(audio.signal.squeeze().numpy(), generate_kwargs={"language": language})
+        return self.pipe(audio.signal.squeeze().numpy())
+
+
+def to_hf_dataset(generator, outdir: Path) -> None:
+    # Create a Hugging Face dataset from the data
+    ds = Dataset.from_generator(generator)
+    # Save the dataset to a JSON file
+    ds.save_to_disk(outdir)

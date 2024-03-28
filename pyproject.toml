@@ -24,10 +24,13 @@ dependencies = [
     "speechbrain>=1.0.0",
     "torchaudio>=2.0.0",
     "opensmile>=2.3.0",
+    "matplotlib>=3.8.3",
     "click",
-    "pydra",
-    "openai-whisper",
     "whisperx @ git+https://github.com/m-bain/whisperx.git@78dcfaab51005aa703ee21375f81ed31bc248560",
+    "pydra~=0.23",
+    "TTS",
+    "accelerate",
+    "datasets"
 ]
 
 [project.optional-dependencies]
