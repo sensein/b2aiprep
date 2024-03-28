@@ -48,6 +48,9 @@ b2aiprep-cli --help
     All outputs are currently stored in a single directory specified by the `--outdir`
     flag.
 
+    One can also generate a hugging face dataset in the output directoryby specifying the
+     `--dataset` flag.
+
 3. Generate csv file to feed to batchconvert
 
     ```bash
@@ -74,7 +77,8 @@ b2aiprep-cli --help
     There is a notebook in the docs directory that can be used to interact with the library
     programmatically.
 
-5. Convert the speaker in the source audio file (1st argument) into the speaker of the target audio file (2nd argument) and save the result in the output file (3rd argument)
+5. Convert the speaker in the source audio file (1st argument) into the speaker of the target audio file (2nd argument)
+     and save the result in the output file (3rd argument)
 
     ```bash
     b2aiprep-cli convert-voice data/vc_source.wav data/vc_target.wav data/vc_output.wav
@@ -84,4 +88,10 @@ b2aiprep-cli --help
 
     ```bash
     b2aiprep-cli transcribe data/vc_source.wav
+    ```
+
+    Or use a different model. Note that the large model may take some time to download.
+
+    ```bash
+    b2aiprep-cli transcribe data/vc_source.wav --model_id 'openai/whisper-large-v3' --return_timestamps true
     ```
