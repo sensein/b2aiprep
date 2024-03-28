@@ -25,7 +25,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip setuptools
-          pip install --upgrade --force-reinstall --no-cache-dir --editable=".[dev]"
+          pip install --upgrade --force-reinstall --no-cache-dir --editable=".[dev]" --index-url https://download.pytorch.org/whl/cpu
       - name: Test with pytest
         run: |
           pytest src/tests
