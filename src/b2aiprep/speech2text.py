@@ -1,29 +1,9 @@
 import typing as ty
 
+import torch
+import whisperx
+
 from .process import Audio
-
-
-# Transcribes speech to text using OpenAI's whisper model
-def transcribe_audio_whisper(audio: Audio, model: str = "base", device: ty.Optional[str] = None):
-    """
-    Transcribes audio to text using OpenAI's whisper model.
-
-    Args:
-        audio (Audio). Audio object.
-        model (str): Model to use for transcription. Defaults to "base".
-            See https://github.com/openai/whisper/ for a list of all available models.
-
-    Returns:
-        Result of the transcription.
-    """
-    import whisper
-
-    model = whisper.load_model(
-        model,
-        device=device,
-    )
-    result = model.transcribe(audio.signal.squeeze())
-    return result
 
 
 # Transcribes speech to text using the whisperX model
@@ -33,8 +13,9 @@ def transcribe_audio_whisperx(
     model: str = "base",
     device: ty.Optional[str] = None,
     batch_size: int = 16,
-    compute_type: str = "float32",
+    compute_type: ty.Optional[str] = None,
     force_alignment: bool = True,
+    return_char_alignments: bool = False,
     diarize: bool = False,
     min_speakers: ty.Optional[int] = None,
     max_speakers: ty.Optional[int] = None,
@@ -58,12 +39,13 @@ def transcribe_audio_whisperx(
     Returns:
         Result of the transcription.
     """
-    import whisperx
 
     # 1. Transcribe with original whisper (batched)
+    device = device or "cuda" if torch.cuda.is_available() else "cpu"
     model = whisperx.load_model(model, device, compute_type=compute_type)
 
-    # audio = whisperx.load_audio(audio.signal.squeeze())
+    if audio.sample_rate != 16000:
+        audio = audio.to_16khz()
     audio = audio.signal.squeeze().numpy()
     result = model.transcribe(audio, batch_size=batch_size)
 
@@ -73,7 +55,12 @@ def transcribe_audio_whisperx(
             language_code=result["language"], device=device
         )
         result = whisperx.align(
-            result["segments"], model_a, metadata, audio, device, return_char_alignments=False
+            result["segments"],
+            model_a,
+            metadata,
+            audio,
+            device,
+            return_char_alignments=return_char_alignments,
         )
 
     if diarize:
