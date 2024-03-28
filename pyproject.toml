@@ -19,19 +19,23 @@ classifiers = [
     "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.10, <3.12"
 dependencies = [
     "speechbrain>=1.0.0",
     "torchaudio>=2.0.0",
     "opensmile>=2.3.0",
     "matplotlib>=3.8.3",
     "click",
-    "pydra"
+    "pydra~=0.23",
+    "TTS",
+    "accelerate",
+    "datasets"
 ]
 
 [project.optional-dependencies]
 dev = [
   "pytest",
+  "pre-commit"
 ]
 
 [project.scripts]

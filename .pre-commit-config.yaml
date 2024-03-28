@@ -12,7 +12,7 @@ repos:
     -   id: end-of-file-fixer
     -   id: trailing-whitespace
 -   repo: https://github.com/psf/black
-    rev: 24.2.0
+    rev: 24.3.0
     hooks:
     -   id: black
 -   repo: https://github.com/PyCQA/flake8
@@ -25,6 +25,7 @@ repos:
     hooks:
     -   id: isort
         exclude: ^(src/b2aiprep/_version\.py|versioneer\.py)$
+        args: ["--profile", "black"]
 -   repo: https://github.com/codespell-project/codespell
     rev: v2.2.6
     hooks:
