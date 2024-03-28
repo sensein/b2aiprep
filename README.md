@@ -57,11 +57,10 @@ b2aiprep-cli --help
     b2aiprep-cli createbatchcsv input_dir outfile
     ```
 
-    The input directory should point to the location of the Production directory pulled from Wasabi e.g. `/Users/b2ai/production`. Don't uninclude a / at the end of your path e.g. `/Users/b2ai/production/` will throw an
-    error. This will be fixed later.
+    The input directory should point to the location of the `Production` directory pulled from Wasabi e.g. `/Users/b2ai/production`.
 
-    This directory is expected to have subfolders for each institution, (e.g. `production/MIT`),
-    and each subdirectory is expected to have all the .wav files from each institution
+    This directory can have subfolders for each institution, (e.g. `production/MIT`),
+    and each subdirectory is expected to have all the `.wav` files from each institution.
 
     Outfile is the path to and name of the csv file to be generated, e.g. `audiofiles.csv`
 
