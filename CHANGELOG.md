@@ -1,3 +1,16 @@
+# 0.5.0 (Thu Mar 28 2024)
+
+#### 🚀 Enhancement
+
+- add speech to text and voice conversion [#18](https://github.com/sensein/b2aiprep/pull/18) ([@fabiocat93](https://github.com/fabiocat93) [@satra](https://github.com/satra))
+
+#### Authors: 2
+
+- [@fabiocat93](https://github.com/fabiocat93)
+- Satrajit Ghosh ([@satra](https://github.com/satra))
+
+---
+
 # 0.4.0 (Wed Mar 27 2024)
 
 #### 🚀 Enhancement
