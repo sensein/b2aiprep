@@ -28,4 +28,4 @@ jobs:
           pip install --upgrade --force-reinstall --no-cache-dir --editable=".[dev]"
       - name: Test with pytest
         run: |
-          pytest
+          pytest src/tests
