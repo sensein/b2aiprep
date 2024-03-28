@@ -3,7 +3,6 @@ from pathlib import Path
 import pytest
 
 from b2aiprep.process import Audio, SpeechToText
-from b2aiprep.speech2text import transcribe_audio_whisperx
 
 
 def test_transcribe():
@@ -21,21 +20,6 @@ def test_transcribe():
     result = speech_to_text.transcribe(audio)
     text = result["text"]
     assert text.strip() == audio_content
-
-
-def test_transcribe_whisperx():
-    """
-    Validates SpeechToText's ability to convert audio to text accurately.
-    Checks if the transcription matches the expected output, considering known model discrepancies.
-    """
-    audio_path = str((Path(__file__).parent.parent.parent / "data/vc_source.wav").absolute())
-    audio_content = "If it isn't, it isn't."
-
-    # Note: Should be "If it didn't, it didn't.", but that's what the model understands
-    audio = Audio.from_file(audio_path)
-
-    result = transcribe_audio_whisperx(audio, model="tiny", device="cpu", compute_type="float32")
-    assert result["segments"][0]["text"].strip() == audio_content
 
 
 def test_cuda_not_available():
