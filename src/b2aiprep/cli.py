@@ -9,8 +9,13 @@ import pydra
 from pydra.mark import annotate
 from pydra.mark import task as pydratask
 
-from .process import (Audio, SpeechToText, VoiceConversion, to_features,
-                      verify_speaker_from_files)
+from .process import (
+    Audio,
+    SpeechToText,
+    VoiceConversion,
+    to_features,
+    verify_speaker_from_files,
+)
 
 
 @click.group()
@@ -95,7 +100,7 @@ def batchconvert(csvfile, outdir, n_mels, n_coeff, compute_deltas, plugin, cache
             filename = line
             filenames.append(Path(filename).absolute().as_posix())
         featurize_task.split(
-            splitter=("filename"),
+            splitter=("filename",),
             filename=filenames,
         )
 
@@ -127,8 +132,8 @@ def batchconvert(csvfile, outdir, n_mels, n_coeff, compute_deltas, plugin, cache
 @click.argument("file2", type=click.Path(exists=True))
 @click.argument("model", type=str)
 @click.option("--device", type=str, default=None, show_default=True)
-def verify(file1, file2, model, device=None):
-    score, prediction = verify_speaker_from_files(file1, file2, model=model)
+def verify(file1, file2, model, device):
+    score, prediction = verify_speaker_from_files(file1, file2, model=model, device=device)
     print(f"Score: {float(score):.2f} Prediction: {bool(prediction)}")
 
 
@@ -221,7 +226,7 @@ def createbatchcsv(input_dir, out_file):
 
     # out_file is where a csv file will be saved and should be in the format 'path/name/csv'
     input_dir = Path(input_dir)
-    audiofiles = glob(f"{input_dir}/*/*.wav")
+    audiofiles = glob(f"{input_dir}/**/*.wav", recursive=True)
 
     with open(out_file, "w") as f:
 
