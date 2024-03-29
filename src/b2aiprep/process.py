@@ -94,7 +94,7 @@ def verify_speaker_from_files(
 
 
 def specgram(
-    audio: Audio, n_fft: int = 512, win_length: int = 10, hop_length: int = 10, toDb: bool = False
+    audio: Audio, n_fft: int = 512, win_length: int = 20, hop_length: int = 10, toDb: bool = False
 ) -> torch.tensor:
     """Compute the spectrogram using STFT of the audio signal
 
