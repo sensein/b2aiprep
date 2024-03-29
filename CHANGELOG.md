@@ -1,3 +1,15 @@
+# 0.7.1 (Fri Mar 29 2024)
+
+#### 🐛 Bug Fix
+
+- enh: produce double paneled spectrogram [#24](https://github.com/sensein/b2aiprep/pull/24) ([@satra](https://github.com/satra))
+
+#### Authors: 1
+
+- Satrajit Ghosh ([@satra](https://github.com/satra))
+
+---
+
 # 0.7.0 (Thu Mar 28 2024)
 
 #### 🚀 Enhancement
