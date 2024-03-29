@@ -34,7 +34,10 @@ def main():
 @click.option("--n_mels", type=int, default=20, show_default=True)
 @click.option("--n_coeff", type=int, default=20, show_default=True)
 @click.option("--compute_deltas/--no-compute_deltas", default=True, show_default=True)
-def convert(filename, subject, task, outdir, save_figures, n_mels, n_coeff, compute_deltas):
+@click.option("--opensmile", nargs=2, default=["eGeMAPSv02", "Functionals"], show_default=True)
+def convert(
+    filename, subject, task, outdir, save_figures, n_mels, n_coeff, compute_deltas, opensmile
+):
     to_features(
         filename,
         subject,
@@ -44,6 +47,8 @@ def convert(filename, subject, task, outdir, save_figures, n_mels, n_coeff, comp
         n_mels=n_mels,
         n_coeff=n_coeff,
         compute_deltas=compute_deltas,
+        opensmile_feature_set=opensmile[0],
+        opensmile_feature_level=opensmile[1],
     )
 
 
@@ -70,8 +75,18 @@ def convert(filename, subject, task, outdir, save_figures, n_mels, n_coeff, comp
     show_default=True,
 )
 @click.option("--dataset/--no-dataset", type=bool, default=False, show_default=True)
+@click.option("--opensmile", nargs=2, default=["eGeMAPSv02", "Functionals"], show_default=True)
 def batchconvert(
-    csvfile, outdir, save_figures, n_mels, n_coeff, compute_deltas, plugin, cache, dataset
+    csvfile,
+    outdir,
+    save_figures,
+    n_mels,
+    n_coeff,
+    compute_deltas,
+    plugin,
+    cache,
+    dataset,
+    opensmile,
 ):
     plugin_args = dict()
     for item in plugin[1].split():
@@ -87,6 +102,8 @@ def batchconvert(
         compute_deltas=compute_deltas,
         cache_dir=Path(cache).absolute(),
         save_figures=save_figures,
+        opensmile_feature_set=opensmile[0],
+        opensmile_feature_level=opensmile[1],
     )
 
     with open(csvfile, "r") as f:
