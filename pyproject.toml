@@ -19,7 +19,7 @@ classifiers = [
     "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
 ]
-requires-python = ">=3.10, <3.12"
+requires-python = ">=3.10, <3.13"
 dependencies = [
     "speechbrain>=1.0.0",
     "torchaudio>=2.0.0",
@@ -27,15 +27,24 @@ dependencies = [
     "matplotlib>=3.8.3",
     "click",
     "pydra~=0.23",
-    "TTS",
+    "transformers",
     "accelerate",
-    "datasets"
+    "datasets[audio]"
 ]
 
 [project.optional-dependencies]
+doc = [
+    "jupyterlab",
+    "jupytext",
+    "ipympl"
+]
+tts = [
+    "TTS; python_version < '3.12'"
+]
 dev = [
-  "pytest",
-  "pre-commit"
+    "b2aiprep[doc]",
+    "pytest",
+    "pre-commit"
 ]
 
 [project.scripts]
