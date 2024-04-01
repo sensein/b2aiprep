@@ -1,3 +1,15 @@
+# 0.8.0 (Mon Apr 01 2024)
+
+#### 🚀 Enhancement
+
+- fix: restore matplotlib in notebooks and more efficient pydra execution [#26](https://github.com/sensein/b2aiprep/pull/26) ([@satra](https://github.com/satra))
+
+#### Authors: 1
+
+- Satrajit Ghosh ([@satra](https://github.com/satra))
+
+---
+
 # 0.7.1 (Fri Mar 29 2024)
 
 #### 🐛 Bug Fix
