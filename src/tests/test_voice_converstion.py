@@ -3,7 +3,12 @@ from pathlib import Path
 
 import pytest
 
-from b2aiprep.process import VoiceConversion
+try:
+    import TTS
+except ImportError:
+    TTS = None
+else:
+    from b2aiprep.process import VoiceConversion
 
 
 @pytest.fixture()
@@ -17,6 +22,7 @@ def resource(request):
     return source_file, target_file, output_file
 
 
+@pytest.mark.skipif(TTS is None, reason="TTS is not installed")
 def test_convert_voice(resource):
     """
     Test voice conversion from a source file to an output file
@@ -38,6 +44,7 @@ def test_convert_voice(resource):
     os.remove(output_file)
 
 
+@pytest.mark.skipif(TTS is None, reason="TTS is not installed")
 def test_source_file_not_exist(resource):
     """
     Test behavior when the source file does not exist.
@@ -52,6 +59,7 @@ def test_source_file_not_exist(resource):
     assert str(e.value) == f"The source file {source_file} does not exist."
 
 
+@pytest.mark.skipif(TTS is None, reason="TTS is not installed")
 def test_target_file_not_exist(resource):
     """
     Test behavior when the target file does not exist.
@@ -66,6 +74,7 @@ def test_target_file_not_exist(resource):
     assert str(e.value) == f"The target file {target_file} does not exist."
 
 
+@pytest.mark.skipif(TTS is None, reason="TTS is not installed")
 def test_cuda_not_available():
     """
     Test behavior when CUDA is not available.
