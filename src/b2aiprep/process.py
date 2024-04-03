@@ -7,20 +7,23 @@ from hashlib import md5
 from pathlib import Path
 from typing import Union
 
-import matplotlib
 import matplotlib.pyplot as plt
 import opensmile
 import speechbrain.processing.features as spf
 import torch
+import torchaudio
 from datasets import Dataset
 from scipy import signal
 from speechbrain.augment.time_domain import Resample
 from speechbrain.dataio.dataio import read_audio, read_audio_info
 from speechbrain.inference.speaker import EncoderClassifier
 from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
-from TTS.api import TTS
 
-matplotlib.use("Agg")
+try:
+    from TTS.api import TTS
+except ImportError:
+    TTS = None
+
 warnings.filterwarnings("ignore")
 
 
@@ -93,17 +96,30 @@ def verify_speaker_from_files(
 
 
 def specgram(
-    audio: Audio, win_length: int = 25, hop_lenth: int = 10, log: bool = False
+    audio: Audio, n_fft: int = 512, win_length: int = 20, hop_length: int = 10, toDb: bool = False
 ) -> torch.tensor:
-    """Compute the spectrogram using STFT of the audio signal"""
-    compute_STFT = spf.STFT(
-        sample_rate=audio.sample_rate,
-        win_length=win_length,
-        hop_length=hop_lenth,
-        n_fft=int(400 * audio.sample_rate / 16000),
+    """Compute the spectrogram using STFT of the audio signal
+
+    :param audio: Audio object
+    :param n_fft: FFT window size
+    :param win_length: Window length (ms)
+    :param hop_length: Hop length (ms)
+    :param toDb: If True, return the log of the power of the spectrogram
+    :return: Spectrogram
+    """
+    spectrogram = torchaudio.transforms.Spectrogram(
+        n_fft=n_fft,
+        win_length=int(audio.sample_rate * win_length / 1000),
+        hop_length=int(audio.sample_rate * hop_length / 1000),
+        power=2 if toDb else 1,
     )
-    stft = compute_STFT(audio.signal.unsqueeze(0))
-    return spf.spectral_magnitude(stft.squeeze(), log=log)
+    spec = spectrogram(audio.signal.squeeze()).T
+    if toDb:
+        log_spec = 10.0 * torch.log10(torch.maximum(spec, torch.tensor(1e-10)))
+        log_spec = torch.maximum(log_spec, log_spec.max() - 80)
+        return log_spec
+    else:
+        return spec
 
 
 def melfilterbank(specgram: torch.tensor, n_mels: int = 20) -> torch.tensor:
@@ -144,16 +160,35 @@ def resample_iir(audio: Audio, lowcut: float, new_sample_rate: int, order: int =
 
 def extract_opensmile(
     audio: Audio,
-    feature_set: opensmile.FeatureSet = opensmile.FeatureSet.eGeMAPSv02,
-    feature_level: opensmile.FeatureLevel = opensmile.FeatureLevel.Functionals,
-) -> torch.tensor:  # feature_set: opensmile.FeatureSet = opensmile.FeatureSet.eGeMAPSv02
-
+    feature_set: str = "eGeMAPSv02",
+    feature_level: str = "Functionals",
+) -> torch.tensor:
+    """Extract features using opensmile"""
     smile = opensmile.Smile(
-        feature_set=feature_set,
-        feature_level=feature_level,
-        verbose=True,
+        feature_set=getattr(opensmile.FeatureSet, feature_set),
+        feature_level=getattr(opensmile.FeatureLevel, feature_level),
     )
     return smile.process_signal(audio.signal.squeeze(), audio.sample_rate)
+
+
+def plot_waveform(waveform, sr, title="Waveform", ax=None):
+    time_axis = torch.arange(0, len(waveform)) / sr
+
+    if ax is None:
+        _, ax = plt.subplots(1, 1)
+    ax.plot(time_axis, waveform, linewidth=1)
+    ax.grid(True)
+    ax.set_xlim([0, time_axis[-1]])
+    ax.set_title(title)
+
+
+def plot_spectrogram(specgram, title=None, ylabel="freq_bin", ax=None, **kwargs):
+    if ax is None:
+        _, ax = plt.subplots(1, 1)
+    if title is not None:
+        ax.set_title(title)
+    ax.set_ylabel(ylabel)
+    ax.matshow(specgram, origin="lower", aspect="auto", **kwargs)  # , interpolation="nearest")
 
 
 def to_features(
@@ -165,8 +200,9 @@ def to_features(
     n_mels: int = 20,
     n_coeff: int = 20,
     compute_deltas: bool = True,
-    opensmile_feature_set: opensmile.FeatureSet = opensmile.FeatureSet.eGeMAPSv02,
-    opensmile_feature_level: opensmile.FeatureLevel = opensmile.FeatureLevel.Functionals,
+    opensmile_feature_set: str = "eGeMAPSv02",
+    opensmile_feature_level: str = "Functionals",
+    return_features: bool = False,
 ) -> ty.Tuple[ty.Dict, Path, ty.Optional[Path]]:
     """Compute features from audio file
 
@@ -217,65 +253,69 @@ def to_features(
         # save spectogram as figure
 
         # general log spectrogram for image
-        features_specgram_log = specgram(audio, log=True)
+        features_specgram_log = specgram(audio, toDb=True)
 
-        fig, ax = plt.subplots()
-        ax.matshow(features_specgram_log, origin="lower", aspect=0.1)
-        ax.axes.xaxis.set_ticks_position("bottom")
-
-        plt.title(prefix)
+        fig, axs = plt.subplots(2, 1)
+        plot_waveform(
+            audio.signal, sr=audio.sample_rate, title=f"Original waveform: {prefix}", ax=axs[0]
+        )
+        plot_spectrogram(features_specgram_log.T, title="spectrogram", ax=axs[1])
+        fig.tight_layout()
 
         outfig = outdir / f"{prefix}_specgram.png"
         fig.savefig(outfig, bbox_inches="tight")
         plt.close(fig)
 
-    return features, outfile, outfig
+    return features if return_features else None, outfile, outfig
 
 
-class VoiceConversion:
-    def __init__(
-        self,
-        model_name: str = "voice_conversion_models/multilingual/vctk/freevc24",
-        progress_bar: bool = True,
-        device: ty.Optional[str] = None,
-    ) -> None:
-        """
-        Initialize the Voice Conversion model.
+if TTS is not None:
 
-        :param model_name: Name of the model to be used for voice conversion.
-        :param use_gpu: Boolean indicating whether to use GPU for model computation.
+    class VoiceConversion:
+        def __init__(
+            self,
+            model_name: str = "voice_conversion_models/multilingual/vctk/freevc24",
+            progress_bar: bool = True,
+            device: ty.Optional[str] = None,
+        ) -> None:
+            """
+            Initialize the Voice Conversion model.
 
-        TODO: Add support for multiple devices.
-        """
-        use_gpu = False
-        if device is not None and "cuda" in device:
-            # If CUDA is available, set use_gpu to True
-            if torch.cuda.is_available():
-                use_gpu = True
-            # If CUDA is not available, raise an error
-            else:
-                raise ValueError("CUDA is not available. Please use CPU.")
+            :param model_name: Name of the model to be used for voice conversion.
+            :param use_gpu: Boolean indicating whether to use GPU for model computation.
 
-        self.tts = TTS(model_name=model_name, progress_bar=progress_bar, gpu=use_gpu)
+            TODO: Add support for multiple devices.
+            """
+            use_gpu = False
+            if device is not None and "cuda" in device:
+                # If CUDA is available, set use_gpu to True
+                if torch.cuda.is_available():
+                    use_gpu = True
+                # If CUDA is not available, raise an error
+                else:
+                    raise ValueError("CUDA is not available. Please use CPU.")
 
-    def convert_voice(self, source_file: str, target_file: str, output_file: str) -> None:
-        """
-        Converts the voice from the source audio file to match the voice in the target audio file.
+            self.tts = TTS(model_name=model_name, progress_bar=progress_bar, gpu=use_gpu)
 
-        :param source_file: Path to the source audio file.
-        :param target_file: Path to the target audio file.
-        :param output_file: Path where the converted audio file will be saved.
-        """
-        if not os.path.exists(source_file):
-            raise FileNotFoundError(f"The source file {source_file} does not exist.")
-        if not os.path.exists(target_file):
-            raise FileNotFoundError(f"The target file {target_file} does not exist.")
+        def convert_voice(self, source_file: str, target_file: str, output_file: str) -> None:
+            """
+            Converts the voice from the source audio file to match the voice in
+            the target audio file.
 
-        # Perform voice conversion without modifying the source or target audio data directly.
-        with torch.no_grad():
-            self.tts.voice_conversion_to_file(
-                source_wav=source_file, target_wav=target_file, file_path=output_file
-            )
+            :param source_file: Path to the source audio file.
+            :param target_file: Path to the target audio file.
+            :param output_file: Path where the converted audio file will be saved.
+            """
+            if not os.path.exists(source_file):
+                raise FileNotFoundError(f"The source file {source_file} does not exist.")
+            if not os.path.exists(target_file):
+                raise FileNotFoundError(f"The target file {target_file} does not exist.")
+
+            # Perform voice conversion without modifying the source or target audio data directly.
+            with torch.no_grad():
+                self.tts.voice_conversion_to_file(
+                    source_wav=source_file, target_wav=target_file, file_path=output_file
+                )
 
 
 class SpeechToText:

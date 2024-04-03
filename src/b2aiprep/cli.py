@@ -7,17 +7,24 @@ from pathlib import Path
 
 import click
 import pydra
+import torch
 from pydra.mark import annotate
 from pydra.mark import task as pydratask
 
 from .process import (
     Audio,
     SpeechToText,
-    VoiceConversion,
     to_features,
     to_hf_dataset,
     verify_speaker_from_files,
 )
+
+try:
+    import TTS
+except ImportError:
+    TTS = None
+else:
+    from .process import VoiceConversion
 
 
 @click.group()
@@ -34,7 +41,10 @@ def main():
 @click.option("--n_mels", type=int, default=20, show_default=True)
 @click.option("--n_coeff", type=int, default=20, show_default=True)
 @click.option("--compute_deltas/--no-compute_deltas", default=True, show_default=True)
-def convert(filename, subject, task, outdir, save_figures, n_mels, n_coeff, compute_deltas):
+@click.option("--opensmile", nargs=2, default=["eGeMAPSv02", "Functionals"], show_default=True)
+def convert(
+    filename, subject, task, outdir, save_figures, n_mels, n_coeff, compute_deltas, opensmile
+):
     to_features(
         filename,
         subject,
@@ -44,6 +54,8 @@ def convert(filename, subject, task, outdir, save_figures, n_mels, n_coeff, comp
         n_mels=n_mels,
         n_coeff=n_coeff,
         compute_deltas=compute_deltas,
+        opensmile_feature_set=opensmile[0],
+        opensmile_feature_level=opensmile[1],
     )
 
 
@@ -70,8 +82,18 @@ def convert(filename, subject, task, outdir, save_figures, n_mels, n_coeff, comp
     show_default=True,
 )
 @click.option("--dataset/--no-dataset", type=bool, default=False, show_default=True)
+@click.option("--opensmile", nargs=2, default=["eGeMAPSv02", "Functionals"], show_default=True)
 def batchconvert(
-    csvfile, outdir, save_figures, n_mels, n_coeff, compute_deltas, plugin, cache, dataset
+    csvfile,
+    outdir,
+    save_figures,
+    n_mels,
+    n_coeff,
+    compute_deltas,
+    plugin,
+    cache,
+    dataset,
+    opensmile,
 ):
     plugin_args = dict()
     for item in plugin[1].split():
@@ -87,6 +109,8 @@ def batchconvert(
         compute_deltas=compute_deltas,
         cache_dir=Path(cache).absolute(),
         save_figures=save_figures,
+        opensmile_feature_set=opensmile[0],
+        opensmile_feature_level=opensmile[1],
     )
 
     with open(csvfile, "r") as f:
@@ -135,7 +159,7 @@ def batchconvert(
 
         def gen():
             for val in results:
-                yield val.output.features[0]
+                yield torch.load(val.output.features[1])
 
         to_hf_dataset(gen, Path(outdir) / "hf_dataset")
 
@@ -150,28 +174,32 @@ def verify(file1, file2, model, device):
     print(f"Score: {float(score):.2f} Prediction: {bool(prediction)}")
 
 
-@main.command()
-@click.argument("source_file", type=click.Path(exists=True))
-@click.argument("target_voice_file", type=click.Path(exists=True))
-@click.argument("output_file", type=click.Path())
-@click.option(
-    "--model_name",
-    type=str,
-    default="voice_conversion_models/multilingual/vctk/freevc24",
-    show_default=True,
-)
-@click.option(
-    "--device", type=str, default=None, show_default=True, help="Device to use for inference."
-)
-@click.option("--progress_bar", type=bool, default=True, show_default=True)
-def convert_voice(source_file, target_voice_file, output_file, model_name, device, progress_bar):
-    """
-    Converts the voice in the source_file to match the voice in the target_voice_file,
-    and saves the output to output_file.
-    """
-    vc = VoiceConversion(model_name=model_name, progress_bar=progress_bar, device=device)
-    vc.convert_voice(source_file, target_voice_file, output_file)
-    print(f"Conversion complete. Output saved to: {output_file}")
+if TTS is not None:
+
+    @main.command()
+    @click.argument("source_file", type=click.Path(exists=True))
+    @click.argument("target_voice_file", type=click.Path(exists=True))
+    @click.argument("output_file", type=click.Path())
+    @click.option(
+        "--model_name",
+        type=str,
+        default="voice_conversion_models/multilingual/vctk/freevc24",
+        show_default=True,
+    )
+    @click.option(
+        "--device", type=str, default=None, show_default=True, help="Device to use for inference."
+    )
+    @click.option("--progress_bar", type=bool, default=True, show_default=True)
+    def convert_voice(
+        source_file, target_voice_file, output_file, model_name, device, progress_bar
+    ):
+        """
+        Converts the voice in the source_file to match the voice in the target_voice_file,
+        and saves the output to output_file.
+        """
+        vc = VoiceConversion(model_name=model_name, progress_bar=progress_bar, device=device)
+        vc.convert_voice(source_file, target_voice_file, output_file)
+        print(f"Conversion complete. Output saved to: {output_file}")
 
 
 @main.command()
