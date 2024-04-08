@@ -113,8 +113,13 @@ def specgram(
         n_fft=n_fft or int(400 * audio.sample_rate / 16000),
     )
     stft = compute_STFT(audio.signal.unsqueeze(0))
-    spec = spf.spectral_magnitude(stft.squeeze(), power=1, log=toDb)
-    return spec
+    spec = spf.spectral_magnitude(stft.squeeze(), power=1)
+    if toDb:
+        log_spec = 10.0 * torch.log10(torch.maximum(spec, torch.tensor(1e-10)))
+        log_spec = torch.maximum(log_spec, log_spec.max() - 80)
+        return log_spec
+    else:
+        return spec
 
 
 def melfilterbank(specgram: torch.tensor, n_mels: int = 20) -> torch.tensor:
@@ -218,9 +223,10 @@ def to_features(
     :return: Path to features
     :return: Path to figures
     """
-    import matplotlib
+    if mpl_backend is not None:
+        import matplotlib
 
-    matplotlib.use(mpl_backend)
+        matplotlib.use(mpl_backend)
     with open(filename, "rb") as f:
         md5sum = md5(f.read()).hexdigest()
     audio = Audio.from_file(str(filename))
