@@ -11,7 +11,6 @@ import matplotlib.pyplot as plt
 import opensmile
 import speechbrain.processing.features as spf
 import torch
-import torchaudio
 from datasets import Dataset
 from scipy import signal
 from speechbrain.augment.time_domain import Resample
@@ -107,13 +106,14 @@ def specgram(
     :param toDb: If True, return the log of the power of the spectrogram
     :return: Spectrogram
     """
-    spectrogram = torchaudio.transforms.Spectrogram(
-        n_fft=n_fft,
-        win_length=int(audio.sample_rate * win_length / 1000),
-        hop_length=int(audio.sample_rate * hop_length / 1000),
-        power=2 if toDb else 1,
+    compute_STFT = spf.STFT(
+        sample_rate=audio.sample_rate,
+        win_length=win_length,
+        hop_length=hop_length,
+        n_fft=n_fft or int(400 * audio.sample_rate / 16000),
     )
-    spec = spectrogram(audio.signal.squeeze()).T
+    stft = compute_STFT(audio.signal.unsqueeze(0))
+    spec = spf.spectral_magnitude(stft.squeeze(), power=1)
     if toDb:
         log_spec = 10.0 * torch.log10(torch.maximum(spec, torch.tensor(1e-10)))
         log_spec = torch.maximum(log_spec, log_spec.max() - 80)
@@ -203,6 +203,7 @@ def to_features(
     opensmile_feature_set: str = "eGeMAPSv02",
     opensmile_feature_level: str = "Functionals",
     return_features: bool = False,
+    mpl_backend: str = "Agg",
 ) -> ty.Tuple[ty.Dict, Path, ty.Optional[Path]]:
     """Compute features from audio file
 
@@ -216,9 +217,16 @@ def to_features(
     :param compute_deltas: Whether to compute delta features
     :param opensmile_feature_set: OpenSmile feature set
     :param opensmile_feature_level: OpenSmile feature level
+    :param return_features: Whether to return features
+    :param mpl_backend: matplotlib backend
     :return: Features dictionary
     :return: Path to features
+    :return: Path to figures
     """
+    if mpl_backend is not None:
+        import matplotlib
+
+        matplotlib.use(mpl_backend)
     with open(filename, "rb") as f:
         md5sum = md5(f.read()).hexdigest()
     audio = Audio.from_file(str(filename))
