@@ -30,6 +30,8 @@ b2aiprep-cli --help
     loaded by `torch.load()`. The file is named following a simple convention:
     `sub-<subject_id>_task-<task_name>_md5-<checksum>_features.pt`
 
+    To enable speech to text transcription, specify the `--speech2text` flag.
+
 2. Batch process audio files
 
     This requires a CSV file, where each line is of the form:
@@ -48,8 +50,10 @@ b2aiprep-cli --help
     All outputs are currently stored in a single directory specified by the `--outdir`
     flag.
 
-    One can also generate a hugging face dataset in the output directoryby specifying the
+    One can also generate a hugging face dataset in the output directory by specifying the
      `--dataset` flag.
+
+    To enable speech to text transcription, specify the `--speech2text` flag.
 
 3. Generate csv file to feed to batchconvert
 

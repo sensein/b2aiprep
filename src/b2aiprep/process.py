@@ -197,6 +197,8 @@ def to_features(
     task: ty.Optional[str] = None,
     outdir: ty.Optional[Path] = None,
     save_figures: bool = False,
+    stt_kwargs: ty.Optional[ty.Dict] = None,
+    extract_text: bool = False,
     n_mels: int = 20,
     n_coeff: int = 20,
     compute_deltas: bool = True,
@@ -212,6 +214,8 @@ def to_features(
     :param task: Task ID
     :param outdir: Output directory
     :param save_figures: Whether to save figures
+    :param extract_text: Whether to extract text
+    :param stt_kwargs: Keyword arguments for SpeechToText
     :param n_mels: Number of Mel bands
     :param n_coeff: Number of MFCC coefficients
     :param compute_deltas: Whether to compute delta features
@@ -244,6 +248,21 @@ def to_features(
         "sample_rate": audio.sample_rate,
         "checksum": md5sum,
     }
+    if extract_text:
+        stt_kwargs_default = {
+            "model_id": "openai/whisper-base",
+            "max_new_tokens": 128,
+            "chunk_length_s": 30,
+            "batch_size": 16,
+            "device": None,
+        }
+        if stt_kwargs is not None:
+            stt_kwargs_default.update(**stt_kwargs)
+        stt_kwargs = stt_kwargs_default
+        stt = SpeechToText(**stt_kwargs)
+        transcription = stt.transcribe(audio, language="en")
+        features["transcription"] = transcription
+
     if subject is not None:
         if task is not None:
             prefix = f"sub-{subject}_task-{task}_md5-{md5sum}"
