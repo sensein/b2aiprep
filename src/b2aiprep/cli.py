@@ -41,16 +41,28 @@ def main():
 @click.option("--n_mels", type=int, default=20, show_default=True)
 @click.option("--n_coeff", type=int, default=20, show_default=True)
 @click.option("--compute_deltas/--no-compute_deltas", default=True, show_default=True)
+@click.option("--speech2text/--no-speech2text", type=bool, default=False, show_default=True)
 @click.option("--opensmile", nargs=2, default=["eGeMAPSv02", "Functionals"], show_default=True)
 def convert(
-    filename, subject, task, outdir, save_figures, n_mels, n_coeff, compute_deltas, opensmile
+    filename,
+    subject,
+    task,
+    outdir,
+    save_figures,
+    n_mels,
+    n_coeff,
+    compute_deltas,
+    speech2text,
+    opensmile,
 ):
+    os.makedirs(outdir, exist_ok=True)
     to_features(
         filename,
         subject,
         task,
         outdir=Path(outdir),
         save_figures=save_figures,
+        extract_text=speech2text,
         n_mels=n_mels,
         n_coeff=n_coeff,
         compute_deltas=compute_deltas,
@@ -82,6 +94,7 @@ def convert(
     show_default=True,
 )
 @click.option("--dataset/--no-dataset", type=bool, default=False, show_default=True)
+@click.option("--speech2text/--no-speech2text", type=bool, default=False, show_default=True)
 @click.option("--opensmile", nargs=2, default=["eGeMAPSv02", "Functionals"], show_default=True)
 def batchconvert(
     csvfile,
@@ -93,6 +106,7 @@ def batchconvert(
     plugin,
     cache,
     dataset,
+    speech2text,
     opensmile,
 ):
     plugin_args = dict()
@@ -109,6 +123,7 @@ def batchconvert(
         compute_deltas=compute_deltas,
         cache_dir=Path(cache).absolute(),
         save_figures=save_figures,
+        extract_text=speech2text,
         opensmile_feature_set=opensmile[0],
         opensmile_feature_level=opensmile[1],
     )
@@ -207,7 +222,6 @@ if TTS is not None:
 @click.option("--model_id", type=str, default="openai/whisper-tiny", show_default=True)
 @click.option("--max_new_tokens", type=int, default=128, show_default=True)
 @click.option("--chunk_length_s", type=int, default=30, show_default=True)
-@click.option("--batch_size", type=int, default=16, show_default=True)
 @click.option("--batch_size", type=int, default=16, show_default=True)
 @click.option("--device", type=str, default=None, help="Device to use for inference.")
 @click.option(

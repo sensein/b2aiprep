@@ -1,3 +1,27 @@
+# 0.9.0 (Mon Apr 08 2024)
+
+#### 🚀 Enhancement
+
+- enh: add optional speech to text conversion to features [#29](https://github.com/sensein/b2aiprep/pull/29) ([@satra](https://github.com/satra))
+
+#### Authors: 1
+
+- Satrajit Ghosh ([@satra](https://github.com/satra))
+
+---
+
+# 0.8.1 (Mon Apr 08 2024)
+
+#### 🐛 Bug Fix
+
+- fix: adjust specgram generation [#28](https://github.com/sensein/b2aiprep/pull/28) ([@satra](https://github.com/satra))
+
+#### Authors: 1
+
+- Satrajit Ghosh ([@satra](https://github.com/satra))
+
+---
+
 # 0.8.0 (Mon Apr 01 2024)
 
 #### 🚀 Enhancement

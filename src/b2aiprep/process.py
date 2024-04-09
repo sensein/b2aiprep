@@ -11,7 +11,6 @@ import matplotlib.pyplot as plt
 import opensmile
 import speechbrain.processing.features as spf
 import torch
-import torchaudio
 from datasets import Dataset
 from scipy import signal
 from speechbrain.augment.time_domain import Resample
@@ -107,13 +106,14 @@ def specgram(
     :param toDb: If True, return the log of the power of the spectrogram
     :return: Spectrogram
     """
-    spectrogram = torchaudio.transforms.Spectrogram(
-        n_fft=n_fft,
-        win_length=int(audio.sample_rate * win_length / 1000),
-        hop_length=int(audio.sample_rate * hop_length / 1000),
-        power=2 if toDb else 1,
+    compute_STFT = spf.STFT(
+        sample_rate=audio.sample_rate,
+        win_length=win_length,
+        hop_length=hop_length,
+        n_fft=n_fft or int(400 * audio.sample_rate / 16000),
     )
-    spec = spectrogram(audio.signal.squeeze()).T
+    stft = compute_STFT(audio.signal.unsqueeze(0))
+    spec = spf.spectral_magnitude(stft.squeeze(), power=1)
     if toDb:
         log_spec = 10.0 * torch.log10(torch.maximum(spec, torch.tensor(1e-10)))
         log_spec = torch.maximum(log_spec, log_spec.max() - 80)
@@ -197,12 +197,15 @@ def to_features(
     task: ty.Optional[str] = None,
     outdir: ty.Optional[Path] = None,
     save_figures: bool = False,
+    stt_kwargs: ty.Optional[ty.Dict] = None,
+    extract_text: bool = False,
     n_mels: int = 20,
     n_coeff: int = 20,
     compute_deltas: bool = True,
     opensmile_feature_set: str = "eGeMAPSv02",
     opensmile_feature_level: str = "Functionals",
     return_features: bool = False,
+    mpl_backend: str = "Agg",
 ) -> ty.Tuple[ty.Dict, Path, ty.Optional[Path]]:
     """Compute features from audio file
 
@@ -211,14 +214,23 @@ def to_features(
     :param task: Task ID
     :param outdir: Output directory
     :param save_figures: Whether to save figures
+    :param extract_text: Whether to extract text
+    :param stt_kwargs: Keyword arguments for SpeechToText
     :param n_mels: Number of Mel bands
     :param n_coeff: Number of MFCC coefficients
     :param compute_deltas: Whether to compute delta features
     :param opensmile_feature_set: OpenSmile feature set
     :param opensmile_feature_level: OpenSmile feature level
+    :param return_features: Whether to return features
+    :param mpl_backend: matplotlib backend
     :return: Features dictionary
     :return: Path to features
+    :return: Path to figures
     """
+    if mpl_backend is not None:
+        import matplotlib
+
+        matplotlib.use(mpl_backend)
     with open(filename, "rb") as f:
         md5sum = md5(f.read()).hexdigest()
     audio = Audio.from_file(str(filename))
@@ -236,6 +248,21 @@ def to_features(
         "sample_rate": audio.sample_rate,
         "checksum": md5sum,
     }
+    if extract_text:
+        stt_kwargs_default = {
+            "model_id": "openai/whisper-base",
+            "max_new_tokens": 128,
+            "chunk_length_s": 30,
+            "batch_size": 16,
+            "device": None,
+        }
+        if stt_kwargs is not None:
+            stt_kwargs_default.update(**stt_kwargs)
+        stt_kwargs = stt_kwargs_default
+        stt = SpeechToText(**stt_kwargs)
+        transcription = stt.transcribe(audio, language="en")
+        features["transcription"] = transcription
+
     if subject is not None:
         if task is not None:
             prefix = f"sub-{subject}_task-{task}_md5-{md5sum}"
