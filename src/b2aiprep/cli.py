@@ -288,6 +288,9 @@ def createbatchcsv(input_dir, out_file):
         # using csv.writer method from CSV package
         write = csv.writer(f)
 
+        #write header row
+        write.writerow('filename')
+
         for item in audiofiles:
             write.writerow([Path(item).absolute().as_posix()])
 
