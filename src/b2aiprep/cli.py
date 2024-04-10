@@ -161,21 +161,32 @@ def batchconvert(
         )
 
     cwd = os.getcwd()
-    with pydra.Submitter(plugin=plugin[0], **plugin_args) as sub:
-        sub(runnable=featurize_task)
+    try:
+        with pydra.Submitter(plugin=plugin[0], **plugin_args) as sub:
+            sub(runnable=featurize_task)
+    except Exception:
+        print("Run finished with errors")
+    else:
+        print("Run finished successfully")
     os.chdir(cwd)
-    results = featurize_task.result()
+    results = featurize_task.result(return_inputs=True)
     Path(outdir).mkdir(exist_ok=True, parents=True)
-    for val in results:
-        shutil.copy(val.output.features[1], Path(outdir))
+    stored_results = []
+    for input_params, result in results:
+        if result.errored:
+            print(f"File: {input_params['to_features.filename']} errored")
+            continue
+        shutil.copy(result.output.features[1], Path(outdir))
         if save_figures:
-            shutil.copy(val.output.features[2], Path(outdir))
+            shutil.copy(result.output.features[2], Path(outdir))
+        stored_results.append(Path(outdir) / Path(result.output.features[1]).name)
     if dataset:
 
         def gen():
-            for val in results:
-                yield torch.load(val.output.features[1])
+            for val in stored_results:
+                yield torch.load(val)
 
+        print(f"Input: {len(results)} files. Processed: {len(stored_results)}")
         to_hf_dataset(gen, Path(outdir) / "hf_dataset")
 
 
@@ -288,8 +299,8 @@ def createbatchcsv(input_dir, out_file):
         # using csv.writer method from CSV package
         write = csv.writer(f)
 
-        #write header row
-        write.writerow('filename')
+        # write header row
+        write.writerow(["filename"])
 
         for item in audiofiles:
             write.writerow([Path(item).absolute().as_posix()])
