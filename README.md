@@ -34,7 +34,7 @@ b2aiprep-cli --help
 
 2. Batch process audio files
 
-    This requires a CSV file, where each line is of the form:
+    This requires a CSV file, where there is a column header called `filename` and then each subsequent line is of the form:
     path/to/audio.wav
 
     This also supports a CSV file where each line is of the form:
@@ -68,7 +68,9 @@ b2aiprep-cli --help
 
     Outfile is the path to and name of the csv file to be generated, e.g. `audiofiles.csv`
 
-4. Verify if two audio files are from the same speaker
+   The csv file will have a header named `filename` with all the filenames listed under. 
+
+5. Verify if two audio files are from the same speaker
 
     ```bash
     b2aiprep-cli test_audio1.wav test_audio2.wav --model 'speechbrain/spkrec-ecapa-voxceleb'
@@ -80,14 +82,14 @@ b2aiprep-cli --help
     There is a notebook in the docs directory that can be used to interact with the library
     programmatically.
 
-5. Convert the speaker in the source audio file (1st argument) into the speaker of the target audio file (2nd argument)
+6. Convert the speaker in the source audio file (1st argument) into the speaker of the target audio file (2nd argument)
      and save the result in the output file (3rd argument)
 
     ```bash
     b2aiprep-cli convert-voice data/vc_source.wav data/vc_target.wav data/vc_output.wav
     ```
 
-6. Transcribe the audio
+7. Transcribe the audio
 
     ```bash
     b2aiprep-cli transcribe data/vc_source.wav
