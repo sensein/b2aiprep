@@ -219,7 +219,7 @@ def plot_save_figure(audio, log_spec, prefix, outdir):
     sr = audio.sample_rate
     # This factor is used to decimate the waveform, which provides
     # the biggest speedup.
-    decimate_factor = min(4 ** (int(len(signal) // (win_length * sr))), 100)
+    decimate_factor = min(4 ** (int(len(signal) // (win_length * sr))), 80)
     signal = signal[::decimate_factor]
     sr = sr // decimate_factor
 
