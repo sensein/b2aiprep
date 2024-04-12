@@ -40,6 +40,8 @@ def main():
 @click.option("--save_figures/--no-save_figures", default=False, show_default=True)
 @click.option("--n_mels", type=int, default=20, show_default=True)
 @click.option("--n_coeff", type=int, default=20, show_default=True)
+@click.option("--win_length", type=int, default=20, show_default=True)
+@click.option("--hop_length", type=int, default=10, show_default=True)
 @click.option("--compute_deltas/--no-compute_deltas", default=True, show_default=True)
 @click.option("--speech2text/--no-speech2text", type=bool, default=False, show_default=True)
 @click.option("--opensmile", nargs=2, default=["eGeMAPSv02", "Functionals"], show_default=True)
@@ -51,6 +53,8 @@ def convert(
     save_figures,
     n_mels,
     n_coeff,
+    win_length,
+    hop_length,
     compute_deltas,
     speech2text,
     opensmile,
@@ -65,9 +69,12 @@ def convert(
         extract_text=speech2text,
         n_mels=n_mels,
         n_coeff=n_coeff,
+        win_length=win_length,
+        hop_length=hop_length,
         compute_deltas=compute_deltas,
         opensmile_feature_set=opensmile[0],
         opensmile_feature_level=opensmile[1],
+        device="cpu",
     )
 
 
@@ -77,6 +84,8 @@ def convert(
 @click.option("--save_figures/--no-save_figures", default=False, show_default=True)
 @click.option("--n_mels", type=int, default=20, show_default=True)
 @click.option("--n_coeff", type=int, default=20, show_default=True)
+@click.option("--win_length", type=int, default=20, show_default=True)
+@click.option("--hop_length", type=int, default=10, show_default=True)
 @click.option("--compute_deltas/--no-compute_deltas", default=True, show_default=True)
 @click.option(
     "-p",
@@ -102,6 +111,8 @@ def batchconvert(
     save_figures,
     n_mels,
     n_coeff,
+    win_length,
+    hop_length,
     compute_deltas,
     plugin,
     cache,
@@ -120,12 +131,15 @@ def batchconvert(
     featurize_task = featurize_pdt(
         n_mels=n_mels,
         n_coeff=n_coeff,
+        win_length=win_length,
+        hop_length=hop_length,
         compute_deltas=compute_deltas,
         cache_dir=Path(cache).absolute(),
         save_figures=save_figures,
         extract_text=speech2text,
         opensmile_feature_set=opensmile[0],
         opensmile_feature_level=opensmile[1],
+        device="cpu",
     )
 
     with open(csvfile, "r") as f:
@@ -187,7 +201,7 @@ def batchconvert(
                 yield torch.load(val)
 
         print(f"Input: {len(results)} files. Processed: {len(stored_results)}")
-        to_hf_dataset(gen, Path(outdir) / "hf_dataset")
+        to_hf_dataset(gen, Path(outdir))
 
 
 @main.command()
@@ -292,7 +306,7 @@ def createbatchcsv(input_dir, out_file):
 
     # out_file is where a csv file will be saved and should be in the format 'path/name/csv'
     input_dir = Path(input_dir)
-    audiofiles = glob(f"{input_dir}/**/*.wav", recursive=True)
+    audiofiles = sorted(glob(f"{input_dir}/**/*.wav", recursive=True))
 
     with open(out_file, "w") as f:
 
