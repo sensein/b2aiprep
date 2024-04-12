@@ -1,3 +1,15 @@
+# 0.11.0 (Fri Apr 12 2024)
+
+#### 🚀 Enhancement
+
+- ref: plotting to improve speed [#35](https://github.com/sensein/b2aiprep/pull/35) ([@satra](https://github.com/satra))
+
+#### Authors: 1
+
+- Satrajit Ghosh ([@satra](https://github.com/satra))
+
+---
+
 # 0.10.0 (Wed Apr 10 2024)
 
 #### 🚀 Enhancement
