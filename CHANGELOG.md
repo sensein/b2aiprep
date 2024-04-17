@@ -1,3 +1,22 @@
+# 0.12.0 (Wed Apr 17 2024)
+
+#### 🚀 Enhancement
+
+- Update README.md [#38](https://github.com/sensein/b2aiprep/pull/38) ([@Rahul-Brito](https://github.com/Rahul-Brito))
+
+#### 🐛 Bug Fix
+
+- Added demographics.py [#37](https://github.com/sensein/b2aiprep/pull/37) ([@Rahul-Brito](https://github.com/Rahul-Brito))
+- merging in main [#36](https://github.com/sensein/b2aiprep/pull/36) ([@Rahul-Brito](https://github.com/Rahul-Brito) [@satra](https://github.com/satra) sensein-social@mit.edu)
+
+#### Authors: 3
+
+- B2AIprep Bot (sensein-social@mit.edu)
+- Rahul Brito ([@Rahul-Brito](https://github.com/Rahul-Brito))
+- Satrajit Ghosh ([@satra](https://github.com/satra))
+
+---
+
 # 0.11.0 (Fri Apr 12 2024)
 
 #### 🚀 Enhancement
