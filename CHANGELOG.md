@@ -1,3 +1,40 @@
+# 0.11.0 (Fri Apr 12 2024)
+
+#### 🚀 Enhancement
+
+- ref: plotting to improve speed [#35](https://github.com/sensein/b2aiprep/pull/35) ([@satra](https://github.com/satra))
+
+#### Authors: 1
+
+- Satrajit Ghosh ([@satra](https://github.com/satra))
+
+---
+
+# 0.10.0 (Wed Apr 10 2024)
+
+#### 🚀 Enhancement
+
+- Added better exception handling [#34](https://github.com/sensein/b2aiprep/pull/34) ([@satra](https://github.com/satra))
+
+#### 🐛 Bug Fix
+
+- Update README.md for batchcsg [#33](https://github.com/sensein/b2aiprep/pull/33) ([@Rahul-Brito](https://github.com/Rahul-Brito))
+- fix so does batchconvert not ignore first line of csv [#32](https://github.com/sensein/b2aiprep/pull/32) ([@Rahul-Brito](https://github.com/Rahul-Brito))
+- add performance code [#30](https://github.com/sensein/b2aiprep/pull/30) ([@satra](https://github.com/satra) sensein-social@mit.edu [@Rahul-Brito](https://github.com/Rahul-Brito))
+- pulling main into my branch [#27](https://github.com/sensein/b2aiprep/pull/27) ([@satra](https://github.com/satra) sensein-social@mit.edu [@Rahul-Brito](https://github.com/Rahul-Brito))
+- pullling in all the new changes [#23](https://github.com/sensein/b2aiprep/pull/23) (mbsilva@openmind7.mit.edu [@fabiocat93](https://github.com/fabiocat93) [@satra](https://github.com/satra) sensein-social@mit.edu [@Rahul-Brito](https://github.com/Rahul-Brito))
+
+#### Authors: 6
+
+- [@fabiocat93](https://github.com/fabiocat93)
+- B2AIprep Bot (sensein-social@mit.edu)
+- Miles B Silva (mbsilva@node059.ib.cluster)
+- Miles B Silva (mbsilva@openmind7.mit.edu)
+- Rahul Brito ([@Rahul-Brito](https://github.com/Rahul-Brito))
+- Satrajit Ghosh ([@satra](https://github.com/satra))
+
+---
+
 # 0.9.0 (Mon Apr 08 2024)
 
 #### 🚀 Enhancement
