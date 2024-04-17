@@ -95,7 +95,7 @@ b2aiprep-cli --help
     b2aiprep-cli transcribe data/vc_source.wav
     ```
 
-    Or use a different model. Note that the large model may take some time to download.
+    Or use a different model. Note that the large model may take some time to download. 
 
     ```bash
     b2aiprep-cli transcribe data/vc_source.wav --model_id 'openai/whisper-large-v3' --return_timestamps true
