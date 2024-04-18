@@ -5,7 +5,7 @@ import typing as ty
 import warnings
 from hashlib import md5
 from pathlib import Path
-from typing import Union
+from typing import Optional, Union
 
 import matplotlib.pyplot as plt
 import opensmile
@@ -484,7 +484,7 @@ class SpeechToText:
             device=device,
         )
 
-    def transcribe(self, audio: Audio, language: str = None):
+    def transcribe(self, audio: Audio, language: Optional[str] = None):
         """
         Transcribes the given audio input into text.
 

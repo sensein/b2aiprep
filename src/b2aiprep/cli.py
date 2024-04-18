@@ -34,8 +34,8 @@ def main():
 
 @main.command()
 @click.argument("filename", type=click.Path(exists=True))
-@click.option("-s", "--subject", type=ty.Optional[str], default=None)
-@click.option("-t", "--task", type=ty.Optional[str], default=None)
+@click.option("-s", "--subject", type=str, default=None)
+@click.option("-t", "--task", type=str, default=None)
 @click.option("--outdir", type=click.Path(), default=os.getcwd(), show_default=True)
 @click.option("--save_figures/--no-save_figures", default=False, show_default=True)
 @click.option("--n_mels", type=int, default=20, show_default=True)
