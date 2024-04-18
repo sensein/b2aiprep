@@ -1,3 +1,15 @@
+# 0.12.1 (Thu Apr 18 2024)
+
+#### 🐛 Bug Fix
+
+- Misc fixes [#39](https://github.com/sensein/b2aiprep/pull/39) ([@alistairewj](https://github.com/alistairewj))
+
+#### Authors: 1
+
+- Alistair Johnson ([@alistairewj](https://github.com/alistairewj))
+
+---
+
 # 0.12.0 (Wed Apr 17 2024)
 
 #### 🚀 Enhancement
