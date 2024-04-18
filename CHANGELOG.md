@@ -1,3 +1,15 @@
+# 0.13.0 (Thu Apr 18 2024)
+
+#### 🚀 Enhancement
+
+- Add functions which make it easier to load/manage the datasets [#40](https://github.com/sensein/b2aiprep/pull/40) ([@alistairewj](https://github.com/alistairewj))
+
+#### Authors: 1
+
+- Alistair Johnson ([@alistairewj](https://github.com/alistairewj))
+
+---
+
 # 0.12.1 (Thu Apr 18 2024)
 
 #### 🐛 Bug Fix
