@@ -2,7 +2,7 @@
 
 A simple Python package to prepare acoustic data for the Bridge2AI voice project.
 
-**Caution:** this package is under activedevelopment and interfaces may change rapidly over the next few weeks.
+**Caution:** this package is under active development and interfaces may change rapidly over the next few weeks.
 
 ## Installation
 Requires a Python >= 3.10, <3.12 environment
