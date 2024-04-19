@@ -103,7 +103,7 @@ def get_columns_of_repeat_instrument(repeat_instrument: RepeatInstrument) -> Lis
 
 def get_df_of_repeat_instrument(df: DataFrame, repeat_instrument: RepeatInstrument) -> pd.DataFrame:
     columns = get_columns_of_repeat_instrument(repeat_instrument)
-    if repeat_instrument in (RepeatInstrument.GENERIC_DEMOGRAPHICS, RepeatInstrument.PARTICIPANT):
+    if repeat_instrument in (RepeatInstrument.PARTICIPANT,):
         idx = df['redcap_repeat_instrument'].isnull()
     else:
         idx = df['redcap_repeat_instrument'] == repeat_instrument.value
