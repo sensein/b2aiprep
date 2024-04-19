@@ -142,3 +142,6 @@ cython_debug/
 
 # guide data
 guide/data/
+
+.DS_Store
+cache-wf/
