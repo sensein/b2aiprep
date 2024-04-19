@@ -32,6 +32,12 @@ dependencies = [
     "datasets[audio]"
 ]
 
+[tool.setuptools.packages.find]
+where = ["src"] # <-- this changed
+
+[tool.setuptools.package-data]
+"*" = ["*.*"] # <-- this changed
+
 [project.optional-dependencies]
 doc = [
     "jupyterlab",
