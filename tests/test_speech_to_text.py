@@ -10,7 +10,7 @@ def test_transcribe():
     Validates SpeechToText's ability to convert audio to text accurately.
     Checks if the transcription matches the expected output, considering known model discrepancies.
     """
-    audio_path = str((Path(__file__).parent.parent.parent / "data/vc_source.wav").absolute())
+    audio_path = str((Path(__file__).parent.parent / "data/vc_source.wav").absolute())
     audio_content = "If it isn't, it isn't."
 
     # Note: Should be "If it didn't, it didn't.", but that's what the model understands
