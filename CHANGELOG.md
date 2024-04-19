@@ -1,3 +1,15 @@
+# 0.14.0 (Fri Apr 19 2024)
+
+#### 🚀 Enhancement
+
+- add json files to setup [#41](https://github.com/sensein/b2aiprep/pull/41) ([@satra](https://github.com/satra))
+
+#### Authors: 1
+
+- Satrajit Ghosh ([@satra](https://github.com/satra))
+
+---
+
 # 0.13.0 (Thu Apr 18 2024)
 
 #### 🚀 Enhancement
