@@ -13,7 +13,7 @@ else:
 
 @pytest.fixture()
 def resource(request):
-    datadir = str((Path(__file__).parent.parent.parent / "data").absolute())
+    datadir = str((Path(__file__).parent.parent / "data").absolute())
 
     source_file = f"{datadir}/vc_source.wav"
     target_file = f"{datadir}/vc_target.wav"

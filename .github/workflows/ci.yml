@@ -29,4 +29,4 @@ jobs:
           pip install --no-cache-dir --editable=".[dev,tts]"
       - name: Test with pytest
         run: |
-          pytest src/tests
+          pytest tests
