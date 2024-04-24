@@ -62,14 +62,43 @@ def load_data_columns() -> Dict[str, List[str]]:
     gad7_columns = json.loads(b2ai_resources.joinpath("resources", "gad7.json").read_text())
     participant_columns = json.loads(b2ai_resources.joinpath("resources", "participant.json").read_text())
     phq9_columns = json.loads(b2ai_resources.joinpath("resources", "phq9.json").read_text())
-     
+    voice_perception_columns = json.loads(b2ai_resources.joinpath("resources", "voice_perception.json").read_text())
+    vhi10_columns = json.loads(b2ai_resources.joinpath("resources", "vhi10.json").read_text())
+    panas_columns = json.loads(b2ai_resources.joinpath("resources", "panas.json").read_text())
+    custom_affect_scale_columns = json.loads(b2ai_resources.joinpath("resources", "custom_affect_scale.json").read_text())
+    dsm5_columns = json.loads(b2ai_resources.joinpath("resources", "dsm5.json").read_text())
+    ptsd_columns = json.loads(b2ai_resources.joinpath("resources", "ptsd.json").read_text())
+    adhd_columns = json.loads(b2ai_resources.joinpath("resources", "adhd.json").read_text())
+    dyspnea_columns = json.loads(b2ai_resources.joinpath("resources", "dyspnea.json").read_text())
+    dyspnea_columns = json.loads(b2ai_resources.joinpath("resources", "dyspnea.json").read_text())
+    leicester_cough_columns = json.loads(b2ai_resources.joinpath("resources", "leicester_cough.json").read_text())
+    voice_problem_severity_columns = json.loads(b2ai_resources.joinpath("resources", "voice_problem_severity.json").read_text())
+    winograd_columns =  json.loads(b2ai_resources.joinpath("resources", "winograd.json").read_text())
+    stroop_columns =  json.loads(b2ai_resources.joinpath("resources", "stroop.json").read_text())
+    vocab_columns = json.loads(b2ai_resources.joinpath("resources", "vocab.json").read_text())
+    random_columns = json.loads(b2ai_resources.joinpath("resources", "random.json").read_text())
+
     data_columns = {
         'columns': columns,
         'participant_columns': participant_columns,
         'demographics_columns': demographics_columns,
         'confounders_columns': confounders_columns,
         'phq9_columns': phq9_columns,
-        'gad7_columns': gad7_columns
+        'gad7_columns': gad7_columns,
+        'voice_perception_columns': voice_perception_columns,
+        'vhi10_columns': vhi10_columns,
+        'panas_columns': panas_columns,
+        "custom_affect_scale_columns": custom_affect_scale_columns,
+        "dsm5_columns" : dsm5_columns,
+        "ptsd_columns" : ptsd_columns,
+        "adhd_columns" : adhd_columns,
+        "dyspnea_columns": dyspnea_columns,
+        "leicester_cough_columns": leicester_cough_columns,
+        "voice_problem_severity_columns": voice_problem_severity_columns,
+        'winograd_columns': winograd_columns,
+        "stroop_columns" : stroop_columns,
+        "vocab_columns" : vocab_columns,
+        "random_columns" : random_columns
     }
 
     return data_columns
@@ -81,7 +110,22 @@ def get_columns_of_repeat_instrument(repeat_instrument: RepeatInstrument) -> Lis
         RepeatInstrument.GENERIC_DEMOGRAPHICS: 'demographics_columns',
         RepeatInstrument.GENERIC_CONFOUNDERS: 'confounders_columns',
         RepeatInstrument.GENERIC_PHQ9_DEPRESSION: 'phq9_columns',
-        RepeatInstrument.GENERIC_GAD7_ANXIETY: 'gad7_columns'
+        RepeatInstrument.GENERIC_GAD7_ANXIETY: 'gad7_columns',
+        RepeatInstrument.GENERIC_VOICE_PERCEPTION: 'voice_perception_columns',
+        RepeatInstrument.GENERIC_VOICE_HANDICAP: 'vhi10_columns',
+        RepeatInstrument.MOOD_PANAS: 'panas_columns',
+        RepeatInstrument.MOOD_CUSTOM_AFFECT: 'custom_affect_scale_columns',
+        RepeatInstrument.MOOD_DSM5_ADULT: 'dsm5_columns',
+        RepeatInstrument.MOOD_PTSD_ADULT: 'ptsd_columns',
+        RepeatInstrument.MOOD_ADHD_ADULT: 'adhd_columns',
+        RepeatInstrument.RESP_DYSPNEA_INDEX: 'dyspnea_columns',
+        RepeatInstrument.RESP_LEICESTER_COUGH: 'leicester_cough_columns',
+        RepeatInstrument.VOICE_VOICE_PROBLEM_SEVERITY: 'voice_problem_severity_columns',
+        RepeatInstrument.NEURO_WINOGRAD_SCHEMAS: 'winograd_columns',
+        RepeatInstrument.NEURO_WORDCOLOR_STROOP: 'stroop_columns',
+        RepeatInstrument.NEURO_PRODUCTIVE_VOCABULARY : 'vocab_columns',
+        RepeatInstrument.NEURO_RANDOM_ITEM_GENERATION : 'random_columns'
+        
     }
 
     repeat_instrument_prefix_mapping = {
