@@ -1,0 +1,17 @@
+[
+    "vocabulary_session_id",
+    "vocabulary_recording_acoustic_task_id",
+    "vocabulary_duration",
+    "vocabulary_item_word_1",
+    "vocabulary_item_difficulty_1",
+    "vocabulary_item_word_2",
+    "vocabulary_item_difficulty_2",
+    "vocabulary_item_word_3",
+    "vocabulary_item_difficulty_3",
+    "vocabulary_item_word_4",
+    "vocabulary_item_difficulty_4",
+    "vocabulary_item_word_5",
+    "vocabulary_item_difficulty_5",
+    "vocabulary_item_word_6",
+    "vocabulary_item_difficulty_6"
+]
