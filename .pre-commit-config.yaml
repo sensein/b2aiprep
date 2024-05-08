@@ -30,4 +30,5 @@ repos:
     rev: v2.2.6
     hooks:
     -   id: codespell
+        args: ["--skip=*.json"]
         exclude: ^(src/b2aiprep/_version\.py|versioneer\.py|pyproject\.toml|CHANGELOG\.md|docs/b2ai_script\.ipynb)$
