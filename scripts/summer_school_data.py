@@ -3,18 +3,18 @@ Organizes data, extracts features, and bundles everything together in an easily 
 format for the Bridge2AI Summer School.
 """
 
+import os
+import argparse
+
 from b2aiprep.process import (
-    embed_speaker,
-    verify_speaker, #maybe exclude?
-    verify_speaker_from_files, #maybe exclude?
+    #embed_speaker,
     specgram,
     melfilterbank,
     MFCC,
-    resample_iir,
     extract_opensmile,
-    VoiceConversion,
-    SpeechToText
+    Audio,
 )
+
 
 def retrieve_data():
     # TODO implement
@@ -26,21 +26,48 @@ def organize_data():
     return
 
 
-def extract_features():
-    # TODO implement
+def wav_to_features(wav_path):
     """
-    - Current: 
-         - opensmile (one vector per audio), 
-         - spectrograms, 
-         - mel filerbanks, 
-         - mfccs, 
-         - text transcripts
-    - Can we detect if certain segments of voice contain identifiable information: https://github.com/sensein/b2aiprep/issues/51
-    - Quality metrics (SNR, intelligibility)
-    - Praat extraction
-    - Some items from Nick feature table
+    Extracts features from a single audio file at specified path.
     """
-    return
+    audio = Audio.from_file(str(wav_path))
+    audio = audio.to_16khz()
+    features = {}
+    # features["speaker_embedding"] = embed_speaker(audio, model=) model TBD
+    features["specgram"] = specgram(audio)
+    features["melfilterbank"] = melfilterbank(features["specgram"])
+    features["mfcc"] = MFCC(features["melfilterbank"])
+    features["sample_rate"] = audio.sample_rate
+    features["opensmile"] = extract_opensmile(audio)
+    return features
+
+
+def extract_subject_features(subject_path):
+    """
+    Extracts features for every activity audio file.
+    Args:
+    Returns:
+        features_pt: extracted features
+    """
+
+    # for wav file in subject dir
+        # extract audio features
+        # determine save path
+        # save features
+        
+    #data structure
+    # if subject is not None:
+    #     if task is not None:
+    #         prefix = f"sub-{subject}_task-{task}_md5-{md5sum}"
+    #     else:
+    #         prefix = f"sub-{subject}_md5-{md5sum}"
+    # else:
+    #     prefix = Path(filename).stem
+    # if outdir is None:
+    #     outdir = Path(os.getcwd())
+    # outfile = outdir / f"{prefix}_features.pt"
+    # torch.save(features, outfile)
+    pass
 
 
 def bundle_data(data, save_path):
@@ -48,11 +75,23 @@ def bundle_data(data, save_path):
     return
 
 
+def parse_arguments():
+    parser = argparse.ArgumentParser(description="Process audio data for multiple subjects.")
+    parser.add_argument('--data_path',
+                        type=str,
+                        required=True,
+                        help='Path to data in BIDS-like format')
+    return parser.parse_args()
+
+
 def main():
-    retrieve_data()
-    organize_data()
-    extract_features()
-    bundle_data()
+    args = parse_arguments()
+    for dir in os.listdir(args.data_path):
+        # check if dir is a subject
+        retrieve_data(args.data_path)
+        organize_data()
+        extract_subject_features()
+        bundle_data()
 
 
 if __name__ == "__main__":
