@@ -5,6 +5,7 @@ format for the Bridge2AI Summer School.
 
 import os
 import argparse
+import tarfile
 
 from b2aiprep.process import (
     #embed_speaker,
@@ -54,7 +55,7 @@ def extract_subject_features(subject_path):
         # extract audio features
         # determine save path
         # save features
-        
+
     #data structure
     # if subject is not None:
     #     if task is not None:
@@ -70,9 +71,10 @@ def extract_subject_features(subject_path):
     pass
 
 
-def bundle_data(data, save_path):
-    # TODO implement
-    return
+def bundle_data(source_directory, save_path):
+    """Saves data bundle as a tar file with gzip compression."""
+    with tarfile.open(save_path, "w:gz") as tar:
+        tar.add(source_directory, arcname=os.path.basename(source_directory))
 
 
 def parse_arguments():
