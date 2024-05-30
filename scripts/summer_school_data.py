@@ -11,8 +11,6 @@ import tarfile
 import torch
 
 
-PARTICIPANT_DIGITS = 5  # 30,000 target participants
-
 from b2aiprep.process import (
     embed_speaker,
     specgram,
@@ -23,13 +21,8 @@ from b2aiprep.process import (
 )
 
 
-def retrieve_data(data_path):
-    # TODO implement
-    return
-
-
 def organize_data(data_path):
-    # TODO implement
+    # TODO implement waiting for code from Alistair
     return data_path
 
 
@@ -92,7 +85,9 @@ def bundle_data(source_directory, save_path):
 
 
 def parse_arguments():
-    parser = argparse.ArgumentParser(description="Process audio data for multiple subjects.")
+    parser = argparse.ArgumentParser(
+        description="Process audio data for multiple subjects."
+    )
     parser.add_argument('--data_path',
                         type=str,
                         required=True,
@@ -112,32 +107,23 @@ def parse_arguments():
 def main():
     args = parse_arguments()
 
-    # copy data to directory for tar file
+    print("Organizing data into BIDS-like directory structure...")
+    organize_data(args.data_path)
+
+    print("Removing old processed files...")
     if os.path.isdir(args.processed_files_path):
         shutil.rmtree(args.processed_files_path)
+
+    print("Copying BIDS-like data directory...")
     shutil.copytree(args.data_path, args.processed_files_path)
 
-    retrieve_data(args.data_path)
-    organize_data(args.data_path)
+    print("Extracting acoustic features from audio...")
     extract_features(args.processed_files_path)
-    # for sub_file in os.listdir(args.processed_files_path):  # iterate over subjects
-    #     if sub_file.startswith("sub"):
-    #         for ses_file in os.listdir(sub_file):  # iterate over sessions
-    #             if ses_file.startswith("ses") and os.path.isdir(f"{ses_file}/voice"): 
-    #                 for audio_file in os.listdir(f"{ses_file}/voice"):
-    #                    if audio_file.endswith('.wav'):
-    #                        print(audio_file)
-                           #do something
-                    
-            # subject_num_padded = str(subject_num).zfill(PARTICIPANT_DIGITS)
-            # os.mkdir(f"{args.processed_files_path}/sub-{subject_num_padded}")
-            # subject_num += 1
-            #create 
-            #iterate over .wav files
-            #
-            # print(file)
-            # extract_subject_features()
-            # bundle_data()
+
+    print("Saving .tar file with processed data...")
+    bundle_data(args.processed_files_path, args.tar_save_path)
+
+    print("Process completed.")
 
 
 if __name__ == "__main__":
