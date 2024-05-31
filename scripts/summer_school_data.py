@@ -33,7 +33,10 @@ def wav_to_features(wav_path):
     audio = Audio.from_file(str(wav_path))
     audio = audio.to_16khz()
     features = {}
-    # features["speaker_embedding"] = embed_speaker(audio, model=) model TBD
+    features["speaker_embedding"] = embed_speaker(
+        audio,
+        model="speechbrain/spkrec-ecapa-voxceleb"
+    )
     features["specgram"] = specgram(audio)
     features["melfilterbank"] = melfilterbank(features["specgram"])
     features["mfcc"] = MFCC(features["melfilterbank"])
