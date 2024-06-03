@@ -8,16 +8,17 @@ from pandas import DataFrame
 from enum import Enum
 import json
 from importlib.resources import files
+from pydantic import BaseModel
 from tqdm import tqdm
 
 from b2aiprep.fhir_utils import (
     convert_response_to_fhir,
-    write_response_to_file,
 )
 
 _LOGGER = logging.getLogger(__name__)
 
 _GENERAL_QUESTIONNAIRES = [
+    "participant",
     "eligibility",
     "enrollment",
     "vocalFoldParalysis",
@@ -215,6 +216,40 @@ def get_recordings_for_acoustic_task(df: pd.DataFrame, acoustic_task: str) -> pd
     )
     return dff
 
+def _transform_str_for_filename(filename: str):
+    return filename.replace(' ', '-')
+
+
+def write_pydantic_model_to_bids_file(
+        output_path: Path,
+        data: BaseModel,
+        schema_name: str,
+        subject_id: str,
+        session_id: t.Optional[str] = None,
+        task_name: t.Optional[str] = None,
+        recording_name: t.Optional[str] = None,
+        ):
+    filename = f"sub-{subject_id}"
+    if session_id is not None:
+        session_id = _transform_str_for_filename(session_id)
+        filename += f"_ses-{session_id}"
+    if task_name is not None:
+        task_name = _transform_str_for_filename(task_name)
+        filename += f"_task-{task_name}"
+    if recording_name is not None:
+        recording_name = _transform_str_for_filename(recording_name)
+        filename += f"_rec-{recording_name}"
+
+
+    schema_name = _transform_str_for_filename(schema_name)
+    filename += f"_{schema_name}.json"
+
+    if not output_path.exists():
+        output_path.mkdir(parents=True, exist_ok=True)
+    with open(output_path / filename, "w") as f:
+        f.write(data.json(indent=2))
+
+
 def _df_to_dict(df: pd.DataFrame, index_col: str) -> t.Dict[str, t.Any]:
     """Convert a DataFrame to a dictionary of dictionaries, with the given column as the index.
     
@@ -269,7 +304,7 @@ def output_participant_data_to_fhir(participant: dict, outdir: Path, audiodir: t
     subject_path = outdir / f"sub-{participant_id}"
 
     # TODO: maybe this warning should go in the main function
-    if not audiodir.exists():
+    if audiodir is not None and not audiodir.exists():
         logging.warning(f"Audio path {audiodir} does not exist. No audio files will be reorganized.")
         audiodir = None
 
@@ -277,10 +312,14 @@ def output_participant_data_to_fhir(participant: dict, outdir: Path, audiodir: t
     # patient = create_fhir_patient(participant)
 
     for questionnaire_name in _GENERAL_QUESTIONNAIRES:
+        # given a dictionary of individual data, this function:
+        # (1) identifies specific data elements using the questionnaire name
+        # (2) extracts the responses associated with these elements
+        # (3) reformats the data into a QuestionnaireResponse object and returns it
         fhir_data = convert_response_to_fhir(participant, questionnaire_name)
         if len(fhir_data.item) == 0:
             continue
-        write_response_to_file(
+        write_pydantic_model_to_bids_file(
             subject_path,
             fhir_data,
             schema_name=questionnaire_name,
@@ -301,7 +340,7 @@ def output_participant_data_to_fhir(participant: dict, outdir: Path, audiodir: t
             session,
             questionnaire_name="sessions",
         )
-        write_response_to_file(
+        write_pydantic_model_to_bids_file(
             session_path,
             fhir_data,
             schema_name="sessionschema",
@@ -315,12 +354,12 @@ def output_participant_data_to_fhir(participant: dict, outdir: Path, audiodir: t
                 continue
             
             # replace spaces for the file name
-            acoustic_task_name = task["acoustic_task_name"].replace(" ", "-")
+            acoustic_task_name = _transform_str_for_filename(task["acoustic_task_name"])
             fhir_data = convert_response_to_fhir(
                 task,
                 "acoustic_tasks",
             )
-            write_response_to_file(
+            write_pydantic_model_to_bids_file(
                 beh_path,
                 fhir_data,
                 schema_name="acoustictaskschema",
@@ -338,7 +377,7 @@ def output_participant_data_to_fhir(participant: dict, outdir: Path, audiodir: t
                     recording,
                     "recordings",
                 )
-                write_response_to_file(
+                write_pydantic_model_to_bids_file(
                     beh_path,
                     fhir_data,
                     schema_name="recordingschema",
@@ -365,7 +404,7 @@ def output_participant_data_to_fhir(participant: dict, outdir: Path, audiodir: t
                         # copy file
                         ext = audio_file.suffix
                         
-                        recording_name = recording['recording_name'].replace(" ", "-")
+                        recording_name = _transform_str_for_filename(recording['recording_name'])
                         audio_file_destination = audio_output_path / f"{prefix}_recording-{recording_name}{ext}"
                         if audio_file_destination.exists():
                             logging.warning(f"Audio file {audio_file_destination} already exists. Overwriting.")
@@ -381,7 +420,7 @@ def output_participant_data_to_fhir(participant: dict, outdir: Path, audiodir: t
                 questionnaire_name,
             )
 
-            write_response_to_file(
+            write_pydantic_model_to_bids_file(
                 beh_path,
                 fhir_data,
                 schema_name=f"{questionnaire_name}",

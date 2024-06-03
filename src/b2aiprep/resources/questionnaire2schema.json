@@ -2,6 +2,7 @@
     "sessions" : "sessionschema",
     "acoustic_tasks": "acoustictaskschema",
     "recordings": "recordingschema",
+    "participant": "subjectparticipantbasicinformationschema",
     "eligibility": "subjectparticipanteligiblestudiesschema",
     "enrollment": "enrollmentformschema",
     "vocalFoldParalysis": "dvoicevocalfoldparalysisschema",

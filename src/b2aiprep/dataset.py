@@ -19,6 +19,7 @@ sub-p1/
 import os
 from collections import OrderedDict
 from pathlib import Path
+import re
 import typing as t
 
 
@@ -290,3 +291,141 @@ class BIDSDataset:
         for audio_file in session_path.glob("*.wav"):
             audio.append(audio_file)
         return audio
+
+
+class VBAIDataset(BIDSDataset):
+    """Extension of BIDS format dataset implementing helper functions for data specific
+    to the Bridge2AI Voice as a Biomarker of Health project.
+    """
+
+    def __init__(self, data_path: t.Union[Path, str, os.PathLike]):
+        super().__init__(data_path)
+
+    def _merge_columns_with_underscores(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Merges columns which are exported by RedCap in a one-hot encoding manner, i.e.
+        they correspond to a single category but are split into multiple yes/no columns.
+        
+        Modifies the dataframe in place.
+        
+        Parameters
+        ----------
+        df : pd.DataFrame
+            The dataframe to modify.
+            
+        Returns
+        -------
+        pd.DataFrame
+            The modified dataframe.
+        """
+
+        # identify all the columns which end with __1, __2, etc.
+        # extract the prefix for these columns only
+        columns_with_underscores = sorted(list(set([
+            col[:col.rindex('__')-1]
+            for col in df.columns
+            if re.search('__[0-9]+$', col) is not None
+        ])))
+
+        # iterate through each prefix and merge together data into this prefix
+        for col in columns_with_underscores:
+            columns_to_merge = df.filter(like=f'{col}__').columns
+            df[col] = df[columns_to_merge].apply(lambda x: next((i for i in x if i is not None), None), axis=1)
+            df.drop(columns=columns_to_merge, inplace=True)
+        return df
+
+    def find_audio(self, subject_id: str, session_id: str) -> t.List[Path]:
+        """
+        Find all the audio recordings for a given subject and session.
+
+        Parameters
+        ----------
+        subject_id : str
+            The subject identifier.
+        session_id : str
+            The session identifier.
+
+        Returns
+        -------
+        List[Path]
+            A list of audio recordings.
+        """
+        session_path = self.data_path / f"sub-{subject_id}" / f"ses-{session_id}" / "audio"
+        audio = []
+        for audio_file in session_path.glob("*.wav"):
+            audio.append(audio_file)
+        return audio
+
+    def find_audio_features(self, subject_id: str, session_id: str) -> t.List[Path]:
+        """
+        Find all the audio features for a given subject and session.
+
+        Parameters
+        ----------
+        subject_id : str
+            The subject identifier.
+        session_id : str
+            The session identifier.
+
+        Returns
+        -------
+        List[Path]
+            A list of audio features.
+        """
+        session_path = self.data_path / f"sub-{subject_id}" / f"ses-{session_id}" / "audio_features"
+        features = []
+        for feature_file in session_path.glob("*.json"):
+            features.append(feature_file)
+        return features
+
+    def find_audio_transcripts(self, subject_id: str, session_id: str) -> t.List[Path]:
+        """
+        Find all the audio transcripts for a given subject and session.
+
+        Parameters
+        ----------
+        subject_id : str
+            The subject identifier.
+        session_id : str
+            The session identifier.
+
+        Returns
+        -------
+        List[Path]
+            A list of audio transcripts.
+        """
+        session_path = self.data_path / f"sub-{subject_id}" / f"ses-{session_id}" / "audio_transcripts"
+        transcripts = []
+        for transcript_file in session_path.glob("*.json"):
+            transcripts.append(transcript_file)
+        return transcripts
+    
+    def load_and_pivot_questionnaire(self, questionnaire_name: str) -> pd.DataFrame:
+        """
+        Loads all data for a questionnaire and pivots on the appropriate identifier column.
+
+        Returns
+        -------
+        pd.DataFrame
+            A "wide" format dataframe with either record_id or session_id as the index.
+        """
+        # search across all subjects and get any file ending in demographics
+        qs = self.load_questionnaires(questionnaire_name)
+        q_dfs = []
+        for _, questionnaire in qs.items():
+            # get the dataframe for this questionnaire
+            df = self.questionnaire_to_dataframe(questionnaire)
+            q_dfs.append(df)
+
+        # concatenate all the dataframes
+        pivoted_df = pd.concat(q_dfs)
+        pivoted_df = pd.pivot(pivoted_df, index='record_id', columns='linkId', values='valueString')
+
+        # restore the original order of the columns, as pd.pivot removes it and sorts alphabetically
+        if len(q_dfs) > 0:
+            columns = q_dfs[-1]['linkId'].tolist()
+            columns = [col for col in columns if col in pivoted_df.columns]
+            # add in any columns which may be in pivoted
+            columns.extend([col for col in pivoted_df.columns if col not in columns])
+            pivoted_df = pivoted_df[columns]
+
+        return pivoted_df

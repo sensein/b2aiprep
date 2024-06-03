@@ -136,25 +136,3 @@ def convert_response_to_fhir(participant: dict, questionnaire_name: str) -> Ques
     )
 
     return questionnaire_response_json
-
-def write_response_to_file(
-        output_path: Path,
-        data: QuestionnaireResponse,
-        schema_name: str,
-        subject_id: str,
-        session_id: t.Optional[str] = None,
-        task_name: t.Optional[str] = None,
-        recording_name: t.Optional[str] = None,
-        ):
-    filename = f"sub-{subject_id}"
-    if session_id is not None:
-        filename += f"_ses-{session_id}"
-    if task_name is not None:
-        filename += f"_task-{task_name}"
-    if recording_name is not None:
-        filename += f"_rec-{recording_name}"
-    filename += f"_{schema_name}.json"
-    if not output_path.exists():
-        output_path.mkdir(parents=True, exist_ok=True)
-    with open(output_path / filename, "w") as f:
-        f.write(data.json(indent=2))
