@@ -11,7 +11,10 @@ import torch
 from pydra.mark import annotate
 from pydra.mark import task as pydratask
 
-from .process import (
+from b2aiprep.prepare import (
+    redcap_to_bids,
+)
+from b2aiprep.process import (
     Audio,
     SpeechToText,
     to_features,
@@ -31,6 +34,26 @@ else:
 def main():
     pass
 
+
+@main.command()
+@click.argument("filename", type=click.Path(exists=True))
+@click.option("--outdir", type=click.Path(), default=Path.cwd().joinpath('output').as_posix(), show_default=True)
+@click.option("--audiodir", type=click.Path(), default=None, show_default=True)
+def redcap2bids(
+    filename,
+    outdir,
+    audiodir,
+):
+    outdir = Path(outdir)
+    if outdir.exists() and not outdir.is_dir():
+        raise ValueError(f"Output path {outdir} is not a directory.")
+    if audiodir is not None:
+        audiodir = Path(audiodir)
+    redcap_to_bids(
+        filename,
+        outdir=Path(outdir),
+        audiodir=audiodir,
+    )
 
 @main.command()
 @click.argument("filename", type=click.Path(exists=True))
@@ -320,3 +343,8 @@ def createbatchcsv(input_dir, out_file):
             write.writerow([Path(item).absolute().as_posix()])
 
     print(f"csv of audiofiles generated at: {out_file}")
+
+
+if __name__ == '__main__':
+    # include main to enable python debugging
+    main()  # pylint: disable=no-value-for-parameter
