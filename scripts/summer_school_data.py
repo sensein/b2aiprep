@@ -9,6 +9,8 @@ import shutil
 import tarfile
 
 import torch
+import pydra
+from senselab.audio.tasks.speech_to_text import transcribe_dataset
 
 
 from b2aiprep.process import (
@@ -33,6 +35,8 @@ def wav_to_features(wav_path):
     audio = Audio.from_file(str(wav_path))
     audio = audio.to_16khz()
     features = {}
+    # features["transcription"] = transcribe_dataset({"audio": audio}, model_id="openai/whisper-tiny")
+    print(features["transcription"])
     features["speaker_embedding"] = embed_speaker(
         audio,
         model="speechbrain/spkrec-ecapa-voxceleb"
