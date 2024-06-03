@@ -12,7 +12,7 @@ import torch
 import pydra
 from senselab.audio.tasks.speech_to_text import transcribe_dataset
 
-
+from b2aiprep.prepare import redcap_to_bids
 from b2aiprep.process import (
     embed_speaker,
     specgram,
@@ -21,11 +21,6 @@ from b2aiprep.process import (
     extract_opensmile,
     Audio,
 )
-
-
-def organize_data(data_path):
-    # TODO implement waiting for code from Alistair
-    return data_path
 
 
 def wav_to_features(wav_path):
@@ -95,19 +90,23 @@ def parse_arguments():
     parser = argparse.ArgumentParser(
         description="Process audio data for multiple subjects."
     )
-    parser.add_argument('--data_path',
+    parser.add_argument('--redcap_file_path',
                         type=str,
                         required=True,
-                        help='Path to data in BIDS-like format')
-    parser.add_argument('--tar_save_path',
+                        help='Path to the RedCap data file.')
+    parser.add_argument('--audio_dir_path',
                         type=str,
                         required=True,
-                        help='Where to save the data.')
-    parser.add_argument('--processed_files_path',
+                        help='Path to the audio files directory.')
+    parser.add_argument('--tar_file_path',
+                        type=str,
+                        required=True,
+                        help='Where to save the data bundle .tar file.')
+    parser.add_argument('--bids_files_path',
                         type=str,
                         required=False,
                         default="summer-school-processed-data",
-                        help='Where to save the data.')
+                        help='Where to save the BIDS-like data.')
     return parser.parse_args()
 
 
@@ -115,14 +114,16 @@ def main():
     args = parse_arguments()
 
     print("Organizing data into BIDS-like directory structure...")
-    organize_data(args.data_path)
+    redcap_to_bids(args.redcap_file_path,
+                   args.bids_files_path,
+                   args.audio_dir_path)
 
     print("Removing old processed files...")
-    if os.path.isdir(args.processed_files_path):
-        shutil.rmtree(args.processed_files_path)
+    if os.path.isdir(args.bids_files_path):
+        shutil.rmtree(args.bids_files_path)
 
-    print("Copying BIDS-like data directory...")
-    shutil.copytree(args.data_path, args.processed_files_path)
+    # print("Copying BIDS-like data directory...")
+    # shutil.copytree(args.data_path, args.processed_files_path)
 
     print("Extracting acoustic features from audio...")
     extract_features(args.processed_files_path)
