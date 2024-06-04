@@ -435,7 +435,7 @@ def output_participant_data_to_fhir(participant: dict, outdir: Path, audiodir: t
                         ext = audio_file.suffix
                         
                         recording_name = _transform_str_for_filename(recording['recording_name'])
-                        audio_file_destination = audio_output_path / f"{prefix}_recording-{recording_name}{ext}"
+                        audio_file_destination = audio_output_path / f"{prefix}_rec-{recording_name}{ext}"
                         if audio_file_destination.exists():
                             logging.warning(f"Audio file {audio_file_destination} already exists. Overwriting.")
                         audio_file_destination.write_bytes(audio_file.read_bytes())
