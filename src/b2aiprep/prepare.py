@@ -197,7 +197,17 @@ def get_df_of_repeat_instrument(df: DataFrame, repeat_instrument: RepeatInstrume
         idx = df['redcap_repeat_instrument'].isnull()
     else:
         idx = df['redcap_repeat_instrument'] == repeat_instrument.value
-    return df.loc[idx, columns].copy()
+        
+    columns_present = [c for c in columns if c in df.columns]
+    dff = df.loc[idx, columns_present].copy()
+    if len(columns_present) < len(columns):
+        _LOGGER.warning((
+            f"Inserting None for missing columns of {RepeatInstrument.PARTICIPANT} instrument: "
+            f"{set(columns) - set(columns_present)}"
+        ))
+        for c in set(columns) - set(columns_present):
+            dff[c] = None
+    return dff
 
 def get_recordings_for_acoustic_task(df: pd.DataFrame, acoustic_task: str) -> pd.DataFrame:
     if acoustic_task not in _AUDIO_TASKS:
@@ -303,9 +313,7 @@ def output_participant_data_to_fhir(participant: dict, outdir: Path, audiodir: t
     participant_id = participant['record_id']
     subject_path = outdir / f"sub-{participant_id}"
 
-    # TODO: maybe this warning should go in the main function
     if audiodir is not None and not audiodir.exists():
-        logging.warning(f"Audio path {audiodir} does not exist. No audio files will be reorganized.")
         audiodir = None
 
     # TODO: prepare a Patient resource to use as the reference for each questionnaire
@@ -527,5 +535,8 @@ def redcap_to_bids(
 
     # participants is a list of dictionaries; each dictionary has the same RedCap fields
     # but it respects the nesting / hierarchy present in the original data collection
+    # TODO: maybe this warning should go in the main function
+    if (audiodir is not None) and (not audiodir.exists()):
+        logging.warning(f"{audiodir} path does not exist. No audio files will be reorganized.")
     for participant in tqdm(participants, desc="Writing participant data to file"):
         output_participant_data_to_fhir(participant, outdir, audiodir=audiodir)
