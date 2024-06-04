@@ -111,7 +111,7 @@ def is_invalid_response(participant: dict, outline) -> bool:
     return len(answers.difference({"nan", "unchecked"})) == 0
 
 def load_questionnaire_outline(questionnaire_name):
-    b2ai_resources = files("b2aiprep").joinpath("resources")
+    b2ai_resources = files("b2aiprep").joinpath("resources").joinpath('instrument_columns')
     return json.loads(b2ai_resources.joinpath(f"{questionnaire_name}.json").read_text())
 
 def convert_response_to_fhir(participant: dict, questionnaire_name: str) -> QuestionnaireResponse:
