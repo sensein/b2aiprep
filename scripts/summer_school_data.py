@@ -1,9 +1,16 @@
 """
-Organizes data, extracts features, and bundles everything together in an easily distributable
-format for the Bridge2AI Summer School.
+Organizes data, extracts features, and bundles everything together in an
+easily distributable format for the Bridge2AI Summer School.
 
-Note: Only works with the face-to-face RedCap CSV and a folder containing the face-to-face
-features files presently.
+Only works with the face-to-face RedCap CSV and a folder containing the
+face-to-face features files presently.
+
+Example usage:
+python3 b2aiprep/scripts/summer_school_data.py \
+    --ftf_redcap_file_path bridge2ai-voice-corpus-1-ftf/bridge2ai_voice_data.csv \
+    --audio_dir_path bridge2ai-voice-corpus-1-ftf/ftf-features \
+    --tar_file_path ./summer_school_data_bundle.tar \
+    --bids_files_path ./b2ai-data-bids-like
 """
 
 import argparse
