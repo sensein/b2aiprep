@@ -16,6 +16,7 @@ sub-p1/
     ...
 """
 
+import logging
 import os
 from collections import OrderedDict
 from pathlib import Path
@@ -109,6 +110,30 @@ class BIDSDataset:
             session_id = session.stem[4:]
             sessions[session_id] = session
         return sessions
+    
+    def find_tasks(self, subject_id: str, session_id: str) -> t.Dict[str, Path]:
+        """
+        Find all the tasks for a given subject and session.
+
+        Parameters
+        ----------
+        subject_id : str
+            The subject identifier.
+        session_id : str
+            The session identifier.
+
+        Returns
+        -------
+        Dict[str, Path]
+            A dictionary of tasks for the subject and session.
+        """
+        session_path = self.data_path / f"sub-{subject_id}" / f"ses-{session_id}"
+        tasks = {}
+        prefix_length = len(f"sub-{subject_id}_ses-{session_id}_task-")
+        for task in session_path.glob(f"sub-{subject_id}_ses-{session_id}_task-*"):
+            task_id = task.stem[prefix_length:-4]
+            tasks[task_id] = task.stem
+        return tasks
 
     def list_subjects(self) -> list:
         """
@@ -429,3 +454,41 @@ class VBAIDataset(BIDSDataset):
             pivoted_df = pivoted_df[columns]
 
         return pivoted_df
+
+    def validate_audio_files_exist(self) -> bool:
+        """
+        Validates that the audio recordings for all sessions are present.
+
+        Parameters
+        ----------
+        subject_id : str
+            The subject identifier.
+        session_id : str
+            The session identifier.
+
+        Returns
+        -------
+        bool
+            Whether the audio files are present.
+        """
+        missing_audio_files = []
+        # iterate over all of the audio tasks in beh subfolder
+        subjects = self.find_subjects()
+        for subject in subjects:
+            sessions = self.find_sessions(subject)
+            for session in sessions:
+                tasks = self.find_tasks(subject, session)
+                for task_name, task_filename in tasks.items():
+                    # check if the audio file is present
+                    if '_rec-' not in task_name:
+                        continue
+                    if not task_name.endswith('_recordingschema.json'):
+                        continue
+                    
+                    suffix_len = len('_recordingschema')
+                    audio_filename = Path(task_filename.parent).joinpath('..', 'audio') / f'{task_filename.stem[:suffix_len]}'
+                    if not audio_filename.exists():
+                        missing_audio_files.append(audio_filename)
+
+        logging.debug(f"Missing audio files: {missing_audio_files}")
+        return len(missing_audio_files) == 0

@@ -101,28 +101,29 @@ def load_csv_file(file_path):
         return None
 
 def load_data_columns() -> t.Dict[str, t.List[str]]:  
-    b2ai_resources = files("b2aiprep")
-    columns = json.loads(b2ai_resources.joinpath("resources", "columns.json").read_text())
-    confounders_columns = json.loads(b2ai_resources.joinpath("resources", "confounders.json").read_text())
-    demographics_columns = json.loads(b2ai_resources.joinpath("resources", "demographics.json").read_text())
-    gad7_columns = json.loads(b2ai_resources.joinpath("resources", "gad7.json").read_text())
-    participant_columns = json.loads(b2ai_resources.joinpath("resources", "participant.json").read_text())
-    phq9_columns = json.loads(b2ai_resources.joinpath("resources", "phq9.json").read_text())
-    voice_perception_columns = json.loads(b2ai_resources.joinpath("resources", "voice_perception.json").read_text())
-    vhi10_columns = json.loads(b2ai_resources.joinpath("resources", "vhi10.json").read_text())
-    panas_columns = json.loads(b2ai_resources.joinpath("resources", "panas.json").read_text())
-    custom_affect_scale_columns = json.loads(b2ai_resources.joinpath("resources", "custom_affect_scale.json").read_text())
-    dsm5_columns = json.loads(b2ai_resources.joinpath("resources", "dsm5.json").read_text())
-    ptsd_columns = json.loads(b2ai_resources.joinpath("resources", "ptsd.json").read_text())
-    adhd_columns = json.loads(b2ai_resources.joinpath("resources", "adhd.json").read_text())
-    dyspnea_columns = json.loads(b2ai_resources.joinpath("resources", "dyspnea.json").read_text())
-    dyspnea_columns = json.loads(b2ai_resources.joinpath("resources", "dyspnea.json").read_text())
-    leicester_cough_columns = json.loads(b2ai_resources.joinpath("resources", "leicester_cough.json").read_text())
-    voice_problem_severity_columns = json.loads(b2ai_resources.joinpath("resources", "voice_problem_severity.json").read_text())
-    winograd_columns =  json.loads(b2ai_resources.joinpath("resources", "winograd.json").read_text())
-    stroop_columns =  json.loads(b2ai_resources.joinpath("resources", "stroop.json").read_text())
-    vocab_columns = json.loads(b2ai_resources.joinpath("resources", "vocab.json").read_text())
-    random_columns = json.loads(b2ai_resources.joinpath("resources", "random.json").read_text())
+    b2ai_resources = files("b2aiprep").joinpath("resources")
+    columns = json.loads(b2ai_resources.joinpath("all_columns.json").read_text())
+
+    b2ai_resources = b2ai_resources.joinpath("instrument_columns")
+    confounders_columns = json.loads(b2ai_resources.joinpath("confounders.json").read_text())
+    demographics_columns = json.loads(b2ai_resources.joinpath("demographics.json").read_text())
+    gad7_columns = json.loads(b2ai_resources.joinpath("gad7.json").read_text())
+    participant_columns = json.loads(b2ai_resources.joinpath("participant.json").read_text())
+    phq9_columns = json.loads(b2ai_resources.joinpath("phq9.json").read_text())
+    voice_perception_columns = json.loads(b2ai_resources.joinpath("voice_perception.json").read_text())
+    vhi10_columns = json.loads(b2ai_resources.joinpath("vhi10.json").read_text())
+    panas_columns = json.loads(b2ai_resources.joinpath("panas.json").read_text())
+    custom_affect_scale_columns = json.loads(b2ai_resources.joinpath("custom_affect_scale.json").read_text())
+    dsm5_columns = json.loads(b2ai_resources.joinpath("dsm5.json").read_text())
+    ptsd_columns = json.loads(b2ai_resources.joinpath("ptsd.json").read_text())
+    adhd_columns = json.loads(b2ai_resources.joinpath("adhd.json").read_text())
+    dyspnea_columns = json.loads(b2ai_resources.joinpath("dyspnea.json").read_text())
+    leicester_cough_columns = json.loads(b2ai_resources.joinpath("leicester_cough.json").read_text())
+    voice_problem_severity_columns = json.loads(b2ai_resources.joinpath("voice_problem_severity.json").read_text())
+    winograd_columns =  json.loads(b2ai_resources.joinpath("winograd.json").read_text())
+    stroop_columns =  json.loads(b2ai_resources.joinpath("stroop.json").read_text())
+    vocab_columns = json.loads(b2ai_resources.joinpath("vocab.json").read_text())
+    random_columns = json.loads(b2ai_resources.joinpath("random.json").read_text())
 
     data_columns = {
         'columns': columns,
@@ -191,13 +192,44 @@ def get_columns_of_repeat_instrument(repeat_instrument: RepeatInstrument) -> t.L
         columns.insert(0, 'record_id')
     return columns
 
+def update_column_names(df: DataFrame) -> DataFrame:
+    b2ai_resources = files("b2aiprep").joinpath("resources")
+    column_mapping: dict = json.loads(b2ai_resources.joinpath("column_mapping.json").read_text())
+    # the mapping by default is {"coded_entry": "Coded Entry"}
+    # we want our columns to be named "coded_entry", so we reverse the dict
+    column_mapping = {v: k for k, v in column_mapping.items()}
+
+    # only map columns if we have a full overlap with the mapping dict
+    overlap_keys = set(df.columns.tolist()).intersection(set(column_mapping.keys()))
+    overlap_values = set(df.columns.tolist()).intersection(set(column_mapping.values()))
+    
+    if len(overlap_keys) == df.shape[1]:
+        _LOGGER.info("Mapping columns to coded format.")
+        return df.rename(columns=column_mapping)
+    elif len(overlap_values) == df.shape[1]:
+        # no need to map columns
+        return df
+    else:
+        non_overlapping_columns = set(df.columns.tolist()) - set(column_mapping.keys())
+        raise ValueError(f"Found {len(non_overlapping_columns)} columns not in mapping: {non_overlapping_columns}")
+
 def get_df_of_repeat_instrument(df: DataFrame, repeat_instrument: RepeatInstrument) -> pd.DataFrame:
     columns = get_columns_of_repeat_instrument(repeat_instrument)
     if repeat_instrument in (RepeatInstrument.PARTICIPANT,):
         idx = df['redcap_repeat_instrument'].isnull()
     else:
         idx = df['redcap_repeat_instrument'] == repeat_instrument.value
-    return df.loc[idx, columns].copy()
+        
+    columns_present = [c for c in columns if c in df.columns]
+    dff = df.loc[idx, columns_present].copy()
+    if len(columns_present) < len(columns):
+        _LOGGER.warning((
+            f"Inserting None for missing columns of {RepeatInstrument.PARTICIPANT} instrument: "
+            f"{set(columns) - set(columns_present)}"
+        ))
+        for c in set(columns) - set(columns_present):
+            dff[c] = None
+    return dff
 
 def get_recordings_for_acoustic_task(df: pd.DataFrame, acoustic_task: str) -> pd.DataFrame:
     if acoustic_task not in _AUDIO_TASKS:
@@ -303,9 +335,7 @@ def output_participant_data_to_fhir(participant: dict, outdir: Path, audiodir: t
     participant_id = participant['record_id']
     subject_path = outdir / f"sub-{participant_id}"
 
-    # TODO: maybe this warning should go in the main function
     if audiodir is not None and not audiodir.exists():
-        logging.warning(f"Audio path {audiodir} does not exist. No audio files will be reorganized.")
         audiodir = None
 
     # TODO: prepare a Patient resource to use as the reference for each questionnaire
@@ -405,7 +435,7 @@ def output_participant_data_to_fhir(participant: dict, outdir: Path, audiodir: t
                         ext = audio_file.suffix
                         
                         recording_name = _transform_str_for_filename(recording['recording_name'])
-                        audio_file_destination = audio_output_path / f"{prefix}_recording-{recording_name}{ext}"
+                        audio_file_destination = audio_output_path / f"{prefix}_rec-{recording_name}{ext}"
                         if audio_file_destination.exists():
                             logging.warning(f"Audio file {audio_file_destination} already exists. Overwriting.")
                         audio_file_destination.write_bytes(audio_file.read_bytes())
@@ -435,6 +465,13 @@ def redcap_to_bids(
 ):
     """Converts from RedCap to a BIDS-like structure."""
     df = load_csv_file(filename)
+
+    # It is possible for each column in the dataframe to have one of two names:
+    #   1. coded column names ("record_id")
+    #   2. text column names ("Record ID")
+    # for simplicity, we always map columns to coded columns before processing,
+    # that way we only ever need to manually subselect using one version of the column name
+    df = update_column_names(df)
 
     # create separate data frames for sets of columns
     # number of participants
@@ -527,5 +564,8 @@ def redcap_to_bids(
 
     # participants is a list of dictionaries; each dictionary has the same RedCap fields
     # but it respects the nesting / hierarchy present in the original data collection
+    # TODO: maybe this warning should go in the main function
+    if (audiodir is not None) and (not audiodir.exists()):
+        logging.warning(f"{audiodir} path does not exist. No audio files will be reorganized.")
     for participant in tqdm(participants, desc="Writing participant data to file"):
         output_participant_data_to_fhir(participant, outdir, audiodir=audiodir)
