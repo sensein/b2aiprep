@@ -1,0 +1,12 @@
+[
+    "recording_id",
+    "recording_acoustic_task_id",
+    "recording_session_id",
+    "recording_name",
+    "recording_duration",
+    "recording_size",
+    "recording_profile_name",
+    "recording_profile_version",
+    "recording_input_gain",
+    "recording_microphone"
+]

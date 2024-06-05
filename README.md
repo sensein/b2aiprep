@@ -2,7 +2,7 @@
 
 A simple Python package to prepare acoustic data for the Bridge2AI voice project.
 
-**Caution:** this package is under active development and interfaces may change rapidly over the next few weeks.
+**Caution:** this package is under active development and interfaces may change rapidly.
 
 ## Installation
 Requires a Python >= 3.10, <3.12 environment
@@ -100,3 +100,17 @@ b2aiprep-cli --help
     ```bash
     b2aiprep-cli transcribe data/vc_source.wav --model_id 'openai/whisper-large-v3' --return_timestamps true
     ```
+
+## BIDS-like data
+
+This package provides conversion from a RedCap/file-based custom structure into a [BIDS-like](https://bids-standard.github.io/bids-starter-kit/folders_and_files/folders.html) structure for downstream analysis. In addition, utilities are provided for working with the BIDS-like structured data and to support data analysis of voice and questionnaire data.
+
+Convert a RedCap CSV and a folder of audio files into the BIDS format:
+
+```sh
+b2aiprep-cli redcap2bids bridge2ai_voice_data.csv --outdir output --audiodir audio
+```
+
+The `audiodir` option above can be omitted, in which case no audio data is reorganized.
+
+See the [tutorial.ipynb](docs/tutorial.ipynb) for a few use examples of data in the BIDS-like format.
