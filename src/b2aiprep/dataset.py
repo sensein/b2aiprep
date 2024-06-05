@@ -134,6 +134,30 @@ class BIDSDataset:
             task_id = task.stem[prefix_length:-4]
             tasks[task_id] = task.stem
         return tasks
+    
+    def list_questionnaire_types(self, subject_only: bool = False) -> list:
+        """
+        List all the questionnaire types in the dataset.
+
+        Returns
+        -------
+        list
+            A list of questionnaire types.
+        """
+        questionnaire_types = set()
+        for subject_path in self.data_path.glob("sub-*"):
+            # subject-wide resources
+            for questionnaire in subject_path.glob("sub-*.json"):
+                questionnaire_types.add(questionnaire.stem.split("_")[-1])
+            if subject_only:
+                continue
+            # session-wide resources
+            for session_path in subject_path.glob("ses-*"):
+                beh_path = session_path.joinpath('beh')
+                if beh_path.exists():
+                    for questionnaire in beh_path.glob("sub-*.json"):
+                        questionnaire_types.add(questionnaire.stem.split("_")[-1])
+        return sorted(list(questionnaire_types))
 
     def list_subjects(self) -> list:
         """
@@ -443,7 +467,16 @@ class VBAIDataset(BIDSDataset):
 
         # concatenate all the dataframes
         pivoted_df = pd.concat(q_dfs)
-        pivoted_df = pd.pivot(pivoted_df, index='record_id', columns='linkId', values='valueString')
+
+        # create a value column that merges valueString, valueBoolean, etc.
+        # https://hl7.org/fhir/r4/questionnaireresponse-definitions.html#QuestionnaireResponse.item.answer.value_x_
+        # boolean|decimal|integer|date|dateTime|time|string|uri|Attachment|Coding|Quantity|Reference(Any)
+        # currently we only support String/Boolean
+        value_columns = ['valueString', 'valueBoolean']
+        pivoted_df['value'] = None
+        for col in value_columns:
+            pivoted_df['value'] = pivoted_df['value'].combine_first(pivoted_df[col])
+        pivoted_df = pd.pivot(pivoted_df, index='record_id', columns='linkId', values='value')
 
         # restore the original order of the columns, as pd.pivot removes it and sorts alphabetically
         if len(q_dfs) > 0:
