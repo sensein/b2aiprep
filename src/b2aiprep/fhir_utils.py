@@ -1,16 +1,15 @@
+"""Utility functions for converting participant data (usually nested dictionaries)
+to FHIR format.
+"""
+
 import json
 from importlib.resources import files
-from pathlib import Path
 import typing as t
 
 from fhir.resources import construct_fhir_element
 from fhir.resources.questionnaireresponse import QuestionnaireResponse
 
-def _load_questionnaire_mapping() -> dict:
-    b2ai_resources = files("b2aiprep")
-    return json.loads(b2ai_resources.joinpath("resources", "questionnaire2schema.json").read_text())
-
-_QUESTIONNAIRE_MAPPING = _load_questionnaire_mapping()
+from b2aiprep.constants import DATA_COLUMNS, QUESTIONNAIRE_MAPPING
 
 def is_empty_response(fhir_response: dict):
     answers = set(
@@ -28,6 +27,24 @@ def is_empty_response(fhir_response: dict):
     )
 
 def create_fhir_questionnaire_response(id: str, name: str, items: list) -> dict:
+    """Creates a FHIR QuestionnaireResponse object with default values for the Bridge2AI
+    voice biomarker questionnaires. The items provided should already adhere to the FHIR
+    format for items in a QuestionnaireResponse.
+    
+    Parameters
+    ----------
+    id : str
+        The ID of the response.
+    name : str
+        The name of the questionnaire.
+    items : list
+        The items in the response.
+    
+    Returns
+    -------
+    dict
+        The FHIR QuestionnaireResponse object.
+    """
     fhir_response = {}
     fhir_response["resourceType"] = "QuestionnaireResponse"
     fhir_response["id"] = id
@@ -115,10 +132,35 @@ def load_questionnaire_outline(questionnaire_name):
     return json.loads(b2ai_resources.joinpath(f"{questionnaire_name}.json").read_text())
 
 def convert_response_to_fhir(participant: dict, questionnaire_name: str) -> QuestionnaireResponse:
+    """Converts a participant's response to a FHIR QuestionnaireResponse.
+    
+    Given a dictionary of individual data, the function:
+    (1) identifies specific data elements using the questionnaire name
+    (2) extracts the responses associated with these elements
+    (3) reformats the data into a QuestionnaireResponse object and returns it
+    
+    Parameters
+    ----------
+    participant : dict
+        The participant data.
+    questionnaire_name : str
+        The name of the questionnaire.
+    
+    Returns
+    -------
+    QuestionnaireResponse
+        The FHIR QuestionnaireResponse object.
+    
+    Raises
+    ------
+    ValueError
+        If the parsed JSON does not adhere to the QuestionnaireResponse data structure.
+        Usually due to missing or invalid attributes.
+    """
     participant_id = participant["record_id"]
     reg_questionnaire_name = questionnaire_name.replace("_", "-")
-    mapping_name = _QUESTIONNAIRE_MAPPING[questionnaire_name]
-    outline = load_questionnaire_outline(questionnaire_name)
+    mapping_name = QUESTIONNAIRE_MAPPING[questionnaire_name]
+    outline = DATA_COLUMNS[questionnaire_name]
     generic_items = extract_items(participant, outline)
     if is_invalid_response(participant, outline):
         generic_items = []

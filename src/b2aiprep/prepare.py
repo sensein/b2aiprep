@@ -1,4 +1,23 @@
-"""Reorganize RedCap CSV and voice waveforms into a BIDS-like structure."""
+"""Reorganize RedCap CSV and voice waveforms into a BIDS-like structure.
+
+BIDS is a format designed to organize research data, primarily neuroinformatics
+research data. It prescribes an organization of folders and files:
+https://bids-standard.github.io/bids-starter-kit/folders_and_files/folders.html
+
+BIDS has a general structure of:
+project/
+└── subject
+    └── session
+        └── datatype
+
+Files must follow a filename convention:
+https://bids-standard.github.io/bids-starter-kit/folders_and_files/files.html
+
+BIDS covers many data types, but audio data is not one of them. We therefore
+refer to the reorganized format as "BIDS-like". We use the existing behavioural
+data type for the information captured in RedCap, and a new audio data type for
+the voice recordings.
+"""
 import logging
 from pathlib import Path
 import typing as t
@@ -14,82 +33,32 @@ from tqdm import tqdm
 from b2aiprep.fhir_utils import (
     convert_response_to_fhir,
 )
+from b2aiprep.constants import (
+    RepeatInstrument,
+    DATA_COLUMNS,
+    AUDIO_TASKS,   
+    GENERAL_QUESTIONNAIRES,
+    VALIDATED_QUESTIONNAIRES,
+    REPEAT_INSTRUMENT_COLUMNS,
+    REPEAT_INSTRUMENT_PREFIX_MAPPING,
+    REPEAT_INSTRUMENT_SESSION_ID,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
-_GENERAL_QUESTIONNAIRES = [
-    "participant",
-    "eligibility",
-    "enrollment",
-    "vocalFoldParalysis",
-    "laryngealdystonia",
-    "precancerouseLesions",
-    "laryngealcancer",
-    "benignLesion",
-    "bipolar",
-    "depression",
-    "airwaystenosis",
-    "alzheimers",
-    "parkinsons",
-    "als"
-]
-
-_VALIDATED_QUESTIONNAIRES = [
-    "demographics",
-    "confounders",
-    "gad7",
-    "phq9",
-    "voicePerception",
-    "vhi10",
-    "panas",
-    "customAffectScale",
-    "dsm5",
-    "ptsd",
-    "adhd",
-    "dyspnea",
-    "leicester",
-    "voiceSeverity",
-    "winograd",
-    "stroop",
-    "vocab",
-    "random"
-
-]
-_AUDIO_TASKS = (
-    'Animal fluency', 'Audio Check', 'Breath Sounds',
-    'Cape V sentences', 'Caterpillar Passage', 'Cinderella Story',
-    'Diadochokinesis', 'Free Speech', 'Glides', 'Loudness',
-    'Maximum phonation time', 'Picture description',
-    'Productive Vocabulary', 'Prolonged vowel', 'Rainbow Passage',
-    'Random Item Generation', 'Respiration and cough', 'Story recall',
-    'Voluntary Cough', 'Word-color Stroop',
-)
-
-class RepeatInstrument(Enum):
-    SESSION = 'Session'
-    ACOUSTIC_TASK = 'Acoustic Task'
-    RECORDING = 'Recording'
-    PARTICIPANT = 'Participant'
-    GENERIC_DEMOGRAPHICS = 'Q Generic Demographics'
-    GENERIC_CONFOUNDERS = 'Q Generic Confounders'
-    GENERIC_VOICE_PERCEPTION = 'Q Generic Voice Perception'
-    GENERIC_VOICE_HANDICAP = 'Q Generic Voice Handicap Index Vhi10'
-    GENERIC_PHQ9_DEPRESSION = 'Q Generic Patient Health Questionnaire9'
-    GENERIC_GAD7_ANXIETY = 'Q - Generic - Gad7 Anxiety'
-    RESP_DYSPNEA_INDEX = 'Q - Resp - Dyspnea Index Di'
-    RESP_LEICESTER_COUGH = 'Q - Resp - Leicester Cough Questionnaire Lcq'
-    VOICE_VOICE_PROBLEM_SEVERITY = 'Q - Voice - Voice Problem Severity'
-    MOOD_PANAS = 'Q - Mood - Panas'
-    MOOD_CUSTOM_AFFECT = 'Q - Mood - Custom Affect Scale'
-    MOOD_DSM5_ADULT = 'Q - Mood - Dsm5 Adult'
-    MOOD_PTSD_ADULT = 'Q - Mood - Ptsd Adult'
-    MOOD_ADHD_ADULT = 'Q - Mood - Adhd Adult'
-    NEURO_WINOGRAD_SCHEMAS = 'Q - Neuro Winograd Schemas'
-    NEURO_WORDCOLOR_STROOP = 'Q - Neuro - Wordcolor Stroop'
-    NEURO_PRODUCTIVE_VOCABULARY = 'Q - Neuro - Productive Vocabulary'
-    NEURO_RANDOM_ITEM_GENERATION = 'Q - Neuro - Random Item Generation'
-
 def load_csv_file(file_path):
+    """Load a CSV file into a DataFrame.
+    
+    Parameters
+    ----------
+    file_path : str
+        The path to the CSV file.
+    
+    Returns
+    -------
+    DataFrame
+        The loaded data.
+    """
     try:
         data = pd.read_csv(file_path, low_memory=False, na_values='')
         return data
@@ -100,90 +69,29 @@ def load_csv_file(file_path):
         print('Error parsing CSV file.')
         return None
 
-def load_data_columns() -> t.Dict[str, t.List[str]]:  
-    b2ai_resources = files("b2aiprep").joinpath("resources")
-    columns = json.loads(b2ai_resources.joinpath("all_columns.json").read_text())
-
-    b2ai_resources = b2ai_resources.joinpath("instrument_columns")
-    confounders_columns = json.loads(b2ai_resources.joinpath("confounders.json").read_text())
-    demographics_columns = json.loads(b2ai_resources.joinpath("demographics.json").read_text())
-    gad7_columns = json.loads(b2ai_resources.joinpath("gad7.json").read_text())
-    participant_columns = json.loads(b2ai_resources.joinpath("participant.json").read_text())
-    phq9_columns = json.loads(b2ai_resources.joinpath("phq9.json").read_text())
-    voice_perception_columns = json.loads(b2ai_resources.joinpath("voice_perception.json").read_text())
-    vhi10_columns = json.loads(b2ai_resources.joinpath("vhi10.json").read_text())
-    panas_columns = json.loads(b2ai_resources.joinpath("panas.json").read_text())
-    custom_affect_scale_columns = json.loads(b2ai_resources.joinpath("custom_affect_scale.json").read_text())
-    dsm5_columns = json.loads(b2ai_resources.joinpath("dsm5.json").read_text())
-    ptsd_columns = json.loads(b2ai_resources.joinpath("ptsd.json").read_text())
-    adhd_columns = json.loads(b2ai_resources.joinpath("adhd.json").read_text())
-    dyspnea_columns = json.loads(b2ai_resources.joinpath("dyspnea.json").read_text())
-    leicester_cough_columns = json.loads(b2ai_resources.joinpath("leicester_cough.json").read_text())
-    voice_problem_severity_columns = json.loads(b2ai_resources.joinpath("voice_problem_severity.json").read_text())
-    winograd_columns =  json.loads(b2ai_resources.joinpath("winograd.json").read_text())
-    stroop_columns =  json.loads(b2ai_resources.joinpath("stroop.json").read_text())
-    vocab_columns = json.loads(b2ai_resources.joinpath("vocab.json").read_text())
-    random_columns = json.loads(b2ai_resources.joinpath("random.json").read_text())
-
-    data_columns = {
-        'columns': columns,
-        'participant_columns': participant_columns,
-        'demographics_columns': demographics_columns,
-        'confounders_columns': confounders_columns,
-        'phq9_columns': phq9_columns,
-        'gad7_columns': gad7_columns,
-        'voice_perception_columns': voice_perception_columns,
-        'vhi10_columns': vhi10_columns,
-        'panas_columns': panas_columns,
-        "custom_affect_scale_columns": custom_affect_scale_columns,
-        "dsm5_columns" : dsm5_columns,
-        "ptsd_columns" : ptsd_columns,
-        "adhd_columns" : adhd_columns,
-        "dyspnea_columns": dyspnea_columns,
-        "leicester_cough_columns": leicester_cough_columns,
-        "voice_problem_severity_columns": voice_problem_severity_columns,
-        'winograd_columns': winograd_columns,
-        "stroop_columns" : stroop_columns,
-        "vocab_columns" : vocab_columns,
-        "random_columns" : random_columns
-    }
-
-    return data_columns
-    
 def get_columns_of_repeat_instrument(repeat_instrument: RepeatInstrument) -> t.List[str]:
-    data_columns = load_data_columns()
-    repeat_instrument_columns = {
-        RepeatInstrument.PARTICIPANT: 'participant_columns',
-        RepeatInstrument.GENERIC_DEMOGRAPHICS: 'demographics_columns',
-        RepeatInstrument.GENERIC_CONFOUNDERS: 'confounders_columns',
-        RepeatInstrument.GENERIC_PHQ9_DEPRESSION: 'phq9_columns',
-        RepeatInstrument.GENERIC_GAD7_ANXIETY: 'gad7_columns',
-        RepeatInstrument.GENERIC_VOICE_PERCEPTION: 'voice_perception_columns',
-        RepeatInstrument.GENERIC_VOICE_HANDICAP: 'vhi10_columns',
-        RepeatInstrument.MOOD_PANAS: 'panas_columns',
-        RepeatInstrument.MOOD_CUSTOM_AFFECT: 'custom_affect_scale_columns',
-        RepeatInstrument.MOOD_DSM5_ADULT: 'dsm5_columns',
-        RepeatInstrument.MOOD_PTSD_ADULT: 'ptsd_columns',
-        RepeatInstrument.MOOD_ADHD_ADULT: 'adhd_columns',
-        RepeatInstrument.RESP_DYSPNEA_INDEX: 'dyspnea_columns',
-        RepeatInstrument.RESP_LEICESTER_COUGH: 'leicester_cough_columns',
-        RepeatInstrument.VOICE_VOICE_PROBLEM_SEVERITY: 'voice_problem_severity_columns',
-        RepeatInstrument.NEURO_WINOGRAD_SCHEMAS: 'winograd_columns',
-        RepeatInstrument.NEURO_WORDCOLOR_STROOP: 'stroop_columns',
-        RepeatInstrument.NEURO_PRODUCTIVE_VOCABULARY : 'vocab_columns',
-        RepeatInstrument.NEURO_RANDOM_ITEM_GENERATION : 'random_columns'
-        
-    }
-
-    repeat_instrument_prefix_mapping = {
-        RepeatInstrument.SESSION: 'session_',
-        RepeatInstrument.ACOUSTIC_TASK: 'acoustic_task_',
-        RepeatInstrument.RECORDING: 'recording_',
-    }
-    if repeat_instrument in repeat_instrument_columns:
-        columns = data_columns[repeat_instrument_columns[repeat_instrument]]
-    elif repeat_instrument in repeat_instrument_prefix_mapping:
-        columns = [c for c in data_columns['columns'] if c.startswith(repeat_instrument_prefix_mapping[repeat_instrument])]
+    """Get the set of string column names associated with a repeat instrument.
+    
+    Parameters
+    ----------
+    repeat_instrument : RepeatInstrument
+        The repeat instrument to get columns for. Repeat instruments are specific
+        strings used in a RedCap CSV export which specify the instrument for which
+        a row of data in the RedCap CSV corresponds to. The RepeatInstrument Enum
+        codifies these strings into constants.
+    
+    Returns
+    -------
+    List[str]
+        The column names.
+    """
+    if repeat_instrument in REPEAT_INSTRUMENT_COLUMNS:
+        columns = DATA_COLUMNS[REPEAT_INSTRUMENT_COLUMNS[repeat_instrument]]
+    elif repeat_instrument in REPEAT_INSTRUMENT_PREFIX_MAPPING:
+        columns = [
+            c for c in DATA_COLUMNS['columns']
+            if c.startswith(REPEAT_INSTRUMENT_PREFIX_MAPPING[repeat_instrument])
+        ]
     else:
         # add rest of columns for other repeat instruments
         raise NotImplementedError('Repeat Instrument not implemented.')
@@ -192,7 +100,25 @@ def get_columns_of_repeat_instrument(repeat_instrument: RepeatInstrument) -> t.L
         columns.insert(0, 'record_id')
     return columns
 
-def update_column_names(df: DataFrame) -> DataFrame:
+def update_redcap_df_column_names(df: DataFrame) -> DataFrame:
+    """Update column names for a RedCap derived dataframe to match the coded
+    column names used in the B2AI data processing pipeline.
+
+    RedCap can export coded column names and text column names ("labels"), e.g.
+    "redcap_repeat_instrument" vs. "Repeat Instrument". For downstream consistency,
+    we map all column names to the coded form, i.e. "redcap_repeat_instrument".
+
+    Parameters
+    ----------
+    df : DataFrame
+        The DataFrame to update.
+    
+    Returns
+    -------
+    DataFrame
+        The updated DataFrame.
+    """
+
     b2ai_resources = files("b2aiprep").joinpath("resources")
     column_mapping: dict = json.loads(b2ai_resources.joinpath("column_mapping.json").read_text())
     # the mapping by default is {"coded_entry": "Coded Entry"}
@@ -214,6 +140,21 @@ def update_column_names(df: DataFrame) -> DataFrame:
         raise ValueError(f"Found {len(non_overlapping_columns)} columns not in mapping: {non_overlapping_columns}")
 
 def get_df_of_repeat_instrument(df: DataFrame, repeat_instrument: RepeatInstrument) -> pd.DataFrame:
+    """Filters rows and columns of a RedCap dataframe to correspond to a specific repeat instrument.
+
+    Parameters
+    ----------
+    df : DataFrame
+        The DataFrame to filter.
+    repeat_instrument : RepeatInstrument
+        The repeat instrument to filter for.
+    
+    Returns
+    -------
+    pd.DataFrame
+        The filtered DataFrame.
+    """
+
     columns = get_columns_of_repeat_instrument(repeat_instrument)
     if repeat_instrument in (RepeatInstrument.PARTICIPANT,):
         idx = df['redcap_repeat_instrument'].isnull()
@@ -232,8 +173,23 @@ def get_df_of_repeat_instrument(df: DataFrame, repeat_instrument: RepeatInstrume
     return dff
 
 def get_recordings_for_acoustic_task(df: pd.DataFrame, acoustic_task: str) -> pd.DataFrame:
-    if acoustic_task not in _AUDIO_TASKS:
-        raise ValueError(f'Unrecognized {acoustic_task}. Options: {_AUDIO_TASKS}')
+    """Get recordings for a specific acoustic task.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        The DataFrame to filter.
+    acoustic_task : str
+        The acoustic task to filter for.
+    
+    Returns
+    -------
+    pd.DataFrame
+        The filtered DataFrame.
+    """
+
+    if acoustic_task not in AUDIO_TASKS:
+        raise ValueError(f'Unrecognized {acoustic_task}. Options: {AUDIO_TASKS}')
 
     acoustic_tasks_df = get_df_of_repeat_instrument(df, RepeatInstrument.ACOUSTIC_TASK)
     recordings_df = get_df_of_repeat_instrument(df, RepeatInstrument.RECORDING)
@@ -248,7 +204,8 @@ def get_recordings_for_acoustic_task(df: pd.DataFrame, acoustic_task: str) -> pd
     )
     return dff
 
-def _transform_str_for_filename(filename: str):
+def _transform_str_for_bids_filename(filename: str):
+    """Replace spaces in a string with hyphens to match BIDS string format rules.."""
     return filename.replace(' ', '-')
 
 
@@ -261,19 +218,40 @@ def write_pydantic_model_to_bids_file(
         task_name: t.Optional[str] = None,
         recording_name: t.Optional[str] = None,
         ):
+    """Write a Pydantic model (presumably a FHIR resource) to a JSON file following
+    the BIDS file name conventions.
+
+    Parameters
+    ----------
+    output_path : Path
+        The path to write the file to.
+    data : BaseModel
+        The data to write.
+    schema_name : str
+        The name of the schema.
+    subject_id : str
+        The subject ID.
+    session_id : str, optional
+        The session ID.
+    task_name : str, optional
+        The task name.
+    recording_name : str, optional
+        The recording name.
+    """
+
     filename = f"sub-{subject_id}"
     if session_id is not None:
-        session_id = _transform_str_for_filename(session_id)
+        session_id = _transform_str_for_bids_filename(session_id)
         filename += f"_ses-{session_id}"
     if task_name is not None:
-        task_name = _transform_str_for_filename(task_name)
+        task_name = _transform_str_for_bids_filename(task_name)
         filename += f"_task-{task_name}"
     if recording_name is not None:
-        recording_name = _transform_str_for_filename(recording_name)
+        recording_name = _transform_str_for_bids_filename(recording_name)
         filename += f"_rec-{recording_name}"
 
 
-    schema_name = _transform_str_for_filename(schema_name)
+    schema_name = _transform_str_for_bids_filename(schema_name)
     filename += f"_{schema_name}.json"
 
     if not output_path.exists():
@@ -311,11 +289,26 @@ def _df_to_dict(df: pd.DataFrame, index_col: str) -> t.Dict[str, t.Any]:
     return df.to_dict('index')
 
 def create_file_dir(participant_id, session_id):
+    """Create a file directory structure which follows the BIDS folder structure convention.
+    
+    BIDS folders are formatted as follows:
+    base_project_folder/
+    ├── sub-<participant_id>/
+    │   ├── ses-<session_id>/
+    │   │   ├── beh/
+    │   │   │   ├── sub-<participant_id>_ses-<session_id>_task-<task_name>_rec-<recording_name>_schema.json
+    │   │   │   ├── sub-<participant_id>_ses-<session_id>_task-<task_name>_rec-<recording_name>_schema.json
+
+    Args:
+        participant_id: The participant ID.
+        session_id: The session ID.
+    """
     output_path = Path("./output/")
     paths = [
         output_path / f"sub-{participant_id}/",
         output_path / f"sub-{participant_id}/ses-{session_id}/",
         output_path / f"sub-{participant_id}/ses-{session_id}/beh/",
+        output_path / f"sub-{participant_id}/ses-{session_id}/audio/",
     ]
 
     if session_id == "":
@@ -325,7 +318,7 @@ def create_file_dir(participant_id, session_id):
         folder.mkdir(parents=True, exist_ok=True)
 
 
-def questionnaire_mapping(questionnaire_name):
+def questionnaire_mapping(questionnaire_name: str) -> dict:
     with open("questionnaire_mapping/mappings.json") as mapping_file:
         mapping_str = mapping_file.read()
         mapping_data = json.loads(mapping_str)
@@ -341,11 +334,7 @@ def output_participant_data_to_fhir(participant: dict, outdir: Path, audiodir: t
     # TODO: prepare a Patient resource to use as the reference for each questionnaire
     # patient = create_fhir_patient(participant)
 
-    for questionnaire_name in _GENERAL_QUESTIONNAIRES:
-        # given a dictionary of individual data, this function:
-        # (1) identifies specific data elements using the questionnaire name
-        # (2) extracts the responses associated with these elements
-        # (3) reformats the data into a QuestionnaireResponse object and returns it
+    for questionnaire_name in GENERAL_QUESTIONNAIRES:
         fhir_data = convert_response_to_fhir(participant, questionnaire_name)
         if len(fhir_data.item) == 0:
             continue
@@ -382,9 +371,8 @@ def output_participant_data_to_fhir(participant: dict, outdir: Path, audiodir: t
         for task in session["acoustic_tasks"]:
             if task is None:
                 continue
-            
-            # replace spaces for the file name
-            acoustic_task_name = _transform_str_for_filename(task["acoustic_task_name"])
+
+            acoustic_task_name = _transform_str_for_bids_filename(task["acoustic_task_name"])
             fhir_data = convert_response_to_fhir(
                 task,
                 "acoustic_tasks",
@@ -434,14 +422,14 @@ def output_participant_data_to_fhir(participant: dict, outdir: Path, audiodir: t
                         # copy file
                         ext = audio_file.suffix
                         
-                        recording_name = _transform_str_for_filename(recording['recording_name'])
+                        recording_name = _transform_str_for_bids_filename(recording['recording_name'])
                         audio_file_destination = audio_output_path / f"{prefix}_rec-{recording_name}{ext}"
                         if audio_file_destination.exists():
                             logging.warning(f"Audio file {audio_file_destination} already exists. Overwriting.")
                         audio_file_destination.write_bytes(audio_file.read_bytes())
         
         # validated questionnaires
-        for questionnaire_name in _VALIDATED_QUESTIONNAIRES:
+        for questionnaire_name in VALIDATED_QUESTIONNAIRES:
             if (questionnaire_name not in session) or (session[questionnaire_name] is None):
                 continue
 
@@ -463,7 +451,34 @@ def redcap_to_bids(
     outdir: Path,
     audiodir: t.Optional[Path] = None,
 ):
-    """Converts from RedCap to a BIDS-like structure."""
+    """Converts the Bridge2AI RedCap CSV output and a folder of audio files
+    into the BIDS folder organization.
+
+    BIDS has a general structure of:
+    project/
+    └── subject
+        └── session
+            └── datatype
+    
+    And filenames follow a convention of:
+    sub-<participant_id>_ses-<session_id>[_task-<task_name>_rec-<recording_name>]_<schema>.json
+
+    Parameters
+    ----------
+    filename : Path
+        The path to the RedCap CSV file.
+    outdir : Path
+        The path to write the BIDS-like data to.
+    audiodir : Path, optional
+        The path to the folder containing audio files. If omitted, no audio data will be included
+        in the reorganized output.
+    
+    Raises
+    ------
+    ValueError
+        If the RedCap CSV file is not found, or if the columns in the CSV file do not match
+        the expected columns for the Bridge2AI data.
+    """
     df = load_csv_file(filename)
 
     # It is possible for each column in the dataframe to have one of two names:
@@ -471,7 +486,7 @@ def redcap_to_bids(
     #   2. text column names ("Record ID")
     # for simplicity, we always map columns to coded columns before processing,
     # that way we only ever need to manually subselect using one version of the column name
-    df = update_column_names(df)
+    df = update_redcap_df_column_names(df)
 
     # create separate data frames for sets of columns
     # number of participants
@@ -496,27 +511,13 @@ def redcap_to_bids(
     )
     _LOGGER.info(f"Number of Recordings: {len(recordings_df)}")
 
-    # load in questionnaires based on the repeat instruments
-    dataframes_with_columns = {
-        'demographics': ('demographics_session_id', RepeatInstrument.GENERIC_DEMOGRAPHICS),
-        'confounders': ('confounders_session_id', RepeatInstrument.GENERIC_CONFOUNDERS),
-        'gad7': ('gad_7_session_id', RepeatInstrument.GENERIC_GAD7_ANXIETY),
-        'phq9': ('phq_9_session_id', RepeatInstrument.GENERIC_PHQ9_DEPRESSION),
-        'voicePerception': ('voice_perception_session_id', RepeatInstrument.GENERIC_VOICE_PERCEPTION),
-        'vhi10': ('vhi_session_id', RepeatInstrument.GENERIC_VOICE_HANDICAP),
-        'panas': ('panas_session_id', RepeatInstrument.MOOD_PANAS),
-        'customAffectScale': ('custom_affect_scale_session_id', RepeatInstrument.MOOD_CUSTOM_AFFECT),
-        'dsm5': ('dsm_5_session_id', RepeatInstrument.MOOD_DSM5_ADULT),
-        'ptsd': ('ptsd_session_id', RepeatInstrument.MOOD_PTSD_ADULT),
-        'adhd': ('adhd_session_id', RepeatInstrument.MOOD_ADHD_ADULT),
-        'dyspnea': ('dyspnea_index_session_id', RepeatInstrument.RESP_DYSPNEA_INDEX),
-        'leicester': ('leicester_cough_session_id', RepeatInstrument.RESP_LEICESTER_COUGH),
-        'voiceSeverity': ('voice_severity_session_id', RepeatInstrument.VOICE_VOICE_PROBLEM_SEVERITY),
-        'winograd': ('winograd_session_id', RepeatInstrument.NEURO_WINOGRAD_SCHEMAS),
-        'stroop': ('stroop_session_id', RepeatInstrument.NEURO_WORDCOLOR_STROOP),
-        'vocab': ('vocabulary_session_id', RepeatInstrument.NEURO_PRODUCTIVE_VOCABULARY),
-        'random': ('random_session_id', RepeatInstrument.NEURO_RANDOM_ITEM_GENERATION),
-    }
+    # the repeat instrument columns also defines all the possible
+    # repeat instruments we would like to extract from the RedCap CSV
+    repeat_instruments = list(REPEAT_INSTRUMENT_COLUMNS.keys())
+
+    # omit participant - extracted later on separately
+    if RepeatInstrument.PARTICIPANT in repeat_instruments:
+        repeat_instruments.remove(RepeatInstrument.PARTICIPANT)
 
     # the above dictionary maps the session_id column to an enum
     # we use these values to create a dict that is {session_id: {data ...}}
@@ -526,7 +527,10 @@ def redcap_to_bids(
     #    ...
     #   }
     dataframe_dicts = {}
-    for questionnaire_name, (session_id_col, repeat_instrument) in dataframes_with_columns.items():
+    for repeat_instrument in repeat_instruments:
+        session_id_col = REPEAT_INSTRUMENT_SESSION_ID[repeat_instrument]
+        questionnaire_name = REPEAT_INSTRUMENT_COLUMNS[repeat_instrument]
+
         # load in the df based on the instrument
         questionnaire_df = get_df_of_repeat_instrument(df, repeat_instrument)
         _LOGGER.info(f"Number of {questionnaire_name} entries: {len(questionnaire_df)}")
