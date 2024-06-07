@@ -9,22 +9,30 @@ import typing as t
 from fhir.resources import construct_fhir_element
 from fhir.resources.questionnaireresponse import QuestionnaireResponse
 
-from b2aiprep.constants import DATA_COLUMNS, QUESTIONNAIRE_MAPPING
-
-def is_empty_response(fhir_response: dict):
-    answers = set(
-        [
-            x["answer"][0]["valueString"].lower()
-            for x in fhir_response["item"]
-        ]
-    )
-    has_nan = "nan" in answers
-    has_uncheck = "unchecked" in answers
-    return (
-        (len(answers) == 0)
-        or (len(answers) == 2 and (has_nan and has_uncheck))
-        or (len(answers) == 1 and (has_nan or has_uncheck))
-    )
+def is_empty_questionnaire_response(response: QuestionnaireResponse) -> bool:
+    """Determines whether a questionnaire response is empty.
+    
+    Parameters
+    ----------
+    response : QuestionnaireResponse
+        The questionnaire response.
+    
+    Returns
+    -------
+    bool
+        Whether the response is empty.
+    """
+    if response.item is None:
+        return True
+    
+    for item in response.item:
+        # skip record_id -> it is always present
+        if (item.linkId is not None) and (item.linkId == "record_id"):
+            continue
+        if item.answer is not None:
+            return False
+    
+    return True
 
 def create_fhir_questionnaire_response(id: str, name: str, items: list) -> dict:
     """Creates a FHIR QuestionnaireResponse object with default values for the Bridge2AI
@@ -131,7 +139,13 @@ def load_questionnaire_outline(questionnaire_name):
     b2ai_resources = files("b2aiprep").joinpath("resources").joinpath('instrument_columns')
     return json.loads(b2ai_resources.joinpath(f"{questionnaire_name}.json").read_text())
 
-def convert_response_to_fhir(participant: dict, questionnaire_name: str) -> QuestionnaireResponse:
+def convert_response_to_fhir(
+        participant: dict,
+        # repeat_instrument: RepeatInstrument
+        questionnaire_name: str,
+        mapping_name: str,
+        columns: t.List[str],
+    ) -> QuestionnaireResponse:
     """Converts a participant's response to a FHIR QuestionnaireResponse.
     
     Given a dictionary of individual data, the function:
@@ -158,15 +172,15 @@ def convert_response_to_fhir(participant: dict, questionnaire_name: str) -> Ques
         Usually due to missing or invalid attributes.
     """
     participant_id = participant["record_id"]
-    reg_questionnaire_name = questionnaire_name.replace("_", "-")
-    mapping_name = QUESTIONNAIRE_MAPPING[questionnaire_name]
-    outline = DATA_COLUMNS[questionnaire_name]
-    generic_items = extract_items(participant, outline)
-    if is_invalid_response(participant, outline):
+
+    generic_items = extract_items(participant, columns)
+    if is_invalid_response(participant, columns):
         generic_items = []
 
     generic_response = create_fhir_questionnaire_response(
-        id=f"{participant_id}{reg_questionnaire_name}",
+        # create a unique identifier for this FHIR resource by combining
+        # the participant ID with the questionnaire name
+        id=f'{participant_id}-{questionnaire_name.replace("_", "-")}',
         name=mapping_name,
         items=generic_items,
     )

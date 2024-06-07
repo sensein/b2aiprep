@@ -20,34 +20,33 @@ the voice recordings.
 """
 import logging
 from pathlib import Path
+import json
 import typing as t
 
+import numpy as np
 import pandas as pd
 from pandas import DataFrame
-from enum import Enum
-import json
 from importlib.resources import files
 from pydantic import BaseModel
 from tqdm import tqdm
 
 from b2aiprep.fhir_utils import (
     convert_response_to_fhir,
+    is_empty_questionnaire_response,
 )
 from b2aiprep.constants import (
+    Instrument,
     RepeatInstrument,
-    DATA_COLUMNS,
     AUDIO_TASKS,   
     GENERAL_QUESTIONNAIRES,
     VALIDATED_QUESTIONNAIRES,
-    REPEAT_INSTRUMENT_COLUMNS,
-    REPEAT_INSTRUMENT_PREFIX_MAPPING,
-    REPEAT_INSTRUMENT_SESSION_ID,
 )
 
 _LOGGER = logging.getLogger(__name__)
 
-def load_csv_file(file_path):
-    """Load a CSV file into a DataFrame.
+def load_redcap_csv(file_path):
+    """Load the RedCap CSV file into a DataFrame. Makes modifications to the data
+    to ensure compatibility with downstream tooling.
     
     Parameters
     ----------
@@ -61,6 +60,19 @@ def load_csv_file(file_path):
     """
     try:
         data = pd.read_csv(file_path, low_memory=False, na_values='')
+        if 'redcap_repeat_instrument' in data.columns:
+            col = 'redcap_repeat_instrument'
+        elif 'Repeat Instrument' in data.columns:
+            col = 'Repeat Instrument'
+        else:
+            raise ValueError("No repeat instrument column found in CSV file.")
+        
+        # The RedCap CSV exports all rows with a repeat instrument *except*
+        # a single row per subject, which we refer to as the "Participant" instrument.
+        # We need to fill in the missing values for the Participant instrument
+        # so that downstream tools can filter rows based on this column.
+        participant_instrument = RepeatInstrument.PARTICIPANT.value
+        data[col] = data[col].fillna(participant_instrument.text).astype(str)
         return data
     except FileNotFoundError:
         print('File not found.')
@@ -68,37 +80,6 @@ def load_csv_file(file_path):
     except pd.errors.ParserError:
         print('Error parsing CSV file.')
         return None
-
-def get_columns_of_repeat_instrument(repeat_instrument: RepeatInstrument) -> t.List[str]:
-    """Get the set of string column names associated with a repeat instrument.
-    
-    Parameters
-    ----------
-    repeat_instrument : RepeatInstrument
-        The repeat instrument to get columns for. Repeat instruments are specific
-        strings used in a RedCap CSV export which specify the instrument for which
-        a row of data in the RedCap CSV corresponds to. The RepeatInstrument Enum
-        codifies these strings into constants.
-    
-    Returns
-    -------
-    List[str]
-        The column names.
-    """
-    if repeat_instrument in REPEAT_INSTRUMENT_COLUMNS:
-        columns = DATA_COLUMNS[REPEAT_INSTRUMENT_COLUMNS[repeat_instrument]]
-    elif repeat_instrument in REPEAT_INSTRUMENT_PREFIX_MAPPING:
-        columns = [
-            c for c in DATA_COLUMNS['columns']
-            if c.startswith(REPEAT_INSTRUMENT_PREFIX_MAPPING[repeat_instrument])
-        ]
-    else:
-        # add rest of columns for other repeat instruments
-        raise NotImplementedError('Repeat Instrument not implemented.')
-
-    if 'record_id' not in columns:
-        columns.insert(0, 'record_id')
-    return columns
 
 def update_redcap_df_column_names(df: DataFrame) -> DataFrame:
     """Update column names for a RedCap derived dataframe to match the coded
@@ -139,14 +120,14 @@ def update_redcap_df_column_names(df: DataFrame) -> DataFrame:
         non_overlapping_columns = set(df.columns.tolist()) - set(column_mapping.keys())
         raise ValueError(f"Found {len(non_overlapping_columns)} columns not in mapping: {non_overlapping_columns}")
 
-def get_df_of_repeat_instrument(df: DataFrame, repeat_instrument: RepeatInstrument) -> pd.DataFrame:
+def get_df_of_repeat_instrument(df: DataFrame, instrument: Instrument) -> pd.DataFrame:
     """Filters rows and columns of a RedCap dataframe to correspond to a specific repeat instrument.
 
     Parameters
     ----------
     df : DataFrame
         The DataFrame to filter.
-    repeat_instrument : RepeatInstrument
+    instrument : Instrument
         The repeat instrument to filter for.
     
     Returns
@@ -155,12 +136,9 @@ def get_df_of_repeat_instrument(df: DataFrame, repeat_instrument: RepeatInstrume
         The filtered DataFrame.
     """
 
-    columns = get_columns_of_repeat_instrument(repeat_instrument)
-    if repeat_instrument in (RepeatInstrument.PARTICIPANT,):
-        idx = df['redcap_repeat_instrument'].isnull()
-    else:
-        idx = df['redcap_repeat_instrument'] == repeat_instrument.value
-        
+    columns = instrument.get_columns()
+    idx = df['redcap_repeat_instrument'] == instrument.text
+
     columns_present = [c for c in columns if c in df.columns]
     dff = df.loc[idx, columns_present].copy()
     if len(columns_present) < len(columns):
@@ -168,8 +146,9 @@ def get_df_of_repeat_instrument(df: DataFrame, repeat_instrument: RepeatInstrume
             f"Inserting None for missing columns of {RepeatInstrument.PARTICIPANT} instrument: "
             f"{set(columns) - set(columns_present)}"
         ))
+        impute_value = np.nan
         for c in set(columns) - set(columns_present):
-            dff[c] = None
+            dff[c] = impute_value
     return dff
 
 def get_recordings_for_acoustic_task(df: pd.DataFrame, acoustic_task: str) -> pd.DataFrame:
@@ -324,6 +303,13 @@ def questionnaire_mapping(questionnaire_name: str) -> dict:
         mapping_data = json.loads(mapping_str)
         return mapping_data[questionnaire_name]
 
+def get_instrument_for_name(name: str) -> Instrument:
+    for repeat_instrument in RepeatInstrument:
+        instrument = repeat_instrument.value
+        if instrument.name == name:
+            return instrument
+    raise ValueError(f"No instrument found for value {name}")
+
 def output_participant_data_to_fhir(participant: dict, outdir: Path, audiodir: t.Optional[Path] = None):
     participant_id = participant['record_id']
     subject_path = outdir / f"sub-{participant_id}"
@@ -335,15 +321,26 @@ def output_participant_data_to_fhir(participant: dict, outdir: Path, audiodir: t
     # patient = create_fhir_patient(participant)
 
     for questionnaire_name in GENERAL_QUESTIONNAIRES:
-        fhir_data = convert_response_to_fhir(participant, questionnaire_name)
-        if len(fhir_data.item) == 0:
+        instrument = get_instrument_for_name(questionnaire_name)
+        fhir_data = convert_response_to_fhir(
+            participant,
+            questionnaire_name=questionnaire_name,
+            mapping_name=instrument.schema,
+            columns=instrument.columns,
+        )
+        if is_empty_questionnaire_response(fhir_data):
             continue
+
         write_pydantic_model_to_bids_file(
             subject_path,
             fhir_data,
             schema_name=questionnaire_name,
             subject_id=participant_id,
         )
+
+    session_instrument = get_instrument_for_name("sessions")
+    task_instrument = get_instrument_for_name("acoustic_tasks")
+    recording_instrument = get_instrument_for_name("recordings")
 
     # validated questionnaires are asked per session
     for session in participant["sessions"]:
@@ -357,12 +354,14 @@ def output_participant_data_to_fhir(participant: dict, outdir: Path, audiodir: t
             audio_output_path.mkdir(parents=True, exist_ok=True)
         fhir_data = convert_response_to_fhir(
             session,
-            questionnaire_name="sessions",
+            questionnaire_name=session_instrument.name,
+            mapping_name=session_instrument.schema,
+            columns=session_instrument.columns,
         )
         write_pydantic_model_to_bids_file(
             session_path,
             fhir_data,
-            schema_name="sessionschema",
+            schema_name=session_instrument.schema,
             subject_id=participant_id,
             session_id=session_id
         )
@@ -375,12 +374,14 @@ def output_participant_data_to_fhir(participant: dict, outdir: Path, audiodir: t
             acoustic_task_name = _transform_str_for_bids_filename(task["acoustic_task_name"])
             fhir_data = convert_response_to_fhir(
                 task,
-                "acoustic_tasks",
+                questionnaire_name=task_instrument.name,
+                mapping_name=task_instrument.schema,
+                columns=task_instrument.columns,
             )
             write_pydantic_model_to_bids_file(
                 beh_path,
                 fhir_data,
-                schema_name="acoustictaskschema",
+                schema_name=task_instrument.schema,
                 subject_id=participant_id,
                 session_id=session_id,
                 task_name=acoustic_task_name,
@@ -393,12 +394,14 @@ def output_participant_data_to_fhir(participant: dict, outdir: Path, audiodir: t
             for recording in task["recordings"]:
                 fhir_data = convert_response_to_fhir(
                     recording,
-                    "recordings",
+                    questionnaire_name=recording_instrument.name,
+                    mapping_name=recording_instrument.schema,
+                    columns=recording_instrument.columns,
                 )
                 write_pydantic_model_to_bids_file(
                     beh_path,
                     fhir_data,
-                    schema_name="recordingschema",
+                    schema_name=recording_instrument.schema,
                     subject_id=participant_id,
                     session_id=session_id,
                     task_name=acoustic_task_name,
@@ -429,19 +432,22 @@ def output_participant_data_to_fhir(participant: dict, outdir: Path, audiodir: t
                         audio_file_destination.write_bytes(audio_file.read_bytes())
         
         # validated questionnaires
-        for questionnaire_name in VALIDATED_QUESTIONNAIRES:
-            if (questionnaire_name not in session) or (session[questionnaire_name] is None):
+        for repeat_instrument in VALIDATED_QUESTIONNAIRES:
+            if (repeat_instrument not in session) or (session[repeat_instrument] is None):
                 continue
+            instrument = repeat_instrument.value
 
             fhir_data = convert_response_to_fhir(
-                session[questionnaire_name],
-                questionnaire_name,
+                session[repeat_instrument],
+                questionnaire_name=instrument.name,
+                mapping_name=instrument.schema,
+                columns=instrument.columns,
             )
 
             write_pydantic_model_to_bids_file(
                 beh_path,
                 fhir_data,
-                schema_name=f"{questionnaire_name}",
+                schema_name=instrument.schema,
                 subject_id=participant_id,
                 session_id=session_id
             )
@@ -479,7 +485,7 @@ def redcap_to_bids(
         If the RedCap CSV file is not found, or if the columns in the CSV file do not match
         the expected columns for the Bridge2AI data.
     """
-    df = load_csv_file(filename)
+    df = load_redcap_csv(filename)
 
     # It is possible for each column in the dataframe to have one of two names:
     #   1. coded column names ("record_id")
@@ -488,54 +494,57 @@ def redcap_to_bids(
     # that way we only ever need to manually subselect using one version of the column name
     df = update_redcap_df_column_names(df)
 
-    # create separate data frames for sets of columns
-    # number of participants
-    participants_df = get_df_of_repeat_instrument(
-        df, RepeatInstrument.PARTICIPANT
-    )
-    _LOGGER.info(f"Number of participants: {len(participants_df)}")
-
-    # session info
-    sessions_df = get_df_of_repeat_instrument(df, RepeatInstrument.SESSION)
-    _LOGGER.info(f"Number of sessions: {len(sessions_df)}")
-
-    # subject id (record_id) to accoustic_task_id and accoustic_task_name
-    acoustic_tasks_df = get_df_of_repeat_instrument(
-        df, RepeatInstrument.ACOUSTIC_TASK
-    )
-    _LOGGER.info(f"Number of Acoustic Tasks: {len(acoustic_tasks_df)}")
-
-    # recording info
-    recordings_df = get_df_of_repeat_instrument(
-        df, RepeatInstrument.RECORDING
-    )
-    _LOGGER.info(f"Number of Recordings: {len(recordings_df)}")
-
     # the repeat instrument columns also defines all the possible
     # repeat instruments we would like to extract from the RedCap CSV
-    repeat_instruments = list(REPEAT_INSTRUMENT_COLUMNS.keys())
+    repeat_instruments: t.List[RepeatInstrument] = list(RepeatInstrument.__members__.values())
 
-    # omit participant - extracted later on separately
-    if RepeatInstrument.PARTICIPANT in repeat_instruments:
-        repeat_instruments.remove(RepeatInstrument.PARTICIPANT)
-
-    # the above dictionary maps the session_id column to an enum
-    # we use these values to create a dict that is {session_id: {data ...}}
+    # we use the RepeatInstrument values to create a dict that maps the instrument
     # i.e. we end up with dataframe_dicts = {
     #       'demographics': {"session_id_1": {data}, ...}},
     #       'confounders': {"session_id_1": {data}, ...}},
     #    ...
     #   }
-    dataframe_dicts = {}
+    dataframe_dicts: t.Dict[RepeatInstrument, pd.DataFrame] = {}
     for repeat_instrument in repeat_instruments:
-        session_id_col = REPEAT_INSTRUMENT_SESSION_ID[repeat_instrument]
-        questionnaire_name = REPEAT_INSTRUMENT_COLUMNS[repeat_instrument]
+        instrument = repeat_instrument.value
 
         # load in the df based on the instrument
-        questionnaire_df = get_df_of_repeat_instrument(df, repeat_instrument)
-        _LOGGER.info(f"Number of {questionnaire_name} entries: {len(questionnaire_df)}")
-        # convert the df to a dictionary
-        dataframe_dicts[questionnaire_name] = _df_to_dict(questionnaire_df, session_id_col)
+        questionnaire_df = get_df_of_repeat_instrument(df, instrument)
+        _LOGGER.info(f"Number of {instrument.name} entries: {len(questionnaire_df)}")
+        dataframe_dicts[repeat_instrument] = questionnaire_df
+
+    # # create separate data frames for sets of columns
+    # # number of participants
+    # participants_df = get_df_of_repeat_instrument(
+    #     df, RepeatInstrument.PARTICIPANT.value
+    # )
+    # _LOGGER.info(f"Number of participants: {len(participants_df)}")
+
+    # # session info
+    # sessions_df = get_df_of_repeat_instrument(df, RepeatInstrument.SESSION.value)
+    # _LOGGER.info(f"Number of sessions: {len(sessions_df)}")
+
+    # # subject id (record_id) to accoustic_task_id and accoustic_task_name
+    # acoustic_tasks_df = get_df_of_repeat_instrument(
+    #     df, RepeatInstrument.ACOUSTIC_TASK.value
+    # )
+    # _LOGGER.info(f"Number of Acoustic Tasks: {len(acoustic_tasks_df)}")
+
+    # # recording info
+    # recordings_df = get_df_of_repeat_instrument(
+    #     df, RepeatInstrument.RECORDING.value
+    # )
+    # _LOGGER.info(f"Number of Recordings: {len(recordings_df)}")
+
+    participants_df = dataframe_dicts.pop(RepeatInstrument.PARTICIPANT)
+    sessions_df = dataframe_dicts.pop(RepeatInstrument.SESSION)
+    acoustic_tasks_df = dataframe_dicts.pop(RepeatInstrument.ACOUSTIC_TASK)
+    recordings_df = dataframe_dicts.pop(RepeatInstrument.RECORDING)
+
+    # convert the remaining dataframes to dictionaries indexed by session_id
+    for repeat_instrument, questionnaire_df in dataframe_dicts.items():
+        session_id_col = repeat_instrument.value.session_id
+        dataframe_dicts[repeat_instrument] = _df_to_dict(questionnaire_df, session_id_col)
 
     # create a list of dict containing FHIR formatted version of everyone's data
     participants = []
