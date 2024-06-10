@@ -6,12 +6,10 @@ Feature extraction is parallelized using Pydra.
 
 Example usage:
 python3 b2aiprep/scripts/summer_school_data.py \
-    --ftf_redcap_file_path bridge2ai-voice-corpus-1-ftf/bridge2ai_voice_data.csv \
     --audio_dir_path bridge2ai-voice-corpus-1-ftf/ftf-features \
     --tar_file_path ./summer_school_data_bundle.tar \
     --bids_files_path ./b2ai-data-bids-like
 """
-
 import argparse
 import os
 import logging
@@ -34,9 +32,9 @@ from b2aiprep.process import (
 SUBJECT_ID = "sub"
 SESSION_ID = "ses"
 AUDIO_ID = "audio"
-AUDIO_FILE_EXTENSION = ".wav"
 
 _logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
 
 @pydra.mark.task
@@ -46,7 +44,6 @@ def wav_to_features(wav_path):
     """
     _logger.info(wav_path)
     logging.disable(logging.ERROR)
-    print(len(wav_path), wav_path[-50:])
     audio = Audio.from_file(wav_path)
     audio = audio.to_16khz()
 
@@ -85,10 +82,11 @@ def get_audio_paths(bids_dir_path):
                     
                     # Iterate over each audio file in the voice directory.
                     for audio_file in os.listdir(audio_path):
-                        if audio_file.endswith(AUDIO_FILE_EXTENSION):
+                        if audio_file.endswith(".wav"):
                             audio_file_path = os.path.join(audio_path, audio_file)
                             audio_paths.append(audio_file_path)
     return audio_paths
+
 
 def extract_features_workflow(bids_dir_path, remove=True):
 
@@ -106,7 +104,7 @@ def extract_features_workflow(bids_dir_path, remove=True):
         )
     )
 
-    # Run wav_to_features for each audio file in parallel.
+    # Run wav_to_features for each audio file.
     ef_wf.add(wav_to_features(
             name="features",
             wav_path=ef_wf.audio_paths.lzout.out
@@ -121,6 +119,7 @@ def extract_features_workflow(bids_dir_path, remove=True):
     with pydra.Submitter(plugin='cf') as run:
         run(ef_wf)
     return ef_wf
+
 
 def bundle_data(source_directory, save_path):
     """Saves data bundle as a tar file with gzip compression."""
@@ -150,7 +149,6 @@ def parse_arguments():
 
 def main():
     args = parse_arguments()
-    logging.basicConfig(level=logging.INFO)
 
     _logger.info("Organizing data into BIDS-like directory structure...")
     redcap_to_bids(args.updated_redcap_file_path,
@@ -164,7 +162,7 @@ def main():
 
     _logger.info("Saving .tar file with processed data...")
     bundle_data(args.bids_files_path, args.tar_file_path)
-    _logger.info(f"Saved .tar file with processed data at: {args.tar_file_path}")
+    _logger.info(f"Saved processed data .tar file at: {args.tar_file_path}")
 
     _logger.info("Process completed.")
 

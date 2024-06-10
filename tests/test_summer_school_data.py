@@ -1,5 +1,8 @@
-import pytest
+import os
 import logging
+
+import pytest
+
 from b2aiprep.summer_school_data import (
     extract_features_workflow
 )
@@ -33,9 +36,14 @@ def test_extract_features_coverage():
     assert False, "Not implemented."
 
 
+def test_get_audio_paths_new(bids_files_path):
+    #TODO: implement
+    assert False, "Not implemented."
+
+
 def test_extract_features_timing(benchmark, caplog, bids_files_path):
     """Times the non-optimized iterative extract_features function."""
-    result = benchmark(extract_features_workflow, bids_files_path)
     caplog.set_level(logging.INFO)
+    result = benchmark(extract_features_workflow, bids_files_path)
     _logger.info(str(result))
     return
