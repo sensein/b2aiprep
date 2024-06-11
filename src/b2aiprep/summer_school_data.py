@@ -2,14 +2,30 @@
 Organizes data, extracts features, and bundles everything together in an
 easily distributable format for the Bridge2AI Summer School.
 
+This script performs the following steps:
+1. Organizes RedCap data and audio files into a BIDS-like directory structure.
+2. Extracts audio features from the organized data using a Pydra workflow.
+3. Bundles the processed data into a .tar file with gzip compression.
+
 Feature extraction is parallelized using Pydra.
 
 Usage:
-python3 b2aiprep/src/b2aiprep/summer_school_data.py \
-    --redcap_csv_path [path to RedCap CSV] \
-    --audio_dir_path  [path to Wasabi export directory] \
-    --bids_dir_path [desired path to BIDS output] \
-    --tar_file_path [desired output path for .tar file] \
+    python3 b2aiprep/src/b2aiprep/summer_school_data.py \
+        --redcap_csv_path [path to RedCap CSV] \
+        --audio_dir_path  [path to Wasabi export directory] \
+        --bids_dir_path [desired path to BIDS output] \
+        --tar_file_path [desired output path for .tar file]
+
+Functions:
+    - wav_to_features: Extracts features from a single audio file.
+    - get_audio_paths: Retrieves all .wav audio file paths from a BIDS-like 
+        directory structure.
+    - extract_features_workflow: Runs a Pydra workflow to extract audio 
+        features from BIDS-like directory.
+    - bundle_data: Saves data bundle as a tar file with gzip compression.
+    - prepare_summer_school_data: Organizes and processes Bridge2AI data for 
+        distribution.
+    - parse_arguments: Parses command line arguments for processing audio data.
 """
 
 import argparse
@@ -40,9 +56,18 @@ logging.basicConfig(level=logging.INFO)
 
 
 @pydra.mark.task
-def wav_to_features(wav_path):
-    """
-    Extracts features from a single audio file at specified path.
+def wav_to_features(wav_path: Path) -> dict[str, torch.Tensor]:
+    """Extract features from a single audio file.
+
+    Extracts various audio features from a .wav file at the specified
+    path using the Audio class and feature extraction functions.
+
+    Args:
+      wav_path:
+        The file path to the .wav audio file.
+
+    Returns:
+      A dictionary mapping feature names to their extracted values.
     """
     _logger.info(wav_path)
     logging.disable(logging.ERROR)
@@ -68,7 +93,21 @@ def wav_to_features(wav_path):
 
 
 @pydra.mark.task
-def get_audio_paths(bids_dir_path):
+def get_audio_paths(bids_dir_path: Path) -> list[str]:
+    """Retrieve all .wav audio file paths from a BIDS-like directory structure.
+
+    This function traverses the specified BIDS directory, collecting paths to 
+    .wav audio files from all subject and session directories that match the 
+    expected naming conventions.
+
+    Args:
+      bids_dir_path: 
+        The root directory of the BIDS dataset.
+
+    Returns:
+      list of str: 
+        A list of file paths to .wav audio files within the BIDS directory.
+    """
     audio_paths = []
 
     # Iterate over each subject directory.
@@ -78,20 +117,39 @@ def get_audio_paths(bids_dir_path):
        
             # Iterate over each session directory within a subject.
             for session_dir_path in os.listdir(subject_dir_path):
-                audio_path = os.path.join(subject_dir_path, session_dir_path, AUDIO_ID)
+                audio_path = os.path.join(subject_dir_path, 
+                                          session_dir_path, 
+                                          AUDIO_ID)
                 _logger.info(audio_path)
-                if session_dir_path.startswith(SESSION_ID) and os.path.isdir(audio_path):
+                if session_dir_path.startswith(SESSION_ID) \
+                        and os.path.isdir(audio_path):
                     
                     # Iterate over each audio file in the voice directory.
                     for audio_file in os.listdir(audio_path):
                         if audio_file.endswith(".wav"):
-                            audio_file_path = os.path.join(audio_path, audio_file)
+                            audio_file_path = os.path.join(audio_path, 
+                                                           audio_file)
                             audio_paths.append(audio_file_path)
     return audio_paths
 
 
-def extract_features_workflow(bids_dir_path, remove=True):
+def extract_features_workflow(bids_dir_path, remove: bool = True):
+    """Run a Pydra workflow to extract audio features from BIDS-like directory.
 
+    This function initializes a Pydra workflow that processes a BIDS-like 
+    directory structure to extract features from .wav audio files. It retrieves 
+    the paths to the audio files and applies the wav_to_features to each.
+
+    Args:
+      bids_dir_path:
+        The root directory of the BIDS dataset.
+      remove:
+        Whether to remove temporary files created during processing. Default is True.
+
+    Returns:
+      pydra.Workflow:
+        The Pydra workflow object with the extracted features and audio paths as outputs.
+    """
     # Initialize the Pydra workflow.
     ef_wf = pydra.Workflow(
         name="ef_wf",
@@ -123,38 +181,75 @@ def extract_features_workflow(bids_dir_path, remove=True):
     return ef_wf
 
 
-def bundle_data(source_directory, save_path):
-    """Saves data bundle as a tar file with gzip compression."""
+def bundle_data(source_directory: str, save_path: str) -> None:
+    """Saves data bundle as a tar file with gzip compression.
+
+    Args:
+      source_directory: 
+        The directory containing the data to be bundled.
+      save_path: 
+        The file path where the tar.gz file will be saved.
+    """
     with tarfile.open(save_path, "w:gz") as tar:
         tar.add(source_directory, arcname=os.path.basename(source_directory))
 
 
-def prepare_summer_school_data(args):
+def prepare_summer_school_data(
+            redcap_csv_path: str, 
+            bids_dir_path: str, 
+            audio_dir_path: str, 
+            tar_file_path: str
+        ) -> None:
+    """Organizes and processes Bridge2AI data for distribution.
+
+    This function organizes the data from RedCap and the audio files from 
+    Wasabi into a BIDS-like directory structure, extracts audio features from 
+    the organized data, and bundles the processed data into a .tar file with 
+    gzip compression.
+
+    Args:
+      redcap_csv_path: 
+        The file path to the REDCap CSV file.
+      bids_dir_path: 
+        The directory path for the BIDS dataset.
+      audio_dir_path: 
+        The directory path containing audio files.
+      tar_file_path: 
+        The file path where the .tar.gz file will be saved.
+    """
     _logger.info("Organizing data into BIDS-like directory structure...")
-    redcap_to_bids(args.redcap_csv_path,
-                   args.bids_dir_path,
-                   args.audio_dir_path)
+    redcap_to_bids(redcap_csv_path, bids_dir_path, audio_dir_path)
     _logger.info("Data organization complete.")
 
     _logger.info("Beginning audio feature extraction...")
-    extract_features_workflow(args.bids_dir_path, remove=False)
+    extract_features_workflow(bids_dir_path, remove=False)
     _logger.info("Audio feature extraction complete.")
 
     _logger.info("Saving .tar file with processed data...")
-    bundle_data(args.bids_dir_path, args.tar_file_path)
-    _logger.info(f"Saved processed data .tar file at: {args.tar_file_path}")
+    bundle_data(bids_dir_path, tar_file_path)
+    _logger.info(f"Saved processed data .tar file at: {tar_file_path}")
 
     _logger.info("Process completed.")
 
 
-def parse_arguments():
+def parse_arguments() -> argparse.Namespace:
+    """Parses command line arguments for processing audio data.
+
+    This function sets up and parses command line arguments required for 
+    processing audio data for multiple subjects. It includes paths for the 
+    REDCap CSV file, audio files directory, BIDS-like data directory, and 
+    the output tar file path.
+
+    Returns:
+      argparse.Namespace: The parsed command line arguments.
+    """
     parser = argparse.ArgumentParser(
         description="Process audio data for multiple subjects."
     )
     parser.add_argument('--redcap_csv_path',
                         type=Path,
                         required=True,
-                        help='Path to the audio files directory.')
+                        help='Path to the REDCap CSV file.')
     parser.add_argument('--audio_dir_path',
                         type=Path,
                         required=True,
@@ -173,7 +268,12 @@ def parse_arguments():
 
 def main():
     args = parse_arguments()
-    prepare_summer_school_data(args)
+    prepare_summer_school_data(
+        args.redcap_csv_path,
+        args.audio_dir_path,
+        args.bids_dir_path,
+        args.tar_file_path
+    )
 
 
 if __name__ == "__main__":
