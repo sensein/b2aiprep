@@ -4,12 +4,14 @@ easily distributable format for the Bridge2AI Summer School.
 
 Feature extraction is parallelized using Pydra.
 
-Example usage:
-python3 b2aiprep/scripts/summer_school_data.py \
-    --audio_dir_path bridge2ai-voice-corpus-1-ftf/ftf-features \
-    --tar_file_path ./summer_school_data_bundle.tar \
-    --bids_files_path ./b2ai-data-bids-like
+Usage:
+python3 b2aiprep/src/b2aiprep/summer_school_data.py \
+    --redcap_csv_path [path to RedCap CSV] \
+    --audio_dir_path  [path to Wasabi export directory] \
+    --bids_dir_path [desired path to BIDS output] \
+    --tar_file_path [desired output path for .tar file] \
 """
+
 import argparse
 import os
 import logging
@@ -127,44 +129,51 @@ def bundle_data(source_directory, save_path):
         tar.add(source_directory, arcname=os.path.basename(source_directory))
 
 
+def prepare_summer_school_data(args):
+    _logger.info("Organizing data into BIDS-like directory structure...")
+    redcap_to_bids(args.redcap_csv_path,
+                   args.bids_dir_path,
+                   args.audio_dir_path)
+    _logger.info("Data organization complete.")
+
+    _logger.info("Beginning audio feature extraction...")
+    extract_features_workflow(args.bids_dir_path, remove=False)
+    _logger.info("Audio feature extraction complete.")
+
+    _logger.info("Saving .tar file with processed data...")
+    bundle_data(args.bids_dir_path, args.tar_file_path)
+    _logger.info(f"Saved processed data .tar file at: {args.tar_file_path}")
+
+    _logger.info("Process completed.")
+
+
 def parse_arguments():
     parser = argparse.ArgumentParser(
         description="Process audio data for multiple subjects."
     )
+    parser.add_argument('--redcap_csv_path',
+                        type=Path,
+                        required=True,
+                        help='Path to the audio files directory.')
     parser.add_argument('--audio_dir_path',
                         type=Path,
                         required=True,
                         help='Path to the audio files directory.')
-    parser.add_argument('--tar_file_path',
-                        type=Path,
-                        required=True,
-                        help='Where to save the data bundle .tar file.')
-    parser.add_argument('--bids_files_path',
+    parser.add_argument('--bids_dir_path',
                         type=Path,
                         required=False,
                         default="summer-school-processed-data",
                         help='Where to save the BIDS-like data.')
+    parser.add_argument('--tar_file_path',
+                        type=Path,
+                        required=True,
+                        help='Where to save the data bundle .tar file.')
     return parser.parse_args()
 
 
 def main():
     args = parse_arguments()
-
-    _logger.info("Organizing data into BIDS-like directory structure...")
-    redcap_to_bids(args.updated_redcap_file_path,
-                   args.bids_files_path,
-                   args.audio_dir_path)
-    _logger.info("Data organization complete.")
-
-    _logger.info("Beginning audio feature extraction...")
-    extract_features_workflow(args.bids_files_path, remove=False)
-    _logger.info("Audio feature extraction complete.")
-
-    _logger.info("Saving .tar file with processed data...")
-    bundle_data(args.bids_files_path, args.tar_file_path)
-    _logger.info(f"Saved processed data .tar file at: {args.tar_file_path}")
-
-    _logger.info("Process completed.")
+    prepare_summer_school_data(args)
 
 
 if __name__ == "__main__":
