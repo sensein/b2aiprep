@@ -31,7 +31,26 @@ class BIDSDataset:
     def __init__(self, data_path: t.Union[Path, str, os.PathLike]):
         self.data_path = Path(data_path).resolve()
 
-    def find_subject_questionnaires(self, subject_id: str) -> t.Dict[str, Path]:
+    def find_questionnaires(self, questionnaire_name: str) -> t.List[Path]:
+        """
+        Find all the questionnaires with a given suffix.
+
+        Parameters
+        ----------
+        questionnaire_name : str
+            The name of the questionnaire.
+
+        Returns
+        -------
+        List[Path]
+            A list of questionnaires which have the given questionnaire suffix.
+        """
+        questionnaires = []
+        for questionnaire in self.data_path.rglob(f"sub-*_{questionnaire_name}.json"):
+            questionnaires.append(questionnaire)
+        return questionnaires
+
+    def find_subject_questionnaires(self, subject_id: str) -> t.List[Path]:
         """
         Find all the questionnaires for a given subject.
 
@@ -42,17 +61,16 @@ class BIDSDataset:
 
         Returns
         -------
-        Dict[str, Path]
-            A dictionary of questionnaires for the subject.
+        List[Path]
+            A list of questionnaires for the specific subject.
         """
         subject_path = self.data_path / f"sub-{subject_id}"
-        questionnaires = {}
+        questionnaires = []
         for questionnaire in subject_path.glob("sub-*.json"):
-            questionnaire_name = questionnaire.stem
-            questionnaires[questionnaire_name] = questionnaire
+            questionnaires.append(questionnaire)
         return questionnaires
 
-    def find_session_questionnaires(self, subject_id: str, session_id: str) -> t.Dict[str, Path]:
+    def find_session_questionnaires(self, subject_id: str, session_id: str) -> t.List[Path]:
         """
         Find all the questionnaires for a given subject and session.
 
@@ -65,32 +83,30 @@ class BIDSDataset:
 
         Returns
         -------
-        Dict[str, Path]
-            A dictionary of questionnaires for the subject and session.
+        List[Path]
+            A list of questionnaires for the specific subject and session.
         """
         session_path = self.data_path / f"sub-{subject_id}" / f"ses-{session_id}"
-        questionnaires = {}
+        questionnaires = []
         for questionnaire in session_path.glob("sub-*.json"):
-            questionnaire_name = questionnaire.stem
-            questionnaires[questionnaire_name] = questionnaire
+            questionnaires.append(questionnaire)
         return questionnaires
 
-    def find_subjects(self) -> t.Dict[str, Path]:
+    def find_subjects(self) -> t.List[Path]:
         """
         Find all the subjects in the dataset.
 
         Returns
         -------
-        Dict[str, Path]
-            A dictionary of subjects.
+        List[Path]
+            A list of subject paths.
         """
-        subjects = {}
+        subjects = []
         for subject in self.data_path.glob("sub-*"):
-            subject_id = subject.stem[4:]
-            subjects[subject_id] = subject
+            subjects.append(subject)
         return subjects
 
-    def find_sessions(self, subject_id: str) -> t.Dict[str, Path]:
+    def find_sessions(self, subject_id: str) -> t.List[Path]:
         """
         Find all the sessions for a given subject.
 
@@ -101,14 +117,13 @@ class BIDSDataset:
 
         Returns
         -------
-        Dict[str, Path]
-            A dictionary of sessions for the subject.
+        List[Path]
+            A list of session paths.
         """
         subject_path = self.data_path / f"sub-{subject_id}"
-        sessions = {}
+        sessions = []
         for session in subject_path.glob("ses-*"):
-            session_id = session.stem[4:]
-            sessions[session_id] = session
+            sessions.append(session)
         return sessions
     
     def find_tasks(self, subject_id: str, session_id: str) -> t.Dict[str, Path]:
@@ -135,54 +150,52 @@ class BIDSDataset:
             tasks[task_id] = task.stem
         return tasks
 
-    def list_subjects(self) -> list:
+    def find_tasks(self, subject_id: str, session_id: str) -> t.List[Path]:
         """
-        List all the subjects in the dataset.
-
-        Returns
-        -------
-        list
-            A list of subject identifiers.
-        """
-        return list(self.find_subjects().keys())
-    
-    def list_sessions(self, subject_id: str) -> list:
-        """
-        List all the sessions for a given subject.
+        Find all the tasks for a given subject and session.
 
         Parameters
         ----------
         subject_id : str
             The subject identifier.
+        session_id : str
+            The session identifier.
 
         Returns
         -------
-        list
-            A list of session identifiers.
+        List[Path]
+            A list of task paths.
         """
-        return list(self.find_sessions(subject_id).keys())
+        session_path = self.data_path / f"sub-{subject_id}" / f"ses-{session_id}"
+        tasks = []
+        for task in session_path.glob(f"sub-{subject_id}_ses-{session_id}_task-*"):
+            tasks.append(task)
+        return tasks
     
-    def list_questionnaires(self, subject_id: t.Optional[str] = None) -> list:
+    def list_questionnaire_types(self, subject_only: bool = False) -> t.List[str]:
         """
-        List all the questionnaires. If subject_id is provided, lists
-        only the questionnaires for a given subject.
-        
-        Parameters
-        ----------
-        subject_id : str, optional
-            The subject identifier, by default None.
-        
+        List all the questionnaire types in the dataset.
+
         Returns
         -------
-        list
-            A list of questionnaire names.
+        List[str]
+            A list of questionnaire types.
         """
-        if subject_id is not None:
-            questionnaires = self.find_subject_questionnaires(subject_id)
-        else:
-            questionnaires = self.find_questionnaires()
-        return list(questionnaires.keys())
-        
+        questionnaire_types = set()
+        for subject_path in self.data_path.glob("sub-*"):
+            # subject-wide resources
+            for questionnaire in subject_path.glob("sub-*.json"):
+                questionnaire_types.add(questionnaire.stem.split("_")[-1])
+            if subject_only:
+                continue
+            # session-wide resources
+            for session_path in subject_path.glob("ses-*"):
+                beh_path = session_path.joinpath('beh')
+                if beh_path.exists():
+                    for questionnaire in beh_path.glob("sub-*.json"):
+                        questionnaire_types.add(questionnaire.stem.split("_")[-1])
+        return sorted(list(questionnaire_types))
+
     def load_questionnaire(self, questionnaire_path: Path) -> QuestionnaireResponse:
         """
         Load a questionnaire from a given path.
@@ -199,7 +212,7 @@ class BIDSDataset:
         """
         return QuestionnaireResponse.parse_raw(questionnaire_path.read_text())
     
-    def load_subject_questionnaires(self, subject_id: str) -> t.Dict[str, QuestionnaireResponse]:
+    def load_subject_questionnaires(self, subject_id: str) -> t.List[QuestionnaireResponse]:
         """
         Load all the questionnaires for a given subject.
 
@@ -210,33 +223,14 @@ class BIDSDataset:
 
         Returns
         -------
-        Dict[str, pd.DataFrame]
-            A dictionary of questionnaire data.
+        List[QuestionnaireResponse]
+            A list of questionnaires for the specific subject. Each element is a FHIR
+            QuestionnaireResponse object, which inherits from Pydantic.
         """
         questionnaires = self.find_subject_questionnaires(subject_id)
-        return {name: self.load_questionnaire(path) for name, path in questionnaires.items()}
-    
-    def find_questionnaires(self, questionnaire_name: str) -> t.Dict[str, Path]:
-        """
-        Find all the questionnaires with a given name.
+        return [self.load_questionnaire(path) for path in questionnaires]
 
-        Parameters
-        ----------
-        questionnaire_name : str
-            The name of the questionnaire.
-
-        Returns
-        -------
-        Dict[str, Path]
-            A dictionary of questionnaires.
-        """
-        questionnaires = {}
-        for questionnaire in self.data_path.rglob(f"sub-*_{questionnaire_name}.json"):
-            subject_id = questionnaire.stem.split("_")[0]
-            questionnaires[subject_id] = questionnaire
-        return questionnaires
-    
-    def load_questionnaires(self, questionnaire_name: str) -> t.Dict[str, QuestionnaireResponse]:
+    def load_questionnaires(self, questionnaire_name: str) -> t.List[QuestionnaireResponse]:
         """
         Load all the questionnaires with a given name.
 
@@ -247,11 +241,12 @@ class BIDSDataset:
 
         Returns
         -------
-        Dict[str, pd.DataFrame]
-            A dictionary of questionnaire data.
+        List[QuestionnaireResponse]
+            A list of questionnaires for the specific subject. Each element is a FHIR
+            QuestionnaireResponse object, which inherits from Pydantic.
         """
         questionnaires = self.find_questionnaires(questionnaire_name)
-        return {subject_id: self.load_questionnaire(path) for subject_id, path in questionnaires.items()}
+        return [self.load_questionnaire(path) for path in questionnaires]
     
     def questionnaire_to_dataframe(self, questionnaire: QuestionnaireResponse) -> pd.DataFrame:
         """
@@ -265,7 +260,8 @@ class BIDSDataset:
         Returns
         -------
         pd.DataFrame
-            The questionnaire data as a DataFrame.
+            The questionnaire data as a DataFrame. The dataframe is in a "long" format
+            with a column for "linkId" and multiple value columns (e.g. "valueString")
         """
         questionnaire_dict = questionnaire.dict()
         items = questionnaire_dict["item"]
@@ -289,74 +285,8 @@ class BIDSDataset:
                     linkId=item["linkId"],
                     valueString=None,
                 ))
-            # HACK: parse the questionnaire ID to get the record_id
-            # this should use the subjectOf reference, when implemented
-            items[-1]['record_id'] = questionnaire_dict['id'][:36]
         # unroll based on the possible value options
         return pd.DataFrame(items)
-
-    def list_audio(self, subject_id: str, session_id: str) -> list:
-        """
-        List all the audio recordings for a given subject and session.
-
-        Parameters
-        ----------
-        subject_id : str
-            The subject identifier.
-        session_id : str
-            The session identifier.
-
-        Returns
-        -------
-        list
-            A list of audio recordings.
-        """
-        session_path = self.data_path / f"sub-{subject_id}" / f"ses-{session_id}" / "audio"
-        audio = []
-        for audio_file in session_path.glob("*.wav"):
-            audio.append(audio_file)
-        return audio
-
-
-class VBAIDataset(BIDSDataset):
-    """Extension of BIDS format dataset implementing helper functions for data specific
-    to the Bridge2AI Voice as a Biomarker of Health project.
-    """
-
-    def __init__(self, data_path: t.Union[Path, str, os.PathLike]):
-        super().__init__(data_path)
-
-    def _merge_columns_with_underscores(self, df: pd.DataFrame) -> pd.DataFrame:
-        """Merges columns which are exported by RedCap in a one-hot encoding manner, i.e.
-        they correspond to a single category but are split into multiple yes/no columns.
-        
-        Modifies the dataframe in place.
-        
-        Parameters
-        ----------
-        df : pd.DataFrame
-            The dataframe to modify.
-            
-        Returns
-        -------
-        pd.DataFrame
-            The modified dataframe.
-        """
-
-        # identify all the columns which end with __1, __2, etc.
-        # extract the prefix for these columns only
-        columns_with_underscores = sorted(list(set([
-            col[:col.rindex('__')-1]
-            for col in df.columns
-            if re.search('__[0-9]+$', col) is not None
-        ])))
-
-        # iterate through each prefix and merge together data into this prefix
-        for col in columns_with_underscores:
-            columns_to_merge = df.filter(like=f'{col}__').columns
-            df[col] = df[columns_to_merge].apply(lambda x: next((i for i in x if i is not None), None), axis=1)
-            df.drop(columns=columns_to_merge, inplace=True)
-        return df
 
     def find_audio(self, subject_id: str, session_id: str) -> t.List[Path]:
         """
@@ -423,7 +353,48 @@ class VBAIDataset(BIDSDataset):
         for transcript_file in session_path.glob("*.json"):
             transcripts.append(transcript_file)
         return transcripts
-    
+
+
+class VBAIDataset(BIDSDataset):
+    """Extension of BIDS format dataset implementing helper functions for data specific
+    to the Bridge2AI Voice as a Biomarker of Health project.
+    """
+
+    def __init__(self, data_path: t.Union[Path, str, os.PathLike]):
+        super().__init__(data_path)
+
+    def _merge_columns_with_underscores(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Merges columns which are exported by RedCap in a one-hot encoding manner, i.e.
+        they correspond to a single category but are split into multiple yes/no columns.
+        
+        Modifies the dataframe in place.
+        
+        Parameters
+        ----------
+        df : pd.DataFrame
+            The dataframe to modify.
+            
+        Returns
+        -------
+        pd.DataFrame
+            The modified dataframe.
+        """
+
+        # identify all the columns which end with __1, __2, etc.
+        # extract the prefix for these columns only
+        columns_with_underscores = sorted(list(set([
+            col[:col.rindex('__')-1]
+            for col in df.columns
+            if re.search('__[0-9]+$', col) is not None
+        ])))
+
+        # iterate through each prefix and merge together data into this prefix
+        for col in columns_with_underscores:
+            columns_to_merge = df.filter(like=f'{col}__').columns
+            df[col] = df[columns_to_merge].apply(lambda x: next((i for i in x if i is not None), None), axis=1)
+            df.drop(columns=columns_to_merge, inplace=True)
+        return df
+
     def load_and_pivot_questionnaire(self, questionnaire_name: str) -> pd.DataFrame:
         """
         Loads all data for a questionnaire and pivots on the appropriate identifier column.
@@ -431,19 +402,43 @@ class VBAIDataset(BIDSDataset):
         Returns
         -------
         pd.DataFrame
-            A "wide" format dataframe with either record_id or session_id as the index.
+            A "wide" format dataframe with one row per loaded in questionnaire.
         """
         # search across all subjects and get any file ending in demographics
-        qs = self.load_questionnaires(questionnaire_name)
         q_dfs = []
-        for _, questionnaire in qs.items():
+
+        # create an "pivot_id" column which we pivot on
+        pivot_id = 0
+        for questionnaire in self.load_questionnaires(questionnaire_name):
             # get the dataframe for this questionnaire
             df = self.questionnaire_to_dataframe(questionnaire)
+            df['pivot_id'] = pivot_id
             q_dfs.append(df)
+            pivot_id += 1
+
+        if len(q_dfs) == 0:
+            logging.warning(f"No data found for '{questionnaire_name}'")
+            return pd.DataFrame()
 
         # concatenate all the dataframes
         pivoted_df = pd.concat(q_dfs)
-        pivoted_df = pd.pivot(pivoted_df, index='record_id', columns='linkId', values='valueString')
+
+        # create a value column that merges valueString, valueBoolean, etc.
+        # https://hl7.org/fhir/r4/questionnaireresponse-definitions.html#QuestionnaireResponse.item.answer.value_x_
+        # boolean|decimal|integer|date|dateTime|time|string|uri|Attachment|Coding|Quantity|Reference(Any)
+        # currently we only support String/Boolean
+        value_columns = ['valueString', 'valueBoolean']
+        pivoted_df['value'] = None
+        for col in value_columns:
+            if col in pivoted_df.columns:
+                pivoted_df['value'] = pivoted_df['value'].combine_first(pivoted_df[col])
+
+        # display where there are duplicate values of index
+        # st.write(pivoted_df[pivoted_df.duplicated(subset='index', keep=False)])
+        pivoted_df = pd.pivot(pivoted_df, index='pivot_id', columns='linkId', values='value')
+
+        # drop the pivot_id name from the index
+        pivoted_df = pivoted_df.reset_index(drop=True)
 
         # restore the original order of the columns, as pd.pivot removes it and sorts alphabetically
         if len(q_dfs) > 0:
