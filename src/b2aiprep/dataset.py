@@ -125,6 +125,30 @@ class BIDSDataset:
         for session in subject_path.glob("ses-*"):
             sessions.append(session)
         return sessions
+    
+    def find_tasks(self, subject_id: str, session_id: str) -> t.Dict[str, Path]:
+        """
+        Find all the tasks for a given subject and session.
+
+        Parameters
+        ----------
+        subject_id : str
+            The subject identifier.
+        session_id : str
+            The session identifier.
+
+        Returns
+        -------
+        Dict[str, Path]
+            A dictionary of tasks for the subject and session.
+        """
+        session_path = self.data_path / f"sub-{subject_id}" / f"ses-{session_id}"
+        tasks = {}
+        prefix_length = len(f"sub-{subject_id}_ses-{session_id}_task-")
+        for task in session_path.glob(f"sub-{subject_id}_ses-{session_id}_task-*"):
+            task_id = task.stem[prefix_length:-4]
+            tasks[task_id] = task.stem
+        return tasks
 
     def find_tasks(self, subject_id: str, session_id: str) -> t.List[Path]:
         """
