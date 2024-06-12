@@ -56,7 +56,7 @@ logging.basicConfig(level=logging.INFO)
 
 
 @pydra.mark.task
-def wav_to_features(wav_path: Path) -> dict[str, torch.Tensor]:
+def wav_to_features(wav_path):
     """Extract features from a single audio file.
 
     Extracts various audio features from a .wav file at the specified
@@ -93,7 +93,7 @@ def wav_to_features(wav_path: Path) -> dict[str, torch.Tensor]:
 
 
 @pydra.mark.task
-def get_audio_paths(bids_dir_path: Path) -> list[str]:
+def get_audio_paths(bids_dir_path):
     """Retrieve all .wav audio file paths from a BIDS-like directory structure.
 
     This function traverses the specified BIDS directory, collecting paths to 
@@ -133,7 +133,7 @@ def get_audio_paths(bids_dir_path: Path) -> list[str]:
     return audio_paths
 
 
-def extract_features_workflow(bids_dir_path, remove: bool = True):
+def extract_features_workflow(bids_dir_path: Path, remove: bool = True):
     """Run a Pydra workflow to extract audio features from BIDS-like directory.
 
     This function initializes a Pydra workflow that processes a BIDS-like 
@@ -154,7 +154,8 @@ def extract_features_workflow(bids_dir_path, remove: bool = True):
     ef_wf = pydra.Workflow(
         name="ef_wf",
         input_spec=["bids_dir_path"],
-        bids_dir_path=bids_dir_path
+        bids_dir_path=bids_dir_path,
+        cache_dir=None
     )
 
     # Get paths to every audio file.
@@ -195,10 +196,10 @@ def bundle_data(source_directory: str, save_path: str) -> None:
 
 
 def prepare_summer_school_data(
-            redcap_csv_path: str, 
-            bids_dir_path: str, 
-            audio_dir_path: str, 
-            tar_file_path: str
+            redcap_csv_path: Path, 
+            bids_dir_path: Path, 
+            audio_dir_path: Path, 
+            tar_file_path: Path
         ) -> None:
     """Organizes and processes Bridge2AI data for distribution.
 
@@ -217,6 +218,31 @@ def prepare_summer_school_data(
       tar_file_path: 
         The file path where the .tar.gz file will be saved.
     """
+        # Type checks and casting for the arguments
+    if isinstance(redcap_csv_path, str):
+        _logger.info(f"Casting redcap_csv_path from str to Path: {redcap_csv_path}")
+        redcap_csv_path = Path(redcap_csv_path)
+    elif not isinstance(redcap_csv_path, Path):
+        raise TypeError(f"redcap_csv_path must be of type Path, not {type(redcap_csv_path).__name__}")
+
+    if isinstance(bids_dir_path, str):
+        _logger.info(f"Casting bids_dir_path from str to Path: {bids_dir_path}")
+        bids_dir_path = Path(bids_dir_path)
+    elif not isinstance(bids_dir_path, Path):
+        raise TypeError(f"bids_dir_path must be of type Path, not {type(bids_dir_path).__name__}")
+
+    if isinstance(audio_dir_path, str):
+        _logger.info(f"Casting audio_dir_path from str to Path: {audio_dir_path}")
+        audio_dir_path = Path(audio_dir_path)
+    elif not isinstance(audio_dir_path, Path):
+        raise TypeError(f"audio_dir_path must be of type Path, not {type(audio_dir_path).__name__}")
+
+    if isinstance(tar_file_path, str):
+        _logger.info(f"Casting tar_file_path from str to Path: {tar_file_path}")
+        tar_file_path = Path(tar_file_path)
+    elif not isinstance(tar_file_path, Path):
+        raise TypeError(f"tar_file_path must be of type Path, not {type(tar_file_path).__name__}")
+
     _logger.info("Organizing data into BIDS-like directory structure...")
     redcap_to_bids(redcap_csv_path, bids_dir_path, audio_dir_path)
     _logger.info("Data organization complete.")
