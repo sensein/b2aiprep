@@ -114,3 +114,15 @@ b2aiprep-cli redcap2bids bridge2ai_voice_data.csv --outdir output --audiodir aud
 The `audiodir` option above can be omitted, in which case no audio data is reorganized.
 
 See the [tutorial.ipynb](docs/tutorial.ipynb) for a few use examples of data in the BIDS-like format.
+
+## Summer School Data Preparation
+This command organizes the data with the BIDS-like conversion tool, extracts audio features, and saves the whole thing
+as a .tar file for easy distribution for the Bridge2AI Summer School:
+
+```python3 b2aiprep/src/b2aiprep/summer_school_data.py \
+    --redcap_csv_path [path to RedCap CSV] \
+    --audio_dir_path  [path to Wasabi export directory] \
+    --bids_dir_path [desired path to BIDS output] \
+    --tar_file_path [desired output path for .tar file]
+```
+
