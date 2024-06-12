@@ -14,6 +14,7 @@ from pydra.mark import task as pydratask
 from b2aiprep.prepare import (
     redcap_to_bids,
 )
+from b2aiprep.summer_school_data import prepare_summer_school_data
 from b2aiprep.process import (
     Audio,
     SpeechToText,
@@ -54,6 +55,26 @@ def redcap2bids(
         outdir=Path(outdir),
         audiodir=audiodir,
     )
+
+
+@main.command()
+@click.argument("redcap_csv_path", type=click.Path(exists=True))
+@click.argument("audio_dir_path", type=click.Path(exists=True))
+@click.argument("bids_dir_path", type=click.Path())
+@click.argument("tar_file_path", type=click.Path())
+def prepsummerdata(
+    redcap_csv_path, 
+    audio_dir_path, 
+    bids_dir_path, 
+    tar_file_path
+):
+    prepare_summer_school_data(
+        redcap_csv_path=Path(redcap_csv_path),
+        audio_dir_path=Path(audio_dir_path),
+        bids_dir_path=Path(bids_dir_path),
+        tar_file_path=Path(tar_file_path)
+    )
+
 
 @main.command()
 @click.argument("filename", type=click.Path(exists=True))
