@@ -1,3 +1,15 @@
+# 0.16.0 (Wed Jun 12 2024)
+
+#### 🚀 Enhancement
+
+- Add CLI command for summer school data preparation [#57](https://github.com/sensein/b2aiprep/pull/57) ([@ibevers](https://github.com/ibevers))
+
+#### Authors: 1
+
+- [@ibevers](https://github.com/ibevers)
+
+---
+
 # 0.15.0 (Wed Jun 12 2024)
 
 #### 🚀 Enhancement
