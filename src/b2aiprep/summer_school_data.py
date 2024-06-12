@@ -10,6 +10,12 @@ This script performs the following steps:
 Feature extraction is parallelized using Pydra.
 
 Usage:
+    b2aiprep-cli prepsummerdata \
+       [path to RedCap CSV] \
+       [path to Wasabi export directory] \
+       [desired path to BIDS output] \
+       [desired output path for .tar file]
+
     python3 b2aiprep/src/b2aiprep/summer_school_data.py \
         --redcap_csv_path [path to RedCap CSV] \
         --audio_dir_path  [path to Wasabi export directory] \
