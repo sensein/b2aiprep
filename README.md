@@ -12,7 +12,7 @@ pip install b2aiprep
 ```
 
 ## Usage
-Four commands are available through the CLI:
+See commands available through the CLI:
 
 ```bash
 b2aiprep-cli --help
@@ -119,10 +119,11 @@ See the [tutorial.ipynb](docs/tutorial.ipynb) for a few use examples of data in 
 This command organizes the data with the BIDS-like conversion tool, extracts audio features, and saves the whole thing
 as a .tar file for easy distribution for the Bridge2AI Summer School:
 
-```python3 b2aiprep/src/b2aiprep/summer_school_data.py \
-    --redcap_csv_path [path to RedCap CSV] \
-    --audio_dir_path  [path to Wasabi export directory] \
-    --bids_dir_path [desired path to BIDS output] \
-    --tar_file_path [desired output path for .tar file]
+```sh
+b2aiprep-cli prepsummerdata \
+   [path to RedCap CSV] \
+   [path to Wasabi export directory] \
+   [desired path to BIDS output] \
+   [desired output path for .tar file]
 ```
 
