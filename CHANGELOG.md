@@ -1,3 +1,21 @@
+# 0.15.0 (Wed Jun 12 2024)
+
+#### 🚀 Enhancement
+
+- Add Summer School Data Organization Code [#56](https://github.com/sensein/b2aiprep/pull/56) ([@ibevers](https://github.com/ibevers) [@alistairewj](https://github.com/alistairewj))
+
+#### 🐛 Bug Fix
+
+- tie together the various constants used for parsing the redcap CSV [#54](https://github.com/sensein/b2aiprep/pull/54) ([@alistairewj](https://github.com/alistairewj))
+- BIDS-like format [#52](https://github.com/sensein/b2aiprep/pull/52) ([@alistairewj](https://github.com/alistairewj))
+
+#### Authors: 2
+
+- [@ibevers](https://github.com/ibevers)
+- Alistair Johnson ([@alistairewj](https://github.com/alistairewj))
+
+---
+
 # 0.14.0 (Fri Apr 19 2024)
 
 #### 🚀 Enhancement
