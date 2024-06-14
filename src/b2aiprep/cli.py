@@ -77,12 +77,12 @@ def prepsummerdata(
     )
 
 
-@click.command()
+@main.command()
 @click.argument("source_data_csv_path", type=click.Path(exists=True))
 @click.argument("synthetic_data_path", type=click.Path())
 @click.option("--n_synthetic_rows", default=100, type=int, help="Number of synthetic rows to generate.")
 @click.option("--synthesizer_path", type=click.Path(), help="Path to save/load the synthesizer.")
-def gensynthredcap(source_data_csv_path, synthetic_data_path, n_synthetic_rows, synthesizer_path):
+def gensynthtabdata(source_data_csv_path, synthetic_data_path, n_synthetic_rows, synthesizer_path):
     generate_synthetic_tabular_data(
         source_data_csv_path=Path(source_data_csv_path),
         synthetic_data_path=Path(synthetic_data_path),
