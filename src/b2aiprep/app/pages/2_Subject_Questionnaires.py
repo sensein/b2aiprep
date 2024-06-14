@@ -42,9 +42,11 @@ for column in df.columns:
     if unique_values.issubset({"Yes", "No", "Checked", "Unchecked"}):
         binary_questions.append(column)
 
+c = df.columns[1]
 st.write(
     f"""
     * {df.shape[0]} individuals have responses for the {questionnaire_name} questionnaire.
+    * {df[c].notnull().sum()} individuals have a response for the first question ({c}).
     * {df.shape[1]} questions in this questionnaire.
     * {len(binary_questions)} binary questions in this questionnaire.
     """
