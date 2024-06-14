@@ -15,6 +15,7 @@ from b2aiprep.prepare import (
     redcap_to_bids,
 )
 from b2aiprep.summer_school_data import prepare_summer_school_data
+from b2aiprep.synthetic_data import generate_synthetic_tabular_data
 from b2aiprep.process import (
     Audio,
     SpeechToText,
@@ -73,6 +74,20 @@ def prepsummerdata(
         audio_dir_path=Path(audio_dir_path),
         bids_dir_path=Path(bids_dir_path),
         tar_file_path=Path(tar_file_path)
+    )
+
+
+@click.command()
+@click.argument("source_data_csv_path", type=click.Path(exists=True))
+@click.argument("synthetic_data_path", type=click.Path())
+@click.option("--n_synthetic_rows", default=100, type=int, help="Number of synthetic rows to generate.")
+@click.option("--synthesizer_path", type=click.Path(), help="Path to save/load the synthesizer.")
+def gensynthredcap(source_data_csv_path, synthetic_data_path, n_synthetic_rows, synthesizer_path):
+    generate_synthetic_tabular_data(
+        source_data_csv_path=Path(source_data_csv_path),
+        synthetic_data_path=Path(synthetic_data_path),
+        n_synthetic_rows=n_synthetic_rows,
+        synthesizer_path=Path(synthesizer_path) if synthesizer_path else None
     )
 
 
