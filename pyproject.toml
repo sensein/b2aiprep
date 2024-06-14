@@ -51,6 +51,7 @@ tts = [
 dev = [
     "b2aiprep[doc]",
     "pytest",
+    "pytest-benchmark",
     "pre-commit"
 ]
 
