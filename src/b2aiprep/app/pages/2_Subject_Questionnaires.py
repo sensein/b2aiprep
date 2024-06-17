@@ -2,18 +2,17 @@ import streamlit as st
 import pandas as pd
 import altair as alt
 
-from b2aiprep.dataset import VBAIDataset
 from b2aiprep.constants import GENERAL_QUESTIONNAIRES
+from b2aiprep.dataset import VBAIDataset
 
 st.set_page_config(page_title="Subject questionnaires", page_icon="📊")
 
-@st.cache_data
-def get_bids_data():
-    # TODO: allow user to specify input folder input
-    dataset = VBAIDataset('output')
-    return dataset
 
-dataset = get_bids_data()
+@st.cache_data
+def get_questionnaire_dataframe(_dataset: VBAIDataset, questionnaire_name: str):
+    return _dataset.load_and_pivot_questionnaire(questionnaire_name)
+
+dataset = VBAIDataset(st.session_state.bids_dir)
 
 # st.markdown("# Disease prevalence")
 
@@ -23,12 +22,11 @@ dataset = get_bids_data()
 
 st.markdown("# Subject questionnaires")
 
-
 questionnaire_name = st.selectbox(
     'Which questionnaire would you like to review?',
     GENERAL_QUESTIONNAIRES
 )
-df = dataset.load_and_pivot_questionnaire(questionnaire_name)
+df = get_questionnaire_dataframe(dataset, questionnaire_name)
 
 # there are always a lot of binary questions,
 # so we have a bar chart which includes all checked/unchecked or yes/no questions
@@ -61,23 +59,21 @@ if len(binary_questions) > 0:
     grp['percentage'] = (grp['count'] * 100).round(1)
     grp.index.name = 'linkId'
     
-    # create bar chart in altair
-    # add a tick for each bar to make sure the labels are on the plot for linkId
-    chart = (
-        alt.Chart(grp)
-        .mark_bar()
-        .encode(
-            x=alt.X('linkId:O', axis=alt.Axis(title='Question', tickCount=grp.shape[0])),
-            y=alt.Y('percentage:Q', axis=alt.Axis(title='Percentage')),
-            tooltip=['linkId', 'percentage']
-        )
+    # create horizontal bar chart
+    chart = alt.Chart(grp).mark_bar().encode(
+        x='percentage:Q',
+        y=alt.Y('linkId:N', sort='-x'),
+        tooltip=['count', 'percentage']
+    ).properties(
+        width=600,
+        height=400
     )
 
     st.altair_chart(chart, use_container_width=True)
 
 
 st.markdown("# Bar plot")
-questions = df.columns.tolist()
+questions = df.columns.tolist()[1:]
 question_name = st.selectbox(
     'Which question would you like to display?',
     questions
