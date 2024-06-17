@@ -6,10 +6,13 @@ from glob import glob
 from pathlib import Path
 
 import click
+import pkg_resources
 import pydra
 import torch
 from pydra.mark import annotate
 from pydra.mark import task as pydratask
+from streamlit import config as _config
+from streamlit.web.bootstrap import run
 
 from b2aiprep.prepare import (
     redcap_to_bids,
@@ -35,6 +38,20 @@ else:
 def main():
     pass
 
+
+@main.command()
+@click.argument("bids_dir", type=click.Path(exists=True))
+def dashboard(bids_dir: str):
+    bids_dir = Path(bids_dir).resolve()
+    if not bids_dir.exists():
+        raise ValueError(f"Input path {bids_dir} does not exist.")
+        
+    if not bids_dir.is_dir():
+        raise ValueError(f"Input path {bids_dir} is not a directory.")
+    _config.set_option("server.headless", True)
+
+    dashboard_path = pkg_resources.resource_filename('b2aiprep', 'app/Dashboard.py')
+    run(dashboard_path, args=[], flag_options=[], is_hello=False)
 
 @main.command()
 @click.argument("filename", type=click.Path(exists=True))
