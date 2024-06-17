@@ -9,17 +9,13 @@ import matplotlib.cm as cm
 from b2aiprep.dataset import VBAIDataset
 from b2aiprep.process import Audio, specgram
 
-st.set_page_config(page_title="Audio", page_icon="📊")
+dataset = VBAIDataset(st.session_state.bids_dir)
 
-@st.cache_data
-def get_bids_data():
-    # TODO: allow user to specify input folder input
-    dataset = VBAIDataset('output')
-    return dataset
+st.set_page_config(page_title="Audio", page_icon="📊")
 
 st.markdown("# Audio recordings")
 
-dataset = get_bids_data()
+
 subject_paths = dataset.find_subjects()
 subjects = [path.stem[4:] for path in subject_paths]
 subject = st.selectbox(

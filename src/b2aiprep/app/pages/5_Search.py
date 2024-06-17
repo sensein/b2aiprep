@@ -96,6 +96,10 @@ st.markdown(
 
     The following text box allows you to semantically search the data dictionary.
     You can use it to find the name for fields collected in the study.
+
+    The dataframe column "Form Name" can be used to determine the schema name which contains
+    the data. For example, the "q_generic_demographics" form name corresponds to the 
+    "qgenericdemographicsschema" schema name.
     """
 )
 search_string = st.text_input("Search string", "age")
@@ -113,24 +117,25 @@ for embedding in corpus_as_vector:
 
 # Sort sentences by similarity score in descending order (the most similar ones are first)
 sorted_index = np.argsort(sims)[::-1]
-
-sentences_sorted = np.array(corpus)[sorted_index]
 field_ids_sorted = np.array(field_ids)[sorted_index]
 sims = np.array(sims)[sorted_index]
 
-col1, col2 = st.columns(2)
+final_df = rcdict.copy()
+final_df = final_df.loc[final_df["Variable / Field Name"].isin(field_ids_sorted)]
 
-with col1:
-    cutoff = st.number_input("Cutoff", 0.0, 1.0, 0.3)
-    plt.plot(sims)
-    plt.title("Cosine similarity")
-    st.pyplot(plt)
+# map similarity into the dataframe
+sim_mapper = {field_id: sim for field_id, sim in zip(field_ids_sorted, sims)}
+final_df['similarity'] = final_df["Variable / Field Name"].map(sim_mapper)
+cols_reordered = ["similarity"] + [c for c in final_df.columns if c != "similarity"]
+final_df = final_df[cols_reordered]
+final_df = final_df.sort_values("similarity", ascending=False)
 
+cutoff = st.number_input("Cutoff (controls relevance of results)", 0.0, 1.0, 0.3)
 
-with col2:
-    sentences_to_show = sentences_sorted[sims > cutoff].tolist()
-    field_ids_to_show = field_ids_sorted[sims > cutoff].tolist()
-    final_df = pd.DataFrame(
-        {"field_ids": field_ids_to_show, "field_desc": sentences_to_show}
-    )
-    st.table(final_df)
+# only show up to the cutoff
+idx = final_df["similarity"] > cutoff
+st.write(final_df.loc[idx])
+
+plt.plot(sims)
+plt.title("Cosine similarity")
+st.pyplot(plt)

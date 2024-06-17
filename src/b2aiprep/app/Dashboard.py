@@ -9,8 +9,6 @@ import altair as alt
 
 from b2aiprep.dataset import VBAIDataset
 
-
-
 def parse_args(args):
     parser = argparse.ArgumentParser('Dashboard for audio data in BIDS format.')
     parser.add_argument('bids_dir', help='Folder with the BIDS data', default='output')
@@ -20,7 +18,11 @@ args = parse_args(sys.argv[1:])
 bids_dir = Path(args.bids_dir).resolve()
 if not bids_dir.exists():
     raise ValueError(f"Folder {bids_dir} does not exist.")
-dataset = VBAIDataset(bids_dir)
+
+if 'bids_dir' not in st.session_state:
+    st.session_state.bids_dir = bids_dir.as_posix()
+
+dataset = VBAIDataset(st.session_state.bids_dir)
 
 st.set_page_config(
     page_title="b2ai voice",
