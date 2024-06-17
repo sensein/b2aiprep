@@ -1,12 +1,26 @@
+import argparse
+from pathlib import Path
+import sys
+
 import streamlit as st
 import pandas as pd
 import numpy as np
 import altair as alt
 
-
-import streamlit as st
-
 from b2aiprep.dataset import VBAIDataset
+
+
+
+def parse_args(args):
+    parser = argparse.ArgumentParser('Dashboard for audio data in BIDS format.')
+    parser.add_argument('bids_dir', help='Folder with the BIDS data', default='output')
+    return parser.parse_args(args)
+
+args = parse_args(sys.argv[1:])
+bids_dir = Path(args.bids_dir).resolve()
+if not bids_dir.exists():
+    raise ValueError(f"Folder {bids_dir} does not exist.")
+dataset = VBAIDataset(bids_dir)
 
 st.set_page_config(
     page_title="b2ai voice",
@@ -31,16 +45,13 @@ st.markdown(
     """## Session information"""
 )
 
-# TODO: allow user to specify input folder input
-dataset = VBAIDataset('output')
-
 # every user has a sessionschema which we can get info for the users from
 df = dataset.load_and_pivot_questionnaire('sessionschema')
 n_sessions = df.shape[0]
 n_subjects = df['record_id'].nunique()
 n_subj_gt_1 = df.groupby('record_id').size().gt(1).sum()
 n_subj_gt_3 = df.groupby('record_id').size().gt(3).sum()
-
+max_num_sessions = df.groupby('record_id').size().max()
 df_recordings = dataset.load_and_pivot_questionnaire('recordingschema')
 n_recordings = df_recordings.shape[0]
 
@@ -48,9 +59,8 @@ st.write(
     f"""
     * {n_subjects} subjects have participated.
     * {n_sessions} sessions have been conducted.
+    * {n_subj_gt_1} subjects ({n_subj_gt_1/n_subjects:1.2%}) have more than one session (max = {max_num_sessions}).
     * {n_recordings} recordings have been made.
-    * {n_subj_gt_1} subjects ({n_subj_gt_1/n_subjects:1.2%}) have more than one session.
-    * {n_subj_gt_3} subjects  ({n_subj_gt_3/n_subjects:1.2%}) have participated in more than three sessions.
     """
 )
 
