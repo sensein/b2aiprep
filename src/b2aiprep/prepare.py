@@ -41,6 +41,7 @@ from b2aiprep.constants import (
     GENERAL_QUESTIONNAIRES,
     VALIDATED_QUESTIONNAIRES,
 )
+from b2aiprep.utils import _transform_str_for_bids_filename
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -182,10 +183,6 @@ def get_recordings_for_acoustic_task(df: pd.DataFrame, acoustic_task: str) -> pd
         how='inner'
     )
     return dff
-
-def _transform_str_for_bids_filename(filename: str):
-    """Replace spaces in a string with hyphens to match BIDS string format rules.."""
-    return filename.replace(' ', '-')
 
 
 def write_pydantic_model_to_bids_file(
