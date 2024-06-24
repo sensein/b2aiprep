@@ -14,7 +14,7 @@ st.write(
 
 def get_bids_data():
     # TODO: allow user to specify input folder input
-    dataset = VBAIDataset('output')
+    dataset = VBAIDataset(st.session_state.bids_dir)
     return dataset
 
 schema_name = 'qgenericdemographicsschema'
