@@ -23,9 +23,15 @@ from pathlib import Path
 import re
 import typing as t
 
-
+import numpy as np
+import torch
+from tqdm import tqdm
 from fhir.resources.questionnaireresponse import QuestionnaireResponse
 import pandas as pd
+from soundfile import LibsndfileError
+
+from b2aiprep.process import Audio
+from b2aiprep.utils import _transform_str_for_bids_filename
 
 class BIDSDataset:
     def __init__(self, data_path: t.Union[Path, str, os.PathLike]):
@@ -449,6 +455,130 @@ class VBAIDataset(BIDSDataset):
             pivoted_df = pivoted_df[columns]
 
         return pivoted_df
+
+    def _load_recording_and_acoustic_task_df(self) -> pd.DataFrame:
+        """Loads the recording schema dataframe with the acoustic task name from the acoustic task schema.
+        
+        Returns
+        -------
+        pd.DataFrame
+            The recordings dataframe with the additional "acoustic_task_name" column.
+        """
+        recording_df = self.load_and_pivot_questionnaire('recordingschema')
+        task_df = self.load_and_pivot_questionnaire('acoustictaskschema')
+
+        recording_df = recording_df.merge(
+            task_df[['acoustic_task_id', 'acoustic_task_name']],
+            how='inner',
+            left_on='recording_acoustic_task_id',
+            right_on='acoustic_task_id',
+        )
+        return recording_df
+
+    def load_recording(self, recording_id: str) -> Audio:
+        """Checks for and loads in the given recording_id.
+        
+        Parameters
+        ----------
+        recording_id : str
+            The recording identifier.
+        
+        Returns
+        -------
+        Audio
+            The loaded audio.
+        """
+        # verify the recording_id is in the recording_df
+        recording_df = self._load_recording_and_acoustic_task_df()
+        idx = recording_df['recording_id'] == recording_id
+        if not idx.any():
+            raise ValueError(f"Recording ID '{recording_id}' not found in recordings dataframe.")
+        
+        row = recording_df.loc[idx].iloc[0]
+    
+        subject_id = row['record_id']
+        session_id = row['recording_session_id']
+        task = _transform_str_for_bids_filename(row['acoustic_task_name'])
+        name = _transform_str_for_bids_filename(row['recording_name'])
+        audio_file = self.data_path.joinpath(
+            f'sub-{subject_id}',
+            f'ses-{session_id}',
+            'audio',
+            f'sub-{subject_id}_ses-{session_id}_{task}_rec-{name}.wav'
+        )
+        return Audio.from_file(str(audio_file))
+
+    def load_recordings(self) -> t.List[Audio]:
+        """Loads all audio recordings in the dataset.
+        
+        Returns
+        -------
+        List[Audio]
+            The loaded audio recordings.
+        """
+        recording_df = self._load_recording_and_acoustic_task_df()
+        audio_data = []
+        missed_files = []
+        for _, row in tqdm(
+            recording_df.iterrows(),
+            total=recording_df.shape[0],
+            desc='Loading audio'
+        ):
+            subject_id = row['record_id']
+            session_id = row['recording_session_id']
+            task = _transform_str_for_bids_filename(row['acoustic_task_name'])
+            name = _transform_str_for_bids_filename(row['recording_name'])
+            audio_file = self.data_path.joinpath(
+                f'sub-{subject_id}',
+                f'ses-{session_id}',
+                'audio',
+                f'sub-{subject_id}_ses-{session_id}_{task}_rec-{name}.wav'
+            )
+            try:
+                audio_data.append(Audio.from_file(str(audio_file)))
+            except (LibsndfileError, FileNotFoundError):
+                # assuming lbsnd file error is a file not found, usually it is
+                missed_files.append(audio_file)
+                continue
+        
+        if len(missed_files) > 0:
+            logging.warning(f"Could not find {len(missed_files)} / {recording_df.shape[0]} audio files.")
+        
+        return audio_data
+
+    def load_spectrograms(self) -> t.List[np.array]:
+        """Loads all audio recordings in the dataset."""
+        recording_df = self._load_recording_and_acoustic_task_df()
+        audio_data = []
+        missed_files = []
+        for _, row in tqdm(
+            recording_df.iterrows(),
+            total=recording_df.shape[0],
+            desc='Loading audio'
+        ):
+            subject_id = row['record_id']
+            session_id = row['recording_session_id']
+            task = _transform_str_for_bids_filename(row['acoustic_task_name'])
+            name = _transform_str_for_bids_filename(row['recording_name'])
+            audio_file = self.data_path.joinpath(
+                f'sub-{subject_id}',
+                f'ses-{session_id}',
+                'audio',
+                f'sub-{subject_id}_ses-{session_id}_{task}_rec-{name}.pt'
+            )
+            try:
+                features = torch.load(str(audio_file))
+                audio_data.append(features['specgram'])
+            except FileNotFoundError:
+                # assuming lbsnd file error is a file not found, usually it is
+                missed_files.append(audio_file)
+                continue
+        
+        if len(missed_files) > 0:
+            logging.warning(f"Could not find {len(missed_files)} / {recording_df.shape[0]} feature files.")
+        
+
+        return audio_data
 
     def validate_audio_files_exist(self) -> bool:
         """
