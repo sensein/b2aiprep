@@ -30,7 +30,8 @@ dependencies = [
     "transformers",
     "accelerate",
     "fhir.resources==7.1.0",
-    "datasets[audio]"
+    "datasets[audio]",
+    "streamlit"
 ]
 
 [tool.setuptools.packages.find]
