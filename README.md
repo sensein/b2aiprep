@@ -127,3 +127,10 @@ b2aiprep-cli prepsummerdata \
    [desired output path for .tar file]
 ```
 
+## Streamlit dashboard
+
+A dashboard is provided to help navigate the data in the BIDS format. Launch the dashboard from the repository folder with:
+
+```sh
+streamlit run src/b2aiprep/app/Dashboard.py
+```
