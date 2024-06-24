@@ -1,3 +1,6 @@
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
+
 import matplotlib.pyplot as plt
 import torch
 import torch.nn.functional as F
