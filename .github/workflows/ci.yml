@@ -24,10 +24,9 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo apt-get -y install cmake libgoogle-perftools-dev libunwind-dev
           python -m pip install --upgrade pip setuptools
-          pip install "torch==2.2.2" "torchaudio==2.2.2" --index-url https://download.pytorch.org/whl/cpu
-          pip install --no-cache-dir --editable=".[dev,tts]"
+          pip install torch torchaudio --index-url https://download.pytorch.org/whl/cpu
+          pip install --no-cache-dir --editable=".[dev]"
 
       - name: Test with pytest
         run: |
