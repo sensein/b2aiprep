@@ -18,11 +18,6 @@ from speechbrain.dataio.dataio import read_audio, read_audio_info
 from speechbrain.inference.speaker import EncoderClassifier
 from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
 
-try:
-    from TTS.api import TTS
-except ImportError:
-    TTS = None
-
 warnings.filterwarnings("ignore")
 
 
@@ -385,56 +380,6 @@ def to_features(
         outfig = plot_save_figure(audio, log_spec.T, prefix, outdir)
 
     return features if return_features else None, outfile, outfig
-
-
-if TTS is not None:
-
-    class VoiceConversion:
-        def __init__(
-            self,
-            model_name: str = "voice_conversion_models/multilingual/vctk/freevc24",
-            progress_bar: bool = True,
-            device: ty.Optional[str] = None,
-        ) -> None:
-            """
-            Initialize the Voice Conversion model.
-
-            :param model_name: Name of the model to be used for voice conversion.
-            :param use_gpu: Boolean indicating whether to use GPU for model computation.
-
-            TODO: Add support for multiple devices.
-            """
-            use_gpu = False
-            if device is not None and "cuda" in device:
-                # If CUDA is available, set use_gpu to True
-                if torch.cuda.is_available():
-                    use_gpu = True
-                # If CUDA is not available, raise an error
-                else:
-                    raise ValueError("CUDA is not available. Please use CPU.")
-
-            self.tts = TTS(model_name=model_name, progress_bar=progress_bar, gpu=use_gpu)
-
-        def convert_voice(self, source_file: str, target_file: str, output_file: str) -> None:
-            """
-            Converts the voice from the source audio file to match the voice in
-            the target audio file.
-
-            :param source_file: Path to the source audio file.
-            :param target_file: Path to the target audio file.
-            :param output_file: Path where the converted audio file will be saved.
-            """
-            if not os.path.exists(source_file):
-                raise FileNotFoundError(f"The source file {source_file} does not exist.")
-            if not os.path.exists(target_file):
-                raise FileNotFoundError(f"The target file {target_file} does not exist.")
-
-            # Perform voice conversion without modifying the source or target audio data directly.
-            with torch.no_grad():
-                self.tts.voice_conversion_to_file(
-                    source_wav=source_file, target_wav=target_file, file_path=output_file
-                )
-
 
 class SpeechToText:
     """
