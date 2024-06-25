@@ -27,11 +27,12 @@ dependencies = [
     "matplotlib>=3.8.3",
     "click",
     "pydra~=0.23",
-    "numpy<2",
-    "transformers==3.5.1",
+    "numpy==1.26.4",
+    "sentencepiece==0.1.98",
+    "transformers==4.39.3",
     "accelerate",
     "fhir.resources==7.1.0",
-    "streamlit>=1.36.0",
+    "streamlit==1.35.0",
     "datasets[audio]"
 ]
 
@@ -48,7 +49,7 @@ doc = [
     "ipympl"
 ]
 tts = [
-    "TTS==0.8.0; python_version < '3.12'"
+    "TTS==0.22.0; python_version < '3.12'"
 ]
 dev = [
     "b2aiprep[doc]",
