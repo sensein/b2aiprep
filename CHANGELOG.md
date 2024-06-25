@@ -1,3 +1,19 @@
+# 0.18.0 (Tue Jun 25 2024)
+
+#### 🚀 Enhancement
+
+- Remove TTS and convert voice feature [#63](https://github.com/sensein/b2aiprep/pull/63) ([@alistairewj](https://github.com/alistairewj))
+
+#### 🐛 Bug Fix
+
+- Audio tutorial [#64](https://github.com/sensein/b2aiprep/pull/64) ([@alistairewj](https://github.com/alistairewj))
+
+#### Authors: 1
+
+- Alistair Johnson ([@alistairewj](https://github.com/alistairewj))
+
+---
+
 # 0.16.0 (Wed Jun 12 2024)
 
 #### 🚀 Enhancement
