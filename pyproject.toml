@@ -27,9 +27,12 @@ dependencies = [
     "matplotlib>=3.8.3",
     "click",
     "pydra~=0.23",
+    "numpy",
+    "sentencepiece",
     "transformers",
     "accelerate",
     "fhir.resources==7.1.0",
+    "streamlit",
     "datasets[audio]"
 ]
 
@@ -44,9 +47,6 @@ doc = [
     "jupyterlab",
     "jupytext",
     "ipympl"
-]
-tts = [
-    "TTS; python_version < '3.12'"
 ]
 dev = [
     "b2aiprep[doc]",

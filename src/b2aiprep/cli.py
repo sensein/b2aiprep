@@ -26,14 +26,6 @@ from b2aiprep.process import (
     verify_speaker_from_files,
 )
 
-try:
-    import TTS
-except ImportError:
-    TTS = None
-else:
-    from .process import VoiceConversion
-
-
 @click.group()
 def main():
     pass
@@ -273,35 +265,6 @@ def batchconvert(
 def verify(file1, file2, model, device):
     score, prediction = verify_speaker_from_files(file1, file2, model=model, device=device)
     print(f"Score: {float(score):.2f} Prediction: {bool(prediction)}")
-
-
-if TTS is not None:
-
-    @main.command()
-    @click.argument("source_file", type=click.Path(exists=True))
-    @click.argument("target_voice_file", type=click.Path(exists=True))
-    @click.argument("output_file", type=click.Path())
-    @click.option(
-        "--model_name",
-        type=str,
-        default="voice_conversion_models/multilingual/vctk/freevc24",
-        show_default=True,
-    )
-    @click.option(
-        "--device", type=str, default=None, show_default=True, help="Device to use for inference."
-    )
-    @click.option("--progress_bar", type=bool, default=True, show_default=True)
-    def convert_voice(
-        source_file, target_voice_file, output_file, model_name, device, progress_bar
-    ):
-        """
-        Converts the voice in the source_file to match the voice in the target_voice_file,
-        and saves the output to output_file.
-        """
-        vc = VoiceConversion(model_name=model_name, progress_bar=progress_bar, device=device)
-        vc.convert_voice(source_file, target_voice_file, output_file)
-        print(f"Conversion complete. Output saved to: {output_file}")
-
 
 @main.command()
 @click.argument("audio_file", type=click.Path(exists=True))
