@@ -332,9 +332,9 @@ class BIDSDataset:
         List[Path]
             A list of audio features.
         """
-        session_path = self.data_path / f"sub-{subject_id}" / f"ses-{session_id}" / "audio_features"
+        session_path = self.data_path / f"sub-{subject_id}" / f"ses-{session_id}" / "audio"
         features = []
-        for feature_file in session_path.glob("*.json"):
+        for feature_file in session_path.glob("*.pt"):
             features.append(feature_file)
         return features
 
