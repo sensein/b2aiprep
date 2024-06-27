@@ -429,12 +429,14 @@ class VBAIDataset(BIDSDataset):
         # concatenate all the dataframes
         pivoted_df = pd.concat(q_dfs)
 
+
         # create a value column that merges valueString, valueBoolean, etc.
         # https://hl7.org/fhir/r4/questionnaireresponse-definitions.html#QuestionnaireResponse.item.answer.value_x_
         # boolean|decimal|integer|date|dateTime|time|string|uri|Attachment|Coding|Quantity|Reference(Any)
         # currently we only support String/Boolean
         value_columns = ['valueString', 'valueBoolean']
         pivoted_df['value'] = None
+        pivoted_df = pivoted_df.reset_index(drop=True)
         for col in value_columns:
             if col in pivoted_df.columns:
                 pivoted_df['value'] = pivoted_df['value'].combine_first(pivoted_df[col])
