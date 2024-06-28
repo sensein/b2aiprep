@@ -132,5 +132,6 @@ b2aiprep-cli prepsummerdata \
 A dashboard is provided to help navigate the data in the BIDS format. Launch the dashboard from the repository folder with:
 
 ```sh
-streamlit run src/b2aiprep/app/Dashboard.py
+streamlit run src/b2aiprep/app/Dashboard.py [path to BIDS directory]
 ```
+After the Streamlit dashboard opens, please wait for the BIDS data to be loaded while on the Dashboard page, as an error regarding a non-initialized `bids_dir` directory may pop up if the BIDS data has not been fully loaded.
