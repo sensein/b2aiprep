@@ -93,8 +93,10 @@ def wav_to_features(wav_path):
     logging.disable(logging.NOTSET)
     _logger.setLevel(logging.INFO)
 
+    save_path = wav_path[:-len(".wav")] + "_features/"
+    os.mkdir(save_path)
     for feature_string in features:
-        save_path = wav_path[:-len(".wav")] + "_features/" + feature_string + ".pt"
+        save_path += feature_string + ".pt"
         torch.save(features[feature_string], save_path)
         
     return features
