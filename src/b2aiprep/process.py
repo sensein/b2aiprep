@@ -21,13 +21,7 @@ from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
 warnings.filterwarnings("ignore")
 
 from senselab.audio.data_structures.audio import Audio
-# from senselab.audio.tasks.speaker_embeddings import speechbrain
-
-def embed_speaker(audio: Audio, model: str, device: ty.Optional[str] = None) -> torch.tensor:
-    """Compute the speaker embedding of the audio signal"""
-    classifier = EncoderClassifier.from_hparams(source=model, run_opts={"device": device})
-    embeddings = classifier.encode_batch(audio.signal.T)
-    return embeddings.squeeze()
+from senselab.audio.tasks.speaker_embeddings import speechbrain
 
 def verify_speaker(
     audio1: Audio, audio2: Audio, model: str, model_rate: int, device: ty.Optional[str] = None
