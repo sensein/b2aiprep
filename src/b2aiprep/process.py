@@ -20,51 +20,14 @@ from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
 
 warnings.filterwarnings("ignore")
 
-
-class Audio:
-    def __init__(self, signal: torch.tensor, sample_rate: int) -> None:
-        """Initialize audio object
-        :param signal: is a Torch tensor
-        :param sample_rate: is a float
-        """
-        self.signal = signal
-        self.sample_rate = int(sample_rate)
-
-    @classmethod
-    def from_file(cls, filename: Path, channel: int = 0) -> "Audio":
-        """Load audio file
-
-        If the file contains more than one channel of audio,
-        only the first channel will be loaded.
-
-        :param filename: Path to audio file
-        :param channel: Channel to load (default: 0)
-        :return: Initialized Audio object
-        """
-        signal = read_audio(filename)
-        meta = read_audio_info(filename)
-        if len(signal.shape) > 1 and signal.shape[-1] > 1:
-            signal = signal[:, [channel]]
-        else:
-            signal = signal[:, None]
-        return cls(signal, meta.sample_rate)
-
-    def to_16khz(self) -> "Audio":
-        """Resample audio to 16kHz and return new Audio object
-
-        TODO: The default resampler does a poor job of taking care of
-        aliasing. This should be replaced by a better antialiasing filter.
-        """
-        resampler = Resample(orig_freq=self.sample_rate, new_freq=16000)
-        return Audio(resampler(self.signal.unsqueeze(0)).squeeze(0), 16000)
-
+from senselab.audio.data_structures.audio import Audio
+# from senselab.audio.tasks.speaker_embeddings import speechbrain
 
 def embed_speaker(audio: Audio, model: str, device: ty.Optional[str] = None) -> torch.tensor:
     """Compute the speaker embedding of the audio signal"""
     classifier = EncoderClassifier.from_hparams(source=model, run_opts={"device": device})
     embeddings = classifier.encode_batch(audio.signal.T)
     return embeddings.squeeze()
-
 
 def verify_speaker(
     audio1: Audio, audio2: Audio, model: str, model_rate: int, device: ty.Optional[str] = None
