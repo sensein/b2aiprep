@@ -5,6 +5,7 @@ import typing as ty
 from glob import glob
 from pathlib import Path
 
+from datasets import Dataset
 import click
 import pkg_resources
 import pydra
@@ -22,7 +23,6 @@ from b2aiprep.process import (
     Audio,
     SpeechToText,
     to_features,
-    to_hf_dataset,
     verify_speaker_from_files,
 )
 
@@ -254,6 +254,10 @@ def batchconvert(
                 yield torch.load(val)
 
         print(f"Input: {len(results)} files. Processed: {len(stored_results)}")
+        def to_hf_dataset(generator, outdir: Path) -> None:
+            # Create a Hugging Face dataset from the data
+            ds = Dataset.from_generator(generator)
+            ds.to_parquet(outdir / "b2aivoice.parquet")
         to_hf_dataset(gen, Path(outdir))
 
 
