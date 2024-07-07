@@ -7,7 +7,10 @@ import altair as alt
 import matplotlib.cm as cm
 
 from b2aiprep.dataset import VBAIDataset
-from b2aiprep.process import Audio, specgram
+# from b2aiprep.process import Audio, specgram
+from senselab.audio.data_structures.audio import Audio
+from senselab.audio.tasks.features_extraction.torchaudio import extract_spectrogram_from_audios
+
 
 dataset = VBAIDataset(st.session_state.bids_dir)
 
@@ -65,7 +68,13 @@ if len(audio_record_names) > 0:
     audio = Audio.from_file(str(audio_file))
     audio = audio.to_16khz()
     # set window and hop length to the same to not allow for good Griffin Lim reconstruction
-    features_specgram = specgram(audio, win_length=win_length, hop_length=hop_length, n_fft=nfft)
+    features_specgram = extract_spectrogram_from_audios(
+        audios=[audio],
+        n_fft=nfft,
+        hop_length=hop_length,
+        win_length=win_length
+    )
+    # specgram(audio, win_length=win_length, hop_length=hop_length, n_fft=nfft)
     # features_melfilterbank = melfilterbank(features_specgram, n_mels=n_mels)
     # features_mfcc = MFCC(features_melfilterbank, n_coeff=n_coeff, compute_deltas=compute_deltas)
     # features_opensmile = extract_opensmile(audio, opensmile_feature_set, opensmile_feature_level)

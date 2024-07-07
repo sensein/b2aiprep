@@ -25,6 +25,14 @@ from b2aiprep.process import (
     to_features,
     verify_speaker_from_files,
 )
+from senselab.audio.data_structures.audio import Audio
+from senselab.audio.tasks.speech_to_text.api import transcribe_audios
+
+from senselab.audio.tasks.speaker_embeddings.api import extract_speaker_embeddings_from_audios
+from senselab.audio.tasks.features_extraction.torchaudio import extract_spectrogram_from_audios
+from senselab.audio.tasks.features_extraction.torchaudio import extract_mel_filter_bank_from_audios
+from senselab.audio.tasks.features_extraction.torchaudio import extract_mfcc_from_audios
+from senselab.audio.tasks.features_extraction.opensmile import extract_opensmile_features_from_audios
 
 @click.group()
 def main():
