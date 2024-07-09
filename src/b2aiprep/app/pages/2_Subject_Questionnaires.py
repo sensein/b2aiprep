@@ -1,3 +1,6 @@
+import sys
+import argparse
+
 import streamlit as st
 import pandas as pd
 import altair as alt
@@ -11,8 +14,16 @@ st.set_page_config(page_title="Subject questionnaires", page_icon="📊")
 @st.cache_data
 def get_questionnaire_dataframe(_dataset: VBAIDataset, questionnaire_name: str):
     return _dataset.load_and_pivot_questionnaire(questionnaire_name)
+def parse_args(args):
+    parser = argparse.ArgumentParser('Audio processing for BIDS data.')
+    parser.add_argument('bids_dir', help='Folder with the BIDS data')
+    return parser.parse_args(args)
+
+args = parse_args(sys.argv[1:])
+st.session_state.bids_dir = args.bids_dir
 
 dataset = VBAIDataset(st.session_state.bids_dir)
+
 
 # st.markdown("# Disease prevalence")
 
