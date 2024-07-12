@@ -15,25 +15,20 @@ from pydra.mark import task as pydratask
 from streamlit import config as _config
 from streamlit.web.bootstrap import run
 
-from b2aiprep.prepare import (
-    redcap_to_bids,
-)
+from b2aiprep.prepare import redcap_to_bids
 from b2aiprep.summer_school_data import prepare_summer_school_data
-from b2aiprep.process import (
-    to_features,
-    verify_speaker_from_files,
-)
 from senselab.audio.data_structures.audio import Audio
+from senselab.utils.data_structures.model import HFModel
+from senselab.audio.tasks.speaker_verification.speaker_verification import verify_speaker
 from senselab.audio.tasks.speech_to_text.api import transcribe_audios
-
 from senselab.audio.tasks.speaker_embeddings.api import extract_speaker_embeddings_from_audios
-from senselab.audio.tasks.features_extraction.torchaudio import extract_spectrogram_from_audios
-from senselab.audio.tasks.features_extraction.torchaudio import extract_mel_filter_bank_from_audios
-from senselab.audio.tasks.features_extraction.torchaudio import extract_mfcc_from_audios
+from senselab.audio.tasks.features_extraction.torchaudio import (
+    extract_spectrogram_from_audios,
+    extract_mel_filter_bank_from_audios,
+    extract_mfcc_from_audios
+)
 from senselab.audio.tasks.features_extraction.opensmile import extract_opensmile_features_from_audios
 from senselab.audio.tasks.preprocessing.preprocessing import resample_audios
-from senselab.audio.tasks.speech_to_text.api import transcribe_audios
-from senselab.utils.data_structures.model import HFModel
 
 @click.group()
 def main():
@@ -265,10 +260,13 @@ def batchconvert(
 @main.command()
 @click.argument("file1", type=click.Path(exists=True))
 @click.argument("file2", type=click.Path(exists=True))
-@click.argument("model", type=str)
 @click.option("--device", type=str, default=None, show_default=True)
-def verify(file1, file2, model, device):
-    score, prediction = verify_speaker_from_files(file1, file2, model=model, device=device)
+def verify(file1, file2, device):
+    audio1 = Audio.from_filepath(file1)
+    audio2 = Audio.from_filepath(file2)
+    resampled_audios = resample_audios([audio1, audio2], resample_rate=16000)
+    audio_pair = (resampled_audios[0], resampled_audios[1])
+    score, prediction = verify_speaker(audios=[audio_pair])[0]
     print(f"Score: {float(score):.2f} Prediction: {bool(prediction)}")
 
 @main.command()
