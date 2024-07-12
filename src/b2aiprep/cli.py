@@ -20,8 +20,6 @@ from b2aiprep.prepare import (
 )
 from b2aiprep.summer_school_data import prepare_summer_school_data
 from b2aiprep.process import (
-    Audio,
-    SpeechToText,
     to_features,
     verify_speaker_from_files,
 )
@@ -33,6 +31,9 @@ from senselab.audio.tasks.features_extraction.torchaudio import extract_spectrog
 from senselab.audio.tasks.features_extraction.torchaudio import extract_mel_filter_bank_from_audios
 from senselab.audio.tasks.features_extraction.torchaudio import extract_mfcc_from_audios
 from senselab.audio.tasks.features_extraction.opensmile import extract_opensmile_features_from_audios
+from senselab.audio.tasks.preprocessing.preprocessing import resample_audios
+from senselab.audio.tasks.speech_to_text.api import transcribe_audios
+from senselab.utils.data_structures.model import HFModel
 
 @click.group()
 def main():
@@ -98,45 +99,40 @@ def prepsummerdata(
 @click.option("-s", "--subject", type=str, default=None)
 @click.option("-t", "--task", type=str, default=None)
 @click.option("--outdir", type=click.Path(), default=os.getcwd(), show_default=True)
-@click.option("--save_figures/--no-save_figures", default=False, show_default=True)
 @click.option("--n_mels", type=int, default=20, show_default=True)
 @click.option("--n_coeff", type=int, default=20, show_default=True)
 @click.option("--win_length", type=int, default=20, show_default=True)
 @click.option("--hop_length", type=int, default=10, show_default=True)
-@click.option("--compute_deltas/--no-compute_deltas", default=True, show_default=True)
-@click.option("--speech2text/--no-speech2text", type=bool, default=False, show_default=True)
-@click.option("--opensmile", nargs=2, default=["eGeMAPSv02", "Functionals"], show_default=True)
+@click.option("--transcribe/--no-transcribe", type=bool, default=False, show_default=True)
+@click.option("--opensmile", default="eGeMAPSv02", show_default=True)
 def convert(
     filename,
     subject,
     task,
     outdir,
-    save_figures,
     n_mels,
     n_coeff,
     win_length,
     hop_length,
-    compute_deltas,
-    speech2text,
+    transcribe,
     opensmile,
 ):
     os.makedirs(outdir, exist_ok=True)
-    to_features(
-        filename,
-        subject,
-        task,
-        outdir=Path(outdir),
-        save_figures=save_figures,
-        extract_text=speech2text,
-        n_mels=n_mels,
-        n_coeff=n_coeff,
-        win_length=win_length,
-        hop_length=hop_length,
-        compute_deltas=compute_deltas,
-        opensmile_feature_set=opensmile[0],
-        opensmile_feature_level=opensmile[1],
-        device="cpu",
-    )
+    audio = Audio.from_filepath(filename)
+    features = {}
+    features["subject"] = subject
+    features["task"] = task
+    resampled_audio = resample_audios([audio], resample_rate=16000)[0]
+    features["speaker_embedding"] = extract_speaker_embeddings_from_audios([resampled_audio])
+    features["specgram"] = extract_spectrogram_from_audios([audio], win_length=win_length, hop_length=hop_length)
+    features["melfilterbank"] = extract_mel_filter_bank_from_audios([audio], n_mels=n_mels)
+    features["mfcc"] = extract_mfcc_from_audios([audio])
+    features["sample_rate"] = audio.sampling_rate
+    features["opensmile"] = extract_opensmile_features_from_audios([audio], feature_set=opensmile)
+    if transcribe:
+        features["transcription"] = transcribe_audios(audios=[audio])[0]
+    save_path = Path(outdir) / (Path(filename).stem + ".pt")
+    torch.save(features, save_path)
 
 
 @main.command()
@@ -310,26 +306,10 @@ def transcribe(
     """
     Transcribes the audio_file.
     """
-    # Convert return_timestamps to the correct type
-    if return_timestamps.lower() == "true":
-        return_timestamps = True
-    elif return_timestamps.lower() == "false":
-        return_timestamps = False
-    else:
-        return_timestamps = "word"
-
-    stt = SpeechToText(
-        model_id=model_id,
-        max_new_tokens=max_new_tokens,
-        chunk_length_s=chunk_length_s,
-        batch_size=batch_size,
-        return_timestamps=return_timestamps,
-        device=device,
-    )
-
-    audio_data = Audio.from_file(audio_file)
-    transcription = stt.transcribe(audio_data, language=language)
-    print("Transcription:", transcription)
+    audio_data = Audio.from_filepath(audio_file)
+    model = HFModel(path_or_uri="openai/whisper-base")
+    transcription = transcribe_audios([audio_data], model=model)[0]
+    print("Transcription:", transcription.text)
 
 
 @main.command()
