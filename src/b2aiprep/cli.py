@@ -30,6 +30,7 @@ from senselab.audio.tasks.features_extraction.torchaudio import (
 from senselab.audio.tasks.features_extraction.opensmile import extract_opensmile_features_from_audios
 from senselab.audio.tasks.preprocessing.preprocessing import resample_audios
 
+
 @click.group()
 def main():
     pass
@@ -48,6 +49,7 @@ def dashboard(bids_dir: str):
 
     dashboard_path = pkg_resources.resource_filename('b2aiprep', 'app/Dashboard.py')
     run(dashboard_path, args=[bids_path.as_posix()], flag_options=[], is_hello=False)
+
 
 @main.command()
 @click.argument("filename", type=click.Path(exists=True))
