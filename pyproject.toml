@@ -30,7 +30,6 @@ dependencies = [
     "numpy",
     "sentencepiece",
     "transformers",
-    "accelerate",
     "fhir.resources==7.1.0",
     "streamlit",
     "datasets[audio]",
