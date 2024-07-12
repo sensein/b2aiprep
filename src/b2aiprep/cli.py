@@ -100,7 +100,6 @@ def prepsummerdata(
 @click.option("-t", "--task", type=str, default=None)
 @click.option("--outdir", type=click.Path(), default=os.getcwd(), show_default=True)
 @click.option("--n_mels", type=int, default=20, show_default=True)
-@click.option("--n_coeff", type=int, default=20, show_default=True)
 @click.option("--win_length", type=int, default=20, show_default=True)
 @click.option("--hop_length", type=int, default=10, show_default=True)
 @click.option("--transcribe/--no-transcribe", type=bool, default=False, show_default=True)
@@ -111,7 +110,6 @@ def convert(
     task,
     outdir,
     n_mels,
-    n_coeff,
     win_length,
     hop_length,
     transcribe,
@@ -133,17 +131,15 @@ def convert(
         features["transcription"] = transcribe_audios(audios=[audio])[0]
     save_path = Path(outdir) / (Path(filename).stem + ".pt")
     torch.save(features, save_path)
-
+    return features
 
 @main.command()
 @click.argument("csvfile", type=click.Path(exists=True))
 @click.option("--outdir", type=click.Path(), default=os.getcwd(), show_default=True)
-@click.option("--save_figures/--no-save_figures", default=False, show_default=True)
 @click.option("--n_mels", type=int, default=20, show_default=True)
 @click.option("--n_coeff", type=int, default=20, show_default=True)
 @click.option("--win_length", type=int, default=20, show_default=True)
 @click.option("--hop_length", type=int, default=10, show_default=True)
-@click.option("--compute_deltas/--no-compute_deltas", default=True, show_default=True)
 @click.option(
     "-p",
     "--plugin",
@@ -165,12 +161,10 @@ def convert(
 def batchconvert(
     csvfile,
     outdir,
-    save_figures,
     n_mels,
     n_coeff,
     win_length,
     hop_length,
-    compute_deltas,
     plugin,
     cache,
     dataset,
@@ -184,57 +178,65 @@ def batchconvert(
             value = int(value)
         plugin_args[key] = value
 
-    featurize_pdt = pydratask(annotate({"return": {"features": ty.Any}})(to_features))
-    featurize_task = featurize_pdt(
-        n_mels=n_mels,
-        n_coeff=n_coeff,
-        win_length=win_length,
-        hop_length=hop_length,
-        compute_deltas=compute_deltas,
-        cache_dir=Path(cache).absolute(),
-        save_figures=save_figures,
-        extract_text=speech2text,
-        opensmile_feature_set=opensmile[0],
-        opensmile_feature_level=opensmile[1],
-        device="cpu",
-    )
+    @pydra.task
+    @annotate({"return": {"features": dict}})
+    def convert(filename, subject, task, outdir, n_mels, n_coeff, win_length, hop_length, transcribe, opensmile):
+        os.makedirs(outdir, exist_ok=True)
+        audio = Audio.from_filepath(filename)
+        features = {}
+        features["subject"] = subject
+        features["task"] = task
+        resampled_audio = resample_audios([audio], resample_rate=16000)[0]
+        features["speaker_embedding"] = extract_speaker_embeddings_from_audios([resampled_audio])
+        features["specgram"] = extract_spectrogram_from_audios([audio], win_length=win_length, hop_length=hop_length)
+        features["melfilterbank"] = extract_mel_filter_bank_from_audios([audio], n_mels=n_mels)
+        features["mfcc"] = extract_mfcc_from_audios([audio])
+        features["sample_rate"] = audio.sampling_rate
+        features["opensmile"] = extract_opensmile_features_from_audios([audio], feature_set=opensmile[0])
+        if transcribe:
+            features["transcription"] = transcribe_audios(audios=[audio])[0]
+        save_path = Path(outdir) / (Path(filename).stem + ".pt")
+        torch.save(features, save_path)
+        return features
 
     with open(csvfile, "r") as f:
         reader = csv.DictReader(f)
         num_cols = len(reader.fieldnames)
         lines = [line.strip() for line in f.readlines()]
 
-    # parse csv file differently if it is one column 'filename'
-    # or three column 'filename','subject','task'
     if num_cols == 1:
-        filenames = []
-        for line in lines:
-            filename = line
-            filenames.append(Path(filename).absolute().as_posix())
-        featurize_task.split(
-            splitter=("filename",),
+        filenames = [Path(line).absolute().as_posix() for line in lines]
+        featurize_task = convert.map(
             filename=filenames,
+            subject=[None]*len(filenames),
+            task=[None]*len(filenames),
+            outdir=[outdir]*len(filenames),
+            n_mels=[n_mels]*len(filenames),
+            n_coeff=[n_coeff]*len(filenames),
+            win_length=[win_length]*len(filenames),
+            hop_length=[hop_length]*len(filenames),
+            transcribe=[speech2text]*len(filenames),
+            opensmile=[opensmile]*len(filenames),
         )
     elif num_cols == 3:
-        filenames = []
-        subjects = []
-        tasks = []
-        for line in lines:
-            filename, subject, task = line.split(",")
-            filenames.append(Path(filename).absolute().as_posix())
-            subjects.append(subject)
-            tasks.append(task)
-        featurize_task.split(
-            splitter=("filename", "subject", "task"),
-            filename=filenames,
+        filenames, subjects, tasks = zip(*[line.split(",") for line in lines])
+        featurize_task = convert.map(
+            filename=[Path(f).absolute().as_posix() for f in filenames],
             subject=subjects,
             task=tasks,
+            outdir=[outdir]*len(filenames),
+            n_mels=[n_mels]*len(filenames),
+            n_coeff=[n_coeff]*len(filenames),
+            win_length=[win_length]*len(filenames),
+            hop_length=[hop_length]*len(filenames),
+            transcribe=[speech2text]*len(filenames),
+            opensmile=[opensmile]*len(filenames),
         )
 
     cwd = os.getcwd()
     try:
         with pydra.Submitter(plugin=plugin[0], **plugin_args) as sub:
-            sub(runnable=featurize_task)
+            sub(featurize_task)
     except Exception:
         print("Run finished with errors")
     else:
@@ -245,21 +247,16 @@ def batchconvert(
     stored_results = []
     for input_params, result in results:
         if result.errored:
-            print(f"File: {input_params['to_features.filename']} errored")
+            print(f"File: {input_params['filename']} errored")
             continue
-        shutil.copy(result.output.features[1], Path(outdir))
-        if save_figures:
-            shutil.copy(result.output.features[2], Path(outdir))
-        stored_results.append(Path(outdir) / Path(result.output.features[1]).name)
+        shutil.copy(result.output["features"], Path(outdir))
+        stored_results.append(Path(outdir) / Path(result.output["features"]).name)
     if dataset:
-
         def gen():
             for val in stored_results:
                 yield torch.load(val)
-
         print(f"Input: {len(results)} files. Processed: {len(stored_results)}")
         def to_hf_dataset(generator, outdir: Path) -> None:
-            # Create a Hugging Face dataset from the data
             ds = Dataset.from_generator(generator)
             ds.to_parquet(outdir / "b2aivoice.parquet")
         to_hf_dataset(gen, Path(outdir))

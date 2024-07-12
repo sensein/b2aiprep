@@ -4,8 +4,6 @@ from senselab.audio.tasks.speaker_embeddings.api import extract_speaker_embeddin
 from senselab.audio.tasks.features_extraction.torchaudio import extract_spectrogram_from_audios
 from senselab.audio.tasks.features_extraction.torchaudio import extract_mel_filter_bank_from_audios
 from senselab.audio.tasks.features_extraction.torchaudio import extract_mfcc_from_audios
-# from senselab.audio.tasks.features_extraction.speaker_verification import verify_speaker
-# from senselab.audio.tasks.features_extraction.speaker_verification import verify_speaker_from_files
 from senselab.audio.tasks.features_extraction.opensmile import extract_opensmile_features_from_audios
 from senselab.audio.tasks.plotting.plotting import plot_waveform
 from senselab.audio.tasks.plotting.plotting import plot_specgram
