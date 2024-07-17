@@ -30,7 +30,7 @@ from fhir.resources.questionnaireresponse import QuestionnaireResponse
 import pandas as pd
 from soundfile import LibsndfileError
 
-from b2aiprep.process import Audio
+from senselab.audio.data_structures.audio import Audio
 from b2aiprep.utils import _transform_str_for_bids_filename
 
 class BIDSDataset:
@@ -508,7 +508,8 @@ class VBAIDataset(BIDSDataset):
             'audio',
             f'sub-{subject_id}_ses-{session_id}_{task}_rec-{name}.wav'
         )
-        return Audio.from_file(str(audio_file))
+        return Audio.from_filepath(str(audio_file))
+    
 
     def load_recordings(self) -> t.List[Audio]:
         """Loads all audio recordings in the dataset.
@@ -537,7 +538,7 @@ class VBAIDataset(BIDSDataset):
                 f'sub-{subject_id}_ses-{session_id}_{task}_rec-{name}.wav'
             )
             try:
-                audio_data.append(Audio.from_file(str(audio_file)))
+                audio_data.append(Audio.from_filepath(str(audio_file)))
             except (LibsndfileError, FileNotFoundError):
                 # assuming lbsnd file error is a file not found, usually it is
                 missed_files.append(audio_file)
