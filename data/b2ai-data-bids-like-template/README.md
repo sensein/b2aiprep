@@ -6,9 +6,9 @@ This README provides an overview of the directory structure and the purpose of e
 
 - **CHANGES**: A file that documents the changes, updates, and revisions made to the project over time.
 
-- **phenotype/<measurement_tool_name>.tsv**: A tab-separated values (TSV) file containing phenotype data collected using a specific measurement tool.
+- **phenotype/`<measurement_tool_name>`.tsv**: A tab-separated values (TSV) file containing phenotype data collected using a specific measurement tool.
 
-- **phenotype/<measurement_tool_name>.json**: A JSON file that provides metadata or additional information about the phenotype data collected using a specific measurement tool.
+- **phenotype/`<measurement_tool_name>`.json**: A JSON file that provides metadata or additional information about the phenotype data collected using a specific measurement tool.
 
 - **dataset_description.json**: A JSON file describing the dataset, including information such as the dataset's purpose, structure, and any relevant metadata.
 
@@ -30,19 +30,18 @@ Each session directory is named `ses-<session_id>` and contains subdirectories f
 
 #### Voice Data
 
-- **voice/sub-<participant_id>_ses-<session_id>_task-<task_name>_run-<index>_transcript.txt**: A text file containing the transcript of the audio recording for a specific task and run.
+- **voice/sub-`<participant_id>`_ses-`<session_id>`_task-`<task_name>`_run-`<index>`_transcript.txt**: A text file containing the transcript of the audio recording for a specific task and run.
 
-- **voice/sub-<participant_id>_ses-<session_id>_task-<task_name>_run-<index>_metadata.json**: A JSON file containing metadata about the audio recording, including information such as recording settings and conditions.
+- **voice/sub-`<participant_id>`_ses-`<session_id>`_task-`<task_name>`_run-`<index>`_metadata.json**: A JSON file containing metadata about the audio recording, including information such as recording settings and conditions.
 
-- **voice/sub-<participant_id>_ses-<session_id>_task-<task_name>_run-<index>_features.pt**: A file containing extracted features from the audio recording, stored in a format suitable for further analysis.
+- **voice/sub-`<participant_id>`_ses-`<session_id>`_task-`<task_name>`_run-`<index>`_features.pt**: A file containing extracted features from the audio recording, stored in a format suitable for further analysis.
 
-- **voice/sub-<participant_id>_ses-<session_id>_task-<task_name>_run-<index>_audio.wav**: The raw audio recording file for a specific task and run.
+- **voice/sub-`<participant_id>`_ses-`<session_id>`_task-`<task_name>`_run-`<index>`_audio.wav**: The raw audio recording file for a specific task and run.
 
 #### Behavioral Data
 
-- **beh/sub-<participant_id>_ses-<session_id>_task-<task_name>_run-<index>_response.json**: A JSON file containing the participant's responses for a specific task and run.
+- **beh/sub-`<participant_id>`_ses-`<session_id>`_task-`<task_name>`_run-`<index>`_response.json**: A JSON file containing the participant's responses for a specific task and run.
 
-- **beh/sub-<participant_id>_ses-<session_id>_task-<task_name>_run-<index>_metadata.json**: A JSON file containing metadata about the behavioral data, including information such as task conditions and settings.
+- **beh/sub-`<participant_id>`_ses-`<session_id>`_task-`<task_name>`_run-`<index>`_metadata.json**: A JSON file containing metadata about the behavioral data, including information such as task conditions and settings.
 
 This structure helps to organize and manage the data collected for each participant and session, ensuring that all relevant information is easily accessible and well-documented.
-
