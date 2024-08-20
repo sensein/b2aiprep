@@ -39,7 +39,10 @@
     <div id="description" class="description"></div>
 
     <script>
-        async function fetchGitHubRepoContents(repo, path = '', ref = '945c5621180fc82dc010ed50f9651139099ece1b') {
+        // Commit hash to be used in API requests
+        const commitHash = '945c5621180fc82dc010ed50f9651139099ece1b';
+
+        async function fetchGitHubRepoContents(repo, path = '', ref = commitHash) {
             const url = `https://api.github.com/repos/${repo}/contents/${path}?ref=${ref}`;
             console.log(`Fetching: ${url}`); // Debugging line
             const response = await fetch(url);
@@ -67,7 +70,7 @@
                 li.className = file.type === 'dir' ? 'folder' : 'file';
                 if (file.type === 'dir') {
                     li.addEventListener('click', async () => {
-                        const subFiles = await fetchGitHubRepoContents('sensein/b2aiprep', file.path, '945c5621180fc82dc010ed50f9651139099ece1b');
+                        const subFiles = await fetchGitHubRepoContents('sensein/b2aiprep', file.path, commitHash);
                         const ul = document.createElement('ul');
                         ul.className = 'file-structure';
                         renderFiles(subFiles, ul);
@@ -90,8 +93,7 @@
         document.addEventListener('DOMContentLoaded', async () => {
             const repo = 'sensein/b2aiprep'; // The GitHub repository
             const path = 'data/b2ai-data-bids-like-template'; // The specific directory path
-            const ref = '945c5621180fc82dc010ed50f9651139099ece1b'; // The specific commit hash
-            const files = await fetchGitHubRepoContents(repo, path, ref);
+            const files = await fetchGitHubRepoContents(repo, path, commitHash);
             if (files.length === 0) {
                 document.getElementById('file-structure').textContent = 'No files found or failed to load directory contents.';
             } else {
