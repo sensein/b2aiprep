@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Structure Interface</title>
+    <title>GitHub Directory Viewer</title>
     <style>
         /* Basic styles for the file structure */
         .file-structure {
@@ -15,6 +15,15 @@
             margin: 5px 0;
         }
 
+        .folder {
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .file {
+            font-style: italic;
+        }
+
         .description {
             margin-top: 20px;
             padding: 10px;
@@ -24,35 +33,72 @@
     </style>
 </head>
 <body>
-    <ul class="file-structure">
-        <li>cardiac_ecg <button onclick="showDescription('cardiac')">Learn More</button></li>
-        <li>clinical_data <button onclick="showDescription('clinical')">Learn More</button></li>
-        <li>environment <button onclick="showDescription('environment')">Learn More</button></li>
-        <!-- Add more files/folders as needed -->
-    </ul>
+    <h1>GitHub Directory Viewer</h1>
+    <ul id="file-structure" class="file-structure"></ul>
 
-    <div id="cardiac" class="description">
-        This directory contains cardiac ECG data...
-    </div>
-    <div id="clinical" class="description">
-        This directory contains clinical data...
-    </div>
-    <div id="environment" class="description">
-        This directory contains environmental data...
-    </div>
-    <!-- Add more descriptions as needed -->
+    <div id="description" class="description"></div>
 
     <script>
-        function showDescription(id) {
-            // Hide all descriptions
-            var descriptions = document.getElementsByClassName('description');
-            for (var i = 0; i < descriptions.length; i++) {
-                descriptions[i].style.display = 'none';
+        async function fetchGitHubRepoContents(repo, path = '', ref = '945c5621180fc82dc010ed50f9651139099ece1b') {
+            const url = `https://api.github.com/repos/${repo}/contents/${path}?ref=${ref}`;
+            console.log(`Fetching: ${url}`); // Debugging line
+            const response = await fetch(url);
+            if (!response.ok) {
+                console.error('Failed to fetch repository contents:', response.statusText);
+                document.getElementById('file-structure').textContent = `Error: ${response.statusText}`;
+                return [];
             }
-
-            // Show the selected description
-            document.getElementById(id).style.display = 'block';
+            try {
+                const files = await response.json();
+                console.log('Fetched files:', files); // Debugging line
+                return files;
+            } catch (error) {
+                console.error('Failed to parse JSON:', error);
+                document.getElementById('file-structure').textContent = `Failed to parse JSON: ${error}`;
+                return [];
+            }
         }
+
+        function renderFiles(files, container) {
+            container.innerHTML = '';
+            files.forEach(file => {
+                const li = document.createElement('li');
+                li.textContent = file.name;
+                li.className = file.type === 'dir' ? 'folder' : 'file';
+                if (file.type === 'dir') {
+                    li.addEventListener('click', async () => {
+                        const subFiles = await fetchGitHubRepoContents('sensein/b2aiprep', file.path, '945c5621180fc82dc010ed50f9651139099ece1b');
+                        const ul = document.createElement('ul');
+                        ul.className = 'file-structure';
+                        renderFiles(subFiles, ul);
+                        if (li.nextElementSibling && li.nextElementSibling.tagName === 'UL') {
+                            li.parentNode.removeChild(li.nextElementSibling);
+                        } else {
+                            li.insertAdjacentElement('afterend', ul);
+                        }
+                    });
+                } else {
+                    li.addEventListener('click', () => {
+                        document.getElementById('description').textContent = `File: ${file.name}\nType: ${file.type}\nURL: ${file.html_url}`;
+                        document.getElementById('description').style.display = 'block';
+                    });
+                }
+                container.appendChild(li);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const repo = 'sensein/b2aiprep'; // The GitHub repository
+            const path = 'data/b2ai-data-bids-like-template'; // The specific directory path
+            const ref = '945c5621180fc82dc010ed50f9651139099ece1b'; // The specific commit hash
+            const files = await fetchGitHubRepoContents(repo, path, ref);
+            if (files.length === 0) {
+                document.getElementById('file-structure').textContent = 'No files found or failed to load directory contents.';
+            } else {
+                const fileStructureContainer = document.getElementById('file-structure');
+                renderFiles(files, fileStructureContainer);
+            }
+        });
     </script>
 </body>
 </html>
