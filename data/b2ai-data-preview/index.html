@@ -13,6 +13,9 @@
 
         .file-structure li {
             margin: 5px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .folder {
@@ -30,10 +33,17 @@
             border: 1px solid #ddd;
             display: none; /* Hidden by default */
         }
+
+        .explanation-button {
+            margin-left: 10px;
+            padding: 2px 5px;
+            font-size: 12px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-    <h1>GitHub Directory Viewer</h1>
+    <h1>Bridge2AI Dataset Preview</h1>
     <ul id="file-structure" class="file-structure"></ul>
 
     <div id="description" class="description"></div>
@@ -62,14 +72,32 @@
             }
         }
 
+        function toggleExplanation(name, type) {
+            const description = document.getElementById('description');
+            description.textContent = `Explanation for ${type}: ${name}`;
+            description.style.display = description.style.display === 'block' ? 'none' : 'block';
+        }
+
         function renderFiles(files, container) {
             container.innerHTML = '';
             files.forEach(file => {
                 const li = document.createElement('li');
-                li.textContent = file.name;
                 li.className = file.type === 'dir' ? 'folder' : 'file';
+
+                const textSpan = document.createElement('span');
+                textSpan.textContent = file.name;
+                textSpan.className = li.className;
+
+                const explanationButton = document.createElement('button');
+                explanationButton.textContent = 'Explanation';
+                explanationButton.className = 'explanation-button';
+                explanationButton.addEventListener('click', () => toggleExplanation(file.name, file.type));
+
+                li.appendChild(textSpan);
+                li.appendChild(explanationButton);
+
                 if (file.type === 'dir') {
-                    li.addEventListener('click', async () => {
+                    textSpan.addEventListener('click', async () => {
                         const subFiles = await fetchGitHubRepoContents('sensein/b2aiprep', file.path, commitHash);
                         const ul = document.createElement('ul');
                         ul.className = 'file-structure';
@@ -81,11 +109,12 @@
                         }
                     });
                 } else {
-                    li.addEventListener('click', () => {
+                    textSpan.addEventListener('click', () => {
                         document.getElementById('description').textContent = `File: ${file.name}\nType: ${file.type}\nURL: ${file.html_url}`;
                         document.getElementById('description').style.display = 'block';
                     });
                 }
+
                 container.appendChild(li);
             });
         }
