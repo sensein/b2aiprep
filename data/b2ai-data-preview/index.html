@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Structure Interface</title>
+    <style>
+        /* Basic styles for the file structure */
+        .file-structure {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+
+        .file-structure li {
+            margin: 5px 0;
+        }
+
+        .description {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            display: none; /* Hidden by default */
+        }
+    </style>
+</head>
+<body>
+    <ul class="file-structure">
+        <li>cardiac_ecg <button onclick="showDescription('cardiac')">Learn More</button></li>
+        <li>clinical_data <button onclick="showDescription('clinical')">Learn More</button></li>
+        <li>environment <button onclick="showDescription('environment')">Learn More</button></li>
+        <!-- Add more files/folders as needed -->
+    </ul>
+
+    <div id="cardiac" class="description">
+        This directory contains cardiac ECG data...
+    </div>
+    <div id="clinical" class="description">
+        This directory contains clinical data...
+    </div>
+    <div id="environment" class="description">
+        This directory contains environmental data...
+    </div>
+    <!-- Add more descriptions as needed -->
+
+    <script>
+        function showDescription(id) {
+            // Hide all descriptions
+            var descriptions = document.getElementsByClassName('description');
+            for (var i = 0; i < descriptions.length; i++) {
+                descriptions[i].style.display = 'none';
+            }
+
+            // Show the selected description
+            document.getElementById(id).style.display = 'block';
+        }
+    </script>
+</body>
+</html>

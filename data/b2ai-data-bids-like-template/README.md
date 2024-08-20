@@ -4,11 +4,14 @@ This README provides an overview of the directory structure and the purpose of e
 
 ## Root Directory
 
-- **CHANGES**: A file that documents the changes, updates, and revisions made to the project over time.
+### phenotype
+The phenotype directory stores participant-specific data that is not directly related to specific audio tasks but is relevant for understanding participants' characteristics. 
 
 - **phenotype/<measurement_tool_name>.tsv**: A tab-separated values (TSV) file containing phenotype data collected using a specific measurement tool.
 
 - **phenotype/<measurement_tool_name>.json**: A JSON file that provides metadata or additional information about the phenotype data collected using a specific measurement tool.
+
+- **CHANGES**: A file that documents the changes, updates, and revisions made to the project over time.
 
 - **dataset_description.json**: A JSON file describing the dataset, including information such as the dataset's purpose, structure, and any relevant metadata.
 
