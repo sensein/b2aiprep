@@ -40,6 +40,16 @@
             font-size: 12px;
             cursor: pointer;
         }
+
+        /* Preserve whitespace and formatting */
+        .file-content pre {
+            white-space: pre-wrap; /* Preserve newlines and indents */
+            word-wrap: break-word; /* Handle long words and prevent overflow */
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto; /* Add horizontal scroll if needed */
+        }
     </style>
 </head>
 <body>
@@ -98,7 +108,7 @@
             // Show the file content if it's a file
             if (file.type === 'file') {
                 const content = await fetchFileContent(file.download_url);
-                fileContentBox.textContent = `Contents of ${file.name}:\n\n${content}`;
+                fileContentBox.innerHTML = `<pre>${content}</pre>`; // Preserve formatting and whitespace
                 fileContentBox.style.display = 'block';
             } else {
                 fileContentBox.style.display = 'none';
