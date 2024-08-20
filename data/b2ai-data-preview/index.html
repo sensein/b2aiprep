@@ -97,12 +97,35 @@
             }
         }
 
+        const explanations = {
+            "CHANGES.md": "This file documents the changes, updates, and revisions made to the project over time.",
+            "README.md": "This file provides an overview of the project, including its purpose, structure, and usage instructions.",
+            "dataset_description.json": "This JSON file describes the dataset, including information such as the dataset's purpose, structure, and relevant metadata.",
+            "participants.json": "This JSON file contains metadata about the participants involved in the study, including demographic information and other relevant details.",
+            "participants.tsv": "This TSV file lists the participants involved in the study, along with their corresponding IDs and other relevant information.",
+            "phenotype": "The phenotype directory stores participant-specific data that is not directly related to specific audio tasks but is relevant for understanding participants' characteristics.",
+            "<measurement_tool_name>.json": "This JSON file provides metadata or additional information about the phenotype data collected using a specific measurement tool.",
+            "<measurement_tool_name>.tsv": "This TSV file contains phenotype data collected using a specific measurement tool.",
+            "sub-<participant_id>": "This directory contains data specific to an individual participant, organized by session.",
+            "ses-<another_participant_id>": "This directory contains session-specific data for another participant, including behavioral and voice data.",
+            "beh": "This directory contains behavioral data collected during the session.",
+            "sub-<participant_id>_ses-<session_id>_task-<task_name>_run-<index>_metadata.json": "This JSON file contains metadata about the behavioral task, including information such as task conditions and settings.",
+            "sub-<participant_id>_ses-<session_id>_task-<task_name>_run-<index>_response.json": "This JSON file contains the participant's responses for a specific task and run.",
+            "voice": "This directory contains voice data collected during the session.",
+            "sub-<participant_id>_ses-<session_id>_task-<task_name>_run-<index>_audio.wav": "This is the raw audio recording file for a specific task and run.",
+            "sub-<participant_id>_ses-<session_id>_task-<task_name>_run-<index>_features.pt": "This file contains extracted features from the audio recording, stored in a format suitable for further analysis.",
+            "sub-<participant_id>_ses-<session_id>_task-<task_name>_run-<index>_metadata.json": "This JSON file contains metadata about the audio recording, including information such as recording settings and conditions.",
+            "sub-<participant_id>_ses-<session_id>_task-<task_name>_run-<index>_transcript.txt": "This text file contains the transcript of the audio recording for a specific task and run.",
+            "sessions.tsv": "This TSV file lists all sessions for the participant, including session IDs and other relevant details."
+        };
+
         async function toggleExplanation(file) {
             const description = document.getElementById('description');
             const fileContentBox = document.getElementById('file-content');
 
             // Show the explanation
-            description.textContent = `Explanation for ${file.type}: ${file.name}`;
+            const customExplanation = explanations[file.name] || `Explanation for ${file.type}: ${file.name}`;
+            description.textContent = customExplanation;
             description.style.display = 'block';
 
             // Show the file content if it's a file
@@ -114,6 +137,18 @@
                 fileContentBox.style.display = 'none';
             }
         }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const repo = 'sensein/b2aiprep'; // The GitHub repository
+            const path = 'data/b2ai-data-bids-like-template'; // The specific directory path
+            const files = await fetchGitHubRepoContents(repo, path, commitHash);
+            if (files.length === 0) {
+                document.getElementById('file-structure').textContent = 'No files found or failed to load directory contents.';
+            } else {
+                const fileStructureContainer = document.getElementById('file-structure');
+                renderFiles(files, fileStructureContainer);
+            }
+        });
 
         function renderFiles(files, container) {
             container.innerHTML = '';
