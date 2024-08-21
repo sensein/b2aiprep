@@ -1,3 +1,20 @@
+# 0.19.0 (Wed Jul 17 2024)
+
+#### 🚀 Enhancement
+
+- Replace process.py with senselab functions [#74](https://github.com/sensein/b2aiprep/pull/74) ([@ibevers](https://github.com/ibevers))
+
+#### 🐛 Bug Fix
+
+- Update README.md to specify bids_dir parameter in Streamlit example [#72](https://github.com/sensein/b2aiprep/pull/72) ([@DebuggerDan](https://github.com/DebuggerDan))
+
+#### Authors: 2
+
+- [@ibevers](https://github.com/ibevers)
+- dan ([@DebuggerDan](https://github.com/DebuggerDan))
+
+---
+
 # 0.18.0 (Tue Jun 25 2024)
 
 #### 🚀 Enhancement

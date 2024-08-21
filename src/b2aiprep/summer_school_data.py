@@ -44,14 +44,13 @@ import pydra
 from pathlib import Path
 
 from b2aiprep.prepare import redcap_to_bids
-from b2aiprep.process import (
-    embed_speaker,
-    specgram,
-    melfilterbank,
-    MFCC,
-    extract_opensmile,
-    Audio,
-)
+
+from senselab.audio.data_structures.audio import Audio
+from senselab.audio.tasks.speaker_embeddings.api import extract_speaker_embeddings_from_audios
+from senselab.audio.tasks.features_extraction.torchaudio import extract_spectrogram_from_audios
+from senselab.audio.tasks.features_extraction.torchaudio import extract_mel_filter_bank_from_audios
+from senselab.audio.tasks.features_extraction.torchaudio import extract_mfcc_from_audios
+from senselab.audio.tasks.features_extraction.opensmile import extract_opensmile_features_from_audios
 
 SUBJECT_ID = "sub"
 SESSION_ID = "ses"
@@ -81,15 +80,17 @@ def wav_to_features(wav_path):
     audio = audio.to_16khz()
 
     features = {}
-    features["speaker_embedding"] = embed_speaker(
-        audio,
-        model="speechbrain/spkrec-ecapa-voxceleb"
-    )
-    features["specgram"] = specgram(audio)
-    features["melfilterbank"] = melfilterbank(features["specgram"])
-    features["mfcc"] = MFCC(features["melfilterbank"])
-    features["sample_rate"] = audio.sample_rate
-    features["opensmile"] = extract_opensmile(audio)
+    features["speaker_embedding"] = extract_speaker_embeddings_from_audios([audio])
+    # extract_opensmile_features_from_audios([audio])
+    # embed_speaker(
+    #     audio,
+    #     model="speechbrain/spkrec-ecapa-voxceleb"
+    # )
+    features["specgram"] = extract_spectrogram_from_audios([audio])
+    features["melfilterbank"] = extract_mel_filter_bank_from_audios([audio])
+    features["mfcc"] = extract_mfcc_from_audios([audio])
+    features["sample_rate"] = audio.sampling_rate
+    features["opensmile"] = extract_opensmile_features_from_audios([audio])
     logging.disable(logging.NOTSET)
     _logger.setLevel(logging.INFO)
 

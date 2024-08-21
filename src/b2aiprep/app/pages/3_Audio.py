@@ -3,15 +3,28 @@ import numpy as np
 import streamlit as st
 import pandas as pd
 import altair as alt
+import sys
+import argparse
 
 import matplotlib.cm as cm
 
 from b2aiprep.dataset import VBAIDataset
-from b2aiprep.process import Audio, specgram
-
-dataset = VBAIDataset(st.session_state.bids_dir)
+# from b2aiprep.process import Audio, specgram
+from senselab.audio.data_structures.audio import Audio
+from senselab.audio.tasks.features_extraction.torchaudio import extract_spectrogram_from_audios
+from senselab.audio.tasks.preprocessing.preprocessing import resample_audios
 
 st.set_page_config(page_title="Audio", page_icon="📊")
+
+def parse_args(args):
+    parser = argparse.ArgumentParser('Audio processing for BIDS data.')
+    parser.add_argument('bids_dir', help='Folder with the BIDS data')
+    return parser.parse_args(args)
+
+args = parse_args(sys.argv[1:])
+st.session_state.bids_dir = args.bids_dir
+
+dataset = VBAIDataset(st.session_state.bids_dir)
 
 st.markdown("# Audio recordings")
 
@@ -62,10 +75,17 @@ if len(audio_record_names) > 0:
     hop_length = st.number_input('Hop length', value=15)
     nfft = 1024
 
-    audio = Audio.from_file(str(audio_file))
-    audio = audio.to_16khz()
+    audio = Audio.from_filepath(str(audio_file))
+    audio = resample_audios([audio], 16000)[0]
     # set window and hop length to the same to not allow for good Griffin Lim reconstruction
-    features_specgram = specgram(audio, win_length=win_length, hop_length=hop_length, n_fft=nfft)
+    features_specgram = extract_spectrogram_from_audios(
+        audios=[audio],
+        n_fft=nfft,
+        hop_length=hop_length,
+        win_length=win_length
+    )
+    features_specgram = features_specgram[0]["spectrogram"]  # torch.Tensor
+    # specgram(audio, win_length=win_length, hop_length=hop_length, n_fft=nfft)
     # features_melfilterbank = melfilterbank(features_specgram, n_mels=n_mels)
     # features_mfcc = MFCC(features_melfilterbank, n_coeff=n_coeff, compute_deltas=compute_deltas)
     # features_opensmile = extract_opensmile(audio, opensmile_feature_set, opensmile_feature_level)
@@ -94,7 +114,7 @@ if len(audio_record_names) > 0:
     ylim = ax.get_ylim()
     yticks = ax.get_yticks()
     # convert yticks into frequencies
-    frequencies = yticks / nfft * audio.sample_rate
+    frequencies = yticks / nfft * audio.sampling_rate
     frequencies = [f"{int(f)}" for f in frequencies]
     ax.set_yticks(yticks)
     ax.set_yticklabels(frequencies)

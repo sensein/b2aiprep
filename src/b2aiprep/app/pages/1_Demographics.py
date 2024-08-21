@@ -1,3 +1,6 @@
+import sys
+import argparse
+
 import streamlit as st
 import pandas as pd
 import altair as alt
@@ -12,13 +15,17 @@ st.write(
     """This page overviews the demographics of the dataset."""
 )
 
-def get_bids_data():
-    # TODO: allow user to specify input folder input
-    dataset = VBAIDataset(st.session_state.bids_dir)
-    return dataset
+def parse_args(args):
+    parser = argparse.ArgumentParser('Audio processing for BIDS data.')
+    parser.add_argument('bids_dir', help='Folder with the BIDS data')
+    return parser.parse_args(args)
+
+args = parse_args(sys.argv[1:])
+st.session_state.bids_dir = args.bids_dir
+
+dataset = VBAIDataset(st.session_state.bids_dir)
 
 schema_name = 'qgenericdemographicsschema'
-dataset = get_bids_data()
 df = dataset.load_and_pivot_questionnaire(schema_name)
 
 # st.markdown("## Age Distribution")
