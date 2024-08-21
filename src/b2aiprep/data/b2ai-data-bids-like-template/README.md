@@ -5,7 +5,7 @@ This README provides an overview of the directory structure and the purpose of e
 ## Root Directory
 
 ### phenotype
-The phenotype directory stores participant-specific data that is not directly related to specific audio tasks but is relevant for understanding participants' characteristics. 
+The phenotype directory stores participant-specific data that is not directly related to specific audio tasks but is relevant for understanding participants' characteristics.
 
 - **phenotype/<measurement_tool_name>.tsv**: A tab-separated values (TSV) file containing phenotype data collected using a specific measurement tool.
 
@@ -48,4 +48,3 @@ Each session directory is named `ses-<session_id>` and contains subdirectories f
 - **beh/sub-<participant_id>_ses-<session_id>_task-<task_name>_run-<index>_metadata.json**: A JSON file containing metadata about the behavioral data, including information such as task conditions and settings.
 
 This structure helps to organize and manage the data collected for each participant and session, ensuring that all relevant information is easily accessible and well-documented.
-
