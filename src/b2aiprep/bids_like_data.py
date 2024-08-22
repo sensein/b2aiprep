@@ -37,8 +37,10 @@ TODO: Update with new BIDS-like data structure updates.
 """
 
 import argparse
+import importlib.resources as pkg_resources
 import logging
 import os
+import shutil
 import tarfile
 from pathlib import Path
 
@@ -143,6 +145,31 @@ def get_audio_paths(bids_dir_path):
     return audio_paths
 
 
+def copy_package_file(
+    package: str, resource: str, destination_dir: str, destination_name: str = None
+) -> None:
+    """
+    Copy a file from within a package to a specified directory.
+
+    Args:
+        package (str): The package name where the file is located.
+        resource (str): The resource name (file path within the package).
+        destination_dir (str): The directory where the file should be copied.
+        destination_name (str, optional): The new name for the copied file.
+        If not provided, the original name is used.
+
+    Returns:
+        None
+    """
+    if destination_name is None:
+        destination_name = os.path.basename(resource)
+
+    destination_path = os.path.join(destination_dir, destination_name)
+
+    with pkg_resources.path(package, resource) as src_file_path:
+        shutil.copy(src_file_path, destination_path)
+
+
 def extract_features_workflow(bids_dir_path: Path, remove: bool = True):
     """Run a Pydra workflow to extract audio features from BIDS-like directory.
 
@@ -220,14 +247,12 @@ def prepare_bids_like_data(
         os.makedirs(bids_dir_path)
         _logger.info(f"Created directory: {bids_dir_path}")
 
-    # copy CHANGES.md
-    # copy README.md
-    bash_command = f"cp data/b2ai-data-bids-like-template/CHANGES.md {bids_dir_path}/CHANGES.md"
-    os.system(bash_command)
-
     _logger.info("Organizing data into BIDS-like directory structure...")
     redcap_to_bids(redcap_csv_path, bids_dir_path, audio_dir_path)
     _logger.info("Data organization complete.")
+
+    copy_package_file("b2aiprep.data.b2ai-data-bids-like-template", "CHANGES.md", bids_dir_path)
+    copy_package_file("b2aiprep.data.b2ai-data-bids-like-template", "README.md", bids_dir_path)
 
     _logger.info("Beginning audio feature extraction...")
     extract_features_workflow(bids_dir_path, remove=False)
