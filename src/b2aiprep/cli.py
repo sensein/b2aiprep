@@ -1,34 +1,38 @@
 import csv
 import os
 import shutil
-import typing as ty
 from glob import glob
 from pathlib import Path
 
-from datasets import Dataset
 import click
 import pkg_resources
 import pydra
 import torch
+from datasets import Dataset
 from pydra.mark import annotate
-from pydra.mark import task as pydratask
+from senselab.audio.data_structures.audio import Audio
+from senselab.audio.tasks.features_extraction.opensmile import (
+    extract_opensmile_features_from_audios,
+)
+from senselab.audio.tasks.features_extraction.torchaudio import (
+    extract_mel_filter_bank_from_audios,
+    extract_mfcc_from_audios,
+    extract_spectrogram_from_audios,
+)
+from senselab.audio.tasks.preprocessing.preprocessing import resample_audios
+from senselab.audio.tasks.speaker_embeddings.api import (
+    extract_speaker_embeddings_from_audios,
+)
+from senselab.audio.tasks.speaker_verification.speaker_verification import (
+    verify_speaker,
+)
+from senselab.audio.tasks.speech_to_text.api import transcribe_audios
+from senselab.utils.data_structures.model import HFModel
 from streamlit import config as _config
 from streamlit.web.bootstrap import run
 
+from b2aiprep.bids_like_data import prepare_bids_like_data
 from b2aiprep.prepare import redcap_to_bids
-from b2aiprep.summer_school_data import prepare_summer_school_data
-from senselab.audio.data_structures.audio import Audio
-from senselab.utils.data_structures.model import HFModel
-from senselab.audio.tasks.speaker_verification.speaker_verification import verify_speaker
-from senselab.audio.tasks.speech_to_text.api import transcribe_audios
-from senselab.audio.tasks.speaker_embeddings.api import extract_speaker_embeddings_from_audios
-from senselab.audio.tasks.features_extraction.torchaudio import (
-    extract_spectrogram_from_audios,
-    extract_mel_filter_bank_from_audios,
-    extract_mfcc_from_audios
-)
-from senselab.audio.tasks.features_extraction.opensmile import extract_opensmile_features_from_audios
-from senselab.audio.tasks.preprocessing.preprocessing import resample_audios
 
 
 @click.group()
@@ -42,18 +46,23 @@ def dashboard(bids_dir: str):
     bids_path = Path(bids_dir).resolve()
     if not bids_path.exists():
         raise ValueError(f"Input path {bids_path} does not exist.")
-        
+
     if not bids_path.is_dir():
         raise ValueError(f"Input path {bids_path} is not a directory.")
     _config.set_option("server.headless", True)
 
-    dashboard_path = pkg_resources.resource_filename('b2aiprep', 'app/Dashboard.py')
+    dashboard_path = pkg_resources.resource_filename("b2aiprep", "app/Dashboard.py")
     run(dashboard_path, args=[bids_path.as_posix()], flag_options=[], is_hello=False)
 
 
 @main.command()
 @click.argument("filename", type=click.Path(exists=True))
-@click.option("--outdir", type=click.Path(), default=Path.cwd().joinpath('output').as_posix(), show_default=True)
+@click.option(
+    "--outdir",
+    type=click.Path(),
+    default=Path.cwd().joinpath("output").as_posix(),
+    show_default=True,
+)
 @click.option("--audiodir", type=click.Path(), default=None, show_default=True)
 def redcap2bids(
     filename,
@@ -77,17 +86,12 @@ def redcap2bids(
 @click.argument("audio_dir_path", type=click.Path(exists=True))
 @click.argument("bids_dir_path", type=click.Path())
 @click.argument("tar_file_path", type=click.Path())
-def prepsummerdata(
-    redcap_csv_path, 
-    audio_dir_path, 
-    bids_dir_path, 
-    tar_file_path
-):
-    prepare_summer_school_data(
+def prepsummerdata(redcap_csv_path, audio_dir_path, bids_dir_path, tar_file_path):
+    prepare_bids_like_data(
         redcap_csv_path=Path(redcap_csv_path),
         audio_dir_path=Path(audio_dir_path),
         bids_dir_path=Path(bids_dir_path),
-        tar_file_path=Path(tar_file_path)
+        tar_file_path=Path(tar_file_path),
     )
 
 
@@ -119,7 +123,9 @@ def convert(
     features["task"] = task
     resampled_audio = resample_audios([audio], resample_rate=16000)[0]
     features["speaker_embedding"] = extract_speaker_embeddings_from_audios([resampled_audio])
-    features["specgram"] = extract_spectrogram_from_audios([audio], win_length=win_length, hop_length=hop_length)
+    features["specgram"] = extract_spectrogram_from_audios(
+        [audio], win_length=win_length, hop_length=hop_length
+    )
     features["melfilterbank"] = extract_mel_filter_bank_from_audios([audio], n_mels=n_mels)
     features["mfcc"] = extract_mfcc_from_audios([audio])
     features["sample_rate"] = audio.sampling_rate
@@ -129,6 +135,7 @@ def convert(
     save_path = Path(outdir) / (Path(filename).stem + ".pt")
     torch.save(features, save_path)
     return features
+
 
 @main.command()
 @click.argument("csvfile", type=click.Path(exists=True))
@@ -177,7 +184,18 @@ def batchconvert(
 
     @pydra.task
     @annotate({"return": {"features": dict}})
-    def convert(filename, subject, task, outdir, n_mels, n_coeff, win_length, hop_length, transcribe, opensmile):
+    def convert(
+        filename,
+        subject,
+        task,
+        outdir,
+        n_mels,
+        n_coeff,
+        win_length,
+        hop_length,
+        transcribe,
+        opensmile,
+    ):
         os.makedirs(outdir, exist_ok=True)
         audio = Audio.from_filepath(filename)
         features = {}
@@ -185,11 +203,15 @@ def batchconvert(
         features["task"] = task
         resampled_audio = resample_audios([audio], resample_rate=16000)[0]
         features["speaker_embedding"] = extract_speaker_embeddings_from_audios([resampled_audio])
-        features["specgram"] = extract_spectrogram_from_audios([audio], win_length=win_length, hop_length=hop_length)
+        features["specgram"] = extract_spectrogram_from_audios(
+            [audio], win_length=win_length, hop_length=hop_length
+        )
         features["melfilterbank"] = extract_mel_filter_bank_from_audios([audio], n_mels=n_mels)
         features["mfcc"] = extract_mfcc_from_audios([audio])
         features["sample_rate"] = audio.sampling_rate
-        features["opensmile"] = extract_opensmile_features_from_audios([audio], feature_set=opensmile[0])
+        features["opensmile"] = extract_opensmile_features_from_audios(
+            [audio], feature_set=opensmile[0]
+        )
         if transcribe:
             features["transcription"] = transcribe_audios(audios=[audio])[0]
         save_path = Path(outdir) / (Path(filename).stem + ".pt")
@@ -205,15 +227,15 @@ def batchconvert(
         filenames = [Path(line).absolute().as_posix() for line in lines]
         featurize_task = convert.map(
             filename=filenames,
-            subject=[None]*len(filenames),
-            task=[None]*len(filenames),
-            outdir=[outdir]*len(filenames),
-            n_mels=[n_mels]*len(filenames),
-            n_coeff=[n_coeff]*len(filenames),
-            win_length=[win_length]*len(filenames),
-            hop_length=[hop_length]*len(filenames),
-            transcribe=[speech2text]*len(filenames),
-            opensmile=[opensmile]*len(filenames),
+            subject=[None] * len(filenames),
+            task=[None] * len(filenames),
+            outdir=[outdir] * len(filenames),
+            n_mels=[n_mels] * len(filenames),
+            n_coeff=[n_coeff] * len(filenames),
+            win_length=[win_length] * len(filenames),
+            hop_length=[hop_length] * len(filenames),
+            transcribe=[speech2text] * len(filenames),
+            opensmile=[opensmile] * len(filenames),
         )
     elif num_cols == 3:
         filenames, subjects, tasks = zip(*[line.split(",") for line in lines])
@@ -221,13 +243,13 @@ def batchconvert(
             filename=[Path(f).absolute().as_posix() for f in filenames],
             subject=subjects,
             task=tasks,
-            outdir=[outdir]*len(filenames),
-            n_mels=[n_mels]*len(filenames),
-            n_coeff=[n_coeff]*len(filenames),
-            win_length=[win_length]*len(filenames),
-            hop_length=[hop_length]*len(filenames),
-            transcribe=[speech2text]*len(filenames),
-            opensmile=[opensmile]*len(filenames),
+            outdir=[outdir] * len(filenames),
+            n_mels=[n_mels] * len(filenames),
+            n_coeff=[n_coeff] * len(filenames),
+            win_length=[win_length] * len(filenames),
+            hop_length=[hop_length] * len(filenames),
+            transcribe=[speech2text] * len(filenames),
+            opensmile=[opensmile] * len(filenames),
         )
 
     cwd = os.getcwd()
@@ -249,13 +271,17 @@ def batchconvert(
         shutil.copy(result.output["features"], Path(outdir))
         stored_results.append(Path(outdir) / Path(result.output["features"]).name)
     if dataset:
+
         def gen():
             for val in stored_results:
                 yield torch.load(val)
+
         print(f"Input: {len(results)} files. Processed: {len(stored_results)}")
+
         def to_hf_dataset(generator, outdir: Path) -> None:
             ds = Dataset.from_generator(generator)
             ds.to_parquet(outdir / "b2aivoice.parquet")
+
         to_hf_dataset(gen, Path(outdir))
 
 
@@ -270,6 +296,7 @@ def verify(file1, file2, device):
     audio_pair = (resampled_audios[0], resampled_audios[1])
     score, prediction = verify_speaker(audios=[audio_pair])[0]
     print(f"Score: {float(score):.2f} Prediction: {bool(prediction)}")
+
 
 @main.command()
 @click.argument("audio_file", type=click.Path(exists=True))
@@ -335,6 +362,6 @@ def createbatchcsv(input_dir, out_file):
     print(f"csv of audiofiles generated at: {out_file}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # include main to enable python debugging
     main()  # pylint: disable=no-value-for-parameter

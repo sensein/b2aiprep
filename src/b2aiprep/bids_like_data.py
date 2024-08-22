@@ -16,7 +16,7 @@ Usage:
        [desired path to BIDS output] \
        [desired output path for .tar file]
 
-    python3 b2aiprep/src/b2aiprep/summer_school_data.py \
+    python3 b2aiprep/src/b2aiprep/bids_like_data.py \
         --redcap_csv_path [path to RedCap CSV] \
         --audio_dir_path  [path to Wasabi export directory] \
         --bids_dir_path [desired path to BIDS output] \
@@ -29,7 +29,7 @@ Functions:
     - extract_features_workflow: Runs a Pydra workflow to extract audio
         features from BIDS-like directory.
     - bundle_data: Saves data bundle as a tar file with gzip compression.
-    - prepare_summer_school_data: Organizes and processes Bridge2AI data for
+    - prepare_bids_like_data: Organizes and processes Bridge2AI data for
         distribution.
     - parse_arguments: Parses command line arguments for processing audio data.
 
@@ -196,7 +196,7 @@ def bundle_data(source_directory: str, save_path: str) -> None:
         tar.add(source_directory, arcname=os.path.basename(source_directory))
 
 
-def prepare_summer_school_data(
+def prepare_bids_like_data(
     redcap_csv_path: Path, audio_dir_path: Path, bids_dir_path: Path, tar_file_path: Path
 ) -> None:
     """Organizes and processes Bridge2AI data for distribution.
@@ -219,6 +219,11 @@ def prepare_summer_school_data(
     if not os.path.exists(bids_dir_path):
         os.makedirs(bids_dir_path)
         _logger.info(f"Created directory: {bids_dir_path}")
+
+    # copy CHANGES.md
+    # copy README.md
+    bash_command = f"cp data/b2ai-data-bids-like-template/CHANGES.md {bids_dir_path}/CHANGES.md"
+    os.system(bash_command)
 
     _logger.info("Organizing data into BIDS-like directory structure...")
     redcap_to_bids(redcap_csv_path, bids_dir_path, audio_dir_path)
@@ -268,7 +273,7 @@ def parse_arguments() -> argparse.Namespace:
 
 def main():
     args = parse_arguments()
-    prepare_summer_school_data(
+    prepare_bids_like_data(
         redcap_csv_path=args.redcap_csv_path,
         audio_dir_path=args.audio_dir_path,
         bids_dir_path=args.bids_dir_path,
