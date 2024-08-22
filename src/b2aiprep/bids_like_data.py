@@ -69,6 +69,23 @@ _logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
+def initialize_data_directory(bids_dir_path: str) -> None:
+    """Initializes the data directory using the template.
+
+    Args:
+        bids_dir_path (str): The path to the BIDS directory where the data should be initialized.
+
+    Returns:
+        None
+    """
+    if not os.path.exists(bids_dir_path):
+        os.makedirs(bids_dir_path)
+        _logger.info(f"Created directory: {bids_dir_path}")
+
+    copy_package_file("b2aiprep.data.b2ai-data-bids-like-template", "CHANGES.md", bids_dir_path)
+    copy_package_file("b2aiprep.data.b2ai-data-bids-like-template", "README.md", bids_dir_path)
+
+
 @pydra.mark.task
 def wav_to_features(wav_path):
     """Extract features from a single audio file.
@@ -243,16 +260,11 @@ def prepare_bids_like_data(
       tar_file_path:
         The file path where the .tar.gz file will be saved.
     """
-    if not os.path.exists(bids_dir_path):
-        os.makedirs(bids_dir_path)
-        _logger.info(f"Created directory: {bids_dir_path}")
+    initialize_data_directory(bids_dir_path)
 
     _logger.info("Organizing data into BIDS-like directory structure...")
     redcap_to_bids(redcap_csv_path, bids_dir_path, audio_dir_path)
     _logger.info("Data organization complete.")
-
-    copy_package_file("b2aiprep.data.b2ai-data-bids-like-template", "CHANGES.md", bids_dir_path)
-    copy_package_file("b2aiprep.data.b2ai-data-bids-like-template", "README.md", bids_dir_path)
 
     _logger.info("Beginning audio feature extraction...")
     extract_features_workflow(bids_dir_path, remove=False)
