@@ -69,6 +69,31 @@ _logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
+def copy_package_file(
+    package: str, resource: str, destination_dir: str, destination_name: str = None
+) -> None:
+    """
+    Copy a file from within a package to a specified directory.
+
+    Args:
+        package (str): The package name where the file is located.
+        resource (str): The resource name (file path within the package).
+        destination_dir (str): The directory where the file should be copied.
+        destination_name (str, optional): The new name for the copied file.
+        If not provided, the original name is used.
+
+    Returns:
+        None
+    """
+    if destination_name is None:
+        destination_name = os.path.basename(resource)
+
+    destination_path = os.path.join(destination_dir, destination_name)
+
+    with pkg_resources.path(package, resource) as src_file_path:
+        shutil.copy(src_file_path, destination_path)
+
+
 def initialize_data_directory(bids_dir_path: str) -> None:
     """Initializes the data directory using the template.
 
@@ -84,6 +109,9 @@ def initialize_data_directory(bids_dir_path: str) -> None:
 
     copy_package_file("b2aiprep.data.b2ai-data-bids-like-template", "CHANGES.md", bids_dir_path)
     copy_package_file("b2aiprep.data.b2ai-data-bids-like-template", "README.md", bids_dir_path)
+    copy_package_file(
+        "b2aiprep.data.b2ai-data-bids-like-template", "dataset_description.json", bids_dir_path
+    )
 
 
 @pydra.mark.task
@@ -160,31 +188,6 @@ def get_audio_paths(bids_dir_path):
                             audio_file_path = os.path.join(audio_path, audio_file)
                             audio_paths.append(audio_file_path)
     return audio_paths
-
-
-def copy_package_file(
-    package: str, resource: str, destination_dir: str, destination_name: str = None
-) -> None:
-    """
-    Copy a file from within a package to a specified directory.
-
-    Args:
-        package (str): The package name where the file is located.
-        resource (str): The resource name (file path within the package).
-        destination_dir (str): The directory where the file should be copied.
-        destination_name (str, optional): The new name for the copied file.
-        If not provided, the original name is used.
-
-    Returns:
-        None
-    """
-    if destination_name is None:
-        destination_name = os.path.basename(resource)
-
-    destination_path = os.path.join(destination_dir, destination_name)
-
-    with pkg_resources.path(package, resource) as src_file_path:
-        shutil.copy(src_file_path, destination_path)
 
 
 def extract_features_workflow(bids_dir_path: Path, remove: bool = True):
