@@ -43,7 +43,11 @@ from b2aiprep.prepare.fhir_utils import (
     convert_response_to_fhir,
     is_empty_questionnaire_response,
 )
-from b2aiprep.prepare.utils import _transform_str_for_bids_filename
+from b2aiprep.prepare.utils import (
+    _transform_str_for_bids_filename,
+    construct_all_tsvs_from_jsons,
+    construct_tsv_from_json,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -84,32 +88,6 @@ def load_redcap_csv(file_path):
     except pd.errors.ParserError:
         print("Error parsing CSV file.")
         return None
-
-
-def construct_participants_tsv(df: pd.DataFrame, outdir: str) -> None:
-    """Constructs the participants.tsv file from a DataFrame and a
-    participants.json file.
-
-    Args:
-        df (pd.DataFrame): DataFrame containing participant data.
-        outdir (str): Output directory where participants.tsv and
-                      participants.json are located.
-
-    Returns:
-        None: This function does not return a value; it writes the output to
-              a TSV file.
-    """
-    json_path = os.path.join(outdir, "participants.json")  # Path to participants.json
-    with open(json_path, "r") as f:
-        participants_json = json.load(f)  # Load column labels
-    column_labels = list(participants_json.keys())  # Extract column names
-    valid_columns = [col for col in column_labels if col in df.columns]  # Filter columns
-    if not valid_columns:
-        raise ValueError("No valid columns found in DataFrame that match participants.json")
-    selected_df = df[valid_columns]  # Select relevant columns
-    combined_df = selected_df.groupby("record_id").first().reset_index()  # Combine entries
-    tsv_path = os.path.join(outdir, "participants.tsv")  # Path for participants.tsv
-    combined_df.to_csv(tsv_path, sep="\t", index=False)  # Save to TSV file
 
 
 def update_redcap_df_column_names(df: DataFrame) -> DataFrame:
@@ -550,7 +528,20 @@ def redcap_to_bids(
     # that way we only ever need to manually subselect using one version of the column name
     df = update_redcap_df_column_names(df)
 
-    construct_participants_tsv(df, outdir)
+    construct_tsv_from_json(  # construct participants.tsv
+        df=df,
+        json_file_path=os.path.join(outdir, "participants.json"),
+        output_dir=outdir,
+        output_file_name="participants.tsv",
+    )
+
+    construct_all_tsvs_from_jsons(
+        df=df,
+        input_dir=os.path.join(outdir, "phenotype"),
+        output_dir=os.path.join(outdir, "phenotype"),
+    )
+
+    # construct_phenotype_tsvs(df, outdir)
 
     # the repeat instrument columns also defines all the possible
     # repeat instruments we would like to extract from the RedCap CSV
@@ -562,6 +553,7 @@ def redcap_to_bids(
     #       'confounders': {"session_id_1": {data}, ...}},
     #    ...
     #   }
+    dataframe_dicts: t.Dict[RepeatInstrument, pd.DataFrame] = {}
     dataframe_dicts: t.Dict[RepeatInstrument, pd.DataFrame] = {}
     for repeat_instrument in repeat_instruments:
         instrument = repeat_instrument.value

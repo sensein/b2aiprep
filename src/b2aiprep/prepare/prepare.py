@@ -37,10 +37,8 @@ TODO: Update with new BIDS-like data structure updates.
 """
 
 import argparse
-import importlib.resources as pkg_resources
 import logging
 import os
-import shutil
 import tarfile
 from pathlib import Path
 
@@ -60,6 +58,7 @@ from senselab.audio.tasks.speaker_embeddings.api import (
 )
 
 from b2aiprep.prepare.bids_like_data import redcap_to_bids
+from b2aiprep.prepare.utils import copy_package_resource, remove_files_by_pattern
 
 SUBJECT_ID = "sub"
 SESSION_ID = "ses"
@@ -69,33 +68,10 @@ _logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
-def copy_package_resource(
-    package: str, resource: str, destination_dir: str, destination_name: str = None
-) -> None:
-    """
-    Copy a file or directory from within a package to a specified directory.
-
-    Args:
-        package (str): The package name where the file or directory is located.
-        resource (str): The resource name (file or directory path within the package).
-        destination_dir (str): The directory where the file or directory should be copied.
-        destination_name (str, optional): The new name for the copied file or directory.
-        If not provided, the original name is used.
-
-    Returns:
-        None
-    """
-    if destination_name is None:
-        destination_name = os.path.basename(resource)
-
-    destination_path = os.path.join(destination_dir, destination_name)
-
-    with pkg_resources.path(package, resource) as src_path:
-        src_path = str(src_path)  # Convert to string to avoid issues with path-like objects
-        if os.path.isdir(src_path):  # Check if the resource is a directory
-            shutil.copytree(src_path, destination_path)
-        else:  # Otherwise, assume it is a file
-            shutil.copy(src_path, destination_path)
+def copy_phenotype_files(template_package, bids_dir_path):
+    copy_package_resource(template_package, "phenotype", bids_dir_path)
+    phenotype_path = Path(bids_dir_path) / Path("phenotype")
+    remove_files_by_pattern(phenotype_path, "<measurement_tool_name>*")
 
 
 def initialize_data_directory(bids_dir_path: str) -> None:
@@ -111,15 +87,13 @@ def initialize_data_directory(bids_dir_path: str) -> None:
         os.makedirs(bids_dir_path)
         _logger.info(f"Created directory: {bids_dir_path}")
 
-    copy_package_resource("b2aiprep.data.b2ai-data-bids-like-template", "CHANGES.md", bids_dir_path)
-    copy_package_resource("b2aiprep.data.b2ai-data-bids-like-template", "README.md", bids_dir_path)
-    copy_package_resource(
-        "b2aiprep.data.b2ai-data-bids-like-template", "dataset_description.json", bids_dir_path
-    )
-    copy_package_resource(
-        "b2aiprep.data.b2ai-data-bids-like-template", "participants.json", bids_dir_path
-    )
-    copy_package_resource("b2aiprep.data.b2ai-data-bids-like-template", "phenotype", bids_dir_path)
+    template_package = "b2aiprep.prepare.resources.b2ai-data-bids-like-template"
+
+    copy_package_resource(template_package, "CHANGES.md", bids_dir_path)
+    copy_package_resource(template_package, "README.md", bids_dir_path)
+    copy_package_resource(template_package, "dataset_description.json", bids_dir_path)
+    copy_package_resource(template_package, "participants.json", bids_dir_path)
+    copy_phenotype_files(template_package, bids_dir_path)
 
 
 @pydra.mark.task
