@@ -1,219 +1,1172 @@
 {
-    "participant_id": {
-        "Description": "Unique identifier for each participant in the form sub-<label>",
-        "Units": "n/a"
+    "record_id": {
+        "Description": "Unique identifier for each participant."
     },
-    "age": {
-        "Description": "Age of the participant",
-        "Units": "years",
-        "Notes": "For participants aged 89 or higher, age should be recorded as 89+"
-    },
-    "sex": {
-        "Description": "Sex of the participant as reported by the participant",
-        "Levels": {
-            "male": "Male",
-            "female": "Female",
-            "other": "Other",
-            "prefer not to answer": "Participant prefers not to disclose"
-        }
-    },
-    "language": {
-        "Description": "Primary language spoken by the participant",
-        "Levels": {
-            "English": "English",
-            "Spanish": "Spanish",
-            "French": "French",
-            "Other": "Other languages as specified by the participant"
-        }
-    },
-    "consent_status": {
-        "Description": "Status of participant's consent for the study",
-        "Levels": {
-            "consented": "Participant has consented",
-            "not consented": "Participant has not consented"
-        }
-    },
-    "is_feasibility_participant": {
-        "Description": "Indicates whether the participant is part of the feasibility study",
-        "Levels": {
-            "yes": "Participant is part of the feasibility study",
-            "no": "Participant is not part of the feasibility study"
-        }
+    "selected_language": {
+        "Description": "Language selected by the participant for communication during the study."
     },
     "enrollment_institution": {
-        "Description": "Institution where the participant was enrolled",
-        "Units": "n/a"
+        "Description": "Institution where the participant enrolled in the study."
     },
-    "eligible_studies": {
-        "Description": "Studies the participant is eligible for",
-        "Levels": {
-            "Voice Disorders": "Participant eligible for studies on voice disorders",
-            "Neurological and Neurodegenerative Disorders": "Participant eligible for studies on neurological and neurodegenerative disorders",
-            "Mood and Psychiatric Disorders": "Participant eligible for studies on mood and psychiatric disorders",
-            "Respiratory Disorders": "Participant eligible for studies on respiratory disorders",
-            "Pediatric Disorders": "Participant eligible for studies on pediatric disorders"
-        }
+    "age": {
+        "Description": "Age of the participant units TBD."
+    },
+    "eligible___1": {
+        "description": ""
+    },
+    "eligible_studies___2": {
+        "description": ""
+    },
+    "eligible_studies___3": {
+        "description": ""
+    },
+    "eligible_studies___4": {
+        "description": ""
+    },
+    "eligible_studies___5": {
+        "description": ""
     },
     "is_control_participant": {
-        "Description": "Indicates whether the participant is a control participant",
-        "Levels": {
-            "yes": "Participant is a control",
-            "no": "Participant is not a control"
-        }
+        "description": ""
     },
-    "laryngeal_conditions": {
-        "Description": "Indicates if the participant has any laryngeal conditions",
-        "Levels": {
-            "laryngeal cancer": "Laryngeal cancer",
-            "lesions of the vocal cord": "Lesions of the vocal cord (nodule, polyp, cyst)",
-            "recurrent laryngeal papilloma": "Recurrent laryngeal papilloma (RRP)",
-            "spasmodic dysphonia": "Spasmodic dysphonia / Laryngeal tremor",
-            "unilateral vocal fold paralysis": "Unilateral vocal fold paralysis"
-        }
+    "laryng_cancer": {
+        "description": ""
     },
-    "neurological_conditions": {
-        "Description": "Indicates if the participant has any neurological or neurodegenerative conditions",
-        "Levels": {
-            "alzheimer's disease": "Alzheimer's, dementia, or mild cognitive impairment",
-            "amyotrophic lateral sclerosis": "Amyotrophic Lateral Sclerosis (ALS)",
-            "parkinson's disease": "Parkinson's disease"
-        }
+    "benign_cord_lesion": {
+        "description": ""
     },
-    "psychiatric_conditions": {
-        "Description": "Indicates if the participant has any psychiatric conditions",
-        "Levels": {
-            "alcohol or substance use disorder": "Alcohol or Substance Use Disorder",
-            "anxiety disorder": "Anxiety disorder",
-            "attention-deficit / hyperactivity disorder": "Attention-Deficit / Hyperactivity Disorder (ADHD)",
-            "autism spectrum disorder": "Autism Spectrum Disorder (ASD)",
-            "bipolar disorder": "Bipolar Disorder",
-            "borderline personality disorder": "Borderline Personality Disorder (BPD)",
-            "depression or major depressive disorder": "Depression or Major Depressive Disorder",
-            "eating disorder": "Eating Disorder (ED)",
-            "insomnia / sleep disorder": "Insomnia / sleep disorder",
-            "obsessive-compulsive disorder": "Obsessive-Compulsive Disorder (OCD)",
-            "panic disorder": "Panic Disorder",
-            "post-traumatic stress disorder": "Post-Traumatic Stress Disorder (PTSD)",
-            "schizophrenia": "Schizophrenia",
-            "social anxiety disorder": "Social Anxiety Disorder",
-            "other psychiatric disorder": "Other psychiatric disorder"
-        }
+    "rrp": {
+        "description": ""
     },
-    "respiratory_conditions": {
-        "Description": "Indicates if the participant has any respiratory conditions",
-        "Levels": {
-            "asthma": "Asthma",
-            "airway stenosis": "Airway stenosis (e.g., bilateral vocal fold paralysis; laryngeal stenosis)",
-            "chronic cough": "Chronic Cough",
-            "copd": "COPD",
-            "obstructive sleep apnea": "Obstructive Sleep Apnea (OSA)"
-        }
+    "spas_dys": {
+        "description": ""
     },
-    "pediatric_conditions": {
-        "Description": "Indicates if the participant has any pediatric conditions",
-        "Levels": {
-            "n/a": "Not applicable"
-        }
+    "voc_fold_paralysis": {
+        "description": ""
     },
-    "vision_related_requirements": {
-        "Description": "Indicates if the participant has any vision-related requirements",
-        "Levels": {
-            "change font size": "Participant prefers a different font size",
-            "change font color": "Participant prefers high contrast mode",
-            "use screen reader": "Participant needs a screen reader",
-            "person to read text": "Participant requires a person to read the text"
-        }
+    "alz_dementia_mci": {
+        "description": ""
     },
-    "hearing_related_requirements": {
-        "Description": "Indicates if the participant has any hearing-related requirements",
-        "Levels": {
-            "turn up the volume": "Participant needs volume increased",
-            "turn on closed captions": "Participant requires closed captions",
-            "use haptic feedback": "Participant prefers haptic feedback instead of audio cues"
-        }
+    "als": {
+        "description": ""
     },
-    "physical_challenges": {
-        "Description": "Indicates if the participant has any physical challenges related to touchscreen navigation",
-        "Levels": {
-            "increase button size": "Participant prefers larger buttons",
-            "alternative keyboard": "Participant prefers to connect an alternative keyboard",
-            "navigate by voice commands": "Participant prefers to navigate using voice commands"
-        }
+    "parkinsons": {
+        "description": ""
     },
-    "cognitive_challenges": {
-        "Description": "Indicates if the participant has any cognitive challenges including difficulty reading",
-        "Levels": {
-            "text-to-speech": "Participant prefers text-to-speech",
-            "person to read text": "Participant prefers a person to read the text",
-            "speak answers": "Participant prefers to speak answers instead of typing"
-        }
+    "alcohol_subst_abuse": {
+        "description": ""
     },
-    "smoking_history": {
-        "Description": "Indicates if the participant has a history of smoking",
-        "Levels": {
-            "current smoker": "Participant is a current smoker",
-            "former smoker": "Participant is a former smoker",
-            "never smoked": "Participant has never smoked",
-            "prefer not to answer": "Participant prefers not to disclose smoking history"
-        }
+    "gad": {
+        "description": ""
     },
-    "alcohol_use": {
-        "Description": "Indicates if the participant consumes alcohol",
-        "Levels": {
-            "yes": "Participant consumes alcohol",
-            "no": "Participant does not consume alcohol",
-            "prefer not to answer": "Participant prefers not to disclose alcohol use"
-        }
+    "add_adhd": {
+        "description": ""
     },
-    "employment_status": {
-        "Description": "Indicates the employment status of the participant",
-        "Levels": {
-            "employed, freelance": "Participant is employed freelance",
-            "employed, full time": "Participant is employed full time",
-            "employed, part time": "Participant is employed part time",
-            "employed, multiple part time jobs": "Participant has multiple part time jobs",
-            "student": "Participant is a student",
-            "self-employed": "Participant is self-employed",
-            "retired": "Participant is retired",
-            "unemployed": "Participant is unemployed",
-            "other": "Other employment status as specified by the participant"
-        }
+    "asd": {
+        "description": ""
     },
-    "marital_status": {
-        "Description": "Indicates the marital status of the participant",
-        "Levels": {
-            "single": "Participant is single",
-            "married": "Participant is married",
-            "in a relationship": "Participant is in a relationship",
-            "not married": "Participant is not married",
-            "separated": "Participant is separated",
-            "divorced": "Participant is divorced",
-            "widowed": "Participant is widowed"
-        }
+    "bipolar": {
+        "description": ""
     },
-    "primary_mode_of_transportation": {
-        "Description": "Indicates the participant's primary mode of transportation",
-        "Levels": {
-            "car": "Participant uses a car",
-            "public transport": "Participant uses public transport",
-            "walking": "Participant walks",
-            "cycling": "Participant cycles",
-            "other": "Other mode of transportation as specified by the participant"
-        }
+    "bpd": {
+        "description": ""
     },
-    "housing_status": {
-        "Description": "Indicates the housing status of the participant",
-        "Levels": {
-            "owns home": "Participant owns their home",
-            "rents home": "Participant rents their home",
-            "living with family": "Participant is living with family",
-            "homeless": "Participant is homeless",
-            "other": "Other housing status as specified by the participant"
-        }
+    "depression": {
+        "description": ""
     },
-    "income_level": {
-        "Description": "Indicates the income level of the participant",
-        "Units": "USD",
-        "Notes": "Participants should report their total household income from all sources"
+    "ed": {
+        "description": ""
+    },
+    "insomnia": {
+        "description": ""
+    },
+    "ocd": {
+        "description": ""
+    },
+    "panic": {
+        "description": ""
+    },
+    "ptsd": {
+        "description": ""
+    },
+    "schizophrenia": {
+        "description": ""
+    },
+    "soc_anx_dis": {
+        "description": ""
+    },
+    "other_psych": {
+        "description": ""
+    },
+    "asthma": {
+        "description": ""
+    },
+    "airway_stenosis": {
+        "description": ""
+    },
+    "chronic_cough": {
+        "description": ""
+    },
+    "copd": {
+        "description": ""
+    },
+    "osa": {
+        "description": ""
+    },
+    "subjectparticipant_eligible_studies_complete": {
+        "description": ""
+    },
+    "ef_select_language": {
+        "description": ""
+    },
+    "ef_any_vision_related_req": {
+        "description": ""
+    },
+    "ef_vision_a11y_options___1": {
+        "description": ""
+    },
+    "ef_vision_a11y_options___2": {
+        "description": ""
+    },
+    "ef_vision_a11y_options___3": {
+        "description": ""
+    },
+    "ef_vision_a11y_options___4": {
+        "description": ""
+    },
+    "ef_any_hearing_related_req": {
+        "description": ""
+    },
+    "ef_hearing_a11y_options___1": {
+        "description": ""
+    },
+    "ef_hearing_a11y_options___2": {
+        "description": ""
+    },
+    "ef_hearing_a11y_options___3": {
+        "description": ""
+    },
+    "ef_any_physical_challenges": {
+        "description": ""
+    },
+    "ef_physical_a11y_options___1": {
+        "description": ""
+    },
+    "ef_physical_a11y_options___2": {
+        "description": ""
+    },
+    "ef_physical_a11y_options___3": {
+        "description": ""
+    },
+    "ef_any_cognitive_challeges": {
+        "description": ""
+    },
+    "ef_cognitive_a11y_options___1": {
+        "description": ""
+    },
+    "ef_cognitive_a11y_options___2": {
+        "description": ""
+    },
+    "ef_cognitive_a11y_options___3": {
+        "description": ""
+    },
+    "ef_completed_by___1": {
+        "description": ""
+    },
+    "ef_completed_by___2": {
+        "description": ""
+    },
+    "ef_completed_by___3": {
+        "description": ""
+    },
+    "ef_primary_language": {
+        "description": ""
+    },
+    "ef_primary_language_other": {
+        "description": ""
+    },
+    "ef_fluent_languages___1": {
+        "description": ""
+    },
+    "ef_fluent_languages___2": {
+        "description": ""
+    },
+    "ef_fluent_languages___3": {
+        "description": ""
+    },
+    "ef_fluent_languages___4": {
+        "description": ""
+    },
+    "ef_fluent_languages___5": {
+        "description": ""
+    },
+    "ef_fluent_language_other": {
+        "description": ""
+    },
+    "diagnosis_vfp_gsd": {
+        "description": ""
+    },
+    "diagnosis_vfp_ds": {
+        "description": ""
+    },
+    "diagnosis_vfp_etiology": {
+        "description": ""
+    },
+    "diagnosis_vfp_iatrogenic": {
+        "description": ""
+    },
+    "diagnosis_vfp_tumor": {
+        "description": ""
+    },
+    "diagnosis_vfp_dse": {
+        "description": ""
+    },
+    "diagnosis_degree_os": {
+        "description": ""
+    },
+    "diagnosis_degree_os_2": {
+        "description": ""
+    },
+    "diagnosis_degree_r": {
+        "description": ""
+    },
+    "diagnosis_degree_r_2": {
+        "description": ""
+    },
+    "diagnosis_degree_b": {
+        "description": ""
+    },
+    "diagnosis_degree_b_2": {
+        "description": ""
+    },
+    "diagnosis_degree_s": {
+        "description": ""
+    },
+    "diagnosis_degree_s_2": {
+        "description": ""
+    },
+    "diagnosis_degree_p": {
+        "description": ""
+    },
+    "diagnosis_degree_p_2": {
+        "description": ""
+    },
+    "diagnosis_degree_l": {
+        "description": ""
+    },
+    "diagnosis_degree_l_2": {
+        "description": ""
+    },
+    "diagnosis_degree_comments": {
+        "description": ""
+    },
+    "diagnosis_vfp_treatment": {
+        "description": ""
+    },
+    "diagnosis_vfp_treatment_surgery": {
+        "description": ""
+    },
+    "diagnosis_vfp_treatment_surgery_thyroplasty": {
+        "description": ""
+    },
+    "diagnosis_vfp_treatment_surgery_vfia": {
+        "description": ""
+    },
+    "diagnosis_ld_qete___laryngologist": {
+        "description": ""
+    },
+    "diagnosis_ld_qete___speech_language_pathology": {
+        "description": ""
+    },
+    "diagnosis_ld_qete___neurologist_specializing_disorders": {
+        "description": ""
+    },
+    "diagnosis_ld_assessment___aural_perceptual_evaluation": {
+        "description": ""
+    },
+    "diagnosis_ld_assessment___laryngoscopy_or_stroboscopy": {
+        "description": ""
+    },
+    "diagnosis_ld_assessment___neurological_evaluation": {
+        "description": ""
+    },
+    "diagnosis_ld_ds___adld": {
+        "description": ""
+    },
+    "diagnosis_ld_ds___abld": {
+        "description": ""
+    },
+    "diagnosis_ld_ds___vocal_tremor": {
+        "description": ""
+    },
+    "diagnosis_ld_ds___mixed_laryngeal_dystonia": {
+        "description": ""
+    },
+    "diagnosis_ld_ds___sld": {
+        "description": ""
+    },
+    "diagnosis_ld_ds___arld": {
+        "description": ""
+    },
+    "diagnosis_ld_etiology": {
+        "description": ""
+    },
+    "diagnosis_ld_etiology_cc___essential_tremor_of_the_hands": {
+        "description": ""
+    },
+    "diagnosis_ld_etiology_cc___essential_tremor_of_the_head": {
+        "description": ""
+    },
+    "diagnosis_ld_etiology_cc___jaw_tremor": {
+        "description": ""
+    },
+    "diagnosis_ld_etiology_cc___dystonia_of_the_head_and_neck": {
+        "description": ""
+    },
+    "diagnosis_ld_etiology_cc___other_type_of_dystonia": {
+        "description": ""
+    },
+    "diagnosis_ld_degree_os_1": {
+        "description": ""
+    },
+    "diagnosis_ld_degree_os_2": {
+        "description": ""
+    },
+    "diagnosis_ld_degree_r_1": {
+        "description": ""
+    },
+    "diagnosis_ld_degree_r_2": {
+        "description": ""
+    },
+    "diagnosis_ld_degree_b_1": {
+        "description": ""
+    },
+    "diagnosis_ld_degree_b_2": {
+        "description": ""
+    },
+    "diagnosis_ld_degree_s_1": {
+        "description": ""
+    },
+    "diagnosis_ld_degree_s_2": {
+        "description": ""
+    },
+    "diagnosis_ld_degree_p_1": {
+        "description": ""
+    },
+    "diagnosis_ld_degree_p_2": {
+        "description": ""
+    },
+    "diagnosis_ld_degree_l_1": {
+        "description": ""
+    },
+    "diagnosis_ld_degree_l_2": {
+        "description": ""
+    },
+    "diagnosis_ld_degree_comments": {
+        "description": ""
+    },
+    "diagnosis_ld_treatment": {
+        "description": ""
+    },
+    "diagnosis_ld_treatment_select___botox_injections": {
+        "description": ""
+    },
+    "diagnosis_ld_treatment_select___voice_or_speech_therapy": {
+        "description": ""
+    },
+    "diagnosis_ld_treatment_select___vibrotactile_stimulation": {
+        "description": ""
+    },
+    "diagnosis_ld_treatment_select___deep_brain_stimulation": {
+        "description": ""
+    },
+    "diagnosis_ld_treatment_select___mrgfus": {
+        "description": ""
+    },
+    "diagnosis_ld_treatment_select___other": {
+        "description": ""
+    },
+    "diagnosis_ld_treatment_bi_li": {
+        "description": ""
+    },
+    "diagnois_pl_gsd_ls": {
+        "description": ""
+    },
+    "diagnois_pl_gsd_bp": {
+        "description": ""
+    },
+    "diagnosis_pl_ds___keratosis": {
+        "description": ""
+    },
+    "diagnosis_pl_ds___leukoplakia": {
+        "description": ""
+    },
+    "diagnosis_pl_ds___erythroplakia": {
+        "description": ""
+    },
+    "diagnosis_pl_ds___other": {
+        "description": ""
+    },
+    "diagnosis_pl_ds_l": {
+        "description": ""
+    },
+    "diagnosis_pl_ds_l_wd_g": {
+        "description": ""
+    },
+    "diagnosis_pl_ds_e": {
+        "description": ""
+    },
+    "diagnosis_pl_ds_e_wd_g": {
+        "description": ""
+    },
+    "diagnosis_pl_etiology___past_or_present_smoking": {
+        "description": ""
+    },
+    "diagnosis_pl_etiology___laryngopharyngeal_reflux": {
+        "description": ""
+    },
+    "diagnosis_pl_etiology___other_irritants": {
+        "description": ""
+    },
+    "diagnosis_pl_ds_ll___right_vocal_fold": {
+        "description": ""
+    },
+    "diagnosis_pl_ds_ll___left_vocal_fold": {
+        "description": ""
+    },
+    "diagnosis_pl_ds_ll___both_vocal_folds": {
+        "description": ""
+    },
+    "diagnosis_pl_ds_ll___ventricular_folds": {
+        "description": ""
+    },
+    "diagnosis_pl_ds_ll___subglottal_areas": {
+        "description": ""
+    },
+    "diagnosis_pl_degree_os_1": {
+        "description": ""
+    },
+    "diagnosis_pl_degree_os_2": {
+        "description": ""
+    },
+    "diagnosis_pl_degree_r_1": {
+        "description": ""
+    },
+    "diagnosis_pl_degree_r_2": {
+        "description": ""
+    },
+    "diagnosis_pl_degree_b_1": {
+        "description": ""
+    },
+    "diagnosis_pl_degree_b_2": {
+        "description": ""
+    },
+    "diagnosis_pl_degree_s_1": {
+        "description": ""
+    },
+    "diagnosis_pl_degree_s_2": {
+        "description": ""
+    },
+    "diagnosis_pl_degree_p_1": {
+        "description": ""
+    },
+    "diagnosis_pl_degree_p_2": {
+        "description": ""
+    },
+    "diagnosis_pl_degree_l_1": {
+        "description": ""
+    },
+    "diagnosis_pl_degree_l_2": {
+        "description": ""
+    },
+    "diagnosis_pl_degree_comments": {
+        "description": ""
+    },
+    "diagnosis_pl_treatment": {
+        "description": ""
+    },
+    "diagnosis_pl_treatment_select___surveillance_only": {
+        "description": ""
+    },
+    "diagnosis_pl_treatment_select___laser_resection": {
+        "description": ""
+    },
+    "diagnosis_pl_treatment_select___laser_ablation": {
+        "description": ""
+    },
+    "diagnosis_pl_treatment_select___microlaryngeal_surgery_without_laser": {
+        "description": ""
+    },
+    "diagnosis_pl_treatment_select___radiotherapy_persistent_or_recurrent_lesions": {
+        "description": ""
+    },
+    "diagnosis_pl_treatment_select___voice_or_speech_therapy": {
+        "description": ""
+    },
+    "diagnosis_pl_treatment_select___other": {
+        "description": ""
+    },
+    "diagnois_lc_gsd_sll": {
+        "description": ""
+    },
+    "diagnosis_lc_gsd_bpr": {
+        "description": ""
+    },
+    "diagnosis_lc_gsd_uots___ct_neck": {
+        "description": ""
+    },
+    "diagnosis_lc_gsd_uots___ct_chest": {
+        "description": ""
+    },
+    "diagnosis_lc_gsd_uots___mri_neck": {
+        "description": ""
+    },
+    "diagnosis_lc_gsd_uots___pet_ct": {
+        "description": ""
+    },
+    "diagnosis_lc_gsd_uots___ultrasound_neck": {
+        "description": ""
+    },
+    "diagnosis_lc_ds___right_vocal_fold": {
+        "description": ""
+    },
+    "diagnosis_lc_ds___left_vocal_fold": {
+        "description": ""
+    },
+    "diagnosis_lc_ds___both_vocal_folds": {
+        "description": ""
+    },
+    "diagnosis_lc_ds___anterior_commissure": {
+        "description": ""
+    },
+    "diagnosis_lc_ds___ventricular_folds": {
+        "description": ""
+    },
+    "diagnosis_lc_ds___subglottal_areas": {
+        "description": ""
+    },
+    "diagnosis_lc_etiology___smoking": {
+        "description": ""
+    },
+    "diagnosis_lc_etiology___alcohol": {
+        "description": ""
+    },
+    "diagnosis_lc_etiology___family_history": {
+        "description": ""
+    },
+    "diagnosis_lc_etiology___hpv": {
+        "description": ""
+    },
+    "diagnosis_lc_etiology___exposure_other_harmful_substances": {
+        "description": ""
+    },
+    "diagnosis_lc_ds_t_stage": {
+        "description": ""
+    },
+    "diagnosis_lc_ds_n_stage": {
+        "description": ""
+    },
+    "diagnosis_lc_ds_m_stage": {
+        "description": ""
+    },
+    "diagnosis_lc_degree_os_1": {
+        "description": ""
+    },
+    "diagnosis_lc_degree_os_2": {
+        "description": ""
+    },
+    "diagnosis_lc_degree_r_1": {
+        "description": ""
+    },
+    "diagnosis_lc_degree_r_2": {
+        "description": ""
+    },
+    "diagnosis_lc_degree_b_1": {
+        "description": ""
+    },
+    "diagnosis_lc_degree_b_2": {
+        "description": ""
+    },
+    "diagnosis_lc_degree_s_1": {
+        "description": ""
+    },
+    "diagnosis_lc_degree_s_2": {
+        "description": ""
+    },
+    "diagnosis_lc_degree_p_1": {
+        "description": ""
+    },
+    "diagnosis_lc_degree_p_2": {
+        "description": ""
+    },
+    "diagnosis_lc_degree_l_1": {
+        "description": ""
+    },
+    "diagnosis_lc_degree_l_2": {
+        "description": ""
+    },
+    "diagnosis_lc_degree_comments": {
+        "description": ""
+    },
+    "diagnosis_as_ds_ccsr": {
+        "description": ""
+    },
+    "diagnosis_lc_treatment": {
+        "description": ""
+    },
+    "diagnosis_lc_treatment_select___radiation": {
+        "description": ""
+    },
+    "diagnosis_lc_treatment_select___chemotherapy": {
+        "description": ""
+    },
+    "diagnosis_lc_treatment_select___immunotherapy": {
+        "description": ""
+    },
+    "diagnosis_lc_treatment_select___surgery": {
+        "description": ""
+    },
+    "diagnosis_lc_treatment_select___voice_or_speech_therapy": {
+        "description": ""
+    },
+    "diagnosis_lc_treatment_select___other": {
+        "description": ""
+    },
+    "diagnosis_lc_treatment_s___endoscopic_laser": {
+        "description": ""
+    },
+    "diagnosis_lc_treatment_s___partial_laryngectomy": {
+        "description": ""
+    },
+    "diagnois_bl_gsd": {
+        "description": ""
+    },
+    "diagnosis_bl_ds": {
+        "description": ""
+    },
+    "diagnosis_bl_etiology": {
+        "description": ""
+    },
+    "diagnosis_bl_ds_ll": {
+        "description": ""
+    },
+    "diagnosis_bl_degree_os_1": {
+        "description": ""
+    },
+    "diagnosis_bl_degree_os_2": {
+        "description": ""
+    },
+    "diagnosis_bl_degree_r_1": {
+        "description": ""
+    },
+    "diagnosis_bl_degree_r_2": {
+        "description": ""
+    },
+    "diagnosis_bl_degree_b_1": {
+        "description": ""
+    },
+    "diagnosis_bl_degree_b_2": {
+        "description": ""
+    },
+    "diagnosis_bl_degree_s_1": {
+        "description": ""
+    },
+    "diagnosis_bl_degree_s_2": {
+        "description": ""
+    },
+    "diagnosis_bl_degree_p_1": {
+        "description": ""
+    },
+    "diagnosis_bl_degree_p_2": {
+        "description": ""
+    },
+    "diagnosis_bl_degree_l_1": {
+        "description": ""
+    },
+    "diagnosis_bl_degree_l_2": {
+        "description": ""
+    },
+    "diagnosis_bl_degree_comments": {
+        "description": ""
+    },
+    "diagnosis_bl_treatment": {
+        "description": ""
+    },
+    "diagnosis_bl_treatment_select___voice_or_speech_therapy": {
+        "description": ""
+    },
+    "diagnosis_bl_treatment_select___laryngeal_microsurgery": {
+        "description": ""
+    },
+    "diagnosis_bl_treatment_select___voice_rest": {
+        "description": ""
+    },
+    "diagnosis_bl_treatment_select___other": {
+        "description": ""
+    },
+    "diagnosis_bl_treatment_lm": {
+        "description": ""
+    },
+    "diagnosis_bipolar_gsd": {
+        "description": ""
+    },
+    "diagnosis_bipolar_gsd_interview": {
+        "description": ""
+    },
+    "diagnosis_bipolar_gsd_oqu": {
+        "description": ""
+    },
+    "diagnosis_bipolar_gsd_oquw": {
+        "description": ""
+    },
+    "diagnosis_bipolar_subtype_active": {
+        "description": ""
+    },
+    "diagnosis_bipolar_psychotic": {
+        "description": ""
+    },
+    "diagnosis_bipolar_severity": {
+        "description": ""
+    },
+    "diagnosis_depression_gsd": {
+        "description": ""
+    },
+    "diagnosis_depression_clinical_subcategory": {
+        "description": ""
+    },
+    "diagnosis_depression_gsd_interview": {
+        "description": ""
+    },
+    "diagnosis_depression_gsd_oqu": {
+        "description": ""
+    },
+    "diagnosis_depression_gsd_oquw": {
+        "description": ""
+    },
+    "diagnosis_bipolar_subtype_active_depression": {
+        "description": ""
+    },
+    "diagnosis_bipolar_psychotic_depression": {
+        "description": ""
+    },
+    "diagnosis_bipolar_severity_depression": {
+        "description": ""
+    },
+    "diagnosis_as_pft": {
+        "description": ""
+    },
+    "diagnosis_as_gsd": {
+        "description": ""
+    },
+    "diagnosis_as_gsd_yes___bronchoscopy": {
+        "description": ""
+    },
+    "diagnosis_as_gsd_yes___ct": {
+        "description": ""
+    },
+    "diagnosis_as_ds": {
+        "description": ""
+    },
+    "diagnosis_as_ds_bvfi_gs": {
+        "description": ""
+    },
+    "diagnosis_as_etiology": {
+        "description": ""
+    },
+    "diagnosis_as_etiology_auto_immune": {
+        "description": ""
+    },
+    "diagnosis_as_ds_mcg": {
+        "description": ""
+    },
+    "diagnosis_as_ds_bc": {
+        "description": ""
+    },
+    "diagnosis_as_ds_agw": {
+        "description": ""
+    },
+    "diagnosis_as_ds_ac": {
+        "description": ""
+    },
+    "diagnosis_as_ds_ac_grade_4": {
+        "description": ""
+    },
+    "diagnosis_as_ds_ods": {
+        "description": ""
+    },
+    "diagnosis_as_ds_eps": {
+        "description": ""
+    },
+    "diagnosis_as_treatment___no_treatment": {
+        "description": ""
+    },
+    "diagnosis_as_treatment___surgery": {
+        "description": ""
+    },
+    "diagnosis_as_treatment___in_office_treatment": {
+        "description": ""
+    },
+    "diagnosis_as_treatment_surgery___endoscopic_intervention": {
+        "description": ""
+    },
+    "diagnosis_as_treatment_surgery___endoscopic_excision": {
+        "description": ""
+    },
+    "diagnosis_as_treatment_surgery___laryngotracheal_reconstruction": {
+        "description": ""
+    },
+    "diagnosis_as_treatment_surgery___laryngotracheoplasty": {
+        "description": ""
+    },
+    "diagnosis_as_treatment_surgery___tracheostomy": {
+        "description": ""
+    },
+    "diagnosis_as_treatment_surgery___other": {
+        "description": ""
+    },
+    "diagnosis_as_treatment_in_office___steroid_injections_sole": {
+        "description": ""
+    },
+    "diagnosis_as_treatment_in_office___steroid_injections_adjunct": {
+        "description": ""
+    },
+    "diagnosis_as_treatment_in_office___dilation": {
+        "description": ""
+    },
+    "diagnosis_as_treatment_in_office___laser": {
+        "description": ""
+    },
+    "diagnosis_alz_dementia_mci_causes": {
+        "description": ""
+    },
+    "diagnosis_alz_dementia_mci_dt": {
+        "description": ""
+    },
+    "diagnosis_alz_dementia_mci_etiology___genetic_factors": {
+        "description": ""
+    },
+    "diagnosis_alz_dementia_mci_etiology___age_related_changes": {
+        "description": ""
+    },
+    "diagnosis_alz_dementia_mci_etiology___other_medical_conditions": {
+        "description": ""
+    },
+    "diagnosis_alz_dementia_mci_etiology___substance_related": {
+        "description": ""
+    },
+    "diagnosis_alz_dementia_mci_etiology___other": {
+        "description": ""
+    },
+    "diagnosis_alz_dementia_mci_etiology_gf___familial_alzheimers_disease": {
+        "description": ""
+    },
+    "diagnosis_alz_dementia_mci_etiology_gf___apolipoprotein_e": {
+        "description": ""
+    },
+    "diagnosis_alz_dementia_mci_etiology_gf___other_genetic_factors": {
+        "description": ""
+    },
+    "diagnosis_alz_dementia_mci_ds___mci": {
+        "description": ""
+    },
+    "diagnosis_alz_dementia_mci_ds___cdr": {
+        "description": ""
+    },
+    "diagnosis_alz_dementia_mci_ds_cdr": {
+        "description": ""
+    },
+    "diagnosis_alz_dementia_mci_ca_rudas_score": {
+        "description": ""
+    },
+    "diagnosis_alz_dementia_mci_ca_mmse_score": {
+        "description": ""
+    },
+    "diagnosis_alz_dementia_mci_ca_moca_score": {
+        "description": ""
+    },
+    "diagnosis_alz_dementia_mci_ca_adas_cog_score": {
+        "description": ""
+    },
+    "diagnosis_alz_dementia_mci_ca_other": {
+        "description": ""
+    },
+    "diagnosis_alz_dementia_mci_ca_other_score": {
+        "description": ""
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained": {
+        "description": ""
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes___medications": {
+        "description": ""
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes___npi": {
+        "description": ""
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_medications___cholinesterase_inhibitors": {
+        "description": ""
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_medications___nmda_receptor_antagonist": {
+        "description": ""
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_medications___other": {
+        "description": ""
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___day_program": {
+        "description": ""
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___cognitive_simulation_therapy": {
+        "description": ""
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___reality_orientation_therapy": {
+        "description": ""
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___reminiscence_therapy": {
+        "description": ""
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___physical_exercise_program": {
+        "description": ""
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___dietary_modifications": {
+        "description": ""
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___other": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_gsd_category_1___bradykinesia": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_gsd_category_1___tremor": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_gsd_category_1___rigidity": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_gsd_category_1_calculation": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_gsd_category_2___cerebellar_abnormalities": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_gsd_category_2___supranuclear_gaze_palsy": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_gsd_category_2___bvf_ftd_ppa": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_gsd_category_2___lower_limbs": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_gsd_category_2___dopamine_treatment": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_gsd_category_2___absence_of_response": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_gsd_category_2___cortical_sensory_loss": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_gsd_category_2___dat_scan": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_gsd_category_2___alternative_condition": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_gsd_category_2_calculation": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_gsd_category_3___response_dopaminergic_therapy": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_gsd_category_3___levodopa_induced_dyskinesia": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_gsd_category_3___rest_tremor": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_gsd_category_3___mibg": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_gsd_category_3_calculation": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_gsd_calculation": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_disease_subtype": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_etiology": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_ds": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_ma___updrs": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_ma___other": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_ma_uprds": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_ma_updrs_part_i_score": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_ma_updrs_part_ii_score": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_ma_updrs_part_iii_score": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_ma_updrs_part_iv_score": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_non_motor_symptoms": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_non_motor_symptoms_yes": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_treatment_obtained": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes___medications": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes___npi": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_medications___levodopa": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_medications___dopamine_agonists": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_medications___mao_b": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_medications___amantadine": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_medications___other": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_npi___physical_therapy": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_npi___occupational_therapy": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_npi___speech_therapy": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_npi___dbs": {
+        "description": ""
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_npi___other": {
+        "description": ""
+    },
+    "diagnosis_als_gsd_category_1": {
+        "description": ""
+    },
+    "diagnosis_als_gsd_category_2": {
+        "description": ""
+    },
+    "diagnosis_als_gsd_category_3": {
+        "description": ""
+    },
+    "diagnosis_als_gsd_calculation": {
+        "description": ""
+    },
+    "diagnosis_als_disease_subtype": {
+        "description": ""
+    },
+    "diagnosis_als_disease_subtype_familial": {
+        "description": ""
+    },
+    "diagnosis_als_etiology___genetic_factors": {
+        "description": ""
+    },
+    "diagnosis_als_etiology___environmental_factors": {
+        "description": ""
+    },
+    "diagnosis_als_etiology_genetic_factors___c9orf72": {
+        "description": ""
+    },
+    "diagnosis_als_etiology_genetic_factors___sod1": {
+        "description": ""
+    },
+    "diagnosis_als_etiology_genetic_factors___other": {
+        "description": ""
+    },
+    "diagnosis_als_cp___upper_motor_neuron": {
+        "description": ""
+    },
+    "diagnosis_als_cp___lower_motor_neuron": {
+        "description": ""
+    },
+    "diagnosis_als_cp___bulbar_symptoms": {
+        "description": ""
+    },
+    "diagnosis_als_cp___respiratory_involvement": {
+        "description": ""
+    },
+    "diagnosis_als_dp": {
+        "description": ""
+    },
+    "diagnosis_als_na_alsfrs_r_score": {
+        "description": ""
+    },
+    "diagnosis_als_na_fvc_percentage": {
+        "description": ""
+    },
+    "diagnosis_als_treatment_and_management": {
+        "description": ""
+    },
+    "diagnosis_als_treatment_and_management_yes___medications": {
+        "description": ""
+    },
+    "diagnosis_als_treatment_and_management_yes___supportive_care": {
+        "description": ""
+    },
+    "diagnosis_als_treatment_and_management_yes_medications___riluzole": {
+        "description": ""
+    },
+    "diagnosis_als_treatment_and_management_yes_medications___edaravone": {
+        "description": ""
+    },
+    "diagnosis_als_treatment_and_management_yes_medications___sodium": {
+        "description": ""
+    },
+    "diagnosis_als_treatment_and_management_yes_medications___tofersen": {
+        "description": ""
+    },
+    "diagnosis_als_treatment_and_management_yes_medications___symptomatic_treatment": {
+        "description": ""
+    },
+    "diagnosis_als_treatment_and_management_yes_medications___other": {
+        "description": ""
+    },
+    "diagnosis_als_treatment_and_management_yes_supportive_care___physical_therapy": {
+        "description": ""
+    },
+    "diagnosis_als_treatment_and_management_yes_supportive_care___occupational_therapy": {
+        "description": ""
+    },
+    "diagnosis_als_treatment_and_management_yes_supportive_care___speech_therapy": {
+        "description": ""
+    },
+    "diagnosis_als_treatment_and_management_yes_supportive_care___respiratory_support": {
+        "description": ""
+    },
+    "diagnosis_als_treatment_and_management_yes_supportive_care___nutrition_support": {
+        "description": ""
+    },
+    "diagnosis_als_treatment_and_management_yes_supportive_care___psychotherapy": {
+        "description": ""
+    },
+    "diagnosis_als_treatment_and_management_yes_supportive_care___other": {
+        "description": ""
     }
 }

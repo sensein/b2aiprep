@@ -21,6 +21,7 @@ the voice recordings.
 
 import json
 import logging
+import os
 import typing as t
 from importlib.resources import files
 from pathlib import Path
@@ -83,6 +84,32 @@ def load_redcap_csv(file_path):
     except pd.errors.ParserError:
         print("Error parsing CSV file.")
         return None
+
+
+def construct_participants_tsv(df: pd.DataFrame, outdir: str) -> None:
+    """Constructs the participants.tsv file from a DataFrame and a
+    participants.json file.
+
+    Args:
+        df (pd.DataFrame): DataFrame containing participant data.
+        outdir (str): Output directory where participants.tsv and
+                      participants.json are located.
+
+    Returns:
+        None: This function does not return a value; it writes the output to
+              a TSV file.
+    """
+    json_path = os.path.join(outdir, "participants.json")  # Path to participants.json
+    with open(json_path, "r") as f:
+        participants_json = json.load(f)  # Load column labels
+    column_labels = list(participants_json.keys())  # Extract column names
+    valid_columns = [col for col in column_labels if col in df.columns]  # Filter columns
+    if not valid_columns:
+        raise ValueError("No valid columns found in DataFrame that match participants.json")
+    selected_df = df[valid_columns]  # Select relevant columns
+    combined_df = selected_df.groupby("record_id").first().reset_index()  # Combine entries
+    tsv_path = os.path.join(outdir, "participants.tsv")  # Path for participants.tsv
+    combined_df.to_csv(tsv_path, sep="\t", index=False)  # Save to TSV file
 
 
 def update_redcap_df_column_names(df: DataFrame) -> DataFrame:
@@ -522,6 +549,8 @@ def redcap_to_bids(
     # for simplicity, we always map columns to coded columns before processing,
     # that way we only ever need to manually subselect using one version of the column name
     df = update_redcap_df_column_names(df)
+
+    construct_participants_tsv(df, outdir)
 
     # the repeat instrument columns also defines all the possible
     # repeat instruments we would like to extract from the RedCap CSV
