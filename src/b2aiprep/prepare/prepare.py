@@ -69,17 +69,17 @@ _logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
-def copy_package_file(
+def copy_package_resource(
     package: str, resource: str, destination_dir: str, destination_name: str = None
 ) -> None:
     """
-    Copy a file from within a package to a specified directory.
+    Copy a file or directory from within a package to a specified directory.
 
     Args:
-        package (str): The package name where the file is located.
-        resource (str): The resource name (file path within the package).
-        destination_dir (str): The directory where the file should be copied.
-        destination_name (str, optional): The new name for the copied file.
+        package (str): The package name where the file or directory is located.
+        resource (str): The resource name (file or directory path within the package).
+        destination_dir (str): The directory where the file or directory should be copied.
+        destination_name (str, optional): The new name for the copied file or directory.
         If not provided, the original name is used.
 
     Returns:
@@ -90,8 +90,12 @@ def copy_package_file(
 
     destination_path = os.path.join(destination_dir, destination_name)
 
-    with pkg_resources.path(package, resource) as src_file_path:
-        shutil.copy(src_file_path, destination_path)
+    with pkg_resources.path(package, resource) as src_path:
+        src_path = str(src_path)  # Convert to string to avoid issues with path-like objects
+        if os.path.isdir(src_path):  # Check if the resource is a directory
+            shutil.copytree(src_path, destination_path)
+        else:  # Otherwise, assume it is a file
+            shutil.copy(src_path, destination_path)
 
 
 def initialize_data_directory(bids_dir_path: str) -> None:
@@ -107,14 +111,15 @@ def initialize_data_directory(bids_dir_path: str) -> None:
         os.makedirs(bids_dir_path)
         _logger.info(f"Created directory: {bids_dir_path}")
 
-    copy_package_file("b2aiprep.data.b2ai-data-bids-like-template", "CHANGES.md", bids_dir_path)
-    copy_package_file("b2aiprep.data.b2ai-data-bids-like-template", "README.md", bids_dir_path)
-    copy_package_file(
+    copy_package_resource("b2aiprep.data.b2ai-data-bids-like-template", "CHANGES.md", bids_dir_path)
+    copy_package_resource("b2aiprep.data.b2ai-data-bids-like-template", "README.md", bids_dir_path)
+    copy_package_resource(
         "b2aiprep.data.b2ai-data-bids-like-template", "dataset_description.json", bids_dir_path
     )
-    copy_package_file(
+    copy_package_resource(
         "b2aiprep.data.b2ai-data-bids-like-template", "participants.json", bids_dir_path
     )
+    copy_package_resource("b2aiprep.data.b2ai-data-bids-like-template", "phenotype", bids_dir_path)
 
 
 @pydra.mark.task

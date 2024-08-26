@@ -1,0 +1,494 @@
+{
+    "confounders_session_id": {
+        "description": ""
+    },
+    "confounders_duration": {
+        "description": ""
+    },
+    "is_regular_smoker": {
+        "description": ""
+    },
+    "smoking_hx": {
+        "description": ""
+    },
+    "age_start_smoking": {
+        "description": ""
+    },
+    "age_stop_smoking": {
+        "description": ""
+    },
+    "smoking_types___1": {
+        "description": ""
+    },
+    "smoking_types___2": {
+        "description": ""
+    },
+    "smoking_types___3": {
+        "description": ""
+    },
+    "smoking_types___4": {
+        "description": ""
+    },
+    "smoking_types___5": {
+        "description": ""
+    },
+    "smoking_types___6": {
+        "description": ""
+    },
+    "smoking_types___7": {
+        "description": ""
+    },
+    "smoking_types___8": {
+        "description": ""
+    },
+    "smoking_freq": {
+        "description": ""
+    },
+    "alcohol_yn": {
+        "description": ""
+    },
+    "alcohol_freq": {
+        "description": ""
+    },
+    "alcohol_amt": {
+        "description": ""
+    },
+    "alcohol_drinks": {
+        "description": ""
+    },
+    "alcohol_today": {
+        "description": ""
+    },
+    "drinks_today_number": {
+        "description": ""
+    },
+    "alcohol_rehab": {
+        "description": ""
+    },
+    "current_recovery_alcohol": {
+        "description": ""
+    },
+    "caffeine_intake": {
+        "description": ""
+    },
+    "caffeine_intake_today": {
+        "description": ""
+    },
+    "hydration": {
+        "description": ""
+    },
+    "hydration_today": {
+        "description": ""
+    },
+    "dental_problems": {
+        "description": ""
+    },
+    "seasonal_allergies": {
+        "description": ""
+    },
+    "seasonal_allergies_options___1": {
+        "description": ""
+    },
+    "seasonal_allergies_options___2": {
+        "description": ""
+    },
+    "seasonal_allergies_options___3": {
+        "description": ""
+    },
+    "seasonal_allergies_options___4": {
+        "description": ""
+    },
+    "tired_measure": {
+        "description": ""
+    },
+    "height": {
+        "description": ""
+    },
+    "weight": {
+        "description": ""
+    },
+    "unit": {
+        "description": ""
+    },
+    "symptoms___1": {
+        "description": ""
+    },
+    "symptoms___2": {
+        "description": ""
+    },
+    "symptoms___3": {
+        "description": ""
+    },
+    "symptoms___4": {
+        "description": ""
+    },
+    "symptoms___5": {
+        "description": ""
+    },
+    "symptoms___6": {
+        "description": ""
+    },
+    "symptoms___7": {
+        "description": ""
+    },
+    "ear_med_history___1": {
+        "description": ""
+    },
+    "ear_med_history___2": {
+        "description": ""
+    },
+    "ear_med_history___3": {
+        "description": ""
+    },
+    "nose_med_history___1": {
+        "description": ""
+    },
+    "throat_med_history___1": {
+        "description": ""
+    },
+    "throat_med_history___2": {
+        "description": ""
+    },
+    "throat_med_history___3": {
+        "description": ""
+    },
+    "throat_med_history___4": {
+        "description": ""
+    },
+    "throat_med_history___5": {
+        "description": ""
+    },
+    "throat_med_history___6": {
+        "description": ""
+    },
+    "throat_med_history___7": {
+        "description": ""
+    },
+    "throat_med_history___8": {
+        "description": ""
+    },
+    "throat_med_history___9": {
+        "description": ""
+    },
+    "throat_med_history___10": {
+        "description": ""
+    },
+    "head_med_history___1": {
+        "description": ""
+    },
+    "head_med_history___2": {
+        "description": ""
+    },
+    "ear_surgical___1": {
+        "description": ""
+    },
+    "ear_surgical___2": {
+        "description": ""
+    },
+    "nose_surgical___1": {
+        "description": ""
+    },
+    "nose_surgical___2": {
+        "description": ""
+    },
+    "throat_surgical___1": {
+        "description": ""
+    },
+    "throat_surgical___2": {
+        "description": ""
+    },
+    "throat_surgical___3": {
+        "description": ""
+    },
+    "throat_surgical___4": {
+        "description": ""
+    },
+    "head_surgical___1": {
+        "description": ""
+    },
+    "head_surgical___2": {
+        "description": ""
+    },
+    "neurological_history___1": {
+        "description": ""
+    },
+    "neurological_history___2": {
+        "description": ""
+    },
+    "neurological_history___3": {
+        "description": ""
+    },
+    "neurological_history___4": {
+        "description": ""
+    },
+    "neurological_history___5": {
+        "description": ""
+    },
+    "neurological_history___6": {
+        "description": ""
+    },
+    "current_neuro_dx": {
+        "description": ""
+    },
+    "respiratory_conditions___1": {
+        "description": ""
+    },
+    "respiratory_conditions___2": {
+        "description": ""
+    },
+    "respiratory_conditions___3": {
+        "description": ""
+    },
+    "respiratory_conditions___4": {
+        "description": ""
+    },
+    "respiratory_conditions___5": {
+        "description": ""
+    },
+    "respiratory_conditions___6": {
+        "description": ""
+    },
+    "respiratory_conditions___7": {
+        "description": ""
+    },
+    "respiratory_conditions___8": {
+        "description": ""
+    },
+    "lung_or_metastatic___1": {
+        "description": ""
+    },
+    "lung_or_metastatic___2": {
+        "description": ""
+    },
+    "covid___past_year": {
+        "description": ""
+    },
+    "covid___long": {
+        "description": ""
+    },
+    "covid_past": {
+        "description": ""
+    },
+    "cpap_conditions___1": {
+        "description": ""
+    },
+    "cpap_conditions___2": {
+        "description": ""
+    },
+    "resp_medical_history___1": {
+        "description": ""
+    },
+    "resp_medical_history___2": {
+        "description": ""
+    },
+    "resp_medical_history___3": {
+        "description": ""
+    },
+    "resp_medical_history___4": {
+        "description": ""
+    },
+    "exposed_environmental_pollution": {
+        "description": ""
+    },
+    "breathe_today": {
+        "description": ""
+    },
+    "breathe_today_difficulty": {
+        "description": ""
+    },
+    "cough_today": {
+        "description": ""
+    },
+    "cough_today_severity": {
+        "description": ""
+    },
+    "circulatory_conditions___1": {
+        "description": ""
+    },
+    "circulatory_conditions___2": {
+        "description": ""
+    },
+    "circulatory_conditions___3": {
+        "description": ""
+    },
+    "circulatory_conditions___4": {
+        "description": ""
+    },
+    "circulatory_conditions___5": {
+        "description": ""
+    },
+    "circulatory_conditions___6": {
+        "description": ""
+    },
+    "circulatory_med_history___1": {
+        "description": ""
+    },
+    "circulatory_med_history___2": {
+        "description": ""
+    },
+    "circulatory_med_history___3": {
+        "description": ""
+    },
+    "circulatory_med_history___4": {
+        "description": ""
+    },
+    "circulatory_med_history___5": {
+        "description": ""
+    },
+    "ph_standing": {
+        "description": ""
+    },
+    "ph_take_care": {
+        "description": ""
+    },
+    "ph_learn_task": {
+        "description": ""
+    },
+    "ph_problem_join": {
+        "description": ""
+    },
+    "ph_health_problem": {
+        "description": ""
+    },
+    "ph_concentrating": {
+        "description": ""
+    },
+    "ph_walking": {
+        "description": ""
+    },
+    "ph_washing": {
+        "description": ""
+    },
+    "ph_get_dressed": {
+        "description": ""
+    },
+    "ph_dealing_people": {
+        "description": ""
+    },
+    "ph_friendship": {
+        "description": ""
+    },
+    "ph_day_to_day_work": {
+        "description": ""
+    },
+    "physical_health_freq": {
+        "description": ""
+    },
+    "phys_health_impact": {
+        "description": ""
+    },
+    "phys_health_limited": {
+        "description": ""
+    },
+    "medications___1": {
+        "description": ""
+    },
+    "medications___2": {
+        "description": ""
+    },
+    "medications___3": {
+        "description": ""
+    },
+    "medications___4": {
+        "description": ""
+    },
+    "medications___5": {
+        "description": ""
+    },
+    "medications___6": {
+        "description": ""
+    },
+    "medications___7": {
+        "description": ""
+    },
+    "medications___8": {
+        "description": ""
+    },
+    "medications___9": {
+        "description": ""
+    },
+    "medications___10": {
+        "description": ""
+    },
+    "medications___11": {
+        "description": ""
+    },
+    "medications___12": {
+        "description": ""
+    },
+    "medications___13": {
+        "description": ""
+    },
+    "medications___14": {
+        "description": ""
+    },
+    "medications___15": {
+        "description": ""
+    },
+    "medications___16": {
+        "description": ""
+    },
+    "medications___17": {
+        "description": ""
+    },
+    "medications___18": {
+        "description": ""
+    },
+    "hormone_use___1": {
+        "description": ""
+    },
+    "hormone_use___2": {
+        "description": ""
+    },
+    "hormone_use___3": {
+        "description": ""
+    },
+    "hormone_use___4": {
+        "description": ""
+    },
+    "pain_medication___1": {
+        "description": ""
+    },
+    "pain_medication___2": {
+        "description": ""
+    },
+    "pain_medication___3": {
+        "description": ""
+    },
+    "menstruate": {
+        "description": ""
+    },
+    "menstruate_no": {
+        "description": ""
+    },
+    "menstrual_cycle_status": {
+        "description": ""
+    },
+    "voice_activity___1": {
+        "description": ""
+    },
+    "voice_activity___2": {
+        "description": ""
+    },
+    "voice_activity___3": {
+        "description": ""
+    },
+    "voice_activity___4": {
+        "description": ""
+    },
+    "voice_activity___5": {
+        "description": ""
+    },
+    "voice_activity___6": {
+        "description": ""
+    },
+    "voice_activity___7": {
+        "description": ""
+    },
+    "hours_voice_activity": {
+        "description": ""
+    },
+    "reading_aloud": {
+        "description": ""
+    }
+}

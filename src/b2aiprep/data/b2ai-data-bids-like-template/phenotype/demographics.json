@@ -1,0 +1,167 @@
+{
+    "demographics_session_id": {
+        "description": ""
+    },
+    "demographics_duration": {
+        "description": ""
+    },
+    "demographics_completed_by___1": {
+        "description": ""
+    },
+    "demographics_completed_by___2": {
+        "description": ""
+    },
+    "demographics_completed_by___3": {
+        "description": ""
+    },
+    "state_province": {
+        "description": ""
+    },
+    "country": {
+        "description": ""
+    },
+    "gender_identity": {
+        "description": ""
+    },
+    "specify_gender_identity": {
+        "description": ""
+    },
+    "sexual_orientation": {
+        "description": ""
+    },
+    "race___1": {
+        "description": ""
+    },
+    "race___2": {
+        "description": ""
+    },
+    "race___3": {
+        "description": ""
+    },
+    "race___4": {
+        "description": ""
+    },
+    "race___5": {
+        "description": ""
+    },
+    "race___6": {
+        "description": ""
+    },
+    "race___7": {
+        "description": ""
+    },
+    "race___8": {
+        "description": ""
+    },
+    "ethnicity": {
+        "description": ""
+    },
+    "other_edu_level": {
+        "description": ""
+    },
+    "hearing": {
+        "description": ""
+    },
+    "vision": {
+        "description": ""
+    },
+    "cognition": {
+        "description": ""
+    },
+    "mobility": {
+        "description": ""
+    },
+    "self_care": {
+        "description": ""
+    },
+    "independent_living": {
+        "description": ""
+    },
+    "employ_status___1": {
+        "description": ""
+    },
+    "employ_status___2": {
+        "description": ""
+    },
+    "employ_status___3": {
+        "description": ""
+    },
+    "employ_status___4": {
+        "description": ""
+    },
+    "employ_status___5": {
+        "description": ""
+    },
+    "employ_status___6": {
+        "description": ""
+    },
+    "employ_status___7": {
+        "description": ""
+    },
+    "employ_status___8": {
+        "description": ""
+    },
+    "employ_status___9": {
+        "description": ""
+    },
+    "household_income_usa": {
+        "description": ""
+    },
+    "household_income_ca": {
+        "description": ""
+    },
+    "marital_status___1": {
+        "description": ""
+    },
+    "marital_status___2": {
+        "description": ""
+    },
+    "marital_status___3": {
+        "description": ""
+    },
+    "marital_status___4": {
+        "description": ""
+    },
+    "marital_status___5": {
+        "description": ""
+    },
+    "marital_status___6": {
+        "description": ""
+    },
+    "marital_status___7": {
+        "description": ""
+    },
+    "housing_status": {
+        "description": ""
+    },
+    "household_count": {
+        "description": ""
+    },
+    "spouse_partner_sig_other": {
+        "description": ""
+    },
+    "children": {
+        "description": ""
+    },
+    "parent": {
+        "description": ""
+    },
+    "grandparent": {
+        "description": ""
+    },
+    "other_live_with": {
+        "description": ""
+    },
+    "others_household_specify": {
+        "description": ""
+    },
+    "transportation_yn": {
+        "description": ""
+    },
+    "primary_transportation": {
+        "description": ""
+    },
+    "q_generic_demographics_complete": {
+        "description": ""
+    }
+}

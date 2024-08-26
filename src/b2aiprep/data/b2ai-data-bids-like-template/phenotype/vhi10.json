@@ -1,0 +1,38 @@
+{
+    "vhi_session_id": {
+        "description": ""
+    },
+    "vhi_duration": {
+        "description": ""
+    },
+    "voice_difficult_hear": {
+        "description": ""
+    },
+    "tough_to_understand": {
+        "description": ""
+    },
+    "voice_restrict_social": {
+        "description": ""
+    },
+    "left_out_convo": {
+        "description": ""
+    },
+    "voice_lose_income": {
+        "description": ""
+    },
+    "strain_voice": {
+        "description": ""
+    },
+    "voice_clarity": {
+        "description": ""
+    },
+    "voice_upsetting": {
+        "description": ""
+    },
+    "voice_handicapped": {
+        "description": ""
+    },
+    "ask_whats_wrong_voice": {
+        "description": ""
+    }
+}

@@ -1,0 +1,47 @@
+{
+    "custom_affect_scale_session_id": {
+        "description": ""
+    },
+    "custom_affect_scale_duration": {
+        "description": ""
+    },
+    "sad_or_down": {
+        "description": ""
+    },
+    "joyful": {
+        "description": ""
+    },
+    "motivated": {
+        "description": ""
+    },
+    "lack_of_pleasure": {
+        "description": ""
+    },
+    "tired": {
+        "description": ""
+    },
+    "energetic": {
+        "description": ""
+    },
+    "agitated": {
+        "description": ""
+    },
+    "irritated": {
+        "description": ""
+    },
+    "lonely": {
+        "description": ""
+    },
+    "concentrated": {
+        "description": ""
+    },
+    "relaxed": {
+        "description": ""
+    },
+    "worried": {
+        "description": ""
+    },
+    "desire_to_escape": {
+        "description": ""
+    }
+}
