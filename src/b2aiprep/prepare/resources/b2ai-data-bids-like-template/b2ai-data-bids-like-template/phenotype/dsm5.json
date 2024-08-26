@@ -1,0 +1,122 @@
+{
+    "dsm_5_session_id": {
+        "description": ""
+    },
+    "dsm_5_duration": {
+        "description": ""
+    },
+    "little_interest": {
+        "description": ""
+    },
+    "feeling_down": {
+        "description": ""
+    },
+    "feeling_more_irritated": {
+        "description": ""
+    },
+    "sleeping_less": {
+        "description": ""
+    },
+    "starting_more_projects": {
+        "description": ""
+    },
+    "feeling_nervous": {
+        "description": ""
+    },
+    "feeling_panic": {
+        "description": ""
+    },
+    "avoiding_situations": {
+        "description": ""
+    },
+    "unexplained_aches": {
+        "description": ""
+    },
+    "illness_not_taken_serious": {
+        "description": ""
+    },
+    "self_harm": {
+        "description": ""
+    },
+    "hearing_things": {
+        "description": ""
+    },
+    "someone_hear_thoughts": {
+        "description": ""
+    },
+    "sleep_quality": {
+        "description": ""
+    },
+    "memory_issues": {
+        "description": ""
+    },
+    "unpleasant_thoughts": {
+        "description": ""
+    },
+    "repeat_acts": {
+        "description": ""
+    },
+    "feeling_detached": {
+        "description": ""
+    },
+    "no_purpose": {
+        "description": ""
+    },
+    "isolated": {
+        "description": ""
+    },
+    "drinking_more": {
+        "description": ""
+    },
+    "smoking_more": {
+        "description": ""
+    },
+    "medication_use": {
+        "description": ""
+    },
+    "q1_happy": {
+        "description": ""
+    },
+    "q2_self_confident": {
+        "description": ""
+    },
+    "q3_sleep": {
+        "description": ""
+    },
+    "q4_talk": {
+        "description": ""
+    },
+    "q5_active": {
+        "description": ""
+    },
+    "social_phobia_1": {
+        "description": ""
+    },
+    "social_phobia_2": {
+        "description": ""
+    },
+    "social_phobia_3": {
+        "description": ""
+    },
+    "social_phobia_4": {
+        "description": ""
+    },
+    "social_phobia_5": {
+        "description": ""
+    },
+    "social_phobia_6": {
+        "description": ""
+    },
+    "social_phobia_7": {
+        "description": ""
+    },
+    "social_phobia_8": {
+        "description": ""
+    },
+    "social_phobia_9": {
+        "description": ""
+    },
+    "social_phobia_10": {
+        "description": ""
+    }
+}

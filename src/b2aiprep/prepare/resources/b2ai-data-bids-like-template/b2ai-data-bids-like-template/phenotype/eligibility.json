@@ -1,0 +1,104 @@
+{
+    "eligible_studies___1": {
+        "description": ""
+    },
+    "eligible_studies___2": {
+        "description": ""
+    },
+    "eligible_studies___3": {
+        "description": ""
+    },
+    "eligible_studies___4": {
+        "description": ""
+    },
+    "eligible_studies___5": {
+        "description": ""
+    },
+    "is_control_participant": {
+        "description": ""
+    },
+    "laryng_cancer": {
+        "description": ""
+    },
+    "benign_cord_lesion": {
+        "description": ""
+    },
+    "rrp": {
+        "description": ""
+    },
+    "spas_dys": {
+        "description": ""
+    },
+    "voc_fold_paralysis": {
+        "description": ""
+    },
+    "alz_dementia_mci": {
+        "description": ""
+    },
+    "als": {
+        "description": ""
+    },
+    "parkinsons": {
+        "description": ""
+    },
+    "alcohol_subst_abuse": {
+        "description": ""
+    },
+    "gad": {
+        "description": ""
+    },
+    "add_adhd": {
+        "description": ""
+    },
+    "asd": {
+        "description": ""
+    },
+    "bipolar": {
+        "description": ""
+    },
+    "bpd": {
+        "description": ""
+    },
+    "depression": {
+        "description": ""
+    },
+    "ed": {
+        "description": ""
+    },
+    "insomnia": {
+        "description": ""
+    },
+    "ocd": {
+        "description": ""
+    },
+    "panic": {
+        "description": ""
+    },
+    "ptsd": {
+        "description": ""
+    },
+    "schizophrenia": {
+        "description": ""
+    },
+    "soc_anx_dis": {
+        "description": ""
+    },
+    "other_psych": {
+        "description": ""
+    },
+    "asthma": {
+        "description": ""
+    },
+    "airway_stenosis": {
+        "description": ""
+    },
+    "chronic_cough": {
+        "description": ""
+    },
+    "copd": {
+        "description": ""
+    },
+    "osa": {
+        "description": ""
+    }
+}

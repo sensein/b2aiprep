@@ -1,0 +1,71 @@
+{
+    "diagnois_bl_gsd": {
+        "description": ""
+    },
+    "diagnosis_bl_ds": {
+        "description": ""
+    },
+    "diagnosis_bl_etiology": {
+        "description": ""
+    },
+    "diagnosis_bl_ds_ll": {
+        "description": ""
+    },
+    "diagnosis_bl_degree_os_1": {
+        "description": ""
+    },
+    "diagnosis_bl_degree_os_2": {
+        "description": ""
+    },
+    "diagnosis_bl_degree_r_1": {
+        "description": ""
+    },
+    "diagnosis_bl_degree_r_2": {
+        "description": ""
+    },
+    "diagnosis_bl_degree_b_1": {
+        "description": ""
+    },
+    "diagnosis_bl_degree_b_2": {
+        "description": ""
+    },
+    "diagnosis_bl_degree_s_1": {
+        "description": ""
+    },
+    "diagnosis_bl_degree_s_2": {
+        "description": ""
+    },
+    "diagnosis_bl_degree_p_1": {
+        "description": ""
+    },
+    "diagnosis_bl_degree_p_2": {
+        "description": ""
+    },
+    "diagnosis_bl_degree_l_1": {
+        "description": ""
+    },
+    "diagnosis_bl_degree_l_2": {
+        "description": ""
+    },
+    "diagnosis_bl_degree_comments": {
+        "description": ""
+    },
+    "diagnosis_bl_treatment": {
+        "description": ""
+    },
+    "diagnosis_bl_treatment_select___voice_or_speech_therapy": {
+        "description": ""
+    },
+    "diagnosis_bl_treatment_select___laryngeal_microsurgery": {
+        "description": ""
+    },
+    "diagnosis_bl_treatment_select___voice_rest": {
+        "description": ""
+    },
+    "diagnosis_bl_treatment_select___other": {
+        "description": ""
+    },
+    "diagnosis_bl_treatment_lm": {
+        "description": ""
+    }
+}
