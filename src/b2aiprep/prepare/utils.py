@@ -2,6 +2,8 @@ import json
 import os
 from typing import Dict, List
 
+import pandas as pd
+
 
 def _transform_str_for_bids_filename(filename: str):
     """Replace spaces in a string with hyphens to match BIDS string format rules.."""
@@ -36,7 +38,7 @@ def reformat_resources(input_dir: str, output_dir: str) -> None:
 
     # Create output directory if it does not exist
     os.makedirs(output_dir, exist_ok=True)
-    print("HELLO")
+
     # Iterate through all files in the input directory
     for filename in os.listdir(input_dir):
         if filename.endswith(".json"):
@@ -58,3 +60,52 @@ def reformat_resources(input_dir: str, output_dir: str) -> None:
 
             except Exception as e:
                 print(f"Error processing file '{filename}': {e}")
+
+
+def make_tsv_files(directory: str) -> None:
+    """
+    Creates .tsv files for each .json file present in the specified directory.
+    The .tsv files will have columns corresponding to the keys of the JSON files,
+    maintaining the order of the keys.
+
+    Args:
+        directory (str): The path to the directory containing .json files for which
+                         .tsv files need to be created.
+
+    Returns:
+        None
+
+    Raises:
+        FileNotFoundError: If the specified directory does not exist.
+        Exception: If any unexpected error occurs during file creation.
+    """
+    if not os.path.exists(directory):
+        raise FileNotFoundError(f"The directory '{directory}' does not exist.")
+
+    # Iterate over all files in the specified directory
+    for filename in os.listdir(directory):
+        if filename.endswith(".json"):
+            base_name = os.path.splitext(filename)[0]
+            tsv_filename = f"{base_name}.tsv"
+            json_filepath = os.path.join(directory, filename)
+            tsv_filepath = os.path.join(directory, tsv_filename)
+
+            try:
+                with open(json_filepath, "r") as json_file:
+                    data = json.load(json_file)
+
+                # Extract top-level keys from the JSON file to be the columns
+                keys = list(data.keys())
+                df = pd.DataFrame([{key: "" for key in keys}])
+
+                # Write the DataFrame to a .tsv file
+                df.to_csv(tsv_filepath, sep="\t", index=False)
+
+            except Exception as e:
+                print(f"Error processing file '{filename}': {e}")
+
+
+dir = "/Users/isaacbevers/sensein/b2ai-wrapper/b2aiprep/src/b2aiprep/data\
+    /b2ai-data-bids-like-template/phenotype"
+
+make_tsv_files(dir)
