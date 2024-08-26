@@ -1,6 +1,9 @@
+import glob
+import importlib.resources as pkg_resources
 import json
 import os
-from typing import Dict, List
+import shutil
+from typing import Dict, List, Optional
 
 import pandas as pd
 
@@ -105,7 +108,101 @@ def make_tsv_files(directory: str) -> None:
                 print(f"Error processing file '{filename}': {e}")
 
 
-dir = "/Users/isaacbevers/sensein/b2ai-wrapper/b2aiprep/src/b2aiprep/data\
-    /b2ai-data-bids-like-template/phenotype"
+def copy_package_resource(
+    package: str, resource: str, destination_dir: str, destination_name: str = None
+) -> None:
+    """
+    Copy a file or directory from within a package to a specified directory.
 
-make_tsv_files(dir)
+    Args:
+        package (str): The package name where the file or directory is located.
+        resource (str): The resource name (file or directory path within the package).
+        destination_dir (str): The directory where the file or directory should be copied.
+        destination_name (str, optional): The new name for the copied file or directory.
+        If not provided, the original name is used.
+
+    Returns:
+        None
+    """
+    if destination_name is None:
+        destination_name = os.path.basename(resource)
+    destination_path = os.path.join(destination_dir, destination_name)
+    with pkg_resources.path(package, resource) as src_path:
+        src_path = str(src_path)  # Convert to string to avoid issues with path-like objects
+        if os.path.isdir(src_path):  # Check if the resource is a directory
+            shutil.copytree(src_path, destination_path)
+        else:  # Otherwise, assume it is a file
+            shutil.copy(src_path, destination_path)
+
+
+def remove_files_by_pattern(directory: str, pattern: str) -> None:
+    """
+    Remove all files in a given directory that match a specific pattern.
+
+    Args:
+        directory (str): The path to the directory.
+        pattern (str): The pattern to match files (e.g., "*.txt" for all text files).
+
+    Returns:
+        None
+    """
+    # Construct the full path pattern
+    path_pattern = os.path.join(directory, pattern)
+
+    # Use glob to find all files that match the pattern
+    files_to_remove = glob.glob(path_pattern)
+
+    for file_path in files_to_remove:
+        try:
+            os.remove(file_path)
+            print(f"Removed file: {file_path}")
+        except OSError as e:
+            print(f"Error removing file {file_path}: {e}")
+
+
+def construct_tsv_from_json(
+    df: pd.DataFrame, json_file_path: str, output_dir: str, output_file_name: Optional[str] = None
+) -> None:
+    """
+    Constructs a TSV file from a DataFrame and a JSON file specifying column labels.
+    Combines entries so that there is one row per record_id.
+
+    Args:
+        df (pd.DataFrame): DataFrame containing the data.
+        json_file_path (str): Path to the JSON file with the column labels.
+        output_dir (str): Output directory where the TSV file will be saved.
+        output_file_name (str, optional): The name of the output TSV file.
+                                          If not provided, the JSON file name is used with a .tsv extension.
+
+    Returns:
+        None: This function does not return a value; it writes the output to a TSV file.
+    """
+    # Load the column labels from the JSON file
+    with open(json_file_path, "r") as f:
+        json_data = json.load(f)
+
+    # Extract column names from the JSON file
+    column_labels = list(json_data.keys())
+
+    # Filter column labels to only include those that exist in the DataFrame
+    valid_columns = [col for col in column_labels if col in df.columns]
+
+    if not valid_columns:
+        raise ValueError("No valid columns found in DataFrame that match JSON file")
+
+    # Select the relevant columns from the DataFrame
+    selected_df = df[valid_columns]
+
+    # Combine entries so there is one row per record_id
+    combined_df = selected_df.groupby("record_id").first().reset_index()
+
+    # Define the output file name and path
+    if output_file_name is None:
+        output_file_name = os.path.splitext(os.path.basename(json_file_path))[0] + ".tsv"
+
+    tsv_path = os.path.join(output_dir, output_file_name)
+
+    # Save the combined DataFrame to a TSV file
+    combined_df.to_csv(tsv_path, sep="\t", index=False)
+
+    print(f"TSV file created and saved to: {tsv_path}")
