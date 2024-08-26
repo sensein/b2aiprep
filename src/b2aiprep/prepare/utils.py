@@ -112,7 +112,8 @@ def copy_package_resource(
     package: str, resource: str, destination_dir: str, destination_name: str = None
 ) -> None:
     """
-    Copy a file or directory from within a package to a specified directory.
+    Copy a file or directory from within a package to a specified directory,
+    overwriting if it already exists.
 
     Args:
         package (str): The package name where the file or directory is located.
@@ -127,6 +128,14 @@ def copy_package_resource(
     if destination_name is None:
         destination_name = os.path.basename(resource)
     destination_path = os.path.join(destination_dir, destination_name)
+
+    # Check if the destination path already exists and remove it if so
+    if os.path.exists(destination_path):
+        if os.path.isdir(destination_path):
+            shutil.rmtree(destination_path)
+        else:
+            os.remove(destination_path)
+
     with pkg_resources.path(package, resource) as src_path:
         src_path = str(src_path)  # Convert to string to avoid issues with path-like objects
         if os.path.isdir(src_path):  # Check if the resource is a directory
@@ -190,6 +199,9 @@ def construct_tsv_from_json(
     if not valid_columns:
         raise ValueError("No valid columns found in DataFrame that match JSON file")
 
+    if "record_id" not in valid_columns:
+        valid_columns = ["record_id"] + valid_columns
+
     # Select the relevant columns from the DataFrame
     selected_df = df[valid_columns]
 
@@ -206,3 +218,37 @@ def construct_tsv_from_json(
     combined_df.to_csv(tsv_path, sep="\t", index=False)
 
     print(f"TSV file created and saved to: {tsv_path}")
+
+
+def construct_all_tsvs_from_jsons(
+    df: pd.DataFrame, input_dir: str, output_dir: str, excluded_files: Optional[List[str]] = None
+) -> None:
+    """
+    Constructs TSV files from all JSON files in a specified directory,
+    excluding specific files if provided.
+
+    Args:
+        df (pd.DataFrame): DataFrame containing the data.
+        input_dir (str): Directory containing JSON files with column labels.
+        output_dir (str): Directory where the TSV files will be saved.
+        excluded_files (List[str], optional): List of JSON filenames to exclude
+                                              from processing. Defaults to None.
+
+    Returns:
+        None: This function does not return a value; it writes output to TSV files.
+    """
+    # Ensure the excluded_files list is initialized if None is provided
+    if excluded_files is None:
+        excluded_files = []
+
+    # Ensure output directory exists
+    os.makedirs(output_dir, exist_ok=True)
+
+    # Iterate over all files in the input directory
+    for filename in os.listdir(input_dir):
+        # Process only JSON files that are not excluded
+        if filename.endswith(".json") and filename not in excluded_files:
+            json_file_path = os.path.join(input_dir, filename)
+
+            # Construct the TSV file from the JSON file
+            construct_tsv_from_json(df=df, json_file_path=json_file_path, output_dir=output_dir)
