@@ -221,23 +221,25 @@ def write_pydantic_model_to_bids_file(
     recording_name : str, optional
         The recording name.
     """
-
+    # sub-<participant_id>_ses-<session_id>_task-<task_name>_run-_metadata.json
     filename = f"sub-{subject_id}"
     if session_id is not None:
         session_id = _transform_str_for_bids_filename(session_id)
         filename += f"_ses-{session_id}"
     if task_name is not None:
         task_name = _transform_str_for_bids_filename(task_name)
+        if recording_name is not None:  # add run number
+            task_name = _transform_str_for_bids_filename(recording_name)
+            if task_name.split("-")[-1].isdigit():
+                task_name = "-".join(task_name.split("-")[:-1])
+                task_name += f"_run-{recording_name.split('-')[-1]}"
         filename += f"_task-{task_name}"
-    if recording_name is not None:
-        recording_name = _transform_str_for_bids_filename(recording_name)
-        filename += f"_rec-{recording_name}"
 
     schema_name = _transform_str_for_bids_filename(schema_name)
     filename += f"_{schema_name}.json"
 
     if not output_path.exists():
-        output_path.mkdir(parents=True, exist_ok=True)
+        output_path.mkdir(parents=True, exist_ok=False)
     with open(output_path / filename, "w") as f:
         f.write(data.json(indent=2))
 
