@@ -32,17 +32,8 @@ from pandas import DataFrame
 from pydantic import BaseModel
 from tqdm import tqdm
 
-from b2aiprep.prepare.constants import (
-    AUDIO_TASKS,
-    GENERAL_QUESTIONNAIRES,
-    VALIDATED_QUESTIONNAIRES,
-    Instrument,
-    RepeatInstrument,
-)
-from b2aiprep.prepare.fhir_utils import (
-    convert_response_to_fhir,
-    is_empty_questionnaire_response,
-)
+from b2aiprep.prepare.constants import AUDIO_TASKS, Instrument, RepeatInstrument
+from b2aiprep.prepare.fhir_utils import convert_response_to_fhir
 from b2aiprep.prepare.utils import (
     _transform_str_for_bids_filename,
     construct_all_tsvs_from_jsons,
@@ -341,24 +332,6 @@ def output_participant_data_to_fhir(
     # TODO: prepare a Patient resource to use as the reference for each questionnaire
     # patient = create_fhir_patient(participant)
 
-    for questionnaire_name in GENERAL_QUESTIONNAIRES:
-        instrument = get_instrument_for_name(questionnaire_name)
-        fhir_data = convert_response_to_fhir(
-            participant,
-            questionnaire_name=questionnaire_name,
-            mapping_name=instrument.schema,
-            columns=instrument.columns,
-        )
-        if is_empty_questionnaire_response(fhir_data):
-            continue
-
-        write_pydantic_model_to_bids_file(
-            subject_path,
-            fhir_data,
-            schema_name=questionnaire_name,
-            subject_id=participant_id,
-        )
-
     session_instrument = get_instrument_for_name("sessions")
     task_instrument = get_instrument_for_name("acoustic_tasks")
     recording_instrument = get_instrument_for_name("recordings")
@@ -369,7 +342,6 @@ def output_participant_data_to_fhir(
         # TODO: prepare a session resource to use as the encounter reference for
         # each session questionnaire
         session_path = subject_path / f"ses-{session_id}"
-        beh_path = session_path / "beh"
         audio_output_path = session_path / "audio"
         if not audio_output_path.exists():
             audio_output_path.mkdir(parents=True, exist_ok=True)
@@ -379,6 +351,7 @@ def output_participant_data_to_fhir(
             mapping_name=session_instrument.schema,
             columns=session_instrument.columns,
         )
+        # TODO add a session.tsv and possibly keep a session.json
         write_pydantic_model_to_bids_file(
             session_path,
             fhir_data,
@@ -464,27 +437,6 @@ def output_participant_data_to_fhir(
                                 f"Audio file {audio_file_destination} already exists. Overwriting."
                             )
                         audio_file_destination.write_bytes(audio_file.read_bytes())
-
-        # validated questionnaires
-        for repeat_instrument in VALIDATED_QUESTIONNAIRES:
-            if (repeat_instrument not in session) or (session[repeat_instrument] is None):
-                continue
-            instrument = repeat_instrument.value
-
-            fhir_data = convert_response_to_fhir(
-                session[repeat_instrument],
-                questionnaire_name=instrument.name,
-                mapping_name=instrument.schema,
-                columns=instrument.columns,
-            )
-
-            write_pydantic_model_to_bids_file(
-                beh_path,
-                fhir_data,
-                schema_name=instrument.schema,
-                subject_id=participant_id,
-                session_id=session_id,
-            )
 
 
 def redcap_to_bids(
