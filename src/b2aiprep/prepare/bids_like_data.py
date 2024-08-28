@@ -336,29 +336,19 @@ def output_participant_data_to_fhir(
     task_instrument = get_instrument_for_name("acoustic_tasks")
     recording_instrument = get_instrument_for_name("recordings")
 
+    sessions_df = pd.DataFrame(columns=session_instrument.columns)
     # validated questionnaires are asked per session
     for session in participant["sessions"]:
+        sessions_row = {key: session[key] for key in session_instrument.columns}
+        sessions_df = pd.concat([sessions_df, pd.DataFrame([sessions_row])], ignore_index=True)
         session_id = session["session_id"]
+
         # TODO: prepare a session resource to use as the encounter reference for
         # each session questionnaire
         session_path = subject_path / f"ses-{session_id}"
         audio_output_path = session_path / "audio"
         if not audio_output_path.exists():
             audio_output_path.mkdir(parents=True, exist_ok=True)
-        fhir_data = convert_response_to_fhir(
-            session,
-            questionnaire_name=session_instrument.name,
-            mapping_name=session_instrument.schema,
-            columns=session_instrument.columns,
-        )
-        # TODO add a session.tsv and possibly keep a session.json
-        write_pydantic_model_to_bids_file(
-            session_path,
-            fhir_data,
-            schema_name=session_instrument.schema,
-            subject_id=participant_id,
-            session_id=session_id,
-        )
 
         # multiple acoustic tasks are asked per session
         for task in session["acoustic_tasks"]:
@@ -437,6 +427,9 @@ def output_participant_data_to_fhir(
                                 f"Audio file {audio_file_destination} already exists. Overwriting."
                             )
                         audio_file_destination.write_bytes(audio_file.read_bytes())
+    # Save sessions.tsv
+    sessions_tsv_path = subject_path / "sessions.tsv"
+    sessions_df.to_csv(sessions_tsv_path, sep="\t", index=False)
 
 
 def redcap_to_bids(
@@ -558,6 +551,7 @@ def redcap_to_bids(
             sessions_df["record_id"] == participant["record_id"]
         ].to_dict("records")
 
+        # sessions_df = pd.DataFrame()
         for session in participant["sessions"]:
             # there can be multiple acoustic tasks per session
             session_id = session["session_id"]
