@@ -228,11 +228,12 @@ def write_pydantic_model_to_bids_file(
         filename += f"_ses-{session_id}"
     if task_name is not None:
         task_name = _transform_str_for_bids_filename(task_name)
-        if recording_name is not None:  # add run number
+        if recording_name is not None:
             task_name = _transform_str_for_bids_filename(recording_name)
         filename += f"_task-{task_name}"
 
-    schema_name = _transform_str_for_bids_filename(schema_name)
+    schema_name = _transform_str_for_bids_filename(schema_name).replace("schema", "")
+    schema_name = schema_name + "-metadata"
     filename += f"_{schema_name}.json"
 
     if not output_path.exists():
