@@ -230,9 +230,6 @@ def write_pydantic_model_to_bids_file(
         task_name = _transform_str_for_bids_filename(task_name)
         if recording_name is not None:  # add run number
             task_name = _transform_str_for_bids_filename(recording_name)
-            if task_name.split("-")[-1].isdigit():
-                task_name = "-".join(task_name.split("-")[:-1])
-                task_name += f"_run-{recording_name.split('-')[-1]}"
         filename += f"_task-{task_name}"
 
     schema_name = _transform_str_for_bids_filename(schema_name)
@@ -384,7 +381,7 @@ def output_participant_data_to_fhir(
             )
 
             # prefix is used to name audio files, if they are copied over
-            prefix = f"sub-{participant_id}_ses-{session_id}_{acoustic_task_name}"
+            prefix = f"sub-{participant_id}_ses-{session_id}"
 
             # there may be more than one recording per acoustic task
             for recording in task["recordings"]:
@@ -432,7 +429,7 @@ def output_participant_data_to_fhir(
                             recording["recording_name"]
                         )
                         audio_file_destination = (
-                            audio_output_path / f"{prefix}_rec-{recording_name}{ext}"
+                            audio_output_path / f"{prefix}_task-{recording_name}{ext}"
                         )
                         if audio_file_destination.exists():
                             logging.warning(
