@@ -400,7 +400,7 @@ def output_participant_data_to_fhir(
                 columns=task_instrument.columns,
             )
             write_pydantic_model_to_bids_file(
-                beh_path,
+                audio_output_path,
                 fhir_data,
                 schema_name=task_instrument.schema,
                 subject_id=participant_id,
@@ -420,7 +420,7 @@ def output_participant_data_to_fhir(
                     columns=recording_instrument.columns,
                 )
                 write_pydantic_model_to_bids_file(
-                    beh_path,
+                    audio_output_path,
                     fhir_data,
                     schema_name=recording_instrument.schema,
                     subject_id=participant_id,
