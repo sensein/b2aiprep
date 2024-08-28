@@ -200,6 +200,7 @@ def get_recordings_for_acoustic_task(df: pd.DataFrame, acoustic_task: str) -> pd
     return dff
 
 
+# TODO Modify the save path and naming of this to correspond to the voice file
 def write_pydantic_model_to_bids_file(
     output_path: Path,
     data: BaseModel,
@@ -535,19 +536,20 @@ def redcap_to_bids(
         output_file_name="participants.tsv",
     )
 
-    construct_all_tsvs_from_jsons(
+    construct_all_tsvs_from_jsons(  # construct phenotype tsvs
         df=df,
         input_dir=os.path.join(outdir, "phenotype"),
         output_dir=os.path.join(outdir, "phenotype"),
     )
 
-    # construct_phenotype_tsvs(df, outdir)
-
-    # the repeat instrument columns also defines all the possible
-    # repeat instruments we would like to extract from the RedCap CSV
+    # The repeat instrument columns also defines all the possible
+    # repeat instruments we would like to extract from the RedCap CSV.
+    # In this case, repeat instruments are not necessarily repeatedly collected.
+    # Rather they are entries that correspond with specific activities.
     repeat_instruments: t.List[RepeatInstrument] = list(RepeatInstrument.__members__.values())
 
     # we use the RepeatInstrument values to create a dict that maps the instrument
+    # record_id: dictionary where keys=column names and values=values for that record_id
     # i.e. we end up with dataframe_dicts = {
     #       'demographics': {"session_id_1": {data}, ...}},
     #       'confounders': {"session_id_1": {data}, ...}},
