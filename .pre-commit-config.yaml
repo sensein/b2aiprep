@@ -5,21 +5,22 @@ ci:
 
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: v4.6.0
     hooks:
     -   id: check-added-large-files
     -   id: check-yaml
     -   id: end-of-file-fixer
     -   id: trailing-whitespace
 -   repo: https://github.com/psf/black
-    rev: 24.3.0
+    rev: 24.8.0
     hooks:
     -   id: black
--   repo: https://github.com/PyCQA/flake8
-    rev: 7.0.0
+-   repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.6.2  # Replace with the latest version available
     hooks:
-    - id: flake8
-      exclude: ^(src/b2aiprep/_version\.py|versioneer\.py)$
+    -   id: ruff
+        args: ["--fix"]
+        exclude: ^(src/b2aiprep/_version\.py|versioneer\.py)$
 -   repo: https://github.com/PyCQA/isort
     rev: 5.13.2
     hooks:
@@ -27,7 +28,7 @@ repos:
         exclude: ^(src/b2aiprep/_version\.py|versioneer\.py)$
         args: ["--profile", "black"]
 -   repo: https://github.com/codespell-project/codespell
-    rev: v2.2.6
+    rev: v2.3.0
     hooks:
     -   id: codespell
         args: ["--skip=*.json"]

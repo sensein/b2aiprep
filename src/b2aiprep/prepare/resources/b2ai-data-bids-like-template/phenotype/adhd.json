@@ -1,0 +1,62 @@
+{
+    "adhd_session_id": {
+        "description": ""
+    },
+    "adhd_duration": {
+        "description": ""
+    },
+    "wrapping_up": {
+        "description": ""
+    },
+    "things_in_order": {
+        "description": ""
+    },
+    "remembering_appt": {
+        "description": ""
+    },
+    "avoidance": {
+        "description": ""
+    },
+    "fidget": {
+        "description": ""
+    },
+    "overly_active": {
+        "description": ""
+    },
+    "careless": {
+        "description": ""
+    },
+    "difficulty_attention": {
+        "description": ""
+    },
+    "difficulty_concentrating": {
+        "description": ""
+    },
+    "misplace": {
+        "description": ""
+    },
+    "distracted": {
+        "description": ""
+    },
+    "remain_seated": {
+        "description": ""
+    },
+    "restless": {
+        "description": ""
+    },
+    "difficulty_unwinding": {
+        "description": ""
+    },
+    "talking_too_much": {
+        "description": ""
+    },
+    "finish_other_sent": {
+        "description": ""
+    },
+    "difficulty_waiting": {
+        "description": ""
+    },
+    "interrupt_others": {
+        "description": ""
+    }
+}

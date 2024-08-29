@@ -1,0 +1,38 @@
+{
+    "dyspnea_index_session_id": {
+        "description": ""
+    },
+    "dyspnea_index_duration": {
+        "description": ""
+    },
+    "di_air_in": {
+        "description": ""
+    },
+    "di_tightness_throat": {
+        "description": ""
+    },
+    "di_effort_breathe": {
+        "description": ""
+    },
+    "di_weather_changes": {
+        "description": ""
+    },
+    "di_breathing_worse_stress": {
+        "description": ""
+    },
+    "di_sound_breathing_in": {
+        "description": ""
+    },
+    "di_strain": {
+        "description": ""
+    },
+    "di_exercise": {
+        "description": ""
+    },
+    "di_breathing_stresses_me": {
+        "description": ""
+    },
+    "di_restrict_personal_social_life": {
+        "description": ""
+    }
+}

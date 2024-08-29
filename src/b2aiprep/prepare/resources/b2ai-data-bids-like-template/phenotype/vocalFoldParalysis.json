@@ -1,0 +1,71 @@
+{
+    "diagnosis_vfp_gsd": {
+        "description": ""
+    },
+    "diagnosis_vfp_ds": {
+        "description": ""
+    },
+    "diagnosis_vfp_etiology": {
+        "description": ""
+    },
+    "diagnosis_vfp_iatrogenic": {
+        "description": ""
+    },
+    "diagnosis_vfp_tumor": {
+        "description": ""
+    },
+    "diagnosis_vfp_dse": {
+        "description": ""
+    },
+    "diagnosis_degree_os": {
+        "description": ""
+    },
+    "diagnosis_degree_os_2": {
+        "description": ""
+    },
+    "diagnosis_degree_r": {
+        "description": ""
+    },
+    "diagnosis_degree_r_2": {
+        "description": ""
+    },
+    "diagnosis_degree_b": {
+        "description": ""
+    },
+    "diagnosis_degree_b_2": {
+        "description": ""
+    },
+    "diagnosis_degree_s": {
+        "description": ""
+    },
+    "diagnosis_degree_s_2": {
+        "description": ""
+    },
+    "diagnosis_degree_p": {
+        "description": ""
+    },
+    "diagnosis_degree_p_2": {
+        "description": ""
+    },
+    "diagnosis_degree_l": {
+        "description": ""
+    },
+    "diagnosis_degree_l_2": {
+        "description": ""
+    },
+    "diagnosis_degree_comments": {
+        "description": ""
+    },
+    "diagnosis_vfp_treatment": {
+        "description": ""
+    },
+    "diagnosis_vfp_treatment_surgery": {
+        "description": ""
+    },
+    "diagnosis_vfp_treatment_surgery_thyroplasty": {
+        "description": ""
+    },
+    "diagnosis_vfp_treatment_surgery_vfia": {
+        "description": ""
+    }
+}

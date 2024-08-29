@@ -1,0 +1,8 @@
+[
+    "acoustic_task_id",
+    "acoustic_task_session_id",
+    "acoustic_task_name",
+    "acoustic_task_cohort",
+    "acoustic_task_status",
+    "acoustic_task_duration"
+]

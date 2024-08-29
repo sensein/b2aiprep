@@ -1,0 +1,656 @@
+{
+    "winograd_session_id": {
+        "description": ""
+    },
+    "winograd_duration": {
+        "description": ""
+    },
+    "winograd_score": {
+        "description": ""
+    },
+    "winograd_number_questions": {
+        "description": ""
+    },
+    "winograd_questions_asked": {
+        "description": ""
+    },
+    "winograd_q_1": {
+        "description": ""
+    },
+    "winograd_q_2": {
+        "description": ""
+    },
+    "winograd_q_3": {
+        "description": ""
+    },
+    "winograd_q_4": {
+        "description": ""
+    },
+    "winograd_q_5": {
+        "description": ""
+    },
+    "winograd_q_6": {
+        "description": ""
+    },
+    "winograd_q_7": {
+        "description": ""
+    },
+    "winograd_q_8": {
+        "description": ""
+    },
+    "winograd_q_9": {
+        "description": ""
+    },
+    "winograd_q_10": {
+        "description": ""
+    },
+    "winograd_q_11": {
+        "description": ""
+    },
+    "winograd_q_12": {
+        "description": ""
+    },
+    "winograd_q_13": {
+        "description": ""
+    },
+    "winograd_q_14": {
+        "description": ""
+    },
+    "winograd_q_15": {
+        "description": ""
+    },
+    "winograd_q_16": {
+        "description": ""
+    },
+    "winograd_q_17": {
+        "description": ""
+    },
+    "winograd_q_18": {
+        "description": ""
+    },
+    "winograd_q_19": {
+        "description": ""
+    },
+    "winograd_q_20": {
+        "description": ""
+    },
+    "winograd_q_21": {
+        "description": ""
+    },
+    "winograd_q_22": {
+        "description": ""
+    },
+    "winograd_q_23": {
+        "description": ""
+    },
+    "winograd_q_24": {
+        "description": ""
+    },
+    "winograd_q_25": {
+        "description": ""
+    },
+    "winograd_q_26": {
+        "description": ""
+    },
+    "winograd_q_27": {
+        "description": ""
+    },
+    "winograd_q_28": {
+        "description": ""
+    },
+    "winograd_q_29": {
+        "description": ""
+    },
+    "winograd_q_30": {
+        "description": ""
+    },
+    "winograd_q_31": {
+        "description": ""
+    },
+    "winograd_q_32": {
+        "description": ""
+    },
+    "winograd_q_33": {
+        "description": ""
+    },
+    "winograd_q_34": {
+        "description": ""
+    },
+    "winograd_q_35": {
+        "description": ""
+    },
+    "winograd_q_36": {
+        "description": ""
+    },
+    "winograd_q_37": {
+        "description": ""
+    },
+    "winograd_q_38": {
+        "description": ""
+    },
+    "winograd_q_39": {
+        "description": ""
+    },
+    "winograd_q_40": {
+        "description": ""
+    },
+    "winograd_q_41": {
+        "description": ""
+    },
+    "winograd_q_42": {
+        "description": ""
+    },
+    "winograd_q_43": {
+        "description": ""
+    },
+    "winograd_q_44": {
+        "description": ""
+    },
+    "winograd_q_45": {
+        "description": ""
+    },
+    "winograd_q_46": {
+        "description": ""
+    },
+    "winograd_q_47": {
+        "description": ""
+    },
+    "winograd_q_48": {
+        "description": ""
+    },
+    "winograd_q_49": {
+        "description": ""
+    },
+    "winograd_q_50": {
+        "description": ""
+    },
+    "winograd_q_51": {
+        "description": ""
+    },
+    "winograd_q_52": {
+        "description": ""
+    },
+    "winograd_q_53": {
+        "description": ""
+    },
+    "winograd_q_54": {
+        "description": ""
+    },
+    "winograd_q_55": {
+        "description": ""
+    },
+    "winograd_q_56": {
+        "description": ""
+    },
+    "winograd_q_57": {
+        "description": ""
+    },
+    "winograd_q_58": {
+        "description": ""
+    },
+    "winograd_q_59": {
+        "description": ""
+    },
+    "winograd_q_60": {
+        "description": ""
+    },
+    "winograd_q_61": {
+        "description": ""
+    },
+    "winograd_q_62": {
+        "description": ""
+    },
+    "winograd_q_63": {
+        "description": ""
+    },
+    "winograd_q_64": {
+        "description": ""
+    },
+    "winograd_q_65": {
+        "description": ""
+    },
+    "winograd_q_66": {
+        "description": ""
+    },
+    "winograd_q_67": {
+        "description": ""
+    },
+    "winograd_q_68": {
+        "description": ""
+    },
+    "winograd_q_69": {
+        "description": ""
+    },
+    "winograd_q_70": {
+        "description": ""
+    },
+    "winograd_q_71": {
+        "description": ""
+    },
+    "winograd_q_72": {
+        "description": ""
+    },
+    "winograd_q_73": {
+        "description": ""
+    },
+    "winograd_q_74": {
+        "description": ""
+    },
+    "winograd_q_75": {
+        "description": ""
+    },
+    "winograd_q_76": {
+        "description": ""
+    },
+    "winograd_q_77": {
+        "description": ""
+    },
+    "winograd_q_78": {
+        "description": ""
+    },
+    "winograd_q_79": {
+        "description": ""
+    },
+    "winograd_q_80": {
+        "description": ""
+    },
+    "winograd_q_81": {
+        "description": ""
+    },
+    "winograd_q_82": {
+        "description": ""
+    },
+    "winograd_q_83": {
+        "description": ""
+    },
+    "winograd_q_84": {
+        "description": ""
+    },
+    "winograd_q_85": {
+        "description": ""
+    },
+    "winograd_q_86": {
+        "description": ""
+    },
+    "winograd_q_87": {
+        "description": ""
+    },
+    "winograd_q_88": {
+        "description": ""
+    },
+    "winograd_q_89": {
+        "description": ""
+    },
+    "winograd_q_90": {
+        "description": ""
+    },
+    "winograd_q_91": {
+        "description": ""
+    },
+    "winograd_q_92": {
+        "description": ""
+    },
+    "winograd_q_93": {
+        "description": ""
+    },
+    "winograd_q_94": {
+        "description": ""
+    },
+    "winograd_q_95": {
+        "description": ""
+    },
+    "winograd_q_96": {
+        "description": ""
+    },
+    "winograd_q_97": {
+        "description": ""
+    },
+    "winograd_q_98": {
+        "description": ""
+    },
+    "winograd_q_99": {
+        "description": ""
+    },
+    "winograd_q_100": {
+        "description": ""
+    },
+    "winograd_q_101": {
+        "description": ""
+    },
+    "winograd_q_102": {
+        "description": ""
+    },
+    "winograd_q_103": {
+        "description": ""
+    },
+    "winograd_q_104": {
+        "description": ""
+    },
+    "winograd_q_105": {
+        "description": ""
+    },
+    "winograd_q_106": {
+        "description": ""
+    },
+    "winograd_q_107": {
+        "description": ""
+    },
+    "winograd_q_108": {
+        "description": ""
+    },
+    "winograd_q_109": {
+        "description": ""
+    },
+    "winograd_q_110": {
+        "description": ""
+    },
+    "winograd_q_111": {
+        "description": ""
+    },
+    "winograd_q_112": {
+        "description": ""
+    },
+    "winograd_q_113": {
+        "description": ""
+    },
+    "winograd_q_114": {
+        "description": ""
+    },
+    "winograd_q_115": {
+        "description": ""
+    },
+    "winograd_q_116": {
+        "description": ""
+    },
+    "winograd_q_117": {
+        "description": ""
+    },
+    "winograd_q_118": {
+        "description": ""
+    },
+    "winograd_q_119": {
+        "description": ""
+    },
+    "winograd_q_120": {
+        "description": ""
+    },
+    "winograd_q_121": {
+        "description": ""
+    },
+    "winograd_q_122": {
+        "description": ""
+    },
+    "winograd_q_123": {
+        "description": ""
+    },
+    "winograd_q_124": {
+        "description": ""
+    },
+    "winograd_q_125": {
+        "description": ""
+    },
+    "winograd_q_126": {
+        "description": ""
+    },
+    "winograd_q_127": {
+        "description": ""
+    },
+    "winograd_q_128": {
+        "description": ""
+    },
+    "winograd_q_129": {
+        "description": ""
+    },
+    "winograd_q_130": {
+        "description": ""
+    },
+    "winograd_q_131": {
+        "description": ""
+    },
+    "winograd_q_132": {
+        "description": ""
+    },
+    "winograd_q_133": {
+        "description": ""
+    },
+    "winograd_q_134": {
+        "description": ""
+    },
+    "winograd_q_135": {
+        "description": ""
+    },
+    "winograd_q_136": {
+        "description": ""
+    },
+    "winograd_q_137": {
+        "description": ""
+    },
+    "winograd_q_138": {
+        "description": ""
+    },
+    "winograd_q_139": {
+        "description": ""
+    },
+    "winograd_q_140": {
+        "description": ""
+    },
+    "winograd_q_141": {
+        "description": ""
+    },
+    "winograd_q_142": {
+        "description": ""
+    },
+    "winograd_q_143": {
+        "description": ""
+    },
+    "winograd_q_144": {
+        "description": ""
+    },
+    "winograd_q_145": {
+        "description": ""
+    },
+    "winograd_q_146": {
+        "description": ""
+    },
+    "winograd_q_147": {
+        "description": ""
+    },
+    "winograd_q_148": {
+        "description": ""
+    },
+    "winograd_q_149": {
+        "description": ""
+    },
+    "winograd_q_150": {
+        "description": ""
+    },
+    "winograd_q_151": {
+        "description": ""
+    },
+    "winograd_q_152": {
+        "description": ""
+    },
+    "winograd_q_153": {
+        "description": ""
+    },
+    "winograd_q_154": {
+        "description": ""
+    },
+    "winograd_q_155": {
+        "description": ""
+    },
+    "winograd_q_156": {
+        "description": ""
+    },
+    "winograd_q_157": {
+        "description": ""
+    },
+    "winograd_q_158": {
+        "description": ""
+    },
+    "winograd_q_159": {
+        "description": ""
+    },
+    "winograd_q_160": {
+        "description": ""
+    },
+    "winograd_q_161": {
+        "description": ""
+    },
+    "winograd_q_162": {
+        "description": ""
+    },
+    "winograd_q_163": {
+        "description": ""
+    },
+    "winograd_q_164": {
+        "description": ""
+    },
+    "winograd_q_165": {
+        "description": ""
+    },
+    "winograd_q_166": {
+        "description": ""
+    },
+    "winograd_q_167": {
+        "description": ""
+    },
+    "winograd_q_168": {
+        "description": ""
+    },
+    "winograd_q_169": {
+        "description": ""
+    },
+    "winograd_q_170": {
+        "description": ""
+    },
+    "winograd_q_171": {
+        "description": ""
+    },
+    "winograd_q_172": {
+        "description": ""
+    },
+    "winograd_q_173": {
+        "description": ""
+    },
+    "winograd_q_174": {
+        "description": ""
+    },
+    "winograd_q_175": {
+        "description": ""
+    },
+    "winograd_q_176": {
+        "description": ""
+    },
+    "winograd_q_177": {
+        "description": ""
+    },
+    "winograd_q_178": {
+        "description": ""
+    },
+    "winograd_q_179": {
+        "description": ""
+    },
+    "winograd_q_180": {
+        "description": ""
+    },
+    "winograd_q_181": {
+        "description": ""
+    },
+    "winograd_q_182": {
+        "description": ""
+    },
+    "winograd_q_183": {
+        "description": ""
+    },
+    "winograd_q_184": {
+        "description": ""
+    },
+    "winograd_q_185": {
+        "description": ""
+    },
+    "winograd_q_186": {
+        "description": ""
+    },
+    "winograd_q_187": {
+        "description": ""
+    },
+    "winograd_q_188": {
+        "description": ""
+    },
+    "winograd_q_189": {
+        "description": ""
+    },
+    "winograd_q_190": {
+        "description": ""
+    },
+    "winograd_q_191": {
+        "description": ""
+    },
+    "winograd_q_192": {
+        "description": ""
+    },
+    "winograd_q_193": {
+        "description": ""
+    },
+    "winograd_q_194": {
+        "description": ""
+    },
+    "winograd_q_195": {
+        "description": ""
+    },
+    "winograd_q_196": {
+        "description": ""
+    },
+    "winograd_q_197": {
+        "description": ""
+    },
+    "winograd_q_198": {
+        "description": ""
+    },
+    "winograd_q_199": {
+        "description": ""
+    },
+    "winograd_q_200": {
+        "description": ""
+    },
+    "winograd_q_201": {
+        "description": ""
+    },
+    "winograd_q_202": {
+        "description": ""
+    },
+    "winograd_q_203": {
+        "description": ""
+    },
+    "winograd_q_204": {
+        "description": ""
+    },
+    "winograd_q_205": {
+        "description": ""
+    },
+    "winograd_q_206": {
+        "description": ""
+    },
+    "winograd_q_207": {
+        "description": ""
+    },
+    "winograd_q_208": {
+        "description": ""
+    },
+    "winograd_q_209": {
+        "description": ""
+    },
+    "winograd_q_210": {
+        "description": ""
+    },
+    "winograd_q_211": {
+        "description": ""
+    },
+    "winograd_q_212": {
+        "description": ""
+    },
+    "winograd_q_213": {
+        "description": ""
+    }
+}

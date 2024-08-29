@@ -1,0 +1,47 @@
+{
+    "vocabulary_session_id": {
+        "description": ""
+    },
+    "vocabulary_recording_acoustic_task_id": {
+        "description": ""
+    },
+    "vocabulary_duration": {
+        "description": ""
+    },
+    "vocabulary_item_word_1": {
+        "description": ""
+    },
+    "vocabulary_item_difficulty_1": {
+        "description": ""
+    },
+    "vocabulary_item_word_2": {
+        "description": ""
+    },
+    "vocabulary_item_difficulty_2": {
+        "description": ""
+    },
+    "vocabulary_item_word_3": {
+        "description": ""
+    },
+    "vocabulary_item_difficulty_3": {
+        "description": ""
+    },
+    "vocabulary_item_word_4": {
+        "description": ""
+    },
+    "vocabulary_item_difficulty_4": {
+        "description": ""
+    },
+    "vocabulary_item_word_5": {
+        "description": ""
+    },
+    "vocabulary_item_difficulty_5": {
+        "description": ""
+    },
+    "vocabulary_item_word_6": {
+        "description": ""
+    },
+    "vocabulary_item_difficulty_6": {
+        "description": ""
+    }
+}
