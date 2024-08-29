@@ -128,7 +128,7 @@ def wav_to_features(wav_path: Path):
     features["mfcc"] = extract_mfcc_from_audios([audio])[0]
     features["sample_rate"] = audio.sampling_rate
     features["opensmile"] = extract_opensmile_features_from_audios([audio])[0]
-    speech_to_text_model = HFModel(path_or_uri="openai/whisper-large")
+    speech_to_text_model = HFModel(path_or_uri="openai/whisper-tiny")
     features["transcription"] = transcribe_audios(audios=[audio], model=speech_to_text_model)[0]
     logging.disable(logging.NOTSET)
     _logger.setLevel(logging.INFO)
