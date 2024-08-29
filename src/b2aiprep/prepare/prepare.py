@@ -53,6 +53,7 @@ from senselab.audio.tasks.features_extraction.torchaudio import (
     extract_mfcc_from_audios,
     extract_spectrogram_from_audios,
 )
+from senselab.audio.tasks.preprocessing.preprocessing import resample_audios
 from senselab.audio.tasks.speaker_embeddings.api import (
     extract_speaker_embeddings_from_audios,
 )
@@ -63,6 +64,7 @@ from b2aiprep.prepare.utils import copy_package_resource, remove_files_by_patter
 SUBJECT_ID = "sub"
 SESSION_ID = "ses"
 AUDIO_ID = "audio"
+RESAMPLE_RATE = 16000
 
 _logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -114,27 +116,22 @@ def wav_to_features(wav_path: Path):
 
     _logger.info(wav_path)
     logging.disable(logging.ERROR)
-    audio = Audio.from_file(wav_path)
-    audio = audio.to_16khz()
+    audio = Audio.from_filepath(str(wav_path))
+    audio = resample_audios([audio], resample_rate=RESAMPLE_RATE)[0]
 
     features = {}
-    features["speaker_embedding"] = extract_speaker_embeddings_from_audios([audio])
-    # extract_opensmile_features_from_audios([audio])
-    # embed_speaker(
-    #     audio,
-    #     model="speechbrain/spkrec-ecapa-voxceleb"
-    # )
-    features["specgram"] = extract_spectrogram_from_audios([audio])
-    features["melfilterbank"] = extract_mel_filter_bank_from_audios([audio])
-    features["mfcc"] = extract_mfcc_from_audios([audio])
+    features["speaker_embedding"] = extract_speaker_embeddings_from_audios([audio])[0]
+    features["specgram"] = extract_spectrogram_from_audios([audio])[0]
+    features["melfilterbank"] = extract_mel_filter_bank_from_audios([audio])[0]
+    features["mfcc"] = extract_mfcc_from_audios([audio])[0]
     features["sample_rate"] = audio.sampling_rate
-    features["opensmile"] = extract_opensmile_features_from_audios([audio])
+    features["opensmile"] = extract_opensmile_features_from_audios([audio])[0]
     logging.disable(logging.NOTSET)
     _logger.setLevel(logging.INFO)
 
     # Define the save directory for features
     audio_dir = wav_path.parent
-    features_dir = audio_dir.parent / "audio_features"
+    features_dir = audio_dir.parent / "audio"
     features_dir.mkdir(exist_ok=True)
 
     # Save each feature in a separate file
@@ -219,6 +216,15 @@ def extract_features_workflow(bids_dir_path: Path, remove: bool = True):
     with pydra.Submitter(plugin="cf") as run:
         run(ef_wf)
     return ef_wf
+
+
+def _extract_features_non_pydra(bids_dir_path: Path, remove: bool = True):
+    """Provides a non-Pydra implementation of _extract_features_workflow"""
+    audio_paths = get_audio_paths(name="audio_paths", bids_dir_path=bids_dir_path)().output.out
+    all_features = []
+    for path in audio_paths:
+        all_features.append(wav_to_features(wav_path=Path(path))().output.out)
+    return all_features
 
 
 def bundle_data(source_directory: str, save_path: str) -> None:
