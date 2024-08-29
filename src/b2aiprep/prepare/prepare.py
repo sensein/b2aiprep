@@ -97,7 +97,7 @@ def initialize_data_directory(bids_dir_path: str) -> None:
 
 
 @pydra.mark.task
-def wav_to_features(wav_path):
+def wav_to_features(wav_path: Path):
     """Extract features from a single audio file.
 
     Extracts various audio features from a .wav file at the specified
@@ -110,6 +110,8 @@ def wav_to_features(wav_path):
     Returns:
       A dictionary mapping feature names to their extracted values.
     """
+    wav_path = Path(wav_path)
+
     _logger.info(wav_path)
     logging.disable(logging.ERROR)
     audio = Audio.from_file(wav_path)
@@ -130,8 +132,15 @@ def wav_to_features(wav_path):
     logging.disable(logging.NOTSET)
     _logger.setLevel(logging.INFO)
 
-    save_path = wav_path[: -len(".wav")] + ".pt"
-    torch.save(features, save_path)
+    # Define the save directory for features
+    audio_dir = wav_path.parent
+    features_dir = audio_dir.parent / "audio_features"
+    features_dir.mkdir(exist_ok=True)
+
+    # Save each feature in a separate file
+    for feature_name, feature_value in features.items():
+        save_path = features_dir / f"{wav_path.stem}_{feature_name}.pt"
+        torch.save(feature_value, save_path)
     return features
 
 
