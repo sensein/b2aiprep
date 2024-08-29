@@ -2,7 +2,7 @@ import logging
 
 import pytest
 
-from b2aiprep.prepare import extract_features_workflow
+from b2aiprep.prepare.prepare import extract_features_workflow
 
 logging.basicConfig(level=logging.INFO)
 _logger = logging.getLogger(__name__)
