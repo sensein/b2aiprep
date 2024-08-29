@@ -57,6 +57,8 @@ from senselab.audio.tasks.preprocessing.preprocessing import resample_audios
 from senselab.audio.tasks.speaker_embeddings.api import (
     extract_speaker_embeddings_from_audios,
 )
+from senselab.audio.tasks.speech_to_text.api import transcribe_audios
+from senselab.utils.data_structures.model import HFModel
 
 from b2aiprep.prepare.bids_like_data import redcap_to_bids
 from b2aiprep.prepare.utils import copy_package_resource, remove_files_by_pattern
@@ -126,6 +128,8 @@ def wav_to_features(wav_path: Path):
     features["mfcc"] = extract_mfcc_from_audios([audio])[0]
     features["sample_rate"] = audio.sampling_rate
     features["opensmile"] = extract_opensmile_features_from_audios([audio])[0]
+    speech_to_text_model = HFModel(path_or_uri="openai/whisper-large")
+    features["transcription"] = transcribe_audios(audios=[audio], model=speech_to_text_model)[0]
     logging.disable(logging.NOTSET)
     _logger.setLevel(logging.INFO)
 
@@ -136,8 +140,16 @@ def wav_to_features(wav_path: Path):
 
     # Save each feature in a separate file
     for feature_name, feature_value in features.items():
-        save_path = features_dir / f"{wav_path.stem}_{feature_name}.pt"
-        torch.save(feature_value, save_path)
+        file_extension = "pt"
+        if feature_name == "transcription":
+            file_extension = "txt"
+        save_path = features_dir / f"{wav_path.stem}_{feature_name}.{file_extension}"
+        if file_extension == "pt":
+            torch.save(feature_value, save_path)
+        else:
+            with open(save_path, "w", encoding="utf-8") as text_file:
+                text_file.write(feature_value.text)
+
     return features
 
 
@@ -178,47 +190,47 @@ def get_audio_paths(bids_dir_path):
     return audio_paths
 
 
+# def extract_features_workflow(bids_dir_path: Path, remove: bool = True):
+#     """Run a Pydra workflow to extract audio features from BIDS-like directory.
+
+#     This function initializes a Pydra workflow that processes a BIDS-like
+#     directory structure to extract features from .wav audio files. It retrieves
+#     the paths to the audio files and applies the wav_to_features to each.
+
+#     Args:
+#       bids_dir_path:
+#         The root directory of the BIDS dataset.
+#       remove:
+#         Whether to remove temporary files created during processing. Default is True.
+
+#     Returns:
+#       pydra.Workflow:
+#         The Pydra workflow object with the extracted features and audio paths as outputs.
+#     """
+#     # Initialize the Pydra workflow.
+#     ef_wf = pydra.Workflow(
+#         name="ef_wf", input_spec=["bids_dir_path"], bids_dir_path=bids_dir_path, cache_dir=None
+#     )
+
+#     # Get paths to every audio file.
+#     ef_wf.add(get_audio_paths(name="audio_paths", bids_dir_path=bids_dir_path))
+
+#     # Run wav_to_features for each audio file.
+#     ef_wf.add(
+#         wav_to_features(name="features", wav_path=ef_wf.audio_paths.lzout.out).split(
+#             "wav_path", wav_path=ef_wf.audio_paths.lzout.out
+#         )
+#     )
+
+#     ef_wf.set_output(
+#         {"audio_paths": ef_wf.audio_paths.lzout.out, "features": ef_wf.features.lzout.out}
+#     )
+#     with pydra.Submitter(plugin="cf") as run:
+#         run(ef_wf)
+#     return ef_wf
+
+
 def extract_features_workflow(bids_dir_path: Path, remove: bool = True):
-    """Run a Pydra workflow to extract audio features from BIDS-like directory.
-
-    This function initializes a Pydra workflow that processes a BIDS-like
-    directory structure to extract features from .wav audio files. It retrieves
-    the paths to the audio files and applies the wav_to_features to each.
-
-    Args:
-      bids_dir_path:
-        The root directory of the BIDS dataset.
-      remove:
-        Whether to remove temporary files created during processing. Default is True.
-
-    Returns:
-      pydra.Workflow:
-        The Pydra workflow object with the extracted features and audio paths as outputs.
-    """
-    # Initialize the Pydra workflow.
-    ef_wf = pydra.Workflow(
-        name="ef_wf", input_spec=["bids_dir_path"], bids_dir_path=bids_dir_path, cache_dir=None
-    )
-
-    # Get paths to every audio file.
-    ef_wf.add(get_audio_paths(name="audio_paths", bids_dir_path=bids_dir_path))
-
-    # Run wav_to_features for each audio file.
-    ef_wf.add(
-        wav_to_features(name="features", wav_path=ef_wf.audio_paths.lzout.out).split(
-            "wav_path", wav_path=ef_wf.audio_paths.lzout.out
-        )
-    )
-
-    ef_wf.set_output(
-        {"audio_paths": ef_wf.audio_paths.lzout.out, "features": ef_wf.features.lzout.out}
-    )
-    with pydra.Submitter(plugin="cf") as run:
-        run(ef_wf)
-    return ef_wf
-
-
-def _extract_features_non_pydra(bids_dir_path: Path, remove: bool = True):
     """Provides a non-Pydra implementation of _extract_features_workflow"""
     audio_paths = get_audio_paths(name="audio_paths", bids_dir_path=bids_dir_path)().output.out
     all_features = []
