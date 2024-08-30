@@ -36,7 +36,6 @@ Functions:
 TODO: Update with new BIDS-like data structure updates.
 """
 
-import argparse
 import logging
 import os
 import tarfile
@@ -322,45 +321,8 @@ def prepare_bids_like_data(
     _logger.info("Process completed.")
 
 
-def parse_arguments() -> argparse.Namespace:
-    """Parses command line arguments for processing audio data.
-
-    This function sets up and parses command line arguments required for
-    processing audio data for multiple subjects. It includes paths for the
-    REDCap CSV file, audio files directory, BIDS-like data directory, and
-    the output tar file path.
-
-    Returns:
-      argparse.Namespace: The parsed command line arguments.
-    """
-    parser = argparse.ArgumentParser(description="Process audio data for multiple subjects.")
-    parser.add_argument(
-        "--redcap_csv_path", type=Path, required=True, help="Path to the REDCap CSV file."
-    )
-    parser.add_argument(
-        "--audio_dir_path", type=Path, required=True, help="Path to the audio files directory."
-    )
-    parser.add_argument(
-        "--bids_dir_path",
-        type=Path,
-        required=False,
-        default="summer-school-processed-data",
-        help="Where to save the BIDS-like data.",
-    )
-    parser.add_argument(
-        "--tar_file_path", type=Path, required=True, help="Where to save the data bundle .tar file."
-    )
-    return parser.parse_args()
-
-
 def main():
-    args = parse_arguments()
-    prepare_bids_like_data(
-        redcap_csv_path=args.redcap_csv_path,
-        audio_dir_path=args.audio_dir_path,
-        bids_dir_path=args.bids_dir_path,
-        tar_file_path=args.tar_file_path,
-    )
+    pass
 
 
 if __name__ == "__main__":
