@@ -41,7 +41,9 @@ import logging
 import os
 import tarfile
 from pathlib import Path
+from typing import List
 
+import numpy as np
 import pydra
 import torch
 from senselab.audio.data_structures.audio import Audio
@@ -92,7 +94,6 @@ def initialize_data_directory(bids_dir_path: str) -> None:
         _logger.info(f"Created directory: {bids_dir_path}")
 
     template_package = "b2aiprep.prepare.resources.b2ai-data-bids-like-template"
-
     copy_package_resource(template_package, "CHANGES.md", bids_dir_path)
     copy_package_resource(template_package, "README.md", bids_dir_path)
     copy_package_resource(template_package, "dataset_description.json", bids_dir_path)
@@ -101,7 +102,7 @@ def initialize_data_directory(bids_dir_path: str) -> None:
 
 
 @pydra.mark.task
-def wav_to_features(wav_path: Path, transcription_model_size: str):
+def wav_to_features(wav_paths: List[Path], transcription_model_size: str):
     """Extract features from a single audio file.
 
     Extracts various audio features from a .wav file at the specified
@@ -114,43 +115,45 @@ def wav_to_features(wav_path: Path, transcription_model_size: str):
     Returns:
       A dictionary mapping feature names to their extracted values.
     """
-    wav_path = Path(wav_path)
+    all_features = []
+    for wav_path in wav_paths:
+        wav_path = Path(wav_path)
 
-    _logger.info(wav_path)
-    logging.disable(logging.ERROR)
-    audio = Audio.from_filepath(str(wav_path))
-    audio = resample_audios([audio], resample_rate=RESAMPLE_RATE)[0]
+        _logger.info(wav_path)
+        logging.disable(logging.ERROR)
+        audio = Audio.from_filepath(str(wav_path))
+        audio = resample_audios([audio], resample_rate=RESAMPLE_RATE)[0]
 
-    features = {}
-    features["speaker_embedding"] = extract_speaker_embeddings_from_audios([audio])[0]
-    features["specgram"] = extract_spectrogram_from_audios([audio])[0]
-    features["melfilterbank"] = extract_mel_filter_bank_from_audios([audio])[0]
-    features["mfcc"] = extract_mfcc_from_audios([audio])[0]
-    features["sample_rate"] = audio.sampling_rate
-    features["opensmile"] = extract_opensmile_features_from_audios([audio])[0]
-    speech_to_text_model = HFModel(path_or_uri=f"openai/whisper-{transcription_model_size}")
-    features["transcription"] = transcribe_audios(audios=[audio], model=speech_to_text_model)[0]
-    logging.disable(logging.NOTSET)
-    _logger.setLevel(logging.INFO)
+        features = {}
+        features["speaker_embedding"] = extract_speaker_embeddings_from_audios([audio])[0]
+        features["specgram"] = extract_spectrogram_from_audios([audio])[0]
+        features["melfilterbank"] = extract_mel_filter_bank_from_audios([audio])[0]
+        features["mfcc"] = extract_mfcc_from_audios([audio])[0]
+        features["sample_rate"] = audio.sampling_rate
+        features["opensmile"] = extract_opensmile_features_from_audios([audio])[0]
+        speech_to_text_model = HFModel(path_or_uri=f"openai/whisper-{transcription_model_size}")
+        features["transcription"] = transcribe_audios(audios=[audio], model=speech_to_text_model)[0]
+        logging.disable(logging.NOTSET)
+        _logger.setLevel(logging.INFO)
 
-    # Define the save directory for features
-    audio_dir = wav_path.parent
-    features_dir = audio_dir.parent / "audio"
-    features_dir.mkdir(exist_ok=True)
+        # Define the save directory for features
+        audio_dir = wav_path.parent
+        features_dir = audio_dir.parent / "audio"
+        features_dir.mkdir(exist_ok=True)
 
-    # Save each feature in a separate file
-    for feature_name, feature_value in features.items():
-        file_extension = "pt"
-        if feature_name == "transcription":
-            file_extension = "txt"
-        save_path = features_dir / f"{wav_path.stem}_{feature_name}.{file_extension}"
-        if file_extension == "pt":
-            torch.save(feature_value, save_path)
-        else:
-            with open(save_path, "w", encoding="utf-8") as text_file:
-                text_file.write(feature_value.text)
-
-    return features
+        # Save each feature in a separate file
+        for feature_name, feature_value in features.items():
+            file_extension = "pt"
+            if feature_name == "transcription":
+                file_extension = "txt"
+            save_path = features_dir / f"{wav_path.stem}_{feature_name}.{file_extension}"
+            if file_extension == "pt":
+                torch.save(feature_value, save_path)
+            else:
+                with open(save_path, "w", encoding="utf-8") as text_file:
+                    text_file.write(feature_value.text)
+        all_features.append(features)
+    return all_features
 
 
 @pydra.mark.task
@@ -187,7 +190,13 @@ def get_audio_paths(bids_dir_path, n_cores):
                         if audio_file.endswith(".wav"):
                             audio_file_path = os.path.join(audio_path, audio_file)
                             audio_paths.append(audio_file_path)
-    return audio_paths
+
+    # Assuming audio_paths is a list of paths and n_cores is the number of cores
+    batched_audio_paths = np.array_split(audio_paths, n_cores)
+    batched_audio_paths = [
+        list(batch) for batch in batched_audio_paths
+    ]  # Convert each chunk back to a list if needed
+    return batched_audio_paths
 
 
 def extract_features_workflow(
@@ -226,7 +235,7 @@ def extract_features_workflow(
             name="features",
             wav_path=ef_wf.audio_paths.lzout.out,
             transcription_model_size=transcription_model_size,
-        ).split("wav_path", wav_path=ef_wf.audio_paths.lzout.out)
+        ).split("wav_paths", wav_paths=ef_wf.audio_paths.lzout.out)
     )
 
     ef_wf.set_output(
