@@ -86,13 +86,17 @@ def redcap2bids(
 @click.argument("audio_dir_path", type=click.Path(exists=True))
 @click.argument("bids_dir_path", type=click.Path())
 @click.argument("tar_file_path", type=click.Path())
-def prepbidslikedata(redcap_csv_path, audio_dir_path, bids_dir_path, tar_file_path):
+@click.argument("transcription_model_size", type=click.Path())
+def prepbidslikedata(
+    redcap_csv_path, audio_dir_path, bids_dir_path, tar_file_path, transcription_model_size
+):
     """Organizes the data into a BIDS-like directory structure."""
     prepare_bids_like_data(
         redcap_csv_path=Path(redcap_csv_path),
         audio_dir_path=Path(audio_dir_path),
         bids_dir_path=Path(bids_dir_path),
         tar_file_path=Path(tar_file_path),
+        transcription_model_size=Path(transcription_model_size),
     )
 
 
