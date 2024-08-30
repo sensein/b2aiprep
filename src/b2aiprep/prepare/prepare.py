@@ -154,7 +154,7 @@ def wav_to_features(wav_path: Path, transcription_model_size: str):
 
 
 @pydra.mark.task
-def get_audio_paths(bids_dir_path):
+def get_audio_paths(bids_dir_path, n_cores):
     """Retrieve all .wav audio file paths from a BIDS-like directory structure.
 
     This function traverses the specified BIDS directory, collecting paths to
@@ -191,7 +191,10 @@ def get_audio_paths(bids_dir_path):
 
 
 def extract_features_workflow(
-    bids_dir_path: Path, remove: bool = True, transcription_model_size: str = "tiny"
+    bids_dir_path: Path,
+    remove: bool = True,
+    transcription_model_size: str = "tiny",
+    n_cores: int = 8,
 ):
     """Run a Pydra workflow to extract audio features from BIDS-like directory.
 
@@ -215,7 +218,7 @@ def extract_features_workflow(
     )
 
     # Get paths to every audio file.
-    ef_wf.add(get_audio_paths(name="audio_paths", bids_dir_path=bids_dir_path))
+    ef_wf.add(get_audio_paths(name="audio_paths", bids_dir_path=bids_dir_path, n_cores=n_cores))
 
     # Run wav_to_features for each audio file.
     ef_wf.add(
@@ -267,7 +270,8 @@ def prepare_bids_like_data(
     audio_dir_path: Path,
     bids_dir_path: Path,
     tar_file_path: Path,
-    transcription_model_size: str = "tiny",
+    transcription_model_size: str,
+    n_cores: int,
 ) -> None:
     """Organizes and processes Bridge2AI data for distribution.
 
@@ -294,8 +298,12 @@ def prepare_bids_like_data(
 
     _logger.info("Beginning audio feature extraction...")
     extract_features_workflow(
-        bids_dir_path, remove=False, transcription_model_size=transcription_model_size
+        bids_dir_path,
+        remove=False,
+        transcription_model_size=transcription_model_size,
+        n_cores=n_cores,
     )
+
     _logger.info("Audio feature extraction complete.")
 
     _logger.info("Saving .tar file with processed data...")
