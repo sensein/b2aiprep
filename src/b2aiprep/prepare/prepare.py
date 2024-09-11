@@ -33,7 +33,6 @@ Functions:
         distribution.
     - parse_arguments: Parses command line arguments for processing audio data.
 
-TODO: Update with new BIDS-like data structure updates.
 """
 
 import logging
