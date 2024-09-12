@@ -173,12 +173,11 @@ def get_recordings_for_acoustic_task(df: pd.DataFrame, acoustic_task: str) -> pd
     pd.DataFrame
         The filtered DataFrame.
     """
-
     if acoustic_task not in AUDIO_TASKS:
         raise ValueError(f"Unrecognized {acoustic_task}. Options: {AUDIO_TASKS}")
 
-    acoustic_tasks_df = get_df_of_repeat_instrument(df, RepeatInstrument.ACOUSTIC_TASK)
-    recordings_df = get_df_of_repeat_instrument(df, RepeatInstrument.RECORDING)
+    acoustic_tasks_df = get_df_of_repeat_instrument(df, RepeatInstrument.ACOUSTIC_TASK.value)
+    recordings_df = get_df_of_repeat_instrument(df, RepeatInstrument.RECORDING.value)
 
     idx = acoustic_tasks_df["acoustic_task_name"] == acoustic_task
 
@@ -428,6 +427,8 @@ def output_participant_data_to_fhir(
                             )
                         audio_file_destination.write_bytes(audio_file.read_bytes())
     # Save sessions.tsv
+    if not os.path.exists(subject_path):
+        os.mkdir(subject_path)
     sessions_tsv_path = subject_path / "sessions.tsv"
     sessions_df.to_csv(sessions_tsv_path, sep="\t", index=False)
 
