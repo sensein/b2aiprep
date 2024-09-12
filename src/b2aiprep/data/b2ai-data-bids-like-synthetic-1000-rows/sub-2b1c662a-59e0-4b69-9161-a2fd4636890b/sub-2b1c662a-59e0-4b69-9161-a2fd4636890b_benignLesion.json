@@ -1,0 +1,90 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "id": "2b1c662a-59e0-4b69-9161-a2fd4636890b-benignLesion",
+  "questionnaire": "https://kind-lab.github.io/vbai-fhir/Questionnaire-dvoicebenignlesionsschema",
+  "status": "completed",
+  "item": [
+    {
+      "linkId": "record_id",
+      "answer": [
+        {
+          "valueString": "2b1c662a-59e0-4b69-9161-a2fd4636890b"
+        }
+      ]
+    },
+    {
+      "linkId": "diagnois_bl_gsd"
+    },
+    {
+      "linkId": "diagnosis_bl_ds"
+    },
+    {
+      "linkId": "diagnosis_bl_etiology"
+    },
+    {
+      "linkId": "diagnosis_bl_ds_ll"
+    },
+    {
+      "linkId": "diagnosis_bl_degree_os_1"
+    },
+    {
+      "linkId": "diagnosis_bl_degree_os_2"
+    },
+    {
+      "linkId": "diagnosis_bl_degree_r_1"
+    },
+    {
+      "linkId": "diagnosis_bl_degree_r_2"
+    },
+    {
+      "linkId": "diagnosis_bl_degree_b_1"
+    },
+    {
+      "linkId": "diagnosis_bl_degree_b_2"
+    },
+    {
+      "linkId": "diagnosis_bl_degree_s_1"
+    },
+    {
+      "linkId": "diagnosis_bl_degree_s_2"
+    },
+    {
+      "linkId": "diagnosis_bl_degree_p_1"
+    },
+    {
+      "linkId": "diagnosis_bl_degree_p_2"
+    },
+    {
+      "linkId": "diagnosis_bl_degree_l_1"
+    },
+    {
+      "linkId": "diagnosis_bl_degree_l_2"
+    },
+    {
+      "linkId": "diagnosis_bl_degree_comments"
+    },
+    {
+      "linkId": "diagnosis_bl_treatment"
+    },
+    {
+      "linkId": "diagnosis_bl_treatment_select___voice_or_speech_therapy"
+    },
+    {
+      "linkId": "diagnosis_bl_treatment_select___laryngeal_microsurgery",
+      "answer": [
+        {
+          "valueBoolean": false
+        }
+      ]
+    },
+    {
+      "linkId": "diagnosis_bl_treatment_select___voice_rest"
+    },
+    {
+      "linkId": "diagnosis_bl_treatment_select___other"
+    },
+    {
+      "linkId": "diagnosis_bl_treatment_lm"
+    }
+  ]
+}

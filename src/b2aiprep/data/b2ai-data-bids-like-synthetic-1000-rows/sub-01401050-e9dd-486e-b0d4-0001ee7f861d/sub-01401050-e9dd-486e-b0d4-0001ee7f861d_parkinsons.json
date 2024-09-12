@@ -1,0 +1,156 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "id": "01401050-e9dd-486e-b0d4-0001ee7f861d-parkinsons",
+  "questionnaire": "https://kind-lab.github.io/vbai-fhir/Questionnaire-dneuroparkinsonsdiseaseschema",
+  "status": "completed",
+  "item": [
+    {
+      "linkId": "record_id",
+      "answer": [
+        {
+          "valueString": "01401050-e9dd-486e-b0d4-0001ee7f861d"
+        }
+      ]
+    },
+    {
+      "linkId": "diagnosis_parkinsons_gsd_category_1___bradykinesia"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_gsd_category_1___tremor"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_gsd_category_1___rigidity"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_gsd_category_1_calculation"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_gsd_category_2___cerebellar_abnormalities"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_gsd_category_2___supranuclear_gaze_palsy"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_gsd_category_2___bvf_ftd_ppa"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_gsd_category_2___lower_limbs"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_gsd_category_2___dopamine_treatment"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_gsd_category_2___absence_of_response"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_gsd_category_2___cortical_sensory_loss"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_gsd_category_2___dat_scan"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_gsd_category_2___alternative_condition"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_gsd_category_2_calculation"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_gsd_category_3___response_dopaminergic_therapy"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_gsd_category_3___levodopa_induced_dyskinesia"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_gsd_category_3___rest_tremor"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_gsd_category_3___mibg"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_gsd_category_3_calculation"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_gsd_calculation"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_disease_subtype"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_etiology"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_ds"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_ma___updrs"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_ma___other"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_ma_uprds"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_ma_updrs_part_i_score"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_ma_updrs_part_ii_score"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_ma_updrs_part_iii_score"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_ma_updrs_part_iv_score"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_non_motor_symptoms"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_non_motor_symptoms_yes"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_treatment_obtained"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_treatment_obtained_yes___medications"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_treatment_obtained_yes___npi"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_treatment_obtained_yes_medications___levodopa"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_treatment_obtained_yes_medications___dopamine_agonists"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_treatment_obtained_yes_medications___mao_b"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_treatment_obtained_yes_medications___amantadine"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_treatment_obtained_yes_medications___other"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_treatment_obtained_yes_npi___physical_therapy"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_treatment_obtained_yes_npi___occupational_therapy"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_treatment_obtained_yes_npi___speech_therapy",
+      "answer": [
+        {
+          "valueBoolean": false
+        }
+      ]
+    },
+    {
+      "linkId": "diagnosis_parkinsons_treatment_obtained_yes_npi___dbs"
+    },
+    {
+      "linkId": "diagnosis_parkinsons_treatment_obtained_yes_npi___other"
+    }
+  ]
+}

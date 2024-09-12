@@ -1,0 +1,31 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "id": "2b1c662a-59e0-4b69-9161-a2fd4636890b-sessions",
+  "questionnaire": "https://kind-lab.github.io/vbai-fhir/Questionnaire-sessionschema",
+  "status": "completed",
+  "item": [
+    {
+      "linkId": "record_id",
+      "answer": [
+        {
+          "valueString": "2b1c662a-59e0-4b69-9161-a2fd4636890b"
+        }
+      ]
+    },
+    {
+      "linkId": "session_id"
+    },
+    {
+      "linkId": "session_status"
+    },
+    {
+      "linkId": "session_is_control_participant"
+    },
+    {
+      "linkId": "session_duration"
+    },
+    {
+      "linkId": "session_site"
+    }
+  ]
+}

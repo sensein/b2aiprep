@@ -1,0 +1,138 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "id": "2b1c662a-59e0-4b69-9161-a2fd4636890b-precancerousLesions",
+  "questionnaire": "https://kind-lab.github.io/vbai-fhir/Questionnaire-dvoiceprecancerouslesionsschema",
+  "status": "completed",
+  "item": [
+    {
+      "linkId": "record_id",
+      "answer": [
+        {
+          "valueString": "2b1c662a-59e0-4b69-9161-a2fd4636890b"
+        }
+      ]
+    },
+    {
+      "linkId": "diagnois_pl_gsd_ls"
+    },
+    {
+      "linkId": "diagnois_pl_gsd_bp"
+    },
+    {
+      "linkId": "diagnosis_pl_ds___keratosis"
+    },
+    {
+      "linkId": "diagnosis_pl_ds___leukoplakia"
+    },
+    {
+      "linkId": "diagnosis_pl_ds___erythroplakia"
+    },
+    {
+      "linkId": "diagnosis_pl_ds___other"
+    },
+    {
+      "linkId": "diagnosis_pl_ds_l"
+    },
+    {
+      "linkId": "diagnosis_pl_ds_l_wd_g"
+    },
+    {
+      "linkId": "diagnosis_pl_ds_e"
+    },
+    {
+      "linkId": "diagnosis_pl_ds_e_wd_g"
+    },
+    {
+      "linkId": "diagnosis_pl_etiology___past_or_present_smoking"
+    },
+    {
+      "linkId": "diagnosis_pl_etiology___laryngopharyngeal_reflux"
+    },
+    {
+      "linkId": "diagnosis_pl_etiology___other_irritants"
+    },
+    {
+      "linkId": "diagnosis_pl_ds_ll___right_vocal_fold"
+    },
+    {
+      "linkId": "diagnosis_pl_ds_ll___left_vocal_fold"
+    },
+    {
+      "linkId": "diagnosis_pl_ds_ll___both_vocal_folds"
+    },
+    {
+      "linkId": "diagnosis_pl_ds_ll___ventricular_folds",
+      "answer": [
+        {
+          "valueBoolean": false
+        }
+      ]
+    },
+    {
+      "linkId": "diagnosis_pl_ds_ll___subglottal_areas"
+    },
+    {
+      "linkId": "diagnosis_pl_degree_os_1"
+    },
+    {
+      "linkId": "diagnosis_pl_degree_os_2"
+    },
+    {
+      "linkId": "diagnosis_pl_degree_r_1"
+    },
+    {
+      "linkId": "diagnosis_pl_degree_r_2"
+    },
+    {
+      "linkId": "diagnosis_pl_degree_b_1"
+    },
+    {
+      "linkId": "diagnosis_pl_degree_b_2"
+    },
+    {
+      "linkId": "diagnosis_pl_degree_s_1"
+    },
+    {
+      "linkId": "diagnosis_pl_degree_s_2"
+    },
+    {
+      "linkId": "diagnosis_pl_degree_p_1"
+    },
+    {
+      "linkId": "diagnosis_pl_degree_p_2"
+    },
+    {
+      "linkId": "diagnosis_pl_degree_l_1"
+    },
+    {
+      "linkId": "diagnosis_pl_degree_l_2"
+    },
+    {
+      "linkId": "diagnosis_pl_degree_comments"
+    },
+    {
+      "linkId": "diagnosis_pl_treatment"
+    },
+    {
+      "linkId": "diagnosis_pl_treatment_select___surveillance_only"
+    },
+    {
+      "linkId": "diagnosis_pl_treatment_select___laser_resection"
+    },
+    {
+      "linkId": "diagnosis_pl_treatment_select___laser_ablation"
+    },
+    {
+      "linkId": "diagnosis_pl_treatment_select___microlaryngeal_surgery_without_laser"
+    },
+    {
+      "linkId": "diagnosis_pl_treatment_select___radiotherapy_persistent_or_recurrent_lesions"
+    },
+    {
+      "linkId": "diagnosis_pl_treatment_select___voice_or_speech_therapy"
+    },
+    {
+      "linkId": "diagnosis_pl_treatment_select___other"
+    }
+  ]
+}

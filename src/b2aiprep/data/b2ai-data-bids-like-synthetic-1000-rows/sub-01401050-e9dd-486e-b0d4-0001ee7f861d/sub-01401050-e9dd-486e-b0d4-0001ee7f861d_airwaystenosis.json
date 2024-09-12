@@ -1,0 +1,105 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "id": "01401050-e9dd-486e-b0d4-0001ee7f861d-airwaystenosis",
+  "questionnaire": "https://kind-lab.github.io/vbai-fhir/Questionnaire-drespairwaystenosisschema",
+  "status": "completed",
+  "item": [
+    {
+      "linkId": "record_id",
+      "answer": [
+        {
+          "valueString": "01401050-e9dd-486e-b0d4-0001ee7f861d"
+        }
+      ]
+    },
+    {
+      "linkId": "diagnosis_as_pft"
+    },
+    {
+      "linkId": "diagnosis_as_gsd"
+    },
+    {
+      "linkId": "diagnosis_as_gsd_yes___bronchoscopy"
+    },
+    {
+      "linkId": "diagnosis_as_gsd_yes___ct"
+    },
+    {
+      "linkId": "diagnosis_as_ds"
+    },
+    {
+      "linkId": "diagnosis_as_ds_bvfi_gs"
+    },
+    {
+      "linkId": "diagnosis_as_etiology"
+    },
+    {
+      "linkId": "diagnosis_as_etiology_auto_immune"
+    },
+    {
+      "linkId": "diagnosis_as_ds_mcg"
+    },
+    {
+      "linkId": "diagnosis_as_ds_bc"
+    },
+    {
+      "linkId": "diagnosis_as_ds_agw"
+    },
+    {
+      "linkId": "diagnosis_as_ds_ac"
+    },
+    {
+      "linkId": "diagnosis_as_ds_ac_grade_4"
+    },
+    {
+      "linkId": "diagnosis_as_ds_ods"
+    },
+    {
+      "linkId": "diagnosis_as_ds_eps"
+    },
+    {
+      "linkId": "diagnosis_as_treatment___no_treatment"
+    },
+    {
+      "linkId": "diagnosis_as_treatment___surgery"
+    },
+    {
+      "linkId": "diagnosis_as_treatment___in_office_treatment"
+    },
+    {
+      "linkId": "diagnosis_as_treatment_surgery___endoscopic_intervention",
+      "answer": [
+        {
+          "valueBoolean": false
+        }
+      ]
+    },
+    {
+      "linkId": "diagnosis_as_treatment_surgery___endoscopic_excision"
+    },
+    {
+      "linkId": "diagnosis_as_treatment_surgery___laryngotracheal_reconstruction"
+    },
+    {
+      "linkId": "diagnosis_as_treatment_surgery___laryngotracheoplasty"
+    },
+    {
+      "linkId": "diagnosis_as_treatment_surgery___tracheostomy"
+    },
+    {
+      "linkId": "diagnosis_as_treatment_surgery___other"
+    },
+    {
+      "linkId": "diagnosis_as_treatment_in_office___steroid_injections_sole"
+    },
+    {
+      "linkId": "diagnosis_as_treatment_in_office___steroid_injections_adjunct"
+    },
+    {
+      "linkId": "diagnosis_as_treatment_in_office___dilation"
+    },
+    {
+      "linkId": "diagnosis_as_treatment_in_office___laser"
+    }
+  ]
+}
