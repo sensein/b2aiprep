@@ -252,3 +252,43 @@ def construct_all_tsvs_from_jsons(
 
             # Construct the TSV file from the JSON file
             construct_tsv_from_json(df=df, json_file_path=json_file_path, output_dir=output_dir)
+
+
+def open_json_as_dict(file_path):
+    with open(file_path, "r") as file:
+        return json.load(file)
+
+
+# Updated function to take file paths as input and perform the comparison
+def compare_json_keys_only_differences_from_files(file1_path, file2_path):
+    # Load JSON files as dictionaries
+    json1 = open_json_as_dict(file1_path)
+    json2 = open_json_as_dict(file2_path)
+
+    # Get keys from both JSON objects
+    keys1 = set(json1.keys())
+    keys2 = set(json2.keys())
+
+    # Find differences
+    only_in_file1 = keys1 - keys2
+    only_in_file2 = keys2 - keys1
+
+    result = {"only_in_file1": list(only_in_file1), "only_in_file2": list(only_in_file2)}
+
+    return result
+
+
+def sort_json_by_another_and_save(
+    json_to_sort: Dict[str, any], reference_json: Dict[str, any], output_file_path: str
+) -> None:
+    # Create an ordered list of keys from the reference JSON
+    reference_keys = list(reference_json.keys())
+
+    # Sort the json_to_sort according to the reference keys order
+    sorted_json = {key: json_to_sort[key] for key in reference_keys if key in json_to_sort}
+
+    # Save the sorted JSON to the output file
+    with open(output_file_path, "w") as output_file:
+        json.dump(sorted_json, output_file, indent=4)
+
+    print(f"Sorted JSON saved to {output_file_path}")
