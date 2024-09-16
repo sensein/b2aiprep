@@ -100,7 +100,7 @@ def initialize_data_directory(bids_dir_path: str) -> None:
 
 
 @pydra.mark.task
-def wav_to_features(wav_paths: List[Path], transcription_model_size: str):
+def wav_to_features(wav_paths: List[Path], transcription_model_size: str, with_sensitive: bool):
     """Extract features from a single audio file.
 
     Extracts various audio features from a .wav file at the specified
@@ -129,8 +129,11 @@ def wav_to_features(wav_paths: List[Path], transcription_model_size: str):
         features["mfcc"] = extract_mfcc_from_audios([audio])[0]
         features["sample_rate"] = audio.sampling_rate
         features["opensmile"] = extract_opensmile_features_from_audios([audio])[0]
-        speech_to_text_model = HFModel(path_or_uri=f"openai/whisper-{transcription_model_size}")
-        features["transcription"] = transcribe_audios(audios=[audio], model=speech_to_text_model)[0]
+        if with_sensitive:
+            speech_to_text_model = HFModel(path_or_uri=f"openai/whisper-{transcription_model_size}")
+            features["transcription"] = transcribe_audios(
+                audios=[audio], model=speech_to_text_model
+            )[0]
         logging.disable(logging.NOTSET)
         _logger.setLevel(logging.INFO)
 
@@ -151,6 +154,8 @@ def wav_to_features(wav_paths: List[Path], transcription_model_size: str):
                 with open(save_path, "w", encoding="utf-8") as text_file:
                     text_file.write(feature_value.text)
         all_features.append(features)
+        if not with_sensitive:
+            os.remove(wav_path)
     return all_features
 
 
@@ -199,9 +204,9 @@ def get_audio_paths(bids_dir_path, n_cores):
 
 def extract_features_workflow(
     bids_dir_path: Path,
-    remove: bool = True,
     transcription_model_size: str = "tiny",
     n_cores: int = 8,
+    with_sensitive: bool = True,
 ):
     """Run a Pydra workflow to extract audio features from BIDS-like directory.
 
@@ -233,6 +238,7 @@ def extract_features_workflow(
             name="features",
             wav_path=ef_wf.audio_paths.lzout.out,
             transcription_model_size=transcription_model_size,
+            with_sensitive=with_sensitive,
         ).split("wav_paths", wav_paths=ef_wf.audio_paths.lzout.out)
     )
 
@@ -241,6 +247,7 @@ def extract_features_workflow(
     )
     with pydra.Submitter(plugin="cf") as run:
         run(ef_wf)
+
     return ef_wf
 
 
@@ -279,6 +286,7 @@ def prepare_bids_like_data(
     tar_file_path: Path,
     transcription_model_size: str,
     n_cores: int,
+    with_sensitive: bool,
 ) -> None:
     """Organizes and processes Bridge2AI data for distribution.
 
@@ -306,9 +314,9 @@ def prepare_bids_like_data(
     _logger.info("Beginning audio feature extraction...")
     extract_features_workflow(
         bids_dir_path,
-        remove=False,
         transcription_model_size=transcription_model_size,
         n_cores=n_cores,
+        with_sensitive=with_sensitive,
     )
 
     _logger.info("Audio feature extraction complete.")

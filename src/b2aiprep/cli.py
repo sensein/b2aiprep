@@ -88,8 +88,15 @@ def redcap2bids(
 @click.argument("tar_file_path", type=click.Path())
 @click.argument("transcription_model_size", type=str)
 @click.argument("n_cores", type=int)
+@click.argument("with_sensitive", type=bool)
 def prepbidslikedata(
-    redcap_csv_path, audio_dir_path, bids_dir_path, tar_file_path, transcription_model_size, n_cores
+    redcap_csv_path,
+    audio_dir_path,
+    bids_dir_path,
+    tar_file_path,
+    transcription_model_size,
+    n_cores,
+    with_sensitive,
 ):
     """Organizes the data into a BIDS-like directory structure.
 
@@ -98,7 +105,8 @@ def prepbidslikedata(
     bids_dir_path: path to store bids-like data\n
     tar_file_path: path to store tar file\n
     transcription_model_size: tiny, small, medium, or large\n
-    n_cores: number of cores to run feature extraction on
+    n_cores: number of cores to run feature extraction on\n
+    with_sensitive: whether to include sensitive data
     """
     prepare_bids_like_data(
         redcap_csv_path=Path(redcap_csv_path),
@@ -107,6 +115,7 @@ def prepbidslikedata(
         tar_file_path=Path(tar_file_path),
         transcription_model_size=transcription_model_size,
         n_cores=n_cores,
+        with_sensitive=with_sensitive,
     )
 
 
