@@ -33,7 +33,7 @@ dependencies = [
     "fhir.resources==7.1.0",
     "streamlit",
     "datasets[audio]",
-    "senselab"
+    "senselab>=0.12.0"
 ]
 
 [tool.setuptools.packages.find]
