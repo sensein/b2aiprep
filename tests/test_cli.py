@@ -48,6 +48,7 @@ def test_prepbidslikedata_cli(setup_temp_files):
         tar_file_path,
         "tiny",  # transcription_model_size
         "2",  # n_cores
+        "true",
     ]
 
     # Run the CLI command
