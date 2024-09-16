@@ -2,6 +2,7 @@ import os
 import shutil
 import subprocess
 import tempfile
+from pathlib import Path
 
 import pytest
 
@@ -10,7 +11,8 @@ import pytest
 def setup_temp_files():
     """Fixture to set up temporary directories and files for testing."""
     # Paths to required data files
-    redcap_csv_source = "src/b2aiprep/data/sdv_redcap_synthetic_data_1000_rows.csv"
+    project_root = Path(__file__).parent.parent
+    redcap_csv_source = project_root / "data/sdv_redcap_synthetic_data_1000_rows.csv"
 
     with (
         tempfile.TemporaryDirectory() as audio_dir,

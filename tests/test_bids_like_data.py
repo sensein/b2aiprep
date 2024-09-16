@@ -168,8 +168,8 @@ def test_get_instrument_for_name():
 
 
 def test_redcap_to_bids():
-    # Path to the actual CSV file
-    csv_file_path = Path("src/b2aiprep/data/sdv_redcap_synthetic_data_1000_rows.csv")
+    project_root = Path(__file__).parent.parent
+    csv_file_path = project_root / "data/sdv_redcap_synthetic_data_1000_rows.csv"
 
     # Check if the file exists before proceeding
     if not csv_file_path.exists():
