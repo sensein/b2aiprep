@@ -1,0 +1,12 @@
+{
+    "BIDSVersion": "1.9.0",
+    "License": "B2AI-Voice-LICENSE-v1.0_Sep12 clean.pdf",
+    "Name": "Bridge2AI Voice Dataset",
+    "ReferencesAndLinks": {
+        "SourceLicenseTermsAI-READI": {
+            "description": "The license terms are based on those of the AI-READI dataset",
+            "link": "https://zenodo.org/doi/10.5281/zenodo.10642458",
+            "DOI": "10.5281/zenodo.10642458"
+        }
+    }
+}

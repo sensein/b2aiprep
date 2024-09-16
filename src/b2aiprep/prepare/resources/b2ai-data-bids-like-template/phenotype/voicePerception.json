@@ -1,0 +1,11 @@
+{
+    "voice_perception_session_id": {
+        "description": "Unique identifier for the voice perception session."
+    },
+    "voice_perception_duration": {
+        "description": "Total duration of the voice perception assessment."
+    },
+    "voice_quality_perception": {
+        "description": "Indicates the participant's perception of their voice quality."
+    }
+}

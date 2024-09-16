@@ -1,0 +1,119 @@
+{
+    "diagnosis_ld_qete___laryngologist": {
+        "description": "Indicates if the participant's laryngeal dystonia was determined by a laryngologist as part of the qualitative expert team evaluation."
+    },
+    "diagnosis_ld_qete___speech_language_pathology": {
+        "description": "Indicates if the participant's laryngeal dystonia was determined by a speech-language pathologist as part of the qualitative expert team evaluation."
+    },
+    "diagnosis_ld_qete___neurologist_specializing_disorders": {
+        "description": "Indicates if the participant's laryngeal dystonia was determined by a neurologist specializing in movement disorders as part of the qualitative expert team evaluation."
+    },
+    "diagnosis_ld_assessment___aural_perceptual_evaluation": {
+        "description": "Indicates if the participant underwent an aural-perceptual evaluation as part of their laryngeal dystonia assessment."
+    },
+    "diagnosis_ld_assessment___laryngoscopy_or_stroboscopy": {
+        "description": "Indicates if the participant underwent laryngoscopy or stroboscopy as part of their laryngeal dystonia assessment."
+    },
+    "diagnosis_ld_assessment___neurological_evaluation": {
+        "description": "Indicates if the participant underwent a neurological evaluation as part of their laryngeal dystonia assessment."
+    },
+    "diagnosis_ld_ds___adld": {
+        "description": "Indicates if the participant has adductor laryngeal dystonia (ADLD)."
+    },
+    "diagnosis_ld_ds___abld": {
+        "description": "Indicates if the participant has abductor laryngeal dystonia (ABLD)."
+    },
+    "diagnosis_ld_ds___vocal_tremor": {
+        "description": "Indicates if the participant has vocal tremor."
+    },
+    "diagnosis_ld_ds___mixed_laryngeal_dystonia": {
+        "description": "Indicates if the participant has mixed laryngeal dystonia."
+    },
+    "diagnosis_ld_ds___sld": {
+        "description": "Indicates if the participant has singer's laryngeal dystonia (SLD)."
+    },
+    "diagnosis_ld_ds___arld": {
+        "description": "Indicates if the participant has adductor laryngeal spasms during inspiration (ARLD)."
+    },
+    "diagnosis_ld_etiology": {
+        "description": "Specifies the etiology or cause of the participant’s laryngeal dystonia."
+    },
+    "diagnosis_ld_etiology_cc___essential_tremor_of_the_hands": {
+        "description": "Indicates if the participant has an essential tremor of the hands."
+    },
+    "diagnosis_ld_etiology_cc___essential_tremor_of_the_head": {
+        "description": "Indicates if the participant has an essential tremor of the head."
+    },
+    "diagnosis_ld_etiology_cc___jaw_tremor": {
+        "description": "Indicates if the participant has a jaw tremor."
+    },
+    "diagnosis_ld_etiology_cc___dystonia_of_the_head_and_neck": {
+        "description": "Indicates if the participant has dystonia of the head and neck."
+    },
+    "diagnosis_ld_etiology_cc___other_type_of_dystonia": {
+        "description": "Indicates if the participant has another type of dystonia."
+    },
+    "diagnosis_ld_degree_os_1": {
+        "description": "Indicates the participant's overall severity of laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_os_2": {
+        "description": "Indicates an alternative measure of the participant's overall severity of laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_r_1": {
+        "description": "Indicates the roughness of the participant’s voice as a result of laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_r_2": {
+        "description": "Indicates an alternative measure of the roughness of the participant’s voice due to laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_b_1": {
+        "description": "Indicates the breathiness of the participant’s voice as a result of laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_b_2": {
+        "description": "Indicates an alternative measure of the breathiness of the participant’s voice due to laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_s_1": {
+        "description": "Indicates the strain in the participant’s voice as a result of laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_s_2": {
+        "description": "Indicates an alternative measure of the strain in the participant’s voice due to laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_p_1": {
+        "description": "Indicates the pitch of the participant’s voice as a result of laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_p_2": {
+        "description": "Indicates an alternative measure of the pitch of the participant’s voice due to laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_l_1": {
+        "description": "Indicates the loudness of the participant’s voice as a result of laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_l_2": {
+        "description": "Indicates an alternative measure of the loudness of the participant’s voice due to laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_comments": {
+        "description": "Provides additional comments about the resonance of the participant’s voice due to laryngeal dystonia."
+    },
+    "diagnosis_ld_treatment": {
+        "description": "Indicates if the participant has undergone any treatment for laryngeal dystonia."
+    },
+    "diagnosis_ld_treatment_select___botox_injections": {
+        "description": "Indicates if the participant has received botox injections as a treatment for laryngeal dystonia."
+    },
+    "diagnosis_ld_treatment_select___voice_or_speech_therapy": {
+        "description": "Indicates if the participant has undergone voice or speech therapy as a treatment for laryngeal dystonia."
+    },
+    "diagnosis_ld_treatment_select___vibrotactile_stimulation": {
+        "description": "Indicates if the participant has undergone vibrotactile stimulation as a treatment for laryngeal dystonia."
+    },
+    "diagnosis_ld_treatment_select___deep_brain_stimulation": {
+        "description": "Indicates if the participant has undergone deep brain stimulation as a treatment for laryngeal dystonia."
+    },
+    "diagnosis_ld_treatment_select___mrgfus": {
+        "description": "Indicates if the participant has undergone magnetic resonance-guided focused ultrasound (MRgFUS) as a treatment for laryngeal dystonia."
+    },
+    "diagnosis_ld_treatment_select___other": {
+        "description": "Indicates if the participant has undergone other treatments for laryngeal dystonia."
+    },
+    "diagnosis_ld_treatment_bi_li": {
+        "description": "Specifies when the participant received their last injection as treatment for laryngeal dystonia."
+    }
+}

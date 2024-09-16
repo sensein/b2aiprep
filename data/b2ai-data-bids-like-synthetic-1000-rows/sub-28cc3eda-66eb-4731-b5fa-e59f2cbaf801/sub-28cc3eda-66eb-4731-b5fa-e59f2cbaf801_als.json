@@ -1,0 +1,123 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "id": "28cc3eda-66eb-4731-b5fa-e59f2cbaf801-als",
+  "questionnaire": "https://kind-lab.github.io/vbai-fhir/Questionnaire-dneuroamyotrophiclateralsclerosisalsschema",
+  "status": "completed",
+  "item": [
+    {
+      "linkId": "record_id",
+      "answer": [
+        {
+          "valueString": "28cc3eda-66eb-4731-b5fa-e59f2cbaf801"
+        }
+      ]
+    },
+    {
+      "linkId": "diagnosis_als_gsd_category_1"
+    },
+    {
+      "linkId": "diagnosis_als_gsd_category_2"
+    },
+    {
+      "linkId": "diagnosis_als_gsd_category_3"
+    },
+    {
+      "linkId": "diagnosis_als_gsd_calculation"
+    },
+    {
+      "linkId": "diagnosis_als_disease_subtype"
+    },
+    {
+      "linkId": "diagnosis_als_disease_subtype_familial"
+    },
+    {
+      "linkId": "diagnosis_als_etiology___genetic_factors"
+    },
+    {
+      "linkId": "diagnosis_als_etiology___environmental_factors"
+    },
+    {
+      "linkId": "diagnosis_als_etiology_genetic_factors___c9orf72"
+    },
+    {
+      "linkId": "diagnosis_als_etiology_genetic_factors___sod1"
+    },
+    {
+      "linkId": "diagnosis_als_etiology_genetic_factors___other"
+    },
+    {
+      "linkId": "diagnosis_als_cp___upper_motor_neuron"
+    },
+    {
+      "linkId": "diagnosis_als_cp___lower_motor_neuron"
+    },
+    {
+      "linkId": "diagnosis_als_cp___bulbar_symptoms"
+    },
+    {
+      "linkId": "diagnosis_als_cp___respiratory_involvement"
+    },
+    {
+      "linkId": "diagnosis_als_dp"
+    },
+    {
+      "linkId": "diagnosis_als_na_alsfrs_r_score"
+    },
+    {
+      "linkId": "diagnosis_als_na_fvc_percentage"
+    },
+    {
+      "linkId": "diagnosis_als_treatment_and_management"
+    },
+    {
+      "linkId": "diagnosis_als_treatment_and_management_yes___medications"
+    },
+    {
+      "linkId": "diagnosis_als_treatment_and_management_yes___supportive_care"
+    },
+    {
+      "linkId": "diagnosis_als_treatment_and_management_yes_medications___riluzole"
+    },
+    {
+      "linkId": "diagnosis_als_treatment_and_management_yes_medications___edaravone"
+    },
+    {
+      "linkId": "diagnosis_als_treatment_and_management_yes_medications___sodium",
+      "answer": [
+        {
+          "valueBoolean": false
+        }
+      ]
+    },
+    {
+      "linkId": "diagnosis_als_treatment_and_management_yes_medications___tofersen"
+    },
+    {
+      "linkId": "diagnosis_als_treatment_and_management_yes_medications___symptomatic_treatment"
+    },
+    {
+      "linkId": "diagnosis_als_treatment_and_management_yes_medications___other"
+    },
+    {
+      "linkId": "diagnosis_als_treatment_and_management_yes_supportive_care___physical_therapy"
+    },
+    {
+      "linkId": "diagnosis_als_treatment_and_management_yes_supportive_care___occupational_therapy"
+    },
+    {
+      "linkId": "diagnosis_als_treatment_and_management_yes_supportive_care___speech_therapy"
+    },
+    {
+      "linkId": "diagnosis_als_treatment_and_management_yes_supportive_care___respiratory_support"
+    },
+    {
+      "linkId": "diagnosis_als_treatment_and_management_yes_supportive_care___nutrition_support"
+    },
+    {
+      "linkId": "diagnosis_als_treatment_and_management_yes_supportive_care___psychotherapy"
+    },
+    {
+      "linkId": "diagnosis_als_treatment_and_management_yes_supportive_care___other"
+    }
+  ]
+}

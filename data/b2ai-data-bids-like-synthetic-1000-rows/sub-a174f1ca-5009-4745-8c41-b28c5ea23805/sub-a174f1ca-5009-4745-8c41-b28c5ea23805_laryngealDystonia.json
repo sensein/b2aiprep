@@ -1,0 +1,143 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "id": "a174f1ca-5009-4745-8c41-b28c5ea23805-laryngealDystonia",
+  "questionnaire": "https://kind-lab.github.io/vbai-fhir/Questionnaire-dvoicelaryngealdystoniaschema",
+  "status": "completed",
+  "item": [
+    {
+      "linkId": "record_id",
+      "answer": [
+        {
+          "valueString": "a174f1ca-5009-4745-8c41-b28c5ea23805"
+        }
+      ]
+    },
+    {
+      "linkId": "diagnosis_ld_qete___laryngologist"
+    },
+    {
+      "linkId": "diagnosis_ld_qete___speech_language_pathology"
+    },
+    {
+      "linkId": "diagnosis_ld_qete___neurologist_specializing_disorders"
+    },
+    {
+      "linkId": "diagnosis_ld_assessment___aural_perceptual_evaluation"
+    },
+    {
+      "linkId": "diagnosis_ld_assessment___laryngoscopy_or_stroboscopy"
+    },
+    {
+      "linkId": "diagnosis_ld_assessment___neurological_evaluation"
+    },
+    {
+      "linkId": "diagnosis_ld_ds___adld"
+    },
+    {
+      "linkId": "diagnosis_ld_ds___abld",
+      "answer": [
+        {
+          "valueBoolean": false
+        }
+      ]
+    },
+    {
+      "linkId": "diagnosis_ld_ds___vocal_tremor"
+    },
+    {
+      "linkId": "diagnosis_ld_ds___mixed_laryngeal_dystonia"
+    },
+    {
+      "linkId": "diagnosis_ld_ds___sld"
+    },
+    {
+      "linkId": "diagnosis_ld_ds___arld"
+    },
+    {
+      "linkId": "diagnosis_ld_etiology"
+    },
+    {
+      "linkId": "diagnosis_ld_etiology_cc___essential_tremor_of_the_hands"
+    },
+    {
+      "linkId": "diagnosis_ld_etiology_cc___essential_tremor_of_the_head"
+    },
+    {
+      "linkId": "diagnosis_ld_etiology_cc___jaw_tremor"
+    },
+    {
+      "linkId": "diagnosis_ld_etiology_cc___dystonia_of_the_head_and_neck"
+    },
+    {
+      "linkId": "diagnosis_ld_etiology_cc___other_type_of_dystonia"
+    },
+    {
+      "linkId": "diagnosis_ld_degree_os_1"
+    },
+    {
+      "linkId": "diagnosis_ld_degree_os_2"
+    },
+    {
+      "linkId": "diagnosis_ld_degree_r_1"
+    },
+    {
+      "linkId": "diagnosis_ld_degree_r_2"
+    },
+    {
+      "linkId": "diagnosis_ld_degree_b_1"
+    },
+    {
+      "linkId": "diagnosis_ld_degree_b_2"
+    },
+    {
+      "linkId": "diagnosis_ld_degree_s_1"
+    },
+    {
+      "linkId": "diagnosis_ld_degree_s_2"
+    },
+    {
+      "linkId": "diagnosis_ld_degree_p_1"
+    },
+    {
+      "linkId": "diagnosis_ld_degree_p_2"
+    },
+    {
+      "linkId": "diagnosis_ld_degree_l_1"
+    },
+    {
+      "linkId": "diagnosis_ld_degree_l_2"
+    },
+    {
+      "linkId": "diagnosis_ld_degree_comments"
+    },
+    {
+      "linkId": "diagnosis_ld_treatment"
+    },
+    {
+      "linkId": "diagnosis_ld_treatment_select___botox_injections"
+    },
+    {
+      "linkId": "diagnosis_ld_treatment_select___voice_or_speech_therapy"
+    },
+    {
+      "linkId": "diagnosis_ld_treatment_select___vibrotactile_stimulation"
+    },
+    {
+      "linkId": "diagnosis_ld_treatment_select___deep_brain_stimulation",
+      "answer": [
+        {
+          "valueBoolean": false
+        }
+      ]
+    },
+    {
+      "linkId": "diagnosis_ld_treatment_select___mrgfus"
+    },
+    {
+      "linkId": "diagnosis_ld_treatment_select___other"
+    },
+    {
+      "linkId": "diagnosis_ld_treatment_bi_li"
+    }
+  ]
+}

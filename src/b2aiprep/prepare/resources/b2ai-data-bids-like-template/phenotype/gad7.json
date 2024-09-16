@@ -1,0 +1,29 @@
+{
+    "gad_7_session_id": {
+        "description": "Unique identifier for the GAD-7 session."
+    },
+    "nervous_anxious": {
+        "description": "Indicates if the participant feels nervous or anxious."
+    },
+    "cant_control_worry": {
+        "description": "Indicates if the participant feels that they cannot control their worry."
+    },
+    "worry_too_much": {
+        "description": "Indicates if the participant feels that they worry too much."
+    },
+    "trouble_relaxing": {
+        "description": "Indicates if the participant has trouble relaxing."
+    },
+    "hard_to_sit_still": {
+        "description": "Indicates if the participant finds it hard to sit still."
+    },
+    "easily_agitated": {
+        "description": "Indicates if the participant feels easily agitated."
+    },
+    "afraid_of_things": {
+        "description": "Indicates if the participant is afraid of specific things or situations."
+    },
+    "tough_to_work": {
+        "description": "Indicates if the participant finds it difficult to concentrate or work."
+    }
+}

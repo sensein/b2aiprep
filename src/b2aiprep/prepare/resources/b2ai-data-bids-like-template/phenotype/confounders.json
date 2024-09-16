@@ -1,0 +1,494 @@
+{
+    "confounders_session_id": {
+        "description": "Unique identifier for the confounders assessment session."
+    },
+    "confounders_duration": {
+        "description": "Total duration of the confounders assessment."
+    },
+    "is_regular_smoker": {
+        "description": "Indicates if the participant is a regular smoker."
+    },
+    "smoking_hx": {
+        "description": "Indicates the participant's smoking history."
+    },
+    "age_start_smoking": {
+        "description": "Indicates the age at which the participant started smoking."
+    },
+    "age_stop_smoking": {
+        "description": "Indicates the age at which the participant stopped smoking."
+    },
+    "smoking_types___1": {
+        "description": "Reports if the participant has used smoking type 1."
+    },
+    "smoking_types___2": {
+        "description": "Indicates if the participant smokes cigars."
+    },
+    "smoking_types___3": {
+        "description": "Indicates if the participant smokes pipes."
+    },
+    "smoking_types___4": {
+        "description": "Indicates if the participant uses chewing tobacco."
+    },
+    "smoking_types___5": {
+        "description": "Indicates if the participant uses cigars."
+    },
+    "smoking_types___6": {
+        "description": "Indicates if the participant uses snuff."
+    },
+    "smoking_types___7": {
+        "description": "Reports if the participant has used smoking type 7."
+    },
+    "smoking_types___8": {
+        "description": "Indicates if the participant uses other forms of tobacco, such as e-cigarettes."
+    },
+    "smoking_freq": {
+        "description": "Indicates how often the participant smokes."
+    },
+    "alcohol_yn": {
+        "description": "Indicates if the participant consumes alcohol."
+    },
+    "alcohol_freq": {
+        "description": "Indicates how often the participant consumes alcohol."
+    },
+    "alcohol_amt": {
+        "description": "Reports the amount of alcohol the participant consumed."
+    },
+    "alcohol_drinks": {
+        "description": "The number of alcoholic drinks the participant typically consumes."
+    },
+    "alcohol_today": {
+        "description": "Reports if the participant consumed alcohol today."
+    },
+    "drinks_today_number": {
+        "description": "The number of alcoholic drinks the participant has consumed today."
+    },
+    "alcohol_rehab": {
+        "description": "Indicates if the participant has undergone rehabilitation for alcohol use."
+    },
+    "current_recovery_alcohol": {
+        "description": "Indicates if the participant is currently in recovery for alcohol use."
+    },
+    "caffeine_intake": {
+        "description": "Reports the participant's caffeine intake."
+    },
+    "caffeine_intake_today": {
+        "description": "The amount of caffeine the participant has consumed today."
+    },
+    "hydration": {
+        "description": "Indicates if the participant feels hydrated."
+    },
+    "hydration_today": {
+        "description": "Indicates if the participant feels adequately hydrated today."
+    },
+    "dental_problems": {
+        "description": "Indicates if the participant has dental problems or issues."
+    },
+    "seasonal_allergies": {
+        "description": "Indicates if the participant has any seasonal allergies."
+    },
+    "seasonal_allergies_options___1": {
+        "description": "Indicates if the participant has seasonal allergies to tree pollen."
+    },
+    "seasonal_allergies_options___2": {
+        "description": "Indicates if the participant has seasonal allergies to specific allergens listed under option 2."
+    },
+    "seasonal_allergies_options___3": {
+        "description": "Indicates if the participant has seasonal allergies to grass pollen."
+    },
+    "seasonal_allergies_options___4": {
+        "description": "Indicates if the participant has seasonal allergies to pollen or other triggers."
+    },
+    "tired_measure": {
+        "description": "Indicates if the participant feels tired or fatigued."
+    },
+    "height": {
+        "description": "The participant's height in centimeters or inches."
+    },
+    "weight": {
+        "description": "The participant's weight in kilograms or pounds."
+    },
+    "unit": {
+        "description": "The measurement unit used for the participant's responses (e.g., kilograms or pounds)."
+    },
+    "symptoms___1": {
+        "description": "Indicates if the participant reports experiencing symptom 1."
+    },
+    "symptoms___2": {
+        "description": "Indicates if the participant reports experiencing symptom 2."
+    },
+    "symptoms___3": {
+        "description": "Indicates if the participant reports experiencing symptom 3."
+    },
+    "symptoms___4": {
+        "description": "Indicates if the participant is experiencing symptom 4 as part of their health assessment."
+    },
+    "symptoms___5": {
+        "description": "Indicates if the participant reports experiencing symptom 5."
+    },
+    "symptoms___6": {
+        "description": "Indicates if the participant reports experiencing symptom 6."
+    },
+    "symptoms___7": {
+        "description": "Indicates if the participant reports experiencing symptom 7."
+    },
+    "ear_med_history___1": {
+        "description": "Indicates if the participant has a history of ear-related medical conditions."
+    },
+    "ear_med_history___2": {
+        "description": "Indicates if the participant has a history of hearing loss."
+    },
+    "ear_med_history___3": {
+        "description": "Indicates if the participant has a history of ear-related medical condition 3."
+    },
+    "nose_med_history___1": {
+        "description": "Indicates if the participant has a history of nose-related medical condition 1."
+    },
+    "throat_med_history___1": {
+        "description": "Indicates if the participant has a history of throat-related medical conditions."
+    },
+    "throat_med_history___2": {
+        "description": "Indicates if the participant has a history of throat-related medical conditions."
+    },
+    "throat_med_history___3": {
+        "description": "Indicates if the participant has a history of throat infections."
+    },
+    "throat_med_history___4": {
+        "description": "Indicates if the participant has a history of vocal cord nodules."
+    },
+    "throat_med_history___5": {
+        "description": "Indicates if the participant has a history of throat cancer."
+    },
+    "throat_med_history___6": {
+        "description": "Indicates if the participant has a history of throat-related medical condition 6."
+    },
+    "throat_med_history___7": {
+        "description": "Indicates if the participant has a history of laryngeal cancer."
+    },
+    "throat_med_history___8": {
+        "description": "Indicates if the participant has a history of vocal cord paralysis."
+    },
+    "throat_med_history___9": {
+        "description": "Indicates if the participant has a history of throat cancer."
+    },
+    "throat_med_history___10": {
+        "description": "Indicates if the participant has a history of tracheostomy."
+    },
+    "head_med_history___1": {
+        "description": "Indicates if the participant has a history of traumatic brain injury (TBI)."
+    },
+    "head_med_history___2": {
+        "description": "Indicates if the participant has a history of brain tumors."
+    },
+    "ear_surgical___1": {
+        "description": "Indicates if the participant has undergone surgery for ear infections."
+    },
+    "ear_surgical___2": {
+        "description": "Indicates if the participant has undergone surgery for hearing loss."
+    },
+    "nose_surgical___1": {
+        "description": "Indicates if the participant has undergone surgery for nasal polyps."
+    },
+    "nose_surgical___2": {
+        "description": "Indicates if the participant has undergone surgery for nose-related conditions."
+    },
+    "throat_surgical___1": {
+        "description": "Indicates if the participant has undergone throat surgery."
+    },
+    "throat_surgical___2": {
+        "description": "Indicates if the participant has undergone surgery for throat polyps."
+    },
+    "throat_surgical___3": {
+        "description": "Indicates if the participant has undergone surgery for throat cancer."
+    },
+    "throat_surgical___4": {
+        "description": "Indicates if the participant has undergone surgery for vocal cord nodules."
+    },
+    "head_surgical___1": {
+        "description": "Indicates if the participant has undergone surgery for traumatic brain injury (TBI)."
+    },
+    "head_surgical___2": {
+        "description": "Indicates if the participant has undergone surgery for a head-related condition."
+    },
+    "neurological_history___1": {
+        "description": "Indicates if the participant has a history of neurological disorders."
+    },
+    "neurological_history___2": {
+        "description": "Indicates if the participant has a history of migraines."
+    },
+    "neurological_history___3": {
+        "description": "Indicates if the participant has a history of neurological condition 3."
+    },
+    "neurological_history___4": {
+        "description": "Indicates if the participant has a history of epilepsy."
+    },
+    "neurological_history___5": {
+        "description": "Indicates if the participant has a history of Alzheimer's disease."
+    },
+    "neurological_history___6": {
+        "description": "Indicates if the participant has a history of multiple sclerosis (MS)."
+    },
+    "current_neuro_dx": {
+        "description": "Indicates the participant's current neurological diagnosis."
+    },
+    "respiratory_conditions___1": {
+        "description": "Indicates if the participant has a diagnosis of bronchitis."
+    },
+    "respiratory_conditions___2": {
+        "description": "Indicates if the participant has a diagnosis of asthma."
+    },
+    "respiratory_conditions___3": {
+        "description": "Indicates if the participant has a diagnosis of COPD."
+    },
+    "respiratory_conditions___4": {
+        "description": "Indicates if the participant has a chronic bronchitis diagnosis."
+    },
+    "respiratory_conditions___5": {
+        "description": "Indicates if the participant has a diagnosis of interstitial lung disease."
+    },
+    "respiratory_conditions___6": {
+        "description": "Indicates if the participant has a diagnosis of emphysema."
+    },
+    "respiratory_conditions___7": {
+        "description": "Indicates if the participant has a diagnosis of sleep apnea."
+    },
+    "respiratory_conditions___8": {
+        "description": "Indicates if the participant has been diagnosed with tuberculosis."
+    },
+    "lung_or_metastatic___1": {
+        "description": "Indicates if the participant has a diagnosis of lung cancer."
+    },
+    "lung_or_metastatic___2": {
+        "description": "Indicates if the participant has a diagnosis of metastatic lung cancer."
+    },
+    "covid___past_year": {
+        "description": "Indicates if the participant has had COVID-19 in the past year."
+    },
+    "covid___long": {
+        "description": "Reports if the participant has experienced long COVID symptoms."
+    },
+    "covid_past": {
+        "description": "Indicates if the participant has had COVID-19 in the past."
+    },
+    "cpap_conditions___1": {
+        "description": "Indicates if the participant has used CPAP therapy for obstructive sleep apnea."
+    },
+    "cpap_conditions___2": {
+        "description": "Indicates if the participant has used continuous positive airway pressure (CPAP) therapy for sleep apnea."
+    },
+    "resp_medical_history___1": {
+        "description": "Indicates if the participant has a history of chronic bronchitis."
+    },
+    "resp_medical_history___2": {
+        "description": "Indicates if the participant has a history of asthma."
+    },
+    "resp_medical_history___3": {
+        "description": "Indicates if the participant has a history of chronic obstructive pulmonary disease (COPD)."
+    },
+    "resp_medical_history___4": {
+        "description": "Indicates if the participant has a history of respiratory condition 4."
+    },
+    "exposed_environmental_pollution": {
+        "description": "Indicates if the participant has been exposed to environmental pollution."
+    },
+    "breathe_today": {
+        "description": "Indicates if the participant is experiencing difficulty breathing today."
+    },
+    "breathe_today_difficulty": {
+        "description": "Reports if the participant experienced breathing difficulty today."
+    },
+    "cough_today": {
+        "description": "Indicates if the participant has coughed today."
+    },
+    "cough_today_severity": {
+        "description": "Severity of the participant's cough today."
+    },
+    "circulatory_conditions___1": {
+        "description": "Indicates if the participant has a diagnosis of cardiovascular disease."
+    },
+    "circulatory_conditions___2": {
+        "description": "Indicates if the participant has a circulatory condition categorized as condition 2."
+    },
+    "circulatory_conditions___3": {
+        "description": "Indicates if the participant has a diagnosis of heart failure."
+    },
+    "circulatory_conditions___4": {
+        "description": "Indicates if the participant has a diagnosis of hypertension."
+    },
+    "circulatory_conditions___5": {
+        "description": "Indicates if the participant has a diagnosis of peripheral artery disease."
+    },
+    "circulatory_conditions___6": {
+        "description": "Indicates if the participant has a diagnosis of varicose veins."
+    },
+    "circulatory_med_history___1": {
+        "description": "Indicates if the participant has a history of heart disease."
+    },
+    "circulatory_med_history___2": {
+        "description": "Indicates if the participant has a history of hypertension."
+    },
+    "circulatory_med_history___3": {
+        "description": "Indicates if the participant has a history of angina."
+    },
+    "circulatory_med_history___4": {
+        "description": "Indicates if the participant has a history of arrhythmia."
+    },
+    "circulatory_med_history___5": {
+        "description": "Indicates if the participant has a history of stroke."
+    },
+    "ph_standing": {
+        "description": "Indicates if the participant experiences physical health difficulties while standing."
+    },
+    "ph_take_care": {
+        "description": "Indicates if the participant has difficulty taking care of themselves due to physical health issues."
+    },
+    "ph_learn_task": {
+        "description": "Indicates if the participant has difficulty learning new tasks due to physical health issues."
+    },
+    "ph_problem_join": {
+        "description": "Indicates if the participant has problems joining social activities due to physical health."
+    },
+    "ph_health_problem": {
+        "description": "Indicates if the participant has a health problem that affects their daily life."
+    },
+    "ph_concentrating": {
+        "description": "Indicates if the participant has difficulty concentrating due to physical health issues."
+    },
+    "ph_walking": {
+        "description": "Reports if the participant experiences physical health issues while walking."
+    },
+    "ph_washing": {
+        "description": "Reports if the participant experiences physical health issues while washing."
+    },
+    "ph_get_dressed": {
+        "description": "Indicates if the participant has difficulty getting dressed due to physical health issues."
+    },
+    "ph_dealing_people": {
+        "description": "Indicates if the participant has difficulty dealing with people due to physical health issues."
+    },
+    "ph_friendship": {
+        "description": "Indicates if the participant has difficulty maintaining friendships due to physical health issues."
+    },
+    "ph_day_to_day_work": {
+        "description": "Reports if the participant's physical health affects their day-to-day work."
+    },
+    "physical_health_freq": {
+        "description": "Indicates how frequently the participant experiences physical health issues."
+    },
+    "phys_health_impact": {
+        "description": "Indicates if the participant's physical health impacts their daily life."
+    },
+    "phys_health_limited": {
+        "description": "Indicates if the participant's physical health is limiting their daily activities."
+    },
+    "medications___1": {
+        "description": "Indicates if the participant is currently taking medication 1."
+    },
+    "medications___2": {
+        "description": "Indicates if the participant is taking medication 2."
+    },
+    "medications___3": {
+        "description": "Indicates if the participant is taking medication 3."
+    },
+    "medications___4": {
+        "description": "Indicates if the participant is taking medication 4."
+    },
+    "medications___5": {
+        "description": "Indicates if the participant is taking medication 5."
+    },
+    "medications___6": {
+        "description": "Indicates if the participant is taking medication 6."
+    },
+    "medications___7": {
+        "description": "Indicates if the participant is taking medication 7."
+    },
+    "medications___8": {
+        "description": "Indicates if the participant is taking medication 8."
+    },
+    "medications___9": {
+        "description": "Indicates if the participant is taking medication 9."
+    },
+    "medications___10": {
+        "description": "Indicates if the participant is taking medication 10."
+    },
+    "medications___11": {
+        "description": "Indicates if the participant is currently taking medication 11."
+    },
+    "medications___12": {
+        "description": "Indicates if the participant is taking medication 12."
+    },
+    "medications___13": {
+        "description": "Indicates if the participant is taking medication 13."
+    },
+    "medications___14": {
+        "description": "Indicates if the participant is currently taking medication 14."
+    },
+    "medications___15": {
+        "description": "Indicates if the participant is taking medication 15."
+    },
+    "medications___16": {
+        "description": "Indicates if the participant is taking medication 16."
+    },
+    "medications___17": {
+        "description": "Indicates if the participant is using medication 17."
+    },
+    "medications___18": {
+        "description": "Indicates if the participant is currently taking medication 18."
+    },
+    "hormone_use___1": {
+        "description": "Indicates if the participant uses hormone treatments (e.g., oral contraceptives)."
+    },
+    "hormone_use___2": {
+        "description": "Indicates if the participant uses hormone replacement therapy."
+    },
+    "hormone_use___3": {
+        "description": "Indicates if the participant uses hormone therapy for menopause."
+    },
+    "hormone_use___4": {
+        "description": "Indicates if the participant uses other forms of hormone therapy not listed."
+    },
+    "pain_medication___1": {
+        "description": "Indicates if the participant is taking pain medication 1."
+    },
+    "pain_medication___2": {
+        "description": "Indicates if the participant is taking pain medication 2."
+    },
+    "pain_medication___3": {
+        "description": "Indicates if the participant is taking pain medication 3."
+    },
+    "menstruate": {
+        "description": "Indicates if the participant menstruates."
+    },
+    "menstruate_no": {
+        "description": "Indicates if the participant does not menstruate."
+    },
+    "menstrual_cycle_status": {
+        "description": "Indicates the participant's menstrual cycle status."
+    },
+    "voice_activity___1": {
+        "description": "Indicates the first type of voice activity the participant engaged in."
+    },
+    "voice_activity___2": {
+        "description": "Indicates the second type of voice activity engaged in by the participant."
+    },
+    "voice_activity___3": {
+        "description": "Indicates the third type of voice activity the participant engaged in."
+    },
+    "voice_activity___4": {
+        "description": "Indicates the fourth type of voice activity the participant engaged in."
+    },
+    "voice_activity___5": {
+        "description": "Indicates the fifth type of voice activity the participant engaged in."
+    },
+    "voice_activity___6": {
+        "description": "Indicates the sixth type of voice activity the participant engaged in."
+    },
+    "voice_activity___7": {
+        "description": "Indicates the seventh type of voice activity the participant engaged in."
+    },
+    "hours_voice_activity": {
+        "description": "Number of hours the participant engaged in voice-related activities."
+    },
+    "reading_aloud": {
+        "description": "Indicates if the participant is reading aloud."
+    }
+}

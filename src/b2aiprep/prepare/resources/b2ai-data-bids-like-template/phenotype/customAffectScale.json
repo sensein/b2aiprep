@@ -1,0 +1,47 @@
+{
+    "custom_affect_scale_session_id": {
+        "description": "Unique identifier for the custom affect scale session."
+    },
+    "custom_affect_scale_duration": {
+        "description": "Total duration of the custom affect scale assessment."
+    },
+    "sad_or_down": {
+        "description": "Indicates if the participant feels sad or down."
+    },
+    "joyful": {
+        "description": "Indicates if the participant feels joyful."
+    },
+    "motivated": {
+        "description": "Assesses the level of motivation or drive the participant exhibits in performing tasks."
+    },
+    "lack_of_pleasure": {
+        "description": "Indicates if the participant feels a lack of pleasure or interest in doing things."
+    },
+    "tired": {
+        "description": "Indicates if the participant feels tired during the assessment."
+    },
+    "energetic": {
+        "description": "Indicates if the participant feels energetic or lively."
+    },
+    "agitated": {
+        "description": "Indicates if the participant feels agitated."
+    },
+    "irritated": {
+        "description": "Indicates if the participant feels irritated or annoyed."
+    },
+    "lonely": {
+        "description": "Indicates if the participant feels lonely."
+    },
+    "concentrated": {
+        "description": "Indicates if the participant is able to concentrate."
+    },
+    "relaxed": {
+        "description": "Indicates if the participant feels relaxed."
+    },
+    "worried": {
+        "description": "Indicates if the participant feels worried or anxious."
+    },
+    "desire_to_escape": {
+        "description": "Indicates if the participant has a desire to escape stressful situations."
+    }
+}

@@ -1,0 +1,35 @@
+{
+    "phq_9_session_id": {
+        "description": "Unique identifier for the PHQ-9 session."
+    },
+    "no_interest": {
+        "description": "Measures if the participant experiences a lack of interest or pleasure in daily activities."
+    },
+    "feeling_depressed": {
+        "description": "Indicates if the participant feels depressed or down."
+    },
+    "trouble_sleeping": {
+        "description": "Indicates if the participant has trouble sleeping."
+    },
+    "no_energy": {
+        "description": "Indicates if the participant has no energy or feels fatigued."
+    },
+    "no_appetite": {
+        "description": "Indicates if the participant has no appetite."
+    },
+    "feeling_bad_self": {
+        "description": "Indicates if the participant feels bad about themselves."
+    },
+    "trouble_concentrate": {
+        "description": "Indicates if the participant has trouble concentrating."
+    },
+    "move_speak_slow": {
+        "description": "Indicates if the participant moves or speaks slowly."
+    },
+    "thoughts_death": {
+        "description": "Indicates if the participant has thoughts of death or dying."
+    },
+    "hard_to_work": {
+        "description": "Indicates if the participant has difficulty working due to their physical or mental health."
+    }
+}

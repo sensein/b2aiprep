@@ -1,0 +1,123 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "id": "5201d61d-4b67-482f-bddd-39466e63c4f4-eligibility",
+  "questionnaire": "https://kind-lab.github.io/vbai-fhir/Questionnaire-subjectparticipanteligiblestudiesschema",
+  "status": "completed",
+  "item": [
+    {
+      "linkId": "record_id",
+      "answer": [
+        {
+          "valueString": "5201d61d-4b67-482f-bddd-39466e63c4f4"
+        }
+      ]
+    },
+    {
+      "linkId": "eligible_studies___1"
+    },
+    {
+      "linkId": "eligible_studies___2"
+    },
+    {
+      "linkId": "eligible_studies___3"
+    },
+    {
+      "linkId": "eligible_studies___4"
+    },
+    {
+      "linkId": "eligible_studies___5"
+    },
+    {
+      "linkId": "is_control_participant"
+    },
+    {
+      "linkId": "laryng_cancer"
+    },
+    {
+      "linkId": "benign_cord_lesion"
+    },
+    {
+      "linkId": "rrp"
+    },
+    {
+      "linkId": "spas_dys"
+    },
+    {
+      "linkId": "voc_fold_paralysis"
+    },
+    {
+      "linkId": "alz_dementia_mci"
+    },
+    {
+      "linkId": "als"
+    },
+    {
+      "linkId": "parkinsons"
+    },
+    {
+      "linkId": "alcohol_subst_abuse"
+    },
+    {
+      "linkId": "gad"
+    },
+    {
+      "linkId": "add_adhd"
+    },
+    {
+      "linkId": "asd"
+    },
+    {
+      "linkId": "bipolar"
+    },
+    {
+      "linkId": "bpd"
+    },
+    {
+      "linkId": "depression"
+    },
+    {
+      "linkId": "ed",
+      "answer": [
+        {
+          "valueBoolean": false
+        }
+      ]
+    },
+    {
+      "linkId": "insomnia"
+    },
+    {
+      "linkId": "ocd"
+    },
+    {
+      "linkId": "panic"
+    },
+    {
+      "linkId": "ptsd"
+    },
+    {
+      "linkId": "schizophrenia"
+    },
+    {
+      "linkId": "soc_anx_dis"
+    },
+    {
+      "linkId": "other_psych"
+    },
+    {
+      "linkId": "asthma"
+    },
+    {
+      "linkId": "airway_stenosis"
+    },
+    {
+      "linkId": "chronic_cough"
+    },
+    {
+      "linkId": "copd"
+    },
+    {
+      "linkId": "osa"
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+    "diagnosis_as_pft": {
+        "description": "Indicates if the participant has undergone pulmonary function testing in the past three months."
+    },
+    "diagnosis_as_gsd": {
+        "description": "Indicates if the participant has airway stenosis confirmed by laryngoscopy, bronchoscopy, or CT imaging."
+    },
+    "diagnosis_as_gsd_yes___bronchoscopy": {
+        "description": "Indicates if the participant’s airway stenosis was confirmed by bronchoscopy or laryngoscopy."
+    },
+    "diagnosis_as_gsd_yes___ct": {
+        "description": "Indicates if the participant’s airway stenosis was confirmed by CT imaging."
+    },
+    "diagnosis_as_ds": {
+        "description": "Specifies the subtype of the participant’s airway stenosis."
+    },
+    "diagnosis_as_ds_bvfi_gs": {
+        "description": "Indicates if the participant has bilateral vocal fold immobility or glottic stenosis as a subtype of airway stenosis."
+    },
+    "diagnosis_as_etiology": {
+        "description": "Specifies the etiology or cause of the participant’s airway stenosis."
+    },
+    "diagnosis_as_etiology_auto_immune": {
+        "description": "Indicates if the participant’s airway stenosis is caused by an autoimmune or granulomatous disease."
+    },
+    "diagnosis_as_ds_mcg": {
+        "description": "Indicates the degree of the participant’s stenosis based on the Myer-Cotton Grade."
+    },
+    "diagnosis_as_ds_bc": {
+        "description": "Indicates the degree of the participant’s stenosis based on the Bogdasarian Classification."
+    },
+    "diagnosis_as_ds_agw": {
+        "description": "Indicates the anterior glottic web classification of the participant’s airway stenosis according to Cohen."
+    },
+    "diagnosis_as_ds_ac": {
+        "description": "Indicates the grade of stenosis of the participant’s supraglottic stenosis according to the Aziz Classification."
+    },
+    "diagnosis_as_ds_ac_grade_4": {
+        "description": "Indicates the grade of supraglottic stenosis based on the Aziz Classification."
+    },
+    "diagnosis_as_ds_ods": {
+        "description": "Indicates the overall subjective classification of the participant’s airway stenosis."
+    },
+    "diagnosis_as_ds_eps": {
+        "description": "Indicates the estimated percentage of stenosis from 0 to 100."
+    },
+    "diagnosis_as_treatment___no_treatment": {
+        "description": "Indicates if the participant has received no treatment for their airway stenosis."
+    },
+    "diagnosis_as_treatment___surgery": {
+        "description": "Indicates if the participant has undergone surgery as treatment for their airway stenosis."
+    },
+    "diagnosis_as_treatment___in_office_treatment": {
+        "description": "Indicates if the participant has undergone in-office treatment for their airway stenosis."
+    },
+    "diagnosis_as_treatment_surgery___endoscopic_intervention": {
+        "description": "Indicates if the participant has undergone endoscopic intervention with laser and balloon dilation and steroid injection as surgery for airway stenosis."
+    },
+    "diagnosis_as_treatment_surgery___endoscopic_excision": {
+        "description": "Indicates if the participant has undergone endoscopic laser wedge excision with balloon dilation and steroid injection as surgery for airway stenosis."
+    },
+    "diagnosis_as_treatment_surgery___laryngotracheal_reconstruction": {
+        "description": "Indicates if the participant has undergone open laryngotracheal reconstruction as surgery for airway stenosis."
+    },
+    "diagnosis_as_treatment_surgery___laryngotracheoplasty": {
+        "description": "Indicates if the participant has undergone laryngotracheoplasty (Maddern procedure) as surgery for airway stenosis."
+    },
+    "diagnosis_as_treatment_surgery___tracheostomy": {
+        "description": "Indicates if the participant has undergone a tracheostomy as surgery for airway stenosis."
+    },
+    "diagnosis_as_treatment_surgery___other": {
+        "description": "Indicates if the participant has undergone another type of surgery for airway stenosis."
+    },
+    "diagnosis_as_treatment_in_office___steroid_injections_sole": {
+        "description": "Indicates if the participant has undergone awake steroid injection(s) as the sole treatment for airway stenosis."
+    },
+    "diagnosis_as_treatment_in_office___steroid_injections_adjunct": {
+        "description": "Indicates if the participant has undergone awake steroid injection(s) as an adjunct treatment for airway stenosis."
+    },
+    "diagnosis_as_treatment_in_office___dilation": {
+        "description": "Indicates if the participant has undergone in-office or awake dilation as treatment for airway stenosis."
+    },
+    "diagnosis_as_treatment_in_office___laser": {
+        "description": "Indicates if the participant has undergone in-office or awake laser treatment for airway stenosis."
+    }
+}

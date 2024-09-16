@@ -1,0 +1,38 @@
+{
+    "dyspnea_index_session_id": {
+        "description": "Unique identifier for the Dyspnea Index session."
+    },
+    "dyspnea_index_duration": {
+        "description": "Duration of the Dyspnea Index assessment."
+    },
+    "di_air_in": {
+        "description": "Reports if the participant experiences difficulty inhaling air."
+    },
+    "di_tightness_throat": {
+        "description": "Indicates if the participant experiences tightness in the throat as part of their dyspnea symptoms."
+    },
+    "di_effort_breathe": {
+        "description": "Indicates if the participant experiences increased effort while breathing."
+    },
+    "di_weather_changes": {
+        "description": "Indicates if the participant's breathing issues worsen with changes in the weather."
+    },
+    "di_breathing_worse_stress": {
+        "description": "Indicates if the participant’s breathing gets worse when stressed."
+    },
+    "di_sound_breathing_in": {
+        "description": "Indicates if the participant experiences sound while breathing in as part of their dyspnea symptoms."
+    },
+    "di_strain": {
+        "description": "Indicates if the participant experiences strain when breathing."
+    },
+    "di_exercise": {
+        "description": "Reports if the participant has difficulty exercising."
+    },
+    "di_breathing_stresses_me": {
+        "description": "Indicates if the participant's breathing issues cause them stress."
+    },
+    "di_restrict_personal_social_life": {
+        "description": "Indicates if the participant's breathing issues restrict their personal and social life."
+    }
+}

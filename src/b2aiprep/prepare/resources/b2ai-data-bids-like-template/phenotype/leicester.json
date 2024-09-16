@@ -1,0 +1,65 @@
+{
+    "leicester_cough_session_id": {
+        "description": "Unique identifier for the Leicester Cough Questionnaire session."
+    },
+    "leicester_cough_duration": {
+        "description": "Total duration of the Leicester Cough Questionnaire (LCQ)."
+    },
+    "lcq_chest_stomach_pains": {
+        "description": "Indicates if the participant experiences chest or stomach pains as part of their cough symptoms."
+    },
+    "lcq_sputum_phlegm": {
+        "description": "Indicates if the participant produces sputum or phlegm as part of their cough symptoms."
+    },
+    "lcq_tired": {
+        "description": "Indicates if the participant feels tired due to their cough."
+    },
+    "lcq_embarrassed": {
+        "description": "Indicates if the participant feels embarrassed by their cough."
+    },
+    "lcq_anxious": {
+        "description": "Indicates if the participant feels anxious due to their cough."
+    },
+    "lcq_interfere_job": {
+        "description": "Indicates if the participant's cough interferes with their ability to work."
+    },
+    "lcq_interfere_life": {
+        "description": "Indicates if the participant's cough interferes with their daily life."
+    },
+    "lcq_exposure_paint": {
+        "description": "Indicates if the participant has been exposed to paint or chemical fumes that worsen their cough."
+    },
+    "lcq_sleep": {
+        "description": "Indicates if the participant's cough affects their sleep."
+    },
+    "lcq_bout": {
+        "description": "Indicates if the participant has bouts of coughing."
+    },
+    "lcq_frustrated": {
+        "description": "Indicates if the participant feels frustrated as part of their cough symptoms."
+    },
+    "lcq_fed_up": {
+        "description": "Indicates if the participant feels fed up due to their cough."
+    },
+    "lcq_hoarse_voice": {
+        "description": "Indicates if the participant has a hoarse voice as part of their cough symptoms."
+    },
+    "lcq_serious_illness": {
+        "description": "Indicates if the participant's cough interferes with their life due to a serious illness."
+    },
+    "lcq_other_people": {
+        "description": "Indicates if the participant feels that their cough bothers other people."
+    },
+    "lcq_interrupt_conversation": {
+        "description": "Indicates if the participant's cough interrupts conversations."
+    },
+    "lcq_partner": {
+        "description": "Indicates if the participant feels that their cough affects their partner or significant other."
+    },
+    "lcq_felt_in_control": {
+        "description": "Indicates if the participant feels in control of their cough."
+    },
+    "lcq_energy": {
+        "description": "Indicates if the participant experiences low energy as part of their cough symptoms."
+    }
+}

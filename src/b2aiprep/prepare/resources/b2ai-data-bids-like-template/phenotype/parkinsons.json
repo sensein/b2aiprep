@@ -1,0 +1,137 @@
+{
+    "diagnosis_parkinsons_gsd_category_1___bradykinesia": {
+        "description": "Indicates if the participant has bradykinesia as part of their Parkinson’s disease diagnosis."
+    },
+    "diagnosis_parkinsons_gsd_category_1___tremor": {
+        "description": "Indicates if the participant has tremor as part of their Parkinson’s disease diagnosis."
+    },
+    "diagnosis_parkinsons_gsd_category_1___rigidity": {
+        "description": "Indicates if the participant has rigidity as part of their Parkinson’s disease diagnosis."
+    },
+    "diagnosis_parkinsons_gsd_category_1_calculation": {
+        "description": "Indicates if the participant meets the criteria for Category 1 Parkinsonism based on bradykinesia, tremor, or rigidity."
+    },
+    "diagnosis_parkinsons_gsd_category_2___cerebellar_abnormalities": {
+        "description": "Indicates if the participant has cerebellar abnormalities as part of the exclusion criteria for Parkinson’s disease diagnosis."
+    },
+    "diagnosis_parkinsons_gsd_category_2___supranuclear_gaze_palsy": {
+        "description": "Indicates if the participant has supranuclear gaze palsy as part of the exclusion criteria for Parkinson’s disease diagnosis."
+    },
+    "diagnosis_parkinsons_gsd_category_2___bvf_ftd_ppa": {
+        "description": "Indicates if the participant has a diagnosis of behavioral variant frontotemporal dementia (bvFTD) or primary progressive aphasia (PPA) within five years of disease onset as part of the exclusion criteria for Parkinson’s disease diagnosis."
+    },
+    "diagnosis_parkinsons_gsd_category_2___lower_limbs": {
+        "description": "Indicates if the participant’s Parkinsonian features are restricted to the lower limbs for more than three years as part of the exclusion criteria."
+    },
+    "diagnosis_parkinsons_gsd_category_2___dopamine_treatment": {
+        "description": "Indicates if the participant has been treated with dopamine or related medications."
+    },
+    "diagnosis_parkinsons_gsd_category_2___absence_of_response": {
+        "description": "Indicates if the participant shows no response in category 2 of the Parkinson's GSD assessment."
+    },
+    "diagnosis_parkinsons_gsd_category_2___cortical_sensory_loss": {
+        "description": "Indicates if the participant has cortical sensory loss as part of Parkinson's GSD Category 2."
+    },
+    "diagnosis_parkinsons_gsd_category_2___dat_scan": {
+        "description": "Indicates if the participant has undergone a DAT scan as part of Parkinson's GSD Category 2."
+    },
+    "diagnosis_parkinsons_gsd_category_2___alternative_condition": {
+        "description": "Indicates if the participant has an alternative condition related to Parkinson's disease GSD Category 2."
+    },
+    "diagnosis_parkinsons_gsd_category_2_calculation": {
+        "description": "Calculation for Parkinson's GSD Category 2 diagnosis."
+    },
+    "diagnosis_parkinsons_gsd_category_3___response_dopaminergic_therapy": {
+        "description": "Indicates if the participant's Parkinson's diagnosis includes response to dopaminergic therapy under GSD category 3."
+    },
+    "diagnosis_parkinsons_gsd_category_3___levodopa_induced_dyskinesia": {
+        "description": "Indicates if the participant has levodopa-induced dyskinesia as part of their Parkinson's diagnosis."
+    },
+    "diagnosis_parkinsons_gsd_category_3___rest_tremor": {
+        "description": "Indicates if the participant's Parkinson's diagnosis includes rest tremor under GSD category 3."
+    },
+    "diagnosis_parkinsons_gsd_category_3___mibg": {
+        "description": "Indicates if the participant's Parkinson's diagnosis includes MIBG in category 3 of the GSD assessment."
+    },
+    "diagnosis_parkinsons_gsd_category_3_calculation": {
+        "description": "Calculation for Parkinson's GSD Category 3 diagnosis."
+    },
+    "diagnosis_parkinsons_gsd_calculation": {
+        "description": "Calculated score for Parkinson's disease diagnosis based on the GSD (Global Severity of Disease) scale."
+    },
+    "diagnosis_parkinsons_disease_subtype": {
+        "description": "Indicates the subtype of Parkinson's disease diagnosed in the participant."
+    },
+    "diagnosis_parkinsons_etiology": {
+        "description": "Indicates the etiology or cause of the participant's Parkinson's diagnosis."
+    },
+    "diagnosis_parkinsons_ds": {
+        "description": "Indicates the diagnostic subcategory of the participant's Parkinson's disease."
+    },
+    "diagnosis_parkinsons_ma___updrs": {
+        "description": "Indicates the participant's motor assessment score on the UPDRS (Unified Parkinson's Disease Rating Scale)."
+    },
+    "diagnosis_parkinsons_ma___other": {
+        "description": "Indicates if the participant has other motor assessment results for Parkinson's disease."
+    },
+    "diagnosis_parkinsons_ma_uprds": {
+        "description": "Indicates the participant's score on the Unified Parkinson's Disease Rating Scale (UPDRS)."
+    },
+    "diagnosis_parkinsons_ma_updrs_part_i_score": {
+        "description": "Score from Part I of the MDS-UPDRS, assessing non-motor aspects of daily living."
+    },
+    "diagnosis_parkinsons_ma_updrs_part_ii_score": {
+        "description": "Score from Part II of the MDS-UPDRS, assessing the participant's activities of daily living."
+    },
+    "diagnosis_parkinsons_ma_updrs_part_iii_score": {
+        "description": "Score from Part III of the MDS-UPDRS, assessing motor symptoms in Parkinson's disease."
+    },
+    "diagnosis_parkinsons_ma_updrs_part_iv_score": {
+        "description": "Score from Part IV of the MDS-UPDRS, assessing complications of therapy in Parkinson's disease."
+    },
+    "diagnosis_parkinsons_non_motor_symptoms": {
+        "description": "Indicates if the participant has non-motor symptoms associated with Parkinson's disease."
+    },
+    "diagnosis_parkinsons_non_motor_symptoms_yes": {
+        "description": "Indicates specific non-motor symptoms that the participant experiences as part of Parkinson's disease."
+    },
+    "diagnosis_parkinsons_treatment_obtained": {
+        "description": "Indicates if the participant has received treatment for Parkinson's disease."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes___medications": {
+        "description": "Indicates if the participant is receiving medication for Parkinson's disease."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes___npi": {
+        "description": "Indicates if the participant has received non-pharmacological interventions as part of Parkinson's treatment."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_medications___levodopa": {
+        "description": "Indicates if the participant is receiving levodopa as part of Parkinson's treatment."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_medications___dopamine_agonists": {
+        "description": "Indicates if the participant is receiving dopamine agonists as part of Parkinson's treatment."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_medications___mao_b": {
+        "description": "Indicates if the participant is receiving MAO-B inhibitors as part of Parkinson's treatment."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_medications___amantadine": {
+        "description": "Indicates if the participant is receiving Amantadine for Parkinson's treatment."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_medications___other": {
+        "description": "Indicates if the participant is receiving other medications for Parkinson's disease."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_npi___physical_therapy": {
+        "description": "Indicates if the participant has received physical therapy as a treatment for Parkinson's disease."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_npi___occupational_therapy": {
+        "description": "Indicates if the participant is receiving occupational therapy as part of Parkinson's treatment."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_npi___speech_therapy": {
+        "description": "Indicates if the participant has received speech therapy as part of Parkinson's treatment."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_npi___dbs": {
+        "description": "Indicates if the participant has received deep brain stimulation (DBS) as part of Parkinson's treatment."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_npi___other": {
+        "description": "Indicates if the participant has received non-pharmacological treatment for Parkinson's, other than those specified."
+    }
+}

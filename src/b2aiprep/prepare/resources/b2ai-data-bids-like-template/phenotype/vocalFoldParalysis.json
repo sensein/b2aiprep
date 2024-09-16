@@ -1,0 +1,56 @@
+{
+    "diagnosis_vfp_gsd": {
+        "description": "Indicates if the participant has vocal fold paralysis (VFP) confirmed by laryngoscopy or stroboscopy."
+    },
+    "diagnosis_vfp_etiology": {
+        "description": "Specifies the etiology or cause of the participant’s vocal fold paralysis (VFP)."
+    },
+    "diagnosis_vfp_iatrogenic": {
+        "description": "Indicates if the participant's vocal fold paralysis (VFP) is related to surgery or intubation."
+    },
+    "diagnosis_vfp_tumor": {
+        "description": "Indicates if the participant’s vocal fold paralysis (VFP) is caused by a tumor invading the recurrent laryngeal nerve (RLN)."
+    },
+    "diagnosis_vfp_dse": {
+        "description": "Specifies the degree of the participant’s glottic gap."
+    },
+    "diagnosis_degree_os": {
+        "description": "Indicates the overall severity of the participant’s vocal fold paralysis (VFP)."
+    },
+    "diagnosis_degree_os_2": {
+        "description": "Indicates an alternative measure of the overall severity of the participant’s condition."
+    },
+    "diagnosis_degree_r": {
+        "description": "Indicates the roughness of the participant’s voice."
+    },
+    "diagnosis_degree_r_2": {
+        "description": "Indicates an alternative measure of the roughness of the participant’s voice."
+    },
+    "diagnosis_degree_b": {
+        "description": "Indicates the breathiness of the participant’s voice."
+    },
+    "diagnosis_degree_b_2": {
+        "description": "Indicates an alternative measure of the breathiness of the participant’s voice."
+    },
+    "diagnosis_degree_s": {
+        "description": "Indicates the strain in the participant’s voice."
+    },
+    "diagnosis_degree_s_2": {
+        "description": "Indicates an alternative measure of the strain in the participant’s voice."
+    },
+    "diagnosis_degree_p": {
+        "description": "Indicates the pitch of the participant’s voice."
+    },
+    "diagnosis_degree_p_2": {
+        "description": "Indicates an alternative measure of the pitch of the participant’s voice."
+    },
+    "diagnosis_degree_l": {
+        "description": "Indicates the loudness of the participant’s voice."
+    },
+    "diagnosis_degree_l_2": {
+        "description": "Indicates an alternative measure of the loudness of the participant’s voice."
+    },
+    "diagnosis_degree_comments": {
+        "description": "Provides additional comments about the resonance of the participant’s voice."
+    }
+}

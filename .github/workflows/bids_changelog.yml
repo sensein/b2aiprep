@@ -1,0 +1,38 @@
+name: Update BIDS-like data template dir CHANGES.md
+
+on:
+  push:
+    paths:
+      - 'src/b2aiprep/data'
+  workflow_dispatch: # This allows manual triggering of the workflow
+
+jobs:
+  update-changelog:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the repository
+      - uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js environment (required for auto-changelog)
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      # Step 3: Install auto-changelog or any other changelog tool
+      - name: Install auto-changelog
+        run: npm install -g auto-changelog
+
+      # Step 4: Generate the changelog
+      - name: Generate changelog
+        run: auto-changelog -p
+
+      # Step 5: Commit and push the updated CHANGES.md file
+      - name: Commit and push changes
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add src/b2aiprep/data/b2ai-data-bids-like-template/CHANGES.md
+          git commit -m "Update b2ai-data-bids-like-template/CHANGES.md"
+          git push origin HEAD:main

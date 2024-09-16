@@ -1,0 +1,104 @@
+{
+    "eligible_studies___1": {
+        "description": "Indicates if the participant is eligible for study 1."
+    },
+    "eligible_studies___2": {
+        "description": "Indicates if the participant is eligible for studies related to neurological and neurodegenerative disorders."
+    },
+    "eligible_studies___3": {
+        "description": "Indicates if the participant is eligible for mood and psychiatric disorder studies."
+    },
+    "eligible_studies___4": {
+        "description": "Indicates if the participant is eligible for respiratory disorder studies."
+    },
+    "eligible_studies___5": {
+        "description": "Indicates if the participant is eligible for pediatric disorder studies."
+    },
+    "is_control_participant": {
+        "description": "Indicates whether the participant is a control group participant."
+    },
+    "laryng_cancer": {
+        "description": "Indicates if the participant has laryngeal cancer."
+    },
+    "benign_cord_lesion": {
+        "description": "Indicates if the participant has benign lesions of the vocal cord such as nodules, polyps, or cysts."
+    },
+    "rrp": {
+        "description": "Indicates if the participant has recurrent laryngeal papilloma (RRP)."
+    },
+    "spas_dys": {
+        "description": "Indicates if the participant has spasmodic dysphonia or laryngeal tremor."
+    },
+    "voc_fold_paralysis": {
+        "description": "Indicates if the participant has unilateral vocal fold paralysis."
+    },
+    "alz_dementia_mci": {
+        "description": "Indicates if the participant has Alzheimer’s, dementia, or mild cognitive impairment."
+    },
+    "als": {
+        "description": "Indicates if the participant has Amyotrophic Lateral Sclerosis (ALS)."
+    },
+    "parkinsons": {
+        "description": "Indicates if the participant has Parkinson’s disease."
+    },
+    "alcohol_subst_abuse": {
+        "description": "Indicates if the participant has alcohol or substance use disorder."
+    },
+    "gad": {
+        "description": "Indicates if the participant has an anxiety disorder."
+    },
+    "add_adhd": {
+        "description": "Indicates if the participant has Attention-Deficit/Hyperactivity Disorder (ADHD)."
+    },
+    "asd": {
+        "description": "Indicates if the participant has Autism Spectrum Disorder (ASD)."
+    },
+    "bipolar": {
+        "description": "Indicates if the participant has Bipolar Disorder."
+    },
+    "bpd": {
+        "description": "Indicates if the participant has Borderline Personality Disorder (BPD)."
+    },
+    "depression": {
+        "description": "Indicates if the participant has depression or major depressive disorder."
+    },
+    "ed": {
+        "description": "Indicates if the participant has an eating disorder (ED)."
+    },
+    "insomnia": {
+        "description": "Indicates if the participant has insomnia or other sleep disorders."
+    },
+    "ocd": {
+        "description": "Indicates if the participant has Obsessive-Compulsive Disorder (OCD)."
+    },
+    "panic": {
+        "description": "Indicates if the participant has panic disorder."
+    },
+    "ptsd": {
+        "description": "Indicates if the participant has Post-Traumatic Stress Disorder (PTSD)."
+    },
+    "schizophrenia": {
+        "description": "Indicates if the participant has schizophrenia."
+    },
+    "soc_anx_dis": {
+        "description": "Indicates if the participant has social anxiety disorder."
+    },
+    "other_psych": {
+        "description": "Indicates if the participant has other psychiatric disorders."
+    },
+    "asthma": {
+        "description": "Indicates if the participant has asthma."
+    },
+    "airway_stenosis": {
+        "description": "Indicates if the participant has airway stenosis, such as bilateral vocal fold paralysis or laryngeal stenosis."
+    },
+    "chronic_cough": {
+        "description": "Indicates if the participant has chronic cough."
+    },
+    "copd": {
+        "description": "Indicates if the participant has Chronic Obstructive Pulmonary Disease (COPD)."
+    },
+    "osa": {
+        "description": "Indicates if the participant has obstructive sleep apnea (OSA)."
+    }
+}
