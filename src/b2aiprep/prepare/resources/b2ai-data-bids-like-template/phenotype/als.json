@@ -1,104 +1,104 @@
 {
     "diagnosis_als_gsd_category_1": {
-        "description": ""
+        "description": "Indicates the participant's ALS diagnosis under GSD category 1."
     },
     "diagnosis_als_gsd_category_2": {
-        "description": ""
+        "description": "Indicates if the participant meets the criteria for ALS GSD Category 2."
     },
     "diagnosis_als_gsd_category_3": {
-        "description": ""
+        "description": "Indicates the participant's ALS diagnosis under GSD category 3."
     },
     "diagnosis_als_gsd_calculation": {
-        "description": ""
+        "description": "Calculation for the participant's ALS GSD diagnosis."
     },
     "diagnosis_als_disease_subtype": {
-        "description": ""
+        "description": "Indicates the subtype of ALS diagnosed in the participant."
     },
     "diagnosis_als_disease_subtype_familial": {
-        "description": ""
+        "description": "Indicates if the participant has been diagnosed with familial ALS."
     },
     "diagnosis_als_etiology___genetic_factors": {
-        "description": ""
+        "description": "Indicates if the participant's ALS diagnosis is linked to genetic factors."
     },
     "diagnosis_als_etiology___environmental_factors": {
-        "description": ""
+        "description": "Indicates if the participant's ALS diagnosis is linked to environmental factors."
     },
     "diagnosis_als_etiology_genetic_factors___c9orf72": {
-        "description": ""
+        "description": "Indicates if the participant's ALS diagnosis is linked to the C9orf72 genetic factor."
     },
     "diagnosis_als_etiology_genetic_factors___sod1": {
-        "description": ""
+        "description": "Indicates if the participant's ALS diagnosis is linked to the SOD1 genetic factor."
     },
     "diagnosis_als_etiology_genetic_factors___other": {
-        "description": ""
+        "description": "Indicates if the participant's ALS diagnosis is linked to other genetic factors not listed."
     },
     "diagnosis_als_cp___upper_motor_neuron": {
-        "description": ""
+        "description": "Indicates if the participant's ALS diagnosis includes upper motor neuron involvement."
     },
     "diagnosis_als_cp___lower_motor_neuron": {
-        "description": ""
+        "description": "Indicates if the participant has lower motor neuron involvement as part of their ALS diagnosis."
     },
     "diagnosis_als_cp___bulbar_symptoms": {
-        "description": ""
+        "description": "Indicates if the participant has bulbar symptoms as part of their ALS diagnosis."
     },
     "diagnosis_als_cp___respiratory_involvement": {
-        "description": ""
+        "description": "Indicates if the participant has respiratory involvement as part of their ALS diagnosis."
     },
     "diagnosis_als_dp": {
-        "description": ""
+        "description": "Indicates if the participant has a diagnosis of ALS with dementia."
     },
     "diagnosis_als_na_alsfrs_r_score": {
-        "description": ""
+        "description": "The participant's score on the ALS Functional Rating Scale-Revised (ALSFRS-R)."
     },
     "diagnosis_als_na_fvc_percentage": {
-        "description": ""
+        "description": "Indicates the participant's forced vital capacity (FVC) percentage for ALS diagnosis."
     },
     "diagnosis_als_treatment_and_management": {
-        "description": ""
+        "description": "Indicates the treatment and management plan for the participant's ALS diagnosis."
     },
     "diagnosis_als_treatment_and_management_yes___medications": {
-        "description": ""
+        "description": "Indicates if the participant is receiving medications as part of ALS treatment."
     },
     "diagnosis_als_treatment_and_management_yes___supportive_care": {
-        "description": ""
+        "description": "Indicates if the participant is receiving supportive care as part of ALS management."
     },
     "diagnosis_als_treatment_and_management_yes_medications___riluzole": {
-        "description": ""
+        "description": "Indicates if the participant is receiving riluzole as part of ALS treatment."
     },
     "diagnosis_als_treatment_and_management_yes_medications___edaravone": {
-        "description": ""
+        "description": "Indicates if the participant is receiving edaravone as part of ALS treatment."
     },
     "diagnosis_als_treatment_and_management_yes_medications___sodium": {
-        "description": ""
+        "description": "Indicates if the participant is receiving sodium as part of ALS treatment."
     },
     "diagnosis_als_treatment_and_management_yes_medications___tofersen": {
-        "description": ""
+        "description": "Indicates if the participant is receiving Tofersen as part of ALS treatment."
     },
     "diagnosis_als_treatment_and_management_yes_medications___symptomatic_treatment": {
-        "description": ""
+        "description": "Indicates if the participant is receiving symptomatic treatment as part of ALS management."
     },
     "diagnosis_als_treatment_and_management_yes_medications___other": {
-        "description": ""
+        "description": "Indicates if the participant is receiving other medications as part of ALS treatment."
     },
     "diagnosis_als_treatment_and_management_yes_supportive_care___physical_therapy": {
-        "description": ""
+        "description": "Indicates if the participant has received physical therapy as part of ALS management."
     },
     "diagnosis_als_treatment_and_management_yes_supportive_care___occupational_therapy": {
-        "description": ""
+        "description": "Indicates if the participant is receiving occupational therapy as part of ALS treatment and supportive care."
     },
     "diagnosis_als_treatment_and_management_yes_supportive_care___speech_therapy": {
-        "description": ""
+        "description": "Indicates if the participant has received speech therapy as part of ALS management."
     },
     "diagnosis_als_treatment_and_management_yes_supportive_care___respiratory_support": {
-        "description": ""
+        "description": "Indicates if the participant has received respiratory support as part of ALS management."
     },
     "diagnosis_als_treatment_and_management_yes_supportive_care___nutrition_support": {
-        "description": ""
+        "description": "Indicates if the participant has received nutrition support as part of ALS management."
     },
     "diagnosis_als_treatment_and_management_yes_supportive_care___psychotherapy": {
-        "description": ""
+        "description": "Indicates if the participant has received psychotherapy as part of ALS management."
     },
     "diagnosis_als_treatment_and_management_yes_supportive_care___other": {
-        "description": ""
+        "description": "Indicates if the participant has received other forms of supportive care for ALS."
     }
 }

@@ -292,3 +292,51 @@ def sort_json_by_another_and_save(
         json.dump(sorted_json, output_file, indent=4)
 
     print(f"Sorted JSON saved to {output_file_path}")
+
+
+def save_json(data: Dict[str, any], file_path: str) -> None:
+    """Helper function to save a dictionary as a JSON file with correct character rendering."""
+    with open(file_path, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=4, ensure_ascii=False)
+
+
+def update_jsons_in_directory(directory: str, reference_file: str) -> None:
+    """Function to load all JSON files in a directory, replace their values
+    with values from a reference JSON file based on matching keys, and remove
+    those entries from the reference JSON at the end, excluding <measurement_tool_name>.json."""
+
+    # Load reference JSON
+    reference_json = open_json_as_dict(reference_file)
+
+    # Track the keys that have been updated
+    updated_keys: List[str] = []
+
+    # Iterate over all files in the directory
+    for file_name in os.listdir(directory):
+        # Exclude <measurement_tool_name>.json
+        if file_name.endswith(".json") and file_name != "<measurement_tool_name>.json":
+            file_path = os.path.join(directory, file_name)
+
+            # Load the current JSON file as a dict
+            json_data = open_json_as_dict(file_path)
+
+            # Replace values in the json_data with the ones from reference_json for matching keys
+            updated_json = {}
+            for key in json_data.keys():
+                if key in reference_json:
+                    updated_json[key] = reference_json[key]  # Use the value from reference JSON
+                    updated_keys.append(key)  # Track the key to be removed later
+                else:
+                    raise KeyError(f"Key '{key}' in {file_name} not found in reference JSON.")
+
+            # Save the updated JSON file
+            save_json(updated_json, file_path)
+            print(f"Updated: {file_name}")
+
+    # Remove all updated keys from the reference JSON
+    for key in updated_keys:
+        reference_json.pop(key, None)
+
+    # Save the modified reference JSON back to its original file
+    save_json(reference_json, reference_file)
+    print(f"Updated reference JSON saved back to {reference_file}")

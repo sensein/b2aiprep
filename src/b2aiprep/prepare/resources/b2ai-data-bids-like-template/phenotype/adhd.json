@@ -1,62 +1,62 @@
 {
     "adhd_session_id": {
-        "description": ""
+        "description": "Unique identifier for the ADHD session."
     },
     "adhd_duration": {
-        "description": ""
+        "description": "Duration of ADHD-related assessments."
     },
     "wrapping_up": {
-        "description": ""
+        "description": "Indicates if the session is nearing completion."
     },
     "things_in_order": {
-        "description": ""
+        "description": "Indicates if the participant prefers to keep things in order."
     },
     "remembering_appt": {
-        "description": ""
+        "description": "Reports if the participant has trouble remembering appointments."
     },
     "avoidance": {
-        "description": ""
+        "description": "Indicates if the participant avoids reminders of stressful or traumatic events."
     },
     "fidget": {
-        "description": ""
+        "description": "Indicates if the participant is fidgeting during the session."
     },
     "overly_active": {
-        "description": ""
+        "description": "Indicates if the participant is overly active or restless."
     },
     "careless": {
-        "description": ""
+        "description": "Indicates if the participant feels careless about their actions or responsibilities."
     },
     "difficulty_attention": {
-        "description": ""
+        "description": "Indicates if the participant has difficulty paying attention."
     },
     "difficulty_concentrating": {
-        "description": ""
+        "description": "Indicates if the participant has difficulty concentrating."
     },
     "misplace": {
-        "description": ""
+        "description": "Indicates if the participant often misplaces things."
     },
     "distracted": {
-        "description": ""
+        "description": "Indicates if the participant feels distracted during the session."
     },
     "remain_seated": {
-        "description": ""
+        "description": "Indicates if the participant is able to remain seated for long periods."
     },
     "restless": {
-        "description": ""
+        "description": "Indicates if the participant feels restless."
     },
     "difficulty_unwinding": {
-        "description": ""
+        "description": "Indicates if the participant has difficulty unwinding or relaxing after stressful events."
     },
     "talking_too_much": {
-        "description": ""
+        "description": "Indicates if the participant feels they are talking too much."
     },
     "finish_other_sent": {
-        "description": ""
+        "description": "Indicates if the participant finishes others' sentences."
     },
     "difficulty_waiting": {
-        "description": ""
+        "description": "Indicates if the participant has difficulty waiting for others."
     },
     "interrupt_others": {
-        "description": ""
+        "description": "Indicates if the participant tends to interrupt others during conversations."
     }
 }

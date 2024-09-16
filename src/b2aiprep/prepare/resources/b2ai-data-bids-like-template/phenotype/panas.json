@@ -1,38 +1,38 @@
 {
     "panas_session_id": {
-        "description": ""
+        "description": "Unique session identifier for the PANAS (Positive and Negative Affect Schedule) questionnaire."
     },
     "panas_duration": {
-        "description": ""
+        "description": "Duration of the Positive and Negative Affect Schedule (PANAS) questionnaire."
     },
     "upset": {
-        "description": ""
+        "description": "Indicates if the participant feels upset."
     },
     "hostile": {
-        "description": ""
+        "description": "Indicates if the participant feels hostile or angry."
     },
     "alert": {
-        "description": ""
+        "description": "Indicates if the participant is alert during the session."
     },
     "ashamed": {
-        "description": ""
+        "description": "Indicates if the participant feels ashamed."
     },
     "inspired": {
-        "description": ""
+        "description": "Indicates if the participant feels inspired or motivated."
     },
     "nervous": {
-        "description": ""
+        "description": "Indicates if the participant feels nervous."
     },
     "determined": {
-        "description": ""
+        "description": "Indicates if the participant feels determined or focused."
     },
     "attentive": {
-        "description": ""
+        "description": "Indicates if the participant appears attentive during the session."
     },
     "afraid": {
-        "description": ""
+        "description": "Indicates if the participant feels afraid."
     },
     "active": {
-        "description": ""
+        "description": "Indicates if the participant feels physically active or engaged."
     }
 }
