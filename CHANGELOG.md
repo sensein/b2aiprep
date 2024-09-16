@@ -1,3 +1,20 @@
+# 0.20.0 (Mon Sep 16 2024)
+
+#### 🚀 Enhancement
+
+- Update the BIDS-like saving to align with template directory [#77](https://github.com/sensein/b2aiprep/pull/77) ([@ibevers](https://github.com/ibevers))
+
+#### 🐛 Bug Fix
+
+- Merge in bids-like-updates [#78](https://github.com/sensein/b2aiprep/pull/78) ([@ibevers](https://github.com/ibevers))
+- Add BIDS-like data template directory structure [#76](https://github.com/sensein/b2aiprep/pull/76) ([@ibevers](https://github.com/ibevers))
+
+#### Authors: 1
+
+- [@ibevers](https://github.com/ibevers)
+
+---
+
 # 0.19.0 (Wed Jul 17 2024)
 
 #### 🚀 Enhancement
