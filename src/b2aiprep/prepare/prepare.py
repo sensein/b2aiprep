@@ -45,6 +45,7 @@ import numpy as np
 import pydra
 import torch
 from senselab.audio.data_structures.audio import Audio
+from senselab.utils.data_structures.language import Language
 from senselab.audio.tasks.features_extraction.opensmile import (
     extract_opensmile_features_from_audios,
 )
@@ -114,6 +115,7 @@ def wav_to_features(wav_paths: List[Path], transcription_model_size: str, with_s
       A dictionary mapping feature names to their extracted values.
     """
     all_features = []
+    language = Language.model_validate({"language_code": "en"}) # used for transcription
     for wav_path in wav_paths:
         wav_path = Path(wav_path)
 
@@ -132,7 +134,7 @@ def wav_to_features(wav_paths: List[Path], transcription_model_size: str, with_s
         if with_sensitive:
             speech_to_text_model = HFModel(path_or_uri=f"openai/whisper-{transcription_model_size}")
             features["transcription"] = transcribe_audios(
-                audios=[audio], model=speech_to_text_model
+                audios=[audio], model=speech_to_text_model, language=language
             )[0]
         logging.disable(logging.NOTSET)
         _logger.setLevel(logging.INFO)
@@ -252,15 +254,15 @@ def extract_features_workflow(
 
 
 def _extract_features_workflow(
-    bids_dir_path: Path, remove: bool = True, transcription_model_size: str = "tiny"
+    bids_dir_path: Path, remove: bool = True, transcription_model_size: str = "tiny", n_cores: int = 1
 ):
     """Provides a non-Pydra implementation of _extract_features_workflow"""
-    audio_paths = get_audio_paths(name="audio_paths", bids_dir_path=bids_dir_path)().output.out
+    audio_paths = get_audio_paths(name="audio_paths", bids_dir_path=bids_dir_path, n_cores=1)().output.out
     all_features = []
-    for path in audio_paths:
+    for path_batch in audio_paths:
         all_features.append(
             wav_to_features(
-                wav_path=Path(path), transcription_model_size=transcription_model_size
+                wav_paths=path_batch, transcription_model_size=transcription_model_size
             )().output.out
         )
     return all_features
@@ -305,14 +307,14 @@ def prepare_bids_like_data(
       tar_file_path:
         The file path where the .tar.gz file will be saved.
     """
-    initialize_data_directory(bids_dir_path)
+    # initialize_data_directory(bids_dir_path)
 
     _logger.info("Organizing data into BIDS-like directory structure...")
-    redcap_to_bids(redcap_csv_path, bids_dir_path, audio_dir_path)
+    # redcap_to_bids(redcap_csv_path, bids_dir_path, audio_dir_path)
     _logger.info("Data organization complete.")
 
     _logger.info("Beginning audio feature extraction...")
-    extract_features_workflow(
+    _extract_features_workflow(
         bids_dir_path,
         transcription_model_size=transcription_model_size,
         n_cores=n_cores,
