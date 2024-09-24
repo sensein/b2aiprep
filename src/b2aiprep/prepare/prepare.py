@@ -58,6 +58,8 @@ from senselab.audio.tasks.speaker_embeddings.api import (
     extract_speaker_embeddings_from_audios,
 )
 from senselab.audio.tasks.speech_to_text.api import transcribe_audios
+from senselab.utils.data_structures.device import DeviceType
+from senselab.utils.data_structures.language import Language
 from senselab.utils.data_structures.model import HFModel
 
 from b2aiprep.prepare.bids_like_data import redcap_to_bids
@@ -131,8 +133,10 @@ def wav_to_features(wav_paths: List[Path], transcription_model_size: str, with_s
         features["opensmile"] = extract_opensmile_features_from_audios([audio])[0]
         if with_sensitive:
             speech_to_text_model = HFModel(path_or_uri=f"openai/whisper-{transcription_model_size}")
+            device = DeviceType.CPU
+            language = Language(language_code="english")
             features["transcription"] = transcribe_audios(
-                audios=[audio], model=speech_to_text_model
+                audios=[audio], model=speech_to_text_model, device=device, language=language
             )[0]
         logging.disable(logging.NOTSET)
         _logger.setLevel(logging.INFO)
