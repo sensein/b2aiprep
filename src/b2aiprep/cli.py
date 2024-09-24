@@ -89,6 +89,7 @@ def redcap2bids(
 @click.argument("transcription_model_size", type=str)
 @click.argument("n_cores", type=int)
 @click.argument("with_sensitive", type=bool)
+@click.argument("update_columns_names", type=bool)
 def prepbidslikedata(
     redcap_csv_path,
     audio_dir_path,
@@ -97,6 +98,7 @@ def prepbidslikedata(
     transcription_model_size,
     n_cores,
     with_sensitive,
+    update_columns_names,
 ):
     """Organizes the data into a BIDS-like directory structure.
 
@@ -106,7 +108,8 @@ def prepbidslikedata(
     tar_file_path: path to store tar file\n
     transcription_model_size: tiny, small, medium, or large\n
     n_cores: number of cores to run feature extraction on\n
-    with_sensitive: whether to include sensitive data
+    with_sensitive: whether to include sensitive data\n
+    update_columns_names: whether to replace column names with column_mappings
     """
     prepare_bids_like_data(
         redcap_csv_path=Path(redcap_csv_path),
@@ -116,6 +119,7 @@ def prepbidslikedata(
         transcription_model_size=transcription_model_size,
         n_cores=n_cores,
         with_sensitive=with_sensitive,
+        update_columns_names=update_columns_names,
     )
 
 

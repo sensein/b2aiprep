@@ -436,6 +436,7 @@ def output_participant_data_to_fhir(
 def redcap_to_bids(
     filename: Path,
     outdir: Path,
+    update_column_names: bool,
     audiodir: t.Optional[Path] = None,
 ):
     """Converts the Bridge2AI RedCap CSV output and a folder of audio files
@@ -473,7 +474,8 @@ def redcap_to_bids(
     #   2. text column names ("Record ID")
     # for simplicity, we always map columns to coded columns before processing,
     # that way we only ever need to manually subselect using one version of the column name
-    df = update_redcap_df_column_names(df)
+    if update_column_names:
+        df = update_redcap_df_column_names(df)
 
     construct_tsv_from_json(  # construct participants.tsv
         df=df,

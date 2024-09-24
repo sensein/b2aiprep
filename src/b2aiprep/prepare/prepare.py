@@ -330,6 +330,7 @@ def prepare_bids_like_data(
     transcription_model_size: str,
     n_cores: int,
     with_sensitive: bool,
+    update_columns_names: bool = False,
 ) -> None:
     """Organizes and processes Bridge2AI data for distribution.
 
@@ -351,7 +352,7 @@ def prepare_bids_like_data(
     initialize_data_directory(bids_dir_path)
 
     _logger.info("Organizing data into BIDS-like directory structure...")
-    redcap_to_bids(redcap_csv_path, bids_dir_path, audio_dir_path)
+    redcap_to_bids(redcap_csv_path, bids_dir_path, update_columns_names, audio_dir_path)
     _logger.info("Data organization complete.")
 
     _logger.info("Beginning audio feature extraction...")
