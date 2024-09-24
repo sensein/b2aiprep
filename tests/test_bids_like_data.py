@@ -181,7 +181,7 @@ def test_redcap_to_bids():
         # output_dir.mkdir(parents=True, exist_ok=True)  # Ensure the directory exists
         initialize_data_directory(output_dir)
         # Call the actual redcap_to_bids function with the real CSV and the temporary output directory
-        redcap_to_bids(csv_file_path, output_dir)
+        redcap_to_bids(csv_file_path, output_dir, update_column_names=True)
 
         # Check if the expected output files exist in the temporary directory
         if not any(output_dir.iterdir()):
