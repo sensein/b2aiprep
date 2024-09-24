@@ -423,9 +423,9 @@ def output_participant_data_to_fhir(
                         )
                         if audio_file_destination.exists():
                             logging.warning(
-                                f"Audio file {audio_file_destination} already exists. Overwriting."
+                                f"Audio file {audio_file_destination} already exists. Skipping."
                             )
-                        audio_file_destination.write_bytes(audio_file.read_bytes())
+                            audio_file_destination.write_bytes(audio_file.read_bytes())
     # Save sessions.tsv
     if not os.path.exists(subject_path):
         os.mkdir(subject_path)
@@ -473,7 +473,7 @@ def redcap_to_bids(
     #   2. text column names ("Record ID")
     # for simplicity, we always map columns to coded columns before processing,
     # that way we only ever need to manually subselect using one version of the column name
-    # df = update_redcap_df_column_names(df)
+    df = update_redcap_df_column_names(df)
 
     construct_tsv_from_json(  # construct participants.tsv
         df=df,

@@ -101,10 +101,10 @@ def initialize_data_directory(bids_dir_path: str) -> None:
 
 @pydra.mark.task
 def wav_to_features(wav_paths: List[Path], transcription_model_size: str, with_sensitive: bool):
-    """Extract features from a single audio file.
+    """Extract features from a list of audio files.
 
-    Extracts various audio features from a .wav file at the specified
-    path using the Audio class and feature extraction functions.
+    Extracts various audio features from .wav files
+    using the Audio class and feature extraction functions.
 
     Args:
       wav_path:
@@ -193,8 +193,9 @@ def get_audio_paths(bids_dir_path, n_cores):
                         if audio_file.endswith(".wav"):
                             audio_file_path = os.path.join(audio_path, audio_file)
                             audio_paths.append(audio_file_path)
+    if n_cores == 1:  # iterative case
+        return audio_paths
 
-    # Assuming audio_paths is a list of paths and n_cores is the number of cores
     batched_audio_paths = np.array_split(audio_paths, n_cores)
     batched_audio_paths = [
         list(batch) for batch in batched_audio_paths
@@ -232,7 +233,8 @@ def extract_features_workflow(
     # Get paths to every audio file.
     ef_wf.add(get_audio_paths(name="audio_paths", bids_dir_path=bids_dir_path, n_cores=n_cores))
 
-    # Run wav_to_features for each audio file.
+    # Run wav_to_features for each audio file
+    # .
     ef_wf.add(
         wav_to_features(
             name="features",
@@ -251,19 +253,60 @@ def extract_features_workflow(
     return ef_wf
 
 
-def _extract_features_workflow(
-    bids_dir_path: Path, remove: bool = True, transcription_model_size: str = "tiny"
+def extract_features_iteratively(
+    bids_dir_path: Path,
+    transcription_model_size: str,
+    n_cores: int,
+    with_sensitive: bool,
 ):
     """Provides a non-Pydra implementation of _extract_features_workflow"""
-    audio_paths = get_audio_paths(name="audio_paths", bids_dir_path=bids_dir_path)().output.out
+    audio_paths = get_audio_paths(
+        name="audio_paths", bids_dir_path=bids_dir_path, n_cores=n_cores
+    )().output.out
     all_features = []
-    for path in audio_paths:
-        all_features.append(
-            wav_to_features(
-                wav_path=Path(path), transcription_model_size=transcription_model_size
-            )().output.out
+    all_features.append(
+        # def wav_to_features(wav_paths: List[Path], transcription_model_size: str, with_sensitive: bool):
+        wav_to_features(
+            wav_paths=audio_paths,
+            transcription_model_size=transcription_model_size,
+            with_sensitive=with_sensitive,
+        )().output.out
+    )
+
+
+def extract_features(
+    bids_dir_path: Path,
+    transcription_model_size: str = "tiny",
+    n_cores: int = 8,
+    with_sensitive: bool = True,
+):
+    """
+    Extracts features from a BIDS-compliant directory using either an iterative
+    or workflow-based approach depending on the number of cores specified.
+
+    Args:
+        bids_dir_path (Path): Path to the BIDS directory containing the dataset.
+        transcription_model_size (str): Size of the transcription model to use,
+            with options such as 'tiny', 'small', 'medium', etc.
+        n_cores (int): Number of CPU cores to use. If set to 1,
+            will extract iteratively. Otherwise, it will parallelize.
+        with_sensitive (bool): Flag to indicate whether sensitive data is included
+            in the feature extraction process. Default is True.
+    """
+    if n_cores == 1:
+        extract_features_iteratively(
+            bids_dir_path,
+            transcription_model_size=transcription_model_size,
+            n_cores=n_cores,
+            with_sensitive=with_sensitive,
         )
-    return all_features
+    else:
+        extract_features_workflow(
+            bids_dir_path,
+            transcription_model_size=transcription_model_size,
+            n_cores=n_cores,
+            with_sensitive=with_sensitive,
+        )
 
 
 def bundle_data(source_directory: str, save_path: str) -> None:
@@ -312,13 +355,12 @@ def prepare_bids_like_data(
     _logger.info("Data organization complete.")
 
     _logger.info("Beginning audio feature extraction...")
-    extract_features_workflow(
+    extract_features(
         bids_dir_path,
         transcription_model_size=transcription_model_size,
         n_cores=n_cores,
         with_sensitive=with_sensitive,
     )
-
     _logger.info("Audio feature extraction complete.")
 
     _logger.info("Saving .tar file with processed data...")
