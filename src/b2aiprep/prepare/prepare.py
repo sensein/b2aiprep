@@ -38,12 +38,16 @@ Functions:
 import logging
 import os
 import tarfile
+import traceback
+from collections import defaultdict
 from pathlib import Path
+from time import sleep
 from typing import List
 
 import numpy as np
 import pydra
 import torch
+import tqdm
 from senselab.audio.data_structures.audio import Audio
 from senselab.audio.tasks.features_extraction.opensmile import (
     extract_opensmile_features_from_audios,
@@ -135,9 +139,20 @@ def wav_to_features(wav_paths: List[Path], transcription_model_size: str, with_s
             speech_to_text_model = HFModel(path_or_uri=f"openai/whisper-{transcription_model_size}")
             device = DeviceType.CPU
             language = Language(language_code="english")
-            features["transcription"] = transcribe_audios(
-                audios=[audio], model=speech_to_text_model, device=device, language=language
-            )[0]
+            try:
+                features["transcription"] = transcribe_audios(
+                    audios=[audio], model=speech_to_text_model, device=device, language=language
+                )[0]
+            except Exception:
+                sleep(1)
+                try:
+                    features["transcription"] = transcribe_audios(
+                        audios=[audio], model=speech_to_text_model, device=device, language=language
+                    )[0]
+                except Exception as e:
+                    logging.disable(logging.NOTSET)
+                    _logger.error(f"An error occurred with feature extraction: {e}")
+                    _logger.error(traceback.print_exc())
         logging.disable(logging.NOTSET)
         _logger.setLevel(logging.INFO)
 
@@ -374,10 +389,11 @@ def prepare_bids_like_data(
 
     _logger.info("Process completed.")
 
+
 def validate_bids_data(
     bids_dir_path: Path,
     fix: bool = True,
-    transcription_model_size: str = 'medium',
+    transcription_model_size: str = "medium",
 ) -> None:
     """Scans BIDS audio data and verifies that all expected features are present."""
     _logger.info("Scanning for features in BIDS directory.")
@@ -387,28 +403,37 @@ def validate_bids_data(
     # in audio_dir.parent / "audio"
     audio_paths = get_audio_paths(bids_dir_path)
     audio_to_reprocess = defaultdict(list)
-    features = ('speaker_embedding', 'specgram', 'melfilterbank', 'mfcc', 'sample_rate', 'opensmile')
+    features = (
+        "speaker_embedding",
+        "specgram",
+        "melfilterbank",
+        "mfcc",
+        "sample_rate",
+        "opensmile",
+    )
     for audio_path in audio_paths:
         audio_path = Path(audio_path)
         audio_dir = audio_path.parent
         features_dir = audio_dir.parent / "audio"
         for feat_name in features:
-            if features_dir.joinpath(f'{audio_path.stem}_{feat_name}.pt').exists() is False:
+            if features_dir.joinpath(f"{audio_path.stem}_{feat_name}.pt").exists() is False:
                 audio_to_reprocess[audio_path].append(feat_name)
-        
+
         # also check for transcription
-        if features_dir.joinpath(f'{audio_path.stem}_transcription.txt').exists() is False:
-            audio_to_reprocess[audio_path].append('transcription')
-    
+        if features_dir.joinpath(f"{audio_path.stem}_transcription.txt").exists() is False:
+            audio_to_reprocess[audio_path].append("transcription")
+
     if len(audio_to_reprocess) > 0:
-        _logger.info(f"Missing features for {len(audio_to_reprocess)} / {len(audio_paths)} audio files")
+        _logger.info(
+            f"Missing features for {len(audio_to_reprocess)} / {len(audio_paths)} audio files"
+        )
     else:
         _logger.info("All audio files have been processed and all feature files are present.")
         return
 
     if not fix:
         return
-    
+
     feature_extraction_fcns = {
         "speaker_embedding": extract_speaker_embeddings_from_audios,
         "specgram": extract_spectrogram_from_audios,
@@ -416,7 +441,9 @@ def validate_bids_data(
         "mfcc": extract_mfcc_from_audios,
         "opensmile": extract_opensmile_features_from_audios,
     }
-    for audio_path, missing_feats in tqdm(audio_to_reprocess.items(), total=len(audio_to_reprocess), desc='Reprocessing audio files'):
+    for audio_path, missing_feats in tqdm(
+        audio_to_reprocess.items(), total=len(audio_to_reprocess), desc="Reprocessing audio files"
+    ):
         audio_dir = audio_path.parent
         features_dir = audio_dir.parent / "audio"
         features_dir.mkdir(exist_ok=True)
@@ -429,9 +456,11 @@ def validate_bids_data(
                 feature_value = audio.sampling_rate
             elif feat_name in feature_extraction_fcns:
                 feature_value = feature_extraction_fcns[feat_name]([audio])[0]
-            elif feat_name == 'transcription':
+            elif feat_name == "transcription":
                 language = Language.model_validate({"language_code": "en"})
-                speech_to_text_model = HFModel(path_or_uri=f"openai/whisper-{transcription_model_size}")
+                speech_to_text_model = HFModel(
+                    path_or_uri=f"openai/whisper-{transcription_model_size}"
+                )
                 feature_value = transcribe_audios(
                     audios=[audio], model=speech_to_text_model, language=language
                 )[0]
@@ -448,6 +477,7 @@ def validate_bids_data(
                     text_file.write(feature_value.text)
 
     _logger.info("Process completed.")
+
 
 def main():
     pass
