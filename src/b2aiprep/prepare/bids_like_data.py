@@ -81,47 +81,68 @@ def load_redcap_csv(file_path):
         return None
 
 
-def update_redcap_df_column_names(df: DataFrame) -> DataFrame:
-    """Update column names for a RedCap derived dataframe to match the coded
-    column names used in the B2AI data processing pipeline.
+def validate_redcap_df_column_names(df: DataFrame) -> DataFrame:
+    """RedCap allows two distinct export formats: raw data or with labels.
+    The raw data format exports column names as coded entries, e.g. "record_id".
+    This would be ideal, but it modifies the values of the data export. To avoid this,
+    the dataset is exported with labels, e.g. "Record ID". Afterward, the dataset
+    has the header manually modified to match the coded entries.
 
-    RedCap can export coded column names and text column names ("labels"), e.g.
-    "redcap_repeat_instrument" vs. "Repeat Instrument". For downstream consistency,
-    we map all column names to the coded form, i.e. "redcap_repeat_instrument".
+    This cannot be done with the data dictionary, as the data dictionary dimensions
+    do not match the dataset dimensions. The raw data must also be exported and the header
+    should be copied over to the label data.
+
+    This function verifies the headers are exported correctly.
 
     Parameters
     ----------
     df : DataFrame
         The DataFrame to update.
 
-    Returns
-    -------
-    DataFrame
-        The updated DataFrame.
+    Raises
+    ------
+    ValueError
+        If the columns in the DataFrame do not match the expected columns
+        for the Bridge2AI data voice data.
     """
 
+    # this column mapping is derived from the data dictionary, and is a subset
+    # of the columns exported from redcap.
     b2ai_resources = files("b2aiprep").joinpath("prepare").joinpath("resources")
     column_mapping: dict = json.loads(b2ai_resources.joinpath("column_mapping.json").read_text())
-    # the mapping by default is {"coded_entry": "Coded Entry"}
-    # we want our columns to be named "coded_entry", so we reverse the dict
-    column_mapping = {v: k for k, v in column_mapping.items()}
-
+    
     # only map columns if we have a full overlap with the mapping dict
-    overlap_keys = set(df.columns.tolist()).intersection(set(column_mapping.keys()))
-    overlap_values = set(df.columns.tolist()).intersection(set(column_mapping.values()))
+    overlap_with_label = set(df.columns.tolist()).intersection(set(column_mapping.values()))
+    overlap_with_coded = set(df.columns.tolist()).intersection(set(column_mapping.keys()))
 
-    if len(overlap_keys) == df.shape[1]:
-        _LOGGER.info("Mapping columns to coded format.")
-        return df.rename(columns=column_mapping)
-    elif len(overlap_values) == df.shape[1]:
-        # no need to map columns
-        return df
-    else:
-        non_overlapping_columns = set(df.columns.tolist()) - set(column_mapping.keys())
+    if len(overlap_with_coded) == df.shape[1]:
+        return
+    
+    if len(overlap_with_coded) == 0:
         raise ValueError(
-            f"Found {len(non_overlapping_columns)} \
-                columns not in mapping: {non_overlapping_columns}"
+            (
+                "Dataframe has no coded headers. Please modify the source data to have "
+                "coded labels instead."
+            )
         )
+
+    # if we have more than half of the columns as label headers, we assume the data is
+    # exported with labels
+    if len(overlap_with_label) > (df.shape[1] * 0.5):
+        raise ValueError(
+            (
+                "Dataframe has label headers rather than coded headers. Please modify the source data to have "
+                "coded labels instead."
+            )
+        )
+
+    # raise a warning about the labels - unclear why there would be a mix
+    _LOGGER.warning(
+        (
+            f"Dataframe has a mix of label and coded headers: {len(overlap_with_coded)} coded and "
+            f"{len(overlap_with_label)} label. Downstream processing expects only coded labels."
+        )
+    )
 
 
 def get_df_of_repeat_instrument(df: DataFrame, instrument: Instrument) -> pd.DataFrame:
@@ -472,11 +493,12 @@ def redcap_to_bids(
     # It is possible for each column in the dataframe to have one of two names:
     #   1. coded column names ("record_id")
     #   2. text column names ("Record ID")
-    # for simplicity, we always map columns to coded columns before processing,
-    # that way we only ever need to manually subselect using one version of the column name
-    if update_column_names:
-        df = update_redcap_df_column_names(df)
 
+    # we require coded column names for downstream processing. it is not trivial to map
+    # them one to one, as the text column names are not unique (e.g. there are ~6 columns
+    # with the name "Strain").
+    validate_redcap_df_column_names(df)
+    
     construct_tsv_from_json(  # construct participants.tsv
         df=df,
         json_file_path=os.path.join(outdir, "participants.json"),

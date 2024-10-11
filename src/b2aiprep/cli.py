@@ -146,6 +146,28 @@ def validate(
     )
 
 @main.command()
+@click.argument("bids_dir_path", type=click.Path())
+@click.argument("fix", type=bool)
+def validate(
+    bids_dir_path,
+    fix,
+):
+    """Organizes the data into a BIDS-like directory structure.
+
+    redcap_csv_path: path to the redcap csv\n
+    audio_dir_path: path to directory with audio files\n
+    bids_dir_path: path to store bids-like data\n
+    tar_file_path: path to store tar file\n
+    transcription_model_size: tiny, small, medium, or large\n
+    n_cores: number of cores to run feature extraction on\n
+    with_sensitive: whether to include sensitive data
+    """
+    validate_bids_data(
+        bids_dir_path=Path(bids_dir_path),
+        fix=fix,
+    )
+
+@main.command()
 @click.argument("filename", type=click.Path(exists=True))
 @click.option("-s", "--subject", type=str, default=None)
 @click.option("-t", "--task", type=str, default=None)
