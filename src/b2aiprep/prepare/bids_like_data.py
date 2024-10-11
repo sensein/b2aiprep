@@ -425,7 +425,7 @@ def output_participant_data_to_fhir(
                             logging.warning(
                                 f"Audio file {audio_file_destination} already exists. Skipping."
                             )
-                            audio_file_destination.write_bytes(audio_file.read_bytes())
+                        audio_file_destination.write_bytes(audio_file.read_bytes())
     # Save sessions.tsv
     if not os.path.exists(subject_path):
         os.mkdir(subject_path)

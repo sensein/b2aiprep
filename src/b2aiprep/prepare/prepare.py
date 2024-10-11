@@ -105,6 +105,27 @@ def initialize_data_directory(bids_dir_path: str) -> None:
     copy_phenotype_files(template_package, bids_dir_path)
 
 
+def transcribe(audio, features, transcription_model_size):
+    """
+    Transcribes an audio input using a specified transcription model size.
+
+    Args:
+        audio (str): Path to the audio file to be transcribed.
+        features (list): List of features required for the transcription process.
+        transcription_model_size (str): Size of the transcription model to use
+        (e.g., 'small', 'medium', 'large').
+
+    Returns:
+        str: The transcription of the audio file.
+    """
+    speech_to_text_model = HFModel(path_or_uri=f"openai/whisper-{transcription_model_size}")
+    device = DeviceType.CPU
+    language = Language(language_code="english")
+    return transcribe_audios(
+        audios=[audio], model=speech_to_text_model, device=device, language=language
+    )[0]
+
+
 @pydra.mark.task
 def wav_to_features(wav_paths: List[Path], transcription_model_size: str, with_sensitive: bool):
     """Extract features from a list of audio files.
@@ -136,19 +157,12 @@ def wav_to_features(wav_paths: List[Path], transcription_model_size: str, with_s
         features["sample_rate"] = audio.sampling_rate
         features["opensmile"] = extract_opensmile_features_from_audios([audio])[0]
         if with_sensitive:
-            speech_to_text_model = HFModel(path_or_uri=f"openai/whisper-{transcription_model_size}")
-            device = DeviceType.CPU
-            language = Language(language_code="english")
             try:
-                features["transcription"] = transcribe_audios(
-                    audios=[audio], model=speech_to_text_model, device=device, language=language
-                )[0]
+                features["transcription"] = transcribe(audio, features, transcription_model_size)
             except Exception:
                 sleep(1)
                 try:
-                    features["transcription"] = transcribe_audios(
-                        audios=[audio], model=speech_to_text_model, device=device, language=language
-                    )[0]
+                    features["transcription"] = transcribe(audio, features)
                 except Exception as e:
                     logging.disable(logging.NOTSET)
                     _logger.error(f"An error occurred with feature extraction: {e}")
