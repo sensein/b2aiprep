@@ -35,7 +35,6 @@ Functions:
 
 """
 
-from collections import defaultdict
 import logging
 import os
 import tarfile
@@ -46,12 +45,9 @@ from time import sleep
 from typing import List
 
 import numpy as np
-from pydantic import ValidationError
 import pydra
 import torch
-import tqdm
 from senselab.audio.data_structures.audio import Audio
-from senselab.utils.data_structures.language import Language
 from senselab.audio.tasks.features_extraction.opensmile import (
     extract_opensmile_features_from_audios,
 )
@@ -145,7 +141,7 @@ def wav_to_features(wav_paths: List[Path], transcription_model_size: str, with_s
       A dictionary mapping feature names to their extracted values.
     """
     all_features = []
-    for wav_path in tqdm(wav_paths, total=len(wav_paths), desc='Extracting features'):
+    for wav_path in tqdm(wav_paths, total=len(wav_paths), desc="Extracting features"):
         wav_path = Path(wav_path)
 
         _logger.info(wav_path)
@@ -191,7 +187,7 @@ def wav_to_features(wav_paths: List[Path], transcription_model_size: str, with_s
                 with open(save_path, "w", encoding="utf-8") as text_file:
                     text_file.write(feature_value.text)
         all_features.append(features)
-        
+
     return all_features
 
 
@@ -283,9 +279,7 @@ def extract_features_workflow(
         ).split("wav_path", wav_path=ef_wf.lzin.audio_paths)
     )
 
-    ef_wf.set_output(
-        {"audio_paths": ef_wf.lzin.audio_paths}
-    )
+    ef_wf.set_output({"audio_paths": ef_wf.lzin.audio_paths})
 
     with pydra.Submitter(plugin="cf") as run:
         run(ef_wf)
@@ -347,6 +341,7 @@ def extract_features(
             with_sensitive=with_sensitive,
         )
 
+
 def bundle_data(source_directory: str, save_path: str) -> None:
     """Saves data bundle as a tar file with gzip compression.
 
@@ -390,7 +385,7 @@ def prepare_bids_like_data(
     # initialize_data_directory(bids_dir_path)
 
     _logger.info("Organizing data into BIDS-like directory structure...")
-    
+
     redcap_to_bids(redcap_csv_path, bids_dir_path, update_columns_names, audio_dir_path)
     _logger.info("Data organization complete.")
 
@@ -411,16 +406,20 @@ def prepare_bids_like_data(
         audio_path = Path(audio_path)
         audio_dir = audio_path.parent
         features_dir = audio_dir.parent / "audio"
-        feature_files = [file for file in features_dir.glob(f'{audio_path.stem}*.pt')]
+        feature_files = [file for file in features_dir.glob(f"{audio_path.stem}*.pt")]
         if len(feature_files) == 0:
             missing_features.append(audio_path)
-        feature_files = [file for file in features_dir.glob(f'{audio_path.stem}*.txt')]
+        feature_files = [file for file in features_dir.glob(f"{audio_path.stem}*.txt")]
         if len(feature_files) == 0:
             missing_transcriptions.append(audio_path)
     if len(missing_transcriptions) > 0:
-        _logger.warning(f"Missing transcriptions for {len(missing_transcriptions)} / {len(audio_paths)} audio files")
+        _logger.warning(
+            f"Missing transcriptions for {len(missing_transcriptions)} / {len(audio_paths)} audio files"
+        )
     if len(missing_features) > 0:
-        _logger.warning(f"Missing features for {len(missing_features)} / {len(audio_paths)} audio files")
+        _logger.warning(
+            f"Missing features for {len(missing_features)} / {len(audio_paths)} audio files"
+        )
     else:
         _logger.info("All audio files have been processed.")
 
@@ -430,80 +429,6 @@ def prepare_bids_like_data(
 
     _logger.info("Process completed.")
 
-def validate_bids_data(
-    bids_dir_path: Path,
-    fix: bool = True,
-    transcription_model_size: str = 'medium',
-) -> None:
-    """Scans BIDS audio data and verifies that all expected features are present."""
-    _logger.info("Scanning for features in BIDS directory.")
-    # TODO: add a check to see if the audio feature extraction is complete
-    # before proceeding to the next step
-    # can verify features are generated for each audio_dir by looking for .pt files
-    # in audio_dir.parent / "audio"
-    audio_paths = get_audio_paths(bids_dir_path)
-    audio_to_reprocess = defaultdict(list)
-    features = ('speaker_embedding', 'specgram', 'melfilterbank', 'mfcc', 'sample_rate', 'opensmile')
-    for audio_path in audio_paths:
-        audio_path = Path(audio_path)
-        audio_dir = audio_path.parent
-        features_dir = audio_dir.parent / "audio"
-        for feat_name in features:
-            if features_dir.joinpath(f'{audio_path.stem}_{feat_name}.pt').exists() is False:
-                audio_to_reprocess[audio_path].append(feat_name)
-        
-        # also check for transcription
-        if features_dir.joinpath(f'{audio_path.stem}_transcription.txt').exists() is False:
-            audio_to_reprocess[audio_path].append('transcription')
-    
-    if len(audio_to_reprocess) > 0:
-        _logger.info(f"Missing features for {len(audio_to_reprocess)} / {len(audio_paths)} audio files")
-    else:
-        _logger.info("All audio files have been processed and all feature files are present.")
-        return
-
-    if not fix:
-        return
-    
-    feature_extraction_fcns = {
-        "speaker_embedding": extract_speaker_embeddings_from_audios,
-        "specgram": extract_spectrogram_from_audios,
-        "melfilterbank": extract_mel_filter_bank_from_audios,
-        "mfcc": extract_mfcc_from_audios,
-        "opensmile": extract_opensmile_features_from_audios,
-    }
-    for audio_path, missing_feats in tqdm(audio_to_reprocess.items(), total=len(audio_to_reprocess), desc='Reprocessing audio files'):
-        audio_dir = audio_path.parent
-        features_dir = audio_dir.parent / "audio"
-        features_dir.mkdir(exist_ok=True)
-        for feat_name in missing_feats:
-            audio = Audio.from_filepath(str(audio_path))
-            audio = resample_audios([audio], resample_rate=RESAMPLE_RATE)[0]
-
-            file_extension = "pt"
-            if feat_name == "sample_rate":
-                feature_value = audio.sampling_rate
-            elif feat_name in feature_extraction_fcns:
-                feature_value = feature_extraction_fcns[feat_name]([audio])[0]
-            elif feat_name == 'transcription':
-                language = Language.model_validate({"language_code": "en"})
-                speech_to_text_model = HFModel(path_or_uri=f"openai/whisper-{transcription_model_size}")
-                feature_value = transcribe_audios(
-                    audios=[audio], model=speech_to_text_model, language=language
-                )[0]
-                file_extension = "txt"
-            else:
-                _logger.warning(f"Unsupported feature: {feat_name}")
-                continue
-
-            save_path = features_dir / f"{audio_path.stem}_{feat_name}.{file_extension}"
-            if file_extension == "pt":
-                torch.save(feature_value, save_path)
-            else:
-                with open(save_path, "w", encoding="utf-8") as text_file:
-                    text_file.write(feature_value.text)
-
-    _logger.info("Process completed.")
 
 def validate_bids_data(
     bids_dir_path: Path,
