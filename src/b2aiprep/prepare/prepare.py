@@ -273,10 +273,10 @@ def extract_features_workflow(
     ef_wf.add(
         wav_to_features(
             name="features",
-            wav_path=ef_wf.lzin.audio_paths,
+            wav_paths=ef_wf.lzin.audio_paths,
             transcription_model_size=transcription_model_size,
             with_sensitive=with_sensitive,
-        ).split("wav_path", wav_path=ef_wf.lzin.audio_paths)
+        ).split("wav_path", wav_paths=ef_wf.lzin.audio_paths)
     )
 
     ef_wf.set_output({"audio_paths": ef_wf.lzin.audio_paths})
@@ -382,10 +382,9 @@ def prepare_bids_like_data(
       tar_file_path:
         The file path where the .tar.gz file will be saved.
     """
-    # initialize_data_directory(bids_dir_path)
+    initialize_data_directory(bids_dir_path)
 
     _logger.info("Organizing data into BIDS-like directory structure...")
-
     redcap_to_bids(redcap_csv_path, bids_dir_path, update_columns_names, audio_dir_path)
     _logger.info("Data organization complete.")
 
