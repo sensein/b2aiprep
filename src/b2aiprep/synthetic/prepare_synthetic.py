@@ -20,56 +20,58 @@ refer to the reorganized format as "BIDS-like". We use the existing behavioural
 data type for the information captured in RedCap, and a new audio data type for
 the voice recordings.
 """
-import logging
-from pathlib import Path
+
 import json
+import logging
 import typing as t
 import uuid
+from importlib.resources import files
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
 from pandas import DataFrame
-from importlib.resources import files
 from pydantic import BaseModel
 from tqdm import tqdm
 
+from b2aiprep.constants import (
+    AUDIO_TASKS,
+    GENERAL_QUESTIONNAIRES,
+    VALIDATED_QUESTIONNAIRES,
+    Instrument,
+    RepeatInstrument,
+)
 from b2aiprep.fhir_utils import (
     convert_response_to_fhir,
     is_empty_questionnaire_response,
 )
-from b2aiprep.constants import (
-    Instrument,
-    RepeatInstrument,
-    AUDIO_TASKS,   
-    GENERAL_QUESTIONNAIRES,
-    VALIDATED_QUESTIONNAIRES,
-)
 
 _LOGGER = logging.getLogger(__name__)
+
 
 def load_redcap_csv(file_path):
     """Load the RedCap CSV file into a DataFrame. Makes modifications to the data
     to ensure compatibility with downstream tooling.
-    
+
     Parameters
     ----------
     file_path : str
         The path to the CSV file.
-    
+
     Returns
     -------
     DataFrame
         The loaded data.
     """
     try:
-        data = pd.read_csv(file_path, low_memory=False, na_values='')
-        if 'redcap_repeat_instrument' in data.columns:
-            col = 'redcap_repeat_instrument'
-        elif 'Repeat Instrument' in data.columns:
-            col = 'Repeat Instrument'
+        data = pd.read_csv(file_path, low_memory=False, na_values="")
+        if "redcap_repeat_instrument" in data.columns:
+            col = "redcap_repeat_instrument"
+        elif "Repeat Instrument" in data.columns:
+            col = "Repeat Instrument"
         else:
             raise ValueError("No repeat instrument column found in CSV file.")
-        
+
         # The RedCap CSV exports all rows with a repeat instrument *except*
         # a single row per subject, which we refer to as the "Participant" instrument.
         # We need to fill in the missing values for the Participant instrument
@@ -78,11 +80,12 @@ def load_redcap_csv(file_path):
         data[col] = data[col].fillna(participant_instrument.text).astype(str)
         return data
     except FileNotFoundError:
-        print('File not found.')
+        print("File not found.")
         return None
     except pd.errors.ParserError:
-        print('Error parsing CSV file.')
+        print("Error parsing CSV file.")
         return None
+
 
 def update_redcap_df_column_names(df: DataFrame) -> DataFrame:
     """Update column names for a RedCap derived dataframe to match the coded
@@ -96,7 +99,7 @@ def update_redcap_df_column_names(df: DataFrame) -> DataFrame:
     ----------
     df : DataFrame
         The DataFrame to update.
-    
+
     Returns
     -------
     DataFrame
@@ -112,7 +115,7 @@ def update_redcap_df_column_names(df: DataFrame) -> DataFrame:
     # only map columns if we have a full overlap with the mapping dict
     overlap_keys = set(df.columns.tolist()).intersection(set(column_mapping.keys()))
     overlap_values = set(df.columns.tolist()).intersection(set(column_mapping.values()))
-    
+
     if len(overlap_keys) == df.shape[1]:
         _LOGGER.info("Mapping columns to coded format.")
         return df.rename(columns=column_mapping)
@@ -121,7 +124,10 @@ def update_redcap_df_column_names(df: DataFrame) -> DataFrame:
         return df
     else:
         non_overlapping_columns = set(df.columns.tolist()) - set(column_mapping.keys())
-        raise ValueError(f"Found {len(non_overlapping_columns)} columns not in mapping: {non_overlapping_columns}")
+        raise ValueError(
+            f"Found {len(non_overlapping_columns)} columns not in mapping: {non_overlapping_columns}"
+        )
+
 
 def get_df_of_repeat_instrument(df: DataFrame, instrument: Instrument) -> pd.DataFrame:
     """Filters rows and columns of a RedCap dataframe to correspond to a specific repeat instrument.
@@ -132,7 +138,7 @@ def get_df_of_repeat_instrument(df: DataFrame, instrument: Instrument) -> pd.Dat
         The DataFrame to filter.
     instrument : Instrument
         The repeat instrument to filter for.
-    
+
     Returns
     -------
     pd.DataFrame
@@ -140,19 +146,22 @@ def get_df_of_repeat_instrument(df: DataFrame, instrument: Instrument) -> pd.Dat
     """
 
     columns = instrument.get_columns()
-    idx = df['redcap_repeat_instrument'] == instrument.text
+    idx = df["redcap_repeat_instrument"] == instrument.text
 
     columns_present = [c for c in columns if c in df.columns]
     dff = df.loc[idx, columns_present].copy()
     if len(columns_present) < len(columns):
-        _LOGGER.warning((
-            f"Inserting None for missing columns of {RepeatInstrument.PARTICIPANT} instrument: "
-            f"{set(columns) - set(columns_present)}"
-        ))
+        _LOGGER.warning(
+            (
+                f"Inserting None for missing columns of {RepeatInstrument.PARTICIPANT} instrument: "
+                f"{set(columns) - set(columns_present)}"
+            )
+        )
         impute_value = np.nan
         for c in set(columns) - set(columns_present):
             dff[c] = impute_value
     return dff
+
 
 def get_recordings_for_acoustic_task(df: pd.DataFrame, acoustic_task: str) -> pd.DataFrame:
     """Get recordings for a specific acoustic task.
@@ -163,7 +172,7 @@ def get_recordings_for_acoustic_task(df: pd.DataFrame, acoustic_task: str) -> pd
         The DataFrame to filter.
     acoustic_task : str
         The acoustic task to filter for.
-    
+
     Returns
     -------
     pd.DataFrame
@@ -171,38 +180,39 @@ def get_recordings_for_acoustic_task(df: pd.DataFrame, acoustic_task: str) -> pd
     """
 
     if acoustic_task not in AUDIO_TASKS:
-        raise ValueError(f'Unrecognized {acoustic_task}. Options: {AUDIO_TASKS}')
+        raise ValueError(f"Unrecognized {acoustic_task}. Options: {AUDIO_TASKS}")
 
     acoustic_tasks_df = get_df_of_repeat_instrument(df, RepeatInstrument.ACOUSTIC_TASK)
     recordings_df = get_df_of_repeat_instrument(df, RepeatInstrument.RECORDING)
 
-    idx = acoustic_tasks_df['acoustic_task_name'] == acoustic_task
+    idx = acoustic_tasks_df["acoustic_task_name"] == acoustic_task
 
     dff = recordings_df.merge(
-        acoustic_tasks_df.loc[idx, ['acoustic_task_id']],
-        left_on='recording_acoustic_task_id',
-        right_on='acoustic_task_id',
-        how='inner'
+        acoustic_tasks_df.loc[idx, ["acoustic_task_id"]],
+        left_on="recording_acoustic_task_id",
+        right_on="acoustic_task_id",
+        how="inner",
     )
     return dff
 
+
 def _transform_str_for_bids_filename(filename: str):
     """Replace spaces in a string with hyphens to match BIDS string format rules.."""
-    if type(filename) != str:
+    if not isinstance(filename, str):
         filename = "NaN"
     print(filename)
-    return filename.replace(' ', '-')
+    return filename.replace(" ", "-")
 
 
 def write_pydantic_model_to_bids_file(
-        output_path: Path,
-        data: BaseModel,
-        schema_name: str,
-        subject_id: str,
-        session_id: t.Optional[str] = None,
-        task_name: t.Optional[str] = None,
-        recording_name: t.Optional[str] = None,
-        ):
+    output_path: Path,
+    data: BaseModel,
+    schema_name: str,
+    subject_id: str,
+    session_id: t.Optional[str] = None,
+    task_name: t.Optional[str] = None,
+    recording_name: t.Optional[str] = None,
+):
     """Write a Pydantic model (presumably a FHIR resource) to a JSON file following
     the BIDS file name conventions.
 
@@ -235,7 +245,6 @@ def write_pydantic_model_to_bids_file(
         recording_name = _transform_str_for_bids_filename(recording_name)
         filename += f"_rec-{recording_name}"
 
-
     schema_name = _transform_str_for_bids_filename(schema_name)
     filename += f"_{schema_name}.json"
 
@@ -247,13 +256,13 @@ def write_pydantic_model_to_bids_file(
 
 def _df_to_dict(df: pd.DataFrame, index_col: str) -> t.Dict[str, t.Any]:
     """Convert a DataFrame to a dictionary of dictionaries, with the given column as the index.
-    
+
     Retains the index column within the dictionary.
-    
+
     Args:
         df: DataFrame to convert.
         index_col: Column to use as the index.
-        
+
     Returns:
         Dictionary of dictionaries.
     """
@@ -269,7 +278,7 @@ def _df_to_dict(df: pd.DataFrame, index_col: str) -> t.Dict[str, t.Any]:
     #     if non_unique_columns:
     #         df = df.drop(columns=non_unique_columns[1:])  # Keep the first non-unique column and drop the rest
     #     return df
-    
+
     # if df[index_col].nunique() < df.shape[0]:
     #     df = drop_non_unique_columns(df)
 
@@ -280,11 +289,12 @@ def _df_to_dict(df: pd.DataFrame, index_col: str) -> t.Dict[str, t.Any]:
     # Copy the given column into the index, preserving the original column
     df.index = df[index_col]
 
-    return df.to_dict('index')
+    return df.to_dict("index")
+
 
 def create_file_dir(participant_id, session_id):
     """Create a file directory structure which follows the BIDS folder structure convention.
-    
+
     BIDS folders are formatted as follows:
     base_project_folder/
     ├── sub-<participant_id>/
@@ -327,9 +337,11 @@ def get_instrument_for_name(name: str) -> Instrument:
     raise ValueError(f"No instrument found for value {name}")
 
 
-def output_participant_data_to_fhir(participant: dict, outdir: Path, audiodir: t.Optional[Path] = None):
-    
-    participant_id = participant['record_id']
+def output_participant_data_to_fhir(
+    participant: dict, outdir: Path, audiodir: t.Optional[Path] = None
+):
+
+    participant_id = participant["record_id"]
     subject_path = outdir / f"sub-{participant_id}"
 
     if audiodir is not None and not audiodir.exists():
@@ -363,13 +375,13 @@ def output_participant_data_to_fhir(participant: dict, outdir: Path, audiodir: t
     # validated questionnaires are asked per session
     for session in participant["sessions"]:
         session_id = session["session_id"]
-        if str(session_id) == 'nan':
+        if str(session_id) == "nan":
             session_id = str(uuid.uuid4())
         # TODO: prepare a session resource to use as the encounter reference for
         # each session questionnaire
         session_path = subject_path / f"ses-{session_id}"
-        beh_path = session_path / 'beh'
-        audio_output_path = session_path / 'audio'
+        beh_path = session_path / "beh"
+        audio_output_path = session_path / "audio"
         if not audio_output_path.exists():
             audio_output_path.mkdir(parents=True, exist_ok=True)
         fhir_data = convert_response_to_fhir(
@@ -383,7 +395,7 @@ def output_participant_data_to_fhir(participant: dict, outdir: Path, audiodir: t
             fhir_data,
             schema_name=session_instrument.schema,
             subject_id=participant_id,
-            session_id=session_id
+            session_id=session_id,
         )
         # session["acoustic_tasks"] = [
         #     "Animal-fluency_rec-Animal-fluency.wav",
@@ -440,7 +452,7 @@ def output_participant_data_to_fhir(participant: dict, outdir: Path, audiodir: t
                 session_id=session_id,
                 task_name=acoustic_task_name,
             )
-            
+
             # prefix is used to name audio files, if they are copied over
             prefix = f"sub-{participant_id}_ses-{session_id}_{acoustic_task_name}"
 
@@ -459,7 +471,7 @@ def output_participant_data_to_fhir(participant: dict, outdir: Path, audiodir: t
                     subject_id=participant_id,
                     session_id=session_id,
                     task_name=acoustic_task_name,
-                    recording_name=recording["recording_name"]
+                    recording_name=recording["recording_name"],
                 )
 
                 # we also need to organize the audio file
@@ -467,24 +479,34 @@ def output_participant_data_to_fhir(participant: dict, outdir: Path, audiodir: t
                     # audio files are under a folder with the site name, so we need to recursively glob
                     audio_files = list(audiodir.rglob(f"{recording['recording_id']}*"))
                     if len(audio_files) == 0:
-                        logging.warning(f"No audio file found for recording {recording['recording_id']}.")
+                        logging.warning(
+                            f"No audio file found for recording {recording['recording_id']}."
+                        )
                     else:
                         if len(audio_files) > 1:
-                            logging.warning((
-                                f"Multiple audio files found for recording {recording['recording_id']}."
-                                f" Using only {audio_files[0]}"
-                            ))
+                            logging.warning(
+                                (
+                                    f"Multiple audio files found for recording {recording['recording_id']}."
+                                    f" Using only {audio_files[0]}"
+                                )
+                            )
                         audio_file = audio_files[0]
 
                         # copy file
                         ext = audio_file.suffix
-                        
-                        recording_name = _transform_str_for_bids_filename(recording['recording_name'])
-                        audio_file_destination = audio_output_path / f"{prefix}_rec-{recording_name}{ext}"
+
+                        recording_name = _transform_str_for_bids_filename(
+                            recording["recording_name"]
+                        )
+                        audio_file_destination = (
+                            audio_output_path / f"{prefix}_rec-{recording_name}{ext}"
+                        )
                         if audio_file_destination.exists():
-                            logging.warning(f"Audio file {audio_file_destination} already exists. Overwriting.")
+                            logging.warning(
+                                f"Audio file {audio_file_destination} already exists. Overwriting."
+                            )
                         audio_file_destination.write_bytes(audio_file.read_bytes())
-        
+
         # validated questionnaires
         for repeat_instrument in VALIDATED_QUESTIONNAIRES:
             if (repeat_instrument not in session) or (session[repeat_instrument] is None):
@@ -503,8 +525,9 @@ def output_participant_data_to_fhir(participant: dict, outdir: Path, audiodir: t
                 fhir_data,
                 schema_name=instrument.schema,
                 subject_id=participant_id,
-                session_id=session_id
+                session_id=session_id,
             )
+
 
 def redcap_to_bids(
     filename: Path,
@@ -519,7 +542,7 @@ def redcap_to_bids(
     └── subject
         └── session
             └── datatype
-    
+
     And filenames follow a convention of:
     sub-<participant_id>_ses-<session_id>[_task-<task_name>_rec-<recording_name>]_<schema>.json
 
@@ -532,7 +555,7 @@ def redcap_to_bids(
     audiodir : Path, optional
         The path to the folder containing audio files. If omitted, no audio data will be included
         in the reorganized output.
-    
+
     Raises
     ------
     ValueError
@@ -611,7 +634,7 @@ def redcap_to_bids(
         for session in participant["sessions"]:
             # there can be multiple acoustic tasks per session
             session_id = session["session_id"]
-            if str(session_id) == 'nan':
+            if str(session_id) == "nan":
                 session_id = str(uuid.uuid4())
             session["acoustic_tasks"] = acoustic_tasks_df[
                 acoustic_tasks_df["acoustic_task_session_id"] == session_id
@@ -619,8 +642,7 @@ def redcap_to_bids(
             for task in session["acoustic_tasks"]:
                 # there can be multiple recordings per acoustic task
                 task["recordings"] = recordings_df[
-                    recordings_df["recording_acoustic_task_id"]
-                    == task["acoustic_task_id"]
+                    recordings_df["recording_acoustic_task_id"] == task["acoustic_task_id"]
                 ].to_dict("records")
 
             # there can be only one demographics per session

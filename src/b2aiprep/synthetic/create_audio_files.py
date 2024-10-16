@@ -1,17 +1,19 @@
 import os
 import shutil
 
+
 def copy_wav_file(src_file_path, dest_directory, file_names):
     if not os.path.exists(dest_directory):
         os.makedirs(dest_directory)
-    
+
     for file_name in file_names:
         dest_file_path = os.path.join(dest_directory, file_name)
         shutil.copy(src_file_path, dest_file_path)
 
+
 # Example usage
-src_file_path = '/path/to/your/source/file.wav'  # Update this with the path to your source file
-dest_directory = '/Users/isaacbevers/sensein/b2ai-wrapper/b2ai-data/b2ai-data-bids-like-curated/sub-0aeebf70-44a5-4537-af1b-1c24840f104d/ses-C63E6402-5ECC-45B5-8A57-6FE638A766A5/audio'
+src_file_path = "/path/to/your/source/file.wav"  # Update this with the path to your source file
+dest_directory = "/Users/isaacbevers/sensein/b2ai-wrapper/b2ai-data/b2ai-data-bids-like-curated/sub-0aeebf70-44a5-4537-af1b-1c24840f104d/ses-C63E6402-5ECC-45B5-8A57-6FE638A766A5/audio"
 file_names = [
     "Animal-fluency_rec-Animal-fluency.wav",
     "Audio-Check_rec-Audio-Check-1.wav",
@@ -44,7 +46,7 @@ file_names = [
     "Respiration-and-cough_rec-Respiration-and-cough-FiveBreaths-2.wav",
     "Respiration-and-cough_rec-Respiration-and-cough-FiveBreaths-3.wav",
     "Respiration-and-cough_rec-Respiration-and-cough-FiveBreaths-4.wav",
-    "Story-recall_rec-Story-recall.wav"
+    "Story-recall_rec-Story-recall.wav",
 ]
 
 copy_wav_file(src_file_path, dest_directory, file_names)
