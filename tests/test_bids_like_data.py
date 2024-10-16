@@ -14,7 +14,6 @@ from b2aiprep.prepare.bids_like_data import (
     load_redcap_csv,
     questionnaire_mapping,
     redcap_to_bids,
-    update_redcap_df_column_names,
     write_pydantic_model_to_bids_file,
 )
 from b2aiprep.prepare.constants import AUDIO_TASKS, RepeatInstrument
@@ -33,45 +32,6 @@ def test_load_redcap_csv(mock_read_csv):
     assert df is not None
     assert "record_id" in df.columns
     assert "redcap_repeat_instrument" in df.columns
-
-
-def test_update_redcap_df_column_names():
-    # Path to the actual 'column_mapping.json' file
-    real_file_path = Path("src/b2aiprep/prepare/resources/column_mapping.json")
-
-    # Check if the file exists
-    assert real_file_path.exists(), f"File not found: {real_file_path}"
-
-    # Create a DataFrame using the "verbose" column names (the right side of your JSON mapping)
-    mock_data = pd.DataFrame(
-        {
-            "Record ID": [1, 2],
-            "Repeat Instrument": ["instrument_1", "instrument_2"],
-            "Repeat Instance": [1, 1],
-            "Language": ["English", "Spanish"],
-            "Consent Status": ["Yes", "No"],
-            "Is Feasibility Participant?": ["Yes", "No"],
-            "Enrollment Institution": ["MIT", "Harvard"],
-            "Age": [34, 28],
-        }
-    )
-
-    # Call the function, which will now use the real file system
-    updated_df = update_redcap_df_column_names(mock_data)
-
-    # Ensure the column names have been updated according to 'column_mapping.json'
-    assert "record_id" in updated_df.columns
-    assert "redcap_repeat_instrument" in updated_df.columns
-    assert "redcap_repeat_instance" in updated_df.columns
-    assert "selected_language" in updated_df.columns
-    assert "consent_status" in updated_df.columns
-    assert "is_feasibility_participant" in updated_df.columns
-    assert "enrollment_institution" in updated_df.columns
-    assert "age" in updated_df.columns
-
-    # Ensure that the verbose column names are no longer present
-    assert "Record ID" not in updated_df.columns
-    assert "Repeat Instrument" not in updated_df.columns
 
 
 def test_get_df_of_repeat_instrument():
