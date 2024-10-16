@@ -1,0 +1,47 @@
+{
+    "vocabulary_session_id": {
+        "description": "Unique session identifier for the vocabulary task."
+    },
+    "vocabulary_recording_acoustic_task_id": {
+        "description": "The unique identifier for the vocabulary recording acoustic task."
+    },
+    "vocabulary_duration": {
+        "description": "Duration of the vocabulary assessment."
+    },
+    "vocabulary_item_word_1": {
+        "description": "Response for vocabulary word item 1."
+    },
+    "vocabulary_item_difficulty_1": {
+        "description": "Indicates the participant's reported difficulty level for vocabulary item 1."
+    },
+    "vocabulary_item_word_2": {
+        "description": "Response for vocabulary word item 2."
+    },
+    "vocabulary_item_difficulty_2": {
+        "description": "Indicates the participant's reported difficulty level for vocabulary item 2."
+    },
+    "vocabulary_item_word_3": {
+        "description": "Response for vocabulary word item 3."
+    },
+    "vocabulary_item_difficulty_3": {
+        "description": "Indicates the participant's reported difficulty level for vocabulary item 3."
+    },
+    "vocabulary_item_word_4": {
+        "description": "Response for vocabulary word item 4."
+    },
+    "vocabulary_item_difficulty_4": {
+        "description": "Indicates the participant's reported difficulty level for vocabulary item 4."
+    },
+    "vocabulary_item_word_5": {
+        "description": "Response for vocabulary word item 5."
+    },
+    "vocabulary_item_difficulty_5": {
+        "description": "Indicates the participant's reported difficulty level for vocabulary item 5."
+    },
+    "vocabulary_item_word_6": {
+        "description": "Response for vocabulary word item 6."
+    },
+    "vocabulary_item_difficulty_6": {
+        "description": "Indicates the difficulty level reported by the participant for vocabulary item 6."
+    }
+}

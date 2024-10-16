@@ -1,0 +1,122 @@
+{
+    "dsm_5_session_id": {
+        "description": "Unique identifier for the DSM-5 session."
+    },
+    "dsm_5_duration": {
+        "description": "Total duration of the DSM-5 assessment."
+    },
+    "little_interest": {
+        "description": "Indicates if the participant has little interest or pleasure in doing things."
+    },
+    "feeling_down": {
+        "description": "Indicates if the participant is feeling down or sad."
+    },
+    "feeling_more_irritated": {
+        "description": "Indicates if the participant feels more irritated than usual."
+    },
+    "sleeping_less": {
+        "description": "Indicates if the participant is sleeping less than usual."
+    },
+    "starting_more_projects": {
+        "description": "Indicates if the participant is starting more projects than they can manage."
+    },
+    "feeling_nervous": {
+        "description": "Indicates if the participant feels nervous."
+    },
+    "feeling_panic": {
+        "description": "Indicates if the participant feels panic or overwhelming fear."
+    },
+    "avoiding_situations": {
+        "description": "Indicates if the participant is avoiding certain situations due to stress or anxiety."
+    },
+    "unexplained_aches": {
+        "description": "Indicates if the participant experiences unexplained aches or pains."
+    },
+    "illness_not_taken_serious": {
+        "description": "Reports if the participant feels that their illness is not taken seriously by others."
+    },
+    "self_harm": {
+        "description": "Indicates if the participant has a history of self-harm."
+    },
+    "hearing_things": {
+        "description": "Indicates if the participant has experienced auditory hallucinations."
+    },
+    "someone_hear_thoughts": {
+        "description": "Indicates if the participant believes that others can hear their thoughts."
+    },
+    "sleep_quality": {
+        "description": "Indicates the participant's subjective assessment of their sleep quality."
+    },
+    "memory_issues": {
+        "description": "Reports if the participant is experiencing memory issues."
+    },
+    "unpleasant_thoughts": {
+        "description": "Reports if the participant experienced unpleasant thoughts recently."
+    },
+    "repeat_acts": {
+        "description": "Indicates if the participant repeats certain actions or behaviors."
+    },
+    "feeling_detached": {
+        "description": "Indicates if the participant feels detached from reality or their surroundings."
+    },
+    "no_purpose": {
+        "description": "Indicates if the participant feels like they have no purpose."
+    },
+    "isolated": {
+        "description": "Indicates if the participant feels isolated or alone."
+    },
+    "drinking_more": {
+        "description": "Indicates if the participant is consuming more alcohol."
+    },
+    "smoking_more": {
+        "description": "Indicates if the participant is smoking more than usual."
+    },
+    "medication_use": {
+        "description": "Indicates the participant's use of medications during the study."
+    },
+    "q1_happy": {
+        "description": "Response to question 1: 'Is the participant feeling happy?'"
+    },
+    "q2_self_confident": {
+        "description": "Asks how self-confident the participant feels in general."
+    },
+    "q3_sleep": {
+        "description": "Response to question 3: 'Is the participant experiencing trouble sleeping?'"
+    },
+    "q4_talk": {
+        "description": "Response to question 4: 'Does the participant talk about a specific topic?'"
+    },
+    "q5_active": {
+        "description": "Inquires how active or energetic the participant feels throughout the day."
+    },
+    "social_phobia_1": {
+        "description": "Response to social phobia item 1, indicating the participant's level of discomfort in social situations."
+    },
+    "social_phobia_2": {
+        "description": "Response to social phobia item 2, assessing the participant's level of discomfort in social situations."
+    },
+    "social_phobia_3": {
+        "description": "Indicates if the participant experiences social phobia related to situation 3."
+    },
+    "social_phobia_4": {
+        "description": "Indicates if the participant experiences social phobia in scenario 4."
+    },
+    "social_phobia_5": {
+        "description": "Indicates if the participant experiences social phobia in scenario 5."
+    },
+    "social_phobia_6": {
+        "description": "Indicates if the participant experiences social phobia in scenario 6."
+    },
+    "social_phobia_7": {
+        "description": "Indicates the participant's level of social phobia based on scenario 7."
+    },
+    "social_phobia_8": {
+        "description": "Indicates if the participant experiences social phobia in scenario 8."
+    },
+    "social_phobia_9": {
+        "description": "Indicates if the participant experiences social phobia in scenario 9."
+    },
+    "social_phobia_10": {
+        "description": "Indicates if the participant has social phobia in a specific scenario (item 10)."
+    }
+}

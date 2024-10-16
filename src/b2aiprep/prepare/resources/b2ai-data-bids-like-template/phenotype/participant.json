@@ -1,0 +1,1157 @@
+{
+    "record_id": {
+        "description": "Unique identifier for each participant."
+    },
+    "selected_language": {
+        "description": "The language chosen by the participant for communication during the study."
+    },
+    "enrollment_institution": {
+        "description": "The institution where the participant has enrolled in the study."
+    },
+    "age": {
+        "description": "The age of the participant, measured in years."
+    },
+    "eligible_studies___1": {
+        "description": "Indicates if the participant is eligible for study 1."
+    },
+    "eligible_studies___2": {
+        "description": "Indicates if the participant is eligible for studies related to neurological and neurodegenerative disorders."
+    },
+    "eligible_studies___3": {
+        "description": "Indicates if the participant is eligible for mood and psychiatric disorder studies."
+    },
+    "eligible_studies___4": {
+        "description": "Indicates if the participant is eligible for respiratory disorder studies."
+    },
+    "eligible_studies___5": {
+        "description": "Indicates if the participant is eligible for pediatric disorder studies."
+    },
+    "is_control_participant": {
+        "description": "Indicates whether the participant is a control group participant."
+    },
+    "laryng_cancer": {
+        "description": "Indicates if the participant has laryngeal cancer."
+    },
+    "benign_cord_lesion": {
+        "description": "Indicates if the participant has benign lesions of the vocal cord such as nodules, polyps, or cysts."
+    },
+    "rrp": {
+        "description": "Indicates if the participant has recurrent laryngeal papilloma (RRP)."
+    },
+    "spas_dys": {
+        "description": "Indicates if the participant has spasmodic dysphonia or laryngeal tremor."
+    },
+    "voc_fold_paralysis": {
+        "description": "Indicates if the participant has unilateral vocal fold paralysis."
+    },
+    "alz_dementia_mci": {
+        "description": "Indicates if the participant has Alzheimer’s, dementia, or mild cognitive impairment."
+    },
+    "als": {
+        "description": "Indicates if the participant has Amyotrophic Lateral Sclerosis (ALS)."
+    },
+    "parkinsons": {
+        "description": "Indicates if the participant has Parkinson’s disease."
+    },
+    "alcohol_subst_abuse": {
+        "description": "Indicates if the participant has alcohol or substance use disorder."
+    },
+    "gad": {
+        "description": "Indicates if the participant has an anxiety disorder."
+    },
+    "add_adhd": {
+        "description": "Indicates if the participant has Attention-Deficit/Hyperactivity Disorder (ADHD)."
+    },
+    "asd": {
+        "description": "Indicates if the participant has Autism Spectrum Disorder (ASD)."
+    },
+    "bipolar": {
+        "description": "Indicates if the participant has Bipolar Disorder."
+    },
+    "bpd": {
+        "description": "Indicates if the participant has Borderline Personality Disorder (BPD)."
+    },
+    "depression": {
+        "description": "Indicates if the participant has depression or major depressive disorder."
+    },
+    "ed": {
+        "description": "Indicates if the participant has an eating disorder (ED)."
+    },
+    "insomnia": {
+        "description": "Indicates if the participant has insomnia or other sleep disorders."
+    },
+    "ocd": {
+        "description": "Indicates if the participant has Obsessive-Compulsive Disorder (OCD)."
+    },
+    "panic": {
+        "description": "Indicates if the participant has panic disorder."
+    },
+    "ptsd": {
+        "description": "Indicates if the participant has Post-Traumatic Stress Disorder (PTSD)."
+    },
+    "schizophrenia": {
+        "description": "Indicates if the participant has schizophrenia."
+    },
+    "soc_anx_dis": {
+        "description": "Indicates if the participant has social anxiety disorder."
+    },
+    "other_psych": {
+        "description": "Indicates if the participant has other psychiatric disorders."
+    },
+    "asthma": {
+        "description": "Indicates if the participant has asthma."
+    },
+    "airway_stenosis": {
+        "description": "Indicates if the participant has airway stenosis, such as bilateral vocal fold paralysis or laryngeal stenosis."
+    },
+    "chronic_cough": {
+        "description": "Indicates if the participant has chronic cough."
+    },
+    "copd": {
+        "description": "Indicates if the participant has Chronic Obstructive Pulmonary Disease (COPD)."
+    },
+    "osa": {
+        "description": "Indicates if the participant has obstructive sleep apnea (OSA)."
+    },
+    "subjectparticipant_eligible_studies_complete": {
+        "description": "Indicates if the eligibility screening for participant studies is complete."
+    },
+    "ef_select_language": {
+        "description": "Indicates the participant’s selected language for the study."
+    },
+    "ef_any_vision_related_req": {
+        "description": "Indicates if the participant has any vision-related requirements to assist with reading text in the study."
+    },
+    "ef_vision_a11y_options___1": {
+        "description": "Indicates if the participant requires changes to the font size as part of the study’s accessibility features."
+    },
+    "ef_vision_a11y_options___2": {
+        "description": "Indicates if the participant requires changes to the font color (high contrast mode) as part of the study’s accessibility features."
+    },
+    "ef_vision_a11y_options___3": {
+        "description": "Indicates if the participant requires the use of a screen reader as part of the study’s accessibility features."
+    },
+    "ef_vision_a11y_options___4": {
+        "description": "Indicates if the participant requires a person to read the text to them as part of the study’s accessibility features."
+    },
+    "ef_any_hearing_related_req": {
+        "description": "Indicates if the participant has any hearing-related requirements to assist with listening to sound files in the study."
+    },
+    "ef_hearing_a11y_options___1": {
+        "description": "Indicates if the participant requires an increase in volume as part of the study’s accessibility features."
+    },
+    "ef_hearing_a11y_options___2": {
+        "description": "Indicates if the participant requires closed captions as part of the study’s accessibility features."
+    },
+    "ef_hearing_a11y_options___3": {
+        "description": "Indicates if the participant prefers to use haptic feedback (vibrations) instead of audio cues as part of the study’s accessibility features."
+    },
+    "ef_any_physical_challenges": {
+        "description": "Indicates if the participant has any physical challenges that may affect their ability to navigate the application using a touch screen."
+    },
+    "ef_physical_a11y_options___1": {
+        "description": "Indicates if the participant requires an increase in button size as part of the study’s accessibility features."
+    },
+    "ef_physical_a11y_options___2": {
+        "description": "Indicates if the participant requires the use of an alternative keyboard connected to the app."
+    },
+    "ef_physical_a11y_options___3": {
+        "description": "Indicates if the participant would prefer to navigate the survey using voice commands instead of the touch screen."
+    },
+    "ef_any_cognitive_challeges": {
+        "description": "Indicates if the participant has any cognitive challenges, including difficulty reading, that may require assistance in answering questions and following directions in the study."
+    },
+    "ef_cognitive_a11y_options___1": {
+        "description": "Indicates if the participant prefers to have the questions read aloud using text-to-speech as part of the study’s accessibility features."
+    },
+    "ef_cognitive_a11y_options___2": {
+        "description": "Indicates if the participant prefers to have a person read the text to them as part of the study’s accessibility features."
+    },
+    "ef_cognitive_a11y_options___3": {
+        "description": "Indicates if the participant prefers to speak their answers instead of typing them as part of the study’s accessibility features."
+    },
+    "ef_completed_by___1": {
+        "description": "Indicates if the responses in the survey were completed by the participant themselves."
+    },
+    "ef_completed_by___2": {
+        "description": "Indicates if the responses in the survey were completed by an assistant."
+    },
+    "ef_completed_by___3": {
+        "description": "Indicates if the responses in the survey were completed by a parent or caregiver."
+    },
+    "ef_primary_language": {
+        "description": "Indicates the primary language spoken by the participant."
+    },
+    "ef_primary_language_other": {
+        "description": "If the participant's primary language is not listed, this field specifies the language."
+    },
+    "ef_fluent_languages___1": {
+        "description": "Indicates if the participant speaks no additional languages fluently."
+    },
+    "ef_fluent_languages___2": {
+        "description": "Indicates if the participant speaks English fluently in addition to their primary language."
+    },
+    "ef_fluent_languages___3": {
+        "description": "Indicates if the participant speaks French fluently in addition to their primary language."
+    },
+    "ef_fluent_languages___4": {
+        "description": "Indicates if the participant speaks Spanish fluently in addition to their primary language."
+    },
+    "ef_fluent_languages___5": {
+        "description": "Indicates if the participant speaks any other language fluently, and provides the details."
+    },
+    "ef_fluent_language_other": {
+        "description": "If the participant speaks another language fluently that is not listed, this field specifies the language."
+    },
+    "diagnosis_vfp_gsd": {
+        "description": "Indicates if the participant has vocal fold paralysis (VFP) confirmed by laryngoscopy or stroboscopy."
+    },
+    "diagnosis_vfp_etiology": {
+        "description": "Specifies the etiology or cause of the participant’s vocal fold paralysis (VFP)."
+    },
+    "diagnosis_vfp_iatrogenic": {
+        "description": "Indicates if the participant's vocal fold paralysis (VFP) is related to surgery or intubation."
+    },
+    "diagnosis_vfp_tumor": {
+        "description": "Indicates if the participant’s vocal fold paralysis (VFP) is caused by a tumor invading the recurrent laryngeal nerve (RLN)."
+    },
+    "diagnosis_vfp_dse": {
+        "description": "Specifies the degree of the participant’s glottic gap."
+    },
+    "diagnosis_degree_os": {
+        "description": "Indicates the overall severity of the participant’s vocal fold paralysis (VFP)."
+    },
+    "diagnosis_degree_os_2": {
+        "description": "Indicates an alternative measure of the overall severity of the participant’s condition."
+    },
+    "diagnosis_degree_r": {
+        "description": "Indicates the roughness of the participant’s voice."
+    },
+    "diagnosis_degree_r_2": {
+        "description": "Indicates an alternative measure of the roughness of the participant’s voice."
+    },
+    "diagnosis_degree_b": {
+        "description": "Indicates the breathiness of the participant’s voice."
+    },
+    "diagnosis_degree_b_2": {
+        "description": "Indicates an alternative measure of the breathiness of the participant’s voice."
+    },
+    "diagnosis_degree_s": {
+        "description": "Indicates the strain in the participant’s voice."
+    },
+    "diagnosis_degree_s_2": {
+        "description": "Indicates an alternative measure of the strain in the participant’s voice."
+    },
+    "diagnosis_degree_p": {
+        "description": "Indicates the pitch of the participant’s voice."
+    },
+    "diagnosis_degree_p_2": {
+        "description": "Indicates an alternative measure of the pitch of the participant’s voice."
+    },
+    "diagnosis_degree_l": {
+        "description": "Indicates the loudness of the participant’s voice."
+    },
+    "diagnosis_degree_l_2": {
+        "description": "Indicates an alternative measure of the loudness of the participant’s voice."
+    },
+    "diagnosis_degree_comments": {
+        "description": "Provides additional comments about the resonance of the participant’s voice."
+    },
+    "diagnosis_ld_qete___laryngologist": {
+        "description": "Indicates if the participant's laryngeal dystonia was determined by a laryngologist as part of the qualitative expert team evaluation."
+    },
+    "diagnosis_ld_qete___speech_language_pathology": {
+        "description": "Indicates if the participant's laryngeal dystonia was determined by a speech-language pathologist as part of the qualitative expert team evaluation."
+    },
+    "diagnosis_ld_qete___neurologist_specializing_disorders": {
+        "description": "Indicates if the participant's laryngeal dystonia was determined by a neurologist specializing in movement disorders as part of the qualitative expert team evaluation."
+    },
+    "diagnosis_ld_assessment___aural_perceptual_evaluation": {
+        "description": "Indicates if the participant underwent an aural-perceptual evaluation as part of their laryngeal dystonia assessment."
+    },
+    "diagnosis_ld_assessment___laryngoscopy_or_stroboscopy": {
+        "description": "Indicates if the participant underwent laryngoscopy or stroboscopy as part of their laryngeal dystonia assessment."
+    },
+    "diagnosis_ld_assessment___neurological_evaluation": {
+        "description": "Indicates if the participant underwent a neurological evaluation as part of their laryngeal dystonia assessment."
+    },
+    "diagnosis_ld_ds___adld": {
+        "description": "Indicates if the participant has adductor laryngeal dystonia (ADLD)."
+    },
+    "diagnosis_ld_ds___abld": {
+        "description": "Indicates if the participant has abductor laryngeal dystonia (ABLD)."
+    },
+    "diagnosis_ld_ds___vocal_tremor": {
+        "description": "Indicates if the participant has vocal tremor."
+    },
+    "diagnosis_ld_ds___mixed_laryngeal_dystonia": {
+        "description": "Indicates if the participant has mixed laryngeal dystonia."
+    },
+    "diagnosis_ld_ds___sld": {
+        "description": "Indicates if the participant has singer's laryngeal dystonia (SLD)."
+    },
+    "diagnosis_ld_ds___arld": {
+        "description": "Indicates if the participant has adductor laryngeal spasms during inspiration (ARLD)."
+    },
+    "diagnosis_ld_etiology": {
+        "description": "Specifies the etiology or cause of the participant’s laryngeal dystonia."
+    },
+    "diagnosis_ld_etiology_cc___essential_tremor_of_the_hands": {
+        "description": "Indicates if the participant has an essential tremor of the hands."
+    },
+    "diagnosis_ld_etiology_cc___essential_tremor_of_the_head": {
+        "description": "Indicates if the participant has an essential tremor of the head."
+    },
+    "diagnosis_ld_etiology_cc___jaw_tremor": {
+        "description": "Indicates if the participant has a jaw tremor."
+    },
+    "diagnosis_ld_etiology_cc___dystonia_of_the_head_and_neck": {
+        "description": "Indicates if the participant has dystonia of the head and neck."
+    },
+    "diagnosis_ld_etiology_cc___other_type_of_dystonia": {
+        "description": "Indicates if the participant has another type of dystonia."
+    },
+    "diagnosis_ld_degree_os_1": {
+        "description": "Indicates the participant's overall severity of laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_os_2": {
+        "description": "Indicates an alternative measure of the participant's overall severity of laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_r_1": {
+        "description": "Indicates the roughness of the participant’s voice as a result of laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_r_2": {
+        "description": "Indicates an alternative measure of the roughness of the participant’s voice due to laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_b_1": {
+        "description": "Indicates the breathiness of the participant’s voice as a result of laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_b_2": {
+        "description": "Indicates an alternative measure of the breathiness of the participant’s voice due to laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_s_1": {
+        "description": "Indicates the strain in the participant’s voice as a result of laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_s_2": {
+        "description": "Indicates an alternative measure of the strain in the participant’s voice due to laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_p_1": {
+        "description": "Indicates the pitch of the participant’s voice as a result of laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_p_2": {
+        "description": "Indicates an alternative measure of the pitch of the participant’s voice due to laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_l_1": {
+        "description": "Indicates the loudness of the participant’s voice as a result of laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_l_2": {
+        "description": "Indicates an alternative measure of the loudness of the participant’s voice due to laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_comments": {
+        "description": "Provides additional comments about the resonance of the participant’s voice due to laryngeal dystonia."
+    },
+    "diagnosis_ld_treatment": {
+        "description": "Indicates if the participant has undergone any treatment for laryngeal dystonia."
+    },
+    "diagnosis_ld_treatment_select___botox_injections": {
+        "description": "Indicates if the participant has received botox injections as a treatment for laryngeal dystonia."
+    },
+    "diagnosis_ld_treatment_select___voice_or_speech_therapy": {
+        "description": "Indicates if the participant has undergone voice or speech therapy as a treatment for laryngeal dystonia."
+    },
+    "diagnosis_ld_treatment_select___vibrotactile_stimulation": {
+        "description": "Indicates if the participant has undergone vibrotactile stimulation as a treatment for laryngeal dystonia."
+    },
+    "diagnosis_ld_treatment_select___deep_brain_stimulation": {
+        "description": "Indicates if the participant has undergone deep brain stimulation as a treatment for laryngeal dystonia."
+    },
+    "diagnosis_ld_treatment_select___mrgfus": {
+        "description": "Indicates if the participant has undergone magnetic resonance-guided focused ultrasound (MRgFUS) as a treatment for laryngeal dystonia."
+    },
+    "diagnosis_ld_treatment_select___other": {
+        "description": "Indicates if the participant has undergone other treatments for laryngeal dystonia."
+    },
+    "diagnosis_ld_treatment_bi_li": {
+        "description": "Specifies when the participant received their last injection as treatment for laryngeal dystonia."
+    },
+    "diagnois_pl_gsd_ls": {
+        "description": "Indicates if the participant has a precancerous vocal fold lesion confirmed by laryngoscopy or stroboscopy."
+    },
+    "diagnois_pl_gsd_bp": {
+        "description": "Indicates if the participant has a precancerous vocal fold lesion confirmed by biopsy or pathology."
+    },
+    "diagnosis_pl_ds___keratosis": {
+        "description": "Indicates if the participant has been diagnosed with keratosis."
+    },
+    "diagnosis_pl_ds___leukoplakia": {
+        "description": "Indicates if the participant has been diagnosed with leukoplakia."
+    },
+    "diagnosis_pl_ds___erythroplakia": {
+        "description": "Indicates if the participant has been diagnosed with erythroplakia."
+    },
+    "diagnosis_pl_ds___other": {
+        "description": "Indicates if the participant has been diagnosed with another precancerous lesion."
+    },
+    "diagnosis_pl_ds_l": {
+        "description": "Indicates if the participant has leukoplakia."
+    },
+    "diagnosis_pl_ds_l_wd_g": {
+        "description": "Indicates if the participant has leukoplakia with dysplasia."
+    },
+    "diagnosis_pl_ds_e": {
+        "description": "Indicates if the participant has erythroplakia."
+    },
+    "diagnosis_pl_ds_e_wd_g": {
+        "description": "Indicates if the participant has erythroplakia with dysplasia."
+    },
+    "diagnosis_pl_etiology___past_or_present_smoking": {
+        "description": "Indicates if the participant has a history of smoking as a risk factor for their precancerous lesion."
+    },
+    "diagnosis_pl_etiology___laryngopharyngeal_reflux": {
+        "description": "Indicates if the participant has laryngopharyngeal reflux as a risk factor for their precancerous lesion."
+    },
+    "diagnosis_pl_etiology___other_irritants": {
+        "description": "Indicates if the participant has other irritants as risk factors for their precancerous lesion."
+    },
+    "diagnosis_pl_ds_ll___right_vocal_fold": {
+        "description": "Indicates if the participant's lesion is located on the right vocal fold."
+    },
+    "diagnosis_pl_ds_ll___left_vocal_fold": {
+        "description": "Indicates if the participant's lesion is located on the left vocal fold."
+    },
+    "diagnosis_pl_ds_ll___both_vocal_folds": {
+        "description": "Indicates if the participant's lesion is located on both vocal folds."
+    },
+    "diagnosis_pl_ds_ll___ventricular_folds": {
+        "description": "Indicates if the participant's lesion is located on the ventricular folds."
+    },
+    "diagnosis_pl_ds_ll___subglottal_areas": {
+        "description": "Indicates if the participant's lesion is located in the subglottal areas."
+    },
+    "diagnosis_pl_degree_os_1": {
+        "description": "Indicates the overall severity of the participant’s precancerous lesion."
+    },
+    "diagnosis_pl_degree_os_2": {
+        "description": "Indicates an alternative measure of the overall severity of the participant’s precancerous lesion."
+    },
+    "diagnosis_pl_degree_r_1": {
+        "description": "Indicates the roughness of the participant’s voice due to the precancerous lesion."
+    },
+    "diagnosis_pl_degree_r_2": {
+        "description": "Indicates an alternative measure of the roughness of the participant’s voice due to the precancerous lesion."
+    },
+    "diagnosis_pl_degree_b_1": {
+        "description": "Indicates the breathiness of the participant’s voice due to the precancerous lesion."
+    },
+    "diagnosis_pl_degree_b_2": {
+        "description": "Indicates an alternative measure of the breathiness of the participant’s voice due to the precancerous lesion."
+    },
+    "diagnosis_pl_degree_s_1": {
+        "description": "Indicates the strain in the participant’s voice due to the precancerous lesion."
+    },
+    "diagnosis_pl_degree_s_2": {
+        "description": "Indicates an alternative measure of the strain in the participant’s voice due to the precancerous lesion."
+    },
+    "diagnosis_pl_degree_p_1": {
+        "description": "Indicates the pitch of the participant’s voice due to the precancerous lesion."
+    },
+    "diagnosis_pl_degree_p_2": {
+        "description": "Indicates an alternative measure of the pitch of the participant’s voice due to the precancerous lesion."
+    },
+    "diagnosis_pl_degree_l_1": {
+        "description": "Indicates the loudness of the participant’s voice due to the precancerous lesion."
+    },
+    "diagnosis_pl_degree_l_2": {
+        "description": "Indicates an alternative measure of the loudness of the participant’s voice due to the precancerous lesion."
+    },
+    "diagnosis_pl_degree_comments": {
+        "description": "Provides additional comments about the resonance of the participant’s voice due to the precancerous lesion."
+    },
+    "diagnosis_pl_treatment": {
+        "description": "Indicates if the participant has undergone any treatment for their precancerous lesion."
+    },
+    "diagnosis_pl_treatment_select___surveillance_only": {
+        "description": "Indicates if the participant is under surveillance only as treatment for their precancerous lesion."
+    },
+    "diagnosis_pl_treatment_select___laser_resection": {
+        "description": "Indicates if the participant has undergone laser resection as treatment for their precancerous lesion."
+    },
+    "diagnosis_pl_treatment_select___laser_ablation": {
+        "description": "Indicates if the participant has undergone laser ablation as treatment for their precancerous lesion."
+    },
+    "diagnosis_pl_treatment_select___microlaryngeal_surgery_without_laser": {
+        "description": "Indicates if the participant has undergone microlaryngeal surgery without laser as treatment for their precancerous lesion."
+    },
+    "diagnosis_pl_treatment_select___radiotherapy_persistent_or_recurrent_lesions": {
+        "description": "Indicates if the participant has undergone radiotherapy for persistent or recurrent lesions."
+    },
+    "diagnosis_pl_treatment_select___voice_or_speech_therapy": {
+        "description": "Indicates if the participant has undergone voice or speech therapy as treatment for their precancerous lesion."
+    },
+    "diagnosis_pl_treatment_select___other": {
+        "description": "Indicates if the participant has undergone other treatments for their precancerous lesion."
+    },
+    "diagnois_lc_gsd_sll": {
+        "description": "Indicates if the participant has a suspicious laryngeal lesion confirmed by laryngoscopy or stroboscopy."
+    },
+    "diagnosis_lc_gsd_bpr": {
+        "description": "Indicates if the participant has laryngeal cancer confirmed by biopsy or pathology report."
+    },
+    "diagnosis_lc_gsd_uots___ct_neck": {
+        "description": "Indicates if the participant has undergone a CT of the neck as part of their laryngeal cancer diagnosis."
+    },
+    "diagnosis_lc_gsd_uots___ct_chest": {
+        "description": "Indicates if the participant has undergone a CT of the chest as part of their laryngeal cancer diagnosis."
+    },
+    "diagnosis_lc_gsd_uots___mri_neck": {
+        "description": "Indicates if the participant has undergone an MRI of the neck as part of their laryngeal cancer diagnosis."
+    },
+    "diagnosis_lc_gsd_uots___pet_ct": {
+        "description": "Indicates if the participant has undergone a PET-CT as part of their laryngeal cancer diagnosis."
+    },
+    "diagnosis_lc_gsd_uots___ultrasound_neck": {
+        "description": "Indicates if the participant has undergone an ultrasound of the neck as part of their laryngeal cancer diagnosis."
+    },
+    "diagnosis_lc_ds___right_vocal_fold": {
+        "description": "Indicates if the participant’s laryngeal cancer involves the right vocal fold."
+    },
+    "diagnosis_lc_ds___left_vocal_fold": {
+        "description": "Indicates if the participant’s laryngeal cancer involves the left vocal fold."
+    },
+    "diagnosis_lc_ds___both_vocal_folds": {
+        "description": "Indicates if the participant’s laryngeal cancer involves both vocal folds."
+    },
+    "diagnosis_lc_ds___anterior_commissure": {
+        "description": "Indicates if the participant’s laryngeal cancer involves the anterior commissure."
+    },
+    "diagnosis_lc_ds___ventricular_folds": {
+        "description": "Indicates if the participant’s laryngeal cancer involves the ventricular folds."
+    },
+    "diagnosis_lc_ds___subglottal_areas": {
+        "description": "Indicates if the participant’s laryngeal cancer involves the subglottal areas."
+    },
+    "diagnosis_lc_etiology___smoking": {
+        "description": "Indicates if smoking is a risk factor for the participant’s laryngeal cancer."
+    },
+    "diagnosis_lc_etiology___alcohol": {
+        "description": "Indicates if alcohol use is a risk factor for the participant’s laryngeal cancer."
+    },
+    "diagnosis_lc_etiology___family_history": {
+        "description": "Indicates if family history is a risk factor for the participant’s laryngeal cancer."
+    },
+    "diagnosis_lc_etiology___hpv": {
+        "description": "Indicates if human papilloma virus (HPV) is a risk factor for the participant’s laryngeal cancer."
+    },
+    "diagnosis_lc_etiology___exposure_other_harmful_substances": {
+        "description": "Indicates if exposure to other harmful substances is a risk factor for the participant’s laryngeal cancer."
+    },
+    "diagnosis_lc_ds_t_stage": {
+        "description": "Indicates the T stage of the participant’s laryngeal cancer according to the AJCC Classification."
+    },
+    "diagnosis_lc_ds_n_stage": {
+        "description": "Indicates the N stage of the participant’s laryngeal cancer according to the AJCC Classification."
+    },
+    "diagnosis_lc_ds_m_stage": {
+        "description": "Indicates the M stage of the participant’s laryngeal cancer according to the AJCC Classification."
+    },
+    "diagnosis_lc_degree_os_1": {
+        "description": "Indicates the overall severity of the participant’s laryngeal cancer."
+    },
+    "diagnosis_lc_degree_os_2": {
+        "description": "Indicates an alternative measure of the overall severity of the participant’s laryngeal cancer."
+    },
+    "diagnosis_lc_degree_r_1": {
+        "description": "Indicates the roughness of the participant’s voice due to laryngeal cancer."
+    },
+    "diagnosis_lc_degree_r_2": {
+        "description": "Indicates an alternative measure of the roughness of the participant’s voice due to laryngeal cancer."
+    },
+    "diagnosis_lc_degree_b_1": {
+        "description": "Indicates the breathiness of the participant’s voice due to laryngeal cancer."
+    },
+    "diagnosis_lc_degree_b_2": {
+        "description": "Indicates an alternative measure of the breathiness of the participant’s voice due to laryngeal cancer."
+    },
+    "diagnosis_lc_degree_s_1": {
+        "description": "Indicates the strain in the participant’s voice due to laryngeal cancer."
+    },
+    "diagnosis_lc_degree_s_2": {
+        "description": "Indicates an alternative measure of the strain in the participant’s voice due to laryngeal cancer."
+    },
+    "diagnosis_lc_degree_p_1": {
+        "description": "Indicates the pitch of the participant’s voice due to laryngeal cancer."
+    },
+    "diagnosis_lc_degree_p_2": {
+        "description": "Indicates an alternative measure of the pitch of the participant’s voice due to laryngeal cancer."
+    },
+    "diagnosis_lc_degree_l_1": {
+        "description": "Indicates the loudness of the participant’s voice due to laryngeal cancer."
+    },
+    "diagnosis_lc_degree_l_2": {
+        "description": "Indicates an alternative measure of the loudness of the participant’s voice due to laryngeal cancer."
+    },
+    "diagnosis_lc_degree_comments": {
+        "description": "Provides additional comments about the resonance of the participant’s voice due to laryngeal cancer."
+    },
+    "diagnosis_as_ds_ccsr": {
+        "description": "Indicates if the participant’s cancer is causing stridor at rest."
+    },
+    "diagnosis_lc_treatment": {
+        "description": "Indicates if the participant has undergone any treatment for laryngeal cancer."
+    },
+    "diagnosis_lc_treatment_select___radiation": {
+        "description": "Indicates if the participant has undergone radiation as treatment for laryngeal cancer."
+    },
+    "diagnosis_lc_treatment_select___chemotherapy": {
+        "description": "Indicates if the participant has undergone chemotherapy as treatment for laryngeal cancer."
+    },
+    "diagnosis_lc_treatment_select___immunotherapy": {
+        "description": "Indicates if the participant has undergone immunotherapy as treatment for laryngeal cancer."
+    },
+    "diagnosis_lc_treatment_select___surgery": {
+        "description": "Indicates if the participant has undergone surgery as treatment for laryngeal cancer."
+    },
+    "diagnosis_lc_treatment_select___voice_or_speech_therapy": {
+        "description": "Indicates if the participant has undergone voice or speech therapy as treatment for laryngeal cancer."
+    },
+    "diagnosis_lc_treatment_select___other": {
+        "description": "Indicates if the participant has undergone other treatments for laryngeal cancer."
+    },
+    "diagnosis_lc_treatment_s___endoscopic_laser": {
+        "description": "Indicates if the participant has undergone endoscopic laser surgery as treatment for laryngeal cancer."
+    },
+    "diagnosis_lc_treatment_s___partial_laryngectomy": {
+        "description": "Indicates if the participant has undergone partial laryngectomy as treatment for laryngeal cancer."
+    },
+    "diagnois_bl_gsd": {
+        "description": "Indicates if the participant has a benign lesion confirmed by laryngoscopy or stroboscopy."
+    },
+    "diagnosis_bl_ds": {
+        "description": "Indicates the participant’s diagnosis of a benign lesion."
+    },
+    "diagnosis_bl_etiology": {
+        "description": "Specifies the etiology or cause of the participant’s benign lesion."
+    },
+    "diagnosis_bl_ds_ll": {
+        "description": "Indicates the location of the participant’s benign lesion."
+    },
+    "diagnosis_bl_degree_os_1": {
+        "description": "Indicates the overall severity of the participant’s benign lesion."
+    },
+    "diagnosis_bl_degree_os_2": {
+        "description": "Indicates an alternative measure of the overall severity of the participant’s benign lesion."
+    },
+    "diagnosis_bl_degree_r_1": {
+        "description": "Indicates the roughness of the participant’s voice due to the benign lesion."
+    },
+    "diagnosis_bl_degree_r_2": {
+        "description": "Indicates an alternative measure of the roughness of the participant’s voice due to the benign lesion."
+    },
+    "diagnosis_bl_degree_b_1": {
+        "description": "Indicates the breathiness of the participant’s voice due to the benign lesion."
+    },
+    "diagnosis_bl_degree_b_2": {
+        "description": "Indicates an alternative measure of the breathiness of the participant’s voice due to the benign lesion."
+    },
+    "diagnosis_bl_degree_s_1": {
+        "description": "Indicates the strain in the participant’s voice due to the benign lesion."
+    },
+    "diagnosis_bl_degree_s_2": {
+        "description": "Indicates an alternative measure of the strain in the participant’s voice due to the benign lesion."
+    },
+    "diagnosis_bl_degree_p_1": {
+        "description": "Indicates the pitch of the participant’s voice due to the benign lesion."
+    },
+    "diagnosis_bl_degree_p_2": {
+        "description": "Indicates an alternative measure of the pitch of the participant’s voice due to the benign lesion."
+    },
+    "diagnosis_bl_degree_l_1": {
+        "description": "Indicates the loudness of the participant’s voice due to the benign lesion."
+    },
+    "diagnosis_bl_degree_l_2": {
+        "description": "Indicates an alternative measure of the loudness of the participant’s voice due to the benign lesion."
+    },
+    "diagnosis_bl_degree_comments": {
+        "description": "Provides additional comments about the resonance of the participant’s voice due to the benign lesion."
+    },
+    "diagnosis_bl_treatment": {
+        "description": "Indicates if the participant has undergone any treatment for the benign lesion."
+    },
+    "diagnosis_bl_treatment_select___voice_or_speech_therapy": {
+        "description": "Indicates if the participant has undergone voice or speech therapy as treatment for the benign lesion."
+    },
+    "diagnosis_bl_treatment_select___laryngeal_microsurgery": {
+        "description": "Indicates if the participant has undergone laryngeal microsurgery as treatment for the benign lesion."
+    },
+    "diagnosis_bl_treatment_select___voice_rest": {
+        "description": "Indicates if the participant has undergone voice rest as treatment for the benign lesion."
+    },
+    "diagnosis_bl_treatment_select___other": {
+        "description": "Indicates if the participant has undergone other treatments for the benign lesion."
+    },
+    "diagnosis_bl_treatment_lm": {
+        "description": "Indicates if the participant has undergone laryngeal microsurgery for the benign lesion."
+    },
+    "diagnosis_bipolar_gsd": {
+        "description": "Specifies the participant’s diagnosis of bipolar disorder."
+    },
+    "diagnosis_bipolar_gsd_interview": {
+        "description": "Indicates if a structured clinical interview was conducted for diagnosing the participant’s bipolar disorder."
+    },
+    "diagnosis_bipolar_gsd_oqu": {
+        "description": "Indicates if an objective questionnaire was used in the diagnosis of the participant’s bipolar disorder."
+    },
+    "diagnosis_bipolar_gsd_oquw": {
+        "description": "Specifies which objective questionnaire was used in diagnosing the participant’s bipolar disorder."
+    },
+    "diagnosis_bipolar_subtype_active": {
+        "description": "Specifies the active subtype of the participant’s bipolar disorder."
+    },
+    "diagnosis_bipolar_psychotic": {
+        "description": "Indicates if the participant has psychotic symptoms associated with bipolar disorder."
+    },
+    "diagnosis_bipolar_severity": {
+        "description": "Indicates the severity of the participant’s bipolar disorder."
+    },
+    "diagnosis_depression_gsd": {
+        "description": "Indicates the participant’s diagnosis of depression."
+    },
+    "diagnosis_depression_clinical_subcategory": {
+        "description": "Specifies the subcategory of clinical depression, such as major depressive disorder, for the participant."
+    },
+    "diagnosis_depression_gsd_interview": {
+        "description": "Indicates if a structured clinical interview was conducted for diagnosing the participant’s depression."
+    },
+    "diagnosis_depression_gsd_oqu": {
+        "description": "Indicates if an objective questionnaire was used in the diagnosis of the participant’s depression."
+    },
+    "diagnosis_depression_gsd_oquw": {
+        "description": "Specifies which objective questionnaire was used in diagnosing the participant’s depression."
+    },
+    "diagnosis_bipolar_subtype_active_depression": {
+        "description": "Specifies the active subtype of depression in the participant’s bipolar disorder."
+    },
+    "diagnosis_bipolar_psychotic_depression": {
+        "description": "Indicates if the participant has psychotic symptoms associated with the depressive phase of their bipolar disorder."
+    },
+    "diagnosis_bipolar_severity_depression": {
+        "description": "Indicates the severity of the participant’s depressive phase of bipolar disorder."
+    },
+    "diagnosis_as_pft": {
+        "description": "Indicates if the participant has undergone pulmonary function testing in the past three months."
+    },
+    "diagnosis_as_gsd": {
+        "description": "Indicates if the participant has airway stenosis confirmed by laryngoscopy, bronchoscopy, or CT imaging."
+    },
+    "diagnosis_as_gsd_yes___bronchoscopy": {
+        "description": "Indicates if the participant’s airway stenosis was confirmed by bronchoscopy or laryngoscopy."
+    },
+    "diagnosis_as_gsd_yes___ct": {
+        "description": "Indicates if the participant’s airway stenosis was confirmed by CT imaging."
+    },
+    "diagnosis_as_ds": {
+        "description": "Specifies the subtype of the participant’s airway stenosis."
+    },
+    "diagnosis_as_ds_bvfi_gs": {
+        "description": "Indicates if the participant has bilateral vocal fold immobility or glottic stenosis as a subtype of airway stenosis."
+    },
+    "diagnosis_as_etiology": {
+        "description": "Specifies the etiology or cause of the participant’s airway stenosis."
+    },
+    "diagnosis_as_etiology_auto_immune": {
+        "description": "Indicates if the participant’s airway stenosis is caused by an autoimmune or granulomatous disease."
+    },
+    "diagnosis_as_ds_mcg": {
+        "description": "Indicates the degree of the participant’s stenosis based on the Myer-Cotton Grade."
+    },
+    "diagnosis_as_ds_bc": {
+        "description": "Indicates the degree of the participant’s stenosis based on the Bogdasarian Classification."
+    },
+    "diagnosis_as_ds_agw": {
+        "description": "Indicates the anterior glottic web classification of the participant’s airway stenosis according to Cohen."
+    },
+    "diagnosis_as_ds_ac": {
+        "description": "Indicates the grade of stenosis of the participant’s supraglottic stenosis according to the Aziz Classification."
+    },
+    "diagnosis_as_ds_ac_grade_4": {
+        "description": "Indicates the grade of supraglottic stenosis based on the Aziz Classification."
+    },
+    "diagnosis_as_ds_ods": {
+        "description": "Indicates the overall subjective classification of the participant’s airway stenosis."
+    },
+    "diagnosis_as_ds_eps": {
+        "description": "Indicates the estimated percentage of stenosis from 0 to 100."
+    },
+    "diagnosis_as_treatment___no_treatment": {
+        "description": "Indicates if the participant has received no treatment for their airway stenosis."
+    },
+    "diagnosis_as_treatment___surgery": {
+        "description": "Indicates if the participant has undergone surgery as treatment for their airway stenosis."
+    },
+    "diagnosis_as_treatment___in_office_treatment": {
+        "description": "Indicates if the participant has undergone in-office treatment for their airway stenosis."
+    },
+    "diagnosis_as_treatment_surgery___endoscopic_intervention": {
+        "description": "Indicates if the participant has undergone endoscopic intervention with laser and balloon dilation and steroid injection as surgery for airway stenosis."
+    },
+    "diagnosis_as_treatment_surgery___endoscopic_excision": {
+        "description": "Indicates if the participant has undergone endoscopic laser wedge excision with balloon dilation and steroid injection as surgery for airway stenosis."
+    },
+    "diagnosis_as_treatment_surgery___laryngotracheal_reconstruction": {
+        "description": "Indicates if the participant has undergone open laryngotracheal reconstruction as surgery for airway stenosis."
+    },
+    "diagnosis_as_treatment_surgery___laryngotracheoplasty": {
+        "description": "Indicates if the participant has undergone laryngotracheoplasty (Maddern procedure) as surgery for airway stenosis."
+    },
+    "diagnosis_as_treatment_surgery___tracheostomy": {
+        "description": "Indicates if the participant has undergone a tracheostomy as surgery for airway stenosis."
+    },
+    "diagnosis_as_treatment_surgery___other": {
+        "description": "Indicates if the participant has undergone another type of surgery for airway stenosis."
+    },
+    "diagnosis_as_treatment_in_office___steroid_injections_sole": {
+        "description": "Indicates if the participant has undergone awake steroid injection(s) as the sole treatment for airway stenosis."
+    },
+    "diagnosis_as_treatment_in_office___steroid_injections_adjunct": {
+        "description": "Indicates if the participant has undergone awake steroid injection(s) as an adjunct treatment for airway stenosis."
+    },
+    "diagnosis_as_treatment_in_office___dilation": {
+        "description": "Indicates if the participant has undergone in-office or awake dilation as treatment for airway stenosis."
+    },
+    "diagnosis_as_treatment_in_office___laser": {
+        "description": "Indicates if the participant has undergone in-office or awake laser treatment for airway stenosis."
+    },
+    "diagnosis_alz_dementia_mci_causes": {
+        "description": "Indicates if other causes of cognitive or functional changes have been excluded in the participant’s diagnosis."
+    },
+    "diagnosis_alz_dementia_mci_dt": {
+        "description": "Specifies the type of dementia or cognitive impairment in the participant."
+    },
+    "diagnosis_alz_dementia_mci_etiology___genetic_factors": {
+        "description": "Indicates if genetic factors are suspected or known to be the etiology of the participant’s cognitive impairment or dementia."
+    },
+    "diagnosis_alz_dementia_mci_etiology___age_related_changes": {
+        "description": "Indicates if age-related changes are suspected or known to be the etiology of the participant’s cognitive impairment or dementia."
+    },
+    "diagnosis_alz_dementia_mci_etiology___other_medical_conditions": {
+        "description": "Indicates if other medical conditions, such as vascular factors or traumatic brain injury, are suspected or known to be the etiology of the participant’s cognitive impairment or dementia."
+    },
+    "diagnosis_alz_dementia_mci_etiology___substance_related": {
+        "description": "Indicates if substance-related factors, such as alcohol-induced cognitive impairment, are suspected or known to be the etiology of the participant’s cognitive impairment or dementia."
+    },
+    "diagnosis_alz_dementia_mci_etiology___other": {
+        "description": "Indicates if another etiology is suspected or known to be the cause of the participant’s cognitive impairment or dementia."
+    },
+    "diagnosis_alz_dementia_mci_etiology_gf___familial_alzheimers_disease": {
+        "description": "Indicates if familial Alzheimer’s disease is the genetic factor suspected or known to be the cause of the participant’s cognitive impairment or dementia."
+    },
+    "diagnosis_alz_dementia_mci_etiology_gf___apolipoprotein_e": {
+        "description": "Indicates if apolipoprotein E (APOE) ε4 allele is the genetic factor suspected or known to be the cause of the participant’s cognitive impairment or dementia."
+    },
+    "diagnosis_alz_dementia_mci_etiology_gf___other_genetic_factors": {
+        "description": "Indicates if other genetic factors are suspected or known to be the cause of the participant’s cognitive impairment or dementia."
+    },
+    "diagnosis_alz_dementia_mci_ds___mci": {
+        "description": "Indicates if the participant’s cognitive impairment is classified as mild cognitive impairment (MCI)."
+    },
+    "diagnosis_alz_dementia_mci_ds___cdr": {
+        "description": "Indicates if the participant’s cognitive impairment is classified using the Clinical Dementia Rating (CDR) staging."
+    },
+    "diagnosis_alz_dementia_mci_ds_cdr": {
+        "description": "Specifies the participant’s Clinical Dementia Rating (CDR) staging."
+    },
+    "diagnosis_alz_dementia_mci_ca_rudas_score": {
+        "description": "Specifies the participant’s Rowland Universal Dementia Assessment Scale (RUDAS) score."
+    },
+    "diagnosis_alz_dementia_mci_ca_mmse_score": {
+        "description": "Specifies the participant’s Mini-Mental State Examination (MMSE) score."
+    },
+    "diagnosis_alz_dementia_mci_ca_moca_score": {
+        "description": "Specifies the participant’s Montreal Cognitive Assessment (MoCA) score."
+    },
+    "diagnosis_alz_dementia_mci_ca_adas_cog_score": {
+        "description": "Specifies the participant’s Alzheimer’s Disease Assessment Scale-Cognitive Subscale (ADAS-Cog) score."
+    },
+    "diagnosis_alz_dementia_mci_ca_other": {
+        "description": "Specifies if another cognitive assessment tool was used for the participant."
+    },
+    "diagnosis_alz_dementia_mci_ca_other_score": {
+        "description": "Specifies the score from another cognitive assessment tool used for the participant."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained": {
+        "description": "Indicates if the participant has undergone any treatment for Alzheimer’s disease, cognitive impairment, or other types of dementia."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes___medications": {
+        "description": "Indicates if the participant has taken medications as treatment for Alzheimer’s disease or cognitive impairment."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes___npi": {
+        "description": "Indicates if the participant has received non-pharmacological interventions as treatment for Alzheimer’s disease or cognitive impairment."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_medications___cholinesterase_inhibitors": {
+        "description": "Indicates if the participant has taken cholinesterase inhibitors, such as Donepezil, as treatment for Alzheimer’s disease or cognitive impairment."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_medications___nmda_receptor_antagonist": {
+        "description": "Indicates if the participant has taken NMDA receptor antagonist, such as Memantine, as treatment for Alzheimer’s disease or cognitive impairment."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_medications___other": {
+        "description": "Indicates if the participant has taken other medications as treatment for Alzheimer’s disease or cognitive impairment."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___day_program": {
+        "description": "Indicates if the participant has participated in a day program as a non-pharmacological intervention for Alzheimer’s disease or cognitive impairment."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___cognitive_simulation_therapy": {
+        "description": "Indicates if the participant has undergone cognitive stimulation therapy as a non-pharmacological intervention for Alzheimer’s disease or cognitive impairment."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___reality_orientation_therapy": {
+        "description": "Indicates if the participant has undergone reality orientation therapy as a non-pharmacological intervention for Alzheimer’s disease or cognitive impairment."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___reminiscence_therapy": {
+        "description": "Indicates if the participant has undergone reminiscence therapy as a non-pharmacological intervention for Alzheimer’s disease or cognitive impairment."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___physical_exercise_program": {
+        "description": "Indicates if the participant has participated in a physical exercise program as a non-pharmacological intervention for Alzheimer’s disease or cognitive impairment."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___dietary_modifications": {
+        "description": "Indicates if the participant has undergone dietary modifications as a non-pharmacological intervention for Alzheimer’s disease or cognitive impairment."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___other": {
+        "description": "Indicates if the participant has undergone other non-pharmacological interventions for Alzheimer’s disease or cognitive impairment."
+    },
+    "diagnosis_parkinsons_gsd_category_1___bradykinesia": {
+        "description": "Indicates if the participant has bradykinesia as part of their Parkinson’s disease diagnosis."
+    },
+    "diagnosis_parkinsons_gsd_category_1___tremor": {
+        "description": "Indicates if the participant has tremor as part of their Parkinson’s disease diagnosis."
+    },
+    "diagnosis_parkinsons_gsd_category_1___rigidity": {
+        "description": "Indicates if the participant has rigidity as part of their Parkinson’s disease diagnosis."
+    },
+    "diagnosis_parkinsons_gsd_category_1_calculation": {
+        "description": "Indicates if the participant meets the criteria for Category 1 Parkinsonism based on bradykinesia, tremor, or rigidity."
+    },
+    "diagnosis_parkinsons_gsd_category_2___cerebellar_abnormalities": {
+        "description": "Indicates if the participant has cerebellar abnormalities as part of the exclusion criteria for Parkinson’s disease diagnosis."
+    },
+    "diagnosis_parkinsons_gsd_category_2___supranuclear_gaze_palsy": {
+        "description": "Indicates if the participant has supranuclear gaze palsy as part of the exclusion criteria for Parkinson’s disease diagnosis."
+    },
+    "diagnosis_parkinsons_gsd_category_2___bvf_ftd_ppa": {
+        "description": "Indicates if the participant has a diagnosis of behavioral variant frontotemporal dementia (bvFTD) or primary progressive aphasia (PPA) within five years of disease onset as part of the exclusion criteria for Parkinson’s disease diagnosis."
+    },
+    "diagnosis_parkinsons_gsd_category_2___lower_limbs": {
+        "description": "Indicates if the participant’s Parkinsonian features are restricted to the lower limbs for more than three years as part of the exclusion criteria."
+    },
+    "diagnosis_parkinsons_gsd_category_2___dopamine_treatment": {
+        "description": "Indicates if the participant has been treated with dopamine or related medications."
+    },
+    "diagnosis_parkinsons_gsd_category_2___absence_of_response": {
+        "description": "Indicates if the participant shows no response in category 2 of the Parkinson's GSD assessment."
+    },
+    "diagnosis_parkinsons_gsd_category_2___cortical_sensory_loss": {
+        "description": "Indicates if the participant has cortical sensory loss as part of Parkinson's GSD Category 2."
+    },
+    "diagnosis_parkinsons_gsd_category_2___dat_scan": {
+        "description": "Indicates if the participant has undergone a DAT scan as part of Parkinson's GSD Category 2."
+    },
+    "diagnosis_parkinsons_gsd_category_2___alternative_condition": {
+        "description": "Indicates if the participant has an alternative condition related to Parkinson's disease GSD Category 2."
+    },
+    "diagnosis_parkinsons_gsd_category_2_calculation": {
+        "description": "Calculation for Parkinson's GSD Category 2 diagnosis."
+    },
+    "diagnosis_parkinsons_gsd_category_3___response_dopaminergic_therapy": {
+        "description": "Indicates if the participant's Parkinson's diagnosis includes response to dopaminergic therapy under GSD category 3."
+    },
+    "diagnosis_parkinsons_gsd_category_3___levodopa_induced_dyskinesia": {
+        "description": "Indicates if the participant has levodopa-induced dyskinesia as part of their Parkinson's diagnosis."
+    },
+    "diagnosis_parkinsons_gsd_category_3___rest_tremor": {
+        "description": "Indicates if the participant's Parkinson's diagnosis includes rest tremor under GSD category 3."
+    },
+    "diagnosis_parkinsons_gsd_category_3___mibg": {
+        "description": "Indicates if the participant's Parkinson's diagnosis includes MIBG in category 3 of the GSD assessment."
+    },
+    "diagnosis_parkinsons_gsd_category_3_calculation": {
+        "description": "Calculation for Parkinson's GSD Category 3 diagnosis."
+    },
+    "diagnosis_parkinsons_gsd_calculation": {
+        "description": "Calculated score for Parkinson's disease diagnosis based on the GSD (Global Severity of Disease) scale."
+    },
+    "diagnosis_parkinsons_disease_subtype": {
+        "description": "Indicates the subtype of Parkinson's disease diagnosed in the participant."
+    },
+    "diagnosis_parkinsons_etiology": {
+        "description": "Indicates the etiology or cause of the participant's Parkinson's diagnosis."
+    },
+    "diagnosis_parkinsons_ds": {
+        "description": "Indicates the diagnostic subcategory of the participant's Parkinson's disease."
+    },
+    "diagnosis_parkinsons_ma___updrs": {
+        "description": "Indicates the participant's motor assessment score on the UPDRS (Unified Parkinson's Disease Rating Scale)."
+    },
+    "diagnosis_parkinsons_ma___other": {
+        "description": "Indicates if the participant has other motor assessment results for Parkinson's disease."
+    },
+    "diagnosis_parkinsons_ma_uprds": {
+        "description": "Indicates the participant's score on the Unified Parkinson's Disease Rating Scale (UPDRS)."
+    },
+    "diagnosis_parkinsons_ma_updrs_part_i_score": {
+        "description": "Score from Part I of the MDS-UPDRS, assessing non-motor aspects of daily living."
+    },
+    "diagnosis_parkinsons_ma_updrs_part_ii_score": {
+        "description": "Score from Part II of the MDS-UPDRS, assessing the participant's activities of daily living."
+    },
+    "diagnosis_parkinsons_ma_updrs_part_iii_score": {
+        "description": "Score from Part III of the MDS-UPDRS, assessing motor symptoms in Parkinson's disease."
+    },
+    "diagnosis_parkinsons_ma_updrs_part_iv_score": {
+        "description": "Score from Part IV of the MDS-UPDRS, assessing complications of therapy in Parkinson's disease."
+    },
+    "diagnosis_parkinsons_non_motor_symptoms": {
+        "description": "Indicates if the participant has non-motor symptoms associated with Parkinson's disease."
+    },
+    "diagnosis_parkinsons_non_motor_symptoms_yes": {
+        "description": "Indicates specific non-motor symptoms that the participant experiences as part of Parkinson's disease."
+    },
+    "diagnosis_parkinsons_treatment_obtained": {
+        "description": "Indicates if the participant has received treatment for Parkinson's disease."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes___medications": {
+        "description": "Indicates if the participant is receiving medication for Parkinson's disease."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes___npi": {
+        "description": "Indicates if the participant has received non-pharmacological interventions as part of Parkinson's treatment."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_medications___levodopa": {
+        "description": "Indicates if the participant is receiving levodopa as part of Parkinson's treatment."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_medications___dopamine_agonists": {
+        "description": "Indicates if the participant is receiving dopamine agonists as part of Parkinson's treatment."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_medications___mao_b": {
+        "description": "Indicates if the participant is receiving MAO-B inhibitors as part of Parkinson's treatment."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_medications___amantadine": {
+        "description": "Indicates if the participant is receiving Amantadine for Parkinson's treatment."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_medications___other": {
+        "description": "Indicates if the participant is receiving other medications for Parkinson's disease."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_npi___physical_therapy": {
+        "description": "Indicates if the participant has received physical therapy as a treatment for Parkinson's disease."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_npi___occupational_therapy": {
+        "description": "Indicates if the participant is receiving occupational therapy as part of Parkinson's treatment."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_npi___speech_therapy": {
+        "description": "Indicates if the participant has received speech therapy as part of Parkinson's treatment."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_npi___dbs": {
+        "description": "Indicates if the participant has received deep brain stimulation (DBS) as part of Parkinson's treatment."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_npi___other": {
+        "description": "Indicates if the participant has received non-pharmacological treatment for Parkinson's, other than those specified."
+    },
+    "diagnosis_als_gsd_category_1": {
+        "description": "Indicates the participant's ALS diagnosis under GSD category 1."
+    },
+    "diagnosis_als_gsd_category_2": {
+        "description": "Indicates if the participant meets the criteria for ALS GSD Category 2."
+    },
+    "diagnosis_als_gsd_category_3": {
+        "description": "Indicates the participant's ALS diagnosis under GSD category 3."
+    },
+    "diagnosis_als_gsd_calculation": {
+        "description": "Calculation for the participant's ALS GSD diagnosis."
+    },
+    "diagnosis_als_disease_subtype": {
+        "description": "Indicates the subtype of ALS diagnosed in the participant."
+    },
+    "diagnosis_als_disease_subtype_familial": {
+        "description": "Indicates if the participant has been diagnosed with familial ALS."
+    },
+    "diagnosis_als_etiology___genetic_factors": {
+        "description": "Indicates if the participant's ALS diagnosis is linked to genetic factors."
+    },
+    "diagnosis_als_etiology___environmental_factors": {
+        "description": "Indicates if the participant's ALS diagnosis is linked to environmental factors."
+    },
+    "diagnosis_als_etiology_genetic_factors___c9orf72": {
+        "description": "Indicates if the participant's ALS diagnosis is linked to the C9orf72 genetic factor."
+    },
+    "diagnosis_als_etiology_genetic_factors___sod1": {
+        "description": "Indicates if the participant's ALS diagnosis is linked to the SOD1 genetic factor."
+    },
+    "diagnosis_als_etiology_genetic_factors___other": {
+        "description": "Indicates if the participant's ALS diagnosis is linked to other genetic factors not listed."
+    },
+    "diagnosis_als_cp___upper_motor_neuron": {
+        "description": "Indicates if the participant's ALS diagnosis includes upper motor neuron involvement."
+    },
+    "diagnosis_als_cp___lower_motor_neuron": {
+        "description": "Indicates if the participant has lower motor neuron involvement as part of their ALS diagnosis."
+    },
+    "diagnosis_als_cp___bulbar_symptoms": {
+        "description": "Indicates if the participant has bulbar symptoms as part of their ALS diagnosis."
+    },
+    "diagnosis_als_cp___respiratory_involvement": {
+        "description": "Indicates if the participant has respiratory involvement as part of their ALS diagnosis."
+    },
+    "diagnosis_als_dp": {
+        "description": "Indicates if the participant has a diagnosis of ALS with dementia."
+    },
+    "diagnosis_als_na_alsfrs_r_score": {
+        "description": "The participant's score on the ALS Functional Rating Scale-Revised (ALSFRS-R)."
+    },
+    "diagnosis_als_na_fvc_percentage": {
+        "description": "Indicates the participant's forced vital capacity (FVC) percentage for ALS diagnosis."
+    },
+    "diagnosis_als_treatment_and_management": {
+        "description": "Indicates the treatment and management plan for the participant's ALS diagnosis."
+    },
+    "diagnosis_als_treatment_and_management_yes___medications": {
+        "description": "Indicates if the participant is receiving medications as part of ALS treatment."
+    },
+    "diagnosis_als_treatment_and_management_yes___supportive_care": {
+        "description": "Indicates if the participant is receiving supportive care as part of ALS management."
+    },
+    "diagnosis_als_treatment_and_management_yes_medications___riluzole": {
+        "description": "Indicates if the participant is receiving riluzole as part of ALS treatment."
+    },
+    "diagnosis_als_treatment_and_management_yes_medications___edaravone": {
+        "description": "Indicates if the participant is receiving edaravone as part of ALS treatment."
+    },
+    "diagnosis_als_treatment_and_management_yes_medications___sodium": {
+        "description": "Indicates if the participant is receiving sodium as part of ALS treatment."
+    },
+    "diagnosis_als_treatment_and_management_yes_medications___tofersen": {
+        "description": "Indicates if the participant is receiving Tofersen as part of ALS treatment."
+    },
+    "diagnosis_als_treatment_and_management_yes_medications___symptomatic_treatment": {
+        "description": "Indicates if the participant is receiving symptomatic treatment as part of ALS management."
+    },
+    "diagnosis_als_treatment_and_management_yes_medications___other": {
+        "description": "Indicates if the participant is receiving other medications as part of ALS treatment."
+    },
+    "diagnosis_als_treatment_and_management_yes_supportive_care___physical_therapy": {
+        "description": "Indicates if the participant has received physical therapy as part of ALS management."
+    },
+    "diagnosis_als_treatment_and_management_yes_supportive_care___occupational_therapy": {
+        "description": "Indicates if the participant is receiving occupational therapy as part of ALS treatment and supportive care."
+    },
+    "diagnosis_als_treatment_and_management_yes_supportive_care___speech_therapy": {
+        "description": "Indicates if the participant has received speech therapy as part of ALS management."
+    },
+    "diagnosis_als_treatment_and_management_yes_supportive_care___respiratory_support": {
+        "description": "Indicates if the participant has received respiratory support as part of ALS management."
+    },
+    "diagnosis_als_treatment_and_management_yes_supportive_care___nutrition_support": {
+        "description": "Indicates if the participant has received nutrition support as part of ALS management."
+    },
+    "diagnosis_als_treatment_and_management_yes_supportive_care___psychotherapy": {
+        "description": "Indicates if the participant has received psychotherapy as part of ALS management."
+    },
+    "diagnosis_als_treatment_and_management_yes_supportive_care___other": {
+        "description": "Indicates if the participant has received other forms of supportive care for ALS."
+    }
+}

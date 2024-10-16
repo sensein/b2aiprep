@@ -1,0 +1,38 @@
+{
+    "ptsd_session_id": {
+        "description": "Unique identifier for the PTSD assessment session."
+    },
+    "ptsd_duration": {
+        "description": "Reports the duration of post-traumatic stress disorder (PTSD) symptoms the participant is experiencing."
+    },
+    "traumatic_event": {
+        "description": "Reports if the participant has experienced a traumatic event recently."
+    },
+    "flashbacks": {
+        "description": "Indicates if the participant experiences flashbacks to stressful or traumatic events."
+    },
+    "emotionally_upset": {
+        "description": "Indicates if the participant feels emotionally upset during the session."
+    },
+    "avoiding_reminders": {
+        "description": "Indicates if the participant is avoiding reminders of traumatic events."
+    },
+    "thinking_stressful_event": {
+        "description": "Reports if the participant is thinking about a stressful event during the session."
+    },
+    "neg_emotional_state": {
+        "description": "Indicates if the participant is experiencing negative emotional states."
+    },
+    "losing_interest": {
+        "description": "Indicates if the participant is losing interest in things they usually enjoy."
+    },
+    "super_alert": {
+        "description": "Indicates if the participant is highly alert during the session."
+    },
+    "feeling_jumpy": {
+        "description": "Indicates if the participant feels jumpy or anxious."
+    },
+    "irritable": {
+        "description": "Indicates if the participant feels irritable or easily annoyed."
+    }
+}

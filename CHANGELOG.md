@@ -1,3 +1,53 @@
+# 0.20.0 (Mon Sep 16 2024)
+
+#### 🚀 Enhancement
+
+- Update the BIDS-like saving to align with template directory [#77](https://github.com/sensein/b2aiprep/pull/77) ([@ibevers](https://github.com/ibevers))
+
+#### 🐛 Bug Fix
+
+- Merge in bids-like-updates [#78](https://github.com/sensein/b2aiprep/pull/78) ([@ibevers](https://github.com/ibevers))
+- Add BIDS-like data template directory structure [#76](https://github.com/sensein/b2aiprep/pull/76) ([@ibevers](https://github.com/ibevers))
+
+#### Authors: 1
+
+- [@ibevers](https://github.com/ibevers)
+
+---
+
+# 0.19.0 (Wed Jul 17 2024)
+
+#### 🚀 Enhancement
+
+- Replace process.py with senselab functions [#74](https://github.com/sensein/b2aiprep/pull/74) ([@ibevers](https://github.com/ibevers))
+
+#### 🐛 Bug Fix
+
+- Update README.md to specify bids_dir parameter in Streamlit example [#72](https://github.com/sensein/b2aiprep/pull/72) ([@DebuggerDan](https://github.com/DebuggerDan))
+
+#### Authors: 2
+
+- [@ibevers](https://github.com/ibevers)
+- dan ([@DebuggerDan](https://github.com/DebuggerDan))
+
+---
+
+# 0.18.0 (Tue Jun 25 2024)
+
+#### 🚀 Enhancement
+
+- Remove TTS and convert voice feature [#63](https://github.com/sensein/b2aiprep/pull/63) ([@alistairewj](https://github.com/alistairewj))
+
+#### 🐛 Bug Fix
+
+- Audio tutorial [#64](https://github.com/sensein/b2aiprep/pull/64) ([@alistairewj](https://github.com/alistairewj))
+
+#### Authors: 1
+
+- Alistair Johnson ([@alistairewj](https://github.com/alistairewj))
+
+---
+
 # 0.16.0 (Wed Jun 12 2024)
 
 #### 🚀 Enhancement

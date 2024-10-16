@@ -1,0 +1,134 @@
+{
+    "diagnois_lc_gsd_sll": {
+        "description": "Indicates if the participant has a suspicious laryngeal lesion confirmed by laryngoscopy or stroboscopy."
+    },
+    "diagnosis_lc_gsd_bpr": {
+        "description": "Indicates if the participant has laryngeal cancer confirmed by biopsy or pathology report."
+    },
+    "diagnosis_lc_gsd_uots___ct_neck": {
+        "description": "Indicates if the participant has undergone a CT of the neck as part of their laryngeal cancer diagnosis."
+    },
+    "diagnosis_lc_gsd_uots___ct_chest": {
+        "description": "Indicates if the participant has undergone a CT of the chest as part of their laryngeal cancer diagnosis."
+    },
+    "diagnosis_lc_gsd_uots___mri_neck": {
+        "description": "Indicates if the participant has undergone an MRI of the neck as part of their laryngeal cancer diagnosis."
+    },
+    "diagnosis_lc_gsd_uots___pet_ct": {
+        "description": "Indicates if the participant has undergone a PET-CT as part of their laryngeal cancer diagnosis."
+    },
+    "diagnosis_lc_gsd_uots___ultrasound_neck": {
+        "description": "Indicates if the participant has undergone an ultrasound of the neck as part of their laryngeal cancer diagnosis."
+    },
+    "diagnosis_lc_ds___right_vocal_fold": {
+        "description": "Indicates if the participant’s laryngeal cancer involves the right vocal fold."
+    },
+    "diagnosis_lc_ds___left_vocal_fold": {
+        "description": "Indicates if the participant’s laryngeal cancer involves the left vocal fold."
+    },
+    "diagnosis_lc_ds___both_vocal_folds": {
+        "description": "Indicates if the participant’s laryngeal cancer involves both vocal folds."
+    },
+    "diagnosis_lc_ds___anterior_commissure": {
+        "description": "Indicates if the participant’s laryngeal cancer involves the anterior commissure."
+    },
+    "diagnosis_lc_ds___ventricular_folds": {
+        "description": "Indicates if the participant’s laryngeal cancer involves the ventricular folds."
+    },
+    "diagnosis_lc_ds___subglottal_areas": {
+        "description": "Indicates if the participant’s laryngeal cancer involves the subglottal areas."
+    },
+    "diagnosis_lc_etiology___smoking": {
+        "description": "Indicates if smoking is a risk factor for the participant’s laryngeal cancer."
+    },
+    "diagnosis_lc_etiology___alcohol": {
+        "description": "Indicates if alcohol use is a risk factor for the participant’s laryngeal cancer."
+    },
+    "diagnosis_lc_etiology___family_history": {
+        "description": "Indicates if family history is a risk factor for the participant’s laryngeal cancer."
+    },
+    "diagnosis_lc_etiology___hpv": {
+        "description": "Indicates if human papilloma virus (HPV) is a risk factor for the participant’s laryngeal cancer."
+    },
+    "diagnosis_lc_etiology___exposure_other_harmful_substances": {
+        "description": "Indicates if exposure to other harmful substances is a risk factor for the participant’s laryngeal cancer."
+    },
+    "diagnosis_lc_ds_t_stage": {
+        "description": "Indicates the T stage of the participant’s laryngeal cancer according to the AJCC Classification."
+    },
+    "diagnosis_lc_ds_n_stage": {
+        "description": "Indicates the N stage of the participant’s laryngeal cancer according to the AJCC Classification."
+    },
+    "diagnosis_lc_ds_m_stage": {
+        "description": "Indicates the M stage of the participant’s laryngeal cancer according to the AJCC Classification."
+    },
+    "diagnosis_lc_degree_os_1": {
+        "description": "Indicates the overall severity of the participant’s laryngeal cancer."
+    },
+    "diagnosis_lc_degree_os_2": {
+        "description": "Indicates an alternative measure of the overall severity of the participant’s laryngeal cancer."
+    },
+    "diagnosis_lc_degree_r_1": {
+        "description": "Indicates the roughness of the participant’s voice due to laryngeal cancer."
+    },
+    "diagnosis_lc_degree_r_2": {
+        "description": "Indicates an alternative measure of the roughness of the participant’s voice due to laryngeal cancer."
+    },
+    "diagnosis_lc_degree_b_1": {
+        "description": "Indicates the breathiness of the participant’s voice due to laryngeal cancer."
+    },
+    "diagnosis_lc_degree_b_2": {
+        "description": "Indicates an alternative measure of the breathiness of the participant’s voice due to laryngeal cancer."
+    },
+    "diagnosis_lc_degree_s_1": {
+        "description": "Indicates the strain in the participant’s voice due to laryngeal cancer."
+    },
+    "diagnosis_lc_degree_s_2": {
+        "description": "Indicates an alternative measure of the strain in the participant’s voice due to laryngeal cancer."
+    },
+    "diagnosis_lc_degree_p_1": {
+        "description": "Indicates the pitch of the participant’s voice due to laryngeal cancer."
+    },
+    "diagnosis_lc_degree_p_2": {
+        "description": "Indicates an alternative measure of the pitch of the participant’s voice due to laryngeal cancer."
+    },
+    "diagnosis_lc_degree_l_1": {
+        "description": "Indicates the loudness of the participant’s voice due to laryngeal cancer."
+    },
+    "diagnosis_lc_degree_l_2": {
+        "description": "Indicates an alternative measure of the loudness of the participant’s voice due to laryngeal cancer."
+    },
+    "diagnosis_lc_degree_comments": {
+        "description": "Provides additional comments about the resonance of the participant’s voice due to laryngeal cancer."
+    },
+    "diagnosis_as_ds_ccsr": {
+        "description": "Indicates if the participant’s cancer is causing stridor at rest."
+    },
+    "diagnosis_lc_treatment": {
+        "description": "Indicates if the participant has undergone any treatment for laryngeal cancer."
+    },
+    "diagnosis_lc_treatment_select___radiation": {
+        "description": "Indicates if the participant has undergone radiation as treatment for laryngeal cancer."
+    },
+    "diagnosis_lc_treatment_select___chemotherapy": {
+        "description": "Indicates if the participant has undergone chemotherapy as treatment for laryngeal cancer."
+    },
+    "diagnosis_lc_treatment_select___immunotherapy": {
+        "description": "Indicates if the participant has undergone immunotherapy as treatment for laryngeal cancer."
+    },
+    "diagnosis_lc_treatment_select___surgery": {
+        "description": "Indicates if the participant has undergone surgery as treatment for laryngeal cancer."
+    },
+    "diagnosis_lc_treatment_select___voice_or_speech_therapy": {
+        "description": "Indicates if the participant has undergone voice or speech therapy as treatment for laryngeal cancer."
+    },
+    "diagnosis_lc_treatment_select___other": {
+        "description": "Indicates if the participant has undergone other treatments for laryngeal cancer."
+    },
+    "diagnosis_lc_treatment_s___endoscopic_laser": {
+        "description": "Indicates if the participant has undergone endoscopic laser surgery as treatment for laryngeal cancer."
+    },
+    "diagnosis_lc_treatment_s___partial_laryngectomy": {
+        "description": "Indicates if the participant has undergone partial laryngectomy as treatment for laryngeal cancer."
+    }
+}

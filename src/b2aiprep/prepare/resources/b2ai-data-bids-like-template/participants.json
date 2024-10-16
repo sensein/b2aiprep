@@ -1,0 +1,3455 @@
+{
+    "record_id": {
+        "description": "Unique identifier for each participant."
+    },
+    "redcap_repeat_instrument": {
+        "description": "Indicates if this is a repeat administration of the REDCap instrument."
+    },
+    "redcap_repeat_instance": {
+        "description": "Indicates the REDCap repeat instance for a particular survey or assessment."
+    },
+    "selected_language": {
+        "description": "The language chosen by the participant for communication during the study."
+    },
+    "consent_status": {
+        "description": "Indicates if the participant has given consent for the study."
+    },
+    "is_feasibility_participant": {
+        "description": "Indicates if the participant is part of a feasibility study."
+    },
+    "enrollment_institution": {
+        "description": "The institution where the participant has enrolled in the study."
+    },
+    "age": {
+        "description": "The age of the participant, measured in years."
+    },
+    "eligible_studies___1": {
+        "description": "Indicates if the participant is eligible for study 1."
+    },
+    "eligible_studies___2": {
+        "description": "Indicates if the participant is eligible for studies related to neurological and neurodegenerative disorders."
+    },
+    "eligible_studies___3": {
+        "description": "Indicates if the participant is eligible for mood and psychiatric disorder studies."
+    },
+    "eligible_studies___4": {
+        "description": "Indicates if the participant is eligible for respiratory disorder studies."
+    },
+    "eligible_studies___5": {
+        "description": "Indicates if the participant is eligible for pediatric disorder studies."
+    },
+    "is_control_participant": {
+        "description": "Indicates whether the participant is a control group participant."
+    },
+    "laryng_cancer": {
+        "description": "Indicates if the participant has laryngeal cancer."
+    },
+    "benign_cord_lesion": {
+        "description": "Indicates if the participant has benign lesions of the vocal cord such as nodules, polyps, or cysts."
+    },
+    "rrp": {
+        "description": "Indicates if the participant has recurrent laryngeal papilloma (RRP)."
+    },
+    "spas_dys": {
+        "description": "Indicates if the participant has spasmodic dysphonia or laryngeal tremor."
+    },
+    "voc_fold_paralysis": {
+        "description": "Indicates if the participant has unilateral vocal fold paralysis."
+    },
+    "alz_dementia_mci": {
+        "description": "Indicates if the participant has Alzheimer\u2019s, dementia, or mild cognitive impairment."
+    },
+    "als": {
+        "description": "Indicates if the participant has Amyotrophic Lateral Sclerosis (ALS)."
+    },
+    "parkinsons": {
+        "description": "Indicates if the participant has Parkinson\u2019s disease."
+    },
+    "alcohol_subst_abuse": {
+        "description": "Indicates if the participant has alcohol or substance use disorder."
+    },
+    "gad": {
+        "description": "Indicates if the participant has an anxiety disorder."
+    },
+    "add_adhd": {
+        "description": "Indicates if the participant has Attention-Deficit/Hyperactivity Disorder (ADHD)."
+    },
+    "asd": {
+        "description": "Indicates if the participant has Autism Spectrum Disorder (ASD)."
+    },
+    "bipolar": {
+        "description": "Indicates if the participant has Bipolar Disorder."
+    },
+    "bpd": {
+        "description": "Indicates if the participant has Borderline Personality Disorder (BPD)."
+    },
+    "depression": {
+        "description": "Indicates if the participant has depression or major depressive disorder."
+    },
+    "ed": {
+        "description": "Indicates if the participant has an eating disorder (ED)."
+    },
+    "insomnia": {
+        "description": "Indicates if the participant has insomnia or other sleep disorders."
+    },
+    "ocd": {
+        "description": "Indicates if the participant has Obsessive-Compulsive Disorder (OCD)."
+    },
+    "panic": {
+        "description": "Indicates if the participant has panic disorder."
+    },
+    "ptsd": {
+        "description": "Indicates if the participant has Post-Traumatic Stress Disorder (PTSD)."
+    },
+    "schizophrenia": {
+        "description": "Indicates if the participant has schizophrenia."
+    },
+    "soc_anx_dis": {
+        "description": "Indicates if the participant has social anxiety disorder."
+    },
+    "other_psych": {
+        "description": "Indicates if the participant has other psychiatric disorders."
+    },
+    "asthma": {
+        "description": "Indicates if the participant has asthma."
+    },
+    "airway_stenosis": {
+        "description": "Indicates if the participant has airway stenosis, such as bilateral vocal fold paralysis or laryngeal stenosis."
+    },
+    "chronic_cough": {
+        "description": "Indicates if the participant has chronic cough."
+    },
+    "copd": {
+        "description": "Indicates if the participant has Chronic Obstructive Pulmonary Disease (COPD)."
+    },
+    "osa": {
+        "description": "Indicates if the participant has obstructive sleep apnea (OSA)."
+    },
+    "subjectparticipant_eligible_studies_complete": {
+        "description": "Indicates if the eligibility screening for participant studies is complete."
+    },
+    "ef_select_language": {
+        "description": "Indicates the participant\u2019s selected language for the study."
+    },
+    "ef_any_vision_related_req": {
+        "description": "Indicates if the participant has any vision-related requirements to assist with reading text in the study."
+    },
+    "ef_vision_a11y_options___1": {
+        "description": "Indicates if the participant requires changes to the font size as part of the study\u2019s accessibility features."
+    },
+    "ef_vision_a11y_options___2": {
+        "description": "Indicates if the participant requires changes to the font color (high contrast mode) as part of the study\u2019s accessibility features."
+    },
+    "ef_vision_a11y_options___3": {
+        "description": "Indicates if the participant requires the use of a screen reader as part of the study\u2019s accessibility features."
+    },
+    "ef_vision_a11y_options___4": {
+        "description": "Indicates if the participant requires a person to read the text to them as part of the study\u2019s accessibility features."
+    },
+    "ef_any_hearing_related_req": {
+        "description": "Indicates if the participant has any hearing-related requirements to assist with listening to sound files in the study."
+    },
+    "ef_hearing_a11y_options___1": {
+        "description": "Indicates if the participant requires an increase in volume as part of the study\u2019s accessibility features."
+    },
+    "ef_hearing_a11y_options___2": {
+        "description": "Indicates if the participant requires closed captions as part of the study\u2019s accessibility features."
+    },
+    "ef_hearing_a11y_options___3": {
+        "description": "Indicates if the participant prefers to use haptic feedback (vibrations) instead of audio cues as part of the study\u2019s accessibility features."
+    },
+    "ef_any_physical_challenges": {
+        "description": "Indicates if the participant has any physical challenges that may affect their ability to navigate the application using a touch screen."
+    },
+    "ef_physical_a11y_options___1": {
+        "description": "Indicates if the participant requires an increase in button size as part of the study\u2019s accessibility features."
+    },
+    "ef_physical_a11y_options___2": {
+        "description": "Indicates if the participant requires the use of an alternative keyboard connected to the app."
+    },
+    "ef_physical_a11y_options___3": {
+        "description": "Indicates if the participant would prefer to navigate the survey using voice commands instead of the touch screen."
+    },
+    "ef_any_cognitive_challeges": {
+        "description": "Indicates if the participant has any cognitive challenges, including difficulty reading, that may require assistance in answering questions and following directions in the study."
+    },
+    "ef_cognitive_a11y_options___1": {
+        "description": "Indicates if the participant prefers to have the questions read aloud using text-to-speech as part of the study\u2019s accessibility features."
+    },
+    "ef_cognitive_a11y_options___2": {
+        "description": "Indicates if the participant prefers to have a person read the text to them as part of the study\u2019s accessibility features."
+    },
+    "ef_cognitive_a11y_options___3": {
+        "description": "Indicates if the participant prefers to speak their answers instead of typing them as part of the study\u2019s accessibility features."
+    },
+    "ef_completed_by___1": {
+        "description": "Indicates if the responses in the survey were completed by the participant themselves."
+    },
+    "ef_completed_by___2": {
+        "description": "Indicates if the responses in the survey were completed by an assistant."
+    },
+    "ef_completed_by___3": {
+        "description": "Indicates if the responses in the survey were completed by a parent or caregiver."
+    },
+    "ef_primary_language": {
+        "description": "Indicates the primary language spoken by the participant."
+    },
+    "ef_primary_language_other": {
+        "description": "If the participant's primary language is not listed, this field specifies the language."
+    },
+    "ef_fluent_languages___1": {
+        "description": "Indicates if the participant speaks no additional languages fluently."
+    },
+    "ef_fluent_languages___2": {
+        "description": "Indicates if the participant speaks English fluently in addition to their primary language."
+    },
+    "ef_fluent_languages___3": {
+        "description": "Indicates if the participant speaks French fluently in addition to their primary language."
+    },
+    "ef_fluent_languages___4": {
+        "description": "Indicates if the participant speaks Spanish fluently in addition to their primary language."
+    },
+    "ef_fluent_languages___5": {
+        "description": "Indicates if the participant speaks any other language fluently, and provides the details."
+    },
+    "ef_fluent_language_other": {
+        "description": "If the participant speaks another language fluently that is not listed, this field specifies the language."
+    },
+    "diagnosis_vfp_gsd": {
+        "description": "Indicates if the participant has vocal fold paralysis (VFP) confirmed by laryngoscopy or stroboscopy."
+    },
+    "diagnosis_vfp_etiology": {
+        "description": "Specifies the etiology or cause of the participant\u2019s vocal fold paralysis (VFP)."
+    },
+    "diagnosis_vfp_iatrogenic": {
+        "description": "Indicates if the participant's vocal fold paralysis (VFP) is related to surgery or intubation."
+    },
+    "diagnosis_vfp_tumor": {
+        "description": "Indicates if the participant\u2019s vocal fold paralysis (VFP) is caused by a tumor invading the recurrent laryngeal nerve (RLN)."
+    },
+    "diagnosis_vfp_dse": {
+        "description": "Specifies the degree of the participant\u2019s glottic gap."
+    },
+    "diagnosis_degree_os": {
+        "description": "Indicates the overall severity of the participant\u2019s vocal fold paralysis (VFP)."
+    },
+    "diagnosis_degree_os_2": {
+        "description": "Indicates an alternative measure of the overall severity of the participant\u2019s condition."
+    },
+    "diagnosis_degree_r": {
+        "description": "Indicates the roughness of the participant\u2019s voice."
+    },
+    "diagnosis_degree_r_2": {
+        "description": "Indicates an alternative measure of the roughness of the participant\u2019s voice."
+    },
+    "diagnosis_degree_b": {
+        "description": "Indicates the breathiness of the participant\u2019s voice."
+    },
+    "diagnosis_degree_b_2": {
+        "description": "Indicates an alternative measure of the breathiness of the participant\u2019s voice."
+    },
+    "diagnosis_degree_s": {
+        "description": "Indicates the strain in the participant\u2019s voice."
+    },
+    "diagnosis_degree_s_2": {
+        "description": "Indicates an alternative measure of the strain in the participant\u2019s voice."
+    },
+    "diagnosis_degree_p": {
+        "description": "Indicates the pitch of the participant\u2019s voice."
+    },
+    "diagnosis_degree_p_2": {
+        "description": "Indicates an alternative measure of the pitch of the participant\u2019s voice."
+    },
+    "diagnosis_degree_l": {
+        "description": "Indicates the loudness of the participant\u2019s voice."
+    },
+    "diagnosis_degree_l_2": {
+        "description": "Indicates an alternative measure of the loudness of the participant\u2019s voice."
+    },
+    "diagnosis_degree_comments": {
+        "description": "Provides additional comments about the resonance of the participant\u2019s voice."
+    },
+    "diagnosis_ld_qete___laryngologist": {
+        "description": "Indicates if the participant's laryngeal dystonia was determined by a laryngologist as part of the qualitative expert team evaluation."
+    },
+    "diagnosis_ld_qete___speech_language_pathology": {
+        "description": "Indicates if the participant's laryngeal dystonia was determined by a speech-language pathologist as part of the qualitative expert team evaluation."
+    },
+    "diagnosis_ld_qete___neurologist_specializing_disorders": {
+        "description": "Indicates if the participant's laryngeal dystonia was determined by a neurologist specializing in movement disorders as part of the qualitative expert team evaluation."
+    },
+    "diagnosis_ld_assessment___aural_perceptual_evaluation": {
+        "description": "Indicates if the participant underwent an aural-perceptual evaluation as part of their laryngeal dystonia assessment."
+    },
+    "diagnosis_ld_assessment___laryngoscopy_or_stroboscopy": {
+        "description": "Indicates if the participant underwent laryngoscopy or stroboscopy as part of their laryngeal dystonia assessment."
+    },
+    "diagnosis_ld_assessment___neurological_evaluation": {
+        "description": "Indicates if the participant underwent a neurological evaluation as part of their laryngeal dystonia assessment."
+    },
+    "diagnosis_ld_ds___adld": {
+        "description": "Indicates if the participant has adductor laryngeal dystonia (ADLD)."
+    },
+    "diagnosis_ld_ds___abld": {
+        "description": "Indicates if the participant has abductor laryngeal dystonia (ABLD)."
+    },
+    "diagnosis_ld_ds___vocal_tremor": {
+        "description": "Indicates if the participant has vocal tremor."
+    },
+    "diagnosis_ld_ds___mixed_laryngeal_dystonia": {
+        "description": "Indicates if the participant has mixed laryngeal dystonia."
+    },
+    "diagnosis_ld_ds___sld": {
+        "description": "Indicates if the participant has singer's laryngeal dystonia (SLD)."
+    },
+    "diagnosis_ld_ds___arld": {
+        "description": "Indicates if the participant has adductor laryngeal spasms during inspiration (ARLD)."
+    },
+    "diagnosis_ld_etiology": {
+        "description": "Specifies the etiology or cause of the participant\u2019s laryngeal dystonia."
+    },
+    "diagnosis_ld_etiology_cc___essential_tremor_of_the_hands": {
+        "description": "Indicates if the participant has an essential tremor of the hands."
+    },
+    "diagnosis_ld_etiology_cc___essential_tremor_of_the_head": {
+        "description": "Indicates if the participant has an essential tremor of the head."
+    },
+    "diagnosis_ld_etiology_cc___jaw_tremor": {
+        "description": "Indicates if the participant has a jaw tremor."
+    },
+    "diagnosis_ld_etiology_cc___dystonia_of_the_head_and_neck": {
+        "description": "Indicates if the participant has dystonia of the head and neck."
+    },
+    "diagnosis_ld_etiology_cc___other_type_of_dystonia": {
+        "description": "Indicates if the participant has another type of dystonia."
+    },
+    "diagnosis_ld_degree_os_1": {
+        "description": "Indicates the participant's overall severity of laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_os_2": {
+        "description": "Indicates an alternative measure of the participant's overall severity of laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_r_1": {
+        "description": "Indicates the roughness of the participant\u2019s voice as a result of laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_r_2": {
+        "description": "Indicates an alternative measure of the roughness of the participant\u2019s voice due to laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_b_1": {
+        "description": "Indicates the breathiness of the participant\u2019s voice as a result of laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_b_2": {
+        "description": "Indicates an alternative measure of the breathiness of the participant\u2019s voice due to laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_s_1": {
+        "description": "Indicates the strain in the participant\u2019s voice as a result of laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_s_2": {
+        "description": "Indicates an alternative measure of the strain in the participant\u2019s voice due to laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_p_1": {
+        "description": "Indicates the pitch of the participant\u2019s voice as a result of laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_p_2": {
+        "description": "Indicates an alternative measure of the pitch of the participant\u2019s voice due to laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_l_1": {
+        "description": "Indicates the loudness of the participant\u2019s voice as a result of laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_l_2": {
+        "description": "Indicates an alternative measure of the loudness of the participant\u2019s voice due to laryngeal dystonia."
+    },
+    "diagnosis_ld_degree_comments": {
+        "description": "Provides additional comments about the resonance of the participant\u2019s voice due to laryngeal dystonia."
+    },
+    "diagnosis_ld_treatment": {
+        "description": "Indicates if the participant has undergone any treatment for laryngeal dystonia."
+    },
+    "diagnosis_ld_treatment_select___botox_injections": {
+        "description": "Indicates if the participant has received botox injections as a treatment for laryngeal dystonia."
+    },
+    "diagnosis_ld_treatment_select___voice_or_speech_therapy": {
+        "description": "Indicates if the participant has undergone voice or speech therapy as a treatment for laryngeal dystonia."
+    },
+    "diagnosis_ld_treatment_select___vibrotactile_stimulation": {
+        "description": "Indicates if the participant has undergone vibrotactile stimulation as a treatment for laryngeal dystonia."
+    },
+    "diagnosis_ld_treatment_select___deep_brain_stimulation": {
+        "description": "Indicates if the participant has undergone deep brain stimulation as a treatment for laryngeal dystonia."
+    },
+    "diagnosis_ld_treatment_select___mrgfus": {
+        "description": "Indicates if the participant has undergone magnetic resonance-guided focused ultrasound (MRgFUS) as a treatment for laryngeal dystonia."
+    },
+    "diagnosis_ld_treatment_select___other": {
+        "description": "Indicates if the participant has undergone other treatments for laryngeal dystonia."
+    },
+    "diagnosis_ld_treatment_bi_li": {
+        "description": "Specifies when the participant received their last injection as treatment for laryngeal dystonia."
+    },
+    "diagnois_pl_gsd_ls": {
+        "description": "Indicates if the participant has a precancerous vocal fold lesion confirmed by laryngoscopy or stroboscopy."
+    },
+    "diagnois_pl_gsd_bp": {
+        "description": "Indicates if the participant has a precancerous vocal fold lesion confirmed by biopsy or pathology."
+    },
+    "diagnosis_pl_ds___keratosis": {
+        "description": "Indicates if the participant has been diagnosed with keratosis."
+    },
+    "diagnosis_pl_ds___leukoplakia": {
+        "description": "Indicates if the participant has been diagnosed with leukoplakia."
+    },
+    "diagnosis_pl_ds___erythroplakia": {
+        "description": "Indicates if the participant has been diagnosed with erythroplakia."
+    },
+    "diagnosis_pl_ds___other": {
+        "description": "Indicates if the participant has been diagnosed with another precancerous lesion."
+    },
+    "diagnosis_pl_ds_l": {
+        "description": "Indicates if the participant has leukoplakia."
+    },
+    "diagnosis_pl_ds_l_wd_g": {
+        "description": "Indicates if the participant has leukoplakia with dysplasia."
+    },
+    "diagnosis_pl_ds_e": {
+        "description": "Indicates if the participant has erythroplakia."
+    },
+    "diagnosis_pl_ds_e_wd_g": {
+        "description": "Indicates if the participant has erythroplakia with dysplasia."
+    },
+    "diagnosis_pl_etiology___past_or_present_smoking": {
+        "description": "Indicates if the participant has a history of smoking as a risk factor for their precancerous lesion."
+    },
+    "diagnosis_pl_etiology___laryngopharyngeal_reflux": {
+        "description": "Indicates if the participant has laryngopharyngeal reflux as a risk factor for their precancerous lesion."
+    },
+    "diagnosis_pl_etiology___other_irritants": {
+        "description": "Indicates if the participant has other irritants as risk factors for their precancerous lesion."
+    },
+    "diagnosis_pl_ds_ll___right_vocal_fold": {
+        "description": "Indicates if the participant's lesion is located on the right vocal fold."
+    },
+    "diagnosis_pl_ds_ll___left_vocal_fold": {
+        "description": "Indicates if the participant's lesion is located on the left vocal fold."
+    },
+    "diagnosis_pl_ds_ll___both_vocal_folds": {
+        "description": "Indicates if the participant's lesion is located on both vocal folds."
+    },
+    "diagnosis_pl_ds_ll___ventricular_folds": {
+        "description": "Indicates if the participant's lesion is located on the ventricular folds."
+    },
+    "diagnosis_pl_ds_ll___subglottal_areas": {
+        "description": "Indicates if the participant's lesion is located in the subglottal areas."
+    },
+    "diagnosis_pl_degree_os_1": {
+        "description": "Indicates the overall severity of the participant\u2019s precancerous lesion."
+    },
+    "diagnosis_pl_degree_os_2": {
+        "description": "Indicates an alternative measure of the overall severity of the participant\u2019s precancerous lesion."
+    },
+    "diagnosis_pl_degree_r_1": {
+        "description": "Indicates the roughness of the participant\u2019s voice due to the precancerous lesion."
+    },
+    "diagnosis_pl_degree_r_2": {
+        "description": "Indicates an alternative measure of the roughness of the participant\u2019s voice due to the precancerous lesion."
+    },
+    "diagnosis_pl_degree_b_1": {
+        "description": "Indicates the breathiness of the participant\u2019s voice due to the precancerous lesion."
+    },
+    "diagnosis_pl_degree_b_2": {
+        "description": "Indicates an alternative measure of the breathiness of the participant\u2019s voice due to the precancerous lesion."
+    },
+    "diagnosis_pl_degree_s_1": {
+        "description": "Indicates the strain in the participant\u2019s voice due to the precancerous lesion."
+    },
+    "diagnosis_pl_degree_s_2": {
+        "description": "Indicates an alternative measure of the strain in the participant\u2019s voice due to the precancerous lesion."
+    },
+    "diagnosis_pl_degree_p_1": {
+        "description": "Indicates the pitch of the participant\u2019s voice due to the precancerous lesion."
+    },
+    "diagnosis_pl_degree_p_2": {
+        "description": "Indicates an alternative measure of the pitch of the participant\u2019s voice due to the precancerous lesion."
+    },
+    "diagnosis_pl_degree_l_1": {
+        "description": "Indicates the loudness of the participant\u2019s voice due to the precancerous lesion."
+    },
+    "diagnosis_pl_degree_l_2": {
+        "description": "Indicates an alternative measure of the loudness of the participant\u2019s voice due to the precancerous lesion."
+    },
+    "diagnosis_pl_degree_comments": {
+        "description": "Provides additional comments about the resonance of the participant\u2019s voice due to the precancerous lesion."
+    },
+    "diagnosis_pl_treatment": {
+        "description": "Indicates if the participant has undergone any treatment for their precancerous lesion."
+    },
+    "diagnosis_pl_treatment_select___surveillance_only": {
+        "description": "Indicates if the participant is under surveillance only as treatment for their precancerous lesion."
+    },
+    "diagnosis_pl_treatment_select___laser_resection": {
+        "description": "Indicates if the participant has undergone laser resection as treatment for their precancerous lesion."
+    },
+    "diagnosis_pl_treatment_select___laser_ablation": {
+        "description": "Indicates if the participant has undergone laser ablation as treatment for their precancerous lesion."
+    },
+    "diagnosis_pl_treatment_select___microlaryngeal_surgery_without_laser": {
+        "description": "Indicates if the participant has undergone microlaryngeal surgery without laser as treatment for their precancerous lesion."
+    },
+    "diagnosis_pl_treatment_select___radiotherapy_persistent_or_recurrent_lesions": {
+        "description": "Indicates if the participant has undergone radiotherapy for persistent or recurrent lesions."
+    },
+    "diagnosis_pl_treatment_select___voice_or_speech_therapy": {
+        "description": "Indicates if the participant has undergone voice or speech therapy as treatment for their precancerous lesion."
+    },
+    "diagnosis_pl_treatment_select___other": {
+        "description": "Indicates if the participant has undergone other treatments for their precancerous lesion."
+    },
+    "diagnois_lc_gsd_sll": {
+        "description": "Indicates if the participant has a suspicious laryngeal lesion confirmed by laryngoscopy or stroboscopy."
+    },
+    "diagnosis_lc_gsd_bpr": {
+        "description": "Indicates if the participant has laryngeal cancer confirmed by biopsy or pathology report."
+    },
+    "diagnosis_lc_gsd_uots___ct_neck": {
+        "description": "Indicates if the participant has undergone a CT of the neck as part of their laryngeal cancer diagnosis."
+    },
+    "diagnosis_lc_gsd_uots___ct_chest": {
+        "description": "Indicates if the participant has undergone a CT of the chest as part of their laryngeal cancer diagnosis."
+    },
+    "diagnosis_lc_gsd_uots___mri_neck": {
+        "description": "Indicates if the participant has undergone an MRI of the neck as part of their laryngeal cancer diagnosis."
+    },
+    "diagnosis_lc_gsd_uots___pet_ct": {
+        "description": "Indicates if the participant has undergone a PET-CT as part of their laryngeal cancer diagnosis."
+    },
+    "diagnosis_lc_gsd_uots___ultrasound_neck": {
+        "description": "Indicates if the participant has undergone an ultrasound of the neck as part of their laryngeal cancer diagnosis."
+    },
+    "diagnosis_lc_ds___right_vocal_fold": {
+        "description": "Indicates if the participant\u2019s laryngeal cancer involves the right vocal fold."
+    },
+    "diagnosis_lc_ds___left_vocal_fold": {
+        "description": "Indicates if the participant\u2019s laryngeal cancer involves the left vocal fold."
+    },
+    "diagnosis_lc_ds___both_vocal_folds": {
+        "description": "Indicates if the participant\u2019s laryngeal cancer involves both vocal folds."
+    },
+    "diagnosis_lc_ds___anterior_commissure": {
+        "description": "Indicates if the participant\u2019s laryngeal cancer involves the anterior commissure."
+    },
+    "diagnosis_lc_ds___ventricular_folds": {
+        "description": "Indicates if the participant\u2019s laryngeal cancer involves the ventricular folds."
+    },
+    "diagnosis_lc_ds___subglottal_areas": {
+        "description": "Indicates if the participant\u2019s laryngeal cancer involves the subglottal areas."
+    },
+    "diagnosis_lc_etiology___smoking": {
+        "description": "Indicates if smoking is a risk factor for the participant\u2019s laryngeal cancer."
+    },
+    "diagnosis_lc_etiology___alcohol": {
+        "description": "Indicates if alcohol use is a risk factor for the participant\u2019s laryngeal cancer."
+    },
+    "diagnosis_lc_etiology___family_history": {
+        "description": "Indicates if family history is a risk factor for the participant\u2019s laryngeal cancer."
+    },
+    "diagnosis_lc_etiology___hpv": {
+        "description": "Indicates if human papilloma virus (HPV) is a risk factor for the participant\u2019s laryngeal cancer."
+    },
+    "diagnosis_lc_etiology___exposure_other_harmful_substances": {
+        "description": "Indicates if exposure to other harmful substances is a risk factor for the participant\u2019s laryngeal cancer."
+    },
+    "diagnosis_lc_ds_t_stage": {
+        "description": "Indicates the T stage of the participant\u2019s laryngeal cancer according to the AJCC Classification."
+    },
+    "diagnosis_lc_ds_n_stage": {
+        "description": "Indicates the N stage of the participant\u2019s laryngeal cancer according to the AJCC Classification."
+    },
+    "diagnosis_lc_ds_m_stage": {
+        "description": "Indicates the M stage of the participant\u2019s laryngeal cancer according to the AJCC Classification."
+    },
+    "diagnosis_lc_degree_os_1": {
+        "description": "Indicates the overall severity of the participant\u2019s laryngeal cancer."
+    },
+    "diagnosis_lc_degree_os_2": {
+        "description": "Indicates an alternative measure of the overall severity of the participant\u2019s laryngeal cancer."
+    },
+    "diagnosis_lc_degree_r_1": {
+        "description": "Indicates the roughness of the participant\u2019s voice due to laryngeal cancer."
+    },
+    "diagnosis_lc_degree_r_2": {
+        "description": "Indicates an alternative measure of the roughness of the participant\u2019s voice due to laryngeal cancer."
+    },
+    "diagnosis_lc_degree_b_1": {
+        "description": "Indicates the breathiness of the participant\u2019s voice due to laryngeal cancer."
+    },
+    "diagnosis_lc_degree_b_2": {
+        "description": "Indicates an alternative measure of the breathiness of the participant\u2019s voice due to laryngeal cancer."
+    },
+    "diagnosis_lc_degree_s_1": {
+        "description": "Indicates the strain in the participant\u2019s voice due to laryngeal cancer."
+    },
+    "diagnosis_lc_degree_s_2": {
+        "description": "Indicates an alternative measure of the strain in the participant\u2019s voice due to laryngeal cancer."
+    },
+    "diagnosis_lc_degree_p_1": {
+        "description": "Indicates the pitch of the participant\u2019s voice due to laryngeal cancer."
+    },
+    "diagnosis_lc_degree_p_2": {
+        "description": "Indicates an alternative measure of the pitch of the participant\u2019s voice due to laryngeal cancer."
+    },
+    "diagnosis_lc_degree_l_1": {
+        "description": "Indicates the loudness of the participant\u2019s voice due to laryngeal cancer."
+    },
+    "diagnosis_lc_degree_l_2": {
+        "description": "Indicates an alternative measure of the loudness of the participant\u2019s voice due to laryngeal cancer."
+    },
+    "diagnosis_lc_degree_comments": {
+        "description": "Provides additional comments about the resonance of the participant\u2019s voice due to laryngeal cancer."
+    },
+    "diagnosis_as_ds_ccsr": {
+        "description": "Indicates if the participant\u2019s cancer is causing stridor at rest."
+    },
+    "diagnosis_lc_treatment": {
+        "description": "Indicates if the participant has undergone any treatment for laryngeal cancer."
+    },
+    "diagnosis_lc_treatment_select___radiation": {
+        "description": "Indicates if the participant has undergone radiation as treatment for laryngeal cancer."
+    },
+    "diagnosis_lc_treatment_select___chemotherapy": {
+        "description": "Indicates if the participant has undergone chemotherapy as treatment for laryngeal cancer."
+    },
+    "diagnosis_lc_treatment_select___immunotherapy": {
+        "description": "Indicates if the participant has undergone immunotherapy as treatment for laryngeal cancer."
+    },
+    "diagnosis_lc_treatment_select___surgery": {
+        "description": "Indicates if the participant has undergone surgery as treatment for laryngeal cancer."
+    },
+    "diagnosis_lc_treatment_select___voice_or_speech_therapy": {
+        "description": "Indicates if the participant has undergone voice or speech therapy as treatment for laryngeal cancer."
+    },
+    "diagnosis_lc_treatment_select___other": {
+        "description": "Indicates if the participant has undergone other treatments for laryngeal cancer."
+    },
+    "diagnosis_lc_treatment_s___endoscopic_laser": {
+        "description": "Indicates if the participant has undergone endoscopic laser surgery as treatment for laryngeal cancer."
+    },
+    "diagnosis_lc_treatment_s___partial_laryngectomy": {
+        "description": "Indicates if the participant has undergone partial laryngectomy as treatment for laryngeal cancer."
+    },
+    "diagnois_bl_gsd": {
+        "description": "Indicates if the participant has a benign lesion confirmed by laryngoscopy or stroboscopy."
+    },
+    "diagnosis_bl_ds": {
+        "description": "Indicates the participant\u2019s diagnosis of a benign lesion."
+    },
+    "diagnosis_bl_etiology": {
+        "description": "Specifies the etiology or cause of the participant\u2019s benign lesion."
+    },
+    "diagnosis_bl_ds_ll": {
+        "description": "Indicates the location of the participant\u2019s benign lesion."
+    },
+    "diagnosis_bl_degree_os_1": {
+        "description": "Indicates the overall severity of the participant\u2019s benign lesion."
+    },
+    "diagnosis_bl_degree_os_2": {
+        "description": "Indicates an alternative measure of the overall severity of the participant\u2019s benign lesion."
+    },
+    "diagnosis_bl_degree_r_1": {
+        "description": "Indicates the roughness of the participant\u2019s voice due to the benign lesion."
+    },
+    "diagnosis_bl_degree_r_2": {
+        "description": "Indicates an alternative measure of the roughness of the participant\u2019s voice due to the benign lesion."
+    },
+    "diagnosis_bl_degree_b_1": {
+        "description": "Indicates the breathiness of the participant\u2019s voice due to the benign lesion."
+    },
+    "diagnosis_bl_degree_b_2": {
+        "description": "Indicates an alternative measure of the breathiness of the participant\u2019s voice due to the benign lesion."
+    },
+    "diagnosis_bl_degree_s_1": {
+        "description": "Indicates the strain in the participant\u2019s voice due to the benign lesion."
+    },
+    "diagnosis_bl_degree_s_2": {
+        "description": "Indicates an alternative measure of the strain in the participant\u2019s voice due to the benign lesion."
+    },
+    "diagnosis_bl_degree_p_1": {
+        "description": "Indicates the pitch of the participant\u2019s voice due to the benign lesion."
+    },
+    "diagnosis_bl_degree_p_2": {
+        "description": "Indicates an alternative measure of the pitch of the participant\u2019s voice due to the benign lesion."
+    },
+    "diagnosis_bl_degree_l_1": {
+        "description": "Indicates the loudness of the participant\u2019s voice due to the benign lesion."
+    },
+    "diagnosis_bl_degree_l_2": {
+        "description": "Indicates an alternative measure of the loudness of the participant\u2019s voice due to the benign lesion."
+    },
+    "diagnosis_bl_degree_comments": {
+        "description": "Provides additional comments about the resonance of the participant\u2019s voice due to the benign lesion."
+    },
+    "diagnosis_bl_treatment": {
+        "description": "Indicates if the participant has undergone any treatment for the benign lesion."
+    },
+    "diagnosis_bl_treatment_select___voice_or_speech_therapy": {
+        "description": "Indicates if the participant has undergone voice or speech therapy as treatment for the benign lesion."
+    },
+    "diagnosis_bl_treatment_select___laryngeal_microsurgery": {
+        "description": "Indicates if the participant has undergone laryngeal microsurgery as treatment for the benign lesion."
+    },
+    "diagnosis_bl_treatment_select___voice_rest": {
+        "description": "Indicates if the participant has undergone voice rest as treatment for the benign lesion."
+    },
+    "diagnosis_bl_treatment_select___other": {
+        "description": "Indicates if the participant has undergone other treatments for the benign lesion."
+    },
+    "diagnosis_bl_treatment_lm": {
+        "description": "Indicates if the participant has undergone laryngeal microsurgery for the benign lesion."
+    },
+    "diagnosis_bipolar_gsd": {
+        "description": "Specifies the participant\u2019s diagnosis of bipolar disorder."
+    },
+    "diagnosis_bipolar_gsd_interview": {
+        "description": "Indicates if a structured clinical interview was conducted for diagnosing the participant\u2019s bipolar disorder."
+    },
+    "diagnosis_bipolar_gsd_oqu": {
+        "description": "Indicates if an objective questionnaire was used in the diagnosis of the participant\u2019s bipolar disorder."
+    },
+    "diagnosis_bipolar_gsd_oquw": {
+        "description": "Specifies which objective questionnaire was used in diagnosing the participant\u2019s bipolar disorder."
+    },
+    "diagnosis_bipolar_subtype_active": {
+        "description": "Specifies the active subtype of the participant\u2019s bipolar disorder."
+    },
+    "diagnosis_bipolar_psychotic": {
+        "description": "Indicates if the participant has psychotic symptoms associated with bipolar disorder."
+    },
+    "diagnosis_bipolar_severity": {
+        "description": "Indicates the severity of the participant\u2019s bipolar disorder."
+    },
+    "diagnosis_depression_gsd": {
+        "description": "Indicates the participant\u2019s diagnosis of depression."
+    },
+    "diagnosis_depression_clinical_subcategory": {
+        "description": "Specifies the subcategory of clinical depression, such as major depressive disorder, for the participant."
+    },
+    "diagnosis_depression_gsd_interview": {
+        "description": "Indicates if a structured clinical interview was conducted for diagnosing the participant\u2019s depression."
+    },
+    "diagnosis_depression_gsd_oqu": {
+        "description": "Indicates if an objective questionnaire was used in the diagnosis of the participant\u2019s depression."
+    },
+    "diagnosis_depression_gsd_oquw": {
+        "description": "Specifies which objective questionnaire was used in diagnosing the participant\u2019s depression."
+    },
+    "diagnosis_bipolar_subtype_active_depression": {
+        "description": "Specifies the active subtype of depression in the participant\u2019s bipolar disorder."
+    },
+    "diagnosis_bipolar_psychotic_depression": {
+        "description": "Indicates if the participant has psychotic symptoms associated with the depressive phase of their bipolar disorder."
+    },
+    "diagnosis_bipolar_severity_depression": {
+        "description": "Indicates the severity of the participant\u2019s depressive phase of bipolar disorder."
+    },
+    "diagnosis_as_pft": {
+        "description": "Indicates if the participant has undergone pulmonary function testing in the past three months."
+    },
+    "diagnosis_as_gsd": {
+        "description": "Indicates if the participant has airway stenosis confirmed by laryngoscopy, bronchoscopy, or CT imaging."
+    },
+    "diagnosis_as_gsd_yes___bronchoscopy": {
+        "description": "Indicates if the participant\u2019s airway stenosis was confirmed by bronchoscopy or laryngoscopy."
+    },
+    "diagnosis_as_gsd_yes___ct": {
+        "description": "Indicates if the participant\u2019s airway stenosis was confirmed by CT imaging."
+    },
+    "diagnosis_as_ds": {
+        "description": "Specifies the subtype of the participant\u2019s airway stenosis."
+    },
+    "diagnosis_as_ds_bvfi_gs": {
+        "description": "Indicates if the participant has bilateral vocal fold immobility or glottic stenosis as a subtype of airway stenosis."
+    },
+    "diagnosis_as_etiology": {
+        "description": "Specifies the etiology or cause of the participant\u2019s airway stenosis."
+    },
+    "diagnosis_as_etiology_auto_immune": {
+        "description": "Indicates if the participant\u2019s airway stenosis is caused by an autoimmune or granulomatous disease."
+    },
+    "diagnosis_as_ds_mcg": {
+        "description": "Indicates the degree of the participant\u2019s stenosis based on the Myer-Cotton Grade."
+    },
+    "diagnosis_as_ds_bc": {
+        "description": "Indicates the degree of the participant\u2019s stenosis based on the Bogdasarian Classification."
+    },
+    "diagnosis_as_ds_agw": {
+        "description": "Indicates the anterior glottic web classification of the participant\u2019s airway stenosis according to Cohen."
+    },
+    "diagnosis_as_ds_ac": {
+        "description": "Indicates the grade of stenosis of the participant\u2019s supraglottic stenosis according to the Aziz Classification."
+    },
+    "diagnosis_as_ds_ac_grade_4": {
+        "description": "Indicates the grade of supraglottic stenosis based on the Aziz Classification."
+    },
+    "diagnosis_as_ds_ods": {
+        "description": "Indicates the overall subjective classification of the participant\u2019s airway stenosis."
+    },
+    "diagnosis_as_ds_eps": {
+        "description": "Indicates the estimated percentage of stenosis from 0 to 100."
+    },
+    "diagnosis_as_treatment___no_treatment": {
+        "description": "Indicates if the participant has received no treatment for their airway stenosis."
+    },
+    "diagnosis_as_treatment___surgery": {
+        "description": "Indicates if the participant has undergone surgery as treatment for their airway stenosis."
+    },
+    "diagnosis_as_treatment___in_office_treatment": {
+        "description": "Indicates if the participant has undergone in-office treatment for their airway stenosis."
+    },
+    "diagnosis_as_treatment_surgery___endoscopic_intervention": {
+        "description": "Indicates if the participant has undergone endoscopic intervention with laser and balloon dilation and steroid injection as surgery for airway stenosis."
+    },
+    "diagnosis_as_treatment_surgery___endoscopic_excision": {
+        "description": "Indicates if the participant has undergone endoscopic laser wedge excision with balloon dilation and steroid injection as surgery for airway stenosis."
+    },
+    "diagnosis_as_treatment_surgery___laryngotracheal_reconstruction": {
+        "description": "Indicates if the participant has undergone open laryngotracheal reconstruction as surgery for airway stenosis."
+    },
+    "diagnosis_as_treatment_surgery___laryngotracheoplasty": {
+        "description": "Indicates if the participant has undergone laryngotracheoplasty (Maddern procedure) as surgery for airway stenosis."
+    },
+    "diagnosis_as_treatment_surgery___tracheostomy": {
+        "description": "Indicates if the participant has undergone a tracheostomy as surgery for airway stenosis."
+    },
+    "diagnosis_as_treatment_surgery___other": {
+        "description": "Indicates if the participant has undergone another type of surgery for airway stenosis."
+    },
+    "diagnosis_as_treatment_in_office___steroid_injections_sole": {
+        "description": "Indicates if the participant has undergone awake steroid injection(s) as the sole treatment for airway stenosis."
+    },
+    "diagnosis_as_treatment_in_office___steroid_injections_adjunct": {
+        "description": "Indicates if the participant has undergone awake steroid injection(s) as an adjunct treatment for airway stenosis."
+    },
+    "diagnosis_as_treatment_in_office___dilation": {
+        "description": "Indicates if the participant has undergone in-office or awake dilation as treatment for airway stenosis."
+    },
+    "diagnosis_as_treatment_in_office___laser": {
+        "description": "Indicates if the participant has undergone in-office or awake laser treatment for airway stenosis."
+    },
+    "diagnosis_alz_dementia_mci_causes": {
+        "description": "Indicates if other causes of cognitive or functional changes have been excluded in the participant\u2019s diagnosis."
+    },
+    "diagnosis_alz_dementia_mci_dt": {
+        "description": "Specifies the type of dementia or cognitive impairment in the participant."
+    },
+    "diagnosis_alz_dementia_mci_etiology___genetic_factors": {
+        "description": "Indicates if genetic factors are suspected or known to be the etiology of the participant\u2019s cognitive impairment or dementia."
+    },
+    "diagnosis_alz_dementia_mci_etiology___age_related_changes": {
+        "description": "Indicates if age-related changes are suspected or known to be the etiology of the participant\u2019s cognitive impairment or dementia."
+    },
+    "diagnosis_alz_dementia_mci_etiology___other_medical_conditions": {
+        "description": "Indicates if other medical conditions, such as vascular factors or traumatic brain injury, are suspected or known to be the etiology of the participant\u2019s cognitive impairment or dementia."
+    },
+    "diagnosis_alz_dementia_mci_etiology___substance_related": {
+        "description": "Indicates if substance-related factors, such as alcohol-induced cognitive impairment, are suspected or known to be the etiology of the participant\u2019s cognitive impairment or dementia."
+    },
+    "diagnosis_alz_dementia_mci_etiology___other": {
+        "description": "Indicates if another etiology is suspected or known to be the cause of the participant\u2019s cognitive impairment or dementia."
+    },
+    "diagnosis_alz_dementia_mci_etiology_gf___familial_alzheimers_disease": {
+        "description": "Indicates if familial Alzheimer\u2019s disease is the genetic factor suspected or known to be the cause of the participant\u2019s cognitive impairment or dementia."
+    },
+    "diagnosis_alz_dementia_mci_etiology_gf___apolipoprotein_e": {
+        "description": "Indicates if apolipoprotein E (APOE) \u03b54 allele is the genetic factor suspected or known to be the cause of the participant\u2019s cognitive impairment or dementia."
+    },
+    "diagnosis_alz_dementia_mci_etiology_gf___other_genetic_factors": {
+        "description": "Indicates if other genetic factors are suspected or known to be the cause of the participant\u2019s cognitive impairment or dementia."
+    },
+    "diagnosis_alz_dementia_mci_ds___mci": {
+        "description": "Indicates if the participant\u2019s cognitive impairment is classified as mild cognitive impairment (MCI)."
+    },
+    "diagnosis_alz_dementia_mci_ds___cdr": {
+        "description": "Indicates if the participant\u2019s cognitive impairment is classified using the Clinical Dementia Rating (CDR) staging."
+    },
+    "diagnosis_alz_dementia_mci_ds_cdr": {
+        "description": "Specifies the participant\u2019s Clinical Dementia Rating (CDR) staging."
+    },
+    "diagnosis_alz_dementia_mci_ca_rudas_score": {
+        "description": "Specifies the participant\u2019s Rowland Universal Dementia Assessment Scale (RUDAS) score."
+    },
+    "diagnosis_alz_dementia_mci_ca_mmse_score": {
+        "description": "Specifies the participant\u2019s Mini-Mental State Examination (MMSE) score."
+    },
+    "diagnosis_alz_dementia_mci_ca_moca_score": {
+        "description": "Specifies the participant\u2019s Montreal Cognitive Assessment (MoCA) score."
+    },
+    "diagnosis_alz_dementia_mci_ca_adas_cog_score": {
+        "description": "Specifies the participant\u2019s Alzheimer\u2019s Disease Assessment Scale-Cognitive Subscale (ADAS-Cog) score."
+    },
+    "diagnosis_alz_dementia_mci_ca_other": {
+        "description": "Specifies if another cognitive assessment tool was used for the participant."
+    },
+    "diagnosis_alz_dementia_mci_ca_other_score": {
+        "description": "Specifies the score from another cognitive assessment tool used for the participant."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained": {
+        "description": "Indicates if the participant has undergone any treatment for Alzheimer\u2019s disease, cognitive impairment, or other types of dementia."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes___medications": {
+        "description": "Indicates if the participant has taken medications as treatment for Alzheimer\u2019s disease or cognitive impairment."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes___npi": {
+        "description": "Indicates if the participant has received non-pharmacological interventions as treatment for Alzheimer\u2019s disease or cognitive impairment."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_medications___cholinesterase_inhibitors": {
+        "description": "Indicates if the participant has taken cholinesterase inhibitors, such as Donepezil, as treatment for Alzheimer\u2019s disease or cognitive impairment."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_medications___nmda_receptor_antagonist": {
+        "description": "Indicates if the participant has taken NMDA receptor antagonist, such as Memantine, as treatment for Alzheimer\u2019s disease or cognitive impairment."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_medications___other": {
+        "description": "Indicates if the participant has taken other medications as treatment for Alzheimer\u2019s disease or cognitive impairment."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___day_program": {
+        "description": "Indicates if the participant has participated in a day program as a non-pharmacological intervention for Alzheimer\u2019s disease or cognitive impairment."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___cognitive_simulation_therapy": {
+        "description": "Indicates if the participant has undergone cognitive stimulation therapy as a non-pharmacological intervention for Alzheimer\u2019s disease or cognitive impairment."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___reality_orientation_therapy": {
+        "description": "Indicates if the participant has undergone reality orientation therapy as a non-pharmacological intervention for Alzheimer\u2019s disease or cognitive impairment."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___reminiscence_therapy": {
+        "description": "Indicates if the participant has undergone reminiscence therapy as a non-pharmacological intervention for Alzheimer\u2019s disease or cognitive impairment."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___physical_exercise_program": {
+        "description": "Indicates if the participant has participated in a physical exercise program as a non-pharmacological intervention for Alzheimer\u2019s disease or cognitive impairment."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___dietary_modifications": {
+        "description": "Indicates if the participant has undergone dietary modifications as a non-pharmacological intervention for Alzheimer\u2019s disease or cognitive impairment."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___other": {
+        "description": "Indicates if the participant has undergone other non-pharmacological interventions for Alzheimer\u2019s disease or cognitive impairment."
+    },
+    "diagnosis_parkinsons_gsd_category_1___bradykinesia": {
+        "description": "Indicates if the participant has bradykinesia as part of their Parkinson\u2019s disease diagnosis."
+    },
+    "diagnosis_parkinsons_gsd_category_1___tremor": {
+        "description": "Indicates if the participant has tremor as part of their Parkinson\u2019s disease diagnosis."
+    },
+    "diagnosis_parkinsons_gsd_category_1___rigidity": {
+        "description": "Indicates if the participant has rigidity as part of their Parkinson\u2019s disease diagnosis."
+    },
+    "diagnosis_parkinsons_gsd_category_1_calculation": {
+        "description": "Indicates if the participant meets the criteria for Category 1 Parkinsonism based on bradykinesia, tremor, or rigidity."
+    },
+    "diagnosis_parkinsons_gsd_category_2___cerebellar_abnormalities": {
+        "description": "Indicates if the participant has cerebellar abnormalities as part of the exclusion criteria for Parkinson\u2019s disease diagnosis."
+    },
+    "diagnosis_parkinsons_gsd_category_2___supranuclear_gaze_palsy": {
+        "description": "Indicates if the participant has supranuclear gaze palsy as part of the exclusion criteria for Parkinson\u2019s disease diagnosis."
+    },
+    "diagnosis_parkinsons_gsd_category_2___bvf_ftd_ppa": {
+        "description": "Indicates if the participant has a diagnosis of behavioral variant frontotemporal dementia (bvFTD) or primary progressive aphasia (PPA) within five years of disease onset as part of the exclusion criteria for Parkinson\u2019s disease diagnosis."
+    },
+    "diagnosis_parkinsons_gsd_category_2___lower_limbs": {
+        "description": "Indicates if the participant\u2019s Parkinsonian features are restricted to the lower limbs for more than three years as part of the exclusion criteria."
+    },
+    "diagnosis_parkinsons_gsd_category_2___dopamine_treatment": {
+        "description": "Indicates if the participant has been treated with dopamine or related medications."
+    },
+    "diagnosis_parkinsons_gsd_category_2___absence_of_response": {
+        "description": "Indicates if the participant shows no response in category 2 of the Parkinson's GSD assessment."
+    },
+    "diagnosis_parkinsons_gsd_category_2___cortical_sensory_loss": {
+        "description": "Indicates if the participant has cortical sensory loss as part of Parkinson's GSD Category 2."
+    },
+    "diagnosis_parkinsons_gsd_category_2___dat_scan": {
+        "description": "Indicates if the participant has undergone a DAT scan as part of Parkinson's GSD Category 2."
+    },
+    "diagnosis_parkinsons_gsd_category_2___alternative_condition": {
+        "description": "Indicates if the participant has an alternative condition related to Parkinson's disease GSD Category 2."
+    },
+    "diagnosis_parkinsons_gsd_category_2_calculation": {
+        "description": "Calculation for Parkinson's GSD Category 2 diagnosis."
+    },
+    "diagnosis_parkinsons_gsd_category_3___response_dopaminergic_therapy": {
+        "description": "Indicates if the participant's Parkinson's diagnosis includes response to dopaminergic therapy under GSD category 3."
+    },
+    "diagnosis_parkinsons_gsd_category_3___levodopa_induced_dyskinesia": {
+        "description": "Indicates if the participant has levodopa-induced dyskinesia as part of their Parkinson's diagnosis."
+    },
+    "diagnosis_parkinsons_gsd_category_3___rest_tremor": {
+        "description": "Indicates if the participant's Parkinson's diagnosis includes rest tremor under GSD category 3."
+    },
+    "diagnosis_parkinsons_gsd_category_3___mibg": {
+        "description": "Indicates if the participant's Parkinson's diagnosis includes MIBG in category 3 of the GSD assessment."
+    },
+    "diagnosis_parkinsons_gsd_category_3_calculation": {
+        "description": "Calculation for Parkinson's GSD Category 3 diagnosis."
+    },
+    "diagnosis_parkinsons_gsd_calculation": {
+        "description": "Calculated score for Parkinson's disease diagnosis based on the GSD (Global Severity of Disease) scale."
+    },
+    "diagnosis_parkinsons_disease_subtype": {
+        "description": "Indicates the subtype of Parkinson's disease diagnosed in the participant."
+    },
+    "diagnosis_parkinsons_etiology": {
+        "description": "Indicates the etiology or cause of the participant's Parkinson's diagnosis."
+    },
+    "diagnosis_parkinsons_ds": {
+        "description": "Indicates the diagnostic subcategory of the participant's Parkinson's disease."
+    },
+    "diagnosis_parkinsons_ma___updrs": {
+        "description": "Indicates the participant's motor assessment score on the UPDRS (Unified Parkinson's Disease Rating Scale)."
+    },
+    "diagnosis_parkinsons_ma___other": {
+        "description": "Indicates if the participant has other motor assessment results for Parkinson's disease."
+    },
+    "diagnosis_parkinsons_ma_uprds": {
+        "description": "Indicates the participant's score on the Unified Parkinson's Disease Rating Scale (UPDRS)."
+    },
+    "diagnosis_parkinsons_ma_updrs_part_i_score": {
+        "description": "Score from Part I of the MDS-UPDRS, assessing non-motor aspects of daily living."
+    },
+    "diagnosis_parkinsons_ma_updrs_part_ii_score": {
+        "description": "Score from Part II of the MDS-UPDRS, assessing the participant's activities of daily living."
+    },
+    "diagnosis_parkinsons_ma_updrs_part_iii_score": {
+        "description": "Score from Part III of the MDS-UPDRS, assessing motor symptoms in Parkinson's disease."
+    },
+    "diagnosis_parkinsons_ma_updrs_part_iv_score": {
+        "description": "Score from Part IV of the MDS-UPDRS, assessing complications of therapy in Parkinson's disease."
+    },
+    "diagnosis_parkinsons_non_motor_symptoms": {
+        "description": "Indicates if the participant has non-motor symptoms associated with Parkinson's disease."
+    },
+    "diagnosis_parkinsons_non_motor_symptoms_yes": {
+        "description": "Indicates specific non-motor symptoms that the participant experiences as part of Parkinson's disease."
+    },
+    "diagnosis_parkinsons_treatment_obtained": {
+        "description": "Indicates if the participant has received treatment for Parkinson's disease."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes___medications": {
+        "description": "Indicates if the participant is receiving medication for Parkinson's disease."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes___npi": {
+        "description": "Indicates if the participant has received non-pharmacological interventions as part of Parkinson's treatment."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_medications___levodopa": {
+        "description": "Indicates if the participant is receiving levodopa as part of Parkinson's treatment."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_medications___dopamine_agonists": {
+        "description": "Indicates if the participant is receiving dopamine agonists as part of Parkinson's treatment."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_medications___mao_b": {
+        "description": "Indicates if the participant is receiving MAO-B inhibitors as part of Parkinson's treatment."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_medications___amantadine": {
+        "description": "Indicates if the participant is receiving Amantadine for Parkinson's treatment."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_medications___other": {
+        "description": "Indicates if the participant is receiving other medications for Parkinson's disease."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_npi___physical_therapy": {
+        "description": "Indicates if the participant has received physical therapy as a treatment for Parkinson's disease."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_npi___occupational_therapy": {
+        "description": "Indicates if the participant is receiving occupational therapy as part of Parkinson's treatment."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_npi___speech_therapy": {
+        "description": "Indicates if the participant has received speech therapy as part of Parkinson's treatment."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_npi___dbs": {
+        "description": "Indicates if the participant has received deep brain stimulation (DBS) as part of Parkinson's treatment."
+    },
+    "diagnosis_parkinsons_treatment_obtained_yes_npi___other": {
+        "description": "Indicates if the participant has received non-pharmacological treatment for Parkinson's, other than those specified."
+    },
+    "diagnosis_als_gsd_category_1": {
+        "description": "Indicates the participant's ALS diagnosis under GSD category 1."
+    },
+    "diagnosis_als_gsd_category_2": {
+        "description": "Indicates if the participant meets the criteria for ALS GSD Category 2."
+    },
+    "diagnosis_als_gsd_category_3": {
+        "description": "Indicates the participant's ALS diagnosis under GSD category 3."
+    },
+    "diagnosis_als_gsd_calculation": {
+        "description": "Calculation for the participant's ALS GSD diagnosis."
+    },
+    "diagnosis_als_disease_subtype": {
+        "description": "Indicates the subtype of ALS diagnosed in the participant."
+    },
+    "diagnosis_als_disease_subtype_familial": {
+        "description": "Indicates if the participant has been diagnosed with familial ALS."
+    },
+    "diagnosis_als_etiology___genetic_factors": {
+        "description": "Indicates if the participant's ALS diagnosis is linked to genetic factors."
+    },
+    "diagnosis_als_etiology___environmental_factors": {
+        "description": "Indicates if the participant's ALS diagnosis is linked to environmental factors."
+    },
+    "diagnosis_als_etiology_genetic_factors___c9orf72": {
+        "description": "Indicates if the participant's ALS diagnosis is linked to the C9orf72 genetic factor."
+    },
+    "diagnosis_als_etiology_genetic_factors___sod1": {
+        "description": "Indicates if the participant's ALS diagnosis is linked to the SOD1 genetic factor."
+    },
+    "diagnosis_als_etiology_genetic_factors___other": {
+        "description": "Indicates if the participant's ALS diagnosis is linked to other genetic factors not listed."
+    },
+    "diagnosis_als_cp___upper_motor_neuron": {
+        "description": "Indicates if the participant's ALS diagnosis includes upper motor neuron involvement."
+    },
+    "diagnosis_als_cp___lower_motor_neuron": {
+        "description": "Indicates if the participant has lower motor neuron involvement as part of their ALS diagnosis."
+    },
+    "diagnosis_als_cp___bulbar_symptoms": {
+        "description": "Indicates if the participant has bulbar symptoms as part of their ALS diagnosis."
+    },
+    "diagnosis_als_cp___respiratory_involvement": {
+        "description": "Indicates if the participant has respiratory involvement as part of their ALS diagnosis."
+    },
+    "diagnosis_als_dp": {
+        "description": "Indicates if the participant has a diagnosis of ALS with dementia."
+    },
+    "diagnosis_als_na_alsfrs_r_score": {
+        "description": "The participant's score on the ALS Functional Rating Scale-Revised (ALSFRS-R)."
+    },
+    "diagnosis_als_na_fvc_percentage": {
+        "description": "Indicates the participant's forced vital capacity (FVC) percentage for ALS diagnosis."
+    },
+    "diagnosis_als_treatment_and_management": {
+        "description": "Indicates the treatment and management plan for the participant's ALS diagnosis."
+    },
+    "diagnosis_als_treatment_and_management_yes___medications": {
+        "description": "Indicates if the participant is receiving medications as part of ALS treatment."
+    },
+    "diagnosis_als_treatment_and_management_yes___supportive_care": {
+        "description": "Indicates if the participant is receiving supportive care as part of ALS management."
+    },
+    "diagnosis_als_treatment_and_management_yes_medications___riluzole": {
+        "description": "Indicates if the participant is receiving riluzole as part of ALS treatment."
+    },
+    "diagnosis_als_treatment_and_management_yes_medications___edaravone": {
+        "description": "Indicates if the participant is receiving edaravone as part of ALS treatment."
+    },
+    "diagnosis_als_treatment_and_management_yes_medications___sodium": {
+        "description": "Indicates if the participant is receiving sodium as part of ALS treatment."
+    },
+    "diagnosis_als_treatment_and_management_yes_medications___tofersen": {
+        "description": "Indicates if the participant is receiving Tofersen as part of ALS treatment."
+    },
+    "diagnosis_als_treatment_and_management_yes_medications___symptomatic_treatment": {
+        "description": "Indicates if the participant is receiving symptomatic treatment as part of ALS management."
+    },
+    "diagnosis_als_treatment_and_management_yes_medications___other": {
+        "description": "Indicates if the participant is receiving other medications as part of ALS treatment."
+    },
+    "diagnosis_als_treatment_and_management_yes_supportive_care___physical_therapy": {
+        "description": "Indicates if the participant has received physical therapy as part of ALS management."
+    },
+    "diagnosis_als_treatment_and_management_yes_supportive_care___occupational_therapy": {
+        "description": "Indicates if the participant is receiving occupational therapy as part of ALS treatment and supportive care."
+    },
+    "diagnosis_als_treatment_and_management_yes_supportive_care___speech_therapy": {
+        "description": "Indicates if the participant has received speech therapy as part of ALS management."
+    },
+    "diagnosis_als_treatment_and_management_yes_supportive_care___respiratory_support": {
+        "description": "Indicates if the participant has received respiratory support as part of ALS management."
+    },
+    "diagnosis_als_treatment_and_management_yes_supportive_care___nutrition_support": {
+        "description": "Indicates if the participant has received nutrition support as part of ALS management."
+    },
+    "diagnosis_als_treatment_and_management_yes_supportive_care___psychotherapy": {
+        "description": "Indicates if the participant has received psychotherapy as part of ALS management."
+    },
+    "diagnosis_als_treatment_and_management_yes_supportive_care___other": {
+        "description": "Indicates if the participant has received other forms of supportive care for ALS."
+    },
+    "session_id": {
+        "description": "The unique identifier for the session."
+    },
+    "session_status": {
+        "description": "Current status of the session."
+    },
+    "session_is_control_participant": {
+        "description": "Indicates if the participant is part of the control group for this session."
+    },
+    "session_duration": {
+        "description": "Total duration of the session."
+    },
+    "session_site": {
+        "description": "The location where the session was conducted."
+    },
+    "acoustic_task_id": {
+        "description": "Unique identifier for the acoustic task performed by the participant."
+    },
+    "acoustic_task_session_id": {
+        "description": "Unique identifier for the acoustic task session."
+    },
+    "acoustic_task_name": {
+        "description": "The name of the acoustic task performed by the participant."
+    },
+    "acoustic_task_cohort": {
+        "description": "The cohort to which the participant belongs for the acoustic task."
+    },
+    "acoustic_task_status": {
+        "description": "Indicates the current status of the participant's acoustic task."
+    },
+    "acoustic_task_duration": {
+        "description": "Total duration of the acoustic task."
+    },
+    "recording_id": {
+        "description": "Unique identifier for the recording session."
+    },
+    "recording_acoustic_task_id": {
+        "description": "The unique identifier for the recording acoustic task."
+    },
+    "recording_session_id": {
+        "description": "Unique session identifier for the recording."
+    },
+    "recording_name": {
+        "description": "Name of the recording session."
+    },
+    "recording_duration": {
+        "description": "Duration of the recording for the session."
+    },
+    "recording_size": {
+        "description": "Indicates the file size of the recording."
+    },
+    "recording_profile_name": {
+        "description": "The name of the recording profile used during the session."
+    },
+    "recording_profile_version": {
+        "description": "Indicates the version of the recording profile used."
+    },
+    "recording_input_gain": {
+        "description": "Indicates the input gain setting used during the recording."
+    },
+    "recording_microphone": {
+        "description": "Indicates the type of microphone used during the recording."
+    },
+    "demographics_session_id": {
+        "description": "Unique identifier for the demographics session."
+    },
+    "demographics_duration": {
+        "description": "Total duration of the demographics section."
+    },
+    "demographics_completed_by___1": {
+        "description": "Indicates if the participant completed the demographic section on their own."
+    },
+    "demographics_completed_by___2": {
+        "description": "Indicates if demographics were completed by a healthcare professional."
+    },
+    "demographics_completed_by___3": {
+        "description": "Indicates if demographics were completed by a caregiver."
+    },
+    "state_province": {
+        "description": "The state or province where the participant lives."
+    },
+    "country": {
+        "description": "The country where the participant resides."
+    },
+    "gender_identity": {
+        "description": "The participant's reported gender identity."
+    },
+    "specify_gender_identity": {
+        "description": "Allows the participant to specify their gender identity."
+    },
+    "sexual_orientation": {
+        "description": "Indicates the participant's sexual orientation."
+    },
+    "race___1": {
+        "description": "Indicates if the participant identifies with race category 1."
+    },
+    "race___2": {
+        "description": "Indicates if the participant identifies with race category 2."
+    },
+    "race___3": {
+        "description": "Indicates if the participant identifies with race category 3."
+    },
+    "race___4": {
+        "description": "Indicates if the participant identifies with race category 4."
+    },
+    "race___5": {
+        "description": "Indicates if the participant identifies with race category 5."
+    },
+    "race___6": {
+        "description": "Indicates if the participant identifies with race category 6."
+    },
+    "race___7": {
+        "description": "Indicates if the participant identifies with race category 7."
+    },
+    "race___8": {
+        "description": "Indicates if the participant identifies with race category 8."
+    },
+    "ethnicity": {
+        "description": "Indicates the participant's ethnicity."
+    },
+    "other_edu_level": {
+        "description": "Indicates if the participant has received an education level not listed in other options."
+    },
+    "hearing": {
+        "description": "Indicates if the participant has hearing issues."
+    },
+    "vision": {
+        "description": "Indicates if the participant has vision issues."
+    },
+    "cognition": {
+        "description": "Reports on the participant's cognitive abilities or issues."
+    },
+    "mobility": {
+        "description": "Indicates the participant's level of mobility or movement."
+    },
+    "self_care": {
+        "description": "Indicates if the participant engages in self-care activities."
+    },
+    "independent_living": {
+        "description": "Indicates if the participant is living independently."
+    },
+    "employ_status___1": {
+        "description": "Indicates if the participant is employed full-time."
+    },
+    "employ_status___2": {
+        "description": "Indicates if the participant is employed full-time."
+    },
+    "employ_status___3": {
+        "description": "Indicates if the participant is employed part-time."
+    },
+    "employ_status___4": {
+        "description": "Indicates if the participant is a student."
+    },
+    "employ_status___5": {
+        "description": "Indicates if the participant is a homemaker."
+    },
+    "employ_status___6": {
+        "description": "Indicates if the participant is unemployed."
+    },
+    "employ_status___7": {
+        "description": "Indicates if the participant is self-employed."
+    },
+    "employ_status___8": {
+        "description": "Indicates if the participant is a volunteer."
+    },
+    "employ_status___9": {
+        "description": "Indicates if the participant is retired."
+    },
+    "household_income_usa": {
+        "description": "The participant's household income in US dollars."
+    },
+    "household_income_ca": {
+        "description": "The participant's household income in Canadian dollars."
+    },
+    "marital_status___1": {
+        "description": "Indicates if the participant is married."
+    },
+    "marital_status___2": {
+        "description": "Indicates if the participant is in a domestic partnership."
+    },
+    "marital_status___3": {
+        "description": "Indicates if the participant is separated."
+    },
+    "marital_status___4": {
+        "description": "Indicates if the participant is widowed."
+    },
+    "marital_status___5": {
+        "description": "Indicates if the participant is single."
+    },
+    "marital_status___6": {
+        "description": "Indicates if the participant is divorced."
+    },
+    "marital_status___7": {
+        "description": "Indicates if the participant is cohabiting."
+    },
+    "housing_status": {
+        "description": "Indicates the participant's current housing status."
+    },
+    "household_count": {
+        "description": "The number of people living in the participant's household."
+    },
+    "spouse_partner_sig_other": {
+        "description": "Indicates if the participant has a spouse, partner, or significant other."
+    },
+    "children": {
+        "description": "Indicates if the participant has children."
+    },
+    "parent": {
+        "description": "Indicates if the participant is a parent."
+    },
+    "grandparent": {
+        "description": "Indicates if the participant is a grandparent."
+    },
+    "other_live_with": {
+        "description": "Indicates if the participant lives with people not listed in other options."
+    },
+    "others_household_specify": {
+        "description": "Allows the participant to specify other people living in their household."
+    },
+    "transportation_yn": {
+        "description": "Indicates if the participant has access to transportation."
+    },
+    "primary_transportation": {
+        "description": "Indicates the participant's primary mode of transportation."
+    },
+    "q_generic_demographics_complete": {
+        "description": "Indicates if the participant has completed the generic demographics section."
+    },
+    "confounders_session_id": {
+        "description": "Unique identifier for the confounders assessment session."
+    },
+    "confounders_duration": {
+        "description": "Total duration of the confounders assessment."
+    },
+    "is_regular_smoker": {
+        "description": "Indicates if the participant is a regular smoker."
+    },
+    "smoking_hx": {
+        "description": "Indicates the participant's smoking history."
+    },
+    "age_start_smoking": {
+        "description": "Indicates the age at which the participant started smoking."
+    },
+    "age_stop_smoking": {
+        "description": "Indicates the age at which the participant stopped smoking."
+    },
+    "smoking_types___1": {
+        "description": "Reports if the participant has used smoking type 1."
+    },
+    "smoking_types___2": {
+        "description": "Indicates if the participant smokes cigars."
+    },
+    "smoking_types___3": {
+        "description": "Indicates if the participant smokes pipes."
+    },
+    "smoking_types___4": {
+        "description": "Indicates if the participant uses chewing tobacco."
+    },
+    "smoking_types___5": {
+        "description": "Indicates if the participant uses cigars."
+    },
+    "smoking_types___6": {
+        "description": "Indicates if the participant uses snuff."
+    },
+    "smoking_types___7": {
+        "description": "Reports if the participant has used smoking type 7."
+    },
+    "smoking_types___8": {
+        "description": "Indicates if the participant uses other forms of tobacco, such as e-cigarettes."
+    },
+    "smoking_freq": {
+        "description": "Indicates how often the participant smokes."
+    },
+    "alcohol_yn": {
+        "description": "Indicates if the participant consumes alcohol."
+    },
+    "alcohol_freq": {
+        "description": "Indicates how often the participant consumes alcohol."
+    },
+    "alcohol_amt": {
+        "description": "Reports the amount of alcohol the participant consumed."
+    },
+    "alcohol_drinks": {
+        "description": "The number of alcoholic drinks the participant typically consumes."
+    },
+    "alcohol_today": {
+        "description": "Reports if the participant consumed alcohol today."
+    },
+    "drinks_today_number": {
+        "description": "The number of alcoholic drinks the participant has consumed today."
+    },
+    "alcohol_rehab": {
+        "description": "Indicates if the participant has undergone rehabilitation for alcohol use."
+    },
+    "current_recovery_alcohol": {
+        "description": "Indicates if the participant is currently in recovery for alcohol use."
+    },
+    "caffeine_intake": {
+        "description": "Reports the participant's caffeine intake."
+    },
+    "caffeine_intake_today": {
+        "description": "The amount of caffeine the participant has consumed today."
+    },
+    "hydration": {
+        "description": "Indicates if the participant feels hydrated."
+    },
+    "hydration_today": {
+        "description": "Indicates if the participant feels adequately hydrated today."
+    },
+    "dental_problems": {
+        "description": "Indicates if the participant has dental problems or issues."
+    },
+    "seasonal_allergies": {
+        "description": "Indicates if the participant has any seasonal allergies."
+    },
+    "seasonal_allergies_options___1": {
+        "description": "Indicates if the participant has seasonal allergies to tree pollen."
+    },
+    "seasonal_allergies_options___2": {
+        "description": "Indicates if the participant has seasonal allergies to specific allergens listed under option 2."
+    },
+    "seasonal_allergies_options___3": {
+        "description": "Indicates if the participant has seasonal allergies to grass pollen."
+    },
+    "seasonal_allergies_options___4": {
+        "description": "Indicates if the participant has seasonal allergies to pollen or other triggers."
+    },
+    "tired_measure": {
+        "description": "Indicates if the participant feels tired or fatigued."
+    },
+    "height": {
+        "description": "The participant's height in centimeters or inches."
+    },
+    "weight": {
+        "description": "The participant's weight in kilograms or pounds."
+    },
+    "unit": {
+        "description": "The measurement unit used for the participant's responses (e.g., kilograms or pounds)."
+    },
+    "symptoms___1": {
+        "description": "Indicates if the participant reports experiencing symptom 1."
+    },
+    "symptoms___2": {
+        "description": "Indicates if the participant reports experiencing symptom 2."
+    },
+    "symptoms___3": {
+        "description": "Indicates if the participant reports experiencing symptom 3."
+    },
+    "symptoms___4": {
+        "description": "Indicates if the participant is experiencing symptom 4 as part of their health assessment."
+    },
+    "symptoms___5": {
+        "description": "Indicates if the participant reports experiencing symptom 5."
+    },
+    "symptoms___6": {
+        "description": "Indicates if the participant reports experiencing symptom 6."
+    },
+    "symptoms___7": {
+        "description": "Indicates if the participant reports experiencing symptom 7."
+    },
+    "ear_med_history___1": {
+        "description": "Indicates if the participant has a history of ear-related medical conditions."
+    },
+    "ear_med_history___2": {
+        "description": "Indicates if the participant has a history of hearing loss."
+    },
+    "ear_med_history___3": {
+        "description": "Indicates if the participant has a history of ear-related medical condition 3."
+    },
+    "nose_med_history___1": {
+        "description": "Indicates if the participant has a history of nose-related medical condition 1."
+    },
+    "throat_med_history___1": {
+        "description": "Indicates if the participant has a history of throat-related medical conditions."
+    },
+    "throat_med_history___2": {
+        "description": "Indicates if the participant has a history of throat-related medical conditions."
+    },
+    "throat_med_history___3": {
+        "description": "Indicates if the participant has a history of throat infections."
+    },
+    "throat_med_history___4": {
+        "description": "Indicates if the participant has a history of vocal cord nodules."
+    },
+    "throat_med_history___5": {
+        "description": "Indicates if the participant has a history of throat cancer."
+    },
+    "throat_med_history___6": {
+        "description": "Indicates if the participant has a history of throat-related medical condition 6."
+    },
+    "throat_med_history___7": {
+        "description": "Indicates if the participant has a history of laryngeal cancer."
+    },
+    "throat_med_history___8": {
+        "description": "Indicates if the participant has a history of vocal cord paralysis."
+    },
+    "throat_med_history___9": {
+        "description": "Indicates if the participant has a history of throat cancer."
+    },
+    "throat_med_history___10": {
+        "description": "Indicates if the participant has a history of tracheostomy."
+    },
+    "throat_med_history___11": {
+        "description": "Indicates if the participant has a history of vocal cord paralysis."
+    },
+    "throat_med_history___12": {
+        "description": "Indicates if the participant has a history of throat-related medical condition 12."
+    },
+    "head_med_history___1": {
+        "description": "Indicates if the participant has a history of traumatic brain injury (TBI)."
+    },
+    "head_med_history___2": {
+        "description": "Indicates if the participant has a history of brain tumors."
+    },
+    "ear_surgical___1": {
+        "description": "Indicates if the participant has undergone surgery for ear infections."
+    },
+    "ear_surgical___2": {
+        "description": "Indicates if the participant has undergone surgery for hearing loss."
+    },
+    "nose_surgical___1": {
+        "description": "Indicates if the participant has undergone surgery for nasal polyps."
+    },
+    "nose_surgical___2": {
+        "description": "Indicates if the participant has undergone surgery for nose-related conditions."
+    },
+    "throat_surgical___1": {
+        "description": "Indicates if the participant has undergone throat surgery."
+    },
+    "throat_surgical___2": {
+        "description": "Indicates if the participant has undergone surgery for throat polyps."
+    },
+    "throat_surgical___3": {
+        "description": "Indicates if the participant has undergone surgery for throat cancer."
+    },
+    "throat_surgical___4": {
+        "description": "Indicates if the participant has undergone surgery for vocal cord nodules."
+    },
+    "head_surgical___1": {
+        "description": "Indicates if the participant has undergone surgery for traumatic brain injury (TBI)."
+    },
+    "head_surgical___2": {
+        "description": "Indicates if the participant has undergone surgery for a head-related condition."
+    },
+    "neurological_history___1": {
+        "description": "Indicates if the participant has a history of neurological disorders."
+    },
+    "neurological_history___2": {
+        "description": "Indicates if the participant has a history of migraines."
+    },
+    "neurological_history___3": {
+        "description": "Indicates if the participant has a history of neurological condition 3."
+    },
+    "neurological_history___4": {
+        "description": "Indicates if the participant has a history of epilepsy."
+    },
+    "neurological_history___5": {
+        "description": "Indicates if the participant has a history of Alzheimer's disease."
+    },
+    "neurological_history___6": {
+        "description": "Indicates if the participant has a history of multiple sclerosis (MS)."
+    },
+    "current_neuro_dx": {
+        "description": "Indicates the participant's current neurological diagnosis."
+    },
+    "respiratory_conditions___1": {
+        "description": "Indicates if the participant has a diagnosis of bronchitis."
+    },
+    "respiratory_conditions___2": {
+        "description": "Indicates if the participant has a diagnosis of asthma."
+    },
+    "respiratory_conditions___3": {
+        "description": "Indicates if the participant has a diagnosis of COPD."
+    },
+    "respiratory_conditions___4": {
+        "description": "Indicates if the participant has a chronic bronchitis diagnosis."
+    },
+    "respiratory_conditions___5": {
+        "description": "Indicates if the participant has a diagnosis of interstitial lung disease."
+    },
+    "respiratory_conditions___6": {
+        "description": "Indicates if the participant has a diagnosis of emphysema."
+    },
+    "respiratory_conditions___7": {
+        "description": "Indicates if the participant has a diagnosis of sleep apnea."
+    },
+    "respiratory_conditions___8": {
+        "description": "Indicates if the participant has been diagnosed with tuberculosis."
+    },
+    "lung_or_metastatic___1": {
+        "description": "Indicates if the participant has a diagnosis of lung cancer."
+    },
+    "lung_or_metastatic___2": {
+        "description": "Indicates if the participant has a diagnosis of metastatic lung cancer."
+    },
+    "covid___past_year": {
+        "description": "Indicates if the participant has had COVID-19 in the past year."
+    },
+    "covid___long": {
+        "description": "Reports if the participant has experienced long COVID symptoms."
+    },
+    "covid_past": {
+        "description": "Indicates if the participant has had COVID-19 in the past."
+    },
+    "cpap_conditions___1": {
+        "description": "Indicates if the participant has used CPAP therapy for obstructive sleep apnea."
+    },
+    "cpap_conditions___2": {
+        "description": "Indicates if the participant has used continuous positive airway pressure (CPAP) therapy for sleep apnea."
+    },
+    "resp_medical_history___1": {
+        "description": "Indicates if the participant has a history of chronic bronchitis."
+    },
+    "resp_medical_history___2": {
+        "description": "Indicates if the participant has a history of asthma."
+    },
+    "resp_medical_history___3": {
+        "description": "Indicates if the participant has a history of chronic obstructive pulmonary disease (COPD)."
+    },
+    "resp_medical_history___4": {
+        "description": "Indicates if the participant has a history of respiratory condition 4."
+    },
+    "exposed_environmental_pollution": {
+        "description": "Indicates if the participant has been exposed to environmental pollution."
+    },
+    "breathe_today": {
+        "description": "Indicates if the participant is experiencing difficulty breathing today."
+    },
+    "breathe_today_difficulty": {
+        "description": "Reports if the participant experienced breathing difficulty today."
+    },
+    "cough_today": {
+        "description": "Indicates if the participant has coughed today."
+    },
+    "cough_today_severity": {
+        "description": "Severity of the participant's cough today."
+    },
+    "circulatory_conditions___1": {
+        "description": "Indicates if the participant has a diagnosis of cardiovascular disease."
+    },
+    "circulatory_conditions___2": {
+        "description": "Indicates if the participant has a circulatory condition categorized as condition 2."
+    },
+    "circulatory_conditions___3": {
+        "description": "Indicates if the participant has a diagnosis of heart failure."
+    },
+    "circulatory_conditions___4": {
+        "description": "Indicates if the participant has a diagnosis of hypertension."
+    },
+    "circulatory_conditions___5": {
+        "description": "Indicates if the participant has a diagnosis of peripheral artery disease."
+    },
+    "circulatory_conditions___6": {
+        "description": "Indicates if the participant has a diagnosis of varicose veins."
+    },
+    "circulatory_med_history___1": {
+        "description": "Indicates if the participant has a history of heart disease."
+    },
+    "circulatory_med_history___2": {
+        "description": "Indicates if the participant has a history of hypertension."
+    },
+    "circulatory_med_history___3": {
+        "description": "Indicates if the participant has a history of angina."
+    },
+    "circulatory_med_history___4": {
+        "description": "Indicates if the participant has a history of arrhythmia."
+    },
+    "circulatory_med_history___5": {
+        "description": "Indicates if the participant has a history of stroke."
+    },
+    "ph_standing": {
+        "description": "Indicates if the participant experiences physical health difficulties while standing."
+    },
+    "ph_take_care": {
+        "description": "Indicates if the participant has difficulty taking care of themselves due to physical health issues."
+    },
+    "ph_learn_task": {
+        "description": "Indicates if the participant has difficulty learning new tasks due to physical health issues."
+    },
+    "ph_problem_join": {
+        "description": "Indicates if the participant has problems joining social activities due to physical health."
+    },
+    "ph_health_problem": {
+        "description": "Indicates if the participant has a health problem that affects their daily life."
+    },
+    "ph_concentrating": {
+        "description": "Indicates if the participant has difficulty concentrating due to physical health issues."
+    },
+    "ph_walking": {
+        "description": "Reports if the participant experiences physical health issues while walking."
+    },
+    "ph_washing": {
+        "description": "Reports if the participant experiences physical health issues while washing."
+    },
+    "ph_get_dressed": {
+        "description": "Indicates if the participant has difficulty getting dressed due to physical health issues."
+    },
+    "ph_dealing_people": {
+        "description": "Indicates if the participant has difficulty dealing with people due to physical health issues."
+    },
+    "ph_friendship": {
+        "description": "Indicates if the participant has difficulty maintaining friendships due to physical health issues."
+    },
+    "ph_day_to_day_work": {
+        "description": "Reports if the participant's physical health affects their day-to-day work."
+    },
+    "physical_health_freq": {
+        "description": "Indicates how frequently the participant experiences physical health issues."
+    },
+    "phys_health_impact": {
+        "description": "Indicates if the participant's physical health impacts their daily life."
+    },
+    "phys_health_limited": {
+        "description": "Indicates if the participant's physical health is limiting their daily activities."
+    },
+    "medications___1": {
+        "description": "Indicates if the participant is currently taking medication 1."
+    },
+    "medications___2": {
+        "description": "Indicates if the participant is taking medication 2."
+    },
+    "medications___3": {
+        "description": "Indicates if the participant is taking medication 3."
+    },
+    "medications___4": {
+        "description": "Indicates if the participant is taking medication 4."
+    },
+    "medications___5": {
+        "description": "Indicates if the participant is taking medication 5."
+    },
+    "medications___6": {
+        "description": "Indicates if the participant is taking medication 6."
+    },
+    "medications___7": {
+        "description": "Indicates if the participant is taking medication 7."
+    },
+    "medications___8": {
+        "description": "Indicates if the participant is taking medication 8."
+    },
+    "medications___9": {
+        "description": "Indicates if the participant is taking medication 9."
+    },
+    "medications___10": {
+        "description": "Indicates if the participant is taking medication 10."
+    },
+    "medications___11": {
+        "description": "Indicates if the participant is currently taking medication 11."
+    },
+    "medications___12": {
+        "description": "Indicates if the participant is taking medication 12."
+    },
+    "medications___13": {
+        "description": "Indicates if the participant is taking medication 13."
+    },
+    "medications___14": {
+        "description": "Indicates if the participant is currently taking medication 14."
+    },
+    "medications___15": {
+        "description": "Indicates if the participant is taking medication 15."
+    },
+    "medications___16": {
+        "description": "Indicates if the participant is taking medication 16."
+    },
+    "medications___17": {
+        "description": "Indicates if the participant is using medication 17."
+    },
+    "medications___18": {
+        "description": "Indicates if the participant is currently taking medication 18."
+    },
+    "hormone_use___1": {
+        "description": "Indicates if the participant uses hormone treatments (e.g., oral contraceptives)."
+    },
+    "hormone_use___2": {
+        "description": "Indicates if the participant uses hormone replacement therapy."
+    },
+    "hormone_use___3": {
+        "description": "Indicates if the participant uses hormone therapy for menopause."
+    },
+    "hormone_use___4": {
+        "description": "Indicates if the participant uses other forms of hormone therapy not listed."
+    },
+    "pain_medication___1": {
+        "description": "Indicates if the participant is taking pain medication 1."
+    },
+    "pain_medication___2": {
+        "description": "Indicates if the participant is taking pain medication 2."
+    },
+    "pain_medication___3": {
+        "description": "Indicates if the participant is taking pain medication 3."
+    },
+    "menstruate": {
+        "description": "Indicates if the participant menstruates."
+    },
+    "menstruate_no": {
+        "description": "Indicates if the participant does not menstruate."
+    },
+    "menstrual_cycle_status": {
+        "description": "Indicates the participant's menstrual cycle status."
+    },
+    "voice_activity___1": {
+        "description": "Indicates the first type of voice activity the participant engaged in."
+    },
+    "voice_activity___2": {
+        "description": "Indicates the second type of voice activity engaged in by the participant."
+    },
+    "voice_activity___3": {
+        "description": "Indicates the third type of voice activity the participant engaged in."
+    },
+    "voice_activity___4": {
+        "description": "Indicates the fourth type of voice activity the participant engaged in."
+    },
+    "voice_activity___5": {
+        "description": "Indicates the fifth type of voice activity the participant engaged in."
+    },
+    "voice_activity___6": {
+        "description": "Indicates the sixth type of voice activity the participant engaged in."
+    },
+    "voice_activity___7": {
+        "description": "Indicates the seventh type of voice activity the participant engaged in."
+    },
+    "hours_voice_activity": {
+        "description": "Number of hours the participant engaged in voice-related activities."
+    },
+    "reading_aloud": {
+        "description": "Indicates if the participant is reading aloud."
+    },
+    "voice_perception_session_id": {
+        "description": "Unique identifier for the voice perception session."
+    },
+    "voice_perception_duration": {
+        "description": "Total duration of the voice perception assessment."
+    },
+    "voice_quality_perception": {
+        "description": "Indicates the participant's perception of their voice quality."
+    },
+    "vhi_session_id": {
+        "description": "The unique identifier for the Voice Handicap Index session."
+    },
+    "vhi_duration": {
+        "description": "Duration of the Voice Handicap Index session."
+    },
+    "voice_difficult_hear": {
+        "description": "Indicates if the participant's voice is difficult to hear."
+    },
+    "tough_to_understand": {
+        "description": "Indicates if the participant feels that their voice is tough to understand."
+    },
+    "voice_restrict_social": {
+        "description": "Indicates if the participant's voice issues restrict their social activities."
+    },
+    "left_out_convo": {
+        "description": "Reports if the participant felt left out of a conversation recently."
+    },
+    "voice_lose_income": {
+        "description": "Indicates if the participant's voice issues have led to a loss of income."
+    },
+    "strain_voice": {
+        "description": "Reports if the participant has experienced voice strain."
+    },
+    "voice_clarity": {
+        "description": "Indicates if the participant\u2019s voice is clear during the session."
+    },
+    "voice_upsetting": {
+        "description": "Indicates if the participant finds their voice issues upsetting."
+    },
+    "voice_handicapped": {
+        "description": "Indicates if the participant feels handicapped by their voice."
+    },
+    "ask_whats_wrong_voice": {
+        "description": "Indicates if the participant asked what was wrong with their voice during the assessment."
+    },
+    "phq_9_session_id": {
+        "description": "Unique identifier for the PHQ-9 session."
+    },
+    "phq_9_duration": {
+        "description": "Duration of the PHQ-9 questionnaire."
+    },
+    "no_interest": {
+        "description": "Measures if the participant experiences a lack of interest or pleasure in daily activities."
+    },
+    "feeling_depressed": {
+        "description": "Indicates if the participant feels depressed or down."
+    },
+    "trouble_sleeping": {
+        "description": "Indicates if the participant has trouble sleeping."
+    },
+    "no_energy": {
+        "description": "Indicates if the participant has no energy or feels fatigued."
+    },
+    "no_appetite": {
+        "description": "Indicates if the participant has no appetite."
+    },
+    "feeling_bad_self": {
+        "description": "Indicates if the participant feels bad about themselves."
+    },
+    "trouble_concentrate": {
+        "description": "Indicates if the participant has trouble concentrating."
+    },
+    "move_speak_slow": {
+        "description": "Indicates if the participant moves or speaks slowly."
+    },
+    "thoughts_death": {
+        "description": "Indicates if the participant has thoughts of death or dying."
+    },
+    "hard_to_work": {
+        "description": "Indicates if the participant has difficulty working due to their physical or mental health."
+    },
+    "gad_7_session_id": {
+        "description": "Unique identifier for the GAD-7 session."
+    },
+    "gad_7_duration": {
+        "description": "Duration of the GAD-7 questionnaire, assessing anxiety levels."
+    },
+    "nervous_anxious": {
+        "description": "Indicates if the participant feels nervous or anxious."
+    },
+    "cant_control_worry": {
+        "description": "Indicates if the participant feels that they cannot control their worry."
+    },
+    "worry_too_much": {
+        "description": "Indicates if the participant feels that they worry too much."
+    },
+    "trouble_relaxing": {
+        "description": "Indicates if the participant has trouble relaxing."
+    },
+    "hard_to_sit_still": {
+        "description": "Indicates if the participant finds it hard to sit still."
+    },
+    "easily_agitated": {
+        "description": "Indicates if the participant feels easily agitated."
+    },
+    "afraid_of_things": {
+        "description": "Indicates if the participant is afraid of specific things or situations."
+    },
+    "tough_to_work": {
+        "description": "Indicates if the participant finds it difficult to concentrate or work."
+    },
+    "voice_severity_session_id": {
+        "description": "Unique identifier for the voice severity session."
+    },
+    "voice_severity_duration": {
+        "description": "Duration of the assessment for the severity of the participant's voice issues."
+    },
+    "describe_the_severity_of_a": {
+        "description": "Asks the participant to describe the severity of a specific condition or symptom."
+    },
+    "panas_session_id": {
+        "description": "Unique session identifier for the PANAS (Positive and Negative Affect Schedule) questionnaire."
+    },
+    "panas_duration": {
+        "description": "Duration of the Positive and Negative Affect Schedule (PANAS) questionnaire."
+    },
+    "upset": {
+        "description": "Indicates if the participant feels upset."
+    },
+    "hostile": {
+        "description": "Indicates if the participant feels hostile or angry."
+    },
+    "alert": {
+        "description": "Indicates if the participant is alert during the session."
+    },
+    "ashamed": {
+        "description": "Indicates if the participant feels ashamed."
+    },
+    "inspired": {
+        "description": "Indicates if the participant feels inspired or motivated."
+    },
+    "nervous": {
+        "description": "Indicates if the participant feels nervous."
+    },
+    "determined": {
+        "description": "Indicates if the participant feels determined or focused."
+    },
+    "attentive": {
+        "description": "Indicates if the participant appears attentive during the session."
+    },
+    "afraid": {
+        "description": "Indicates if the participant feels afraid."
+    },
+    "active": {
+        "description": "Indicates if the participant feels physically active or engaged."
+    },
+    "custom_affect_scale_session_id": {
+        "description": "Unique identifier for the custom affect scale session."
+    },
+    "custom_affect_scale_duration": {
+        "description": "Total duration of the custom affect scale assessment."
+    },
+    "sad_or_down": {
+        "description": "Indicates if the participant feels sad or down."
+    },
+    "joyful": {
+        "description": "Indicates if the participant feels joyful."
+    },
+    "motivated": {
+        "description": "Assesses the level of motivation or drive the participant exhibits in performing tasks."
+    },
+    "lack_of_pleasure": {
+        "description": "Indicates if the participant feels a lack of pleasure or interest in doing things."
+    },
+    "tired": {
+        "description": "Indicates if the participant feels tired during the assessment."
+    },
+    "energetic": {
+        "description": "Indicates if the participant feels energetic or lively."
+    },
+    "agitated": {
+        "description": "Indicates if the participant feels agitated."
+    },
+    "irritated": {
+        "description": "Indicates if the participant feels irritated or annoyed."
+    },
+    "lonely": {
+        "description": "Indicates if the participant feels lonely."
+    },
+    "concentrated": {
+        "description": "Indicates if the participant is able to concentrate."
+    },
+    "relaxed": {
+        "description": "Indicates if the participant feels relaxed."
+    },
+    "worried": {
+        "description": "Indicates if the participant feels worried or anxious."
+    },
+    "desire_to_escape": {
+        "description": "Indicates if the participant has a desire to escape stressful situations."
+    },
+    "dsm_5_session_id": {
+        "description": "Unique identifier for the DSM-5 session."
+    },
+    "dsm_5_duration": {
+        "description": "Total duration of the DSM-5 assessment."
+    },
+    "little_interest": {
+        "description": "Indicates if the participant has little interest or pleasure in doing things."
+    },
+    "feeling_down": {
+        "description": "Indicates if the participant is feeling down or sad."
+    },
+    "feeling_more_irritated": {
+        "description": "Indicates if the participant feels more irritated than usual."
+    },
+    "sleeping_less": {
+        "description": "Indicates if the participant is sleeping less than usual."
+    },
+    "starting_more_projects": {
+        "description": "Indicates if the participant is starting more projects than they can manage."
+    },
+    "feeling_nervous": {
+        "description": "Indicates if the participant feels nervous."
+    },
+    "feeling_panic": {
+        "description": "Indicates if the participant feels panic or overwhelming fear."
+    },
+    "avoiding_situations": {
+        "description": "Indicates if the participant is avoiding certain situations due to stress or anxiety."
+    },
+    "unexplained_aches": {
+        "description": "Indicates if the participant experiences unexplained aches or pains."
+    },
+    "illness_not_taken_serious": {
+        "description": "Reports if the participant feels that their illness is not taken seriously by others."
+    },
+    "self_harm": {
+        "description": "Indicates if the participant has a history of self-harm."
+    },
+    "hearing_things": {
+        "description": "Indicates if the participant has experienced auditory hallucinations."
+    },
+    "someone_hear_thoughts": {
+        "description": "Indicates if the participant believes that others can hear their thoughts."
+    },
+    "sleep_quality": {
+        "description": "Indicates the participant's subjective assessment of their sleep quality."
+    },
+    "memory_issues": {
+        "description": "Reports if the participant is experiencing memory issues."
+    },
+    "unpleasant_thoughts": {
+        "description": "Reports if the participant experienced unpleasant thoughts recently."
+    },
+    "repeat_acts": {
+        "description": "Indicates if the participant repeats certain actions or behaviors."
+    },
+    "feeling_detached": {
+        "description": "Indicates if the participant feels detached from reality or their surroundings."
+    },
+    "no_purpose": {
+        "description": "Indicates if the participant feels like they have no purpose."
+    },
+    "isolated": {
+        "description": "Indicates if the participant feels isolated or alone."
+    },
+    "drinking_more": {
+        "description": "Indicates if the participant is consuming more alcohol."
+    },
+    "smoking_more": {
+        "description": "Indicates if the participant is smoking more than usual."
+    },
+    "medication_use": {
+        "description": "Indicates the participant's use of medications during the study."
+    },
+    "q1_happy": {
+        "description": "Response to question 1: 'Is the participant feeling happy?'"
+    },
+    "q2_self_confident": {
+        "description": "Asks how self-confident the participant feels in general."
+    },
+    "q3_sleep": {
+        "description": "Response to question 3: 'Is the participant experiencing trouble sleeping?'"
+    },
+    "q4_talk": {
+        "description": "Response to question 4: 'Does the participant talk about a specific topic?'"
+    },
+    "q5_active": {
+        "description": "Inquires how active or energetic the participant feels throughout the day."
+    },
+    "social_phobia_1": {
+        "description": "Response to social phobia item 1, indicating the participant's level of discomfort in social situations."
+    },
+    "social_phobia_2": {
+        "description": "Response to social phobia item 2, assessing the participant's level of discomfort in social situations."
+    },
+    "social_phobia_3": {
+        "description": "Indicates if the participant experiences social phobia related to situation 3."
+    },
+    "social_phobia_4": {
+        "description": "Indicates if the participant experiences social phobia in scenario 4."
+    },
+    "social_phobia_5": {
+        "description": "Indicates if the participant experiences social phobia in scenario 5."
+    },
+    "social_phobia_6": {
+        "description": "Indicates if the participant experiences social phobia in scenario 6."
+    },
+    "social_phobia_7": {
+        "description": "Indicates the participant's level of social phobia based on scenario 7."
+    },
+    "social_phobia_8": {
+        "description": "Indicates if the participant experiences social phobia in scenario 8."
+    },
+    "social_phobia_9": {
+        "description": "Indicates if the participant experiences social phobia in scenario 9."
+    },
+    "social_phobia_10": {
+        "description": "Indicates if the participant has social phobia in a specific scenario (item 10)."
+    },
+    "ptsd_session_id": {
+        "description": "Unique identifier for the PTSD assessment session."
+    },
+    "ptsd_duration": {
+        "description": "Reports the duration of post-traumatic stress disorder (PTSD) symptoms the participant is experiencing."
+    },
+    "traumatic_event": {
+        "description": "Reports if the participant has experienced a traumatic event recently."
+    },
+    "flashbacks": {
+        "description": "Indicates if the participant experiences flashbacks to stressful or traumatic events."
+    },
+    "emotionally_upset": {
+        "description": "Indicates if the participant feels emotionally upset during the session."
+    },
+    "avoiding_reminders": {
+        "description": "Indicates if the participant is avoiding reminders of traumatic events."
+    },
+    "thinking_stressful_event": {
+        "description": "Reports if the participant is thinking about a stressful event during the session."
+    },
+    "neg_emotional_state": {
+        "description": "Indicates if the participant is experiencing negative emotional states."
+    },
+    "losing_interest": {
+        "description": "Indicates if the participant is losing interest in things they usually enjoy."
+    },
+    "super_alert": {
+        "description": "Indicates if the participant is highly alert during the session."
+    },
+    "feeling_jumpy": {
+        "description": "Indicates if the participant feels jumpy or anxious."
+    },
+    "irritable": {
+        "description": "Indicates if the participant feels irritable or easily annoyed."
+    },
+    "adhd_session_id": {
+        "description": "Unique identifier for the ADHD session."
+    },
+    "adhd_duration": {
+        "description": "Duration of ADHD-related assessments."
+    },
+    "wrapping_up": {
+        "description": "Indicates if the session is nearing completion."
+    },
+    "things_in_order": {
+        "description": "Indicates if the participant prefers to keep things in order."
+    },
+    "remembering_appt": {
+        "description": "Reports if the participant has trouble remembering appointments."
+    },
+    "avoidance": {
+        "description": "Indicates if the participant avoids reminders of stressful or traumatic events."
+    },
+    "fidget": {
+        "description": "Indicates if the participant is fidgeting during the session."
+    },
+    "overly_active": {
+        "description": "Indicates if the participant is overly active or restless."
+    },
+    "careless": {
+        "description": "Indicates if the participant feels careless about their actions or responsibilities."
+    },
+    "difficulty_attention": {
+        "description": "Indicates if the participant has difficulty paying attention."
+    },
+    "difficulty_concentrating": {
+        "description": "Indicates if the participant has difficulty concentrating."
+    },
+    "misplace": {
+        "description": "Indicates if the participant often misplaces things."
+    },
+    "distracted": {
+        "description": "Indicates if the participant feels distracted during the session."
+    },
+    "remain_seated": {
+        "description": "Indicates if the participant is able to remain seated for long periods."
+    },
+    "restless": {
+        "description": "Indicates if the participant feels restless."
+    },
+    "difficulty_unwinding": {
+        "description": "Indicates if the participant has difficulty unwinding or relaxing after stressful events."
+    },
+    "talking_too_much": {
+        "description": "Indicates if the participant feels they are talking too much."
+    },
+    "finish_other_sent": {
+        "description": "Indicates if the participant finishes others' sentences."
+    },
+    "difficulty_waiting": {
+        "description": "Indicates if the participant has difficulty waiting for others."
+    },
+    "interrupt_others": {
+        "description": "Indicates if the participant tends to interrupt others during conversations."
+    },
+    "dyspnea_index_session_id": {
+        "description": "Unique identifier for the Dyspnea Index session."
+    },
+    "dyspnea_index_duration": {
+        "description": "Duration of the Dyspnea Index assessment."
+    },
+    "di_air_in": {
+        "description": "Reports if the participant experiences difficulty inhaling air."
+    },
+    "di_tightness_throat": {
+        "description": "Indicates if the participant experiences tightness in the throat as part of their dyspnea symptoms."
+    },
+    "di_effort_breathe": {
+        "description": "Indicates if the participant experiences increased effort while breathing."
+    },
+    "di_weather_changes": {
+        "description": "Indicates if the participant's breathing issues worsen with changes in the weather."
+    },
+    "di_breathing_worse_stress": {
+        "description": "Indicates if the participant\u2019s breathing gets worse when stressed."
+    },
+    "di_sound_breathing_in": {
+        "description": "Indicates if the participant experiences sound while breathing in as part of their dyspnea symptoms."
+    },
+    "di_strain": {
+        "description": "Indicates if the participant experiences strain when breathing."
+    },
+    "di_exercise": {
+        "description": "Reports if the participant has difficulty exercising."
+    },
+    "di_breathing_stresses_me": {
+        "description": "Indicates if the participant's breathing issues cause them stress."
+    },
+    "di_restrict_personal_social_life": {
+        "description": "Indicates if the participant's breathing issues restrict their personal and social life."
+    },
+    "leicester_cough_session_id": {
+        "description": "Unique identifier for the Leicester Cough Questionnaire session."
+    },
+    "leicester_cough_duration": {
+        "description": "Total duration of the Leicester Cough Questionnaire (LCQ)."
+    },
+    "lcq_chest_stomach_pains": {
+        "description": "Indicates if the participant experiences chest or stomach pains as part of their cough symptoms."
+    },
+    "lcq_sputum_phlegm": {
+        "description": "Indicates if the participant produces sputum or phlegm as part of their cough symptoms."
+    },
+    "lcq_tired": {
+        "description": "Indicates if the participant feels tired due to their cough."
+    },
+    "lcq_embarrassed": {
+        "description": "Indicates if the participant feels embarrassed by their cough."
+    },
+    "lcq_anxious": {
+        "description": "Indicates if the participant feels anxious due to their cough."
+    },
+    "lcq_interfere_job": {
+        "description": "Indicates if the participant's cough interferes with their ability to work."
+    },
+    "lcq_interfere_life": {
+        "description": "Indicates if the participant's cough interferes with their daily life."
+    },
+    "lcq_exposure_paint": {
+        "description": "Indicates if the participant has been exposed to paint or chemical fumes that worsen their cough."
+    },
+    "lcq_sleep": {
+        "description": "Indicates if the participant's cough affects their sleep."
+    },
+    "lcq_bout": {
+        "description": "Indicates if the participant has bouts of coughing."
+    },
+    "lcq_frustrated": {
+        "description": "Indicates if the participant feels frustrated as part of their cough symptoms."
+    },
+    "lcq_fed_up": {
+        "description": "Indicates if the participant feels fed up due to their cough."
+    },
+    "lcq_hoarse_voice": {
+        "description": "Indicates if the participant has a hoarse voice as part of their cough symptoms."
+    },
+    "lcq_serious_illness": {
+        "description": "Indicates if the participant's cough interferes with their life due to a serious illness."
+    },
+    "lcq_other_people": {
+        "description": "Indicates if the participant feels that their cough bothers other people."
+    },
+    "lcq_interrupt_conversation": {
+        "description": "Indicates if the participant's cough interrupts conversations."
+    },
+    "lcq_partner": {
+        "description": "Indicates if the participant feels that their cough affects their partner or significant other."
+    },
+    "lcq_felt_in_control": {
+        "description": "Indicates if the participant feels in control of their cough."
+    },
+    "lcq_energy": {
+        "description": "Indicates if the participant experiences low energy as part of their cough symptoms."
+    },
+    "winograd_session_id": {
+        "description": "Unique identifier for the Winograd schema session."
+    },
+    "winograd_duration": {
+        "description": "Total duration of the Winograd schema task."
+    },
+    "winograd_score": {
+        "description": "The score for the Winograd schema challenge for the participant."
+    },
+    "winograd_number_questions": {
+        "description": "The total number of Winograd questions presented to the participant."
+    },
+    "winograd_questions_asked": {
+        "description": "The total number of Winograd questions asked during the session."
+    },
+    "winograd_q_1": {
+        "description": "Response to Winograd question 1: 'Can the participant interpret social dynamics based on context?'"
+    },
+    "winograd_q_2": {
+        "description": "Response to Winograd question 2: 'Can the participant interpret the outcome of an ambiguous scenario?'"
+    },
+    "winograd_q_3": {
+        "description": "Response to Winograd question 3: 'Can the participant infer the intentions of others based on contextual clues?'"
+    },
+    "winograd_q_4": {
+        "description": "Response to Winograd question 4: 'Can the participant resolve ambiguity in a situation involving social dynamics?'"
+    },
+    "winograd_q_5": {
+        "description": "Response to Winograd question 5: 'Can the participant make inferences about an agent's actions based on context?'"
+    },
+    "winograd_q_6": {
+        "description": "Response to Winograd question 6: 'Can the participant reason about an everyday scenario involving multiple agents?'"
+    },
+    "winograd_q_7": {
+        "description": "Response to Winograd question 7: 'Can the participant make logical inferences about everyday situations?'"
+    },
+    "winograd_q_8": {
+        "description": "Response to Winograd question 8: 'Can the participant infer the correct outcome in a scenario involving social dynamics?'"
+    },
+    "winograd_q_9": {
+        "description": "Response to Winograd question 9: 'Does the participant understand cause and effect relationships in social interactions?'"
+    },
+    "winograd_q_10": {
+        "description": "Response to Winograd question 10: 'Can the participant infer the correct outcome in a scenario involving social dynamics?'"
+    },
+    "winograd_q_11": {
+        "description": "Response to Winograd question 11: 'Can the participant infer the correct outcome based on reasoning?'"
+    },
+    "winograd_q_12": {
+        "description": "Response to Winograd question 12: 'Can the participant infer the intentions of others based on context?'"
+    },
+    "winograd_q_13": {
+        "description": "Response to Winograd question 13: 'Can the participant reason about the effects of actions in a social scenario?'"
+    },
+    "winograd_q_14": {
+        "description": "Response to Winograd question 14: 'Can the participant resolve ambiguity in a scenario involving multiple agents?'"
+    },
+    "winograd_q_15": {
+        "description": "Response to Winograd question 15: 'Can the participant reason through cause and effect in a social scenario?'"
+    },
+    "winograd_q_16": {
+        "description": "Response to Winograd question 16: 'Can the participant make logical inferences about cause and effect in a scenario?'"
+    },
+    "winograd_q_17": {
+        "description": "Response to Winograd question 17: 'Can the participant infer the correct outcome in a scenario involving multiple agents?'"
+    },
+    "winograd_q_18": {
+        "description": "Response to Winograd question 18: 'Can the participant use common sense reasoning to infer the outcome of a situation?'"
+    },
+    "winograd_q_19": {
+        "description": "Response to Winograd question 19: 'Does the participant demonstrate the ability to understand cause and effect in a scenario?'"
+    },
+    "winograd_q_20": {
+        "description": "Response to Winograd question 20: 'Can the participant reason through social interactions in a scenario involving multiple agents?'"
+    },
+    "winograd_q_21": {
+        "description": "Response to Winograd question 21: 'Can the participant reason through the effects of actions in a social scenario?'"
+    },
+    "winograd_q_22": {
+        "description": "Response to Winograd question 22: 'Can the participant infer the correct outcome in a scenario involving multiple agents?'"
+    },
+    "winograd_q_23": {
+        "description": "Response to Winograd question 23: 'Can the participant reason about the intentions of others based on contextual clues?'"
+    },
+    "winograd_q_24": {
+        "description": "Response to Winograd question 24: 'Can the participant reason about the consequences of actions in an ambiguous situation?'"
+    },
+    "winograd_q_25": {
+        "description": "Response to Winograd question 25: 'Does the participant demonstrate an understanding of cause and effect in social situations?'"
+    },
+    "winograd_q_26": {
+        "description": "Response to Winograd question 26: 'Can the participant make inferences about social behaviors?'"
+    },
+    "winograd_q_27": {
+        "description": "Response to Winograd question 27: 'Can the participant make logical inferences about the actions of others in a scenario?'"
+    },
+    "winograd_q_28": {
+        "description": "Response to Winograd question 28: 'Can the participant reason logically about cause and effect?'"
+    },
+    "winograd_q_29": {
+        "description": "Response to Winograd question 29: 'Does the participant demonstrate common-sense reasoning in a social scenario?'"
+    },
+    "winograd_q_30": {
+        "description": "Response to Winograd question 30: 'Can the participant make logical deductions about social interactions?'"
+    },
+    "winograd_q_31": {
+        "description": "Response to Winograd question 31: 'Does the participant understand logical cause and effect relationships?'"
+    },
+    "winograd_q_32": {
+        "description": "Response to Winograd question 32: 'Can the participant recognize the logical outcomes of actions in social contexts?'"
+    },
+    "winograd_q_33": {
+        "description": "Response to Winograd question 33: 'Can the participant infer the intentions of others based on contextual clues?'"
+    },
+    "winograd_q_34": {
+        "description": "Response to Winograd question 34: 'Can the participant infer the correct outcome in a scenario involving multiple agents?'"
+    },
+    "winograd_q_35": {
+        "description": "Response to Winograd question 35: 'Can the participant reason through social interactions in a scenario involving multiple agents?'"
+    },
+    "winograd_q_36": {
+        "description": "Response to Winograd question 36: 'Does the participant demonstrate common-sense reasoning in a scenario involving multiple agents?'"
+    },
+    "winograd_q_37": {
+        "description": "Response to Winograd question 37: 'Does the participant demonstrate common-sense reasoning in resolving ambiguity in a social situation?'"
+    },
+    "winograd_q_38": {
+        "description": "Response to Winograd question 38: 'Can the participant make logical inferences about the intentions of others in a scenario?'"
+    },
+    "winograd_q_39": {
+        "description": "Response to Winograd question 39: 'Can the participant identify logical outcomes in a given situation?'"
+    },
+    "winograd_q_40": {
+        "description": "Response to Winograd question 40: 'Can the participant make logical inferences about the actions of others in a social situation?'"
+    },
+    "winograd_q_41": {
+        "description": "Response to Winograd question 41: 'Can the participant reason through ambiguity in a social situation?'"
+    },
+    "winograd_q_42": {
+        "description": "Response to Winograd question 42: 'Can the participant infer the intentions of others based on contextual clues?'"
+    },
+    "winograd_q_43": {
+        "description": "Response to Winograd question 43: 'Can the participant resolve ambiguous references in a text?'"
+    },
+    "winograd_q_44": {
+        "description": "Response to Winograd question 44: 'Can the participant resolve ambiguity in an interpersonal situation?'"
+    },
+    "winograd_q_45": {
+        "description": "Response to Winograd question 45: 'Does the participant understand abstract social concepts?'"
+    },
+    "winograd_q_46": {
+        "description": "Response to Winograd question 46: 'Can the participant reason through ambiguity in a scenario involving multiple agents?'"
+    },
+    "winograd_q_47": {
+        "description": "Response to Winograd question 47: 'Can the participant infer the correct outcome in a scenario involving social dynamics?'"
+    },
+    "winograd_q_48": {
+        "description": "Response to Winograd question 48: 'Can the participant infer the correct outcome in a social situation involving multiple agents?'"
+    },
+    "winograd_q_49": {
+        "description": "Response to Winograd question 49: 'Does the participant demonstrate an understanding of cause and effect in social interactions?'"
+    },
+    "winograd_q_50": {
+        "description": "Response to Winograd question 50: 'Can the participant make logical inferences about the actions of others in a hypothetical scenario?'"
+    },
+    "winograd_q_51": {
+        "description": "Response to Winograd question 51: 'Can the participant reason about the consequences of an action in a hypothetical situation?'"
+    },
+    "winograd_q_52": {
+        "description": "Response to Winograd question 52: 'Can the participant make logical inferences about the actions of others in a social situation?'"
+    },
+    "winograd_q_53": {
+        "description": "Response to Winograd question 53: 'Can the participant infer an action based on contextual cues?'"
+    },
+    "winograd_q_54": {
+        "description": "Response to Winograd question 54: 'Does the participant demonstrate the ability to understand cause and effect in a hypothetical situation?'"
+    },
+    "winograd_q_55": {
+        "description": "Response to Winograd question 55: 'Does the participant demonstrate an understanding of cause and effect in a hypothetical situation?'"
+    },
+    "winograd_q_56": {
+        "description": "Response to Winograd question 56: 'Does the participant demonstrate common-sense reasoning in interpreting social dynamics?'"
+    },
+    "winograd_q_57": {
+        "description": "Response to Winograd question 57: 'Can the participant make inferences based on actions in a social situation?'"
+    },
+    "winograd_q_58": {
+        "description": "Response to Winograd question 58: 'Can the participant make logical inferences about the intentions of others in a social situation?'"
+    },
+    "winograd_q_59": {
+        "description": "Response to Winograd question 59: 'Can the participant interpret the actions of others based on context?'"
+    },
+    "winograd_q_60": {
+        "description": "Response to Winograd question 60: 'Can the participant resolve ambiguity in a scenario involving social interactions?'"
+    },
+    "winograd_q_61": {
+        "description": "Response to Winograd question 61: 'Can the participant reason logically about consequences in social interactions?'"
+    },
+    "winograd_q_62": {
+        "description": "Response to Winograd question 62: 'Can the participant infer the intentions of others based on contextual clues?'"
+    },
+    "winograd_q_63": {
+        "description": "Response to Winograd question 63: 'Can the participant make logical deductions about cause and effect?'"
+    },
+    "winograd_q_64": {
+        "description": "Response to Winograd question 64: 'Can the participant make logical inferences about the actions of others in a social scenario?'"
+    },
+    "winograd_q_65": {
+        "description": "Response to Winograd question 65: 'Can the participant reason through social interactions in a hypothetical situation?'"
+    },
+    "winograd_q_66": {
+        "description": "Response to Winograd question 66: 'Can the participant infer the correct outcome in a scenario involving multiple agents?'"
+    },
+    "winograd_q_67": {
+        "description": "Response to Winograd question 67: 'Can the participant reason about the intentions of others based on the given context?'"
+    },
+    "winograd_q_68": {
+        "description": "Response to Winograd question 68: 'Can the participant infer the correct outcome in a social situation involving multiple agents?'"
+    },
+    "winograd_q_69": {
+        "description": "Response to Winograd question 69: 'Can the participant apply common sense reasoning to solve practical problems?'"
+    },
+    "winograd_q_70": {
+        "description": "Response to Winograd question 70: 'Can the participant infer the intentions of others based on the given context?'"
+    },
+    "winograd_q_71": {
+        "description": "Response to Winograd question 71: 'Can the participant infer the correct outcome in a situation involving social dynamics?'"
+    },
+    "winograd_q_72": {
+        "description": "Response to Winograd question 72: 'Can the participant infer the correct outcome in an ambiguous scenario?'"
+    },
+    "winograd_q_73": {
+        "description": "Response to Winograd question 73: 'Can the participant understand the intentions of others based on context?'"
+    },
+    "winograd_q_74": {
+        "description": "Response to Winograd question 74: 'Does the participant demonstrate logical reasoning in the given scenario?'"
+    },
+    "winograd_q_75": {
+        "description": "Response to Winograd question 75: 'Can the participant reason about cause and effect in complex scenarios?'"
+    },
+    "winograd_q_76": {
+        "description": "Response to Winograd question 76: 'Can the participant infer the intentions of others based on the given context?'"
+    },
+    "winograd_q_77": {
+        "description": "Response to Winograd question 77: 'Can the participant resolve ambiguity in a social scenario involving multiple agents?'"
+    },
+    "winograd_q_78": {
+        "description": "Response to Winograd question 78: 'Can the participant infer the intentions of others in a hypothetical situation?'"
+    },
+    "winograd_q_79": {
+        "description": "Response to Winograd question 79: 'Can the participant make logical inferences about the actions of others?'"
+    },
+    "winograd_q_80": {
+        "description": "Response to Winograd question 80: 'Can the participant make logical inferences about the intentions of others in a social scenario?'"
+    },
+    "winograd_q_81": {
+        "description": "Response to Winograd question 81: 'Can the participant reason through social interactions in a scenario involving multiple agents?'"
+    },
+    "winograd_q_82": {
+        "description": "Response to Winograd question 82: 'Can the participant reason about the effects of actions in a hypothetical scenario?'"
+    },
+    "winograd_q_83": {
+        "description": "Response to Winograd question 83: 'Can the participant make logical inferences about the effects of actions in a hypothetical situation?'"
+    },
+    "winograd_q_84": {
+        "description": "Response to Winograd question 84: 'Can the participant interpret the actions of others in a hypothetical scenario?'"
+    },
+    "winograd_q_85": {
+        "description": "Response to Winograd question 85: 'Can the participant understand logical outcomes in everyday scenarios?'"
+    },
+    "winograd_q_86": {
+        "description": "Response to Winograd question 86: 'Can the participant interpret actions of agents in an everyday situation?'"
+    },
+    "winograd_q_87": {
+        "description": "Response to Winograd question 87: 'Can the participant reason about the relationships between agents in a hypothetical situation?'"
+    },
+    "winograd_q_88": {
+        "description": "Response to Winograd question 88: 'Can the participant reason through ambiguity in a scenario involving social dynamics?'"
+    },
+    "winograd_q_89": {
+        "description": "Response to Winograd question 89: 'Can the participant reason through social interactions in a scenario involving multiple agents?'"
+    },
+    "winograd_q_90": {
+        "description": "Response to Winograd question 90: 'Can the participant resolve ambiguity in a scenario involving multiple agents?'"
+    },
+    "winograd_q_91": {
+        "description": "Response to Winograd question 91: 'Can the participant reason through social interactions in a hypothetical scenario?'"
+    },
+    "winograd_q_92": {
+        "description": "Response to Winograd question 92: 'Can the participant infer logical outcomes in social scenarios?'"
+    },
+    "winograd_q_93": {
+        "description": "Response to Winograd question 93: 'Can the participant reason through the effects of actions in a scenario involving social interactions?'"
+    },
+    "winograd_q_94": {
+        "description": "Response to Winograd question 94: 'Can the participant reason through social interactions in a scenario involving multiple agents?'"
+    },
+    "winograd_q_95": {
+        "description": "Response to Winograd question 95: 'Can the participant predict outcomes in a hypothetical scenario?'"
+    },
+    "winograd_q_96": {
+        "description": "Response to Winograd question 96: 'Can the participant make logical conclusions based on context?'"
+    },
+    "winograd_q_97": {
+        "description": "Response to Winograd question 97: 'Can the participant understand the implications of an agent's action?'"
+    },
+    "winograd_q_98": {
+        "description": "Response to Winograd question 98: 'Does the participant demonstrate understanding of social dynamics in a scenario?'"
+    },
+    "winograd_q_99": {
+        "description": "Response to Winograd question 99: 'Does the participant demonstrate common-sense reasoning in interpreting social situations?'"
+    },
+    "winograd_q_100": {
+        "description": "Response to Winograd question 100: 'Can the participant resolve ambiguity in a situation involving social dynamics?'"
+    },
+    "winograd_q_101": {
+        "description": "Response to Winograd question 101: 'Can the participant reason about the consequences of an agent's actions in a hypothetical situation?'"
+    },
+    "winograd_q_102": {
+        "description": "Response to Winograd question 102: 'Does the participant demonstrate the ability to make logical inferences in a social situation?'"
+    },
+    "winograd_q_103": {
+        "description": "Response to Winograd question 103: 'Can the participant interpret the actions of an agent in context?'"
+    },
+    "winograd_q_104": {
+        "description": "Response to Winograd question 104: 'Can the participant resolve ambiguity in a situation involving multiple agents?'"
+    },
+    "winograd_q_105": {
+        "description": "Response to Winograd question 105: 'Can the participant resolve ambiguity in a complex situation involving multiple agents?'"
+    },
+    "winograd_q_106": {
+        "description": "Response to Winograd question 106: 'Can the participant make logical inferences about the actions of others?'"
+    },
+    "winograd_q_107": {
+        "description": "Response to Winograd question 107: 'Can the participant interpret the actions of others in a complex social situation?'"
+    },
+    "winograd_q_108": {
+        "description": "Response to Winograd question 108: 'Does the participant demonstrate common-sense reasoning in interpreting social situations?'"
+    },
+    "winograd_q_109": {
+        "description": "Response to Winograd question 109: 'Can the participant apply common sense reasoning to solve a given problem?'"
+    },
+    "winograd_q_110": {
+        "description": "Response to Winograd question 110: 'Does the participant demonstrate an understanding of cause and effect in a social situation?'"
+    },
+    "winograd_q_111": {
+        "description": "Response to Winograd question 111: 'Does the participant demonstrate an understanding of social dynamics in a scenario involving multiple agents?'"
+    },
+    "winograd_q_112": {
+        "description": "Response to Winograd question 112: 'Can the participant predict the effects of an action in a scenario?'"
+    },
+    "winograd_q_113": {
+        "description": "Response to Winograd question 113: 'Can the participant use common sense reasoning to solve problems in social situations?'"
+    },
+    "winograd_q_114": {
+        "description": "Response to Winograd question 114: 'Can the participant resolve ambiguity in a social scenario involving multiple agents?'"
+    },
+    "winograd_q_115": {
+        "description": "Response to Winograd question 115: 'Can the participant reason about the relationship between two agents based on context?'"
+    },
+    "winograd_q_116": {
+        "description": "Response to Winograd question 116: 'Can the participant infer the correct outcome in a situation involving social dynamics?'"
+    },
+    "winograd_q_117": {
+        "description": "Response to Winograd question 117: 'Can the participant reason logically in social situations?'"
+    },
+    "winograd_q_118": {
+        "description": "Response to Winograd question 118: 'Can the participant make logical inferences in social interactions?'"
+    },
+    "winograd_q_119": {
+        "description": "Response to Winograd question 119: 'Can the participant resolve ambiguity in a social situation involving multiple agents?'"
+    },
+    "winograd_q_120": {
+        "description": "Response to Winograd question 120: 'Can the participant reason through a common sense problem involving multiple agents?'"
+    },
+    "winograd_q_121": {
+        "description": "Response to Winograd question 121: 'Can the participant resolve ambiguity in a scenario involving social interactions?'"
+    },
+    "winograd_q_122": {
+        "description": "Response to Winograd question 122: 'Does the participant understand the implications of an action?'"
+    },
+    "winograd_q_123": {
+        "description": "Response to Winograd question 123: 'Can the participant resolve ambiguity in a situation involving social dynamics?'"
+    },
+    "winograd_q_124": {
+        "description": "Response to Winograd question 124: 'Can the participant resolve ambiguity in a social situation involving multiple agents?'"
+    },
+    "winograd_q_125": {
+        "description": "Response to Winograd question 125: 'Can the participant infer the correct outcome in a scenario involving multiple agents?'"
+    },
+    "winograd_q_126": {
+        "description": "Response to Winograd question 126: 'Can the participant resolve ambiguity in a hypothetical situation?'"
+    },
+    "winograd_q_127": {
+        "description": "Response to Winograd question 127: 'Can the participant reason through ambiguity in a situation involving social interactions?'"
+    },
+    "winograd_q_128": {
+        "description": "Response to Winograd question 128: 'Can the participant make commonsense inferences in hypothetical scenarios?'"
+    },
+    "winograd_q_129": {
+        "description": "Response to Winograd question 129: 'Can the participant resolve ambiguity in a scenario involving social interactions?'"
+    },
+    "winograd_q_130": {
+        "description": "Response to Winograd question 130: 'Can the participant reason through ambiguity in a scenario involving social dynamics?'"
+    },
+    "winograd_q_131": {
+        "description": "Response to Winograd question 131: 'Can the participant reason about the consequences of their actions?'"
+    },
+    "winograd_q_132": {
+        "description": "Response to Winograd question 132: 'Can the participant resolve an ambiguity in a scenario involving multiple agents?'"
+    },
+    "winograd_q_133": {
+        "description": "Response to Winograd question 133: 'Can the participant resolve ambiguity in a situation involving social interactions?'"
+    },
+    "winograd_q_134": {
+        "description": "Response to Winograd question 134: 'Can the participant reason through social interactions in a scenario involving multiple agents?'"
+    },
+    "winograd_q_135": {
+        "description": "Response to Winograd question 135: 'Can the participant reason through ambiguity in a situation involving multiple agents?'"
+    },
+    "winograd_q_136": {
+        "description": "Response to Winograd question 136: 'Can the participant infer the correct outcome in a social situation involving multiple agents?'"
+    },
+    "winograd_q_137": {
+        "description": "Response to Winograd question 137: 'Can the participant reason about social dynamics in a hypothetical scenario?'"
+    },
+    "winograd_q_138": {
+        "description": "Response to Winograd question 138: 'Can the participant make logical inferences about the actions of others in a scenario?'"
+    },
+    "winograd_q_139": {
+        "description": "Response to Winograd question 139: 'Can the participant infer the motivations of others in a complex social interaction?'"
+    },
+    "winograd_q_140": {
+        "description": "Response to Winograd question 140: 'Can the participant reason through social interactions in a scenario involving multiple agents?'"
+    },
+    "winograd_q_141": {
+        "description": "Response to Winograd question 141: 'Can the participant infer the intentions of others based on contextual clues?'"
+    },
+    "winograd_q_142": {
+        "description": "Response to Winograd question 142: 'Can the participant infer the correct referent in an ambiguous sentence?'"
+    },
+    "winograd_q_143": {
+        "description": "Response to Winograd question 143: 'Can the participant make logical inferences about the actions of others based on context?'"
+    },
+    "winograd_q_144": {
+        "description": "Response to Winograd question 144: 'Does the participant demonstrate understanding of cause and effect in ambiguous situations?'"
+    },
+    "winograd_q_145": {
+        "description": "Response to Winograd question 145: 'Does the participant demonstrate common-sense reasoning in a scenario involving multiple agents?'"
+    },
+    "winograd_q_146": {
+        "description": "Response to Winograd question 146: 'Can the participant resolve ambiguity in a hypothetical scenario?'"
+    },
+    "winograd_q_147": {
+        "description": "Response to Winograd question 147: 'Can the participant interpret the actions of others in a complex social situation?'"
+    },
+    "winograd_q_148": {
+        "description": "Response to Winograd question 148: 'Does the participant demonstrate an understanding of cause and effect in a social scenario?'"
+    },
+    "winograd_q_149": {
+        "description": "Response to Winograd question 149: 'Can the participant interpret the intentions of others in a scenario?'"
+    },
+    "winograd_q_150": {
+        "description": "Response to Winograd question 150: 'Can the participant make logical inferences about the actions of others?'"
+    },
+    "winograd_q_151": {
+        "description": "Response to Winograd question 151: 'Does the participant reason about outcomes in hypothetical situations involving social interactions?'"
+    },
+    "winograd_q_152": {
+        "description": "Response to Winograd question 152: 'Does the participant understand how actions lead to specific outcomes in a given scenario?'"
+    },
+    "winograd_q_153": {
+        "description": "Response to Winograd question 153: 'Can the participant interpret an action based on its context?'"
+    },
+    "winograd_q_154": {
+        "description": "Response to Winograd question 154: 'Does the participant demonstrate an understanding of cause and effect in social situations?'"
+    },
+    "winograd_q_155": {
+        "description": "Response to Winograd question 155: 'Can the participant reason through ambiguity in a scenario involving social dynamics?'"
+    },
+    "winograd_q_156": {
+        "description": "Response to Winograd question 156: 'Can the participant predict the outcomes of interpersonal dynamics in a hypothetical scenario?'"
+    },
+    "winograd_q_157": {
+        "description": "Response to Winograd question 157: 'Can the participant resolve ambiguity in a scenario involving multiple agents?'"
+    },
+    "winograd_q_158": {
+        "description": "Response to Winograd question 158: 'Can the participant reason through social interactions in a scenario involving multiple agents?'"
+    },
+    "winograd_q_159": {
+        "description": "Response to Winograd question 159: 'Can the participant reason about the effects of actions in a social situation?'"
+    },
+    "winograd_q_160": {
+        "description": "Response to Winograd question 160: 'Does the participant understand relationships between agents in a scenario?'"
+    },
+    "winograd_q_161": {
+        "description": "Response to Winograd question 161: 'Does the participant demonstrate common-sense reasoning in interpreting social situations?'"
+    },
+    "winograd_q_162": {
+        "description": "Response to Winograd question 162: 'Does the participant demonstrate common-sense reasoning in interpreting social situations?'"
+    },
+    "winograd_q_163": {
+        "description": "Response to Winograd question 163: 'Can the participant resolve ambiguity in a scenario involving multiple agents?'"
+    },
+    "winograd_q_164": {
+        "description": "Response to Winograd question 164: 'Does the participant understand the intentions of others based on contextual clues?'"
+    },
+    "winograd_q_165": {
+        "description": "Response to Winograd question 165: 'Can the participant make logical inferences about the actions of others in a social situation?'"
+    },
+    "winograd_q_166": {
+        "description": "Response to Winograd question 166: 'Can the participant make inferences about actions of agents in hypothetical scenarios?'"
+    },
+    "winograd_q_167": {
+        "description": "Response to Winograd question 167: 'Can the participant reason about the intentions of others in a scenario involving social interactions?'"
+    },
+    "winograd_q_168": {
+        "description": "Response to Winograd question 168: 'Can the participant resolve ambiguity in a scenario involving social interactions?'"
+    },
+    "winograd_q_169": {
+        "description": "Response to Winograd question 169: 'Does the participant understand consequences in social interactions?'"
+    },
+    "winograd_q_170": {
+        "description": "Response to Winograd question 170: 'Can the participant reason about the consequences of actions in a social situation?'"
+    },
+    "winograd_q_171": {
+        "description": "Response to Winograd question 171: 'Does the participant demonstrate common-sense reasoning in resolving social conflicts?'"
+    },
+    "winograd_q_172": {
+        "description": "Response to Winograd question 172: 'Can the participant reason about the consequences of actions in a social scenario?'"
+    },
+    "winograd_q_173": {
+        "description": "Response to Winograd question 173: 'Can the participant interpret the actions of others in a hypothetical situation?'"
+    },
+    "winograd_q_174": {
+        "description": "Response to Winograd question 174: 'Can the participant make logical inferences about the consequences of actions in a scenario?'"
+    },
+    "winograd_q_175": {
+        "description": "Response to Winograd question 175: 'Can the participant make logical inferences about the effects of actions in a social context?'"
+    },
+    "winograd_q_176": {
+        "description": "Response to Winograd question 176: 'Can the participant infer the correct outcome in a scenario involving social dynamics?'"
+    },
+    "winograd_q_177": {
+        "description": "Response to Winograd question 177: 'Can the participant reason about agents and their actions in a complex situation?'"
+    },
+    "winograd_q_178": {
+        "description": "Response to Winograd question 178: 'Can the participant reason through social interactions in a scenario involving multiple agents?'"
+    },
+    "winograd_q_179": {
+        "description": "Response to Winograd question 179: 'Can the participant resolve ambiguity in a social scenario?'"
+    },
+    "winograd_q_180": {
+        "description": "Response to Winograd question 180: 'Can the participant infer the correct outcome in a situation involving social dynamics?'"
+    },
+    "winograd_q_181": {
+        "description": "Response to Winograd question 181: 'Does the participant demonstrate common-sense reasoning in interpreting a scenario involving multiple agents?'"
+    },
+    "winograd_q_182": {
+        "description": "Response to Winograd question 182: 'Can the participant make inferences based on social expectations?'"
+    },
+    "winograd_q_183": {
+        "description": "Response to Winograd question 183: 'Can the participant reason through cause and effect in a complex situation?'"
+    },
+    "winograd_q_184": {
+        "description": "Response to Winograd question 184: 'Can the participant make logical inferences based on the actions of others?'"
+    },
+    "winograd_q_185": {
+        "description": "Response to Winograd question 185: 'Does the participant demonstrate an understanding of cause-and-effect in a social scenario?'"
+    },
+    "winograd_q_186": {
+        "description": "Response to Winograd question 186: 'Can the participant make logical inferences about the effects of actions in a social scenario?'"
+    },
+    "winograd_q_187": {
+        "description": "Response to Winograd question 187: 'Can the participant reason through ambiguity in a scenario involving multiple agents?'"
+    },
+    "winograd_q_188": {
+        "description": "Response to Winograd question 188: 'Can the participant make inferences about interpersonal dynamics in a hypothetical situation?'"
+    },
+    "winograd_q_189": {
+        "description": "Response to Winograd question 189: 'Can the participant resolve ambiguity in a scenario involving multiple agents?'"
+    },
+    "winograd_q_190": {
+        "description": "Response to Winograd question 190: 'Does the participant demonstrate common-sense reasoning in resolving social ambiguity?'"
+    },
+    "winograd_q_191": {
+        "description": "Response to Winograd question 191: 'Can the participant reason through ambiguity in a social scenario?'"
+    },
+    "winograd_q_192": {
+        "description": "Response to Winograd question 192: 'Does the participant understand ambiguous relationships between agents in a situation?'"
+    },
+    "winograd_q_193": {
+        "description": "Response to Winograd question 193: 'Can the participant reason through cause-and-effect relationships in a social scenario?'"
+    },
+    "winograd_q_194": {
+        "description": "Response to Winograd question 194: 'Can the participant resolve ambiguity in a scenario involving multiple agents?'"
+    },
+    "winograd_q_195": {
+        "description": "Response to Winograd question 195: 'Does the participant demonstrate common-sense reasoning in interpreting social situations?'"
+    },
+    "winograd_q_196": {
+        "description": "Response to Winograd question 196: 'Can the participant reason about the outcomes of hypothetical situations?'"
+    },
+    "winograd_q_197": {
+        "description": "Response to Winograd question 197: 'Can the participant make logical inferences about the consequences of actions in a social scenario?'"
+    },
+    "winograd_q_198": {
+        "description": "Response to Winograd question 198: 'Can the participant resolve ambiguity in a scenario involving multiple agents?'"
+    },
+    "winograd_q_199": {
+        "description": "Response to Winograd question 199: 'Can the participant resolve ambiguity in a situation involving social dynamics?'"
+    },
+    "winograd_q_200": {
+        "description": "Response to Winograd question 200: 'Can the participant infer the correct outcome in a scenario involving multiple agents?'"
+    },
+    "winograd_q_201": {
+        "description": "Response to Winograd question 201: 'Can the participant resolve ambiguity in a scenario involving multiple agents?'"
+    },
+    "winograd_q_202": {
+        "description": "Response to Winograd question 202: 'Can the participant infer logical consequences in a social context?'"
+    },
+    "winograd_q_203": {
+        "description": "Response to Winograd question 203: 'Does the participant demonstrate an understanding of social dynamics in a hypothetical situation?'"
+    },
+    "winograd_q_204": {
+        "description": "Response to Winograd question 204: 'Can the participant make logical inferences about the intentions of others?'"
+    },
+    "winograd_q_205": {
+        "description": "Response to Winograd question 205: 'Can the participant reason through complex social dynamics in a scenario?'"
+    },
+    "winograd_q_206": {
+        "description": "Response to Winograd question 206: 'Can the participant interpret the actions of others in a given context?'"
+    },
+    "winograd_q_207": {
+        "description": "Response to Winograd question 207: 'Does the participant demonstrate common-sense reasoning in a social scenario?'"
+    },
+    "winograd_q_208": {
+        "description": "Response to Winograd question 208: 'Can the participant predict the outcomes of actions in a complex social scenario?'"
+    },
+    "winograd_q_209": {
+        "description": "Response to Winograd question 209: 'Can the participant reason about the actions of others based on contextual clues?'"
+    },
+    "winograd_q_210": {
+        "description": "Response to Winograd question 210: 'Can the participant predict logical outcomes in a given situation?'"
+    },
+    "winograd_q_211": {
+        "description": "Response to Winograd question 211: 'Does the participant show common-sense reasoning in interpreting a scenario?'"
+    },
+    "winograd_q_212": {
+        "description": "Response to Winograd question 212: 'Does the participant understand logical relationships in a given social scenario?'"
+    },
+    "winograd_q_213": {
+        "description": "Response to Winograd question 213: 'Can the participant make logical inferences about the actions of others in a social scenario?'"
+    },
+    "winograd_q_214": {
+        "description": "Response to Winograd question 214: 'Can the participant reason through the effects of actions in a hypothetical situation?'"
+    },
+    "winograd_q_215": {
+        "description": "Response to Winograd question 215: 'Can the participant predict the outcomes of actions in a complex social situation?'"
+    },
+    "winograd_q_216": {
+        "description": "Response to Winograd question 216: 'Can the participant reason through cause and effect in a social context?'"
+    },
+    "winograd_q_217": {
+        "description": "Response to Winograd question 217: 'Does the participant show evidence of common sense reasoning about everyday situations?'"
+    },
+    "winograd_q_218": {
+        "description": "Response to Winograd question 218: 'Does the participant demonstrate common-sense reasoning in interpreting a social situation?'"
+    },
+    "winograd_q_219": {
+        "description": "Response to Winograd question 219: 'Does the participant demonstrate an understanding of logical relationships in social scenarios?'"
+    },
+    "winograd_q_220": {
+        "description": "Response to Winograd question 220: 'Can the participant resolve ambiguity in a situation involving social interactions?'"
+    },
+    "winograd_q_221": {
+        "description": "Response to Winograd question 221: 'Can the participant reason about the effects of actions in a social context?'"
+    },
+    "winograd_q_222": {
+        "description": "Response to Winograd question 222: 'Can the participant make logical inferences in a complex social situation?'"
+    },
+    "winograd_q_223": {
+        "description": "Response to Winograd question 223: 'Can the participant reason about the actions of others based on contextual clues?'"
+    },
+    "winograd_q_224": {
+        "description": "Response to Winograd question 224: 'Can the participant correctly infer actions based on a given context?'"
+    },
+    "winograd_q_225": {
+        "description": "Response to Winograd question 225: 'Can the participant make logical inferences about the actions of others in a scenario?'"
+    },
+    "winograd_q_226": {
+        "description": "Response to Winograd question 226: 'Can the participant resolve ambiguity in a scenario involving social interactions?'"
+    },
+    "winograd_q_227": {
+        "description": "Response to Winograd question 227: 'Can the participant infer the effects of actions in a social situation?'"
+    },
+    "winograd_q_228": {
+        "description": "Response to Winograd question 228: 'Does the participant demonstrate common-sense reasoning in interpreting a social scenario?'"
+    },
+    "winograd_q_229": {
+        "description": "Response to Winograd question 229: 'Can the participant resolve ambiguity in a scenario involving social interactions?'"
+    },
+    "winograd_q_230": {
+        "description": "Response to Winograd question 230: 'Can the participant make logical inferences based on common sense reasoning?'"
+    },
+    "winograd_q_231": {
+        "description": "Response to Winograd question 231: 'Does the participant demonstrate an understanding of social dynamics in a scenario involving multiple agents?'"
+    },
+    "winograd_q_232": {
+        "description": "Response to Winograd question 232: 'Does the participant demonstrate common-sense reasoning in resolving ambiguity in a social situation?'"
+    },
+    "winograd_q_233": {
+        "description": "Response to Winograd question 233: 'Can the participant reason about the intentions of others based on the given context?'"
+    },
+    "winograd_q_234": {
+        "description": "Response to Winograd question 234: 'Does the participant demonstrate common-sense reasoning in resolving ambiguous social situations?'"
+    },
+    "winograd_q_235": {
+        "description": "Response to Winograd question 235: 'Does the participant understand cause and effect relationships in the given scenario?'"
+    },
+    "winograd_q_236": {
+        "description": "Response to Winograd question 236: 'Can the participant understand the effects of an action based on context?'"
+    },
+    "winograd_q_237": {
+        "description": "Response to Winograd question 237: 'Can the participant interpret the actions of others based on the given context?'"
+    },
+    "winograd_q_238": {
+        "description": "Response to Winograd question 238: 'Can the participant predict outcomes in social situations?'"
+    },
+    "winograd_q_239": {
+        "description": "Response to Winograd question 239: 'Can the participant reason about the consequences of actions in a social scenario?'"
+    },
+    "winograd_q_240": {
+        "description": "Response to Winograd question 240: 'Does the participant demonstrate an understanding of cause and effect in social interactions?'"
+    },
+    "winograd_q_241": {
+        "description": "Response to Winograd question 241: 'Can the participant resolve ambiguity in a scenario involving multiple agents?'"
+    },
+    "winograd_q_242": {
+        "description": "Response to Winograd question 242: 'Can the participant reason about the actions of others based on contextual clues?'"
+    },
+    "winograd_q_243": {
+        "description": "Response to Winograd question 243: 'Does the participant reason about the effects of actions in ambiguous situations?'"
+    },
+    "winograd_q_244": {
+        "description": "Response to Winograd question 244: 'Does the participant understand the social dynamics in a scenario involving ambiguity?'"
+    },
+    "winograd_q_245": {
+        "description": "Response to Winograd question 245: 'Can the participant reason through social interactions in a scenario involving multiple agents?'"
+    },
+    "winograd_q_246": {
+        "description": "Response to Winograd question 246: 'Can the participant infer the correct outcome in a scenario involving social dynamics?'"
+    },
+    "winograd_q_247": {
+        "description": "Response to Winograd question 247: 'Can the participant resolve ambiguity in a scenario involving social dynamics?'"
+    },
+    "winograd_q_248": {
+        "description": "Response to Winograd question 248: 'Can the participant resolve ambiguity in a situation involving social interactions?'"
+    },
+    "winograd_q_249": {
+        "description": "Response to Winograd question 249: 'Can the participant resolve ambiguity in a scenario involving social interactions?'"
+    },
+    "winograd_q_250": {
+        "description": "Response to Winograd question 250: 'Does the participant make logical inferences about the actions of others?'"
+    },
+    "winograd_q_251": {
+        "description": "Response to Winograd question 251: 'Does the participant demonstrate common sense reasoning in social contexts?'"
+    },
+    "winograd_q_252": {
+        "description": "Response to Winograd question 252: 'Can the participant grasp consequences of a hypothetical action?'"
+    },
+    "winograd_q_253": {
+        "description": "Response to Winograd question 253: 'Does the participant understand the effects of an action in a complex scenario?'"
+    },
+    "winograd_q_254": {
+        "description": "Response to Winograd question 254: 'Can the participant reason through ambiguity in a scenario involving social interactions?'"
+    },
+    "winograd_q_255": {
+        "description": "Response to Winograd question 255: 'Does the participant demonstrate an understanding of social expectations in various contexts?'"
+    },
+    "winograd_q_256": {
+        "description": "Response to Winograd question 256: 'Does the participant understand the effects of actions in a hypothetical scenario?'"
+    },
+    "winograd_q_257": {
+        "description": "Response to Winograd question 257: 'Does the participant understand complex cause-and-effect relationships?'"
+    },
+    "winograd_q_258": {
+        "description": "Response to Winograd question 258: 'Can the participant reason about the intentions of others based on context?'"
+    },
+    "winograd_q_259": {
+        "description": "Response to Winograd question 259: 'Can the participant understand cause and effect in everyday situations?'"
+    },
+    "winograd_q_260": {
+        "description": "Response to Winograd question 260: 'Can the participant reason through social interactions in a scenario involving multiple agents?'"
+    },
+    "winograd_q_261": {
+        "description": "Response to Winograd question 261: 'Can the participant make logical inferences about the actions of others in a social scenario?'"
+    },
+    "winograd_q_262": {
+        "description": "Response to Winograd question 262: 'Can the participant infer social expectations from actions?'"
+    },
+    "winograd_q_263": {
+        "description": "Response to Winograd question 263: 'Does the participant understand social norms and expectations in the given scenario?'"
+    },
+    "winograd_q_264": {
+        "description": "Response to Winograd question 264: 'Can the participant reason about the actions of others based on contextual clues?'"
+    },
+    "winograd_q_265": {
+        "description": "Response to Winograd question 265: 'Can the participant understand cause and effect relationships in social settings?'"
+    },
+    "winograd_q_266": {
+        "description": "Response to Winograd question 266: 'Does the participant demonstrate common-sense reasoning in a social situation?'"
+    },
+    "winograd_q_267": {
+        "description": "Response to Winograd question 267: 'Does the participant demonstrate an understanding of cause-and-effect in social interactions?'"
+    },
+    "winograd_q_268": {
+        "description": "Response to Winograd question 268: 'Can the participant reason about the consequences of actions in a social scenario?'"
+    },
+    "winograd_q_269": {
+        "description": "Response to Winograd question 269: 'Can the participant resolve ambiguity in a scenario involving social dynamics?'"
+    },
+    "winograd_q_270": {
+        "description": "Response to Winograd question 270: 'Can the participant reason through social interactions in a scenario involving multiple agents?'"
+    },
+    "winograd_q_271": {
+        "description": "Response to Winograd question 271: 'Can the participant demonstrate logical reasoning about everyday events?'"
+    },
+    "winograd_q_272": {
+        "description": "Response to Winograd question 272: 'Can the participant infer the correct outcome in a scenario involving social dynamics?'"
+    },
+    "winograd_q_273": {
+        "description": "Response to Winograd question 273: 'Can the participant infer the correct outcome in a scenario involving social interactions?'"
+    },
+    "winograd_q_274": {
+        "description": "Response to Winograd question 274: 'Does the participant reason logically in a given social situation?'"
+    },
+    "winograd_q_275": {
+        "description": "Response to Winograd question 275: 'Does the participant interpret the consequences of a hypothetical action?'"
+    },
+    "winograd_q_276": {
+        "description": "Response to Winograd question 276: 'Can the participant reason through social interactions in a scenario involving multiple agents?'"
+    },
+    "stroop_session_id": {
+        "description": "Unique identifier for the Stroop session."
+    },
+    "stroop_recording_acoustic_task_id": {
+        "description": "The unique identifier for the Stroop recording acoustic task."
+    },
+    "stroop_duration": {
+        "description": "Total duration of the Stroop task."
+    },
+    "stroop_item_stimulus_1": {
+        "description": "Stimulus presented for Stroop item 1."
+    },
+    "stroop_item_color_1": {
+        "description": "Color identified by the participant for Stroop item 1."
+    },
+    "stroop_item_time_1": {
+        "description": "Time taken to respond to Stroop item 1."
+    },
+    "stroop_item_stimulus_2": {
+        "description": "Stimulus presented for Stroop item 2."
+    },
+    "stroop_item_color_2": {
+        "description": "Color identified by the participant for Stroop item 2."
+    },
+    "stroop_item_time_2": {
+        "description": "Measures the response time for Stroop task item 2."
+    },
+    "stroop_item_stimulus_3": {
+        "description": "Stimulus presented for Stroop item 3."
+    },
+    "stroop_item_color_3": {
+        "description": "Color identified by the participant for Stroop item 3."
+    },
+    "stroop_item_time_3": {
+        "description": "Time taken by the participant to respond to Stroop item 3."
+    },
+    "stroop_item_stimulus_4": {
+        "description": "Stimulus presented for Stroop item 4."
+    },
+    "stroop_item_color_4": {
+        "description": "Indicates the color used in Stroop task item 4."
+    },
+    "stroop_item_time_4": {
+        "description": "Time taken to respond to Stroop item 4."
+    },
+    "stroop_item_stimulus_5": {
+        "description": "Stimulus presented for Stroop item 5."
+    },
+    "stroop_item_color_5": {
+        "description": "Color identified by the participant for Stroop item 5."
+    },
+    "stroop_item_time_5": {
+        "description": "Measures the response time for Stroop task item 5."
+    },
+    "stroop_item_stimulus_6": {
+        "description": "Stimulus presented for Stroop item 6."
+    },
+    "stroop_item_color_6": {
+        "description": "Color identified by the participant for Stroop item 6."
+    },
+    "stroop_item_time_6": {
+        "description": "Measures the response time for Stroop task item 6."
+    },
+    "stroop_item_stimulus_7": {
+        "description": "Stimulus presented for Stroop item 7."
+    },
+    "stroop_item_color_7": {
+        "description": "Color identified by the participant for Stroop item 7."
+    },
+    "stroop_item_time_7": {
+        "description": "Time taken to respond to Stroop item 7."
+    },
+    "stroop_item_stimulus_8": {
+        "description": "Stimulus presented for Stroop item 8."
+    },
+    "stroop_item_color_8": {
+        "description": "Color identified by the participant for Stroop item 8."
+    },
+    "stroop_item_time_8": {
+        "description": "Time taken to respond to Stroop item 8."
+    },
+    "stroop_item_stimulus_9": {
+        "description": "Stimulus presented for Stroop item 9."
+    },
+    "stroop_item_color_9": {
+        "description": "Color identified by the participant for Stroop item 9."
+    },
+    "stroop_item_time_9": {
+        "description": "Time taken to respond to Stroop item 9."
+    },
+    "stroop_item_stimulus_10": {
+        "description": "Stimulus presented for Stroop item 10."
+    },
+    "stroop_item_color_10": {
+        "description": "Color identified by the participant for Stroop item 10."
+    },
+    "stroop_item_time_10": {
+        "description": "Time taken to respond to Stroop item 10."
+    },
+    "stroop_item_stimulus_11": {
+        "description": "Stimulus presented for Stroop item 11."
+    },
+    "stroop_item_color_11": {
+        "description": "Color identified by the participant for Stroop item 11."
+    },
+    "stroop_item_time_11": {
+        "description": "Time taken to respond to Stroop item 11."
+    },
+    "stroop_item_stimulus_12": {
+        "description": "Stimulus presented for Stroop item 12."
+    },
+    "stroop_item_color_12": {
+        "description": "Color identified by the participant for Stroop item 12."
+    },
+    "stroop_item_time_12": {
+        "description": "Time taken to respond to Stroop item 12."
+    },
+    "stroop_item_stimulus_13": {
+        "description": "Stimulus presented for Stroop item 13."
+    },
+    "stroop_item_color_13": {
+        "description": "Color identified by the participant for Stroop item 13."
+    },
+    "stroop_item_time_13": {
+        "description": "Time taken to respond to Stroop item 13."
+    },
+    "stroop_item_stimulus_14": {
+        "description": "Indicates the stimulus presented in Stroop task item 14."
+    },
+    "stroop_item_color_14": {
+        "description": "Color identified by the participant for Stroop item 14."
+    },
+    "stroop_item_time_14": {
+        "description": "Measures the response time for Stroop task item 14."
+    },
+    "stroop_item_stimulus_15": {
+        "description": "Indicates the stimulus presented in Stroop task item 15."
+    },
+    "stroop_item_color_15": {
+        "description": "Color identified by the participant for Stroop item 15."
+    },
+    "stroop_item_time_15": {
+        "description": "Measures the response time for Stroop task item 15."
+    },
+    "vocabulary_session_id": {
+        "description": "Unique session identifier for the vocabulary task."
+    },
+    "vocabulary_recording_acoustic_task_id": {
+        "description": "The unique identifier for the vocabulary recording acoustic task."
+    },
+    "vocabulary_duration": {
+        "description": "Duration of the vocabulary assessment."
+    },
+    "vocabulary_item_word_1": {
+        "description": "Response for vocabulary word item 1."
+    },
+    "vocabulary_item_difficulty_1": {
+        "description": "Indicates the participant's reported difficulty level for vocabulary item 1."
+    },
+    "vocabulary_item_word_2": {
+        "description": "Response for vocabulary word item 2."
+    },
+    "vocabulary_item_difficulty_2": {
+        "description": "Indicates the participant's reported difficulty level for vocabulary item 2."
+    },
+    "vocabulary_item_word_3": {
+        "description": "Response for vocabulary word item 3."
+    },
+    "vocabulary_item_difficulty_3": {
+        "description": "Indicates the participant's reported difficulty level for vocabulary item 3."
+    },
+    "vocabulary_item_word_4": {
+        "description": "Response for vocabulary word item 4."
+    },
+    "vocabulary_item_difficulty_4": {
+        "description": "Indicates the participant's reported difficulty level for vocabulary item 4."
+    },
+    "vocabulary_item_word_5": {
+        "description": "Response for vocabulary word item 5."
+    },
+    "vocabulary_item_difficulty_5": {
+        "description": "Indicates the participant's reported difficulty level for vocabulary item 5."
+    },
+    "vocabulary_item_word_6": {
+        "description": "Response for vocabulary word item 6."
+    },
+    "vocabulary_item_difficulty_6": {
+        "description": "Indicates the difficulty level reported by the participant for vocabulary item 6."
+    },
+    "random_session_id": {
+        "description": "Unique identifier for a random session."
+    },
+    "random_recording_acoustic_task_id": {
+        "description": "Unique identifier for a random recording acoustic task."
+    },
+    "random_duration": {
+        "description": "Total duration of a randomly assigned task or session."
+    },
+    "random_item_generation_category": {
+        "description": "Category assigned for random item generation in the session."
+    }
+}

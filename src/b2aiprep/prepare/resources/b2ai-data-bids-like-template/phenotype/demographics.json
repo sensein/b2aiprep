@@ -1,0 +1,167 @@
+{
+    "demographics_session_id": {
+        "description": "Unique identifier for the demographics session."
+    },
+    "demographics_duration": {
+        "description": "Total duration of the demographics section."
+    },
+    "demographics_completed_by___1": {
+        "description": "Indicates if the participant completed the demographic section on their own."
+    },
+    "demographics_completed_by___2": {
+        "description": "Indicates if demographics were completed by a healthcare professional."
+    },
+    "demographics_completed_by___3": {
+        "description": "Indicates if demographics were completed by a caregiver."
+    },
+    "state_province": {
+        "description": "The state or province where the participant lives."
+    },
+    "country": {
+        "description": "The country where the participant resides."
+    },
+    "gender_identity": {
+        "description": "The participant's reported gender identity."
+    },
+    "specify_gender_identity": {
+        "description": "Allows the participant to specify their gender identity."
+    },
+    "sexual_orientation": {
+        "description": "Indicates the participant's sexual orientation."
+    },
+    "race___1": {
+        "description": "Indicates if the participant identifies with race category 1."
+    },
+    "race___2": {
+        "description": "Indicates if the participant identifies with race category 2."
+    },
+    "race___3": {
+        "description": "Indicates if the participant identifies with race category 3."
+    },
+    "race___4": {
+        "description": "Indicates if the participant identifies with race category 4."
+    },
+    "race___5": {
+        "description": "Indicates if the participant identifies with race category 5."
+    },
+    "race___6": {
+        "description": "Indicates if the participant identifies with race category 6."
+    },
+    "race___7": {
+        "description": "Indicates if the participant identifies with race category 7."
+    },
+    "race___8": {
+        "description": "Indicates if the participant identifies with race category 8."
+    },
+    "ethnicity": {
+        "description": "Indicates the participant's ethnicity."
+    },
+    "other_edu_level": {
+        "description": "Indicates if the participant has received an education level not listed in other options."
+    },
+    "hearing": {
+        "description": "Indicates if the participant has hearing issues."
+    },
+    "vision": {
+        "description": "Indicates if the participant has vision issues."
+    },
+    "cognition": {
+        "description": "Reports on the participant's cognitive abilities or issues."
+    },
+    "mobility": {
+        "description": "Indicates the participant's level of mobility or movement."
+    },
+    "self_care": {
+        "description": "Indicates if the participant engages in self-care activities."
+    },
+    "independent_living": {
+        "description": "Indicates if the participant is living independently."
+    },
+    "employ_status___1": {
+        "description": "Indicates if the participant is employed full-time."
+    },
+    "employ_status___2": {
+        "description": "Indicates if the participant is employed full-time."
+    },
+    "employ_status___3": {
+        "description": "Indicates if the participant is employed part-time."
+    },
+    "employ_status___4": {
+        "description": "Indicates if the participant is a student."
+    },
+    "employ_status___5": {
+        "description": "Indicates if the participant is a homemaker."
+    },
+    "employ_status___6": {
+        "description": "Indicates if the participant is unemployed."
+    },
+    "employ_status___7": {
+        "description": "Indicates if the participant is self-employed."
+    },
+    "employ_status___8": {
+        "description": "Indicates if the participant is a volunteer."
+    },
+    "employ_status___9": {
+        "description": "Indicates if the participant is retired."
+    },
+    "household_income_usa": {
+        "description": "The participant's household income in US dollars."
+    },
+    "household_income_ca": {
+        "description": "The participant's household income in Canadian dollars."
+    },
+    "marital_status___1": {
+        "description": "Indicates if the participant is married."
+    },
+    "marital_status___2": {
+        "description": "Indicates if the participant is in a domestic partnership."
+    },
+    "marital_status___3": {
+        "description": "Indicates if the participant is separated."
+    },
+    "marital_status___4": {
+        "description": "Indicates if the participant is widowed."
+    },
+    "marital_status___5": {
+        "description": "Indicates if the participant is single."
+    },
+    "marital_status___6": {
+        "description": "Indicates if the participant is divorced."
+    },
+    "marital_status___7": {
+        "description": "Indicates if the participant is cohabiting."
+    },
+    "housing_status": {
+        "description": "Indicates the participant's current housing status."
+    },
+    "household_count": {
+        "description": "The number of people living in the participant's household."
+    },
+    "spouse_partner_sig_other": {
+        "description": "Indicates if the participant has a spouse, partner, or significant other."
+    },
+    "children": {
+        "description": "Indicates if the participant has children."
+    },
+    "parent": {
+        "description": "Indicates if the participant is a parent."
+    },
+    "grandparent": {
+        "description": "Indicates if the participant is a grandparent."
+    },
+    "other_live_with": {
+        "description": "Indicates if the participant lives with people not listed in other options."
+    },
+    "others_household_specify": {
+        "description": "Allows the participant to specify other people living in their household."
+    },
+    "transportation_yn": {
+        "description": "Indicates if the participant has access to transportation."
+    },
+    "primary_transportation": {
+        "description": "Indicates the participant's primary mode of transportation."
+    },
+    "q_generic_demographics_complete": {
+        "description": "Indicates if the participant has completed the generic demographics section."
+    }
+}

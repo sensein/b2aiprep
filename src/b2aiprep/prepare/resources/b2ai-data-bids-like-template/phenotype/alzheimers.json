@@ -1,0 +1,98 @@
+{
+    "diagnosis_alz_dementia_mci_causes": {
+        "description": "Indicates if other causes of cognitive or functional changes have been excluded in the participant’s diagnosis."
+    },
+    "diagnosis_alz_dementia_mci_dt": {
+        "description": "Specifies the type of dementia or cognitive impairment in the participant."
+    },
+    "diagnosis_alz_dementia_mci_etiology___genetic_factors": {
+        "description": "Indicates if genetic factors are suspected or known to be the etiology of the participant’s cognitive impairment or dementia."
+    },
+    "diagnosis_alz_dementia_mci_etiology___age_related_changes": {
+        "description": "Indicates if age-related changes are suspected or known to be the etiology of the participant’s cognitive impairment or dementia."
+    },
+    "diagnosis_alz_dementia_mci_etiology___other_medical_conditions": {
+        "description": "Indicates if other medical conditions, such as vascular factors or traumatic brain injury, are suspected or known to be the etiology of the participant’s cognitive impairment or dementia."
+    },
+    "diagnosis_alz_dementia_mci_etiology___substance_related": {
+        "description": "Indicates if substance-related factors, such as alcohol-induced cognitive impairment, are suspected or known to be the etiology of the participant’s cognitive impairment or dementia."
+    },
+    "diagnosis_alz_dementia_mci_etiology___other": {
+        "description": "Indicates if another etiology is suspected or known to be the cause of the participant’s cognitive impairment or dementia."
+    },
+    "diagnosis_alz_dementia_mci_etiology_gf___familial_alzheimers_disease": {
+        "description": "Indicates if familial Alzheimer’s disease is the genetic factor suspected or known to be the cause of the participant’s cognitive impairment or dementia."
+    },
+    "diagnosis_alz_dementia_mci_etiology_gf___apolipoprotein_e": {
+        "description": "Indicates if apolipoprotein E (APOE) ε4 allele is the genetic factor suspected or known to be the cause of the participant’s cognitive impairment or dementia."
+    },
+    "diagnosis_alz_dementia_mci_etiology_gf___other_genetic_factors": {
+        "description": "Indicates if other genetic factors are suspected or known to be the cause of the participant’s cognitive impairment or dementia."
+    },
+    "diagnosis_alz_dementia_mci_ds___mci": {
+        "description": "Indicates if the participant’s cognitive impairment is classified as mild cognitive impairment (MCI)."
+    },
+    "diagnosis_alz_dementia_mci_ds___cdr": {
+        "description": "Indicates if the participant’s cognitive impairment is classified using the Clinical Dementia Rating (CDR) staging."
+    },
+    "diagnosis_alz_dementia_mci_ds_cdr": {
+        "description": "Specifies the participant’s Clinical Dementia Rating (CDR) staging."
+    },
+    "diagnosis_alz_dementia_mci_ca_rudas_score": {
+        "description": "Specifies the participant’s Rowland Universal Dementia Assessment Scale (RUDAS) score."
+    },
+    "diagnosis_alz_dementia_mci_ca_mmse_score": {
+        "description": "Specifies the participant’s Mini-Mental State Examination (MMSE) score."
+    },
+    "diagnosis_alz_dementia_mci_ca_moca_score": {
+        "description": "Specifies the participant’s Montreal Cognitive Assessment (MoCA) score."
+    },
+    "diagnosis_alz_dementia_mci_ca_adas_cog_score": {
+        "description": "Specifies the participant’s Alzheimer’s Disease Assessment Scale-Cognitive Subscale (ADAS-Cog) score."
+    },
+    "diagnosis_alz_dementia_mci_ca_other": {
+        "description": "Specifies if another cognitive assessment tool was used for the participant."
+    },
+    "diagnosis_alz_dementia_mci_ca_other_score": {
+        "description": "Specifies the score from another cognitive assessment tool used for the participant."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained": {
+        "description": "Indicates if the participant has undergone any treatment for Alzheimer’s disease, cognitive impairment, or other types of dementia."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes___medications": {
+        "description": "Indicates if the participant has taken medications as treatment for Alzheimer’s disease or cognitive impairment."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes___npi": {
+        "description": "Indicates if the participant has received non-pharmacological interventions as treatment for Alzheimer’s disease or cognitive impairment."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_medications___cholinesterase_inhibitors": {
+        "description": "Indicates if the participant has taken cholinesterase inhibitors, such as Donepezil, as treatment for Alzheimer’s disease or cognitive impairment."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_medications___nmda_receptor_antagonist": {
+        "description": "Indicates if the participant has taken NMDA receptor antagonist, such as Memantine, as treatment for Alzheimer’s disease or cognitive impairment."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_medications___other": {
+        "description": "Indicates if the participant has taken other medications as treatment for Alzheimer’s disease or cognitive impairment."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___day_program": {
+        "description": "Indicates if the participant has participated in a day program as a non-pharmacological intervention for Alzheimer’s disease or cognitive impairment."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___cognitive_simulation_therapy": {
+        "description": "Indicates if the participant has undergone cognitive stimulation therapy as a non-pharmacological intervention for Alzheimer’s disease or cognitive impairment."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___reality_orientation_therapy": {
+        "description": "Indicates if the participant has undergone reality orientation therapy as a non-pharmacological intervention for Alzheimer’s disease or cognitive impairment."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___reminiscence_therapy": {
+        "description": "Indicates if the participant has undergone reminiscence therapy as a non-pharmacological intervention for Alzheimer’s disease or cognitive impairment."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___physical_exercise_program": {
+        "description": "Indicates if the participant has participated in a physical exercise program as a non-pharmacological intervention for Alzheimer’s disease or cognitive impairment."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___dietary_modifications": {
+        "description": "Indicates if the participant has undergone dietary modifications as a non-pharmacological intervention for Alzheimer’s disease or cognitive impairment."
+    },
+    "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___other": {
+        "description": "Indicates if the participant has undergone other non-pharmacological interventions for Alzheimer’s disease or cognitive impairment."
+    }
+}

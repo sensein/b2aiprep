@@ -1,0 +1,14 @@
+{
+    "random_session_id": {
+        "description": "Unique identifier for a random session."
+    },
+    "random_recording_acoustic_task_id": {
+        "description": "Unique identifier for a random recording acoustic task."
+    },
+    "random_duration": {
+        "description": "Total duration of a randomly assigned task or session."
+    },
+    "random_item_generation_category": {
+        "description": "Category assigned for random item generation in the session."
+    }
+}

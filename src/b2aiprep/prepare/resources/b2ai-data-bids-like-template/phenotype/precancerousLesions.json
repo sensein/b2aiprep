@@ -1,0 +1,119 @@
+{
+    "diagnois_pl_gsd_ls": {
+        "description": "Indicates if the participant has a precancerous vocal fold lesion confirmed by laryngoscopy or stroboscopy."
+    },
+    "diagnois_pl_gsd_bp": {
+        "description": "Indicates if the participant has a precancerous vocal fold lesion confirmed by biopsy or pathology."
+    },
+    "diagnosis_pl_ds___keratosis": {
+        "description": "Indicates if the participant has been diagnosed with keratosis."
+    },
+    "diagnosis_pl_ds___leukoplakia": {
+        "description": "Indicates if the participant has been diagnosed with leukoplakia."
+    },
+    "diagnosis_pl_ds___erythroplakia": {
+        "description": "Indicates if the participant has been diagnosed with erythroplakia."
+    },
+    "diagnosis_pl_ds___other": {
+        "description": "Indicates if the participant has been diagnosed with another precancerous lesion."
+    },
+    "diagnosis_pl_ds_l": {
+        "description": "Indicates if the participant has leukoplakia."
+    },
+    "diagnosis_pl_ds_l_wd_g": {
+        "description": "Indicates if the participant has leukoplakia with dysplasia."
+    },
+    "diagnosis_pl_ds_e": {
+        "description": "Indicates if the participant has erythroplakia."
+    },
+    "diagnosis_pl_ds_e_wd_g": {
+        "description": "Indicates if the participant has erythroplakia with dysplasia."
+    },
+    "diagnosis_pl_etiology___past_or_present_smoking": {
+        "description": "Indicates if the participant has a history of smoking as a risk factor for their precancerous lesion."
+    },
+    "diagnosis_pl_etiology___laryngopharyngeal_reflux": {
+        "description": "Indicates if the participant has laryngopharyngeal reflux as a risk factor for their precancerous lesion."
+    },
+    "diagnosis_pl_etiology___other_irritants": {
+        "description": "Indicates if the participant has other irritants as risk factors for their precancerous lesion."
+    },
+    "diagnosis_pl_ds_ll___right_vocal_fold": {
+        "description": "Indicates if the participant's lesion is located on the right vocal fold."
+    },
+    "diagnosis_pl_ds_ll___left_vocal_fold": {
+        "description": "Indicates if the participant's lesion is located on the left vocal fold."
+    },
+    "diagnosis_pl_ds_ll___both_vocal_folds": {
+        "description": "Indicates if the participant's lesion is located on both vocal folds."
+    },
+    "diagnosis_pl_ds_ll___ventricular_folds": {
+        "description": "Indicates if the participant's lesion is located on the ventricular folds."
+    },
+    "diagnosis_pl_ds_ll___subglottal_areas": {
+        "description": "Indicates if the participant's lesion is located in the subglottal areas."
+    },
+    "diagnosis_pl_degree_os_1": {
+        "description": "Indicates the overall severity of the participant’s precancerous lesion."
+    },
+    "diagnosis_pl_degree_os_2": {
+        "description": "Indicates an alternative measure of the overall severity of the participant’s precancerous lesion."
+    },
+    "diagnosis_pl_degree_r_1": {
+        "description": "Indicates the roughness of the participant’s voice due to the precancerous lesion."
+    },
+    "diagnosis_pl_degree_r_2": {
+        "description": "Indicates an alternative measure of the roughness of the participant’s voice due to the precancerous lesion."
+    },
+    "diagnosis_pl_degree_b_1": {
+        "description": "Indicates the breathiness of the participant’s voice due to the precancerous lesion."
+    },
+    "diagnosis_pl_degree_b_2": {
+        "description": "Indicates an alternative measure of the breathiness of the participant’s voice due to the precancerous lesion."
+    },
+    "diagnosis_pl_degree_s_1": {
+        "description": "Indicates the strain in the participant’s voice due to the precancerous lesion."
+    },
+    "diagnosis_pl_degree_s_2": {
+        "description": "Indicates an alternative measure of the strain in the participant’s voice due to the precancerous lesion."
+    },
+    "diagnosis_pl_degree_p_1": {
+        "description": "Indicates the pitch of the participant’s voice due to the precancerous lesion."
+    },
+    "diagnosis_pl_degree_p_2": {
+        "description": "Indicates an alternative measure of the pitch of the participant’s voice due to the precancerous lesion."
+    },
+    "diagnosis_pl_degree_l_1": {
+        "description": "Indicates the loudness of the participant’s voice due to the precancerous lesion."
+    },
+    "diagnosis_pl_degree_l_2": {
+        "description": "Indicates an alternative measure of the loudness of the participant’s voice due to the precancerous lesion."
+    },
+    "diagnosis_pl_degree_comments": {
+        "description": "Provides additional comments about the resonance of the participant’s voice due to the precancerous lesion."
+    },
+    "diagnosis_pl_treatment": {
+        "description": "Indicates if the participant has undergone any treatment for their precancerous lesion."
+    },
+    "diagnosis_pl_treatment_select___surveillance_only": {
+        "description": "Indicates if the participant is under surveillance only as treatment for their precancerous lesion."
+    },
+    "diagnosis_pl_treatment_select___laser_resection": {
+        "description": "Indicates if the participant has undergone laser resection as treatment for their precancerous lesion."
+    },
+    "diagnosis_pl_treatment_select___laser_ablation": {
+        "description": "Indicates if the participant has undergone laser ablation as treatment for their precancerous lesion."
+    },
+    "diagnosis_pl_treatment_select___microlaryngeal_surgery_without_laser": {
+        "description": "Indicates if the participant has undergone microlaryngeal surgery without laser as treatment for their precancerous lesion."
+    },
+    "diagnosis_pl_treatment_select___radiotherapy_persistent_or_recurrent_lesions": {
+        "description": "Indicates if the participant has undergone radiotherapy for persistent or recurrent lesions."
+    },
+    "diagnosis_pl_treatment_select___voice_or_speech_therapy": {
+        "description": "Indicates if the participant has undergone voice or speech therapy as treatment for their precancerous lesion."
+    },
+    "diagnosis_pl_treatment_select___other": {
+        "description": "Indicates if the participant has undergone other treatments for their precancerous lesion."
+    }
+}

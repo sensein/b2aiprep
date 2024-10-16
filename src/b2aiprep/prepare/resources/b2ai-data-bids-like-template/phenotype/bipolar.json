@@ -1,0 +1,23 @@
+{
+    "diagnosis_bipolar_gsd": {
+        "description": "Specifies the participant’s diagnosis of bipolar disorder."
+    },
+    "diagnosis_bipolar_gsd_interview": {
+        "description": "Indicates if a structured clinical interview was conducted for diagnosing the participant’s bipolar disorder."
+    },
+    "diagnosis_bipolar_gsd_oqu": {
+        "description": "Indicates if an objective questionnaire was used in the diagnosis of the participant’s bipolar disorder."
+    },
+    "diagnosis_bipolar_gsd_oquw": {
+        "description": "Specifies which objective questionnaire was used in diagnosing the participant’s bipolar disorder."
+    },
+    "diagnosis_bipolar_subtype_active": {
+        "description": "Specifies the active subtype of the participant’s bipolar disorder."
+    },
+    "diagnosis_bipolar_psychotic": {
+        "description": "Indicates if the participant has psychotic symptoms associated with bipolar disorder."
+    },
+    "diagnosis_bipolar_severity": {
+        "description": "Indicates the severity of the participant’s bipolar disorder."
+    }
+}

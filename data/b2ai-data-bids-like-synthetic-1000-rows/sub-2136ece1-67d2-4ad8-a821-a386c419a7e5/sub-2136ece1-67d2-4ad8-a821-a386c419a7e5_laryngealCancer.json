@@ -1,0 +1,153 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "id": "2136ece1-67d2-4ad8-a821-a386c419a7e5-laryngealCancer",
+  "questionnaire": "https://kind-lab.github.io/vbai-fhir/Questionnaire-dvoicelaryngealcancerschema",
+  "status": "completed",
+  "item": [
+    {
+      "linkId": "record_id",
+      "answer": [
+        {
+          "valueString": "2136ece1-67d2-4ad8-a821-a386c419a7e5"
+        }
+      ]
+    },
+    {
+      "linkId": "diagnois_lc_gsd_sll"
+    },
+    {
+      "linkId": "diagnosis_lc_gsd_bpr"
+    },
+    {
+      "linkId": "diagnosis_lc_gsd_uots___ct_neck"
+    },
+    {
+      "linkId": "diagnosis_lc_gsd_uots___ct_chest"
+    },
+    {
+      "linkId": "diagnosis_lc_gsd_uots___mri_neck"
+    },
+    {
+      "linkId": "diagnosis_lc_gsd_uots___pet_ct"
+    },
+    {
+      "linkId": "diagnosis_lc_gsd_uots___ultrasound_neck",
+      "answer": [
+        {
+          "valueBoolean": false
+        }
+      ]
+    },
+    {
+      "linkId": "diagnosis_lc_ds___right_vocal_fold"
+    },
+    {
+      "linkId": "diagnosis_lc_ds___left_vocal_fold"
+    },
+    {
+      "linkId": "diagnosis_lc_ds___both_vocal_folds"
+    },
+    {
+      "linkId": "diagnosis_lc_ds___anterior_commissure"
+    },
+    {
+      "linkId": "diagnosis_lc_ds___ventricular_folds"
+    },
+    {
+      "linkId": "diagnosis_lc_ds___subglottal_areas"
+    },
+    {
+      "linkId": "diagnosis_lc_etiology___smoking"
+    },
+    {
+      "linkId": "diagnosis_lc_etiology___alcohol"
+    },
+    {
+      "linkId": "diagnosis_lc_etiology___family_history"
+    },
+    {
+      "linkId": "diagnosis_lc_etiology___hpv"
+    },
+    {
+      "linkId": "diagnosis_lc_etiology___exposure_other_harmful_substances"
+    },
+    {
+      "linkId": "diagnosis_lc_ds_t_stage"
+    },
+    {
+      "linkId": "diagnosis_lc_ds_n_stage"
+    },
+    {
+      "linkId": "diagnosis_lc_ds_m_stage"
+    },
+    {
+      "linkId": "diagnosis_lc_degree_os_1"
+    },
+    {
+      "linkId": "diagnosis_lc_degree_os_2"
+    },
+    {
+      "linkId": "diagnosis_lc_degree_r_1"
+    },
+    {
+      "linkId": "diagnosis_lc_degree_r_2"
+    },
+    {
+      "linkId": "diagnosis_lc_degree_b_1"
+    },
+    {
+      "linkId": "diagnosis_lc_degree_b_2"
+    },
+    {
+      "linkId": "diagnosis_lc_degree_s_1"
+    },
+    {
+      "linkId": "diagnosis_lc_degree_s_2"
+    },
+    {
+      "linkId": "diagnosis_lc_degree_p_1"
+    },
+    {
+      "linkId": "diagnosis_lc_degree_p_2"
+    },
+    {
+      "linkId": "diagnosis_lc_degree_l_1"
+    },
+    {
+      "linkId": "diagnosis_lc_degree_l_2"
+    },
+    {
+      "linkId": "diagnosis_lc_degree_comments"
+    },
+    {
+      "linkId": "diagnosis_as_ds_ccsr"
+    },
+    {
+      "linkId": "diagnosis_lc_treatment"
+    },
+    {
+      "linkId": "diagnosis_lc_treatment_select___radiation"
+    },
+    {
+      "linkId": "diagnosis_lc_treatment_select___chemotherapy"
+    },
+    {
+      "linkId": "diagnosis_lc_treatment_select___immunotherapy"
+    },
+    {
+      "linkId": "diagnosis_lc_treatment_select___surgery"
+    },
+    {
+      "linkId": "diagnosis_lc_treatment_select___voice_or_speech_therapy"
+    },
+    {
+      "linkId": "diagnosis_lc_treatment_select___other"
+    },
+    {
+      "linkId": "diagnosis_lc_treatment_s___endoscopic_laser"
+    },
+    {
+      "linkId": "diagnosis_lc_treatment_s___partial_laryngectomy"
+    }
+  ]
+}

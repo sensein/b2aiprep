@@ -1,0 +1,11 @@
+{
+    "voice_severity_session_id": {
+        "description": "Unique identifier for the voice severity session."
+    },
+    "voice_severity_duration": {
+        "description": "Duration of the assessment for the severity of the participant's voice issues."
+    },
+    "describe_the_severity_of_a": {
+        "description": "Asks the participant to describe the severity of a specific condition or symptom."
+    }
+}

@@ -1,0 +1,7 @@
+[
+    "session_id",
+    "session_status",
+    "session_is_control_participant",
+    "session_duration",
+    "session_site"
+]

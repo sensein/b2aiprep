@@ -1,0 +1,38 @@
+{
+    "vhi_session_id": {
+        "description": "The unique identifier for the Voice Handicap Index session."
+    },
+    "vhi_duration": {
+        "description": "Duration of the Voice Handicap Index session."
+    },
+    "voice_difficult_hear": {
+        "description": "Indicates if the participant's voice is difficult to hear."
+    },
+    "tough_to_understand": {
+        "description": "Indicates if the participant feels that their voice is tough to understand."
+    },
+    "voice_restrict_social": {
+        "description": "Indicates if the participant's voice issues restrict their social activities."
+    },
+    "left_out_convo": {
+        "description": "Reports if the participant felt left out of a conversation recently."
+    },
+    "voice_lose_income": {
+        "description": "Indicates if the participant's voice issues have led to a loss of income."
+    },
+    "strain_voice": {
+        "description": "Reports if the participant has experienced voice strain."
+    },
+    "voice_clarity": {
+        "description": "Indicates if the participant’s voice is clear during the session."
+    },
+    "voice_upsetting": {
+        "description": "Indicates if the participant finds their voice issues upsetting."
+    },
+    "voice_handicapped": {
+        "description": "Indicates if the participant feels handicapped by their voice."
+    },
+    "ask_whats_wrong_voice": {
+        "description": "Indicates if the participant asked what was wrong with their voice during the assessment."
+    }
+}

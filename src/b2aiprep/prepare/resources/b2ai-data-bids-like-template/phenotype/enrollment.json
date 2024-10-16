@@ -1,0 +1,89 @@
+{
+    "ef_select_language": {
+        "description": "Indicates the participant’s selected language for the study."
+    },
+    "ef_any_vision_related_req": {
+        "description": "Indicates if the participant has any vision-related requirements to assist with reading text in the study."
+    },
+    "ef_vision_a11y_options___1": {
+        "description": "Indicates if the participant requires changes to the font size as part of the study’s accessibility features."
+    },
+    "ef_vision_a11y_options___2": {
+        "description": "Indicates if the participant requires changes to the font color (high contrast mode) as part of the study’s accessibility features."
+    },
+    "ef_vision_a11y_options___3": {
+        "description": "Indicates if the participant requires the use of a screen reader as part of the study’s accessibility features."
+    },
+    "ef_vision_a11y_options___4": {
+        "description": "Indicates if the participant requires a person to read the text to them as part of the study’s accessibility features."
+    },
+    "ef_any_hearing_related_req": {
+        "description": "Indicates if the participant has any hearing-related requirements to assist with listening to sound files in the study."
+    },
+    "ef_hearing_a11y_options___1": {
+        "description": "Indicates if the participant requires an increase in volume as part of the study’s accessibility features."
+    },
+    "ef_hearing_a11y_options___2": {
+        "description": "Indicates if the participant requires closed captions as part of the study’s accessibility features."
+    },
+    "ef_hearing_a11y_options___3": {
+        "description": "Indicates if the participant prefers to use haptic feedback (vibrations) instead of audio cues as part of the study’s accessibility features."
+    },
+    "ef_any_physical_challenges": {
+        "description": "Indicates if the participant has any physical challenges that may affect their ability to navigate the application using a touch screen."
+    },
+    "ef_physical_a11y_options___1": {
+        "description": "Indicates if the participant requires an increase in button size as part of the study’s accessibility features."
+    },
+    "ef_physical_a11y_options___2": {
+        "description": "Indicates if the participant requires the use of an alternative keyboard connected to the app."
+    },
+    "ef_physical_a11y_options___3": {
+        "description": "Indicates if the participant would prefer to navigate the survey using voice commands instead of the touch screen."
+    },
+    "ef_any_cognitive_challeges": {
+        "description": "Indicates if the participant has any cognitive challenges, including difficulty reading, that may require assistance in answering questions and following directions in the study."
+    },
+    "ef_cognitive_a11y_options___1": {
+        "description": "Indicates if the participant prefers to have the questions read aloud using text-to-speech as part of the study’s accessibility features."
+    },
+    "ef_cognitive_a11y_options___2": {
+        "description": "Indicates if the participant prefers to have a person read the text to them as part of the study’s accessibility features."
+    },
+    "ef_cognitive_a11y_options___3": {
+        "description": "Indicates if the participant prefers to speak their answers instead of typing them as part of the study’s accessibility features."
+    },
+    "ef_completed_by___1": {
+        "description": "Indicates if the responses in the survey were completed by the participant themselves."
+    },
+    "ef_completed_by___2": {
+        "description": "Indicates if the responses in the survey were completed by an assistant."
+    },
+    "ef_completed_by___3": {
+        "description": "Indicates if the responses in the survey were completed by a parent or caregiver."
+    },
+    "ef_primary_language": {
+        "description": "Indicates the primary language spoken by the participant."
+    },
+    "ef_primary_language_other": {
+        "description": "If the participant's primary language is not listed, this field specifies the language."
+    },
+    "ef_fluent_languages___1": {
+        "description": "Indicates if the participant speaks no additional languages fluently."
+    },
+    "ef_fluent_languages___2": {
+        "description": "Indicates if the participant speaks English fluently in addition to their primary language."
+    },
+    "ef_fluent_languages___3": {
+        "description": "Indicates if the participant speaks French fluently in addition to their primary language."
+    },
+    "ef_fluent_languages___4": {
+        "description": "Indicates if the participant speaks Spanish fluently in addition to their primary language."
+    },
+    "ef_fluent_languages___5": {
+        "description": "Indicates if the participant speaks any other language fluently, and provides the details."
+    },
+    "ef_fluent_language_other": {
+        "description": "If the participant speaks another language fluently that is not listed, this field specifies the language."
+    }
+}

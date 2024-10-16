@@ -1,0 +1,128 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "id": "2136ece1-67d2-4ad8-a821-a386c419a7e5-eligibility",
+  "questionnaire": "https://kind-lab.github.io/vbai-fhir/Questionnaire-subjectparticipanteligiblestudiesschema",
+  "status": "completed",
+  "item": [
+    {
+      "linkId": "record_id",
+      "answer": [
+        {
+          "valueString": "2136ece1-67d2-4ad8-a821-a386c419a7e5"
+        }
+      ]
+    },
+    {
+      "linkId": "eligible_studies___1"
+    },
+    {
+      "linkId": "eligible_studies___2"
+    },
+    {
+      "linkId": "eligible_studies___3"
+    },
+    {
+      "linkId": "eligible_studies___4"
+    },
+    {
+      "linkId": "eligible_studies___5",
+      "answer": [
+        {
+          "valueBoolean": false
+        }
+      ]
+    },
+    {
+      "linkId": "is_control_participant"
+    },
+    {
+      "linkId": "laryng_cancer"
+    },
+    {
+      "linkId": "benign_cord_lesion"
+    },
+    {
+      "linkId": "rrp",
+      "answer": [
+        {
+          "valueBoolean": false
+        }
+      ]
+    },
+    {
+      "linkId": "spas_dys"
+    },
+    {
+      "linkId": "voc_fold_paralysis"
+    },
+    {
+      "linkId": "alz_dementia_mci"
+    },
+    {
+      "linkId": "als"
+    },
+    {
+      "linkId": "parkinsons"
+    },
+    {
+      "linkId": "alcohol_subst_abuse"
+    },
+    {
+      "linkId": "gad"
+    },
+    {
+      "linkId": "add_adhd"
+    },
+    {
+      "linkId": "asd"
+    },
+    {
+      "linkId": "bipolar"
+    },
+    {
+      "linkId": "bpd"
+    },
+    {
+      "linkId": "depression"
+    },
+    {
+      "linkId": "ed"
+    },
+    {
+      "linkId": "insomnia"
+    },
+    {
+      "linkId": "ocd"
+    },
+    {
+      "linkId": "panic"
+    },
+    {
+      "linkId": "ptsd"
+    },
+    {
+      "linkId": "schizophrenia"
+    },
+    {
+      "linkId": "soc_anx_dis"
+    },
+    {
+      "linkId": "other_psych"
+    },
+    {
+      "linkId": "asthma"
+    },
+    {
+      "linkId": "airway_stenosis"
+    },
+    {
+      "linkId": "chronic_cough"
+    },
+    {
+      "linkId": "copd"
+    },
+    {
+      "linkId": "osa"
+    }
+  ]
+}

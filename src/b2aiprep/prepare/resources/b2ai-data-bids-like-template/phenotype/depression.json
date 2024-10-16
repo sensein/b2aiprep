@@ -1,0 +1,26 @@
+{
+    "diagnosis_depression_gsd": {
+        "description": "Indicates the participant’s diagnosis of depression."
+    },
+    "diagnosis_depression_clinical_subcategory": {
+        "description": "Specifies the subcategory of clinical depression, such as major depressive disorder, for the participant."
+    },
+    "diagnosis_depression_gsd_interview": {
+        "description": "Indicates if a structured clinical interview was conducted for diagnosing the participant’s depression."
+    },
+    "diagnosis_depression_gsd_oqu": {
+        "description": "Indicates if an objective questionnaire was used in the diagnosis of the participant’s depression."
+    },
+    "diagnosis_depression_gsd_oquw": {
+        "description": "Specifies which objective questionnaire was used in diagnosing the participant’s depression."
+    },
+    "diagnosis_bipolar_subtype_active_depression": {
+        "description": "Specifies the active subtype of depression in the participant’s bipolar disorder."
+    },
+    "diagnosis_bipolar_psychotic_depression": {
+        "description": "Indicates if the participant has psychotic symptoms associated with the depressive phase of their bipolar disorder."
+    },
+    "diagnosis_bipolar_severity_depression": {
+        "description": "Indicates the severity of the participant’s depressive phase of bipolar disorder."
+    }
+}
