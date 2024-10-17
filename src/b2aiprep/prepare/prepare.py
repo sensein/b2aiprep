@@ -57,10 +57,6 @@ from senselab.audio.tasks.features_extraction.torchaudio import (
     extract_spectrogram_from_audios,
 )
 from senselab.audio.tasks.preprocessing.preprocessing import resample_audios
-from senselab.audio.tasks.speaker_embeddings.api import (
-    extract_speaker_embeddings_from_audios,
-)
-from senselab.audio.tasks.speech_to_text.api import transcribe_audios
 from senselab.utils.data_structures.device import DeviceType
 from senselab.utils.data_structures.language import Language
 from senselab.utils.data_structures.model import HFModel
@@ -75,6 +71,23 @@ RESAMPLE_RATE = 16000
 
 _logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
+
+try:
+    from senselab.audio.tasks.speaker_embeddings.api import (
+        extract_speaker_embeddings_from_audios,
+    )
+except Exception as e:
+    _logger.error(
+        f"Speaker embeddings import error occurred. \
+                  This is likely because this device is not connected to wifi. {e}"
+    )
+try:
+    from senselab.audio.tasks.speech_to_text.api import transcribe_audios
+except Exception as e:
+    _logger.error(
+        f"Speech to text import error occurred. \
+                  This is likely because this device is not connected to wifi. {e}"
+    )
 
 
 def copy_phenotype_files(template_package, bids_dir_path):
@@ -143,13 +156,17 @@ def wav_to_features(wav_paths: List[Path], transcription_model_size: str, with_s
     for wav_path in tqdm(wav_paths, total=len(wav_paths), desc="Extracting features"):
         wav_path = Path(wav_path)
 
-        _logger.info(wav_path)
         logging.disable(logging.ERROR)
         audio = Audio.from_filepath(str(wav_path))
         audio = resample_audios([audio], resample_rate=RESAMPLE_RATE)[0]
 
         features = {}
-        features["speaker_embedding"] = extract_speaker_embeddings_from_audios([audio])[0]
+        try:
+            features["speaker_embedding"] = extract_speaker_embeddings_from_audios([audio])[0]
+        except Exception as e:
+            _logger.error(
+                f"Speaker embeddings: An error occurred with extracting speaker embeddings. {e}"
+            )
         features["specgram"] = extract_spectrogram_from_audios([audio])[0]
         features["melfilterbank"] = extract_mel_filter_bank_from_audios([audio])[0]
         features["mfcc"] = extract_mfcc_from_audios([audio])[0]
@@ -159,12 +176,14 @@ def wav_to_features(wav_paths: List[Path], transcription_model_size: str, with_s
             try:
                 features["transcription"] = transcribe(audio, features, transcription_model_size)
             except Exception:
-                sleep(1)
+                sleep(0.1)
                 try:
-                    features["transcription"] = transcribe(audio, features)
+                    features["transcription"] = transcribe(
+                        audio, features, transcription_model_size
+                    )
                 except Exception as e:
                     logging.disable(logging.NOTSET)
-                    _logger.error(f"An error occurred with feature extraction: {e}")
+                    _logger.error(f"Transcription: An error occurred with transcription: {e}")
                     _logger.error(traceback.print_exc())
         logging.disable(logging.NOTSET)
         _logger.setLevel(logging.INFO)
