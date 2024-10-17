@@ -66,7 +66,6 @@ from senselab.utils.data_structures.language import Language
 from senselab.utils.data_structures.model import HFModel
 from tqdm import tqdm
 
-from b2aiprep.prepare.bids_like_data import redcap_to_bids
 from b2aiprep.prepare.utils import copy_package_resource, remove_files_by_pattern
 
 SUBJECT_ID = "sub"
@@ -191,7 +190,6 @@ def wav_to_features(wav_paths: List[Path], transcription_model_size: str, with_s
     return all_features
 
 
-@pydra.mark.task
 def get_audio_paths(bids_dir_path, n_cores):
     """Retrieve all .wav audio file paths from a BIDS-like directory structure.
 
@@ -258,28 +256,24 @@ def extract_features_workflow(
         The Pydra workflow object with the extracted features and audio paths as outputs.
     """
     # Get paths to every audio file.
-    audio_paths = get_audio_paths(bids_dir_path=bids_dir_path)
+    audio_paths = get_audio_paths(bids_dir_path=bids_dir_path, n_cores=n_cores)
 
     # Initialize the Pydra workflow.
     ef_wf = pydra.Workflow(
         name="ef_wf", input_spec=["audio_paths"], audio_paths=audio_paths, cache_dir=None
     )
 
-    # Get paths to every audio file.
-    ef_wf.add(get_audio_paths(name="audio_paths", bids_dir_path=bids_dir_path, n_cores=n_cores))
-
     # Run wav_to_features for each audio file
-    # .
     ef_wf.add(
         wav_to_features(
             name="features",
             wav_paths=ef_wf.lzin.audio_paths,
             transcription_model_size=transcription_model_size,
             with_sensitive=with_sensitive,
-        ).split("wav_path", wav_paths=ef_wf.lzin.audio_paths)
+        ).split("wav_paths", wav_paths=ef_wf.lzin.audio_paths)
     )
 
-    ef_wf.set_output({"audio_paths": ef_wf.lzin.audio_paths})
+    ef_wf.set_output({"features": ef_wf.features.lzout.out})
 
     with pydra.Submitter(plugin="cf") as run:
         run(ef_wf)
@@ -382,10 +376,10 @@ def prepare_bids_like_data(
       tar_file_path:
         The file path where the .tar.gz file will be saved.
     """
-    initialize_data_directory(bids_dir_path)
+    # initialize_data_directory(bids_dir_path)
 
     _logger.info("Organizing data into BIDS-like directory structure...")
-    redcap_to_bids(redcap_csv_path, bids_dir_path, update_columns_names, audio_dir_path)
+    # redcap_to_bids(redcap_csv_path, bids_dir_path, update_columns_names, audio_dir_path)
     _logger.info("Data organization complete.")
 
     _logger.info("Beginning audio feature extraction...")
