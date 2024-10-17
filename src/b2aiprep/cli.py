@@ -19,6 +19,7 @@ from senselab.audio.tasks.features_extraction.torchaudio import (
     extract_mfcc_from_audios,
     extract_spectrogram_from_audios,
 )
+
 from senselab.audio.tasks.preprocessing.preprocessing import resample_audios
 from senselab.audio.tasks.speaker_embeddings.api import (
     extract_speaker_embeddings_from_audios,
@@ -32,7 +33,7 @@ from streamlit import config as _config
 from streamlit.web.bootstrap import run
 
 from b2aiprep.prepare.bids_like_data import redcap_to_bids
-from b2aiprep.prepare.prepare import prepare_bids_like_data
+from b2aiprep.prepare.prepare import prepare_bids_like_data, validate_bids_data
 
 
 @click.group()
@@ -89,6 +90,7 @@ def redcap2bids(
 @click.argument("transcription_model_size", type=str)
 @click.argument("n_cores", type=int)
 @click.argument("with_sensitive", type=bool)
+@click.argument("update_columns_names", type=bool)
 def prepbidslikedata(
     redcap_csv_path,
     audio_dir_path,
@@ -97,6 +99,37 @@ def prepbidslikedata(
     transcription_model_size,
     n_cores,
     with_sensitive,
+    update_columns_names,
+):
+    """Organizes the data into a BIDS-like directory structure.
+
+    redcap_csv_path: path to the redcap csv\n
+    audio_dir_path: path to directory with audio files\n
+    bids_dir_path: path to store bids-like data\n
+    tar_file_path: path to store tar file\n
+    transcription_model_size: tiny, small, medium, or large\n
+    n_cores: number of cores to run feature extraction on\n
+    with_sensitive: whether to include sensitive data\n
+    update_columns_names: whether to replace column names with column_mappings
+    """
+    prepare_bids_like_data(
+        redcap_csv_path=Path(redcap_csv_path),
+        audio_dir_path=Path(audio_dir_path),
+        bids_dir_path=Path(bids_dir_path),
+        tar_file_path=Path(tar_file_path),
+        transcription_model_size=transcription_model_size,
+        n_cores=n_cores,
+        with_sensitive=with_sensitive,
+        update_columns_names=update_columns_names,
+    )
+
+
+@main.command()
+@click.argument("bids_dir_path", type=click.Path())
+@click.argument("fix", type=bool)
+def validate(
+    bids_dir_path,
+    fix,
 ):
     """Organizes the data into a BIDS-like directory structure.
 
@@ -108,17 +141,24 @@ def prepbidslikedata(
     n_cores: number of cores to run feature extraction on\n
     with_sensitive: whether to include sensitive data
     """
-    prepare_bids_like_data(
-        redcap_csv_path=Path(redcap_csv_path),
-        audio_dir_path=Path(audio_dir_path),
+    validate_bids_data(
         bids_dir_path=Path(bids_dir_path),
-        tar_file_path=Path(tar_file_path),
-        transcription_model_size=transcription_model_size,
-        n_cores=n_cores,
-        with_sensitive=with_sensitive,
+        fix=fix,
+    )
+    
+@click.argument("source_data_csv_path", type=click.Path(exists=True))
+@click.argument("synthetic_data_path", type=click.Path())
+@click.option("--n_synthetic_rows", default=100, type=int, help="Number of synthetic rows to generate.")
+@click.option("--synthesizer_path", type=click.Path(), help="Path to save/load the synthesizer.")
+def gensynthtabdata(source_data_csv_path, synthetic_data_path, n_synthetic_rows, synthesizer_path):
+    generate_synthetic_tabular_data(
+        source_data_csv_path=Path(source_data_csv_path),
+        synthetic_data_path=Path(synthetic_data_path),
+        n_synthetic_rows=n_synthetic_rows,
+        synthesizer_path=Path(synthesizer_path) if synthesizer_path else None
     )
 
-
+    
 @main.command()
 @click.argument("filename", type=click.Path(exists=True))
 @click.option("-s", "--subject", type=str, default=None)
