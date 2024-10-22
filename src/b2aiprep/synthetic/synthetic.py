@@ -71,7 +71,7 @@ def fit_synthesizer(source_data_csv_path: Path, synthesizer_path: Path = None):
         synthesizer.save(synthesizer_path)  # ensures valid path
         synthesizer.fit(data=data)
         synthesizer.save(synthesizer_path)
-        _logger.info("Synthesizer fitted.")
+        _logger.info("Synthesizer fit.")
     return synthesizer
 
 
