@@ -15,37 +15,6 @@ logging.basicConfig(filename=None, level=logging.INFO)
 logging.getLogger("sdv").setLevel(logging.WARNING)
 
 
-def evaluate_data(synthetic_data_csv_path, real_data_csv_path):
-    real_data = pd.read_csv(real_data_csv_path)
-    synthetic_data = pd.read_csv(synthetic_data_csv_path)
-    metadata = SingleTableMetadata()
-    metadata.detect_from_dataframe(data=real_data)
-    quality_report = evaluate_quality(real_data, synthetic_data, metadata)
-    print(quality_report)
-
-
-def generate_column_plot(synthetic_data_csv_path, real_data_csv_path, save_path=None):
-    real_data = pd.read_csv(real_data_csv_path)
-    synthetic_data = pd.read_csv(synthetic_data_csv_path)
-    metadata = SingleTableMetadata()
-    metadata.detect_from_dataframe(data=real_data)
-
-    print(real_data.columns[:1])
-    for column_name in real_data.columns:
-
-        fig = get_column_plot(
-            real_data=real_data,
-            synthetic_data=synthetic_data,
-            column_name=column_name,
-            metadata=metadata,
-        )
-
-        fig.show()
-
-    if save_path:
-        pass  # TODO implement saving
-
-
 def fit_synthesizer(source_data_csv_path: Path, synthesizer_path: Path = None):
     data = pd.read_csv(source_data_csv_path)
 
@@ -96,3 +65,40 @@ def generate_tabular_data(
             raise FileNotFoundError(f"Provided path {synthetic_data_path} does not exist.")
 
     return synthetic_data
+
+
+def evaluate_data(synthetic_data_csv_path, real_data_csv_path, report_path: Path = None):
+    real_data = pd.read_csv(real_data_csv_path)
+    synthetic_data = pd.read_csv(synthetic_data_csv_path)
+    metadata = SingleTableMetadata()
+    metadata.detect_from_dataframe(data=real_data)
+    quality_report = evaluate_quality(real_data, synthetic_data, metadata)
+    if report_path:
+        if os.path.exists(report_path):
+            with open(report_path, "w") as report_file:
+                report_file.write(str(quality_report))
+            _logger.info(f"Report saved to {report_path}.")
+        else:
+            raise FileNotFoundError(f"Provided path {report_path} does not exist.")
+
+
+def generate_column_plot(synthetic_data_csv_path, real_data_csv_path, save_path=None):
+    real_data = pd.read_csv(real_data_csv_path)
+    synthetic_data = pd.read_csv(synthetic_data_csv_path)
+    metadata = SingleTableMetadata()
+    metadata.detect_from_dataframe(data=real_data)
+
+    print(real_data.columns[:1])
+    for column_name in real_data.columns:
+
+        fig = get_column_plot(
+            real_data=real_data,
+            synthetic_data=synthetic_data,
+            column_name=column_name,
+            metadata=metadata,
+        )
+
+        fig.show()
+
+    if save_path:
+        pass  # TODO implement saving
