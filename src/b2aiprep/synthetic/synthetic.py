@@ -3,6 +3,7 @@ import os
 import pickle
 import uuid
 from pathlib import Path
+from typing import Optional
 
 import pandas as pd
 from sdv.evaluation.single_table import evaluate_quality, get_column_plot
@@ -75,55 +76,23 @@ def fit_synthesizer(source_data_csv_path: Path, synthesizer_path: Path = None):
     return synthesizer
 
 
-source_data_csv_path = "/Users/isaacbevers/sensein/b2ai-wrapper/b2ai-data/bridge2ai-voice-corpus-3/bridge2ai-voice-corpus-3-replaced-cols-combined.csv"
-synthetic_data_path = (
-    "b2aiprep/data/corpus-3/sdv_redcap_synthetic_data_100_rows_corpus_3_combine_first.csv"
-)
-n_synthetic_rows = 100
-synthesizer_path = "b2aiprep/models/synthesizers/corpus_3_csv_CTGAN_synthesizer_combined.pkl"
-
-fit_synthesizer(source_data_csv_path, synthesizer_path)
-
-
 def generate_tabular_data(
-    source_data_csv_path: Path,
-    synthetic_data_path: Path = None,
     n_synthetic_rows: int = 100,
+    synthetic_data_path: Optional[Path] = None,
     synthesizer_path: Path = None,
 ):
-    """Once the synthesizer is fit, seems to take roughly 5 seconds per 100 rows."""
-    synthesizer_dir = os.path.dirname(synthesizer_path)
-    if not os.path.exists(synthesizer_dir):
-        _logger.info(
-            f"Path does not exist: {synthesizer_dir}. \
-                        Path created."
-        )
-        os.makedirs(synthesizer_dir)
+    with open(synthesizer_path, "rb") as f:
+        synthesizer = pickle.load(f)
 
-    synthetic_data_dir = os.path.dirname(synthetic_data_path)
-    if not os.path.exists(synthetic_data_dir):
-        _logger.info(
-            f"Path does not exist: {synthetic_data_dir}. \
-                        Path created."
-        )
-        os.makedirs(synthetic_data_dir)
+    _logger.info(f"Sampling {n_synthetic_rows} rows with the synthesizer...")
+    synthetic_data = synthesizer.sample(num_rows=n_synthetic_rows)
+    _logger.info(f"{n_synthetic_rows} rows sampled.")
 
-    # _logger.info(f"Sampling {n_synthetic_rows} rows with the synthesizer...")
-    # synthetic_data = synthesizer.sample(num_rows=n_synthetic_rows)
-    # _logger.info(f"{n_synthetic_rows} rows sampled.")
+    if synthetic_data_path:
+        if os.path.exists(synthetic_data_path):
+            synthetic_data.to_csv(synthetic_data_path, index=False)
+            _logger.info(f"Data saved to {synthetic_data_path}.")
+        else:
+            raise FileNotFoundError(f"Provided path {synthetic_data_path} does not exist.")
 
-    # # TODO Quality report
-    # synthetic_data.to_csv(synthetic_data_path, index=False)
-
-
-# source_data_csv_path = "/data/test_tiny.csv"
-# synthetic_data_path = os.getcwd() + "/../data/corpus-3/test_tiny_synthetic.csv"
-# n_synthetic_rows = 3
-# synthesizer_path = os.getcwd() + "/../models/synthesizers/corpus_3_csv_CTGAN_synthesizer_combined.pkl"
-
-
-# generate_tabular_data(
-#     source_data_csv_path=source_data_csv_path,
-#     synthetic_data_path=synthetic_data_path,
-#     n_synthetic_rows=n_synthetic_rows,
-#     synthesizer_path=synthesizer_path)
+    return synthetic_data
