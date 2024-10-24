@@ -148,3 +148,6 @@ guide/data/
 
 *.DS_Store
 cache-wf/
+
+# synthesizers
+models
