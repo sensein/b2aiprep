@@ -1,7 +1,6 @@
 import logging
 import os
 import pickle
-import uuid
 from pathlib import Path
 from typing import Optional
 
@@ -18,23 +17,18 @@ logging.getLogger("sdv").setLevel(logging.WARNING)
 def fit_synthesizer(source_data_csv_path: Path, synthesizer_path: Path = None):
     data = pd.read_csv(source_data_csv_path)
 
-    # Add unique Record IDs
-    data["Record ID"] = [str(uuid.uuid4()) for _ in range(len(data))]
-
     # Detect metadata from the data
     metadata = SingleTableMetadata()
     metadata.detect_from_dataframe(data=data)
     _logger.info("Metadata detected from source data CSV.")
 
-    # Initialize synthesizer
-    synthesizer = None
     # Load the synthesizer if it exists.
+    synthesizer = None
     if synthesizer_path and os.path.exists(synthesizer_path):
         with open(synthesizer_path, "rb") as f:
             synthesizer = pickle.load(f)
         _logger.info("Loaded synthesizer from file.")
-    else:
-        # Fit a new synthesizer if no valid path or file exists
+    else:  # Fit a new synthesizer if no valid path or file exists
         _logger.info("Fitting new synthesizer...")
         synthesizer = CTGANSynthesizer(metadata)
         _logger.info(f"synthesizer path: {synthesizer_path}")
@@ -67,9 +61,9 @@ def generate_tabular_data(
     return synthetic_data
 
 
-def evaluate_data(synthetic_data_csv_path, real_data_csv_path, report_path: Path = None):
-    real_data = pd.read_csv(real_data_csv_path)
-    synthetic_data = pd.read_csv(synthetic_data_csv_path)
+def evaluate_data(synthetic_data_path, real_data_path, report_path: Path = None):
+    real_data = pd.read_csv(real_data_path)
+    synthetic_data = pd.read_csv(synthetic_data_path)
     metadata = SingleTableMetadata()
     metadata.detect_from_dataframe(data=real_data)
     quality_report = evaluate_quality(real_data, synthetic_data, metadata)
