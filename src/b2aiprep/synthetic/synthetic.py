@@ -108,12 +108,13 @@ def evaluate_data(synthetic_data_path, real_data_path, evaluation_report_path: P
     return evaluation
 
 
-def generate_column_plot(synthetic_data_csv_path, real_data_csv_path, save_path=None):
+def get_column_plots(synthetic_data_csv_path, real_data_csv_path, save_directory=None):
     real_data = pd.read_csv(real_data_csv_path)
     synthetic_data = pd.read_csv(synthetic_data_csv_path)
     metadata = SingleTableMetadata()
     metadata.detect_from_dataframe(data=real_data)
 
+    column_plots = []
     # Iterate over each column in the real data
     for column_name in real_data.columns:
         fig = get_column_plot(
@@ -123,14 +124,12 @@ def generate_column_plot(synthetic_data_csv_path, real_data_csv_path, save_path=
             metadata=metadata,
         )
 
-        # If save_path is provided, save the plot to that directory
-        if save_path:
-            if os.path.exists(save_path):
-                output_file = os.path.join(save_path, f"{column_name}_comparison_plot.png")
-                fig.savefig(output_file)
-                _logger.info(f"Plot saved to {output_file}.")
-            else:
-                raise FileNotFoundError(f"Provided path {save_path} does not exist.")
-        else:
-            # Show the plot if no save_path is provided
-            fig.show()
+        column_plots.append(fig)
+
+        if save_directory:  # Save the plot to the specified directory
+            file_path = os.path.join(
+                save_directory, f"{column_name}_column_real_and_synthetic_distribution_plot.png"
+            )
+            fig.write_image(file_path)
+            _logger.info(f"Plot saved for column '{column_name}' at: {file_path}")
+    return column_plots
