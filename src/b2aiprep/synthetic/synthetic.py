@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 import pickle
@@ -5,7 +6,11 @@ from pathlib import Path
 from typing import Optional
 
 import pandas as pd
-from sdv.evaluation.single_table import evaluate_quality, get_column_plot
+from sdv.evaluation.single_table import (
+    evaluate_quality,
+    get_column_plot,
+    run_diagnostic,
+)
 from sdv.metadata import SingleTableMetadata
 from sdv.single_table import CTGANSynthesizer
 
@@ -14,7 +19,7 @@ logging.basicConfig(filename=None, level=logging.INFO)
 logging.getLogger("sdv").setLevel(logging.WARNING)
 
 
-def fit_synthesizer(source_data_csv_path: Path, synthesizer_path: Path = None):
+def fit_synthesizer(source_data_csv_path: Path, refit: bool = False, synthesizer_path: Path = None):
     data = pd.read_csv(source_data_csv_path)
 
     # Detect metadata from the data
@@ -22,9 +27,9 @@ def fit_synthesizer(source_data_csv_path: Path, synthesizer_path: Path = None):
     metadata.detect_from_dataframe(data=data)
     _logger.info("Metadata detected from source data CSV.")
 
-    # Load the synthesizer if it exists.
+    # Load the synthesizer if it exist and refit == False.
     synthesizer = None
-    if synthesizer_path and os.path.exists(synthesizer_path):
+    if os.path.exists(synthesizer_path) and not refit:
         with open(synthesizer_path, "rb") as f:
             synthesizer = pickle.load(f)
         _logger.info("Loaded synthesizer from file.")
@@ -61,19 +66,46 @@ def generate_tabular_data(
     return synthetic_data
 
 
-def evaluate_data(synthetic_data_path, real_data_path, report_path: Path = None):
+def run_diagnostics(
+    synthetic_data_path: str, real_data_path: str, diagnostic_report_path: Path = None
+):
+    real_data = pd.read_csv(real_data_path)
+    synthetic_data = pd.read_csv(synthetic_data_path)
+
+    metadata = SingleTableMetadata()
+    metadata.detect_from_dataframe(data=real_data)
+
+    # Perform basic validity checks
+    diagnostic = run_diagnostic(real_data, synthetic_data, metadata)
+    _logger.info("Basic validity checks completed.")
+
+    # Save
+    diagnostic_info_dict = diagnostic.get_info()
+    diagnostic_info_dict["score"] = diagnostic.get_score()
+    diagnostic_info_json = json.dumps(diagnostic_info_dict, ensure_ascii=False, indent=4)
+    with open(diagnostic_report_path, "w", encoding="utf-8") as report_file:
+        report_file.write(diagnostic_info_json)
+
+    _logger.info(f"Diagnostic report saved to {diagnostic_report_path}.")
+    return diagnostic
+
+
+def evaluate_data(synthetic_data_path, real_data_path, evaluation_report_path: Path = None):
     real_data = pd.read_csv(real_data_path)
     synthetic_data = pd.read_csv(synthetic_data_path)
     metadata = SingleTableMetadata()
     metadata.detect_from_dataframe(data=real_data)
-    quality_report = evaluate_quality(real_data, synthetic_data, metadata)
-    if report_path:
-        if os.path.exists(report_path):
-            with open(report_path, "w") as report_file:
-                report_file.write(str(quality_report))
-            _logger.info(f"Report saved to {report_path}.")
-        else:
-            raise FileNotFoundError(f"Provided path {report_path} does not exist.")
+    evaluation = evaluate_quality(real_data, synthetic_data, metadata)
+
+    # Save
+    evaluation_info_dict = evaluation.get_info()
+    evaluation_info_dict["score"] = evaluation.get_score()
+    evaluation_info_json = json.dumps(evaluation_info_dict, ensure_ascii=False, indent=4)
+    with open(evaluation_report_path, "w", encoding="utf-8") as report_file:
+        report_file.write(evaluation_info_json)
+
+    _logger.info(f"Diagnostic report saved to {evaluation_report_path}.")
+    return evaluation
 
 
 def generate_column_plot(synthetic_data_csv_path, real_data_csv_path, save_path=None):
@@ -82,9 +114,8 @@ def generate_column_plot(synthetic_data_csv_path, real_data_csv_path, save_path=
     metadata = SingleTableMetadata()
     metadata.detect_from_dataframe(data=real_data)
 
-    print(real_data.columns[:1])
+    # Iterate over each column in the real data
     for column_name in real_data.columns:
-
         fig = get_column_plot(
             real_data=real_data,
             synthetic_data=synthetic_data,
@@ -92,7 +123,14 @@ def generate_column_plot(synthetic_data_csv_path, real_data_csv_path, save_path=
             metadata=metadata,
         )
 
-        fig.show()
-
-    if save_path:
-        pass  # TODO implement saving
+        # If save_path is provided, save the plot to that directory
+        if save_path:
+            if os.path.exists(save_path):
+                output_file = os.path.join(save_path, f"{column_name}_comparison_plot.png")
+                fig.savefig(output_file)
+                _logger.info(f"Plot saved to {output_file}.")
+            else:
+                raise FileNotFoundError(f"Provided path {save_path} does not exist.")
+        else:
+            # Show the plot if no save_path is provided
+            fig.show()
