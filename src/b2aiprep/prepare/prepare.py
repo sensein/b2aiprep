@@ -62,6 +62,7 @@ from senselab.utils.data_structures.language import Language
 from senselab.utils.data_structures.model import HFModel
 from tqdm import tqdm
 
+from b2aiprep.prepare.bids import redcap_to_bids
 from b2aiprep.prepare.utils import copy_package_resource, remove_files_by_pattern
 
 SUBJECT_ID = "sub"
@@ -89,13 +90,6 @@ except Exception as e:
                   This is likely because this device is not connected to wifi. {e}"
     )
 
-
-def copy_phenotype_files(template_package, bids_dir_path):
-    copy_package_resource(template_package, "phenotype", bids_dir_path)
-    phenotype_path = Path(bids_dir_path) / Path("phenotype")
-    remove_files_by_pattern(phenotype_path, "<measurement_tool_name>*")
-
-
 def initialize_data_directory(bids_dir_path: str) -> None:
     """Initializes the data directory using the template.
 
@@ -114,7 +108,9 @@ def initialize_data_directory(bids_dir_path: str) -> None:
     copy_package_resource(template_package, "README.md", bids_dir_path)
     copy_package_resource(template_package, "dataset_description.json", bids_dir_path)
     copy_package_resource(template_package, "participants.json", bids_dir_path)
-    copy_phenotype_files(template_package, bids_dir_path)
+    copy_package_resource(template_package, "phenotype", bids_dir_path)
+    phenotype_path = Path(bids_dir_path).joinpath("phenotype")
+    remove_files_by_pattern(phenotype_path, "<measurement_tool_name>*")
 
 
 def transcribe(audio, features, transcription_model_size):
@@ -322,42 +318,6 @@ def extract_features_serially(
         )().output.out
     )
 
-
-def extract_features(
-    bids_dir_path: Path,
-    transcription_model_size: str = "tiny",
-    n_cores: int = 8,
-    with_sensitive: bool = True,
-):
-    """
-    Extracts features from a BIDS-compliant directory using either an iterative
-    or workflow-based approach depending on the number of cores specified.
-
-    Args:
-        bids_dir_path (Path): Path to the BIDS directory containing the dataset.
-        transcription_model_size (str): Size of the transcription model to use,
-            with options such as 'tiny', 'small', 'medium', etc.
-        n_cores (int): Number of CPU cores to use. If set to 1,
-            will extract iteratively. Otherwise, it will parallelize.
-        with_sensitive (bool): Flag to indicate whether sensitive data is included
-            in the feature extraction process. Default is True.
-    """
-    if n_cores == 1:
-        extract_features_serially(
-            bids_dir_path,
-            transcription_model_size=transcription_model_size,
-            n_cores=n_cores,
-            with_sensitive=with_sensitive,
-        )
-    else:
-        extract_features_workflow(
-            bids_dir_path,
-            transcription_model_size=transcription_model_size,
-            n_cores=n_cores,
-            with_sensitive=with_sensitive,
-        )
-
-
 def bundle_data(source_directory: str, save_path: str) -> None:
     """Saves data bundle as a tar file with gzip compression.
 
@@ -379,7 +339,6 @@ def prepare_bids_like_data(
     transcription_model_size: str,
     n_cores: int,
     with_sensitive: bool,
-    update_columns_names: bool = False,
 ) -> None:
     """Organizes and processes Bridge2AI data for distribution.
 
@@ -398,19 +357,27 @@ def prepare_bids_like_data(
       tar_file_path:
         The file path where the .tar.gz file will be saved.
     """
-    # initialize_data_directory(bids_dir_path)
+    initialize_data_directory(bids_dir_path)
 
     _logger.info("Organizing data into BIDS-like directory structure...")
-    # redcap_to_bids(redcap_csv_path, bids_dir_path, update_columns_names, audio_dir_path)
+    redcap_to_bids(redcap_csv_path, bids_dir_path, audio_dir_path)
     _logger.info("Data organization complete.")
 
     _logger.info("Beginning audio feature extraction...")
-    extract_features(
-        bids_dir_path,
-        transcription_model_size=transcription_model_size,
-        n_cores=n_cores,
-        with_sensitive=with_sensitive,
-    )
+    if n_cores == 1:
+        extract_features_serially(
+            bids_dir_path,
+            transcription_model_size=transcription_model_size,
+            n_cores=n_cores,
+            with_sensitive=with_sensitive,
+        )
+    else:
+        extract_features_workflow(
+            bids_dir_path,
+            transcription_model_size=transcription_model_size,
+            n_cores=n_cores,
+            with_sensitive=with_sensitive,
+        )
     _logger.info("Audio feature extraction complete.")
 
     # Below code checks to see if we have all the expected feature/transcript files.
