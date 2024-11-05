@@ -32,7 +32,7 @@ from senselab.utils.data_structures.model import HFModel
 from streamlit import config as _config
 from streamlit.web.bootstrap import run
 
-from b2aiprep.prepare.bids_like_data import redcap_to_bids
+from b2aiprep.prepare.bids import redcap_to_bids
 from b2aiprep.prepare.prepare import prepare_bids_like_data, validate_bids_data
 
 

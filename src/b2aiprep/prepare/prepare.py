@@ -206,6 +206,9 @@ def wav_to_features(wav_paths: List[Path], transcription_model_size: str, with_s
                     text_file.write(feature_value.text)
         all_features.append(features)
 
+        # debug
+        break
+
     return all_features
 
 
