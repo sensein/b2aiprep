@@ -1,494 +1,3076 @@
 {
-    "confounders_session_id": {
-        "description": "Unique identifier for the confounders assessment session."
-    },
-    "confounders_duration": {
-        "description": "Total duration of the confounders assessment."
-    },
-    "is_regular_smoker": {
-        "description": "Indicates if the participant is a regular smoker."
-    },
-    "smoking_hx": {
-        "description": "Indicates the participant's smoking history."
-    },
-    "age_start_smoking": {
-        "description": "Indicates the age at which the participant started smoking."
-    },
-    "age_stop_smoking": {
-        "description": "Indicates the age at which the participant stopped smoking."
-    },
-    "smoking_types___1": {
-        "description": "Reports if the participant has used smoking type 1."
-    },
-    "smoking_types___2": {
-        "description": "Indicates if the participant smokes cigars."
-    },
-    "smoking_types___3": {
-        "description": "Indicates if the participant smokes pipes."
-    },
-    "smoking_types___4": {
-        "description": "Indicates if the participant uses chewing tobacco."
-    },
-    "smoking_types___5": {
-        "description": "Indicates if the participant uses cigars."
-    },
-    "smoking_types___6": {
-        "description": "Indicates if the participant uses snuff."
-    },
-    "smoking_types___7": {
-        "description": "Reports if the participant has used smoking type 7."
-    },
-    "smoking_types___8": {
-        "description": "Indicates if the participant uses other forms of tobacco, such as e-cigarettes."
-    },
-    "smoking_freq": {
-        "description": "Indicates how often the participant smokes."
-    },
-    "alcohol_yn": {
-        "description": "Indicates if the participant consumes alcohol."
-    },
-    "alcohol_freq": {
-        "description": "Indicates how often the participant consumes alcohol."
-    },
-    "alcohol_amt": {
-        "description": "Reports the amount of alcohol the participant consumed."
-    },
-    "alcohol_drinks": {
-        "description": "The number of alcoholic drinks the participant typically consumes."
-    },
-    "alcohol_today": {
-        "description": "Reports if the participant consumed alcohol today."
-    },
-    "drinks_today_number": {
-        "description": "The number of alcoholic drinks the participant has consumed today."
-    },
-    "alcohol_rehab": {
-        "description": "Indicates if the participant has undergone rehabilitation for alcohol use."
-    },
-    "current_recovery_alcohol": {
-        "description": "Indicates if the participant is currently in recovery for alcohol use."
-    },
-    "caffeine_intake": {
-        "description": "Reports the participant's caffeine intake."
-    },
-    "caffeine_intake_today": {
-        "description": "The amount of caffeine the participant has consumed today."
-    },
-    "hydration": {
-        "description": "Indicates if the participant feels hydrated."
-    },
-    "hydration_today": {
-        "description": "Indicates if the participant feels adequately hydrated today."
-    },
-    "dental_problems": {
-        "description": "Indicates if the participant has dental problems or issues."
-    },
-    "seasonal_allergies": {
-        "description": "Indicates if the participant has any seasonal allergies."
-    },
-    "seasonal_allergies_options___1": {
-        "description": "Indicates if the participant has seasonal allergies to tree pollen."
-    },
-    "seasonal_allergies_options___2": {
-        "description": "Indicates if the participant has seasonal allergies to specific allergens listed under option 2."
-    },
-    "seasonal_allergies_options___3": {
-        "description": "Indicates if the participant has seasonal allergies to grass pollen."
-    },
-    "seasonal_allergies_options___4": {
-        "description": "Indicates if the participant has seasonal allergies to pollen or other triggers."
-    },
-    "tired_measure": {
-        "description": "Indicates if the participant feels tired or fatigued."
-    },
-    "height": {
-        "description": "The participant's height in centimeters or inches."
-    },
-    "weight": {
-        "description": "The participant's weight in kilograms or pounds."
-    },
-    "unit": {
-        "description": "The measurement unit used for the participant's responses (e.g., kilograms or pounds)."
-    },
-    "symptoms___1": {
-        "description": "Indicates if the participant reports experiencing symptom 1."
-    },
-    "symptoms___2": {
-        "description": "Indicates if the participant reports experiencing symptom 2."
-    },
-    "symptoms___3": {
-        "description": "Indicates if the participant reports experiencing symptom 3."
-    },
-    "symptoms___4": {
-        "description": "Indicates if the participant is experiencing symptom 4 as part of their health assessment."
-    },
-    "symptoms___5": {
-        "description": "Indicates if the participant reports experiencing symptom 5."
-    },
-    "symptoms___6": {
-        "description": "Indicates if the participant reports experiencing symptom 6."
-    },
-    "symptoms___7": {
-        "description": "Indicates if the participant reports experiencing symptom 7."
-    },
-    "ear_med_history___1": {
-        "description": "Indicates if the participant has a history of ear-related medical conditions."
-    },
-    "ear_med_history___2": {
-        "description": "Indicates if the participant has a history of hearing loss."
-    },
-    "ear_med_history___3": {
-        "description": "Indicates if the participant has a history of ear-related medical condition 3."
-    },
-    "nose_med_history___1": {
-        "description": "Indicates if the participant has a history of nose-related medical condition 1."
-    },
-    "throat_med_history___1": {
-        "description": "Indicates if the participant has a history of throat-related medical conditions."
-    },
-    "throat_med_history___2": {
-        "description": "Indicates if the participant has a history of throat-related medical conditions."
-    },
-    "throat_med_history___3": {
-        "description": "Indicates if the participant has a history of throat infections."
-    },
-    "throat_med_history___4": {
-        "description": "Indicates if the participant has a history of vocal cord nodules."
-    },
-    "throat_med_history___5": {
-        "description": "Indicates if the participant has a history of throat cancer."
-    },
-    "throat_med_history___6": {
-        "description": "Indicates if the participant has a history of throat-related medical condition 6."
-    },
-    "throat_med_history___7": {
-        "description": "Indicates if the participant has a history of laryngeal cancer."
-    },
-    "throat_med_history___8": {
-        "description": "Indicates if the participant has a history of vocal cord paralysis."
-    },
-    "throat_med_history___9": {
-        "description": "Indicates if the participant has a history of throat cancer."
-    },
-    "throat_med_history___10": {
-        "description": "Indicates if the participant has a history of tracheostomy."
-    },
-    "head_med_history___1": {
-        "description": "Indicates if the participant has a history of traumatic brain injury (TBI)."
-    },
-    "head_med_history___2": {
-        "description": "Indicates if the participant has a history of brain tumors."
-    },
-    "ear_surgical___1": {
-        "description": "Indicates if the participant has undergone surgery for ear infections."
-    },
-    "ear_surgical___2": {
-        "description": "Indicates if the participant has undergone surgery for hearing loss."
-    },
-    "nose_surgical___1": {
-        "description": "Indicates if the participant has undergone surgery for nasal polyps."
-    },
-    "nose_surgical___2": {
-        "description": "Indicates if the participant has undergone surgery for nose-related conditions."
-    },
-    "throat_surgical___1": {
-        "description": "Indicates if the participant has undergone throat surgery."
-    },
-    "throat_surgical___2": {
-        "description": "Indicates if the participant has undergone surgery for throat polyps."
-    },
-    "throat_surgical___3": {
-        "description": "Indicates if the participant has undergone surgery for throat cancer."
-    },
-    "throat_surgical___4": {
-        "description": "Indicates if the participant has undergone surgery for vocal cord nodules."
-    },
-    "head_surgical___1": {
-        "description": "Indicates if the participant has undergone surgery for traumatic brain injury (TBI)."
-    },
-    "head_surgical___2": {
-        "description": "Indicates if the participant has undergone surgery for a head-related condition."
-    },
-    "neurological_history___1": {
-        "description": "Indicates if the participant has a history of neurological disorders."
-    },
-    "neurological_history___2": {
-        "description": "Indicates if the participant has a history of migraines."
-    },
-    "neurological_history___3": {
-        "description": "Indicates if the participant has a history of neurological condition 3."
-    },
-    "neurological_history___4": {
-        "description": "Indicates if the participant has a history of epilepsy."
-    },
-    "neurological_history___5": {
-        "description": "Indicates if the participant has a history of Alzheimer's disease."
-    },
-    "neurological_history___6": {
-        "description": "Indicates if the participant has a history of multiple sclerosis (MS)."
-    },
-    "current_neuro_dx": {
-        "description": "Indicates the participant's current neurological diagnosis."
-    },
-    "respiratory_conditions___1": {
-        "description": "Indicates if the participant has a diagnosis of bronchitis."
-    },
-    "respiratory_conditions___2": {
-        "description": "Indicates if the participant has a diagnosis of asthma."
-    },
-    "respiratory_conditions___3": {
-        "description": "Indicates if the participant has a diagnosis of COPD."
-    },
-    "respiratory_conditions___4": {
-        "description": "Indicates if the participant has a chronic bronchitis diagnosis."
-    },
-    "respiratory_conditions___5": {
-        "description": "Indicates if the participant has a diagnosis of interstitial lung disease."
-    },
-    "respiratory_conditions___6": {
-        "description": "Indicates if the participant has a diagnosis of emphysema."
-    },
-    "respiratory_conditions___7": {
-        "description": "Indicates if the participant has a diagnosis of sleep apnea."
-    },
-    "respiratory_conditions___8": {
-        "description": "Indicates if the participant has been diagnosed with tuberculosis."
-    },
-    "lung_or_metastatic___1": {
-        "description": "Indicates if the participant has a diagnosis of lung cancer."
-    },
-    "lung_or_metastatic___2": {
-        "description": "Indicates if the participant has a diagnosis of metastatic lung cancer."
-    },
-    "covid___past_year": {
-        "description": "Indicates if the participant has had COVID-19 in the past year."
-    },
-    "covid___long": {
-        "description": "Reports if the participant has experienced long COVID symptoms."
-    },
-    "covid_past": {
-        "description": "Indicates if the participant has had COVID-19 in the past."
-    },
-    "cpap_conditions___1": {
-        "description": "Indicates if the participant has used CPAP therapy for obstructive sleep apnea."
-    },
-    "cpap_conditions___2": {
-        "description": "Indicates if the participant has used continuous positive airway pressure (CPAP) therapy for sleep apnea."
-    },
-    "resp_medical_history___1": {
-        "description": "Indicates if the participant has a history of chronic bronchitis."
-    },
-    "resp_medical_history___2": {
-        "description": "Indicates if the participant has a history of asthma."
-    },
-    "resp_medical_history___3": {
-        "description": "Indicates if the participant has a history of chronic obstructive pulmonary disease (COPD)."
-    },
-    "resp_medical_history___4": {
-        "description": "Indicates if the participant has a history of respiratory condition 4."
-    },
-    "exposed_environmental_pollution": {
-        "description": "Indicates if the participant has been exposed to environmental pollution."
-    },
-    "breathe_today": {
-        "description": "Indicates if the participant is experiencing difficulty breathing today."
-    },
-    "breathe_today_difficulty": {
-        "description": "Reports if the participant experienced breathing difficulty today."
-    },
-    "cough_today": {
-        "description": "Indicates if the participant has coughed today."
-    },
-    "cough_today_severity": {
-        "description": "Severity of the participant's cough today."
-    },
-    "circulatory_conditions___1": {
-        "description": "Indicates if the participant has a diagnosis of cardiovascular disease."
-    },
-    "circulatory_conditions___2": {
-        "description": "Indicates if the participant has a circulatory condition categorized as condition 2."
-    },
-    "circulatory_conditions___3": {
-        "description": "Indicates if the participant has a diagnosis of heart failure."
-    },
-    "circulatory_conditions___4": {
-        "description": "Indicates if the participant has a diagnosis of hypertension."
-    },
-    "circulatory_conditions___5": {
-        "description": "Indicates if the participant has a diagnosis of peripheral artery disease."
-    },
-    "circulatory_conditions___6": {
-        "description": "Indicates if the participant has a diagnosis of varicose veins."
-    },
-    "circulatory_med_history___1": {
-        "description": "Indicates if the participant has a history of heart disease."
-    },
-    "circulatory_med_history___2": {
-        "description": "Indicates if the participant has a history of hypertension."
-    },
-    "circulatory_med_history___3": {
-        "description": "Indicates if the participant has a history of angina."
-    },
-    "circulatory_med_history___4": {
-        "description": "Indicates if the participant has a history of arrhythmia."
-    },
-    "circulatory_med_history___5": {
-        "description": "Indicates if the participant has a history of stroke."
-    },
-    "ph_standing": {
-        "description": "Indicates if the participant experiences physical health difficulties while standing."
-    },
-    "ph_take_care": {
-        "description": "Indicates if the participant has difficulty taking care of themselves due to physical health issues."
-    },
-    "ph_learn_task": {
-        "description": "Indicates if the participant has difficulty learning new tasks due to physical health issues."
-    },
-    "ph_problem_join": {
-        "description": "Indicates if the participant has problems joining social activities due to physical health."
-    },
-    "ph_health_problem": {
-        "description": "Indicates if the participant has a health problem that affects their daily life."
-    },
-    "ph_concentrating": {
-        "description": "Indicates if the participant has difficulty concentrating due to physical health issues."
-    },
-    "ph_walking": {
-        "description": "Reports if the participant experiences physical health issues while walking."
-    },
-    "ph_washing": {
-        "description": "Reports if the participant experiences physical health issues while washing."
-    },
-    "ph_get_dressed": {
-        "description": "Indicates if the participant has difficulty getting dressed due to physical health issues."
-    },
-    "ph_dealing_people": {
-        "description": "Indicates if the participant has difficulty dealing with people due to physical health issues."
-    },
-    "ph_friendship": {
-        "description": "Indicates if the participant has difficulty maintaining friendships due to physical health issues."
-    },
-    "ph_day_to_day_work": {
-        "description": "Reports if the participant's physical health affects their day-to-day work."
-    },
-    "physical_health_freq": {
-        "description": "Indicates how frequently the participant experiences physical health issues."
-    },
-    "phys_health_impact": {
-        "description": "Indicates if the participant's physical health impacts their daily life."
-    },
-    "phys_health_limited": {
-        "description": "Indicates if the participant's physical health is limiting their daily activities."
-    },
-    "medications___1": {
-        "description": "Indicates if the participant is currently taking medication 1."
-    },
-    "medications___2": {
-        "description": "Indicates if the participant is taking medication 2."
-    },
-    "medications___3": {
-        "description": "Indicates if the participant is taking medication 3."
-    },
-    "medications___4": {
-        "description": "Indicates if the participant is taking medication 4."
-    },
-    "medications___5": {
-        "description": "Indicates if the participant is taking medication 5."
-    },
-    "medications___6": {
-        "description": "Indicates if the participant is taking medication 6."
-    },
-    "medications___7": {
-        "description": "Indicates if the participant is taking medication 7."
-    },
-    "medications___8": {
-        "description": "Indicates if the participant is taking medication 8."
-    },
-    "medications___9": {
-        "description": "Indicates if the participant is taking medication 9."
-    },
-    "medications___10": {
-        "description": "Indicates if the participant is taking medication 10."
-    },
-    "medications___11": {
-        "description": "Indicates if the participant is currently taking medication 11."
-    },
-    "medications___12": {
-        "description": "Indicates if the participant is taking medication 12."
-    },
-    "medications___13": {
-        "description": "Indicates if the participant is taking medication 13."
-    },
-    "medications___14": {
-        "description": "Indicates if the participant is currently taking medication 14."
-    },
-    "medications___15": {
-        "description": "Indicates if the participant is taking medication 15."
-    },
-    "medications___16": {
-        "description": "Indicates if the participant is taking medication 16."
-    },
-    "medications___17": {
-        "description": "Indicates if the participant is using medication 17."
-    },
-    "medications___18": {
-        "description": "Indicates if the participant is currently taking medication 18."
-    },
-    "hormone_use___1": {
-        "description": "Indicates if the participant uses hormone treatments (e.g., oral contraceptives)."
-    },
-    "hormone_use___2": {
-        "description": "Indicates if the participant uses hormone replacement therapy."
-    },
-    "hormone_use___3": {
-        "description": "Indicates if the participant uses hormone therapy for menopause."
-    },
-    "hormone_use___4": {
-        "description": "Indicates if the participant uses other forms of hormone therapy not listed."
-    },
-    "pain_medication___1": {
-        "description": "Indicates if the participant is taking pain medication 1."
-    },
-    "pain_medication___2": {
-        "description": "Indicates if the participant is taking pain medication 2."
-    },
-    "pain_medication___3": {
-        "description": "Indicates if the participant is taking pain medication 3."
-    },
-    "menstruate": {
-        "description": "Indicates if the participant menstruates."
-    },
-    "menstruate_no": {
-        "description": "Indicates if the participant does not menstruate."
-    },
-    "menstrual_cycle_status": {
-        "description": "Indicates the participant's menstrual cycle status."
-    },
-    "voice_activity___1": {
-        "description": "Indicates the first type of voice activity the participant engaged in."
-    },
-    "voice_activity___2": {
-        "description": "Indicates the second type of voice activity engaged in by the participant."
-    },
-    "voice_activity___3": {
-        "description": "Indicates the third type of voice activity the participant engaged in."
-    },
-    "voice_activity___4": {
-        "description": "Indicates the fourth type of voice activity the participant engaged in."
-    },
-    "voice_activity___5": {
-        "description": "Indicates the fifth type of voice activity the participant engaged in."
-    },
-    "voice_activity___6": {
-        "description": "Indicates the sixth type of voice activity the participant engaged in."
-    },
-    "voice_activity___7": {
-        "description": "Indicates the seventh type of voice activity the participant engaged in."
-    },
-    "hours_voice_activity": {
-        "description": "Number of hours the participant engaged in voice-related activities."
-    },
-    "reading_aloud": {
-        "description": "Indicates if the participant is reading aloud."
+    "q_generic_confounders_schema": {
+        "description": "Measures variables that could impact study outcomes.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/q_generic_confounders_schema",
+        "data_elements": {
+            "confounders_session_id": {
+                "description": "Unique identifier for the confounders assessment session.",
+                "question": {
+                    "en": "Session ID"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/confounders_session_id",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "confounders_duration": {
+                "description": "Total duration of the confounders assessment.",
+                "question": {
+                    "en": "Questionnaire Duration (seconds)"
+                },
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/confounders_duration",
+                "minValue": 0.0,
+                "valueType": [
+                    "xsd:decimal"
+                ]
+            },
+            "is_regular_smoker": {
+                "description": "Indicates if the participant is a regular smoker.",
+                "question": {
+                    "en": "[LEGACY]\nHave you been a regular smoker or not within the last 3 years?"
+                },
+                "datatype": [
+                    "xsd:boolean"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 0
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/is_regular_smoker",
+                "valueType": [
+                    "xsd:boolean"
+                ]
+            },
+            "smoking_hx": {
+                "description": "Indicates the participant's smoking history.",
+                "question": {
+                    "en": "[LEGACY]\nHave you ever smoked regularly (more than a few times a month for at least two months)?\nThis includes tobacco, cannabis, vapes, e-cigarettes, hookah, or pipes."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "I've never smoked regularly"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "I used to smoke"
+                        },
+                        "value": "past"
+                    },
+                    {
+                        "name": {
+                            "en": "I currently smoke"
+                        },
+                        "value": "currently"
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": "noAnswer"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/smoking_hx",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "age_start_smoking": {
+                "description": "Indicates the age at which the participant started smoking.",
+                "question": {
+                    "en": "[LEGACY]\nAt what age did you start smoking?"
+                },
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/age_start_smoking",
+                "valueType": [
+                    "xsd:decimal"
+                ]
+            },
+            "age_stop_smoking": {
+                "description": "Indicates the age at which the participant stopped smoking.",
+                "question": {
+                    "en": "[LEGACY]\nAt what age did you stop?"
+                },
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/age_stop_smoking",
+                "valueType": [
+                    "xsd:decimal"
+                ]
+            },
+            "smoking_types___1": {
+                "description": "Reports if the participant has used smoking type 1."
+            },
+            "smoking_types___2": {
+                "description": "Indicates if the participant smokes cigars."
+            },
+            "smoking_types___3": {
+                "description": "Indicates if the participant smokes pipes."
+            },
+            "smoking_types___4": {
+                "description": "Indicates if the participant uses chewing tobacco."
+            },
+            "smoking_types___5": {
+                "description": "Indicates if the participant uses cigars."
+            },
+            "smoking_types___6": {
+                "description": "Indicates if the participant uses snuff."
+            },
+            "smoking_types___7": {
+                "description": "Reports if the participant has used smoking type 7."
+            },
+            "smoking_types___8": {
+                "description": "Indicates if the participant uses other forms of tobacco, such as e-cigarettes."
+            },
+            "smoking_freq": {
+                "description": "Indicates how often the participant smokes.",
+                "question": {
+                    "en": "[LEGACY]\nHow often do/did you smoke?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Multiple times a day"
+                        },
+                        "value": "multipleTimes"
+                    },
+                    {
+                        "name": {
+                            "en": "About once a day"
+                        },
+                        "value": "onceDay"
+                    },
+                    {
+                        "name": {
+                            "en": "A few times a week"
+                        },
+                        "value": "fewWeek"
+                    },
+                    {
+                        "name": {
+                            "en": "A few times a month"
+                        },
+                        "value": "fewMonth"
+                    },
+                    {
+                        "name": {
+                            "en": "A few times a year"
+                        },
+                        "value": "fewYear"
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": "noAnswer"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/smoking_freq",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "alcohol_yn": {
+                "description": "Indicates if the participant consumes alcohol.",
+                "question": {
+                    "en": "Do you drink alcohol?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": "noAnswer"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/alcohol_yn",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "alcohol_freq": {
+                "description": "Indicates how often the participant consumes alcohol.",
+                "question": {
+                    "en": "How often do you have at least one drink containing alcohol?\nDrinks can be beer, wine, shots of liquor, cocktails containing a shot of liquor"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Monthly or less"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "2 - 4 times a month"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "2 - 3 times a week"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "4 or more times a week"
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": 5
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/alcohol_freq",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "alcohol_amt": {
+                "description": "Reports the amount of alcohol the participant consumed.",
+                "question": {
+                    "en": "How many drinks containing alcohol do you have on a typical day when you are drinking?\nOne drink is 12 oz. beer, 5 oz. wine, 1.5 oz. (one shot) liquor"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "0 - 2"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "3 - 4"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "5 - 6"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "7 - 9"
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "10 or more"
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": 6
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/alcohol_amt",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "alcohol_drinks": {
+                "description": "The number of alcoholic drinks the participant typically consumes.",
+                "question": {
+                    "en": "How often did you have six or more drinks on one occasion in the past year?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never in the past year"
+                        },
+                        "value": "neverInThePastYear"
+                    },
+                    {
+                        "name": {
+                            "en": "Less than monthly"
+                        },
+                        "value": "lessThanMonthly"
+                    },
+                    {
+                        "name": {
+                            "en": "Monthly"
+                        },
+                        "value": "monthly"
+                    },
+                    {
+                        "name": {
+                            "en": "Weekly"
+                        },
+                        "value": "weekly"
+                    },
+                    {
+                        "name": {
+                            "en": "Daily or almost daily"
+                        },
+                        "value": "daily"
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": "noAnswer"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/alcohol_drinks",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "alcohol_today": {
+                "description": "Reports if the participant consumed alcohol today.",
+                "question": {
+                    "en": "Have you drunk alcohol today?"
+                },
+                "datatype": [
+                    "xsd:boolean"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 0
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/alcohol_today",
+                "valueType": [
+                    "xsd:boolean"
+                ]
+            },
+            "drinks_today_number": {
+                "description": "The number of alcoholic drinks the participant has consumed today.",
+                "question": {
+                    "en": "How many drinks did you have?"
+                },
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/drinks_today_number",
+                "valueType": [
+                    "xsd:decimal"
+                ]
+            },
+            "alcohol_rehab": {
+                "description": "Indicates if the participant has undergone rehabilitation for alcohol use.",
+                "question": {
+                    "en": "Have you ever been in rehab or counseling for heavy alcohol use?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never in the past year"
+                        },
+                        "value": "neverInThePastYear"
+                    },
+                    {
+                        "name": {
+                            "en": "Less than monthly"
+                        },
+                        "value": "lessThanMonthly"
+                    },
+                    {
+                        "name": {
+                            "en": "Monthly"
+                        },
+                        "value": "monthly"
+                    },
+                    {
+                        "name": {
+                            "en": "Weekly"
+                        },
+                        "value": "weekly"
+                    },
+                    {
+                        "name": {
+                            "en": "Daily or almost daily"
+                        },
+                        "value": "daily"
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": "noAnswer"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/alcohol_rehab",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "current_recovery_alcohol": {
+                "description": "Indicates if the participant is currently in recovery for alcohol use.",
+                "question": {
+                    "en": "Are you currently in recovery for alcohol use?"
+                },
+                "datatype": [
+                    "xsd:boolean"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 0
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/current_recovery_alcohol",
+                "valueType": [
+                    "xsd:boolean"
+                ]
+            },
+            "caffeine_intake": {
+                "description": "Reports the participant's caffeine intake.",
+                "question": {
+                    "en": "How many small (8oz or 230ml) cups of coffee OR shots of espresso OR caffeinated teas do you drink on a typical day?"
+                },
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/caffeine_intake",
+                "valueType": [
+                    "xsd:decimal"
+                ]
+            },
+            "caffeine_intake_today": {
+                "description": "The amount of caffeine the participant has consumed today.",
+                "question": {
+                    "en": "How many small (8oz or 230ml) cups of coffee OR shots of espresso OR caffeinated teas have you had TODAY?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/caffeine_intake_today",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "hydration": {
+                "description": "Indicates if the participant feels hydrated.",
+                "question": {
+                    "en": "How many small (8oz or 230ml) cups of water do you drink on a typical day?"
+                },
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/hydration",
+                "valueType": [
+                    "xsd:decimal"
+                ]
+            },
+            "hydration_today": {
+                "description": "Indicates if the participant feels adequately hydrated today.",
+                "question": {
+                    "en": "How many small (8oz or 230ml) cups of water have you had TODAY?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/hydration_today",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "dental_problems": {
+                "description": "Indicates if the participant has dental problems or issues.",
+                "question": {
+                    "en": "Do you have any dental problems that might affect speech?"
+                },
+                "datatype": [
+                    "xsd:boolean"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 0
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/dental_problems",
+                "valueType": [
+                    "xsd:boolean"
+                ]
+            },
+            "seasonal_allergies": {
+                "description": "Indicates if the participant has any seasonal allergies.",
+                "question": {
+                    "en": "Do you currently have seasonal allergies, cold-like symptoms or other conditions that may affect your voice today?"
+                },
+                "datatype": [
+                    "xsd:boolean"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 0
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/seasonal_allergies",
+                "valueType": [
+                    "xsd:boolean"
+                ]
+            },
+            "seasonal_allergies_options___1": {
+                "description": "Indicates if the participant has seasonal allergies to tree pollen."
+            },
+            "seasonal_allergies_options___2": {
+                "description": "Indicates if the participant has seasonal allergies to specific allergens listed under option 2."
+            },
+            "seasonal_allergies_options___3": {
+                "description": "Indicates if the participant has seasonal allergies to grass pollen."
+            },
+            "seasonal_allergies_options___4": {
+                "description": "Indicates if the participant has seasonal allergies to pollen or other triggers."
+            },
+            "tired_measure": {
+                "description": "Indicates if the participant feels tired or fatigued.",
+                "question": {
+                    "en": "How tired are you?\n0=not tired at all, 10=extremely tired"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "0"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "1"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "2"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "3"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "4"
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "5"
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "6"
+                        },
+                        "value": 6
+                    },
+                    {
+                        "name": {
+                            "en": "7"
+                        },
+                        "value": 7
+                    },
+                    {
+                        "name": {
+                            "en": "8"
+                        },
+                        "value": 8
+                    },
+                    {
+                        "name": {
+                            "en": "9"
+                        },
+                        "value": 9
+                    },
+                    {
+                        "name": {
+                            "en": "10"
+                        },
+                        "value": 10
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/tired_measure",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "height": {
+                "description": "The participant's height in centimeters or inches.",
+                "question": {
+                    "en": "Height"
+                },
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/height",
+                "valueType": [
+                    "xsd:decimal"
+                ]
+            },
+            "weight": {
+                "description": "The participant's weight in kilograms or pounds.",
+                "question": {
+                    "en": "Weight"
+                },
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/weight",
+                "valueType": [
+                    "xsd:decimal"
+                ]
+            },
+            "unit": {
+                "description": "The measurement unit used for the participant's responses (e.g., kilograms or pounds).",
+                "question": {
+                    "en": "Unit"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Metric"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "US customary units"
+                        },
+                        "value": 2
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/unit",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "symptoms___1": {
+                "description": "Indicates if the participant reports experiencing symptom 1."
+            },
+            "symptoms___2": {
+                "description": "Indicates if the participant reports experiencing symptom 2."
+            },
+            "symptoms___3": {
+                "description": "Indicates if the participant reports experiencing symptom 3."
+            },
+            "symptoms___4": {
+                "description": "Indicates if the participant is experiencing symptom 4 as part of their health assessment."
+            },
+            "symptoms___5": {
+                "description": "Indicates if the participant reports experiencing symptom 5."
+            },
+            "symptoms___6": {
+                "description": "Indicates if the participant reports experiencing symptom 6."
+            },
+            "symptoms___7": {
+                "description": "Indicates if the participant reports experiencing symptom 7."
+            },
+            "ear_med_history___1": {
+                "description": "Indicates if the participant has a history of ear-related medical conditions."
+            },
+            "ear_med_history___2": {
+                "description": "Indicates if the participant has a history of hearing loss."
+            },
+            "ear_med_history___3": {
+                "description": "Indicates if the participant has a history of ear-related medical condition 3."
+            },
+            "nose_med_history___1": {
+                "description": "Indicates if the participant has a history of nose-related medical condition 1."
+            },
+            "throat_med_history___1": {
+                "description": "Indicates if the participant has a history of throat-related medical conditions."
+            },
+            "throat_med_history___2": {
+                "description": "Indicates if the participant has a history of throat-related medical conditions."
+            },
+            "throat_med_history___3": {
+                "description": "Indicates if the participant has a history of throat infections."
+            },
+            "throat_med_history___4": {
+                "description": "Indicates if the participant has a history of vocal cord nodules."
+            },
+            "throat_med_history___5": {
+                "description": "Indicates if the participant has a history of throat cancer."
+            },
+            "throat_med_history___6": {
+                "description": "Indicates if the participant has a history of throat-related medical condition 6."
+            },
+            "throat_med_history___7": {
+                "description": "Indicates if the participant has a history of laryngeal cancer."
+            },
+            "throat_med_history___8": {
+                "description": "Indicates if the participant has a history of vocal cord paralysis."
+            },
+            "throat_med_history___9": {
+                "description": "Indicates if the participant has a history of throat cancer."
+            },
+            "throat_med_history___10": {
+                "description": "Indicates if the participant has a history of tracheostomy."
+            },
+            "head_med_history___1": {
+                "description": "Indicates if the participant has a history of traumatic brain injury (TBI)."
+            },
+            "head_med_history___2": {
+                "description": "Indicates if the participant has a history of brain tumors."
+            },
+            "ear_surgical___1": {
+                "description": "Indicates if the participant has undergone surgery for ear infections."
+            },
+            "ear_surgical___2": {
+                "description": "Indicates if the participant has undergone surgery for hearing loss."
+            },
+            "nose_surgical___1": {
+                "description": "Indicates if the participant has undergone surgery for nasal polyps."
+            },
+            "nose_surgical___2": {
+                "description": "Indicates if the participant has undergone surgery for nose-related conditions."
+            },
+            "throat_surgical___1": {
+                "description": "Indicates if the participant has undergone throat surgery."
+            },
+            "throat_surgical___2": {
+                "description": "Indicates if the participant has undergone surgery for throat polyps."
+            },
+            "throat_surgical___3": {
+                "description": "Indicates if the participant has undergone surgery for throat cancer."
+            },
+            "throat_surgical___4": {
+                "description": "Indicates if the participant has undergone surgery for vocal cord nodules."
+            },
+            "head_surgical___1": {
+                "description": "Indicates if the participant has undergone surgery for traumatic brain injury (TBI)."
+            },
+            "head_surgical___2": {
+                "description": "Indicates if the participant has undergone surgery for a head-related condition."
+            },
+            "neurological_history___1": {
+                "description": "Indicates if the participant has a history of neurological disorders."
+            },
+            "neurological_history___2": {
+                "description": "Indicates if the participant has a history of migraines."
+            },
+            "neurological_history___3": {
+                "description": "Indicates if the participant has a history of neurological condition 3."
+            },
+            "neurological_history___4": {
+                "description": "Indicates if the participant has a history of epilepsy."
+            },
+            "neurological_history___5": {
+                "description": "Indicates if the participant has a history of Alzheimer's disease."
+            },
+            "neurological_history___6": {
+                "description": "Indicates if the participant has a history of multiple sclerosis (MS)."
+            },
+            "current_neuro_dx": {
+                "description": "Indicates the participant's current neurological diagnosis.",
+                "question": {
+                    "en": "Do you currently have these conditions or currently experience symptoms as a result of having had these conditions?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Only some"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "All"
+                        },
+                        "value": 3
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/current_neuro_dx",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "respiratory_conditions___1": {
+                "description": "Indicates if the participant has a diagnosis of bronchitis."
+            },
+            "respiratory_conditions___2": {
+                "description": "Indicates if the participant has a diagnosis of asthma."
+            },
+            "respiratory_conditions___3": {
+                "description": "Indicates if the participant has a diagnosis of COPD."
+            },
+            "respiratory_conditions___4": {
+                "description": "Indicates if the participant has a chronic bronchitis diagnosis."
+            },
+            "respiratory_conditions___5": {
+                "description": "Indicates if the participant has a diagnosis of interstitial lung disease."
+            },
+            "respiratory_conditions___6": {
+                "description": "Indicates if the participant has a diagnosis of emphysema."
+            },
+            "respiratory_conditions___7": {
+                "description": "Indicates if the participant has a diagnosis of sleep apnea."
+            },
+            "respiratory_conditions___8": {
+                "description": "Indicates if the participant has been diagnosed with tuberculosis."
+            },
+            "lung_or_metastatic___1": {
+                "description": "Indicates if the participant has a diagnosis of lung cancer."
+            },
+            "lung_or_metastatic___2": {
+                "description": "Indicates if the participant has a diagnosis of metastatic lung cancer."
+            },
+            "covid___past_year": {
+                "description": "Indicates if the participant has had COVID-19 in the past year."
+            },
+            "covid___long": {
+                "description": "Reports if the participant has experienced long COVID symptoms."
+            },
+            "covid_past": {
+                "description": "Indicates if the participant has had COVID-19 in the past.",
+                "question": {
+                    "en": "Have you had COVID in the past month?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/covid_past",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "cpap_conditions___1": {
+                "description": "Indicates if the participant has used CPAP therapy for obstructive sleep apnea."
+            },
+            "cpap_conditions___2": {
+                "description": "Indicates if the participant has used continuous positive airway pressure (CPAP) therapy for sleep apnea."
+            },
+            "resp_medical_history___1": {
+                "description": "Indicates if the participant has a history of chronic bronchitis."
+            },
+            "resp_medical_history___2": {
+                "description": "Indicates if the participant has a history of asthma."
+            },
+            "resp_medical_history___3": {
+                "description": "Indicates if the participant has a history of chronic obstructive pulmonary disease (COPD)."
+            },
+            "resp_medical_history___4": {
+                "description": "Indicates if the participant has a history of respiratory condition 4."
+            },
+            "exposed_environmental_pollution": {
+                "description": "Indicates if the participant has been exposed to environmental pollution.",
+                "question": {
+                    "en": "Have you been exposed to environmental pollution that may affect your breathing or voice?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/exposed_environmental_pollution",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "breathe_today": {
+                "description": "Indicates if the participant is experiencing difficulty breathing today.",
+                "question": {
+                    "en": "Are you having difficulty breathing today?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/breathe_today",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "breathe_today_difficulty": {
+                "description": "Reports if the participant experienced breathing difficulty today.",
+                "question": {
+                    "en": "Please specify the level of difficulty"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Slight Difficulty"
+                        },
+                        "value": "slightDifficulty"
+                    },
+                    {
+                        "name": {
+                            "en": "Moderate Difficulty"
+                        },
+                        "value": "moderateDifficulty"
+                    },
+                    {
+                        "name": {
+                            "en": "Significant Difficulty"
+                        },
+                        "value": "significantDifficulty"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/breathe_today_difficulty",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "cough_today": {
+                "description": "Indicates if the participant has coughed today.",
+                "question": {
+                    "en": "Are you coughing today?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/cough_today",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "cough_today_severity": {
+                "description": "Severity of the participant's cough today.",
+                "question": {
+                    "en": "What is the severity of your cough?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "1"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "2"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "3"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "4"
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "5"
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "6"
+                        },
+                        "value": 6
+                    },
+                    {
+                        "name": {
+                            "en": "7"
+                        },
+                        "value": 7
+                    },
+                    {
+                        "name": {
+                            "en": "8"
+                        },
+                        "value": 8
+                    },
+                    {
+                        "name": {
+                            "en": "9"
+                        },
+                        "value": 9
+                    },
+                    {
+                        "name": {
+                            "en": "10"
+                        },
+                        "value": 10
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/cough_today_severity",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "circulatory_conditions___1": {
+                "description": "Indicates if the participant has a diagnosis of cardiovascular disease."
+            },
+            "circulatory_conditions___2": {
+                "description": "Indicates if the participant has a circulatory condition categorized as condition 2."
+            },
+            "circulatory_conditions___3": {
+                "description": "Indicates if the participant has a diagnosis of heart failure."
+            },
+            "circulatory_conditions___4": {
+                "description": "Indicates if the participant has a diagnosis of hypertension."
+            },
+            "circulatory_conditions___5": {
+                "description": "Indicates if the participant has a diagnosis of peripheral artery disease."
+            },
+            "circulatory_conditions___6": {
+                "description": "Indicates if the participant has a diagnosis of varicose veins."
+            },
+            "circulatory_med_history___1": {
+                "description": "Indicates if the participant has a history of heart disease."
+            },
+            "circulatory_med_history___2": {
+                "description": "Indicates if the participant has a history of hypertension."
+            },
+            "circulatory_med_history___3": {
+                "description": "Indicates if the participant has a history of angina."
+            },
+            "circulatory_med_history___4": {
+                "description": "Indicates if the participant has a history of arrhythmia."
+            },
+            "circulatory_med_history___5": {
+                "description": "Indicates if the participant has a history of stroke."
+            },
+            "ph_standing": {
+                "description": "Indicates if the participant experiences physical health difficulties while standing.",
+                "question": {
+                    "en": "Standing for long periods such as 30 minutes?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None"
+                        },
+                        "value": "none"
+                    },
+                    {
+                        "name": {
+                            "en": "Mild"
+                        },
+                        "value": "mild"
+                    },
+                    {
+                        "name": {
+                            "en": "Moderate"
+                        },
+                        "value": "moderate"
+                    },
+                    {
+                        "name": {
+                            "en": "Severe"
+                        },
+                        "value": "severe"
+                    },
+                    {
+                        "name": {
+                            "en": "Extreme or cannot do"
+                        },
+                        "value": "extreme"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/ph_standing",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "ph_take_care": {
+                "description": "Indicates if the participant has difficulty taking care of themselves due to physical health issues.",
+                "question": {
+                    "en": "Taking care of your household responsibilities?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None"
+                        },
+                        "value": "none"
+                    },
+                    {
+                        "name": {
+                            "en": "Mild"
+                        },
+                        "value": "mild"
+                    },
+                    {
+                        "name": {
+                            "en": "Moderate"
+                        },
+                        "value": "moderate"
+                    },
+                    {
+                        "name": {
+                            "en": "Severe"
+                        },
+                        "value": "severe"
+                    },
+                    {
+                        "name": {
+                            "en": "Extreme or cannot do"
+                        },
+                        "value": "extreme"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/ph_take_care",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "ph_learn_task": {
+                "description": "Indicates if the participant has difficulty learning new tasks due to physical health issues.",
+                "question": {
+                    "en": "Learning a new task, for example, learning how to get to a new place?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None"
+                        },
+                        "value": "none"
+                    },
+                    {
+                        "name": {
+                            "en": "Mild"
+                        },
+                        "value": "mild"
+                    },
+                    {
+                        "name": {
+                            "en": "Moderate"
+                        },
+                        "value": "moderate"
+                    },
+                    {
+                        "name": {
+                            "en": "Severe"
+                        },
+                        "value": "severe"
+                    },
+                    {
+                        "name": {
+                            "en": "Extreme or cannot do"
+                        },
+                        "value": "extreme"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/ph_learn_task",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "ph_problem_join": {
+                "description": "Indicates if the participant has problems joining social activities due to physical health.",
+                "question": {
+                    "en": "How much of a problem did you have joining in community activities (for example, festivities, religious or other activities) in the same way as anyone else can?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None"
+                        },
+                        "value": "none"
+                    },
+                    {
+                        "name": {
+                            "en": "Mild"
+                        },
+                        "value": "mild"
+                    },
+                    {
+                        "name": {
+                            "en": "Moderate"
+                        },
+                        "value": "moderate"
+                    },
+                    {
+                        "name": {
+                            "en": "Severe"
+                        },
+                        "value": "severe"
+                    },
+                    {
+                        "name": {
+                            "en": "Extreme or cannot do"
+                        },
+                        "value": "extreme"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/ph_problem_join",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "ph_health_problem": {
+                "description": "Indicates if the participant has a health problem that affects their daily life.",
+                "question": {
+                    "en": "How much have you been emotionally affected by your health problems?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None"
+                        },
+                        "value": "none"
+                    },
+                    {
+                        "name": {
+                            "en": "Mild"
+                        },
+                        "value": "mild"
+                    },
+                    {
+                        "name": {
+                            "en": "Moderate"
+                        },
+                        "value": "moderate"
+                    },
+                    {
+                        "name": {
+                            "en": "Severe"
+                        },
+                        "value": "severe"
+                    },
+                    {
+                        "name": {
+                            "en": "Extreme or cannot do"
+                        },
+                        "value": "extreme"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/ph_health_problem",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "ph_concentrating": {
+                "description": "Indicates if the participant has difficulty concentrating due to physical health issues.",
+                "question": {
+                    "en": "Concentrating on doing something for ten minutes?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None"
+                        },
+                        "value": "none"
+                    },
+                    {
+                        "name": {
+                            "en": "Mild"
+                        },
+                        "value": "mild"
+                    },
+                    {
+                        "name": {
+                            "en": "Moderate"
+                        },
+                        "value": "moderate"
+                    },
+                    {
+                        "name": {
+                            "en": "Severe"
+                        },
+                        "value": "severe"
+                    },
+                    {
+                        "name": {
+                            "en": "Extreme or cannot do"
+                        },
+                        "value": "extreme"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/ph_concentrating",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "ph_walking": {
+                "description": "Reports if the participant experiences physical health issues while walking.",
+                "question": {
+                    "en": "Walking a long distance such as a kilometre [or equivalent]?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None"
+                        },
+                        "value": "none"
+                    },
+                    {
+                        "name": {
+                            "en": "Mild"
+                        },
+                        "value": "mild"
+                    },
+                    {
+                        "name": {
+                            "en": "Moderate"
+                        },
+                        "value": "moderate"
+                    },
+                    {
+                        "name": {
+                            "en": "Severe"
+                        },
+                        "value": "severe"
+                    },
+                    {
+                        "name": {
+                            "en": "Extreme or cannot do"
+                        },
+                        "value": "extreme"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/ph_walking",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "ph_washing": {
+                "description": "Reports if the participant experiences physical health issues while washing.",
+                "question": {
+                    "en": "Washing your whole body?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None"
+                        },
+                        "value": "none"
+                    },
+                    {
+                        "name": {
+                            "en": "Mild"
+                        },
+                        "value": "mild"
+                    },
+                    {
+                        "name": {
+                            "en": "Moderate"
+                        },
+                        "value": "moderate"
+                    },
+                    {
+                        "name": {
+                            "en": "Severe"
+                        },
+                        "value": "severe"
+                    },
+                    {
+                        "name": {
+                            "en": "Extreme or cannot do"
+                        },
+                        "value": "extreme"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/ph_washing",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "ph_get_dressed": {
+                "description": "Indicates if the participant has difficulty getting dressed due to physical health issues.",
+                "question": {
+                    "en": "Getting dressed?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None"
+                        },
+                        "value": "none"
+                    },
+                    {
+                        "name": {
+                            "en": "Mild"
+                        },
+                        "value": "mild"
+                    },
+                    {
+                        "name": {
+                            "en": "Moderate"
+                        },
+                        "value": "moderate"
+                    },
+                    {
+                        "name": {
+                            "en": "Severe"
+                        },
+                        "value": "severe"
+                    },
+                    {
+                        "name": {
+                            "en": "Extreme or cannot do"
+                        },
+                        "value": "extreme"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/ph_get_dressed",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "ph_dealing_people": {
+                "description": "Indicates if the participant has difficulty dealing with people due to physical health issues.",
+                "question": {
+                    "en": "Dealing with people you do not know?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None"
+                        },
+                        "value": "none"
+                    },
+                    {
+                        "name": {
+                            "en": "Mild"
+                        },
+                        "value": "mild"
+                    },
+                    {
+                        "name": {
+                            "en": "Moderate"
+                        },
+                        "value": "moderate"
+                    },
+                    {
+                        "name": {
+                            "en": "Severe"
+                        },
+                        "value": "severe"
+                    },
+                    {
+                        "name": {
+                            "en": "Extreme or cannot do"
+                        },
+                        "value": "extreme"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/ph_dealing_people",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "ph_friendship": {
+                "description": "Indicates if the participant has difficulty maintaining friendships due to physical health issues.",
+                "question": {
+                    "en": "Maintaining a friendship?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None"
+                        },
+                        "value": "none"
+                    },
+                    {
+                        "name": {
+                            "en": "Mild"
+                        },
+                        "value": "mild"
+                    },
+                    {
+                        "name": {
+                            "en": "Moderate"
+                        },
+                        "value": "moderate"
+                    },
+                    {
+                        "name": {
+                            "en": "Severe"
+                        },
+                        "value": "severe"
+                    },
+                    {
+                        "name": {
+                            "en": "Extreme or cannot do"
+                        },
+                        "value": "extreme"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/ph_friendship",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "ph_day_to_day_work": {
+                "description": "Reports if the participant's physical health affects their day-to-day work.",
+                "question": {
+                    "en": "Your day-to-day work?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None"
+                        },
+                        "value": "none"
+                    },
+                    {
+                        "name": {
+                            "en": "Mild"
+                        },
+                        "value": "mild"
+                    },
+                    {
+                        "name": {
+                            "en": "Moderate"
+                        },
+                        "value": "moderate"
+                    },
+                    {
+                        "name": {
+                            "en": "Severe"
+                        },
+                        "value": "severe"
+                    },
+                    {
+                        "name": {
+                            "en": "Extreme or cannot do"
+                        },
+                        "value": "extreme"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/ph_day_to_day_work",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "physical_health_freq": {
+                "description": "Indicates how frequently the participant experiences physical health issues.",
+                "question": {
+                    "en": "Overall, in the past 30 days, how many days were these difficulties present?"
+                },
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/physical_health_freq",
+                "valueType": [
+                    "xsd:decimal"
+                ]
+            },
+            "phys_health_impact": {
+                "description": "Indicates if the participant's physical health impacts their daily life.",
+                "question": {
+                    "en": "In the past 30 days, for how many days were you totally unable to carry out your usual activities or work because of any health condition?"
+                },
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/phys_health_impact",
+                "valueType": [
+                    "xsd:decimal"
+                ]
+            },
+            "phys_health_limited": {
+                "description": "Indicates if the participant's physical health is limiting their daily activities.",
+                "question": {
+                    "en": "In the past 30 days, not counting the days that you were totally unable, for how many days did you cut back or reduce your usual activities or work because of any health condition?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/phys_health_limited",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "medications___1": {
+                "description": "Indicates if the participant is currently taking medication 1."
+            },
+            "medications___2": {
+                "description": "Indicates if the participant is taking medication 2."
+            },
+            "medications___3": {
+                "description": "Indicates if the participant is taking medication 3."
+            },
+            "medications___4": {
+                "description": "Indicates if the participant is taking medication 4."
+            },
+            "medications___5": {
+                "description": "Indicates if the participant is taking medication 5."
+            },
+            "medications___6": {
+                "description": "Indicates if the participant is taking medication 6."
+            },
+            "medications___7": {
+                "description": "Indicates if the participant is taking medication 7."
+            },
+            "medications___8": {
+                "description": "Indicates if the participant is taking medication 8."
+            },
+            "medications___9": {
+                "description": "Indicates if the participant is taking medication 9."
+            },
+            "medications___10": {
+                "description": "Indicates if the participant is taking medication 10."
+            },
+            "medications___11": {
+                "description": "Indicates if the participant is currently taking medication 11."
+            },
+            "medications___12": {
+                "description": "Indicates if the participant is taking medication 12."
+            },
+            "medications___13": {
+                "description": "Indicates if the participant is taking medication 13."
+            },
+            "medications___14": {
+                "description": "Indicates if the participant is currently taking medication 14."
+            },
+            "medications___15": {
+                "description": "Indicates if the participant is taking medication 15."
+            },
+            "medications___16": {
+                "description": "Indicates if the participant is taking medication 16."
+            },
+            "medications___17": {
+                "description": "Indicates if the participant is using medication 17."
+            },
+            "medications___18": {
+                "description": "Indicates if the participant is currently taking medication 18."
+            },
+            "hormone_use___1": {
+                "description": "Indicates if the participant uses hormone treatments (e.g., oral contraceptives)."
+            },
+            "hormone_use___2": {
+                "description": "Indicates if the participant uses hormone replacement therapy."
+            },
+            "hormone_use___3": {
+                "description": "Indicates if the participant uses hormone therapy for menopause."
+            },
+            "hormone_use___4": {
+                "description": "Indicates if the participant uses other forms of hormone therapy not listed."
+            },
+            "pain_medication___1": {
+                "description": "Indicates if the participant is taking pain medication 1."
+            },
+            "pain_medication___2": {
+                "description": "Indicates if the participant is taking pain medication 2."
+            },
+            "pain_medication___3": {
+                "description": "Indicates if the participant is taking pain medication 3."
+            },
+            "menstruate": {
+                "description": "Indicates if the participant menstruates.",
+                "question": {
+                    "en": "Do you menstruate?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Does not apply"
+                        },
+                        "value": "doesNotApply"
+                    },
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": "noAnswer"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/menstruate",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "menstruate_no": {
+                "description": "Indicates if the participant does not menstruate.",
+                "question": {
+                    "en": "Please explain"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "I am pregnant"
+                        },
+                        "value": "pregnant"
+                    },
+                    {
+                        "name": {
+                            "en": "I have an IUD"
+                        },
+                        "value": "iud"
+                    },
+                    {
+                        "name": {
+                            "en": "I have gone through menopause"
+                        },
+                        "value": "menopause"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/menstruate_no",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "menstrual_cycle_status": {
+                "description": "Indicates the participant's menstrual cycle status.",
+                "question": {
+                    "en": "Where in your cycle are you? We ask because this may affect your voice."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Menstruating"
+                        },
+                        "value": "menstruating"
+                    },
+                    {
+                        "name": {
+                            "en": "Premenstrual"
+                        },
+                        "value": "premenstrual"
+                    },
+                    {
+                        "name": {
+                            "en": "Postmenstrual"
+                        },
+                        "value": "postmenstrual"
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": "noAnswer"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/menstrual_cycle_status",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "voice_activity___1": {
+                "description": "Indicates the first type of voice activity the participant engaged in."
+            },
+            "voice_activity___2": {
+                "description": "Indicates the second type of voice activity engaged in by the participant."
+            },
+            "voice_activity___3": {
+                "description": "Indicates the third type of voice activity the participant engaged in."
+            },
+            "voice_activity___4": {
+                "description": "Indicates the fourth type of voice activity the participant engaged in."
+            },
+            "voice_activity___5": {
+                "description": "Indicates the fifth type of voice activity the participant engaged in."
+            },
+            "voice_activity___6": {
+                "description": "Indicates the sixth type of voice activity the participant engaged in."
+            },
+            "voice_activity___7": {
+                "description": "Indicates the seventh type of voice activity the participant engaged in."
+            },
+            "hours_voice_activity": {
+                "description": "Number of hours the participant engaged in voice-related activities.",
+                "question": {
+                    "en": "How many hours per day do you do this activity with a loud voice or in a loud environment that requires elevating your voice (for instance, a noisy bar or a noisy classroom)?"
+                },
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/hours_voice_activity",
+                "valueType": [
+                    "xsd:decimal"
+                ]
+            },
+            "reading_aloud": {
+                "description": "Indicates if the participant is reading aloud.",
+                "question": {
+                    "en": "How good do you think you are at reading out loud in [English/Spanish/French], that is reading out loud without making mistakes and understanding what you read at a normal rate?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Excellent"
+                        },
+                        "value": "excellent"
+                    },
+                    {
+                        "name": {
+                            "en": "Very good"
+                        },
+                        "value": "veryGood"
+                    },
+                    {
+                        "name": {
+                            "en": "Good"
+                        },
+                        "value": "good"
+                    },
+                    {
+                        "name": {
+                            "en": "Fair"
+                        },
+                        "value": "fair"
+                    },
+                    {
+                        "name": {
+                            "en": "Poor"
+                        },
+                        "value": "poor"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/reading_aloud",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "smoking_types": {
+                "question": {
+                    "en": "[LEGACY]\nChecklist of different types (choose all that apply):"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Tobacco cigarettes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Cannabis joints, bong, pipe"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Vapes"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "e-cigarettes"
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Hookah"
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Pipes"
+                        },
+                        "value": 6
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": 7
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": 8
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/smoking_types",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "seasonal_allergies_options": {
+                "question": {
+                    "en": "Check all that apply:"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Nasal congestion or obstruction"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Cough"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Scratchy or sore throat"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Shortness of breath"
+                        },
+                        "value": 4
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/seasonal_allergies_options",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "symptoms": {
+                "question": {
+                    "en": "There are some symptoms that can affect your voice. Are you currently experiencing any of these symptoms? Check all that apply."
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Anxiety or nervousness"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Confusion"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Dizziness"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Frequent or severe headache or migraine"
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Sleep disturbance"
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Speech difficulty"
+                        },
+                        "value": 6
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": 7
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/symptoms",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "ear_med_history": {
+                "question": {
+                    "en": "Ear"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Chronic ear infection"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Cochlear implant"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Hearing loss"
+                        },
+                        "value": 3
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/ear_med_history",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "nose_med_history": {
+                "question": {
+                    "en": "Nose"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Frequent sinusitis"
+                        },
+                        "value": 1
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/nose_med_history",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "throat_med_history": {
+                "question": {
+                    "en": "Throat"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Pre-cancerous throat lesion (e.g. laryngeal leukoplakia or keratosis"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Reflux (heartburn)"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Reinke's edema, polypoid corditis, or smoker's larynx"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Sjögren's syndrome"
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Swallowing disorders (dysphagia)"
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Throat cancer"
+                        },
+                        "value": 6
+                    },
+                    {
+                        "name": {
+                            "en": "Thyroid disease"
+                        },
+                        "value": 7
+                    },
+                    {
+                        "name": {
+                            "en": "Velopharyngeal insufficiency"
+                        },
+                        "value": 8
+                    },
+                    {
+                        "name": {
+                            "en": "Vocal fold dysfunction, paradoxical vocal fold motion, or inducible laryngeal obstruction"
+                        },
+                        "value": 9
+                    },
+                    {
+                        "name": {
+                            "en": "Vocal fold polyp, nodule, or cyst"
+                        },
+                        "value": 10
+                    },
+                    {
+                        "name": {
+                            "en": "Vocal hemorrhage or bleed"
+                        },
+                        "value": 11
+                    },
+                    {
+                        "name": {
+                            "en": "Voice/throat disorder"
+                        },
+                        "value": 12
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/throat_med_history",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "head_med_history": {
+                "question": {
+                    "en": "Head"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Radiation around head and neck"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Seasonal allergies"
+                        },
+                        "value": 2
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/head_med_history",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "ear_surgical": {
+                "question": {
+                    "en": "Ear"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Chronic ear surgery (e.g. mastoid)"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Ear tubes"
+                        },
+                        "value": 2
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/ear_surgical",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "nose_surgical": {
+                "question": {
+                    "en": "Nose"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Septoplasty/Rhinoplasty"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Sinus surgery"
+                        },
+                        "value": 2
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/nose_surgical",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "throat_surgical": {
+                "question": {
+                    "en": "Throat"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Airway surgery"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Throat surgery"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Thyroid surgery"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Tonsillectomy/Adenoidectomy"
+                        },
+                        "value": 4
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/throat_surgical",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "head_surgical": {
+                "question": {
+                    "en": "Head"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Head/Neck cancer (e.g. oropharyngeal cancer)"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Sleep surgery"
+                        },
+                        "value": 2
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/head_surgical",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "neurological_history": {
+                "question": {
+                    "en": "Neurological Medical History"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Brain tumor"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Dysarthria"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Epilepsy"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Multiple sclerosis"
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Traumatic brain injury"
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": 6
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/neurological_history",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "respiratory_conditions": {
+                "question": {
+                    "en": "Respiratory Conditions"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Bronchiectasis"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Cancer (lung or metastatic)"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Emphysema"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Interstitial lung disease (sarcoidosis, pulmonary fibrosis)"
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Pneumothorax or atelectasis (collapsed lung)"
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Pulmonary hypertension"
+                        },
+                        "value": 6
+                    },
+                    {
+                        "name": {
+                            "en": "Radiation to the chest"
+                        },
+                        "value": 7
+                    },
+                    {
+                        "name": {
+                            "en": "Tuberculosis"
+                        },
+                        "value": 8
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/respiratory_conditions",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "lung_or_metastatic": {
+                "question": {
+                    "en": "Cancer (lung or metastatic)"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Lung"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Metastatic"
+                        },
+                        "value": 2
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/lung_or_metastatic",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "covid": {
+                "question": {
+                    "en": "Have you had COVID recently, or are you currently experiencing the effects of long COVID? (check all that apply)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "COVID in the past year"
+                        },
+                        "value": "past_year"
+                    },
+                    {
+                        "name": {
+                            "en": "Long COVID (symptoms persisted at least four weeks after initial infection)"
+                        },
+                        "value": "long"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/covid",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "cpap_conditions": {
+                "question": {
+                    "en": "Are you currently using CPAP or supplemental oxygen? (check all that apply)"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Active CPAP use"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "On supplemental oxygen"
+                        },
+                        "value": 2
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/cpap_conditions",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "resp_medical_history": {
+                "question": {
+                    "en": "Respiratory medical history"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Craniofacial or chest wall trauma"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Previous lobectomy"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Prior chest/airway surgery"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Prolonged intubation (more than a week)"
+                        },
+                        "value": 4
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/resp_medical_history",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "circulatory_conditions": {
+                "question": {
+                    "en": "Have you been diagnosed with any of these circulatory or heart conditions by a clinician? (check all that apply)"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Atrial fibrillation"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Cardiac condition"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Chronic pericarditis"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Congestive heart failure"
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Coronary heart disease"
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Hypertension"
+                        },
+                        "value": 6
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/circulatory_conditions",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "circulatory_med_history": {
+                "question": {
+                    "en": "Some other conditions can affect the sound of your voice. Have you been diagnosed with any of these conditions by a clinician? (check all that apply)"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Chronic kidney disease"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Diabetes"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Infectious disease"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Obesity"
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Scoliosis"
+                        },
+                        "value": 5
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/circulatory_med_history",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "medications": {
+                "question": {
+                    "en": "Do you currently take or use any of these medications or substances? Please check all that apply"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Antibiotics"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Anti-histamines (allergy medications)"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Anti-Hypertensive Medications (Blood Pressure Medication)"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Diuretics (ex: Lasix)"
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Decongestants"
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Muscle relaxants (ex: Baclofen)"
+                        },
+                        "value": 6
+                    },
+                    {
+                        "name": {
+                            "en": "Hormone use"
+                        },
+                        "value": 7
+                    },
+                    {
+                        "name": {
+                            "en": "Inhaled corticosteroids"
+                        },
+                        "value": 8
+                    },
+                    {
+                        "name": {
+                            "en": "Oral steroids"
+                        },
+                        "value": 9
+                    },
+                    {
+                        "name": {
+                            "en": "Anti-anxiety medications: (ex: Benzodiazepine)"
+                        },
+                        "value": 10
+                    },
+                    {
+                        "name": {
+                            "en": "Chronic Pain medication"
+                        },
+                        "value": 11
+                    },
+                    {
+                        "name": {
+                            "en": "Psychotropic/antipsychotic medications (ex: Clozapine)"
+                        },
+                        "value": 12
+                    },
+                    {
+                        "name": {
+                            "en": "Antidepressants (ex: amitryptiline)"
+                        },
+                        "value": 13
+                    },
+                    {
+                        "name": {
+                            "en": "Immune suppressors (ex: Methotrexate)"
+                        },
+                        "value": 14
+                    },
+                    {
+                        "name": {
+                            "en": "Reflux medications (ex: Pantoprazole, Nexium)"
+                        },
+                        "value": 15
+                    },
+                    {
+                        "name": {
+                            "en": "Anticholinergics (ex: Ventolin)"
+                        },
+                        "value": 16
+                    },
+                    {
+                        "name": {
+                            "en": "Anticoagulants (blood thinners)"
+                        },
+                        "value": 17
+                    },
+                    {
+                        "name": {
+                            "en": "Antiepileptic (ex: Phenytoin)"
+                        },
+                        "value": 18
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/medications",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "hormone_use": {
+                "question": {
+                    "en": "Hormone use"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Oral contraceptive"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Hormonal replacement therapy (HRT)"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Androgenic steroids"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": 4
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/hormone_use",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "pain_medication": {
+                "question": {
+                    "en": "Chronic Pain medication"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "NSAIDs (ex: Ibuprofen/Advil/Cerebrex)"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Morphine/Oxycodone"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Neuro-modulators (ex: Gabapentin, Lyrica)"
+                        },
+                        "value": 3
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/pain_medication",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "voice_activity": {
+                "question": {
+                    "en": "Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Bartender"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Waiter, receptionist"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Speaking (secretary, call center, attorney, salesperson)"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Teacher"
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Singer"
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Cheerleading"
+                        },
+                        "value": 6
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": 7
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/voice_activity",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            }
+        }
     }
 }

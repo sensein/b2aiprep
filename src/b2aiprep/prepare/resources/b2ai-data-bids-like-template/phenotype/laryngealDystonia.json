@@ -1,119 +1,770 @@
 {
-    "diagnosis_ld_qete___laryngologist": {
-        "description": "Indicates if the participant's laryngeal dystonia was determined by a laryngologist as part of the qualitative expert team evaluation."
-    },
-    "diagnosis_ld_qete___speech_language_pathology": {
-        "description": "Indicates if the participant's laryngeal dystonia was determined by a speech-language pathologist as part of the qualitative expert team evaluation."
-    },
-    "diagnosis_ld_qete___neurologist_specializing_disorders": {
-        "description": "Indicates if the participant's laryngeal dystonia was determined by a neurologist specializing in movement disorders as part of the qualitative expert team evaluation."
-    },
-    "diagnosis_ld_assessment___aural_perceptual_evaluation": {
-        "description": "Indicates if the participant underwent an aural-perceptual evaluation as part of their laryngeal dystonia assessment."
-    },
-    "diagnosis_ld_assessment___laryngoscopy_or_stroboscopy": {
-        "description": "Indicates if the participant underwent laryngoscopy or stroboscopy as part of their laryngeal dystonia assessment."
-    },
-    "diagnosis_ld_assessment___neurological_evaluation": {
-        "description": "Indicates if the participant underwent a neurological evaluation as part of their laryngeal dystonia assessment."
-    },
-    "diagnosis_ld_ds___adld": {
-        "description": "Indicates if the participant has adductor laryngeal dystonia (ADLD)."
-    },
-    "diagnosis_ld_ds___abld": {
-        "description": "Indicates if the participant has abductor laryngeal dystonia (ABLD)."
-    },
-    "diagnosis_ld_ds___vocal_tremor": {
-        "description": "Indicates if the participant has vocal tremor."
-    },
-    "diagnosis_ld_ds___mixed_laryngeal_dystonia": {
-        "description": "Indicates if the participant has mixed laryngeal dystonia."
-    },
-    "diagnosis_ld_ds___sld": {
-        "description": "Indicates if the participant has singer's laryngeal dystonia (SLD)."
-    },
-    "diagnosis_ld_ds___arld": {
-        "description": "Indicates if the participant has adductor laryngeal spasms during inspiration (ARLD)."
-    },
-    "diagnosis_ld_etiology": {
-        "description": "Specifies the etiology or cause of the participant’s laryngeal dystonia."
-    },
-    "diagnosis_ld_etiology_cc___essential_tremor_of_the_hands": {
-        "description": "Indicates if the participant has an essential tremor of the hands."
-    },
-    "diagnosis_ld_etiology_cc___essential_tremor_of_the_head": {
-        "description": "Indicates if the participant has an essential tremor of the head."
-    },
-    "diagnosis_ld_etiology_cc___jaw_tremor": {
-        "description": "Indicates if the participant has a jaw tremor."
-    },
-    "diagnosis_ld_etiology_cc___dystonia_of_the_head_and_neck": {
-        "description": "Indicates if the participant has dystonia of the head and neck."
-    },
-    "diagnosis_ld_etiology_cc___other_type_of_dystonia": {
-        "description": "Indicates if the participant has another type of dystonia."
-    },
-    "diagnosis_ld_degree_os_1": {
-        "description": "Indicates the participant's overall severity of laryngeal dystonia."
-    },
-    "diagnosis_ld_degree_os_2": {
-        "description": "Indicates an alternative measure of the participant's overall severity of laryngeal dystonia."
-    },
-    "diagnosis_ld_degree_r_1": {
-        "description": "Indicates the roughness of the participant’s voice as a result of laryngeal dystonia."
-    },
-    "diagnosis_ld_degree_r_2": {
-        "description": "Indicates an alternative measure of the roughness of the participant’s voice due to laryngeal dystonia."
-    },
-    "diagnosis_ld_degree_b_1": {
-        "description": "Indicates the breathiness of the participant’s voice as a result of laryngeal dystonia."
-    },
-    "diagnosis_ld_degree_b_2": {
-        "description": "Indicates an alternative measure of the breathiness of the participant’s voice due to laryngeal dystonia."
-    },
-    "diagnosis_ld_degree_s_1": {
-        "description": "Indicates the strain in the participant’s voice as a result of laryngeal dystonia."
-    },
-    "diagnosis_ld_degree_s_2": {
-        "description": "Indicates an alternative measure of the strain in the participant’s voice due to laryngeal dystonia."
-    },
-    "diagnosis_ld_degree_p_1": {
-        "description": "Indicates the pitch of the participant’s voice as a result of laryngeal dystonia."
-    },
-    "diagnosis_ld_degree_p_2": {
-        "description": "Indicates an alternative measure of the pitch of the participant’s voice due to laryngeal dystonia."
-    },
-    "diagnosis_ld_degree_l_1": {
-        "description": "Indicates the loudness of the participant’s voice as a result of laryngeal dystonia."
-    },
-    "diagnosis_ld_degree_l_2": {
-        "description": "Indicates an alternative measure of the loudness of the participant’s voice due to laryngeal dystonia."
-    },
-    "diagnosis_ld_degree_comments": {
-        "description": "Provides additional comments about the resonance of the participant’s voice due to laryngeal dystonia."
-    },
-    "diagnosis_ld_treatment": {
-        "description": "Indicates if the participant has undergone any treatment for laryngeal dystonia."
-    },
-    "diagnosis_ld_treatment_select___botox_injections": {
-        "description": "Indicates if the participant has received botox injections as a treatment for laryngeal dystonia."
-    },
-    "diagnosis_ld_treatment_select___voice_or_speech_therapy": {
-        "description": "Indicates if the participant has undergone voice or speech therapy as a treatment for laryngeal dystonia."
-    },
-    "diagnosis_ld_treatment_select___vibrotactile_stimulation": {
-        "description": "Indicates if the participant has undergone vibrotactile stimulation as a treatment for laryngeal dystonia."
-    },
-    "diagnosis_ld_treatment_select___deep_brain_stimulation": {
-        "description": "Indicates if the participant has undergone deep brain stimulation as a treatment for laryngeal dystonia."
-    },
-    "diagnosis_ld_treatment_select___mrgfus": {
-        "description": "Indicates if the participant has undergone magnetic resonance-guided focused ultrasound (MRgFUS) as a treatment for laryngeal dystonia."
-    },
-    "diagnosis_ld_treatment_select___other": {
-        "description": "Indicates if the participant has undergone other treatments for laryngeal dystonia."
-    },
-    "diagnosis_ld_treatment_bi_li": {
-        "description": "Specifies when the participant received their last injection as treatment for laryngeal dystonia."
+    "d_voice_laryngeal_dystonia_schema": {
+        "description": "Measures symptoms and characteristics of laryngeal dystonia.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/d_voice_laryngeal_dystonia_schema",
+        "data_elements": {
+            "diagnosis_ld_qete___laryngologist": {
+                "description": "Indicates if the participant's laryngeal dystonia was determined by a laryngologist as part of the qualitative expert team evaluation."
+            },
+            "diagnosis_ld_qete___speech_language_pathology": {
+                "description": "Indicates if the participant's laryngeal dystonia was determined by a speech-language pathologist as part of the qualitative expert team evaluation."
+            },
+            "diagnosis_ld_qete___neurologist_specializing_disorders": {
+                "description": "Indicates if the participant's laryngeal dystonia was determined by a neurologist specializing in movement disorders as part of the qualitative expert team evaluation."
+            },
+            "diagnosis_ld_assessment___aural_perceptual_evaluation": {
+                "description": "Indicates if the participant underwent an aural-perceptual evaluation as part of their laryngeal dystonia assessment."
+            },
+            "diagnosis_ld_assessment___laryngoscopy_or_stroboscopy": {
+                "description": "Indicates if the participant underwent laryngoscopy or stroboscopy as part of their laryngeal dystonia assessment."
+            },
+            "diagnosis_ld_assessment___neurological_evaluation": {
+                "description": "Indicates if the participant underwent a neurological evaluation as part of their laryngeal dystonia assessment."
+            },
+            "diagnosis_ld_ds___adld": {
+                "description": "Indicates if the participant has adductor laryngeal dystonia (ADLD)."
+            },
+            "diagnosis_ld_ds___abld": {
+                "description": "Indicates if the participant has abductor laryngeal dystonia (ABLD)."
+            },
+            "diagnosis_ld_ds___vocal_tremor": {
+                "description": "Indicates if the participant has vocal tremor."
+            },
+            "diagnosis_ld_ds___mixed_laryngeal_dystonia": {
+                "description": "Indicates if the participant has mixed laryngeal dystonia."
+            },
+            "diagnosis_ld_ds___sld": {
+                "description": "Indicates if the participant has singer's laryngeal dystonia (SLD)."
+            },
+            "diagnosis_ld_ds___arld": {
+                "description": "Indicates if the participant has adductor laryngeal spasms during inspiration (ARLD)."
+            },
+            "diagnosis_ld_etiology": {
+                "description": "Specifies the etiology or cause of the participant’s laryngeal dystonia.",
+                "question": {
+                    "en": "What is the etiology?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Idiopathic"
+                        },
+                        "value": "idiopathic"
+                    },
+                    {
+                        "name": {
+                            "en": "Familial"
+                        },
+                        "value": "familial"
+                    },
+                    {
+                        "name": {
+                            "en": "Trauma"
+                        },
+                        "value": "trauma"
+                    },
+                    {
+                        "name": {
+                            "en": "Unknown"
+                        },
+                        "value": "unknown"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_etiology",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ld_etiology_cc___essential_tremor_of_the_hands": {
+                "description": "Indicates if the participant has an essential tremor of the hands."
+            },
+            "diagnosis_ld_etiology_cc___essential_tremor_of_the_head": {
+                "description": "Indicates if the participant has an essential tremor of the head."
+            },
+            "diagnosis_ld_etiology_cc___jaw_tremor": {
+                "description": "Indicates if the participant has a jaw tremor."
+            },
+            "diagnosis_ld_etiology_cc___dystonia_of_the_head_and_neck": {
+                "description": "Indicates if the participant has dystonia of the head and neck."
+            },
+            "diagnosis_ld_etiology_cc___other_type_of_dystonia": {
+                "description": "Indicates if the participant has another type of dystonia."
+            },
+            "diagnosis_ld_degree_os_1": {
+                "description": "Indicates the participant's overall severity of laryngeal dystonia.",
+                "question": {
+                    "en": "Overall Severity"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "MI"
+                        },
+                        "value": "MI"
+                    },
+                    {
+                        "name": {
+                            "en": "MO"
+                        },
+                        "value": "MO"
+                    },
+                    {
+                        "name": {
+                            "en": "SE"
+                        },
+                        "value": "SE"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_os_1",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ld_degree_os_2": {
+                "description": "Indicates an alternative measure of the participant's overall severity of laryngeal dystonia.",
+                "question": {
+                    "en": "Overall Severity"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Consistent"
+                        },
+                        "value": "consistent"
+                    },
+                    {
+                        "name": {
+                            "en": "Intermittent"
+                        },
+                        "value": "intermittent"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_os_2",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ld_degree_r_1": {
+                "description": "Indicates the roughness of the participant’s voice as a result of laryngeal dystonia.",
+                "question": {
+                    "en": "Roughness"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "MI"
+                        },
+                        "value": "MI"
+                    },
+                    {
+                        "name": {
+                            "en": "MO"
+                        },
+                        "value": "MO"
+                    },
+                    {
+                        "name": {
+                            "en": "SE"
+                        },
+                        "value": "SE"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_r_1",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ld_degree_r_2": {
+                "description": "Indicates an alternative measure of the roughness of the participant’s voice due to laryngeal dystonia.",
+                "question": {
+                    "en": "Roughness"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Consistent"
+                        },
+                        "value": "consistent"
+                    },
+                    {
+                        "name": {
+                            "en": "Intermittent"
+                        },
+                        "value": "intermittent"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_r_2",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ld_degree_b_1": {
+                "description": "Indicates the breathiness of the participant’s voice as a result of laryngeal dystonia.",
+                "question": {
+                    "en": "Breathiness"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "MI"
+                        },
+                        "value": "MI"
+                    },
+                    {
+                        "name": {
+                            "en": "MO"
+                        },
+                        "value": "MO"
+                    },
+                    {
+                        "name": {
+                            "en": "SE"
+                        },
+                        "value": "SE"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_b_1",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ld_degree_b_2": {
+                "description": "Indicates an alternative measure of the breathiness of the participant’s voice due to laryngeal dystonia.",
+                "question": {
+                    "en": "Breathiness"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Consistent"
+                        },
+                        "value": "consistent"
+                    },
+                    {
+                        "name": {
+                            "en": "Intermittent"
+                        },
+                        "value": "intermittent"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_b_2",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ld_degree_s_1": {
+                "description": "Indicates the strain in the participant’s voice as a result of laryngeal dystonia.",
+                "question": {
+                    "en": "Strain"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "MI"
+                        },
+                        "value": "MI"
+                    },
+                    {
+                        "name": {
+                            "en": "MO"
+                        },
+                        "value": "MO"
+                    },
+                    {
+                        "name": {
+                            "en": "SE"
+                        },
+                        "value": "SE"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_s_1",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ld_degree_s_2": {
+                "description": "Indicates an alternative measure of the strain in the participant’s voice due to laryngeal dystonia.",
+                "question": {
+                    "en": "Strain"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Consistent"
+                        },
+                        "value": "consistent"
+                    },
+                    {
+                        "name": {
+                            "en": "Intermittent"
+                        },
+                        "value": "intermittent"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_s_2",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ld_degree_p_1": {
+                "description": "Indicates the pitch of the participant’s voice as a result of laryngeal dystonia.",
+                "question": {
+                    "en": "Pitch"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "MI"
+                        },
+                        "value": "MI"
+                    },
+                    {
+                        "name": {
+                            "en": "MO"
+                        },
+                        "value": "MO"
+                    },
+                    {
+                        "name": {
+                            "en": "SE"
+                        },
+                        "value": "SE"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_p_1",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ld_degree_p_2": {
+                "description": "Indicates an alternative measure of the pitch of the participant’s voice due to laryngeal dystonia.",
+                "question": {
+                    "en": "Pitch"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Consistent"
+                        },
+                        "value": "consistent"
+                    },
+                    {
+                        "name": {
+                            "en": "Intermittent"
+                        },
+                        "value": "intermittent"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_p_2",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ld_degree_l_1": {
+                "description": "Indicates the loudness of the participant’s voice as a result of laryngeal dystonia.",
+                "question": {
+                    "en": "Loudness"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "MI"
+                        },
+                        "value": "MI"
+                    },
+                    {
+                        "name": {
+                            "en": "MO"
+                        },
+                        "value": "MO"
+                    },
+                    {
+                        "name": {
+                            "en": "SE"
+                        },
+                        "value": "SE"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_l_1",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ld_degree_l_2": {
+                "description": "Indicates an alternative measure of the loudness of the participant’s voice due to laryngeal dystonia.",
+                "question": {
+                    "en": "Loudness"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Consistent"
+                        },
+                        "value": "consistent"
+                    },
+                    {
+                        "name": {
+                            "en": "Intermittent"
+                        },
+                        "value": "intermittent"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_l_2",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ld_degree_comments": {
+                "description": "Provides additional comments about the resonance of the participant’s voice due to laryngeal dystonia.",
+                "question": {
+                    "en": "Comments about resonance"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Normal"
+                        },
+                        "value": "normal"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_comments",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ld_treatment": {
+                "description": "Indicates if the participant has undergone any treatment for laryngeal dystonia.",
+                "question": {
+                    "en": "Has the patient undergone any treatment for their condition?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_treatment",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ld_treatment_select___botox_injections": {
+                "description": "Indicates if the participant has received botox injections as a treatment for laryngeal dystonia."
+            },
+            "diagnosis_ld_treatment_select___voice_or_speech_therapy": {
+                "description": "Indicates if the participant has undergone voice or speech therapy as a treatment for laryngeal dystonia."
+            },
+            "diagnosis_ld_treatment_select___vibrotactile_stimulation": {
+                "description": "Indicates if the participant has undergone vibrotactile stimulation as a treatment for laryngeal dystonia."
+            },
+            "diagnosis_ld_treatment_select___deep_brain_stimulation": {
+                "description": "Indicates if the participant has undergone deep brain stimulation as a treatment for laryngeal dystonia."
+            },
+            "diagnosis_ld_treatment_select___mrgfus": {
+                "description": "Indicates if the participant has undergone magnetic resonance-guided focused ultrasound (MRgFUS) as a treatment for laryngeal dystonia."
+            },
+            "diagnosis_ld_treatment_select___other": {
+                "description": "Indicates if the participant has undergone other treatments for laryngeal dystonia."
+            },
+            "diagnosis_ld_treatment_bi_li": {
+                "description": "Specifies when the participant received their last injection as treatment for laryngeal dystonia.",
+                "question": {
+                    "en": "When was the last injection?"
+                },
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_treatment_bi_li",
+                "valueType": [
+                    "xsd:decimal"
+                ]
+            },
+            "diagnosis_ld_qete": {
+                "question": {
+                    "en": "Does the patient have laryngeal dystonia as determined by qualitative expert team evaluation?\n(Select all that apply)."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Laryngologist"
+                        },
+                        "value": "laryngologist"
+                    },
+                    {
+                        "name": {
+                            "en": "Speech-Language Pathology"
+                        },
+                        "value": "speech_language_pathology"
+                    },
+                    {
+                        "name": {
+                            "en": "Neurologist specializing in movement disorders"
+                        },
+                        "value": "neurologist_specializing_disorders"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_qete",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ld_assessment": {
+                "question": {
+                    "en": "Did the patient have the following assessment?\n(Select all that apply)."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Aural-perceptual evaluation"
+                        },
+                        "value": "aural_perceptual_evaluation"
+                    },
+                    {
+                        "name": {
+                            "en": "Laryngoscopy or stroboscopy"
+                        },
+                        "value": "laryngoscopy_or_stroboscopy"
+                    },
+                    {
+                        "name": {
+                            "en": "Neurological evaluation"
+                        },
+                        "value": "neurological_evaluation"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_assessment",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ld_ds": {
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Adductor laryngeal dystonia (ADLD)"
+                        },
+                        "value": "adld"
+                    },
+                    {
+                        "name": {
+                            "en": "Abductor laryngeal dystonia (ABLD)"
+                        },
+                        "value": "abld"
+                    },
+                    {
+                        "name": {
+                            "en": "Vocal Tremor"
+                        },
+                        "value": "vocal_tremor"
+                    },
+                    {
+                        "name": {
+                            "en": "Mixed laryngeal dystonia"
+                        },
+                        "value": "mixed_laryngeal_dystonia"
+                    },
+                    {
+                        "name": {
+                            "en": "Singer's laryngeal dystonia (SLD)"
+                        },
+                        "value": "sld"
+                    },
+                    {
+                        "name": {
+                            "en": "Adductor laryngeal spasms during inspiration (ARLD)"
+                        },
+                        "value": "arld"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_ds",
+                "question": {
+                    "en": "Disease Subtypes:\n(Select all that apply)"
+                },
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ld_etiology_cc": {
+                "question": {
+                    "en": "Does the patient have any of the following concomitant conditions?\n(Select all that apply)."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Essential Tremor of the hands"
+                        },
+                        "value": "essential_tremor_of_the_hands"
+                    },
+                    {
+                        "name": {
+                            "en": "Essential tremor of the head"
+                        },
+                        "value": "essential_tremor_of_the_head"
+                    },
+                    {
+                        "name": {
+                            "en": "Jaw tremor"
+                        },
+                        "value": "jaw_tremor"
+                    },
+                    {
+                        "name": {
+                            "en": "Dystonia of the head and neck"
+                        },
+                        "value": "dystonia_of_the_head_and_neck"
+                    },
+                    {
+                        "name": {
+                            "en": "Other type of dystonia"
+                        },
+                        "value": "other_type_of_dystonia"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_etiology_cc",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ld_treatment_select": {
+                "question": {
+                    "en": "Select all that apply:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Botox injections"
+                        },
+                        "value": "botox_injections"
+                    },
+                    {
+                        "name": {
+                            "en": "Voice/speech therapy"
+                        },
+                        "value": "voice_or_speech_therapy"
+                    },
+                    {
+                        "name": {
+                            "en": "Vibrotactile stimulation"
+                        },
+                        "value": "vibrotactile_stimulation"
+                    },
+                    {
+                        "name": {
+                            "en": "Deep brain stimulation"
+                        },
+                        "value": "deep_brain_stimulation"
+                    },
+                    {
+                        "name": {
+                            "en": "Magnetic resonance imaging-guided focused ultrasound (MRgFUS)"
+                        },
+                        "value": "mrgfus"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_treatment_select",
+                "valueType": [
+                    "xsd:string"
+                ]
+            }
+        }
     }
 }
