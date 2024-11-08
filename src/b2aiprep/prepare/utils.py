@@ -2,13 +2,16 @@ import glob
 import importlib.resources as pkg_resources
 import json
 import os
+from pathlib import Path
 import shutil
 from typing import Dict, List, Optional
+import logging
 
 import pandas as pd
 
+_LOGGER = logging.getLogger(__name__)
 
-def _transform_str_for_bids_filename(filename: str):
+def transform_str_for_bids_filename(filename: str):
     """Replace spaces in a string with hyphens to match BIDS string format rules.."""
     return filename.replace(" ", "-")
 
@@ -168,90 +171,27 @@ def remove_files_by_pattern(directory: str, pattern: str) -> None:
         except OSError as e:
             print(f"Error removing file {file_path}: {e}")
 
-
-def construct_tsv_from_json(
-    df: pd.DataFrame, json_file_path: str, output_dir: str, output_file_name: Optional[str] = None
-) -> None:
-    """
-    Constructs a TSV file from a DataFrame and a JSON file specifying column labels.
-    Combines entries so that there is one row per record_id.
+def initialize_data_directory(bids_dir_path: str) -> None:
+    """Initializes the data directory using the template.
 
     Args:
-        df (pd.DataFrame): DataFrame containing the data.
-        json_file_path (str): Path to the JSON file with the column labels.
-        output_dir (str): Output directory where the TSV file will be saved.
-        output_file_name (str, optional): The name of the output TSV file.
-                                          If not provided, the JSON file name is used with a .tsv extension.
+        bids_dir_path (str): The path to the BIDS directory where the data should be initialized.
 
     Returns:
-        None: This function does not return a value; it writes the output to a TSV file.
+        None
     """
-    # Load the column labels from the JSON file
-    with open(json_file_path, "r") as f:
-        json_data = json.load(f)
+    if not os.path.exists(bids_dir_path):
+        os.makedirs(bids_dir_path)
+        _LOGGER.info(f"Created directory: {bids_dir_path}")
 
-    # Extract column names from the JSON file
-    column_labels = list(json_data.keys())
-
-    # Filter column labels to only include those that exist in the DataFrame
-    valid_columns = [col for col in column_labels if col in df.columns]
-
-    if not valid_columns:
-        raise ValueError("No valid columns found in DataFrame that match JSON file")
-
-    if "record_id" not in valid_columns:
-        valid_columns = ["record_id"] + valid_columns
-
-    # Select the relevant columns from the DataFrame
-    selected_df = df[valid_columns]
-
-    # Combine entries so there is one row per record_id
-    combined_df = selected_df.groupby("record_id").first().reset_index()
-
-    # Define the output file name and path
-    if output_file_name is None:
-        output_file_name = os.path.splitext(os.path.basename(json_file_path))[0] + ".tsv"
-
-    tsv_path = os.path.join(output_dir, output_file_name)
-
-    # Save the combined DataFrame to a TSV file
-    combined_df.to_csv(tsv_path, sep="\t", index=False)
-
-    print(f"TSV file created and saved to: {tsv_path}")
-
-
-def construct_all_tsvs_from_jsons(
-    df: pd.DataFrame, input_dir: str, output_dir: str, excluded_files: Optional[List[str]] = None
-) -> None:
-    """
-    Constructs TSV files from all JSON files in a specified directory,
-    excluding specific files if provided.
-
-    Args:
-        df (pd.DataFrame): DataFrame containing the data.
-        input_dir (str): Directory containing JSON files with column labels.
-        output_dir (str): Directory where the TSV files will be saved.
-        excluded_files (List[str], optional): List of JSON filenames to exclude
-                                              from processing. Defaults to None.
-
-    Returns:
-        None: This function does not return a value; it writes output to TSV files.
-    """
-    # Ensure the excluded_files list is initialized if None is provided
-    if excluded_files is None:
-        excluded_files = []
-
-    # Ensure output directory exists
-    os.makedirs(output_dir, exist_ok=True)
-
-    # Iterate over all files in the input directory
-    for filename in os.listdir(input_dir):
-        # Process only JSON files that are not excluded
-        if filename.endswith(".json") and filename not in excluded_files:
-            json_file_path = os.path.join(input_dir, filename)
-
-            # Construct the TSV file from the JSON file
-            construct_tsv_from_json(df=df, json_file_path=json_file_path, output_dir=output_dir)
+    template_package = "b2aiprep.prepare.resources.b2ai-data-bids-like-template"
+    copy_package_resource(template_package, "CHANGES.md", bids_dir_path)
+    copy_package_resource(template_package, "README.md", bids_dir_path)
+    copy_package_resource(template_package, "dataset_description.json", bids_dir_path)
+    copy_package_resource(template_package, "participants.json", bids_dir_path)
+    copy_package_resource(template_package, "phenotype", bids_dir_path)
+    phenotype_path = Path(bids_dir_path).joinpath("phenotype")
+    remove_files_by_pattern(phenotype_path, "<measurement_tool_name>*")
 
 
 def open_json_as_dict(file_path):
@@ -340,3 +280,4 @@ def update_jsons_in_directory(directory: str, reference_file: str) -> None:
     # Save the modified reference JSON back to its original file
     save_json(reference_json, reference_file)
     print(f"Updated reference JSON saved back to {reference_file}")
+

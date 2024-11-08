@@ -1,16 +1,23 @@
 """Commands available through the CLI."""
 import csv
+import json
 import logging
 import os
 import shutil
 from glob import glob
 from pathlib import Path
+import tarfile
+from functools import partial
+import typing as t
 
 import click
+import numpy as np
+import pandas as pd
 import pkg_resources
 import pydra
 import torch
 from datasets import Dataset
+
 from pydra.mark import annotate
 from senselab.audio.data_structures.audio import Audio
 from senselab.audio.tasks.features_extraction.opensmile import (
@@ -30,14 +37,18 @@ from senselab.audio.tasks.speaker_verification.speaker_verification import (
     verify_speaker,
 )
 from senselab.audio.tasks.speech_to_text.api import transcribe_audios
+from senselab.utils.data_structures.device import DeviceType
 from senselab.utils.data_structures.model import HFModel
+from senselab.utils.data_structures.language import Language
 from streamlit import config as _config
 from streamlit.web.bootstrap import run
+from tqdm import tqdm
 
-from b2aiprep.prepare.bids import redcap_to_bids
-from b2aiprep.prepare.prepare import prepare_bids_like_data, validate_bids_data
+from b2aiprep.prepare.bids import get_audio_paths, redcap_to_bids, validate_bids_folder
+from b2aiprep.prepare.prepare import extract_features_serially, extract_features_workflow, validate_bids_data, RESAMPLE_RATE
+from b2aiprep.prepare.signal_processing import extract_mel_filter_bank, extract_mfcc, extract_spectrogram, resample_audio
 
-
+_LOGGER = logging.getLogger(__name__)
 
 @click.command()
 @click.argument("bids_dir", type=click.Path(exists=True))
@@ -88,8 +99,7 @@ def redcap2bids(
 @click.argument("transcription_model_size", type=str)
 @click.argument("n_cores", type=int)
 @click.argument("with_sensitive", type=bool)
-@click.argument("update_columns_names", type=bool)
-def prepbidslikedata(
+def prepare_bids(
     redcap_csv_path,
     audio_dir_path,
     bids_dir_path,
@@ -97,29 +107,152 @@ def prepbidslikedata(
     transcription_model_size,
     n_cores,
     with_sensitive,
-    update_columns_names,
 ):
     """Organizes the data into a BIDS-like directory structure.
 
-    redcap_csv_path: path to the redcap csv\n
-    audio_dir_path: path to directory with audio files\n
-    bids_dir_path: path to store bids-like data\n
-    tar_file_path: path to store tar file\n
-    transcription_model_size: tiny, small, medium, or large\n
-    n_cores: number of cores to run feature extraction on\n
-    with_sensitive: whether to include sensitive data\n
+    redcap_csv_path: path to the redcap csv
+    audio_dir_path: path to directory with audio files
+    bids_dir_path: path to store bids-like data
+    tar_file_path: path to store tar file
+    transcription_model_size: tiny, small, medium, or large
+    n_cores: number of cores to run feature extraction on
+    with_sensitive: whether to include sensitive data
     update_columns_names: whether to replace column names with column_mappings
     """
-    prepare_bids_like_data(
-        redcap_csv_path=Path(redcap_csv_path),
-        audio_dir_path=Path(audio_dir_path),
-        bids_dir_path=Path(bids_dir_path),
-        tar_file_path=Path(tar_file_path),
-        transcription_model_size=transcription_model_size,
-        n_cores=n_cores,
-        with_sensitive=with_sensitive,
-        update_columns_names=update_columns_names,
+    _LOGGER.info("Organizing data into BIDS-like directory structure...")
+    redcap_to_bids(redcap_csv_path, bids_dir_path, audio_dir_path)
+    _LOGGER.info("Data organization complete.")
+
+    _LOGGER.info("Beginning audio feature extraction...")
+    if n_cores == 1:
+        extract_features_serially(
+            bids_dir_path,
+            transcription_model_size=transcription_model_size,
+            n_cores=n_cores,
+            with_sensitive=with_sensitive,
+        )
+    else:
+        extract_features_workflow(
+            bids_dir_path,
+            transcription_model_size=transcription_model_size,
+            n_cores=n_cores,
+            with_sensitive=with_sensitive,
+        )
+    _LOGGER.info("Audio feature extraction complete.")
+
+    # Below code checks to see if we have all the expected feature/transcript files.
+    validate_bids_folder(bids_dir_path)
+
+    _LOGGER.info("Saving .tar file with processed data...")
+    with tarfile.open(tar_file_path, "w:gz") as tar:
+        tar.add(bids_dir_path, arcname=os.path.basename(bids_dir_path))
+    _LOGGER.info(f"Saved processed data .tar file at: {tar_file_path}")
+
+    _LOGGER.info("Process completed.")
+
+def load_audio_features(
+    audio_paths,
+    file_extension,
+) -> t.Generator[t.Dict[str, t.Any], None, None]:
+    """Load audio features from individual files and yield dictionaries amenable to HuggingFace's Dataset from_generator."""
+    for wav_path in tqdm(audio_paths, total=len(audio_paths), desc="Extracting features"):
+        wav_path = Path(wav_path).resolve()
+        audio_dir = wav_path.parent
+        features_dir = audio_dir.parent / "audio"
+
+        output = {}
+        # get the subject_id and session_id for this data
+        # TODO: we should appropriately load these as FHIR resources to validate the data
+        metadata_filepath = wav_path.parent.joinpath(wav_path.stem + "_recording-metadata.json")
+        metadata = json.loads(metadata_filepath.read_text())
+        
+        for item in metadata["item"]:
+            if item["linkId"] == "record_id":
+                output["subject_id"] = item["answer"][0]["valueString"]
+            elif item["linkId"] == "recording_session_id":
+                output["session_id"] = item["answer"][0]["valueString"]
+            elif item["linkId"] == "recording_name":
+                output["recording_name"] = item["answer"][0]["valueString"]
+            elif item["linkId"] == "recording_duration":
+                output["recording_duration"] = item["answer"][0]["valueString"]
+
+        feature_path = features_dir / f"{wav_path.stem}_transcription.txt"
+        with open(feature_path, "r", encoding="utf-8") as text_file:
+            transcription = text_file.read()
+        output['transcription'] = transcription
+
+        for feature_name in ["speaker_embedding", "specgram", "melfilterbank", "mfcc", "opensmile"]:
+            feature_path = features_dir / f"{wav_path.stem}_{feature_name}.{file_extension}"
+            if not feature_path.exists():
+                continue
+            if feature_name == "speaker_embedding":
+                output["speaker_embedding"] = torch.load(feature_path)
+            else:
+                data = torch.load(feature_path)
+                if len(data) == 1:
+                    key = next(iter(data.keys()))
+                    data[key] = data[key].numpy().astype(np.float32)
+                output.update(torch.load(feature_path))
+        
+        # load transcription
+        feature_path = features_dir / f"{wav_path.stem}_transcription.txt"
+        if feature_path.exists():
+            output["transcription"] = feature_path.read_text()
+        
+        yield output
+
+
+@click.command()
+@click.argument("bids_path", type=click.Path())
+def create_derived_dataset(
+    bids_path,
+):
+    bids_path = Path(bids_path)
+    audio_paths = get_audio_paths(
+        bids_dir_path=bids_path,
     )
+    file_extension = "pt"
+    _LOGGER.info("Loading derived data into a single HF dataset.")
+    feature_loader = partial(load_audio_features, audio_paths, file_extension)
+    ds = Dataset.from_generator(feature_loader, num_proc=1)
+    ds.to_parquet(
+        Path(bids_path).joinpath("b2ai-voice.parquet").as_posix(),
+        compression="snappy",    
+    )
+    _LOGGER.info("Parquet dataset created.")
+    _LOGGER.info("Creating merged phenotype data.")
+
+    # first initialize a dataframe with all the record IDs which are equivalent to participant IDs.
+    df = pd.read_csv(bids_path.joinpath("participants.tsv"), sep="\t")
+    df = df[['record_id']]
+    with open(bids_path.joinpath("participants.json"), "r") as f:
+        participants = json.load(f)
+    phenotype = {"participant_id": participants["record_id"]}
+
+    for phenotype_filepath in sorted(list(bids_path.joinpath("phenotype").glob("*.tsv"))):
+        df_add = pd.read_csv(phenotype_filepath, sep="\t")
+        phenotype_name = phenotype_filepath.stem
+        if phenotype_name == 'participant':
+            continue
+        # check for overlapping columns
+        for col in df_add.columns:
+            if col == "record_id":
+                continue
+            if col in df.columns:
+                raise ValueError(f"Column {col} already exists in the dataframe")
+
+        df = df.merge(df_add, on='record_id', how='left')
+        with open(bids_path.joinpath("phenotype", f"{phenotype_name}.json"), "r") as f:
+            phenotype_add = json.load(f)
+        
+        phenotype.update(phenotype_add)
+
+    df = df.rename(columns={"record_id": "participant_id"})
+    df.to_csv(bids_path.joinpath("phenotype.tsv"), sep="\t", index=False)
+
+    # write out phenotype
+    with open(bids_path.joinpath("phenotype.json"), "w") as f:
+        json.dump(phenotype, f, indent=2)
 
 
 @click.command()
@@ -363,40 +496,30 @@ def verify(file1, file2, device):
 
 @click.command()
 @click.argument("audio_file", type=click.Path(exists=True))
-@click.option("--model_id", type=str, default="openai/whisper-tiny", show_default=True)
-@click.option("--max_new_tokens", type=int, default=128, show_default=True)
-@click.option("--chunk_length_s", type=int, default=30, show_default=True)
-@click.option("--batch_size", type=int, default=16, show_default=True)
-@click.option("--device", type=str, default=None, help="Device to use for inference.")
-@click.option(
-    "--return_timestamps",
-    type=str,
-    default="false",
-    help="Return timestamps with the transcription. Can be 'true', 'false', or 'word'.",
-)
+@click.option("--model", type=str, default="openai/whisper-tiny", show_default=True)
+@click.option("--device", type=str, default="cpu", help="Device to use for inference.")
 @click.option(
     "--language",
     type=str,
-    default=None,
+    default="en",
     help="Language of the audio for transcription (default is multi-language).",
 )
 def transcribe(
     audio_file,
-    model_id,
-    max_new_tokens,
-    chunk_length_s,
-    batch_size,
+    model,
     device,
-    return_timestamps,
     language,
 ):
     """
     Transcribes the audio_file.
     """
     audio_data = Audio.from_filepath(audio_file)
-    model = HFModel(path_or_uri="openai/whisper-base")
-    transcription = transcribe_audios([audio_data], model=model)[0]
-    print("Transcription:", transcription.text)
+    hf_model = HFModel(path_or_uri=model)
+    device = DeviceType(device.lower())
+    language = Language.model_validate({"language_code": language})
+    _LOGGER.info("Transcribing audio...")
+    transcription = transcribe_audios([audio_data], model=hf_model, device=device, language=language)[0]
+    print(transcription.text)
 
 
 @click.command()

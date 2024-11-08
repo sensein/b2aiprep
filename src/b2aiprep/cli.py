@@ -34,10 +34,12 @@ from streamlit import config as _config
 from streamlit.web.bootstrap import run
 
 from b2aiprep.commands import (
+    create_derived_dataset,
     dashboard,
+    extract_features,
     redcap2bids,
     # extract_praat,
-    prepbidslikedata,
+    # prepbidslikedata,
     validate,
     gensynthtabdata,
     convert,
@@ -52,7 +54,6 @@ from b2aiprep.commands import (
     '--log-level',
     default="INFO",
     type=click.Choice(["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]),
-    case_sensitive=False,
     help="Set the log level for the CLI."
 )
 @click.pass_context
@@ -65,7 +66,7 @@ def cli(ctx, log_level):
 
 cli.add_command(dashboard)
 cli.add_command(redcap2bids)
-cli.add_command(prepbidslikedata)
+# cli.add_command(prepbidslikedata)
 cli.add_command(validate)
 cli.add_command(gensynthtabdata)
 cli.add_command(convert)
@@ -73,6 +74,8 @@ cli.add_command(batchconvert)
 cli.add_command(verify)
 cli.add_command(transcribe)
 cli.add_command(createbatchcsv)
+cli.add_command(extract_features)
+cli.add_command(create_derived_dataset)
 
 if __name__ == "__main__":
     # include main to enable python debugging

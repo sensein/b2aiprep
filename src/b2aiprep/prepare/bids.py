@@ -35,12 +35,65 @@ from tqdm import tqdm
 from b2aiprep.prepare.constants import AUDIO_TASKS, Instrument, RepeatInstrument
 from b2aiprep.prepare.fhir_utils import convert_response_to_fhir
 from b2aiprep.prepare.utils import (
-    _transform_str_for_bids_filename,
-    construct_all_tsvs_from_jsons,
-    construct_tsv_from_json,
+    transform_str_for_bids_filename,
+    initialize_data_directory,
 )
 
+SUBJECT_PREFIX = "sub"
+SESSION_PREFIX = "ses"
+AUDIO_FOLDER = "audio"
+RESAMPLE_RATE = 16000
 _LOGGER = logging.getLogger(__name__)
+
+def get_audio_paths(bids_dir_path: Path) -> t.Union[t.List[str], t.List[t.List[str]]]:
+    """Retrieve all .wav audio file paths from a BIDS-like directory structure.
+
+    This function traverses the specified BIDS directory, collecting paths to
+    .wav audio files from all subject and session directories that match the
+    expected naming conventions.
+
+    Args:
+      bids_dir_path:
+        The root directory of the BIDS dataset.
+
+    Returns:
+      list of str:
+        A list of file paths to .wav audio files within the BIDS directory.
+    """
+    audio_paths = []
+
+    # Iterate over each subject directory.
+    for sub_file in os.listdir(bids_dir_path):
+        subject_dir_path = os.path.join(bids_dir_path, sub_file)
+        if sub_file.startswith(SUBJECT_PREFIX) and os.path.isdir(subject_dir_path):
+
+            # Iterate over each session directory within a subject.
+            for session_dir_path in os.listdir(subject_dir_path):
+                audio_path = os.path.join(subject_dir_path, session_dir_path, AUDIO_FOLDER)
+
+                if session_dir_path.startswith(SESSION_PREFIX) and os.path.isdir(audio_path):
+                    # _logger.info(audio_path)
+                    # Iterate over each audio file in the voice directory.
+                    for audio_file in os.listdir(audio_path):
+                        if audio_file.endswith(".wav"):
+                            audio_file_path = os.path.join(audio_path, audio_file)
+                            audio_paths.append(audio_file_path)
+    return audio_paths
+
+def batch_elements(elements: t.List[t.Any], batch_size: int) -> t.List[t.List[t.Any]]:
+    """Batch elements into lists of a specified size.
+
+    Args:
+      elements:
+        The elements to batch.
+      batch_size:
+        The size of each batch.
+
+    Returns:
+      list of list of any:
+        A list of lists, each containing a batch of elements.
+    """
+    return [elements[i : i + batch_size] for i in range(0, len(elements), batch_size)]
 
 
 def load_redcap_csv(file_path):
@@ -137,12 +190,20 @@ def validate_redcap_df_column_names(df: DataFrame) -> DataFrame:
         )
 
     # raise a warning about the labels - unclear why there would be a mix
-    _LOGGER.warning(
-        (
-            f"Dataframe has a mix of label and coded headers: {len(overlap_with_coded)} coded and "
-            f"{len(overlap_with_label)} label. Downstream processing expects only coded labels."
+    if len(overlap_with_label) > 0:
+        _LOGGER.warning(
+            (
+                f"Dataframe has a mix of label and coded headers: {len(overlap_with_coded)} coded, "
+                f"{len(overlap_with_label)} label, and {df.shape[1]} total columns. Downstream processing expects only coded labels."
+            )
         )
-    )
+    
+    elif len(overlap_with_coded) < df.shape[1]:
+        _LOGGER.warning(
+            (
+                f"Dataframe has only {len(overlap_with_coded)} / {df.shape[1]} coded headers."
+            )
+        )
 
 
 def get_df_of_repeat_instrument(df: DataFrame, instrument: Instrument) -> pd.DataFrame:
@@ -244,15 +305,15 @@ def write_pydantic_model_to_bids_file(
     # sub-<participant_id>_ses-<session_id>_task-<task_name>_run-_metadata.json
     filename = f"sub-{subject_id}"
     if session_id is not None:
-        session_id = _transform_str_for_bids_filename(session_id)
+        session_id = transform_str_for_bids_filename(session_id)
         filename += f"_ses-{session_id}"
     if task_name is not None:
-        task_name = _transform_str_for_bids_filename(task_name)
+        task_name = transform_str_for_bids_filename(task_name)
         if recording_name is not None:
-            task_name = _transform_str_for_bids_filename(recording_name)
+            task_name = transform_str_for_bids_filename(recording_name)
         filename += f"_task-{task_name}"
 
-    schema_name = _transform_str_for_bids_filename(schema_name).replace("schema", "")
+    schema_name = transform_str_for_bids_filename(schema_name).replace("schema", "")
     schema_name = schema_name + "-metadata"
     filename += f"_{schema_name}.json"
 
@@ -375,7 +436,7 @@ def output_participant_data_to_fhir(
             if task is None:
                 continue
 
-            acoustic_task_name = _transform_str_for_bids_filename(task["acoustic_task_name"])
+            acoustic_task_name = transform_str_for_bids_filename(task["acoustic_task_name"])
             fhir_data = convert_response_to_fhir(
                 task,
                 questionnaire_name=task_instrument.name,
@@ -436,7 +497,7 @@ def output_participant_data_to_fhir(
                         # copy file
                         ext = audio_file.suffix
 
-                        recording_name = _transform_str_for_bids_filename(
+                        recording_name = transform_str_for_bids_filename(
                             recording["recording_name"]
                         )
                         audio_file_destination = (
@@ -454,10 +515,93 @@ def output_participant_data_to_fhir(
     sessions_df.to_csv(sessions_tsv_path, sep="\t", index=False)
 
 
+def construct_tsv_from_json(
+    df: pd.DataFrame, json_file_path: str, output_dir: str, output_file_name: t.Optional[str] = None
+) -> None:
+    """
+    Constructs a TSV file from a DataFrame and a JSON file specifying column labels.
+    Combines entries so that there is one row per record_id.
+
+    Args:
+        df (pd.DataFrame): DataFrame containing the data.
+        json_file_path (str): Path to the JSON file with the column labels.
+        output_dir (str): Output directory where the TSV file will be saved.
+        output_file_name (str, optional): The name of the output TSV file.
+                                          If not provided, the JSON file name is used with a .tsv extension.
+
+    Returns:
+        None: This function does not return a value; it writes the output to a TSV file.
+    """
+    # Load the column labels from the JSON file
+    with open(json_file_path, "r") as f:
+        json_data = json.load(f)
+
+    # Extract column names from the JSON file
+    column_labels = list(json_data.keys())
+
+    # Filter column labels to only include those that exist in the DataFrame
+    valid_columns = [col for col in column_labels if col in df.columns]
+
+    if not valid_columns:
+        raise ValueError("No valid columns found in DataFrame that match JSON file")
+
+    if "record_id" not in valid_columns:
+        valid_columns = ["record_id"] + valid_columns
+
+    # Select the relevant columns from the DataFrame
+    selected_df = df[valid_columns]
+
+    # Combine entries so there is one row per record_id
+    combined_df = selected_df.groupby("record_id").first().reset_index()
+
+    # Define the output file name and path
+    if output_file_name is None:
+        output_file_name = os.path.splitext(os.path.basename(json_file_path))[0] + ".tsv"
+
+    tsv_path = os.path.join(output_dir, output_file_name)
+
+    # Save the combined DataFrame to a TSV file
+    combined_df.to_csv(tsv_path, sep="\t", index=False)
+
+    print(f"TSV file created and saved to: {tsv_path}")
+
+def construct_all_tsvs_from_jsons(
+    df: pd.DataFrame, input_dir: str, output_dir: str, excluded_files: t.Optional[t.List[str]] = None
+) -> None:
+    """
+    Constructs TSV files from all JSON files in a specified directory,
+    excluding specific files if provided.
+
+    Args:
+        df (pd.DataFrame): DataFrame containing the data.
+        input_dir (str): Directory containing JSON files with column labels.
+        output_dir (str): Directory where the TSV files will be saved.
+        excluded_files (List[str], optional): List of JSON filenames to exclude
+                                              from processing. Defaults to None.
+
+    Returns:
+        None: This function does not return a value; it writes output to TSV files.
+    """
+    # Ensure the excluded_files list is initialized if None is provided
+    if excluded_files is None:
+        excluded_files = []
+
+    # Ensure output directory exists
+    os.makedirs(output_dir, exist_ok=True)
+
+    # Iterate over all files in the input directory
+    for filename in os.listdir(input_dir):
+        # Process only JSON files that are not excluded
+        if filename.endswith(".json") and filename not in excluded_files:
+            json_file_path = os.path.join(input_dir, filename)
+
+            # Construct the TSV file from the JSON file
+            construct_tsv_from_json(df=df, json_file_path=json_file_path, output_dir=output_dir)
+
+
 def redcap_to_bids(
     filename: Path,
     outdir: Path,
-    update_column_names: bool,
     audiodir: t.Optional[Path] = None,
 ):
     """Converts the Bridge2AI RedCap CSV output and a folder of audio files
@@ -488,15 +632,19 @@ def redcap_to_bids(
         If the RedCap CSV file is not found, or if the columns in the CSV file do not match
         the expected columns for the Bridge2AI data.
     """
+    initialize_data_directory(outdir)
+
     df = load_redcap_csv(filename)
 
     # It is possible for each column in the dataframe to have one of two names:
     #   1. coded column names ("record_id")
     #   2. text column names ("Record ID")
 
-    # we require coded column names for downstream processing. it is not trivial to map
-    # them one to one, as the text column names are not unique (e.g. there are ~6 columns
-    # with the name "Strain").
+    # we require coded column names for downstream processing. 
+    # redcap can export a CSV with either (1) variable names (unique) or (2) variable descriptions
+    # in mode (1), the raw values are exported, and in mode (2), human readable values are output
+    # the export process is (2), then manually copy (1) header over (2). so we validate that this
+    # manual step has been done here.
     validate_redcap_df_column_names(df)
     
     construct_tsv_from_json(  # construct participants.tsv
@@ -592,7 +740,7 @@ def redcap_to_bids(
             # there can be only one demographics per session
             for key, df_by_session_id in dataframe_dicts.items():
                 if session_id not in df_by_session_id:
-                    _LOGGER.info(f"No {key} found for session {session_id}.")
+                    # _LOGGER.info(f"No {key} found for session {session_id}.")
                     session[key] = None
                 else:
                     session[key] = df_by_session_id[session_id]
@@ -604,3 +752,37 @@ def redcap_to_bids(
         logging.warning(f"{audiodir} path does not exist. No audio files will be reorganized.")
     for participant in tqdm(participants, desc="Writing participant data to file"):
         output_participant_data_to_fhir(participant, outdir, audiodir=audiodir)
+
+def validate_bids_folder(bids_dir_path: Path):
+    """Validate the BIDS-like folder structure.
+
+    This function checks that all audio files have corresponding feature
+    files and transcriptions.
+
+    Args:
+        bids_dir_path:
+            The root directory of the BIDS dataset.
+    """
+    audio_paths = get_audio_paths(bids_dir_path)
+    missing_features = []
+    missing_transcriptions = []
+    for audio_path in audio_paths:
+        audio_path = Path(audio_path)
+        audio_dir = audio_path.parent
+        features_dir = audio_dir.parent / "audio"
+        feature_files = [file for file in features_dir.glob(f"{audio_path.stem}*.pt")]
+        if len(feature_files) == 0:
+            missing_features.append(audio_path)
+        feature_files = [file for file in features_dir.glob(f"{audio_path.stem}*.txt")]
+        if len(feature_files) == 0:
+            missing_transcriptions.append(audio_path)
+    if len(missing_transcriptions) > 0:
+        _LOGGER.warning(
+            f"Missing transcriptions for {len(missing_transcriptions)} / {len(audio_paths)} audio files"
+        )
+    if len(missing_features) > 0:
+        _LOGGER.warning(
+            f"Missing features for {len(missing_features)} / {len(audio_paths)} audio files"
+        )
+    else:
+        _LOGGER.info("All audio files have been processed.")

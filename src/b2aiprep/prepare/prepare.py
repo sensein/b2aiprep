@@ -62,8 +62,7 @@ from senselab.utils.data_structures.language import Language
 from senselab.utils.data_structures.model import HFModel
 from tqdm import tqdm
 
-from b2aiprep.prepare.bids import redcap_to_bids
-from b2aiprep.prepare.utils import copy_package_resource, remove_files_by_pattern
+from b2aiprep.prepare.bids import get_audio_paths, batch_elements
 
 SUBJECT_ID = "sub"
 SESSION_ID = "ses"
@@ -89,29 +88,6 @@ except Exception as e:
         f"Speech to text import error occurred. \
                   This is likely because this device is not connected to wifi. {e}"
     )
-
-def initialize_data_directory(bids_dir_path: str) -> None:
-    """Initializes the data directory using the template.
-
-    Args:
-        bids_dir_path (str): The path to the BIDS directory where the data should be initialized.
-
-    Returns:
-        None
-    """
-    if not os.path.exists(bids_dir_path):
-        os.makedirs(bids_dir_path)
-        _logger.info(f"Created directory: {bids_dir_path}")
-
-    template_package = "b2aiprep.prepare.resources.b2ai-data-bids-like-template"
-    copy_package_resource(template_package, "CHANGES.md", bids_dir_path)
-    copy_package_resource(template_package, "README.md", bids_dir_path)
-    copy_package_resource(template_package, "dataset_description.json", bids_dir_path)
-    copy_package_resource(template_package, "participants.json", bids_dir_path)
-    copy_package_resource(template_package, "phenotype", bids_dir_path)
-    phenotype_path = Path(bids_dir_path).joinpath("phenotype")
-    remove_files_by_pattern(phenotype_path, "<measurement_tool_name>*")
-
 
 def transcribe(audio, features, transcription_model_size):
     """
@@ -207,50 +183,6 @@ def wav_to_features(wav_paths: List[Path], transcription_model_size: str, with_s
 
     return all_features
 
-
-def get_audio_paths(bids_dir_path, n_cores):
-    """Retrieve all .wav audio file paths from a BIDS-like directory structure.
-
-    This function traverses the specified BIDS directory, collecting paths to
-    .wav audio files from all subject and session directories that match the
-    expected naming conventions.
-
-    Args:
-      bids_dir_path:
-        The root directory of the BIDS dataset.
-
-    Returns:
-      list of str:
-        A list of file paths to .wav audio files within the BIDS directory.
-    """
-    audio_paths = []
-
-    # Iterate over each subject directory.
-    for sub_file in os.listdir(bids_dir_path):
-        subject_dir_path = os.path.join(bids_dir_path, sub_file)
-        if sub_file.startswith(SUBJECT_ID) and os.path.isdir(subject_dir_path):
-
-            # Iterate over each session directory within a subject.
-            for session_dir_path in os.listdir(subject_dir_path):
-                audio_path = os.path.join(subject_dir_path, session_dir_path, AUDIO_ID)
-
-                if session_dir_path.startswith(SESSION_ID) and os.path.isdir(audio_path):
-                    # _logger.info(audio_path)
-                    # Iterate over each audio file in the voice directory.
-                    for audio_file in os.listdir(audio_path):
-                        if audio_file.endswith(".wav"):
-                            audio_file_path = os.path.join(audio_path, audio_file)
-                            audio_paths.append(audio_file_path)
-    if n_cores == 1:  # iterative case
-        return audio_paths
-
-    batched_audio_paths = np.array_split(audio_paths, n_cores)
-    batched_audio_paths = [
-        list(batch) for batch in batched_audio_paths
-    ]  # Convert each chunk back to a list if needed
-    return batched_audio_paths
-
-
 def extract_features_workflow(
     bids_dir_path: Path,
     transcription_model_size: str = "tiny",
@@ -274,7 +206,9 @@ def extract_features_workflow(
         The Pydra workflow object with the extracted features and audio paths as outputs.
     """
     # Get paths to every audio file.
-    audio_paths = get_audio_paths(bids_dir_path=bids_dir_path, n_cores=n_cores)
+    audio_paths = get_audio_paths(bids_dir_path=bids_dir_path)
+    if n_cores > 1:
+        audio_paths = batch_elements(audio_paths, n_cores)
 
     # Initialize the Pydra workflow.
     ef_wf = pydra.Workflow(
@@ -298,16 +232,15 @@ def extract_features_workflow(
 
     return ef_wf
 
-
 def extract_features_serially(
     bids_dir_path: Path,
     transcription_model_size: str,
     n_cores: int,
     with_sensitive: bool,
 ):
-    """Provides a non-Pydra implementation of _extract_features_workflow"""
+    """Provides a non-Pydra implementation of extract_features_workflow"""
     audio_paths = get_audio_paths(
-        name="audio_paths", bids_dir_path=bids_dir_path, n_cores=n_cores
+        name="audio_paths", bids_dir_path=bids_dir_path
     )().output.out
     all_features = []
     all_features.append(
@@ -317,100 +250,6 @@ def extract_features_serially(
             with_sensitive=with_sensitive,
         )().output.out
     )
-
-def bundle_data(source_directory: str, save_path: str) -> None:
-    """Saves data bundle as a tar file with gzip compression.
-
-    Args:
-      source_directory:
-        The directory containing the data to be bundled.
-      save_path:
-        The file path where the tar.gz file will be saved.
-    """
-    with tarfile.open(save_path, "w:gz") as tar:
-        tar.add(source_directory, arcname=os.path.basename(source_directory))
-
-
-def prepare_bids_like_data(
-    redcap_csv_path: Path,
-    audio_dir_path: Path,
-    bids_dir_path: Path,
-    tar_file_path: Path,
-    transcription_model_size: str,
-    n_cores: int,
-    with_sensitive: bool,
-) -> None:
-    """Organizes and processes Bridge2AI data for distribution.
-
-    This function organizes the data from RedCap and the audio files from
-    Wasabi into a BIDS-like directory structure, extracts audio features from
-    the organized data, and bundles the processed data into a .tar file with
-    gzip compression.
-
-    Args:
-      redcap_csv_path:
-        The file path to the REDCap CSV file.
-      audio_dir_path:
-        The directory path containing audio files.
-      bids_dir_path:
-        The directory path for the BIDS dataset.
-      tar_file_path:
-        The file path where the .tar.gz file will be saved.
-    """
-    initialize_data_directory(bids_dir_path)
-
-    _logger.info("Organizing data into BIDS-like directory structure...")
-    redcap_to_bids(redcap_csv_path, bids_dir_path, audio_dir_path)
-    _logger.info("Data organization complete.")
-
-    _logger.info("Beginning audio feature extraction...")
-    if n_cores == 1:
-        extract_features_serially(
-            bids_dir_path,
-            transcription_model_size=transcription_model_size,
-            n_cores=n_cores,
-            with_sensitive=with_sensitive,
-        )
-    else:
-        extract_features_workflow(
-            bids_dir_path,
-            transcription_model_size=transcription_model_size,
-            n_cores=n_cores,
-            with_sensitive=with_sensitive,
-        )
-    _logger.info("Audio feature extraction complete.")
-
-    # Below code checks to see if we have all the expected feature/transcript files.
-    audio_paths = get_audio_paths(bids_dir_path)
-    missing_features = []
-    missing_transcriptions = []
-    for audio_path in audio_paths:
-        audio_path = Path(audio_path)
-        audio_dir = audio_path.parent
-        features_dir = audio_dir.parent / "audio"
-        feature_files = [file for file in features_dir.glob(f"{audio_path.stem}*.pt")]
-        if len(feature_files) == 0:
-            missing_features.append(audio_path)
-        feature_files = [file for file in features_dir.glob(f"{audio_path.stem}*.txt")]
-        if len(feature_files) == 0:
-            missing_transcriptions.append(audio_path)
-    if len(missing_transcriptions) > 0:
-        _logger.warning(
-            f"Missing transcriptions for {len(missing_transcriptions)} / {len(audio_paths)} audio files"
-        )
-    if len(missing_features) > 0:
-        _logger.warning(
-            f"Missing features for {len(missing_features)} / {len(audio_paths)} audio files"
-        )
-    else:
-        _logger.info("All audio files have been processed.")
-
-    _logger.info("Saving .tar file with processed data...")
-    bundle_data(bids_dir_path, tar_file_path)
-    _logger.info(f"Saved processed data .tar file at: {tar_file_path}")
-
-    _logger.info("Process completed.")
-
 
 def validate_bids_data(
     bids_dir_path: Path,
@@ -499,11 +338,3 @@ def validate_bids_data(
                     text_file.write(feature_value.text)
 
     _logger.info("Process completed.")
-
-
-def main():
-    pass
-
-
-if __name__ == "__main__":
-    main()
