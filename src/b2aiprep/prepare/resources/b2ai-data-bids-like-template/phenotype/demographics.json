@@ -1,9 +1,23 @@
 {
     "demographics_session_id": {
-        "description": "Unique identifier for the demographics session."
+        "description": "Unique identifier for the demographics session.",
+        "question": {
+            "en": "Session ID"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "demographics_duration": {
-        "description": "Total duration of the demographics section."
+        "description": "Total duration of the demographics section.",
+        "question": {
+            "en": "Questionnaire Duration (seconds)"
+        },
+        "datatype": [
+            "xsd:decimal"
+        ],
+        "choices": null
     },
     "demographics_completed_by___1": {
         "description": "Indicates if the participant completed the demographic section on their own."
@@ -15,7 +29,14 @@
         "description": "Indicates if demographics were completed by a caregiver."
     },
     "state_province": {
-        "description": "The state or province where the participant lives."
+        "description": "The state or province where the participant lives.",
+        "question": {
+            "en": "State/Province"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "country": {
         "description": "The country where the participant resides."
@@ -24,10 +45,68 @@
         "description": "The participant's reported gender identity."
     },
     "specify_gender_identity": {
-        "description": "Allows the participant to specify their gender identity."
+        "description": "Allows the participant to specify their gender identity.",
+        "question": {
+            "en": "Please specify gender identity"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Cis: same gender as the sex assigned at birth "
+                },
+                "value": "cis"
+            },
+            {
+                "name": {
+                    "en": "Trans"
+                },
+                "value": " trans"
+            }
+        ]
     },
     "sexual_orientation": {
-        "description": "Indicates the participant's sexual orientation."
+        "description": "Indicates the participant's sexual orientation.",
+        "question": {
+            "en": "What is your sexual orientation?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Bisexual "
+                },
+                "value": "bisexual"
+            },
+            {
+                "name": {
+                    "en": "Heterosexual "
+                },
+                "value": " heterosexual"
+            },
+            {
+                "name": {
+                    "en": "Homosexual "
+                },
+                "value": " homosexual"
+            },
+            {
+                "name": {
+                    "en": "Other (Please specify) "
+                },
+                "value": " other"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": " noAnswer"
+            }
+        ]
     },
     "race___1": {
         "description": "Indicates if the participant identifies with race category 1."
@@ -54,10 +133,43 @@
         "description": "Indicates if the participant identifies with race category 8."
     },
     "ethnicity": {
-        "description": "Indicates the participant's ethnicity."
+        "description": "Indicates the participant's ethnicity.",
+        "question": {
+            "en": "What is your ethnic or cultural origin?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Hispanic or Latino "
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "Not Hispanic or Latino "
+                },
+                "value": " no"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": " noAnswer"
+            }
+        ]
     },
     "other_edu_level": {
-        "description": "Indicates if the participant has received an education level not listed in other options."
+        "description": "Indicates if the participant has received an education level not listed in other options.",
+        "question": {
+            "en": "If you selected \"other\" level of education, please specify:"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "hearing": {
         "description": "Indicates if the participant has hearing issues."
@@ -66,16 +178,94 @@
         "description": "Indicates if the participant has vision issues."
     },
     "cognition": {
-        "description": "Reports on the participant's cognitive abilities or issues."
+        "description": "Reports on the participant's cognitive abilities or issues.",
+        "question": {
+            "en": "Because of a physical, mental, or emotional condition, do you have serious difficulty concentrating, remembering, or making decisions?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "No "
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Yes "
+                },
+                "value": " yes"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": " noAnswer"
+            }
+        ]
     },
     "mobility": {
         "description": "Indicates the participant's level of mobility or movement."
     },
     "self_care": {
-        "description": "Indicates if the participant engages in self-care activities."
+        "description": "Indicates if the participant engages in self-care activities.",
+        "question": {
+            "en": "Do you have difficulty dressing or bathing?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "No "
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Yes "
+                },
+                "value": " yes"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": " noAnswer"
+            }
+        ]
     },
     "independent_living": {
-        "description": "Indicates if the participant is living independently."
+        "description": "Indicates if the participant is living independently.",
+        "question": {
+            "en": "Because of a physical, mental, or emotional condition, do you have difficulty doing errands alone such as visiting a doctor's office or shopping?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "No "
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Yes "
+                },
+                "value": " yes"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": " noAnswer"
+            }
+        ]
     },
     "employ_status___1": {
         "description": "Indicates if the participant is employed full-time."
@@ -105,10 +295,134 @@
         "description": "Indicates if the participant is retired."
     },
     "household_income_usa": {
-        "description": "The participant's household income in US dollars."
+        "description": "The participant's household income in US dollars.",
+        "question": {
+            "en": "What was your total household income last year (USD)? Please include all sources of income, including pensions, dividends, alimony, child support, etc."
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "< $15,000 "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "$15,000 to $29,999 "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "$30,000 to $$49,999 "
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "$50,000 to $99,999 "
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "$100,000 to $149,999 "
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "$150,000 to $199,999 "
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "$200,000 to $249,999 "
+                },
+                "value": 7
+            },
+            {
+                "name": {
+                    "en": ">$250,000 "
+                },
+                "value": 8
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": 9
+            }
+        ]
     },
     "household_income_ca": {
-        "description": "The participant's household income in Canadian dollars."
+        "description": "The participant's household income in Canadian dollars.",
+        "question": {
+            "en": "What was your total household income last year (CAD)? Please include all sources of income, including pensions, dividends, alimony, child support, etc."
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "< $15,000 "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "$15,000 to $29,999 "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "$30,000 to $$49,999 "
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "$50,000 to $99,999 "
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "$100,000 to $149,999 "
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "$150,000 to $199,999 "
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "$200,000 to $249,999 "
+                },
+                "value": 7
+            },
+            {
+                "name": {
+                    "en": ">$250,000 "
+                },
+                "value": 8
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": 9
+            }
+        ]
     },
     "marital_status___1": {
         "description": "Indicates if the participant is married."
@@ -132,10 +446,61 @@
         "description": "Indicates if the participant is cohabiting."
     },
     "housing_status": {
-        "description": "Indicates the participant's current housing status."
+        "description": "Indicates the participant's current housing status.",
+        "question": {
+            "en": "What is your current housing status?"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Assisted living "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Own home "
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "Rent home "
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "Skilled nursing facility/nursing home "
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "Unhoused-temporarily "
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "Unhoused-permanently"
+                },
+                "value": 7
+            }
+        ]
     },
     "household_count": {
-        "description": "The number of people living in the participant's household."
+        "description": "The number of people living in the participant's household.",
+        "question": {
+            "en": "How many people live in your household?Please specify a number"
+        },
+        "datatype": [
+            "xsd:decimal"
+        ],
+        "choices": null
     },
     "spouse_partner_sig_other": {
         "description": "Indicates if the participant has a spouse, partner, or significant other."
@@ -147,21 +512,125 @@
         "description": "Indicates if the participant is a parent."
     },
     "grandparent": {
-        "description": "Indicates if the participant is a grandparent."
+        "description": "Indicates if the participant is a grandparent.",
+        "question": {
+            "en": "One or more grandparent"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": 0
+            }
+        ]
     },
     "other_live_with": {
         "description": "Indicates if the participant lives with people not listed in other options."
     },
     "others_household_specify": {
-        "description": "Allows the participant to specify other people living in their household."
+        "description": "Allows the participant to specify other people living in their household.",
+        "question": {
+            "en": "If \"others\" live in your household, please specify:"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "transportation_yn": {
-        "description": "Indicates if the participant has access to transportation."
+        "description": "Indicates if the participant has access to transportation.",
+        "question": {
+            "en": "Do you have a reliable mode of transportation?"
+        },
+        "datatype": [
+            "xsd:boolean"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": 0
+            }
+        ]
     },
     "primary_transportation": {
-        "description": "Indicates the participant's primary mode of transportation."
+        "description": "Indicates the participant's primary mode of transportation.",
+        "question": {
+            "en": "What is your primary mode of transportation?"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Personal vehicle "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Shared vehicle "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Public transportation "
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "Ride with someone else "
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "Ride service "
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "Bicycle/Motorbike "
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "Walking "
+                },
+                "value": 7
+            },
+            {
+                "name": {
+                    "en": "Other (Please specify)"
+                },
+                "value": 8
+            }
+        ]
     },
     "q_generic_demographics_complete": {
         "description": "Indicates if the participant has completed the generic demographics section."
-    }
+    },
+    "data_elements": {}
 }

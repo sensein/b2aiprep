@@ -1,9 +1,61 @@
 {
     "diagnois_lc_gsd_sll": {
-        "description": "Indicates if the participant has a suspicious laryngeal lesion confirmed by laryngoscopy or stroboscopy."
+        "description": "Indicates if the participant has a suspicious laryngeal lesion confirmed by laryngoscopy or stroboscopy.",
+        "question": {
+            "en": "Did the patient get a laryngoscopy/stroboscopy confirming the presence of a suspicious laryngeal lesion?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes "
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No "
+                },
+                "value": " no"
+            },
+            {
+                "name": {
+                    "en": "Not certain"
+                },
+                "value": " notCertain"
+            }
+        ]
     },
     "diagnosis_lc_gsd_bpr": {
-        "description": "Indicates if the participant has laryngeal cancer confirmed by biopsy or pathology report."
+        "description": "Indicates if the participant has laryngeal cancer confirmed by biopsy or pathology report.",
+        "question": {
+            "en": "Does the patient have laryngeal cancer confirmed by biopsy/pathology report?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes "
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No "
+                },
+                "value": " no"
+            },
+            {
+                "name": {
+                    "en": "Not certain"
+                },
+                "value": " notCertain"
+            }
+        ]
     },
     "diagnosis_lc_gsd_uots___ct_neck": {
         "description": "Indicates if the participant has undergone a CT of the neck as part of their laryngeal cancer diagnosis."
@@ -54,55 +106,489 @@
         "description": "Indicates if exposure to other harmful substances is a risk factor for the participant’s laryngeal cancer."
     },
     "diagnosis_lc_ds_t_stage": {
-        "description": "Indicates the T stage of the participant’s laryngeal cancer according to the AJCC Classification."
+        "description": "Indicates the T stage of the participant’s laryngeal cancer according to the AJCC Classification.",
+        "question": {
+            "en": "What is the T stage of the cancer based on the AJCC Classification?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Tis (carcinoma in situ) "
+                },
+                "value": "tis"
+            },
+            {
+                "name": {
+                    "en": "T1a "
+                },
+                "value": " t1a"
+            },
+            {
+                "name": {
+                    "en": "T1b "
+                },
+                "value": " t1b"
+            },
+            {
+                "name": {
+                    "en": "T2 "
+                },
+                "value": " t2"
+            },
+            {
+                "name": {
+                    "en": "T3 "
+                },
+                "value": " t3"
+            },
+            {
+                "name": {
+                    "en": "T4a "
+                },
+                "value": " t4a"
+            },
+            {
+                "name": {
+                    "en": "T4b "
+                },
+                "value": " t4b"
+            },
+            {
+                "name": {
+                    "en": "Unknown yet"
+                },
+                "value": " unknownYet"
+            }
+        ]
     },
     "diagnosis_lc_ds_n_stage": {
-        "description": "Indicates the N stage of the participant’s laryngeal cancer according to the AJCC Classification."
+        "description": "Indicates the N stage of the participant’s laryngeal cancer according to the AJCC Classification.",
+        "question": {
+            "en": "What is the N stage of the cancer based on the AJCC Classification?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "N0 "
+                },
+                "value": "n0"
+            },
+            {
+                "name": {
+                    "en": "N1 "
+                },
+                "value": " n1"
+            },
+            {
+                "name": {
+                    "en": "N2a "
+                },
+                "value": " n2a"
+            },
+            {
+                "name": {
+                    "en": "N2b "
+                },
+                "value": " n2b"
+            },
+            {
+                "name": {
+                    "en": "N2c "
+                },
+                "value": " n2c"
+            },
+            {
+                "name": {
+                    "en": "N3 "
+                },
+                "value": " n3"
+            },
+            {
+                "name": {
+                    "en": "Unknown yet"
+                },
+                "value": " unknownYet"
+            }
+        ]
     },
     "diagnosis_lc_ds_m_stage": {
-        "description": "Indicates the M stage of the participant’s laryngeal cancer according to the AJCC Classification."
+        "description": "Indicates the M stage of the participant’s laryngeal cancer according to the AJCC Classification.",
+        "question": {
+            "en": "What is the M stage of the cancer based on the AJCC Classification?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "M0: no distant metastasis "
+                },
+                "value": "m0"
+            },
+            {
+                "name": {
+                    "en": "M1: Any distant metastasis"
+                },
+                "value": " m1"
+            }
+        ]
     },
     "diagnosis_lc_degree_os_1": {
-        "description": "Indicates the overall severity of the participant’s laryngeal cancer."
+        "description": "Indicates the overall severity of the participant’s laryngeal cancer.",
+        "question": {
+            "en": "Overall Severity"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "MI "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": " MO "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": " SE"
+                },
+                "value": 2
+            }
+        ]
     },
     "diagnosis_lc_degree_os_2": {
-        "description": "Indicates an alternative measure of the overall severity of the participant’s laryngeal cancer."
+        "description": "Indicates an alternative measure of the overall severity of the participant’s laryngeal cancer.",
+        "question": {
+            "en": "Overall Severity"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Consistent "
+                },
+                "value": "consistent"
+            },
+            {
+                "name": {
+                    "en": "Intermittent"
+                },
+                "value": " intermittent"
+            }
+        ]
     },
     "diagnosis_lc_degree_r_1": {
-        "description": "Indicates the roughness of the participant’s voice due to laryngeal cancer."
+        "description": "Indicates the roughness of the participant’s voice due to laryngeal cancer.",
+        "question": {
+            "en": "Roughness"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "MI "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": " MO "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": " SE"
+                },
+                "value": 2
+            }
+        ]
     },
     "diagnosis_lc_degree_r_2": {
-        "description": "Indicates an alternative measure of the roughness of the participant’s voice due to laryngeal cancer."
+        "description": "Indicates an alternative measure of the roughness of the participant’s voice due to laryngeal cancer.",
+        "question": {
+            "en": "Roughness"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Consistent "
+                },
+                "value": "consistent"
+            },
+            {
+                "name": {
+                    "en": "Intermittent"
+                },
+                "value": " intermittent"
+            }
+        ]
     },
     "diagnosis_lc_degree_b_1": {
-        "description": "Indicates the breathiness of the participant’s voice due to laryngeal cancer."
+        "description": "Indicates the breathiness of the participant’s voice due to laryngeal cancer.",
+        "question": {
+            "en": "Breathiness"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "MI "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": " MO "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": " SE"
+                },
+                "value": 2
+            }
+        ]
     },
     "diagnosis_lc_degree_b_2": {
-        "description": "Indicates an alternative measure of the breathiness of the participant’s voice due to laryngeal cancer."
+        "description": "Indicates an alternative measure of the breathiness of the participant’s voice due to laryngeal cancer.",
+        "question": {
+            "en": "Breathiness"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Consistent "
+                },
+                "value": "consistent"
+            },
+            {
+                "name": {
+                    "en": "Intermittent"
+                },
+                "value": " intermittent"
+            }
+        ]
     },
     "diagnosis_lc_degree_s_1": {
-        "description": "Indicates the strain in the participant’s voice due to laryngeal cancer."
+        "description": "Indicates the strain in the participant’s voice due to laryngeal cancer.",
+        "question": {
+            "en": "Strain"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "MI "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": " MO "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": " SE"
+                },
+                "value": 2
+            }
+        ]
     },
     "diagnosis_lc_degree_s_2": {
-        "description": "Indicates an alternative measure of the strain in the participant’s voice due to laryngeal cancer."
+        "description": "Indicates an alternative measure of the strain in the participant’s voice due to laryngeal cancer.",
+        "question": {
+            "en": "Strain"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Consistent "
+                },
+                "value": "consistent"
+            },
+            {
+                "name": {
+                    "en": "Intermittent"
+                },
+                "value": " intermittent"
+            }
+        ]
     },
     "diagnosis_lc_degree_p_1": {
-        "description": "Indicates the pitch of the participant’s voice due to laryngeal cancer."
+        "description": "Indicates the pitch of the participant’s voice due to laryngeal cancer.",
+        "question": {
+            "en": "Pitch"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "MI "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": " MO "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": " SE"
+                },
+                "value": 2
+            }
+        ]
     },
     "diagnosis_lc_degree_p_2": {
-        "description": "Indicates an alternative measure of the pitch of the participant’s voice due to laryngeal cancer."
+        "description": "Indicates an alternative measure of the pitch of the participant’s voice due to laryngeal cancer.",
+        "question": {
+            "en": "Pitch"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Consistent "
+                },
+                "value": "consistent"
+            },
+            {
+                "name": {
+                    "en": "Intermittent"
+                },
+                "value": " intermittent"
+            }
+        ]
     },
     "diagnosis_lc_degree_l_1": {
-        "description": "Indicates the loudness of the participant’s voice due to laryngeal cancer."
+        "description": "Indicates the loudness of the participant’s voice due to laryngeal cancer.",
+        "question": {
+            "en": "Loudness"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "MI "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": " MO "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": " SE"
+                },
+                "value": 2
+            }
+        ]
     },
     "diagnosis_lc_degree_l_2": {
-        "description": "Indicates an alternative measure of the loudness of the participant’s voice due to laryngeal cancer."
+        "description": "Indicates an alternative measure of the loudness of the participant’s voice due to laryngeal cancer.",
+        "question": {
+            "en": "Loudness"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Consistent "
+                },
+                "value": "consistent"
+            },
+            {
+                "name": {
+                    "en": "Intermittent"
+                },
+                "value": " intermittent"
+            }
+        ]
     },
     "diagnosis_lc_degree_comments": {
         "description": "Provides additional comments about the resonance of the participant’s voice due to laryngeal cancer."
     },
     "diagnosis_as_ds_ccsr": {
-        "description": "Indicates if the participant’s cancer is causing stridor at rest."
+        "description": "Indicates if the participant’s cancer is causing stridor at rest.",
+        "question": {
+            "en": "Is the cancer causing stridor at rest?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "No the patient does not have stridor "
+                },
+                "value": "noStridor"
+            },
+            {
+                "name": {
+                    "en": "Yes mild stridor "
+                },
+                "value": " mildStridor"
+            },
+            {
+                "name": {
+                    "en": "Yes moderate stridor "
+                },
+                "value": " moderateStridor"
+            },
+            {
+                "name": {
+                    "en": "Yes severe stridor"
+                },
+                "value": " severeStridor"
+            }
+        ]
     },
     "diagnosis_lc_treatment": {
         "description": "Indicates if the participant has undergone any treatment for laryngeal cancer."
@@ -130,5 +616,6 @@
     },
     "diagnosis_lc_treatment_s___partial_laryngectomy": {
         "description": "Indicates if the participant has undergone partial laryngectomy as treatment for laryngeal cancer."
-    }
+    },
+    "data_elements": {}
 }

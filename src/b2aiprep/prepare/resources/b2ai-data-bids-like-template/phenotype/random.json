@@ -10,5 +10,6 @@
     },
     "random_item_generation_category": {
         "description": "Category assigned for random item generation in the session."
-    }
+    },
+    "data_elements": {}
 }

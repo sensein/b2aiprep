@@ -9,7 +9,14 @@
         "description": "Indicates if the participant has rigidity as part of their Parkinson’s disease diagnosis."
     },
     "diagnosis_parkinsons_gsd_category_1_calculation": {
-        "description": "Indicates if the participant meets the criteria for Category 1 Parkinsonism based on bradykinesia, tremor, or rigidity."
+        "description": "Indicates if the participant meets the criteria for Category 1 Parkinsonism based on bradykinesia, tremor, or rigidity.",
+        "question": {
+            "en": "Category 1 Criteria Met"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "diagnosis_parkinsons_gsd_category_2___cerebellar_abnormalities": {
         "description": "Indicates if the participant has cerebellar abnormalities as part of the exclusion criteria for Parkinson’s disease diagnosis."
@@ -39,7 +46,14 @@
         "description": "Indicates if the participant has an alternative condition related to Parkinson's disease GSD Category 2."
     },
     "diagnosis_parkinsons_gsd_category_2_calculation": {
-        "description": "Calculation for Parkinson's GSD Category 2 diagnosis."
+        "description": "Calculation for Parkinson's GSD Category 2 diagnosis.",
+        "question": {
+            "en": "Category 2 Criteria Met"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "diagnosis_parkinsons_gsd_category_3___response_dopaminergic_therapy": {
         "description": "Indicates if the participant's Parkinson's diagnosis includes response to dopaminergic therapy under GSD category 3."
@@ -54,10 +68,24 @@
         "description": "Indicates if the participant's Parkinson's diagnosis includes MIBG in category 3 of the GSD assessment."
     },
     "diagnosis_parkinsons_gsd_category_3_calculation": {
-        "description": "Calculation for Parkinson's GSD Category 3 diagnosis."
+        "description": "Calculation for Parkinson's GSD Category 3 diagnosis.",
+        "question": {
+            "en": "Category 3 Criteria Met"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "diagnosis_parkinsons_gsd_calculation": {
-        "description": "Calculated score for Parkinson's disease diagnosis based on the GSD (Global Severity of Disease) scale."
+        "description": "Calculated score for Parkinson's disease diagnosis based on the GSD (Global Severity of Disease) scale.",
+        "question": {
+            "en": "Does the patient meet the diagnostic criteria for Parkinson's Disease (Parkinsonism) based on the criteria above?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "diagnosis_parkinsons_disease_subtype": {
         "description": "Indicates the subtype of Parkinson's disease diagnosed in the participant."
@@ -66,7 +94,45 @@
         "description": "Indicates the etiology or cause of the participant's Parkinson's diagnosis."
     },
     "diagnosis_parkinsons_ds": {
-        "description": "Indicates the diagnostic subcategory of the participant's Parkinson's disease."
+        "description": "Indicates the diagnostic subcategory of the participant's Parkinson's disease.",
+        "question": {
+            "en": "What is the current stage/severity of Parkinson's disease in the patient?\n•\tHoehn and Yahr Scale:"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Stage 1 (Unilateral involvement only) "
+                },
+                "value": "stage1"
+            },
+            {
+                "name": {
+                    "en": "Stage 2 (Bilateral involvement without impairment of balance) "
+                },
+                "value": " stage2"
+            },
+            {
+                "name": {
+                    "en": "Stage 3 (Bilateral involvement with mild to moderate impairment of balance) "
+                },
+                "value": " stage3"
+            },
+            {
+                "name": {
+                    "en": "Stage 4 (Severe disability but still able to walk or stand unassisted) "
+                },
+                "value": " stage4"
+            },
+            {
+                "name": {
+                    "en": "Stage 5 (Wheelchair-bound or bedridden unless aided)"
+                },
+                "value": " stage5"
+            }
+        ]
     },
     "diagnosis_parkinsons_ma___updrs": {
         "description": "Indicates the participant's motor assessment score on the UPDRS (Unified Parkinson's Disease Rating Scale)."
@@ -75,25 +141,92 @@
         "description": "Indicates if the participant has other motor assessment results for Parkinson's disease."
     },
     "diagnosis_parkinsons_ma_uprds": {
-        "description": "Indicates the participant's score on the Unified Parkinson's Disease Rating Scale (UPDRS)."
+        "description": "Indicates the participant's score on the Unified Parkinson's Disease Rating Scale (UPDRS).",
+        "question": {
+            "en": "Unified Parkinson's Disease Rating Scale (UPDRS)"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Part I (Intellectual function mood behavior) score "
+                },
+                "value": "partI"
+            },
+            {
+                "name": {
+                    "en": "Part II (Activities of daily living) score "
+                },
+                "value": " partII"
+            },
+            {
+                "name": {
+                    "en": "Part III (Motor Examination) score "
+                },
+                "value": " partIII"
+            },
+            {
+                "name": {
+                    "en": "Part IV (Motor complications) score"
+                },
+                "value": " partIV"
+            }
+        ]
     },
     "diagnosis_parkinsons_ma_updrs_part_i_score": {
-        "description": "Score from Part I of the MDS-UPDRS, assessing non-motor aspects of daily living."
+        "description": "Score from Part I of the MDS-UPDRS, assessing non-motor aspects of daily living.",
+        "question": {
+            "en": "Part I (Intellectual function, mood, behavior) score:"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "diagnosis_parkinsons_ma_updrs_part_ii_score": {
-        "description": "Score from Part II of the MDS-UPDRS, assessing the participant's activities of daily living."
+        "description": "Score from Part II of the MDS-UPDRS, assessing the participant's activities of daily living.",
+        "question": {
+            "en": "Part II (Activities of daily living) score:"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "diagnosis_parkinsons_ma_updrs_part_iii_score": {
-        "description": "Score from Part III of the MDS-UPDRS, assessing motor symptoms in Parkinson's disease."
+        "description": "Score from Part III of the MDS-UPDRS, assessing motor symptoms in Parkinson's disease.",
+        "question": {
+            "en": "Part III (Motor Examination) score:"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "diagnosis_parkinsons_ma_updrs_part_iv_score": {
-        "description": "Score from Part IV of the MDS-UPDRS, assessing complications of therapy in Parkinson's disease."
+        "description": "Score from Part IV of the MDS-UPDRS, assessing complications of therapy in Parkinson's disease.",
+        "question": {
+            "en": "Part IV (Motor complications) score:"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "diagnosis_parkinsons_non_motor_symptoms": {
         "description": "Indicates if the participant has non-motor symptoms associated with Parkinson's disease."
     },
     "diagnosis_parkinsons_non_motor_symptoms_yes": {
-        "description": "Indicates specific non-motor symptoms that the participant experiences as part of Parkinson's disease."
+        "description": "Indicates specific non-motor symptoms that the participant experiences as part of Parkinson's disease.",
+        "question": {
+            "en": "If you selected \"Yes\", please specify:"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "diagnosis_parkinsons_treatment_obtained": {
         "description": "Indicates if the participant has received treatment for Parkinson's disease."
@@ -133,5 +266,6 @@
     },
     "diagnosis_parkinsons_treatment_obtained_yes_npi___other": {
         "description": "Indicates if the participant has received non-pharmacological treatment for Parkinson's, other than those specified."
-    }
+    },
+    "data_elements": {}
 }

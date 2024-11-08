@@ -1,9 +1,23 @@
 {
     "panas_session_id": {
-        "description": "Unique session identifier for the PANAS (Positive and Negative Affect Schedule) questionnaire."
+        "description": "Unique session identifier for the PANAS (Positive and Negative Affect Schedule) questionnaire.",
+        "question": {
+            "en": "Session ID"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "panas_duration": {
-        "description": "Duration of the Positive and Negative Affect Schedule (PANAS) questionnaire."
+        "description": "Duration of the Positive and Negative Affect Schedule (PANAS) questionnaire.",
+        "question": {
+            "en": "Questionnaire Duration (seconds)"
+        },
+        "datatype": [
+            "xsd:decimal"
+        ],
+        "choices": null
     },
     "upset": {
         "description": "Indicates if the participant feels upset."
@@ -12,7 +26,45 @@
         "description": "Indicates if the participant feels hostile or angry."
     },
     "alert": {
-        "description": "Indicates if the participant is alert during the session."
+        "description": "Indicates if the participant is alert during the session.",
+        "question": {
+            "en": "Being \"super alert\", on guard, or constantly on the lookout for danger?"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "0=Not at all "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "1=A little bit "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "2=Moderately "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "3=Quite a bit "
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "4=Extremely"
+                },
+                "value": 4
+            }
+        ]
     },
     "ashamed": {
         "description": "Indicates if the participant feels ashamed."
@@ -27,12 +79,119 @@
         "description": "Indicates if the participant feels determined or focused."
     },
     "attentive": {
-        "description": "Indicates if the participant appears attentive during the session."
+        "description": "Indicates if the participant appears attentive during the session.",
+        "question": {
+            "en": "Concentrated (not distracted or inattentive)"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "0 "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "1 "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "2 "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "3 "
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "4 "
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "5 "
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "6 "
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "7 "
+                },
+                "value": 7
+            },
+            {
+                "name": {
+                    "en": "8 "
+                },
+                "value": 8
+            },
+            {
+                "name": {
+                    "en": "9 "
+                },
+                "value": 9
+            },
+            {
+                "name": {
+                    "en": "10"
+                },
+                "value": 10
+            }
+        ]
     },
     "afraid": {
-        "description": "Indicates if the participant feels afraid."
+        "description": "Indicates if the participant feels afraid.",
+        "question": {
+            "en": "Feeling afraid, as if something awful might happen."
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Not at all "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "Several days "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "More than half the days "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Nearly every day"
+                },
+                "value": 3
+            }
+        ]
     },
     "active": {
         "description": "Indicates if the participant feels physically active or engaged."
-    }
+    },
+    "data_elements": {}
 }

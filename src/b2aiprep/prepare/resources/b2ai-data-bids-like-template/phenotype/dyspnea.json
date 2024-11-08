@@ -1,9 +1,23 @@
 {
     "dyspnea_index_session_id": {
-        "description": "Unique identifier for the Dyspnea Index session."
+        "description": "Unique identifier for the Dyspnea Index session.",
+        "question": {
+            "en": "Session ID"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "dyspnea_index_duration": {
-        "description": "Duration of the Dyspnea Index assessment."
+        "description": "Duration of the Dyspnea Index assessment.",
+        "question": {
+            "en": "Questionnaire Duration (seconds)"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "di_air_in": {
         "description": "Reports if the participant experiences difficulty inhaling air."
@@ -34,5 +48,6 @@
     },
     "di_restrict_personal_social_life": {
         "description": "Indicates if the participant's breathing issues restrict their personal and social life."
-    }
+    },
+    "data_elements": {}
 }

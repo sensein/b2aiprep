@@ -1,11 +1,52 @@
 {
     "voice_severity_session_id": {
-        "description": "Unique identifier for the voice severity session."
+        "description": "Unique identifier for the voice severity session.",
+        "question": {
+            "en": "Session ID"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "voice_severity_duration": {
-        "description": "Duration of the assessment for the severity of the participant's voice issues."
+        "description": "Duration of the assessment for the severity of the participant's voice issues.",
+        "question": {
+            "en": "Questionnaire Duration (seconds)"
+        },
+        "datatype": [
+            "xsd:decimal"
+        ],
+        "choices": null
     },
     "describe_the_severity_of_a": {
-        "description": "Asks the participant to describe the severity of a specific condition or symptom."
-    }
+        "description": "Asks the participant to describe the severity of a specific condition or symptom.",
+        "question": {
+            "en": "Describe the severity of auditory-perceptual attributes of a voice problem*Overall severity scale (0-100)"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "0 "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "  "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": " 100"
+                },
+                "value": 2
+            }
+        ]
+    },
+    "data_elements": {}
 }

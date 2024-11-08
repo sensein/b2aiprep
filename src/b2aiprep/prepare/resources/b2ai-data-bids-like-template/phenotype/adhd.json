@@ -1,9 +1,23 @@
 {
     "adhd_session_id": {
-        "description": "Unique identifier for the ADHD session."
+        "description": "Unique identifier for the ADHD session.",
+        "question": {
+            "en": "Session ID"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "adhd_duration": {
-        "description": "Duration of ADHD-related assessments."
+        "description": "Duration of ADHD-related assessments.",
+        "question": {
+            "en": "Questionnaire Duration (seconds)"
+        },
+        "datatype": [
+            "xsd:decimal"
+        ],
+        "choices": null
     },
     "wrapping_up": {
         "description": "Indicates if the session is nearing completion."
@@ -24,7 +38,45 @@
         "description": "Indicates if the participant is overly active or restless."
     },
     "careless": {
-        "description": "Indicates if the participant feels careless about their actions or responsibilities."
+        "description": "Indicates if the participant feels careless about their actions or responsibilities.",
+        "question": {
+            "en": "How often do you make careless mistakes when you have to work on a boring or difficult project?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Never "
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Rarely "
+                },
+                "value": " rarely"
+            },
+            {
+                "name": {
+                    "en": "Sometimes "
+                },
+                "value": " sometimes"
+            },
+            {
+                "name": {
+                    "en": "Often "
+                },
+                "value": " often"
+            },
+            {
+                "name": {
+                    "en": "Very Often"
+                },
+                "value": " veryOften"
+            }
+        ]
     },
     "difficulty_attention": {
         "description": "Indicates if the participant has difficulty paying attention."
@@ -33,7 +85,45 @@
         "description": "Indicates if the participant has difficulty concentrating."
     },
     "misplace": {
-        "description": "Indicates if the participant often misplaces things."
+        "description": "Indicates if the participant often misplaces things.",
+        "question": {
+            "en": "How often do you misplace or have difficulty finding things at home or at work?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Never "
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Rarely "
+                },
+                "value": " rarely"
+            },
+            {
+                "name": {
+                    "en": "Sometimes "
+                },
+                "value": " sometimes"
+            },
+            {
+                "name": {
+                    "en": "Often "
+                },
+                "value": " often"
+            },
+            {
+                "name": {
+                    "en": "Very Often"
+                },
+                "value": " veryOften"
+            }
+        ]
     },
     "distracted": {
         "description": "Indicates if the participant feels distracted during the session."
@@ -58,5 +148,6 @@
     },
     "interrupt_others": {
         "description": "Indicates if the participant tends to interrupt others during conversations."
-    }
+    },
+    "data_elements": {}
 }

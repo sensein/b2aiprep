@@ -21,7 +21,33 @@
         "description": "Specifies the etiology or cause of the participant’s airway stenosis."
     },
     "diagnosis_as_etiology_auto_immune": {
-        "description": "Indicates if the participant’s airway stenosis is caused by an autoimmune or granulomatous disease."
+        "description": "Indicates if the participant’s airway stenosis is caused by an autoimmune or granulomatous disease.",
+        "question": {
+            "en": "Auto-immune or granulomatous disease Subcategory"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Granulomatosis with polyangiitis (GPA) (Formerly known as Wegner's disease) "
+                },
+                "value": "gpa"
+            },
+            {
+                "name": {
+                    "en": "Relapsing Polychondritis "
+                },
+                "value": " relapsingPolychondritis"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": " other"
+            }
+        ]
     },
     "diagnosis_as_ds_mcg": {
         "description": "Indicates the degree of the participant’s stenosis based on the Myer-Cotton Grade."
@@ -30,19 +56,110 @@
         "description": "Indicates the degree of the participant’s stenosis based on the Bogdasarian Classification."
     },
     "diagnosis_as_ds_agw": {
-        "description": "Indicates the anterior glottic web classification of the participant’s airway stenosis according to Cohen."
+        "description": "Indicates the anterior glottic web classification of the participant’s airway stenosis according to Cohen.",
+        "question": {
+            "en": "Anterior Glottic Web classification (Cohen)"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Grade 1 (0-35% obstruction) "
+                },
+                "value": "grade1"
+            },
+            {
+                "name": {
+                    "en": "Grade 2 (35-50% obstruction) "
+                },
+                "value": " grade2"
+            },
+            {
+                "name": {
+                    "en": "Grade 3 (51-75% obstruction) "
+                },
+                "value": " grade3"
+            },
+            {
+                "name": {
+                    "en": "Grade 4 (76-100% obstruction)"
+                },
+                "value": " grade4"
+            }
+        ]
     },
     "diagnosis_as_ds_ac": {
         "description": "Indicates the grade of stenosis of the participant’s supraglottic stenosis according to the Aziz Classification."
     },
     "diagnosis_as_ds_ac_grade_4": {
-        "description": "Indicates the grade of supraglottic stenosis based on the Aziz Classification."
+        "description": "Indicates the grade of supraglottic stenosis based on the Aziz Classification.",
+        "question": {
+            "en": "Grade of Stenosis (Aziz Classification of Supraglottic Stenosis)"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Grade 4T "
+                },
+                "value": "grade4t"
+            },
+            {
+                "name": {
+                    "en": "Grade 4G "
+                },
+                "value": " grade4g"
+            },
+            {
+                "name": {
+                    "en": "Grade 4TG"
+                },
+                "value": " grade4tg"
+            }
+        ]
     },
     "diagnosis_as_ds_ods": {
-        "description": "Indicates the overall subjective classification of the participant’s airway stenosis."
+        "description": "Indicates the overall subjective classification of the participant’s airway stenosis.",
+        "question": {
+            "en": "How would you subjectively classify the overall degree of stenosis?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Mild "
+                },
+                "value": "mild"
+            },
+            {
+                "name": {
+                    "en": "Moderate "
+                },
+                "value": " moderate"
+            },
+            {
+                "name": {
+                    "en": "Severe"
+                },
+                "value": " severe"
+            }
+        ]
     },
     "diagnosis_as_ds_eps": {
-        "description": "Indicates the estimated percentage of stenosis from 0 to 100."
+        "description": "Indicates the estimated percentage of stenosis from 0 to 100.",
+        "question": {
+            "en": "How would you subjectively estimate the percent of stenosis from 0 to 100?"
+        },
+        "datatype": [
+            "xsd:decimal"
+        ],
+        "choices": null
     },
     "diagnosis_as_treatment___no_treatment": {
         "description": "Indicates if the participant has received no treatment for their airway stenosis."
@@ -82,5 +199,6 @@
     },
     "diagnosis_as_treatment_in_office___laser": {
         "description": "Indicates if the participant has undergone in-office or awake laser treatment for airway stenosis."
-    }
+    },
+    "data_elements": {}
 }

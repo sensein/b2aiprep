@@ -24,7 +24,33 @@
         "description": "Indicates if the participant has benign lesions of the vocal cord such as nodules, polyps, or cysts."
     },
     "rrp": {
-        "description": "Indicates if the participant has recurrent laryngeal papilloma (RRP)."
+        "description": "Indicates if the participant has recurrent laryngeal papilloma (RRP).",
+        "question": {
+            "en": "What is the etiology?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Phonotrauma "
+                },
+                "value": "phonotrauma"
+            },
+            {
+                "name": {
+                    "en": "HPV virus (RRP) "
+                },
+                "value": " rrp"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": " other"
+            }
+        ]
     },
     "spas_dys": {
         "description": "Indicates if the participant has spasmodic dysphonia or laryngeal tremor."
@@ -100,5 +126,6 @@
     },
     "osa": {
         "description": "Indicates if the participant has obstructive sleep apnea (OSA)."
-    }
+    },
+    "data_elements": {}
 }

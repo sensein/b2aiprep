@@ -1,9 +1,23 @@
 {
     "leicester_cough_session_id": {
-        "description": "Unique identifier for the Leicester Cough Questionnaire session."
+        "description": "Unique identifier for the Leicester Cough Questionnaire session.",
+        "question": {
+            "en": "Session ID"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "leicester_cough_duration": {
-        "description": "Total duration of the Leicester Cough Questionnaire (LCQ)."
+        "description": "Total duration of the Leicester Cough Questionnaire (LCQ).",
+        "question": {
+            "en": "Questionnaire Duration (seconds)"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "lcq_chest_stomach_pains": {
         "description": "Indicates if the participant experiences chest or stomach pains as part of their cough symptoms."
@@ -61,5 +75,6 @@
     },
     "lcq_energy": {
         "description": "Indicates if the participant experiences low energy as part of their cough symptoms."
-    }
+    },
+    "data_elements": {}
 }

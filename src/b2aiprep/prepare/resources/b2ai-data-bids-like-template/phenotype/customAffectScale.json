@@ -1,9 +1,23 @@
 {
     "custom_affect_scale_session_id": {
-        "description": "Unique identifier for the custom affect scale session."
+        "description": "Unique identifier for the custom affect scale session.",
+        "question": {
+            "en": "Session ID"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "custom_affect_scale_duration": {
-        "description": "Total duration of the custom affect scale assessment."
+        "description": "Total duration of the custom affect scale assessment.",
+        "question": {
+            "en": "Questionnaire Duration (seconds)"
+        },
+        "datatype": [
+            "xsd:decimal"
+        ],
+        "choices": null
     },
     "sad_or_down": {
         "description": "Indicates if the participant feels sad or down."
@@ -27,7 +41,45 @@
         "description": "Indicates if the participant feels agitated."
     },
     "irritated": {
-        "description": "Indicates if the participant feels irritated or annoyed."
+        "description": "Indicates if the participant feels irritated or annoyed.",
+        "question": {
+            "en": "Feeling more irritated, grouchy, or angry than usual?"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "0=None (Not at all) "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "1=Slight (Rare less than a day or two) "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "2=Mild (Several days) "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "3=Moderate (More than half the days) "
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "4=Severe (Nearly every day)"
+                },
+                "value": 4
+            }
+        ]
     },
     "lonely": {
         "description": "Indicates if the participant feels lonely."
@@ -43,5 +95,6 @@
     },
     "desire_to_escape": {
         "description": "Indicates if the participant has a desire to escape stressful situations."
-    }
+    },
+    "data_elements": {}
 }

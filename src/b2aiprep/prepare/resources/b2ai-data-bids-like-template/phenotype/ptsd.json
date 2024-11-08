@@ -1,15 +1,67 @@
 {
     "ptsd_session_id": {
-        "description": "Unique identifier for the PTSD assessment session."
+        "description": "Unique identifier for the PTSD assessment session.",
+        "question": {
+            "en": "Session ID"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "ptsd_duration": {
-        "description": "Reports the duration of post-traumatic stress disorder (PTSD) symptoms the participant is experiencing."
+        "description": "Reports the duration of post-traumatic stress disorder (PTSD) symptoms the participant is experiencing.",
+        "question": {
+            "en": "Questionnaire Duration (seconds)"
+        },
+        "datatype": [
+            "xsd:decimal"
+        ],
+        "choices": null
     },
     "traumatic_event": {
         "description": "Reports if the participant has experienced a traumatic event recently."
     },
     "flashbacks": {
-        "description": "Indicates if the participant experiences flashbacks to stressful or traumatic events."
+        "description": "Indicates if the participant experiences flashbacks to stressful or traumatic events.",
+        "question": {
+            "en": "Having \"flashbacks\", that is, you suddenly acted or felt as if a stressful experience from the past was happening all over again (for example, you reexperienced parts of a stressful experience by seeing, hearing, smelling, or physically feeling parts of the experience)?"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "0=Not at all "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "1=A little bit "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "2=Moderately "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "3=Quite a bit "
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "4=Extremely"
+                },
+                "value": 4
+            }
+        ]
     },
     "emotionally_upset": {
         "description": "Indicates if the participant feels emotionally upset during the session."
@@ -34,5 +86,6 @@
     },
     "irritable": {
         "description": "Indicates if the participant feels irritable or easily annoyed."
-    }
+    },
+    "data_elements": {}
 }

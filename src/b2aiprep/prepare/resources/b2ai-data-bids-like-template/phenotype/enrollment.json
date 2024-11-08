@@ -1,9 +1,55 @@
 {
     "ef_select_language": {
-        "description": "Indicates the participant’s selected language for the study."
+        "description": "Indicates the participant’s selected language for the study.",
+        "question": {
+            "en": "Select a language"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "English "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Español "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Français"
+                },
+                "value": 3
+            }
+        ]
     },
     "ef_any_vision_related_req": {
-        "description": "Indicates if the participant has any vision-related requirements to assist with reading text in the study."
+        "description": "Indicates if the participant has any vision-related requirements to assist with reading text in the study.",
+        "question": {
+            "en": "This application requires you to read text to answer questions. Do you have any vision-related requirements we can assist with?"
+        },
+        "datatype": [
+            "xsd:boolean"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": 0
+            }
+        ]
     },
     "ef_vision_a11y_options___1": {
         "description": "Indicates if the participant requires changes to the font size as part of the study’s accessibility features."
@@ -18,7 +64,27 @@
         "description": "Indicates if the participant requires a person to read the text to them as part of the study’s accessibility features."
     },
     "ef_any_hearing_related_req": {
-        "description": "Indicates if the participant has any hearing-related requirements to assist with listening to sound files in the study."
+        "description": "Indicates if the participant has any hearing-related requirements to assist with listening to sound files in the study.",
+        "question": {
+            "en": "This application may present some sound files for you to listen to. Do you have any hearing-related requirements we can assist with?"
+        },
+        "datatype": [
+            "xsd:boolean"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": 0
+            }
+        ]
     },
     "ef_hearing_a11y_options___1": {
         "description": "Indicates if the participant requires an increase in volume as part of the study’s accessibility features."
@@ -30,7 +96,27 @@
         "description": "Indicates if the participant prefers to use haptic feedback (vibrations) instead of audio cues as part of the study’s accessibility features."
     },
     "ef_any_physical_challenges": {
-        "description": "Indicates if the participant has any physical challenges that may affect their ability to navigate the application using a touch screen."
+        "description": "Indicates if the participant has any physical challenges that may affect their ability to navigate the application using a touch screen.",
+        "question": {
+            "en": "This application requires you to navigate through the questions using a touch screen. Do you have any physical challenges we can accomodate?"
+        },
+        "datatype": [
+            "xsd:boolean"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": 0
+            }
+        ]
     },
     "ef_physical_a11y_options___1": {
         "description": "Indicates if the participant requires an increase in button size as part of the study’s accessibility features."
@@ -42,7 +128,27 @@
         "description": "Indicates if the participant would prefer to navigate the survey using voice commands instead of the touch screen."
     },
     "ef_any_cognitive_challeges": {
-        "description": "Indicates if the participant has any cognitive challenges, including difficulty reading, that may require assistance in answering questions and following directions in the study."
+        "description": "Indicates if the participant has any cognitive challenges, including difficulty reading, that may require assistance in answering questions and following directions in the study.",
+        "question": {
+            "en": "This application requires you to read text, answer questions, and follow directions. Do you have any cognitive challenges, including difficulty reading, that we can assist with?"
+        },
+        "datatype": [
+            "xsd:boolean"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": 0
+            }
+        ]
     },
     "ef_cognitive_a11y_options___1": {
         "description": "Indicates if the participant prefers to have the questions read aloud using text-to-speech as part of the study’s accessibility features."
@@ -66,7 +172,14 @@
         "description": "Indicates the primary language spoken by the participant."
     },
     "ef_primary_language_other": {
-        "description": "If the participant's primary language is not listed, this field specifies the language."
+        "description": "If the participant's primary language is not listed, this field specifies the language.",
+        "question": {
+            "en": "If primary language is \"other\", please specify:"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "ef_fluent_languages___1": {
         "description": "Indicates if the participant speaks no additional languages fluently."
@@ -84,6 +197,14 @@
         "description": "Indicates if the participant speaks any other language fluently, and provides the details."
     },
     "ef_fluent_language_other": {
-        "description": "If the participant speaks another language fluently that is not listed, this field specifies the language."
-    }
+        "description": "If the participant speaks another language fluently that is not listed, this field specifies the language.",
+        "question": {
+            "en": "If you speak any other languages fluently, please specify:"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
+    },
+    "data_elements": {}
 }

@@ -1,9 +1,23 @@
 {
     "vhi_session_id": {
-        "description": "The unique identifier for the Voice Handicap Index session."
+        "description": "The unique identifier for the Voice Handicap Index session.",
+        "question": {
+            "en": "Session ID"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "vhi_duration": {
-        "description": "Duration of the Voice Handicap Index session."
+        "description": "Duration of the Voice Handicap Index session.",
+        "question": {
+            "en": "Questionnaire Duration (seconds)"
+        },
+        "datatype": [
+            "xsd:decimal"
+        ],
+        "choices": null
     },
     "voice_difficult_hear": {
         "description": "Indicates if the participant's voice is difficult to hear."
@@ -34,5 +48,6 @@
     },
     "ask_whats_wrong_voice": {
         "description": "Indicates if the participant asked what was wrong with their voice during the assessment."
-    }
+    },
+    "data_elements": {}
 }

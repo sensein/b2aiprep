@@ -1,9 +1,61 @@
 {
     "diagnois_pl_gsd_ls": {
-        "description": "Indicates if the participant has a precancerous vocal fold lesion confirmed by laryngoscopy or stroboscopy."
+        "description": "Indicates if the participant has a precancerous vocal fold lesion confirmed by laryngoscopy or stroboscopy.",
+        "question": {
+            "en": "Does the patient have a precancerous vocal fold lesion confirmed by laryngoscopy/stroboscopy?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes "
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No "
+                },
+                "value": " no"
+            },
+            {
+                "name": {
+                    "en": "Not certain"
+                },
+                "value": " notCertain"
+            }
+        ]
     },
     "diagnois_pl_gsd_bp": {
-        "description": "Indicates if the participant has a precancerous vocal fold lesion confirmed by biopsy or pathology."
+        "description": "Indicates if the participant has a precancerous vocal fold lesion confirmed by biopsy or pathology.",
+        "question": {
+            "en": "Does the patient have a precancerous vocal fold lesion confirmed by biopsy/pathology?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes "
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No "
+                },
+                "value": " no"
+            },
+            {
+                "name": {
+                    "en": "Not certain"
+                },
+                "value": " notCertain"
+            }
+        ]
     },
     "diagnosis_pl_ds___keratosis": {
         "description": "Indicates if the participant has been diagnosed with keratosis."
@@ -21,13 +73,65 @@
         "description": "Indicates if the participant has leukoplakia."
     },
     "diagnosis_pl_ds_l_wd_g": {
-        "description": "Indicates if the participant has leukoplakia with dysplasia."
+        "description": "Indicates if the participant has leukoplakia with dysplasia.",
+        "question": {
+            "en": "Leukoplakia with dysplasia"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Low grade "
+                },
+                "value": "lowGrade"
+            },
+            {
+                "name": {
+                    "en": "Moderate grade "
+                },
+                "value": " moderateGrade"
+            },
+            {
+                "name": {
+                    "en": "High grade"
+                },
+                "value": " highGrade"
+            }
+        ]
     },
     "diagnosis_pl_ds_e": {
         "description": "Indicates if the participant has erythroplakia."
     },
     "diagnosis_pl_ds_e_wd_g": {
-        "description": "Indicates if the participant has erythroplakia with dysplasia."
+        "description": "Indicates if the participant has erythroplakia with dysplasia.",
+        "question": {
+            "en": "Erythroplakia with dysplasia"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Low grade "
+                },
+                "value": "lowGrade"
+            },
+            {
+                "name": {
+                    "en": "Moderate grade "
+                },
+                "value": " moderateGrade"
+            },
+            {
+                "name": {
+                    "en": "High grade"
+                },
+                "value": " highGrade"
+            }
+        ]
     },
     "diagnosis_pl_etiology___past_or_present_smoking": {
         "description": "Indicates if the participant has a history of smoking as a risk factor for their precancerous lesion."
@@ -54,40 +158,316 @@
         "description": "Indicates if the participant's lesion is located in the subglottal areas."
     },
     "diagnosis_pl_degree_os_1": {
-        "description": "Indicates the overall severity of the participant’s precancerous lesion."
+        "description": "Indicates the overall severity of the participant’s precancerous lesion.",
+        "question": {
+            "en": "Overall Severity"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "MI "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": " MO "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": " SE"
+                },
+                "value": 2
+            }
+        ]
     },
     "diagnosis_pl_degree_os_2": {
-        "description": "Indicates an alternative measure of the overall severity of the participant’s precancerous lesion."
+        "description": "Indicates an alternative measure of the overall severity of the participant’s precancerous lesion.",
+        "question": {
+            "en": "Overall Severity"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Consistent "
+                },
+                "value": "consistent"
+            },
+            {
+                "name": {
+                    "en": "Intermittent"
+                },
+                "value": " intermittent"
+            }
+        ]
     },
     "diagnosis_pl_degree_r_1": {
-        "description": "Indicates the roughness of the participant’s voice due to the precancerous lesion."
+        "description": "Indicates the roughness of the participant’s voice due to the precancerous lesion.",
+        "question": {
+            "en": "Roughness"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "MI "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": " MO "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": " SE"
+                },
+                "value": 2
+            }
+        ]
     },
     "diagnosis_pl_degree_r_2": {
-        "description": "Indicates an alternative measure of the roughness of the participant’s voice due to the precancerous lesion."
+        "description": "Indicates an alternative measure of the roughness of the participant’s voice due to the precancerous lesion.",
+        "question": {
+            "en": "Roughness"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Consistent "
+                },
+                "value": "consistent"
+            },
+            {
+                "name": {
+                    "en": "Intermittent"
+                },
+                "value": " intermittent"
+            }
+        ]
     },
     "diagnosis_pl_degree_b_1": {
-        "description": "Indicates the breathiness of the participant’s voice due to the precancerous lesion."
+        "description": "Indicates the breathiness of the participant’s voice due to the precancerous lesion.",
+        "question": {
+            "en": "Breathiness"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "MI "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": " MO "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": " SE"
+                },
+                "value": 2
+            }
+        ]
     },
     "diagnosis_pl_degree_b_2": {
-        "description": "Indicates an alternative measure of the breathiness of the participant’s voice due to the precancerous lesion."
+        "description": "Indicates an alternative measure of the breathiness of the participant’s voice due to the precancerous lesion.",
+        "question": {
+            "en": "Breathiness"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Consistent "
+                },
+                "value": "consistent"
+            },
+            {
+                "name": {
+                    "en": "Intermittent"
+                },
+                "value": " intermittent"
+            }
+        ]
     },
     "diagnosis_pl_degree_s_1": {
-        "description": "Indicates the strain in the participant’s voice due to the precancerous lesion."
+        "description": "Indicates the strain in the participant’s voice due to the precancerous lesion.",
+        "question": {
+            "en": "Strain"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "MI "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": " MO "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": " SE"
+                },
+                "value": 2
+            }
+        ]
     },
     "diagnosis_pl_degree_s_2": {
-        "description": "Indicates an alternative measure of the strain in the participant’s voice due to the precancerous lesion."
+        "description": "Indicates an alternative measure of the strain in the participant’s voice due to the precancerous lesion.",
+        "question": {
+            "en": "Strain"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Consistent "
+                },
+                "value": "consistent"
+            },
+            {
+                "name": {
+                    "en": "Intermittent"
+                },
+                "value": " intermittent"
+            }
+        ]
     },
     "diagnosis_pl_degree_p_1": {
-        "description": "Indicates the pitch of the participant’s voice due to the precancerous lesion."
+        "description": "Indicates the pitch of the participant’s voice due to the precancerous lesion.",
+        "question": {
+            "en": "Pitch"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "MI "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": " MO "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": " SE"
+                },
+                "value": 2
+            }
+        ]
     },
     "diagnosis_pl_degree_p_2": {
-        "description": "Indicates an alternative measure of the pitch of the participant’s voice due to the precancerous lesion."
+        "description": "Indicates an alternative measure of the pitch of the participant’s voice due to the precancerous lesion.",
+        "question": {
+            "en": "Pitch"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Consistent "
+                },
+                "value": "consistent"
+            },
+            {
+                "name": {
+                    "en": "Intermittent"
+                },
+                "value": " intermittent"
+            }
+        ]
     },
     "diagnosis_pl_degree_l_1": {
-        "description": "Indicates the loudness of the participant’s voice due to the precancerous lesion."
+        "description": "Indicates the loudness of the participant’s voice due to the precancerous lesion.",
+        "question": {
+            "en": "Loudness"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "MI "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": " MO "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": " SE"
+                },
+                "value": 2
+            }
+        ]
     },
     "diagnosis_pl_degree_l_2": {
-        "description": "Indicates an alternative measure of the loudness of the participant’s voice due to the precancerous lesion."
+        "description": "Indicates an alternative measure of the loudness of the participant’s voice due to the precancerous lesion.",
+        "question": {
+            "en": "Loudness"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Consistent "
+                },
+                "value": "consistent"
+            },
+            {
+                "name": {
+                    "en": "Intermittent"
+                },
+                "value": " intermittent"
+            }
+        ]
     },
     "diagnosis_pl_degree_comments": {
         "description": "Provides additional comments about the resonance of the participant’s voice due to the precancerous lesion."
@@ -115,5 +495,6 @@
     },
     "diagnosis_pl_treatment_select___other": {
         "description": "Indicates if the participant has undergone other treatments for their precancerous lesion."
-    }
+    },
+    "data_elements": {}
 }

@@ -3,13 +3,65 @@
         "description": "Specifies the participant’s diagnosis of bipolar disorder."
     },
     "diagnosis_bipolar_gsd_interview": {
-        "description": "Indicates if a structured clinical interview was conducted for diagnosing the participant’s bipolar disorder."
+        "description": "Indicates if a structured clinical interview was conducted for diagnosing the participant’s bipolar disorder.",
+        "question": {
+            "en": "Was a structured clinical interview done?"
+        },
+        "datatype": [
+            "xsd:boolean"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": 0
+            }
+        ]
     },
     "diagnosis_bipolar_gsd_oqu": {
         "description": "Indicates if an objective questionnaire was used in the diagnosis of the participant’s bipolar disorder."
     },
     "diagnosis_bipolar_gsd_oquw": {
-        "description": "Specifies which objective questionnaire was used in diagnosing the participant’s bipolar disorder."
+        "description": "Specifies which objective questionnaire was used in diagnosing the participant’s bipolar disorder.",
+        "question": {
+            "en": "Which objective questionnaire was used?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Patient Health Questionnaire (PHQ-9) "
+                },
+                "value": "phq9"
+            },
+            {
+                "name": {
+                    "en": "HAM-D "
+                },
+                "value": " hamD"
+            },
+            {
+                "name": {
+                    "en": "Beck Depression Inventory (BDI) "
+                },
+                "value": " bdi"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": " other"
+            }
+        ]
     },
     "diagnosis_bipolar_subtype_active": {
         "description": "Specifies the active subtype of the participant’s bipolar disorder."
@@ -19,5 +71,6 @@
     },
     "diagnosis_bipolar_severity": {
         "description": "Indicates the severity of the participant’s bipolar disorder."
-    }
+    },
+    "data_elements": {}
 }

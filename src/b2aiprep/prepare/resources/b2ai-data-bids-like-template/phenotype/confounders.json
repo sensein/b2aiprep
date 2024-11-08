@@ -1,21 +1,101 @@
 {
     "confounders_session_id": {
-        "description": "Unique identifier for the confounders assessment session."
+        "description": "Unique identifier for the confounders assessment session.",
+        "question": {
+            "en": "Session ID"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "confounders_duration": {
-        "description": "Total duration of the confounders assessment."
+        "description": "Total duration of the confounders assessment.",
+        "question": {
+            "en": "Questionnaire Duration (seconds)"
+        },
+        "datatype": [
+            "xsd:decimal"
+        ],
+        "choices": null
     },
     "is_regular_smoker": {
-        "description": "Indicates if the participant is a regular smoker."
+        "description": "Indicates if the participant is a regular smoker.",
+        "question": {
+            "en": "Have you been a regular smoker or not within the last 3 years?"
+        },
+        "datatype": [
+            "xsd:boolean"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": 0
+            }
+        ]
     },
     "smoking_hx": {
-        "description": "Indicates the participant's smoking history."
+        "description": "Indicates the participant's smoking history.",
+        "question": {
+            "en": "Have you ever smoked regularly (more than a few times a month for at least two months)?This includes tobacco, cannabis, vapes, e-cigarettes, hookah, or pipes."
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "I've never smoked regularly "
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "I used to smoke "
+                },
+                "value": " past"
+            },
+            {
+                "name": {
+                    "en": "I currently smoke "
+                },
+                "value": " currently"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": " noAnswer"
+            }
+        ]
     },
     "age_start_smoking": {
-        "description": "Indicates the age at which the participant started smoking."
+        "description": "Indicates the age at which the participant started smoking.",
+        "question": {
+            "en": "At what age did you start smoking?"
+        },
+        "datatype": [
+            "xsd:decimal"
+        ],
+        "choices": null
     },
     "age_stop_smoking": {
-        "description": "Indicates the age at which the participant stopped smoking."
+        "description": "Indicates the age at which the participant stopped smoking.",
+        "question": {
+            "en": "At what age did you stop?"
+        },
+        "datatype": [
+            "xsd:decimal"
+        ],
+        "choices": null
     },
     "smoking_types___1": {
         "description": "Reports if the participant has used smoking type 1."
@@ -42,46 +122,367 @@
         "description": "Indicates if the participant uses other forms of tobacco, such as e-cigarettes."
     },
     "smoking_freq": {
-        "description": "Indicates how often the participant smokes."
+        "description": "Indicates how often the participant smokes.",
+        "question": {
+            "en": "How often do/did you smoke?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Multiple times a day "
+                },
+                "value": "multipleTimes"
+            },
+            {
+                "name": {
+                    "en": "About once a day "
+                },
+                "value": " onceDay"
+            },
+            {
+                "name": {
+                    "en": "A few times a week "
+                },
+                "value": " fewWeek"
+            },
+            {
+                "name": {
+                    "en": "A few times a month "
+                },
+                "value": " fewMonth"
+            },
+            {
+                "name": {
+                    "en": "A few times a year "
+                },
+                "value": " fewYear"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": " noAnswer"
+            }
+        ]
     },
     "alcohol_yn": {
-        "description": "Indicates if the participant consumes alcohol."
+        "description": "Indicates if the participant consumes alcohol.",
+        "question": {
+            "en": "Do you drink alcohol?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes "
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No "
+                },
+                "value": " no"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": " noAnswer"
+            }
+        ]
     },
     "alcohol_freq": {
-        "description": "Indicates how often the participant consumes alcohol."
+        "description": "Indicates how often the participant consumes alcohol.",
+        "question": {
+            "en": "How often do you have at least one drink containing alcohol?Drinks can be beer, wine, shots of liquor, cocktails containing a shot of liquor"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Monthly or less "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "2 - 4 times a month "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "2 - 3 times a week "
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "4 or more times a week "
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": 5
+            }
+        ]
     },
     "alcohol_amt": {
-        "description": "Reports the amount of alcohol the participant consumed."
+        "description": "Reports the amount of alcohol the participant consumed.",
+        "question": {
+            "en": "How many drinks containing alcohol do you have on a typical day when you are drinking?One drink is 12 oz. beer, 5 oz. wine, 1.5 oz. (one shot) liquor"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "0 - 2 "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "3 - 4 "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "5 - 6 "
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "7 - 9 "
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "10 or more "
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": 6
+            }
+        ]
     },
     "alcohol_drinks": {
-        "description": "The number of alcoholic drinks the participant typically consumes."
+        "description": "The number of alcoholic drinks the participant typically consumes.",
+        "question": {
+            "en": "How often did you have six or more drinks on one occasion in the past year?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Never in the past year "
+                },
+                "value": "neverInThePastYear"
+            },
+            {
+                "name": {
+                    "en": "Less than monthly "
+                },
+                "value": " lessThanMonthly"
+            },
+            {
+                "name": {
+                    "en": "Monthly "
+                },
+                "value": " monthly"
+            },
+            {
+                "name": {
+                    "en": "Weekly "
+                },
+                "value": " weekly"
+            },
+            {
+                "name": {
+                    "en": "Daily or almost daily "
+                },
+                "value": " daily"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": " noAnswer"
+            }
+        ]
     },
     "alcohol_today": {
-        "description": "Reports if the participant consumed alcohol today."
+        "description": "Reports if the participant consumed alcohol today.",
+        "question": {
+            "en": "Have you drunk alcohol today?"
+        },
+        "datatype": [
+            "xsd:boolean"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": 0
+            }
+        ]
     },
     "drinks_today_number": {
-        "description": "The number of alcoholic drinks the participant has consumed today."
+        "description": "The number of alcoholic drinks the participant has consumed today.",
+        "question": {
+            "en": "How many drinks did you have?"
+        },
+        "datatype": [
+            "xsd:decimal"
+        ],
+        "choices": null
     },
     "alcohol_rehab": {
-        "description": "Indicates if the participant has undergone rehabilitation for alcohol use."
+        "description": "Indicates if the participant has undergone rehabilitation for alcohol use.",
+        "question": {
+            "en": "Have you ever been in rehab or counseling for heavy alcohol use?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Never in the past year "
+                },
+                "value": "neverInThePastYear"
+            },
+            {
+                "name": {
+                    "en": "Less than monthly "
+                },
+                "value": " lessThanMonthly"
+            },
+            {
+                "name": {
+                    "en": "Monthly "
+                },
+                "value": " monthly"
+            },
+            {
+                "name": {
+                    "en": "Weekly "
+                },
+                "value": " weekly"
+            },
+            {
+                "name": {
+                    "en": "Daily or almost daily "
+                },
+                "value": " daily"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": " noAnswer"
+            }
+        ]
     },
     "current_recovery_alcohol": {
-        "description": "Indicates if the participant is currently in recovery for alcohol use."
+        "description": "Indicates if the participant is currently in recovery for alcohol use.",
+        "question": {
+            "en": "Are you currently in recovery for alcohol use?"
+        },
+        "datatype": [
+            "xsd:boolean"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": 0
+            }
+        ]
     },
     "caffeine_intake": {
         "description": "Reports the participant's caffeine intake."
     },
     "caffeine_intake_today": {
-        "description": "The amount of caffeine the participant has consumed today."
+        "description": "The amount of caffeine the participant has consumed today.",
+        "question": {
+            "en": "How many small (8oz or 230ml) cups of coffee OR shots of espresso OR caffeinated teas have you had TODAY?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "hydration": {
         "description": "Indicates if the participant feels hydrated."
     },
     "hydration_today": {
-        "description": "Indicates if the participant feels adequately hydrated today."
+        "description": "Indicates if the participant feels adequately hydrated today.",
+        "question": {
+            "en": "How many small (8oz or 230ml) cups of water have you had TODAY?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "dental_problems": {
-        "description": "Indicates if the participant has dental problems or issues."
+        "description": "Indicates if the participant has dental problems or issues.",
+        "question": {
+            "en": "Do you have any dental problems that might affect speech?"
+        },
+        "datatype": [
+            "xsd:boolean"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": 0
+            }
+        ]
     },
     "seasonal_allergies": {
         "description": "Indicates if the participant has any seasonal allergies."
@@ -99,10 +500,91 @@
         "description": "Indicates if the participant has seasonal allergies to pollen or other triggers."
     },
     "tired_measure": {
-        "description": "Indicates if the participant feels tired or fatigued."
+        "description": "Indicates if the participant feels tired or fatigued.",
+        "question": {
+            "en": "How tired are you?0=not tired at all, 10=extremely tired"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "0 "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "1 "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "2 "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "3 "
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "4 "
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "5 "
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "6 "
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "7 "
+                },
+                "value": 7
+            },
+            {
+                "name": {
+                    "en": "8 "
+                },
+                "value": 8
+            },
+            {
+                "name": {
+                    "en": "9 "
+                },
+                "value": 9
+            },
+            {
+                "name": {
+                    "en": "10"
+                },
+                "value": 10
+            }
+        ]
     },
     "height": {
-        "description": "The participant's height in centimeters or inches."
+        "description": "The participant's height in centimeters or inches.",
+        "question": {
+            "en": "Height (inches)"
+        },
+        "datatype": [
+            "xsd:decimal"
+        ],
+        "choices": null
     },
     "weight": {
         "description": "The participant's weight in kilograms or pounds."
@@ -228,7 +710,33 @@
         "description": "Indicates if the participant has a history of multiple sclerosis (MS)."
     },
     "current_neuro_dx": {
-        "description": "Indicates the participant's current neurological diagnosis."
+        "description": "Indicates the participant's current neurological diagnosis.",
+        "question": {
+            "en": "Do you currently have these conditions or currently experience symptoms as a result of having had these conditions?"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "None "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Only some "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "All"
+                },
+                "value": 3
+            }
+        ]
     },
     "respiratory_conditions___1": {
         "description": "Indicates if the participant has a diagnosis of bronchitis."
@@ -267,7 +775,27 @@
         "description": "Reports if the participant has experienced long COVID symptoms."
     },
     "covid_past": {
-        "description": "Indicates if the participant has had COVID-19 in the past."
+        "description": "Indicates if the participant has had COVID-19 in the past.",
+        "question": {
+            "en": "Have you had COVID in the past month?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes "
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": " no"
+            }
+        ]
     },
     "cpap_conditions___1": {
         "description": "Indicates if the participant has used CPAP therapy for obstructive sleep apnea."
@@ -288,19 +816,133 @@
         "description": "Indicates if the participant has a history of respiratory condition 4."
     },
     "exposed_environmental_pollution": {
-        "description": "Indicates if the participant has been exposed to environmental pollution."
+        "description": "Indicates if the participant has been exposed to environmental pollution.",
+        "question": {
+            "en": "Have you been exposed to environmental pollution that may affect your breathing or voice?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes "
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": " no"
+            }
+        ]
     },
     "breathe_today": {
         "description": "Indicates if the participant is experiencing difficulty breathing today."
     },
     "breathe_today_difficulty": {
-        "description": "Reports if the participant experienced breathing difficulty today."
+        "description": "Reports if the participant experienced breathing difficulty today.",
+        "question": {
+            "en": "Please specify the level of difficulty"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Slight Difficulty "
+                },
+                "value": "slightDifficulty"
+            },
+            {
+                "name": {
+                    "en": "Moderate Difficulty "
+                },
+                "value": " moderateDifficulty"
+            },
+            {
+                "name": {
+                    "en": "Significant Difficulty"
+                },
+                "value": " significantDifficulty"
+            }
+        ]
     },
     "cough_today": {
         "description": "Indicates if the participant has coughed today."
     },
     "cough_today_severity": {
-        "description": "Severity of the participant's cough today."
+        "description": "Severity of the participant's cough today.",
+        "question": {
+            "en": "What is the severity of your cough?\nA selection of 10 being means the most severe."
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "1 "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "2 "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "3 "
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "4 "
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "5 "
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "6 "
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "7 "
+                },
+                "value": 7
+            },
+            {
+                "name": {
+                    "en": "8 "
+                },
+                "value": 8
+            },
+            {
+                "name": {
+                    "en": "9 "
+                },
+                "value": 9
+            },
+            {
+                "name": {
+                    "en": "10"
+                },
+                "value": 10
+            }
+        ]
     },
     "circulatory_conditions___1": {
         "description": "Indicates if the participant has a diagnosis of cardiovascular disease."
@@ -372,13 +1014,34 @@
         "description": "Reports if the participant's physical health affects their day-to-day work."
     },
     "physical_health_freq": {
-        "description": "Indicates how frequently the participant experiences physical health issues."
+        "description": "Indicates how frequently the participant experiences physical health issues.",
+        "question": {
+            "en": "Overall, in the past 30 days, how many days were these difficulties present?"
+        },
+        "datatype": [
+            "xsd:decimal"
+        ],
+        "choices": null
     },
     "phys_health_impact": {
-        "description": "Indicates if the participant's physical health impacts their daily life."
+        "description": "Indicates if the participant's physical health impacts their daily life.",
+        "question": {
+            "en": "In the past 30 days, for how many days were you totally unable to carry out your usual activities or work because of any health condition?"
+        },
+        "datatype": [
+            "xsd:decimal"
+        ],
+        "choices": null
     },
     "phys_health_limited": {
-        "description": "Indicates if the participant's physical health is limiting their daily activities."
+        "description": "Indicates if the participant's physical health is limiting their daily activities.",
+        "question": {
+            "en": "In the past 30 days, not counting the days that you were totally unable, for how many days did you cut back or reduce your usual activities or work because of any health condition?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "medications___1": {
         "description": "Indicates if the participant is currently taking medication 1."
@@ -459,10 +1122,74 @@
         "description": "Indicates if the participant menstruates."
     },
     "menstruate_no": {
-        "description": "Indicates if the participant does not menstruate."
+        "description": "Indicates if the participant does not menstruate.",
+        "question": {
+            "en": "Please explain"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "I am pregnant "
+                },
+                "value": "pregnant"
+            },
+            {
+                "name": {
+                    "en": "I have an IUD "
+                },
+                "value": " iud"
+            },
+            {
+                "name": {
+                    "en": "I have gone through menopause "
+                },
+                "value": " menopause"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": " other"
+            }
+        ]
     },
     "menstrual_cycle_status": {
-        "description": "Indicates the participant's menstrual cycle status."
+        "description": "Indicates the participant's menstrual cycle status.",
+        "question": {
+            "en": "Where in your cycle are you?(We ask because this may affect your voice.)"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Menstruating "
+                },
+                "value": "menstruating"
+            },
+            {
+                "name": {
+                    "en": "Premenstrual "
+                },
+                "value": " premenstrual"
+            },
+            {
+                "name": {
+                    "en": "Postmenstrual "
+                },
+                "value": " postmenstrual"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": " noAnswer"
+            }
+        ]
     },
     "voice_activity___1": {
         "description": "Indicates the first type of voice activity the participant engaged in."
@@ -486,9 +1213,55 @@
         "description": "Indicates the seventh type of voice activity the participant engaged in."
     },
     "hours_voice_activity": {
-        "description": "Number of hours the participant engaged in voice-related activities."
+        "description": "Number of hours the participant engaged in voice-related activities.",
+        "question": {
+            "en": "How many hours per day do you do this activity with a loud voice or in a loud environment that requires elevating your voice (for instance, a noisy bar or a noisy classroom)?"
+        },
+        "datatype": [
+            "xsd:decimal"
+        ],
+        "choices": null
     },
     "reading_aloud": {
-        "description": "Indicates if the participant is reading aloud."
-    }
+        "description": "Indicates if the participant is reading aloud.",
+        "question": {
+            "en": "\"How good do you think you are at reading out loud in [English/Spanish/French], that is reading out loud without making mistakes and understanding what you read at a normal rate?\""
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Excellent "
+                },
+                "value": "excellent"
+            },
+            {
+                "name": {
+                    "en": "Very good "
+                },
+                "value": " veryGood"
+            },
+            {
+                "name": {
+                    "en": "Good "
+                },
+                "value": " good"
+            },
+            {
+                "name": {
+                    "en": "Fair "
+                },
+                "value": " fair"
+            },
+            {
+                "name": {
+                    "en": "Poor"
+                },
+                "value": " poor"
+            }
+        ]
+    },
+    "data_elements": {}
 }

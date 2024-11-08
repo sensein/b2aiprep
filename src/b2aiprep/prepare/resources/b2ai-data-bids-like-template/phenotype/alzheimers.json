@@ -1,6 +1,32 @@
 {
     "diagnosis_alz_dementia_mci_causes": {
-        "description": "Indicates if other causes of cognitive or functional changes have been excluded in the participant’s diagnosis."
+        "description": "Indicates if other causes of cognitive or functional changes have been excluded in the participant’s diagnosis.",
+        "question": {
+            "en": "Have you excluded other causes of cognitive/functional changes (and/or other subtypes)?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "No "
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Yes "
+                },
+                "value": " yes"
+            },
+            {
+                "name": {
+                    "en": "Not certain"
+                },
+                "value": " notCertain"
+            }
+        ]
     },
     "diagnosis_alz_dementia_mci_dt": {
         "description": "Specifies the type of dementia or cognitive impairment in the participant."
@@ -36,25 +62,92 @@
         "description": "Indicates if the participant’s cognitive impairment is classified using the Clinical Dementia Rating (CDR) staging."
     },
     "diagnosis_alz_dementia_mci_ds_cdr": {
-        "description": "Specifies the participant’s Clinical Dementia Rating (CDR) staging."
+        "description": "Specifies the participant’s Clinical Dementia Rating (CDR) staging.",
+        "question": {
+            "en": "Clinical dementia rating (CDR) staging subcategory:"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "CDR 0.5 (Very mild impairment) "
+                },
+                "value": "cdr0_5"
+            },
+            {
+                "name": {
+                    "en": "CDR 1 (Mild impairment) "
+                },
+                "value": " cdr1"
+            },
+            {
+                "name": {
+                    "en": "CDR 2 (Moderate impairment) "
+                },
+                "value": " cdr2"
+            },
+            {
+                "name": {
+                    "en": "CDR 3 (Severe impairment)"
+                },
+                "value": " cdr3"
+            }
+        ]
     },
     "diagnosis_alz_dementia_mci_ca_rudas_score": {
-        "description": "Specifies the participant’s Rowland Universal Dementia Assessment Scale (RUDAS) score."
+        "description": "Specifies the participant’s Rowland Universal Dementia Assessment Scale (RUDAS) score.",
+        "question": {
+            "en": "Rowland Universal Dementia Assessment Scale (RUDAS) score:"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "diagnosis_alz_dementia_mci_ca_mmse_score": {
-        "description": "Specifies the participant’s Mini-Mental State Examination (MMSE) score."
+        "description": "Specifies the participant’s Mini-Mental State Examination (MMSE) score.",
+        "question": {
+            "en": "Mini-Mental State Examination (MMSE) score:"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "diagnosis_alz_dementia_mci_ca_moca_score": {
-        "description": "Specifies the participant’s Montreal Cognitive Assessment (MoCA) score."
+        "description": "Specifies the participant’s Montreal Cognitive Assessment (MoCA) score.",
+        "question": {
+            "en": "Montreal Cognitive Assessment (MoCA) score:"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "diagnosis_alz_dementia_mci_ca_adas_cog_score": {
-        "description": "Specifies the participant’s Alzheimer’s Disease Assessment Scale-Cognitive Subscale (ADAS-Cog) score."
+        "description": "Specifies the participant’s Alzheimer’s Disease Assessment Scale-Cognitive Subscale (ADAS-Cog) score.",
+        "question": {
+            "en": "Alzheimer's Disease Assessment Scale-Cognitive Subscale (ADAS-Cog) score:"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "diagnosis_alz_dementia_mci_ca_other": {
         "description": "Specifies if another cognitive assessment tool was used for the participant."
     },
     "diagnosis_alz_dementia_mci_ca_other_score": {
-        "description": "Specifies the score from another cognitive assessment tool used for the participant."
+        "description": "Specifies the score from another cognitive assessment tool used for the participant.",
+        "question": {
+            "en": "Other cognitive assessment tool score:"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "diagnosis_alz_dementia_mci_treatment_obtained": {
         "description": "Indicates if the participant has undergone any treatment for Alzheimer’s disease, cognitive impairment, or other types of dementia."
@@ -94,5 +187,6 @@
     },
     "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___other": {
         "description": "Indicates if the participant has undergone other non-pharmacological interventions for Alzheimer’s disease or cognitive impairment."
-    }
+    },
+    "data_elements": {}
 }
