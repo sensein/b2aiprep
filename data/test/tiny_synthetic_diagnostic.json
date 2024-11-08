@@ -4,6 +4,6 @@
     "sdmetrics_version": "0.14.1",
     "num_rows_real_data": 4,
     "num_rows_synthetic_data": 3,
-    "generation_time": 0.030169248580932617,
+    "generation_time": 0.005666017532348633,
     "score": 1.0
 }
