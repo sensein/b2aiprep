@@ -1,7 +1,7 @@
 import typing as t
 
 import numpy as np
-from scipy.signal import butter, lfilter, resample_poly
+from scipy.signal import butter, filtfilt, resample_poly
 import torch
 import torchaudio
 
@@ -13,14 +13,12 @@ def resample_audio(waveform: np.ndarray, original_hz: int, target_hz: int, order
     if original_hz > target_hz:
         cutoff_freq = nyquist_target / nyquist_orig
         b, a = butter(order, cutoff_freq)
-        waveform = lfilter(b, a, waveform)
+    elif original_hz < target_hz:
+        cutoff_freq = nyquist_orig / nyquist_target
+        b, a = butter(order, cutoff_freq)
 
-    # Calculate the resampling factors for the polyphase filter
-    up = target_hz
-    down = original_hz
-
-    # Resample the waveform using a polyphase filter
-    waveform = resample_poly(waveform, up, down, axis=0)
+    waveform = filtfilt(b, a, waveform)
+    waveform = resample_poly(waveform, target_hz, original_hz, axis=0)
 
     return waveform
 
