@@ -152,3 +152,6 @@ cache-wf/
 
 # synthesizers
 models
+
+docs/iframe_figures/
+data/corpus-3/sdv_redcap_synthetic_data_100_rows_corpus_3_combine_first.csv
