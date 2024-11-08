@@ -1,0 +1,9 @@
+{
+    "report_type": "DiagnosticReport",
+    "generated_date": "2024-10-24",
+    "sdmetrics_version": "0.14.1",
+    "num_rows_real_data": 4,
+    "num_rows_synthetic_data": 3,
+    "generation_time": 0.005666017532348633,
+    "score": 1.0
+}
