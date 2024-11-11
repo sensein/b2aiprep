@@ -1,14 +1,15 @@
 """Commands available through the CLI."""
+
 import csv
 import json
 import logging
 import os
 import shutil
+import tarfile
+import typing as t
+from functools import partial
 from glob import glob
 from pathlib import Path
-import tarfile
-from functools import partial
-import typing as t
 
 import click
 import numpy as np
@@ -17,7 +18,6 @@ import pkg_resources
 import pydra
 import torch
 from datasets import Dataset
-
 from pydra.mark import annotate
 from senselab.audio.data_structures.audio import Audio
 from senselab.audio.tasks.features_extraction.opensmile import (
@@ -28,7 +28,6 @@ from senselab.audio.tasks.features_extraction.torchaudio import (
     extract_mfcc_from_audios,
     extract_spectrogram_from_audios,
 )
-
 from senselab.audio.tasks.preprocessing.preprocessing import resample_audios
 from senselab.audio.tasks.speaker_embeddings.api import (
     extract_speaker_embeddings_from_audios,
@@ -38,16 +37,19 @@ from senselab.audio.tasks.speaker_verification.speaker_verification import (
 )
 from senselab.audio.tasks.speech_to_text.api import transcribe_audios
 from senselab.utils.data_structures.device import DeviceType
-from senselab.utils.data_structures.model import HFModel
 from senselab.utils.data_structures.language import Language
+from senselab.utils.data_structures.model import HFModel
 from streamlit import config as _config
 from streamlit.web.bootstrap import run
 from tqdm import tqdm
 
 from b2aiprep.prepare.bids import get_audio_paths, redcap_to_bids, validate_bids_folder
-from b2aiprep.prepare.prepare import extract_features_serially, extract_features_workflow, validate_bids_data
+from b2aiprep.prepare.prepare import extract_features_workflow, validate_bids_data
+
+# from b2aiprep.synthetic_data import generate_synthetic_tabular_data
 
 _LOGGER = logging.getLogger(__name__)
+
 
 @click.command()
 @click.argument("bids_dir", type=click.Path(exists=True))
@@ -123,20 +125,12 @@ def prepare_bids(
     _LOGGER.info("Data organization complete.")
 
     _LOGGER.info("Beginning audio feature extraction...")
-    if n_cores == 1:
-        extract_features_serially(
-            bids_dir_path,
-            transcription_model_size=transcription_model_size,
-            n_cores=n_cores,
-            with_sensitive=with_sensitive,
-        )
-    else:
-        extract_features_workflow(
-            bids_dir_path,
-            transcription_model_size=transcription_model_size,
-            n_cores=n_cores,
-            with_sensitive=with_sensitive,
-        )
+    extract_features_workflow(
+        bids_dir_path,
+        transcription_model_size=transcription_model_size,
+        n_cores=n_cores,
+        with_sensitive=with_sensitive,
+    )
     _LOGGER.info("Audio feature extraction complete.")
 
     # Below code checks to see if we have all the expected feature/transcript files.
@@ -148,6 +142,7 @@ def prepare_bids(
     _LOGGER.info(f"Saved processed data .tar file at: {tar_file_path}")
 
     _LOGGER.info("Process completed.")
+
 
 def load_audio_features(
     audio_paths,
@@ -164,7 +159,7 @@ def load_audio_features(
         # TODO: we should appropriately load these as FHIR resources to validate the data
         metadata_filepath = wav_path.parent.joinpath(wav_path.stem + "_recording-metadata.json")
         metadata = json.loads(metadata_filepath.read_text())
-        
+
         for item in metadata["item"]:
             if item["linkId"] == "record_id":
                 output["subject_id"] = item["answer"][0]["valueString"]
@@ -178,7 +173,7 @@ def load_audio_features(
         feature_path = features_dir / f"{wav_path.stem}_transcription.txt"
         with open(feature_path, "r", encoding="utf-8") as text_file:
             transcription = text_file.read()
-        output['transcription'] = transcription
+        output["transcription"] = transcription
 
         for feature_name in ["speaker_embedding", "specgram", "melfilterbank", "mfcc", "opensmile"]:
             feature_path = features_dir / f"{wav_path.stem}_{feature_name}.{file_extension}"
@@ -192,12 +187,12 @@ def load_audio_features(
                     key = next(iter(data.keys()))
                     data[key] = data[key].numpy().astype(np.float32)
                 output.update(torch.load(feature_path))
-        
+
         # load transcription
         feature_path = features_dir / f"{wav_path.stem}_transcription.txt"
         if feature_path.exists():
             output["transcription"] = feature_path.read_text()
-        
+
         yield output
 
 
@@ -216,14 +211,14 @@ def create_derived_dataset(
     ds = Dataset.from_generator(feature_loader, num_proc=1)
     ds.to_parquet(
         Path(bids_path).joinpath("b2ai-voice.parquet").as_posix(),
-        compression="snappy",    
+        compression="snappy",
     )
     _LOGGER.info("Parquet dataset created.")
     _LOGGER.info("Creating merged phenotype data.")
 
     # first initialize a dataframe with all the record IDs which are equivalent to participant IDs.
     df = pd.read_csv(bids_path.joinpath("participants.tsv"), sep="\t")
-    df = df[['record_id']]
+    df = df[["record_id"]]
     with open(bids_path.joinpath("participants.json"), "r") as f:
         participants = json.load(f)
     phenotype = {"participant_id": participants["record_id"]}
@@ -231,7 +226,7 @@ def create_derived_dataset(
     for phenotype_filepath in sorted(list(bids_path.joinpath("phenotype").glob("*.tsv"))):
         df_add = pd.read_csv(phenotype_filepath, sep="\t")
         phenotype_name = phenotype_filepath.stem
-        if phenotype_name == 'participant':
+        if phenotype_name == "participant":
             continue
         # check for overlapping columns
         for col in df_add.columns:
@@ -240,10 +235,10 @@ def create_derived_dataset(
             if col in df.columns:
                 raise ValueError(f"Column {col} already exists in the dataframe")
 
-        df = df.merge(df_add, on='record_id', how='left')
+        df = df.merge(df_add, on="record_id", how="left")
         with open(bids_path.joinpath("phenotype", f"{phenotype_name}.json"), "r") as f:
             phenotype_add = json.load(f)
-        
+
         phenotype.update(phenotype_add)
 
     df = df.rename(columns={"record_id": "participant_id"})
@@ -275,21 +270,24 @@ def validate(
         bids_dir_path=Path(bids_dir_path),
         fix=fix,
     )
-    
-@click.command()
-@click.argument("source_data_csv_path", type=click.Path(exists=True))
-@click.argument("synthetic_data_path", type=click.Path())
-@click.option("--n_synthetic_rows", default=100, type=int, help="Number of synthetic rows to generate.")
-@click.option("--synthesizer_path", type=click.Path(), help="Path to save/load the synthesizer.")
-def gensynthtabdata(source_data_csv_path, synthetic_data_path, n_synthetic_rows, synthesizer_path):
-    generate_synthetic_tabular_data(
-        source_data_csv_path=Path(source_data_csv_path),
-        synthetic_data_path=Path(synthetic_data_path),
-        n_synthetic_rows=n_synthetic_rows,
-        synthesizer_path=Path(synthesizer_path) if synthesizer_path else None
-    )
 
-    
+
+# @click.command()
+# @click.argument("source_data_csv_path", type=click.Path(exists=True))
+# @click.argument("synthetic_data_path", type=click.Path())
+# @click.option(
+#     "--n_synthetic_rows", default=100, type=int, help="Number of synthetic rows to generate."
+# )
+# @click.option("--synthesizer_path", type=click.Path(), help="Path to save/load the synthesizer.")
+# def gensynthtabdata(source_data_csv_path, synthetic_data_path, n_synthetic_rows, synthesizer_path):
+#     generate_synthetic_tabular_data(
+#         source_data_csv_path=Path(source_data_csv_path),
+#         synthetic_data_path=Path(synthetic_data_path),
+#         n_synthetic_rows=n_synthetic_rows,
+#         synthesizer_path=Path(synthesizer_path) if synthesizer_path else None,
+#     )
+
+
 @click.command()
 @click.argument("filename", type=click.Path(exists=True))
 @click.option("-s", "--subject", type=str, default=None)
@@ -517,7 +515,9 @@ def transcribe(
     device = DeviceType(device.lower())
     language = Language.model_validate({"language_code": language})
     _LOGGER.info("Transcribing audio...")
-    transcription = transcribe_audios([audio_data], model=hf_model, device=device, language=language)[0]
+    transcription = transcribe_audios(
+        [audio_data], model=hf_model, device=device, language=language
+    )[0]
     print(transcription.text)
 
 
