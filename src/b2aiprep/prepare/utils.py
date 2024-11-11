@@ -1,15 +1,17 @@
 import glob
 import importlib.resources as pkg_resources
 import json
-import os
-from pathlib import Path
-import shutil
-from typing import Dict, List, Optional
 import logging
+import os
+import shutil
+import time
+from pathlib import Path
+from typing import Dict, List
 
 import pandas as pd
 
 _LOGGER = logging.getLogger(__name__)
+
 
 def transform_str_for_bids_filename(filename: str):
     """Replace spaces in a string with hyphens to match BIDS string format rules.."""
@@ -171,6 +173,7 @@ def remove_files_by_pattern(directory: str, pattern: str) -> None:
         except OSError as e:
             print(f"Error removing file {file_path}: {e}")
 
+
 def initialize_data_directory(bids_dir_path: str) -> None:
     """Initializes the data directory using the template.
 
@@ -281,3 +284,31 @@ def update_jsons_in_directory(directory: str, reference_file: str) -> None:
     save_json(reference_json, reference_file)
     print(f"Updated reference JSON saved back to {reference_file}")
 
+
+def retry(func, max_retries=3, delay=0.5, exceptions=(Exception,)):
+    """
+    Retry a function n times with a specified delay.
+
+    Args:
+        func: The function to be called.
+        max_retries: The maximum number of retries (default: 3).
+        delay: The delay between retries in seconds (default: 1).
+        exceptions: A tuple of exceptions to retry on (default: all exceptions).
+    """
+
+    def wrapper(*args, **kwargs):
+        attempts = 0
+        while attempts < max_retries:
+            try:
+                return func(*args, **kwargs)
+            except exceptions as e:
+                attempts += 1
+                if attempts < max_retries:
+                    print(
+                        f"Retry attempt {attempts} failed due to {e}. Retrying in {delay} seconds..."
+                    )
+                    time.sleep(delay)
+                else:
+                    raise
+
+    return wrapper
