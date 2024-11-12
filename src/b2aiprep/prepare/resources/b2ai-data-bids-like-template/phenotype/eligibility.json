@@ -15,7 +15,27 @@
         "description": "Indicates if the participant is eligible for pediatric disorder studies."
     },
     "is_control_participant": {
-        "description": "Indicates whether the participant is a control group participant."
+        "description": "Indicates whether the participant is a control group participant.",
+        "question": {
+            "en": "Is Control Participant?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes "
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": " no"
+            }
+        ]
     },
     "laryng_cancer": {
         "description": "Indicates if the participant has laryngeal cancer."
@@ -89,7 +109,27 @@
         "description": "Indicates if the participant has depression or major depressive disorder."
     },
     "ed": {
-        "description": "Indicates if the participant has an eating disorder (ED)."
+        "description": "Indicates if the participant has an eating disorder (ED).",
+        "question": {
+            "en": "Eating Disorder (ED)"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Unchecked "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "Checked"
+                },
+                "value": 1
+            }
+        ]
     },
     "insomnia": {
         "description": "Indicates if the participant has insomnia or other sleep disorders."

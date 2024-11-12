@@ -20,7 +20,14 @@
         "choices": null
     },
     "traumatic_event": {
-        "description": "Reports if the participant has experienced a traumatic event recently."
+        "description": "Reports if the participant has experienced a traumatic event recently.",
+        "question": {
+            "en": "Please list the traumatic event that you experienced"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "flashbacks": {
         "description": "Indicates if the participant experiences flashbacks to stressful or traumatic events.",
@@ -85,7 +92,45 @@
         "description": "Indicates if the participant feels jumpy or anxious."
     },
     "irritable": {
-        "description": "Indicates if the participant feels irritable or easily annoyed."
+        "description": "Indicates if the participant feels irritable or easily annoyed.",
+        "question": {
+            "en": "Being extremely irritable or angry to the point where you yelled at other people, got into fights, or destroyed things?"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "0=Not at all "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "1=A little bit "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "2=Moderately "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "3=Quite a bit "
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "4=Extremely"
+                },
+                "value": 4
+            }
+        ]
     },
     "data_elements": {}
 }

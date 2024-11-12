@@ -436,7 +436,14 @@
         ]
     },
     "caffeine_intake": {
-        "description": "Reports the participant's caffeine intake."
+        "description": "Reports the participant's caffeine intake.",
+        "question": {
+            "en": "How many small (8oz or 230ml) cups of coffee OR shots of espresso OR caffeinated teas do you drink on a typical day?"
+        },
+        "datatype": [
+            "xsd:decimal"
+        ],
+        "choices": null
     },
     "caffeine_intake_today": {
         "description": "The amount of caffeine the participant has consumed today.",
@@ -449,7 +456,14 @@
         "choices": null
     },
     "hydration": {
-        "description": "Indicates if the participant feels hydrated."
+        "description": "Indicates if the participant feels hydrated.",
+        "question": {
+            "en": "How many small (8oz or 230ml) cups of water do you drink on a typical day?"
+        },
+        "datatype": [
+            "xsd:decimal"
+        ],
+        "choices": null
     },
     "hydration_today": {
         "description": "Indicates if the participant feels adequately hydrated today.",
@@ -485,7 +499,27 @@
         ]
     },
     "seasonal_allergies": {
-        "description": "Indicates if the participant has any seasonal allergies."
+        "description": "Indicates if the participant has any seasonal allergies.",
+        "question": {
+            "en": "Do you currently have seasonal allergies, cold-like symptoms or other conditions that may affect your voice today?"
+        },
+        "datatype": [
+            "xsd:boolean"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": 0
+            }
+        ]
     },
     "seasonal_allergies_options___1": {
         "description": "Indicates if the participant has seasonal allergies to tree pollen."
@@ -587,10 +621,37 @@
         "choices": null
     },
     "weight": {
-        "description": "The participant's weight in kilograms or pounds."
+        "description": "The participant's weight in kilograms or pounds.",
+        "question": {
+            "en": "Weight (pounds)"
+        },
+        "datatype": [
+            "xsd:decimal"
+        ],
+        "choices": null
     },
     "unit": {
-        "description": "The measurement unit used for the participant's responses (e.g., kilograms or pounds)."
+        "description": "The measurement unit used for the participant's responses (e.g., kilograms or pounds).",
+        "question": {
+            "en": "Unit"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Metric "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "US customary units"
+                },
+                "value": 2
+            }
+        ]
     },
     "symptoms___1": {
         "description": "Indicates if the participant reports experiencing symptom 1."
@@ -839,7 +900,27 @@
         ]
     },
     "breathe_today": {
-        "description": "Indicates if the participant is experiencing difficulty breathing today."
+        "description": "Indicates if the participant is experiencing difficulty breathing today.",
+        "question": {
+            "en": "Are you having difficulty breathing today?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes "
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": " no"
+            }
+        ]
     },
     "breathe_today_difficulty": {
         "description": "Reports if the participant experienced breathing difficulty today.",
@@ -871,7 +952,27 @@
         ]
     },
     "cough_today": {
-        "description": "Indicates if the participant has coughed today."
+        "description": "Indicates if the participant has coughed today.",
+        "question": {
+            "en": "Are you coughing today?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes "
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": " no"
+            }
+        ]
     },
     "cough_today_severity": {
         "description": "Severity of the participant's cough today.",
@@ -1119,7 +1220,39 @@
         "description": "Indicates if the participant is taking pain medication 3."
     },
     "menstruate": {
-        "description": "Indicates if the participant menstruates."
+        "description": "Indicates if the participant menstruates.",
+        "question": {
+            "en": "Do you menstruate?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Does not apply "
+                },
+                "value": "doesNotApply"
+            },
+            {
+                "name": {
+                    "en": "Yes "
+                },
+                "value": " yes"
+            },
+            {
+                "name": {
+                    "en": "No "
+                },
+                "value": " no"
+            },
+            {
+                "name": {
+                    "en": "Prefer no to answer"
+                },
+                "value": " noAnswer"
+            }
+        ]
     },
     "menstruate_no": {
         "description": "Indicates if the participant does not menstruate.",

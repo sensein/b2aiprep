@@ -30,13 +30,102 @@
         "choices": null
     },
     "stroop_item_stimulus_1": {
-        "description": "Stimulus presented for Stroop item 1."
+        "description": "Stimulus presented for Stroop item 1.",
+        "question": {
+            "en": "Item 1\nStimulus"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "oooo "
+                },
+                "value": "oooo"
+            },
+            {
+                "name": {
+                    "en": "red "
+                },
+                "value": " red"
+            },
+            {
+                "name": {
+                    "en": "green "
+                },
+                "value": " green"
+            },
+            {
+                "name": {
+                    "en": "blue "
+                },
+                "value": " blue"
+            },
+            {
+                "name": {
+                    "en": "purple "
+                },
+                "value": " purple"
+            },
+            {
+                "name": {
+                    "en": "brown"
+                },
+                "value": " brown"
+            }
+        ]
     },
     "stroop_item_color_1": {
-        "description": "Color identified by the participant for Stroop item 1."
+        "description": "Color identified by the participant for Stroop item 1.",
+        "question": {
+            "en": "Item 1\nColor"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "red "
+                },
+                "value": "red"
+            },
+            {
+                "name": {
+                    "en": "green "
+                },
+                "value": " green"
+            },
+            {
+                "name": {
+                    "en": "blue "
+                },
+                "value": " blue"
+            },
+            {
+                "name": {
+                    "en": "purple "
+                },
+                "value": " purple"
+            },
+            {
+                "name": {
+                    "en": "brown"
+                },
+                "value": " brown"
+            }
+        ]
     },
     "stroop_item_time_1": {
-        "description": "Time taken to respond to Stroop item 1."
+        "description": "Time taken to respond to Stroop item 1.",
+        "question": {
+            "en": "Item 1\nTime Start"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "stroop_item_stimulus_2": {
         "description": "Stimulus presented for Stroop item 2.",

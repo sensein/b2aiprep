@@ -29,7 +29,57 @@
         ]
     },
     "diagnosis_alz_dementia_mci_dt": {
-        "description": "Specifies the type of dementia or cognitive impairment in the participant."
+        "description": "Specifies the type of dementia or cognitive impairment in the participant.",
+        "question": {
+            "en": "Specify the disease type in the patient:"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Mild Cognitive Impairment (MCI) "
+                },
+                "value": "mci"
+            },
+            {
+                "name": {
+                    "en": "Typical Alzheimer's Disease (AD) "
+                },
+                "value": " ad"
+            },
+            {
+                "name": {
+                    "en": "Frontotemporal Dementia (FTD) "
+                },
+                "value": " ftd"
+            },
+            {
+                "name": {
+                    "en": "Lewy Body Dementia (LBD) "
+                },
+                "value": " lbd"
+            },
+            {
+                "name": {
+                    "en": "Vascular Dementia (VaD) "
+                },
+                "value": " vad"
+            },
+            {
+                "name": {
+                    "en": "Mixed Dementia (e.g. AD and VaD) "
+                },
+                "value": " mixed"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": " other"
+            }
+        ]
     },
     "diagnosis_alz_dementia_mci_etiology___genetic_factors": {
         "description": "Indicates if genetic factors are suspected or known to be the etiology of the participant’s cognitive impairment or dementia."
@@ -137,7 +187,14 @@
         "choices": null
     },
     "diagnosis_alz_dementia_mci_ca_other": {
-        "description": "Specifies if another cognitive assessment tool was used for the participant."
+        "description": "Specifies if another cognitive assessment tool was used for the participant.",
+        "question": {
+            "en": "Other cognitive assessment tool (Please Specify):"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "diagnosis_alz_dementia_mci_ca_other_score": {
         "description": "Specifies the score from another cognitive assessment tool used for the participant.",
@@ -150,7 +207,27 @@
         "choices": null
     },
     "diagnosis_alz_dementia_mci_treatment_obtained": {
-        "description": "Indicates if the participant has undergone any treatment for Alzheimer’s disease, cognitive impairment, or other types of dementia."
+        "description": "Indicates if the participant has undergone any treatment for Alzheimer’s disease, cognitive impairment, or other types of dementia.",
+        "question": {
+            "en": "Has the patient undergone any treatment for Alzheimer's disease or cognitive impairment or other types of dementia?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes "
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": " no"
+            }
+        ]
     },
     "diagnosis_alz_dementia_mci_treatment_obtained_yes___medications": {
         "description": "Indicates if the participant has taken medications as treatment for Alzheimer’s disease or cognitive impairment."

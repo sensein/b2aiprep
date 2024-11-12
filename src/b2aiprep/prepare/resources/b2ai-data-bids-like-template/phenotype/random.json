@@ -1,15 +1,104 @@
 {
     "random_session_id": {
-        "description": "Unique identifier for a random session."
+        "description": "Unique identifier for a random session.",
+        "question": {
+            "en": "Session ID"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "random_recording_acoustic_task_id": {
-        "description": "Unique identifier for a random recording acoustic task."
+        "description": "Unique identifier for a random recording acoustic task.",
+        "question": {
+            "en": "Acoustic Task ID"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "random_duration": {
-        "description": "Total duration of a randomly assigned task or session."
+        "description": "Total duration of a randomly assigned task or session.",
+        "question": {
+            "en": "Questionnaire Duration (seconds)"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": null
     },
     "random_item_generation_category": {
-        "description": "Category assigned for random item generation in the session."
+        "description": "Category assigned for random item generation in the session.",
+        "question": {
+            "en": "Random item generation category"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Numbers "
+                },
+                "value": "numbers"
+            },
+            {
+                "name": {
+                    "en": "Letters "
+                },
+                "value": " letters"
+            },
+            {
+                "name": {
+                    "en": "First names "
+                },
+                "value": " firstNames"
+            },
+            {
+                "name": {
+                    "en": "City names "
+                },
+                "value": " cityNames"
+            },
+            {
+                "name": {
+                    "en": "Country names "
+                },
+                "value": " countryNames"
+            },
+            {
+                "name": {
+                    "en": "Jobs "
+                },
+                "value": " jobs"
+            },
+            {
+                "name": {
+                    "en": "Fruits "
+                },
+                "value": " fruits"
+            },
+            {
+                "name": {
+                    "en": "Drinks "
+                },
+                "value": " drinks"
+            },
+            {
+                "name": {
+                    "en": "Animals "
+                },
+                "value": " animals"
+            },
+            {
+                "name": {
+                    "en": "English words starting with \"t\""
+                },
+                "value": " wordStartingWithT"
+            }
+        ]
     },
     "data_elements": {}
 }

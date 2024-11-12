@@ -553,7 +553,27 @@
         ]
     },
     "diagnosis_lc_degree_comments": {
-        "description": "Provides additional comments about the resonance of the participant’s voice due to laryngeal cancer."
+        "description": "Provides additional comments about the resonance of the participant’s voice due to laryngeal cancer.",
+        "question": {
+            "en": "Comments about resonance"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Normal "
+                },
+                "value": "normal"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": " other"
+            }
+        ]
     },
     "diagnosis_as_ds_ccsr": {
         "description": "Indicates if the participant’s cancer is causing stridor at rest.",
@@ -591,7 +611,27 @@
         ]
     },
     "diagnosis_lc_treatment": {
-        "description": "Indicates if the participant has undergone any treatment for laryngeal cancer."
+        "description": "Indicates if the participant has undergone any treatment for laryngeal cancer.",
+        "question": {
+            "en": "Has the patient undergone any treatment for their condition?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes "
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": " no"
+            }
+        ]
     },
     "diagnosis_lc_treatment_select___radiation": {
         "description": "Indicates if the participant has undergone radiation as treatment for laryngeal cancer."

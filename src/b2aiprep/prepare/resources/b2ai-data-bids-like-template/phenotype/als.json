@@ -97,7 +97,39 @@
         "choices": null
     },
     "diagnosis_als_disease_subtype": {
-        "description": "Indicates the subtype of ALS diagnosed in the participant."
+        "description": "Indicates the subtype of ALS diagnosed in the participant.",
+        "question": {
+            "en": "Specify the type of ALS in the patient:"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Sporadic ALS "
+                },
+                "value": "sporadicAls"
+            },
+            {
+                "name": {
+                    "en": "Familial ALS "
+                },
+                "value": " familialAls"
+            },
+            {
+                "name": {
+                    "en": "Spinal/limb-onset ALS "
+                },
+                "value": " spinalAls"
+            },
+            {
+                "name": {
+                    "en": "Bulbar-onset ALS"
+                },
+                "value": " bulbarAls"
+            }
+        ]
     },
     "diagnosis_als_disease_subtype_familial": {
         "description": "Indicates if the participant has been diagnosed with familial ALS.",
@@ -186,7 +218,27 @@
         "choices": null
     },
     "diagnosis_als_treatment_and_management": {
-        "description": "Indicates the treatment and management plan for the participant's ALS diagnosis."
+        "description": "Indicates the treatment and management plan for the participant's ALS diagnosis.",
+        "question": {
+            "en": "Has the patient undergone any treatment or interventions for ALS?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes "
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": " no"
+            }
+        ]
     },
     "diagnosis_als_treatment_and_management_yes___medications": {
         "description": "Indicates if the participant is receiving medications as part of ALS treatment."

@@ -50,85 +50,625 @@
         "choices": null
     },
     "winograd_q_1": {
-        "description": "Response to Winograd question 1: 'Can the participant interpret social dynamics based on context?'"
+        "description": "Response to Winograd question 1: 'Can the participant interpret social dynamics based on context?'",
+        "question": {
+            "en": "1. The city councilmen refused the demonstrators a permit because they feared violence. Who feared violence?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "The city councilmen "
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "The demonstrators"
+                },
+                "value": " incorrect"
+            }
+        ]
     },
     "winograd_q_2": {
-        "description": "Response to Winograd question 2: 'Can the participant interpret the outcome of an ambiguous scenario?'"
+        "description": "Response to Winograd question 2: 'Can the participant interpret the outcome of an ambiguous scenario?'",
+        "question": {
+            "en": "2. The city councilmen refused the demonstrators a permit because they advocated violence. Who advocated violence?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "The city councilmen "
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "The demonstrators"
+                },
+                "value": " correct"
+            }
+        ]
     },
     "winograd_q_3": {
-        "description": "Response to Winograd question 3: 'Can the participant infer the intentions of others based on contextual clues?'"
+        "description": "Response to Winograd question 3: 'Can the participant infer the intentions of others based on contextual clues?'",
+        "question": {
+            "en": "3. The trophy doesn't fit into the brown suitcase because it's too small. What is too small?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "The suitcase "
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "The trophy"
+                },
+                "value": " incorrect"
+            }
+        ]
     },
     "winograd_q_4": {
-        "description": "Response to Winograd question 4: 'Can the participant resolve ambiguity in a situation involving social dynamics?'"
+        "description": "Response to Winograd question 4: 'Can the participant resolve ambiguity in a situation involving social dynamics?'",
+        "question": {
+            "en": "4. The trophy doesn't fit into the brown suitcase because it's too large. What is too large?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "The suitcase "
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "The trophy"
+                },
+                "value": " correct"
+            }
+        ]
     },
     "winograd_q_5": {
-        "description": "Response to Winograd question 5: 'Can the participant make inferences about an agent's actions based on context?'"
+        "description": "Response to Winograd question 5: 'Can the participant make inferences about an agent's actions based on context?'",
+        "question": {
+            "en": "5. Joan made sure to thank Susan for all the help she had given. Who had given help?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Susan "
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "Joan"
+                },
+                "value": " incorrect"
+            }
+        ]
     },
     "winograd_q_6": {
-        "description": "Response to Winograd question 6: 'Can the participant reason about an everyday scenario involving multiple agents?'"
+        "description": "Response to Winograd question 6: 'Can the participant reason about an everyday scenario involving multiple agents?'",
+        "question": {
+            "en": "6. Joan made sure to thank Susan for all the help she had received. Who had received help?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Susan "
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "Joan"
+                },
+                "value": " correct"
+            }
+        ]
     },
     "winograd_q_7": {
-        "description": "Response to Winograd question 7: 'Can the participant make logical inferences about everyday situations?'"
+        "description": "Response to Winograd question 7: 'Can the participant make logical inferences about everyday situations?'",
+        "question": {
+            "en": "7. Paul tried to call George on the phone, but he wasn't successful. Who was not successful?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Paul "
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "George"
+                },
+                "value": " incorrect"
+            }
+        ]
     },
     "winograd_q_8": {
-        "description": "Response to Winograd question 8: 'Can the participant infer the correct outcome in a scenario involving social dynamics?'"
+        "description": "Response to Winograd question 8: 'Can the participant infer the correct outcome in a scenario involving social dynamics?'",
+        "question": {
+            "en": "8. Paul tried to call George on the phone, but he wasn't available. Who was not available?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Paul "
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "George"
+                },
+                "value": " correct"
+            }
+        ]
     },
     "winograd_q_9": {
-        "description": "Response to Winograd question 9: 'Does the participant understand cause and effect relationships in social interactions?'"
+        "description": "Response to Winograd question 9: 'Does the participant understand cause and effect relationships in social interactions?'",
+        "question": {
+            "en": "9. The lawyer asked the witness a question, but he was reluctant to answer it. Who was reluctant to answer the question?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "The witness "
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "The lawyer"
+                },
+                "value": " incorrect"
+            }
+        ]
     },
     "winograd_q_10": {
-        "description": "Response to Winograd question 10: 'Can the participant infer the correct outcome in a scenario involving social dynamics?'"
+        "description": "Response to Winograd question 10: 'Can the participant infer the correct outcome in a scenario involving social dynamics?'",
+        "question": {
+            "en": "10. The lawyer asked the witness a question, but he was reluctant to repeat it. Who was reluctant to repeat the question?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "The witness "
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "The lawyer"
+                },
+                "value": " correct"
+            }
+        ]
     },
     "winograd_q_11": {
-        "description": "Response to Winograd question 11: 'Can the participant infer the correct outcome based on reasoning?'"
+        "description": "Response to Winograd question 11: 'Can the participant infer the correct outcome based on reasoning?'",
+        "question": {
+            "en": "11. The delivery truck zoomed by the school bus because it was going so fast. What was going so fast?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "The truck "
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "The bus"
+                },
+                "value": " incorrect"
+            }
+        ]
     },
     "winograd_q_12": {
-        "description": "Response to Winograd question 12: 'Can the participant infer the intentions of others based on context?'"
+        "description": "Response to Winograd question 12: 'Can the participant infer the intentions of others based on context?'",
+        "question": {
+            "en": "12. The delivery truck zoomed by the school bus because it was going so slow. What was going so slow?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "The truck "
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "The bus"
+                },
+                "value": " correct"
+            }
+        ]
     },
     "winograd_q_13": {
-        "description": "Response to Winograd question 13: 'Can the participant reason about the effects of actions in a social scenario?'"
+        "description": "Response to Winograd question 13: 'Can the participant reason about the effects of actions in a social scenario?'",
+        "question": {
+            "en": "13. Frank felt vindicated when his longtime rival Bill revealed that he was the winner of the competition. Who was the winner of the competition?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Frank "
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "Bill"
+                },
+                "value": " incorrect"
+            }
+        ]
     },
     "winograd_q_14": {
-        "description": "Response to Winograd question 14: 'Can the participant resolve ambiguity in a scenario involving multiple agents?'"
+        "description": "Response to Winograd question 14: 'Can the participant resolve ambiguity in a scenario involving multiple agents?'",
+        "question": {
+            "en": "14. Frank felt crushed when his longtime rival Bill revealed that he was the winner of the competition. Who was the winner of the competition?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Frank "
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "Bill"
+                },
+                "value": " correct"
+            }
+        ]
     },
     "winograd_q_15": {
-        "description": "Response to Winograd question 15: 'Can the participant reason through cause and effect in a social scenario?'"
+        "description": "Response to Winograd question 15: 'Can the participant reason through cause and effect in a social scenario?'",
+        "question": {
+            "en": "15. The man couldn't lift his son because he was so weak. Who was weak?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "The man "
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "The son"
+                },
+                "value": " incorrect"
+            }
+        ]
     },
     "winograd_q_16": {
-        "description": "Response to Winograd question 16: 'Can the participant make logical inferences about cause and effect in a scenario?'"
+        "description": "Response to Winograd question 16: 'Can the participant make logical inferences about cause and effect in a scenario?'",
+        "question": {
+            "en": "16. The man couldn't lift his son because he was so heavy. Who was heavy?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "The man "
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "The son"
+                },
+                "value": " correct"
+            }
+        ]
     },
     "winograd_q_17": {
-        "description": "Response to Winograd question 17: 'Can the participant infer the correct outcome in a scenario involving multiple agents?'"
+        "description": "Response to Winograd question 17: 'Can the participant infer the correct outcome in a scenario involving multiple agents?'",
+        "question": {
+            "en": "17. The large ball crashed right through the table because it was made of steel. What was made of steel?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "The ball "
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "The table"
+                },
+                "value": " correct"
+            }
+        ]
     },
     "winograd_q_18": {
-        "description": "Response to Winograd question 18: 'Can the participant use common sense reasoning to infer the outcome of a situation?'"
+        "description": "Response to Winograd question 18: 'Can the participant use common sense reasoning to infer the outcome of a situation?'",
+        "question": {
+            "en": "18. The large ball crashed right through the table because it was made of styrofoam. What was made of styrofoam?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "The ball "
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "The table"
+                },
+                "value": " incorrect"
+            }
+        ]
     },
     "winograd_q_19": {
-        "description": "Response to Winograd question 19: 'Does the participant demonstrate the ability to understand cause and effect in a scenario?'"
+        "description": "Response to Winograd question 19: 'Does the participant demonstrate the ability to understand cause and effect in a scenario?'",
+        "question": {
+            "en": "19. John couldn't see the stage with Billy in front of him because he is so short. Who is so short?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "John "
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "Billy"
+                },
+                "value": " incorrect"
+            }
+        ]
     },
     "winograd_q_20": {
-        "description": "Response to Winograd question 20: 'Can the participant reason through social interactions in a scenario involving multiple agents?'"
+        "description": "Response to Winograd question 20: 'Can the participant reason through social interactions in a scenario involving multiple agents?'",
+        "question": {
+            "en": "20.  John couldn't see the stage with Billy in front of him because he is so tall. Who is so tall?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "John "
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "Billy"
+                },
+                "value": " correct"
+            }
+        ]
     },
     "winograd_q_21": {
-        "description": "Response to Winograd question 21: 'Can the participant reason through the effects of actions in a social scenario?'"
+        "description": "Response to Winograd question 21: 'Can the participant reason through the effects of actions in a social scenario?'",
+        "question": {
+            "en": "21. Tom threw his schoolbag down to Ray after he reached the top of the stairs. Who reached the top of the stairs?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Tom "
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "Ray"
+                },
+                "value": " incorrect"
+            }
+        ]
     },
     "winograd_q_22": {
-        "description": "Response to Winograd question 22: 'Can the participant infer the correct outcome in a scenario involving multiple agents?'"
+        "description": "Response to Winograd question 22: 'Can the participant infer the correct outcome in a scenario involving multiple agents?'",
+        "question": {
+            "en": "22. Tom threw his schoolbag down to Ray after he reached the bottom of the stairs. Who reached the bottom of the stairs?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Tom "
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "Ray"
+                },
+                "value": " correct"
+            }
+        ]
     },
     "winograd_q_23": {
-        "description": "Response to Winograd question 23: 'Can the participant reason about the intentions of others based on contextual clues?'"
+        "description": "Response to Winograd question 23: 'Can the participant reason about the intentions of others based on contextual clues?'",
+        "question": {
+            "en": "23. Although they ran at about the same speed, Sue beat Sally because she had such a good start. Who had a good start?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Sue "
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "Sally"
+                },
+                "value": " incorrect"
+            }
+        ]
     },
     "winograd_q_24": {
-        "description": "Response to Winograd question 24: 'Can the participant reason about the consequences of actions in an ambiguous situation?'"
+        "description": "Response to Winograd question 24: 'Can the participant reason about the consequences of actions in an ambiguous situation?'",
+        "question": {
+            "en": "24. Although they ran at about the same speed, Sue beat Sally because she had such a bad start. Who had a bad start?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Sue "
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "Sally"
+                },
+                "value": " correct"
+            }
+        ]
     },
     "winograd_q_25": {
-        "description": "Response to Winograd question 25: 'Does the participant demonstrate an understanding of cause and effect in social situations?'"
+        "description": "Response to Winograd question 25: 'Does the participant demonstrate an understanding of cause and effect in social situations?'",
+        "question": {
+            "en": "25. The sculpture rolled off the shelf because it wasn't anchored. What wasn't anchored?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "The sculpture "
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "The shelf"
+                },
+                "value": " incorrect"
+            }
+        ]
     },
     "winograd_q_26": {
-        "description": "Response to Winograd question 26: 'Can the participant make inferences about social behaviors?'"
+        "description": "Response to Winograd question 26: 'Can the participant make inferences about social behaviors?'",
+        "question": {
+            "en": "26. The sculpture rolled off the shelf because it wasn't level. What wasn't level?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "The sculpture "
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "The shelf"
+                },
+                "value": " correct"
+            }
+        ]
     },
     "winograd_q_27": {
-        "description": "Response to Winograd question 27: 'Can the participant make logical inferences about the actions of others in a scenario?'"
+        "description": "Response to Winograd question 27: 'Can the participant make logical inferences about the actions of others in a scenario?'",
+        "question": {
+            "en": "27. Sam's drawing was hung just above Tina's and it did look much better with another one below it. Which looked better?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Sam's drawing "
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "Tina's drawing"
+                },
+                "value": " incorrect"
+            }
+        ]
     },
     "winograd_q_28": {
         "description": "Response to Winograd question 28: 'Can the participant reason logically about cause and effect?'",

@@ -29,10 +29,98 @@
         ]
     },
     "diagnosis_bl_ds": {
-        "description": "Indicates the participant’s diagnosis of a benign lesion."
+        "description": "Indicates the participant’s diagnosis of a benign lesion.",
+        "question": {
+            "en": "What is the benign lesion diagnosis?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Vocal fold nodules "
+                },
+                "value": "vocalFoldNodules"
+            },
+            {
+                "name": {
+                    "en": "Vocal fold polyp "
+                },
+                "value": " vocalFoldPolyp"
+            },
+            {
+                "name": {
+                    "en": "Vocal fold cyst "
+                },
+                "value": " vocalFoldCyst"
+            },
+            {
+                "name": {
+                    "en": "Reinke's edema "
+                },
+                "value": " reinkesEdema"
+            },
+            {
+                "name": {
+                    "en": "Vocal fold ulcers "
+                },
+                "value": " vocalFoldUlcers"
+            },
+            {
+                "name": {
+                    "en": "Recurrent respiratory papilloma "
+                },
+                "value": " recurrentRespiratoryPapilloma"
+            },
+            {
+                "name": {
+                    "en": "Fibrous masse (s) "
+                },
+                "value": " fibrousMasses"
+            },
+            {
+                "name": {
+                    "en": "Rheumatoid nodules "
+                },
+                "value": " rheumatoidNodules"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": " other"
+            }
+        ]
     },
     "diagnosis_bl_etiology": {
-        "description": "Specifies the etiology or cause of the participant’s benign lesion."
+        "description": "Specifies the etiology or cause of the participant’s benign lesion.",
+        "question": {
+            "en": "What is the etiology?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Phonotrauma "
+                },
+                "value": "phonotrauma"
+            },
+            {
+                "name": {
+                    "en": "HPV virus (RRP) "
+                },
+                "value": " rrp"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": " other"
+            }
+        ]
     },
     "diagnosis_bl_ds_ll": {
         "description": "Indicates the location of the participant’s benign lesion.",
@@ -376,10 +464,50 @@
         ]
     },
     "diagnosis_bl_degree_comments": {
-        "description": "Provides additional comments about the resonance of the participant’s voice due to the benign lesion."
+        "description": "Provides additional comments about the resonance of the participant’s voice due to the benign lesion.",
+        "question": {
+            "en": "Comments about resonance"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Normal "
+                },
+                "value": "normal"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": " other"
+            }
+        ]
     },
     "diagnosis_bl_treatment": {
-        "description": "Indicates if the participant has undergone any treatment for the benign lesion."
+        "description": "Indicates if the participant has undergone any treatment for the benign lesion.",
+        "question": {
+            "en": "Has the patient undergone any treatment for his condition?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes "
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": " no"
+            }
+        ]
     },
     "diagnosis_bl_treatment_select___voice_or_speech_therapy": {
         "description": "Indicates if the participant has undergone voice or speech therapy as treatment for the benign lesion."

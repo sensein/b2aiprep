@@ -88,10 +88,86 @@
         "choices": null
     },
     "diagnosis_parkinsons_disease_subtype": {
-        "description": "Indicates the subtype of Parkinson's disease diagnosed in the participant."
+        "description": "Indicates the subtype of Parkinson's disease diagnosed in the participant.",
+        "question": {
+            "en": "Specify the subtype of Parkinson's Disease in the patient:"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Idiopathic Parkinson's Disease (IPD) "
+                },
+                "value": "ipd"
+            },
+            {
+                "name": {
+                    "en": "Multiple System Atrophy (MSA) "
+                },
+                "value": " msa"
+            },
+            {
+                "name": {
+                    "en": "Progressive Supranuclear Palsy (PSP) "
+                },
+                "value": " psp"
+            },
+            {
+                "name": {
+                    "en": "Corticobasal Degeneration (CBD) "
+                },
+                "value": " cbd"
+            },
+            {
+                "name": {
+                    "en": "Dementia with Lewy Bodies (DLB) "
+                },
+                "value": " dlb"
+            },
+            {
+                "name": {
+                    "en": "Other Parkinsonism or Atypical Parkinsonism "
+                },
+                "value": " other"
+            },
+            {
+                "name": {
+                    "en": "Not Sure / Undetermined"
+                },
+                "value": " notSure"
+            }
+        ]
     },
     "diagnosis_parkinsons_etiology": {
-        "description": "Indicates the etiology or cause of the participant's Parkinson's diagnosis."
+        "description": "Indicates the etiology or cause of the participant's Parkinson's diagnosis.",
+        "question": {
+            "en": "What is the suspected or known etiology of Parkinson's disease in the patient?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Idiopathic (unknown cause) "
+                },
+                "value": "idiopathic"
+            },
+            {
+                "name": {
+                    "en": "Familial Parkinson's Disease "
+                },
+                "value": " familialParkinsonsDisease"
+            },
+            {
+                "name": {
+                    "en": "Environmental factors"
+                },
+                "value": " environmentalFactors"
+            }
+        ]
     },
     "diagnosis_parkinsons_ds": {
         "description": "Indicates the diagnostic subcategory of the participant's Parkinson's disease.",
@@ -216,7 +292,27 @@
         "choices": null
     },
     "diagnosis_parkinsons_non_motor_symptoms": {
-        "description": "Indicates if the participant has non-motor symptoms associated with Parkinson's disease."
+        "description": "Indicates if the participant has non-motor symptoms associated with Parkinson's disease.",
+        "question": {
+            "en": "Are there significant non-motor symptoms associated with Parkinson's disease in the patient?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes "
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": " no"
+            }
+        ]
     },
     "diagnosis_parkinsons_non_motor_symptoms_yes": {
         "description": "Indicates specific non-motor symptoms that the participant experiences as part of Parkinson's disease.",
@@ -229,7 +325,27 @@
         "choices": null
     },
     "diagnosis_parkinsons_treatment_obtained": {
-        "description": "Indicates if the participant has received treatment for Parkinson's disease."
+        "description": "Indicates if the participant has received treatment for Parkinson's disease.",
+        "question": {
+            "en": "Has the patient undergone any treatment for Parkinson's disease?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes "
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": " no"
+            }
+        ]
     },
     "diagnosis_parkinsons_treatment_obtained_yes___medications": {
         "description": "Indicates if the participant is receiving medication for Parkinson's disease."

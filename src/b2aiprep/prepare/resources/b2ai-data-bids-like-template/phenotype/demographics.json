@@ -39,10 +39,68 @@
         "choices": null
     },
     "country": {
-        "description": "The country where the participant resides."
+        "description": "The country where the participant resides.",
+        "question": {
+            "en": "Country"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "USA "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Canada"
+                },
+                "value": 2
+            }
+        ]
     },
     "gender_identity": {
-        "description": "The participant's reported gender identity."
+        "description": "The participant's reported gender identity.",
+        "question": {
+            "en": "What is your gender identity?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Female gender identity "
+                },
+                "value": "female"
+            },
+            {
+                "name": {
+                    "en": "Male gender identity "
+                },
+                "value": " male"
+            },
+            {
+                "name": {
+                    "en": "Non-binary or genderqueer gender identity "
+                },
+                "value": " nonBinary"
+            },
+            {
+                "name": {
+                    "en": "Other "
+                },
+                "value": " other"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": " noAnswer"
+            }
+        ]
     },
     "specify_gender_identity": {
         "description": "Allows the participant to specify their gender identity.",
@@ -172,10 +230,62 @@
         "choices": null
     },
     "hearing": {
-        "description": "Indicates if the participant has hearing issues."
+        "description": "Indicates if the participant has hearing issues.",
+        "question": {
+            "en": "Are you deaf or do you have serious difficulty hearing?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "No "
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Yes "
+                },
+                "value": " yes"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": " noAnswer"
+            }
+        ]
     },
     "vision": {
-        "description": "Indicates if the participant has vision issues."
+        "description": "Indicates if the participant has vision issues.",
+        "question": {
+            "en": "Are you blind or do you have serious difficulty seeing, even when wearing glasses?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "No "
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Yes "
+                },
+                "value": " yes"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": " noAnswer"
+            }
+        ]
     },
     "cognition": {
         "description": "Reports on the participant's cognitive abilities or issues.",
@@ -207,7 +317,33 @@
         ]
     },
     "mobility": {
-        "description": "Indicates the participant's level of mobility or movement."
+        "description": "Indicates the participant's level of mobility or movement.",
+        "question": {
+            "en": "Do you have serious difficulty walking or climbing stairs?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "No "
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Yes "
+                },
+                "value": " yes"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": " noAnswer"
+            }
+        ]
     },
     "self_care": {
         "description": "Indicates if the participant engages in self-care activities.",
@@ -506,10 +642,50 @@
         "description": "Indicates if the participant has a spouse, partner, or significant other."
     },
     "children": {
-        "description": "Indicates if the participant has children."
+        "description": "Indicates if the participant has children.",
+        "question": {
+            "en": "One or more children"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": 0
+            }
+        ]
     },
     "parent": {
-        "description": "Indicates if the participant is a parent."
+        "description": "Indicates if the participant is a parent.",
+        "question": {
+            "en": "One or more parent"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": 0
+            }
+        ]
     },
     "grandparent": {
         "description": "Indicates if the participant is a grandparent.",

@@ -36,7 +36,45 @@
         "description": "Indicates if the participant has adductor laryngeal spasms during inspiration (ARLD)."
     },
     "diagnosis_ld_etiology": {
-        "description": "Specifies the etiology or cause of the participant’s laryngeal dystonia."
+        "description": "Specifies the etiology or cause of the participant’s laryngeal dystonia.",
+        "question": {
+            "en": "What is the etiology?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Idiopathic "
+                },
+                "value": "idiopathic"
+            },
+            {
+                "name": {
+                    "en": "Familial "
+                },
+                "value": " familial"
+            },
+            {
+                "name": {
+                    "en": "Trauma "
+                },
+                "value": " trauma"
+            },
+            {
+                "name": {
+                    "en": "Unknown "
+                },
+                "value": " unknown"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": " other"
+            }
+        ]
     },
     "diagnosis_ld_etiology_cc___essential_tremor_of_the_hands": {
         "description": "Indicates if the participant has an essential tremor of the hands."
@@ -366,10 +404,50 @@
         ]
     },
     "diagnosis_ld_degree_comments": {
-        "description": "Provides additional comments about the resonance of the participant’s voice due to laryngeal dystonia."
+        "description": "Provides additional comments about the resonance of the participant’s voice due to laryngeal dystonia.",
+        "question": {
+            "en": "Comments about resonance"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Normal "
+                },
+                "value": "normal"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": " other"
+            }
+        ]
     },
     "diagnosis_ld_treatment": {
-        "description": "Indicates if the participant has undergone any treatment for laryngeal dystonia."
+        "description": "Indicates if the participant has undergone any treatment for laryngeal dystonia.",
+        "question": {
+            "en": "Has the patient undergone any treatment for their condition?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes "
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": " no"
+            }
+        ]
     },
     "diagnosis_ld_treatment_select___botox_injections": {
         "description": "Indicates if the participant has received botox injections as a treatment for laryngeal dystonia."

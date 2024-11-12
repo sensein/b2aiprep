@@ -70,7 +70,27 @@
         "description": "Indicates if the participant has been diagnosed with another precancerous lesion."
     },
     "diagnosis_pl_ds_l": {
-        "description": "Indicates if the participant has leukoplakia."
+        "description": "Indicates if the participant has leukoplakia.",
+        "question": {
+            "en": "Leukoplakia"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "With dysplasia "
+                },
+                "value": "withDysplasia"
+            },
+            {
+                "name": {
+                    "en": "Without dysplasia"
+                },
+                "value": " withoutDysplasia"
+            }
+        ]
     },
     "diagnosis_pl_ds_l_wd_g": {
         "description": "Indicates if the participant has leukoplakia with dysplasia.",
@@ -102,7 +122,27 @@
         ]
     },
     "diagnosis_pl_ds_e": {
-        "description": "Indicates if the participant has erythroplakia."
+        "description": "Indicates if the participant has erythroplakia.",
+        "question": {
+            "en": "Erythroplakia"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "With dysplasia "
+                },
+                "value": "withDysplasia"
+            },
+            {
+                "name": {
+                    "en": "Without dysplasia"
+                },
+                "value": " withoutDysplasia"
+            }
+        ]
     },
     "diagnosis_pl_ds_e_wd_g": {
         "description": "Indicates if the participant has erythroplakia with dysplasia.",
@@ -470,10 +510,50 @@
         ]
     },
     "diagnosis_pl_degree_comments": {
-        "description": "Provides additional comments about the resonance of the participant’s voice due to the precancerous lesion."
+        "description": "Provides additional comments about the resonance of the participant’s voice due to the precancerous lesion.",
+        "question": {
+            "en": "Comments about resonance"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Normal "
+                },
+                "value": "normal"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": " other"
+            }
+        ]
     },
     "diagnosis_pl_treatment": {
-        "description": "Indicates if the participant has undergone any treatment for their precancerous lesion."
+        "description": "Indicates if the participant has undergone any treatment for their precancerous lesion.",
+        "question": {
+            "en": "Has the patient undergone any treatment for this condition?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes "
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": " no"
+            }
+        ]
     },
     "diagnosis_pl_treatment_select___surveillance_only": {
         "description": "Indicates if the participant is under surveillance only as treatment for their precancerous lesion."

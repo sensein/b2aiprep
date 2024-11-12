@@ -169,7 +169,39 @@
         "description": "Indicates if the responses in the survey were completed by a parent or caregiver."
     },
     "ef_primary_language": {
-        "description": "Indicates the primary language spoken by the participant."
+        "description": "Indicates the primary language spoken by the participant.",
+        "question": {
+            "en": "What is your primary language?"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "English "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "French "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Spanish "
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "Other (Please specify below)"
+                },
+                "value": 4
+            }
+        ]
     },
     "ef_primary_language_other": {
         "description": "If the participant's primary language is not listed, this field specifies the language.",

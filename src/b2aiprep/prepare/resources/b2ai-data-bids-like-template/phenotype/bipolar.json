@@ -1,6 +1,38 @@
 {
     "diagnosis_bipolar_gsd": {
-        "description": "Specifies the participant’s diagnosis of bipolar disorder."
+        "description": "Specifies the participant’s diagnosis of bipolar disorder.",
+        "question": {
+            "en": "Diagnosis"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Bipolar I disorder "
+                },
+                "value": "bipolar_1"
+            },
+            {
+                "name": {
+                    "en": "Bipolar II disorder "
+                },
+                "value": " bipolar_2"
+            },
+            {
+                "name": {
+                    "en": "Cyclothymic disorder (cyclothymia) "
+                },
+                "value": " cyclothymia"
+            },
+            {
+                "name": {
+                    "en": "Other specified and unspecified bipolar and related disorders"
+                },
+                "value": " other"
+            }
+        ]
     },
     "diagnosis_bipolar_gsd_interview": {
         "description": "Indicates if a structured clinical interview was conducted for diagnosing the participant’s bipolar disorder.",
@@ -26,7 +58,27 @@
         ]
     },
     "diagnosis_bipolar_gsd_oqu": {
-        "description": "Indicates if an objective questionnaire was used in the diagnosis of the participant’s bipolar disorder."
+        "description": "Indicates if an objective questionnaire was used in the diagnosis of the participant’s bipolar disorder.",
+        "question": {
+            "en": "Was an objective questionnaire used?"
+        },
+        "datatype": [
+            "xsd:boolean"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": 0
+            }
+        ]
     },
     "diagnosis_bipolar_gsd_oquw": {
         "description": "Specifies which objective questionnaire was used in diagnosing the participant’s bipolar disorder.",
@@ -64,13 +116,79 @@
         ]
     },
     "diagnosis_bipolar_subtype_active": {
-        "description": "Specifies the active subtype of the participant’s bipolar disorder."
+        "description": "Specifies the active subtype of the participant’s bipolar disorder.",
+        "question": {
+            "en": "Disease Subtype"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Active "
+                },
+                "value": "active"
+            },
+            {
+                "name": {
+                    "en": "Recurrent"
+                },
+                "value": " recurrent"
+            }
+        ]
     },
     "diagnosis_bipolar_psychotic": {
-        "description": "Indicates if the participant has psychotic symptoms associated with bipolar disorder."
+        "description": "Indicates if the participant has psychotic symptoms associated with bipolar disorder.",
+        "question": {
+            "en": "Psychotic Symptoms"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "With "
+                },
+                "value": "with"
+            },
+            {
+                "name": {
+                    "en": "Without"
+                },
+                "value": " without"
+            }
+        ]
     },
     "diagnosis_bipolar_severity": {
-        "description": "Indicates the severity of the participant’s bipolar disorder."
+        "description": "Indicates the severity of the participant’s bipolar disorder.",
+        "question": {
+            "en": "Disease Severity"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Mild "
+                },
+                "value": "mild"
+            },
+            {
+                "name": {
+                    "en": "Moderate "
+                },
+                "value": " moderate"
+            },
+            {
+                "name": {
+                    "en": "Severe"
+                },
+                "value": " severe"
+            }
+        ]
     },
     "data_elements": {}
 }

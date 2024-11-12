@@ -32,7 +32,45 @@
         "description": "Indicates if the participant avoids reminders of stressful or traumatic events."
     },
     "fidget": {
-        "description": "Indicates if the participant is fidgeting during the session."
+        "description": "Indicates if the participant is fidgeting during the session.",
+        "question": {
+            "en": "How often do you fidget or squirm with your hands or feet when you have to sit down for a long time?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Never "
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Rarely "
+                },
+                "value": " rarely"
+            },
+            {
+                "name": {
+                    "en": "Sometimes "
+                },
+                "value": " sometimes"
+            },
+            {
+                "name": {
+                    "en": "Often "
+                },
+                "value": " often"
+            },
+            {
+                "name": {
+                    "en": "Very Often"
+                },
+                "value": " veryOften"
+            }
+        ]
     },
     "overly_active": {
         "description": "Indicates if the participant is overly active or restless."
@@ -126,13 +164,89 @@
         ]
     },
     "distracted": {
-        "description": "Indicates if the participant feels distracted during the session."
+        "description": "Indicates if the participant feels distracted during the session.",
+        "question": {
+            "en": "How often are you distracted by activity or noise around you?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Never "
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Rarely "
+                },
+                "value": " rarely"
+            },
+            {
+                "name": {
+                    "en": "Sometimes "
+                },
+                "value": " sometimes"
+            },
+            {
+                "name": {
+                    "en": "Often "
+                },
+                "value": " often"
+            },
+            {
+                "name": {
+                    "en": "Very Often"
+                },
+                "value": " veryOften"
+            }
+        ]
     },
     "remain_seated": {
         "description": "Indicates if the participant is able to remain seated for long periods."
     },
     "restless": {
-        "description": "Indicates if the participant feels restless."
+        "description": "Indicates if the participant feels restless.",
+        "question": {
+            "en": "How often do you feel restless or fidgety?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Never "
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Rarely "
+                },
+                "value": " rarely"
+            },
+            {
+                "name": {
+                    "en": "Sometimes "
+                },
+                "value": " sometimes"
+            },
+            {
+                "name": {
+                    "en": "Often "
+                },
+                "value": " often"
+            },
+            {
+                "name": {
+                    "en": "Very Often"
+                },
+                "value": " veryOften"
+            }
+        ]
     },
     "difficulty_unwinding": {
         "description": "Indicates if the participant has difficulty unwinding or relaxing after stressful events."
