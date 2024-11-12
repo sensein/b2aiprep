@@ -36,6 +36,7 @@ Functions:
 """
 
 import logging
+import os
 import traceback
 from pathlib import Path
 from typing import List
@@ -57,7 +58,7 @@ from senselab.utils.data_structures import (
 )
 from tqdm import tqdm
 
-from b2aiprep.prepare.bids import batch_elements, get_audio_paths
+from b2aiprep.prepare.bids import get_audio_paths
 from b2aiprep.prepare.utils import retry
 
 SUBJECT_ID = "sub"
@@ -71,11 +72,11 @@ logging.basicConfig(level=logging.INFO)
 
 @pydra.mark.task
 def wav_to_features(
-    wav_paths: List[Path],
+    wav_paths: List[str | os.PathLike],
     transcription_model_size: str,
     with_sensitive: bool,
     device: DeviceType = DeviceType.CPU,
-):
+) -> List[str | os.PathLike]:
     """Extract features from a list of audio files.
 
     Extracts various audio features from .wav files
@@ -89,6 +90,7 @@ def wav_to_features(
       A dictionary mapping feature names to their extracted values.
     """
     all_features = []
+    _logger.info(f"Number of audio files: {len(wav_paths)}")
     for wav_path in tqdm(wav_paths, total=len(wav_paths), desc="Extracting features"):
         wav_path = Path(wav_path)
 
@@ -100,17 +102,35 @@ def wav_to_features(
         audio_orig = downmix_audios_to_mono([audio_orig])[0]
 
         # Resample both audios to 16kHz
-        audio_16k = resample_audios([audio_orig], 16000)[0]
+        audio_16k = resample_audios([audio_orig], RESAMPLE_RATE)[0]
 
+        win_length = 25
+        hop_length = 10
+
+        # Extract features
         features = extract_features_from_audios(
             audios=[audio_16k],
             opensmile=True,
-            parselmouth=True,
-            torchaudio=True,
+            parselmouth={
+                "time_step": hop_length / 1000,
+                "window_length": win_length / 1000,
+                "plugin": "serial",
+            },
+            torchaudio={
+                "freq_low": 80,
+                "freq_high": 500,
+                "n_fft": win_length * audio_16k.sampling_rate // 1000,
+                "n_mels": 20,
+                "n_mfcc": 20,
+                "win_length": win_length,
+                "hop_length": hop_length,
+                "plugin": "serial",
+            },
             torchaudio_squim=True,
         )
         features = features.pop()
         features["sample_rate"] = audio_16k.sampling_rate
+        features["sensitive_features"] = None
         if with_sensitive:
             features["audio_path"] = wav_path
             try:
@@ -139,6 +159,7 @@ def wav_to_features(
                 logging.disable(logging.NOTSET)
                 _logger.error(f"Transcription: An error occurred with transcription: {e}")
                 _logger.error(traceback.print_exc())
+            features["sensitive_features"] = ["audio_path", "speaker_embedding", "transcription"]
         logging.disable(logging.NOTSET)
         _logger.setLevel(logging.INFO)
 
@@ -148,7 +169,7 @@ def wav_to_features(
         features_dir.mkdir(exist_ok=True)
         save_path = features_dir / f"{wav_path.stem}_features.pt"
         torch.save(features, save_path)
-        all_features.append(features)
+        all_features.append(save_path)
 
     return all_features
 
@@ -159,6 +180,7 @@ def extract_features_workflow(
     n_cores: int = 8,
     with_sensitive: bool = True,
     plugin="cf",
+    cache_dir: str | os.PathLike = None,
 ):
     """Run a Pydra workflow to extract audio features from BIDS-like directory.
 
@@ -176,34 +198,26 @@ def extract_features_workflow(
       pydra.Workflow:
         The Pydra workflow object with the extracted features and audio paths as outputs.
     """
-    # Get paths to every audio file.
-    audio_paths = get_audio_paths(bids_dir_path=bids_dir_path)
     if n_cores > 1:
-        audio_paths = batch_elements(audio_paths, n_cores)
-
-    # Initialize the Pydra workflow.
-    ef_wf = pydra.Workflow(
-        name="ef_wf", input_spec=["audio_paths"], audio_paths=audio_paths, cache_dir=None
+        group_by = "subject"
+    else:
+        group_by = "size"
+        plugin = "serial"
+    # Get paths to every audio file.
+    audio_paths = get_audio_paths(bids_dir_path=bids_dir_path, group_by=group_by)
+    extract_task = wav_to_features(
+        transcription_model_size=transcription_model_size,
+        with_sensitive=with_sensitive,
+        cache_dir=cache_dir,
     )
-
-    # Run wav_to_features for each audio file
-    ef_wf.add(
-        wav_to_features(
-            name="features",
-            wav_paths=ef_wf.lzin.audio_paths,
-            transcription_model_size=transcription_model_size,
-            with_sensitive=with_sensitive,
-        ).split("wav_paths", wav_paths=ef_wf.lzin.audio_paths)
-    )
-
-    ef_wf.set_output({"features": ef_wf.features.lzout.out})
-
+    if n_cores > 1:
+        extract_task.split("wav_paths", wav_paths=audio_paths)
+    else:
+        extract_task.inputs.wav_paths = audio_paths
     plugin_args = {"n_procs": n_cores} if n_cores > 1 else {}
-    plugin = plugin if n_cores > 1 else "serial"
     with pydra.Submitter(plugin=plugin, **plugin_args) as run:
-        run(ef_wf)
-
-    return ef_wf
+        run(extract_task)
+    return extract_task
 
 
 def validate_bids_data(
@@ -217,7 +231,7 @@ def validate_bids_data(
     # before proceeding to the next step
     # can verify features are generated for each audio_dir by looking for .pt files
     # in audio_dir.parent / "audio"
-    audio_paths = get_audio_paths(bids_dir_path)
+    audio_paths = get_audio_paths(bids_dir_path, group_by="size")
     audio_to_reprocess = []
     for audio_path in audio_paths:
         audio_path = Path(audio_path)
@@ -237,12 +251,10 @@ def validate_bids_data(
     if not fix:
         return
 
-    for audio_path in tqdm(
-        audio_to_reprocess, total=len(audio_to_reprocess), desc="Reprocessing audio files"
-    ):
-        audio_dir = audio_path.parent
-        features_dir = audio_dir.parent / "audio"
-        features_dir.mkdir(exist_ok=True)
-        wav_to_features([audio_path], transcription_model_size=transcription_model_size)
+    extract_task = wav_to_features(
+        audio_to_reprocess, transcription_model_size=transcription_model_size
+    )
+    with pydra.Submitter(plugin="serial") as run:
+        run(extract_task)
 
     _logger.info("Process completed.")
