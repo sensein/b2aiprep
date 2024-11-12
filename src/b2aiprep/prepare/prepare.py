@@ -191,12 +191,20 @@ def extract_features_workflow(
     Args:
       bids_dir_path:
         The root directory of the BIDS dataset.
-      remove:
-        Whether to remove temporary files created during processing. Default is True.
+      transcription_model_size:
+        The size of the Whisper model to use for transcription.
+      n_cores:
+        The number of cores to use for parallel processing.
+      with_sensitive:
+        Whether to extract sensitive features such as speaker embeddings and transcriptions.
+      plugin:
+        The Pydra plugin to use for parallel processing.
+      cache_dir:
+        The directory to use for caching intermediate results.
 
     Returns:
-      pydra.Workflow:
-        The Pydra workflow object with the extracted features and audio paths as outputs.
+      pydra.Task:
+        The Pydra Task object with the extracted feature paths.
     """
     if n_cores > 1:
         group_by = "subject"
