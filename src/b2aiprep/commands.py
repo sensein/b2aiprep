@@ -98,8 +98,9 @@ def redcap2bids(
 @click.argument("bids_dir_path", type=click.Path())
 @click.argument("tar_file_path", type=click.Path())
 @click.argument("transcription_model_size", type=str)
-@click.argument("n_cores", type=int)
-@click.argument("with_sensitive", type=bool)
+@click.option("--n_cores", type=int, default=8, show_default=True)
+@click.option("--with_sensitive/--no-with_sensitive", type=bool, default=True, show_default=True)
+@click.option("--cache", type=click.Path(), default=None, show_default=True)
 def prepare_bids(
     redcap_csv_path,
     audio_dir_path,
@@ -108,6 +109,7 @@ def prepare_bids(
     transcription_model_size,
     n_cores,
     with_sensitive,
+    cache,
 ):
     """Organizes the data into a BIDS-like directory structure.
 
@@ -120,6 +122,10 @@ def prepare_bids(
     with_sensitive: whether to include sensitive data
     update_columns_names: whether to replace column names with column_mappings
     """
+    if cache is None:
+        cache = Path(bids_dir_path).parent / "b2aiprep_cache"
+    os.makedirs(cache, exist_ok=True)
+
     _LOGGER.info("Organizing data into BIDS-like directory structure...")
     redcap_to_bids(redcap_csv_path, bids_dir_path, audio_dir_path)
     _LOGGER.info("Data organization complete.")
@@ -130,6 +136,7 @@ def prepare_bids(
         transcription_model_size=transcription_model_size,
         n_cores=n_cores,
         with_sensitive=with_sensitive,
+        cache_dir=cache,
     )
     _LOGGER.info("Audio feature extraction complete.")
 
@@ -202,9 +209,7 @@ def create_derived_dataset(
     bids_path,
 ):
     bids_path = Path(bids_path)
-    audio_paths = get_audio_paths(
-        bids_dir_path=bids_path,
-    )
+    audio_paths = get_audio_paths(bids_dir_path=bids_path, group_by="size")
     file_extension = "pt"
     _LOGGER.info("Loading derived data into a single HF dataset.")
     feature_loader = partial(load_audio_features, audio_paths, file_extension)
