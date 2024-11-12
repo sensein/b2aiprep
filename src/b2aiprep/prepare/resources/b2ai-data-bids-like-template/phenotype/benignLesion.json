@@ -544,5 +544,39 @@
             }
         ]
     },
-    "data_elements": {}
+    "data_elements": {},
+    "diagnosis_bl_treatment_select": {
+        "question": {
+            "en": "Select all that apply:"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Voice/speech therapy "
+                },
+                "value": "voice_or_speech_therapy"
+            },
+            {
+                "name": {
+                    "en": "Laryngeal microsurgery "
+                },
+                "value": " laryngeal_microsurgery"
+            },
+            {
+                "name": {
+                    "en": "Voice rest "
+                },
+                "value": " voice_rest"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": " other"
+            }
+        ]
+    }
 }

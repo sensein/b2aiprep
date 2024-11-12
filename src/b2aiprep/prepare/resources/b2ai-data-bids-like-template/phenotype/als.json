@@ -285,5 +285,209 @@
     "diagnosis_als_treatment_and_management_yes_supportive_care___other": {
         "description": "Indicates if the participant has received other forms of supportive care for ALS."
     },
-    "data_elements": {}
+    "data_elements": {},
+    "diagnosis_als_etiology": {
+        "question": {
+            "en": "What is the suspected or known etiology of ALS in the patient?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Genetic factors "
+                },
+                "value": "genetic_factors"
+            },
+            {
+                "name": {
+                    "en": "Environmental factors"
+                },
+                "value": " environmental_factors"
+            }
+        ]
+    },
+    "diagnosis_als_etiology_genetic_factors": {
+        "question": {
+            "en": "Genetic Factors"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "C9orf72 mutation "
+                },
+                "value": "c9orf72"
+            },
+            {
+                "name": {
+                    "en": "SOD1 mutation "
+                },
+                "value": " sod1"
+            },
+            {
+                "name": {
+                    "en": "Other genetic factors"
+                },
+                "value": " other"
+            }
+        ]
+    },
+    "diagnosis_als_cp": {
+        "question": {
+            "en": "Describe the clinical features and symptoms of ALS in the patient:"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Upper Motor Neuron Signs (e.g. spasticity hyperreflexia) "
+                },
+                "value": "upper_motor_neuron"
+            },
+            {
+                "name": {
+                    "en": "Lower Motor Neuron Signs (e.g. muscle weakness atrophy fasciculations) "
+                },
+                "value": " lower_motor_neuron"
+            },
+            {
+                "name": {
+                    "en": "Bulbar Symptoms (e.g. dysarthria dysphagia) "
+                },
+                "value": " bulbar_symptoms"
+            },
+            {
+                "name": {
+                    "en": "Respiratory Involvement"
+                },
+                "value": " respiratory_involvement"
+            }
+        ]
+    },
+    "diagnosis_als_treatment_and_management_yes": {
+        "question": {
+            "en": "Yes"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Medications "
+                },
+                "value": "medications"
+            },
+            {
+                "name": {
+                    "en": "Supportive Care"
+                },
+                "value": " supportive_care"
+            }
+        ]
+    },
+    "diagnosis_als_treatment_and_management_yes_medications": {
+        "question": {
+            "en": "Medications (if applicable):"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Riluzole "
+                },
+                "value": "riluzole"
+            },
+            {
+                "name": {
+                    "en": "Edaravone "
+                },
+                "value": " edaravone"
+            },
+            {
+                "name": {
+                    "en": "Sodium phenylbutyrate/taurursodiol "
+                },
+                "value": " sodium"
+            },
+            {
+                "name": {
+                    "en": "Tofersen "
+                },
+                "value": " tofersen"
+            },
+            {
+                "name": {
+                    "en": "Symptomatic treatment (e.g. for spasticity pain) "
+                },
+                "value": " symptomatic_treatment"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": " other"
+            }
+        ]
+    },
+    "diagnosis_als_treatment_and_management_yes_supportive_care": {
+        "question": {
+            "en": "Supportive Care:"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Physical therapy "
+                },
+                "value": "physical_therapy"
+            },
+            {
+                "name": {
+                    "en": "Occupational therapy "
+                },
+                "value": " occupational_therapy"
+            },
+            {
+                "name": {
+                    "en": "Speech therapy "
+                },
+                "value": " speech_therapy"
+            },
+            {
+                "name": {
+                    "en": "Respiratory support (e.g. non-invasive ventilation) "
+                },
+                "value": " respiratory_support"
+            },
+            {
+                "name": {
+                    "en": "Nutrition and swallowing support "
+                },
+                "value": " nutrition_support"
+            },
+            {
+                "name": {
+                    "en": "Psychotherapy "
+                },
+                "value": " psychotherapy"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": " other"
+            }
+        ]
+    }
 }

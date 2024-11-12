@@ -167,5 +167,45 @@
     "osa": {
         "description": "Indicates if the participant has obstructive sleep apnea (OSA)."
     },
-    "data_elements": {}
+    "data_elements": {},
+    "eligible_studies": {
+        "question": {
+            "en": "Eligible Studies"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Voice Disorders "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Neurological and Neurodegenerative Disorders "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Mood and Psychiatric Disorders "
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "Respiratory Disorders "
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "Pediatric Disorders"
+                },
+                "value": 5
+            }
+        ]
+    }
 }

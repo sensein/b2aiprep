@@ -576,5 +576,159 @@
     "diagnosis_pl_treatment_select___other": {
         "description": "Indicates if the participant has undergone other treatments for their precancerous lesion."
     },
-    "data_elements": {}
+    "data_elements": {},
+    "diagnosis_pl_ds": {
+        "question": {
+            "en": "What is the diagnosis?\n(Select all that apply)."
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Keratosis "
+                },
+                "value": "keratosis"
+            },
+            {
+                "name": {
+                    "en": "Leukoplakia "
+                },
+                "value": " leukoplakia"
+            },
+            {
+                "name": {
+                    "en": "Erythroplakia "
+                },
+                "value": " erythroplakia"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": " other"
+            }
+        ]
+    },
+    "diagnosis_pl_etiology": {
+        "question": {
+            "en": "Does the patient have the following risk factors?\n(Select all that apply)."
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Past or present smoking "
+                },
+                "value": "past_or_present_smoking"
+            },
+            {
+                "name": {
+                    "en": "Laryngopharyngeal reflux "
+                },
+                "value": " laryngopharyngeal_reflux"
+            },
+            {
+                "name": {
+                    "en": "Other irritants"
+                },
+                "value": " other_irritants"
+            }
+        ]
+    },
+    "diagnosis_pl_ds_ll": {
+        "question": {
+            "en": "Location of lesion(s)\n(Select all that apply)."
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Right vocal fold "
+                },
+                "value": "right_vocal_fold"
+            },
+            {
+                "name": {
+                    "en": "Left vocal fold "
+                },
+                "value": " left_vocal_fold"
+            },
+            {
+                "name": {
+                    "en": "Both vocal folds "
+                },
+                "value": " both_vocal_folds"
+            },
+            {
+                "name": {
+                    "en": "Ventricular folds (right or left) "
+                },
+                "value": " ventricular_folds"
+            },
+            {
+                "name": {
+                    "en": "Subglottal areas"
+                },
+                "value": " subglottal_areas"
+            }
+        ]
+    },
+    "diagnosis_pl_treatment_select": {
+        "question": {
+            "en": "Select all that apply:"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Surveillance only (previous diagnosis) "
+                },
+                "value": "surveillance_only"
+            },
+            {
+                "name": {
+                    "en": "Laser resection "
+                },
+                "value": " laser_resection"
+            },
+            {
+                "name": {
+                    "en": "Laser ablation "
+                },
+                "value": " laser_ablation"
+            },
+            {
+                "name": {
+                    "en": "Microlaryngeal surgery without laser "
+                },
+                "value": " microlaryngeal_surgery_without_laser"
+            },
+            {
+                "name": {
+                    "en": "Radiotherapy for persistent or recurrent lesions "
+                },
+                "value": " radiotherapy_persistent_or_recurrent_lesions"
+            },
+            {
+                "name": {
+                    "en": "Voice/speech therapy "
+                },
+                "value": " voice_or_speech_therapy"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": " other"
+            }
+        ]
+    }
 }

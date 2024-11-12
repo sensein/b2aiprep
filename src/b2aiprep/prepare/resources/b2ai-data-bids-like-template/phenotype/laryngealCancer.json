@@ -657,5 +657,199 @@
     "diagnosis_lc_treatment_s___partial_laryngectomy": {
         "description": "Indicates if the participant has undergone partial laryngectomy as treatment for laryngeal cancer."
     },
-    "data_elements": {}
+    "data_elements": {},
+    "diagnosis_lc_gsd_uots": {
+        "question": {
+            "en": "Did the patient undergo other types of scans?\n(Select all that apply)."
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "CT of the neck "
+                },
+                "value": "ct_neck"
+            },
+            {
+                "name": {
+                    "en": "CT of the chest "
+                },
+                "value": " ct_chest"
+            },
+            {
+                "name": {
+                    "en": "MRI of the neck "
+                },
+                "value": " mri_neck"
+            },
+            {
+                "name": {
+                    "en": "PET-CT "
+                },
+                "value": " pet_ct"
+            },
+            {
+                "name": {
+                    "en": "Ultrasound of the neck"
+                },
+                "value": " ultrasound_neck"
+            }
+        ]
+    },
+    "diagnosis_lc_ds": {
+        "question": {
+            "en": "Which laryngeal structures are/were involved?\n(Select all that apply)."
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Right vocal fold "
+                },
+                "value": "right_vocal_fold"
+            },
+            {
+                "name": {
+                    "en": "Left vocal fold "
+                },
+                "value": " left_vocal_fold"
+            },
+            {
+                "name": {
+                    "en": "Both vocal folds "
+                },
+                "value": " both_vocal_folds"
+            },
+            {
+                "name": {
+                    "en": "Anterior commissure "
+                },
+                "value": " anterior_commissure"
+            },
+            {
+                "name": {
+                    "en": "Ventricular folds (right or left) "
+                },
+                "value": " ventricular_folds"
+            },
+            {
+                "name": {
+                    "en": "Subglottal areas"
+                },
+                "value": " subglottal_areas"
+            }
+        ]
+    },
+    "diagnosis_lc_etiology": {
+        "question": {
+            "en": "Check any risk factors of this patient in relation to their laryngeal cancer.\n(Select all that apply)."
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Smoking "
+                },
+                "value": "smoking"
+            },
+            {
+                "name": {
+                    "en": "Alcohol "
+                },
+                "value": " alcohol"
+            },
+            {
+                "name": {
+                    "en": "Family history "
+                },
+                "value": " family_history"
+            },
+            {
+                "name": {
+                    "en": "Human Papilloma Virus (HPV) "
+                },
+                "value": " hpv"
+            },
+            {
+                "name": {
+                    "en": "Exposure to other harmful substances"
+                },
+                "value": " exposure_other_harmful_substances"
+            }
+        ]
+    },
+    "diagnosis_lc_treatment_select": {
+        "question": {
+            "en": "Select all that apply:"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Radiation "
+                },
+                "value": "radiation"
+            },
+            {
+                "name": {
+                    "en": "Chemotherapy "
+                },
+                "value": " chemotherapy"
+            },
+            {
+                "name": {
+                    "en": "Immunotherapy "
+                },
+                "value": " immunotherapy"
+            },
+            {
+                "name": {
+                    "en": "Surgery "
+                },
+                "value": " surgery"
+            },
+            {
+                "name": {
+                    "en": "Voice/Speech therapy "
+                },
+                "value": " voice_or_speech_therapy"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": " other"
+            }
+        ]
+    },
+    "diagnosis_lc_treatment_s": {
+        "question": {
+            "en": "Surgery"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Endoscopic laser "
+                },
+                "value": "endoscopic_laser"
+            },
+            {
+                "name": {
+                    "en": "Partial laryngectomy"
+                },
+                "value": " partial_laryngectomy"
+            }
+        ]
+    }
 }
