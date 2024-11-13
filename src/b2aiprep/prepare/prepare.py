@@ -76,10 +76,20 @@ def extract_single(
     wav_path: str | os.PathLike,
     transcription_model_size: str,
     with_sensitive: bool,
+    overwrite: bool = False,
     device: DeviceType = DeviceType.CPU,
 ):
 
     wav_path = Path(wav_path)
+    # Define the save directory for features
+    audio_dir = wav_path.parent
+    features_dir = audio_dir.parent / "audio"
+    features_dir.mkdir(exist_ok=True)
+    save_to = features_dir / f"{wav_path.stem}_features.pt"
+
+    if save_to.exists() and not overwrite:
+        _logger.info(f"{save_to} already exists. Skipping.")
+        return save_to
 
     logging.disable(logging.ERROR)
     # Load audio
@@ -156,11 +166,6 @@ def extract_single(
     logging.disable(logging.NOTSET)
     _logger.setLevel(logging.INFO)
 
-    # Define the save directory for features
-    audio_dir = wav_path.parent
-    features_dir = audio_dir.parent / "audio"
-    features_dir.mkdir(exist_ok=True)
-    save_to = features_dir / f"{wav_path.stem}_features.pt"
     torch.save(features, save_to)
     return save_to
 
@@ -169,6 +174,7 @@ def wav_to_features(
     wav_paths: List[str | os.PathLike],
     transcription_model_size: str,
     with_sensitive: bool,
+    overwrite: bool = False,
     device: DeviceType = DeviceType.CPU,
 ) -> List[str | os.PathLike]:
     """Extract features from a list of audio files.
@@ -192,6 +198,7 @@ def wav_to_features(
                 transcription_model_size=transcription_model_size,
                 with_sensitive=with_sensitive,
                 device=device,
+                overwrite=overwrite,
             )
             all_features.append(save_path)
     else:
@@ -200,6 +207,7 @@ def wav_to_features(
             transcription_model_size=transcription_model_size,
             with_sensitive=with_sensitive,
             device=device,
+            overwrite=overwrite,
         )
         all_features.append(save_path)
     return all_features
@@ -209,6 +217,7 @@ def extract_features_workflow(
     bids_dir_path: Path,
     transcription_model_size: str = "tiny",
     with_sensitive: bool = True,
+    overwrite: bool = False,
     n_cores: int = 8,
     plugin: str = "cf",
     address: str = None,

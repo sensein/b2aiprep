@@ -100,6 +100,7 @@ def redcap2bids(
 @click.argument("transcription_model_size", type=str)
 @click.option("--n_cores", type=int, default=8, show_default=True)
 @click.option("--with_sensitive/--no-with_sensitive", type=bool, default=True, show_default=True)
+@click.option("--overwrite/--no-overwrite", type=bool, default=False, show_default=True)
 @click.option("--cache", type=click.Path(), default=None, show_default=True)
 @click.option("--address", type=str, default=None, show_default=True)
 def prepare_bids(
@@ -110,6 +111,7 @@ def prepare_bids(
     transcription_model_size,
     n_cores,
     with_sensitive,
+    overwrite,
     cache,
     address,
 ):
@@ -138,6 +140,7 @@ def prepare_bids(
         transcription_model_size=transcription_model_size,
         n_cores=n_cores,
         with_sensitive=with_sensitive,
+        overwrite=overwrite,
         cache_dir=cache,
         plugin="dask" if address is not None else "cf",
         address=address,
