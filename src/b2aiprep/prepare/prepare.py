@@ -59,6 +59,7 @@ from senselab.utils.data_structures import (
 from tqdm import tqdm
 
 from b2aiprep.prepare.bids import get_audio_paths
+from b2aiprep.prepare.constants import SPEECH_TASKS
 from b2aiprep.prepare.utils import retry
 
 SUBJECT_ID = "sub"
@@ -107,26 +108,34 @@ def wav_to_features(
         win_length = 25
         hop_length = 10
 
+        is_speech = any([v.replace(" ", "-") in wav_path.name for v in SPEECH_TASKS])
+
+        parsel_mouth_config = (
+            {
+                "time_step": hop_length / 1000,
+                "window_length": win_length / 1000,
+                "plugin": "serial",
+            }
+            if is_speech
+            else False
+        )
+        torch_config = {
+            "freq_low": 80,
+            "freq_high": 500,
+            "n_fft": win_length * audio_16k.sampling_rate // 1000,
+            "n_mels": 20,
+            "n_mfcc": 20,
+            "win_length": win_length,
+            "hop_length": hop_length,
+            "plugin": "serial",
+        }
         # Extract features
         features = extract_features_from_audios(
             audios=[audio_16k],
             opensmile=True,
-            parselmouth={
-                "time_step": hop_length / 1000,
-                "window_length": win_length / 1000,
-                "plugin": "serial",
-            },
-            torchaudio={
-                "freq_low": 80,
-                "freq_high": 500,
-                "n_fft": win_length * audio_16k.sampling_rate // 1000,
-                "n_mels": 20,
-                "n_mfcc": 20,
-                "win_length": win_length,
-                "hop_length": hop_length,
-                "plugin": "serial",
-            },
-            torchaudio_squim=True,
+            parselmouth=parsel_mouth_config,
+            torchaudio=torch_config,
+            torchaudio_squim=is_speech,
         )
         features = features.pop()
         features["sample_rate"] = audio_16k.sampling_rate
@@ -145,6 +154,7 @@ def wav_to_features(
                 _logger.error(
                     f"Speaker embeddings: An error occurred with extracting speaker embeddings. {e}"
                 )
+            features["transcription"] = None
             try:
                 speech_to_text_model = HFModel(
                     path_or_uri=f"openai/whisper-{transcription_model_size}", revision="main"
@@ -155,7 +165,6 @@ def wav_to_features(
                 )
                 features["transcription"] = transcription[0]
             except Exception as e:
-                features["transcription"] = None
                 logging.disable(logging.NOTSET)
                 _logger.error(f"Transcription: An error occurred with transcription: {e}")
                 _logger.error(traceback.print_exc())
@@ -179,7 +188,8 @@ def extract_features_workflow(
     transcription_model_size: str = "tiny",
     n_cores: int = 8,
     with_sensitive: bool = True,
-    plugin="cf",
+    plugin: str = "cf",
+    address: str = None,
     cache_dir: str | os.PathLike = None,
 ):
     """Run a Pydra workflow to extract audio features from BIDS-like directory.
@@ -208,9 +218,11 @@ def extract_features_workflow(
     """
     if n_cores > 1:
         group_by = "subject"
+        plugin_args: dict = ({"n_procs": n_cores} if plugin == "cf" else {},)
     else:
         group_by = "size"
         plugin = "serial"
+        plugin_args = {}
     # Get paths to every audio file.
     audio_paths = get_audio_paths(bids_dir_path=bids_dir_path, group_by=group_by)
     extract_task = wav_to_features(
@@ -222,7 +234,8 @@ def extract_features_workflow(
         extract_task.split("wav_paths", wav_paths=audio_paths)
     else:
         extract_task.inputs.wav_paths = audio_paths
-    plugin_args = {"n_procs": n_cores} if n_cores > 1 else {}
+    if plugin == "dask":
+        plugin_args = {"address": address}
     with pydra.Submitter(plugin=plugin, **plugin_args) as run:
         run(extract_task)
     return extract_task

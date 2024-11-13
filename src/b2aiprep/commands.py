@@ -101,6 +101,7 @@ def redcap2bids(
 @click.option("--n_cores", type=int, default=8, show_default=True)
 @click.option("--with_sensitive/--no-with_sensitive", type=bool, default=True, show_default=True)
 @click.option("--cache", type=click.Path(), default=None, show_default=True)
+@click.option("--address", type=str, default=None, show_default=True)
 def prepare_bids(
     redcap_csv_path,
     audio_dir_path,
@@ -110,6 +111,7 @@ def prepare_bids(
     n_cores,
     with_sensitive,
     cache,
+    address,
 ):
     """Organizes the data into a BIDS-like directory structure.
 
@@ -137,6 +139,8 @@ def prepare_bids(
         n_cores=n_cores,
         with_sensitive=with_sensitive,
         cache_dir=cache,
+        plugin="dask" if address is not None else "cf",
+        address=address,
     )
     _LOGGER.info("Audio feature extraction complete.")
 
