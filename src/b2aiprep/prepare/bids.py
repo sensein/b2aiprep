@@ -35,8 +35,8 @@ from tqdm import tqdm
 from b2aiprep.prepare.constants import AUDIO_TASKS, Instrument, RepeatInstrument
 from b2aiprep.prepare.fhir_utils import convert_response_to_fhir
 from b2aiprep.prepare.utils import (
-    transform_str_for_bids_filename,
     initialize_data_directory,
+    transform_str_for_bids_filename,
 )
 
 SUBJECT_PREFIX = "sub"
@@ -45,7 +45,10 @@ AUDIO_FOLDER = "audio"
 RESAMPLE_RATE = 16000
 _LOGGER = logging.getLogger(__name__)
 
-def get_audio_paths(bids_dir_path: Path) -> t.Union[t.List[str], t.List[t.List[str]]]:
+
+def get_audio_paths(
+    bids_dir_path: str | os.PathLike,
+) -> list[dict[str, Path | int]]:
     """Retrieve all .wav audio file paths from a BIDS-like directory structure.
 
     This function traverses the specified BIDS directory, collecting paths to
@@ -53,32 +56,37 @@ def get_audio_paths(bids_dir_path: Path) -> t.Union[t.List[str], t.List[t.List[s
     expected naming conventions.
 
     Args:
-      bids_dir_path:
-        The root directory of the BIDS dataset.
+      bids_dir_path: The root directory of the BIDS dataset.
 
     Returns:
-      list of str:
-        A list of file paths to .wav audio files within the BIDS directory.
+      list[dict[str, Path | int]]:
+        A list of dictionaries, each containing the path to an audio file and
+        its size in bytes.
     """
-    audio_paths = []
+    audio_paths: list[dict[str, Path | int]] = []
 
     # Iterate over each subject directory.
     for sub_file in os.listdir(bids_dir_path):
         subject_dir_path = os.path.join(bids_dir_path, sub_file)
         if sub_file.startswith(SUBJECT_PREFIX) and os.path.isdir(subject_dir_path):
-
             # Iterate over each session directory within a subject.
             for session_dir_path in os.listdir(subject_dir_path):
                 audio_path = os.path.join(subject_dir_path, session_dir_path, AUDIO_FOLDER)
-
                 if session_dir_path.startswith(SESSION_PREFIX) and os.path.isdir(audio_path):
                     # _logger.info(audio_path)
                     # Iterate over each audio file in the voice directory.
                     for audio_file in os.listdir(audio_path):
                         if audio_file.endswith(".wav"):
-                            audio_file_path = os.path.join(audio_path, audio_file)
-                            audio_paths.append(audio_file_path)
+                            audio_file_path = Path(os.path.join(audio_path, audio_file))
+                            audio_paths.append(
+                                {
+                                    "path": audio_file_path.absolute(),
+                                    "subject": audio_file_path.name.split("_")[0].split("sub-")[1],
+                                    "size": audio_file_path.stat().st_size,
+                                }
+                            )
     return audio_paths
+
 
 def batch_elements(elements: t.List[t.Any], batch_size: int) -> t.List[t.List[t.Any]]:
     """Batch elements into lists of a specified size.
@@ -163,14 +171,14 @@ def validate_redcap_df_column_names(df: DataFrame) -> DataFrame:
     # of the columns exported from redcap.
     b2ai_resources = files("b2aiprep").joinpath("prepare").joinpath("resources")
     column_mapping: dict = json.loads(b2ai_resources.joinpath("column_mapping.json").read_text())
-    
+
     # only map columns if we have a full overlap with the mapping dict
     overlap_with_label = set(df.columns.tolist()).intersection(set(column_mapping.values()))
     overlap_with_coded = set(df.columns.tolist()).intersection(set(column_mapping.keys()))
 
     if len(overlap_with_coded) == df.shape[1]:
         return
-    
+
     if len(overlap_with_coded) == 0:
         raise ValueError(
             (
@@ -197,12 +205,10 @@ def validate_redcap_df_column_names(df: DataFrame) -> DataFrame:
                 f"{len(overlap_with_label)} label, and {df.shape[1]} total columns. Downstream processing expects only coded labels."
             )
         )
-    
+
     elif len(overlap_with_coded) < df.shape[1]:
         _LOGGER.warning(
-            (
-                f"Dataframe has only {len(overlap_with_coded)} / {df.shape[1]} coded headers."
-            )
+            (f"Dataframe has only {len(overlap_with_coded)} / {df.shape[1]} coded headers.")
         )
 
 
@@ -407,7 +413,7 @@ def output_participant_data_to_fhir(
     participant_id = participant["record_id"]
     subject_path = outdir / f"sub-{participant_id}"
 
-    if audiodir is not None and not audiodir.exists():
+    if audiodir is not None and not Path(audiodir).exists():
         audiodir = None
 
     # TODO: prepare a Patient resource to use as the reference for each questionnaire
@@ -565,8 +571,12 @@ def construct_tsv_from_json(
 
     print(f"TSV file created and saved to: {tsv_path}")
 
+
 def construct_all_tsvs_from_jsons(
-    df: pd.DataFrame, input_dir: str, output_dir: str, excluded_files: t.Optional[t.List[str]] = None
+    df: pd.DataFrame,
+    input_dir: str,
+    output_dir: str,
+    excluded_files: t.Optional[t.List[str]] = None,
 ) -> None:
     """
     Constructs TSV files from all JSON files in a specified directory,
@@ -640,13 +650,13 @@ def redcap_to_bids(
     #   1. coded column names ("record_id")
     #   2. text column names ("Record ID")
 
-    # we require coded column names for downstream processing. 
+    # we require coded column names for downstream processing.
     # redcap can export a CSV with either (1) variable names (unique) or (2) variable descriptions
     # in mode (1), the raw values are exported, and in mode (2), human readable values are output
     # the export process is (2), then manually copy (1) header over (2). so we validate that this
     # manual step has been done here.
     validate_redcap_df_column_names(df)
-    
+
     construct_tsv_from_json(  # construct participants.tsv
         df=df,
         json_file_path=os.path.join(outdir, "participants.json"),
@@ -748,10 +758,11 @@ def redcap_to_bids(
     # participants is a list of dictionaries; each dictionary has the same RedCap fields
     # but it respects the nesting / hierarchy present in the original data collection
     # TODO: maybe this warning should go in the main function
-    if (audiodir is not None) and (not audiodir.exists()):
+    if (audiodir is not None) and (not Path(audiodir).exists()):
         logging.warning(f"{audiodir} path does not exist. No audio files will be reorganized.")
     for participant in tqdm(participants, desc="Writing participant data to file"):
         output_participant_data_to_fhir(participant, outdir, audiodir=audiodir)
+
 
 def validate_bids_folder(bids_dir_path: Path):
     """Validate the BIDS-like folder structure.
@@ -763,7 +774,7 @@ def validate_bids_folder(bids_dir_path: Path):
         bids_dir_path:
             The root directory of the BIDS dataset.
     """
-    audio_paths = get_audio_paths(bids_dir_path)
+    audio_paths = [x["path"] for x in get_audio_paths(bids_dir_path)]
     missing_features = []
     missing_transcriptions = []
     for audio_path in audio_paths:

@@ -21,19 +21,10 @@ classifiers = [
 ]
 requires-python = ">=3.10, <3.13"
 dependencies = [
-    "speechbrain>=1.0.0",
-    "torchaudio>=2.0.0",
-    "opensmile>=2.3.0",
+    "senselab~=0.18.0",
     "matplotlib>=3.8.3",
-    "click",
-    "pydra~=0.23",
-    "numpy",
-    "sentencepiece",
-    "transformers",
     "fhir.resources==7.1.0",
-    "streamlit",
-    "datasets[audio]",
-    "senselab>=0.12.0"
+    "streamlit"
 ]
 
 [tool.setuptools.packages.find]
@@ -57,7 +48,7 @@ dev = [
 ]
 
 [project.scripts]
-b2aiprep-cli = "b2aiprep.cli:main"
+b2aiprep-cli = "b2aiprep.cli:cli"
 
 [project.urls]
 Homepage = "https://github.com/sensein/b2aiprep"
