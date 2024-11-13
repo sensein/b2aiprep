@@ -424,7 +424,7 @@ def output_participant_data_to_fhir(
     participant_id = participant["record_id"]
     subject_path = outdir / f"sub-{participant_id}"
 
-    if audiodir is not None and not audiodir.exists():
+    if audiodir is not None and not Path(audiodir).exists():
         audiodir = None
 
     # TODO: prepare a Patient resource to use as the reference for each questionnaire
@@ -769,7 +769,7 @@ def redcap_to_bids(
     # participants is a list of dictionaries; each dictionary has the same RedCap fields
     # but it respects the nesting / hierarchy present in the original data collection
     # TODO: maybe this warning should go in the main function
-    if (audiodir is not None) and (not audiodir.exists()):
+    if (audiodir is not None) and (not Path(audiodir).exists()):
         logging.warning(f"{audiodir} path does not exist. No audio files will be reorganized.")
     for participant in tqdm(participants, desc="Writing participant data to file"):
         output_participant_data_to_fhir(participant, outdir, audiodir=audiodir)
