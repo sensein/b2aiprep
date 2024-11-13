@@ -75,6 +75,5 @@
     },
     "lcq_energy": {
         "description": "Indicates if the participant experiences low energy as part of their cough symptoms."
-    },
-    "data_elements": {}
+    }
 }

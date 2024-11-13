@@ -492,7 +492,6 @@
     "diagnosis_as_treatment_in_office___laser": {
         "description": "Indicates if the participant has undergone in-office or awake laser treatment for airway stenosis."
     },
-    "data_elements": {},
     "diagnosis_as_gsd_yes": {
         "question": {
             "en": "Confirmed by"

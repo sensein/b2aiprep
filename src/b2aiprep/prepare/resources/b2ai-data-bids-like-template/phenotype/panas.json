@@ -192,6 +192,5 @@
     },
     "active": {
         "description": "Indicates if the participant feels physically active or engaged."
-    },
-    "data_elements": {}
+    }
 }

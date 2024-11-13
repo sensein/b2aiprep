@@ -48,6 +48,5 @@
     },
     "di_restrict_personal_social_life": {
         "description": "Indicates if the participant's breathing issues restrict their personal and social life."
-    },
-    "data_elements": {}
+    }
 }

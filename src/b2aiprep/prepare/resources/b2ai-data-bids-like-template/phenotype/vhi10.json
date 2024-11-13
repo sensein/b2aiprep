@@ -48,6 +48,5 @@
     },
     "ask_whats_wrong_voice": {
         "description": "Indicates if the participant asked what was wrong with their voice during the assessment."
-    },
-    "data_elements": {}
+    }
 }

@@ -265,7 +265,6 @@
     "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___other": {
         "description": "Indicates if the participant has undergone other non-pharmacological interventions for Alzheimer’s disease or cognitive impairment."
     },
-    "data_elements": {},
     "diagnosis_alz_dementia_mci_etiology": {
         "question": {
             "en": "What is the suspected or known etiology in the patient?"

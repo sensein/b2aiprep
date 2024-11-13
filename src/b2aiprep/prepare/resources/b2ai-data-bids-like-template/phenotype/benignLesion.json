@@ -544,7 +544,6 @@
             }
         ]
     },
-    "data_elements": {},
     "diagnosis_bl_treatment_select": {
         "question": {
             "en": "Select all that apply:"

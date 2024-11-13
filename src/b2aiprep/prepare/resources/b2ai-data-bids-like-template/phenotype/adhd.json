@@ -262,6 +262,5 @@
     },
     "interrupt_others": {
         "description": "Indicates if the participant tends to interrupt others during conversations."
-    },
-    "data_elements": {}
+    }
 }

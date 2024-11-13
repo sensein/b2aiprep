@@ -5131,7 +5131,6 @@
     "diagnosis_als_treatment_and_management_yes_supportive_care___other": {
         "description": "Indicates if the participant has received other forms of supportive care for ALS."
     },
-    "data_elements": {},
     "eligible_studies": {
         "question": {
             "en": "Eligible Studies"

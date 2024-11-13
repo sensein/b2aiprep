@@ -95,6 +95,5 @@
     },
     "desire_to_escape": {
         "description": "Indicates if the participant has a desire to escape stressful situations."
-    },
-    "data_elements": {}
+    }
 }

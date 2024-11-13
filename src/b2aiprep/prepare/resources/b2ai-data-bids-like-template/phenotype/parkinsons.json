@@ -383,7 +383,6 @@
     "diagnosis_parkinsons_treatment_obtained_yes_npi___other": {
         "description": "Indicates if the participant has received non-pharmacological treatment for Parkinson's, other than those specified."
     },
-    "data_elements": {},
     "diagnosis_parkinsons_gsd_category_1": {
         "question": {
             "en": "Category 1 - Parkinsonism"

@@ -808,7 +808,6 @@
     "q_generic_demographics_complete": {
         "description": "Indicates if the participant has completed the generic demographics section."
     },
-    "data_elements": {},
     "demographics_completed_by": {
         "question": {
             "en": "Who is completing this survey?"

@@ -657,7 +657,6 @@
     "diagnosis_lc_treatment_s___partial_laryngectomy": {
         "description": "Indicates if the participant has undergone partial laryngectomy as treatment for laryngeal cancer."
     },
-    "data_elements": {},
     "diagnosis_lc_gsd_uots": {
         "question": {
             "en": "Did the patient undergo other types of scans?\n(Select all that apply)."

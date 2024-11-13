@@ -576,7 +576,6 @@
     "diagnosis_pl_treatment_select___other": {
         "description": "Indicates if the participant has undergone other treatments for their precancerous lesion."
     },
-    "data_elements": {},
     "diagnosis_pl_ds": {
         "question": {
             "en": "What is the diagnosis?\n(Select all that apply)."

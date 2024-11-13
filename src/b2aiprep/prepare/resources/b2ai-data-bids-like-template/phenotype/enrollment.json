@@ -238,7 +238,6 @@
         ],
         "choices": null
     },
-    "data_elements": {},
     "ef_vision_a11y_options": {
         "question": {
             "en": "Yes, I would like to use some of the accessibility features of the app"

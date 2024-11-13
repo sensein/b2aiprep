@@ -167,7 +167,6 @@
     "osa": {
         "description": "Indicates if the participant has obstructive sleep apnea (OSA)."
     },
-    "data_elements": {},
     "eligible_studies": {
         "question": {
             "en": "Eligible Studies"

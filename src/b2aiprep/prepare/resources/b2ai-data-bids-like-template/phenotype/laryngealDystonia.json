@@ -477,7 +477,6 @@
         ],
         "choices": null
     },
-    "data_elements": {},
     "diagnosis_ld_qete": {
         "question": {
             "en": "Does the patient have laryngeal dystonia as determined by qualitative expert team evaluation?\n(Select all that apply)."

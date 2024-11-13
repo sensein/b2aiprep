@@ -1396,7 +1396,6 @@
             }
         ]
     },
-    "data_elements": {},
     "smoking_types": {
         "question": {
             "en": "Please select smoking types used (Check all that apply)"
