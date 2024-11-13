@@ -103,6 +103,7 @@ def redcap2bids(
 @click.option("--overwrite/--no-overwrite", type=bool, default=False, show_default=True)
 @click.option("--cache", type=click.Path(), default=None, show_default=True)
 @click.option("--address", type=str, default=None, show_default=True)
+@click.option("--percentile", type=int, default=100, show_default=True)
 def prepare_bids(
     redcap_csv_path,
     audio_dir_path,
@@ -114,6 +115,7 @@ def prepare_bids(
     overwrite,
     cache,
     address,
+    percentile,
 ):
     """Organizes the data into a BIDS-like directory structure.
 
@@ -144,6 +146,7 @@ def prepare_bids(
         cache_dir=cache,
         plugin="dask" if address is not None else "cf",
         address=address,
+        percentile=percentile,
     )
     _LOGGER.info("Audio feature extraction complete.")
 

@@ -41,6 +41,7 @@ import traceback
 from pathlib import Path
 from typing import List
 
+import numpy as np
 import pandas as pd
 import pydra
 import torch
@@ -222,6 +223,7 @@ def extract_features_workflow(
     plugin: str = "cf",
     address: str = None,
     cache_dir: str | os.PathLike = None,
+    percentile: int = 100,
 ):
     """Run a Pydra workflow to extract audio features from BIDS-like directory.
 
@@ -259,6 +261,7 @@ def extract_features_workflow(
     # Get paths to every audio file.
     audio_paths = get_audio_paths(bids_dir_path=bids_dir_path)
     df = pd.DataFrame(audio_paths)
+    df = df[df["size"] <= np.percentile(df["size"].values, percentile)]
     # randomize to distribute sizes
     df = df.sample(frac=1).reset_index(drop=True)
     audio_paths = df.path.values.tolist()
