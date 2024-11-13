@@ -108,17 +108,15 @@ def wav_to_features(
         win_length = 25
         hop_length = 10
 
-        is_speech = any([v.replace(" ", "-") in wav_path.name for v in SPEECH_TASKS])
+        is_speech_task = any([v.replace(" ", "-") in wav_path.name for v in SPEECH_TASKS])
 
-        parsel_mouth_config = (
-            {
+        parsel_mouth_config = False
+        if is_speech_task:
+            parsel_mouth_config = {
                 "time_step": hop_length / 1000,
                 "window_length": win_length / 1000,
                 "plugin": "serial",
             }
-            if is_speech
-            else False
-        )
         torch_config = {
             "freq_low": 80,
             "freq_high": 500,
@@ -135,8 +133,9 @@ def wav_to_features(
             opensmile=True,
             parselmouth=parsel_mouth_config,
             torchaudio=torch_config,
-            torchaudio_squim=is_speech,
-        )
+            torchaudio_squim=is_speech_task,
+        ).pop()
+        features["is_speech_task"] = is_speech_task
         features = features.pop()
         features["sample_rate"] = audio_16k.sampling_rate
         features["sensitive_features"] = None
