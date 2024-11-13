@@ -218,7 +218,7 @@ def extract_features_workflow(
     """
     if n_cores > 1:
         group_by = "subject"
-        plugin_args: dict = ({"n_procs": n_cores} if plugin == "cf" else {},)
+        plugin_args: dict = {"n_procs": n_cores} if plugin == "cf" else {}
     else:
         group_by = "size"
         plugin = "serial"
