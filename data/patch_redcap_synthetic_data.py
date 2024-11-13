@@ -117,7 +117,7 @@ def main():
     print('Patched! New shape:')
     print(df_synthetic.shape)
 
-    df_synthetic.to_csv('sdv_redcap_synthetic_data_1000_rows.csv', index=False)
+    df_synthetic.to_csv(current_path.joinpath('sdv_redcap_synthetic_data_1000_rows.csv'), index=False)
 
 if __name__ == '__main__':
     main()
