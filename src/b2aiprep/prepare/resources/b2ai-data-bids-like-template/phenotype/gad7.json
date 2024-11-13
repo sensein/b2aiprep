@@ -10,25 +10,249 @@
         "choices": null
     },
     "nervous_anxious": {
-        "description": "Indicates if the participant feels nervous or anxious."
+        "description": "Indicates if the participant feels nervous or anxious.",
+        "question": {
+            "en": "Feeling nervous, anxious, or on edge."
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Not at all "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "Several days "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "More than half the days "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Nearly every day"
+                },
+                "value": 3
+            }
+        ]
     },
     "cant_control_worry": {
-        "description": "Indicates if the participant feels that they cannot control their worry."
+        "description": "Indicates if the participant feels that they cannot control their worry.",
+        "question": {
+            "en": "Not being able to stop or control worrying."
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Not at all "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "Several days "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "More than half the days "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Nearly every day"
+                },
+                "value": 3
+            }
+        ]
     },
     "worry_too_much": {
-        "description": "Indicates if the participant feels that they worry too much."
+        "description": "Indicates if the participant feels that they worry too much.",
+        "question": {
+            "en": "Worrying too much about different things."
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Not at all "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "Several days "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "More than half the days "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Nearly every day"
+                },
+                "value": 3
+            }
+        ]
     },
     "trouble_relaxing": {
-        "description": "Indicates if the participant has trouble relaxing."
+        "description": "Indicates if the participant has trouble relaxing.",
+        "question": {
+            "en": "Trouble relaxing."
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Not at all "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "Several days "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "More than half the days "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Nearly every day"
+                },
+                "value": 3
+            }
+        ]
     },
     "hard_to_sit_still": {
-        "description": "Indicates if the participant finds it hard to sit still."
+        "description": "Indicates if the participant finds it hard to sit still.",
+        "question": {
+            "en": "Being so restless that it is hard to sit still."
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Not at all "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "Several days "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "More than half the days "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Nearly every day"
+                },
+                "value": 3
+            }
+        ]
     },
     "easily_agitated": {
-        "description": "Indicates if the participant feels easily agitated."
+        "description": "Indicates if the participant feels easily agitated.",
+        "question": {
+            "en": "Becoming easily annoyed or irritable."
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Not at all "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "Several days "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "More than half the days "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Nearly every day"
+                },
+                "value": 3
+            }
+        ]
     },
     "afraid_of_things": {
-        "description": "Indicates if the participant is afraid of specific things or situations."
+        "description": "Indicates if the participant is afraid of specific things or situations.",
+        "question": {
+            "en": "Feeling afraid, as if something awful might happen."
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Not at all "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "Several days "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "More than half the days "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Nearly every day"
+                },
+                "value": 3
+            }
+        ]
     },
     "tough_to_work": {
         "description": "Indicates if the participant finds it difficult to concentrate or work.",

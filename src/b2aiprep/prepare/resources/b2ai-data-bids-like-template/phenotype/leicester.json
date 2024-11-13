@@ -20,60 +20,1010 @@
         "choices": null
     },
     "lcq_chest_stomach_pains": {
-        "description": "Indicates if the participant experiences chest or stomach pains as part of their cough symptoms."
+        "description": "Indicates if the participant experiences chest or stomach pains as part of their cough symptoms.",
+        "question": {
+            "en": "In the last 2 weeks, have you had chest or stomach pains as a result of your cough?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "None of the time "
+                },
+                "value": "noneOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Hardly any of the time "
+                },
+                "value": " hardlyAnyOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A little of the time "
+                },
+                "value": " aLittleOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Some of the time "
+                },
+                "value": " someOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A good bit of the time "
+                },
+                "value": " aGoodBitOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Most of the time "
+                },
+                "value": " mostOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "All of the time"
+                },
+                "value": " allOfTheTime"
+            }
+        ]
     },
     "lcq_sputum_phlegm": {
-        "description": "Indicates if the participant produces sputum or phlegm as part of their cough symptoms."
+        "description": "Indicates if the participant produces sputum or phlegm as part of their cough symptoms.",
+        "question": {
+            "en": "In the last 2 weeks, have you been bothered by sputum (phlegm) production when you cough?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "None of the time "
+                },
+                "value": "noneOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Hardly any of the time "
+                },
+                "value": " hardlyAnyOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A little of the time "
+                },
+                "value": " aLittleOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Some of the time "
+                },
+                "value": " someOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A good bit of the time "
+                },
+                "value": " aGoodBitOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Most of the time "
+                },
+                "value": " mostOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "All of the time"
+                },
+                "value": " allOfTheTime"
+            }
+        ]
     },
     "lcq_tired": {
-        "description": "Indicates if the participant feels tired due to their cough."
+        "description": "Indicates if the participant feels tired due to their cough.",
+        "question": {
+            "en": "In the last 2 weeks, have you been tired because of your cough?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "None of the time "
+                },
+                "value": "noneOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Hardly any of the time "
+                },
+                "value": " hardlyAnyOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A little of the time "
+                },
+                "value": " aLittleOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Some of the time "
+                },
+                "value": " someOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A good bit of the time "
+                },
+                "value": " aGoodBitOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Most of the time "
+                },
+                "value": " mostOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "All of the time"
+                },
+                "value": " allOfTheTime"
+            }
+        ]
     },
     "lcq_embarrassed": {
-        "description": "Indicates if the participant feels embarrassed by their cough."
+        "description": "Indicates if the participant feels embarrassed by their cough.",
+        "question": {
+            "en": "How often during the last 2 weeks have you felt embarrassed by your coughing?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "None of the time "
+                },
+                "value": "noneOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Hardly any of the time "
+                },
+                "value": " hardlyAnyOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A little of the time "
+                },
+                "value": " aLittleOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Some of the time "
+                },
+                "value": " someOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A good bit of the time "
+                },
+                "value": " aGoodBitOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Most of the time "
+                },
+                "value": " mostOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "All of the time"
+                },
+                "value": " allOfTheTime"
+            }
+        ]
     },
     "lcq_anxious": {
-        "description": "Indicates if the participant feels anxious due to their cough."
+        "description": "Indicates if the participant feels anxious due to their cough.",
+        "question": {
+            "en": "In the last 2 weeks, my cough has made me feel anxious."
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "None of the time "
+                },
+                "value": "noneOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Hardly any of the time "
+                },
+                "value": " hardlyAnyOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A little of the time "
+                },
+                "value": " aLittleOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Some of the time "
+                },
+                "value": " someOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A good bit of the time "
+                },
+                "value": " aGoodBitOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Most of the time "
+                },
+                "value": " mostOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "All of the time"
+                },
+                "value": " allOfTheTime"
+            }
+        ]
     },
     "lcq_interfere_job": {
-        "description": "Indicates if the participant's cough interferes with their ability to work."
+        "description": "Indicates if the participant's cough interferes with their ability to work.",
+        "question": {
+            "en": "In the last 2 weeks, my cough has interfered with my job or other daily tasks."
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "None of the time "
+                },
+                "value": "noneOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Hardly any of the time "
+                },
+                "value": " hardlyAnyOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A little of the time "
+                },
+                "value": " aLittleOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Some of the time "
+                },
+                "value": " someOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A good bit of the time "
+                },
+                "value": " aGoodBitOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Most of the time "
+                },
+                "value": " mostOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "All of the time"
+                },
+                "value": " allOfTheTime"
+            }
+        ]
     },
     "lcq_interfere_life": {
-        "description": "Indicates if the participant's cough interferes with their daily life."
+        "description": "Indicates if the participant's cough interferes with their daily life.",
+        "question": {
+            "en": "In the last 2 weeks, I felt that my cough interfered with the overall enjoyment of my life."
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "None of the time "
+                },
+                "value": "noneOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Hardly any of the time "
+                },
+                "value": " hardlyAnyOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A little of the time "
+                },
+                "value": " aLittleOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Some of the time "
+                },
+                "value": " someOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A good bit of the time "
+                },
+                "value": " aGoodBitOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Most of the time "
+                },
+                "value": " mostOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "All of the time"
+                },
+                "value": " allOfTheTime"
+            }
+        ]
     },
     "lcq_exposure_paint": {
-        "description": "Indicates if the participant has been exposed to paint or chemical fumes that worsen their cough."
+        "description": "Indicates if the participant has been exposed to paint or chemical fumes that worsen their cough.",
+        "question": {
+            "en": "In the last 2 weeks, exposure to paint or fumes has made me cough."
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "None of the time "
+                },
+                "value": "noneOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Hardly any of the time "
+                },
+                "value": " hardlyAnyOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A little of the time "
+                },
+                "value": " aLittleOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Some of the time "
+                },
+                "value": " someOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A good bit of the time "
+                },
+                "value": " aGoodBitOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Most of the time "
+                },
+                "value": " mostOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "All of the time"
+                },
+                "value": " allOfTheTime"
+            }
+        ]
     },
     "lcq_sleep": {
-        "description": "Indicates if the participant's cough affects their sleep."
+        "description": "Indicates if the participant's cough affects their sleep.",
+        "question": {
+            "en": "In the last 2 weeks, has your cough disturbed your sleep?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "None of the time "
+                },
+                "value": "noneOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Hardly any of the time "
+                },
+                "value": " hardlyAnyOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A little of the time "
+                },
+                "value": " aLittleOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Some of the time "
+                },
+                "value": " someOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A good bit of the time "
+                },
+                "value": " aGoodBitOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Most of the time "
+                },
+                "value": " mostOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "All of the time"
+                },
+                "value": " allOfTheTime"
+            }
+        ]
     },
     "lcq_bout": {
-        "description": "Indicates if the participant has bouts of coughing."
+        "description": "Indicates if the participant has bouts of coughing.",
+        "question": {
+            "en": "In the last 2 weeks, how many times a day have you had a coughing bout?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "None of the time "
+                },
+                "value": "noneOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Hardly any of the time "
+                },
+                "value": " hardlyAnyOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A little of the time "
+                },
+                "value": " aLittleOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Some of the time "
+                },
+                "value": " someOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A good bit of the time "
+                },
+                "value": " aGoodBitOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Most of the time "
+                },
+                "value": " mostOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "All of the time"
+                },
+                "value": " allOfTheTime"
+            }
+        ]
     },
     "lcq_frustrated": {
-        "description": "Indicates if the participant feels frustrated as part of their cough symptoms."
+        "description": "Indicates if the participant feels frustrated as part of their cough symptoms.",
+        "question": {
+            "en": "In the last 2 weeks, my cough has made me feel frustrated."
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "None of the time "
+                },
+                "value": "noneOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Hardly any of the time "
+                },
+                "value": " hardlyAnyOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A little of the time "
+                },
+                "value": " aLittleOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Some of the time "
+                },
+                "value": " someOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A good bit of the time "
+                },
+                "value": " aGoodBitOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Most of the time "
+                },
+                "value": " mostOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "All of the time"
+                },
+                "value": " allOfTheTime"
+            }
+        ]
     },
     "lcq_fed_up": {
-        "description": "Indicates if the participant feels fed up due to their cough."
+        "description": "Indicates if the participant feels fed up due to their cough.",
+        "question": {
+            "en": "In the last 2 weeks, my cough has made me feel fed up."
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "None of the time "
+                },
+                "value": "noneOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Hardly any of the time "
+                },
+                "value": " hardlyAnyOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A little of the time "
+                },
+                "value": " aLittleOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Some of the time "
+                },
+                "value": " someOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A good bit of the time "
+                },
+                "value": " aGoodBitOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Most of the time "
+                },
+                "value": " mostOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "All of the time"
+                },
+                "value": " allOfTheTime"
+            }
+        ]
     },
     "lcq_hoarse_voice": {
-        "description": "Indicates if the participant has a hoarse voice as part of their cough symptoms."
+        "description": "Indicates if the participant has a hoarse voice as part of their cough symptoms.",
+        "question": {
+            "en": "In the last 2 weeks, have you suffered from a hoarse voice as a result of your cough?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "None of the time "
+                },
+                "value": "noneOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Hardly any of the time "
+                },
+                "value": " hardlyAnyOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A little of the time "
+                },
+                "value": " aLittleOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Some of the time "
+                },
+                "value": " someOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A good bit of the time "
+                },
+                "value": " aGoodBitOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Most of the time "
+                },
+                "value": " mostOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "All of the time"
+                },
+                "value": " allOfTheTime"
+            }
+        ]
     },
     "lcq_serious_illness": {
-        "description": "Indicates if the participant's cough interferes with their life due to a serious illness."
+        "description": "Indicates if the participant's cough interferes with their life due to a serious illness.",
+        "question": {
+            "en": "In the last 2 weeks, have you worried that your cough may indicate serious illness?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "None of the time "
+                },
+                "value": "noneOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Hardly any of the time "
+                },
+                "value": " hardlyAnyOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A little of the time "
+                },
+                "value": " aLittleOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Some of the time "
+                },
+                "value": " someOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A good bit of the time "
+                },
+                "value": " aGoodBitOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Most of the time "
+                },
+                "value": " mostOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "All of the time"
+                },
+                "value": " allOfTheTime"
+            }
+        ]
     },
     "lcq_other_people": {
-        "description": "Indicates if the participant feels that their cough bothers other people."
+        "description": "Indicates if the participant feels that their cough bothers other people.",
+        "question": {
+            "en": "In the last 2 weeks, have you been concerned that other people think something is wrong with you, because of your cough?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "None of the time "
+                },
+                "value": "noneOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Hardly any of the time "
+                },
+                "value": " hardlyAnyOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A little of the time "
+                },
+                "value": " aLittleOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Some of the time "
+                },
+                "value": " someOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A good bit of the time "
+                },
+                "value": " aGoodBitOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Most of the time "
+                },
+                "value": " mostOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "All of the time"
+                },
+                "value": " allOfTheTime"
+            }
+        ]
     },
     "lcq_interrupt_conversation": {
-        "description": "Indicates if the participant's cough interrupts conversations."
+        "description": "Indicates if the participant's cough interrupts conversations.",
+        "question": {
+            "en": "In the last 2 weeks, my cough has interrupted conversation or telephone calls."
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "None of the time "
+                },
+                "value": "noneOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Hardly any of the time "
+                },
+                "value": " hardlyAnyOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A little of the time "
+                },
+                "value": " aLittleOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Some of the time "
+                },
+                "value": " someOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A good bit of the time "
+                },
+                "value": " aGoodBitOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Most of the time "
+                },
+                "value": " mostOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "All of the time"
+                },
+                "value": " allOfTheTime"
+            }
+        ]
     },
     "lcq_partner": {
-        "description": "Indicates if the participant feels that their cough affects their partner or significant other."
+        "description": "Indicates if the participant feels that their cough affects their partner or significant other.",
+        "question": {
+            "en": "In the last 2 weeks, I feel that my cough has annoyed my partner, family, or friends."
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "None of the time "
+                },
+                "value": "noneOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Hardly any of the time "
+                },
+                "value": " hardlyAnyOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A little of the time "
+                },
+                "value": " aLittleOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Some of the time "
+                },
+                "value": " someOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A good bit of the time "
+                },
+                "value": " aGoodBitOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Most of the time "
+                },
+                "value": " mostOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "All of the time"
+                },
+                "value": " allOfTheTime"
+            }
+        ]
     },
     "lcq_felt_in_control": {
-        "description": "Indicates if the participant feels in control of their cough."
+        "description": "Indicates if the participant feels in control of their cough.",
+        "question": {
+            "en": "In the last 2 weeks, have you felt in control of your cough?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "None of the time "
+                },
+                "value": "noneOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Hardly any of the time "
+                },
+                "value": " hardlyAnyOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A little of the time "
+                },
+                "value": " aLittleOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Some of the time "
+                },
+                "value": " someOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A good bit of the time "
+                },
+                "value": " aGoodBitOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Most of the time "
+                },
+                "value": " mostOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "All of the time"
+                },
+                "value": " allOfTheTime"
+            }
+        ]
     },
     "lcq_energy": {
-        "description": "Indicates if the participant experiences low energy as part of their cough symptoms."
+        "description": "Indicates if the participant experiences low energy as part of their cough symptoms.",
+        "question": {
+            "en": "In the last 2 weeks, have you had a lot of energy?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "None of the time "
+                },
+                "value": "noneOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Hardly any of the time "
+                },
+                "value": " hardlyAnyOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A little of the time "
+                },
+                "value": " aLittleOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Some of the time "
+                },
+                "value": " someOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A good bit of the time "
+                },
+                "value": " aGoodBitOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Most of the time "
+                },
+                "value": " mostOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "All of the time"
+                },
+                "value": " allOfTheTime"
+            }
+        ]
     }
 }

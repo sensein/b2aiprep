@@ -639,7 +639,27 @@
         "choices": null
     },
     "spouse_partner_sig_other": {
-        "description": "Indicates if the participant has a spouse, partner, or significant other."
+        "description": "Indicates if the participant has a spouse, partner, or significant other.",
+        "question": {
+            "en": "Spouse/partner/significant other"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": 0
+            }
+        ]
     },
     "children": {
         "description": "Indicates if the participant has children.",
@@ -711,7 +731,27 @@
         ]
     },
     "other_live_with": {
-        "description": "Indicates if the participant lives with people not listed in other options."
+        "description": "Indicates if the participant lives with people not listed in other options.",
+        "question": {
+            "en": "Other"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": 0
+            }
+        ]
     },
     "others_household_specify": {
         "description": "Allows the participant to specify other people living in their household.",

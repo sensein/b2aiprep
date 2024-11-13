@@ -1079,40 +1079,496 @@
         "description": "Indicates if the participant has a history of stroke."
     },
     "ph_standing": {
-        "description": "Indicates if the participant experiences physical health difficulties while standing."
+        "description": "Indicates if the participant experiences physical health difficulties while standing.",
+        "question": {
+            "en": "Standing for long periods such as 30 minutes?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "None "
+                },
+                "value": "none"
+            },
+            {
+                "name": {
+                    "en": "Mild "
+                },
+                "value": " mild"
+            },
+            {
+                "name": {
+                    "en": "Moderate "
+                },
+                "value": " moderate"
+            },
+            {
+                "name": {
+                    "en": "Severe "
+                },
+                "value": " severe"
+            },
+            {
+                "name": {
+                    "en": "Extreme or cannot do"
+                },
+                "value": " extreme"
+            }
+        ]
     },
     "ph_take_care": {
-        "description": "Indicates if the participant has difficulty taking care of themselves due to physical health issues."
+        "description": "Indicates if the participant has difficulty taking care of themselves due to physical health issues.",
+        "question": {
+            "en": "Taking care of your household responsibilities?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "None "
+                },
+                "value": "none"
+            },
+            {
+                "name": {
+                    "en": "Mild "
+                },
+                "value": " mild"
+            },
+            {
+                "name": {
+                    "en": "Moderate "
+                },
+                "value": " moderate"
+            },
+            {
+                "name": {
+                    "en": "Severe "
+                },
+                "value": " severe"
+            },
+            {
+                "name": {
+                    "en": "Extreme or cannot do"
+                },
+                "value": " extreme"
+            }
+        ]
     },
     "ph_learn_task": {
-        "description": "Indicates if the participant has difficulty learning new tasks due to physical health issues."
+        "description": "Indicates if the participant has difficulty learning new tasks due to physical health issues.",
+        "question": {
+            "en": "Learning a new task, for example, learning how to get to a new place?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "None "
+                },
+                "value": "none"
+            },
+            {
+                "name": {
+                    "en": "Mild "
+                },
+                "value": " mild"
+            },
+            {
+                "name": {
+                    "en": "Moderate "
+                },
+                "value": " moderate"
+            },
+            {
+                "name": {
+                    "en": "Severe "
+                },
+                "value": " severe"
+            },
+            {
+                "name": {
+                    "en": "Extreme or cannot do"
+                },
+                "value": " extreme"
+            }
+        ]
     },
     "ph_problem_join": {
-        "description": "Indicates if the participant has problems joining social activities due to physical health."
+        "description": "Indicates if the participant has problems joining social activities due to physical health.",
+        "question": {
+            "en": "How much of a problem did you have joining in community activities (for example, festivities, religious or other activities) in the same way as anyone else can?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "None "
+                },
+                "value": "none"
+            },
+            {
+                "name": {
+                    "en": "Mild "
+                },
+                "value": " mild"
+            },
+            {
+                "name": {
+                    "en": "Moderate "
+                },
+                "value": " moderate"
+            },
+            {
+                "name": {
+                    "en": "Severe "
+                },
+                "value": " severe"
+            },
+            {
+                "name": {
+                    "en": "Extreme or cannot do"
+                },
+                "value": " extreme"
+            }
+        ]
     },
     "ph_health_problem": {
-        "description": "Indicates if the participant has a health problem that affects their daily life."
+        "description": "Indicates if the participant has a health problem that affects their daily life.",
+        "question": {
+            "en": "How much have you been emotionally affected by your health problems?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "None "
+                },
+                "value": "none"
+            },
+            {
+                "name": {
+                    "en": "Mild "
+                },
+                "value": " mild"
+            },
+            {
+                "name": {
+                    "en": "Moderate "
+                },
+                "value": " moderate"
+            },
+            {
+                "name": {
+                    "en": "Severe "
+                },
+                "value": " severe"
+            },
+            {
+                "name": {
+                    "en": "Extreme or cannot do"
+                },
+                "value": " extreme"
+            }
+        ]
     },
     "ph_concentrating": {
-        "description": "Indicates if the participant has difficulty concentrating due to physical health issues."
+        "description": "Indicates if the participant has difficulty concentrating due to physical health issues.",
+        "question": {
+            "en": "Concentrating on doing something for ten minutes?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "None "
+                },
+                "value": "none"
+            },
+            {
+                "name": {
+                    "en": "Mild "
+                },
+                "value": " mild"
+            },
+            {
+                "name": {
+                    "en": "Moderate "
+                },
+                "value": " moderate"
+            },
+            {
+                "name": {
+                    "en": "Severe "
+                },
+                "value": " severe"
+            },
+            {
+                "name": {
+                    "en": "Extreme or cannot do"
+                },
+                "value": " extreme"
+            }
+        ]
     },
     "ph_walking": {
-        "description": "Reports if the participant experiences physical health issues while walking."
+        "description": "Reports if the participant experiences physical health issues while walking.",
+        "question": {
+            "en": "Walking a long distance such as a kilometre [or equivalent]?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "None "
+                },
+                "value": "none"
+            },
+            {
+                "name": {
+                    "en": "Mild "
+                },
+                "value": " mild"
+            },
+            {
+                "name": {
+                    "en": "Moderate "
+                },
+                "value": " moderate"
+            },
+            {
+                "name": {
+                    "en": "Severe "
+                },
+                "value": " severe"
+            },
+            {
+                "name": {
+                    "en": "Extreme or cannot do"
+                },
+                "value": " extreme"
+            }
+        ]
     },
     "ph_washing": {
-        "description": "Reports if the participant experiences physical health issues while washing."
+        "description": "Reports if the participant experiences physical health issues while washing.",
+        "question": {
+            "en": "Washing your whole body?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "None "
+                },
+                "value": "none"
+            },
+            {
+                "name": {
+                    "en": "Mild "
+                },
+                "value": " mild"
+            },
+            {
+                "name": {
+                    "en": "Moderate "
+                },
+                "value": " moderate"
+            },
+            {
+                "name": {
+                    "en": "Severe "
+                },
+                "value": " severe"
+            },
+            {
+                "name": {
+                    "en": "Extreme or cannot do"
+                },
+                "value": " extreme"
+            }
+        ]
     },
     "ph_get_dressed": {
-        "description": "Indicates if the participant has difficulty getting dressed due to physical health issues."
+        "description": "Indicates if the participant has difficulty getting dressed due to physical health issues.",
+        "question": {
+            "en": "Getting dressed?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "None "
+                },
+                "value": "none"
+            },
+            {
+                "name": {
+                    "en": "Mild "
+                },
+                "value": " mild"
+            },
+            {
+                "name": {
+                    "en": "Moderate "
+                },
+                "value": " moderate"
+            },
+            {
+                "name": {
+                    "en": "Severe "
+                },
+                "value": " severe"
+            },
+            {
+                "name": {
+                    "en": "Extreme or cannot do"
+                },
+                "value": " extreme"
+            }
+        ]
     },
     "ph_dealing_people": {
-        "description": "Indicates if the participant has difficulty dealing with people due to physical health issues."
+        "description": "Indicates if the participant has difficulty dealing with people due to physical health issues.",
+        "question": {
+            "en": "Dealing with people you do not know?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "None "
+                },
+                "value": "none"
+            },
+            {
+                "name": {
+                    "en": "Mild "
+                },
+                "value": " mild"
+            },
+            {
+                "name": {
+                    "en": "Moderate "
+                },
+                "value": " moderate"
+            },
+            {
+                "name": {
+                    "en": "Severe "
+                },
+                "value": " severe"
+            },
+            {
+                "name": {
+                    "en": "Extreme or cannot do"
+                },
+                "value": " extreme"
+            }
+        ]
     },
     "ph_friendship": {
-        "description": "Indicates if the participant has difficulty maintaining friendships due to physical health issues."
+        "description": "Indicates if the participant has difficulty maintaining friendships due to physical health issues.",
+        "question": {
+            "en": "Maintaining a friendship?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "None "
+                },
+                "value": "none"
+            },
+            {
+                "name": {
+                    "en": "Mild "
+                },
+                "value": " mild"
+            },
+            {
+                "name": {
+                    "en": "Moderate "
+                },
+                "value": " moderate"
+            },
+            {
+                "name": {
+                    "en": "Severe "
+                },
+                "value": " severe"
+            },
+            {
+                "name": {
+                    "en": "Extreme or cannot do"
+                },
+                "value": " extreme"
+            }
+        ]
     },
     "ph_day_to_day_work": {
-        "description": "Reports if the participant's physical health affects their day-to-day work."
+        "description": "Reports if the participant's physical health affects their day-to-day work.",
+        "question": {
+            "en": "Your day-to-day work?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "None "
+                },
+                "value": "none"
+            },
+            {
+                "name": {
+                    "en": "Mild "
+                },
+                "value": " mild"
+            },
+            {
+                "name": {
+                    "en": "Moderate "
+                },
+                "value": " moderate"
+            },
+            {
+                "name": {
+                    "en": "Severe "
+                },
+                "value": " severe"
+            },
+            {
+                "name": {
+                    "en": "Extreme or cannot do"
+                },
+                "value": " extreme"
+            }
+        ]
     },
     "physical_health_freq": {
         "description": "Indicates how frequently the participant experiences physical health issues.",

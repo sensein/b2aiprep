@@ -20,30 +20,9 @@
         "choices": null
     },
     "sad_or_down": {
-        "description": "Indicates if the participant feels sad or down."
-    },
-    "joyful": {
-        "description": "Indicates if the participant feels joyful."
-    },
-    "motivated": {
-        "description": "Assesses the level of motivation or drive the participant exhibits in performing tasks."
-    },
-    "lack_of_pleasure": {
-        "description": "Indicates if the participant feels a lack of pleasure or interest in doing things."
-    },
-    "tired": {
-        "description": "Indicates if the participant feels tired during the assessment."
-    },
-    "energetic": {
-        "description": "Indicates if the participant feels energetic or lively."
-    },
-    "agitated": {
-        "description": "Indicates if the participant feels agitated."
-    },
-    "irritated": {
-        "description": "Indicates if the participant feels irritated or annoyed.",
+        "description": "Indicates if the participant feels sad or down.",
         "question": {
-            "en": "Feeling more irritated, grouchy, or angry than usual?"
+            "en": "Sad or down"
         },
         "datatype": [
             "xsd:integer"
@@ -51,49 +30,994 @@
         "choices": [
             {
                 "name": {
-                    "en": "0=None (Not at all) "
+                    "en": "0 "
                 },
                 "value": 0
             },
             {
                 "name": {
-                    "en": "1=Slight (Rare less than a day or two) "
+                    "en": "1 "
                 },
                 "value": 1
             },
             {
                 "name": {
-                    "en": "2=Mild (Several days) "
+                    "en": "2 "
                 },
                 "value": 2
             },
             {
                 "name": {
-                    "en": "3=Moderate (More than half the days) "
+                    "en": "3 "
                 },
                 "value": 3
             },
             {
                 "name": {
-                    "en": "4=Severe (Nearly every day)"
+                    "en": "4 "
                 },
                 "value": 4
+            },
+            {
+                "name": {
+                    "en": "5 "
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "6 "
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "7 "
+                },
+                "value": 7
+            },
+            {
+                "name": {
+                    "en": "8 "
+                },
+                "value": 8
+            },
+            {
+                "name": {
+                    "en": "9 "
+                },
+                "value": 9
+            },
+            {
+                "name": {
+                    "en": "10"
+                },
+                "value": 10
+            }
+        ]
+    },
+    "joyful": {
+        "description": "Indicates if the participant feels joyful.",
+        "question": {
+            "en": "Joyful"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "0 "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "1 "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "2 "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "3 "
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "4 "
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "5 "
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "6 "
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "7 "
+                },
+                "value": 7
+            },
+            {
+                "name": {
+                    "en": "8 "
+                },
+                "value": 8
+            },
+            {
+                "name": {
+                    "en": "9 "
+                },
+                "value": 9
+            },
+            {
+                "name": {
+                    "en": "10"
+                },
+                "value": 10
+            }
+        ]
+    },
+    "motivated": {
+        "description": "Assesses the level of motivation or drive the participant exhibits in performing tasks.",
+        "question": {
+            "en": "Motivated or interested"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "0 "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "1 "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "2 "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "3 "
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "4 "
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "5 "
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "6 "
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "7 "
+                },
+                "value": 7
+            },
+            {
+                "name": {
+                    "en": "8 "
+                },
+                "value": 8
+            },
+            {
+                "name": {
+                    "en": "9 "
+                },
+                "value": 9
+            },
+            {
+                "name": {
+                    "en": "10"
+                },
+                "value": 10
+            }
+        ]
+    },
+    "lack_of_pleasure": {
+        "description": "Indicates if the participant feels a lack of pleasure or interest in doing things.",
+        "question": {
+            "en": "Lack of pleasure (in things you tend to enjoy)"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "0 "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "1 "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "2 "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "3 "
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "4 "
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "5 "
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "6 "
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "7 "
+                },
+                "value": 7
+            },
+            {
+                "name": {
+                    "en": "8 "
+                },
+                "value": 8
+            },
+            {
+                "name": {
+                    "en": "9 "
+                },
+                "value": 9
+            },
+            {
+                "name": {
+                    "en": "10"
+                },
+                "value": 10
+            }
+        ]
+    },
+    "tired": {
+        "description": "Indicates if the participant feels tired during the assessment.",
+        "question": {
+            "en": "Tired or fatigued"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "0 "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "1 "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "2 "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "3 "
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "4 "
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "5 "
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "6 "
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "7 "
+                },
+                "value": 7
+            },
+            {
+                "name": {
+                    "en": "8 "
+                },
+                "value": 8
+            },
+            {
+                "name": {
+                    "en": "9 "
+                },
+                "value": 9
+            },
+            {
+                "name": {
+                    "en": "10"
+                },
+                "value": 10
+            }
+        ]
+    },
+    "energetic": {
+        "description": "Indicates if the participant feels energetic or lively.",
+        "question": {
+            "en": "Energetic"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "0 "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "1 "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "2 "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "3 "
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "4 "
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "5 "
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "6 "
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "7 "
+                },
+                "value": 7
+            },
+            {
+                "name": {
+                    "en": "8 "
+                },
+                "value": 8
+            },
+            {
+                "name": {
+                    "en": "9 "
+                },
+                "value": 9
+            },
+            {
+                "name": {
+                    "en": "10"
+                },
+                "value": 10
+            }
+        ]
+    },
+    "agitated": {
+        "description": "Indicates if the participant feels agitated.",
+        "question": {
+            "en": "Agitated (restless, fidgety, pacing, cannot sit still)"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "0 "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "1 "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "2 "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "3 "
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "4 "
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "5 "
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "6 "
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "7 "
+                },
+                "value": 7
+            },
+            {
+                "name": {
+                    "en": "8 "
+                },
+                "value": 8
+            },
+            {
+                "name": {
+                    "en": "9 "
+                },
+                "value": 9
+            },
+            {
+                "name": {
+                    "en": "10"
+                },
+                "value": 10
+            }
+        ]
+    },
+    "irritated": {
+        "description": "Indicates if the participant feels irritated or annoyed.",
+        "question": {
+            "en": "Irritated or angry (towards something or someone)"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "0 "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "1 "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "2 "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "3 "
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "4 "
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "5 "
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "6 "
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "7 "
+                },
+                "value": 7
+            },
+            {
+                "name": {
+                    "en": "8 "
+                },
+                "value": 8
+            },
+            {
+                "name": {
+                    "en": "9 "
+                },
+                "value": 9
+            },
+            {
+                "name": {
+                    "en": "10"
+                },
+                "value": 10
             }
         ]
     },
     "lonely": {
-        "description": "Indicates if the participant feels lonely."
+        "description": "Indicates if the participant feels lonely.",
+        "question": {
+            "en": "Lonely or isolated"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "0 "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "1 "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "2 "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "3 "
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "4 "
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "5 "
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "6 "
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "7 "
+                },
+                "value": 7
+            },
+            {
+                "name": {
+                    "en": "8 "
+                },
+                "value": 8
+            },
+            {
+                "name": {
+                    "en": "9 "
+                },
+                "value": 9
+            },
+            {
+                "name": {
+                    "en": "10"
+                },
+                "value": 10
+            }
+        ]
     },
     "concentrated": {
-        "description": "Indicates if the participant is able to concentrate."
+        "description": "Indicates if the participant is able to concentrate.",
+        "question": {
+            "en": "Concentrated (not distracted or inattentive)"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "0 "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "1 "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "2 "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "3 "
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "4 "
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "5 "
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "6 "
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "7 "
+                },
+                "value": 7
+            },
+            {
+                "name": {
+                    "en": "8 "
+                },
+                "value": 8
+            },
+            {
+                "name": {
+                    "en": "9 "
+                },
+                "value": 9
+            },
+            {
+                "name": {
+                    "en": "10"
+                },
+                "value": 10
+            }
+        ]
     },
     "relaxed": {
-        "description": "Indicates if the participant feels relaxed."
+        "description": "Indicates if the participant feels relaxed.",
+        "question": {
+            "en": "Relaxed or calm"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "0 "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "1 "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "2 "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "3 "
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "4 "
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "5 "
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "6 "
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "7 "
+                },
+                "value": 7
+            },
+            {
+                "name": {
+                    "en": "8 "
+                },
+                "value": 8
+            },
+            {
+                "name": {
+                    "en": "9 "
+                },
+                "value": 9
+            },
+            {
+                "name": {
+                    "en": "10"
+                },
+                "value": 10
+            }
+        ]
     },
     "worried": {
-        "description": "Indicates if the participant feels worried or anxious."
+        "description": "Indicates if the participant feels worried or anxious.",
+        "question": {
+            "en": "Worried or anxious"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "0 "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "1 "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "2 "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "3 "
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "4 "
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "5 "
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "6 "
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "7 "
+                },
+                "value": 7
+            },
+            {
+                "name": {
+                    "en": "8 "
+                },
+                "value": 8
+            },
+            {
+                "name": {
+                    "en": "9 "
+                },
+                "value": 9
+            },
+            {
+                "name": {
+                    "en": "10"
+                },
+                "value": 10
+            }
+        ]
     },
     "desire_to_escape": {
-        "description": "Indicates if the participant has a desire to escape stressful situations."
+        "description": "Indicates if the participant has a desire to escape stressful situations.",
+        "question": {
+            "en": "Desire to escape (your thoughts and/or feelings)"
+        },
+        "datatype": [
+            "xsd:integer"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "0 "
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "1 "
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "2 "
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "3 "
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "4 "
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "5 "
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "6 "
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "7 "
+                },
+                "value": 7
+            },
+            {
+                "name": {
+                    "en": "8 "
+                },
+                "value": 8
+            },
+            {
+                "name": {
+                    "en": "9 "
+                },
+                "value": 9
+            },
+            {
+                "name": {
+                    "en": "10"
+                },
+                "value": 10
+            }
+        ]
     }
 }

@@ -20,16 +20,168 @@
         "choices": null
     },
     "wrapping_up": {
-        "description": "Indicates if the session is nearing completion."
+        "description": "Indicates if the session is nearing completion.",
+        "question": {
+            "en": "How often do you have trouble wrapping up the final details of a project, once the challenging parts have been done?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Never "
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Rarely "
+                },
+                "value": " rarely"
+            },
+            {
+                "name": {
+                    "en": "Sometimes "
+                },
+                "value": " sometimes"
+            },
+            {
+                "name": {
+                    "en": "Often "
+                },
+                "value": " often"
+            },
+            {
+                "name": {
+                    "en": "Very Often"
+                },
+                "value": " veryOften"
+            }
+        ]
     },
     "things_in_order": {
-        "description": "Indicates if the participant prefers to keep things in order."
+        "description": "Indicates if the participant prefers to keep things in order.",
+        "question": {
+            "en": "How often do you have difficulty getting things in order when you have to do a task that requires organization?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Never "
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Rarely "
+                },
+                "value": " rarely"
+            },
+            {
+                "name": {
+                    "en": "Sometimes "
+                },
+                "value": " sometimes"
+            },
+            {
+                "name": {
+                    "en": "Often "
+                },
+                "value": " often"
+            },
+            {
+                "name": {
+                    "en": "Very Often"
+                },
+                "value": " veryOften"
+            }
+        ]
     },
     "remembering_appt": {
-        "description": "Reports if the participant has trouble remembering appointments."
+        "description": "Reports if the participant has trouble remembering appointments.",
+        "question": {
+            "en": "How often do you have problems remembering appointments or obligations?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Never "
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Rarely "
+                },
+                "value": " rarely"
+            },
+            {
+                "name": {
+                    "en": "Sometimes "
+                },
+                "value": " sometimes"
+            },
+            {
+                "name": {
+                    "en": "Often "
+                },
+                "value": " often"
+            },
+            {
+                "name": {
+                    "en": "Very Often"
+                },
+                "value": " veryOften"
+            }
+        ]
     },
     "avoidance": {
-        "description": "Indicates if the participant avoids reminders of stressful or traumatic events."
+        "description": "Indicates if the participant avoids reminders of stressful or traumatic events.",
+        "question": {
+            "en": "When you have a task that requires a lot of thought, how often do you avoid or delay getting started?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Never "
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Rarely "
+                },
+                "value": " rarely"
+            },
+            {
+                "name": {
+                    "en": "Sometimes "
+                },
+                "value": " sometimes"
+            },
+            {
+                "name": {
+                    "en": "Often "
+                },
+                "value": " often"
+            },
+            {
+                "name": {
+                    "en": "Very Often"
+                },
+                "value": " veryOften"
+            }
+        ]
     },
     "fidget": {
         "description": "Indicates if the participant is fidgeting during the session.",
@@ -73,7 +225,45 @@
         ]
     },
     "overly_active": {
-        "description": "Indicates if the participant is overly active or restless."
+        "description": "Indicates if the participant is overly active or restless.",
+        "question": {
+            "en": "How often do you feel overly active and compelled to do things, like you were driven by a motor?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Never "
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Rarely "
+                },
+                "value": " rarely"
+            },
+            {
+                "name": {
+                    "en": "Sometimes "
+                },
+                "value": " sometimes"
+            },
+            {
+                "name": {
+                    "en": "Often "
+                },
+                "value": " often"
+            },
+            {
+                "name": {
+                    "en": "Very Often"
+                },
+                "value": " veryOften"
+            }
+        ]
     },
     "careless": {
         "description": "Indicates if the participant feels careless about their actions or responsibilities.",
@@ -117,10 +307,86 @@
         ]
     },
     "difficulty_attention": {
-        "description": "Indicates if the participant has difficulty paying attention."
+        "description": "Indicates if the participant has difficulty paying attention.",
+        "question": {
+            "en": "How often do you have difficulty keeping your attention when you are doing boring or repetitive work?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Never "
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Rarely "
+                },
+                "value": " rarely"
+            },
+            {
+                "name": {
+                    "en": "Sometimes "
+                },
+                "value": " sometimes"
+            },
+            {
+                "name": {
+                    "en": "Often "
+                },
+                "value": " often"
+            },
+            {
+                "name": {
+                    "en": "Very Often"
+                },
+                "value": " veryOften"
+            }
+        ]
     },
     "difficulty_concentrating": {
-        "description": "Indicates if the participant has difficulty concentrating."
+        "description": "Indicates if the participant has difficulty concentrating.",
+        "question": {
+            "en": "How often do you have difficulty concentrating on what people say to you, even when they are speaking to you directly?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Never "
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Rarely "
+                },
+                "value": " rarely"
+            },
+            {
+                "name": {
+                    "en": "Sometimes "
+                },
+                "value": " sometimes"
+            },
+            {
+                "name": {
+                    "en": "Often "
+                },
+                "value": " often"
+            },
+            {
+                "name": {
+                    "en": "Very Often"
+                },
+                "value": " veryOften"
+            }
+        ]
     },
     "misplace": {
         "description": "Indicates if the participant often misplaces things.",
@@ -205,7 +471,45 @@
         ]
     },
     "remain_seated": {
-        "description": "Indicates if the participant is able to remain seated for long periods."
+        "description": "Indicates if the participant is able to remain seated for long periods.",
+        "question": {
+            "en": "How often do you leave your seat in meetings or other situations in which you are expected to remain seated?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Never "
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Rarely "
+                },
+                "value": " rarely"
+            },
+            {
+                "name": {
+                    "en": "Sometimes "
+                },
+                "value": " sometimes"
+            },
+            {
+                "name": {
+                    "en": "Often "
+                },
+                "value": " often"
+            },
+            {
+                "name": {
+                    "en": "Very Often"
+                },
+                "value": " veryOften"
+            }
+        ]
     },
     "restless": {
         "description": "Indicates if the participant feels restless.",
@@ -249,18 +553,208 @@
         ]
     },
     "difficulty_unwinding": {
-        "description": "Indicates if the participant has difficulty unwinding or relaxing after stressful events."
+        "description": "Indicates if the participant has difficulty unwinding or relaxing after stressful events.",
+        "question": {
+            "en": "How often do you have difficulty unwinding and relaxing when you have time to yourself?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Never "
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Rarely "
+                },
+                "value": " rarely"
+            },
+            {
+                "name": {
+                    "en": "Sometimes "
+                },
+                "value": " sometimes"
+            },
+            {
+                "name": {
+                    "en": "Often "
+                },
+                "value": " often"
+            },
+            {
+                "name": {
+                    "en": "Very Often"
+                },
+                "value": " veryOften"
+            }
+        ]
     },
     "talking_too_much": {
-        "description": "Indicates if the participant feels they are talking too much."
+        "description": "Indicates if the participant feels they are talking too much.",
+        "question": {
+            "en": "How often do you find yourself talking too much when you are in social situations?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Never "
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Rarely "
+                },
+                "value": " rarely"
+            },
+            {
+                "name": {
+                    "en": "Sometimes "
+                },
+                "value": " sometimes"
+            },
+            {
+                "name": {
+                    "en": "Often "
+                },
+                "value": " often"
+            },
+            {
+                "name": {
+                    "en": "Very Often"
+                },
+                "value": " veryOften"
+            }
+        ]
     },
     "finish_other_sent": {
-        "description": "Indicates if the participant finishes others' sentences."
+        "description": "Indicates if the participant finishes others' sentences.",
+        "question": {
+            "en": "When you're in a conversation, how often do you find yourself finishing the sentences of the people you are talking to, before they can finish them themselves?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Never "
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Rarely "
+                },
+                "value": " rarely"
+            },
+            {
+                "name": {
+                    "en": "Sometimes "
+                },
+                "value": " sometimes"
+            },
+            {
+                "name": {
+                    "en": "Often "
+                },
+                "value": " often"
+            },
+            {
+                "name": {
+                    "en": "Very Often"
+                },
+                "value": " veryOften"
+            }
+        ]
     },
     "difficulty_waiting": {
-        "description": "Indicates if the participant has difficulty waiting for others."
+        "description": "Indicates if the participant has difficulty waiting for others.",
+        "question": {
+            "en": "How often do you have difficulty waiting your turn in situations when turn taking is required?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Never "
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Rarely "
+                },
+                "value": " rarely"
+            },
+            {
+                "name": {
+                    "en": "Sometimes "
+                },
+                "value": " sometimes"
+            },
+            {
+                "name": {
+                    "en": "Often "
+                },
+                "value": " often"
+            },
+            {
+                "name": {
+                    "en": "Very Often"
+                },
+                "value": " veryOften"
+            }
+        ]
     },
     "interrupt_others": {
-        "description": "Indicates if the participant tends to interrupt others during conversations."
+        "description": "Indicates if the participant tends to interrupt others during conversations.",
+        "question": {
+            "en": "How often do you interrupt others when they are busy?"
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Never "
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Rarely "
+                },
+                "value": " rarely"
+            },
+            {
+                "name": {
+                    "en": "Sometimes "
+                },
+                "value": " sometimes"
+            },
+            {
+                "name": {
+                    "en": "Often "
+                },
+                "value": " often"
+            },
+            {
+                "name": {
+                    "en": "Very Often"
+                },
+                "value": " veryOften"
+            }
+        ]
     }
 }

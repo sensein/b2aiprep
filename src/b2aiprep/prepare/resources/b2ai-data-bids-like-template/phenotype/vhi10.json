@@ -20,33 +20,413 @@
         "choices": null
     },
     "voice_difficult_hear": {
-        "description": "Indicates if the participant's voice is difficult to hear."
+        "description": "Indicates if the participant's voice is difficult to hear.",
+        "question": {
+            "en": "My voice makes it difficult for people to hear me."
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Never "
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Almost Never "
+                },
+                "value": " almostNever"
+            },
+            {
+                "name": {
+                    "en": "Sometimes "
+                },
+                "value": " sometimes"
+            },
+            {
+                "name": {
+                    "en": "Almost Always "
+                },
+                "value": " almostAlways"
+            },
+            {
+                "name": {
+                    "en": "Always"
+                },
+                "value": " always"
+            }
+        ]
     },
     "tough_to_understand": {
-        "description": "Indicates if the participant feels that their voice is tough to understand."
+        "description": "Indicates if the participant feels that their voice is tough to understand.",
+        "question": {
+            "en": "People have difficulty understanding me in a noisy room."
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Never "
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Almost Never "
+                },
+                "value": " almostNever"
+            },
+            {
+                "name": {
+                    "en": "Sometimes "
+                },
+                "value": " sometimes"
+            },
+            {
+                "name": {
+                    "en": "Almost Always "
+                },
+                "value": " almostAlways"
+            },
+            {
+                "name": {
+                    "en": "Always"
+                },
+                "value": " always"
+            }
+        ]
     },
     "voice_restrict_social": {
-        "description": "Indicates if the participant's voice issues restrict their social activities."
+        "description": "Indicates if the participant's voice issues restrict their social activities.",
+        "question": {
+            "en": "My voice difficulties restrict personal and social life."
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Never "
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Almost Never "
+                },
+                "value": " almostNever"
+            },
+            {
+                "name": {
+                    "en": "Sometimes "
+                },
+                "value": " sometimes"
+            },
+            {
+                "name": {
+                    "en": "Almost Always "
+                },
+                "value": " almostAlways"
+            },
+            {
+                "name": {
+                    "en": "Always"
+                },
+                "value": " always"
+            }
+        ]
     },
     "left_out_convo": {
-        "description": "Reports if the participant felt left out of a conversation recently."
+        "description": "Reports if the participant felt left out of a conversation recently.",
+        "question": {
+            "en": "I feel left out of conversations because of my voice."
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Never "
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Almost Never "
+                },
+                "value": " almostNever"
+            },
+            {
+                "name": {
+                    "en": "Sometimes "
+                },
+                "value": " sometimes"
+            },
+            {
+                "name": {
+                    "en": "Almost Always "
+                },
+                "value": " almostAlways"
+            },
+            {
+                "name": {
+                    "en": "Always"
+                },
+                "value": " always"
+            }
+        ]
     },
     "voice_lose_income": {
-        "description": "Indicates if the participant's voice issues have led to a loss of income."
+        "description": "Indicates if the participant's voice issues have led to a loss of income.",
+        "question": {
+            "en": "My voice problem causes me to lose income."
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Never "
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Almost Never "
+                },
+                "value": " almostNever"
+            },
+            {
+                "name": {
+                    "en": "Sometimes "
+                },
+                "value": " sometimes"
+            },
+            {
+                "name": {
+                    "en": "Almost Always "
+                },
+                "value": " almostAlways"
+            },
+            {
+                "name": {
+                    "en": "Always"
+                },
+                "value": " always"
+            }
+        ]
     },
     "strain_voice": {
-        "description": "Reports if the participant has experienced voice strain."
+        "description": "Reports if the participant has experienced voice strain.",
+        "question": {
+            "en": "I feel as though I have to strain to produce voice."
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Never "
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Almost Never "
+                },
+                "value": " almostNever"
+            },
+            {
+                "name": {
+                    "en": "Sometimes "
+                },
+                "value": " sometimes"
+            },
+            {
+                "name": {
+                    "en": "Almost Always "
+                },
+                "value": " almostAlways"
+            },
+            {
+                "name": {
+                    "en": "Always"
+                },
+                "value": " always"
+            }
+        ]
     },
     "voice_clarity": {
-        "description": "Indicates if the participant’s voice is clear during the session."
+        "description": "Indicates if the participant’s voice is clear during the session.",
+        "question": {
+            "en": "The clarity of my voice is unpredictable."
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Never "
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Almost Never "
+                },
+                "value": " almostNever"
+            },
+            {
+                "name": {
+                    "en": "Sometimes "
+                },
+                "value": " sometimes"
+            },
+            {
+                "name": {
+                    "en": "Almost Always "
+                },
+                "value": " almostAlways"
+            },
+            {
+                "name": {
+                    "en": "Always"
+                },
+                "value": " always"
+            }
+        ]
     },
     "voice_upsetting": {
-        "description": "Indicates if the participant finds their voice issues upsetting."
+        "description": "Indicates if the participant finds their voice issues upsetting.",
+        "question": {
+            "en": "My voice problem upsets me."
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Never "
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Almost Never "
+                },
+                "value": " almostNever"
+            },
+            {
+                "name": {
+                    "en": "Sometimes "
+                },
+                "value": " sometimes"
+            },
+            {
+                "name": {
+                    "en": "Almost Always "
+                },
+                "value": " almostAlways"
+            },
+            {
+                "name": {
+                    "en": "Always"
+                },
+                "value": " always"
+            }
+        ]
     },
     "voice_handicapped": {
-        "description": "Indicates if the participant feels handicapped by their voice."
+        "description": "Indicates if the participant feels handicapped by their voice.",
+        "question": {
+            "en": "My voice makes me feel handicapped."
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Never "
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Almost Never "
+                },
+                "value": " almostNever"
+            },
+            {
+                "name": {
+                    "en": "Sometimes "
+                },
+                "value": " sometimes"
+            },
+            {
+                "name": {
+                    "en": "Almost Always "
+                },
+                "value": " almostAlways"
+            },
+            {
+                "name": {
+                    "en": "Always"
+                },
+                "value": " always"
+            }
+        ]
     },
     "ask_whats_wrong_voice": {
-        "description": "Indicates if the participant asked what was wrong with their voice during the assessment."
+        "description": "Indicates if the participant asked what was wrong with their voice during the assessment.",
+        "question": {
+            "en": "People ask, \"What's wrong with your voice?\""
+        },
+        "datatype": [
+            "xsd:string"
+        ],
+        "choices": [
+            {
+                "name": {
+                    "en": "Never "
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Almost Never "
+                },
+                "value": " almostNever"
+            },
+            {
+                "name": {
+                    "en": "Sometimes "
+                },
+                "value": " sometimes"
+            },
+            {
+                "name": {
+                    "en": "Almost Always "
+                },
+                "value": " almostAlways"
+            },
+            {
+                "name": {
+                    "en": "Always"
+                },
+                "value": " always"
+            }
+        ]
     }
 }
