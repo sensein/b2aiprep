@@ -48,8 +48,7 @@ _LOGGER = logging.getLogger(__name__)
 
 def get_audio_paths(
     bids_dir_path: str | os.PathLike,
-    group_by: t.Literal["subject", "size"] = "subject",
-) -> t.List[str | os.PathLike] | t.List[t.List[str | os.PathLike]]:
+) -> list[dict[str, Path | int]]:
     """Retrieve all .wav audio file paths from a BIDS-like directory structure.
 
     This function traverses the specified BIDS directory, collecting paths to
@@ -58,24 +57,17 @@ def get_audio_paths(
 
     Args:
       bids_dir_path: The root directory of the BIDS dataset.
-      group_by: The type of grouping to apply to the audio paths. If 'subject',
-        the audio paths will be grouped by subject. If 'size', the audio paths
-        will be grouped by file size.
 
     Returns:
-      list of list of str:
-        A list of lists of file paths to .wav audio files within the BIDS
-        directory when grouped by subject.
-      list of str:
-        A list of file paths to .wav audio files within the BIDS directory when
-        grouped by file size.
+      list[dict[str, Path | int]]:
+        A list of dictionaries, each containing the path to an audio file and
+        its size in bytes.
     """
-    audio_paths = []
+    audio_paths: list[dict[str, Path | int]] = []
 
     # Iterate over each subject directory.
     for sub_file in os.listdir(bids_dir_path):
         subject_dir_path = os.path.join(bids_dir_path, sub_file)
-        audio_paths_subj = []
         if sub_file.startswith(SUBJECT_PREFIX) and os.path.isdir(subject_dir_path):
             # Iterate over each session directory within a subject.
             for session_dir_path in os.listdir(subject_dir_path):
@@ -85,17 +77,14 @@ def get_audio_paths(
                     # Iterate over each audio file in the voice directory.
                     for audio_file in os.listdir(audio_path):
                         if audio_file.endswith(".wav"):
-                            audio_file_path = os.path.join(audio_path, audio_file)
-                            audio_paths_subj.append(Path(audio_file_path).absolute())
-            file_sizes = [audio_path.stat().st_size for audio_path in audio_paths_subj]
-            audio_paths_subj = [audio_paths_subj[idx] for idx in np.argsort(file_sizes)]
-            if group_by == "subject":
-                audio_paths.append(audio_paths_subj)
-            else:
-                audio_paths.extend(audio_paths_subj)
-    if group_by == "size":
-        file_sizes = [audio_path.stat().st_size for audio_path in audio_paths]
-        audio_paths = [audio_paths[idx] for idx in np.argsort(file_sizes)]
+                            audio_file_path = Path(os.path.join(audio_path, audio_file))
+                            audio_paths.append(
+                                {
+                                    "path": audio_file_path.absolute(),
+                                    "subject": audio_file_path.name.split("_")[0].split("sub-")[1],
+                                    "size": audio_file_path.stat().st_size,
+                                }
+                            )
     return audio_paths
 
 
@@ -785,7 +774,7 @@ def validate_bids_folder(bids_dir_path: Path):
         bids_dir_path:
             The root directory of the BIDS dataset.
     """
-    audio_paths = get_audio_paths(bids_dir_path)
+    audio_paths = [x["path"] for x in get_audio_paths(bids_dir_path)]
     missing_features = []
     missing_transcriptions = []
     for audio_path in audio_paths:
