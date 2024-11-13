@@ -136,7 +136,6 @@ def wav_to_features(
             torchaudio_squim=is_speech_task,
         ).pop()
         features["is_speech_task"] = is_speech_task
-        features = features.pop()
         features["sample_rate"] = audio_16k.sampling_rate
         features["sensitive_features"] = None
         if with_sensitive:
