@@ -131,12 +131,12 @@ def prepare_bids(
     os.makedirs(cache, exist_ok=True)
 
     _LOGGER.info("Organizing data into BIDS-like directory structure...")
-    redcap_to_bids(redcap_csv_path, Path(bids_dir_path), audio_dir_path)
+    redcap_to_bids(Path(redcap_csv_path), Path(bids_dir_path), Path(audio_dir_path))
     _LOGGER.info("Data organization complete.")
 
     _LOGGER.info("Beginning audio feature extraction...")
     extract_features_workflow(
-        bids_dir_path,
+        Path(bids_dir_path),
         transcription_model_size=transcription_model_size,
         n_cores=n_cores,
         with_sensitive=with_sensitive,
@@ -148,7 +148,7 @@ def prepare_bids(
     _LOGGER.info("Audio feature extraction complete.")
 
     # Below code checks to see if we have all the expected feature/transcript files.
-    validate_bids_folder(bids_dir_path)
+    validate_bids_folder(Path(bids_dir_path))
 
     _LOGGER.info("Saving .tar file with processed data...")
     with tarfile.open(tar_file_path, "w:gz") as tar:
