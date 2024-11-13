@@ -1,4 +1,5 @@
 import logging
+import multiprocessing as mp
 
 import click
 
@@ -47,5 +48,6 @@ cli.add_command(createbatchcsv)
 cli.add_command(create_derived_dataset)
 
 if __name__ == "__main__":
+    mp.set_start_method("spawn")
     # include main to enable python debugging
     cli()  # pylint: disable=no-value-for-parameter
