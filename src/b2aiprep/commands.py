@@ -213,7 +213,8 @@ def create_derived_dataset(
     bids_path,
 ):
     bids_path = Path(bids_path)
-    audio_paths = get_audio_paths(bids_dir_path=bids_path, group_by="size")
+    audio_paths = get_audio_paths(bids_dir_path=bids_path)
+    audio_paths = [x["path"] for x in audio_paths]
     file_extension = "pt"
     _LOGGER.info("Loading derived data into a single HF dataset.")
     feature_loader = partial(load_audio_features, audio_paths, file_extension)

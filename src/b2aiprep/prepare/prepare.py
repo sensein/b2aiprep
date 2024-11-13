@@ -41,6 +41,7 @@ import traceback
 from pathlib import Path
 from typing import List
 
+import pandas as pd
 import pydra
 import torch
 from senselab.audio.data_structures import Audio
@@ -71,7 +72,99 @@ _logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
-@pydra.mark.task
+def extract_single(
+    wav_path: str | os.PathLike,
+    transcription_model_size: str,
+    with_sensitive: bool,
+    device: DeviceType = DeviceType.CPU,
+):
+
+    wav_path = Path(wav_path)
+
+    logging.disable(logging.ERROR)
+    # Load audio
+    audio_orig = Audio.from_filepath(wav_path)
+
+    # Downmix to mono
+    audio_orig = downmix_audios_to_mono([audio_orig])[0]
+
+    # Resample both audios to 16kHz
+    audio_16k = resample_audios([audio_orig], RESAMPLE_RATE)[0]
+
+    win_length = 25
+    hop_length = 10
+
+    is_speech_task = any([v.replace(" ", "-") in wav_path.name for v in SPEECH_TASKS])
+
+    parsel_mouth_config = False
+    if is_speech_task:
+        parsel_mouth_config = {
+            "time_step": hop_length / 1000,
+            "window_length": win_length / 1000,
+            "plugin": "serial",
+        }
+    torch_config = {
+        "freq_low": 80,
+        "freq_high": 500,
+        "n_fft": win_length * audio_16k.sampling_rate // 1000,
+        "n_mels": 20,
+        "n_mfcc": 20,
+        "win_length": win_length,
+        "hop_length": hop_length,
+        "plugin": "serial",
+    }
+    # Extract features
+    features = extract_features_from_audios(
+        audios=[audio_16k],
+        opensmile=True,
+        parselmouth=parsel_mouth_config,
+        torchaudio=torch_config,
+        torchaudio_squim=is_speech_task,
+    ).pop()
+    features["is_speech_task"] = is_speech_task
+    features["sample_rate"] = audio_16k.sampling_rate
+    features["sensitive_features"] = None
+    if with_sensitive:
+        features["audio_path"] = wav_path
+        try:
+            model = SpeechBrainModel(
+                path_or_uri="speechbrain/spkrec-ecapa-voxceleb", revision="main"
+            )
+            features["speaker_embedding"] = extract_speaker_embeddings_from_audios(
+                [audio_16k], model, device
+            )[0]
+        except Exception as e:
+            features["speaker_embedding"] = None
+            _logger.error(
+                f"Speaker embeddings: An error occurred with extracting speaker embeddings. {e}"
+            )
+        features["transcription"] = None
+        try:
+            speech_to_text_model = HFModel(
+                path_or_uri=f"openai/whisper-{transcription_model_size}", revision="main"
+            )
+            language = Language.model_validate({"language_code": "en"})
+            transcription = retry(transcribe_audios)(
+                [audio_16k], model=speech_to_text_model, device=device, language=language
+            )
+            features["transcription"] = transcription[0]
+        except Exception as e:
+            logging.disable(logging.NOTSET)
+            _logger.error(f"Transcription: An error occurred with transcription: {e}")
+            _logger.error(traceback.print_exc())
+        features["sensitive_features"] = ["audio_path", "speaker_embedding", "transcription"]
+    logging.disable(logging.NOTSET)
+    _logger.setLevel(logging.INFO)
+
+    # Define the save directory for features
+    audio_dir = wav_path.parent
+    features_dir = audio_dir.parent / "audio"
+    features_dir.mkdir(exist_ok=True)
+    save_to = features_dir / f"{wav_path.stem}_features.pt"
+    torch.save(features, save_to)
+    return save_to
+
+
 def wav_to_features(
     wav_paths: List[str | os.PathLike],
     transcription_model_size: str,
@@ -91,101 +184,32 @@ def wav_to_features(
       A dictionary mapping feature names to their extracted values.
     """
     all_features = []
-    _logger.info(f"Number of audio files: {len(wav_paths)}")
-    for wav_path in tqdm(wav_paths, total=len(wav_paths), desc="Extracting features"):
-        wav_path = Path(wav_path)
-
-        logging.disable(logging.ERROR)
-        # Load audio
-        audio_orig = Audio.from_filepath(wav_path)
-
-        # Downmix to mono
-        audio_orig = downmix_audios_to_mono([audio_orig])[0]
-
-        # Resample both audios to 16kHz
-        audio_16k = resample_audios([audio_orig], RESAMPLE_RATE)[0]
-
-        win_length = 25
-        hop_length = 10
-
-        is_speech_task = any([v.replace(" ", "-") in wav_path.name for v in SPEECH_TASKS])
-
-        parsel_mouth_config = False
-        if is_speech_task:
-            parsel_mouth_config = {
-                "time_step": hop_length / 1000,
-                "window_length": win_length / 1000,
-                "plugin": "serial",
-            }
-        torch_config = {
-            "freq_low": 80,
-            "freq_high": 500,
-            "n_fft": win_length * audio_16k.sampling_rate // 1000,
-            "n_mels": 20,
-            "n_mfcc": 20,
-            "win_length": win_length,
-            "hop_length": hop_length,
-            "plugin": "serial",
-        }
-        # Extract features
-        features = extract_features_from_audios(
-            audios=[audio_16k],
-            opensmile=True,
-            parselmouth=parsel_mouth_config,
-            torchaudio=torch_config,
-            torchaudio_squim=is_speech_task,
-        ).pop()
-        features["is_speech_task"] = is_speech_task
-        features["sample_rate"] = audio_16k.sampling_rate
-        features["sensitive_features"] = None
-        if with_sensitive:
-            features["audio_path"] = wav_path
-            try:
-                model = SpeechBrainModel(
-                    path_or_uri="speechbrain/spkrec-ecapa-voxceleb", revision="main"
-                )
-                features["speaker_embedding"] = extract_speaker_embeddings_from_audios(
-                    [audio_16k], model, device
-                )[0]
-            except Exception as e:
-                features["speaker_embedding"] = None
-                _logger.error(
-                    f"Speaker embeddings: An error occurred with extracting speaker embeddings. {e}"
-                )
-            features["transcription"] = None
-            try:
-                speech_to_text_model = HFModel(
-                    path_or_uri=f"openai/whisper-{transcription_model_size}", revision="main"
-                )
-                language = Language.model_validate({"language_code": "en"})
-                transcription = retry(transcribe_audios)(
-                    [audio_16k], model=speech_to_text_model, device=device, language=language
-                )
-                features["transcription"] = transcription[0]
-            except Exception as e:
-                logging.disable(logging.NOTSET)
-                _logger.error(f"Transcription: An error occurred with transcription: {e}")
-                _logger.error(traceback.print_exc())
-            features["sensitive_features"] = ["audio_path", "speaker_embedding", "transcription"]
-        logging.disable(logging.NOTSET)
-        _logger.setLevel(logging.INFO)
-
-        # Define the save directory for features
-        audio_dir = wav_path.parent
-        features_dir = audio_dir.parent / "audio"
-        features_dir.mkdir(exist_ok=True)
-        save_path = features_dir / f"{wav_path.stem}_features.pt"
-        torch.save(features, save_path)
+    if len(wav_paths) > 1:
+        _logger.info(f"Number of audio files: {len(wav_paths)}")
+        for wav_path in tqdm(wav_paths, total=len(wav_paths), desc="Extracting features"):
+            save_path = extract_single(
+                wav_path,
+                transcription_model_size=transcription_model_size,
+                with_sensitive=with_sensitive,
+                device=device,
+            )
+            all_features.append(save_path)
+    else:
+        save_path = extract_single(
+            wav_paths[0],
+            transcription_model_size=transcription_model_size,
+            with_sensitive=with_sensitive,
+            device=device,
+        )
         all_features.append(save_path)
-
     return all_features
 
 
 def extract_features_workflow(
     bids_dir_path: Path,
     transcription_model_size: str = "tiny",
-    n_cores: int = 8,
     with_sensitive: bool = True,
+    n_cores: int = 8,
     plugin: str = "cf",
     address: str = None,
     cache_dir: str | os.PathLike = None,
@@ -215,23 +239,24 @@ def extract_features_workflow(
         The Pydra Task object with the extracted feature paths.
     """
     if n_cores > 1:
-        group_by = "subject"
         plugin_args: dict = {"n_procs": n_cores} if plugin == "cf" else {}
     else:
-        group_by = "size"
         plugin = "serial"
         plugin_args = {}
     # Get paths to every audio file.
-    audio_paths = get_audio_paths(bids_dir_path=bids_dir_path, group_by=group_by)
-    extract_task = wav_to_features(
+    audio_paths = get_audio_paths(bids_dir_path=bids_dir_path)
+    df = pd.DataFrame(audio_paths)
+    # randomize to distribute sizes
+    df = df.sample(frac=1).reset_index(drop=True)
+    audio_paths = df.path.values.tolist()
+    _logger.info(f"Number of audio files: {len(audio_paths)}")
+    # Run the task
+    extract_task = pydra.mark.task(extract_single)(
         transcription_model_size=transcription_model_size,
         with_sensitive=with_sensitive,
         cache_dir=cache_dir,
     )
-    if n_cores > 1:
-        extract_task.split("wav_paths", wav_paths=audio_paths)
-    else:
-        extract_task.inputs.wav_paths = audio_paths
+    extract_task.split("wav_path", wav_path=audio_paths)
     if plugin == "dask":
         plugin_args = {"address": address}
     with pydra.Submitter(plugin=plugin, **plugin_args) as run:
@@ -242,7 +267,12 @@ def extract_features_workflow(
 def validate_bids_data(
     bids_dir_path: Path,
     fix: bool = True,
-    transcription_model_size: str = "medium",
+    transcription_model_size: str = "tiny",
+    with_sensitive: bool = True,
+    n_cores: int = 8,
+    plugin: str = "cf",
+    address: str = None,
+    cache_dir: str | os.PathLike = None,
 ) -> None:
     """Scans BIDS audio data and verifies that all expected features are present."""
     _logger.info("Scanning for features in BIDS directory.")
@@ -250,9 +280,10 @@ def validate_bids_data(
     # before proceeding to the next step
     # can verify features are generated for each audio_dir by looking for .pt files
     # in audio_dir.parent / "audio"
-    audio_paths = get_audio_paths(bids_dir_path, group_by="size")
+    audio_paths = get_audio_paths(bids_dir_path)
+    df = pd.DataFrame(audio_paths)
     audio_to_reprocess = []
-    for audio_path in audio_paths:
+    for audio_path in df.path.values.tolist():
         audio_path = Path(audio_path)
         audio_dir = audio_path.parent
         features_dir = audio_dir.parent / "audio"
@@ -270,10 +301,23 @@ def validate_bids_data(
     if not fix:
         return
 
+    if n_cores > 1:
+        plugin_args: dict = {"n_procs": n_cores} if plugin == "cf" else {}
+    else:
+        plugin = "serial"
+        plugin_args = {}
     extract_task = wav_to_features(
-        audio_to_reprocess, transcription_model_size=transcription_model_size
+        transcription_model_size=transcription_model_size,
+        with_sensitive=with_sensitive,
     )
-    with pydra.Submitter(plugin="serial") as run:
+    if n_cores > 1:
+        extract_task.split("wav_paths", wav_paths=[[x] for x in audio_to_reprocess])
+    else:
+        extract_task.inputs.wav_paths = audio_to_reprocess
+    if plugin == "dask":
+        plugin_args = {"address": address}
+    with pydra.Submitter(plugin=plugin, **plugin_args) as run:
         run(extract_task)
-
+    with pydra.Submitter(plugin="cf") as run:
+        run(extract_task)
     _logger.info("Process completed.")
