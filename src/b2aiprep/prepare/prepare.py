@@ -247,6 +247,9 @@ def extract_features_workflow(
       pydra.Task:
         The Pydra Task object with the extracted feature paths.
     """
+    import multiprocessing as mp
+
+    mp.set_start_method("spawn")
     if n_cores > 1:
         plugin_args: dict = {"n_procs": n_cores} if plugin == "cf" else {}
     else:
