@@ -36,22 +36,22 @@ def setup_temp_files():
         yield redcap_csv_path, audio_dir, bids_dir_path, tar_file_path
 
 
-def test_prepbidslikedata_cli(setup_temp_files):
+def test_prepare_bids_cli(setup_temp_files):
     """Test the 'b2aiprep-cli prepbidslikedata' command using subprocess."""
     redcap_csv_path, audio_dir, bids_dir_path, tar_file_path = setup_temp_files
 
     # Define the CLI command
     command = [
         "b2aiprep-cli",
-        "prepbidslikedata",
+        "prepare-bids",
         redcap_csv_path,
         audio_dir,
         bids_dir_path,
         tar_file_path,
         "tiny",  # transcription_model_size
-        "2",  # n_cores
-        "true",  #
-        "true",
+        "--n_cores", "2",
+        "--with_sensitive",
+        "--overwrite",
     ]
 
     # Run the CLI command
