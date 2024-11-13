@@ -1,0 +1,1215 @@
+Record ID
+Repeat Instrument
+Repeat Instance
+Language
+Consent Status
+Is Feasibility Participant?
+Enrollment Institution
+Age
+Eligible Studies (choice=Voice Disorders)
+Eligible Studies (choice=Neurological and Neurodegenerative Disorders)
+Eligible Studies (choice=Mood and Psychiatric Disorders)
+Eligible Studies (choice=Respiratory Disorders)
+Eligible Studies (choice=Pediatric Disorders [Ages 2-4])
+Eligible Studies (choice=Pediatric Disorders [Ages 4-6])
+Eligible Studies (choice=Pediatric Disorders [Ages 6-10])
+Eligible Studies (choice=Pediatric Disorders [Ages 10+])
+Eligible Studies (choice=Pediatric Placeholder)
+Is Control Participant?
+Laryngeal Cancer
+Lesions of the vocal cord (nodule, polyp, cyst)
+Recurrent Laryngeal Papilloma (RRP)
+Spasmodic Dysphonia / Laryngeal Tremor
+Unilateral Vocal Fold Paralysis
+Alzheimer's, Dementia, or Mild Cognitive Impairment
+Amyotrophic Lateral Sclerosis (ALS)
+Parkinson's disease
+Alcohol or Substance Use Disorder
+Anxiety Disorder
+Attention-Deficit / Hyperactivity Disorder (ADHD)
+Autism Spectrum Disorder (ASD)
+Bipolar Disorder
+Borderline Personality Disorder (BPD)
+Depression or Major Depressive Disorder
+Eating Disorder (ED)
+Insomnia / Sleep Disorder
+Obsessive-Compulsive Disorder (OCD)
+Panic Disorder
+Post-Traumatic Stress Disorder (PTSD)
+Schizophrenia
+Social Anxiety Disorder
+Other Psychiatric Disorder
+Asthma
+Airway Stenosis (for example: bilateral vocal fold paralysis; laryngeal stenosis)
+Chronic Cough
+COPD
+Obstructive Sleep Apnea (OSA)
+Complete?
+Select a language
+This application requires you to read text to answer questions. Do you have any vision-related requirements we can assist with?
+Yes, I would like to use some of the accessibility features of the app (choice=I would like to change the font size)
+Yes, I would like to use some of the accessibility features of the app (choice=I would like to change the font color (high contrast mode))
+Yes, I would like to use some of the accessibility features of the app (choice=I would like to use a screen reader)
+Yes, I would like to use some of the accessibility features of the app (choice=I would like a person to read the text to me)
+This application may present some sound files for you to listen to. Do you have any hearing-related requirements we can assist with?
+Yes, I would like to use some of the accessibility features of the app (choice=I would like to turn up the volume)
+Yes, I would like to use some of the accessibility features of the app (choice=I would like to turn on closed captions)
+Yes, I would like to use some of the accessibility features of the app (choice=I would like to use haptic feedback (vibrations) instead of audio cues)
+This application requires you to navigate through the questions using a touch screen. Do you have any physical challenges we can accommodate?
+Yes, I would like to use some of the accessibility features of the app (choice=I would like to increase the size of the buttons)
+Yes, I would like to use some of the accessibility features of the app (choice=I have an alternative keyboard Id like to connect instead)
+Yes, I would like to use some of the accessibility features of the app (choice=I would like to navigate the survey using voice commands instead of the touch screen)
+This application requires you to read text, answer questions, and follow directions. Do you have any cognitive challenges, including difficulty reading, that we can assist with?
+Yes, I would like to use some of the accessibility features of the app (choice=I would like the questions to be read to me using text-to-speech)
+Yes, I would like to use some of the accessibility features of the app (choice=I would like a person to read the text to me)
+Yes, I would like to use some of the accessibility features of the app (choice=I would like to speak my answers instead of typing them)
+Check all that apply (choice=Self)
+Check all that apply (choice=Assistant)
+Check all that apply (choice=Parent/Caregiver)
+What is your primary language?
+If primary language is 'other', please specify:
+Do you speak any additional language(s) fluently (similar to a native speaker)? (choice=None)
+Do you speak any additional language(s) fluently (similar to a native speaker)? (choice=English)
+Do you speak any additional language(s) fluently (similar to a native speaker)? (choice=French)
+Do you speak any additional language(s) fluently (similar to a native speaker)? (choice=Spanish)
+Do you speak any additional language(s) fluently (similar to a native speaker)? (choice=Other (please specify below))
+If you speak any other languages fluently, please specify:
+Does the patient have VFP confirmed by laryngoscopy/stroboscopy?
+What is the etiology?
+Iatrogenic (surgery/intubation) subcategory
+Tumor invading RLN - Subcategory
+Degree of Glottic Gap
+Overall Severity
+Overall Severity
+Roughness
+Roughness
+Breathiness
+Breathiness
+Strain
+Strain
+Pitch
+Pitch
+Loudness
+Loudness
+Comments about resonance
+Does the patient have laryngeal dystonia as determined by qualitative expert team evaluation?  (Select all that apply). (choice=Laryngologist)
+Does the patient have laryngeal dystonia as determined by qualitative expert team evaluation?  (Select all that apply). (choice=Speech-Language Pathology)
+Does the patient have laryngeal dystonia as determined by qualitative expert team evaluation?  (Select all that apply). (choice=Neurologist specializing in movement disorders)
+Did the patient have the following assessment?  (Select all that apply). (choice=Aural-perceptual evaluation)
+Did the patient have the following assessment?  (Select all that apply). (choice=Laryngoscopy or stroboscopy)
+Did the patient have the following assessment?  (Select all that apply). (choice=Neurological evaluation)
+Disease Subtypes:  (Select all that apply) (choice=Adductor laryngeal dystonia (ADLD))
+Disease Subtypes:  (Select all that apply) (choice=Abductor laryngeal dystonia (ABLD))
+Disease Subtypes:  (Select all that apply) (choice=Vocal Tremor)
+Disease Subtypes:  (Select all that apply) (choice=Mixed laryngeal dystonia)
+Disease Subtypes:  (Select all that apply) (choice=Singers laryngeal dystonia (SLD))
+Disease Subtypes:  (Select all that apply) (choice=Adductor laryngeal spasms during inspiration (ARLD))
+What is the etiology?
+Does the patient have any of the following concomitant conditions?  (Select all that apply). (choice=Essential Tremor of the hands)
+Does the patient have any of the following concomitant conditions?  (Select all that apply). (choice=Essential tremor of the head)
+Does the patient have any of the following concomitant conditions?  (Select all that apply). (choice=Jaw tremor)
+Does the patient have any of the following concomitant conditions?  (Select all that apply). (choice=Dystonia of the head and neck)
+Does the patient have any of the following concomitant conditions?  (Select all that apply). (choice=Other type of dystonia)
+Overall Severity
+Overall Severity
+Roughness
+Roughness
+Breathiness
+Breathiness
+Strain
+Strain
+Pitch
+Pitch
+Loudness
+Loudness
+Comments about resonance
+Has the patient undergone any treatment for their condition?
+Select all that apply: (choice=Botox injections)
+Select all that apply: (choice=Voice/speech therapy)
+Select all that apply: (choice=Vibrotactile stimulation)
+Select all that apply: (choice=Deep brain stimulation)
+Select all that apply: (choice=Magnetic resonance imaging-guided focused ultrasound (MRgFUS))
+Select all that apply: (choice=Other)
+When was the last injection?
+Does the patient have a precancerous vocal fold lesion confirmed by laryngoscopy/stroboscopy?
+Does the patient have a precancerous vocal fold lesion confirmed by biopsy/pathology?
+What is the diagnosis?  (Select all that apply). (choice=Keratosis)
+What is the diagnosis?  (Select all that apply). (choice=Leukoplakia)
+What is the diagnosis?  (Select all that apply). (choice=Erythroplakia)
+What is the diagnosis?  (Select all that apply). (choice=Other)
+Leukoplakia
+Leukoplakia with dysplasia
+Erythroplakia
+Erythroplakia with dysplasia
+Does the patient have the following risk factors?  (Select all that apply). (choice=Past or present smoking)
+Does the patient have the following risk factors?  (Select all that apply). (choice=Laryngopharyngeal reflux)
+Does the patient have the following risk factors?  (Select all that apply). (choice=Other irritants)
+Location of lesion(s)  (Select all that apply). (choice=Right vocal fold)
+Location of lesion(s)  (Select all that apply). (choice=Left vocal fold)
+Location of lesion(s)  (Select all that apply). (choice=Both vocal folds)
+Location of lesion(s)  (Select all that apply). (choice=Ventricular folds (right or left))
+Location of lesion(s)  (Select all that apply). (choice=Subglottal areas)
+Overall Severity
+Overall Severity
+Roughness
+Roughness
+Breathiness
+Breathiness
+Strain
+Strain
+Pitch
+Pitch
+Loudness
+Loudness
+Comments about resonance
+Has the patient undergone any treatment for this condition?
+Select all that apply: (choice=Surveillance only (previous diagnosis))
+Select all that apply: (choice=Laser resection)
+Select all that apply: (choice=Laser ablation)
+Select all that apply: (choice=Microlaryngeal surgery without laser)
+Select all that apply: (choice=Radiotherapy for persistent or recurrent lesions)
+Select all that apply: (choice=Voice/speech therapy)
+Select all that apply: (choice=Other)
+Did the patient get a laryngoscopy/stroboscopy confirming the presence of a suspicious laryngeal lesion?
+Does the patient have laryngeal cancer confirmed by biopsy/pathology report?
+Did the patient undergo other types of scans?  (Select all that apply). (choice=CT of the neck)
+Did the patient undergo other types of scans?  (Select all that apply). (choice=CT of the chest)
+Did the patient undergo other types of scans?  (Select all that apply). (choice=MRI of the neck)
+Did the patient undergo other types of scans?  (Select all that apply). (choice=PET-CT)
+Did the patient undergo other types of scans?  (Select all that apply). (choice=Ultrasound of the neck)
+Which laryngeal structures are/were involved?  (Select all that apply). (choice=Right vocal fold)
+Which laryngeal structures are/were involved?  (Select all that apply). (choice=Left vocal fold)
+Which laryngeal structures are/were involved?  (Select all that apply). (choice=Both vocal folds)
+Which laryngeal structures are/were involved?  (Select all that apply). (choice=Anterior commissure)
+Which laryngeal structures are/were involved?  (Select all that apply). (choice=Ventricular folds (right or left))
+Which laryngeal structures are/were involved?  (Select all that apply). (choice=Subglottal areas)
+Check any risk factors of this patient in relation to their laryngeal cancer.  (Select all that apply). (choice=Smoking)
+Check any risk factors of this patient in relation to their laryngeal cancer.  (Select all that apply). (choice=Alcohol)
+Check any risk factors of this patient in relation to their laryngeal cancer.  (Select all that apply). (choice=Family history)
+Check any risk factors of this patient in relation to their laryngeal cancer.  (Select all that apply). (choice=Human Papilloma Virus (HPV))
+Check any risk factors of this patient in relation to their laryngeal cancer.  (Select all that apply). (choice=Exposure to other harmful substances)
+What is the T stage of the cancer based on the AJCC Classification?
+What is the N stage of the cancer based on the AJCC Classification?
+What is the M stage of the cancer based on the AJCC Classification?
+Overall Severity
+Overall Severity
+Roughness
+Roughness
+Breathiness
+Breathiness
+Strain
+Strain
+Pitch
+Pitch
+Loudness
+Loudness
+Comments about resonance
+Is the cancer causing stridor at rest?
+Has the patient undergone any treatment for their condition?
+Select all that apply: (choice=Radiation)
+Select all that apply: (choice=Chemotherapy)
+Select all that apply: (choice=Immunotherapy)
+Select all that apply: (choice=Surgery)
+Select all that apply: (choice=Voice/Speech therapy)
+Select all that apply: (choice=Other)
+Surgery (choice=Endoscopic laser)
+Surgery (choice=Partial laryngectomy)
+Does the patient have a benign lesion confirmed by laryngoscopy/stroboscopy?
+What is the benign lesion diagnosis?
+What is the etiology?
+Location of lesion(s)
+Overall Severity
+Overall Severity
+Roughness
+Roughness
+Breathiness
+Breathiness
+Strain
+Strain
+Pitch
+Pitch
+Loudness
+Loudness
+Comments about resonance
+Has the patient undergone any treatment for his condition?
+Select all that apply: (choice=Voice/speech therapy)
+Select all that apply: (choice=Laryngeal microsurgery)
+Select all that apply: (choice=Voice rest)
+Select all that apply: (choice=Other)
+Laryngeal microsurgery
+Diagnosis    (Legacy)
+Was a structured clinical interview done?    (Legacy)
+Was an objective questionnaire used?    (Legacy)
+Which objective questionnaire was used?    (Legacy)
+Disease Subtype    (Legacy)
+Psychotic Symptoms    (Legacy)
+Disease Severity    (Legacy)
+Diagnosis     (Legacy)
+Clinical depression (major depressive disorder) Subcategory    (Legacy)
+Was a structured clinical interview done?    (Legacy)
+Was an objective questionnaire used?    (Legacy)
+Which objective questionnaire was used?    (Legacy)
+Disease Subtype    (Legacy)
+Psychotic Symptoms    (Legacy)
+Disease Severity    (Legacy)
+Has the patient had pulmonary function testing within the past 3 months?
+Does the patient have airway stenosis confirmed by a laryngoscopy, bronchoscopy or CT imaging?
+Confirmed by (choice=Confirmed by bronchoscopy or laryngoscopy)
+Confirmed by (choice=Confirmed by CT imaging)
+Disease Subtype
+Bilateral Vocal fold immobility or Glottic Stenosis Subtype
+What is the etiology?
+Auto-immune or granulomatous disease Subcategory
+Degree of Stenosis (Myer-Cotton Grade)
+Degree of Stenosis (Bogdasarian Classification)
+Anterior Glottic Web classification (Cohen)
+Grade of Stenosis (Aziz Classification of Supraglottic Stenosis)
+Grade of Stenosis (Aziz Classification of Supraglottic Stenosis)
+How would you subjectively classify the overall degree of stenosis?
+How would you subjectively estimate the percent of stenosis from 0 to 100?
+What treatment has the patient undergone for their stenosis? (choice=No treatment)
+What treatment has the patient undergone for their stenosis? (choice=Surgery)
+What treatment has the patient undergone for their stenosis? (choice=In-office treatment)
+Surgery options (choice=Endoscopic intervention with Laser and Balloon dilation and steroid injection)
+Surgery options (choice=Endoscopic laser wedge excision with balloon dilation and steroid injection)
+Surgery options (choice=Open Laryngotracheal reconstruction)
+Surgery options (choice=Laryngotracheoplasty (Maddern procedure))
+Surgery options (choice=Tracheostomy)
+Surgery options (choice=Other)
+In-office/awake treatment options (choice=Awake Steroid injection(s) as sole treatment)
+In-office/awake treatment options (choice=Awake Steroid injection(s) as adjunct treatment)
+In-office/awake treatment options (choice=In-office or awake dilation)
+In-office/awake treatment options (choice=In-office or awake laser)
+Have you excluded other causes of cognitive/functional changes (and/or other subtypes)?
+Specify the disease type in the patient:
+What is the suspected or known etiology in the patient? (choice=Genetic factors)
+What is the suspected or known etiology in the patient? (choice=Age-related changes)
+What is the suspected or known etiology in the patient? (choice=Other medical conditions (e.g., vascular factors, traumatic brain injury))
+What is the suspected or known etiology in the patient? (choice=Substance-related (e.g., alcohol-induced cognitive impairment))
+What is the suspected or known etiology in the patient? (choice=Other)
+Genetic Factors Subcategory (choice=Familial Alzheimers disease (e.g., mutations in APP, PSEN1, PSEN2 genes))
+Genetic Factors Subcategory (choice=Apolipoprotein E (APOE) ε4 allele)
+Genetic Factors Subcategory (choice=Other genetic factors)
+What is the current stage/severity of cognitive impairment or dementia in the patient? (choice=Mild cognitive impairment (MCI))
+What is the current stage/severity of cognitive impairment or dementia in the patient? (choice=Clinical dementia rating (CDR) staging)
+Clinical dementia rating (CDR) staging subcategory:
+Rowland Universal Dementia Assessment Scale (RUDAS) score:
+Mini-Mental State Examination (MMSE) score:
+Montreal Cognitive Assessment (MoCA) score:
+Alzheimer's Disease Assessment Scale-Cognitive Subscale (ADAS-Cog) score:
+Other cognitive assessment tool (Please Specify):
+Other cognitive assessment tool score:
+Has the patient undergone any treatment for Alzheimer's disease or cognitive impairment or other types of dementia?
+Yes (choice=Medications)
+Yes (choice=Non-pharmacological interventions)
+Medications: (choice=Cholinesterase inhibitors (e.g., Donepezil, Rivastigmine, Galantamine))
+Medications: (choice=NMDA receptor antagonist (e.g., Memantine))
+Medications: (choice=Other)
+Non-pharmacological interventions: (choice=Day program)
+Non-pharmacological interventions: (choice=Cognitive stimulation therapy)
+Non-pharmacological interventions: (choice=Reality orientation therapy)
+Non-pharmacological interventions: (choice=Reminiscence therapy)
+Non-pharmacological interventions: (choice=Physical exercise program)
+Non-pharmacological interventions: (choice=Dietary modifications)
+Non-pharmacological interventions: (choice=Other)
+Category 1 - Parkinsonism (choice=Bradykinesia)
+Category 1 - Parkinsonism (choice=Tremor)
+Category 1 - Parkinsonism (choice=Rigidity)
+Category 1 Criteria Met
+Category 2 - Exclusion criteria (choice=Cerebellar abnormalities)
+Category 2 - Exclusion criteria (choice=Supranuclear gaze palsy)
+Category 2 - Exclusion criteria (choice=Diagnosis of behavioral variant of frontotemporal dementia or primary progressive aphasia within 5 years of disease onset)
+Category 2 - Exclusion criteria (choice=Parkinsonian features restricted to the lower limbs for more than 3 years)
+Category 2 - Exclusion criteria (choice=Treatment with a dopamine receptor blocker or dopamine depleting agent consistent with drug-induced parkinsonism)
+Category 2 - Exclusion criteria (choice=Absence of a response to high-dose levodopa despite at least moderate disease severity)
+Category 2 - Exclusion criteria (choice=Cortical sensory loss, clear limb ideomotor apraxia, or progressive aphasia)
+Category 2 - Exclusion criteria (choice=Normal functional imaging of the dopaminergic system (DAT scan))
+Category 2 - Exclusion criteria (choice=Diagnosis of alternative condition causing parkinsonism which could be causing the symptoms)
+Category 2 Criteria Met
+Category 3 - Supportive criteria (choice=Clear beneficial response to dopaminergic therapy)
+Category 3 - Supportive criteria (choice=Presence of levodopa-induced dyskinesia)
+Category 3 - Supportive criteria (choice=Rest tremor of a limb)
+Category 3 - Supportive criteria (choice=The presence of either olfactory loss or cardiac sympathetic denervation on MIBG scintigraphy (although the latter is rarely done in current practice))
+Category 3 Criteria Met
+Does the patient meet the diagnostic criteria for Parkinson's Disease (Parkinsonism) based on the criteria above?
+Specify the subtype of Parkinson's Disease in the patient:
+What is the suspected or known etiology of Parkinson's disease in the patient?
+"What is the current stage/severity of Parkinson's disease in the patient?  •	Hoehn and Yahr Scale:"
+Please provide scores or results from validated cognitive assessment tools: (choice=Unified Parkinsons Disease Rating Scale (UPDRS))
+Please provide scores or results from validated cognitive assessment tools: (choice=Other motor assessment tool)
+Unified Parkinson's Disease Rating Scale (UPDRS)
+Part I (Intellectual function, mood, behavior) score:
+Part II (Activities of daily living) score:
+Part III (Motor Examination) score:
+Part IV (Motor complications) score:
+Are there significant non-motor symptoms associated with Parkinson's disease in the patient?
+If you selected 'Yes', please specify:
+Has the patient undergone any treatment for Parkinson's disease?
+Yes (choice=Medications)
+Yes (choice=Non-pharmacological interventions)
+Medications: (choice=Levodopa)
+Medications: (choice=Dopamine agonists)
+Medications: (choice=MAO-B inhibitors)
+Medications: (choice=Amantadine)
+Medications: (choice=Other)
+Non-pharmacological interventions: (choice=Physical therapy)
+Non-pharmacological interventions: (choice=Occupational therapy)
+Non-pharmacological interventions: (choice=Speech therapy)
+Non-pharmacological interventions: (choice=Deep Brain Stimulation (DBS) therapy)
+Non-pharmacological interventions: (choice=Other)
+(1) Progressive motor impairment documented by history or repeated clinical assessment, preceded by normal motor function;
+(2) presence of UMN and LMN signs in at least 1 body region (with UMN and LMN dysfunction noted in the same body region if only one body region is involved) or LMN dysfunction in at least 2 body regions;
+(3) investigations excluding other disease processes.
+Does the patient meet the diagnostic criteria for Amyotrophic Lateral Sclerosis (ALS) based on the criteria above?
+Specify the type of ALS in the patient:
+If you selected 'Familial ALS', please specify the genetic mutation if known:
+What is the suspected or known etiology of ALS in the patient? (choice=Genetic factors)
+What is the suspected or known etiology of ALS in the patient? (choice=Environmental factors)
+Genetic Factors (choice=C9orf72 mutation)
+Genetic Factors (choice=SOD1 mutation)
+Genetic Factors (choice=Other genetic factors)
+Describe the clinical features and symptoms of ALS in the patient: (choice=Upper Motor Neuron Signs (e.g., spasticity, hyperreflexia))
+Describe the clinical features and symptoms of ALS in the patient: (choice=Lower Motor Neuron Signs (e.g., muscle weakness, atrophy, fasciculations))
+Describe the clinical features and symptoms of ALS in the patient: (choice=Bulbar Symptoms (e.g., dysarthria, dysphagia))
+Describe the clinical features and symptoms of ALS in the patient: (choice=Respiratory Involvement)
+Please provide information on the current stage and progression of ALS:
+Revised ALS Functional Rating Scale (ALSFRS-R) score:
+Forced Vital Capacity (FVC) percentage (if measured):
+Has the patient undergone any treatment or interventions for ALS?
+Yes (choice=Medications)
+Yes (choice=Supportive Care)
+Medications (if applicable): (choice=Riluzole)
+Medications (if applicable): (choice=Edaravone)
+Medications (if applicable): (choice=Sodium phenylbutyrate/taurursodiol)
+Medications (if applicable): (choice=Tofersen)
+Medications (if applicable): (choice=Symptomatic treatment (e.g., for spasticity, pain))
+Medications (if applicable): (choice=Other)
+Supportive Care: (choice=Physical therapy)
+Supportive Care: (choice=Occupational therapy)
+Supportive Care: (choice=Speech therapy)
+Supportive Care: (choice=Respiratory support (e.g., non-invasive ventilation))
+Supportive Care: (choice=Nutrition and swallowing support)
+Supportive Care: (choice=Psychotherapy)
+Supportive Care: (choice=Other)
+Session ID
+Session Status
+Is Control Participant?
+Session Duration (seconds)
+Session Site?
+Acoustic Task ID
+Session ID
+Acoustic Task Name
+Acoustic Task Cohort
+Acoustic Task Status
+Acoustic Task Duration (seconds)
+Recording ID
+Acoustic Task ID
+Session ID
+Recording Name
+Duration (Seconds)
+Recording Size (KiB)
+Recording Profile Name
+Recording Profile Version
+Recording Input Gain
+Recording Microphone
+Session ID
+Questionnaire Duration (seconds)
+Who is completing this survey? (choice=Self)
+Who is completing this survey? (choice=Assistant)
+Who is completing this survey? (choice=Parent/Caregiver)
+State/Province
+Country
+What is your gender identity?
+Please specify gender identity
+What is your sexual orientation?
+Which race category best describes you? Choose all that apply (choice=American Indian or Alaska Native)
+Which race category best describes you? Choose all that apply (choice=Asian)
+Which race category best describes you? Choose all that apply (choice=Black or African American)
+Which race category best describes you? Choose all that apply (choice=Native Hawaiian or other Pacific Islander)
+Which race category best describes you? Choose all that apply (choice=White)
+Which race category best describes you? Choose all that apply (choice=Canadian Indigenous or Aboriginal)
+Which race category best describes you? Choose all that apply (choice=Other)
+Which race category best describes you? Choose all that apply (choice=Prefer not to answer)
+What is your ethnic or cultural origin?
+If you selected 'other' level of education, please specify:
+Are you deaf or do you have serious difficulty hearing?
+Are you blind or do you have serious difficulty seeing, even when wearing glasses?
+Because of a physical, mental, or emotional condition, do you have serious difficulty concentrating, remembering, or making decisions?
+Do you have serious difficulty walking or climbing stairs?
+Do you have difficulty dressing or bathing?
+Because of a physical, mental, or emotional condition, do you have difficulty doing errands alone such as visiting a doctor's office or shopping?
+What is your employment status? Choose all that apply (choice=Employed, freelance)
+What is your employment status? Choose all that apply (choice=Employed, full time)
+What is your employment status? Choose all that apply (choice=Employed, part time)
+What is your employment status? Choose all that apply (choice=Employed, multiple part time jobs)
+What is your employment status? Choose all that apply (choice=Student)
+What is your employment status? Choose all that apply (choice=Self-employed)
+What is your employment status? Choose all that apply (choice=Retired)
+What is your employment status? Choose all that apply (choice=Unemployed)
+What is your employment status? Choose all that apply (choice=Other)
+What was your total household income last year (USD)? Please include all sources of income, including pensions, dividends, alimony, child support, etc.
+What was your total household income last year (CAD)? Please include all sources of income, including pensions, dividends, alimony, child support, etc.
+What is your marital status? Choose all that apply (choice=Single)
+What is your marital status? Choose all that apply (choice=Married)
+What is your marital status? Choose all that apply (choice=In a relationship)
+What is your marital status? Choose all that apply (choice=Not married)
+What is your marital status? Choose all that apply (choice=Separated)
+What is your marital status? Choose all that apply (choice=Divorced)
+What is your marital status? Choose all that apply (choice=Widowed)
+What is your current housing status?
+How many people live in your household? Please specify a number
+Spouse/partner/significant other
+One or more children
+One or more parent
+One or more grandparent
+Other
+If 'others' live in your household, please specify:
+Do you have a reliable mode of transportation?
+What is your primary mode of transportation?
+Complete?
+Session ID
+Questionnaire Duration (seconds)
+Have you been a regular smoker or not within the last 3 years?
+Have you ever smoked regularly (more than a few times a month for at least two months)?  This includes tobacco, cannabis, vapes, e-cigarettes, hookah, or pipes.
+At what age did you start smoking?
+At what age did you stop?
+Checklist of different types (choose all that apply): (choice=Tobacco cigarettes)
+Checklist of different types (choose all that apply): (choice=Cannabis joints, bong, pipe)
+Checklist of different types (choose all that apply): (choice=Vapes)
+Checklist of different types (choose all that apply): (choice=e-cigarettes)
+Checklist of different types (choose all that apply): (choice=Hookah)
+Checklist of different types (choose all that apply): (choice=Pipes)
+Checklist of different types (choose all that apply): (choice=Other)
+Checklist of different types (choose all that apply): (choice=Prefer not to answer)
+How often do/did you smoke?
+Do you drink alcohol?
+How often do you have at least one drink containing alcohol?  Drinks can be beer, wine, shots of liquor, cocktails containing a shot of liquor
+How many drinks containing alcohol do you have on a typical day when you are drinking?  One drink is 12 oz. beer, 5 oz. wine, 1.5 oz. (one shot) liquor
+How often did you have six or more drinks on one occasion in the past year?
+Have you drunk alcohol today?
+How many drinks did you have?
+Have you ever been in rehab or counseling for heavy alcohol use?
+Are you currently in recovery for alcohol use?
+How many small (8oz or 230ml) cups of coffee OR shots of espresso OR caffeinated teas do you drink on a typical day?
+How many small (8oz or 230ml) cups of coffee OR shots of espresso OR caffeinated teas have you had TODAY?
+How many small (8oz or 230ml) cups of water do you drink on a typical day?
+How many small (8oz or 230ml) cups of water have you had TODAY?
+Do you have any dental problems that might affect speech?
+Do you currently have seasonal allergies, cold-like symptoms or other conditions that may affect your voice today?
+Check all that apply: (choice=Nasal congestion or obstruction)
+Check all that apply: (choice=Cough)
+Check all that apply: (choice=Scratchy or sore throat)
+Check all that apply: (choice=Shortness of breath)
+How tired are you?  0=not tired at all, 10=extremely tired
+Height
+Weight
+Unit
+There are some symptoms that can affect your voice. Are you currently experiencing any of these symptoms? Check all that apply. (choice=Anxiety or nervousness)
+There are some symptoms that can affect your voice. Are you currently experiencing any of these symptoms? Check all that apply. (choice=Confusion)
+There are some symptoms that can affect your voice. Are you currently experiencing any of these symptoms? Check all that apply. (choice=Dizziness)
+There are some symptoms that can affect your voice. Are you currently experiencing any of these symptoms? Check all that apply. (choice=Frequent or severe headache or migraine)
+There are some symptoms that can affect your voice. Are you currently experiencing any of these symptoms? Check all that apply. (choice=Sleep disturbance)
+There are some symptoms that can affect your voice. Are you currently experiencing any of these symptoms? Check all that apply. (choice=Speech difficulty)
+There are some symptoms that can affect your voice. Are you currently experiencing any of these symptoms? Check all that apply. (choice=Prefer not to answer)
+Ear (choice=Chronic ear infection)
+Ear (choice=Cochlear implant)
+Ear (choice=Hearing loss)
+Nose (choice=Frequent sinusitis)
+Throat (choice=Pre-cancerous throat lesion (e.g. laryngeal leukoplakia or keratosis)
+Throat (choice=Reflux (heartburn))
+Throat (choice=Reinkes edema, polypoid corditis, or smokers larynx)
+Throat (choice=Sjögrens syndrome)
+Throat (choice=Swallowing disorders (dysphagia))
+Throat (choice=Throat cancer)
+Throat (choice=Thyroid disease)
+Throat (choice=Velopharyngeal insufficiency)
+Throat (choice=Vocal fold dysfunction, paradoxical vocal fold motion, or inducible laryngeal obstruction)
+Throat (choice=Vocal fold polyp, nodule, or cyst)
+Throat (choice=Vocal hemorrhage or bleed)
+Throat (choice=Voice/throat disorder)
+Head (choice=Radiation around head and neck)
+Head (choice=Seasonal allergies)
+Ear (choice=Chronic ear surgery (e.g. mastoid))
+Ear (choice=Ear tubes)
+Nose (choice=Septoplasty/Rhinoplasty)
+Nose (choice=Sinus surgery)
+Throat (choice=Airway surgery)
+Throat (choice=Throat surgery)
+Throat (choice=Thyroid surgery)
+Throat (choice=Tonsillectomy/Adenoidectomy)
+Head (choice=Head/Neck cancer (e.g. oropharyngeal cancer))
+Head (choice=Sleep surgery)
+Neurological Medical History (choice=Brain tumor)
+Neurological Medical History (choice=Dysarthria)
+Neurological Medical History (choice=Epilepsy)
+Neurological Medical History (choice=Multiple sclerosis)
+Neurological Medical History (choice=Traumatic brain injury)
+Neurological Medical History (choice=Other)
+Do you currently have these conditions or currently experience symptoms as a result of having had these conditions?
+Respiratory Conditions (choice=Bronchiectasis)
+Respiratory Conditions (choice=Cancer (lung or metastatic))
+Respiratory Conditions (choice=Emphysema)
+Respiratory Conditions (choice=Interstitial lung disease (sarcoidosis, pulmonary fibrosis))
+Respiratory Conditions (choice=Pneumothorax or atelectasis (collapsed lung))
+Respiratory Conditions (choice=Pulmonary hypertension)
+Respiratory Conditions (choice=Radiation to the chest)
+Respiratory Conditions (choice=Tuberculosis)
+Cancer (lung or metastatic) (choice=Lung)
+Cancer (lung or metastatic) (choice=Metastatic)
+Have you had COVID recently, or are you currently experiencing the effects of long COVID? (check all that apply) (choice=COVID in the past year)
+Have you had COVID recently, or are you currently experiencing the effects of long COVID? (check all that apply) (choice=Long COVID (symptoms persisted at least four weeks after initial infection))
+Have you had COVID in the past month?
+Are you currently using CPAP or supplemental oxygen? (check all that apply) (choice=Active CPAP use)
+Are you currently using CPAP or supplemental oxygen? (check all that apply) (choice=On supplemental oxygen)
+Respiratory medical history (choice=Craniofacial or chest wall trauma)
+Respiratory medical history (choice=Previous lobectomy)
+Respiratory medical history (choice=Prior chest/airway surgery)
+Respiratory medical history (choice=Prolonged intubation (more than a week))
+Have you been exposed to environmental pollution that may affect your breathing or voice?
+Are you having difficulty breathing today?
+Please specify the level of difficulty
+Are you coughing today?
+What is the severity of your cough?
+Have you been diagnosed with any of these circulatory or heart conditions by a clinician? (check all that apply) (choice=Atrial fibrillation)
+Have you been diagnosed with any of these circulatory or heart conditions by a clinician? (check all that apply) (choice=Cardiac condition)
+Have you been diagnosed with any of these circulatory or heart conditions by a clinician? (check all that apply) (choice=Chronic pericarditis)
+Have you been diagnosed with any of these circulatory or heart conditions by a clinician? (check all that apply) (choice=Congestive heart failure)
+Have you been diagnosed with any of these circulatory or heart conditions by a clinician? (check all that apply) (choice=Coronary heart disease)
+Have you been diagnosed with any of these circulatory or heart conditions by a clinician? (check all that apply) (choice=Hypertension)
+Some other conditions can affect the sound of your voice. Have you been diagnosed with any of these conditions by a clinician? (check all that apply) (choice=Chronic kidney disease)
+Some other conditions can affect the sound of your voice. Have you been diagnosed with any of these conditions by a clinician? (check all that apply) (choice=Diabetes)
+Some other conditions can affect the sound of your voice. Have you been diagnosed with any of these conditions by a clinician? (check all that apply) (choice=Infectious disease)
+Some other conditions can affect the sound of your voice. Have you been diagnosed with any of these conditions by a clinician? (check all that apply) (choice=Obesity)
+Some other conditions can affect the sound of your voice. Have you been diagnosed with any of these conditions by a clinician? (check all that apply) (choice=Scoliosis)
+Standing for long periods such as 30 minutes?
+Taking care of your household responsibilities?
+Learning a new task, for example, learning how to get to a new place?
+How much of a problem did you have joining in community activities (for example, festivities, religious or other activities) in the same way as anyone else can?
+How much have you been emotionally affected by your health problems?
+Concentrating on doing something for ten minutes?
+Walking a long distance such as a kilometre [or equivalent]?
+Washing your whole body?
+Getting dressed?
+Dealing with people you do not know?
+Maintaining a friendship?
+Your day-to-day work?
+Overall, in the past 30 days, how many days were these difficulties present?
+In the past 30 days, for how many days were you totally unable to carry out your usual activities or work because of any health condition?
+In the past 30 days, not counting the days that you were totally unable, for how many days did you cut back or reduce your usual activities or work because of any health condition?
+Do you currently take or use any of these medications or substances? Please check all that apply (choice=Antibiotics)
+Do you currently take or use any of these medications or substances? Please check all that apply (choice=Anti-histamines (allergy medications))
+Do you currently take or use any of these medications or substances? Please check all that apply (choice=Anti-Hypertensive Medications (Blood Pressure Medication))
+Do you currently take or use any of these medications or substances? Please check all that apply (choice=Diuretics (ex: Lasix))
+Do you currently take or use any of these medications or substances? Please check all that apply (choice=Decongestants)
+Do you currently take or use any of these medications or substances? Please check all that apply (choice=Muscle relaxants (ex: Baclofen))
+Do you currently take or use any of these medications or substances? Please check all that apply (choice=Hormone use)
+Do you currently take or use any of these medications or substances? Please check all that apply (choice=Inhaled corticosteroids)
+Do you currently take or use any of these medications or substances? Please check all that apply (choice=Oral steroids)
+Do you currently take or use any of these medications or substances? Please check all that apply (choice=Anti-anxiety medications: (ex: Benzodiazepine))
+Do you currently take or use any of these medications or substances? Please check all that apply (choice=Chronic Pain medication)
+Do you currently take or use any of these medications or substances? Please check all that apply (choice=Psychotropic/antipsychotic medications (ex: Clozapine))
+Do you currently take or use any of these medications or substances? Please check all that apply (choice=Antidepressants (ex: amitryptiline))
+Do you currently take or use any of these medications or substances? Please check all that apply (choice=Immune suppressors (ex: Methotrexate))
+Do you currently take or use any of these medications or substances? Please check all that apply (choice=Reflux medications (ex: Pantoprazole, Nexium))
+Do you currently take or use any of these medications or substances? Please check all that apply (choice=Anticholinergics (ex: Ventolin))
+Do you currently take or use any of these medications or substances? Please check all that apply (choice=Anticoagulants (blood thinners))
+Do you currently take or use any of these medications or substances? Please check all that apply (choice=Antiepileptic (ex: Phenytoin))
+Hormone use (choice=Oral contraceptive)
+Hormone use (choice=Hormonal replacement therapy (HRT))
+Hormone use (choice=Androgenic steroids)
+Hormone use (choice=Other)
+Chronic Pain medication (choice=NSAIDs (ex: Ibuprofen/Advil/Cerebrex))
+Chronic Pain medication (choice=Morphine/Oxycodone)
+Chronic Pain medication (choice=Neuro-modulators (ex: Gabapentin, Lyrica))
+Do you menstruate?
+Please explain
+Where in your cycle are you? We ask because this may affect your voice.
+Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply (choice=Bartender)
+Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply (choice=Waiter, receptionist)
+Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply (choice=Speaking (secretary, call center, attorney, salesperson))
+Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply (choice=Teacher)
+Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply (choice=Singer)
+Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply (choice=Cheerleading)
+Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply (choice=Other)
+How many hours per day do you do this activity with a loud voice or in a loud environment that requires elevating your voice (for instance, a noisy bar or a noisy classroom)?
+How good do you think you are at reading out loud in [English/Spanish/French], that is reading out loud without making mistakes and understanding what you read at a normal rate?
+Session ID
+Questionnaire Duration (seconds)
+How would rate your voice quality today from 1-10?  1 is the lowest quality and 10 is the best voice quality
+Session ID
+Questionnaire Duration (seconds)
+My voice makes it difficult for people to hear me.
+People have difficulty understanding me in a noisy room.
+My voice difficulties restrict personal and social life.
+I feel left out of conversations because of my voice.
+My voice problem causes me to lose income.
+I feel as though I have to strain to produce voice.
+The clarity of my voice is unpredictable.
+My voice problem upsets me.
+My voice makes me feel handicapped.
+People ask, 'What's wrong with your voice?'
+Session ID
+Questionnaire Duration (seconds)
+Little interest or pleasure in doing things.
+Feeling down, depressed, or hopeless.
+Trouble falling or staying asleep, or sleeping too much.
+Feeling tired or having little energy.
+Poor appetite or overeating.
+Feeling bad about yourself - or that you are a failure or have let yourself or your family down.
+Trouble concentrating on things, such as reading the newspaper or watching television.
+Moving or speaking so slowly that other people could have noticed? Or the opposite - being so fidgety or restless that you have been moving around a lot more than usual.
+Thoughts that you would be better off dead or of hurting yourself in some way.
+How difficult have they made it for you to do your work, take care of things at home, or get along with other people?
+Session ID
+Questionnaire Duration (seconds)
+Feeling nervous, anxious, or on edge.
+Not being able to stop or control worrying.
+Worrying too much about different things.
+Trouble relaxing.
+Being so restless that it is hard to sit still.
+Becoming easily annoyed or irritable.
+Feeling afraid, as if something awful might happen.
+How difficult have they made it for you to do your work, take care of things at home, or get along with other people?
+Session ID
+Questionnaire Duration (seconds)
+Describe the severity of auditory-perceptual attributes of a voice problem  *Overall severity scale (0-100)
+Session ID
+Questionnaire Duration (seconds)
+Upset
+Hostile
+Alert
+Ashamed
+Inspired
+Nervous
+Determined
+Attentive
+Afraid
+Active
+Session ID
+Questionnaire Duration (seconds)
+Sad or down
+Joyful
+Motivated or interested
+Lack of pleasure (in things you tend to enjoy)
+Tired or fatigued
+Energetic
+Agitated (restless, fidgety, pacing, cannot sit still)
+Irritated or angry (towards something or someone)
+Lonely or isolated
+Concentrated (not distracted or inattentive)
+Relaxed or calm
+Worried or anxious
+Desire to escape (your thoughts and/or feelings)
+Session ID
+Questionnaire Duration (seconds)
+Little interest or pleasure in doing things?
+Feeling down, depressed, or hopeless?
+Feeling more irritated, grouchy, or angry than usual?
+Sleeping less than usual, but still have a lot of energy?
+Starting lots more projects than usual or doing more risky things than usual?
+Feeling nervous, anxious, frightened, worried, or on edge?
+Feeling panic or being frightened?
+Avoiding situations that make you anxious?
+Unexplained aches and pains (e.g., head, back, joints, abdomen, legs)?
+Feeling that your illnesses are not being taken seriously enough?
+Thoughts of actually hurting yourself?
+Hearing things other people couldn't hear, such as voices even when no one was around?
+Feeling that someone could hear your thoughts, or that you could hear what another person was thinking?
+Problems with sleep that affected your sleep quality over all?
+Problems with memory (e.g., learning new information) or with location (e.g., finding your way home)?
+Unpleasant thoughts, urges, or images that repeatedly enter your mind?
+Feeling driven to perform certain behaviors or mental acts over and over again?
+Feeling detached or distant from yourself, your body, your physical surroundings, or your memories?
+Not knowing who you really are or what you want out of life?
+Not feeling close to other people or enjoying your relationships with them?
+Drinking at least 4 drinks of any kind of alcohol in a single day?
+Smoking any cigarettes, a cigar, or pipe, or using snuff or chewing tobacco?
+Using any of the following medicines ON YOUR OWN, that is, without a doctor's prescription, in greater amounts or longer than prescribed [e.g., painkillers (like Vicodin), stimulants (like Ritalin or Adderall), sedatives or tranquilizers (like sleeping pills or Valium), or drugs like marijuana, cocaine or crack, club drugs (like ecstasy), hallucinogens (like LSD), heroin, inhalants or solvents (like glue), or methamphetamine (like speed)]?
+Question 1
+Question 2
+Question 3
+Question 4
+Question 5
+felt moments of sudden terror, fear, or fright in social situations
+felt anxious, worried, or nervous about social situations
+had thoughts of being rejected, humiliated, embarrassed, ridiculed, or offending others
+felt a racing heart, sweaty, trouble breathing, faint, or shaky in social situations
+felt tense muscles, felt on edge or restless, or had trouble relaxing in social situations
+avoided, or did not approach or enter, social situations
+left social situations early or participated only minimally (e.g., said little, avoided eye contact)
+spent a lot of time preparing what to say or how to act in social situations
+distracted myself to avoid thinking about social situations
+needed help to cope with social situations (e.g., alcohol or medications, superstitious objects)
+Session ID
+Questionnaire Duration (seconds)
+Please list the traumatic event that you experienced
+Having 'flashbacks', that is, you suddenly acted or felt as if a stressful experience from the past was happening all over again (for example, you reexperienced parts of a stressful experience by seeing, hearing, smelling, or physically feeling parts of the experience)?
+Feeling very emotionally upset when something reminded you of a stressful experience?
+Trying to avoid thoughts, feelings, or physical sensations that reminded you of a stressful experience?
+Thinking that a stressful event happened because you or someone else (who didn't directly harm you) did something wrong or didn't do everything possible to prevent it, or because of something about you?
+Having a very negative emotional state (for example, you were experiencing lots of fear, anger, guilt, shame, or horror) after a stressful experience?
+Losing interest in activities you used to enjoy before having a stressful experience?
+Being 'super alert', on guard, or constantly on the lookout for danger?
+Feeling jumpy or easily startled when you hear an unexpected noise?
+Being extremely irritable or angry to the point where you yelled at other people, got into fights, or destroyed things?
+Session ID
+Questionnaire Duration (seconds)
+How often do you have trouble wrapping up the final details of a project, once the challenging parts have been done?
+How often do you have difficulty getting things in order when you have to do a task that requires organization?
+How often do you have problems remembering appointments or obligations?
+When you have a task that requires a lot of thought, how often do you avoid or delay getting started?
+How often do you fidget or squirm with your hands or feet when you have to sit down for a long time?
+How often do you feel overly active and compelled to do things, like you were driven by a motor?
+How often do you make careless mistakes when you have to work on a boring or difficult project?
+How often do you have difficulty keeping your attention when you are doing boring or repetitive work?
+How often do you have difficulty concentrating on what people say to you, even when they are speaking to you directly?
+How often do you misplace or have difficulty finding things at home or at work?
+How often are you distracted by activity or noise around you?
+How often do you leave your seat in meetings or other situations in which you are expected to remain seated?
+How often do you feel restless or fidgety?
+How often do you have difficulty unwinding and relaxing when you have time to yourself?
+How often do you find yourself talking too much when you are in social situations?
+When you're in a conversation, how often do you find yourself finishing the sentences of the people you are talking to, before they can finish them themselves?
+How often do you have difficulty waiting your turn in situations when turn taking is required?
+How often do you interrupt others when they are busy?
+Session ID
+Questionnaire Duration (seconds)
+I have trouble getting air in.
+I feel tightness in my throat when I am having my breathing problem.
+It takes more effort to breathe than it used to.
+Changes in the weather affect my breathing problem.
+My breathing gets worse with stress.
+I make sound/noise breathing in.
+I have to strain to breathe.
+My shortness of breath gets worse with exercise or physical activity.
+My breathing problem makes me feel stressed.
+My breathing problem causes me to restrict my personal and social life.
+Session ID
+Questionnaire Duration (seconds)
+In the last 2 weeks, have you had chest or stomach pains as a result of your cough?
+In the last 2 weeks, have you been bothered by sputum (phlegm) production when you cough?
+In the last 2 weeks, have you been tired because of your cough?
+How often during the last 2 weeks have you felt embarrassed by your coughing?
+In the last 2 weeks, my cough has made me feel anxious.
+In the last 2 weeks, my cough has interfered with my job or other daily tasks.
+In the last 2 weeks, I felt that my cough interfered with the overall enjoyment of my life.
+In the last 2 weeks, exposure to paint or fumes has made me cough.
+In the last 2 weeks, has your cough disturbed your sleep?
+In the last 2 weeks, how many times a day have you had a coughing bout?
+In the last 2 weeks, my cough has made me feel frustrated.
+In the last 2 weeks, my cough has made me feel fed up.
+In the last 2 weeks, have you suffered from a hoarse voice as a result of your cough?
+In the last 2 weeks, have you worried that your cough may indicate serious illness?
+In the last 2 weeks, have you been concerned that other people think something is wrong with you, because of your cough?
+In the last 2 weeks, my cough has interrupted conversation or telephone calls.
+In the last 2 weeks, I feel that my cough has annoyed my partner, family, or friends.
+In the last 2 weeks, have you felt in control of your cough?
+In the last 2 weeks, have you had a lot of energy?
+Session ID
+Questionnaire Duration (seconds)
+Winograd Schema Score
+Number of questions asked
+Questions asked  (Comma separated)
+1. The city councilmen refused the demonstrators a permit because they feared violence. Who feared violence?
+2. The city councilmen refused the demonstrators a permit because they advocated violence. Who advocated violence?
+3. The trophy doesn't fit into the brown suitcase because it's too small. What is too small?
+4. The trophy doesn't fit into the brown suitcase because it's too large. What is too large?
+5. Joan made sure to thank Susan for all the help she had given. Who had given help?
+6. Joan made sure to thank Susan for all the help she had received. Who had received help?
+7. Paul tried to call George on the phone, but he wasn't successful. Who was not successful?
+8. Paul tried to call George on the phone, but he wasn't available. Who was not available?
+9. The lawyer asked the witness a question, but he was reluctant to answer it. Who was reluctant to answer the question?
+10. The lawyer asked the witness a question, but he was reluctant to repeat it. Who was reluctant to repeat the question?
+11. The delivery truck zoomed by the school bus because it was going so fast. What was going so fast?
+12. The delivery truck zoomed by the school bus because it was going so slow. What was going so slow?
+13. Frank felt vindicated when his longtime rival Bill revealed that he was the winner of the competition. Who was the winner of the competition?
+14. Frank felt crushed when his longtime rival Bill revealed that he was the winner of the competition. Who was the winner of the competition?
+15. The man couldn't lift his son because he was so weak. Who was weak?
+16. The man couldn't lift his son because he was so heavy. Who was heavy?
+17. The large ball crashed right through the table because it was made of steel. What was made of steel?
+18. The large ball crashed right through the table because it was made of styrofoam. What was made of styrofoam?
+19. John couldn't see the stage with Billy in front of him because he is so short. Who is so short?
+20.  John couldn't see the stage with Billy in front of him because he is so tall. Who is so tall?
+21. Tom threw his schoolbag down to Ray after he reached the top of the stairs. Who reached the top of the stairs?
+22. Tom threw his schoolbag down to Ray after he reached the bottom of the stairs. Who reached the bottom of the stairs?
+23. Although they ran at about the same speed, Sue beat Sally because she had such a good start. Who had a good start?
+24. Although they ran at about the same speed, Sue beat Sally because she had such a bad start. Who had a bad start?
+25. The sculpture rolled off the shelf because it wasn't anchored. What wasn't anchored?
+26. The sculpture rolled off the shelf because it wasn't level. What wasn't level?
+27. Sam's drawing was hung just above Tina's and it did look much better with another one below it. Which looked better?
+28. Sam's drawing was hung just above Tina's and it did look much better with another one above it. Which looked better?
+29. Anna did a lot better than her good friend Lucy on the test because she had studied so hard. Who studied hard?
+30. Anna did a lot worse than her good friend Lucy on the test because she had studied so hard. Who studied hard?
+31. The firemen arrived after the police because they were coming from so far away. Who came from far away?
+32. The firemen arrived before the police because they were coming from so far away. Who came from far away?
+33. Frank was upset with Tom because the toaster he had bought from him didn't work. Who had bought the toaster?
+34. Frank was upset with Tom because the toaster he had sold to him didn't work. Who had sold the toaster?
+35. Jim yelled at Kevin because he was so upset. Who was upset?
+36. Jim comforted Kevin because he was so upset. Who was upset?
+37. The sack of potatoes had been placed above the bag of flour, so it had to be moved first. What had to be moved first?
+38. The sack of potatoes had been placed below the bag of flour, so it had to be moved first. What had to be moved first?
+39. Pete envies Martin because he is very successful. Who is very successful?
+40. Pete envies Martin although he is very successful. Who is very successful?
+41. I was trying to balance the bottle upside down on the table, but I couldn't do it because it was so top-heavy. What was top-heavy?
+42. I was trying to balance the bottle upside down on the table, but I couldn't do it because it was so uneven. What was uneven?
+43. I spread the cloth on the table in order to protect it. To protect what?
+44. I spread the cloth on the table in order to display it. To display what?
+45. The older students were bullying the younger ones, so we rescued them. Whom did we rescued?
+46. The older students were bullying the younger ones, so we punished them. Whom did we punished?
+47. I poured water from the bottle into the cup until it was full. What was full?
+48. I poured water from the bottle into the cup until it was empty. What was empty?
+49. Susan knows all about Ann's personal problems because she is nosy. Who is nosy?
+50. Susan knows all about Ann's personal problems because she is indiscreet. Who is indiscreet?
+51. Susan knew that Ann's son had been in a car accident, so she told her about it. Who told the other about the accident?
+52. Susan knew that Ann's son had been in a car accident, because she told her about it. Who told the other about the accident?
+53. Joe's uncle can still beat him at tennis, even though he is 30 years older. Who is older?
+54. Joe's uncle can still beat him at tennis, even though he is 30 years younger. Who is younger?
+55. The police left the house and went into the garage, where they found the murder weapon. Where did they find the murder weapon?
+56. The police left the house and went into the garage, after they found the murder weapon. Where did they find the murder weapon?
+57. The painting in Mark's living room shows an oak tree. It is to the right of the bookcase. What is to the right of the bookcase?
+58. The painting in Mark's living room shows an oak tree. It is to the right of a house. What is to the right of a house?
+59. There is a gap in the wall. You can see the garden through it. You can see the garden through what?
+60. There is a gap in the wall. You can see the garden behind it. You can see the garden behind what?
+61. The drain is clogged with hair. It has to be cleaned. What has to be cleaned?
+62. The drain is clogged with hair. It has to be removed. What has to be removed?
+63. My meeting started at 4:00 and I needed to catch the train at 4:30, so there wasn't much time. Luckily, it was short, so it worked out. What was short?
+64. My meeting started at 4:00 and I needed to catch the train at 4:30, so there wasn't much time. Luckily, it was delayed, so it worked out. What was delayed?
+65. There is a pillar between me and the stage, and I can't see it. What can't I see?
+66. There is a pillar between me and the stage, and I can't see around it. What can't I see around?
+67. They broadcast an announcement, but a subway came into the station and I couldn't hear it. What couldn't I hear?
+68. They broadcast an announcement, but a subway came into the station and I couldn't hear over it. What couldn't I hear over?
+69. In the middle of the outdoor concert, the rain started falling, and it continued until 10. What continued until 10?
+70. In the middle of the outdoor concert, the rain started falling, but it continued until 10. What continued until 10?
+71. I used an old rag to clean the knife, and then I put it in the drawer. What did I put in the drawer?
+72. I used an old rag to clean the knife, and then I put it in the trash. What did I put in the trash?
+73. Ann asked Mary what time the library closes, but she had forgotten. Who had forgotten?
+74. Ann asked Mary what time the library closes, because she had forgotten. Who had forgotten?
+75. I took the water bottle out of the backpack so that it would be lighter. What would be lighter?
+76. I took the water bottle out of the backpack so that it would be handy. What would be handy?
+77. I couldn't put the pot on the shelf because it was too high. What was too high?
+78. I couldn't put the pot on the shelf because it was too tall. What was too tall?
+79. I'm sure that my map will show this building; it is very famous. What is famous?
+80. I'm sure that my map will show this building; it is very good. What is good?
+81. Bob paid for Charlie's college education. He is very generous. Who is generous?
+82. Bob paid for Charlie's college education. He is very grateful. Who is grateful?
+83. Bob paid for Charlie's college education, but now Charlie acts as though it never happened. He is very hurt. Who is hurt?
+84. Bob paid for Charlie's college education, but now Charlie acts as though it never happened. He is very ungrateful. Who is ungrateful?
+85. Bob was playing cards with Adam and was way ahead. If Adam hadn't had a sudden run of good luck, he would have won. Who would have won?
+86. Bob was playing cards with Adam and was way ahead. If Adam hadn't had a sudden run of good luck, he would have lost. Who would have lost?
+87. Adam can't leave work here until Bob arrives to replace him. If Bob had left home for work on time, he would be here by this time. Who would be here?
+88. Adam can't leave work here until Bob arrives to replace him. If Bob had left home for work on time, he would be gone by this time. Who would be gone?
+89. If the con artist has succeeded in fooling Sam, he would have gotten a lot of money. Who would have gotten the money?
+90. If the con artist has succeeded in fooling Sam, he would have lost a lot of money. Who would have lost the money?
+91. It was a summer afternoon, and the dog was sitting in the middle of the lawn. After a while, it got up and moved to a spot under the tree, because it was hot. What was hot?
+92. It was a summer afternoon, and the dog was sitting in the middle of the lawn. After a while, it got up and moved to a spot under the tree, because it was cooler. What was cooler?
+93. The cat was lying by the mouse hole waiting for the mouse, but it was too cautious. What was too cautious?
+94. The cat was lying by the mouse hole waiting for the mouse, but it was too impatient. What was too impatient?
+95. Anne gave birth to a daughter last month. She is a very charming woman. Who is a very charming woman?
+96. Anne gave birth to a daughter last month. She is a very charming baby. Who is a very charming baby?
+97. Alice tried frantically to stop her daughter from chatting at the party, leaving us to wonder why she was behaving so strangely. Who was behaving strangely?
+98. Alice tried frantically to stop her daughter from barking at the party, leaving us to wonder why she was behaving so strangely. Who was behaving strangely?
+99. I saw Jim yelling at some guy in a military uniform with a huge red beard. I don't know who he was, but he looked very unhappy. Who looked very unhappy?
+100. I saw Jim yelling at some guy in a military uniform with a huge red beard. I don't know why he was, but he looked very unhappy. Who looked very unhappy?
+101. The fish ate the worm. It was tasty. What was tasty?
+102. The fish ate the worm. It was hungry. What was hungry?
+103. I was trying to open the lock with the key, but someone had filled the keyhole with chewing gum, and I couldn't get it in. What couldn't I get in?
+104. I was trying to open the lock with the key, but someone had filled the keyhole with chewing gum, and I couldn't get it out. What couldn't I get out?
+105. The dog chased the cat, which ran up a tree. It waited at the top. Which waited at the top?
+106. The dog chased the cat, which ran up a tree. It waited at the bottom. Which waited at the bottom?
+107. In the storm, the tree fell down and crashed through the roof of my house. Now, I have to get it removed. What has to be removed?
+108. In the storm, the tree fell down and crashed through the roof of my house. Now, I have to get it repaired. What has to be repaired?
+109. The customer walked into the bank and stabbed one of the tellers. He was immediately taken to the emergency room. Who was taken to the emergency room?
+110. The customer walked into the bank and stabbed one of the tellers. He was immediately taken to the police station. Who was taken to the police station?
+111. John was doing research in the library when he heard a man humming and whistling. He was very annoyed. Who was annoyed?
+112. John was doing research in the library when he heard a man humming and whistling. He was very annoying. Who was annoying?
+113. John was jogging through the park when he saw a man juggling watermelons. He was very impressed. Who was impressed?
+114. John was jogging through the park when he saw a man juggling watermelons. He was very impressive. Who was impressive?
+115. Bob collapsed on the sidewalk. Soon he saw Carl coming to help. He was very ill. Who was ill?
+116. Bob collapsed on the sidewalk. Soon he saw Carl coming to help. He was very concerned. Who was concerned?
+117. Sam and Amy are passionately in love, but Amy's parents are unhappy about it, because they are snobs. Who are snobs?
+118. Sam and Amy are passionately in love, but Amy's parents are unhappy about it, because they are fifteen. Who are fifteen?
+119. Mark told Pete many lies about himself, which Pete included in his book. He should have been more truthful. Who should have been more truthful?
+120. Mark told Pete many lies about himself, which Pete included in his book. He should have been more skeptical. Who should have been more skeptical?
+121. Joe has sold his house and bought a new one a few miles away. He will be moving out of it on Thursday. Which house will he be moving out of?
+122. Joe has sold his house and bought a new one a few miles away. He will be moving into it on Thursday. Which house will he be moving into?
+123. Many people start to read Paul's books and can't put them down. They are gripped because Paul writes so well. Who or what are gripped?
+124. Many people start to read Paul's books and can't put them down. They are popular because Paul writes so well. Who or what are popular?
+125. Mary took out her flute and played one of her favorite pieces. She has loved it since she was a child. What has Mary loved since she was a child?
+126. Mary took out her flute and played one of her favorite pieces. She has had it since she was a child. What has Mary had since she was a child?
+127. Sam pulled up a chair to the piano, but it was broken, so he had to stand instead. What was broken?
+128. Sam pulled up a chair to the piano, but it was broken, so he had to sing instead. What was broken?
+129. Since it was raining, I carried the newspaper over my backpack to keep it dry. What was I trying to keep dry?
+130. Since it was raining, I carried the newspaper in my backpack to keep it dry. What was I trying to keep dry?
+131. Sara borrowed the book from the library because she needs it for an article she is working on. She reads it when she gets home from work. What does Sara reads when she gets home from work?
+132. Sara borrowed the book from the library because she needs it for an article she is working on. She writes it when she gets home from work. What does Sara writes when she gets home from work?
+133. This morning, Joey built a sand castle on the beach, and put a toy flag in the highest tower, but this afternoon a breeze knocked it down. What did the a breeze knock down?
+134. This morning, Joey built a sand castle on the beach, and put a toy flag in the highest tower, but this afternoon the tide knocked it down. What did the the tide knock down?
+135. Jane knocked on Susan's door, but there was no answer. She was out. Who was out?
+136. Jane knocked on Susan's door, but there was no answer. She was disappointed. Who was disappointed?
+137. Jane knocked on the door, and Susan answered it. She invited her to come out. Who invited whom?
+138. Jane knocked on the door, and Susan answered it. She invited her to come in. Who invited whom?
+139. Sam took French classes from Adam, because he was eager to speak it fluently. Who was eager to speak French fluently?
+140. Sam took French classes from Adam, because he was known to speak it fluently. Who was known to speak French fluently?
+141. The path to the lake was blocked, so we couldn't reach it. What couldn't we reach?
+142. The path to the lake was blocked, so we couldn't use it. What couldn't we use?
+143. The sun was covered by a thick cloud all morning, but luckily, by the time the picnic started, it was gone. What was gone?
+144. The sun was covered by a thick cloud all morning, but luckily, by the time the picnic started, it was out. What was out?
+145. We went to the lake, because a shark had been seen at the ocean beach, so it was a dangerous place to swim. Which was a dangerous place to swim?
+146. We went to the lake, because a shark had been seen at the ocean beach, so it was a safer place to swim. Which was a safer place to swim?
+147. Sam tried to paint a picture of shepherds with sheep, but they ended up looking more like dogs. What looked like dogs?
+148. Sam tried to paint a picture of shepherds with sheep, but they ended up looking more like golfers. What looked like golfers?
+149. Mary tucked her daughter Anne into bed, so that she could sleep. Who is going to sleep?
+150. Mary tucked her daughter Anne into bed, so that she could work. Who is going to work?
+151. Fred and Alice had very warm down coats, but they were not enough for the cold in Alaska. Who or what were not enough for the cold?
+152. Fred and Alice had very warm down coats, but they were not prepared for the cold in Alaska. Who or what were not prepared for the cold?
+153. Thomson visited Cooper's grave in 17 At that date he had been dead for five years. Who had been dead for five years?
+154. Thomson visited Cooper's grave in 17 At that date he had been travelling for five years. Who had been travelling for five years?
+155. Jackson was greatly influenced by Arnold, though he lived two centuries earlier. Who lived earlier?
+156. Jackson was greatly influenced by Arnold, though he lived two centuries later. Who lived later?
+157. Tom's daughter Eva is engaged to Dr. Stewart, who is his partner. The two doctors have known one another for ten years. Which two people have known one another for ten years?
+158. Tom's daughter Eva is engaged to Dr. Stewart, who is his partner. The two lovers have known one another for ten years. Which two people have known one another for ten years?
+159. I can't cut that tree down with that axe; it is too thick. What is too thick?
+160. I can't cut that tree down with that axe; it is too small. What is too small?
+161. The foxes are getting in at night and attacking the chickens. I shall have to guard them. What do I have to guard?
+162. The foxes are getting in at night and attacking the chickens. I shall have to kill them. What do I have to kill?
+163. The foxes are getting in at night and attacking the chickens. They have gotten very bold. What has gotten bold?
+164. The foxes are getting in at night and attacking the chickens. They have gotten very nervous. What has gotten nervous?
+165. Fred covered his eyes with his hands, because the wind was blowing sand around. He opened them when the wind stopped. What did Fred opened?
+166. Fred covered his eyes with his hands, because the wind was blowing sand around. He lowered them when the wind stopped. What did Fred lowered?
+167. The actress used to be named Terpsichore, but she changed it to Tina a few years ago, because she figured it was easier to pronounce. Which name was easier to pronounce?
+168. The actress used to be named Terpsichore, but she changed it to Tina a few years ago, because she figured it was too hard to pronounce. Which name was too hard to pronounce?
+169. Fred watched TV while George went out to buy groceries. After an hour he got up. Who got up?
+170. Fred watched TV while George went out to buy groceries. After an hour he got back. Who got back?
+171. Fred was supposed to run the dishwasher, but he put it off, because he wanted to watch TV. But the show turned out to be boring, so he changed his mind and turned it on. What did Fred turn on?
+172. Fred was supposed to run the dishwasher, but he put it off, because he wanted to watch TV. But the show turned out to be boring, so he changed his mind and turned it off. What did Fred turn off?
+173. Fred is the only man still alive who remembers my great-grandfather. He is a remarkable man. Who is a remarkable man?
+174. Fred is the only man still alive who remembers my great-grandfather. He was a remarkable man. Who was a remarkable man?
+175. Fred is the only man alive who still remembers my father as an infant. When Fred first saw my father, he was twelve years old. Who was twelve years old?
+176. Fred is the only man alive who still remembers my father as an infant. When Fred first saw my father, he was twelve months old. Who was twelve months old?
+177. In July, Kamtchatka declared war on Yakutsk. Since Yakutsk's army was much better equipped and ten times larger, they were victorious within weeks. Who was victorious?
+178. In July, Kamtchatka declared war on Yakutsk. Since Yakutsk's army was much better equipped and ten times larger, they were defeated within weeks. Who was defeated?
+179. Elizabeth moved her company from Sparta to Troy to save money on taxes; the taxes are much higher there. Where are the taxes higher?
+180. Elizabeth moved her company from Sparta to Troy to save money on taxes; the taxes are much lower there. Where are the taxes lower?
+181. Esther figures that she will save shipping costs if she builds her factory in Springfield instead of Franklin, because most of her customers live there. In which town do most of Esther's customers live?
+182. Esther figures that she will save shipping costs if she builds her factory in Springfield instead of Franklin, because none of her customers live there. In which town do none of Esther's customers live?
+183. There are too many deer in the park, so the park service brought in a small pack of wolves. The population should increase over the next few years. Which population will increase?
+184. There are too many deer in the park, so the park service brought in a small pack of wolves. The population should decrease over the next few years. Which population will decrease?
+185. Archaeologists have concluded that humans lived in Laputa 20,000 years ago. They hunted for deer on the river banks. Who hunted for deer?
+186. Archaeologists have concluded that humans lived in Laputa 20,000 years ago. They hunted for evidence on the river banks. Who hunted for evidence?
+187. The scientists are studying three species of fish that have recently been found living in the Indian Ocean. They appeared two years ago. Who or what appeared two years ago?
+188. The scientists are studying three species of fish that have recently been found living in the Indian Ocean. They began two years ago. Who or what began two years ago?
+189. The journalists interviewed the stars of the new movie. They were very cooperative, so the interview lasted for a long time. Who was cooperative?
+190. The journalists interviewed the stars of the new movie. They were very persistent, so the interview lasted for a long time. Who was persistent?
+191. The police arrested all of the gang members. They were trying to run the drug trade in the neighborhood. Who was trying to run the drug trade?
+192. The police arrested all of the gang members. They were trying to stop the drug trade in the neighborhood. Who was trying to stop the drug trade?
+193. I put the cake away in the refrigerator. It has a lot of butter in it. What has a lot of butter?
+194. I put the cake away in the refrigerator. It has a lot of leftovers in it. What has a lot of leftovers?
+195. Sam broke both his ankles and he's walking with crutches. But a month or so from now they should be better. What should be better?
+196. Sam broke both his ankles and he's walking with crutches. But a month or so from now they should be unnecessary. What should be unnecessary?
+197. When the sponsors of the bill got to the town hall, they were surprised to find that the room was full of opponents. They were very much in the majority. Who were in the majority?
+198. When the sponsors of the bill got to the town hall, they were surprised to find that the room was full of opponents. They were very much in the minority. Who were in the minority?
+199. Everyone really loved the oatmeal cookies; only a few people liked the chocolate chip cookies. Next time, we should make more of them. Which cookie should we make more of, next time?
+200. Everyone really loved the oatmeal cookies; only a few people liked the chocolate chip cookies. Next time, we should make fewer of them. Which cookie should we make fewer of, next time?
+201. We had hoped to place copies of our newsletter on all the chairs in the auditorium, but there were simply not enough of them. There are not enough of what?
+202. We had hoped to place copies of our newsletter on all the chairs in the auditorium, but there were simply too many of them. There are too many of what?
+203. I stuck a pin through a carrot. When I pulled the pin out, it left a hole. What left a hole?
+204. I stuck a pin through a carrot. When I pulled the pin out, it had a hole. What had a hole?
+205. I couldn't find a spoon, so I tried using a pen to stir my coffee. But that turned out to be a bad idea, because it got full of ink. What got full of ink?
+206. I couldn't find a spoon, so I tried using a pen to stir my coffee. But that turned out to be a bad idea, because it got full of coffee. What got full of coffee?
+207. Steve follows Fred's example in everything. He admires him hugely. Who admires whom?
+208. Steve follows Fred's example in everything. He influences him hugely. Who influences whom?
+209. The table won't fit through the doorway because it is too wide. What is too wide?
+210. The table won't fit through the doorway because it is too narrow. What is too narrow?
+211. Grace was happy to trade me her sweater for my jacket. She thinks it looks great on her. What looks great on Grace?
+212. Grace was happy to trade me her sweater for my jacket. She thinks it looks dowdy on her. What looks dowdy on Grace?
+213. Bill thinks that calling attention to himself was rude to Bert. Who called attention to himself?
+214. Bill thinks that calling attention to himself was rude of Bert. Who called attention to himself?
+215. John hired Bill to take care of him. Who is taking care of whom?
+216. John hired himself out to Bill to take care of him. Who is taking care of whom?
+217. John promised Bill to leave, so an hour later he left. Who left?
+218. John ordered Bill to leave, so an hour later he left. Who left?
+219. Sam Goodman's biography of the Spartan general Xenophanes conveys a vivid sense of the difficulties he faced in his childhood. Who faced difficulties?
+220. Sam Goodman's biography of the Spartan general Xenophanes conveys a vivid sense of the difficulties he faced in his research. Who faced difficulties?
+221. Emma's mother had died long ago, and her place had been taken by an excellent woman as governess. Whose place had been taken?
+222. Emma's mother had died long ago, and her education had been taken care by an excellent woman as governess. Whose education had been taken care of?
+223. Jane knocked on Susan's door but she did not answer. Who did not answer?
+224. Jane knocked on Susan's door but she did not get an answer. Who did not get an answer?
+225. Joe paid the detective after he received the final report on the case. Who received the final report?
+226. Joe paid the detective after he delivered the final report on the case. Who delivered the final report?
+227. Beth didn't get angry with Sally, who had cut her off, because she stopped and counted to ten. Who counted to ten?
+228. Beth didn't get angry with Sally, who had cut her off, because she stopped and apologized. Who apologized?
+229. Jim signaled the barman and gestured toward his empty glass. Whose empty glass?
+230. Jim signaled the barman and gestured toward his bathroom key. Whose bathroom key?
+231. Dan took the rear seat while Bill claimed the front because his 'Dibs!' was quicker. Whose 'Dibs' was quicker?
+232. Dan took the rear seat while Bill claimed the front because his 'Dibs!'' was slow. Whose 'Dibs' was slow?
+233. Tom said 'Check' to Ralph as he took his bishop. Whose bishop did Tom take?
+234. Tom said 'Check' to Ralph as he moved his bishop. Whose bishop did Tom moved?
+235. As Andrea in the crop duster passed over Susan, she could see the landing strip. Who could see the landing strip?
+236. As Andrea in the crop duster passed over Susan, she could see the landing gear. Who could see the landing gear?
+237. Tom gave Ralph a lift to school so he wouldn't have to walk. Who wouldn't have to walk?
+238. Tom gave Ralph a lift to school so he wouldn't have to drive alone. Who wouldn't have to drive alone?
+239. Bill passed the half-empty plate to John because he was full. Who was full?
+240. Bill passed the half-empty plate to John because he was hungry. Who was hungry?
+241. Bill passed the gameboy to John because his turn was over. Whose turn was over?
+242. Bill passed the gameboy to John because his turn was next. Whose turn was next?
+243. The man lifted the boy onto his bunk bed. Whose bunk bed?
+244. The man lifted the boy onto his shoulders. Whose shoulders?
+245. Patting her back, the woman smiled at the girl. Whose back did the woman pat?
+246. Stretching her back, the woman smiled at the girl. Whose back did the woman stretch?
+247. Billy cried because Toby wouldn't share his toy. Who owned the toy?
+248. Billy cried because Toby wouldn't accept his toy. Who owned the toy?
+249. Lily spoke to Donna, breaking her concentration. Whose concentration?
+250. Lily spoke to Donna, breaking her silence. Whose silence?
+251. When Tommy dropped his ice cream, Timmy giggled, so father gave him a stern look. Who got the look from father?
+252. When Tommy dropped his ice cream, Timmy giggled, so father gave him a sympathetic look. Who got the look from father?
+253. As Ollie carried Tommy up the long winding steps, his legs dangled. Whose legs dangled?
+254. As Ollie carried Tommy up the long winding steps, his legs ached. Whose legs ached?
+255. The father carried the sleeping boy in his arms. Whose arms?
+256. The father carried the sleeping boy in his bassinet. Whose bassinet?
+257. The woman held the girl against her chest. Whose chest?
+258. The woman held the girl against her will. Whose will?
+259. Pam's parents came home and found her having sex with her boyfriend, Paul. They were embarrassed about it. Who were embarrassed?
+260. Pam's parents came home and found her having sex with her boyfriend, Paul. They were furious about it. Who were furious?
+261. Dr. Adams informed Kate that she had cancer and presented several options for future treatment. Who had cancer?
+262. Dr. Adams informed Kate that she had retired and presented several options for future treatment. Who had retired?
+263. Dan had to stop Bill from toying with the injured bird. He is very compassionate. Who is compassionate?
+264. Dan had to stop Bill from toying with the injured bird. He is very cruel. Who is cruel?
+265. Jane gave Joan candy because she was hungry. Who was hungry?
+266. Jane gave Joan candy because she wasn't hungry. Who wasn't hungry?
+267. I tried to paint a picture of an orchard, with lemons in the lemon trees, but they came out looking more like light bulbs . What looked like light bulbs?
+268. I tried to paint a picture of an orchard, with lemons in the lemon trees, but they came out looking more like telephone poles. What looked like telephone poles?
+269. James asked Robert for a favor but he refused. Who refused?
+270. James asked Robert for a favor but he was refused. Who was refused?
+271. Kirilov ceded the presidency to Shatov because he was more popular. Who was more popular?
+272. Kirilov ceded the presidency to Shatov because he was less popular. Who was less popular?
+273. Emma did not pass the ball to Janie although she was open. Who was open?
+274. Emma did not pass the ball to Janie although she saw that she was open. Who saw that she was open?
+275. Joe saw his brother skiing on TV last night but the fool didn't recognize him. Who is the fool?
+276. Joe saw his brother skiing on TV last night but the fool didn't have a coat on. Who is the fool?
+Session ID
+Acoustic Task ID
+Questionnaire Duration (seconds)
+Item 1  Stimulus
+Item 1  Color
+Item 1  Time Start
+Item 2  Stimulus
+Item 2  Color
+Item 2  Time Start
+Item 3  Stimulus
+Item 3  Color
+Item 3  Time Start
+Item 4  Stimulus
+Item 4  Color
+Item 4  Time Start
+Item 5  Stimulus
+Item 5  Color
+Item 5  Time Start
+Item 6  Stimulus
+Item 6  Color
+Item 6  Time Start
+Item 7  Stimulus
+Item 7  Color
+Item 7  Time Start
+Item 8  Stimulus
+Item 8  Color
+Item 8  Time Start
+Item 9  Stimulus
+Item 9  Color
+Item 9  Time Start
+Item 10  Stimulus
+Item 10  Color
+Item 10  Time Start
+Item 11  Stimulus
+Item 11  Color
+Item 11  Time Start
+Item 12  Stimulus
+Item 12  Color
+Item 12  Time Start
+Item 13  Stimulus
+Item 13  Color
+Item 13  Time Start
+Item 14  Stimulus
+Item 14  Color
+Item 14  Time Start
+Item 15  Stimulus
+Item 15  Color
+Item 15  Time Start
+Session ID
+Acoustic Task ID
+Questionnaire Duration (seconds)
+Item 1  Word
+Item 1  Word Difficulty
+Item 2  Word
+Item 2  Word Difficulty
+Item 3  Word
+Item 3  Word Difficulty
+Item 4  Word
+Item 4  Word Difficulty
+Item 5  Word
+Item 5  Word Difficulty
+Item 6  Word
+Item 6  Word Difficulty
+Session ID
+Acoustic Task ID
+Questionnaire Duration (seconds)
+Random item generation category
+Have you been diagnosed with Bipolar Disorder?
+Have you ever seen things other people can't see or heard things other people can't hear?
+Have you ever had a manic episode (i.e., While not under the influence of substances, a distinct period of abnormally and persistently elevated, expansive, or irritable mood and abnormally and persistently goal-directed behavior or energy, lasting at least 1 week and present most of the day, nearly every day)?
+Please select any active psychiatric problems and medical problems (select all that apply). (choice=ADHD)
+Please select any active psychiatric problems and medical problems (select all that apply). (choice=Anxiety)
+Please select any active psychiatric problems and medical problems (select all that apply). (choice=OCD)
+Please select any active psychiatric problems and medical problems (select all that apply). (choice=Stroke)
+Please select any active psychiatric problems and medical problems (select all that apply). (choice=Epilepsy)
+Please select any active psychiatric problems and medical problems (select all that apply). (choice=Laryngeal cancer)
+Please select any active psychiatric problems and medical problems (select all that apply). (choice=Seasonal allergies)
+Please select any active psychiatric problems and medical problems (select all that apply). (choice=Other)
+Please select any historical psychiatric problems and medical problems (select all that apply). (choice=ADHD)
+Please select any historical psychiatric problems and medical problems (select all that apply). (choice=Anxiety)
+Please select any historical psychiatric problems and medical problems (select all that apply). (choice=OCD)
+Please select any historical psychiatric problems and medical problems (select all that apply). (choice=Stroke)
+Please select any historical psychiatric problems and medical problems (select all that apply). (choice=Epilepsy)
+Please select any historical psychiatric problems and medical problems (select all that apply). (choice=Laryngeal cancer)
+Please select any historical psychiatric problems and medical problems (select all that apply). (choice=Seasonal allergies)
+Please select any historical psychiatric problems and medical problems (select all that apply). (choice=Other)
+Approximately how many depressive episodes have you had in your life (feeling down and depressed more days than not over two weeks)?
+Approximately how many manic episodes have you had in your life?
+Have you been diagnosed with a depressive disorder?
+Please select any active psychiatric problems and medical problems (select all that apply). (choice=ADHD)
+Please select any active psychiatric problems and medical problems (select all that apply). (choice=Anxiety)
+Please select any active psychiatric problems and medical problems (select all that apply). (choice=OCD)
+Please select any active psychiatric problems and medical problems (select all that apply). (choice=Stroke)
+Please select any active psychiatric problems and medical problems (select all that apply). (choice=Epilepsy)
+Please select any active psychiatric problems and medical problems (select all that apply). (choice=Laryngeal cancer)
+Please select any active psychiatric problems and medical problems (select all that apply). (choice=Seasonal allergies)
+Please select any active psychiatric problems and medical problems (select all that apply). (choice=Other)
+Please select any historical psychiatric problems and medical problems (select all that apply). (choice=ADHD)
+Please select any historical psychiatric problems and medical problems (select all that apply). (choice=Anxiety)
+Please select any historical psychiatric problems and medical problems (select all that apply). (choice=OCD)
+Please select any historical psychiatric problems and medical problems (select all that apply). (choice=Stroke)
+Please select any historical psychiatric problems and medical problems (select all that apply). (choice=Epilepsy)
+Please select any historical psychiatric problems and medical problems (select all that apply). (choice=Laryngeal cancer)
+Please select any historical psychiatric problems and medical problems (select all that apply). (choice=Seasonal allergies)
+Please select any historical psychiatric problems and medical problems (select all that apply). (choice=Other)
+Approximately how many depressive episodes have you had in your life (feeling down and depressed more days than not over two weeks)?
+Have you ever been prescribed medication for mental or emotional problems (e.g., antidepressants, anxiolytics, antipsychotics, mood stabilizers, etc.)?
+Have you ever seen a mental health professional for talk therapy (could include social workers, psychiatrists, etc.)?
+Have you been diagnosed with an anxiety disorder?
+Please select any active psychiatric problems and medical problems (select all that apply). (choice=ADHD)
+Please select any active psychiatric problems and medical problems (select all that apply). (choice=Anxiety)
+Please select any active psychiatric problems and medical problems (select all that apply). (choice=OCD)
+Please select any active psychiatric problems and medical problems (select all that apply). (choice=Stroke)
+Please select any active psychiatric problems and medical problems (select all that apply). (choice=Epilepsy)
+Please select any active psychiatric problems and medical problems (select all that apply). (choice=Laryngeal cancer)
+Please select any active psychiatric problems and medical problems (select all that apply). (choice=Seasonal allergies)
+Please select any active psychiatric problems and medical problems (select all that apply). (choice=Other)
+Please select any historical psychiatric problems and medical problems (select all that apply). (choice=ADHD)
+Please select any historical psychiatric problems and medical problems (select all that apply). (choice=Anxiety)
+Please select any historical psychiatric problems and medical problems (select all that apply). (choice=OCD)
+Please select any historical psychiatric problems and medical problems (select all that apply). (choice=Stroke)
+Please select any historical psychiatric problems and medical problems (select all that apply). (choice=Epilepsy)
+Please select any historical psychiatric problems and medical problems (select all that apply). (choice=Laryngeal cancer)
+Please select any historical psychiatric problems and medical problems (select all that apply). (choice=Seasonal allergies)
+Please select any historical psychiatric problems and medical problems (select all that apply). (choice=Other)
+Have you ever been prescribed medication for mental or emotional problems (e.g., antidepressants, anxiolytics, antipsychotics, mood stabilizers, etc.)?
+Have you ever seen a mental health professional for talk therapy (could include social workers, psychiatrists, etc.)?
