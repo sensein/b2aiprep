@@ -239,7 +239,23 @@ def create_derived_dataset(
         participants = json.load(f)
     phenotype = {"participant_id": participants["record_id"]}
 
-    for phenotype_filepath in sorted(list(bids_path.joinpath("phenotype").glob("*.tsv"))):
+    phenotype_files = list(bids_path.joinpath("phenotype").glob("*.tsv"))
+    phenotype_order = [
+        "eligibility", "enrollment", "participant",
+        "demographics", "confounders",
+    ]
+    # order phenotype files by (1) the order of the list above then (2) alphabetically
+    # since sorts are stable, we can guarantee this by doing it in reverse
+    phenotype_files = sorted(phenotype_files)
+    phenotype_files = sorted(
+        phenotype_files,
+        key=lambda x: (
+            phenotype_order.index(x.stem) if x.stem in phenotype_order else 100,
+            x.stem,
+        ),
+    )
+
+    for phenotype_filepath in phenotype_files:
         df_add = pd.read_csv(phenotype_filepath, sep="\t")
         phenotype_name = phenotype_filepath.stem
         if phenotype_name == "participant":
@@ -263,7 +279,6 @@ def create_derived_dataset(
     # write out phenotype
     with open(bids_path.joinpath("phenotype.json"), "w") as f:
         json.dump(phenotype, f, indent=2)
-
 
 @click.command()
 @click.argument("bids_dir_path", type=click.Path())
