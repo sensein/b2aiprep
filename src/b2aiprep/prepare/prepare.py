@@ -251,7 +251,11 @@ def extract_features_workflow(
     """
     import multiprocessing as mp
 
-    mp.set_start_method("spawn")
+    try:
+        mp.set_start_method('spawn', force=True)
+    except RuntimeError:
+        # Already set
+        pass
 
     if n_cores > 1:
         plugin_args: dict = {"n_procs": n_cores} if plugin == "cf" else {}
@@ -261,7 +265,11 @@ def extract_features_workflow(
     # Get paths to every audio file.
     audio_paths = get_audio_paths(bids_dir_path=bids_dir_path)
     df = pd.DataFrame(audio_paths)
-    df = df[df["size"] <= np.percentile(df["size"].values, percentile)]
+    if "path" not in df.columns:
+        _logger.warning("No audio files found in the BIDS directory.")
+        return
+    if "size" in df.columns:
+        df = df[df["size"] <= np.percentile(df["size"].values, percentile)]
     # randomize to distribute sizes
     df = df.sample(frac=1).reset_index(drop=True)
     audio_paths = df.path.values.tolist()
