@@ -45,6 +45,22 @@ AUDIO_TASKS = (
     "Word-color Stroop",
 )
 
+SPEECH_TASKS = (
+    "Animal fluency",
+    "Cape V sentences",
+    "Caterpillar Passage",
+    "Cinderella Story",
+    "Diadochokinesis",
+    "Free Speech",
+    "Picture description",
+    "Productive Vocabulary",
+    "Prolonged vowel",
+    "Rainbow Passage",
+    "Random Item Generation",
+    "Story recall",
+    "Word-color Stroop",
+)
+
 
 class Instrument(BaseModel):
     """Instruments are associated with fixed sets of columns and a string
@@ -53,7 +69,7 @@ class Instrument(BaseModel):
     session_id: str
     name: str
     text: str
-    schema: str
+    schema_name: str
     _columns: t.List[str] = []
 
     @property
@@ -111,203 +127,203 @@ class RepeatInstrument(Enum):
         session_id="record_id",
         name="participant",
         text="Participant",
-        schema="subjectparticipantbasicinformationschema",
+        schema_name="subjectparticipantbasicinformationschema",
     )
     ELIGIBILITY = Instrument(
         session_id="record_id",
         name="eligibility",
         text="Participant",
-        schema="subjectparticipanteligiblestudiesschema",
+        schema_name="subjectparticipanteligiblestudiesschema",
     )
     ENROLLMENT = Instrument(
-        session_id="record_id", name="enrollment", text="Participant", schema="enrollmentformschema"
+        session_id="record_id", name="enrollment", text="Participant", schema_name="enrollmentformschema"
     )
     VOCAL_FOLD_PARALYSIS = Instrument(
         session_id="record_id",
         name="vocalFoldParalysis",
         text="Participant",
-        schema="dvoicevocalfoldparalysisschema",
+        schema_name="dvoicevocalfoldparalysisschema",
     )
     LARYNGEAL_DYSTONIA = Instrument(
         session_id="record_id",
         name="laryngealDystonia",
         text="Participant",
-        schema="dvoicelaryngealdystoniaschema",
+        schema_name="dvoicelaryngealdystoniaschema",
     )
     PRECANCEROUS_LESIONS = Instrument(
         session_id="record_id",
         name="precancerousLesions",
         text="Participant",
-        schema="dvoiceprecancerouslesionsschema",
+        schema_name="dvoiceprecancerouslesionsschema",
     )
     LARYNGEAL_CANCER = Instrument(
         session_id="record_id",
         name="laryngealCancer",
         text="Participant",
-        schema="dvoicelaryngealcancerschema",
+        schema_name="dvoicelaryngealcancerschema",
     )
     BENIGN_LESION = Instrument(
         session_id="record_id",
         name="benignLesion",
         text="Participant",
-        schema="dvoicebenignlesionsschema",
+        schema_name="dvoicebenignlesionsschema",
     )
     BIPOLAR = Instrument(
         session_id="record_id",
         name="bipolar",
         text="Participant",
-        schema="dmoodbipolardisorderschema",
+        schema_name="dmoodbipolardisorderschema",
     )
     DEPRESSION = Instrument(
         session_id="record_id",
         name="depression",
         text="Participant",
-        schema="dmooddepressionormajordepressivedisorderschema",
+        schema_name="dmooddepressionormajordepressivedisorderschema",
     )
     AIRWAY_STENOSIS = Instrument(
         session_id="record_id",
         name="airwaystenosis",
         text="Participant",
-        schema="drespairwaystenosisschema",
+        schema_name="drespairwaystenosisschema",
     )
     ALZHEIMERS = Instrument(
         session_id="record_id",
         name="alzheimers",
         text="Participant",
-        schema="dneuroalzheimersdiseasemildcognitiveimpairmeschema",
+        schema_name="dneuroalzheimersdiseasemildcognitiveimpairmeschema",
     )
     PARKINSONS = Instrument(
         session_id="record_id",
         name="parkinsons",
         text="Participant",
-        schema="dneuroparkinsonsdiseaseschema",
+        schema_name="dneuroparkinsonsdiseaseschema",
     )
     ALS = Instrument(
         session_id="record_id",
         name="als",
         text="Participant",
-        schema="dneuroamyotrophiclateralsclerosisalsschema",
+        schema_name="dneuroamyotrophiclateralsclerosisalsschema",
     )
     # data where the row has a specific repeat instrument, filtered to by the text argument
     SESSION = Instrument(
-        session_id="session_id", name="sessions", text="Session", schema="sessionschema"
+        session_id="session_id", name="sessions", text="Session", schema_name="sessionschema"
     )
     ACOUSTIC_TASK = Instrument(
         session_id="acoustic_task_id",
         name="acoustic_tasks",
         text="Acoustic Task",
-        schema="acoustictaskschema",
+        schema_name="acoustictaskschema",
     )
     RECORDING = Instrument(
-        session_id="recording_id", name="recordings", text="Recording", schema="recordingschema"
+        session_id="recording_id", name="recordings", text="Recording", schema_name="recordingschema"
     )
     GENERIC_DEMOGRAPHICS = Instrument(
         session_id="demographics_session_id",
         name="demographics",
         text="Q Generic Demographics",
-        schema="qgenericdemographicsschema",
+        schema_name="qgenericdemographicsschema",
     )
     GENERIC_CONFOUNDERS = Instrument(
         session_id="confounders_session_id",
         name="confounders",
         text="Q Generic Confounders",
-        schema="qgenericconfoundersschema",
+        schema_name="qgenericconfoundersschema",
     )
     GENERIC_VOICE_PERCEPTION = Instrument(
         session_id="voice_perception_session_id",
         name="voicePerception",
         text="Q Generic Voice Perception",
-        schema="qgenericvoiceperceptionschema",
+        schema_name="qgenericvoiceperceptionschema",
     )
     GENERIC_VOICE_HANDICAP = Instrument(
         session_id="vhi_session_id",
         name="vhi10",
         text="Q Generic Voice Handicap Index Vhi10",
-        schema="qgenericvoicehandicapindexvhi10schema",
+        schema_name="qgenericvoicehandicapindexvhi10schema",
     )
     GENERIC_PHQ9_DEPRESSION = Instrument(
         session_id="phq_9_session_id",
         name="phq9",
         text="Q Generic Patient Health Questionnaire9",
-        schema="qgenericpatienthealthquestionnaire9schema",
+        schema_name="qgenericpatienthealthquestionnaire9schema",
     )
     GENERIC_GAD7_ANXIETY = Instrument(
         session_id="gad_7_session_id",
         name="gad7",
         text="Q - Generic - Gad7 Anxiety",
-        schema="qgenericgad7anxietyschema",
+        schema_name="qgenericgad7anxietyschema",
     )
     RESP_DYSPNEA_INDEX = Instrument(
         session_id="dyspnea_index_session_id",
         name="dyspnea",
         text="Q - Resp - Dyspnea Index Di",
-        schema="qrespdyspneaindexdischema",
+        schema_name="qrespdyspneaindexdischema",
     )
     RESP_LEICESTER_COUGH = Instrument(
         session_id="leicester_cough_session_id",
         name="leicester",
         text="Q - Resp - Leicester Cough Questionnaire Lcq",
-        schema="qrespleicestercoughquestionnairelcqschema",
+        schema_name="qrespleicestercoughquestionnairelcqschema",
     )
     VOICE_VOICE_PROBLEM_SEVERITY = Instrument(
         session_id="voice_severity_session_id",
         name="voiceSeverity",
         text="Q - Voice - Voice Problem Severity",
-        schema="qvoicevoiceproblemseverityschema",
+        schema_name="qvoicevoiceproblemseverityschema",
     )
     MOOD_PANAS = Instrument(
         session_id="panas_session_id",
         name="panas",
         text="Q - Mood - Panas",
-        schema="qmoodpanasschema",
+        schema_name="qmoodpanasschema",
     )
     MOOD_CUSTOM_AFFECT = Instrument(
         session_id="custom_affect_scale_session_id",
         name="customAffectScale",
         text="Q - Mood - Custom Affect Scale",
-        schema="qmoodcustomaffectscaleschema",
+        schema_name="qmoodcustomaffectscaleschema",
     )
     MOOD_DSM5_ADULT = Instrument(
         session_id="dsm_5_session_id",
         name="dsm5",
         text="Q - Mood - Dsm5 Adult",
-        schema="qmooddsm5adultschema",
+        schema_name="qmooddsm5adultschema",
     )
     MOOD_PTSD_ADULT = Instrument(
         session_id="ptsd_session_id",
         name="ptsd",
         text="Q - Mood - Ptsd Adult",
-        schema="qmoodptsdadultschema",
+        schema_name="qmoodptsdadultschema",
     )
     MOOD_ADHD_ADULT = Instrument(
         session_id="adhd_session_id",
         name="adhd",
         text="Q - Mood - Adhd Adult",
-        schema="qmoodadhdadultschema",
+        schema_name="qmoodadhdadultschema",
     )
     NEURO_WINOGRAD_SCHEMAS = Instrument(
         session_id="winograd_session_id",
         name="winograd",
         text="Q - Neuro Winograd Schemas",
-        schema="qneurowinogradschemasschema",
+        schema_name="qneurowinogradschemasschema",
     )
     NEURO_WORDCOLOR_STROOP = Instrument(
         session_id="stroop_session_id",
         name="stroop",
         text="Q - Neuro - Wordcolor Stroop",
-        schema="qneurowordcolorstroopschema",
+        schema_name="qneurowordcolorstroopschema",
     )
     NEURO_PRODUCTIVE_VOCABULARY = Instrument(
         session_id="vocabulary_session_id",
         name="vocab",
         text="Q - Neuro - Productive Vocabulary",
-        schema="qneuroproductivevocabularyschema",
+        schema_name="qneuroproductivevocabularyschema",
     )
     NEURO_RANDOM_ITEM_GENERATION = Instrument(
         session_id="random_session_id",
         name="random",
         text="Q - Neuro - Random Item Generation",
-        schema="qneurorandomitemgenerationschema",
+        schema_name="qneurorandomitemgenerationschema",
     )
 
 

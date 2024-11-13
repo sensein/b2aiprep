@@ -35,12 +35,73 @@ from tqdm import tqdm
 from b2aiprep.prepare.constants import AUDIO_TASKS, Instrument, RepeatInstrument
 from b2aiprep.prepare.fhir_utils import convert_response_to_fhir
 from b2aiprep.prepare.utils import (
-    _transform_str_for_bids_filename,
-    construct_all_tsvs_from_jsons,
-    construct_tsv_from_json,
+    initialize_data_directory,
+    transform_str_for_bids_filename,
 )
 
+SUBJECT_PREFIX = "sub"
+SESSION_PREFIX = "ses"
+AUDIO_FOLDER = "audio"
+RESAMPLE_RATE = 16000
 _LOGGER = logging.getLogger(__name__)
+
+
+def get_audio_paths(
+    bids_dir_path: str | os.PathLike,
+) -> list[dict[str, Path | int]]:
+    """Retrieve all .wav audio file paths from a BIDS-like directory structure.
+
+    This function traverses the specified BIDS directory, collecting paths to
+    .wav audio files from all subject and session directories that match the
+    expected naming conventions.
+
+    Args:
+      bids_dir_path: The root directory of the BIDS dataset.
+
+    Returns:
+      list[dict[str, Path | int]]:
+        A list of dictionaries, each containing the path to an audio file and
+        its size in bytes.
+    """
+    audio_paths: list[dict[str, Path | int]] = []
+
+    # Iterate over each subject directory.
+    for sub_file in os.listdir(bids_dir_path):
+        subject_dir_path = os.path.join(bids_dir_path, sub_file)
+        if sub_file.startswith(SUBJECT_PREFIX) and os.path.isdir(subject_dir_path):
+            # Iterate over each session directory within a subject.
+            for session_dir_path in os.listdir(subject_dir_path):
+                audio_path = os.path.join(subject_dir_path, session_dir_path, AUDIO_FOLDER)
+                if session_dir_path.startswith(SESSION_PREFIX) and os.path.isdir(audio_path):
+                    # _logger.info(audio_path)
+                    # Iterate over each audio file in the voice directory.
+                    for audio_file in os.listdir(audio_path):
+                        if audio_file.endswith(".wav"):
+                            audio_file_path = Path(os.path.join(audio_path, audio_file))
+                            audio_paths.append(
+                                {
+                                    "path": audio_file_path.absolute(),
+                                    "subject": audio_file_path.name.split("_")[0].split("sub-")[1],
+                                    "size": audio_file_path.stat().st_size,
+                                }
+                            )
+    return audio_paths
+
+
+def batch_elements(elements: t.List[t.Any], batch_size: int) -> t.List[t.List[t.Any]]:
+    """Batch elements into lists of a specified size.
+
+    Args:
+      elements:
+        The elements to batch.
+      batch_size:
+        The size of each batch.
+
+    Returns:
+      list of list of any:
+        A list of lists, each containing a batch of elements.
+    """
+    return [elements[i : i + batch_size] for i in range(0, len(elements), batch_size)]
 
 
 def load_redcap_csv(file_path):
@@ -81,46 +142,73 @@ def load_redcap_csv(file_path):
         return None
 
 
-def update_redcap_df_column_names(df: DataFrame) -> DataFrame:
-    """Update column names for a RedCap derived dataframe to match the coded
-    column names used in the B2AI data processing pipeline.
+def validate_redcap_df_column_names(df: DataFrame) -> DataFrame:
+    """RedCap allows two distinct export formats: raw data or with labels.
+    The raw data format exports column names as coded entries, e.g. "record_id".
+    This would be ideal, but it modifies the values of the data export. To avoid this,
+    the dataset is exported with labels, e.g. "Record ID". Afterward, the dataset
+    has the header manually modified to match the coded entries.
 
-    RedCap can export coded column names and text column names ("labels"), e.g.
-    "redcap_repeat_instrument" vs. "Repeat Instrument". For downstream consistency,
-    we map all column names to the coded form, i.e. "redcap_repeat_instrument".
+    This cannot be done with the data dictionary, as the data dictionary dimensions
+    do not match the dataset dimensions. The raw data must also be exported and the header
+    should be copied over to the label data.
+
+    This function verifies the headers are exported correctly.
 
     Parameters
     ----------
     df : DataFrame
         The DataFrame to update.
 
-    Returns
-    -------
-    DataFrame
-        The updated DataFrame.
+    Raises
+    ------
+    ValueError
+        If the columns in the DataFrame do not match the expected columns
+        for the Bridge2AI data voice data.
     """
 
+    # this column mapping is derived from the data dictionary, and is a subset
+    # of the columns exported from redcap.
     b2ai_resources = files("b2aiprep").joinpath("prepare").joinpath("resources")
     column_mapping: dict = json.loads(b2ai_resources.joinpath("column_mapping.json").read_text())
-    # the mapping by default is {"coded_entry": "Coded Entry"}
-    # we want our columns to be named "coded_entry", so we reverse the dict
-    column_mapping = {v: k for k, v in column_mapping.items()}
 
     # only map columns if we have a full overlap with the mapping dict
-    overlap_keys = set(df.columns.tolist()).intersection(set(column_mapping.keys()))
-    overlap_values = set(df.columns.tolist()).intersection(set(column_mapping.values()))
+    overlap_with_label = set(df.columns.tolist()).intersection(set(column_mapping.values()))
+    overlap_with_coded = set(df.columns.tolist()).intersection(set(column_mapping.keys()))
 
-    if len(overlap_keys) == df.shape[1]:
-        _LOGGER.info("Mapping columns to coded format.")
-        return df.rename(columns=column_mapping)
-    elif len(overlap_values) == df.shape[1]:
-        # no need to map columns
-        return df
-    else:
-        non_overlapping_columns = set(df.columns.tolist()) - set(column_mapping.keys())
+    if len(overlap_with_coded) == df.shape[1]:
+        return
+
+    if len(overlap_with_coded) == 0:
         raise ValueError(
-            f"Found {len(non_overlapping_columns)} \
-                columns not in mapping: {non_overlapping_columns}"
+            (
+                "Dataframe has no coded headers. Please modify the source data to have "
+                "coded labels instead."
+            )
+        )
+
+    # if we have more than half of the columns as label headers, we assume the data is
+    # exported with labels
+    if len(overlap_with_label) > (df.shape[1] * 0.5):
+        raise ValueError(
+            (
+                "Dataframe has label headers rather than coded headers. Please modify the source data to have "
+                "coded labels instead."
+            )
+        )
+
+    # raise a warning about the labels - unclear why there would be a mix
+    if len(overlap_with_label) > 0:
+        _LOGGER.warning(
+            (
+                f"Dataframe has a mix of label and coded headers: {len(overlap_with_coded)} coded, "
+                f"{len(overlap_with_label)} label, and {df.shape[1]} total columns. Downstream processing expects only coded labels."
+            )
+        )
+
+    elif len(overlap_with_coded) < df.shape[1]:
+        _LOGGER.warning(
+            (f"Dataframe has only {len(overlap_with_coded)} / {df.shape[1]} coded headers.")
         )
 
 
@@ -223,15 +311,15 @@ def write_pydantic_model_to_bids_file(
     # sub-<participant_id>_ses-<session_id>_task-<task_name>_run-_metadata.json
     filename = f"sub-{subject_id}"
     if session_id is not None:
-        session_id = _transform_str_for_bids_filename(session_id)
+        session_id = transform_str_for_bids_filename(session_id)
         filename += f"_ses-{session_id}"
     if task_name is not None:
-        task_name = _transform_str_for_bids_filename(task_name)
+        task_name = transform_str_for_bids_filename(task_name)
         if recording_name is not None:
-            task_name = _transform_str_for_bids_filename(recording_name)
+            task_name = transform_str_for_bids_filename(recording_name)
         filename += f"_task-{task_name}"
 
-    schema_name = _transform_str_for_bids_filename(schema_name).replace("schema", "")
+    schema_name = transform_str_for_bids_filename(schema_name).replace("schema", "")
     schema_name = schema_name + "-metadata"
     filename += f"_{schema_name}.json"
 
@@ -325,7 +413,7 @@ def output_participant_data_to_fhir(
     participant_id = participant["record_id"]
     subject_path = outdir / f"sub-{participant_id}"
 
-    if audiodir is not None and not audiodir.exists():
+    if audiodir is not None and not Path(audiodir).exists():
         audiodir = None
 
     # TODO: prepare a Patient resource to use as the reference for each questionnaire
@@ -354,17 +442,17 @@ def output_participant_data_to_fhir(
             if task is None:
                 continue
 
-            acoustic_task_name = _transform_str_for_bids_filename(task["acoustic_task_name"])
+            acoustic_task_name = transform_str_for_bids_filename(task["acoustic_task_name"])
             fhir_data = convert_response_to_fhir(
                 task,
                 questionnaire_name=task_instrument.name,
-                mapping_name=task_instrument.schema,
+                mapping_name=task_instrument.schema_name,
                 columns=task_instrument.columns,
             )
             write_pydantic_model_to_bids_file(
                 audio_output_path,
                 fhir_data,
-                schema_name=task_instrument.schema,
+                schema_name=task_instrument.schema_name,
                 subject_id=participant_id,
                 session_id=session_id,
                 task_name=acoustic_task_name,
@@ -378,13 +466,13 @@ def output_participant_data_to_fhir(
                 fhir_data = convert_response_to_fhir(
                     recording,
                     questionnaire_name=recording_instrument.name,
-                    mapping_name=recording_instrument.schema,
+                    mapping_name=recording_instrument.schema_name,
                     columns=recording_instrument.columns,
                 )
                 write_pydantic_model_to_bids_file(
                     audio_output_path,
                     fhir_data,
-                    schema_name=recording_instrument.schema,
+                    schema_name=recording_instrument.schema_name,
                     subject_id=participant_id,
                     session_id=session_id,
                     task_name=acoustic_task_name,
@@ -415,7 +503,7 @@ def output_participant_data_to_fhir(
                         # copy file
                         ext = audio_file.suffix
 
-                        recording_name = _transform_str_for_bids_filename(
+                        recording_name = transform_str_for_bids_filename(
                             recording["recording_name"]
                         )
                         audio_file_destination = (
@@ -423,7 +511,7 @@ def output_participant_data_to_fhir(
                         )
                         if audio_file_destination.exists():
                             logging.warning(
-                                f"Audio file {audio_file_destination} already exists. Overwriting."
+                                f"Audio file {audio_file_destination} already exists. Skipping."
                             )
                         audio_file_destination.write_bytes(audio_file.read_bytes())
     # Save sessions.tsv
@@ -431,6 +519,94 @@ def output_participant_data_to_fhir(
         os.mkdir(subject_path)
     sessions_tsv_path = subject_path / "sessions.tsv"
     sessions_df.to_csv(sessions_tsv_path, sep="\t", index=False)
+
+
+def construct_tsv_from_json(
+    df: pd.DataFrame, json_file_path: str, output_dir: str, output_file_name: t.Optional[str] = None
+) -> None:
+    """
+    Constructs a TSV file from a DataFrame and a JSON file specifying column labels.
+    Combines entries so that there is one row per record_id.
+
+    Args:
+        df (pd.DataFrame): DataFrame containing the data.
+        json_file_path (str): Path to the JSON file with the column labels.
+        output_dir (str): Output directory where the TSV file will be saved.
+        output_file_name (str, optional): The name of the output TSV file.
+                                          If not provided, the JSON file name is used with a .tsv extension.
+
+    Returns:
+        None: This function does not return a value; it writes the output to a TSV file.
+    """
+    # Load the column labels from the JSON file
+    with open(json_file_path, "r") as f:
+        json_data = json.load(f)
+
+    # Extract column names from the JSON file
+    column_labels = list(json_data.keys())
+
+    # Filter column labels to only include those that exist in the DataFrame
+    valid_columns = [col for col in column_labels if col in df.columns]
+
+    if not valid_columns:
+        raise ValueError("No valid columns found in DataFrame that match JSON file")
+
+    if "record_id" not in valid_columns:
+        valid_columns = ["record_id"] + valid_columns
+
+    # Select the relevant columns from the DataFrame
+    selected_df = df[valid_columns]
+
+    # Combine entries so there is one row per record_id
+    combined_df = selected_df.groupby("record_id").first().reset_index()
+
+    # Define the output file name and path
+    if output_file_name is None:
+        output_file_name = os.path.splitext(os.path.basename(json_file_path))[0] + ".tsv"
+
+    tsv_path = os.path.join(output_dir, output_file_name)
+
+    # Save the combined DataFrame to a TSV file
+    combined_df.to_csv(tsv_path, sep="\t", index=False)
+
+    print(f"TSV file created and saved to: {tsv_path}")
+
+
+def construct_all_tsvs_from_jsons(
+    df: pd.DataFrame,
+    input_dir: str,
+    output_dir: str,
+    excluded_files: t.Optional[t.List[str]] = None,
+) -> None:
+    """
+    Constructs TSV files from all JSON files in a specified directory,
+    excluding specific files if provided.
+
+    Args:
+        df (pd.DataFrame): DataFrame containing the data.
+        input_dir (str): Directory containing JSON files with column labels.
+        output_dir (str): Directory where the TSV files will be saved.
+        excluded_files (List[str], optional): List of JSON filenames to exclude
+                                              from processing. Defaults to None.
+
+    Returns:
+        None: This function does not return a value; it writes output to TSV files.
+    """
+    # Ensure the excluded_files list is initialized if None is provided
+    if excluded_files is None:
+        excluded_files = []
+
+    # Ensure output directory exists
+    os.makedirs(output_dir, exist_ok=True)
+
+    # Iterate over all files in the input directory
+    for filename in os.listdir(input_dir):
+        # Process only JSON files that are not excluded
+        if filename.endswith(".json") and filename not in excluded_files:
+            json_file_path = os.path.join(input_dir, filename)
+
+            # Construct the TSV file from the JSON file
+            construct_tsv_from_json(df=df, json_file_path=json_file_path, output_dir=output_dir)
 
 
 def redcap_to_bids(
@@ -466,14 +642,20 @@ def redcap_to_bids(
         If the RedCap CSV file is not found, or if the columns in the CSV file do not match
         the expected columns for the Bridge2AI data.
     """
+    initialize_data_directory(outdir)
+
     df = load_redcap_csv(filename)
 
     # It is possible for each column in the dataframe to have one of two names:
     #   1. coded column names ("record_id")
     #   2. text column names ("Record ID")
-    # for simplicity, we always map columns to coded columns before processing,
-    # that way we only ever need to manually subselect using one version of the column name
-    df = update_redcap_df_column_names(df)
+
+    # we require coded column names for downstream processing.
+    # redcap can export a CSV with either (1) variable names (unique) or (2) variable descriptions
+    # in mode (1), the raw values are exported, and in mode (2), human readable values are output
+    # the export process is (2), then manually copy (1) header over (2). so we validate that this
+    # manual step has been done here.
+    validate_redcap_df_column_names(df)
 
     construct_tsv_from_json(  # construct participants.tsv
         df=df,
@@ -568,7 +750,7 @@ def redcap_to_bids(
             # there can be only one demographics per session
             for key, df_by_session_id in dataframe_dicts.items():
                 if session_id not in df_by_session_id:
-                    _LOGGER.info(f"No {key} found for session {session_id}.")
+                    # _LOGGER.info(f"No {key} found for session {session_id}.")
                     session[key] = None
                 else:
                     session[key] = df_by_session_id[session_id]
@@ -576,7 +758,42 @@ def redcap_to_bids(
     # participants is a list of dictionaries; each dictionary has the same RedCap fields
     # but it respects the nesting / hierarchy present in the original data collection
     # TODO: maybe this warning should go in the main function
-    if (audiodir is not None) and (not audiodir.exists()):
+    if (audiodir is not None) and (not Path(audiodir).exists()):
         logging.warning(f"{audiodir} path does not exist. No audio files will be reorganized.")
     for participant in tqdm(participants, desc="Writing participant data to file"):
         output_participant_data_to_fhir(participant, outdir, audiodir=audiodir)
+
+
+def validate_bids_folder(bids_dir_path: Path):
+    """Validate the BIDS-like folder structure.
+
+    This function checks that all audio files have corresponding feature
+    files and transcriptions.
+
+    Args:
+        bids_dir_path:
+            The root directory of the BIDS dataset.
+    """
+    audio_paths = [x["path"] for x in get_audio_paths(bids_dir_path)]
+    missing_features = []
+    missing_transcriptions = []
+    for audio_path in audio_paths:
+        audio_path = Path(audio_path)
+        audio_dir = audio_path.parent
+        features_dir = audio_dir.parent / "audio"
+        feature_files = [file for file in features_dir.glob(f"{audio_path.stem}*.pt")]
+        if len(feature_files) == 0:
+            missing_features.append(audio_path)
+        feature_files = [file for file in features_dir.glob(f"{audio_path.stem}*.txt")]
+        if len(feature_files) == 0:
+            missing_transcriptions.append(audio_path)
+    if len(missing_transcriptions) > 0:
+        _LOGGER.warning(
+            f"Missing transcriptions for {len(missing_transcriptions)} / {len(audio_paths)} audio files"
+        )
+    if len(missing_features) > 0:
+        _LOGGER.warning(
+            f"Missing features for {len(missing_features)} / {len(audio_paths)} audio files"
+        )
+    else:
+        _LOGGER.info("All audio files have been processed.")

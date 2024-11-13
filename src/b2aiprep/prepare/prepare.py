@@ -37,31 +37,32 @@ Functions:
 
 import logging
 import os
-import tarfile
+import traceback
 from pathlib import Path
 from typing import List
 
 import numpy as np
+import pandas as pd
 import pydra
 import torch
-from senselab.audio.data_structures.audio import Audio
-from senselab.audio.tasks.features_extraction.opensmile import (
-    extract_opensmile_features_from_audios,
-)
-from senselab.audio.tasks.features_extraction.torchaudio import (
-    extract_mel_filter_bank_from_audios,
-    extract_mfcc_from_audios,
-    extract_spectrogram_from_audios,
-)
-from senselab.audio.tasks.preprocessing.preprocessing import resample_audios
-from senselab.audio.tasks.speaker_embeddings.api import (
+from senselab.audio.data_structures import Audio
+from senselab.audio.tasks.features_extraction.api import extract_features_from_audios
+from senselab.audio.tasks.preprocessing import downmix_audios_to_mono, resample_audios
+from senselab.audio.tasks.speaker_embeddings import (
     extract_speaker_embeddings_from_audios,
 )
-from senselab.audio.tasks.speech_to_text.api import transcribe_audios
-from senselab.utils.data_structures.model import HFModel
+from senselab.audio.tasks.speech_to_text import transcribe_audios
+from senselab.utils.data_structures import (
+    DeviceType,
+    HFModel,
+    Language,
+    SpeechBrainModel,
+)
+from tqdm import tqdm
 
-from b2aiprep.prepare.bids_like_data import redcap_to_bids
-from b2aiprep.prepare.utils import copy_package_resource, remove_files_by_pattern
+from b2aiprep.prepare.bids import get_audio_paths
+from b2aiprep.prepare.constants import SPEECH_TASKS
+from b2aiprep.prepare.utils import retry
 
 SUBJECT_ID = "sub"
 SESSION_ID = "ses"
@@ -72,39 +73,115 @@ _logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
-def copy_phenotype_files(template_package, bids_dir_path):
-    copy_package_resource(template_package, "phenotype", bids_dir_path)
-    phenotype_path = Path(bids_dir_path) / Path("phenotype")
-    remove_files_by_pattern(phenotype_path, "<measurement_tool_name>*")
+def extract_single(
+    wav_path: str | os.PathLike,
+    transcription_model_size: str,
+    with_sensitive: bool,
+    overwrite: bool = False,
+    device: DeviceType = DeviceType.CPU,
+):
+
+    wav_path = Path(wav_path)
+    # Define the save directory for features
+    audio_dir = wav_path.parent
+    features_dir = audio_dir.parent / "audio"
+    features_dir.mkdir(exist_ok=True)
+    save_to = features_dir / f"{wav_path.stem}_features.pt"
+
+    if save_to.exists() and not overwrite:
+        _logger.info(f"{save_to} already exists. Skipping.")
+        return save_to
+
+    logging.disable(logging.ERROR)
+    # Load audio
+    audio_orig = Audio.from_filepath(wav_path)
+
+    # Downmix to mono
+    audio_orig = downmix_audios_to_mono([audio_orig])[0]
+
+    # Resample both audios to 16kHz
+    audio_16k = resample_audios([audio_orig], RESAMPLE_RATE)[0]
+
+    win_length = 25
+    hop_length = 10
+
+    is_speech_task = any([v.replace(" ", "-") in wav_path.name for v in SPEECH_TASKS])
+
+    parsel_mouth_config = False
+    if is_speech_task:
+        parsel_mouth_config = {
+            "time_step": hop_length / 1000,
+            "window_length": win_length / 1000,
+            "plugin": "serial",
+        }
+    torch_config = {
+        "freq_low": 80,
+        "freq_high": 500,
+        "n_fft": win_length * audio_16k.sampling_rate // 1000,
+        "n_mels": 20,
+        "n_mfcc": 20,
+        "win_length": win_length,
+        "hop_length": hop_length,
+        "plugin": "serial",
+    }
+    # Extract features
+    features = extract_features_from_audios(
+        audios=[audio_16k],
+        opensmile=True,
+        parselmouth=parsel_mouth_config,
+        torchaudio=torch_config,
+        torchaudio_squim=is_speech_task,
+    ).pop()
+    features["is_speech_task"] = is_speech_task
+    features["sample_rate"] = audio_16k.sampling_rate
+    features["sensitive_features"] = None
+    if with_sensitive:
+        features["audio_path"] = wav_path
+        try:
+            model = SpeechBrainModel(
+                path_or_uri="speechbrain/spkrec-ecapa-voxceleb", revision="main"
+            )
+            features["speaker_embedding"] = extract_speaker_embeddings_from_audios(
+                [audio_16k], model, device
+            )[0]
+        except Exception as e:
+            features["speaker_embedding"] = None
+            _logger.error(
+                f"Speaker embeddings: An error occurred with extracting speaker embeddings. {e}"
+            )
+        features["transcription"] = None
+        try:
+            speech_to_text_model = HFModel(
+                path_or_uri=f"openai/whisper-{transcription_model_size}", revision="main"
+            )
+            language = Language.model_validate({"language_code": "en"})
+            transcription = retry(transcribe_audios)(
+                [audio_16k], model=speech_to_text_model, device=device, language=language
+            )
+            features["transcription"] = transcription[0]
+        except Exception as e:
+            logging.disable(logging.NOTSET)
+            _logger.error(f"Transcription: An error occurred with transcription: {e}")
+            _logger.error(traceback.print_exc())
+        features["sensitive_features"] = ["audio_path", "speaker_embedding", "transcription"]
+    logging.disable(logging.NOTSET)
+    _logger.setLevel(logging.INFO)
+
+    torch.save(features, save_to)
+    return save_to
 
 
-def initialize_data_directory(bids_dir_path: str) -> None:
-    """Initializes the data directory using the template.
+def wav_to_features(
+    wav_paths: List[str | os.PathLike],
+    transcription_model_size: str,
+    with_sensitive: bool,
+    overwrite: bool = False,
+    device: DeviceType = DeviceType.CPU,
+) -> List[str | os.PathLike]:
+    """Extract features from a list of audio files.
 
-    Args:
-        bids_dir_path (str): The path to the BIDS directory where the data should be initialized.
-
-    Returns:
-        None
-    """
-    if not os.path.exists(bids_dir_path):
-        os.makedirs(bids_dir_path)
-        _logger.info(f"Created directory: {bids_dir_path}")
-
-    template_package = "b2aiprep.prepare.resources.b2ai-data-bids-like-template"
-    copy_package_resource(template_package, "CHANGES.md", bids_dir_path)
-    copy_package_resource(template_package, "README.md", bids_dir_path)
-    copy_package_resource(template_package, "dataset_description.json", bids_dir_path)
-    copy_package_resource(template_package, "participants.json", bids_dir_path)
-    copy_phenotype_files(template_package, bids_dir_path)
-
-
-@pydra.mark.task
-def wav_to_features(wav_paths: List[Path], transcription_model_size: str, with_sensitive: bool):
-    """Extract features from a single audio file.
-
-    Extracts various audio features from a .wav file at the specified
-    path using the Audio class and feature extraction functions.
+    Extracts various audio features from .wav files
+    using the Audio class and feature extraction functions.
 
     Args:
       wav_path:
@@ -114,99 +191,39 @@ def wav_to_features(wav_paths: List[Path], transcription_model_size: str, with_s
       A dictionary mapping feature names to their extracted values.
     """
     all_features = []
-    for wav_path in wav_paths:
-        wav_path = Path(wav_path)
-
-        _logger.info(wav_path)
-        logging.disable(logging.ERROR)
-        audio = Audio.from_filepath(str(wav_path))
-        audio = resample_audios([audio], resample_rate=RESAMPLE_RATE)[0]
-
-        features = {}
-        features["speaker_embedding"] = extract_speaker_embeddings_from_audios([audio])[0]
-        features["specgram"] = extract_spectrogram_from_audios([audio])[0]
-        features["melfilterbank"] = extract_mel_filter_bank_from_audios([audio])[0]
-        features["mfcc"] = extract_mfcc_from_audios([audio])[0]
-        features["sample_rate"] = audio.sampling_rate
-        features["opensmile"] = extract_opensmile_features_from_audios([audio])[0]
-        if with_sensitive:
-            speech_to_text_model = HFModel(path_or_uri=f"openai/whisper-{transcription_model_size}")
-            features["transcription"] = transcribe_audios(
-                audios=[audio], model=speech_to_text_model
-            )[0]
-        logging.disable(logging.NOTSET)
-        _logger.setLevel(logging.INFO)
-
-        # Define the save directory for features
-        audio_dir = wav_path.parent
-        features_dir = audio_dir.parent / "audio"
-        features_dir.mkdir(exist_ok=True)
-
-        # Save each feature in a separate file
-        for feature_name, feature_value in features.items():
-            file_extension = "pt"
-            if feature_name == "transcription":
-                file_extension = "txt"
-            save_path = features_dir / f"{wav_path.stem}_{feature_name}.{file_extension}"
-            if file_extension == "pt":
-                torch.save(feature_value, save_path)
-            else:
-                with open(save_path, "w", encoding="utf-8") as text_file:
-                    text_file.write(feature_value.text)
-        all_features.append(features)
-        if not with_sensitive:
-            os.remove(wav_path)
+    if len(wav_paths) > 1:
+        _logger.info(f"Number of audio files: {len(wav_paths)}")
+        for wav_path in tqdm(wav_paths, total=len(wav_paths), desc="Extracting features"):
+            save_path = extract_single(
+                wav_path,
+                transcription_model_size=transcription_model_size,
+                with_sensitive=with_sensitive,
+                device=device,
+                overwrite=overwrite,
+            )
+            all_features.append(save_path)
+    else:
+        save_path = extract_single(
+            wav_paths[0],
+            transcription_model_size=transcription_model_size,
+            with_sensitive=with_sensitive,
+            device=device,
+            overwrite=overwrite,
+        )
+        all_features.append(save_path)
     return all_features
-
-
-@pydra.mark.task
-def get_audio_paths(bids_dir_path, n_cores):
-    """Retrieve all .wav audio file paths from a BIDS-like directory structure.
-
-    This function traverses the specified BIDS directory, collecting paths to
-    .wav audio files from all subject and session directories that match the
-    expected naming conventions.
-
-    Args:
-      bids_dir_path:
-        The root directory of the BIDS dataset.
-
-    Returns:
-      list of str:
-        A list of file paths to .wav audio files within the BIDS directory.
-    """
-    audio_paths = []
-
-    # Iterate over each subject directory.
-    for sub_file in os.listdir(bids_dir_path):
-        subject_dir_path = os.path.join(bids_dir_path, sub_file)
-        if sub_file.startswith(SUBJECT_ID) and os.path.isdir(subject_dir_path):
-
-            # Iterate over each session directory within a subject.
-            for session_dir_path in os.listdir(subject_dir_path):
-                audio_path = os.path.join(subject_dir_path, session_dir_path, AUDIO_ID)
-
-                if session_dir_path.startswith(SESSION_ID) and os.path.isdir(audio_path):
-                    _logger.info(audio_path)
-                    # Iterate over each audio file in the voice directory.
-                    for audio_file in os.listdir(audio_path):
-                        if audio_file.endswith(".wav"):
-                            audio_file_path = os.path.join(audio_path, audio_file)
-                            audio_paths.append(audio_file_path)
-
-    # Assuming audio_paths is a list of paths and n_cores is the number of cores
-    batched_audio_paths = np.array_split(audio_paths, n_cores)
-    batched_audio_paths = [
-        list(batch) for batch in batched_audio_paths
-    ]  # Convert each chunk back to a list if needed
-    return batched_audio_paths
 
 
 def extract_features_workflow(
     bids_dir_path: Path,
     transcription_model_size: str = "tiny",
-    n_cores: int = 8,
     with_sensitive: bool = True,
+    overwrite: bool = False,
+    n_cores: int = 8,
+    plugin: str = "cf",
+    address: str = None,
+    cache_dir: str | os.PathLike = None,
+    percentile: int = 100,
 ):
     """Run a Pydra workflow to extract audio features from BIDS-like directory.
 
@@ -217,120 +234,114 @@ def extract_features_workflow(
     Args:
       bids_dir_path:
         The root directory of the BIDS dataset.
-      remove:
-        Whether to remove temporary files created during processing. Default is True.
+      transcription_model_size:
+        The size of the Whisper model to use for transcription.
+      n_cores:
+        The number of cores to use for parallel processing.
+      with_sensitive:
+        Whether to extract sensitive features such as speaker embeddings and transcriptions.
+      plugin:
+        The Pydra plugin to use for parallel processing.
+      cache_dir:
+        The directory to use for caching intermediate results.
 
     Returns:
-      pydra.Workflow:
-        The Pydra workflow object with the extracted features and audio paths as outputs.
+      pydra.Task:
+        The Pydra Task object with the extracted feature paths.
     """
-    # Initialize the Pydra workflow.
-    ef_wf = pydra.Workflow(
-        name="ef_wf", input_spec=["bids_dir_path"], bids_dir_path=bids_dir_path, cache_dir=None
-    )
+    import multiprocessing as mp
 
+    try:
+        mp.set_start_method('spawn', force=True)
+    except RuntimeError:
+        # Already set
+        pass
+
+    if n_cores > 1:
+        plugin_args: dict = {"n_procs": n_cores} if plugin == "cf" else {}
+    else:
+        plugin = "serial"
+        plugin_args = {}
     # Get paths to every audio file.
-    ef_wf.add(get_audio_paths(name="audio_paths", bids_dir_path=bids_dir_path, n_cores=n_cores))
-
-    # Run wav_to_features for each audio file.
-    ef_wf.add(
-        wav_to_features(
-            name="features",
-            wav_path=ef_wf.audio_paths.lzout.out,
-            transcription_model_size=transcription_model_size,
-            with_sensitive=with_sensitive,
-        ).split("wav_paths", wav_paths=ef_wf.audio_paths.lzout.out)
-    )
-
-    ef_wf.set_output(
-        {"audio_paths": ef_wf.audio_paths.lzout.out, "features": ef_wf.features.lzout.out}
-    )
-    with pydra.Submitter(plugin="cf") as run:
-        run(ef_wf)
-
-    return ef_wf
-
-
-def _extract_features_workflow(
-    bids_dir_path: Path, remove: bool = True, transcription_model_size: str = "tiny"
-):
-    """Provides a non-Pydra implementation of _extract_features_workflow"""
-    audio_paths = get_audio_paths(name="audio_paths", bids_dir_path=bids_dir_path)().output.out
-    all_features = []
-    for path in audio_paths:
-        all_features.append(
-            wav_to_features(
-                wav_path=Path(path), transcription_model_size=transcription_model_size
-            )().output.out
-        )
-    return all_features
-
-
-def bundle_data(source_directory: str, save_path: str) -> None:
-    """Saves data bundle as a tar file with gzip compression.
-
-    Args:
-      source_directory:
-        The directory containing the data to be bundled.
-      save_path:
-        The file path where the tar.gz file will be saved.
-    """
-    with tarfile.open(save_path, "w:gz") as tar:
-        tar.add(source_directory, arcname=os.path.basename(source_directory))
-
-
-def prepare_bids_like_data(
-    redcap_csv_path: Path,
-    audio_dir_path: Path,
-    bids_dir_path: Path,
-    tar_file_path: Path,
-    transcription_model_size: str,
-    n_cores: int,
-    with_sensitive: bool,
-) -> None:
-    """Organizes and processes Bridge2AI data for distribution.
-
-    This function organizes the data from RedCap and the audio files from
-    Wasabi into a BIDS-like directory structure, extracts audio features from
-    the organized data, and bundles the processed data into a .tar file with
-    gzip compression.
-
-    Args:
-      redcap_csv_path:
-        The file path to the REDCap CSV file.
-      audio_dir_path:
-        The directory path containing audio files.
-      bids_dir_path:
-        The directory path for the BIDS dataset.
-      tar_file_path:
-        The file path where the .tar.gz file will be saved.
-    """
-    initialize_data_directory(bids_dir_path)
-
-    _logger.info("Organizing data into BIDS-like directory structure...")
-    redcap_to_bids(redcap_csv_path, bids_dir_path, audio_dir_path)
-    _logger.info("Data organization complete.")
-
-    _logger.info("Beginning audio feature extraction...")
-    extract_features_workflow(
-        bids_dir_path,
+    audio_paths = get_audio_paths(bids_dir_path=bids_dir_path)
+    df = pd.DataFrame(audio_paths)
+    if "path" not in df.columns:
+        _logger.warning("No audio files found in the BIDS directory.")
+        return
+    if "size" in df.columns:
+        df = df[df["size"] <= np.percentile(df["size"].values, percentile)]
+    # randomize to distribute sizes
+    df = df.sample(frac=1).reset_index(drop=True)
+    audio_paths = df.path.values.tolist()
+    _logger.info(f"Number of audio files: {len(audio_paths)}")
+    # Run the task
+    extract_task = pydra.mark.task(extract_single)(
         transcription_model_size=transcription_model_size,
-        n_cores=n_cores,
+        with_sensitive=with_sensitive,
+        cache_dir=cache_dir,
+    )
+    extract_task.split("wav_path", wav_path=audio_paths)
+    if plugin == "dask":
+        plugin_args = {"address": address}
+    with pydra.Submitter(plugin=plugin, **plugin_args) as run:
+        run(extract_task)
+    return extract_task
+
+
+def validate_bids_data(
+    bids_dir_path: Path,
+    fix: bool = True,
+    transcription_model_size: str = "tiny",
+    with_sensitive: bool = True,
+    n_cores: int = 8,
+    plugin: str = "cf",
+    address: str = None,
+    cache_dir: str | os.PathLike = None,
+) -> None:
+    """Scans BIDS audio data and verifies that all expected features are present."""
+    _logger.info("Scanning for features in BIDS directory.")
+    # TODO: add a check to see if the audio feature extraction is complete
+    # before proceeding to the next step
+    # can verify features are generated for each audio_dir by looking for .pt files
+    # in audio_dir.parent / "audio"
+    audio_paths = get_audio_paths(bids_dir_path)
+    df = pd.DataFrame(audio_paths)
+    audio_to_reprocess = []
+    for audio_path in df.path.values.tolist():
+        audio_path = Path(audio_path)
+        audio_dir = audio_path.parent
+        features_dir = audio_dir.parent / "audio"
+        if features_dir.joinpath(f"{audio_path.stem}_features.pt").exists() is False:
+            audio_to_reprocess.append(audio_path)
+
+    if len(audio_to_reprocess) > 0:
+        _logger.info(
+            f"Missing features for {len(audio_to_reprocess)} / {len(audio_paths)} audio files"
+        )
+    else:
+        _logger.info("All audio files have been processed and all feature files are present.")
+        return
+
+    if not fix:
+        return
+
+    if n_cores > 1:
+        plugin_args: dict = {"n_procs": n_cores} if plugin == "cf" else {}
+    else:
+        plugin = "serial"
+        plugin_args = {}
+    extract_task = wav_to_features(
+        transcription_model_size=transcription_model_size,
         with_sensitive=with_sensitive,
     )
-
-    _logger.info("Audio feature extraction complete.")
-
-    _logger.info("Saving .tar file with processed data...")
-    bundle_data(bids_dir_path, tar_file_path)
-    _logger.info(f"Saved processed data .tar file at: {tar_file_path}")
-
+    if n_cores > 1:
+        extract_task.split("wav_paths", wav_paths=[[x] for x in audio_to_reprocess])
+    else:
+        extract_task.inputs.wav_paths = audio_to_reprocess
+    if plugin == "dask":
+        plugin_args = {"address": address}
+    with pydra.Submitter(plugin=plugin, **plugin_args) as run:
+        run(extract_task)
+    with pydra.Submitter(plugin="cf") as run:
+        run(extract_task)
     _logger.info("Process completed.")
-
-
-def main():
-    pass
-
-
-if __name__ == "__main__":
-    main()
