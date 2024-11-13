@@ -131,7 +131,7 @@ def prepare_bids(
     os.makedirs(cache, exist_ok=True)
 
     _LOGGER.info("Organizing data into BIDS-like directory structure...")
-    redcap_to_bids(redcap_csv_path, bids_dir_path, audio_dir_path)
+    redcap_to_bids(redcap_csv_path, Path(bids_dir_path), audio_dir_path)
     _LOGGER.info("Data organization complete.")
 
     _LOGGER.info("Beginning audio feature extraction...")
