@@ -877,7 +877,25 @@
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/primary_transportation"
             },
             "q_generic_demographics_complete": {
-                "description": "Indicates if the participant has completed the generic demographics section."
+                "description": "Indicates if the participant has completed the generic demographics section.",
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Incomplete"
+                        },
+                        "value": "incomplete"
+                    },
+                    {
+                        "name": {
+                            "en": "Complete"
+                        },
+                        "value": "complete"
+                    }
+                ],
+                "termURL": null
             },
             "demographics_completed_by": {},
             "race": {},
