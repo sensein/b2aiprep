@@ -7,7 +7,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_ptsd_adult/items/ptsd_session_id"
     },
     "ptsd_duration": {
         "description": "Reports the duration of post-traumatic stress disorder (PTSD) symptoms the participant is experiencing.",
@@ -17,7 +18,8 @@
         "datatype": [
             "xsd:decimal"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_ptsd_adult/items/ptsd_duration"
     },
     "traumatic_event": {
         "description": "Reports if the participant has experienced a traumatic event recently.",
@@ -27,7 +29,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_ptsd_adult/items/traumatic_event"
     },
     "flashbacks": {
         "description": "Indicates if the participant experiences flashbacks to stressful or traumatic events.",
@@ -68,7 +71,8 @@
                 },
                 "value": 4
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_ptsd_adult/items/flashbacks"
     },
     "emotionally_upset": {
         "description": "Indicates if the participant feels emotionally upset during the session.",
@@ -109,7 +113,8 @@
                 },
                 "value": 4
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_ptsd_adult/items/emotionally_upset"
     },
     "avoiding_reminders": {
         "description": "Indicates if the participant is avoiding reminders of traumatic events.",
@@ -150,7 +155,8 @@
                 },
                 "value": 4
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_ptsd_adult/items/avoiding_reminders"
     },
     "thinking_stressful_event": {
         "description": "Reports if the participant is thinking about a stressful event during the session.",
@@ -191,7 +197,8 @@
                 },
                 "value": 4
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_ptsd_adult/items/thinking_stressful_event"
     },
     "neg_emotional_state": {
         "description": "Indicates if the participant is experiencing negative emotional states.",
@@ -232,7 +239,8 @@
                 },
                 "value": 4
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_ptsd_adult/items/neg_emotional_state"
     },
     "losing_interest": {
         "description": "Indicates if the participant is losing interest in things they usually enjoy.",
@@ -273,7 +281,8 @@
                 },
                 "value": 4
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_ptsd_adult/items/losing_interest"
     },
     "super_alert": {
         "description": "Indicates if the participant is highly alert during the session.",
@@ -314,7 +323,8 @@
                 },
                 "value": 4
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_ptsd_adult/items/super_alert"
     },
     "feeling_jumpy": {
         "description": "Indicates if the participant feels jumpy or anxious.",
@@ -355,7 +365,8 @@
                 },
                 "value": 4
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_ptsd_adult/items/feeling_jumpy"
     },
     "irritable": {
         "description": "Indicates if the participant feels irritable or easily annoyed.",
@@ -396,6 +407,7 @@
                 },
                 "value": 4
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_ptsd_adult/items/irritable"
     }
 }

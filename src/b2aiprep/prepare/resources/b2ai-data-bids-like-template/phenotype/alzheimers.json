@@ -26,7 +26,8 @@
                 },
                 "value": " notCertain"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_causes"
     },
     "diagnosis_alz_dementia_mci_dt": {
         "description": "Specifies the type of dementia or cognitive impairment in the participant.",
@@ -79,7 +80,8 @@
                 },
                 "value": " other"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_dt"
     },
     "diagnosis_alz_dementia_mci_etiology___genetic_factors": {
         "description": "Indicates if genetic factors are suspected or known to be the etiology of the participant’s cognitive impairment or dementia."
@@ -144,7 +146,8 @@
                 },
                 "value": " cdr3"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ds_cdr"
     },
     "diagnosis_alz_dementia_mci_ca_rudas_score": {
         "description": "Specifies the participant’s Rowland Universal Dementia Assessment Scale (RUDAS) score.",
@@ -154,7 +157,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ca_rudas_score"
     },
     "diagnosis_alz_dementia_mci_ca_mmse_score": {
         "description": "Specifies the participant’s Mini-Mental State Examination (MMSE) score.",
@@ -164,7 +168,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ca_mmse_score"
     },
     "diagnosis_alz_dementia_mci_ca_moca_score": {
         "description": "Specifies the participant’s Montreal Cognitive Assessment (MoCA) score.",
@@ -174,7 +179,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ca_moca_score"
     },
     "diagnosis_alz_dementia_mci_ca_adas_cog_score": {
         "description": "Specifies the participant’s Alzheimer’s Disease Assessment Scale-Cognitive Subscale (ADAS-Cog) score.",
@@ -184,7 +190,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ca_adas_cog_score"
     },
     "diagnosis_alz_dementia_mci_ca_other": {
         "description": "Specifies if another cognitive assessment tool was used for the participant.",
@@ -194,7 +201,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ca_other"
     },
     "diagnosis_alz_dementia_mci_ca_other_score": {
         "description": "Specifies the score from another cognitive assessment tool used for the participant.",
@@ -204,7 +212,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ca_other_score"
     },
     "diagnosis_alz_dementia_mci_treatment_obtained": {
         "description": "Indicates if the participant has undergone any treatment for Alzheimer’s disease, cognitive impairment, or other types of dementia.",
@@ -227,7 +236,8 @@
                 },
                 "value": " no"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_treatment_obtained"
     },
     "diagnosis_alz_dementia_mci_treatment_obtained_yes___medications": {
         "description": "Indicates if the participant has taken medications as treatment for Alzheimer’s disease or cognitive impairment."
@@ -303,7 +313,8 @@
                 },
                 "value": " other"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_etiology"
     },
     "diagnosis_alz_dementia_mci_etiology_gf": {
         "question": {
@@ -331,7 +342,8 @@
                 },
                 "value": " other_genetic_factors"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_etiology_gf"
     },
     "diagnosis_alz_dementia_mci_ds": {
         "question": {
@@ -353,7 +365,8 @@
                 },
                 "value": " cdr"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ds"
     },
     "diagnosis_alz_dementia_mci_treatment_obtained_yes": {
         "question": {
@@ -375,7 +388,8 @@
                 },
                 "value": " npi"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_treatment_obtained_yes"
     },
     "diagnosis_alz_dementia_mci_treatment_obtained_yes_medications": {
         "question": {
@@ -403,7 +417,8 @@
                 },
                 "value": " other"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_treatment_obtained_yes_medications"
     },
     "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi": {
         "question": {
@@ -455,6 +470,7 @@
                 },
                 "value": " other"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_treatment_obtained_yes_npi"
     }
 }

@@ -7,7 +7,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_perception/items/voice_perception_session_id"
     },
     "voice_perception_duration": {
         "description": "Total duration of the voice perception assessment.",
@@ -17,7 +18,8 @@
         "datatype": [
             "xsd:decimal"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_perception/items/voice_perception_duration"
     },
     "voice_quality_perception": {
         "description": "Indicates the participant's perception of their voice quality.",
@@ -88,6 +90,7 @@
                 },
                 "value": 10
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_perception/items/voice_quality_perception"
     }
 }

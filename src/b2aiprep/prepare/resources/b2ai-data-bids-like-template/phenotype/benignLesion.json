@@ -26,7 +26,8 @@
                 },
                 "value": " notCertain"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_benign_lesions/items/diagnois_bl_gsd"
     },
     "diagnosis_bl_ds": {
         "description": "Indicates the participant’s diagnosis of a benign lesion.",
@@ -91,7 +92,8 @@
                 },
                 "value": " other"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_benign_lesions/items/diagnosis_bl_ds"
     },
     "diagnosis_bl_etiology": {
         "description": "Specifies the etiology or cause of the participant’s benign lesion.",
@@ -120,7 +122,8 @@
                 },
                 "value": " other"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_benign_lesions/items/diagnosis_bl_etiology"
     },
     "diagnosis_bl_ds_ll": {
         "description": "Indicates the location of the participant’s benign lesion.",
@@ -149,7 +152,8 @@
                 },
                 "value": " bothVocalFolds"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_benign_lesions/items/diagnosis_bl_ds_ll"
     },
     "diagnosis_bl_degree_os_1": {
         "description": "Indicates the overall severity of the participant’s benign lesion.",
@@ -178,7 +182,8 @@
                 },
                 "value": 2
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_os_1"
     },
     "diagnosis_bl_degree_os_2": {
         "description": "Indicates an alternative measure of the overall severity of the participant’s benign lesion.",
@@ -201,7 +206,8 @@
                 },
                 "value": " intermittent"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_os_2"
     },
     "diagnosis_bl_degree_r_1": {
         "description": "Indicates the roughness of the participant’s voice due to the benign lesion.",
@@ -230,7 +236,8 @@
                 },
                 "value": 2
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_r_1"
     },
     "diagnosis_bl_degree_r_2": {
         "description": "Indicates an alternative measure of the roughness of the participant’s voice due to the benign lesion.",
@@ -253,7 +260,8 @@
                 },
                 "value": " intermittent"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_r_2"
     },
     "diagnosis_bl_degree_b_1": {
         "description": "Indicates the breathiness of the participant’s voice due to the benign lesion.",
@@ -282,7 +290,8 @@
                 },
                 "value": 2
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_b_1"
     },
     "diagnosis_bl_degree_b_2": {
         "description": "Indicates an alternative measure of the breathiness of the participant’s voice due to the benign lesion.",
@@ -305,7 +314,8 @@
                 },
                 "value": " intermittent"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_b_2"
     },
     "diagnosis_bl_degree_s_1": {
         "description": "Indicates the strain in the participant’s voice due to the benign lesion.",
@@ -334,7 +344,8 @@
                 },
                 "value": 2
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_s_1"
     },
     "diagnosis_bl_degree_s_2": {
         "description": "Indicates an alternative measure of the strain in the participant’s voice due to the benign lesion.",
@@ -357,7 +368,8 @@
                 },
                 "value": " intermittent"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_s_2"
     },
     "diagnosis_bl_degree_p_1": {
         "description": "Indicates the pitch of the participant’s voice due to the benign lesion.",
@@ -386,7 +398,8 @@
                 },
                 "value": 2
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_p_1"
     },
     "diagnosis_bl_degree_p_2": {
         "description": "Indicates an alternative measure of the pitch of the participant’s voice due to the benign lesion.",
@@ -409,7 +422,8 @@
                 },
                 "value": " intermittent"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_p_2"
     },
     "diagnosis_bl_degree_l_1": {
         "description": "Indicates the loudness of the participant’s voice due to the benign lesion.",
@@ -438,7 +452,8 @@
                 },
                 "value": 2
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_l_1"
     },
     "diagnosis_bl_degree_l_2": {
         "description": "Indicates an alternative measure of the loudness of the participant’s voice due to the benign lesion.",
@@ -461,7 +476,8 @@
                 },
                 "value": " intermittent"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_l_2"
     },
     "diagnosis_bl_degree_comments": {
         "description": "Provides additional comments about the resonance of the participant’s voice due to the benign lesion.",
@@ -484,7 +500,8 @@
                 },
                 "value": " other"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_comments"
     },
     "diagnosis_bl_treatment": {
         "description": "Indicates if the participant has undergone any treatment for the benign lesion.",
@@ -507,7 +524,8 @@
                 },
                 "value": " no"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_benign_lesions/items/diagnosis_bl_treatment"
     },
     "diagnosis_bl_treatment_select___voice_or_speech_therapy": {
         "description": "Indicates if the participant has undergone voice or speech therapy as treatment for the benign lesion."
@@ -542,7 +560,8 @@
                 },
                 "value": " withoutLaser"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_benign_lesions/items/diagnosis_bl_treatment_lm"
     },
     "diagnosis_bl_treatment_select": {
         "question": {
@@ -576,6 +595,7 @@
                 },
                 "value": " other"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_benign_lesions/items/diagnosis_bl_treatment_select"
     }
 }

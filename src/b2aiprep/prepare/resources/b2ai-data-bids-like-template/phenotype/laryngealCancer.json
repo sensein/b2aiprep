@@ -26,7 +26,8 @@
                 },
                 "value": " notCertain"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_cancer/items/diagnois_lc_gsd_sll"
     },
     "diagnosis_lc_gsd_bpr": {
         "description": "Indicates if the participant has laryngeal cancer confirmed by biopsy or pathology report.",
@@ -55,7 +56,8 @@
                 },
                 "value": " notCertain"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_gsd_bpr"
     },
     "diagnosis_lc_gsd_uots___ct_neck": {
         "description": "Indicates if the participant has undergone a CT of the neck as part of their laryngeal cancer diagnosis."
@@ -162,7 +164,8 @@
                 },
                 "value": " unknownYet"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_ds_t_stage"
     },
     "diagnosis_lc_ds_n_stage": {
         "description": "Indicates the N stage of the participant’s laryngeal cancer according to the AJCC Classification.",
@@ -215,7 +218,8 @@
                 },
                 "value": " unknownYet"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_ds_n_stage"
     },
     "diagnosis_lc_ds_m_stage": {
         "description": "Indicates the M stage of the participant’s laryngeal cancer according to the AJCC Classification.",
@@ -238,7 +242,8 @@
                 },
                 "value": " m1"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_ds_m_stage"
     },
     "diagnosis_lc_degree_os_1": {
         "description": "Indicates the overall severity of the participant’s laryngeal cancer.",
@@ -267,7 +272,8 @@
                 },
                 "value": 2
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_os_1"
     },
     "diagnosis_lc_degree_os_2": {
         "description": "Indicates an alternative measure of the overall severity of the participant’s laryngeal cancer.",
@@ -290,7 +296,8 @@
                 },
                 "value": " intermittent"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_os_2"
     },
     "diagnosis_lc_degree_r_1": {
         "description": "Indicates the roughness of the participant’s voice due to laryngeal cancer.",
@@ -319,7 +326,8 @@
                 },
                 "value": 2
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_r_1"
     },
     "diagnosis_lc_degree_r_2": {
         "description": "Indicates an alternative measure of the roughness of the participant’s voice due to laryngeal cancer.",
@@ -342,7 +350,8 @@
                 },
                 "value": " intermittent"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_r_2"
     },
     "diagnosis_lc_degree_b_1": {
         "description": "Indicates the breathiness of the participant’s voice due to laryngeal cancer.",
@@ -371,7 +380,8 @@
                 },
                 "value": 2
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_b_1"
     },
     "diagnosis_lc_degree_b_2": {
         "description": "Indicates an alternative measure of the breathiness of the participant’s voice due to laryngeal cancer.",
@@ -394,7 +404,8 @@
                 },
                 "value": " intermittent"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_b_2"
     },
     "diagnosis_lc_degree_s_1": {
         "description": "Indicates the strain in the participant’s voice due to laryngeal cancer.",
@@ -423,7 +434,8 @@
                 },
                 "value": 2
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_s_1"
     },
     "diagnosis_lc_degree_s_2": {
         "description": "Indicates an alternative measure of the strain in the participant’s voice due to laryngeal cancer.",
@@ -446,7 +458,8 @@
                 },
                 "value": " intermittent"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_s_2"
     },
     "diagnosis_lc_degree_p_1": {
         "description": "Indicates the pitch of the participant’s voice due to laryngeal cancer.",
@@ -475,7 +488,8 @@
                 },
                 "value": 2
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_p_1"
     },
     "diagnosis_lc_degree_p_2": {
         "description": "Indicates an alternative measure of the pitch of the participant’s voice due to laryngeal cancer.",
@@ -498,7 +512,8 @@
                 },
                 "value": " intermittent"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_p_2"
     },
     "diagnosis_lc_degree_l_1": {
         "description": "Indicates the loudness of the participant’s voice due to laryngeal cancer.",
@@ -527,7 +542,8 @@
                 },
                 "value": 2
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_l_1"
     },
     "diagnosis_lc_degree_l_2": {
         "description": "Indicates an alternative measure of the loudness of the participant’s voice due to laryngeal cancer.",
@@ -550,7 +566,8 @@
                 },
                 "value": " intermittent"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_l_2"
     },
     "diagnosis_lc_degree_comments": {
         "description": "Provides additional comments about the resonance of the participant’s voice due to laryngeal cancer.",
@@ -573,7 +590,8 @@
                 },
                 "value": " other"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_comments"
     },
     "diagnosis_as_ds_ccsr": {
         "description": "Indicates if the participant’s cancer is causing stridor at rest.",
@@ -608,7 +626,8 @@
                 },
                 "value": " severeStridor"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_cancer/items/diagnosis_as_ds_ccsr"
     },
     "diagnosis_lc_treatment": {
         "description": "Indicates if the participant has undergone any treatment for laryngeal cancer.",
@@ -631,7 +650,8 @@
                 },
                 "value": " no"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_treatment"
     },
     "diagnosis_lc_treatment_select___radiation": {
         "description": "Indicates if the participant has undergone radiation as treatment for laryngeal cancer."
@@ -695,7 +715,8 @@
                 },
                 "value": " ultrasound_neck"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_gsd_uots"
     },
     "diagnosis_lc_ds": {
         "question": {
@@ -741,7 +762,8 @@
                 },
                 "value": " subglottal_areas"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_ds"
     },
     "diagnosis_lc_etiology": {
         "question": {
@@ -781,7 +803,8 @@
                 },
                 "value": " exposure_other_harmful_substances"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_etiology"
     },
     "diagnosis_lc_treatment_select": {
         "question": {
@@ -827,7 +850,8 @@
                 },
                 "value": " other"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_treatment_select"
     },
     "diagnosis_lc_treatment_s": {
         "question": {
@@ -849,6 +873,7 @@
                 },
                 "value": " partial_laryngectomy"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_treatment_s"
     }
 }

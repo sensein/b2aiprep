@@ -7,7 +7,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_voice_voice_problem_severity/items/voice_severity_session_id"
     },
     "voice_severity_duration": {
         "description": "Duration of the assessment for the severity of the participant's voice issues.",
@@ -17,7 +18,8 @@
         "datatype": [
             "xsd:decimal"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_voice_voice_problem_severity/items/voice_severity_duration"
     },
     "describe_the_severity_of_a": {
         "description": "Asks the participant to describe the severity of a specific condition or symptom.",
@@ -46,6 +48,7 @@
                 },
                 "value": 2
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_voice_voice_problem_severity/items/describe_the_severity_of_a"
     }
 }

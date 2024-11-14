@@ -35,7 +35,8 @@
                 },
                 "value": " no"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/items/is_control_participant"
     },
     "laryng_cancer": {
         "description": "Indicates if the participant has laryngeal cancer.",
@@ -58,7 +59,8 @@
                 },
                 "value": 1
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/items/laryng_cancer"
     },
     "benign_cord_lesion": {
         "description": "Indicates if the participant has benign lesions of the vocal cord such as nodules, polyps, or cysts.",
@@ -81,7 +83,8 @@
                 },
                 "value": 1
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/items/benign_cord_lesion"
     },
     "rrp": {
         "description": "Indicates if the participant has recurrent laryngeal papilloma (RRP).",
@@ -104,7 +107,8 @@
                 },
                 "value": 1
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/items/rrp"
     },
     "spas_dys": {
         "description": "Indicates if the participant has spasmodic dysphonia or laryngeal tremor.",
@@ -127,7 +131,8 @@
                 },
                 "value": 1
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/items/spas_dys"
     },
     "voc_fold_paralysis": {
         "description": "Indicates if the participant has unilateral vocal fold paralysis.",
@@ -150,7 +155,8 @@
                 },
                 "value": 1
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/items/voc_fold_paralysis"
     },
     "alz_dementia_mci": {
         "description": "Indicates if the participant has Alzheimer’s, dementia, or mild cognitive impairment.",
@@ -173,7 +179,8 @@
                 },
                 "value": 1
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/items/alz_dementia_mci"
     },
     "als": {
         "description": "Indicates if the participant has Amyotrophic Lateral Sclerosis (ALS).",
@@ -196,7 +203,8 @@
                 },
                 "value": 1
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/items/als"
     },
     "parkinsons": {
         "description": "Indicates if the participant has Parkinson’s disease.",
@@ -219,7 +227,8 @@
                 },
                 "value": 1
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/items/parkinsons"
     },
     "alcohol_subst_abuse": {
         "description": "Indicates if the participant has alcohol or substance use disorder.",
@@ -242,7 +251,8 @@
                 },
                 "value": 1
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/items/alcohol_subst_abuse"
     },
     "gad": {
         "description": "Indicates if the participant has an anxiety disorder.",
@@ -265,7 +275,8 @@
                 },
                 "value": 1
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/items/gad"
     },
     "add_adhd": {
         "description": "Indicates if the participant has Attention-Deficit/Hyperactivity Disorder (ADHD).",
@@ -288,7 +299,8 @@
                 },
                 "value": 1
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/items/add_adhd"
     },
     "asd": {
         "description": "Indicates if the participant has Autism Spectrum Disorder (ASD).",
@@ -311,7 +323,8 @@
                 },
                 "value": 1
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/items/asd"
     },
     "bipolar": {
         "description": "Indicates if the participant has Bipolar Disorder.",
@@ -334,7 +347,8 @@
                 },
                 "value": 1
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/items/bipolar"
     },
     "bpd": {
         "description": "Indicates if the participant has Borderline Personality Disorder (BPD).",
@@ -357,7 +371,8 @@
                 },
                 "value": 1
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/items/bpd"
     },
     "depression": {
         "description": "Indicates if the participant has depression or major depressive disorder.",
@@ -380,7 +395,8 @@
                 },
                 "value": 1
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/items/depression"
     },
     "ed": {
         "description": "Indicates if the participant has an eating disorder (ED).",
@@ -403,7 +419,8 @@
                 },
                 "value": 1
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/items/ed"
     },
     "insomnia": {
         "description": "Indicates if the participant has insomnia or other sleep disorders.",
@@ -426,7 +443,8 @@
                 },
                 "value": 1
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/items/insomnia"
     },
     "ocd": {
         "description": "Indicates if the participant has Obsessive-Compulsive Disorder (OCD).",
@@ -449,7 +467,8 @@
                 },
                 "value": 1
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/items/ocd"
     },
     "panic": {
         "description": "Indicates if the participant has panic disorder.",
@@ -472,7 +491,8 @@
                 },
                 "value": 1
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/items/panic"
     },
     "ptsd": {
         "description": "Indicates if the participant has Post-Traumatic Stress Disorder (PTSD).",
@@ -495,7 +515,8 @@
                 },
                 "value": 1
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/items/ptsd"
     },
     "schizophrenia": {
         "description": "Indicates if the participant has schizophrenia.",
@@ -518,7 +539,8 @@
                 },
                 "value": 1
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/items/schizophrenia"
     },
     "soc_anx_dis": {
         "description": "Indicates if the participant has social anxiety disorder.",
@@ -541,7 +563,8 @@
                 },
                 "value": 1
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/items/soc_anx_dis"
     },
     "other_psych": {
         "description": "Indicates if the participant has other psychiatric disorders.",
@@ -564,7 +587,8 @@
                 },
                 "value": 1
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/items/other_psych"
     },
     "asthma": {
         "description": "Indicates if the participant has asthma.",
@@ -587,7 +611,8 @@
                 },
                 "value": 1
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/items/asthma"
     },
     "airway_stenosis": {
         "description": "Indicates if the participant has airway stenosis, such as bilateral vocal fold paralysis or laryngeal stenosis.",
@@ -610,7 +635,8 @@
                 },
                 "value": 1
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/items/airway_stenosis"
     },
     "chronic_cough": {
         "description": "Indicates if the participant has chronic cough.",
@@ -633,7 +659,8 @@
                 },
                 "value": 1
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/items/chronic_cough"
     },
     "copd": {
         "description": "Indicates if the participant has Chronic Obstructive Pulmonary Disease (COPD).",
@@ -656,7 +683,8 @@
                 },
                 "value": 1
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/items/copd"
     },
     "osa": {
         "description": "Indicates if the participant has obstructive sleep apnea (OSA).",
@@ -679,7 +707,8 @@
                 },
                 "value": 1
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/items/osa"
     },
     "eligible_studies": {
         "question": {
@@ -719,6 +748,7 @@
                 },
                 "value": 5
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/items/eligible_studies"
     }
 }

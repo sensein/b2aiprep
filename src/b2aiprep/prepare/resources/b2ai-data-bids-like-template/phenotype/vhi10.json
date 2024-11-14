@@ -7,7 +7,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/vhi_session_id"
     },
     "vhi_duration": {
         "description": "Duration of the Voice Handicap Index session.",
@@ -17,7 +18,8 @@
         "datatype": [
             "xsd:decimal"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/vhi_duration"
     },
     "voice_difficult_hear": {
         "description": "Indicates if the participant's voice is difficult to hear.",
@@ -58,7 +60,8 @@
                 },
                 "value": " always"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/voice_difficult_hear"
     },
     "tough_to_understand": {
         "description": "Indicates if the participant feels that their voice is tough to understand.",
@@ -99,7 +102,8 @@
                 },
                 "value": " always"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/tough_to_understand"
     },
     "voice_restrict_social": {
         "description": "Indicates if the participant's voice issues restrict their social activities.",
@@ -140,7 +144,8 @@
                 },
                 "value": " always"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/voice_restrict_social"
     },
     "left_out_convo": {
         "description": "Reports if the participant felt left out of a conversation recently.",
@@ -181,7 +186,8 @@
                 },
                 "value": " always"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/left_out_convo"
     },
     "voice_lose_income": {
         "description": "Indicates if the participant's voice issues have led to a loss of income.",
@@ -222,7 +228,8 @@
                 },
                 "value": " always"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/voice_lose_income"
     },
     "strain_voice": {
         "description": "Reports if the participant has experienced voice strain.",
@@ -263,7 +270,8 @@
                 },
                 "value": " always"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/strain_voice"
     },
     "voice_clarity": {
         "description": "Indicates if the participant’s voice is clear during the session.",
@@ -304,7 +312,8 @@
                 },
                 "value": " always"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/voice_clarity"
     },
     "voice_upsetting": {
         "description": "Indicates if the participant finds their voice issues upsetting.",
@@ -345,7 +354,8 @@
                 },
                 "value": " always"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/voice_upsetting"
     },
     "voice_handicapped": {
         "description": "Indicates if the participant feels handicapped by their voice.",
@@ -386,7 +396,8 @@
                 },
                 "value": " always"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/voice_handicapped"
     },
     "ask_whats_wrong_voice": {
         "description": "Indicates if the participant asked what was wrong with their voice during the assessment.",
@@ -427,6 +438,7 @@
                 },
                 "value": " always"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/ask_whats_wrong_voice"
     }
 }

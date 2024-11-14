@@ -7,7 +7,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/adhd_session_id"
     },
     "adhd_duration": {
         "description": "Duration of ADHD-related assessments.",
@@ -17,7 +18,8 @@
         "datatype": [
             "xsd:decimal"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/adhd_duration"
     },
     "wrapping_up": {
         "description": "Indicates if the session is nearing completion.",
@@ -58,7 +60,8 @@
                 },
                 "value": " veryOften"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/wrapping_up"
     },
     "things_in_order": {
         "description": "Indicates if the participant prefers to keep things in order.",
@@ -99,7 +102,8 @@
                 },
                 "value": " veryOften"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/things_in_order"
     },
     "remembering_appt": {
         "description": "Reports if the participant has trouble remembering appointments.",
@@ -140,7 +144,8 @@
                 },
                 "value": " veryOften"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/remembering_appt"
     },
     "avoidance": {
         "description": "Indicates if the participant avoids reminders of stressful or traumatic events.",
@@ -181,7 +186,8 @@
                 },
                 "value": " veryOften"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/avoidance"
     },
     "fidget": {
         "description": "Indicates if the participant is fidgeting during the session.",
@@ -222,7 +228,8 @@
                 },
                 "value": " veryOften"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/fidget"
     },
     "overly_active": {
         "description": "Indicates if the participant is overly active or restless.",
@@ -263,7 +270,8 @@
                 },
                 "value": " veryOften"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/overly_active"
     },
     "careless": {
         "description": "Indicates if the participant feels careless about their actions or responsibilities.",
@@ -304,7 +312,8 @@
                 },
                 "value": " veryOften"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/careless"
     },
     "difficulty_attention": {
         "description": "Indicates if the participant has difficulty paying attention.",
@@ -345,7 +354,8 @@
                 },
                 "value": " veryOften"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/difficulty_attention"
     },
     "difficulty_concentrating": {
         "description": "Indicates if the participant has difficulty concentrating.",
@@ -386,7 +396,8 @@
                 },
                 "value": " veryOften"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/difficulty_concentrating"
     },
     "misplace": {
         "description": "Indicates if the participant often misplaces things.",
@@ -427,7 +438,8 @@
                 },
                 "value": " veryOften"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/misplace"
     },
     "distracted": {
         "description": "Indicates if the participant feels distracted during the session.",
@@ -468,7 +480,8 @@
                 },
                 "value": " veryOften"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/distracted"
     },
     "remain_seated": {
         "description": "Indicates if the participant is able to remain seated for long periods.",
@@ -509,7 +522,8 @@
                 },
                 "value": " veryOften"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/remain_seated"
     },
     "restless": {
         "description": "Indicates if the participant feels restless.",
@@ -550,7 +564,8 @@
                 },
                 "value": " veryOften"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/restless"
     },
     "difficulty_unwinding": {
         "description": "Indicates if the participant has difficulty unwinding or relaxing after stressful events.",
@@ -591,7 +606,8 @@
                 },
                 "value": " veryOften"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/difficulty_unwinding"
     },
     "talking_too_much": {
         "description": "Indicates if the participant feels they are talking too much.",
@@ -632,7 +648,8 @@
                 },
                 "value": " veryOften"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/talking_too_much"
     },
     "finish_other_sent": {
         "description": "Indicates if the participant finishes others' sentences.",
@@ -673,7 +690,8 @@
                 },
                 "value": " veryOften"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/finish_other_sent"
     },
     "difficulty_waiting": {
         "description": "Indicates if the participant has difficulty waiting for others.",
@@ -714,7 +732,8 @@
                 },
                 "value": " veryOften"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/difficulty_waiting"
     },
     "interrupt_others": {
         "description": "Indicates if the participant tends to interrupt others during conversations.",
@@ -755,6 +774,7 @@
                 },
                 "value": " veryOften"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/interrupt_others"
     }
 }

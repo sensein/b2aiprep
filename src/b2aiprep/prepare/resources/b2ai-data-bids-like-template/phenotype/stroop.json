@@ -7,7 +7,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_session_id"
     },
     "stroop_recording_acoustic_task_id": {
         "description": "The unique identifier for the Stroop recording acoustic task.",
@@ -17,7 +18,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_recording_acoustic_task_id"
     },
     "stroop_duration": {
         "description": "Total duration of the Stroop task.",
@@ -27,7 +29,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_duration"
     },
     "stroop_item_stimulus_1": {
         "description": "Stimulus presented for Stroop item 1.",
@@ -74,7 +77,8 @@
                 },
                 "value": " brown"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_stimulus_1"
     },
     "stroop_item_color_1": {
         "description": "Color identified by the participant for Stroop item 1.",
@@ -115,7 +119,8 @@
                 },
                 "value": " brown"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_color_1"
     },
     "stroop_item_time_1": {
         "description": "Time taken to respond to Stroop item 1.",
@@ -125,7 +130,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_time_1"
     },
     "stroop_item_stimulus_2": {
         "description": "Stimulus presented for Stroop item 2.",
@@ -172,7 +178,8 @@
                 },
                 "value": " brown"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_stimulus_2"
     },
     "stroop_item_color_2": {
         "description": "Color identified by the participant for Stroop item 2.",
@@ -213,7 +220,8 @@
                 },
                 "value": " brown"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_color_2"
     },
     "stroop_item_time_2": {
         "description": "Measures the response time for Stroop task item 2.",
@@ -223,7 +231,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_time_2"
     },
     "stroop_item_stimulus_3": {
         "description": "Stimulus presented for Stroop item 3.",
@@ -270,7 +279,8 @@
                 },
                 "value": " brown"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_stimulus_3"
     },
     "stroop_item_color_3": {
         "description": "Color identified by the participant for Stroop item 3.",
@@ -311,7 +321,8 @@
                 },
                 "value": " brown"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_color_3"
     },
     "stroop_item_time_3": {
         "description": "Time taken by the participant to respond to Stroop item 3.",
@@ -321,7 +332,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_time_3"
     },
     "stroop_item_stimulus_4": {
         "description": "Stimulus presented for Stroop item 4.",
@@ -368,7 +380,8 @@
                 },
                 "value": " brown"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_stimulus_4"
     },
     "stroop_item_color_4": {
         "description": "Indicates the color used in Stroop task item 4.",
@@ -409,7 +422,8 @@
                 },
                 "value": " brown"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_color_4"
     },
     "stroop_item_time_4": {
         "description": "Time taken to respond to Stroop item 4.",
@@ -419,7 +433,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_time_4"
     },
     "stroop_item_stimulus_5": {
         "description": "Stimulus presented for Stroop item 5.",
@@ -466,7 +481,8 @@
                 },
                 "value": " brown"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_stimulus_5"
     },
     "stroop_item_color_5": {
         "description": "Color identified by the participant for Stroop item 5.",
@@ -507,7 +523,8 @@
                 },
                 "value": " brown"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_color_5"
     },
     "stroop_item_time_5": {
         "description": "Measures the response time for Stroop task item 5.",
@@ -517,7 +534,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_time_5"
     },
     "stroop_item_stimulus_6": {
         "description": "Stimulus presented for Stroop item 6.",
@@ -564,7 +582,8 @@
                 },
                 "value": " brown"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_stimulus_6"
     },
     "stroop_item_color_6": {
         "description": "Color identified by the participant for Stroop item 6.",
@@ -605,7 +624,8 @@
                 },
                 "value": " brown"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_color_6"
     },
     "stroop_item_time_6": {
         "description": "Measures the response time for Stroop task item 6.",
@@ -615,7 +635,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_time_6"
     },
     "stroop_item_stimulus_7": {
         "description": "Stimulus presented for Stroop item 7.",
@@ -662,7 +683,8 @@
                 },
                 "value": " brown"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_stimulus_7"
     },
     "stroop_item_color_7": {
         "description": "Color identified by the participant for Stroop item 7.",
@@ -703,7 +725,8 @@
                 },
                 "value": " brown"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_color_7"
     },
     "stroop_item_time_7": {
         "description": "Time taken to respond to Stroop item 7.",
@@ -713,7 +736,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_time_7"
     },
     "stroop_item_stimulus_8": {
         "description": "Stimulus presented for Stroop item 8.",
@@ -760,7 +784,8 @@
                 },
                 "value": " brown"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_stimulus_8"
     },
     "stroop_item_color_8": {
         "description": "Color identified by the participant for Stroop item 8.",
@@ -801,7 +826,8 @@
                 },
                 "value": " brown"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_color_8"
     },
     "stroop_item_time_8": {
         "description": "Time taken to respond to Stroop item 8.",
@@ -811,7 +837,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_time_8"
     },
     "stroop_item_stimulus_9": {
         "description": "Stimulus presented for Stroop item 9.",
@@ -858,7 +885,8 @@
                 },
                 "value": " brown"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_stimulus_9"
     },
     "stroop_item_color_9": {
         "description": "Color identified by the participant for Stroop item 9.",
@@ -899,7 +927,8 @@
                 },
                 "value": " brown"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_color_9"
     },
     "stroop_item_time_9": {
         "description": "Time taken to respond to Stroop item 9.",
@@ -909,7 +938,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_time_9"
     },
     "stroop_item_stimulus_10": {
         "description": "Stimulus presented for Stroop item 10.",
@@ -956,7 +986,8 @@
                 },
                 "value": " brown"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_stimulus_10"
     },
     "stroop_item_color_10": {
         "description": "Color identified by the participant for Stroop item 10.",
@@ -997,7 +1028,8 @@
                 },
                 "value": " brown"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_color_10"
     },
     "stroop_item_time_10": {
         "description": "Time taken to respond to Stroop item 10.",
@@ -1007,7 +1039,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_time_10"
     },
     "stroop_item_stimulus_11": {
         "description": "Stimulus presented for Stroop item 11.",
@@ -1054,7 +1087,8 @@
                 },
                 "value": " brown"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_stimulus_11"
     },
     "stroop_item_color_11": {
         "description": "Color identified by the participant for Stroop item 11.",
@@ -1095,7 +1129,8 @@
                 },
                 "value": " brown"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_color_11"
     },
     "stroop_item_time_11": {
         "description": "Time taken to respond to Stroop item 11.",
@@ -1105,7 +1140,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_time_11"
     },
     "stroop_item_stimulus_12": {
         "description": "Stimulus presented for Stroop item 12.",
@@ -1152,7 +1188,8 @@
                 },
                 "value": " brown"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_stimulus_12"
     },
     "stroop_item_color_12": {
         "description": "Color identified by the participant for Stroop item 12.",
@@ -1193,7 +1230,8 @@
                 },
                 "value": " brown"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_color_12"
     },
     "stroop_item_time_12": {
         "description": "Time taken to respond to Stroop item 12.",
@@ -1203,7 +1241,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_time_12"
     },
     "stroop_item_stimulus_13": {
         "description": "Stimulus presented for Stroop item 13.",
@@ -1250,7 +1289,8 @@
                 },
                 "value": " brown"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_stimulus_13"
     },
     "stroop_item_color_13": {
         "description": "Color identified by the participant for Stroop item 13.",
@@ -1291,7 +1331,8 @@
                 },
                 "value": " brown"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_color_13"
     },
     "stroop_item_time_13": {
         "description": "Time taken to respond to Stroop item 13.",
@@ -1301,7 +1342,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_time_13"
     },
     "stroop_item_stimulus_14": {
         "description": "Indicates the stimulus presented in Stroop task item 14.",
@@ -1348,7 +1390,8 @@
                 },
                 "value": " brown"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_stimulus_14"
     },
     "stroop_item_color_14": {
         "description": "Color identified by the participant for Stroop item 14.",
@@ -1389,7 +1432,8 @@
                 },
                 "value": " brown"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_color_14"
     },
     "stroop_item_time_14": {
         "description": "Measures the response time for Stroop task item 14.",
@@ -1399,7 +1443,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_time_14"
     },
     "stroop_item_stimulus_15": {
         "description": "Indicates the stimulus presented in Stroop task item 15.",
@@ -1446,7 +1491,8 @@
                 },
                 "value": " brown"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_stimulus_15"
     },
     "stroop_item_color_15": {
         "description": "Color identified by the participant for Stroop item 15.",
@@ -1487,7 +1533,8 @@
                 },
                 "value": " brown"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_color_15"
     },
     "stroop_item_time_15": {
         "description": "Measures the response time for Stroop task item 15.",
@@ -1497,6 +1544,7 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_time_15"
     }
 }

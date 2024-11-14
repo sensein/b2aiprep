@@ -7,7 +7,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_patient_health_questionnaire9/items/phq_9_session_id"
     },
     "no_interest": {
         "description": "Measures if the participant experiences a lack of interest or pleasure in daily activities.",
@@ -42,7 +43,8 @@
                 },
                 "value": 3
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_patient_health_questionnaire9/items/no_interest"
     },
     "feeling_depressed": {
         "description": "Indicates if the participant feels depressed or down.",
@@ -77,7 +79,8 @@
                 },
                 "value": 3
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_patient_health_questionnaire9/items/feeling_depressed"
     },
     "trouble_sleeping": {
         "description": "Indicates if the participant has trouble sleeping.",
@@ -112,7 +115,8 @@
                 },
                 "value": 3
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_patient_health_questionnaire9/items/trouble_sleeping"
     },
     "no_energy": {
         "description": "Indicates if the participant has no energy or feels fatigued.",
@@ -147,7 +151,8 @@
                 },
                 "value": 3
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_patient_health_questionnaire9/items/no_energy"
     },
     "no_appetite": {
         "description": "Indicates if the participant has no appetite.",
@@ -182,7 +187,8 @@
                 },
                 "value": 3
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_patient_health_questionnaire9/items/no_appetite"
     },
     "feeling_bad_self": {
         "description": "Indicates if the participant feels bad about themselves.",
@@ -217,7 +223,8 @@
                 },
                 "value": 3
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_patient_health_questionnaire9/items/feeling_bad_self"
     },
     "trouble_concentrate": {
         "description": "Indicates if the participant has trouble concentrating.",
@@ -252,7 +259,8 @@
                 },
                 "value": 3
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_patient_health_questionnaire9/items/trouble_concentrate"
     },
     "move_speak_slow": {
         "description": "Indicates if the participant moves or speaks slowly.",
@@ -287,7 +295,8 @@
                 },
                 "value": 3
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_patient_health_questionnaire9/items/move_speak_slow"
     },
     "thoughts_death": {
         "description": "Indicates if the participant has thoughts of death or dying.",
@@ -322,7 +331,8 @@
                 },
                 "value": 3
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_patient_health_questionnaire9/items/thoughts_death"
     },
     "hard_to_work": {
         "description": "Indicates if the participant has difficulty working due to their physical or mental health.",
@@ -357,6 +367,7 @@
                 },
                 "value": 3
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_patient_health_questionnaire9/items/hard_to_work"
     }
 }

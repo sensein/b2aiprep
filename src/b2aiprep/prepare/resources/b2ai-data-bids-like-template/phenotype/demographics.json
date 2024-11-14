@@ -7,7 +7,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/demographics_session_id"
     },
     "demographics_duration": {
         "description": "Total duration of the demographics section.",
@@ -17,7 +18,8 @@
         "datatype": [
             "xsd:decimal"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/demographics_duration"
     },
     "demographics_completed_by___1": {
         "description": "Indicates if the participant completed the demographic section on their own."
@@ -36,7 +38,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/state_province"
     },
     "country": {
         "description": "The country where the participant resides.",
@@ -59,7 +62,8 @@
                 },
                 "value": 2
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/country"
     },
     "gender_identity": {
         "description": "The participant's reported gender identity.",
@@ -100,7 +104,8 @@
                 },
                 "value": " noAnswer"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/gender_identity"
     },
     "specify_gender_identity": {
         "description": "Allows the participant to specify their gender identity.",
@@ -123,7 +128,8 @@
                 },
                 "value": " trans"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/specify_gender_identity"
     },
     "sexual_orientation": {
         "description": "Indicates the participant's sexual orientation.",
@@ -164,7 +170,8 @@
                 },
                 "value": " noAnswer"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/sexual_orientation"
     },
     "race___1": {
         "description": "Indicates if the participant identifies with race category 1."
@@ -217,7 +224,8 @@
                 },
                 "value": " noAnswer"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/ethnicity"
     },
     "other_edu_level": {
         "description": "Indicates if the participant has received an education level not listed in other options.",
@@ -227,7 +235,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/other_edu_level"
     },
     "hearing": {
         "description": "Indicates if the participant has hearing issues.",
@@ -256,7 +265,8 @@
                 },
                 "value": " noAnswer"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/hearing"
     },
     "vision": {
         "description": "Indicates if the participant has vision issues.",
@@ -285,7 +295,8 @@
                 },
                 "value": " noAnswer"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/vision"
     },
     "cognition": {
         "description": "Reports on the participant's cognitive abilities or issues.",
@@ -314,7 +325,8 @@
                 },
                 "value": " noAnswer"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/cognition"
     },
     "mobility": {
         "description": "Indicates the participant's level of mobility or movement.",
@@ -343,7 +355,8 @@
                 },
                 "value": " noAnswer"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/mobility"
     },
     "self_care": {
         "description": "Indicates if the participant engages in self-care activities.",
@@ -372,7 +385,8 @@
                 },
                 "value": " noAnswer"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/self_care"
     },
     "independent_living": {
         "description": "Indicates if the participant is living independently.",
@@ -401,7 +415,8 @@
                 },
                 "value": " noAnswer"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/independent_living"
     },
     "employ_status___1": {
         "description": "Indicates if the participant is employed full-time."
@@ -493,7 +508,8 @@
                 },
                 "value": 9
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/household_income_usa"
     },
     "household_income_ca": {
         "description": "The participant's household income in Canadian dollars.",
@@ -558,7 +574,8 @@
                 },
                 "value": 9
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/household_income_ca"
     },
     "marital_status___1": {
         "description": "Indicates if the participant is married."
@@ -626,7 +643,8 @@
                 },
                 "value": 7
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/housing_status"
     },
     "household_count": {
         "description": "The number of people living in the participant's household.",
@@ -636,7 +654,8 @@
         "datatype": [
             "xsd:decimal"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/household_count"
     },
     "spouse_partner_sig_other": {
         "description": "Indicates if the participant has a spouse, partner, or significant other.",
@@ -659,7 +678,8 @@
                 },
                 "value": 0
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/spouse_partner_sig_other"
     },
     "children": {
         "description": "Indicates if the participant has children.",
@@ -682,7 +702,8 @@
                 },
                 "value": 0
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/children"
     },
     "parent": {
         "description": "Indicates if the participant is a parent.",
@@ -705,7 +726,8 @@
                 },
                 "value": 0
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/parent"
     },
     "grandparent": {
         "description": "Indicates if the participant is a grandparent.",
@@ -728,7 +750,8 @@
                 },
                 "value": 0
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/grandparent"
     },
     "other_live_with": {
         "description": "Indicates if the participant lives with people not listed in other options.",
@@ -751,7 +774,8 @@
                 },
                 "value": 0
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/other_live_with"
     },
     "others_household_specify": {
         "description": "Allows the participant to specify other people living in their household.",
@@ -761,7 +785,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/others_household_specify"
     },
     "transportation_yn": {
         "description": "Indicates if the participant has access to transportation.",
@@ -784,7 +809,8 @@
                 },
                 "value": 0
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/transportation_yn"
     },
     "primary_transportation": {
         "description": "Indicates the participant's primary mode of transportation.",
@@ -843,7 +869,8 @@
                 },
                 "value": 8
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/primary_transportation"
     },
     "q_generic_demographics_complete": {
         "description": "Indicates if the participant has completed the generic demographics section."
@@ -874,7 +901,8 @@
                 },
                 "value": 3
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/demographics_completed_by"
     },
     "race": {
         "question": {
@@ -932,7 +960,8 @@
                 },
                 "value": 8
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/race"
     },
     "employ_status": {
         "question": {
@@ -996,7 +1025,8 @@
                 },
                 "value": 9
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/employ_status"
     },
     "marital_status": {
         "question": {
@@ -1048,6 +1078,7 @@
                 },
                 "value": 7
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/marital_status"
     }
 }

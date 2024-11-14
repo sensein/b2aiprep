@@ -7,7 +7,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_custom_affect_scale/items/custom_affect_scale_session_id"
     },
     "custom_affect_scale_duration": {
         "description": "Total duration of the custom affect scale assessment.",
@@ -17,7 +18,8 @@
         "datatype": [
             "xsd:decimal"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_custom_affect_scale/items/custom_affect_scale_duration"
     },
     "sad_or_down": {
         "description": "Indicates if the participant feels sad or down.",
@@ -94,7 +96,8 @@
                 },
                 "value": 10
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_custom_affect_scale/items/sad_or_down"
     },
     "joyful": {
         "description": "Indicates if the participant feels joyful.",
@@ -171,7 +174,8 @@
                 },
                 "value": 10
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_custom_affect_scale/items/joyful"
     },
     "motivated": {
         "description": "Assesses the level of motivation or drive the participant exhibits in performing tasks.",
@@ -248,7 +252,8 @@
                 },
                 "value": 10
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_custom_affect_scale/items/motivated"
     },
     "lack_of_pleasure": {
         "description": "Indicates if the participant feels a lack of pleasure or interest in doing things.",
@@ -325,7 +330,8 @@
                 },
                 "value": 10
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_custom_affect_scale/items/lack_of_pleasure"
     },
     "tired": {
         "description": "Indicates if the participant feels tired during the assessment.",
@@ -402,7 +408,8 @@
                 },
                 "value": 10
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_custom_affect_scale/items/tired"
     },
     "energetic": {
         "description": "Indicates if the participant feels energetic or lively.",
@@ -479,7 +486,8 @@
                 },
                 "value": 10
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_custom_affect_scale/items/energetic"
     },
     "agitated": {
         "description": "Indicates if the participant feels agitated.",
@@ -556,7 +564,8 @@
                 },
                 "value": 10
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_custom_affect_scale/items/agitated"
     },
     "irritated": {
         "description": "Indicates if the participant feels irritated or annoyed.",
@@ -633,7 +642,8 @@
                 },
                 "value": 10
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_custom_affect_scale/items/irritated"
     },
     "lonely": {
         "description": "Indicates if the participant feels lonely.",
@@ -710,7 +720,8 @@
                 },
                 "value": 10
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_custom_affect_scale/items/lonely"
     },
     "concentrated": {
         "description": "Indicates if the participant is able to concentrate.",
@@ -787,7 +798,8 @@
                 },
                 "value": 10
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_custom_affect_scale/items/concentrated"
     },
     "relaxed": {
         "description": "Indicates if the participant feels relaxed.",
@@ -864,7 +876,8 @@
                 },
                 "value": 10
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_custom_affect_scale/items/relaxed"
     },
     "worried": {
         "description": "Indicates if the participant feels worried or anxious.",
@@ -941,7 +954,8 @@
                 },
                 "value": 10
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_custom_affect_scale/items/worried"
     },
     "desire_to_escape": {
         "description": "Indicates if the participant has a desire to escape stressful situations.",
@@ -1018,6 +1032,7 @@
                 },
                 "value": 10
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_custom_affect_scale/items/desire_to_escape"
     }
 }

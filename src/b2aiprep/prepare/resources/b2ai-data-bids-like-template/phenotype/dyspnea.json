@@ -7,7 +7,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_dyspnea_index_di/items/dyspnea_index_session_id"
     },
     "dyspnea_index_duration": {
         "description": "Duration of the Dyspnea Index assessment.",
@@ -17,7 +18,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_dyspnea_index_di/items/dyspnea_index_duration"
     },
     "di_air_in": {
         "description": "Reports if the participant experiences difficulty inhaling air.",
@@ -58,7 +60,8 @@
                 },
                 "value": " always"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_dyspnea_index_di/items/di_air_in"
     },
     "di_tightness_throat": {
         "description": "Indicates if the participant experiences tightness in the throat as part of their dyspnea symptoms.",
@@ -99,7 +102,8 @@
                 },
                 "value": " always"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_dyspnea_index_di/items/di_tightness_throat"
     },
     "di_effort_breathe": {
         "description": "Indicates if the participant experiences increased effort while breathing.",
@@ -140,7 +144,8 @@
                 },
                 "value": " always"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_dyspnea_index_di/items/di_effort_breathe"
     },
     "di_weather_changes": {
         "description": "Indicates if the participant's breathing issues worsen with changes in the weather.",
@@ -181,7 +186,8 @@
                 },
                 "value": " always"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_dyspnea_index_di/items/di_weather_changes"
     },
     "di_breathing_worse_stress": {
         "description": "Indicates if the participant’s breathing gets worse when stressed.",
@@ -222,7 +228,8 @@
                 },
                 "value": " always"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_dyspnea_index_di/items/di_breathing_worse_stress"
     },
     "di_sound_breathing_in": {
         "description": "Indicates if the participant experiences sound while breathing in as part of their dyspnea symptoms.",
@@ -263,7 +270,8 @@
                 },
                 "value": " always"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_dyspnea_index_di/items/di_sound_breathing_in"
     },
     "di_strain": {
         "description": "Indicates if the participant experiences strain when breathing.",
@@ -304,7 +312,8 @@
                 },
                 "value": " always"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_dyspnea_index_di/items/di_strain"
     },
     "di_exercise": {
         "description": "Reports if the participant has difficulty exercising.",
@@ -345,7 +354,8 @@
                 },
                 "value": " always"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_dyspnea_index_di/items/di_exercise"
     },
     "di_breathing_stresses_me": {
         "description": "Indicates if the participant's breathing issues cause them stress.",
@@ -386,7 +396,8 @@
                 },
                 "value": " always"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_dyspnea_index_di/items/di_breathing_stresses_me"
     },
     "di_restrict_personal_social_life": {
         "description": "Indicates if the participant's breathing issues restrict their personal and social life.",
@@ -427,6 +438,7 @@
                 },
                 "value": " always"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_dyspnea_index_di/items/di_restrict_personal_social_life"
     }
 }

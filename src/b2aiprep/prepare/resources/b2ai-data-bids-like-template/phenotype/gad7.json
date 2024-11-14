@@ -7,7 +7,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_gad7_anxiety/items/gad_7_session_id"
     },
     "nervous_anxious": {
         "description": "Indicates if the participant feels nervous or anxious.",
@@ -42,7 +43,8 @@
                 },
                 "value": 3
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_gad7_anxiety/items/nervous_anxious"
     },
     "cant_control_worry": {
         "description": "Indicates if the participant feels that they cannot control their worry.",
@@ -77,7 +79,8 @@
                 },
                 "value": 3
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_gad7_anxiety/items/cant_control_worry"
     },
     "worry_too_much": {
         "description": "Indicates if the participant feels that they worry too much.",
@@ -112,7 +115,8 @@
                 },
                 "value": 3
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_gad7_anxiety/items/worry_too_much"
     },
     "trouble_relaxing": {
         "description": "Indicates if the participant has trouble relaxing.",
@@ -147,7 +151,8 @@
                 },
                 "value": 3
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_gad7_anxiety/items/trouble_relaxing"
     },
     "hard_to_sit_still": {
         "description": "Indicates if the participant finds it hard to sit still.",
@@ -182,7 +187,8 @@
                 },
                 "value": 3
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_gad7_anxiety/items/hard_to_sit_still"
     },
     "easily_agitated": {
         "description": "Indicates if the participant feels easily agitated.",
@@ -217,7 +223,8 @@
                 },
                 "value": 3
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_gad7_anxiety/items/easily_agitated"
     },
     "afraid_of_things": {
         "description": "Indicates if the participant is afraid of specific things or situations.",
@@ -252,7 +259,8 @@
                 },
                 "value": 3
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_gad7_anxiety/items/afraid_of_things"
     },
     "tough_to_work": {
         "description": "Indicates if the participant finds it difficult to concentrate or work.",
@@ -287,6 +295,7 @@
                 },
                 "value": 3
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_gad7_anxiety/items/tough_to_work"
     }
 }

@@ -7,7 +7,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/leicester_cough_session_id"
     },
     "leicester_cough_duration": {
         "description": "Total duration of the Leicester Cough Questionnaire (LCQ).",
@@ -17,7 +18,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/leicester_cough_duration"
     },
     "lcq_chest_stomach_pains": {
         "description": "Indicates if the participant experiences chest or stomach pains as part of their cough symptoms.",
@@ -70,7 +72,8 @@
                 },
                 "value": " allOfTheTime"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_chest_stomach_pains"
     },
     "lcq_sputum_phlegm": {
         "description": "Indicates if the participant produces sputum or phlegm as part of their cough symptoms.",
@@ -123,7 +126,8 @@
                 },
                 "value": " allOfTheTime"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_sputum_phlegm"
     },
     "lcq_tired": {
         "description": "Indicates if the participant feels tired due to their cough.",
@@ -176,7 +180,8 @@
                 },
                 "value": " allOfTheTime"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_tired"
     },
     "lcq_embarrassed": {
         "description": "Indicates if the participant feels embarrassed by their cough.",
@@ -229,7 +234,8 @@
                 },
                 "value": " allOfTheTime"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_embarrassed"
     },
     "lcq_anxious": {
         "description": "Indicates if the participant feels anxious due to their cough.",
@@ -282,7 +288,8 @@
                 },
                 "value": " allOfTheTime"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_anxious"
     },
     "lcq_interfere_job": {
         "description": "Indicates if the participant's cough interferes with their ability to work.",
@@ -335,7 +342,8 @@
                 },
                 "value": " allOfTheTime"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_interfere_job"
     },
     "lcq_interfere_life": {
         "description": "Indicates if the participant's cough interferes with their daily life.",
@@ -388,7 +396,8 @@
                 },
                 "value": " allOfTheTime"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_interfere_life"
     },
     "lcq_exposure_paint": {
         "description": "Indicates if the participant has been exposed to paint or chemical fumes that worsen their cough.",
@@ -441,7 +450,8 @@
                 },
                 "value": " allOfTheTime"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_exposure_paint"
     },
     "lcq_sleep": {
         "description": "Indicates if the participant's cough affects their sleep.",
@@ -494,7 +504,8 @@
                 },
                 "value": " allOfTheTime"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_sleep"
     },
     "lcq_bout": {
         "description": "Indicates if the participant has bouts of coughing.",
@@ -547,7 +558,8 @@
                 },
                 "value": " allOfTheTime"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_bout"
     },
     "lcq_frustrated": {
         "description": "Indicates if the participant feels frustrated as part of their cough symptoms.",
@@ -600,7 +612,8 @@
                 },
                 "value": " allOfTheTime"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_frustrated"
     },
     "lcq_fed_up": {
         "description": "Indicates if the participant feels fed up due to their cough.",
@@ -653,7 +666,8 @@
                 },
                 "value": " allOfTheTime"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_fed_up"
     },
     "lcq_hoarse_voice": {
         "description": "Indicates if the participant has a hoarse voice as part of their cough symptoms.",
@@ -706,7 +720,8 @@
                 },
                 "value": " allOfTheTime"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_hoarse_voice"
     },
     "lcq_serious_illness": {
         "description": "Indicates if the participant's cough interferes with their life due to a serious illness.",
@@ -759,7 +774,8 @@
                 },
                 "value": " allOfTheTime"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_serious_illness"
     },
     "lcq_other_people": {
         "description": "Indicates if the participant feels that their cough bothers other people.",
@@ -812,7 +828,8 @@
                 },
                 "value": " allOfTheTime"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_other_people"
     },
     "lcq_interrupt_conversation": {
         "description": "Indicates if the participant's cough interrupts conversations.",
@@ -865,7 +882,8 @@
                 },
                 "value": " allOfTheTime"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_interrupt_conversation"
     },
     "lcq_partner": {
         "description": "Indicates if the participant feels that their cough affects their partner or significant other.",
@@ -918,7 +936,8 @@
                 },
                 "value": " allOfTheTime"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_partner"
     },
     "lcq_felt_in_control": {
         "description": "Indicates if the participant feels in control of their cough.",
@@ -971,7 +990,8 @@
                 },
                 "value": " allOfTheTime"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_felt_in_control"
     },
     "lcq_energy": {
         "description": "Indicates if the participant experiences low energy as part of their cough symptoms.",
@@ -1024,6 +1044,7 @@
                 },
                 "value": " allOfTheTime"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_energy"
     }
 }

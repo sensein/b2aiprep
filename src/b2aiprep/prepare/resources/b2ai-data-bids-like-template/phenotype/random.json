@@ -7,7 +7,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_random_item_generation/items/random_session_id"
     },
     "random_recording_acoustic_task_id": {
         "description": "Unique identifier for a random recording acoustic task.",
@@ -17,7 +18,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_random_item_generation/items/random_recording_acoustic_task_id"
     },
     "random_duration": {
         "description": "Total duration of a randomly assigned task or session.",
@@ -27,7 +29,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_random_item_generation/items/random_duration"
     },
     "random_item_generation_category": {
         "description": "Category assigned for random item generation in the session.",
@@ -98,6 +101,7 @@
                 },
                 "value": " wordStartingWithT"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_random_item_generation/items/random_item_generation_category"
     }
 }

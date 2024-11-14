@@ -7,7 +7,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/confounders_session_id"
     },
     "confounders_duration": {
         "description": "Total duration of the confounders assessment.",
@@ -17,7 +18,8 @@
         "datatype": [
             "xsd:decimal"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/confounders_duration"
     },
     "is_regular_smoker": {
         "description": "Indicates if the participant is a regular smoker.",
@@ -40,7 +42,8 @@
                 },
                 "value": 0
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/is_regular_smoker"
     },
     "smoking_hx": {
         "description": "Indicates the participant's smoking history.",
@@ -75,7 +78,8 @@
                 },
                 "value": " noAnswer"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/smoking_hx"
     },
     "age_start_smoking": {
         "description": "Indicates the age at which the participant started smoking.",
@@ -85,7 +89,8 @@
         "datatype": [
             "xsd:decimal"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/age_start_smoking"
     },
     "age_stop_smoking": {
         "description": "Indicates the age at which the participant stopped smoking.",
@@ -95,7 +100,8 @@
         "datatype": [
             "xsd:decimal"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/age_stop_smoking"
     },
     "smoking_types___1": {
         "description": "Reports if the participant has used smoking type 1."
@@ -166,7 +172,8 @@
                 },
                 "value": " noAnswer"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/smoking_freq"
     },
     "alcohol_yn": {
         "description": "Indicates if the participant consumes alcohol.",
@@ -195,7 +202,8 @@
                 },
                 "value": " noAnswer"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/alcohol_yn"
     },
     "alcohol_freq": {
         "description": "Indicates how often the participant consumes alcohol.",
@@ -236,7 +244,8 @@
                 },
                 "value": 5
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/alcohol_freq"
     },
     "alcohol_amt": {
         "description": "Reports the amount of alcohol the participant consumed.",
@@ -283,7 +292,8 @@
                 },
                 "value": 6
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/alcohol_amt"
     },
     "alcohol_drinks": {
         "description": "The number of alcoholic drinks the participant typically consumes.",
@@ -330,7 +340,8 @@
                 },
                 "value": " noAnswer"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/alcohol_drinks"
     },
     "alcohol_today": {
         "description": "Reports if the participant consumed alcohol today.",
@@ -353,7 +364,8 @@
                 },
                 "value": 0
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/alcohol_today"
     },
     "drinks_today_number": {
         "description": "The number of alcoholic drinks the participant has consumed today.",
@@ -363,7 +375,8 @@
         "datatype": [
             "xsd:decimal"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/drinks_today_number"
     },
     "alcohol_rehab": {
         "description": "Indicates if the participant has undergone rehabilitation for alcohol use.",
@@ -410,7 +423,8 @@
                 },
                 "value": " noAnswer"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/alcohol_rehab"
     },
     "current_recovery_alcohol": {
         "description": "Indicates if the participant is currently in recovery for alcohol use.",
@@ -433,7 +447,8 @@
                 },
                 "value": 0
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/current_recovery_alcohol"
     },
     "caffeine_intake": {
         "description": "Reports the participant's caffeine intake.",
@@ -443,7 +458,8 @@
         "datatype": [
             "xsd:decimal"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/caffeine_intake"
     },
     "caffeine_intake_today": {
         "description": "The amount of caffeine the participant has consumed today.",
@@ -453,7 +469,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/caffeine_intake_today"
     },
     "hydration": {
         "description": "Indicates if the participant feels hydrated.",
@@ -463,7 +480,8 @@
         "datatype": [
             "xsd:decimal"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/hydration"
     },
     "hydration_today": {
         "description": "Indicates if the participant feels adequately hydrated today.",
@@ -473,7 +491,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/hydration_today"
     },
     "dental_problems": {
         "description": "Indicates if the participant has dental problems or issues.",
@@ -496,7 +515,8 @@
                 },
                 "value": 0
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/dental_problems"
     },
     "seasonal_allergies": {
         "description": "Indicates if the participant has any seasonal allergies.",
@@ -519,7 +539,8 @@
                 },
                 "value": 0
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/seasonal_allergies"
     },
     "seasonal_allergies_options___1": {
         "description": "Indicates if the participant has seasonal allergies to tree pollen."
@@ -608,7 +629,8 @@
                 },
                 "value": 10
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/tired_measure"
     },
     "height": {
         "description": "The participant's height in centimeters or inches.",
@@ -618,7 +640,8 @@
         "datatype": [
             "xsd:decimal"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/height"
     },
     "weight": {
         "description": "The participant's weight in kilograms or pounds.",
@@ -628,7 +651,8 @@
         "datatype": [
             "xsd:decimal"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/weight"
     },
     "unit": {
         "description": "The measurement unit used for the participant's responses (e.g., kilograms or pounds).",
@@ -651,7 +675,8 @@
                 },
                 "value": 2
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/unit"
     },
     "symptoms___1": {
         "description": "Indicates if the participant reports experiencing symptom 1."
@@ -797,7 +822,8 @@
                 },
                 "value": 3
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/current_neuro_dx"
     },
     "respiratory_conditions___1": {
         "description": "Indicates if the participant has a diagnosis of bronchitis."
@@ -856,7 +882,8 @@
                 },
                 "value": " no"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/covid_past"
     },
     "cpap_conditions___1": {
         "description": "Indicates if the participant has used CPAP therapy for obstructive sleep apnea."
@@ -897,7 +924,8 @@
                 },
                 "value": " no"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/exposed_environmental_pollution"
     },
     "breathe_today": {
         "description": "Indicates if the participant is experiencing difficulty breathing today.",
@@ -920,7 +948,8 @@
                 },
                 "value": " no"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/breathe_today"
     },
     "breathe_today_difficulty": {
         "description": "Reports if the participant experienced breathing difficulty today.",
@@ -949,7 +978,8 @@
                 },
                 "value": " significantDifficulty"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/breathe_today_difficulty"
     },
     "cough_today": {
         "description": "Indicates if the participant has coughed today.",
@@ -972,7 +1002,8 @@
                 },
                 "value": " no"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/cough_today"
     },
     "cough_today_severity": {
         "description": "Severity of the participant's cough today.",
@@ -1043,7 +1074,8 @@
                 },
                 "value": 10
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/cough_today_severity"
     },
     "circulatory_conditions___1": {
         "description": "Indicates if the participant has a diagnosis of cardiovascular disease."
@@ -1117,7 +1149,8 @@
                 },
                 "value": " extreme"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/ph_standing"
     },
     "ph_take_care": {
         "description": "Indicates if the participant has difficulty taking care of themselves due to physical health issues.",
@@ -1158,7 +1191,8 @@
                 },
                 "value": " extreme"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/ph_take_care"
     },
     "ph_learn_task": {
         "description": "Indicates if the participant has difficulty learning new tasks due to physical health issues.",
@@ -1199,7 +1233,8 @@
                 },
                 "value": " extreme"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/ph_learn_task"
     },
     "ph_problem_join": {
         "description": "Indicates if the participant has problems joining social activities due to physical health.",
@@ -1240,7 +1275,8 @@
                 },
                 "value": " extreme"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/ph_problem_join"
     },
     "ph_health_problem": {
         "description": "Indicates if the participant has a health problem that affects their daily life.",
@@ -1281,7 +1317,8 @@
                 },
                 "value": " extreme"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/ph_health_problem"
     },
     "ph_concentrating": {
         "description": "Indicates if the participant has difficulty concentrating due to physical health issues.",
@@ -1322,7 +1359,8 @@
                 },
                 "value": " extreme"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/ph_concentrating"
     },
     "ph_walking": {
         "description": "Reports if the participant experiences physical health issues while walking.",
@@ -1363,7 +1401,8 @@
                 },
                 "value": " extreme"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/ph_walking"
     },
     "ph_washing": {
         "description": "Reports if the participant experiences physical health issues while washing.",
@@ -1404,7 +1443,8 @@
                 },
                 "value": " extreme"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/ph_washing"
     },
     "ph_get_dressed": {
         "description": "Indicates if the participant has difficulty getting dressed due to physical health issues.",
@@ -1445,7 +1485,8 @@
                 },
                 "value": " extreme"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/ph_get_dressed"
     },
     "ph_dealing_people": {
         "description": "Indicates if the participant has difficulty dealing with people due to physical health issues.",
@@ -1486,7 +1527,8 @@
                 },
                 "value": " extreme"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/ph_dealing_people"
     },
     "ph_friendship": {
         "description": "Indicates if the participant has difficulty maintaining friendships due to physical health issues.",
@@ -1527,7 +1569,8 @@
                 },
                 "value": " extreme"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/ph_friendship"
     },
     "ph_day_to_day_work": {
         "description": "Reports if the participant's physical health affects their day-to-day work.",
@@ -1568,7 +1611,8 @@
                 },
                 "value": " extreme"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/ph_day_to_day_work"
     },
     "physical_health_freq": {
         "description": "Indicates how frequently the participant experiences physical health issues.",
@@ -1578,7 +1622,8 @@
         "datatype": [
             "xsd:decimal"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/physical_health_freq"
     },
     "phys_health_impact": {
         "description": "Indicates if the participant's physical health impacts their daily life.",
@@ -1588,7 +1633,8 @@
         "datatype": [
             "xsd:decimal"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/phys_health_impact"
     },
     "phys_health_limited": {
         "description": "Indicates if the participant's physical health is limiting their daily activities.",
@@ -1598,7 +1644,8 @@
         "datatype": [
             "xsd:string"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/phys_health_limited"
     },
     "medications___1": {
         "description": "Indicates if the participant is currently taking medication 1."
@@ -1708,7 +1755,8 @@
                 },
                 "value": " noAnswer"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/menstruate"
     },
     "menstruate_no": {
         "description": "Indicates if the participant does not menstruate.",
@@ -1743,7 +1791,8 @@
                 },
                 "value": " other"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/menstruate_no"
     },
     "menstrual_cycle_status": {
         "description": "Indicates the participant's menstrual cycle status.",
@@ -1778,7 +1827,8 @@
                 },
                 "value": " noAnswer"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/menstrual_cycle_status"
     },
     "voice_activity___1": {
         "description": "Indicates the first type of voice activity the participant engaged in."
@@ -1809,7 +1859,8 @@
         "datatype": [
             "xsd:decimal"
         ],
-        "choices": null
+        "choices": null,
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/hours_voice_activity"
     },
     "reading_aloud": {
         "description": "Indicates if the participant is reading aloud.",
@@ -1850,7 +1901,8 @@
                 },
                 "value": " poor"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/reading_aloud"
     },
     "smoking_types": {
         "question": {
@@ -1908,7 +1960,8 @@
                 },
                 "value": 8
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/smoking_types"
     },
     "seasonal_allergies_options": {
         "question": {
@@ -1942,7 +1995,8 @@
                 },
                 "value": 4
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/seasonal_allergies_options"
     },
     "symptoms": {
         "question": {
@@ -1994,7 +2048,8 @@
                 },
                 "value": 7
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/symptoms"
     },
     "ear_med_history": {
         "question": {
@@ -2022,7 +2077,8 @@
                 },
                 "value": 3
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/ear_med_history"
     },
     "nose_med_history": {
         "question": {
@@ -2038,7 +2094,8 @@
                 },
                 "value": 1
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/nose_med_history"
     },
     "throat_med_history": {
         "question": {
@@ -2120,7 +2177,8 @@
                 },
                 "value": 12
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/throat_med_history"
     },
     "head_med_history": {
         "question": {
@@ -2142,7 +2200,8 @@
                 },
                 "value": 2
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/head_med_history"
     },
     "ear_surgical": {
         "question": {
@@ -2164,7 +2223,8 @@
                 },
                 "value": 2
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/ear_surgical"
     },
     "nose_surgical": {
         "question": {
@@ -2186,7 +2246,8 @@
                 },
                 "value": 2
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/nose_surgical"
     },
     "throat_surgical": {
         "question": {
@@ -2220,7 +2281,8 @@
                 },
                 "value": 4
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/throat_surgical"
     },
     "head_surgical": {
         "question": {
@@ -2242,7 +2304,8 @@
                 },
                 "value": 2
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/head_surgical"
     },
     "neurological_history": {
         "question": {
@@ -2288,7 +2351,8 @@
                 },
                 "value": 6
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/neurological_history"
     },
     "respiratory_conditions": {
         "question": {
@@ -2346,7 +2410,8 @@
                 },
                 "value": 8
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/respiratory_conditions"
     },
     "lung_or_metastatic": {
         "question": {
@@ -2368,7 +2433,8 @@
                 },
                 "value": 2
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/lung_or_metastatic"
     },
     "covid": {
         "question": {
@@ -2390,7 +2456,8 @@
                 },
                 "value": " long"
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/covid"
     },
     "cpap_conditions": {
         "question": {
@@ -2412,7 +2479,8 @@
                 },
                 "value": 2
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/cpap_conditions"
     },
     "resp_medical_history": {
         "question": {
@@ -2446,7 +2514,8 @@
                 },
                 "value": 4
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/resp_medical_history"
     },
     "circulatory_conditions": {
         "question": {
@@ -2492,7 +2561,8 @@
                 },
                 "value": 6
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/circulatory_conditions"
     },
     "circulatory_med_history": {
         "question": {
@@ -2532,7 +2602,8 @@
                 },
                 "value": 5
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/circulatory_med_history"
     },
     "medications": {
         "question": {
@@ -2650,7 +2721,8 @@
                 },
                 "value": 18
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/medications"
     },
     "hormone_use": {
         "question": {
@@ -2684,7 +2756,8 @@
                 },
                 "value": 4
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/hormone_use"
     },
     "pain_medication": {
         "question": {
@@ -2712,7 +2785,8 @@
                 },
                 "value": 3
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/pain_medication"
     },
     "voice_activity": {
         "question": {
@@ -2764,6 +2838,7 @@
                 },
                 "value": 7
             }
-        ]
+        ],
+        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/voice_activity"
     }
 }
