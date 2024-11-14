@@ -1,5 +1,7 @@
 {
     "q_mood_dsm5_adult_schema": {
+        "description": "Measures criteria according to DSM-5 standards.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/q_mood_dsm5_adult_schema",
         "data_elements": {
             "dsm_5_session_id": {
                 "description": "Unique identifier for the DSM-5 session.",
@@ -1619,7 +1621,6 @@
                 ],
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/social_phobia_10"
             }
-        },
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/q_mood_dsm5_adult_schema"
+        }
     }
 }

@@ -1,5 +1,7 @@
 {
     "d_mood_bipolar_disorder_schema": {
+        "description": "Measures symptoms and behaviors related to bipolar disorder.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_mood_bipolar_disorder/d_mood_bipolar_disorder_schema",
         "data_elements": {
             "diagnosis_bipolar_gsd": {
                 "description": "Specifies the participant’s diagnosis of bipolar disorder.",
@@ -199,7 +201,6 @@
                 ],
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_severity"
             }
-        },
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_mood_bipolar_disorder/d_mood_bipolar_disorder_schema"
+        }
     }
 }

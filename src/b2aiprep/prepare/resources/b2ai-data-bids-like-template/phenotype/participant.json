@@ -1,5 +1,7 @@
 {
     "subjectparticipant_basic_information_schema": {
+        "description": "Measures general study-related information.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_basic_information/subjectparticipant_basic_information_schema",
         "data_elements": {
             "record_id": {
                 "description": "Unique identifier for each participant.",
@@ -5889,7 +5891,6 @@
             "diagnosis_als_treatment_and_management_yes": {},
             "diagnosis_als_treatment_and_management_yes_medications": {},
             "diagnosis_als_treatment_and_management_yes_supportive_care": {}
-        },
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_basic_information/subjectparticipant_basic_information_schema"
+        }
     }
 }

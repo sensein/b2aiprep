@@ -1,5 +1,7 @@
 {
     "q_generic_confounders_schema": {
+        "description": "Measures variables that could impact study outcomes.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/q_generic_confounders_schema",
         "data_elements": {
             "confounders_session_id": {
                 "description": "Unique identifier for the confounders assessment session.",
@@ -1929,7 +1931,6 @@
             "hormone_use": {},
             "pain_medication": {},
             "voice_activity": {}
-        },
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/q_generic_confounders_schema"
+        }
     }
 }

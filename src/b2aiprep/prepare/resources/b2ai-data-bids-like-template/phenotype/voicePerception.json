@@ -1,5 +1,7 @@
 {
     "q_generic_voice_perception_schema": {
+        "description": "Measures how participants perceive voice quality.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_perception/q_generic_voice_perception_schema",
         "data_elements": {
             "voice_perception_session_id": {
                 "description": "Unique identifier for the voice perception session.",
@@ -95,7 +97,6 @@
                 ],
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_perception/items/voice_quality_perception"
             }
-        },
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_perception/q_generic_voice_perception_schema"
+        }
     }
 }

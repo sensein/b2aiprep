@@ -1,5 +1,7 @@
 {
     "d_neuro_parkinsons_disease_schema": {
+        "description": "Measures symptoms and progression of Parkinson's disease.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/d_neuro_parkinsons_disease_schema",
         "data_elements": {
             "diagnosis_parkinsons_gsd_category_1___bradykinesia": {
                 "description": "Indicates if the participant has bradykinesia as part of their Parkinson’s disease diagnosis."
@@ -407,7 +409,6 @@
             "diagnosis_parkinsons_treatment_obtained_yes": {},
             "diagnosis_parkinsons_treatment_obtained_yes_medications": {},
             "diagnosis_parkinsons_treatment_obtained_yes_npi": {}
-        },
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/d_neuro_parkinsons_disease_schema"
+        }
     }
 }

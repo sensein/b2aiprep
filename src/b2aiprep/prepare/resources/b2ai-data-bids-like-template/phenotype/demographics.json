@@ -1,5 +1,7 @@
 {
     "q_generic_demographics_schema": {
+        "description": "Measures participant background details.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/q_generic_demographics_schema",
         "data_elements": {
             "demographics_session_id": {
                 "description": "Unique identifier for the demographics session.",
@@ -881,7 +883,6 @@
             "race": {},
             "employ_status": {},
             "marital_status": {}
-        },
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/q_generic_demographics_schema"
+        }
     }
 }

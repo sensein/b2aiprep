@@ -1,5 +1,7 @@
 {
     "subjectparticipant_eligible_studies_schema": {
+        "description": "Measures participant eligibility for the study.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/subjectparticipant_eligible_studies_schema",
         "data_elements": {
             "eligible_studies___1": {
                 "description": "Indicates if the participant is eligible for study 1."
@@ -713,7 +715,6 @@
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/items/osa"
             },
             "eligible_studies": {}
-        },
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/subjectparticipant_eligible_studies_schema"
+        }
     }
 }

@@ -1,5 +1,7 @@
 {
     "q_neuro_productive_vocabulary_schema": {
+        "description": "Measures language and word knowledge.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_productive_vocabulary/q_neuro_productive_vocabulary_schema",
         "data_elements": {
             "vocabulary_session_id": {
                 "description": "Unique session identifier for the vocabulary task.",
@@ -6838,7 +6840,6 @@
                 ],
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_productive_vocabulary/items/vocabulary_item_difficulty_6"
             }
-        },
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_productive_vocabulary/q_neuro_productive_vocabulary_schema"
+        }
     }
 }

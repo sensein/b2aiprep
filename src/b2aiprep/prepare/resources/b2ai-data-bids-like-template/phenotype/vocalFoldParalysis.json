@@ -1,5 +1,7 @@
 {
     "d_voice_unilateral_vocal_fold_paralysis_schema": {
+        "description": "Measures characteristics of vocal fold paralysis.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_unilateral_vocal_fold_paralysis/d_voice_unilateral_vocal_fold_paralysis_schema",
         "data_elements": {
             "diagnosis_vfp_gsd": {
                 "description": "Indicates if the participant has vocal fold paralysis (VFP) confirmed by laryngoscopy or stroboscopy.",
@@ -541,7 +543,6 @@
                 ],
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_comments"
             }
-        },
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_unilateral_vocal_fold_paralysis/d_voice_unilateral_vocal_fold_paralysis_schema"
+        }
     }
 }

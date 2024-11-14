@@ -1,5 +1,7 @@
 {
     "q_neuro_wordcolor_stroop_schema": {
+        "description": "Measures cognitive control and processing speed.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/q_neuro_wordcolor_stroop_schema",
         "data_elements": {
             "stroop_session_id": {
                 "description": "Unique identifier for the Stroop session.",
@@ -1549,7 +1551,6 @@
                 "choices": null,
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/items/stroop_item_time_15"
             }
-        },
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_wordcolor_stroop/q_neuro_wordcolor_stroop_schema"
+        }
     }
 }

@@ -1,5 +1,7 @@
 {
     "enrollment_form_schema": {
+        "description": "Measures participant registration details.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/enrollment_form/enrollment_form_schema",
         "data_elements": {
             "ef_select_language": {
                 "description": "Indicates the participant’s selected language for the study.",
@@ -254,7 +256,6 @@
             "ef_cognitive_a11y_options": {},
             "ef_completed_by": {},
             "ef_fluent_languages": {}
-        },
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/enrollment_form/enrollment_form_schema"
+        }
     }
 }

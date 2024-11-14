@@ -1,5 +1,7 @@
 {
     "d_neuro_alzheimers_disease_mild_cognitive_impairme_schema": {
+        "description": "Measures cognitive decline and related symptoms.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/d_neuro_alzheimers_disease_mild_cognitive_impairme_schema",
         "data_elements": {
             "diagnosis_alz_dementia_mci_causes": {
                 "description": "Indicates if other causes of cognitive or functional changes have been excluded in the participant’s diagnosis.",
@@ -283,7 +285,6 @@
             "diagnosis_alz_dementia_mci_treatment_obtained_yes": {},
             "diagnosis_alz_dementia_mci_treatment_obtained_yes_medications": {},
             "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi": {}
-        },
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/d_neuro_alzheimers_disease_mild_cognitive_impairme_schema"
+        }
     }
 }

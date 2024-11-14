@@ -1,5 +1,7 @@
 {
     "d_neuro_amyotrophic_lateral_sclerosis_als_schema": {
+        "description": "Measures symptoms and progression of ALS.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_amyotrophic_lateral_sclerosis_als/d_neuro_amyotrophic_lateral_sclerosis_als_schema",
         "data_elements": {
             "diagnosis_als_gsd_category_1": {
                 "description": "Indicates the participant's ALS diagnosis under GSD category 1.",
@@ -303,7 +305,6 @@
             "diagnosis_als_treatment_and_management_yes": {},
             "diagnosis_als_treatment_and_management_yes_medications": {},
             "diagnosis_als_treatment_and_management_yes_supportive_care": {}
-        },
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_amyotrophic_lateral_sclerosis_als/d_neuro_amyotrophic_lateral_sclerosis_als_schema"
+        }
     }
 }

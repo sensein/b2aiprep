@@ -1,5 +1,7 @@
 {
     "q_mood_adhd_adult_schema": {
+        "description": "Measures attention-related behaviors and symptoms.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/q_mood_adhd_adult_schema",
         "data_elements": {
             "adhd_session_id": {
                 "description": "Unique identifier for the ADHD session.",
@@ -779,7 +781,6 @@
                 ],
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/interrupt_others"
             }
-        },
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/q_mood_adhd_adult_schema"
+        }
     }
 }

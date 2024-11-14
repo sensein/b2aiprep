@@ -1,5 +1,7 @@
 {
     "d_voice_laryngeal_cancer_schema": {
+        "description": "Measures characteristics of laryngeal cancer.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_cancer/d_voice_laryngeal_cancer_schema",
         "data_elements": {
             "diagnois_lc_gsd_sll": {
                 "description": "Indicates if the participant has a suspicious laryngeal lesion confirmed by laryngoscopy or stroboscopy.",
@@ -684,7 +686,6 @@
             "diagnosis_lc_etiology": {},
             "diagnosis_lc_treatment_select": {},
             "diagnosis_lc_treatment_s": {}
-        },
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_cancer/d_voice_laryngeal_cancer_schema"
+        }
     }
 }

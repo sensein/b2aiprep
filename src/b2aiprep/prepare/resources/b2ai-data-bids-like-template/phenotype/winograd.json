@@ -1,5 +1,7 @@
 {
     "q_neuro_winograd_schemas_schema": {
+        "description": "Measures language comprehension and reasoning.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_winograd_schemas/q_neuro_winograd_schemas_schema",
         "data_elements": {
             "winograd_session_id": {
                 "description": "Unique identifier for the Winograd schema session.",
@@ -6680,7 +6682,6 @@
                 ],
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_winograd_schemas/items/winograd_q_276"
             }
-        },
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_winograd_schemas/q_neuro_winograd_schemas_schema"
+        }
     }
 }

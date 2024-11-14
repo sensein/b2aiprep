@@ -1,5 +1,7 @@
 {
     "d_voice_precancerous_lesions_schema": {
+        "description": "Measures features of precancerous lesions.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_precancerous_lesions/d_voice_precancerous_lesions_schema",
         "data_elements": {
             "diagnois_pl_gsd_ls": {
                 "description": "Indicates if the participant has a precancerous vocal fold lesion confirmed by laryngoscopy or stroboscopy.",
@@ -602,7 +604,6 @@
             "diagnosis_pl_etiology": {},
             "diagnosis_pl_ds_ll": {},
             "diagnosis_pl_treatment_select": {}
-        },
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_precancerous_lesions/d_voice_precancerous_lesions_schema"
+        }
     }
 }

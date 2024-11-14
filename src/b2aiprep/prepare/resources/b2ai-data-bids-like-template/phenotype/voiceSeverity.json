@@ -1,5 +1,7 @@
 {
     "q_voice_voice_problem_severity_schema": {
+        "description": "Measures the impact and seriousness of voice disorders.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_voice_voice_problem_severity/q_voice_voice_problem_severity_schema",
         "data_elements": {
             "voice_severity_session_id": {
                 "description": "Unique identifier for the voice severity session.",
@@ -53,7 +55,6 @@
                 ],
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_voice_voice_problem_severity/items/describe_the_severity_of_a"
             }
-        },
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_voice_voice_problem_severity/q_voice_voice_problem_severity_schema"
+        }
     }
 }

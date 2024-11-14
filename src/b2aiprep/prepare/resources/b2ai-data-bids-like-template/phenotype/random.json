@@ -1,5 +1,7 @@
 {
     "q_neuro_random_item_generation_schema": {
+        "description": "Measures variables for various study purposes.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_random_item_generation/q_neuro_random_item_generation_schema",
         "data_elements": {
             "random_session_id": {
                 "description": "Unique identifier for a random session.",
@@ -106,7 +108,6 @@
                 ],
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_random_item_generation/items/random_item_generation_category"
             }
-        },
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_random_item_generation/q_neuro_random_item_generation_schema"
+        }
     }
 }

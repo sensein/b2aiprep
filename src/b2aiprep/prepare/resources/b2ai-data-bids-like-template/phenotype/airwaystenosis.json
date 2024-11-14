@@ -1,5 +1,7 @@
 {
     "d_resp_airway_stenosis_schema": {
+        "description": "Measures the severity and characteristics of airway stenosis.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_resp_airway_stenosis/d_resp_airway_stenosis_schema",
         "data_elements": {
             "diagnosis_as_pft": {
                 "description": "Indicates if the participant has undergone pulmonary function testing in the past three months.",
@@ -511,7 +513,6 @@
             "diagnosis_as_treatment": {},
             "diagnosis_as_treatment_surgery": {},
             "diagnosis_as_treatment_in_office": {}
-        },
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_resp_airway_stenosis/d_resp_airway_stenosis_schema"
+        }
     }
 }

@@ -1,5 +1,7 @@
 {
     "d_voice_laryngeal_dystonia_schema": {
+        "description": "Measures symptoms and characteristics of laryngeal dystonia.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_dystonia/d_voice_laryngeal_dystonia_schema",
         "data_elements": {
             "diagnosis_ld_qete___laryngologist": {
                 "description": "Indicates if the participant's laryngeal dystonia was determined by a laryngologist as part of the qualitative expert team evaluation."
@@ -500,7 +502,6 @@
             "diagnosis_ld_ds": {},
             "diagnosis_ld_etiology_cc": {},
             "diagnosis_ld_treatment_select": {}
-        },
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_dystonia/d_voice_laryngeal_dystonia_schema"
+        }
     }
 }

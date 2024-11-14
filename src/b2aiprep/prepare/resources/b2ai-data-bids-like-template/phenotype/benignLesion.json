@@ -1,5 +1,7 @@
 {
     "d_voice_benign_lesions_schema": {
+        "description": "Measures features of benign lesions.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_benign_lesions/d_voice_benign_lesions_schema",
         "data_elements": {
             "diagnois_bl_gsd": {
                 "description": "Indicates if the participant has a benign lesion confirmed by laryngoscopy or stroboscopy.",
@@ -566,7 +568,6 @@
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_benign_lesions/items/diagnosis_bl_treatment_lm"
             },
             "diagnosis_bl_treatment_select": {}
-        },
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_benign_lesions/d_voice_benign_lesions_schema"
+        }
     }
 }

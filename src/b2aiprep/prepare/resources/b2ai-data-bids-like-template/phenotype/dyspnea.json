@@ -1,5 +1,7 @@
 {
     "q_resp_dyspnea_index_di_schema": {
+        "description": "Measures the presence and severity of dyspnea.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_dyspnea_index_di/q_resp_dyspnea_index_di_schema",
         "data_elements": {
             "dyspnea_index_session_id": {
                 "description": "Unique identifier for the Dyspnea Index session.",
@@ -443,7 +445,6 @@
                 ],
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_dyspnea_index_di/items/di_restrict_personal_social_life"
             }
-        },
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_dyspnea_index_di/q_resp_dyspnea_index_di_schema"
+        }
     }
 }

@@ -1,5 +1,7 @@
 {
     "q_mood_ptsd_adult_schema": {
+        "description": "Measures trauma-related symptoms.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_ptsd_adult/q_mood_ptsd_adult_schema",
         "data_elements": {
             "ptsd_session_id": {
                 "description": "Unique identifier for the PTSD assessment session.",
@@ -412,7 +414,6 @@
                 ],
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_ptsd_adult/items/irritable"
             }
-        },
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_ptsd_adult/q_mood_ptsd_adult_schema"
+        }
     }
 }

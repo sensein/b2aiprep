@@ -1,5 +1,7 @@
 {
     "d_mood_depression_or_major_depressive_disorder_schema": {
+        "description": "Measures severity and impact of depressive symptoms.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_mood_depression_or_major_depressive_disorder/d_mood_depression_or_major_depressive_disorder_schema",
         "data_elements": {
             "diagnosis_depression_gsd": {
                 "description": "Indicates the participant’s diagnosis of depression.",
@@ -235,7 +237,6 @@
                 ],
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_bipolar_severity_depression"
             }
-        },
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_mood_depression_or_major_depressive_disorder/d_mood_depression_or_major_depressive_disorder_schema"
+        }
     }
 }

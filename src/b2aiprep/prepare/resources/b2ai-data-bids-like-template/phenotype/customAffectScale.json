@@ -1,5 +1,7 @@
 {
     "q_mood_custom_affect_scale_schema": {
+        "description": "Measures emotional states.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_custom_affect_scale/q_mood_custom_affect_scale_schema",
         "data_elements": {
             "custom_affect_scale_session_id": {
                 "description": "Unique identifier for the custom affect scale session.",
@@ -1037,7 +1039,6 @@
                 ],
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_custom_affect_scale/items/desire_to_escape"
             }
-        },
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_custom_affect_scale/q_mood_custom_affect_scale_schema"
+        }
     }
 }

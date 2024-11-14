@@ -1,5 +1,7 @@
 {
     "q_mood_panas_schema": {
+        "description": "Measures positive and negative affect.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_panas/q_mood_panas_schema",
         "data_elements": {
             "panas_session_id": {
                 "description": "Unique session identifier for the PANAS (Positive and Negative Affect Schedule) questionnaire.",
@@ -443,7 +445,6 @@
                 ],
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_panas/items/active"
             }
-        },
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_panas/q_mood_panas_schema"
+        }
     }
 }

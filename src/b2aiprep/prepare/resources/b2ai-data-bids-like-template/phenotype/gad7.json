@@ -1,5 +1,7 @@
 {
     "q_generic_gad7_anxiety_schema": {
+        "description": "Measures severity of generalized anxiety.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_gad7_anxiety/q_generic_gad7_anxiety_schema",
         "data_elements": {
             "gad_7_session_id": {
                 "description": "Unique identifier for the GAD-7 session.",
@@ -300,7 +302,6 @@
                 ],
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_gad7_anxiety/items/tough_to_work"
             }
-        },
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_gad7_anxiety/q_generic_gad7_anxiety_schema"
+        }
     }
 }

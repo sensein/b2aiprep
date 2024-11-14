@@ -1,5 +1,7 @@
 {
     "q_generic_patient_health_questionnaire9_schema": {
+        "description": "Measures severity of depressive symptoms.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_patient_health_questionnaire9/q_generic_patient_health_questionnaire9_schema",
         "data_elements": {
             "phq_9_session_id": {
                 "description": "Unique identifier for the PHQ-9 session.",
@@ -372,7 +374,6 @@
                 ],
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_patient_health_questionnaire9/items/hard_to_work"
             }
-        },
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_patient_health_questionnaire9/q_generic_patient_health_questionnaire9_schema"
+        }
     }
 }

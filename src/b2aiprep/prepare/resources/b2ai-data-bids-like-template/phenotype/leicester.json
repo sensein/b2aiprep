@@ -1,5 +1,7 @@
 {
     "q_resp_leicester_cough_questionnaire_lcq_schema": {
+        "description": "Measures specific health or psychological attributes.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/q_resp_leicester_cough_questionnaire_lcq_schema",
         "data_elements": {
             "leicester_cough_session_id": {
                 "description": "Unique identifier for the Leicester Cough Questionnaire session.",
@@ -1049,7 +1051,6 @@
                 ],
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_energy"
             }
-        },
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/q_resp_leicester_cough_questionnaire_lcq_schema"
+        }
     }
 }
