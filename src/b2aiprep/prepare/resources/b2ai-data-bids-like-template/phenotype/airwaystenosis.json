@@ -509,10 +509,140 @@
             "diagnosis_as_treatment_in_office___laser": {
                 "description": "Indicates if the participant has undergone in-office or awake laser treatment for airway stenosis."
             },
-            "diagnosis_as_gsd_yes": {},
-            "diagnosis_as_treatment": {},
-            "diagnosis_as_treatment_surgery": {},
-            "diagnosis_as_treatment_in_office": {}
+            "diagnosis_as_gsd_yes": {
+                "question": {
+                    "en": "Confirmed by"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Confirmed by bronchoscopy or laryngoscopy "
+                        },
+                        "value": "bronchoscopy"
+                    },
+                    {
+                        "name": {
+                            "en": "Confirmed by CT imaging"
+                        },
+                        "value": " ct"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_resp_airway_stenosis/items/diagnosis_as_gsd_yes"
+            },
+            "diagnosis_as_treatment": {
+                "question": {
+                    "en": "What treatment has the patient undergone for their stenosis?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "No treatment "
+                        },
+                        "value": "no_treatment"
+                    },
+                    {
+                        "name": {
+                            "en": "Surgery "
+                        },
+                        "value": " surgery"
+                    },
+                    {
+                        "name": {
+                            "en": "In-office treatment"
+                        },
+                        "value": " in_office_treatment"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_resp_airway_stenosis/items/diagnosis_as_treatment"
+            },
+            "diagnosis_as_treatment_surgery": {
+                "question": {
+                    "en": "Surgery options"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Endoscopic intervention with Laser and Balloon dilation and steroid injection "
+                        },
+                        "value": "endoscopic_intervention"
+                    },
+                    {
+                        "name": {
+                            "en": "Endoscopic laser wedge excision with balloon dilation and steroid injection "
+                        },
+                        "value": " endoscopic_excision"
+                    },
+                    {
+                        "name": {
+                            "en": "Open Laryngotracheal reconstruction "
+                        },
+                        "value": " laryngotracheal_reconstruction"
+                    },
+                    {
+                        "name": {
+                            "en": "Laryngotracheoplasty (Maddern procedure) "
+                        },
+                        "value": " laryngotracheoplasty"
+                    },
+                    {
+                        "name": {
+                            "en": "Tracheostomy "
+                        },
+                        "value": " tracheostomy"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": " other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_resp_airway_stenosis/items/diagnosis_as_treatment_surgery"
+            },
+            "diagnosis_as_treatment_in_office": {
+                "question": {
+                    "en": "In-office/awake treatment options"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Awake Steroid injection(s) as sole treatment "
+                        },
+                        "value": "steroid_injections_sole"
+                    },
+                    {
+                        "name": {
+                            "en": "Awake Steroid injection(s) as adjunct treatment "
+                        },
+                        "value": " steroid_injections_adjunct"
+                    },
+                    {
+                        "name": {
+                            "en": "In-office or awake dilation "
+                        },
+                        "value": " dilation"
+                    },
+                    {
+                        "name": {
+                            "en": "In-office or awake laser"
+                        },
+                        "value": " laser"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_resp_airway_stenosis/items/diagnosis_as_treatment_in_office"
+            }
         }
     }
 }

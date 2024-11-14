@@ -897,10 +897,212 @@
                 ],
                 "termURL": null
             },
-            "demographics_completed_by": {},
-            "race": {},
-            "employ_status": {},
-            "marital_status": {}
+            "demographics_completed_by": {
+                "question": {
+                    "en": "Who is completing this survey?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Self "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Assistant "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Parent/Caregiver"
+                        },
+                        "value": 3
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/demographics_completed_by"
+            },
+            "race": {
+                "question": {
+                    "en": "Which race category best describes you? Choose all that apply"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "American Indian or Alaska Native "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Asian "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Black or African American "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Native Hawaiian or other Pacific Islander "
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "White "
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Canadian Indigenous or Aboriginal "
+                        },
+                        "value": 6
+                    },
+                    {
+                        "name": {
+                            "en": "Other "
+                        },
+                        "value": 7
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": 8
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/race"
+            },
+            "employ_status": {
+                "question": {
+                    "en": "What is your employment status?\n\nChoose all that apply"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Employed freelance "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Employed full time "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Employed part time "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Employed multiple part time jobs "
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Student "
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Self-employed "
+                        },
+                        "value": 6
+                    },
+                    {
+                        "name": {
+                            "en": "Retired "
+                        },
+                        "value": 7
+                    },
+                    {
+                        "name": {
+                            "en": "Unemployed "
+                        },
+                        "value": 8
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": 9
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/employ_status"
+            },
+            "marital_status": {
+                "question": {
+                    "en": "What is your marital status?\nChoose all that apply"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Single "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Married "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "In a relationship "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Not married "
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Separated "
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Divorced "
+                        },
+                        "value": 6
+                    },
+                    {
+                        "name": {
+                            "en": "Widowed"
+                        },
+                        "value": 7
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/marital_status"
+            }
         }
     }
 }

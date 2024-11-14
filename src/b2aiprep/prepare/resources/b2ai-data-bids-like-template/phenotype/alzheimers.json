@@ -279,12 +279,204 @@
             "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi___other": {
                 "description": "Indicates if the participant has undergone other non-pharmacological interventions for Alzheimer’s disease or cognitive impairment."
             },
-            "diagnosis_alz_dementia_mci_etiology": {},
-            "diagnosis_alz_dementia_mci_etiology_gf": {},
-            "diagnosis_alz_dementia_mci_ds": {},
-            "diagnosis_alz_dementia_mci_treatment_obtained_yes": {},
-            "diagnosis_alz_dementia_mci_treatment_obtained_yes_medications": {},
-            "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi": {}
+            "diagnosis_alz_dementia_mci_etiology": {
+                "question": {
+                    "en": "What is the suspected or known etiology in the patient?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Genetic factors "
+                        },
+                        "value": "genetic_factors"
+                    },
+                    {
+                        "name": {
+                            "en": "Age-related changes "
+                        },
+                        "value": " age_related_changes"
+                    },
+                    {
+                        "name": {
+                            "en": "Other medical conditions (e.g. vascular factors traumatic brain injury) "
+                        },
+                        "value": " other_medical_conditions"
+                    },
+                    {
+                        "name": {
+                            "en": "Substance-related (e.g. alcohol-induced cognitive impairment) "
+                        },
+                        "value": " substance_related"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": " other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_etiology"
+            },
+            "diagnosis_alz_dementia_mci_etiology_gf": {
+                "question": {
+                    "en": "Genetic Factors Subcategory"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Familial Alzheimer's disease (e.g. mutations in APP PSEN1 PSEN2 genes) "
+                        },
+                        "value": "familial_alzheimers_disease"
+                    },
+                    {
+                        "name": {
+                            "en": "Apolipoprotein E (APOE) ε4 allele "
+                        },
+                        "value": " apolipoprotein_e"
+                    },
+                    {
+                        "name": {
+                            "en": "Other genetic factors"
+                        },
+                        "value": " other_genetic_factors"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_etiology_gf"
+            },
+            "diagnosis_alz_dementia_mci_ds": {
+                "question": {
+                    "en": "What is the current stage/severity of cognitive impairment or dementia in the patient?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Mild cognitive impairment (MCI) "
+                        },
+                        "value": "mci"
+                    },
+                    {
+                        "name": {
+                            "en": "Clinical dementia rating (CDR) staging"
+                        },
+                        "value": " cdr"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ds"
+            },
+            "diagnosis_alz_dementia_mci_treatment_obtained_yes": {
+                "question": {
+                    "en": "Yes"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Medications "
+                        },
+                        "value": "medications"
+                    },
+                    {
+                        "name": {
+                            "en": "Non-pharmacological interventions"
+                        },
+                        "value": " npi"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_treatment_obtained_yes"
+            },
+            "diagnosis_alz_dementia_mci_treatment_obtained_yes_medications": {
+                "question": {
+                    "en": "Medications:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Cholinesterase inhibitors (e.g. Donepezil Rivastigmine Galantamine) "
+                        },
+                        "value": "cholinesterase_inhibitors"
+                    },
+                    {
+                        "name": {
+                            "en": "NMDA receptor antagonist (e.g. Memantine) "
+                        },
+                        "value": " nmda_receptor_antagonist"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": " other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_treatment_obtained_yes_medications"
+            },
+            "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi": {
+                "question": {
+                    "en": "Non-pharmacological interventions:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Day program "
+                        },
+                        "value": "day_program"
+                    },
+                    {
+                        "name": {
+                            "en": "Cognitive stimulation therapy "
+                        },
+                        "value": " cognitive_simulation_therapy"
+                    },
+                    {
+                        "name": {
+                            "en": "Reality orientation therapy "
+                        },
+                        "value": " reality_orientation_therapy"
+                    },
+                    {
+                        "name": {
+                            "en": "Reminiscence therapy "
+                        },
+                        "value": " reminiscence_therapy"
+                    },
+                    {
+                        "name": {
+                            "en": "Physical exercise program "
+                        },
+                        "value": " physical_exercise_program"
+                    },
+                    {
+                        "name": {
+                            "en": "Dietary modifications "
+                        },
+                        "value": " dietary_modifications"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": " other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_treatment_obtained_yes_npi"
+            }
         }
     }
 }

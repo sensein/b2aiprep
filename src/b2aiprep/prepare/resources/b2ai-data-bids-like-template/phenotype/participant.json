@@ -5863,51 +5863,1620 @@
             "diagnosis_als_treatment_and_management_yes_supportive_care___other": {
                 "description": "Indicates if the participant has received other forms of supportive care for ALS."
             },
-            "eligible_studies": {},
-            "ef_vision_a11y_options": {},
-            "ef_hearing_a11y_options": {},
-            "ef_physical_a11y_options": {},
-            "ef_cognitive_a11y_options": {},
-            "ef_completed_by": {},
-            "ef_fluent_languages": {},
-            "diagnosis_ld_qete": {},
-            "diagnosis_ld_assessment": {},
-            "diagnosis_ld_ds": {},
-            "diagnosis_ld_etiology_cc": {},
-            "diagnosis_ld_treatment_select": {},
-            "diagnosis_pl_ds": {},
-            "diagnosis_pl_etiology": {},
-            "diagnosis_pl_ds_ll": {},
-            "diagnosis_pl_treatment_select": {},
-            "diagnosis_lc_gsd_uots": {},
-            "diagnosis_lc_ds": {},
-            "diagnosis_lc_etiology": {},
-            "diagnosis_lc_treatment_select": {},
-            "diagnosis_lc_treatment_s": {},
-            "diagnosis_bl_treatment_select": {},
-            "diagnosis_as_gsd_yes": {},
-            "diagnosis_as_treatment": {},
-            "diagnosis_as_treatment_surgery": {},
-            "diagnosis_as_treatment_in_office": {},
-            "diagnosis_alz_dementia_mci_etiology": {},
-            "diagnosis_alz_dementia_mci_etiology_gf": {},
-            "diagnosis_alz_dementia_mci_ds": {},
-            "diagnosis_alz_dementia_mci_treatment_obtained_yes": {},
-            "diagnosis_alz_dementia_mci_treatment_obtained_yes_medications": {},
-            "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi": {},
-            "diagnosis_parkinsons_gsd_category_1": {},
-            "diagnosis_parkinsons_gsd_category_2": {},
-            "diagnosis_parkinsons_gsd_category_3": {},
-            "diagnosis_parkinsons_ma": {},
-            "diagnosis_parkinsons_treatment_obtained_yes": {},
-            "diagnosis_parkinsons_treatment_obtained_yes_medications": {},
-            "diagnosis_parkinsons_treatment_obtained_yes_npi": {},
-            "diagnosis_als_etiology": {},
-            "diagnosis_als_etiology_genetic_factors": {},
-            "diagnosis_als_cp": {},
-            "diagnosis_als_treatment_and_management_yes": {},
-            "diagnosis_als_treatment_and_management_yes_medications": {},
-            "diagnosis_als_treatment_and_management_yes_supportive_care": {}
+            "eligible_studies": {
+                "question": {
+                    "en": "Eligible Studies"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Voice Disorders "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Neurological and Neurodegenerative Disorders "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Mood and Psychiatric Disorders "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Respiratory Disorders "
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Pediatric Disorders"
+                        },
+                        "value": 5
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/items/eligible_studies"
+            },
+            "ef_vision_a11y_options": {
+                "question": {
+                    "en": "Yes, I would like to use some of the accessibility features of the app"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "I would like to change the font size "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "I would like to change the font color (high contrast mode) "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "I would like to use a screen reader "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "I would like a person to read the text to me"
+                        },
+                        "value": 4
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/enrollment_form/items/ef_vision_a11y_options"
+            },
+            "ef_hearing_a11y_options": {
+                "question": {
+                    "en": "Yes, I would like to use some of the accessibility features of the app"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "I would like to turn up the volume "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "I would like to turn on closed captions "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "I would like to use haptic feedback (vibrations) instead of audio cues"
+                        },
+                        "value": 3
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/enrollment_form/items/ef_hearing_a11y_options"
+            },
+            "ef_physical_a11y_options": {
+                "question": {
+                    "en": "Yes, I would like to use some of the accessibility features of the app"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "I would like to increase the size of the buttons "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "I have an alternative keyboard I'd like to connect instead "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "I would like to navigate the survey using voice commands instead of the touch screen"
+                        },
+                        "value": 3
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/enrollment_form/items/ef_physical_a11y_options"
+            },
+            "ef_cognitive_a11y_options": {
+                "question": {
+                    "en": "Yes, I would like to use some of the accessibility features of the app"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "I would like the questions to be read to me using text-to-speech "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "I would like a person to read the text to me "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "I would like to speak my answers instead of typing them"
+                        },
+                        "value": 3
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/enrollment_form/items/ef_cognitive_a11y_options"
+            },
+            "ef_completed_by": {
+                "question": {
+                    "en": "Check all that apply"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Self "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Assistant "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Parent/Caregiver"
+                        },
+                        "value": 3
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/enrollment_form/items/ef_completed_by"
+            },
+            "ef_fluent_languages": {
+                "question": {
+                    "en": "Do you speak any additional language(s) fluently (similar to a native speaker)?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "English "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "French "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Spanish "
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Other (please specify below)"
+                        },
+                        "value": 5
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/enrollment_form/items/ef_fluent_languages"
+            },
+            "diagnosis_ld_qete": {
+                "question": {
+                    "en": "Does the patient have laryngeal dystonia as determined by qualitative expert team evaluation?\n(Select all that apply)."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Laryngologist "
+                        },
+                        "value": "laryngologist"
+                    },
+                    {
+                        "name": {
+                            "en": "Speech-Language Pathology "
+                        },
+                        "value": " speech_language_pathology"
+                    },
+                    {
+                        "name": {
+                            "en": "Neurologist specializing in movement disorders"
+                        },
+                        "value": " neurologist_specializing_disorders"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_qete"
+            },
+            "diagnosis_ld_assessment": {
+                "question": {
+                    "en": "Did the patient have the following assessment?\n(Select all that apply)."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Aural-perceptual evaluation "
+                        },
+                        "value": "aural_perceptual_evaluation"
+                    },
+                    {
+                        "name": {
+                            "en": "Laryngoscopy or stroboscopy "
+                        },
+                        "value": " laryngoscopy_or_stroboscopy"
+                    },
+                    {
+                        "name": {
+                            "en": "Neurological evaluation"
+                        },
+                        "value": " neurological_evaluation"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_assessment"
+            },
+            "diagnosis_ld_ds": {
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Adductor laryngeal dystonia (ADLD) "
+                        },
+                        "value": "adld"
+                    },
+                    {
+                        "name": {
+                            "en": "Abductor laryngeal dystonia (ABLD) "
+                        },
+                        "value": " abld"
+                    },
+                    {
+                        "name": {
+                            "en": "Vocal Tremor "
+                        },
+                        "value": " vocal_tremor"
+                    },
+                    {
+                        "name": {
+                            "en": "Mixed laryngeal dystonia "
+                        },
+                        "value": " mixed_laryngeal_dystonia"
+                    },
+                    {
+                        "name": {
+                            "en": "Singer's laryngeal dystonia (SLD) "
+                        },
+                        "value": " sld"
+                    },
+                    {
+                        "name": {
+                            "en": "Adductor laryngeal spasms during inspiration (ARLD)"
+                        },
+                        "value": " arld"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_ds"
+            },
+            "diagnosis_ld_etiology_cc": {
+                "question": {
+                    "en": "Does the patient have any of the following concomitant conditions?\n(Select all that apply)."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Essential Tremor of the hands "
+                        },
+                        "value": "essential_tremor_of_the_hands"
+                    },
+                    {
+                        "name": {
+                            "en": "Essential tremor of the head "
+                        },
+                        "value": " essential_tremor_of_the_head"
+                    },
+                    {
+                        "name": {
+                            "en": "Jaw tremor "
+                        },
+                        "value": " jaw_tremor"
+                    },
+                    {
+                        "name": {
+                            "en": "Dystonia of the head and neck "
+                        },
+                        "value": " dystonia_of_the_head_and_neck"
+                    },
+                    {
+                        "name": {
+                            "en": "Other type of dystonia"
+                        },
+                        "value": " other_type_of_dystonia"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_etiology_cc"
+            },
+            "diagnosis_ld_treatment_select": {
+                "question": {
+                    "en": "Select all that apply:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Botox injections "
+                        },
+                        "value": "botox_injections"
+                    },
+                    {
+                        "name": {
+                            "en": "Voice/speech therapy "
+                        },
+                        "value": " voice_or_speech_therapy"
+                    },
+                    {
+                        "name": {
+                            "en": "Vibrotactile stimulation "
+                        },
+                        "value": " vibrotactile_stimulation"
+                    },
+                    {
+                        "name": {
+                            "en": "Deep brain stimulation "
+                        },
+                        "value": " deep_brain_stimulation"
+                    },
+                    {
+                        "name": {
+                            "en": "Magnetic resonance imaging-guided focused ultrasound (MRgFUS) "
+                        },
+                        "value": " mrgfus"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": " other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_treatment_select"
+            },
+            "diagnosis_pl_ds": {
+                "question": {
+                    "en": "What is the diagnosis?\n(Select all that apply)."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Keratosis "
+                        },
+                        "value": "keratosis"
+                    },
+                    {
+                        "name": {
+                            "en": "Leukoplakia "
+                        },
+                        "value": " leukoplakia"
+                    },
+                    {
+                        "name": {
+                            "en": "Erythroplakia "
+                        },
+                        "value": " erythroplakia"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": " other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_precancerous_lesions/items/diagnosis_pl_ds"
+            },
+            "diagnosis_pl_etiology": {
+                "question": {
+                    "en": "Does the patient have the following risk factors?\n(Select all that apply)."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Past or present smoking "
+                        },
+                        "value": "past_or_present_smoking"
+                    },
+                    {
+                        "name": {
+                            "en": "Laryngopharyngeal reflux "
+                        },
+                        "value": " laryngopharyngeal_reflux"
+                    },
+                    {
+                        "name": {
+                            "en": "Other irritants"
+                        },
+                        "value": " other_irritants"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_precancerous_lesions/items/diagnosis_pl_etiology"
+            },
+            "diagnosis_pl_ds_ll": {
+                "question": {
+                    "en": "Location of lesion(s)\n(Select all that apply)."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Right vocal fold "
+                        },
+                        "value": "right_vocal_fold"
+                    },
+                    {
+                        "name": {
+                            "en": "Left vocal fold "
+                        },
+                        "value": " left_vocal_fold"
+                    },
+                    {
+                        "name": {
+                            "en": "Both vocal folds "
+                        },
+                        "value": " both_vocal_folds"
+                    },
+                    {
+                        "name": {
+                            "en": "Ventricular folds (right or left) "
+                        },
+                        "value": " ventricular_folds"
+                    },
+                    {
+                        "name": {
+                            "en": "Subglottal areas"
+                        },
+                        "value": " subglottal_areas"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_precancerous_lesions/items/diagnosis_pl_ds_ll"
+            },
+            "diagnosis_pl_treatment_select": {
+                "question": {
+                    "en": "Select all that apply:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Surveillance only (previous diagnosis) "
+                        },
+                        "value": "surveillance_only"
+                    },
+                    {
+                        "name": {
+                            "en": "Laser resection "
+                        },
+                        "value": " laser_resection"
+                    },
+                    {
+                        "name": {
+                            "en": "Laser ablation "
+                        },
+                        "value": " laser_ablation"
+                    },
+                    {
+                        "name": {
+                            "en": "Microlaryngeal surgery without laser "
+                        },
+                        "value": " microlaryngeal_surgery_without_laser"
+                    },
+                    {
+                        "name": {
+                            "en": "Radiotherapy for persistent or recurrent lesions "
+                        },
+                        "value": " radiotherapy_persistent_or_recurrent_lesions"
+                    },
+                    {
+                        "name": {
+                            "en": "Voice/speech therapy "
+                        },
+                        "value": " voice_or_speech_therapy"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": " other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_precancerous_lesions/items/diagnosis_pl_treatment_select"
+            },
+            "diagnosis_lc_gsd_uots": {
+                "question": {
+                    "en": "Did the patient undergo other types of scans?\n(Select all that apply)."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "CT of the neck "
+                        },
+                        "value": "ct_neck"
+                    },
+                    {
+                        "name": {
+                            "en": "CT of the chest "
+                        },
+                        "value": " ct_chest"
+                    },
+                    {
+                        "name": {
+                            "en": "MRI of the neck "
+                        },
+                        "value": " mri_neck"
+                    },
+                    {
+                        "name": {
+                            "en": "PET-CT "
+                        },
+                        "value": " pet_ct"
+                    },
+                    {
+                        "name": {
+                            "en": "Ultrasound of the neck"
+                        },
+                        "value": " ultrasound_neck"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_gsd_uots"
+            },
+            "diagnosis_lc_ds": {
+                "question": {
+                    "en": "Which laryngeal structures are/were involved?\n(Select all that apply)."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Right vocal fold "
+                        },
+                        "value": "right_vocal_fold"
+                    },
+                    {
+                        "name": {
+                            "en": "Left vocal fold "
+                        },
+                        "value": " left_vocal_fold"
+                    },
+                    {
+                        "name": {
+                            "en": "Both vocal folds "
+                        },
+                        "value": " both_vocal_folds"
+                    },
+                    {
+                        "name": {
+                            "en": "Anterior commissure "
+                        },
+                        "value": " anterior_commissure"
+                    },
+                    {
+                        "name": {
+                            "en": "Ventricular folds (right or left) "
+                        },
+                        "value": " ventricular_folds"
+                    },
+                    {
+                        "name": {
+                            "en": "Subglottal areas"
+                        },
+                        "value": " subglottal_areas"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_ds"
+            },
+            "diagnosis_lc_etiology": {
+                "question": {
+                    "en": "Check any risk factors of this patient in relation to their laryngeal cancer.\n(Select all that apply)."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Smoking "
+                        },
+                        "value": "smoking"
+                    },
+                    {
+                        "name": {
+                            "en": "Alcohol "
+                        },
+                        "value": " alcohol"
+                    },
+                    {
+                        "name": {
+                            "en": "Family history "
+                        },
+                        "value": " family_history"
+                    },
+                    {
+                        "name": {
+                            "en": "Human Papilloma Virus (HPV) "
+                        },
+                        "value": " hpv"
+                    },
+                    {
+                        "name": {
+                            "en": "Exposure to other harmful substances"
+                        },
+                        "value": " exposure_other_harmful_substances"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_etiology"
+            },
+            "diagnosis_lc_treatment_select": {
+                "question": {
+                    "en": "Select all that apply:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Radiation "
+                        },
+                        "value": "radiation"
+                    },
+                    {
+                        "name": {
+                            "en": "Chemotherapy "
+                        },
+                        "value": " chemotherapy"
+                    },
+                    {
+                        "name": {
+                            "en": "Immunotherapy "
+                        },
+                        "value": " immunotherapy"
+                    },
+                    {
+                        "name": {
+                            "en": "Surgery "
+                        },
+                        "value": " surgery"
+                    },
+                    {
+                        "name": {
+                            "en": "Voice/Speech therapy "
+                        },
+                        "value": " voice_or_speech_therapy"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": " other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_treatment_select"
+            },
+            "diagnosis_lc_treatment_s": {
+                "question": {
+                    "en": "Surgery"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Endoscopic laser "
+                        },
+                        "value": "endoscopic_laser"
+                    },
+                    {
+                        "name": {
+                            "en": "Partial laryngectomy"
+                        },
+                        "value": " partial_laryngectomy"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_treatment_s"
+            },
+            "diagnosis_bl_treatment_select": {
+                "question": {
+                    "en": "Select all that apply:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Voice/speech therapy "
+                        },
+                        "value": "voice_or_speech_therapy"
+                    },
+                    {
+                        "name": {
+                            "en": "Laryngeal microsurgery "
+                        },
+                        "value": " laryngeal_microsurgery"
+                    },
+                    {
+                        "name": {
+                            "en": "Voice rest "
+                        },
+                        "value": " voice_rest"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": " other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_benign_lesions/items/diagnosis_bl_treatment_select"
+            },
+            "diagnosis_as_gsd_yes": {
+                "question": {
+                    "en": "Confirmed by"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Confirmed by bronchoscopy or laryngoscopy "
+                        },
+                        "value": "bronchoscopy"
+                    },
+                    {
+                        "name": {
+                            "en": "Confirmed by CT imaging"
+                        },
+                        "value": " ct"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_resp_airway_stenosis/items/diagnosis_as_gsd_yes"
+            },
+            "diagnosis_as_treatment": {
+                "question": {
+                    "en": "What treatment has the patient undergone for their stenosis?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "No treatment "
+                        },
+                        "value": "no_treatment"
+                    },
+                    {
+                        "name": {
+                            "en": "Surgery "
+                        },
+                        "value": " surgery"
+                    },
+                    {
+                        "name": {
+                            "en": "In-office treatment"
+                        },
+                        "value": " in_office_treatment"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_resp_airway_stenosis/items/diagnosis_as_treatment"
+            },
+            "diagnosis_as_treatment_surgery": {
+                "question": {
+                    "en": "Surgery options"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Endoscopic intervention with Laser and Balloon dilation and steroid injection "
+                        },
+                        "value": "endoscopic_intervention"
+                    },
+                    {
+                        "name": {
+                            "en": "Endoscopic laser wedge excision with balloon dilation and steroid injection "
+                        },
+                        "value": " endoscopic_excision"
+                    },
+                    {
+                        "name": {
+                            "en": "Open Laryngotracheal reconstruction "
+                        },
+                        "value": " laryngotracheal_reconstruction"
+                    },
+                    {
+                        "name": {
+                            "en": "Laryngotracheoplasty (Maddern procedure) "
+                        },
+                        "value": " laryngotracheoplasty"
+                    },
+                    {
+                        "name": {
+                            "en": "Tracheostomy "
+                        },
+                        "value": " tracheostomy"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": " other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_resp_airway_stenosis/items/diagnosis_as_treatment_surgery"
+            },
+            "diagnosis_as_treatment_in_office": {
+                "question": {
+                    "en": "In-office/awake treatment options"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Awake Steroid injection(s) as sole treatment "
+                        },
+                        "value": "steroid_injections_sole"
+                    },
+                    {
+                        "name": {
+                            "en": "Awake Steroid injection(s) as adjunct treatment "
+                        },
+                        "value": " steroid_injections_adjunct"
+                    },
+                    {
+                        "name": {
+                            "en": "In-office or awake dilation "
+                        },
+                        "value": " dilation"
+                    },
+                    {
+                        "name": {
+                            "en": "In-office or awake laser"
+                        },
+                        "value": " laser"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_resp_airway_stenosis/items/diagnosis_as_treatment_in_office"
+            },
+            "diagnosis_alz_dementia_mci_etiology": {
+                "question": {
+                    "en": "What is the suspected or known etiology in the patient?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Genetic factors "
+                        },
+                        "value": "genetic_factors"
+                    },
+                    {
+                        "name": {
+                            "en": "Age-related changes "
+                        },
+                        "value": " age_related_changes"
+                    },
+                    {
+                        "name": {
+                            "en": "Other medical conditions (e.g. vascular factors traumatic brain injury) "
+                        },
+                        "value": " other_medical_conditions"
+                    },
+                    {
+                        "name": {
+                            "en": "Substance-related (e.g. alcohol-induced cognitive impairment) "
+                        },
+                        "value": " substance_related"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": " other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_etiology"
+            },
+            "diagnosis_alz_dementia_mci_etiology_gf": {
+                "question": {
+                    "en": "Genetic Factors Subcategory"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Familial Alzheimer's disease (e.g. mutations in APP PSEN1 PSEN2 genes) "
+                        },
+                        "value": "familial_alzheimers_disease"
+                    },
+                    {
+                        "name": {
+                            "en": "Apolipoprotein E (APOE) ε4 allele "
+                        },
+                        "value": " apolipoprotein_e"
+                    },
+                    {
+                        "name": {
+                            "en": "Other genetic factors"
+                        },
+                        "value": " other_genetic_factors"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_etiology_gf"
+            },
+            "diagnosis_alz_dementia_mci_ds": {
+                "question": {
+                    "en": "What is the current stage/severity of cognitive impairment or dementia in the patient?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Mild cognitive impairment (MCI) "
+                        },
+                        "value": "mci"
+                    },
+                    {
+                        "name": {
+                            "en": "Clinical dementia rating (CDR) staging"
+                        },
+                        "value": " cdr"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ds"
+            },
+            "diagnosis_alz_dementia_mci_treatment_obtained_yes": {
+                "question": {
+                    "en": "Yes"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Medications "
+                        },
+                        "value": "medications"
+                    },
+                    {
+                        "name": {
+                            "en": "Non-pharmacological interventions"
+                        },
+                        "value": " npi"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_treatment_obtained_yes"
+            },
+            "diagnosis_alz_dementia_mci_treatment_obtained_yes_medications": {
+                "question": {
+                    "en": "Medications:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Cholinesterase inhibitors (e.g. Donepezil Rivastigmine Galantamine) "
+                        },
+                        "value": "cholinesterase_inhibitors"
+                    },
+                    {
+                        "name": {
+                            "en": "NMDA receptor antagonist (e.g. Memantine) "
+                        },
+                        "value": " nmda_receptor_antagonist"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": " other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_treatment_obtained_yes_medications"
+            },
+            "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi": {
+                "question": {
+                    "en": "Non-pharmacological interventions:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Day program "
+                        },
+                        "value": "day_program"
+                    },
+                    {
+                        "name": {
+                            "en": "Cognitive stimulation therapy "
+                        },
+                        "value": " cognitive_simulation_therapy"
+                    },
+                    {
+                        "name": {
+                            "en": "Reality orientation therapy "
+                        },
+                        "value": " reality_orientation_therapy"
+                    },
+                    {
+                        "name": {
+                            "en": "Reminiscence therapy "
+                        },
+                        "value": " reminiscence_therapy"
+                    },
+                    {
+                        "name": {
+                            "en": "Physical exercise program "
+                        },
+                        "value": " physical_exercise_program"
+                    },
+                    {
+                        "name": {
+                            "en": "Dietary modifications "
+                        },
+                        "value": " dietary_modifications"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": " other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_treatment_obtained_yes_npi"
+            },
+            "diagnosis_parkinsons_gsd_category_1": {
+                "question": {
+                    "en": "Category 1 - Parkinsonism"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Bradykinesia "
+                        },
+                        "value": "bradykinesia"
+                    },
+                    {
+                        "name": {
+                            "en": "Tremor "
+                        },
+                        "value": " tremor"
+                    },
+                    {
+                        "name": {
+                            "en": "Rigidity"
+                        },
+                        "value": " rigidity"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_gsd_category_1"
+            },
+            "diagnosis_parkinsons_gsd_category_2": {
+                "question": {
+                    "en": "Category 2 - Exclusion criteria"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Cerebellar abnormalities "
+                        },
+                        "value": "cerebellar_abnormalities"
+                    },
+                    {
+                        "name": {
+                            "en": "Supranuclear gaze palsy "
+                        },
+                        "value": " supranuclear_gaze_palsy"
+                    },
+                    {
+                        "name": {
+                            "en": "Diagnosis of behavioral variant of frontotemporal dementia or primary progressive aphasia within 5 years of disease onset "
+                        },
+                        "value": " bvf_ftd_ppa"
+                    },
+                    {
+                        "name": {
+                            "en": "Parkinsonian features restricted to the lower limbs for more than 3 years "
+                        },
+                        "value": " lower_limbs"
+                    },
+                    {
+                        "name": {
+                            "en": "Treatment with a dopamine receptor blocker or dopamine depleting agent consistent with drug-induced parkinsonism "
+                        },
+                        "value": " dopamine_treatment"
+                    },
+                    {
+                        "name": {
+                            "en": "Absence of a response to high-dose levodopa despite at least moderate disease severity "
+                        },
+                        "value": " absence_of_response"
+                    },
+                    {
+                        "name": {
+                            "en": "Cortical sensory loss clear limb ideomotor apraxia or progressive aphasia "
+                        },
+                        "value": " cortical_sensory_loss"
+                    },
+                    {
+                        "name": {
+                            "en": "Normal functional imaging of the dopaminergic system (\"DAT scan\") "
+                        },
+                        "value": " dat_scan"
+                    },
+                    {
+                        "name": {
+                            "en": "Diagnosis of alternative condition causing parkinsonism which could be causing the symptoms"
+                        },
+                        "value": " alternative_condition"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_gsd_category_2"
+            },
+            "diagnosis_parkinsons_gsd_category_3": {
+                "question": {
+                    "en": "Category 3 - Supportive criteria"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Clear beneficial response to dopaminergic therapy "
+                        },
+                        "value": "response_dopaminergic_therapy"
+                    },
+                    {
+                        "name": {
+                            "en": "Presence of levodopa-induced dyskinesia "
+                        },
+                        "value": " levodopa_induced_dyskinesia"
+                    },
+                    {
+                        "name": {
+                            "en": "Rest tremor of a limb "
+                        },
+                        "value": " rest_tremor"
+                    },
+                    {
+                        "name": {
+                            "en": "The presence of either olfactory loss or cardiac sympathetic denervation on MIBG scintigraphy (although the latter is rarely done in current practice)"
+                        },
+                        "value": " mibg"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_gsd_category_3"
+            },
+            "diagnosis_parkinsons_ma": {
+                "question": {
+                    "en": "Please provide scores or results from validated cognitive assessment tools:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Unified Parkinson's Disease Rating Scale (UPDRS) "
+                        },
+                        "value": "updrs"
+                    },
+                    {
+                        "name": {
+                            "en": "Other motor assessment tool"
+                        },
+                        "value": " other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_ma"
+            },
+            "diagnosis_parkinsons_treatment_obtained_yes": {
+                "question": {
+                    "en": "Yes"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Medications "
+                        },
+                        "value": "medications"
+                    },
+                    {
+                        "name": {
+                            "en": "Non-pharmacological interventions"
+                        },
+                        "value": " npi"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_treatment_obtained_yes"
+            },
+            "diagnosis_parkinsons_treatment_obtained_yes_medications": {
+                "question": {
+                    "en": "Medications:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Levodopa "
+                        },
+                        "value": "levodopa"
+                    },
+                    {
+                        "name": {
+                            "en": "Dopamine agonists "
+                        },
+                        "value": " dopamine_agonists"
+                    },
+                    {
+                        "name": {
+                            "en": "MAO-B inhibitors "
+                        },
+                        "value": " mao_b"
+                    },
+                    {
+                        "name": {
+                            "en": "Amantadine "
+                        },
+                        "value": " amantadine"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": " other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_treatment_obtained_yes_medications"
+            },
+            "diagnosis_parkinsons_treatment_obtained_yes_npi": {
+                "question": {
+                    "en": "Non-pharmacological interventions:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Physical therapy "
+                        },
+                        "value": "physical_therapy"
+                    },
+                    {
+                        "name": {
+                            "en": "Occupational therapy "
+                        },
+                        "value": " occupational_therapy"
+                    },
+                    {
+                        "name": {
+                            "en": "Speech therapy "
+                        },
+                        "value": " speech_therapy"
+                    },
+                    {
+                        "name": {
+                            "en": "Deep Brain Stimulation (DBS) therapy "
+                        },
+                        "value": " dbs"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": " other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_treatment_obtained_yes_npi"
+            },
+            "diagnosis_als_etiology": {
+                "question": {
+                    "en": "What is the suspected or known etiology of ALS in the patient?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Genetic factors "
+                        },
+                        "value": "genetic_factors"
+                    },
+                    {
+                        "name": {
+                            "en": "Environmental factors"
+                        },
+                        "value": " environmental_factors"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_etiology"
+            },
+            "diagnosis_als_etiology_genetic_factors": {
+                "question": {
+                    "en": "Genetic Factors"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "C9orf72 mutation "
+                        },
+                        "value": "c9orf72"
+                    },
+                    {
+                        "name": {
+                            "en": "SOD1 mutation "
+                        },
+                        "value": " sod1"
+                    },
+                    {
+                        "name": {
+                            "en": "Other genetic factors"
+                        },
+                        "value": " other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_etiology_genetic_factors"
+            },
+            "diagnosis_als_cp": {
+                "question": {
+                    "en": "Describe the clinical features and symptoms of ALS in the patient:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Upper Motor Neuron Signs (e.g. spasticity hyperreflexia) "
+                        },
+                        "value": "upper_motor_neuron"
+                    },
+                    {
+                        "name": {
+                            "en": "Lower Motor Neuron Signs (e.g. muscle weakness atrophy fasciculations) "
+                        },
+                        "value": " lower_motor_neuron"
+                    },
+                    {
+                        "name": {
+                            "en": "Bulbar Symptoms (e.g. dysarthria dysphagia) "
+                        },
+                        "value": " bulbar_symptoms"
+                    },
+                    {
+                        "name": {
+                            "en": "Respiratory Involvement"
+                        },
+                        "value": " respiratory_involvement"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_cp"
+            },
+            "diagnosis_als_treatment_and_management_yes": {
+                "question": {
+                    "en": "Yes"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Medications "
+                        },
+                        "value": "medications"
+                    },
+                    {
+                        "name": {
+                            "en": "Supportive Care"
+                        },
+                        "value": " supportive_care"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_treatment_and_management_yes"
+            },
+            "diagnosis_als_treatment_and_management_yes_medications": {
+                "question": {
+                    "en": "Medications (if applicable):"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Riluzole "
+                        },
+                        "value": "riluzole"
+                    },
+                    {
+                        "name": {
+                            "en": "Edaravone "
+                        },
+                        "value": " edaravone"
+                    },
+                    {
+                        "name": {
+                            "en": "Sodium phenylbutyrate/taurursodiol "
+                        },
+                        "value": " sodium"
+                    },
+                    {
+                        "name": {
+                            "en": "Tofersen "
+                        },
+                        "value": " tofersen"
+                    },
+                    {
+                        "name": {
+                            "en": "Symptomatic treatment (e.g. for spasticity pain) "
+                        },
+                        "value": " symptomatic_treatment"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": " other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_treatment_and_management_yes_medications"
+            },
+            "diagnosis_als_treatment_and_management_yes_supportive_care": {
+                "question": {
+                    "en": "Supportive Care:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Physical therapy "
+                        },
+                        "value": "physical_therapy"
+                    },
+                    {
+                        "name": {
+                            "en": "Occupational therapy "
+                        },
+                        "value": " occupational_therapy"
+                    },
+                    {
+                        "name": {
+                            "en": "Speech therapy "
+                        },
+                        "value": " speech_therapy"
+                    },
+                    {
+                        "name": {
+                            "en": "Respiratory support (e.g. non-invasive ventilation) "
+                        },
+                        "value": " respiratory_support"
+                    },
+                    {
+                        "name": {
+                            "en": "Nutrition and swallowing support "
+                        },
+                        "value": " nutrition_support"
+                    },
+                    {
+                        "name": {
+                            "en": "Psychotherapy "
+                        },
+                        "value": " psychotherapy"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": " other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_treatment_and_management_yes_supportive_care"
+            }
         }
     }
 }

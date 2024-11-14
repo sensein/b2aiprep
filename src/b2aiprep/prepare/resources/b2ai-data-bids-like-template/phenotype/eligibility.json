@@ -714,7 +714,47 @@
                 ],
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/items/osa"
             },
-            "eligible_studies": {}
+            "eligible_studies": {
+                "question": {
+                    "en": "Eligible Studies"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Voice Disorders "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Neurological and Neurodegenerative Disorders "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Mood and Psychiatric Disorders "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Respiratory Disorders "
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Pediatric Disorders"
+                        },
+                        "value": 5
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/subjectparticipant_eligible_studies/items/eligible_studies"
+            }
         }
     }
 }

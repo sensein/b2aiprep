@@ -402,13 +402,263 @@
             "diagnosis_parkinsons_treatment_obtained_yes_npi___other": {
                 "description": "Indicates if the participant has received non-pharmacological treatment for Parkinson's, other than those specified."
             },
-            "diagnosis_parkinsons_gsd_category_1": {},
-            "diagnosis_parkinsons_gsd_category_2": {},
-            "diagnosis_parkinsons_gsd_category_3": {},
-            "diagnosis_parkinsons_ma": {},
-            "diagnosis_parkinsons_treatment_obtained_yes": {},
-            "diagnosis_parkinsons_treatment_obtained_yes_medications": {},
-            "diagnosis_parkinsons_treatment_obtained_yes_npi": {}
+            "diagnosis_parkinsons_gsd_category_1": {
+                "question": {
+                    "en": "Category 1 - Parkinsonism"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Bradykinesia "
+                        },
+                        "value": "bradykinesia"
+                    },
+                    {
+                        "name": {
+                            "en": "Tremor "
+                        },
+                        "value": " tremor"
+                    },
+                    {
+                        "name": {
+                            "en": "Rigidity"
+                        },
+                        "value": " rigidity"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_gsd_category_1"
+            },
+            "diagnosis_parkinsons_gsd_category_2": {
+                "question": {
+                    "en": "Category 2 - Exclusion criteria"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Cerebellar abnormalities "
+                        },
+                        "value": "cerebellar_abnormalities"
+                    },
+                    {
+                        "name": {
+                            "en": "Supranuclear gaze palsy "
+                        },
+                        "value": " supranuclear_gaze_palsy"
+                    },
+                    {
+                        "name": {
+                            "en": "Diagnosis of behavioral variant of frontotemporal dementia or primary progressive aphasia within 5 years of disease onset "
+                        },
+                        "value": " bvf_ftd_ppa"
+                    },
+                    {
+                        "name": {
+                            "en": "Parkinsonian features restricted to the lower limbs for more than 3 years "
+                        },
+                        "value": " lower_limbs"
+                    },
+                    {
+                        "name": {
+                            "en": "Treatment with a dopamine receptor blocker or dopamine depleting agent consistent with drug-induced parkinsonism "
+                        },
+                        "value": " dopamine_treatment"
+                    },
+                    {
+                        "name": {
+                            "en": "Absence of a response to high-dose levodopa despite at least moderate disease severity "
+                        },
+                        "value": " absence_of_response"
+                    },
+                    {
+                        "name": {
+                            "en": "Cortical sensory loss clear limb ideomotor apraxia or progressive aphasia "
+                        },
+                        "value": " cortical_sensory_loss"
+                    },
+                    {
+                        "name": {
+                            "en": "Normal functional imaging of the dopaminergic system (\"DAT scan\") "
+                        },
+                        "value": " dat_scan"
+                    },
+                    {
+                        "name": {
+                            "en": "Diagnosis of alternative condition causing parkinsonism which could be causing the symptoms"
+                        },
+                        "value": " alternative_condition"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_gsd_category_2"
+            },
+            "diagnosis_parkinsons_gsd_category_3": {
+                "question": {
+                    "en": "Category 3 - Supportive criteria"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Clear beneficial response to dopaminergic therapy "
+                        },
+                        "value": "response_dopaminergic_therapy"
+                    },
+                    {
+                        "name": {
+                            "en": "Presence of levodopa-induced dyskinesia "
+                        },
+                        "value": " levodopa_induced_dyskinesia"
+                    },
+                    {
+                        "name": {
+                            "en": "Rest tremor of a limb "
+                        },
+                        "value": " rest_tremor"
+                    },
+                    {
+                        "name": {
+                            "en": "The presence of either olfactory loss or cardiac sympathetic denervation on MIBG scintigraphy (although the latter is rarely done in current practice)"
+                        },
+                        "value": " mibg"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_gsd_category_3"
+            },
+            "diagnosis_parkinsons_ma": {
+                "question": {
+                    "en": "Please provide scores or results from validated cognitive assessment tools:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Unified Parkinson's Disease Rating Scale (UPDRS) "
+                        },
+                        "value": "updrs"
+                    },
+                    {
+                        "name": {
+                            "en": "Other motor assessment tool"
+                        },
+                        "value": " other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_ma"
+            },
+            "diagnosis_parkinsons_treatment_obtained_yes": {
+                "question": {
+                    "en": "Yes"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Medications "
+                        },
+                        "value": "medications"
+                    },
+                    {
+                        "name": {
+                            "en": "Non-pharmacological interventions"
+                        },
+                        "value": " npi"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_treatment_obtained_yes"
+            },
+            "diagnosis_parkinsons_treatment_obtained_yes_medications": {
+                "question": {
+                    "en": "Medications:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Levodopa "
+                        },
+                        "value": "levodopa"
+                    },
+                    {
+                        "name": {
+                            "en": "Dopamine agonists "
+                        },
+                        "value": " dopamine_agonists"
+                    },
+                    {
+                        "name": {
+                            "en": "MAO-B inhibitors "
+                        },
+                        "value": " mao_b"
+                    },
+                    {
+                        "name": {
+                            "en": "Amantadine "
+                        },
+                        "value": " amantadine"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": " other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_treatment_obtained_yes_medications"
+            },
+            "diagnosis_parkinsons_treatment_obtained_yes_npi": {
+                "question": {
+                    "en": "Non-pharmacological interventions:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Physical therapy "
+                        },
+                        "value": "physical_therapy"
+                    },
+                    {
+                        "name": {
+                            "en": "Occupational therapy "
+                        },
+                        "value": " occupational_therapy"
+                    },
+                    {
+                        "name": {
+                            "en": "Speech therapy "
+                        },
+                        "value": " speech_therapy"
+                    },
+                    {
+                        "name": {
+                            "en": "Deep Brain Stimulation (DBS) therapy "
+                        },
+                        "value": " dbs"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": " other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_treatment_obtained_yes_npi"
+            }
         }
     }
 }

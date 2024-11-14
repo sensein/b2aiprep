@@ -1908,29 +1908,943 @@
                 ],
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/reading_aloud"
             },
-            "smoking_types": {},
-            "seasonal_allergies_options": {},
-            "symptoms": {},
-            "ear_med_history": {},
-            "nose_med_history": {},
-            "throat_med_history": {},
-            "head_med_history": {},
-            "ear_surgical": {},
-            "nose_surgical": {},
-            "throat_surgical": {},
-            "head_surgical": {},
-            "neurological_history": {},
-            "respiratory_conditions": {},
-            "lung_or_metastatic": {},
-            "covid": {},
-            "cpap_conditions": {},
-            "resp_medical_history": {},
-            "circulatory_conditions": {},
-            "circulatory_med_history": {},
-            "medications": {},
-            "hormone_use": {},
-            "pain_medication": {},
-            "voice_activity": {}
+            "smoking_types": {
+                "question": {
+                    "en": "Please select smoking types used (Check all that apply)"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Tobacco cigarettes "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Cannabis joints bong pipe "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Vapes "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "e-cigarettes "
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Hookah "
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Pipes "
+                        },
+                        "value": 6
+                    },
+                    {
+                        "name": {
+                            "en": "Other (Please specify) "
+                        },
+                        "value": 7
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": 8
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/smoking_types"
+            },
+            "seasonal_allergies_options": {
+                "question": {
+                    "en": "Check all that apply:"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Nasal congestion or obstruction "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Cough "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Scratchy or sore throat "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Shortness of breath"
+                        },
+                        "value": 4
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/seasonal_allergies_options"
+            },
+            "symptoms": {
+                "question": {
+                    "en": "There are some symptoms that can affect your voice. Are you currently experiencing any of these symptoms? Check all that apply."
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Anxiety or nervousness "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Confusion "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Dizziness "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Frequent or severe headache or migraine "
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Sleep disturbance "
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Speech difficulty "
+                        },
+                        "value": 6
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": 7
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/symptoms"
+            },
+            "ear_med_history": {
+                "question": {
+                    "en": "Ear"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Chronic ear infection "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Cochlear implant "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Hearing loss"
+                        },
+                        "value": 3
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/ear_med_history"
+            },
+            "nose_med_history": {
+                "question": {
+                    "en": "Nose"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Frequent sinusitis"
+                        },
+                        "value": 1
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/nose_med_history"
+            },
+            "throat_med_history": {
+                "question": {
+                    "en": "Throat"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Pre-cancerous throat lesion (e.g. laryngeal leukoplakia or keratosis "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Reflux (heartburn) "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Reinke's edema polypoid corditis or smoker's larynx "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Sjögren's syndrome "
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Swallowing disorders (dysphagia) "
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Throat cancer "
+                        },
+                        "value": 6
+                    },
+                    {
+                        "name": {
+                            "en": "Thyroid disease "
+                        },
+                        "value": 7
+                    },
+                    {
+                        "name": {
+                            "en": "Velopharyngeal insufficiency "
+                        },
+                        "value": 8
+                    },
+                    {
+                        "name": {
+                            "en": "Vocal fold dysfunction paradoxical vocal fold motion or inducible laryngeal obstruction "
+                        },
+                        "value": 9
+                    },
+                    {
+                        "name": {
+                            "en": "Vocal fold polyp nodule or cyst "
+                        },
+                        "value": 10
+                    },
+                    {
+                        "name": {
+                            "en": "Vocal hemorrhage or bleed "
+                        },
+                        "value": 11
+                    },
+                    {
+                        "name": {
+                            "en": "Voice/throat disorder"
+                        },
+                        "value": 12
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/throat_med_history"
+            },
+            "head_med_history": {
+                "question": {
+                    "en": "Head"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Radiation around head and neck "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Seasonal allergies"
+                        },
+                        "value": 2
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/head_med_history"
+            },
+            "ear_surgical": {
+                "question": {
+                    "en": "Ear"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Chronic ear surgery (e.g. mastoid) "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Ear tubes"
+                        },
+                        "value": 2
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/ear_surgical"
+            },
+            "nose_surgical": {
+                "question": {
+                    "en": "Nose"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Septoplasty/Rhinoplasty "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Sinus surgery"
+                        },
+                        "value": 2
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/nose_surgical"
+            },
+            "throat_surgical": {
+                "question": {
+                    "en": "Throat"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Airway surgery "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Throat surgery "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Thyroid surgery "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Tonsillectomy/Adenoidectomy"
+                        },
+                        "value": 4
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/throat_surgical"
+            },
+            "head_surgical": {
+                "question": {
+                    "en": "Head"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Head/Neck cancer (e.g. oropharyngeal cancer) "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Sleep surgery"
+                        },
+                        "value": 2
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/head_surgical"
+            },
+            "neurological_history": {
+                "question": {
+                    "en": "Neurological Medical History"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Brain tumor "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Dysarthria "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Epilepsy "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Multiple sclerosis "
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Traumatic brain injury "
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": 6
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/neurological_history"
+            },
+            "respiratory_conditions": {
+                "question": {
+                    "en": "Respiratory Conditions"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Bronchiectasis "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Cancer (lung or metastatic) "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Emphysema "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Interstitial lung disease (sarcoidosis pulmonary fibrosis) "
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Pneumothorax or atelectasis (collapsed lung) "
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Pulmonary hypertension "
+                        },
+                        "value": 6
+                    },
+                    {
+                        "name": {
+                            "en": "Radiation to the chest "
+                        },
+                        "value": 7
+                    },
+                    {
+                        "name": {
+                            "en": "Tuberculosis"
+                        },
+                        "value": 8
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/respiratory_conditions"
+            },
+            "lung_or_metastatic": {
+                "question": {
+                    "en": "Cancer (lung or metastatic)"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Lung "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Metastatic"
+                        },
+                        "value": 2
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/lung_or_metastatic"
+            },
+            "covid": {
+                "question": {
+                    "en": "Have you had COVID recently, or are you currently experiencing the effects of long COVID? (check all that apply)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "COVID in the past year "
+                        },
+                        "value": "past_year"
+                    },
+                    {
+                        "name": {
+                            "en": "Long COVID (symptoms persisted at least four weeks after initial infection)"
+                        },
+                        "value": " long"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/covid"
+            },
+            "cpap_conditions": {
+                "question": {
+                    "en": "Are you currently using CPAP or supplemental oxygen? (check all that apply)"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Active CPAP use "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "On supplemental oxygen"
+                        },
+                        "value": 2
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/cpap_conditions"
+            },
+            "resp_medical_history": {
+                "question": {
+                    "en": "Have you had any of the interventions mentioned below? (check all that apply)\n\nRespiratory medical history"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Craniofacial or chest wall trauma "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Previous lobectomy "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Prior chest/airway surgery "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Prolonged intubation (more than a week)"
+                        },
+                        "value": 4
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/resp_medical_history"
+            },
+            "circulatory_conditions": {
+                "question": {
+                    "en": "Have you been diagnosed with any of these circulatory or heart conditions by a clinician? (check all that apply)"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Atrial fibrillation "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Cardiac condition "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Chronic pericarditis "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Congestive heart failure "
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Coronary heart disease "
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Hypertension"
+                        },
+                        "value": 6
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/circulatory_conditions"
+            },
+            "circulatory_med_history": {
+                "question": {
+                    "en": "Some other conditions can affect the sound of your voice. Have you been diagnosed with any of these conditions by a clinician? (check all that apply)"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Chronic kidney disease "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Diabetes "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Infectious disease "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Obesity "
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Scoliosis"
+                        },
+                        "value": 5
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/circulatory_med_history"
+            },
+            "medications": {
+                "question": {
+                    "en": "Do you currently take or use any of these medications or substances? (Check all that apply)"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Antibiotics "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Anti-histamines (allergy medications) "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Anti-Hypertensive Medications (Blood Pressure Medication) "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Diuretics (ex: Lasix) "
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Decongestants "
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Muscle relaxants (ex: Baclofen) "
+                        },
+                        "value": 6
+                    },
+                    {
+                        "name": {
+                            "en": "Hormone use "
+                        },
+                        "value": 7
+                    },
+                    {
+                        "name": {
+                            "en": "Inhaled corticosteroids "
+                        },
+                        "value": 8
+                    },
+                    {
+                        "name": {
+                            "en": "Oral steroids "
+                        },
+                        "value": 9
+                    },
+                    {
+                        "name": {
+                            "en": "Anti-anxiety medications: (ex: Benzodiazepine) "
+                        },
+                        "value": 10
+                    },
+                    {
+                        "name": {
+                            "en": "Chronic Pain medication "
+                        },
+                        "value": 11
+                    },
+                    {
+                        "name": {
+                            "en": "Psychotropic/antipsychotic medications (ex: Clozapine) "
+                        },
+                        "value": 12
+                    },
+                    {
+                        "name": {
+                            "en": "Antidepressants (ex: amitryptiline) "
+                        },
+                        "value": 13
+                    },
+                    {
+                        "name": {
+                            "en": "Immune suppressors (ex: Methotrexate) "
+                        },
+                        "value": 14
+                    },
+                    {
+                        "name": {
+                            "en": "Reflux medications (ex: Pantoprazole Nexium) "
+                        },
+                        "value": 15
+                    },
+                    {
+                        "name": {
+                            "en": "Anticholinergics (ex: Ventolin) "
+                        },
+                        "value": 16
+                    },
+                    {
+                        "name": {
+                            "en": "Anticoagulants (blood thinners) "
+                        },
+                        "value": 17
+                    },
+                    {
+                        "name": {
+                            "en": "Antiepileptic (ex: Phenytoin)"
+                        },
+                        "value": 18
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/medications"
+            },
+            "hormone_use": {
+                "question": {
+                    "en": "Hormone use"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Oral contraceptive "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Hormonal replacement therapy (HRT) "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Androgenic steroids "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": 4
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/hormone_use"
+            },
+            "pain_medication": {
+                "question": {
+                    "en": "Chronic Pain medication"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "NSAIDs (ex: Ibuprofen/Advil/Cerebrex) "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Morphine/Oxycodone "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Neuro-modulators (ex: Gabapentin Lyrica)"
+                        },
+                        "value": 3
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/pain_medication"
+            },
+            "voice_activity": {
+                "question": {
+                    "en": "Do you do one of these jobs or hobbies that requires using your voice for many hours a day? (check all that apply)"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Bartender "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Waiter receptionist "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Speaking  (secretary call center attorney salesperson) "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Teacher "
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Singer "
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Cheerleading "
+                        },
+                        "value": 6
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": 7
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/voice_activity"
+            }
         }
     }
 }
