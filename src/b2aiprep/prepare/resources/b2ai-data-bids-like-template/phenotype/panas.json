@@ -1,444 +1,449 @@
 {
-    "panas_session_id": {
-        "description": "Unique session identifier for the PANAS (Positive and Negative Affect Schedule) questionnaire.",
-        "question": {
-            "en": "Session ID"
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": null,
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_panas/items/panas_session_id"
-    },
-    "panas_duration": {
-        "description": "Duration of the Positive and Negative Affect Schedule (PANAS) questionnaire.",
-        "question": {
-            "en": "Questionnaire Duration (seconds)"
-        },
-        "datatype": [
-            "xsd:decimal"
-        ],
-        "choices": null,
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_panas/items/panas_duration"
-    },
-    "upset": {
-        "description": "Indicates if the participant feels upset.",
-        "question": {
-            "en": "Upset"
-        },
-        "datatype": [
-            "xsd:integer"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "1 "
+    "q_mood_panas_schema": {
+        "data_elements": {
+            "panas_session_id": {
+                "description": "Unique session identifier for the PANAS (Positive and Negative Affect Schedule) questionnaire.",
+                "question": {
+                    "en": "Session ID"
                 },
-                "value": 1
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_panas/items/panas_session_id"
             },
-            {
-                "name": {
-                    "en": "2 "
+            "panas_duration": {
+                "description": "Duration of the Positive and Negative Affect Schedule (PANAS) questionnaire.",
+                "question": {
+                    "en": "Questionnaire Duration (seconds)"
                 },
-                "value": 2
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_panas/items/panas_duration"
             },
-            {
-                "name": {
-                    "en": "3 "
+            "upset": {
+                "description": "Indicates if the participant feels upset.",
+                "question": {
+                    "en": "Upset"
                 },
-                "value": 3
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "1 "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "2 "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "3 "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "4 "
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "5"
+                        },
+                        "value": 5
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_panas/items/upset"
             },
-            {
-                "name": {
-                    "en": "4 "
+            "hostile": {
+                "description": "Indicates if the participant feels hostile or angry.",
+                "question": {
+                    "en": "Hostile"
                 },
-                "value": 4
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "1 "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "2 "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "3 "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "4 "
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "5"
+                        },
+                        "value": 5
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_panas/items/hostile"
             },
-            {
-                "name": {
-                    "en": "5"
+            "alert": {
+                "description": "Indicates if the participant is alert during the session.",
+                "question": {
+                    "en": "Alert"
                 },
-                "value": 5
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "1 "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "2 "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "3 "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "4 "
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "5"
+                        },
+                        "value": 5
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_panas/items/alert"
+            },
+            "ashamed": {
+                "description": "Indicates if the participant feels ashamed.",
+                "question": {
+                    "en": "Ashamed"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "1 "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "2 "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "3 "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "4 "
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "5"
+                        },
+                        "value": 5
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_panas/items/ashamed"
+            },
+            "inspired": {
+                "description": "Indicates if the participant feels inspired or motivated.",
+                "question": {
+                    "en": "Inspired"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "1 "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "2 "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "3 "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "4 "
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "5"
+                        },
+                        "value": 5
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_panas/items/inspired"
+            },
+            "nervous": {
+                "description": "Indicates if the participant feels nervous.",
+                "question": {
+                    "en": "Nervous"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "1 "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "2 "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "3 "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "4 "
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "5"
+                        },
+                        "value": 5
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_panas/items/nervous"
+            },
+            "determined": {
+                "description": "Indicates if the participant feels determined or focused.",
+                "question": {
+                    "en": "Determined"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "1 "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "2 "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "3 "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "4 "
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "5"
+                        },
+                        "value": 5
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_panas/items/determined"
+            },
+            "attentive": {
+                "description": "Indicates if the participant appears attentive during the session.",
+                "question": {
+                    "en": "Attentive"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "1 "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "2 "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "3 "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "4 "
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "5"
+                        },
+                        "value": 5
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_panas/items/attentive"
+            },
+            "afraid": {
+                "description": "Indicates if the participant feels afraid.",
+                "question": {
+                    "en": "Afraid"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "1 "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "2 "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "3 "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "4 "
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "5"
+                        },
+                        "value": 5
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_panas/items/afraid"
+            },
+            "active": {
+                "description": "Indicates if the participant feels physically active or engaged.",
+                "question": {
+                    "en": "Active"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "1 "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "2 "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "3 "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "4 "
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "5"
+                        },
+                        "value": 5
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_panas/items/active"
             }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_panas/items/upset"
-    },
-    "hostile": {
-        "description": "Indicates if the participant feels hostile or angry.",
-        "question": {
-            "en": "Hostile"
         },
-        "datatype": [
-            "xsd:integer"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "1 "
-                },
-                "value": 1
-            },
-            {
-                "name": {
-                    "en": "2 "
-                },
-                "value": 2
-            },
-            {
-                "name": {
-                    "en": "3 "
-                },
-                "value": 3
-            },
-            {
-                "name": {
-                    "en": "4 "
-                },
-                "value": 4
-            },
-            {
-                "name": {
-                    "en": "5"
-                },
-                "value": 5
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_panas/items/hostile"
-    },
-    "alert": {
-        "description": "Indicates if the participant is alert during the session.",
-        "question": {
-            "en": "Alert"
-        },
-        "datatype": [
-            "xsd:integer"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "1 "
-                },
-                "value": 1
-            },
-            {
-                "name": {
-                    "en": "2 "
-                },
-                "value": 2
-            },
-            {
-                "name": {
-                    "en": "3 "
-                },
-                "value": 3
-            },
-            {
-                "name": {
-                    "en": "4 "
-                },
-                "value": 4
-            },
-            {
-                "name": {
-                    "en": "5"
-                },
-                "value": 5
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_panas/items/alert"
-    },
-    "ashamed": {
-        "description": "Indicates if the participant feels ashamed.",
-        "question": {
-            "en": "Ashamed"
-        },
-        "datatype": [
-            "xsd:integer"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "1 "
-                },
-                "value": 1
-            },
-            {
-                "name": {
-                    "en": "2 "
-                },
-                "value": 2
-            },
-            {
-                "name": {
-                    "en": "3 "
-                },
-                "value": 3
-            },
-            {
-                "name": {
-                    "en": "4 "
-                },
-                "value": 4
-            },
-            {
-                "name": {
-                    "en": "5"
-                },
-                "value": 5
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_panas/items/ashamed"
-    },
-    "inspired": {
-        "description": "Indicates if the participant feels inspired or motivated.",
-        "question": {
-            "en": "Inspired"
-        },
-        "datatype": [
-            "xsd:integer"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "1 "
-                },
-                "value": 1
-            },
-            {
-                "name": {
-                    "en": "2 "
-                },
-                "value": 2
-            },
-            {
-                "name": {
-                    "en": "3 "
-                },
-                "value": 3
-            },
-            {
-                "name": {
-                    "en": "4 "
-                },
-                "value": 4
-            },
-            {
-                "name": {
-                    "en": "5"
-                },
-                "value": 5
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_panas/items/inspired"
-    },
-    "nervous": {
-        "description": "Indicates if the participant feels nervous.",
-        "question": {
-            "en": "Nervous"
-        },
-        "datatype": [
-            "xsd:integer"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "1 "
-                },
-                "value": 1
-            },
-            {
-                "name": {
-                    "en": "2 "
-                },
-                "value": 2
-            },
-            {
-                "name": {
-                    "en": "3 "
-                },
-                "value": 3
-            },
-            {
-                "name": {
-                    "en": "4 "
-                },
-                "value": 4
-            },
-            {
-                "name": {
-                    "en": "5"
-                },
-                "value": 5
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_panas/items/nervous"
-    },
-    "determined": {
-        "description": "Indicates if the participant feels determined or focused.",
-        "question": {
-            "en": "Determined"
-        },
-        "datatype": [
-            "xsd:integer"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "1 "
-                },
-                "value": 1
-            },
-            {
-                "name": {
-                    "en": "2 "
-                },
-                "value": 2
-            },
-            {
-                "name": {
-                    "en": "3 "
-                },
-                "value": 3
-            },
-            {
-                "name": {
-                    "en": "4 "
-                },
-                "value": 4
-            },
-            {
-                "name": {
-                    "en": "5"
-                },
-                "value": 5
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_panas/items/determined"
-    },
-    "attentive": {
-        "description": "Indicates if the participant appears attentive during the session.",
-        "question": {
-            "en": "Attentive"
-        },
-        "datatype": [
-            "xsd:integer"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "1 "
-                },
-                "value": 1
-            },
-            {
-                "name": {
-                    "en": "2 "
-                },
-                "value": 2
-            },
-            {
-                "name": {
-                    "en": "3 "
-                },
-                "value": 3
-            },
-            {
-                "name": {
-                    "en": "4 "
-                },
-                "value": 4
-            },
-            {
-                "name": {
-                    "en": "5"
-                },
-                "value": 5
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_panas/items/attentive"
-    },
-    "afraid": {
-        "description": "Indicates if the participant feels afraid.",
-        "question": {
-            "en": "Afraid"
-        },
-        "datatype": [
-            "xsd:integer"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "1 "
-                },
-                "value": 1
-            },
-            {
-                "name": {
-                    "en": "2 "
-                },
-                "value": 2
-            },
-            {
-                "name": {
-                    "en": "3 "
-                },
-                "value": 3
-            },
-            {
-                "name": {
-                    "en": "4 "
-                },
-                "value": 4
-            },
-            {
-                "name": {
-                    "en": "5"
-                },
-                "value": 5
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_panas/items/afraid"
-    },
-    "active": {
-        "description": "Indicates if the participant feels physically active or engaged.",
-        "question": {
-            "en": "Active"
-        },
-        "datatype": [
-            "xsd:integer"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "1 "
-                },
-                "value": 1
-            },
-            {
-                "name": {
-                    "en": "2 "
-                },
-                "value": 2
-            },
-            {
-                "name": {
-                    "en": "3 "
-                },
-                "value": 3
-            },
-            {
-                "name": {
-                    "en": "4 "
-                },
-                "value": 4
-            },
-            {
-                "name": {
-                    "en": "5"
-                },
-                "value": 5
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_panas/items/active"
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_panas/q_mood_panas_schema"
     }
 }

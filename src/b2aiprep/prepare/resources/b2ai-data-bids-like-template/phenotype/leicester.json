@@ -1,1050 +1,1055 @@
 {
-    "leicester_cough_session_id": {
-        "description": "Unique identifier for the Leicester Cough Questionnaire session.",
-        "question": {
-            "en": "Session ID"
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": null,
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/leicester_cough_session_id"
-    },
-    "leicester_cough_duration": {
-        "description": "Total duration of the Leicester Cough Questionnaire (LCQ).",
-        "question": {
-            "en": "Questionnaire Duration (seconds)"
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": null,
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/leicester_cough_duration"
-    },
-    "lcq_chest_stomach_pains": {
-        "description": "Indicates if the participant experiences chest or stomach pains as part of their cough symptoms.",
-        "question": {
-            "en": "In the last 2 weeks, have you had chest or stomach pains as a result of your cough?"
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "None of the time "
+    "q_resp_leicester_cough_questionnaire_lcq_schema": {
+        "data_elements": {
+            "leicester_cough_session_id": {
+                "description": "Unique identifier for the Leicester Cough Questionnaire session.",
+                "question": {
+                    "en": "Session ID"
                 },
-                "value": "noneOfTheTime"
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/leicester_cough_session_id"
             },
-            {
-                "name": {
-                    "en": "Hardly any of the time "
+            "leicester_cough_duration": {
+                "description": "Total duration of the Leicester Cough Questionnaire (LCQ).",
+                "question": {
+                    "en": "Questionnaire Duration (seconds)"
                 },
-                "value": " hardlyAnyOfTheTime"
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/leicester_cough_duration"
             },
-            {
-                "name": {
-                    "en": "A little of the time "
+            "lcq_chest_stomach_pains": {
+                "description": "Indicates if the participant experiences chest or stomach pains as part of their cough symptoms.",
+                "question": {
+                    "en": "In the last 2 weeks, have you had chest or stomach pains as a result of your cough?"
                 },
-                "value": " aLittleOfTheTime"
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None of the time "
+                        },
+                        "value": "noneOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Hardly any of the time "
+                        },
+                        "value": " hardlyAnyOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A little of the time "
+                        },
+                        "value": " aLittleOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Some of the time "
+                        },
+                        "value": " someOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A good bit of the time "
+                        },
+                        "value": " aGoodBitOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Most of the time "
+                        },
+                        "value": " mostOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "All of the time"
+                        },
+                        "value": " allOfTheTime"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_chest_stomach_pains"
             },
-            {
-                "name": {
-                    "en": "Some of the time "
+            "lcq_sputum_phlegm": {
+                "description": "Indicates if the participant produces sputum or phlegm as part of their cough symptoms.",
+                "question": {
+                    "en": "In the last 2 weeks, have you been bothered by sputum (phlegm) production when you cough?"
                 },
-                "value": " someOfTheTime"
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None of the time "
+                        },
+                        "value": "noneOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Hardly any of the time "
+                        },
+                        "value": " hardlyAnyOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A little of the time "
+                        },
+                        "value": " aLittleOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Some of the time "
+                        },
+                        "value": " someOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A good bit of the time "
+                        },
+                        "value": " aGoodBitOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Most of the time "
+                        },
+                        "value": " mostOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "All of the time"
+                        },
+                        "value": " allOfTheTime"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_sputum_phlegm"
             },
-            {
-                "name": {
-                    "en": "A good bit of the time "
+            "lcq_tired": {
+                "description": "Indicates if the participant feels tired due to their cough.",
+                "question": {
+                    "en": "In the last 2 weeks, have you been tired because of your cough?"
                 },
-                "value": " aGoodBitOfTheTime"
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None of the time "
+                        },
+                        "value": "noneOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Hardly any of the time "
+                        },
+                        "value": " hardlyAnyOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A little of the time "
+                        },
+                        "value": " aLittleOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Some of the time "
+                        },
+                        "value": " someOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A good bit of the time "
+                        },
+                        "value": " aGoodBitOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Most of the time "
+                        },
+                        "value": " mostOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "All of the time"
+                        },
+                        "value": " allOfTheTime"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_tired"
             },
-            {
-                "name": {
-                    "en": "Most of the time "
+            "lcq_embarrassed": {
+                "description": "Indicates if the participant feels embarrassed by their cough.",
+                "question": {
+                    "en": "How often during the last 2 weeks have you felt embarrassed by your coughing?"
                 },
-                "value": " mostOfTheTime"
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None of the time "
+                        },
+                        "value": "noneOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Hardly any of the time "
+                        },
+                        "value": " hardlyAnyOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A little of the time "
+                        },
+                        "value": " aLittleOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Some of the time "
+                        },
+                        "value": " someOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A good bit of the time "
+                        },
+                        "value": " aGoodBitOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Most of the time "
+                        },
+                        "value": " mostOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "All of the time"
+                        },
+                        "value": " allOfTheTime"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_embarrassed"
             },
-            {
-                "name": {
-                    "en": "All of the time"
+            "lcq_anxious": {
+                "description": "Indicates if the participant feels anxious due to their cough.",
+                "question": {
+                    "en": "In the last 2 weeks, my cough has made me feel anxious."
                 },
-                "value": " allOfTheTime"
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None of the time "
+                        },
+                        "value": "noneOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Hardly any of the time "
+                        },
+                        "value": " hardlyAnyOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A little of the time "
+                        },
+                        "value": " aLittleOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Some of the time "
+                        },
+                        "value": " someOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A good bit of the time "
+                        },
+                        "value": " aGoodBitOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Most of the time "
+                        },
+                        "value": " mostOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "All of the time"
+                        },
+                        "value": " allOfTheTime"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_anxious"
+            },
+            "lcq_interfere_job": {
+                "description": "Indicates if the participant's cough interferes with their ability to work.",
+                "question": {
+                    "en": "In the last 2 weeks, my cough has interfered with my job or other daily tasks."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None of the time "
+                        },
+                        "value": "noneOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Hardly any of the time "
+                        },
+                        "value": " hardlyAnyOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A little of the time "
+                        },
+                        "value": " aLittleOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Some of the time "
+                        },
+                        "value": " someOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A good bit of the time "
+                        },
+                        "value": " aGoodBitOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Most of the time "
+                        },
+                        "value": " mostOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "All of the time"
+                        },
+                        "value": " allOfTheTime"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_interfere_job"
+            },
+            "lcq_interfere_life": {
+                "description": "Indicates if the participant's cough interferes with their daily life.",
+                "question": {
+                    "en": "In the last 2 weeks, I felt that my cough interfered with the overall enjoyment of my life."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None of the time "
+                        },
+                        "value": "noneOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Hardly any of the time "
+                        },
+                        "value": " hardlyAnyOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A little of the time "
+                        },
+                        "value": " aLittleOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Some of the time "
+                        },
+                        "value": " someOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A good bit of the time "
+                        },
+                        "value": " aGoodBitOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Most of the time "
+                        },
+                        "value": " mostOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "All of the time"
+                        },
+                        "value": " allOfTheTime"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_interfere_life"
+            },
+            "lcq_exposure_paint": {
+                "description": "Indicates if the participant has been exposed to paint or chemical fumes that worsen their cough.",
+                "question": {
+                    "en": "In the last 2 weeks, exposure to paint or fumes has made me cough."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None of the time "
+                        },
+                        "value": "noneOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Hardly any of the time "
+                        },
+                        "value": " hardlyAnyOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A little of the time "
+                        },
+                        "value": " aLittleOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Some of the time "
+                        },
+                        "value": " someOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A good bit of the time "
+                        },
+                        "value": " aGoodBitOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Most of the time "
+                        },
+                        "value": " mostOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "All of the time"
+                        },
+                        "value": " allOfTheTime"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_exposure_paint"
+            },
+            "lcq_sleep": {
+                "description": "Indicates if the participant's cough affects their sleep.",
+                "question": {
+                    "en": "In the last 2 weeks, has your cough disturbed your sleep?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None of the time "
+                        },
+                        "value": "noneOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Hardly any of the time "
+                        },
+                        "value": " hardlyAnyOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A little of the time "
+                        },
+                        "value": " aLittleOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Some of the time "
+                        },
+                        "value": " someOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A good bit of the time "
+                        },
+                        "value": " aGoodBitOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Most of the time "
+                        },
+                        "value": " mostOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "All of the time"
+                        },
+                        "value": " allOfTheTime"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_sleep"
+            },
+            "lcq_bout": {
+                "description": "Indicates if the participant has bouts of coughing.",
+                "question": {
+                    "en": "In the last 2 weeks, how many times a day have you had a coughing bout?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None of the time "
+                        },
+                        "value": "noneOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Hardly any of the time "
+                        },
+                        "value": " hardlyAnyOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A little of the time "
+                        },
+                        "value": " aLittleOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Some of the time "
+                        },
+                        "value": " someOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A good bit of the time "
+                        },
+                        "value": " aGoodBitOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Most of the time "
+                        },
+                        "value": " mostOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "All of the time"
+                        },
+                        "value": " allOfTheTime"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_bout"
+            },
+            "lcq_frustrated": {
+                "description": "Indicates if the participant feels frustrated as part of their cough symptoms.",
+                "question": {
+                    "en": "In the last 2 weeks, my cough has made me feel frustrated."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None of the time "
+                        },
+                        "value": "noneOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Hardly any of the time "
+                        },
+                        "value": " hardlyAnyOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A little of the time "
+                        },
+                        "value": " aLittleOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Some of the time "
+                        },
+                        "value": " someOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A good bit of the time "
+                        },
+                        "value": " aGoodBitOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Most of the time "
+                        },
+                        "value": " mostOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "All of the time"
+                        },
+                        "value": " allOfTheTime"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_frustrated"
+            },
+            "lcq_fed_up": {
+                "description": "Indicates if the participant feels fed up due to their cough.",
+                "question": {
+                    "en": "In the last 2 weeks, my cough has made me feel fed up."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None of the time "
+                        },
+                        "value": "noneOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Hardly any of the time "
+                        },
+                        "value": " hardlyAnyOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A little of the time "
+                        },
+                        "value": " aLittleOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Some of the time "
+                        },
+                        "value": " someOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A good bit of the time "
+                        },
+                        "value": " aGoodBitOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Most of the time "
+                        },
+                        "value": " mostOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "All of the time"
+                        },
+                        "value": " allOfTheTime"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_fed_up"
+            },
+            "lcq_hoarse_voice": {
+                "description": "Indicates if the participant has a hoarse voice as part of their cough symptoms.",
+                "question": {
+                    "en": "In the last 2 weeks, have you suffered from a hoarse voice as a result of your cough?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None of the time "
+                        },
+                        "value": "noneOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Hardly any of the time "
+                        },
+                        "value": " hardlyAnyOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A little of the time "
+                        },
+                        "value": " aLittleOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Some of the time "
+                        },
+                        "value": " someOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A good bit of the time "
+                        },
+                        "value": " aGoodBitOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Most of the time "
+                        },
+                        "value": " mostOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "All of the time"
+                        },
+                        "value": " allOfTheTime"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_hoarse_voice"
+            },
+            "lcq_serious_illness": {
+                "description": "Indicates if the participant's cough interferes with their life due to a serious illness.",
+                "question": {
+                    "en": "In the last 2 weeks, have you worried that your cough may indicate serious illness?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None of the time "
+                        },
+                        "value": "noneOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Hardly any of the time "
+                        },
+                        "value": " hardlyAnyOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A little of the time "
+                        },
+                        "value": " aLittleOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Some of the time "
+                        },
+                        "value": " someOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A good bit of the time "
+                        },
+                        "value": " aGoodBitOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Most of the time "
+                        },
+                        "value": " mostOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "All of the time"
+                        },
+                        "value": " allOfTheTime"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_serious_illness"
+            },
+            "lcq_other_people": {
+                "description": "Indicates if the participant feels that their cough bothers other people.",
+                "question": {
+                    "en": "In the last 2 weeks, have you been concerned that other people think something is wrong with you, because of your cough?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None of the time "
+                        },
+                        "value": "noneOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Hardly any of the time "
+                        },
+                        "value": " hardlyAnyOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A little of the time "
+                        },
+                        "value": " aLittleOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Some of the time "
+                        },
+                        "value": " someOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A good bit of the time "
+                        },
+                        "value": " aGoodBitOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Most of the time "
+                        },
+                        "value": " mostOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "All of the time"
+                        },
+                        "value": " allOfTheTime"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_other_people"
+            },
+            "lcq_interrupt_conversation": {
+                "description": "Indicates if the participant's cough interrupts conversations.",
+                "question": {
+                    "en": "In the last 2 weeks, my cough has interrupted conversation or telephone calls."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None of the time "
+                        },
+                        "value": "noneOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Hardly any of the time "
+                        },
+                        "value": " hardlyAnyOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A little of the time "
+                        },
+                        "value": " aLittleOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Some of the time "
+                        },
+                        "value": " someOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A good bit of the time "
+                        },
+                        "value": " aGoodBitOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Most of the time "
+                        },
+                        "value": " mostOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "All of the time"
+                        },
+                        "value": " allOfTheTime"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_interrupt_conversation"
+            },
+            "lcq_partner": {
+                "description": "Indicates if the participant feels that their cough affects their partner or significant other.",
+                "question": {
+                    "en": "In the last 2 weeks, I feel that my cough has annoyed my partner, family, or friends."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None of the time "
+                        },
+                        "value": "noneOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Hardly any of the time "
+                        },
+                        "value": " hardlyAnyOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A little of the time "
+                        },
+                        "value": " aLittleOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Some of the time "
+                        },
+                        "value": " someOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A good bit of the time "
+                        },
+                        "value": " aGoodBitOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Most of the time "
+                        },
+                        "value": " mostOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "All of the time"
+                        },
+                        "value": " allOfTheTime"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_partner"
+            },
+            "lcq_felt_in_control": {
+                "description": "Indicates if the participant feels in control of their cough.",
+                "question": {
+                    "en": "In the last 2 weeks, have you felt in control of your cough?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None of the time "
+                        },
+                        "value": "noneOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Hardly any of the time "
+                        },
+                        "value": " hardlyAnyOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A little of the time "
+                        },
+                        "value": " aLittleOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Some of the time "
+                        },
+                        "value": " someOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A good bit of the time "
+                        },
+                        "value": " aGoodBitOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Most of the time "
+                        },
+                        "value": " mostOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "All of the time"
+                        },
+                        "value": " allOfTheTime"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_felt_in_control"
+            },
+            "lcq_energy": {
+                "description": "Indicates if the participant experiences low energy as part of their cough symptoms.",
+                "question": {
+                    "en": "In the last 2 weeks, have you had a lot of energy?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None of the time "
+                        },
+                        "value": "noneOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Hardly any of the time "
+                        },
+                        "value": " hardlyAnyOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A little of the time "
+                        },
+                        "value": " aLittleOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Some of the time "
+                        },
+                        "value": " someOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "A good bit of the time "
+                        },
+                        "value": " aGoodBitOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Most of the time "
+                        },
+                        "value": " mostOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "All of the time"
+                        },
+                        "value": " allOfTheTime"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_energy"
             }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_chest_stomach_pains"
-    },
-    "lcq_sputum_phlegm": {
-        "description": "Indicates if the participant produces sputum or phlegm as part of their cough symptoms.",
-        "question": {
-            "en": "In the last 2 weeks, have you been bothered by sputum (phlegm) production when you cough?"
         },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "None of the time "
-                },
-                "value": "noneOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Hardly any of the time "
-                },
-                "value": " hardlyAnyOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A little of the time "
-                },
-                "value": " aLittleOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Some of the time "
-                },
-                "value": " someOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A good bit of the time "
-                },
-                "value": " aGoodBitOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Most of the time "
-                },
-                "value": " mostOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "All of the time"
-                },
-                "value": " allOfTheTime"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_sputum_phlegm"
-    },
-    "lcq_tired": {
-        "description": "Indicates if the participant feels tired due to their cough.",
-        "question": {
-            "en": "In the last 2 weeks, have you been tired because of your cough?"
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "None of the time "
-                },
-                "value": "noneOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Hardly any of the time "
-                },
-                "value": " hardlyAnyOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A little of the time "
-                },
-                "value": " aLittleOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Some of the time "
-                },
-                "value": " someOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A good bit of the time "
-                },
-                "value": " aGoodBitOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Most of the time "
-                },
-                "value": " mostOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "All of the time"
-                },
-                "value": " allOfTheTime"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_tired"
-    },
-    "lcq_embarrassed": {
-        "description": "Indicates if the participant feels embarrassed by their cough.",
-        "question": {
-            "en": "How often during the last 2 weeks have you felt embarrassed by your coughing?"
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "None of the time "
-                },
-                "value": "noneOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Hardly any of the time "
-                },
-                "value": " hardlyAnyOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A little of the time "
-                },
-                "value": " aLittleOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Some of the time "
-                },
-                "value": " someOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A good bit of the time "
-                },
-                "value": " aGoodBitOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Most of the time "
-                },
-                "value": " mostOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "All of the time"
-                },
-                "value": " allOfTheTime"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_embarrassed"
-    },
-    "lcq_anxious": {
-        "description": "Indicates if the participant feels anxious due to their cough.",
-        "question": {
-            "en": "In the last 2 weeks, my cough has made me feel anxious."
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "None of the time "
-                },
-                "value": "noneOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Hardly any of the time "
-                },
-                "value": " hardlyAnyOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A little of the time "
-                },
-                "value": " aLittleOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Some of the time "
-                },
-                "value": " someOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A good bit of the time "
-                },
-                "value": " aGoodBitOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Most of the time "
-                },
-                "value": " mostOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "All of the time"
-                },
-                "value": " allOfTheTime"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_anxious"
-    },
-    "lcq_interfere_job": {
-        "description": "Indicates if the participant's cough interferes with their ability to work.",
-        "question": {
-            "en": "In the last 2 weeks, my cough has interfered with my job or other daily tasks."
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "None of the time "
-                },
-                "value": "noneOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Hardly any of the time "
-                },
-                "value": " hardlyAnyOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A little of the time "
-                },
-                "value": " aLittleOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Some of the time "
-                },
-                "value": " someOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A good bit of the time "
-                },
-                "value": " aGoodBitOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Most of the time "
-                },
-                "value": " mostOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "All of the time"
-                },
-                "value": " allOfTheTime"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_interfere_job"
-    },
-    "lcq_interfere_life": {
-        "description": "Indicates if the participant's cough interferes with their daily life.",
-        "question": {
-            "en": "In the last 2 weeks, I felt that my cough interfered with the overall enjoyment of my life."
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "None of the time "
-                },
-                "value": "noneOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Hardly any of the time "
-                },
-                "value": " hardlyAnyOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A little of the time "
-                },
-                "value": " aLittleOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Some of the time "
-                },
-                "value": " someOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A good bit of the time "
-                },
-                "value": " aGoodBitOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Most of the time "
-                },
-                "value": " mostOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "All of the time"
-                },
-                "value": " allOfTheTime"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_interfere_life"
-    },
-    "lcq_exposure_paint": {
-        "description": "Indicates if the participant has been exposed to paint or chemical fumes that worsen their cough.",
-        "question": {
-            "en": "In the last 2 weeks, exposure to paint or fumes has made me cough."
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "None of the time "
-                },
-                "value": "noneOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Hardly any of the time "
-                },
-                "value": " hardlyAnyOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A little of the time "
-                },
-                "value": " aLittleOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Some of the time "
-                },
-                "value": " someOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A good bit of the time "
-                },
-                "value": " aGoodBitOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Most of the time "
-                },
-                "value": " mostOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "All of the time"
-                },
-                "value": " allOfTheTime"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_exposure_paint"
-    },
-    "lcq_sleep": {
-        "description": "Indicates if the participant's cough affects their sleep.",
-        "question": {
-            "en": "In the last 2 weeks, has your cough disturbed your sleep?"
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "None of the time "
-                },
-                "value": "noneOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Hardly any of the time "
-                },
-                "value": " hardlyAnyOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A little of the time "
-                },
-                "value": " aLittleOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Some of the time "
-                },
-                "value": " someOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A good bit of the time "
-                },
-                "value": " aGoodBitOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Most of the time "
-                },
-                "value": " mostOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "All of the time"
-                },
-                "value": " allOfTheTime"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_sleep"
-    },
-    "lcq_bout": {
-        "description": "Indicates if the participant has bouts of coughing.",
-        "question": {
-            "en": "In the last 2 weeks, how many times a day have you had a coughing bout?"
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "None of the time "
-                },
-                "value": "noneOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Hardly any of the time "
-                },
-                "value": " hardlyAnyOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A little of the time "
-                },
-                "value": " aLittleOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Some of the time "
-                },
-                "value": " someOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A good bit of the time "
-                },
-                "value": " aGoodBitOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Most of the time "
-                },
-                "value": " mostOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "All of the time"
-                },
-                "value": " allOfTheTime"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_bout"
-    },
-    "lcq_frustrated": {
-        "description": "Indicates if the participant feels frustrated as part of their cough symptoms.",
-        "question": {
-            "en": "In the last 2 weeks, my cough has made me feel frustrated."
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "None of the time "
-                },
-                "value": "noneOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Hardly any of the time "
-                },
-                "value": " hardlyAnyOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A little of the time "
-                },
-                "value": " aLittleOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Some of the time "
-                },
-                "value": " someOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A good bit of the time "
-                },
-                "value": " aGoodBitOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Most of the time "
-                },
-                "value": " mostOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "All of the time"
-                },
-                "value": " allOfTheTime"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_frustrated"
-    },
-    "lcq_fed_up": {
-        "description": "Indicates if the participant feels fed up due to their cough.",
-        "question": {
-            "en": "In the last 2 weeks, my cough has made me feel fed up."
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "None of the time "
-                },
-                "value": "noneOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Hardly any of the time "
-                },
-                "value": " hardlyAnyOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A little of the time "
-                },
-                "value": " aLittleOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Some of the time "
-                },
-                "value": " someOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A good bit of the time "
-                },
-                "value": " aGoodBitOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Most of the time "
-                },
-                "value": " mostOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "All of the time"
-                },
-                "value": " allOfTheTime"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_fed_up"
-    },
-    "lcq_hoarse_voice": {
-        "description": "Indicates if the participant has a hoarse voice as part of their cough symptoms.",
-        "question": {
-            "en": "In the last 2 weeks, have you suffered from a hoarse voice as a result of your cough?"
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "None of the time "
-                },
-                "value": "noneOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Hardly any of the time "
-                },
-                "value": " hardlyAnyOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A little of the time "
-                },
-                "value": " aLittleOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Some of the time "
-                },
-                "value": " someOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A good bit of the time "
-                },
-                "value": " aGoodBitOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Most of the time "
-                },
-                "value": " mostOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "All of the time"
-                },
-                "value": " allOfTheTime"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_hoarse_voice"
-    },
-    "lcq_serious_illness": {
-        "description": "Indicates if the participant's cough interferes with their life due to a serious illness.",
-        "question": {
-            "en": "In the last 2 weeks, have you worried that your cough may indicate serious illness?"
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "None of the time "
-                },
-                "value": "noneOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Hardly any of the time "
-                },
-                "value": " hardlyAnyOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A little of the time "
-                },
-                "value": " aLittleOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Some of the time "
-                },
-                "value": " someOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A good bit of the time "
-                },
-                "value": " aGoodBitOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Most of the time "
-                },
-                "value": " mostOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "All of the time"
-                },
-                "value": " allOfTheTime"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_serious_illness"
-    },
-    "lcq_other_people": {
-        "description": "Indicates if the participant feels that their cough bothers other people.",
-        "question": {
-            "en": "In the last 2 weeks, have you been concerned that other people think something is wrong with you, because of your cough?"
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "None of the time "
-                },
-                "value": "noneOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Hardly any of the time "
-                },
-                "value": " hardlyAnyOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A little of the time "
-                },
-                "value": " aLittleOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Some of the time "
-                },
-                "value": " someOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A good bit of the time "
-                },
-                "value": " aGoodBitOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Most of the time "
-                },
-                "value": " mostOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "All of the time"
-                },
-                "value": " allOfTheTime"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_other_people"
-    },
-    "lcq_interrupt_conversation": {
-        "description": "Indicates if the participant's cough interrupts conversations.",
-        "question": {
-            "en": "In the last 2 weeks, my cough has interrupted conversation or telephone calls."
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "None of the time "
-                },
-                "value": "noneOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Hardly any of the time "
-                },
-                "value": " hardlyAnyOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A little of the time "
-                },
-                "value": " aLittleOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Some of the time "
-                },
-                "value": " someOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A good bit of the time "
-                },
-                "value": " aGoodBitOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Most of the time "
-                },
-                "value": " mostOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "All of the time"
-                },
-                "value": " allOfTheTime"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_interrupt_conversation"
-    },
-    "lcq_partner": {
-        "description": "Indicates if the participant feels that their cough affects their partner or significant other.",
-        "question": {
-            "en": "In the last 2 weeks, I feel that my cough has annoyed my partner, family, or friends."
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "None of the time "
-                },
-                "value": "noneOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Hardly any of the time "
-                },
-                "value": " hardlyAnyOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A little of the time "
-                },
-                "value": " aLittleOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Some of the time "
-                },
-                "value": " someOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A good bit of the time "
-                },
-                "value": " aGoodBitOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Most of the time "
-                },
-                "value": " mostOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "All of the time"
-                },
-                "value": " allOfTheTime"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_partner"
-    },
-    "lcq_felt_in_control": {
-        "description": "Indicates if the participant feels in control of their cough.",
-        "question": {
-            "en": "In the last 2 weeks, have you felt in control of your cough?"
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "None of the time "
-                },
-                "value": "noneOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Hardly any of the time "
-                },
-                "value": " hardlyAnyOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A little of the time "
-                },
-                "value": " aLittleOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Some of the time "
-                },
-                "value": " someOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A good bit of the time "
-                },
-                "value": " aGoodBitOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Most of the time "
-                },
-                "value": " mostOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "All of the time"
-                },
-                "value": " allOfTheTime"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_felt_in_control"
-    },
-    "lcq_energy": {
-        "description": "Indicates if the participant experiences low energy as part of their cough symptoms.",
-        "question": {
-            "en": "In the last 2 weeks, have you had a lot of energy?"
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "None of the time "
-                },
-                "value": "noneOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Hardly any of the time "
-                },
-                "value": " hardlyAnyOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A little of the time "
-                },
-                "value": " aLittleOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Some of the time "
-                },
-                "value": " someOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "A good bit of the time "
-                },
-                "value": " aGoodBitOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "Most of the time "
-                },
-                "value": " mostOfTheTime"
-            },
-            {
-                "name": {
-                    "en": "All of the time"
-                },
-                "value": " allOfTheTime"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/items/lcq_energy"
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_resp_leicester_cough_questionnaire_lcq/q_resp_leicester_cough_questionnaire_lcq_schema"
     }
 }

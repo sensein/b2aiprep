@@ -1,236 +1,241 @@
 {
-    "diagnosis_depression_gsd": {
-        "description": "Indicates the participant’s diagnosis of depression.",
-        "question": {
-            "en": "Diagnosis"
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "Clinical depression (major depressive disorder) "
+    "d_mood_depression_or_major_depressive_disorder_schema": {
+        "data_elements": {
+            "diagnosis_depression_gsd": {
+                "description": "Indicates the participant’s diagnosis of depression.",
+                "question": {
+                    "en": "Diagnosis"
                 },
-                "value": "clinical_depression"
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Clinical depression (major depressive disorder) "
+                        },
+                        "value": "clinical_depression"
+                    },
+                    {
+                        "name": {
+                            "en": "Persistent depressive disorder (PDD) "
+                        },
+                        "value": " pdd"
+                    },
+                    {
+                        "name": {
+                            "en": "Disruptive mood dysregulation disorder (DMDD) "
+                        },
+                        "value": " dmdd"
+                    },
+                    {
+                        "name": {
+                            "en": "Premenstrual dysphoric disorder (PMDD) "
+                        },
+                        "value": " pmdd"
+                    },
+                    {
+                        "name": {
+                            "en": "Depressive disorder due to another medical condition"
+                        },
+                        "value": " other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_depression_gsd"
             },
-            {
-                "name": {
-                    "en": "Persistent depressive disorder (PDD) "
+            "diagnosis_depression_clinical_subcategory": {
+                "description": "Specifies the subcategory of clinical depression, such as major depressive disorder, for the participant.",
+                "question": {
+                    "en": "Clinical depression (major depressive disorder) Subcategory"
                 },
-                "value": " pdd"
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Seasonal affective disorder (seasonal depression) "
+                        },
+                        "value": "seasonal_depression"
+                    },
+                    {
+                        "name": {
+                            "en": "Prenatal depression and postpartum depression "
+                        },
+                        "value": " prenatal_postpartum_depression"
+                    },
+                    {
+                        "name": {
+                            "en": "Atypical depression"
+                        },
+                        "value": " atypical_depression"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_depression_clinical_subcategory"
             },
-            {
-                "name": {
-                    "en": "Disruptive mood dysregulation disorder (DMDD) "
+            "diagnosis_depression_gsd_interview": {
+                "description": "Indicates if a structured clinical interview was conducted for diagnosing the participant’s depression.",
+                "question": {
+                    "en": "Was a structured clinical interview done?"
                 },
-                "value": " dmdd"
+                "datatype": [
+                    "xsd:boolean"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 0
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_depression_gsd_interview"
             },
-            {
-                "name": {
-                    "en": "Premenstrual dysphoric disorder (PMDD) "
+            "diagnosis_depression_gsd_oqu": {
+                "description": "Indicates if an objective questionnaire was used in the diagnosis of the participant’s depression.",
+                "question": {
+                    "en": "Was an objective questionnaire used?"
                 },
-                "value": " pmdd"
+                "datatype": [
+                    "xsd:boolean"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 0
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_depression_gsd_oqu"
             },
-            {
-                "name": {
-                    "en": "Depressive disorder due to another medical condition"
+            "diagnosis_depression_gsd_oquw": {
+                "description": "Specifies which objective questionnaire was used in diagnosing the participant’s depression.",
+                "question": {
+                    "en": "Which objective questionnaire was used?"
                 },
-                "value": " other"
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Patient Health Questionnaire (PHQ-9) "
+                        },
+                        "value": "phq9"
+                    },
+                    {
+                        "name": {
+                            "en": "HAM-D "
+                        },
+                        "value": " hamD"
+                    },
+                    {
+                        "name": {
+                            "en": "Beck Depression Inventory (BDI) "
+                        },
+                        "value": " bdi"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": " other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_depression_gsd_oquw"
+            },
+            "diagnosis_bipolar_subtype_active_depression": {
+                "description": "Specifies the active subtype of depression in the participant’s bipolar disorder.",
+                "question": {
+                    "en": "Disease Subtype"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Active "
+                        },
+                        "value": "active"
+                    },
+                    {
+                        "name": {
+                            "en": "Recurrent"
+                        },
+                        "value": " recurrent"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_bipolar_subtype_active_depression"
+            },
+            "diagnosis_bipolar_psychotic_depression": {
+                "description": "Indicates if the participant has psychotic symptoms associated with the depressive phase of their bipolar disorder.",
+                "question": {
+                    "en": "Psychotic Symptoms"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "With "
+                        },
+                        "value": "with"
+                    },
+                    {
+                        "name": {
+                            "en": "Without"
+                        },
+                        "value": " without"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_bipolar_psychotic_depression"
+            },
+            "diagnosis_bipolar_severity_depression": {
+                "description": "Indicates the severity of the participant’s depressive phase of bipolar disorder.",
+                "question": {
+                    "en": "Disease Severity"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Mild "
+                        },
+                        "value": "mild"
+                    },
+                    {
+                        "name": {
+                            "en": "Moderate "
+                        },
+                        "value": " moderate"
+                    },
+                    {
+                        "name": {
+                            "en": "Severe"
+                        },
+                        "value": " severe"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_bipolar_severity_depression"
             }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_depression_gsd"
-    },
-    "diagnosis_depression_clinical_subcategory": {
-        "description": "Specifies the subcategory of clinical depression, such as major depressive disorder, for the participant.",
-        "question": {
-            "en": "Clinical depression (major depressive disorder) Subcategory"
         },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "Seasonal affective disorder (seasonal depression) "
-                },
-                "value": "seasonal_depression"
-            },
-            {
-                "name": {
-                    "en": "Prenatal depression and postpartum depression "
-                },
-                "value": " prenatal_postpartum_depression"
-            },
-            {
-                "name": {
-                    "en": "Atypical depression"
-                },
-                "value": " atypical_depression"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_depression_clinical_subcategory"
-    },
-    "diagnosis_depression_gsd_interview": {
-        "description": "Indicates if a structured clinical interview was conducted for diagnosing the participant’s depression.",
-        "question": {
-            "en": "Was a structured clinical interview done?"
-        },
-        "datatype": [
-            "xsd:boolean"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "Yes"
-                },
-                "value": 1
-            },
-            {
-                "name": {
-                    "en": "No"
-                },
-                "value": 0
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_depression_gsd_interview"
-    },
-    "diagnosis_depression_gsd_oqu": {
-        "description": "Indicates if an objective questionnaire was used in the diagnosis of the participant’s depression.",
-        "question": {
-            "en": "Was an objective questionnaire used?"
-        },
-        "datatype": [
-            "xsd:boolean"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "Yes"
-                },
-                "value": 1
-            },
-            {
-                "name": {
-                    "en": "No"
-                },
-                "value": 0
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_depression_gsd_oqu"
-    },
-    "diagnosis_depression_gsd_oquw": {
-        "description": "Specifies which objective questionnaire was used in diagnosing the participant’s depression.",
-        "question": {
-            "en": "Which objective questionnaire was used?"
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "Patient Health Questionnaire (PHQ-9) "
-                },
-                "value": "phq9"
-            },
-            {
-                "name": {
-                    "en": "HAM-D "
-                },
-                "value": " hamD"
-            },
-            {
-                "name": {
-                    "en": "Beck Depression Inventory (BDI) "
-                },
-                "value": " bdi"
-            },
-            {
-                "name": {
-                    "en": "Other"
-                },
-                "value": " other"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_depression_gsd_oquw"
-    },
-    "diagnosis_bipolar_subtype_active_depression": {
-        "description": "Specifies the active subtype of depression in the participant’s bipolar disorder.",
-        "question": {
-            "en": "Disease Subtype"
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "Active "
-                },
-                "value": "active"
-            },
-            {
-                "name": {
-                    "en": "Recurrent"
-                },
-                "value": " recurrent"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_bipolar_subtype_active_depression"
-    },
-    "diagnosis_bipolar_psychotic_depression": {
-        "description": "Indicates if the participant has psychotic symptoms associated with the depressive phase of their bipolar disorder.",
-        "question": {
-            "en": "Psychotic Symptoms"
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "With "
-                },
-                "value": "with"
-            },
-            {
-                "name": {
-                    "en": "Without"
-                },
-                "value": " without"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_bipolar_psychotic_depression"
-    },
-    "diagnosis_bipolar_severity_depression": {
-        "description": "Indicates the severity of the participant’s depressive phase of bipolar disorder.",
-        "question": {
-            "en": "Disease Severity"
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "Mild "
-                },
-                "value": "mild"
-            },
-            {
-                "name": {
-                    "en": "Moderate "
-                },
-                "value": " moderate"
-            },
-            {
-                "name": {
-                    "en": "Severe"
-                },
-                "value": " severe"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_bipolar_severity_depression"
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_mood_depression_or_major_depressive_disorder/d_mood_depression_or_major_depressive_disorder_schema"
     }
 }

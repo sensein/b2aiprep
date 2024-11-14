@@ -1,444 +1,449 @@
 {
-    "vhi_session_id": {
-        "description": "The unique identifier for the Voice Handicap Index session.",
-        "question": {
-            "en": "Session ID"
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": null,
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/vhi_session_id"
-    },
-    "vhi_duration": {
-        "description": "Duration of the Voice Handicap Index session.",
-        "question": {
-            "en": "Questionnaire Duration (seconds)"
-        },
-        "datatype": [
-            "xsd:decimal"
-        ],
-        "choices": null,
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/vhi_duration"
-    },
-    "voice_difficult_hear": {
-        "description": "Indicates if the participant's voice is difficult to hear.",
-        "question": {
-            "en": "My voice makes it difficult for people to hear me."
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "Never "
+    "q_generic_voice_handicap_index_vhi10_schema": {
+        "data_elements": {
+            "vhi_session_id": {
+                "description": "The unique identifier for the Voice Handicap Index session.",
+                "question": {
+                    "en": "Session ID"
                 },
-                "value": "never"
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/vhi_session_id"
             },
-            {
-                "name": {
-                    "en": "Almost Never "
+            "vhi_duration": {
+                "description": "Duration of the Voice Handicap Index session.",
+                "question": {
+                    "en": "Questionnaire Duration (seconds)"
                 },
-                "value": " almostNever"
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/vhi_duration"
             },
-            {
-                "name": {
-                    "en": "Sometimes "
+            "voice_difficult_hear": {
+                "description": "Indicates if the participant's voice is difficult to hear.",
+                "question": {
+                    "en": "My voice makes it difficult for people to hear me."
                 },
-                "value": " sometimes"
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never "
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never "
+                        },
+                        "value": " almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes "
+                        },
+                        "value": " sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always "
+                        },
+                        "value": " almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": " always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/voice_difficult_hear"
             },
-            {
-                "name": {
-                    "en": "Almost Always "
+            "tough_to_understand": {
+                "description": "Indicates if the participant feels that their voice is tough to understand.",
+                "question": {
+                    "en": "People have difficulty understanding me in a noisy room."
                 },
-                "value": " almostAlways"
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never "
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never "
+                        },
+                        "value": " almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes "
+                        },
+                        "value": " sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always "
+                        },
+                        "value": " almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": " always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/tough_to_understand"
             },
-            {
-                "name": {
-                    "en": "Always"
+            "voice_restrict_social": {
+                "description": "Indicates if the participant's voice issues restrict their social activities.",
+                "question": {
+                    "en": "My voice difficulties restrict personal and social life."
                 },
-                "value": " always"
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never "
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never "
+                        },
+                        "value": " almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes "
+                        },
+                        "value": " sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always "
+                        },
+                        "value": " almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": " always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/voice_restrict_social"
+            },
+            "left_out_convo": {
+                "description": "Reports if the participant felt left out of a conversation recently.",
+                "question": {
+                    "en": "I feel left out of conversations because of my voice."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never "
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never "
+                        },
+                        "value": " almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes "
+                        },
+                        "value": " sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always "
+                        },
+                        "value": " almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": " always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/left_out_convo"
+            },
+            "voice_lose_income": {
+                "description": "Indicates if the participant's voice issues have led to a loss of income.",
+                "question": {
+                    "en": "My voice problem causes me to lose income."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never "
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never "
+                        },
+                        "value": " almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes "
+                        },
+                        "value": " sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always "
+                        },
+                        "value": " almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": " always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/voice_lose_income"
+            },
+            "strain_voice": {
+                "description": "Reports if the participant has experienced voice strain.",
+                "question": {
+                    "en": "I feel as though I have to strain to produce voice."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never "
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never "
+                        },
+                        "value": " almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes "
+                        },
+                        "value": " sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always "
+                        },
+                        "value": " almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": " always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/strain_voice"
+            },
+            "voice_clarity": {
+                "description": "Indicates if the participant’s voice is clear during the session.",
+                "question": {
+                    "en": "The clarity of my voice is unpredictable."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never "
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never "
+                        },
+                        "value": " almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes "
+                        },
+                        "value": " sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always "
+                        },
+                        "value": " almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": " always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/voice_clarity"
+            },
+            "voice_upsetting": {
+                "description": "Indicates if the participant finds their voice issues upsetting.",
+                "question": {
+                    "en": "My voice problem upsets me."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never "
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never "
+                        },
+                        "value": " almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes "
+                        },
+                        "value": " sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always "
+                        },
+                        "value": " almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": " always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/voice_upsetting"
+            },
+            "voice_handicapped": {
+                "description": "Indicates if the participant feels handicapped by their voice.",
+                "question": {
+                    "en": "My voice makes me feel handicapped."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never "
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never "
+                        },
+                        "value": " almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes "
+                        },
+                        "value": " sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always "
+                        },
+                        "value": " almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": " always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/voice_handicapped"
+            },
+            "ask_whats_wrong_voice": {
+                "description": "Indicates if the participant asked what was wrong with their voice during the assessment.",
+                "question": {
+                    "en": "People ask, \"What's wrong with your voice?\""
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never "
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never "
+                        },
+                        "value": " almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes "
+                        },
+                        "value": " sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always "
+                        },
+                        "value": " almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": " always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/ask_whats_wrong_voice"
             }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/voice_difficult_hear"
-    },
-    "tough_to_understand": {
-        "description": "Indicates if the participant feels that their voice is tough to understand.",
-        "question": {
-            "en": "People have difficulty understanding me in a noisy room."
         },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "Never "
-                },
-                "value": "never"
-            },
-            {
-                "name": {
-                    "en": "Almost Never "
-                },
-                "value": " almostNever"
-            },
-            {
-                "name": {
-                    "en": "Sometimes "
-                },
-                "value": " sometimes"
-            },
-            {
-                "name": {
-                    "en": "Almost Always "
-                },
-                "value": " almostAlways"
-            },
-            {
-                "name": {
-                    "en": "Always"
-                },
-                "value": " always"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/tough_to_understand"
-    },
-    "voice_restrict_social": {
-        "description": "Indicates if the participant's voice issues restrict their social activities.",
-        "question": {
-            "en": "My voice difficulties restrict personal and social life."
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "Never "
-                },
-                "value": "never"
-            },
-            {
-                "name": {
-                    "en": "Almost Never "
-                },
-                "value": " almostNever"
-            },
-            {
-                "name": {
-                    "en": "Sometimes "
-                },
-                "value": " sometimes"
-            },
-            {
-                "name": {
-                    "en": "Almost Always "
-                },
-                "value": " almostAlways"
-            },
-            {
-                "name": {
-                    "en": "Always"
-                },
-                "value": " always"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/voice_restrict_social"
-    },
-    "left_out_convo": {
-        "description": "Reports if the participant felt left out of a conversation recently.",
-        "question": {
-            "en": "I feel left out of conversations because of my voice."
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "Never "
-                },
-                "value": "never"
-            },
-            {
-                "name": {
-                    "en": "Almost Never "
-                },
-                "value": " almostNever"
-            },
-            {
-                "name": {
-                    "en": "Sometimes "
-                },
-                "value": " sometimes"
-            },
-            {
-                "name": {
-                    "en": "Almost Always "
-                },
-                "value": " almostAlways"
-            },
-            {
-                "name": {
-                    "en": "Always"
-                },
-                "value": " always"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/left_out_convo"
-    },
-    "voice_lose_income": {
-        "description": "Indicates if the participant's voice issues have led to a loss of income.",
-        "question": {
-            "en": "My voice problem causes me to lose income."
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "Never "
-                },
-                "value": "never"
-            },
-            {
-                "name": {
-                    "en": "Almost Never "
-                },
-                "value": " almostNever"
-            },
-            {
-                "name": {
-                    "en": "Sometimes "
-                },
-                "value": " sometimes"
-            },
-            {
-                "name": {
-                    "en": "Almost Always "
-                },
-                "value": " almostAlways"
-            },
-            {
-                "name": {
-                    "en": "Always"
-                },
-                "value": " always"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/voice_lose_income"
-    },
-    "strain_voice": {
-        "description": "Reports if the participant has experienced voice strain.",
-        "question": {
-            "en": "I feel as though I have to strain to produce voice."
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "Never "
-                },
-                "value": "never"
-            },
-            {
-                "name": {
-                    "en": "Almost Never "
-                },
-                "value": " almostNever"
-            },
-            {
-                "name": {
-                    "en": "Sometimes "
-                },
-                "value": " sometimes"
-            },
-            {
-                "name": {
-                    "en": "Almost Always "
-                },
-                "value": " almostAlways"
-            },
-            {
-                "name": {
-                    "en": "Always"
-                },
-                "value": " always"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/strain_voice"
-    },
-    "voice_clarity": {
-        "description": "Indicates if the participant’s voice is clear during the session.",
-        "question": {
-            "en": "The clarity of my voice is unpredictable."
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "Never "
-                },
-                "value": "never"
-            },
-            {
-                "name": {
-                    "en": "Almost Never "
-                },
-                "value": " almostNever"
-            },
-            {
-                "name": {
-                    "en": "Sometimes "
-                },
-                "value": " sometimes"
-            },
-            {
-                "name": {
-                    "en": "Almost Always "
-                },
-                "value": " almostAlways"
-            },
-            {
-                "name": {
-                    "en": "Always"
-                },
-                "value": " always"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/voice_clarity"
-    },
-    "voice_upsetting": {
-        "description": "Indicates if the participant finds their voice issues upsetting.",
-        "question": {
-            "en": "My voice problem upsets me."
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "Never "
-                },
-                "value": "never"
-            },
-            {
-                "name": {
-                    "en": "Almost Never "
-                },
-                "value": " almostNever"
-            },
-            {
-                "name": {
-                    "en": "Sometimes "
-                },
-                "value": " sometimes"
-            },
-            {
-                "name": {
-                    "en": "Almost Always "
-                },
-                "value": " almostAlways"
-            },
-            {
-                "name": {
-                    "en": "Always"
-                },
-                "value": " always"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/voice_upsetting"
-    },
-    "voice_handicapped": {
-        "description": "Indicates if the participant feels handicapped by their voice.",
-        "question": {
-            "en": "My voice makes me feel handicapped."
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "Never "
-                },
-                "value": "never"
-            },
-            {
-                "name": {
-                    "en": "Almost Never "
-                },
-                "value": " almostNever"
-            },
-            {
-                "name": {
-                    "en": "Sometimes "
-                },
-                "value": " sometimes"
-            },
-            {
-                "name": {
-                    "en": "Almost Always "
-                },
-                "value": " almostAlways"
-            },
-            {
-                "name": {
-                    "en": "Always"
-                },
-                "value": " always"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/voice_handicapped"
-    },
-    "ask_whats_wrong_voice": {
-        "description": "Indicates if the participant asked what was wrong with their voice during the assessment.",
-        "question": {
-            "en": "People ask, \"What's wrong with your voice?\""
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "Never "
-                },
-                "value": "never"
-            },
-            {
-                "name": {
-                    "en": "Almost Never "
-                },
-                "value": " almostNever"
-            },
-            {
-                "name": {
-                    "en": "Sometimes "
-                },
-                "value": " sometimes"
-            },
-            {
-                "name": {
-                    "en": "Almost Always "
-                },
-                "value": " almostAlways"
-            },
-            {
-                "name": {
-                    "en": "Always"
-                },
-                "value": " always"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/items/ask_whats_wrong_voice"
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_handicap_index_vhi10/q_generic_voice_handicap_index_vhi10_schema"
     }
 }

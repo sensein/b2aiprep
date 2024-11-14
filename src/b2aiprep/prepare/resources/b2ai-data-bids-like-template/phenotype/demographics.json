@@ -1,1084 +1,887 @@
 {
-    "demographics_session_id": {
-        "description": "Unique identifier for the demographics session.",
-        "question": {
-            "en": "Session ID"
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": null,
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/demographics_session_id"
-    },
-    "demographics_duration": {
-        "description": "Total duration of the demographics section.",
-        "question": {
-            "en": "Questionnaire Duration (seconds)"
-        },
-        "datatype": [
-            "xsd:decimal"
-        ],
-        "choices": null,
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/demographics_duration"
-    },
-    "demographics_completed_by___1": {
-        "description": "Indicates if the participant completed the demographic section on their own."
-    },
-    "demographics_completed_by___2": {
-        "description": "Indicates if demographics were completed by a healthcare professional."
-    },
-    "demographics_completed_by___3": {
-        "description": "Indicates if demographics were completed by a caregiver."
-    },
-    "state_province": {
-        "description": "The state or province where the participant lives.",
-        "question": {
-            "en": "State/Province"
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": null,
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/state_province"
-    },
-    "country": {
-        "description": "The country where the participant resides.",
-        "question": {
-            "en": "Country"
-        },
-        "datatype": [
-            "xsd:integer"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "USA "
-                },
-                "value": 1
-            },
-            {
-                "name": {
-                    "en": "Canada"
-                },
-                "value": 2
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/country"
-    },
-    "gender_identity": {
-        "description": "The participant's reported gender identity.",
-        "question": {
-            "en": "What is your gender identity?"
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "Female gender identity "
-                },
-                "value": "female"
-            },
-            {
-                "name": {
-                    "en": "Male gender identity "
-                },
-                "value": " male"
-            },
-            {
-                "name": {
-                    "en": "Non-binary or genderqueer gender identity "
-                },
-                "value": " nonBinary"
-            },
-            {
-                "name": {
-                    "en": "Other "
-                },
-                "value": " other"
-            },
-            {
-                "name": {
-                    "en": "Prefer not to answer"
-                },
-                "value": " noAnswer"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/gender_identity"
-    },
-    "specify_gender_identity": {
-        "description": "Allows the participant to specify their gender identity.",
-        "question": {
-            "en": "Please specify gender identity"
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "Cis: same gender as the sex assigned at birth "
-                },
-                "value": "cis"
-            },
-            {
-                "name": {
-                    "en": "Trans"
-                },
-                "value": " trans"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/specify_gender_identity"
-    },
-    "sexual_orientation": {
-        "description": "Indicates the participant's sexual orientation.",
-        "question": {
-            "en": "What is your sexual orientation?"
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "Bisexual "
-                },
-                "value": "bisexual"
-            },
-            {
-                "name": {
-                    "en": "Heterosexual "
-                },
-                "value": " heterosexual"
-            },
-            {
-                "name": {
-                    "en": "Homosexual "
-                },
-                "value": " homosexual"
-            },
-            {
-                "name": {
-                    "en": "Other (Please specify) "
-                },
-                "value": " other"
-            },
-            {
-                "name": {
-                    "en": "Prefer not to answer"
-                },
-                "value": " noAnswer"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/sexual_orientation"
-    },
-    "race___1": {
-        "description": "Indicates if the participant identifies with race category 1."
-    },
-    "race___2": {
-        "description": "Indicates if the participant identifies with race category 2."
-    },
-    "race___3": {
-        "description": "Indicates if the participant identifies with race category 3."
-    },
-    "race___4": {
-        "description": "Indicates if the participant identifies with race category 4."
-    },
-    "race___5": {
-        "description": "Indicates if the participant identifies with race category 5."
-    },
-    "race___6": {
-        "description": "Indicates if the participant identifies with race category 6."
-    },
-    "race___7": {
-        "description": "Indicates if the participant identifies with race category 7."
-    },
-    "race___8": {
-        "description": "Indicates if the participant identifies with race category 8."
-    },
-    "ethnicity": {
-        "description": "Indicates the participant's ethnicity.",
-        "question": {
-            "en": "What is your ethnic or cultural origin?"
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "Hispanic or Latino "
-                },
-                "value": "yes"
-            },
-            {
-                "name": {
-                    "en": "Not Hispanic or Latino "
-                },
-                "value": " no"
-            },
-            {
-                "name": {
-                    "en": "Prefer not to answer"
-                },
-                "value": " noAnswer"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/ethnicity"
-    },
-    "other_edu_level": {
-        "description": "Indicates if the participant has received an education level not listed in other options.",
-        "question": {
-            "en": "If you selected \"other\" level of education, please specify:"
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": null,
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/other_edu_level"
-    },
-    "hearing": {
-        "description": "Indicates if the participant has hearing issues.",
-        "question": {
-            "en": "Are you deaf or do you have serious difficulty hearing?"
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "No "
-                },
-                "value": "no"
-            },
-            {
-                "name": {
-                    "en": "Yes "
-                },
-                "value": " yes"
-            },
-            {
-                "name": {
-                    "en": "Prefer not to answer"
-                },
-                "value": " noAnswer"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/hearing"
-    },
-    "vision": {
-        "description": "Indicates if the participant has vision issues.",
-        "question": {
-            "en": "Are you blind or do you have serious difficulty seeing, even when wearing glasses?"
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "No "
-                },
-                "value": "no"
-            },
-            {
-                "name": {
-                    "en": "Yes "
-                },
-                "value": " yes"
-            },
-            {
-                "name": {
-                    "en": "Prefer not to answer"
-                },
-                "value": " noAnswer"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/vision"
-    },
-    "cognition": {
-        "description": "Reports on the participant's cognitive abilities or issues.",
-        "question": {
-            "en": "Because of a physical, mental, or emotional condition, do you have serious difficulty concentrating, remembering, or making decisions?"
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "No "
-                },
-                "value": "no"
-            },
-            {
-                "name": {
-                    "en": "Yes "
-                },
-                "value": " yes"
-            },
-            {
-                "name": {
-                    "en": "Prefer not to answer"
-                },
-                "value": " noAnswer"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/cognition"
-    },
-    "mobility": {
-        "description": "Indicates the participant's level of mobility or movement.",
-        "question": {
-            "en": "Do you have serious difficulty walking or climbing stairs?"
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "No "
-                },
-                "value": "no"
-            },
-            {
-                "name": {
-                    "en": "Yes "
-                },
-                "value": " yes"
-            },
-            {
-                "name": {
-                    "en": "Prefer not to answer"
-                },
-                "value": " noAnswer"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/mobility"
-    },
-    "self_care": {
-        "description": "Indicates if the participant engages in self-care activities.",
-        "question": {
-            "en": "Do you have difficulty dressing or bathing?"
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "No "
-                },
-                "value": "no"
-            },
-            {
-                "name": {
-                    "en": "Yes "
-                },
-                "value": " yes"
-            },
-            {
-                "name": {
-                    "en": "Prefer not to answer"
-                },
-                "value": " noAnswer"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/self_care"
-    },
-    "independent_living": {
-        "description": "Indicates if the participant is living independently.",
-        "question": {
-            "en": "Because of a physical, mental, or emotional condition, do you have difficulty doing errands alone such as visiting a doctor's office or shopping?"
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "No "
-                },
-                "value": "no"
-            },
-            {
-                "name": {
-                    "en": "Yes "
-                },
-                "value": " yes"
-            },
-            {
-                "name": {
-                    "en": "Prefer not to answer"
-                },
-                "value": " noAnswer"
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/independent_living"
-    },
-    "employ_status___1": {
-        "description": "Indicates if the participant is employed full-time."
-    },
-    "employ_status___2": {
-        "description": "Indicates if the participant is employed full-time."
-    },
-    "employ_status___3": {
-        "description": "Indicates if the participant is employed part-time."
-    },
-    "employ_status___4": {
-        "description": "Indicates if the participant is a student."
-    },
-    "employ_status___5": {
-        "description": "Indicates if the participant is a homemaker."
-    },
-    "employ_status___6": {
-        "description": "Indicates if the participant is unemployed."
-    },
-    "employ_status___7": {
-        "description": "Indicates if the participant is self-employed."
-    },
-    "employ_status___8": {
-        "description": "Indicates if the participant is a volunteer."
-    },
-    "employ_status___9": {
-        "description": "Indicates if the participant is retired."
-    },
-    "household_income_usa": {
-        "description": "The participant's household income in US dollars.",
-        "question": {
-            "en": "What was your total household income last year (USD)? Please include all sources of income, including pensions, dividends, alimony, child support, etc."
-        },
-        "datatype": [
-            "xsd:integer"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "< $15,000 "
-                },
-                "value": 1
-            },
-            {
-                "name": {
-                    "en": "$15,000 to $29,999 "
-                },
-                "value": 2
-            },
-            {
-                "name": {
-                    "en": "$30,000 to $$49,999 "
-                },
-                "value": 3
-            },
-            {
-                "name": {
-                    "en": "$50,000 to $99,999 "
-                },
-                "value": 4
-            },
-            {
-                "name": {
-                    "en": "$100,000 to $149,999 "
-                },
-                "value": 5
-            },
-            {
-                "name": {
-                    "en": "$150,000 to $199,999 "
-                },
-                "value": 6
-            },
-            {
-                "name": {
-                    "en": "$200,000 to $249,999 "
-                },
-                "value": 7
-            },
-            {
-                "name": {
-                    "en": ">$250,000 "
-                },
-                "value": 8
-            },
-            {
-                "name": {
-                    "en": "Prefer not to answer"
-                },
-                "value": 9
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/household_income_usa"
-    },
-    "household_income_ca": {
-        "description": "The participant's household income in Canadian dollars.",
-        "question": {
-            "en": "What was your total household income last year (CAD)? Please include all sources of income, including pensions, dividends, alimony, child support, etc."
-        },
-        "datatype": [
-            "xsd:integer"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "< $15,000 "
-                },
-                "value": 1
-            },
-            {
-                "name": {
-                    "en": "$15,000 to $29,999 "
-                },
-                "value": 2
-            },
-            {
-                "name": {
-                    "en": "$30,000 to $$49,999 "
-                },
-                "value": 3
-            },
-            {
-                "name": {
-                    "en": "$50,000 to $99,999 "
-                },
-                "value": 4
-            },
-            {
-                "name": {
-                    "en": "$100,000 to $149,999 "
-                },
-                "value": 5
-            },
-            {
-                "name": {
-                    "en": "$150,000 to $199,999 "
-                },
-                "value": 6
-            },
-            {
-                "name": {
-                    "en": "$200,000 to $249,999 "
-                },
-                "value": 7
-            },
-            {
-                "name": {
-                    "en": ">$250,000 "
-                },
-                "value": 8
-            },
-            {
-                "name": {
-                    "en": "Prefer not to answer"
-                },
-                "value": 9
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/household_income_ca"
-    },
-    "marital_status___1": {
-        "description": "Indicates if the participant is married."
-    },
-    "marital_status___2": {
-        "description": "Indicates if the participant is in a domestic partnership."
-    },
-    "marital_status___3": {
-        "description": "Indicates if the participant is separated."
-    },
-    "marital_status___4": {
-        "description": "Indicates if the participant is widowed."
-    },
-    "marital_status___5": {
-        "description": "Indicates if the participant is single."
-    },
-    "marital_status___6": {
-        "description": "Indicates if the participant is divorced."
-    },
-    "marital_status___7": {
-        "description": "Indicates if the participant is cohabiting."
-    },
-    "housing_status": {
-        "description": "Indicates the participant's current housing status.",
-        "question": {
-            "en": "What is your current housing status?"
-        },
-        "datatype": [
-            "xsd:integer"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "Assisted living "
-                },
-                "value": 1
-            },
-            {
-                "name": {
-                    "en": "Own home "
-                },
-                "value": 3
-            },
-            {
-                "name": {
-                    "en": "Rent home "
-                },
-                "value": 4
-            },
-            {
-                "name": {
-                    "en": "Skilled nursing facility/nursing home "
-                },
-                "value": 5
-            },
-            {
-                "name": {
-                    "en": "Unhoused-temporarily "
-                },
-                "value": 6
-            },
-            {
-                "name": {
-                    "en": "Unhoused-permanently"
-                },
-                "value": 7
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/housing_status"
-    },
-    "household_count": {
-        "description": "The number of people living in the participant's household.",
-        "question": {
-            "en": "How many people live in your household?Please specify a number"
-        },
-        "datatype": [
-            "xsd:decimal"
-        ],
-        "choices": null,
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/household_count"
-    },
-    "spouse_partner_sig_other": {
-        "description": "Indicates if the participant has a spouse, partner, or significant other.",
-        "question": {
-            "en": "Spouse/partner/significant other"
-        },
-        "datatype": [
-            "xsd:integer"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "Yes "
-                },
-                "value": 1
-            },
-            {
-                "name": {
-                    "en": "No"
-                },
-                "value": 0
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/spouse_partner_sig_other"
-    },
-    "children": {
-        "description": "Indicates if the participant has children.",
-        "question": {
-            "en": "One or more children"
-        },
-        "datatype": [
-            "xsd:integer"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "Yes "
-                },
-                "value": 1
-            },
-            {
-                "name": {
-                    "en": "No"
-                },
-                "value": 0
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/children"
-    },
-    "parent": {
-        "description": "Indicates if the participant is a parent.",
-        "question": {
-            "en": "One or more parent"
-        },
-        "datatype": [
-            "xsd:integer"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "Yes "
-                },
-                "value": 1
-            },
-            {
-                "name": {
-                    "en": "No"
-                },
-                "value": 0
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/parent"
-    },
-    "grandparent": {
-        "description": "Indicates if the participant is a grandparent.",
-        "question": {
-            "en": "One or more grandparent"
-        },
-        "datatype": [
-            "xsd:integer"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "Yes "
-                },
-                "value": 1
-            },
-            {
-                "name": {
-                    "en": "No"
-                },
-                "value": 0
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/grandparent"
-    },
-    "other_live_with": {
-        "description": "Indicates if the participant lives with people not listed in other options.",
-        "question": {
-            "en": "Other"
-        },
-        "datatype": [
-            "xsd:integer"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "Yes "
-                },
-                "value": 1
-            },
-            {
-                "name": {
-                    "en": "No"
-                },
-                "value": 0
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/other_live_with"
-    },
-    "others_household_specify": {
-        "description": "Allows the participant to specify other people living in their household.",
-        "question": {
-            "en": "If \"others\" live in your household, please specify:"
-        },
-        "datatype": [
-            "xsd:string"
-        ],
-        "choices": null,
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/others_household_specify"
-    },
-    "transportation_yn": {
-        "description": "Indicates if the participant has access to transportation.",
-        "question": {
-            "en": "Do you have a reliable mode of transportation?"
-        },
-        "datatype": [
-            "xsd:boolean"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "Yes"
-                },
-                "value": 1
-            },
-            {
-                "name": {
-                    "en": "No"
-                },
-                "value": 0
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/transportation_yn"
-    },
-    "primary_transportation": {
-        "description": "Indicates the participant's primary mode of transportation.",
-        "question": {
-            "en": "What is your primary mode of transportation?"
-        },
-        "datatype": [
-            "xsd:integer"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "Personal vehicle "
-                },
-                "value": 1
-            },
-            {
-                "name": {
-                    "en": "Shared vehicle "
-                },
-                "value": 2
-            },
-            {
-                "name": {
-                    "en": "Public transportation "
-                },
-                "value": 3
-            },
-            {
-                "name": {
-                    "en": "Ride with someone else "
-                },
-                "value": 4
-            },
-            {
-                "name": {
-                    "en": "Ride service "
-                },
-                "value": 5
-            },
-            {
-                "name": {
-                    "en": "Bicycle/Motorbike "
-                },
-                "value": 6
-            },
-            {
-                "name": {
-                    "en": "Walking "
-                },
-                "value": 7
-            },
-            {
-                "name": {
-                    "en": "Other (Please specify)"
-                },
-                "value": 8
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/primary_transportation"
-    },
-    "q_generic_demographics_complete": {
-        "description": "Indicates if the participant has completed the generic demographics section."
-    },
-    "demographics_completed_by": {
-        "question": {
-            "en": "Who is completing this survey?"
-        },
-        "datatype": [
-            "xsd:integer"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "Self "
-                },
-                "value": 1
-            },
-            {
-                "name": {
-                    "en": "Assistant "
-                },
-                "value": 2
-            },
-            {
-                "name": {
-                    "en": "Parent/Caregiver"
-                },
-                "value": 3
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/demographics_completed_by"
-    },
-    "race": {
-        "question": {
-            "en": "Which race category best describes you? Choose all that apply"
-        },
-        "datatype": [
-            "xsd:integer"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "American Indian or Alaska Native "
-                },
-                "value": 1
-            },
-            {
-                "name": {
-                    "en": "Asian "
-                },
-                "value": 2
-            },
-            {
-                "name": {
-                    "en": "Black or African American "
-                },
-                "value": 3
-            },
-            {
-                "name": {
-                    "en": "Native Hawaiian or other Pacific Islander "
-                },
-                "value": 4
-            },
-            {
-                "name": {
-                    "en": "White "
-                },
-                "value": 5
-            },
-            {
-                "name": {
-                    "en": "Canadian Indigenous or Aboriginal "
-                },
-                "value": 6
-            },
-            {
-                "name": {
-                    "en": "Other "
-                },
-                "value": 7
-            },
-            {
-                "name": {
-                    "en": "Prefer not to answer"
-                },
-                "value": 8
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/race"
-    },
-    "employ_status": {
-        "question": {
-            "en": "What is your employment status?\n\nChoose all that apply"
-        },
-        "datatype": [
-            "xsd:integer"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "Employed freelance "
-                },
-                "value": 1
-            },
-            {
-                "name": {
-                    "en": "Employed full time "
-                },
-                "value": 2
-            },
-            {
-                "name": {
-                    "en": "Employed part time "
-                },
-                "value": 3
-            },
-            {
-                "name": {
-                    "en": "Employed multiple part time jobs "
-                },
-                "value": 4
-            },
-            {
-                "name": {
-                    "en": "Student "
-                },
-                "value": 5
-            },
-            {
-                "name": {
-                    "en": "Self-employed "
-                },
-                "value": 6
-            },
-            {
-                "name": {
-                    "en": "Retired "
-                },
-                "value": 7
-            },
-            {
-                "name": {
-                    "en": "Unemployed "
-                },
-                "value": 8
-            },
-            {
-                "name": {
+    "q_generic_demographics_schema": {
+        "data_elements": {
+            "demographics_session_id": {
+                "description": "Unique identifier for the demographics session.",
+                "question": {
+                    "en": "Session ID"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/demographics_session_id"
+            },
+            "demographics_duration": {
+                "description": "Total duration of the demographics section.",
+                "question": {
+                    "en": "Questionnaire Duration (seconds)"
+                },
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/demographics_duration"
+            },
+            "demographics_completed_by___1": {
+                "description": "Indicates if the participant completed the demographic section on their own."
+            },
+            "demographics_completed_by___2": {
+                "description": "Indicates if demographics were completed by a healthcare professional."
+            },
+            "demographics_completed_by___3": {
+                "description": "Indicates if demographics were completed by a caregiver."
+            },
+            "state_province": {
+                "description": "The state or province where the participant lives.",
+                "question": {
+                    "en": "State/Province"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/state_province"
+            },
+            "country": {
+                "description": "The country where the participant resides.",
+                "question": {
+                    "en": "Country"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "USA "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Canada"
+                        },
+                        "value": 2
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/country"
+            },
+            "gender_identity": {
+                "description": "The participant's reported gender identity.",
+                "question": {
+                    "en": "What is your gender identity?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Female gender identity "
+                        },
+                        "value": "female"
+                    },
+                    {
+                        "name": {
+                            "en": "Male gender identity "
+                        },
+                        "value": " male"
+                    },
+                    {
+                        "name": {
+                            "en": "Non-binary or genderqueer gender identity "
+                        },
+                        "value": " nonBinary"
+                    },
+                    {
+                        "name": {
+                            "en": "Other "
+                        },
+                        "value": " other"
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": " noAnswer"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/gender_identity"
+            },
+            "specify_gender_identity": {
+                "description": "Allows the participant to specify their gender identity.",
+                "question": {
+                    "en": "Please specify gender identity"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Cis: same gender as the sex assigned at birth "
+                        },
+                        "value": "cis"
+                    },
+                    {
+                        "name": {
+                            "en": "Trans"
+                        },
+                        "value": " trans"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/specify_gender_identity"
+            },
+            "sexual_orientation": {
+                "description": "Indicates the participant's sexual orientation.",
+                "question": {
+                    "en": "What is your sexual orientation?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Bisexual "
+                        },
+                        "value": "bisexual"
+                    },
+                    {
+                        "name": {
+                            "en": "Heterosexual "
+                        },
+                        "value": " heterosexual"
+                    },
+                    {
+                        "name": {
+                            "en": "Homosexual "
+                        },
+                        "value": " homosexual"
+                    },
+                    {
+                        "name": {
+                            "en": "Other (Please specify) "
+                        },
+                        "value": " other"
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": " noAnswer"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/sexual_orientation"
+            },
+            "race___1": {
+                "description": "Indicates if the participant identifies with race category 1."
+            },
+            "race___2": {
+                "description": "Indicates if the participant identifies with race category 2."
+            },
+            "race___3": {
+                "description": "Indicates if the participant identifies with race category 3."
+            },
+            "race___4": {
+                "description": "Indicates if the participant identifies with race category 4."
+            },
+            "race___5": {
+                "description": "Indicates if the participant identifies with race category 5."
+            },
+            "race___6": {
+                "description": "Indicates if the participant identifies with race category 6."
+            },
+            "race___7": {
+                "description": "Indicates if the participant identifies with race category 7."
+            },
+            "race___8": {
+                "description": "Indicates if the participant identifies with race category 8."
+            },
+            "ethnicity": {
+                "description": "Indicates the participant's ethnicity.",
+                "question": {
+                    "en": "What is your ethnic or cultural origin?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Hispanic or Latino "
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "Not Hispanic or Latino "
+                        },
+                        "value": " no"
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": " noAnswer"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/ethnicity"
+            },
+            "other_edu_level": {
+                "description": "Indicates if the participant has received an education level not listed in other options.",
+                "question": {
+                    "en": "If you selected \"other\" level of education, please specify:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/other_edu_level"
+            },
+            "hearing": {
+                "description": "Indicates if the participant has hearing issues.",
+                "question": {
+                    "en": "Are you deaf or do you have serious difficulty hearing?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "No "
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Yes "
+                        },
+                        "value": " yes"
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": " noAnswer"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/hearing"
+            },
+            "vision": {
+                "description": "Indicates if the participant has vision issues.",
+                "question": {
+                    "en": "Are you blind or do you have serious difficulty seeing, even when wearing glasses?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "No "
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Yes "
+                        },
+                        "value": " yes"
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": " noAnswer"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/vision"
+            },
+            "cognition": {
+                "description": "Reports on the participant's cognitive abilities or issues.",
+                "question": {
+                    "en": "Because of a physical, mental, or emotional condition, do you have serious difficulty concentrating, remembering, or making decisions?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "No "
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Yes "
+                        },
+                        "value": " yes"
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": " noAnswer"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/cognition"
+            },
+            "mobility": {
+                "description": "Indicates the participant's level of mobility or movement.",
+                "question": {
+                    "en": "Do you have serious difficulty walking or climbing stairs?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "No "
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Yes "
+                        },
+                        "value": " yes"
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": " noAnswer"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/mobility"
+            },
+            "self_care": {
+                "description": "Indicates if the participant engages in self-care activities.",
+                "question": {
+                    "en": "Do you have difficulty dressing or bathing?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "No "
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Yes "
+                        },
+                        "value": " yes"
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": " noAnswer"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/self_care"
+            },
+            "independent_living": {
+                "description": "Indicates if the participant is living independently.",
+                "question": {
+                    "en": "Because of a physical, mental, or emotional condition, do you have difficulty doing errands alone such as visiting a doctor's office or shopping?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "No "
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Yes "
+                        },
+                        "value": " yes"
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": " noAnswer"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/independent_living"
+            },
+            "employ_status___1": {
+                "description": "Indicates if the participant is employed full-time."
+            },
+            "employ_status___2": {
+                "description": "Indicates if the participant is employed full-time."
+            },
+            "employ_status___3": {
+                "description": "Indicates if the participant is employed part-time."
+            },
+            "employ_status___4": {
+                "description": "Indicates if the participant is a student."
+            },
+            "employ_status___5": {
+                "description": "Indicates if the participant is a homemaker."
+            },
+            "employ_status___6": {
+                "description": "Indicates if the participant is unemployed."
+            },
+            "employ_status___7": {
+                "description": "Indicates if the participant is self-employed."
+            },
+            "employ_status___8": {
+                "description": "Indicates if the participant is a volunteer."
+            },
+            "employ_status___9": {
+                "description": "Indicates if the participant is retired."
+            },
+            "household_income_usa": {
+                "description": "The participant's household income in US dollars.",
+                "question": {
+                    "en": "What was your total household income last year (USD)? Please include all sources of income, including pensions, dividends, alimony, child support, etc."
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "< $15,000 "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "$15,000 to $29,999 "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "$30,000 to $$49,999 "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "$50,000 to $99,999 "
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "$100,000 to $149,999 "
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "$150,000 to $199,999 "
+                        },
+                        "value": 6
+                    },
+                    {
+                        "name": {
+                            "en": "$200,000 to $249,999 "
+                        },
+                        "value": 7
+                    },
+                    {
+                        "name": {
+                            "en": ">$250,000 "
+                        },
+                        "value": 8
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": 9
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/household_income_usa"
+            },
+            "household_income_ca": {
+                "description": "The participant's household income in Canadian dollars.",
+                "question": {
+                    "en": "What was your total household income last year (CAD)? Please include all sources of income, including pensions, dividends, alimony, child support, etc."
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "< $15,000 "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "$15,000 to $29,999 "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "$30,000 to $$49,999 "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "$50,000 to $99,999 "
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "$100,000 to $149,999 "
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "$150,000 to $199,999 "
+                        },
+                        "value": 6
+                    },
+                    {
+                        "name": {
+                            "en": "$200,000 to $249,999 "
+                        },
+                        "value": 7
+                    },
+                    {
+                        "name": {
+                            "en": ">$250,000 "
+                        },
+                        "value": 8
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": 9
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/household_income_ca"
+            },
+            "marital_status___1": {
+                "description": "Indicates if the participant is married."
+            },
+            "marital_status___2": {
+                "description": "Indicates if the participant is in a domestic partnership."
+            },
+            "marital_status___3": {
+                "description": "Indicates if the participant is separated."
+            },
+            "marital_status___4": {
+                "description": "Indicates if the participant is widowed."
+            },
+            "marital_status___5": {
+                "description": "Indicates if the participant is single."
+            },
+            "marital_status___6": {
+                "description": "Indicates if the participant is divorced."
+            },
+            "marital_status___7": {
+                "description": "Indicates if the participant is cohabiting."
+            },
+            "housing_status": {
+                "description": "Indicates the participant's current housing status.",
+                "question": {
+                    "en": "What is your current housing status?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Assisted living "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Own home "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Rent home "
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Skilled nursing facility/nursing home "
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Unhoused-temporarily "
+                        },
+                        "value": 6
+                    },
+                    {
+                        "name": {
+                            "en": "Unhoused-permanently"
+                        },
+                        "value": 7
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/housing_status"
+            },
+            "household_count": {
+                "description": "The number of people living in the participant's household.",
+                "question": {
+                    "en": "How many people live in your household?Please specify a number"
+                },
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/household_count"
+            },
+            "spouse_partner_sig_other": {
+                "description": "Indicates if the participant has a spouse, partner, or significant other.",
+                "question": {
+                    "en": "Spouse/partner/significant other"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 0
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/spouse_partner_sig_other"
+            },
+            "children": {
+                "description": "Indicates if the participant has children.",
+                "question": {
+                    "en": "One or more children"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 0
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/children"
+            },
+            "parent": {
+                "description": "Indicates if the participant is a parent.",
+                "question": {
+                    "en": "One or more parent"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 0
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/parent"
+            },
+            "grandparent": {
+                "description": "Indicates if the participant is a grandparent.",
+                "question": {
+                    "en": "One or more grandparent"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 0
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/grandparent"
+            },
+            "other_live_with": {
+                "description": "Indicates if the participant lives with people not listed in other options.",
+                "question": {
                     "en": "Other"
                 },
-                "value": 9
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/employ_status"
-    },
-    "marital_status": {
-        "question": {
-            "en": "What is your marital status?\nChoose all that apply"
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 0
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/other_live_with"
+            },
+            "others_household_specify": {
+                "description": "Allows the participant to specify other people living in their household.",
+                "question": {
+                    "en": "If \"others\" live in your household, please specify:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/others_household_specify"
+            },
+            "transportation_yn": {
+                "description": "Indicates if the participant has access to transportation.",
+                "question": {
+                    "en": "Do you have a reliable mode of transportation?"
+                },
+                "datatype": [
+                    "xsd:boolean"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 0
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/transportation_yn"
+            },
+            "primary_transportation": {
+                "description": "Indicates the participant's primary mode of transportation.",
+                "question": {
+                    "en": "What is your primary mode of transportation?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Personal vehicle "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Shared vehicle "
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Public transportation "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Ride with someone else "
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Ride service "
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Bicycle/Motorbike "
+                        },
+                        "value": 6
+                    },
+                    {
+                        "name": {
+                            "en": "Walking "
+                        },
+                        "value": 7
+                    },
+                    {
+                        "name": {
+                            "en": "Other (Please specify)"
+                        },
+                        "value": 8
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/primary_transportation"
+            },
+            "q_generic_demographics_complete": {
+                "description": "Indicates if the participant has completed the generic demographics section."
+            },
+            "demographics_completed_by": {},
+            "race": {},
+            "employ_status": {},
+            "marital_status": {}
         },
-        "datatype": [
-            "xsd:integer"
-        ],
-        "choices": [
-            {
-                "name": {
-                    "en": "Single "
-                },
-                "value": 1
-            },
-            {
-                "name": {
-                    "en": "Married "
-                },
-                "value": 2
-            },
-            {
-                "name": {
-                    "en": "In a relationship "
-                },
-                "value": 3
-            },
-            {
-                "name": {
-                    "en": "Not married "
-                },
-                "value": 4
-            },
-            {
-                "name": {
-                    "en": "Separated "
-                },
-                "value": 5
-            },
-            {
-                "name": {
-                    "en": "Divorced "
-                },
-                "value": 6
-            },
-            {
-                "name": {
-                    "en": "Widowed"
-                },
-                "value": 7
-            }
-        ],
-        "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/marital_status"
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/q_generic_demographics_schema"
     }
 }
