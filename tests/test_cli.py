@@ -44,14 +44,20 @@ def test_prepare_bids_cli(setup_temp_files):
     command = [
         "b2aiprep-cli",
         "prepare-bids",
-        redcap_csv_path,
-        audio_dir,
         bids_dir_path,
+        "--redcap_csv_path",
+        redcap_csv_path,
+        "--audio_dir_path",
+        audio_dir,
+        "--tar_file_path",
         tar_file_path,
+        "-t",
         "tiny",  # transcription_model_size
-        "--n_cores", "2",
+        "--n_cores",
+        "2",
         "--with_sensitive",
         "--overwrite",
+        "--validate",
     ]
 
     # Run the CLI command
