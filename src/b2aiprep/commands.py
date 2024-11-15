@@ -93,48 +93,71 @@ def redcap2bids(
 
 
 @click.command()
-@click.argument("redcap_csv_path", type=click.Path(exists=True))
-@click.argument("audio_dir_path", type=click.Path(exists=True))
 @click.argument("bids_dir_path", type=click.Path())
-@click.argument("tar_file_path", type=click.Path())
-@click.argument("transcription_model_size", type=str)
-@click.option("--n_cores", type=int, default=8, show_default=True)
+@click.option("--redcap_csv_path", type=click.Path(exists=True), default=None, show_default=True)
+@click.option("--audio_dir_path", type=click.Path(exists=True), default=None, show_default=True)
+@click.option("-z", "--tar_file_path", type=click.Path(), default=None, show_default=True)
+@click.option("-t", "--transcription_model_size", type=str, default="tiny", show_default=True)
+@click.option("-n", "--n_cores", type=int, default=8, show_default=True)
 @click.option("--with_sensitive/--no-with_sensitive", type=bool, default=True, show_default=True)
 @click.option("--overwrite/--no-overwrite", type=bool, default=False, show_default=True)
-@click.option("--cache", type=click.Path(), default=None, show_default=True)
-@click.option("--address", type=str, default=None, show_default=True)
-@click.option("--percentile", type=int, default=100, show_default=True)
+@click.option("--validate/--no-validate", type=bool, default=False, show_default=True)
+@click.option("-c", "--cache", type=click.Path(), default=None, show_default=True)
+@click.option("-a", "--address", type=str, default=None, show_default=True)
+@click.option("-p", "--percentile", type=int, default=100, show_default=True)
+@click.option("-s", "--subject_id", type=str, default=None, show_default=True)
 def prepare_bids(
+    bids_dir_path,
     redcap_csv_path,
     audio_dir_path,
-    bids_dir_path,
     tar_file_path,
     transcription_model_size,
     n_cores,
     with_sensitive,
     overwrite,
+    validate,
     cache,
     address,
     percentile,
+    subject_id,
 ):
-    """Organizes the data into a BIDS-like directory structure.
+    """Organizes the data into a BIDS-like directory structure and extracts audio features.
 
-    redcap_csv_path: path to the redcap csv
-    audio_dir_path: path to directory with audio files
-    bids_dir_path: path to store bids-like data
-    tar_file_path: path to store tar file
-    transcription_model_size: tiny, small, medium, or large
-    n_cores: number of cores to run feature extraction on
-    with_sensitive: whether to include sensitive data
-    update_columns_names: whether to replace column names with column_mappings
+    This command follows a specific workflow:
+    1. If both redcap_csv_path and audio_dir_path are provided:
+       - Converts REDCap data to BIDS format
+       - Organizes audio files into the BIDS structure
+    2. Runs audio feature extraction on the BIDS directory:
+       - Uses specified transcription model
+       - Processes in parallel using n_cores
+       - Can use Dask for distributed processing if address is provided
+       - Can filter by percentile or specific subject
+    3. Optionally validates the BIDS structure if --validate is set
+    4. Creates a compressed tar file if tar_file_path is specified
+
+    Args:
+        bids_dir_path: Path to store BIDS-like data
+        redcap_csv_path: Path to the REDCap CSV file. Required with audio_dir_path for initial BIDS creation
+        audio_dir_path: Path to directory with audio files. Required with redcap_csv_path for initial BIDS creation
+        tar_file_path: Path to store tar file. If provided, creates a compressed archive of the BIDS directory
+        transcription_model_size: Size of transcription model ('tiny', 'small', 'medium', or 'large')
+        n_cores: Number of cores to run feature extraction on. Ignored if using Dask
+        with_sensitive: Whether to include sensitive data in the output
+        overwrite: Whether to overwrite existing files during processing
+        validate: Whether to validate the BIDS folder structure after processing
+        cache: Path to cache directory. Defaults to 'b2aiprep_cache' in parent of bids_dir_path
+        address: Dask scheduler address for distributed processing. If provided, uses Dask instead of concurrent.futures
+        percentile: Percentile threshold for processing. Use to process subset of data
+        subject_id: Specific subject ID to process. If provided, only processes this subject
     """
     if cache is None:
         cache = Path(bids_dir_path).parent / "b2aiprep_cache"
     os.makedirs(cache, exist_ok=True)
 
-    _LOGGER.info("Organizing data into BIDS-like directory structure...")
-    redcap_to_bids(Path(redcap_csv_path), Path(bids_dir_path), Path(audio_dir_path))
-    _LOGGER.info("Data organization complete.")
+    if redcap_csv_path is not None and audio_dir_path is not None:
+        _LOGGER.info("Organizing data into BIDS-like directory structure...")
+        redcap_to_bids(Path(redcap_csv_path), Path(bids_dir_path), Path(audio_dir_path))
+        _LOGGER.info("Data organization complete.")
 
     _LOGGER.info("Beginning audio feature extraction...")
     extract_features_workflow(
@@ -147,16 +170,19 @@ def prepare_bids(
         plugin="dask" if address is not None else "cf",
         address=address,
         percentile=percentile,
+        subject_id=subject_id,
     )
     _LOGGER.info("Audio feature extraction complete.")
 
-    # Below code checks to see if we have all the expected feature/transcript files.
-    validate_bids_folder(Path(bids_dir_path))
+    if validate:
+        # Below code checks to see if we have all the expected feature/transcript files.
+        validate_bids_folder(Path(bids_dir_path))
 
-    _LOGGER.info("Saving .tar file with processed data...")
-    with tarfile.open(tar_file_path, "w:gz") as tar:
-        tar.add(bids_dir_path, arcname=os.path.basename(bids_dir_path))
-    _LOGGER.info(f"Saved processed data .tar file at: {tar_file_path}")
+    if tar_file_path is not None:
+        _LOGGER.info("Saving .tar file with processed data...")
+        with tarfile.open(tar_file_path, "w:gz") as tar:
+            tar.add(bids_dir_path, arcname=os.path.basename(bids_dir_path))
+        _LOGGER.info(f"Saved processed data .tar file at: {tar_file_path}")
 
     _LOGGER.info("Process completed.")
 
@@ -241,8 +267,11 @@ def create_derived_dataset(
 
     phenotype_files = list(bids_path.joinpath("phenotype").glob("*.tsv"))
     phenotype_order = [
-        "eligibility", "enrollment", "participant",
-        "demographics", "confounders",
+        "eligibility",
+        "enrollment",
+        "participant",
+        "demographics",
+        "confounders",
     ]
     # order phenotype files by (1) the order of the list above then (2) alphabetically
     # since sorts are stable, we can guarantee this by doing it in reverse
@@ -279,6 +308,7 @@ def create_derived_dataset(
     # write out phenotype
     with open(bids_path.joinpath("phenotype.json"), "w") as f:
         json.dump(phenotype, f, indent=2)
+
 
 @click.command()
 @click.argument("bids_dir_path", type=click.Path())

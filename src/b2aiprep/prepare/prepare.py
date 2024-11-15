@@ -224,6 +224,7 @@ def extract_features_workflow(
     address: str = None,
     cache_dir: str | os.PathLike = None,
     percentile: int = 100,
+    subject_id: str = None,
 ):
     """Run a Pydra workflow to extract audio features from BIDS-like directory.
 
@@ -252,7 +253,7 @@ def extract_features_workflow(
     import multiprocessing as mp
 
     try:
-        mp.set_start_method('spawn', force=True)
+        mp.set_start_method("spawn", force=True)
     except RuntimeError:
         # Already set
         pass
@@ -270,6 +271,8 @@ def extract_features_workflow(
         return
     if "size" in df.columns:
         df = df[df["size"] <= np.percentile(df["size"].values, percentile)]
+    if subject_id is not None:
+        df = df[df["path"].apply(lambda x: subject_id in str(x))]
     # randomize to distribute sizes
     df = df.sample(frac=1).reset_index(drop=True)
     audio_paths = df.path.values.tolist()
