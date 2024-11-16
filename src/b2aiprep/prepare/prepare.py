@@ -272,7 +272,7 @@ def extract_features_workflow(
     if "size" in df.columns:
         df = df[df["size"] <= np.percentile(df["size"].values, percentile)]
     if subject_id is not None:
-        df = df[df["path"].apply(lambda x: subject_id in str(x))]
+        df = df[df["subject"] == subject_id]
     # randomize to distribute sizes
     df = df.sample(frac=1).reset_index(drop=True)
     audio_paths = df.path.values.tolist()
