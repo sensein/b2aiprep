@@ -250,7 +250,11 @@ def create_derived_dataset(bids_path, outdir):
     _LOGGER.info("Loading derived data")
     static_features = []
     for filename in audio_paths:
-        features = torch.load(filename)
+        filename = str(filename)
+        pt_file = Path(filename.replace(".wav", "_features.pt"))
+        if not pt_file.exists():
+            continue
+        features = torch.load(pt_file)
         subj_info = {
             "participant": filename.split("sub-")[1].split("/ses-")[0],
             "task": filename.split("task-")[1].split("_features")[0],
