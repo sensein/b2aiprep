@@ -7,7 +7,6 @@ import os
 import shutil
 import tarfile
 import typing as t
-from functools import partial
 from glob import glob
 from pathlib import Path
 
@@ -240,22 +239,39 @@ def load_audio_features(
 
 
 @click.command()
-@click.argument("bids_path", type=click.Path())
-def create_derived_dataset(
-    bids_path,
-):
+@click.argument("bids_path", type=click.Path(exists=True))
+@click.argument("outdir", type=click.Path())
+def create_derived_dataset(bids_path, outdir):
     bids_path = Path(bids_path)
+    outdir = Path(outdir)
+    outdir.mkdir(parents=True, exist_ok=True)
     audio_paths = get_audio_paths(bids_dir_path=bids_path)
     audio_paths = [x["path"] for x in audio_paths]
-    file_extension = "pt"
-    _LOGGER.info("Loading derived data into a single HF dataset.")
-    feature_loader = partial(load_audio_features, audio_paths, file_extension)
-    ds = Dataset.from_generator(feature_loader, num_proc=1)
-    ds.to_parquet(
-        Path(bids_path).joinpath("b2ai-voice.parquet").as_posix(),
-        compression="snappy",
-    )
-    _LOGGER.info("Parquet dataset created.")
+    _LOGGER.info("Loading derived data")
+    static_features = []
+    for filename in audio_paths:
+        features = torch.load(filename)
+        subj_info = {
+            "participant": filename.split("sub-")[1].split("/ses-")[0],
+            "task": filename.split("task-")[1].split("_features")[0],
+        }
+        for key in ["opensmile", "praat_parselmouth", "torchaudio_squim"]:
+            subj_info.update(features.get(key, {}))
+        static_features.append(subj_info)
+        dynamic = features["torchaudio"]
+        dynamic["transcription"] = features.get("transcription", None)
+        outfile = (
+            outdir
+            / f"sub-{subj_info['participant']}"
+            / f"sub-{subj_info['participant']}_task-{subj_info['task']}_temporalfeatures.pt"
+        )
+        if not outfile.parent.exists():
+            outfile.parent.mkdir(parents=True, exist_ok=True)
+        torch.save(dynamic, outfile)
+    df_static = pd.DataFrame(static_features)
+    df_static.to_csv(outdir / "static_features.csv", index=False)
+    _LOGGER.info("Finished creating static and dynamic features")
+
     _LOGGER.info("Creating merged phenotype data.")
 
     # first initialize a dataframe with all the record IDs which are equivalent to participant IDs.
@@ -287,7 +303,7 @@ def create_derived_dataset(
     for phenotype_filepath in phenotype_files:
         df_add = pd.read_csv(phenotype_filepath, sep="\t")
         phenotype_name = phenotype_filepath.stem
-        if phenotype_name == "participant":
+        if phenotype_name in ["participant", "eligibility", "enrollment"]:
             continue
         # check for overlapping columns
         for col in df_add.columns:
@@ -299,15 +315,15 @@ def create_derived_dataset(
         df = df.merge(df_add, on="record_id", how="left")
         with open(bids_path.joinpath("phenotype", f"{phenotype_name}.json"), "r") as f:
             phenotype_add = json.load(f)
-
         phenotype.update(phenotype_add)
 
     df = df.rename(columns={"record_id": "participant_id"})
-    df.to_csv(bids_path.joinpath("phenotype.tsv"), sep="\t", index=False)
+    df.to_csv(outdir.joinpath("phenotype.tsv"), sep="\t", index=False)
 
     # write out phenotype
-    with open(bids_path.joinpath("phenotype.json"), "w") as f:
+    with open(outdir.joinpath("phenotype.json"), "w") as f:
         json.dump(phenotype, f, indent=2)
+    _LOGGER.info("Finished creating merged phenotype data.")
 
 
 @click.command()
