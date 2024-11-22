@@ -108,20 +108,19 @@ def extract_single(
     is_speech_task = any([v.replace(" ", "-") in wav_path.name for v in SPEECH_TASKS])
 
     parsel_mouth_config = False
-    if is_speech_task:
-        parsel_mouth_config = {
-            "time_step": hop_length / 1000,
-            "window_length": win_length / 1000,
-            "plugin": "serial",
-        }
+    parsel_mouth_config = {
+        "time_step": hop_length / 1000,
+        "window_length": win_length / 1000,
+        "plugin": "serial",
+    }
     torch_config = {
         "freq_low": 80,
         "freq_high": 500,
-        "n_fft": win_length * audio_16k.sampling_rate // 1000,
-        "n_mels": 20,
-        "n_mfcc": 20,
-        "win_length": win_length,
-        "hop_length": hop_length,
+        "n_fft": (win_length * audio_16k.sampling_rate) // 1000,
+        "n_mels": 60,
+        "n_mfcc": 60,
+        "win_length": (win_length * audio_16k.sampling_rate) // 1000,
+        "hop_length": (hop_length * audio_16k.sampling_rate) // 1000,
         "plugin": "serial",
     }
     # Extract features
@@ -130,10 +129,13 @@ def extract_single(
         opensmile=True,
         parselmouth=parsel_mouth_config,
         torchaudio=torch_config,
-        torchaudio_squim=is_speech_task,
+        torchaudio_squim=True,
     ).pop()
+    features["parselmouth_config"] = parsel_mouth_config
+    features["torch_config"] = torch_config
     features["is_speech_task"] = is_speech_task
     features["sample_rate"] = audio_16k.sampling_rate
+    features["duration"] = len(audio_16k.waveform) / audio_16k.sampling_rate
     features["sensitive_features"] = None
     if with_sensitive:
         features["audio_path"] = wav_path
@@ -281,6 +283,7 @@ def extract_features_workflow(
     extract_task = pydra.mark.task(extract_single)(
         transcription_model_size=transcription_model_size,
         with_sensitive=with_sensitive,
+        overwrite=overwrite,
         cache_dir=cache_dir,
     )
     extract_task.split("wav_path", wav_path=audio_paths)
