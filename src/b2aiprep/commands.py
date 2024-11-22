@@ -258,8 +258,8 @@ def create_derived_dataset(bids_path, outdir):
             continue
         features = torch.load(pt_file)
         subj_info = {
-            "participant": filename.split("sub-")[1].split("/ses-")[0],
-            "task": filename.split("task-")[1].split("_features")[0],
+            "participant": str(pt_file).split("sub-")[1].split("/ses-")[0],
+            "task": str(pt_file).split("task-")[1].split("_features")[0],
         }
         for key in ["opensmile", "praat_parselmouth", "torchaudio_squim"]:
             subj_info.update(features.get(key, {}))
