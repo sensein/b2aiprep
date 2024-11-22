@@ -261,9 +261,12 @@ def create_derived_dataset(bids_path, outdir):
         }
         for key in ["opensmile", "praat_parselmouth", "torchaudio_squim"]:
             subj_info.update(features.get(key, {}))
-        static_features.append(subj_info)
+        subj_info["duration"] = features.get("duration", None)
         dynamic = features["torchaudio"]
         dynamic["transcription"] = features.get("transcription", None)
+        if dynamic["transcription"] is not None:
+            subj_info["transcription"] = dynamic["transcription"].text
+        static_features.append(subj_info)
         outfile = (
             outdir
             / f"sub-{subj_info['participant']}"
