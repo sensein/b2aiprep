@@ -12,7 +12,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_productive_vocabulary/items/vocabulary_session_id"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_productive_vocabulary/items/vocabulary_session_id",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "vocabulary_recording_acoustic_task_id": {
                 "description": "The unique identifier for the vocabulary recording acoustic task.",
@@ -23,7 +26,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_productive_vocabulary/items/vocabulary_recording_acoustic_task_id"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_productive_vocabulary/items/vocabulary_recording_acoustic_task_id",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "vocabulary_duration": {
                 "description": "Duration of the vocabulary assessment.",
@@ -34,7 +40,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_productive_vocabulary/items/vocabulary_duration"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_productive_vocabulary/items/vocabulary_duration",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "vocabulary_item_word_1": {
                 "description": "Response for vocabulary word item 1.",
@@ -1138,7 +1147,10 @@
                         "value": "pejorative"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_productive_vocabulary/items/vocabulary_item_word_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_productive_vocabulary/items/vocabulary_item_word_1",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "vocabulary_item_difficulty_1": {
                 "description": "Indicates the participant's reported difficulty level for vocabulary item 1.",
@@ -1168,7 +1180,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_productive_vocabulary/items/vocabulary_item_difficulty_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_productive_vocabulary/items/vocabulary_item_difficulty_1",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "vocabulary_item_word_2": {
                 "description": "Response for vocabulary word item 2.",
@@ -2272,7 +2287,10 @@
                         "value": "pejorative"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_productive_vocabulary/items/vocabulary_item_word_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_productive_vocabulary/items/vocabulary_item_word_2",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "vocabulary_item_difficulty_2": {
                 "description": "Indicates the participant's reported difficulty level for vocabulary item 2.",
@@ -2302,7 +2320,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_productive_vocabulary/items/vocabulary_item_difficulty_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_productive_vocabulary/items/vocabulary_item_difficulty_2",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "vocabulary_item_word_3": {
                 "description": "Response for vocabulary word item 3.",
@@ -3406,7 +3427,10 @@
                         "value": "pejorative"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_productive_vocabulary/items/vocabulary_item_word_3"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_productive_vocabulary/items/vocabulary_item_word_3",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "vocabulary_item_difficulty_3": {
                 "description": "Indicates the participant's reported difficulty level for vocabulary item 3.",
@@ -3436,7 +3460,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_productive_vocabulary/items/vocabulary_item_difficulty_3"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_productive_vocabulary/items/vocabulary_item_difficulty_3",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "vocabulary_item_word_4": {
                 "description": "Response for vocabulary word item 4.",
@@ -4540,7 +4567,10 @@
                         "value": "pejorative"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_productive_vocabulary/items/vocabulary_item_word_4"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_productive_vocabulary/items/vocabulary_item_word_4",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "vocabulary_item_difficulty_4": {
                 "description": "Indicates the participant's reported difficulty level for vocabulary item 4.",
@@ -4570,7 +4600,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_productive_vocabulary/items/vocabulary_item_difficulty_4"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_productive_vocabulary/items/vocabulary_item_difficulty_4",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "vocabulary_item_word_5": {
                 "description": "Response for vocabulary word item 5.",
@@ -5674,7 +5707,10 @@
                         "value": "pejorative"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_productive_vocabulary/items/vocabulary_item_word_5"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_productive_vocabulary/items/vocabulary_item_word_5",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "vocabulary_item_difficulty_5": {
                 "description": "Indicates the participant's reported difficulty level for vocabulary item 5.",
@@ -5704,7 +5740,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_productive_vocabulary/items/vocabulary_item_difficulty_5"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_productive_vocabulary/items/vocabulary_item_difficulty_5",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "vocabulary_item_word_6": {
                 "description": "Response for vocabulary word item 6.",
@@ -6808,7 +6847,10 @@
                         "value": "pejorative"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_productive_vocabulary/items/vocabulary_item_word_6"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_productive_vocabulary/items/vocabulary_item_word_6",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "vocabulary_item_difficulty_6": {
                 "description": "Indicates the difficulty level reported by the participant for vocabulary item 6.",
@@ -6838,7 +6880,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_productive_vocabulary/items/vocabulary_item_difficulty_6"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_productive_vocabulary/items/vocabulary_item_difficulty_6",
+                "valueType": [
+                    "xsd:integer"
+                ]
             }
         }
     }

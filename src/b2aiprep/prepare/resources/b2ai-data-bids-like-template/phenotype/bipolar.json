@@ -37,7 +37,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_gsd"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_gsd",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_bipolar_gsd_interview": {
                 "description": "Indicates if a structured clinical interview was conducted for diagnosing the participant’s bipolar disorder.",
@@ -61,7 +64,10 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_gsd_interview"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_gsd_interview",
+                "valueType": [
+                    "xsd:boolean"
+                ]
             },
             "diagnosis_bipolar_gsd_oqu": {
                 "description": "Indicates if an objective questionnaire was used in the diagnosis of the participant’s bipolar disorder.",
@@ -85,7 +91,10 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_gsd_oqu"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_gsd_oqu",
+                "valueType": [
+                    "xsd:boolean"
+                ]
             },
             "diagnosis_bipolar_gsd_oquw": {
                 "description": "Specifies which objective questionnaire was used in diagnosing the participant’s bipolar disorder.",
@@ -121,7 +130,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_gsd_oquw"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_gsd_oquw",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_bipolar_subtype_active": {
                 "description": "Specifies the active subtype of the participant’s bipolar disorder.",
@@ -145,7 +157,10 @@
                         "value": "recurrent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_subtype_active"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_subtype_active",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_bipolar_psychotic": {
                 "description": "Indicates if the participant has psychotic symptoms associated with bipolar disorder.",
@@ -169,7 +184,10 @@
                         "value": "without"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_psychotic"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_psychotic",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_bipolar_severity": {
                 "description": "Indicates the severity of the participant’s bipolar disorder.",
@@ -199,7 +217,10 @@
                         "value": "severe"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_severity"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_severity",
+                "valueType": [
+                    "xsd:string"
+                ]
             }
         }
     }

@@ -12,7 +12,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_gad7_anxiety/items/gad_7_session_id"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_gad7_anxiety/items/gad_7_session_id",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "nervous_anxious": {
                 "description": "Indicates if the participant feels nervous or anxious.",
@@ -48,7 +51,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_gad7_anxiety/items/nervous_anxious"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_gad7_anxiety/items/nervous_anxious",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "cant_control_worry": {
                 "description": "Indicates if the participant feels that they cannot control their worry.",
@@ -84,7 +90,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_gad7_anxiety/items/cant_control_worry"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_gad7_anxiety/items/cant_control_worry",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "worry_too_much": {
                 "description": "Indicates if the participant feels that they worry too much.",
@@ -120,7 +129,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_gad7_anxiety/items/worry_too_much"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_gad7_anxiety/items/worry_too_much",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "trouble_relaxing": {
                 "description": "Indicates if the participant has trouble relaxing.",
@@ -156,7 +168,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_gad7_anxiety/items/trouble_relaxing"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_gad7_anxiety/items/trouble_relaxing",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "hard_to_sit_still": {
                 "description": "Indicates if the participant finds it hard to sit still.",
@@ -192,7 +207,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_gad7_anxiety/items/hard_to_sit_still"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_gad7_anxiety/items/hard_to_sit_still",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "easily_agitated": {
                 "description": "Indicates if the participant feels easily agitated.",
@@ -228,7 +246,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_gad7_anxiety/items/easily_agitated"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_gad7_anxiety/items/easily_agitated",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "afraid_of_things": {
                 "description": "Indicates if the participant is afraid of specific things or situations.",
@@ -264,7 +285,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_gad7_anxiety/items/afraid_of_things"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_gad7_anxiety/items/afraid_of_things",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "tough_to_work": {
                 "description": "Indicates if the participant finds it difficult to concentrate or work.",
@@ -300,7 +324,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_gad7_anxiety/items/tough_to_work"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_gad7_anxiety/items/tough_to_work",
+                "valueType": [
+                    "xsd:integer"
+                ]
             }
         }
     }

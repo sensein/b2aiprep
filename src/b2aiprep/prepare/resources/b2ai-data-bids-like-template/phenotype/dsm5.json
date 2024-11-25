@@ -12,7 +12,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/dsm_5_session_id"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/dsm_5_session_id",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "dsm_5_duration": {
                 "description": "Total duration of the DSM-5 assessment.",
@@ -23,7 +26,11 @@
                     "xsd:decimal"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/dsm_5_duration"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/dsm_5_duration",
+                "minValue": 0.0,
+                "valueType": [
+                    "xsd:decimal"
+                ]
             },
             "little_interest": {
                 "description": "Indicates if the participant has little interest or pleasure in doing things.",
@@ -65,7 +72,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/little_interest"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/little_interest",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "feeling_down": {
                 "description": "Indicates if the participant is feeling down or sad.",
@@ -107,7 +117,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/feeling_down"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/feeling_down",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "feeling_more_irritated": {
                 "description": "Indicates if the participant feels more irritated than usual.",
@@ -149,7 +162,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/feeling_more_irritated"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/feeling_more_irritated",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "sleeping_less": {
                 "description": "Indicates if the participant is sleeping less than usual.",
@@ -191,7 +207,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/sleeping_less"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/sleeping_less",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "starting_more_projects": {
                 "description": "Indicates if the participant is starting more projects than they can manage.",
@@ -233,7 +252,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/starting_more_projects"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/starting_more_projects",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "feeling_nervous": {
                 "description": "Indicates if the participant feels nervous.",
@@ -275,7 +297,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/feeling_nervous"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/feeling_nervous",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "feeling_panic": {
                 "description": "Indicates if the participant feels panic or overwhelming fear.",
@@ -317,7 +342,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/feeling_panic"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/feeling_panic",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "avoiding_situations": {
                 "description": "Indicates if the participant is avoiding certain situations due to stress or anxiety.",
@@ -359,7 +387,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/avoiding_situations"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/avoiding_situations",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "unexplained_aches": {
                 "description": "Indicates if the participant experiences unexplained aches or pains.",
@@ -401,7 +432,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/unexplained_aches"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/unexplained_aches",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "illness_not_taken_serious": {
                 "description": "Reports if the participant feels that their illness is not taken seriously by others.",
@@ -443,7 +477,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/illness_not_taken_serious"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/illness_not_taken_serious",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "self_harm": {
                 "description": "Indicates if the participant has a history of self-harm.",
@@ -485,7 +522,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/self_harm"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/self_harm",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "hearing_things": {
                 "description": "Indicates if the participant has experienced auditory hallucinations.",
@@ -527,7 +567,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/hearing_things"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/hearing_things",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "someone_hear_thoughts": {
                 "description": "Indicates if the participant believes that others can hear their thoughts.",
@@ -569,7 +612,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/someone_hear_thoughts"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/someone_hear_thoughts",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "sleep_quality": {
                 "description": "Indicates the participant's subjective assessment of their sleep quality.",
@@ -611,7 +657,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/sleep_quality"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/sleep_quality",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "memory_issues": {
                 "description": "Reports if the participant is experiencing memory issues.",
@@ -653,7 +702,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/memory_issues"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/memory_issues",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "unpleasant_thoughts": {
                 "description": "Reports if the participant experienced unpleasant thoughts recently.",
@@ -695,7 +747,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/unpleasant_thoughts"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/unpleasant_thoughts",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "repeat_acts": {
                 "description": "Indicates if the participant repeats certain actions or behaviors.",
@@ -737,7 +792,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/repeat_acts"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/repeat_acts",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "feeling_detached": {
                 "description": "Indicates if the participant feels detached from reality or their surroundings.",
@@ -779,7 +837,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/feeling_detached"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/feeling_detached",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "no_purpose": {
                 "description": "Indicates if the participant feels like they have no purpose.",
@@ -821,7 +882,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/no_purpose"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/no_purpose",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "isolated": {
                 "description": "Indicates if the participant feels isolated or alone.",
@@ -863,7 +927,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/isolated"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/isolated",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "drinking_more": {
                 "description": "Indicates if the participant is consuming more alcohol.",
@@ -905,7 +972,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/drinking_more"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/drinking_more",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "smoking_more": {
                 "description": "Indicates if the participant is smoking more than usual.",
@@ -947,7 +1017,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/smoking_more"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/smoking_more",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "medication_use": {
                 "description": "Indicates the participant's use of medications during the study.",
@@ -989,7 +1062,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/medication_use"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/medication_use",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "q1_happy": {
                 "description": "Response to question 1: 'Is the participant feeling happy?'",
@@ -1031,7 +1107,10 @@
                         "value": 5
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/q1_happy"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/q1_happy",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "q2_self_confident": {
                 "description": "Asks how self-confident the participant feels in general.",
@@ -1073,7 +1152,10 @@
                         "value": 5
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/q2_self_confident"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/q2_self_confident",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "q3_sleep": {
                 "description": "Response to question 3: 'Is the participant experiencing trouble sleeping?'",
@@ -1115,7 +1197,10 @@
                         "value": 5
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/q3_sleep"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/q3_sleep",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "q4_talk": {
                 "description": "Response to question 4: 'Does the participant talk about a specific topic?'",
@@ -1157,7 +1242,10 @@
                         "value": 5
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/q4_talk"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/q4_talk",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "q5_active": {
                 "description": "Inquires how active or energetic the participant feels throughout the day.",
@@ -1199,7 +1287,10 @@
                         "value": 5
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/q5_active"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/q5_active",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "social_phobia_1": {
                 "description": "Response to social phobia item 1, indicating the participant's level of discomfort in social situations.",
@@ -1241,7 +1332,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/social_phobia_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/social_phobia_1",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "social_phobia_2": {
                 "description": "Response to social phobia item 2, assessing the participant's level of discomfort in social situations.",
@@ -1283,7 +1377,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/social_phobia_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/social_phobia_2",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "social_phobia_3": {
                 "description": "Indicates if the participant experiences social phobia related to situation 3.",
@@ -1325,7 +1422,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/social_phobia_3"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/social_phobia_3",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "social_phobia_4": {
                 "description": "Indicates if the participant experiences social phobia in scenario 4.",
@@ -1367,7 +1467,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/social_phobia_4"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/social_phobia_4",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "social_phobia_5": {
                 "description": "Indicates if the participant experiences social phobia in scenario 5.",
@@ -1409,7 +1512,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/social_phobia_5"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/social_phobia_5",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "social_phobia_6": {
                 "description": "Indicates if the participant experiences social phobia in scenario 6.",
@@ -1451,7 +1557,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/social_phobia_6"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/social_phobia_6",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "social_phobia_7": {
                 "description": "Indicates the participant's level of social phobia based on scenario 7.",
@@ -1493,7 +1602,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/social_phobia_7"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/social_phobia_7",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "social_phobia_8": {
                 "description": "Indicates if the participant experiences social phobia in scenario 8.",
@@ -1535,7 +1647,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/social_phobia_8"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/social_phobia_8",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "social_phobia_9": {
                 "description": "Indicates if the participant experiences social phobia in scenario 9.",
@@ -1577,7 +1692,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/social_phobia_9"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/social_phobia_9",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "social_phobia_10": {
                 "description": "Indicates if the participant has social phobia in a specific scenario (item 10).",
@@ -1619,7 +1737,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/social_phobia_10"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/social_phobia_10",
+                "valueType": [
+                    "xsd:integer"
+                ]
             }
         }
     }

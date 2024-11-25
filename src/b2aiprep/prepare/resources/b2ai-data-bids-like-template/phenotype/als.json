@@ -31,7 +31,10 @@
                         "value": "notCertain"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_gsd_category_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_gsd_category_1",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_als_gsd_category_2": {
                 "description": "Indicates if the participant meets the criteria for ALS GSD Category 2.",
@@ -61,7 +64,10 @@
                         "value": "notCertain"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_gsd_category_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_gsd_category_2",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_als_gsd_category_3": {
                 "description": "Indicates the participant's ALS diagnosis under GSD category 3.",
@@ -91,7 +97,10 @@
                         "value": "notCertain"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_gsd_category_3"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_gsd_category_3",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_als_gsd_calculation": {
                 "description": "Calculation for the participant's ALS GSD diagnosis.",
@@ -102,7 +111,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_gsd_calculation"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_gsd_calculation",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_als_disease_subtype": {
                 "description": "Indicates the subtype of ALS diagnosed in the participant.",
@@ -138,7 +150,10 @@
                         "value": "bulbarAls"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_disease_subtype"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_disease_subtype",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_als_disease_subtype_familial": {
                 "description": "Indicates if the participant has been diagnosed with familial ALS.",
@@ -149,7 +164,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_disease_subtype_familial"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_disease_subtype_familial",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_als_etiology___genetic_factors": {
                 "description": "Indicates if the participant's ALS diagnosis is linked to genetic factors."
@@ -206,7 +224,10 @@
                         "value": "advancedStage"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_dp"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_dp",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_als_na_alsfrs_r_score": {
                 "description": "The participant's score on the ALS Functional Rating Scale-Revised (ALSFRS-R).",
@@ -217,7 +238,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_na_alsfrs_r_score"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_na_alsfrs_r_score",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_als_na_fvc_percentage": {
                 "description": "Indicates the participant's forced vital capacity (FVC) percentage for ALS diagnosis.",
@@ -228,7 +252,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_na_fvc_percentage"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_na_fvc_percentage",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_als_treatment_and_management": {
                 "description": "Indicates the treatment and management plan for the participant's ALS diagnosis.",
@@ -252,7 +279,10 @@
                         "value": "no"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_treatment_and_management"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_treatment_and_management",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_als_treatment_and_management_yes___medications": {
                 "description": "Indicates if the participant is receiving medications as part of ALS treatment."
@@ -320,7 +350,10 @@
                         "value": "environmental_factors"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_etiology"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_etiology",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_als_etiology_genetic_factors": {
                 "question": {
@@ -349,7 +382,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_etiology_genetic_factors"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_etiology_genetic_factors",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_als_cp": {
                 "question": {
@@ -384,7 +420,10 @@
                         "value": "respiratory_involvement"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_cp"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_cp",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_als_treatment_and_management_yes": {
                 "question": {
@@ -407,7 +446,10 @@
                         "value": "supportive_care"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_treatment_and_management_yes"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_treatment_and_management_yes",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_als_treatment_and_management_yes_medications": {
                 "question": {
@@ -454,7 +496,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_treatment_and_management_yes_medications"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_treatment_and_management_yes_medications",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_als_treatment_and_management_yes_supportive_care": {
                 "question": {
@@ -507,7 +552,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_treatment_and_management_yes_supportive_care"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_treatment_and_management_yes_supportive_care",
+                "valueType": [
+                    "xsd:string"
+                ]
             }
         }
     }

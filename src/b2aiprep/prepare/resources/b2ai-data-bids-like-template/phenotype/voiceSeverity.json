@@ -12,7 +12,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_voice_voice_problem_severity/items/voice_severity_session_id"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_voice_voice_problem_severity/items/voice_severity_session_id",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "voice_severity_duration": {
                 "description": "Duration of the assessment for the severity of the participant's voice issues.",
@@ -23,7 +26,11 @@
                     "xsd:decimal"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_voice_voice_problem_severity/items/voice_severity_duration"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_voice_voice_problem_severity/items/voice_severity_duration",
+                "minValue": 0.0,
+                "valueType": [
+                    "xsd:decimal"
+                ]
             },
             "describe_the_severity_of_a": {
                 "description": "Asks the participant to describe the severity of a specific condition or symptom.",
@@ -54,7 +61,13 @@
                         "value": 100
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_voice_voice_problem_severity/items/describe_the_severity_of_a"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_voice_voice_problem_severity/items/describe_the_severity_of_a",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string",
+                    "xsd:integer"
+                ]
             }
         }
     }

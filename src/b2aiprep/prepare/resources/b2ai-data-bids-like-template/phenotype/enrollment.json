@@ -31,7 +31,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_select_language"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_select_language",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "ef_any_vision_related_req": {
                 "description": "Indicates if the participant has any vision-related requirements to assist with reading text in the study.",
@@ -55,7 +58,10 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_any_vision_related_req"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_any_vision_related_req",
+                "valueType": [
+                    "xsd:boolean"
+                ]
             },
             "ef_vision_a11y_options___1": {
                 "description": "Indicates if the participant requires changes to the font size as part of the study’s accessibility features."
@@ -91,7 +97,10 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_any_hearing_related_req"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_any_hearing_related_req",
+                "valueType": [
+                    "xsd:boolean"
+                ]
             },
             "ef_hearing_a11y_options___1": {
                 "description": "Indicates if the participant requires an increase in volume as part of the study’s accessibility features."
@@ -124,7 +133,10 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_any_physical_challenges"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_any_physical_challenges",
+                "valueType": [
+                    "xsd:boolean"
+                ]
             },
             "ef_physical_a11y_options___1": {
                 "description": "Indicates if the participant requires an increase in button size as part of the study’s accessibility features."
@@ -157,7 +169,10 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_any_cognitive_challeges"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_any_cognitive_challeges",
+                "valueType": [
+                    "xsd:boolean"
+                ]
             },
             "ef_cognitive_a11y_options___1": {
                 "description": "Indicates if the participant prefers to have the questions read aloud using text-to-speech as part of the study’s accessibility features."
@@ -211,7 +226,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_primary_language"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_primary_language",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "ef_primary_language_other": {
                 "description": "If the participant's primary language is not listed, this field specifies the language.",
@@ -222,7 +240,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_primary_language_other"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_primary_language_other",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "ef_fluent_languages___1": {
                 "description": "Indicates if the participant speaks no additional languages fluently."
@@ -248,7 +269,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_fluent_language_other"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_fluent_language_other",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "ef_vision_a11y_options": {
                 "question": {
@@ -283,7 +307,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_vision_a11y_options"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_vision_a11y_options",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "ef_hearing_a11y_options": {
                 "question": {
@@ -312,7 +339,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_hearing_a11y_options"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_hearing_a11y_options",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "ef_physical_a11y_options": {
                 "question": {
@@ -341,7 +371,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_physical_a11y_options"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_physical_a11y_options",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "ef_cognitive_a11y_options": {
                 "question": {
@@ -370,7 +403,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_cognitive_a11y_options"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_cognitive_a11y_options",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "ef_completed_by": {
                 "question": {
@@ -399,7 +435,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_completed_by"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_completed_by",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "ef_fluent_languages": {
                 "question": {
@@ -440,7 +479,10 @@
                         "value": 5
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_fluent_languages"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_fluent_languages",
+                "valueType": [
+                    "xsd:integer"
+                ]
             }
         }
     }

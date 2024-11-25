@@ -43,7 +43,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_depression_gsd"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_depression_gsd",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_depression_clinical_subcategory": {
                 "description": "Specifies the subcategory of clinical depression, such as major depressive disorder, for the participant.",
@@ -73,7 +76,10 @@
                         "value": "atypical_depression"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_depression_clinical_subcategory"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_depression_clinical_subcategory",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_depression_gsd_interview": {
                 "description": "Indicates if a structured clinical interview was conducted for diagnosing the participant’s depression.",
@@ -97,7 +103,10 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_depression_gsd_interview"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_depression_gsd_interview",
+                "valueType": [
+                    "xsd:boolean"
+                ]
             },
             "diagnosis_depression_gsd_oqu": {
                 "description": "Indicates if an objective questionnaire was used in the diagnosis of the participant’s depression.",
@@ -121,7 +130,10 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_depression_gsd_oqu"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_depression_gsd_oqu",
+                "valueType": [
+                    "xsd:boolean"
+                ]
             },
             "diagnosis_depression_gsd_oquw": {
                 "description": "Specifies which objective questionnaire was used in diagnosing the participant’s depression.",
@@ -157,7 +169,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_depression_gsd_oquw"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_depression_gsd_oquw",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_bipolar_subtype_active_depression": {
                 "description": "Specifies the active subtype of depression in the participant’s bipolar disorder.",
@@ -181,7 +196,10 @@
                         "value": "recurrent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_bipolar_subtype_active_depression"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_bipolar_subtype_active_depression",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_bipolar_psychotic_depression": {
                 "description": "Indicates if the participant has psychotic symptoms associated with the depressive phase of their bipolar disorder.",
@@ -205,7 +223,10 @@
                         "value": "without"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_bipolar_psychotic_depression"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_bipolar_psychotic_depression",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_bipolar_severity_depression": {
                 "description": "Indicates the severity of the participant’s depressive phase of bipolar disorder.",
@@ -235,7 +256,10 @@
                         "value": "severe"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_bipolar_severity_depression"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_bipolar_severity_depression",
+                "valueType": [
+                    "xsd:string"
+                ]
             }
         }
     }

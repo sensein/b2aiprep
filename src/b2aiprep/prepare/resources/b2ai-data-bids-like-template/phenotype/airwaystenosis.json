@@ -31,7 +31,10 @@
                         "value": "notCertain"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_pft"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_pft",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_as_gsd": {
                 "description": "Indicates if the participant has airway stenosis confirmed by laryngoscopy, bronchoscopy, or CT imaging.",
@@ -61,7 +64,10 @@
                         "value": "notCertain"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_gsd"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_gsd",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_as_gsd_yes___bronchoscopy": {
                 "description": "Indicates if the participant’s airway stenosis was confirmed by bronchoscopy or laryngoscopy."
@@ -109,7 +115,10 @@
                         "value": "multilevelUpperAirwayStenosis"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_as_ds_bvfi_gs": {
                 "description": "Indicates if the participant has bilateral vocal fold immobility or glottic stenosis as a subtype of airway stenosis.",
@@ -151,7 +160,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_bvfi_gs"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_bvfi_gs",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_as_etiology": {
                 "description": "Specifies the etiology or cause of the participant’s airway stenosis.",
@@ -217,7 +229,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_etiology"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_etiology",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_as_etiology_auto_immune": {
                 "description": "Indicates if the participant’s airway stenosis is caused by an autoimmune or granulomatous disease.",
@@ -247,7 +262,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_etiology_auto_immune"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_etiology_auto_immune",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_as_ds_mcg": {
                 "description": "Indicates the degree of the participant’s stenosis based on the Myer-Cotton Grade.",
@@ -283,7 +301,10 @@
                         "value": "gradeIV"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_mcg"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_mcg",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_as_ds_bc": {
                 "description": "Indicates the degree of the participant’s stenosis based on the Bogdasarian Classification.",
@@ -319,7 +340,10 @@
                         "value": "class4"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_bc"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_bc",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_as_ds_agw": {
                 "description": "Indicates the anterior glottic web classification of the participant’s airway stenosis according to Cohen.",
@@ -355,7 +379,10 @@
                         "value": "grade4"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_agw"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_agw",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_as_ds_ac": {
                 "description": "Indicates the grade of stenosis of the participant’s supraglottic stenosis according to the Aziz Classification.",
@@ -397,7 +424,10 @@
                         "value": "unsure"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_ac"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_ac",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_as_ds_ac_grade_4": {
                 "description": "Indicates the grade of supraglottic stenosis based on the Aziz Classification.",
@@ -427,7 +457,10 @@
                         "value": "grade4tg"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_ac_grade_4"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_ac_grade_4",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_as_ds_ods": {
                 "description": "Indicates the overall subjective classification of the participant’s airway stenosis.",
@@ -457,7 +490,10 @@
                         "value": "severe"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_ods"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_ods",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_as_ds_eps": {
                 "description": "Indicates the estimated percentage of stenosis from 0 to 100.",
@@ -468,7 +504,10 @@
                     "xsd:decimal"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_eps"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_eps",
+                "valueType": [
+                    "xsd:decimal"
+                ]
             },
             "diagnosis_as_treatment___no_treatment": {
                 "description": "Indicates if the participant has received no treatment for their airway stenosis."
@@ -530,7 +569,10 @@
                         "value": "ct"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_gsd_yes"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_gsd_yes",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_as_treatment": {
                 "question": {
@@ -559,7 +601,10 @@
                         "value": "in_office_treatment"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_treatment"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_treatment",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_as_treatment_surgery": {
                 "question": {
@@ -606,7 +651,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_treatment_surgery"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_treatment_surgery",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_as_treatment_in_office": {
                 "question": {
@@ -641,7 +689,10 @@
                         "value": "laser"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_treatment_in_office"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_treatment_in_office",
+                "valueType": [
+                    "xsd:string"
+                ]
             }
         }
     }

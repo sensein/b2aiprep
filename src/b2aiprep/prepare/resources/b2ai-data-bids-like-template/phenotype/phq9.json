@@ -12,7 +12,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_patient_health_questionnaire9/items/phq_9_session_id"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_patient_health_questionnaire9/items/phq_9_session_id",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "no_interest": {
                 "description": "Measures if the participant experiences a lack of interest or pleasure in daily activities.",
@@ -48,7 +51,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_patient_health_questionnaire9/items/no_interest"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_patient_health_questionnaire9/items/no_interest",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "feeling_depressed": {
                 "description": "Indicates if the participant feels depressed or down.",
@@ -84,7 +90,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_patient_health_questionnaire9/items/feeling_depressed"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_patient_health_questionnaire9/items/feeling_depressed",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "trouble_sleeping": {
                 "description": "Indicates if the participant has trouble sleeping.",
@@ -120,7 +129,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_patient_health_questionnaire9/items/trouble_sleeping"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_patient_health_questionnaire9/items/trouble_sleeping",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "no_energy": {
                 "description": "Indicates if the participant has no energy or feels fatigued.",
@@ -156,7 +168,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_patient_health_questionnaire9/items/no_energy"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_patient_health_questionnaire9/items/no_energy",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "no_appetite": {
                 "description": "Indicates if the participant has no appetite.",
@@ -192,7 +207,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_patient_health_questionnaire9/items/no_appetite"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_patient_health_questionnaire9/items/no_appetite",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "feeling_bad_self": {
                 "description": "Indicates if the participant feels bad about themselves.",
@@ -228,7 +246,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_patient_health_questionnaire9/items/feeling_bad_self"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_patient_health_questionnaire9/items/feeling_bad_self",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "trouble_concentrate": {
                 "description": "Indicates if the participant has trouble concentrating.",
@@ -264,7 +285,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_patient_health_questionnaire9/items/trouble_concentrate"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_patient_health_questionnaire9/items/trouble_concentrate",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "move_speak_slow": {
                 "description": "Indicates if the participant moves or speaks slowly.",
@@ -300,7 +324,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_patient_health_questionnaire9/items/move_speak_slow"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_patient_health_questionnaire9/items/move_speak_slow",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "thoughts_death": {
                 "description": "Indicates if the participant has thoughts of death or dying.",
@@ -336,7 +363,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_patient_health_questionnaire9/items/thoughts_death"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_patient_health_questionnaire9/items/thoughts_death",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "hard_to_work": {
                 "description": "Indicates if the participant has difficulty working due to their physical or mental health.",
@@ -372,7 +402,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_patient_health_questionnaire9/items/hard_to_work"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_patient_health_questionnaire9/items/hard_to_work",
+                "valueType": [
+                    "xsd:integer"
+                ]
             }
         }
     }

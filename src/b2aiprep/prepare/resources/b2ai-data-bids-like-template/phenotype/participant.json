@@ -12,7 +12,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_basic_information/items/record_id"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_basic_information/items/record_id",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "selected_language": {
                 "description": "The language chosen by the participant for communication during the study.",
@@ -42,7 +45,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_basic_information/items/selected_language"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_basic_information/items/selected_language",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "enrollment_institution": {
                 "description": "The institution where the participant has enrolled in the study.",
@@ -90,7 +96,10 @@
                         "value": "wcm"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_basic_information/items/enrollment_institution"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_basic_information/items/enrollment_institution",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "age": {
                 "description": "The age of the participant, measured in years.",
@@ -101,7 +110,10 @@
                     "xsd:integer"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_basic_information/items/age"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_basic_information/items/age",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "eligible_studies___1": {
                 "description": "Indicates if the participant is eligible for study 1."
@@ -140,7 +152,10 @@
                         "value": "no"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/is_control_participant"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/is_control_participant",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "laryng_cancer": {
                 "description": "Indicates if the participant has laryngeal cancer.",
@@ -164,7 +179,10 @@
                         "value": 1
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/laryng_cancer"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/laryng_cancer",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "benign_cord_lesion": {
                 "description": "Indicates if the participant has benign lesions of the vocal cord such as nodules, polyps, or cysts.",
@@ -188,7 +206,10 @@
                         "value": 1
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/benign_cord_lesion"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/benign_cord_lesion",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "rrp": {
                 "description": "Indicates if the participant has recurrent laryngeal papilloma (RRP).",
@@ -212,7 +233,10 @@
                         "value": 1
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/rrp"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/rrp",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "spas_dys": {
                 "description": "Indicates if the participant has spasmodic dysphonia or laryngeal tremor.",
@@ -236,7 +260,10 @@
                         "value": 1
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/spas_dys"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/spas_dys",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "voc_fold_paralysis": {
                 "description": "Indicates if the participant has unilateral vocal fold paralysis.",
@@ -260,7 +287,10 @@
                         "value": 1
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/voc_fold_paralysis"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/voc_fold_paralysis",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "alz_dementia_mci": {
                 "description": "Indicates if the participant has Alzheimer’s, dementia, or mild cognitive impairment.",
@@ -284,7 +314,10 @@
                         "value": 1
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/alz_dementia_mci"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/alz_dementia_mci",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "als": {
                 "description": "Indicates if the participant has Amyotrophic Lateral Sclerosis (ALS).",
@@ -308,7 +341,10 @@
                         "value": 1
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/als"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/als",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "parkinsons": {
                 "description": "Indicates if the participant has Parkinson’s disease.",
@@ -332,7 +368,10 @@
                         "value": 1
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/parkinsons"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/parkinsons",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "alcohol_subst_abuse": {
                 "description": "Indicates if the participant has alcohol or substance use disorder.",
@@ -356,7 +395,10 @@
                         "value": 1
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/alcohol_subst_abuse"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/alcohol_subst_abuse",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "gad": {
                 "description": "Indicates if the participant has an anxiety disorder.",
@@ -380,7 +422,10 @@
                         "value": 1
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/gad"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/gad",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "add_adhd": {
                 "description": "Indicates if the participant has Attention-Deficit/Hyperactivity Disorder (ADHD).",
@@ -404,7 +449,10 @@
                         "value": 1
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/add_adhd"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/add_adhd",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "asd": {
                 "description": "Indicates if the participant has Autism Spectrum Disorder (ASD).",
@@ -428,7 +476,10 @@
                         "value": 1
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/asd"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/asd",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "bipolar": {
                 "description": "Indicates if the participant has Bipolar Disorder.",
@@ -452,7 +503,10 @@
                         "value": 1
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/bipolar"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/bipolar",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "bpd": {
                 "description": "Indicates if the participant has Borderline Personality Disorder (BPD).",
@@ -476,7 +530,10 @@
                         "value": 1
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/bpd"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/bpd",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "depression": {
                 "description": "Indicates if the participant has depression or major depressive disorder.",
@@ -500,7 +557,10 @@
                         "value": 1
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/depression"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/depression",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "ed": {
                 "description": "Indicates if the participant has an eating disorder (ED).",
@@ -524,7 +584,10 @@
                         "value": 1
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/ed"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/ed",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "insomnia": {
                 "description": "Indicates if the participant has insomnia or other sleep disorders.",
@@ -548,7 +611,10 @@
                         "value": 1
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/insomnia"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/insomnia",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "ocd": {
                 "description": "Indicates if the participant has Obsessive-Compulsive Disorder (OCD).",
@@ -572,7 +638,10 @@
                         "value": 1
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/ocd"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/ocd",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "panic": {
                 "description": "Indicates if the participant has panic disorder.",
@@ -596,7 +665,10 @@
                         "value": 1
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/panic"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/panic",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "ptsd": {
                 "description": "Indicates if the participant has Post-Traumatic Stress Disorder (PTSD).",
@@ -620,7 +692,10 @@
                         "value": 1
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/ptsd"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/ptsd",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "schizophrenia": {
                 "description": "Indicates if the participant has schizophrenia.",
@@ -644,7 +719,10 @@
                         "value": 1
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/schizophrenia"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/schizophrenia",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "soc_anx_dis": {
                 "description": "Indicates if the participant has social anxiety disorder.",
@@ -668,7 +746,10 @@
                         "value": 1
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/soc_anx_dis"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/soc_anx_dis",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "other_psych": {
                 "description": "Indicates if the participant has other psychiatric disorders.",
@@ -692,7 +773,10 @@
                         "value": 1
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/other_psych"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/other_psych",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "asthma": {
                 "description": "Indicates if the participant has asthma.",
@@ -716,7 +800,10 @@
                         "value": 1
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/asthma"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/asthma",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "airway_stenosis": {
                 "description": "Indicates if the participant has airway stenosis, such as bilateral vocal fold paralysis or laryngeal stenosis.",
@@ -740,7 +827,10 @@
                         "value": 1
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/airway_stenosis"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/airway_stenosis",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "chronic_cough": {
                 "description": "Indicates if the participant has chronic cough.",
@@ -764,7 +854,10 @@
                         "value": 1
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/chronic_cough"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/chronic_cough",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "copd": {
                 "description": "Indicates if the participant has Chronic Obstructive Pulmonary Disease (COPD).",
@@ -788,7 +881,10 @@
                         "value": 1
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/copd"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/copd",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "osa": {
                 "description": "Indicates if the participant has obstructive sleep apnea (OSA).",
@@ -812,7 +908,10 @@
                         "value": 1
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/osa"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/osa",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "subjectparticipant_eligible_studies_complete": {
                 "description": "Indicates if the eligibility screening for participant studies is complete.",
@@ -862,7 +961,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_select_language"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_select_language",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "ef_any_vision_related_req": {
                 "description": "Indicates if the participant has any vision-related requirements to assist with reading text in the study.",
@@ -886,7 +988,10 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_any_vision_related_req"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_any_vision_related_req",
+                "valueType": [
+                    "xsd:boolean"
+                ]
             },
             "ef_vision_a11y_options___1": {
                 "description": "Indicates if the participant requires changes to the font size as part of the study’s accessibility features."
@@ -922,7 +1027,10 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_any_hearing_related_req"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_any_hearing_related_req",
+                "valueType": [
+                    "xsd:boolean"
+                ]
             },
             "ef_hearing_a11y_options___1": {
                 "description": "Indicates if the participant requires an increase in volume as part of the study’s accessibility features."
@@ -955,7 +1063,10 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_any_physical_challenges"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_any_physical_challenges",
+                "valueType": [
+                    "xsd:boolean"
+                ]
             },
             "ef_physical_a11y_options___1": {
                 "description": "Indicates if the participant requires an increase in button size as part of the study’s accessibility features."
@@ -988,7 +1099,10 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_any_cognitive_challeges"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_any_cognitive_challeges",
+                "valueType": [
+                    "xsd:boolean"
+                ]
             },
             "ef_cognitive_a11y_options___1": {
                 "description": "Indicates if the participant prefers to have the questions read aloud using text-to-speech as part of the study’s accessibility features."
@@ -1042,7 +1156,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_primary_language"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_primary_language",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "ef_primary_language_other": {
                 "description": "If the participant's primary language is not listed, this field specifies the language.",
@@ -1053,7 +1170,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_primary_language_other"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_primary_language_other",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "ef_fluent_languages___1": {
                 "description": "Indicates if the participant speaks no additional languages fluently."
@@ -1079,7 +1199,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_fluent_language_other"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_fluent_language_other",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_vfp_gsd": {
                 "description": "Indicates if the participant has vocal fold paralysis (VFP) confirmed by laryngoscopy or stroboscopy.",
@@ -1109,7 +1232,10 @@
                         "value": 2
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_vfp_gsd"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_vfp_gsd",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "diagnosis_vfp_etiology": {
                 "description": "Specifies the etiology or cause of the participant’s vocal fold paralysis (VFP).",
@@ -1151,7 +1277,10 @@
                         "value": 5
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_vfp_etiology"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_vfp_etiology",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "diagnosis_vfp_iatrogenic": {
                 "description": "Indicates if the participant's vocal fold paralysis (VFP) is related to surgery or intubation.",
@@ -1205,7 +1334,10 @@
                         "value": 7
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_vfp_iatrogenic"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_vfp_iatrogenic",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "diagnosis_vfp_tumor": {
                 "description": "Indicates if the participant’s vocal fold paralysis (VFP) is caused by a tumor invading the recurrent laryngeal nerve (RLN).",
@@ -1235,7 +1367,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_vfp_tumor"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_vfp_tumor",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "diagnosis_vfp_dse": {
                 "description": "Specifies the degree of the participant’s glottic gap.",
@@ -1271,7 +1406,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_vfp_dse"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_vfp_dse",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "diagnosis_degree_os": {
                 "description": "Indicates the overall severity of the participant’s vocal fold paralysis (VFP).",
@@ -1301,7 +1439,12 @@
                         "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_os"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_os",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_degree_os_2": {
                 "description": "Indicates an alternative measure of the overall severity of the participant’s condition.",
@@ -1325,7 +1468,10 @@
                         "value": 2
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_os_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_os_2",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "diagnosis_degree_r": {
                 "description": "Indicates the roughness of the participant’s voice.",
@@ -1355,7 +1501,12 @@
                         "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_r"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_r",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_degree_r_2": {
                 "description": "Indicates an alternative measure of the roughness of the participant’s voice.",
@@ -1379,7 +1530,10 @@
                         "value": 2
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_r_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_r_2",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "diagnosis_degree_b": {
                 "description": "Indicates the breathiness of the participant’s voice.",
@@ -1409,7 +1563,12 @@
                         "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_b"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_b",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_degree_b_2": {
                 "description": "Indicates an alternative measure of the breathiness of the participant’s voice.",
@@ -1433,7 +1592,10 @@
                         "value": 2
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_b_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_b_2",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "diagnosis_degree_s": {
                 "description": "Indicates the strain in the participant’s voice.",
@@ -1463,7 +1625,12 @@
                         "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_s"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_s",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_degree_s_2": {
                 "description": "Indicates an alternative measure of the strain in the participant’s voice.",
@@ -1487,7 +1654,10 @@
                         "value": 2
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_s_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_s_2",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "diagnosis_degree_p": {
                 "description": "Indicates the pitch of the participant’s voice.",
@@ -1517,7 +1687,12 @@
                         "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_p"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_p",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_degree_p_2": {
                 "description": "Indicates an alternative measure of the pitch of the participant’s voice.",
@@ -1541,7 +1716,10 @@
                         "value": 2
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_p_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_p_2",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "diagnosis_degree_l": {
                 "description": "Indicates the loudness of the participant’s voice.",
@@ -1571,7 +1749,12 @@
                         "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_l"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_l",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_degree_l_2": {
                 "description": "Indicates an alternative measure of the loudness of the participant’s voice.",
@@ -1595,7 +1778,10 @@
                         "value": 2
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_l_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_l_2",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "diagnosis_degree_comments": {
                 "description": "Provides additional comments about the resonance of the participant’s voice.",
@@ -1619,7 +1805,10 @@
                         "value": 2
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_comments"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_comments",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "diagnosis_ld_qete___laryngologist": {
                 "description": "Indicates if the participant's laryngeal dystonia was determined by a laryngologist as part of the qualitative expert team evaluation."
@@ -1697,7 +1886,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_etiology"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_etiology",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_ld_etiology_cc___essential_tremor_of_the_hands": {
                 "description": "Indicates if the participant has an essential tremor of the hands."
@@ -1742,7 +1934,12 @@
                         "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_os_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_os_1",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_ld_degree_os_2": {
                 "description": "Indicates an alternative measure of the participant's overall severity of laryngeal dystonia.",
@@ -1766,7 +1963,10 @@
                         "value": "intermittent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_os_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_os_2",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_ld_degree_r_1": {
                 "description": "Indicates the roughness of the participant’s voice as a result of laryngeal dystonia.",
@@ -1796,7 +1996,12 @@
                         "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_r_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_r_1",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_ld_degree_r_2": {
                 "description": "Indicates an alternative measure of the roughness of the participant’s voice due to laryngeal dystonia.",
@@ -1820,7 +2025,10 @@
                         "value": "intermittent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_r_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_r_2",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_ld_degree_b_1": {
                 "description": "Indicates the breathiness of the participant’s voice as a result of laryngeal dystonia.",
@@ -1850,7 +2058,12 @@
                         "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_b_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_b_1",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_ld_degree_b_2": {
                 "description": "Indicates an alternative measure of the breathiness of the participant’s voice due to laryngeal dystonia.",
@@ -1874,7 +2087,10 @@
                         "value": "intermittent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_b_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_b_2",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_ld_degree_s_1": {
                 "description": "Indicates the strain in the participant’s voice as a result of laryngeal dystonia.",
@@ -1904,7 +2120,12 @@
                         "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_s_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_s_1",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_ld_degree_s_2": {
                 "description": "Indicates an alternative measure of the strain in the participant’s voice due to laryngeal dystonia.",
@@ -1928,7 +2149,10 @@
                         "value": "intermittent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_s_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_s_2",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_ld_degree_p_1": {
                 "description": "Indicates the pitch of the participant’s voice as a result of laryngeal dystonia.",
@@ -1958,7 +2182,12 @@
                         "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_p_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_p_1",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_ld_degree_p_2": {
                 "description": "Indicates an alternative measure of the pitch of the participant’s voice due to laryngeal dystonia.",
@@ -1982,7 +2211,10 @@
                         "value": "intermittent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_p_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_p_2",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_ld_degree_l_1": {
                 "description": "Indicates the loudness of the participant’s voice as a result of laryngeal dystonia.",
@@ -2012,7 +2244,12 @@
                         "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_l_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_l_1",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_ld_degree_l_2": {
                 "description": "Indicates an alternative measure of the loudness of the participant’s voice due to laryngeal dystonia.",
@@ -2036,7 +2273,10 @@
                         "value": "intermittent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_l_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_l_2",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_ld_degree_comments": {
                 "description": "Provides additional comments about the resonance of the participant’s voice due to laryngeal dystonia.",
@@ -2060,7 +2300,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_comments"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_degree_comments",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_ld_treatment": {
                 "description": "Indicates if the participant has undergone any treatment for laryngeal dystonia.",
@@ -2084,7 +2327,10 @@
                         "value": "no"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_treatment"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_treatment",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_ld_treatment_select___botox_injections": {
                 "description": "Indicates if the participant has received botox injections as a treatment for laryngeal dystonia."
@@ -2113,7 +2359,10 @@
                     "xsd:decimal"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_treatment_bi_li"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_treatment_bi_li",
+                "valueType": [
+                    "xsd:decimal"
+                ]
             },
             "diagnois_pl_gsd_ls": {
                 "description": "Indicates if the participant has a precancerous vocal fold lesion confirmed by laryngoscopy or stroboscopy.",
@@ -2143,7 +2392,10 @@
                         "value": "notCertain"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnois_pl_gsd_ls"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnois_pl_gsd_ls",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnois_pl_gsd_bp": {
                 "description": "Indicates if the participant has a precancerous vocal fold lesion confirmed by biopsy or pathology.",
@@ -2173,7 +2425,10 @@
                         "value": "notCertain"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnois_pl_gsd_bp"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnois_pl_gsd_bp",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_pl_ds___keratosis": {
                 "description": "Indicates if the participant has been diagnosed with keratosis."
@@ -2209,7 +2464,10 @@
                         "value": "withoutDysplasia"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_ds_l"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_ds_l",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_pl_ds_l_wd_g": {
                 "description": "Indicates if the participant has leukoplakia with dysplasia.",
@@ -2239,7 +2497,10 @@
                         "value": "highGrade"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_ds_l_wd_g"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_ds_l_wd_g",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_pl_ds_e": {
                 "description": "Indicates if the participant has erythroplakia.",
@@ -2263,7 +2524,10 @@
                         "value": "withoutDysplasia"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_ds_e"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_ds_e",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_pl_ds_e_wd_g": {
                 "description": "Indicates if the participant has erythroplakia with dysplasia.",
@@ -2293,7 +2557,10 @@
                         "value": "highGrade"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_ds_e_wd_g"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_ds_e_wd_g",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_pl_etiology___past_or_present_smoking": {
                 "description": "Indicates if the participant has a history of smoking as a risk factor for their precancerous lesion."
@@ -2347,7 +2614,12 @@
                         "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_os_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_os_1",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_pl_degree_os_2": {
                 "description": "Indicates an alternative measure of the overall severity of the participant’s precancerous lesion.",
@@ -2371,7 +2643,10 @@
                         "value": "intermittent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_os_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_os_2",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_pl_degree_r_1": {
                 "description": "Indicates the roughness of the participant’s voice due to the precancerous lesion.",
@@ -2401,7 +2676,12 @@
                         "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_r_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_r_1",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_pl_degree_r_2": {
                 "description": "Indicates an alternative measure of the roughness of the participant’s voice due to the precancerous lesion.",
@@ -2425,7 +2705,10 @@
                         "value": "intermittent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_r_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_r_2",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_pl_degree_b_1": {
                 "description": "Indicates the breathiness of the participant’s voice due to the precancerous lesion.",
@@ -2455,7 +2738,12 @@
                         "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_b_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_b_1",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_pl_degree_b_2": {
                 "description": "Indicates an alternative measure of the breathiness of the participant’s voice due to the precancerous lesion.",
@@ -2479,7 +2767,10 @@
                         "value": "intermittent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_b_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_b_2",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_pl_degree_s_1": {
                 "description": "Indicates the strain in the participant’s voice due to the precancerous lesion.",
@@ -2509,7 +2800,12 @@
                         "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_s_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_s_1",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_pl_degree_s_2": {
                 "description": "Indicates an alternative measure of the strain in the participant’s voice due to the precancerous lesion.",
@@ -2533,7 +2829,10 @@
                         "value": "intermittent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_s_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_s_2",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_pl_degree_p_1": {
                 "description": "Indicates the pitch of the participant’s voice due to the precancerous lesion.",
@@ -2563,7 +2862,12 @@
                         "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_p_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_p_1",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_pl_degree_p_2": {
                 "description": "Indicates an alternative measure of the pitch of the participant’s voice due to the precancerous lesion.",
@@ -2587,7 +2891,10 @@
                         "value": "intermittent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_p_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_p_2",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_pl_degree_l_1": {
                 "description": "Indicates the loudness of the participant’s voice due to the precancerous lesion.",
@@ -2617,7 +2924,12 @@
                         "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_l_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_l_1",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_pl_degree_l_2": {
                 "description": "Indicates an alternative measure of the loudness of the participant’s voice due to the precancerous lesion.",
@@ -2641,7 +2953,10 @@
                         "value": "intermittent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_l_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_l_2",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_pl_degree_comments": {
                 "description": "Provides additional comments about the resonance of the participant’s voice due to the precancerous lesion.",
@@ -2665,7 +2980,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_comments"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_comments",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_pl_treatment": {
                 "description": "Indicates if the participant has undergone any treatment for their precancerous lesion.",
@@ -2689,7 +3007,10 @@
                         "value": "no"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_treatment"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_treatment",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_pl_treatment_select___surveillance_only": {
                 "description": "Indicates if the participant is under surveillance only as treatment for their precancerous lesion."
@@ -2740,7 +3061,10 @@
                         "value": "notCertain"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnois_lc_gsd_sll"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnois_lc_gsd_sll",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_lc_gsd_bpr": {
                 "description": "Indicates if the participant has laryngeal cancer confirmed by biopsy or pathology report.",
@@ -2770,7 +3094,10 @@
                         "value": "notCertain"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_gsd_bpr"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_gsd_bpr",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_lc_gsd_uots___ct_neck": {
                 "description": "Indicates if the participant has undergone a CT of the neck as part of their laryngeal cancer diagnosis."
@@ -2878,7 +3205,10 @@
                         "value": "unknownYet"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_ds_t_stage"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_ds_t_stage",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_lc_ds_n_stage": {
                 "description": "Indicates the N stage of the participant’s laryngeal cancer according to the AJCC Classification.",
@@ -2932,7 +3262,10 @@
                         "value": "unknownYet"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_ds_n_stage"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_ds_n_stage",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_lc_ds_m_stage": {
                 "description": "Indicates the M stage of the participant’s laryngeal cancer according to the AJCC Classification.",
@@ -2956,7 +3289,10 @@
                         "value": "m1"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_ds_m_stage"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_ds_m_stage",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_lc_degree_os_1": {
                 "description": "Indicates the overall severity of the participant’s laryngeal cancer.",
@@ -2986,7 +3322,12 @@
                         "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_os_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_os_1",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_lc_degree_os_2": {
                 "description": "Indicates an alternative measure of the overall severity of the participant’s laryngeal cancer.",
@@ -3010,7 +3351,10 @@
                         "value": "intermittent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_os_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_os_2",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_lc_degree_r_1": {
                 "description": "Indicates the roughness of the participant’s voice due to laryngeal cancer.",
@@ -3040,7 +3384,12 @@
                         "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_r_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_r_1",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_lc_degree_r_2": {
                 "description": "Indicates an alternative measure of the roughness of the participant’s voice due to laryngeal cancer.",
@@ -3064,7 +3413,10 @@
                         "value": "intermittent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_r_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_r_2",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_lc_degree_b_1": {
                 "description": "Indicates the breathiness of the participant’s voice due to laryngeal cancer.",
@@ -3094,7 +3446,12 @@
                         "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_b_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_b_1",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_lc_degree_b_2": {
                 "description": "Indicates an alternative measure of the breathiness of the participant’s voice due to laryngeal cancer.",
@@ -3118,7 +3475,10 @@
                         "value": "intermittent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_b_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_b_2",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_lc_degree_s_1": {
                 "description": "Indicates the strain in the participant’s voice due to laryngeal cancer.",
@@ -3148,7 +3508,12 @@
                         "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_s_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_s_1",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_lc_degree_s_2": {
                 "description": "Indicates an alternative measure of the strain in the participant’s voice due to laryngeal cancer.",
@@ -3172,7 +3537,10 @@
                         "value": "intermittent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_s_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_s_2",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_lc_degree_p_1": {
                 "description": "Indicates the pitch of the participant’s voice due to laryngeal cancer.",
@@ -3202,7 +3570,12 @@
                         "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_p_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_p_1",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_lc_degree_p_2": {
                 "description": "Indicates an alternative measure of the pitch of the participant’s voice due to laryngeal cancer.",
@@ -3226,7 +3599,10 @@
                         "value": "intermittent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_p_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_p_2",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_lc_degree_l_1": {
                 "description": "Indicates the loudness of the participant’s voice due to laryngeal cancer.",
@@ -3256,7 +3632,12 @@
                         "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_l_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_l_1",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_lc_degree_l_2": {
                 "description": "Indicates an alternative measure of the loudness of the participant’s voice due to laryngeal cancer.",
@@ -3280,7 +3661,10 @@
                         "value": "intermittent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_l_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_l_2",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_lc_degree_comments": {
                 "description": "Provides additional comments about the resonance of the participant’s voice due to laryngeal cancer.",
@@ -3304,7 +3688,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_comments"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_degree_comments",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_as_ds_ccsr": {
                 "description": "Indicates if the participant’s cancer is causing stridor at rest.",
@@ -3340,7 +3727,10 @@
                         "value": "severeStridor"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_as_ds_ccsr"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_as_ds_ccsr",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_lc_treatment": {
                 "description": "Indicates if the participant has undergone any treatment for laryngeal cancer.",
@@ -3364,7 +3754,10 @@
                         "value": "no"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_treatment"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_treatment",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_lc_treatment_select___radiation": {
                 "description": "Indicates if the participant has undergone radiation as treatment for laryngeal cancer."
@@ -3418,7 +3811,10 @@
                         "value": "notCertain"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnois_bl_gsd"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnois_bl_gsd",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_bl_ds": {
                 "description": "Indicates the participant’s diagnosis of a benign lesion.",
@@ -3484,7 +3880,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_ds"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_ds",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_bl_etiology": {
                 "description": "Specifies the etiology or cause of the participant’s benign lesion.",
@@ -3514,7 +3913,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_etiology"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_etiology",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_bl_ds_ll": {
                 "description": "Indicates the location of the participant’s benign lesion.",
@@ -3544,7 +3946,10 @@
                         "value": "bothVocalFolds"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_ds_ll"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_ds_ll",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_bl_degree_os_1": {
                 "description": "Indicates the overall severity of the participant’s benign lesion.",
@@ -3574,7 +3979,12 @@
                         "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_os_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_os_1",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_bl_degree_os_2": {
                 "description": "Indicates an alternative measure of the overall severity of the participant’s benign lesion.",
@@ -3598,7 +4008,10 @@
                         "value": "intermittent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_os_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_os_2",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_bl_degree_r_1": {
                 "description": "Indicates the roughness of the participant’s voice due to the benign lesion.",
@@ -3628,7 +4041,12 @@
                         "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_r_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_r_1",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_bl_degree_r_2": {
                 "description": "Indicates an alternative measure of the roughness of the participant’s voice due to the benign lesion.",
@@ -3652,7 +4070,10 @@
                         "value": "intermittent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_r_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_r_2",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_bl_degree_b_1": {
                 "description": "Indicates the breathiness of the participant’s voice due to the benign lesion.",
@@ -3682,7 +4103,12 @@
                         "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_b_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_b_1",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_bl_degree_b_2": {
                 "description": "Indicates an alternative measure of the breathiness of the participant’s voice due to the benign lesion.",
@@ -3706,7 +4132,10 @@
                         "value": "intermittent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_b_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_b_2",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_bl_degree_s_1": {
                 "description": "Indicates the strain in the participant’s voice due to the benign lesion.",
@@ -3736,7 +4165,12 @@
                         "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_s_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_s_1",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_bl_degree_s_2": {
                 "description": "Indicates an alternative measure of the strain in the participant’s voice due to the benign lesion.",
@@ -3760,7 +4194,10 @@
                         "value": "intermittent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_s_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_s_2",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_bl_degree_p_1": {
                 "description": "Indicates the pitch of the participant’s voice due to the benign lesion.",
@@ -3790,7 +4227,12 @@
                         "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_p_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_p_1",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_bl_degree_p_2": {
                 "description": "Indicates an alternative measure of the pitch of the participant’s voice due to the benign lesion.",
@@ -3814,7 +4256,10 @@
                         "value": "intermittent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_p_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_p_2",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_bl_degree_l_1": {
                 "description": "Indicates the loudness of the participant’s voice due to the benign lesion.",
@@ -3844,7 +4289,12 @@
                         "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_l_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_l_1",
+                "maxValue": 100,
+                "minValue": 0,
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_bl_degree_l_2": {
                 "description": "Indicates an alternative measure of the loudness of the participant’s voice due to the benign lesion.",
@@ -3868,7 +4318,10 @@
                         "value": "intermittent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_l_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_l_2",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_bl_degree_comments": {
                 "description": "Provides additional comments about the resonance of the participant’s voice due to the benign lesion.",
@@ -3892,7 +4345,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_comments"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_comments",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_bl_treatment": {
                 "description": "Indicates if the participant has undergone any treatment for the benign lesion.",
@@ -3916,7 +4372,10 @@
                         "value": "no"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_treatment"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_treatment",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_bl_treatment_select___voice_or_speech_therapy": {
                 "description": "Indicates if the participant has undergone voice or speech therapy as treatment for the benign lesion."
@@ -3952,7 +4411,10 @@
                         "value": "withoutLaser"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_treatment_lm"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_treatment_lm",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_bipolar_gsd": {
                 "description": "Specifies the participant’s diagnosis of bipolar disorder.",
@@ -3988,7 +4450,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_gsd"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_gsd",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_bipolar_gsd_interview": {
                 "description": "Indicates if a structured clinical interview was conducted for diagnosing the participant’s bipolar disorder.",
@@ -4012,7 +4477,10 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_gsd_interview"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_gsd_interview",
+                "valueType": [
+                    "xsd:boolean"
+                ]
             },
             "diagnosis_bipolar_gsd_oqu": {
                 "description": "Indicates if an objective questionnaire was used in the diagnosis of the participant’s bipolar disorder.",
@@ -4036,7 +4504,10 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_gsd_oqu"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_gsd_oqu",
+                "valueType": [
+                    "xsd:boolean"
+                ]
             },
             "diagnosis_bipolar_gsd_oquw": {
                 "description": "Specifies which objective questionnaire was used in diagnosing the participant’s bipolar disorder.",
@@ -4072,7 +4543,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_gsd_oquw"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_gsd_oquw",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_bipolar_subtype_active": {
                 "description": "Specifies the active subtype of the participant’s bipolar disorder.",
@@ -4096,7 +4570,10 @@
                         "value": "recurrent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_subtype_active"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_subtype_active",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_bipolar_psychotic": {
                 "description": "Indicates if the participant has psychotic symptoms associated with bipolar disorder.",
@@ -4120,7 +4597,10 @@
                         "value": "without"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_psychotic"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_psychotic",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_bipolar_severity": {
                 "description": "Indicates the severity of the participant’s bipolar disorder.",
@@ -4150,7 +4630,10 @@
                         "value": "severe"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_severity"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_severity",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_depression_gsd": {
                 "description": "Indicates the participant’s diagnosis of depression.",
@@ -4192,7 +4675,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_depression_gsd"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_depression_gsd",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_depression_clinical_subcategory": {
                 "description": "Specifies the subcategory of clinical depression, such as major depressive disorder, for the participant.",
@@ -4222,7 +4708,10 @@
                         "value": "atypical_depression"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_depression_clinical_subcategory"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_depression_clinical_subcategory",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_depression_gsd_interview": {
                 "description": "Indicates if a structured clinical interview was conducted for diagnosing the participant’s depression.",
@@ -4246,7 +4735,10 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_depression_gsd_interview"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_depression_gsd_interview",
+                "valueType": [
+                    "xsd:boolean"
+                ]
             },
             "diagnosis_depression_gsd_oqu": {
                 "description": "Indicates if an objective questionnaire was used in the diagnosis of the participant’s depression.",
@@ -4270,7 +4762,10 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_depression_gsd_oqu"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_depression_gsd_oqu",
+                "valueType": [
+                    "xsd:boolean"
+                ]
             },
             "diagnosis_depression_gsd_oquw": {
                 "description": "Specifies which objective questionnaire was used in diagnosing the participant’s depression.",
@@ -4306,7 +4801,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_depression_gsd_oquw"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_depression_gsd_oquw",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_bipolar_subtype_active_depression": {
                 "description": "Specifies the active subtype of depression in the participant’s bipolar disorder.",
@@ -4330,7 +4828,10 @@
                         "value": "recurrent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_bipolar_subtype_active_depression"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_bipolar_subtype_active_depression",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_bipolar_psychotic_depression": {
                 "description": "Indicates if the participant has psychotic symptoms associated with the depressive phase of their bipolar disorder.",
@@ -4354,7 +4855,10 @@
                         "value": "without"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_bipolar_psychotic_depression"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_bipolar_psychotic_depression",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_bipolar_severity_depression": {
                 "description": "Indicates the severity of the participant’s depressive phase of bipolar disorder.",
@@ -4384,7 +4888,10 @@
                         "value": "severe"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_bipolar_severity_depression"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_bipolar_severity_depression",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_as_pft": {
                 "description": "Indicates if the participant has undergone pulmonary function testing in the past three months.",
@@ -4414,7 +4921,10 @@
                         "value": "notCertain"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_pft"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_pft",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_as_gsd": {
                 "description": "Indicates if the participant has airway stenosis confirmed by laryngoscopy, bronchoscopy, or CT imaging.",
@@ -4444,7 +4954,10 @@
                         "value": "notCertain"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_gsd"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_gsd",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_as_gsd_yes___bronchoscopy": {
                 "description": "Indicates if the participant’s airway stenosis was confirmed by bronchoscopy or laryngoscopy."
@@ -4492,7 +5005,10 @@
                         "value": "multilevelUpperAirwayStenosis"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_as_ds_bvfi_gs": {
                 "description": "Indicates if the participant has bilateral vocal fold immobility or glottic stenosis as a subtype of airway stenosis.",
@@ -4534,7 +5050,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_bvfi_gs"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_bvfi_gs",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_as_etiology": {
                 "description": "Specifies the etiology or cause of the participant’s airway stenosis.",
@@ -4600,7 +5119,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_etiology"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_etiology",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_as_etiology_auto_immune": {
                 "description": "Indicates if the participant’s airway stenosis is caused by an autoimmune or granulomatous disease.",
@@ -4630,7 +5152,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_etiology_auto_immune"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_etiology_auto_immune",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_as_ds_mcg": {
                 "description": "Indicates the degree of the participant’s stenosis based on the Myer-Cotton Grade.",
@@ -4666,7 +5191,10 @@
                         "value": "gradeIV"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_mcg"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_mcg",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_as_ds_bc": {
                 "description": "Indicates the degree of the participant’s stenosis based on the Bogdasarian Classification.",
@@ -4702,7 +5230,10 @@
                         "value": "class4"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_bc"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_bc",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_as_ds_agw": {
                 "description": "Indicates the anterior glottic web classification of the participant’s airway stenosis according to Cohen.",
@@ -4738,7 +5269,10 @@
                         "value": "grade4"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_agw"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_agw",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_as_ds_ac": {
                 "description": "Indicates the grade of stenosis of the participant’s supraglottic stenosis according to the Aziz Classification.",
@@ -4780,7 +5314,10 @@
                         "value": "unsure"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_ac"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_ac",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_as_ds_ac_grade_4": {
                 "description": "Indicates the grade of supraglottic stenosis based on the Aziz Classification.",
@@ -4810,7 +5347,10 @@
                         "value": "grade4tg"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_ac_grade_4"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_ac_grade_4",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_as_ds_ods": {
                 "description": "Indicates the overall subjective classification of the participant’s airway stenosis.",
@@ -4840,7 +5380,10 @@
                         "value": "severe"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_ods"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_ods",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_as_ds_eps": {
                 "description": "Indicates the estimated percentage of stenosis from 0 to 100.",
@@ -4851,7 +5394,10 @@
                     "xsd:decimal"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_eps"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_eps",
+                "valueType": [
+                    "xsd:decimal"
+                ]
             },
             "diagnosis_as_treatment___no_treatment": {
                 "description": "Indicates if the participant has received no treatment for their airway stenosis."
@@ -4920,7 +5466,10 @@
                         "value": "notCertain"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_causes"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_causes",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_alz_dementia_mci_dt": {
                 "description": "Specifies the type of dementia or cognitive impairment in the participant.",
@@ -4974,7 +5523,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_dt"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_dt",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_alz_dementia_mci_etiology___genetic_factors": {
                 "description": "Indicates if genetic factors are suspected or known to be the etiology of the participant’s cognitive impairment or dementia."
@@ -5040,7 +5592,10 @@
                         "value": "cdr3"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ds_cdr"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ds_cdr",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_alz_dementia_mci_ca_rudas_score": {
                 "description": "Specifies the participant’s Rowland Universal Dementia Assessment Scale (RUDAS) score.",
@@ -5051,7 +5606,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ca_rudas_score"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ca_rudas_score",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_alz_dementia_mci_ca_mmse_score": {
                 "description": "Specifies the participant’s Mini-Mental State Examination (MMSE) score.",
@@ -5062,7 +5620,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ca_mmse_score"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ca_mmse_score",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_alz_dementia_mci_ca_moca_score": {
                 "description": "Specifies the participant’s Montreal Cognitive Assessment (MoCA) score.",
@@ -5073,7 +5634,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ca_moca_score"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ca_moca_score",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_alz_dementia_mci_ca_adas_cog_score": {
                 "description": "Specifies the participant’s Alzheimer’s Disease Assessment Scale-Cognitive Subscale (ADAS-Cog) score.",
@@ -5084,7 +5648,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ca_adas_cog_score"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ca_adas_cog_score",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_alz_dementia_mci_ca_other": {
                 "description": "Specifies if another cognitive assessment tool was used for the participant.",
@@ -5095,7 +5662,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ca_other"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ca_other",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_alz_dementia_mci_ca_other_score": {
                 "description": "Specifies the score from another cognitive assessment tool used for the participant.",
@@ -5106,7 +5676,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ca_other_score"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ca_other_score",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_alz_dementia_mci_treatment_obtained": {
                 "description": "Indicates if the participant has undergone any treatment for Alzheimer’s disease, cognitive impairment, or other types of dementia.",
@@ -5130,7 +5703,10 @@
                         "value": "no"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_treatment_obtained"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_treatment_obtained",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_alz_dementia_mci_treatment_obtained_yes___medications": {
                 "description": "Indicates if the participant has taken medications as treatment for Alzheimer’s disease or cognitive impairment."
@@ -5186,7 +5762,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_gsd_category_1_calculation"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_gsd_category_1_calculation",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_parkinsons_gsd_category_2___cerebellar_abnormalities": {
                 "description": "Indicates if the participant has cerebellar abnormalities as part of the exclusion criteria for Parkinson’s disease diagnosis."
@@ -5224,7 +5803,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_gsd_category_2_calculation"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_gsd_category_2_calculation",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_parkinsons_gsd_category_3___response_dopaminergic_therapy": {
                 "description": "Indicates if the participant's Parkinson's diagnosis includes response to dopaminergic therapy under GSD category 3."
@@ -5247,7 +5829,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_gsd_category_3_calculation"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_gsd_category_3_calculation",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_parkinsons_gsd_calculation": {
                 "description": "Calculated score for Parkinson's disease diagnosis based on the GSD (Global Severity of Disease) scale.",
@@ -5258,7 +5843,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_gsd_calculation"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_gsd_calculation",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_parkinsons_disease_subtype": {
                 "description": "Indicates the subtype of Parkinson's disease diagnosed in the participant.",
@@ -5312,7 +5900,10 @@
                         "value": "notSure"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_disease_subtype"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_disease_subtype",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_parkinsons_etiology": {
                 "description": "Indicates the etiology or cause of the participant's Parkinson's diagnosis.",
@@ -5342,7 +5933,10 @@
                         "value": "environmentalFactors"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_etiology"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_etiology",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_parkinsons_ds": {
                 "description": "Indicates the diagnostic subcategory of the participant's Parkinson's disease.",
@@ -5384,7 +5978,10 @@
                         "value": "stage5"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_ds"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_ds",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_parkinsons_ma___updrs": {
                 "description": "Indicates the participant's motor assessment score on the UPDRS (Unified Parkinson's Disease Rating Scale)."
@@ -5426,7 +6023,10 @@
                         "value": "partIV"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_ma_uprds"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_ma_uprds",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_parkinsons_ma_updrs_part_i_score": {
                 "description": "Score from Part I of the MDS-UPDRS, assessing non-motor aspects of daily living.",
@@ -5437,7 +6037,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_ma_updrs_part_i_score"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_ma_updrs_part_i_score",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_parkinsons_ma_updrs_part_ii_score": {
                 "description": "Score from Part II of the MDS-UPDRS, assessing the participant's activities of daily living.",
@@ -5448,7 +6051,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_ma_updrs_part_ii_score"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_ma_updrs_part_ii_score",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_parkinsons_ma_updrs_part_iii_score": {
                 "description": "Score from Part III of the MDS-UPDRS, assessing motor symptoms in Parkinson's disease.",
@@ -5459,7 +6065,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_ma_updrs_part_iii_score"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_ma_updrs_part_iii_score",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_parkinsons_ma_updrs_part_iv_score": {
                 "description": "Score from Part IV of the MDS-UPDRS, assessing complications of therapy in Parkinson's disease.",
@@ -5470,7 +6079,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_ma_updrs_part_iv_score"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_ma_updrs_part_iv_score",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_parkinsons_non_motor_symptoms": {
                 "description": "Indicates if the participant has non-motor symptoms associated with Parkinson's disease.",
@@ -5494,7 +6106,10 @@
                         "value": "no"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_non_motor_symptoms"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_non_motor_symptoms",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_parkinsons_non_motor_symptoms_yes": {
                 "description": "Indicates specific non-motor symptoms that the participant experiences as part of Parkinson's disease.",
@@ -5505,7 +6120,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_non_motor_symptoms_yes"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_non_motor_symptoms_yes",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_parkinsons_treatment_obtained": {
                 "description": "Indicates if the participant has received treatment for Parkinson's disease.",
@@ -5529,7 +6147,10 @@
                         "value": "no"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_treatment_obtained"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_treatment_obtained",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_parkinsons_treatment_obtained_yes___medications": {
                 "description": "Indicates if the participant is receiving medication for Parkinson's disease."
@@ -5595,7 +6216,10 @@
                         "value": "notCertain"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_gsd_category_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_gsd_category_1",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_als_gsd_category_2": {
                 "description": "Indicates if the participant meets the criteria for ALS GSD Category 2.",
@@ -5625,7 +6249,10 @@
                         "value": "notCertain"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_gsd_category_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_gsd_category_2",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_als_gsd_category_3": {
                 "description": "Indicates the participant's ALS diagnosis under GSD category 3.",
@@ -5655,7 +6282,10 @@
                         "value": "notCertain"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_gsd_category_3"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_gsd_category_3",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_als_gsd_calculation": {
                 "description": "Calculation for the participant's ALS GSD diagnosis.",
@@ -5666,7 +6296,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_gsd_calculation"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_gsd_calculation",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_als_disease_subtype": {
                 "description": "Indicates the subtype of ALS diagnosed in the participant.",
@@ -5702,7 +6335,10 @@
                         "value": "bulbarAls"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_disease_subtype"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_disease_subtype",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_als_disease_subtype_familial": {
                 "description": "Indicates if the participant has been diagnosed with familial ALS.",
@@ -5713,7 +6349,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_disease_subtype_familial"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_disease_subtype_familial",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_als_etiology___genetic_factors": {
                 "description": "Indicates if the participant's ALS diagnosis is linked to genetic factors."
@@ -5770,7 +6409,10 @@
                         "value": "advancedStage"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_dp"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_dp",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_als_na_alsfrs_r_score": {
                 "description": "The participant's score on the ALS Functional Rating Scale-Revised (ALSFRS-R).",
@@ -5781,7 +6423,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_na_alsfrs_r_score"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_na_alsfrs_r_score",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_als_na_fvc_percentage": {
                 "description": "Indicates the participant's forced vital capacity (FVC) percentage for ALS diagnosis.",
@@ -5792,7 +6437,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_na_fvc_percentage"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_na_fvc_percentage",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_als_treatment_and_management": {
                 "description": "Indicates the treatment and management plan for the participant's ALS diagnosis.",
@@ -5816,7 +6464,10 @@
                         "value": "no"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_treatment_and_management"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_treatment_and_management",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_als_treatment_and_management_yes___medications": {
                 "description": "Indicates if the participant is receiving medications as part of ALS treatment."
@@ -5927,7 +6578,11 @@
                         "value": 5
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/eligible_studies"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/eligible_studies",
+                "valueType": [
+                    "xsd:string",
+                    "xsd:integer"
+                ]
             },
             "ef_vision_a11y_options": {
                 "question": {
@@ -5962,7 +6617,10 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_vision_a11y_options"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_vision_a11y_options",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "ef_hearing_a11y_options": {
                 "question": {
@@ -5991,7 +6649,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_hearing_a11y_options"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_hearing_a11y_options",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "ef_physical_a11y_options": {
                 "question": {
@@ -6020,7 +6681,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_physical_a11y_options"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_physical_a11y_options",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "ef_cognitive_a11y_options": {
                 "question": {
@@ -6049,7 +6713,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_cognitive_a11y_options"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_cognitive_a11y_options",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "ef_completed_by": {
                 "question": {
@@ -6078,7 +6745,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_completed_by"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_completed_by",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "ef_fluent_languages": {
                 "question": {
@@ -6119,7 +6789,10 @@
                         "value": 5
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_fluent_languages"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_fluent_languages",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "diagnosis_ld_qete": {
                 "question": {
@@ -6148,7 +6821,10 @@
                         "value": "neurologist_specializing_disorders"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_qete"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_qete",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_ld_assessment": {
                 "question": {
@@ -6177,7 +6853,10 @@
                         "value": "neurological_evaluation"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_assessment"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_assessment",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_ld_ds": {
                 "datatype": [
@@ -6224,7 +6903,10 @@
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_ds",
                 "question": {
                     "en": "Disease Subtypes:\n(Select all that apply)"
-                }
+                },
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_ld_etiology_cc": {
                 "question": {
@@ -6265,7 +6947,10 @@
                         "value": "other_type_of_dystonia"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_etiology_cc"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_etiology_cc",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_ld_treatment_select": {
                 "question": {
@@ -6312,7 +6997,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_treatment_select"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_dystonia/items/diagnosis_ld_treatment_select",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_pl_ds": {
                 "question": {
@@ -6347,7 +7035,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_ds"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_ds",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_pl_etiology": {
                 "question": {
@@ -6376,7 +7067,10 @@
                         "value": "other_irritants"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_etiology"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_etiology",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_pl_ds_ll": {
                 "question": {
@@ -6417,7 +7111,10 @@
                         "value": "subglottal_areas"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_ds_ll"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_ds_ll",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_pl_treatment_select": {
                 "question": {
@@ -6470,7 +7167,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_treatment_select"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_treatment_select",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_lc_gsd_uots": {
                 "question": {
@@ -6511,7 +7211,10 @@
                         "value": "ultrasound_neck"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_gsd_uots"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_gsd_uots",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_lc_ds": {
                 "question": {
@@ -6558,7 +7261,10 @@
                         "value": "subglottal_areas"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_ds"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_ds",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_lc_etiology": {
                 "question": {
@@ -6599,7 +7305,10 @@
                         "value": "exposure_other_harmful_substances"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_etiology"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_etiology",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_lc_treatment_select": {
                 "question": {
@@ -6646,7 +7355,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_treatment_select"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_treatment_select",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_lc_treatment_s": {
                 "question": {
@@ -6669,7 +7381,10 @@
                         "value": "partial_laryngectomy"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_treatment_s"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_laryngeal_cancer/items/diagnosis_lc_treatment_s",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_bl_treatment_select": {
                 "question": {
@@ -6704,7 +7419,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_treatment_select"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_benign_lesions/items/diagnosis_bl_treatment_select",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_as_gsd_yes": {
                 "question": {
@@ -6727,7 +7445,10 @@
                         "value": "ct"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_gsd_yes"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_gsd_yes",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_as_treatment": {
                 "question": {
@@ -6756,7 +7477,10 @@
                         "value": "in_office_treatment"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_treatment"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_treatment",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_as_treatment_surgery": {
                 "question": {
@@ -6803,7 +7527,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_treatment_surgery"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_treatment_surgery",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_as_treatment_in_office": {
                 "question": {
@@ -6838,7 +7565,10 @@
                         "value": "laser"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_treatment_in_office"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_treatment_in_office",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_alz_dementia_mci_etiology": {
                 "question": {
@@ -6879,7 +7609,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_etiology"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_etiology",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_alz_dementia_mci_etiology_gf": {
                 "question": {
@@ -6908,7 +7641,10 @@
                         "value": "other_genetic_factors"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_etiology_gf"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_etiology_gf",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_alz_dementia_mci_ds": {
                 "question": {
@@ -6931,7 +7667,10 @@
                         "value": "cdr"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ds"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ds",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_alz_dementia_mci_treatment_obtained_yes": {
                 "question": {
@@ -6954,7 +7693,10 @@
                         "value": "npi"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_treatment_obtained_yes"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_treatment_obtained_yes",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_alz_dementia_mci_treatment_obtained_yes_medications": {
                 "question": {
@@ -6983,7 +7725,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_treatment_obtained_yes_medications"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_treatment_obtained_yes_medications",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi": {
                 "question": {
@@ -7036,7 +7781,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_treatment_obtained_yes_npi"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_treatment_obtained_yes_npi",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_parkinsons_gsd_category_1": {
                 "question": {
@@ -7065,7 +7813,10 @@
                         "value": "rigidity"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_gsd_category_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_gsd_category_1",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_parkinsons_gsd_category_2": {
                 "question": {
@@ -7130,7 +7881,10 @@
                         "value": "alternative_condition"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_gsd_category_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_gsd_category_2",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_parkinsons_gsd_category_3": {
                 "question": {
@@ -7165,7 +7919,10 @@
                         "value": "mibg"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_gsd_category_3"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_gsd_category_3",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_parkinsons_ma": {
                 "question": {
@@ -7188,7 +7945,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_ma"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_ma",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_parkinsons_treatment_obtained_yes": {
                 "question": {
@@ -7211,7 +7971,10 @@
                         "value": "npi"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_treatment_obtained_yes"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_treatment_obtained_yes",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_parkinsons_treatment_obtained_yes_medications": {
                 "question": {
@@ -7252,7 +8015,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_treatment_obtained_yes_medications"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_treatment_obtained_yes_medications",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_parkinsons_treatment_obtained_yes_npi": {
                 "question": {
@@ -7293,7 +8059,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_treatment_obtained_yes_npi"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_treatment_obtained_yes_npi",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_als_etiology": {
                 "question": {
@@ -7316,7 +8085,10 @@
                         "value": "environmental_factors"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_etiology"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_etiology",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_als_etiology_genetic_factors": {
                 "question": {
@@ -7345,7 +8117,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_etiology_genetic_factors"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_etiology_genetic_factors",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_als_cp": {
                 "question": {
@@ -7380,7 +8155,10 @@
                         "value": "respiratory_involvement"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_cp"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_cp",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_als_treatment_and_management_yes": {
                 "question": {
@@ -7403,7 +8181,10 @@
                         "value": "supportive_care"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_treatment_and_management_yes"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_treatment_and_management_yes",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_als_treatment_and_management_yes_medications": {
                 "question": {
@@ -7450,7 +8231,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_treatment_and_management_yes_medications"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_treatment_and_management_yes_medications",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "diagnosis_als_treatment_and_management_yes_supportive_care": {
                 "question": {
@@ -7503,7 +8287,10 @@
                         "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_treatment_and_management_yes_supportive_care"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_treatment_and_management_yes_supportive_care",
+                "valueType": [
+                    "xsd:string"
+                ]
             }
         }
     }

@@ -12,7 +12,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/demographics_session_id"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/demographics_session_id",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "demographics_duration": {
                 "description": "Total duration of the demographics section.",
@@ -23,7 +26,11 @@
                     "xsd:decimal"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/demographics_duration"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/demographics_duration",
+                "minValue": 0.0,
+                "valueType": [
+                    "xsd:decimal"
+                ]
             },
             "demographics_completed_by___1": {
                 "description": "Indicates if the participant completed the demographic section on their own."
@@ -43,7 +50,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/state_province"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/state_province",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "country": {
                 "description": "The country where the participant resides.",
@@ -67,7 +77,10 @@
                         "value": 2
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/country"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/country",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "gender_identity": {
                 "description": "The participant's reported gender identity.",
@@ -109,7 +122,10 @@
                         "value": "noAnswer"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/gender_identity"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/gender_identity",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "specify_gender_identity": {
                 "description": "Allows the participant to specify their gender identity.",
@@ -133,7 +149,10 @@
                         "value": "trans"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/specify_gender_identity"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/specify_gender_identity",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "sexual_orientation": {
                 "description": "Indicates the participant's sexual orientation.",
@@ -175,7 +194,10 @@
                         "value": "noAnswer"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/sexual_orientation"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/sexual_orientation",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "race___1": {
                 "description": "Indicates if the participant identifies with race category 1."
@@ -229,7 +251,10 @@
                         "value": "noAnswer"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/ethnicity"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/ethnicity",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "other_edu_level": {
                 "description": "Indicates if the participant has received an education level not listed in other options.",
@@ -240,7 +265,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/other_edu_level"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/other_edu_level",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "hearing": {
                 "description": "Indicates if the participant has hearing issues.",
@@ -270,7 +298,10 @@
                         "value": "noAnswer"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/hearing"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/hearing",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "vision": {
                 "description": "Indicates if the participant has vision issues.",
@@ -300,7 +331,10 @@
                         "value": "noAnswer"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/vision"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/vision",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "cognition": {
                 "description": "Reports on the participant's cognitive abilities or issues.",
@@ -330,7 +364,10 @@
                         "value": "noAnswer"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/cognition"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/cognition",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "mobility": {
                 "description": "Indicates the participant's level of mobility or movement.",
@@ -360,7 +397,10 @@
                         "value": "noAnswer"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/mobility"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/mobility",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "self_care": {
                 "description": "Indicates if the participant engages in self-care activities.",
@@ -390,7 +430,10 @@
                         "value": "noAnswer"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/self_care"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/self_care",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "independent_living": {
                 "description": "Indicates if the participant is living independently.",
@@ -420,7 +463,10 @@
                         "value": "noAnswer"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/independent_living"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/independent_living",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "employ_status___1": {
                 "description": "Indicates if the participant is employed full-time."
@@ -513,7 +559,10 @@
                         "value": 9
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/household_income_usa"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/household_income_usa",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "household_income_ca": {
                 "description": "The participant's household income in Canadian dollars.",
@@ -579,7 +628,10 @@
                         "value": 9
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/household_income_ca"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/household_income_ca",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "marital_status___1": {
                 "description": "Indicates if the participant is married."
@@ -648,7 +700,10 @@
                         "value": 7
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/housing_status"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/housing_status",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "household_count": {
                 "description": "The number of people living in the participant's household.",
@@ -659,7 +714,10 @@
                     "xsd:decimal"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/household_count"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/household_count",
+                "valueType": [
+                    "xsd:decimal"
+                ]
             },
             "spouse_partner_sig_other": {
                 "description": "Indicates if the participant has a spouse, partner, or significant other.",
@@ -683,7 +741,10 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/spouse_partner_sig_other"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/spouse_partner_sig_other",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "children": {
                 "description": "Indicates if the participant has children.",
@@ -707,7 +768,10 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/children"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/children",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "parent": {
                 "description": "Indicates if the participant is a parent.",
@@ -731,7 +795,10 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/parent"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/parent",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "grandparent": {
                 "description": "Indicates if the participant is a grandparent.",
@@ -755,7 +822,10 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/grandparent"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/grandparent",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "other_live_with": {
                 "description": "Indicates if the participant lives with people not listed in other options.",
@@ -779,7 +849,10 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/other_live_with"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/other_live_with",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "others_household_specify": {
                 "description": "Allows the participant to specify other people living in their household.",
@@ -790,7 +863,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/others_household_specify"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/others_household_specify",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "transportation_yn": {
                 "description": "Indicates if the participant has access to transportation.",
@@ -814,7 +890,10 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/transportation_yn"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/transportation_yn",
+                "valueType": [
+                    "xsd:boolean"
+                ]
             },
             "primary_transportation": {
                 "description": "Indicates the participant's primary mode of transportation.",
@@ -874,7 +953,10 @@
                         "value": 8
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/primary_transportation"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/primary_transportation",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "q_generic_demographics_complete": {
                 "description": "Indicates if the participant has completed the generic demographics section.",
@@ -924,7 +1006,10 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/demographics_completed_by"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/demographics_completed_by",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "race": {
                 "question": {
@@ -983,7 +1068,10 @@
                         "value": 8
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/race"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/race",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "employ_status": {
                 "question": {
@@ -1048,7 +1136,10 @@
                         "value": 9
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/employ_status"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/employ_status",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "marital_status": {
                 "question": {
@@ -1101,7 +1192,10 @@
                         "value": 7
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/marital_status"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/marital_status",
+                "valueType": [
+                    "xsd:integer"
+                ]
             }
         }
     }

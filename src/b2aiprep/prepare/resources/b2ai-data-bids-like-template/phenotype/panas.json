@@ -12,7 +12,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_panas/items/panas_session_id"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_panas/items/panas_session_id",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "panas_duration": {
                 "description": "Duration of the Positive and Negative Affect Schedule (PANAS) questionnaire.",
@@ -23,7 +26,11 @@
                     "xsd:decimal"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_panas/items/panas_duration"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_panas/items/panas_duration",
+                "minValue": 0.0,
+                "valueType": [
+                    "xsd:decimal"
+                ]
             },
             "upset": {
                 "description": "Indicates if the participant feels upset.",
@@ -65,7 +72,10 @@
                         "value": 5
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_panas/items/upset"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_panas/items/upset",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "hostile": {
                 "description": "Indicates if the participant feels hostile or angry.",
@@ -107,7 +117,10 @@
                         "value": 5
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_panas/items/hostile"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_panas/items/hostile",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "alert": {
                 "description": "Indicates if the participant is alert during the session.",
@@ -149,7 +162,10 @@
                         "value": 5
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_panas/items/alert"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_panas/items/alert",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "ashamed": {
                 "description": "Indicates if the participant feels ashamed.",
@@ -191,7 +207,10 @@
                         "value": 5
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_panas/items/ashamed"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_panas/items/ashamed",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "inspired": {
                 "description": "Indicates if the participant feels inspired or motivated.",
@@ -233,7 +252,10 @@
                         "value": 5
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_panas/items/inspired"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_panas/items/inspired",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "nervous": {
                 "description": "Indicates if the participant feels nervous.",
@@ -275,7 +297,10 @@
                         "value": 5
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_panas/items/nervous"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_panas/items/nervous",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "determined": {
                 "description": "Indicates if the participant feels determined or focused.",
@@ -317,7 +342,10 @@
                         "value": 5
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_panas/items/determined"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_panas/items/determined",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "attentive": {
                 "description": "Indicates if the participant appears attentive during the session.",
@@ -359,7 +387,10 @@
                         "value": 5
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_panas/items/attentive"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_panas/items/attentive",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "afraid": {
                 "description": "Indicates if the participant feels afraid.",
@@ -401,7 +432,10 @@
                         "value": 5
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_panas/items/afraid"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_panas/items/afraid",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "active": {
                 "description": "Indicates if the participant feels physically active or engaged.",
@@ -443,7 +477,10 @@
                         "value": 5
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_panas/items/active"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_panas/items/active",
+                "valueType": [
+                    "xsd:integer"
+                ]
             }
         }
     }

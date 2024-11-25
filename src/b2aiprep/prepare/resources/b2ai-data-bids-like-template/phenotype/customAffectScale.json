@@ -12,7 +12,10 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/custom_affect_scale_session_id"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/custom_affect_scale_session_id",
+                "valueType": [
+                    "xsd:string"
+                ]
             },
             "custom_affect_scale_duration": {
                 "description": "Total duration of the custom affect scale assessment.",
@@ -23,7 +26,11 @@
                     "xsd:decimal"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/custom_affect_scale_duration"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/custom_affect_scale_duration",
+                "minValue": 0.0,
+                "valueType": [
+                    "xsd:decimal"
+                ]
             },
             "sad_or_down": {
                 "description": "Indicates if the participant feels sad or down.",
@@ -101,7 +108,10 @@
                         "value": 10
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/sad_or_down"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/sad_or_down",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "joyful": {
                 "description": "Indicates if the participant feels joyful.",
@@ -179,7 +189,10 @@
                         "value": 10
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/joyful"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/joyful",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "motivated": {
                 "description": "Assesses the level of motivation or drive the participant exhibits in performing tasks.",
@@ -257,7 +270,10 @@
                         "value": 10
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/motivated"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/motivated",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "lack_of_pleasure": {
                 "description": "Indicates if the participant feels a lack of pleasure or interest in doing things.",
@@ -335,7 +351,10 @@
                         "value": 10
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/lack_of_pleasure"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/lack_of_pleasure",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "tired": {
                 "description": "Indicates if the participant feels tired during the assessment.",
@@ -413,7 +432,10 @@
                         "value": 10
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/tired"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/tired",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "energetic": {
                 "description": "Indicates if the participant feels energetic or lively.",
@@ -491,7 +513,10 @@
                         "value": 10
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/energetic"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/energetic",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "agitated": {
                 "description": "Indicates if the participant feels agitated.",
@@ -569,7 +594,10 @@
                         "value": 10
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/agitated"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/agitated",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "irritated": {
                 "description": "Indicates if the participant feels irritated or annoyed.",
@@ -647,7 +675,10 @@
                         "value": 10
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/irritated"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/irritated",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "lonely": {
                 "description": "Indicates if the participant feels lonely.",
@@ -725,7 +756,10 @@
                         "value": 10
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/lonely"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/lonely",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "concentrated": {
                 "description": "Indicates if the participant is able to concentrate.",
@@ -803,7 +837,10 @@
                         "value": 10
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/concentrated"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/concentrated",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "relaxed": {
                 "description": "Indicates if the participant feels relaxed.",
@@ -881,7 +918,10 @@
                         "value": 10
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/relaxed"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/relaxed",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "worried": {
                 "description": "Indicates if the participant feels worried or anxious.",
@@ -959,7 +999,10 @@
                         "value": 10
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/worried"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/worried",
+                "valueType": [
+                    "xsd:integer"
+                ]
             },
             "desire_to_escape": {
                 "description": "Indicates if the participant has a desire to escape stressful situations.",
@@ -1037,7 +1080,10 @@
                         "value": 10
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/desire_to_escape"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/desire_to_escape",
+                "valueType": [
+                    "xsd:integer"
+                ]
             }
         }
     }
