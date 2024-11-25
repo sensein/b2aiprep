@@ -1,7 +1,7 @@
 {
     "q_generic_demographics_schema": {
         "description": "Measures participant background details.",
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/q_generic_demographics_schema",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/q_generic_demographics_schema",
         "data_elements": {
             "demographics_session_id": {
                 "description": "Unique identifier for the demographics session.",
@@ -12,7 +12,7 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/demographics_session_id"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/demographics_session_id"
             },
             "demographics_duration": {
                 "description": "Total duration of the demographics section.",
@@ -23,7 +23,7 @@
                     "xsd:decimal"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/demographics_duration"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/demographics_duration"
             },
             "demographics_completed_by___1": {
                 "description": "Indicates if the participant completed the demographic section on their own."
@@ -43,7 +43,7 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/state_province"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/state_province"
             },
             "country": {
                 "description": "The country where the participant resides.",
@@ -56,7 +56,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "USA "
+                            "en": "USA"
                         },
                         "value": 1
                     },
@@ -67,7 +67,7 @@
                         "value": 2
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/country"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/country"
             },
             "gender_identity": {
                 "description": "The participant's reported gender identity.",
@@ -80,36 +80,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Female gender identity "
+                            "en": "Female gender identity"
                         },
                         "value": "female"
                     },
                     {
                         "name": {
-                            "en": "Male gender identity "
+                            "en": "Male gender identity"
                         },
-                        "value": " male"
+                        "value": "male"
                     },
                     {
                         "name": {
-                            "en": "Non-binary or genderqueer gender identity "
+                            "en": "Non-binary or genderqueer gender identity"
                         },
-                        "value": " nonBinary"
+                        "value": "nonBinary"
                     },
                     {
                         "name": {
-                            "en": "Other "
+                            "en": "Other"
                         },
-                        "value": " other"
+                        "value": "other"
                     },
                     {
                         "name": {
                             "en": "Prefer not to answer"
                         },
-                        "value": " noAnswer"
+                        "value": "noAnswer"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/gender_identity"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/gender_identity"
             },
             "specify_gender_identity": {
                 "description": "Allows the participant to specify their gender identity.",
@@ -122,7 +122,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Cis: same gender as the sex assigned at birth "
+                            "en": "Cis: same gender as the sex assigned at birth"
                         },
                         "value": "cis"
                     },
@@ -130,10 +130,10 @@
                         "name": {
                             "en": "Trans"
                         },
-                        "value": " trans"
+                        "value": "trans"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/specify_gender_identity"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/specify_gender_identity"
             },
             "sexual_orientation": {
                 "description": "Indicates the participant's sexual orientation.",
@@ -146,36 +146,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Bisexual "
+                            "en": "Bisexual"
                         },
                         "value": "bisexual"
                     },
                     {
                         "name": {
-                            "en": "Heterosexual "
+                            "en": "Heterosexual"
                         },
-                        "value": " heterosexual"
+                        "value": "heterosexual"
                     },
                     {
                         "name": {
-                            "en": "Homosexual "
+                            "en": "Homosexual"
                         },
-                        "value": " homosexual"
+                        "value": "homosexual"
                     },
                     {
                         "name": {
-                            "en": "Other (Please specify) "
+                            "en": "Other (Please specify)"
                         },
-                        "value": " other"
+                        "value": "other"
                     },
                     {
                         "name": {
                             "en": "Prefer not to answer"
                         },
-                        "value": " noAnswer"
+                        "value": "noAnswer"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/sexual_orientation"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/sexual_orientation"
             },
             "race___1": {
                 "description": "Indicates if the participant identifies with race category 1."
@@ -212,24 +212,24 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Hispanic or Latino "
+                            "en": "Hispanic or Latino"
                         },
                         "value": "yes"
                     },
                     {
                         "name": {
-                            "en": "Not Hispanic or Latino "
+                            "en": "Not Hispanic or Latino"
                         },
-                        "value": " no"
+                        "value": "no"
                     },
                     {
                         "name": {
                             "en": "Prefer not to answer"
                         },
-                        "value": " noAnswer"
+                        "value": "noAnswer"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/ethnicity"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/ethnicity"
             },
             "other_edu_level": {
                 "description": "Indicates if the participant has received an education level not listed in other options.",
@@ -240,7 +240,7 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/other_edu_level"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/other_edu_level"
             },
             "hearing": {
                 "description": "Indicates if the participant has hearing issues.",
@@ -253,24 +253,24 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "No "
+                            "en": "No"
                         },
                         "value": "no"
                     },
                     {
                         "name": {
-                            "en": "Yes "
+                            "en": "Yes"
                         },
-                        "value": " yes"
+                        "value": "yes"
                     },
                     {
                         "name": {
                             "en": "Prefer not to answer"
                         },
-                        "value": " noAnswer"
+                        "value": "noAnswer"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/hearing"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/hearing"
             },
             "vision": {
                 "description": "Indicates if the participant has vision issues.",
@@ -283,24 +283,24 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "No "
+                            "en": "No"
                         },
                         "value": "no"
                     },
                     {
                         "name": {
-                            "en": "Yes "
+                            "en": "Yes"
                         },
-                        "value": " yes"
+                        "value": "yes"
                     },
                     {
                         "name": {
                             "en": "Prefer not to answer"
                         },
-                        "value": " noAnswer"
+                        "value": "noAnswer"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/vision"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/vision"
             },
             "cognition": {
                 "description": "Reports on the participant's cognitive abilities or issues.",
@@ -313,24 +313,24 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "No "
+                            "en": "No"
                         },
                         "value": "no"
                     },
                     {
                         "name": {
-                            "en": "Yes "
+                            "en": "Yes"
                         },
-                        "value": " yes"
+                        "value": "yes"
                     },
                     {
                         "name": {
                             "en": "Prefer not to answer"
                         },
-                        "value": " noAnswer"
+                        "value": "noAnswer"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/cognition"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/cognition"
             },
             "mobility": {
                 "description": "Indicates the participant's level of mobility or movement.",
@@ -343,24 +343,24 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "No "
+                            "en": "No"
                         },
                         "value": "no"
                     },
                     {
                         "name": {
-                            "en": "Yes "
+                            "en": "Yes"
                         },
-                        "value": " yes"
+                        "value": "yes"
                     },
                     {
                         "name": {
                             "en": "Prefer not to answer"
                         },
-                        "value": " noAnswer"
+                        "value": "noAnswer"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/mobility"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/mobility"
             },
             "self_care": {
                 "description": "Indicates if the participant engages in self-care activities.",
@@ -373,24 +373,24 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "No "
+                            "en": "No"
                         },
                         "value": "no"
                     },
                     {
                         "name": {
-                            "en": "Yes "
+                            "en": "Yes"
                         },
-                        "value": " yes"
+                        "value": "yes"
                     },
                     {
                         "name": {
                             "en": "Prefer not to answer"
                         },
-                        "value": " noAnswer"
+                        "value": "noAnswer"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/self_care"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/self_care"
             },
             "independent_living": {
                 "description": "Indicates if the participant is living independently.",
@@ -403,24 +403,24 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "No "
+                            "en": "No"
                         },
                         "value": "no"
                     },
                     {
                         "name": {
-                            "en": "Yes "
+                            "en": "Yes"
                         },
-                        "value": " yes"
+                        "value": "yes"
                     },
                     {
                         "name": {
                             "en": "Prefer not to answer"
                         },
-                        "value": " noAnswer"
+                        "value": "noAnswer"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/independent_living"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/independent_living"
             },
             "employ_status___1": {
                 "description": "Indicates if the participant is employed full-time."
@@ -460,49 +460,49 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "< $15,000 "
+                            "en": "< $15,000"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "$15,000 to $29,999 "
+                            "en": "$15,000 to $29,999"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "$30,000 to $$49,999 "
+                            "en": "$30,000 to $$49,999"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "$50,000 to $99,999 "
+                            "en": "$50,000 to $99,999"
                         },
                         "value": 4
                     },
                     {
                         "name": {
-                            "en": "$100,000 to $149,999 "
+                            "en": "$100,000 to $149,999"
                         },
                         "value": 5
                     },
                     {
                         "name": {
-                            "en": "$150,000 to $199,999 "
+                            "en": "$150,000 to $199,999"
                         },
                         "value": 6
                     },
                     {
                         "name": {
-                            "en": "$200,000 to $249,999 "
+                            "en": "$200,000 to $249,999"
                         },
                         "value": 7
                     },
                     {
                         "name": {
-                            "en": ">$250,000 "
+                            "en": ">$250,000"
                         },
                         "value": 8
                     },
@@ -513,7 +513,7 @@
                         "value": 9
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/household_income_usa"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/household_income_usa"
             },
             "household_income_ca": {
                 "description": "The participant's household income in Canadian dollars.",
@@ -526,49 +526,49 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "< $15,000 "
+                            "en": "< $15,000"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "$15,000 to $29,999 "
+                            "en": "$15,000 to $29,999"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "$30,000 to $$49,999 "
+                            "en": "$30,000 to $$49,999"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "$50,000 to $99,999 "
+                            "en": "$50,000 to $99,999"
                         },
                         "value": 4
                     },
                     {
                         "name": {
-                            "en": "$100,000 to $149,999 "
+                            "en": "$100,000 to $149,999"
                         },
                         "value": 5
                     },
                     {
                         "name": {
-                            "en": "$150,000 to $199,999 "
+                            "en": "$150,000 to $199,999"
                         },
                         "value": 6
                     },
                     {
                         "name": {
-                            "en": "$200,000 to $249,999 "
+                            "en": "$200,000 to $249,999"
                         },
                         "value": 7
                     },
                     {
                         "name": {
-                            "en": ">$250,000 "
+                            "en": ">$250,000"
                         },
                         "value": 8
                     },
@@ -579,7 +579,7 @@
                         "value": 9
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/household_income_ca"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/household_income_ca"
             },
             "marital_status___1": {
                 "description": "Indicates if the participant is married."
@@ -613,31 +613,31 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Assisted living "
+                            "en": "Assisted living"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Own home "
+                            "en": "Own home"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "Rent home "
+                            "en": "Rent home"
                         },
                         "value": 4
                     },
                     {
                         "name": {
-                            "en": "Skilled nursing facility/nursing home "
+                            "en": "Skilled nursing facility/nursing home"
                         },
                         "value": 5
                     },
                     {
                         "name": {
-                            "en": "Unhoused-temporarily "
+                            "en": "Unhoused-temporarily"
                         },
                         "value": 6
                     },
@@ -648,18 +648,18 @@
                         "value": 7
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/housing_status"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/housing_status"
             },
             "household_count": {
                 "description": "The number of people living in the participant's household.",
                 "question": {
-                    "en": "How many people live in your household?Please specify a number"
+                    "en": "How many people live in your household? Please specify a number"
                 },
                 "datatype": [
                     "xsd:decimal"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/household_count"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/household_count"
             },
             "spouse_partner_sig_other": {
                 "description": "Indicates if the participant has a spouse, partner, or significant other.",
@@ -672,7 +672,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Yes "
+                            "en": "Yes"
                         },
                         "value": 1
                     },
@@ -683,7 +683,7 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/spouse_partner_sig_other"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/spouse_partner_sig_other"
             },
             "children": {
                 "description": "Indicates if the participant has children.",
@@ -696,7 +696,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Yes "
+                            "en": "Yes"
                         },
                         "value": 1
                     },
@@ -707,7 +707,7 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/children"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/children"
             },
             "parent": {
                 "description": "Indicates if the participant is a parent.",
@@ -720,7 +720,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Yes "
+                            "en": "Yes"
                         },
                         "value": 1
                     },
@@ -731,7 +731,7 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/parent"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/parent"
             },
             "grandparent": {
                 "description": "Indicates if the participant is a grandparent.",
@@ -744,7 +744,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Yes "
+                            "en": "Yes"
                         },
                         "value": 1
                     },
@@ -755,7 +755,7 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/grandparent"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/grandparent"
             },
             "other_live_with": {
                 "description": "Indicates if the participant lives with people not listed in other options.",
@@ -768,7 +768,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Yes "
+                            "en": "Yes"
                         },
                         "value": 1
                     },
@@ -779,7 +779,7 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/other_live_with"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/other_live_with"
             },
             "others_household_specify": {
                 "description": "Allows the participant to specify other people living in their household.",
@@ -790,7 +790,7 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/others_household_specify"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/others_household_specify"
             },
             "transportation_yn": {
                 "description": "Indicates if the participant has access to transportation.",
@@ -814,7 +814,7 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/transportation_yn"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/transportation_yn"
             },
             "primary_transportation": {
                 "description": "Indicates the participant's primary mode of transportation.",
@@ -827,43 +827,43 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Personal vehicle "
+                            "en": "Personal vehicle"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Shared vehicle "
+                            "en": "Shared vehicle"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "Public transportation "
+                            "en": "Public transportation"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "Ride with someone else "
+                            "en": "Ride with someone else"
                         },
                         "value": 4
                     },
                     {
                         "name": {
-                            "en": "Ride service "
+                            "en": "Ride service"
                         },
                         "value": 5
                     },
                     {
                         "name": {
-                            "en": "Bicycle/Motorbike "
+                            "en": "Bicycle/Motorbike"
                         },
                         "value": 6
                     },
                     {
                         "name": {
-                            "en": "Walking "
+                            "en": "Walking"
                         },
                         "value": 7
                     },
@@ -874,7 +874,7 @@
                         "value": 8
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/primary_transportation"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/primary_transportation"
             },
             "q_generic_demographics_complete": {
                 "description": "Indicates if the participant has completed the generic demographics section.",
@@ -907,13 +907,13 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Self "
+                            "en": "Self"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Assistant "
+                            "en": "Assistant"
                         },
                         "value": 2
                     },
@@ -924,7 +924,7 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/demographics_completed_by"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/demographics_completed_by"
             },
             "race": {
                 "question": {
@@ -936,43 +936,43 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "American Indian or Alaska Native "
+                            "en": "American Indian or Alaska Native"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Asian "
+                            "en": "Asian"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "Black or African American "
+                            "en": "Black or African American"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "Native Hawaiian or other Pacific Islander "
+                            "en": "Native Hawaiian or other Pacific Islander"
                         },
                         "value": 4
                     },
                     {
                         "name": {
-                            "en": "White "
+                            "en": "White"
                         },
                         "value": 5
                     },
                     {
                         "name": {
-                            "en": "Canadian Indigenous or Aboriginal "
+                            "en": "Canadian Indigenous or Aboriginal"
                         },
                         "value": 6
                     },
                     {
                         "name": {
-                            "en": "Other "
+                            "en": "Other"
                         },
                         "value": 7
                     },
@@ -983,11 +983,11 @@
                         "value": 8
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/race"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/race"
             },
             "employ_status": {
                 "question": {
-                    "en": "What is your employment status?\n\nChoose all that apply"
+                    "en": "What is your employment status? Choose all that apply"
                 },
                 "datatype": [
                     "xsd:integer"
@@ -995,49 +995,49 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Employed freelance "
+                            "en": "Employed, freelance"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Employed full time "
+                            "en": "Employed, full time"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "Employed part time "
+                            "en": "Employed, part time"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "Employed multiple part time jobs "
+                            "en": "Employed, multiple part time jobs"
                         },
                         "value": 4
                     },
                     {
                         "name": {
-                            "en": "Student "
+                            "en": "Student"
                         },
                         "value": 5
                     },
                     {
                         "name": {
-                            "en": "Self-employed "
+                            "en": "Self-employed"
                         },
                         "value": 6
                     },
                     {
                         "name": {
-                            "en": "Retired "
+                            "en": "Retired"
                         },
                         "value": 7
                     },
                     {
                         "name": {
-                            "en": "Unemployed "
+                            "en": "Unemployed"
                         },
                         "value": 8
                     },
@@ -1048,11 +1048,11 @@
                         "value": 9
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/employ_status"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/employ_status"
             },
             "marital_status": {
                 "question": {
-                    "en": "What is your marital status?\nChoose all that apply"
+                    "en": "What is your marital status? Choose all that apply"
                 },
                 "datatype": [
                     "xsd:integer"
@@ -1060,37 +1060,37 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Single "
+                            "en": "Single"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Married "
+                            "en": "Married"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "In a relationship "
+                            "en": "In a relationship"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "Not married "
+                            "en": "Not married"
                         },
                         "value": 4
                     },
                     {
                         "name": {
-                            "en": "Separated "
+                            "en": "Separated"
                         },
                         "value": 5
                     },
                     {
                         "name": {
-                            "en": "Divorced "
+                            "en": "Divorced"
                         },
                         "value": 6
                     },
@@ -1101,7 +1101,7 @@
                         "value": 7
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_demographics/items/marital_status"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_demographics/items/marital_status"
             }
         }
     }

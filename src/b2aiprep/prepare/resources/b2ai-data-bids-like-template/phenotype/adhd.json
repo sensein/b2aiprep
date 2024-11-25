@@ -1,7 +1,7 @@
 {
     "q_mood_adhd_adult_schema": {
         "description": "Measures attention-related behaviors and symptoms.",
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/q_mood_adhd_adult_schema",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/q_mood_adhd_adult_schema",
         "data_elements": {
             "adhd_session_id": {
                 "description": "Unique identifier for the ADHD session.",
@@ -12,7 +12,7 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/adhd_session_id"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/adhd_session_id"
             },
             "adhd_duration": {
                 "description": "Duration of ADHD-related assessments.",
@@ -23,7 +23,7 @@
                     "xsd:decimal"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/adhd_duration"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/adhd_duration"
             },
             "wrapping_up": {
                 "description": "Indicates if the session is nearing completion.",
@@ -36,36 +36,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Never "
+                            "en": "Never"
                         },
                         "value": "never"
                     },
                     {
                         "name": {
-                            "en": "Rarely "
+                            "en": "Rarely"
                         },
-                        "value": " rarely"
+                        "value": "rarely"
                     },
                     {
                         "name": {
-                            "en": "Sometimes "
+                            "en": "Sometimes"
                         },
-                        "value": " sometimes"
+                        "value": "sometimes"
                     },
                     {
                         "name": {
-                            "en": "Often "
+                            "en": "Often"
                         },
-                        "value": " often"
+                        "value": "often"
                     },
                     {
                         "name": {
                             "en": "Very Often"
                         },
-                        "value": " veryOften"
+                        "value": "veryOften"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/wrapping_up"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/wrapping_up"
             },
             "things_in_order": {
                 "description": "Indicates if the participant prefers to keep things in order.",
@@ -78,36 +78,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Never "
+                            "en": "Never"
                         },
                         "value": "never"
                     },
                     {
                         "name": {
-                            "en": "Rarely "
+                            "en": "Rarely"
                         },
-                        "value": " rarely"
+                        "value": "rarely"
                     },
                     {
                         "name": {
-                            "en": "Sometimes "
+                            "en": "Sometimes"
                         },
-                        "value": " sometimes"
+                        "value": "sometimes"
                     },
                     {
                         "name": {
-                            "en": "Often "
+                            "en": "Often"
                         },
-                        "value": " often"
+                        "value": "often"
                     },
                     {
                         "name": {
                             "en": "Very Often"
                         },
-                        "value": " veryOften"
+                        "value": "veryOften"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/things_in_order"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/things_in_order"
             },
             "remembering_appt": {
                 "description": "Reports if the participant has trouble remembering appointments.",
@@ -120,36 +120,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Never "
+                            "en": "Never"
                         },
                         "value": "never"
                     },
                     {
                         "name": {
-                            "en": "Rarely "
+                            "en": "Rarely"
                         },
-                        "value": " rarely"
+                        "value": "rarely"
                     },
                     {
                         "name": {
-                            "en": "Sometimes "
+                            "en": "Sometimes"
                         },
-                        "value": " sometimes"
+                        "value": "sometimes"
                     },
                     {
                         "name": {
-                            "en": "Often "
+                            "en": "Often"
                         },
-                        "value": " often"
+                        "value": "often"
                     },
                     {
                         "name": {
                             "en": "Very Often"
                         },
-                        "value": " veryOften"
+                        "value": "veryOften"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/remembering_appt"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/remembering_appt"
             },
             "avoidance": {
                 "description": "Indicates if the participant avoids reminders of stressful or traumatic events.",
@@ -162,36 +162,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Never "
+                            "en": "Never"
                         },
                         "value": "never"
                     },
                     {
                         "name": {
-                            "en": "Rarely "
+                            "en": "Rarely"
                         },
-                        "value": " rarely"
+                        "value": "rarely"
                     },
                     {
                         "name": {
-                            "en": "Sometimes "
+                            "en": "Sometimes"
                         },
-                        "value": " sometimes"
+                        "value": "sometimes"
                     },
                     {
                         "name": {
-                            "en": "Often "
+                            "en": "Often"
                         },
-                        "value": " often"
+                        "value": "often"
                     },
                     {
                         "name": {
                             "en": "Very Often"
                         },
-                        "value": " veryOften"
+                        "value": "veryOften"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/avoidance"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/avoidance"
             },
             "fidget": {
                 "description": "Indicates if the participant is fidgeting during the session.",
@@ -204,36 +204,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Never "
+                            "en": "Never"
                         },
                         "value": "never"
                     },
                     {
                         "name": {
-                            "en": "Rarely "
+                            "en": "Rarely"
                         },
-                        "value": " rarely"
+                        "value": "rarely"
                     },
                     {
                         "name": {
-                            "en": "Sometimes "
+                            "en": "Sometimes"
                         },
-                        "value": " sometimes"
+                        "value": "sometimes"
                     },
                     {
                         "name": {
-                            "en": "Often "
+                            "en": "Often"
                         },
-                        "value": " often"
+                        "value": "often"
                     },
                     {
                         "name": {
                             "en": "Very Often"
                         },
-                        "value": " veryOften"
+                        "value": "veryOften"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/fidget"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/fidget"
             },
             "overly_active": {
                 "description": "Indicates if the participant is overly active or restless.",
@@ -246,36 +246,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Never "
+                            "en": "Never"
                         },
                         "value": "never"
                     },
                     {
                         "name": {
-                            "en": "Rarely "
+                            "en": "Rarely"
                         },
-                        "value": " rarely"
+                        "value": "rarely"
                     },
                     {
                         "name": {
-                            "en": "Sometimes "
+                            "en": "Sometimes"
                         },
-                        "value": " sometimes"
+                        "value": "sometimes"
                     },
                     {
                         "name": {
-                            "en": "Often "
+                            "en": "Often"
                         },
-                        "value": " often"
+                        "value": "often"
                     },
                     {
                         "name": {
                             "en": "Very Often"
                         },
-                        "value": " veryOften"
+                        "value": "veryOften"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/overly_active"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/overly_active"
             },
             "careless": {
                 "description": "Indicates if the participant feels careless about their actions or responsibilities.",
@@ -288,36 +288,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Never "
+                            "en": "Never"
                         },
                         "value": "never"
                     },
                     {
                         "name": {
-                            "en": "Rarely "
+                            "en": "Rarely"
                         },
-                        "value": " rarely"
+                        "value": "rarely"
                     },
                     {
                         "name": {
-                            "en": "Sometimes "
+                            "en": "Sometimes"
                         },
-                        "value": " sometimes"
+                        "value": "sometimes"
                     },
                     {
                         "name": {
-                            "en": "Often "
+                            "en": "Often"
                         },
-                        "value": " often"
+                        "value": "often"
                     },
                     {
                         "name": {
                             "en": "Very Often"
                         },
-                        "value": " veryOften"
+                        "value": "veryOften"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/careless"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/careless"
             },
             "difficulty_attention": {
                 "description": "Indicates if the participant has difficulty paying attention.",
@@ -330,36 +330,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Never "
+                            "en": "Never"
                         },
                         "value": "never"
                     },
                     {
                         "name": {
-                            "en": "Rarely "
+                            "en": "Rarely"
                         },
-                        "value": " rarely"
+                        "value": "rarely"
                     },
                     {
                         "name": {
-                            "en": "Sometimes "
+                            "en": "Sometimes"
                         },
-                        "value": " sometimes"
+                        "value": "sometimes"
                     },
                     {
                         "name": {
-                            "en": "Often "
+                            "en": "Often"
                         },
-                        "value": " often"
+                        "value": "often"
                     },
                     {
                         "name": {
                             "en": "Very Often"
                         },
-                        "value": " veryOften"
+                        "value": "veryOften"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/difficulty_attention"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/difficulty_attention"
             },
             "difficulty_concentrating": {
                 "description": "Indicates if the participant has difficulty concentrating.",
@@ -372,36 +372,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Never "
+                            "en": "Never"
                         },
                         "value": "never"
                     },
                     {
                         "name": {
-                            "en": "Rarely "
+                            "en": "Rarely"
                         },
-                        "value": " rarely"
+                        "value": "rarely"
                     },
                     {
                         "name": {
-                            "en": "Sometimes "
+                            "en": "Sometimes"
                         },
-                        "value": " sometimes"
+                        "value": "sometimes"
                     },
                     {
                         "name": {
-                            "en": "Often "
+                            "en": "Often"
                         },
-                        "value": " often"
+                        "value": "often"
                     },
                     {
                         "name": {
                             "en": "Very Often"
                         },
-                        "value": " veryOften"
+                        "value": "veryOften"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/difficulty_concentrating"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/difficulty_concentrating"
             },
             "misplace": {
                 "description": "Indicates if the participant often misplaces things.",
@@ -414,36 +414,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Never "
+                            "en": "Never"
                         },
                         "value": "never"
                     },
                     {
                         "name": {
-                            "en": "Rarely "
+                            "en": "Rarely"
                         },
-                        "value": " rarely"
+                        "value": "rarely"
                     },
                     {
                         "name": {
-                            "en": "Sometimes "
+                            "en": "Sometimes"
                         },
-                        "value": " sometimes"
+                        "value": "sometimes"
                     },
                     {
                         "name": {
-                            "en": "Often "
+                            "en": "Often"
                         },
-                        "value": " often"
+                        "value": "often"
                     },
                     {
                         "name": {
                             "en": "Very Often"
                         },
-                        "value": " veryOften"
+                        "value": "veryOften"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/misplace"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/misplace"
             },
             "distracted": {
                 "description": "Indicates if the participant feels distracted during the session.",
@@ -456,36 +456,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Never "
+                            "en": "Never"
                         },
                         "value": "never"
                     },
                     {
                         "name": {
-                            "en": "Rarely "
+                            "en": "Rarely"
                         },
-                        "value": " rarely"
+                        "value": "rarely"
                     },
                     {
                         "name": {
-                            "en": "Sometimes "
+                            "en": "Sometimes"
                         },
-                        "value": " sometimes"
+                        "value": "sometimes"
                     },
                     {
                         "name": {
-                            "en": "Often "
+                            "en": "Often"
                         },
-                        "value": " often"
+                        "value": "often"
                     },
                     {
                         "name": {
                             "en": "Very Often"
                         },
-                        "value": " veryOften"
+                        "value": "veryOften"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/distracted"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/distracted"
             },
             "remain_seated": {
                 "description": "Indicates if the participant is able to remain seated for long periods.",
@@ -498,36 +498,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Never "
+                            "en": "Never"
                         },
                         "value": "never"
                     },
                     {
                         "name": {
-                            "en": "Rarely "
+                            "en": "Rarely"
                         },
-                        "value": " rarely"
+                        "value": "rarely"
                     },
                     {
                         "name": {
-                            "en": "Sometimes "
+                            "en": "Sometimes"
                         },
-                        "value": " sometimes"
+                        "value": "sometimes"
                     },
                     {
                         "name": {
-                            "en": "Often "
+                            "en": "Often"
                         },
-                        "value": " often"
+                        "value": "often"
                     },
                     {
                         "name": {
                             "en": "Very Often"
                         },
-                        "value": " veryOften"
+                        "value": "veryOften"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/remain_seated"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/remain_seated"
             },
             "restless": {
                 "description": "Indicates if the participant feels restless.",
@@ -540,36 +540,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Never "
+                            "en": "Never"
                         },
                         "value": "never"
                     },
                     {
                         "name": {
-                            "en": "Rarely "
+                            "en": "Rarely"
                         },
-                        "value": " rarely"
+                        "value": "rarely"
                     },
                     {
                         "name": {
-                            "en": "Sometimes "
+                            "en": "Sometimes"
                         },
-                        "value": " sometimes"
+                        "value": "sometimes"
                     },
                     {
                         "name": {
-                            "en": "Often "
+                            "en": "Often"
                         },
-                        "value": " often"
+                        "value": "often"
                     },
                     {
                         "name": {
                             "en": "Very Often"
                         },
-                        "value": " veryOften"
+                        "value": "veryOften"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/restless"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/restless"
             },
             "difficulty_unwinding": {
                 "description": "Indicates if the participant has difficulty unwinding or relaxing after stressful events.",
@@ -582,36 +582,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Never "
+                            "en": "Never"
                         },
                         "value": "never"
                     },
                     {
                         "name": {
-                            "en": "Rarely "
+                            "en": "Rarely"
                         },
-                        "value": " rarely"
+                        "value": "rarely"
                     },
                     {
                         "name": {
-                            "en": "Sometimes "
+                            "en": "Sometimes"
                         },
-                        "value": " sometimes"
+                        "value": "sometimes"
                     },
                     {
                         "name": {
-                            "en": "Often "
+                            "en": "Often"
                         },
-                        "value": " often"
+                        "value": "often"
                     },
                     {
                         "name": {
                             "en": "Very Often"
                         },
-                        "value": " veryOften"
+                        "value": "veryOften"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/difficulty_unwinding"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/difficulty_unwinding"
             },
             "talking_too_much": {
                 "description": "Indicates if the participant feels they are talking too much.",
@@ -624,36 +624,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Never "
+                            "en": "Never"
                         },
                         "value": "never"
                     },
                     {
                         "name": {
-                            "en": "Rarely "
+                            "en": "Rarely"
                         },
-                        "value": " rarely"
+                        "value": "rarely"
                     },
                     {
                         "name": {
-                            "en": "Sometimes "
+                            "en": "Sometimes"
                         },
-                        "value": " sometimes"
+                        "value": "sometimes"
                     },
                     {
                         "name": {
-                            "en": "Often "
+                            "en": "Often"
                         },
-                        "value": " often"
+                        "value": "often"
                     },
                     {
                         "name": {
                             "en": "Very Often"
                         },
-                        "value": " veryOften"
+                        "value": "veryOften"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/talking_too_much"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/talking_too_much"
             },
             "finish_other_sent": {
                 "description": "Indicates if the participant finishes others' sentences.",
@@ -666,36 +666,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Never "
+                            "en": "Never"
                         },
                         "value": "never"
                     },
                     {
                         "name": {
-                            "en": "Rarely "
+                            "en": "Rarely"
                         },
-                        "value": " rarely"
+                        "value": "rarely"
                     },
                     {
                         "name": {
-                            "en": "Sometimes "
+                            "en": "Sometimes"
                         },
-                        "value": " sometimes"
+                        "value": "sometimes"
                     },
                     {
                         "name": {
-                            "en": "Often "
+                            "en": "Often"
                         },
-                        "value": " often"
+                        "value": "often"
                     },
                     {
                         "name": {
                             "en": "Very Often"
                         },
-                        "value": " veryOften"
+                        "value": "veryOften"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/finish_other_sent"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/finish_other_sent"
             },
             "difficulty_waiting": {
                 "description": "Indicates if the participant has difficulty waiting for others.",
@@ -708,36 +708,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Never "
+                            "en": "Never"
                         },
                         "value": "never"
                     },
                     {
                         "name": {
-                            "en": "Rarely "
+                            "en": "Rarely"
                         },
-                        "value": " rarely"
+                        "value": "rarely"
                     },
                     {
                         "name": {
-                            "en": "Sometimes "
+                            "en": "Sometimes"
                         },
-                        "value": " sometimes"
+                        "value": "sometimes"
                     },
                     {
                         "name": {
-                            "en": "Often "
+                            "en": "Often"
                         },
-                        "value": " often"
+                        "value": "often"
                     },
                     {
                         "name": {
                             "en": "Very Often"
                         },
-                        "value": " veryOften"
+                        "value": "veryOften"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/difficulty_waiting"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/difficulty_waiting"
             },
             "interrupt_others": {
                 "description": "Indicates if the participant tends to interrupt others during conversations.",
@@ -750,36 +750,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Never "
+                            "en": "Never"
                         },
                         "value": "never"
                     },
                     {
                         "name": {
-                            "en": "Rarely "
+                            "en": "Rarely"
                         },
-                        "value": " rarely"
+                        "value": "rarely"
                     },
                     {
                         "name": {
-                            "en": "Sometimes "
+                            "en": "Sometimes"
                         },
-                        "value": " sometimes"
+                        "value": "sometimes"
                     },
                     {
                         "name": {
-                            "en": "Often "
+                            "en": "Often"
                         },
-                        "value": " often"
+                        "value": "often"
                     },
                     {
                         "name": {
                             "en": "Very Often"
                         },
-                        "value": " veryOften"
+                        "value": "veryOften"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_adhd_adult/items/interrupt_others"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/interrupt_others"
             }
         }
     }

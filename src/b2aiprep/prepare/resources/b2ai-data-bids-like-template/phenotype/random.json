@@ -1,7 +1,7 @@
 {
     "q_neuro_random_item_generation_schema": {
         "description": "Measures variables for various study purposes.",
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_random_item_generation/q_neuro_random_item_generation_schema",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_random_item_generation/q_neuro_random_item_generation_schema",
         "data_elements": {
             "random_session_id": {
                 "description": "Unique identifier for a random session.",
@@ -12,7 +12,7 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_random_item_generation/items/random_session_id"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_random_item_generation/items/random_session_id"
             },
             "random_recording_acoustic_task_id": {
                 "description": "Unique identifier for a random recording acoustic task.",
@@ -23,7 +23,7 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_random_item_generation/items/random_recording_acoustic_task_id"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_random_item_generation/items/random_recording_acoustic_task_id"
             },
             "random_duration": {
                 "description": "Total duration of a randomly assigned task or session.",
@@ -34,7 +34,7 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_random_item_generation/items/random_duration"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_random_item_generation/items/random_duration"
             },
             "random_item_generation_category": {
                 "description": "Category assigned for random item generation in the session.",
@@ -47,66 +47,66 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Numbers "
+                            "en": "Numbers"
                         },
                         "value": "numbers"
                     },
                     {
                         "name": {
-                            "en": "Letters "
+                            "en": "Letters"
                         },
-                        "value": " letters"
+                        "value": "letters"
                     },
                     {
                         "name": {
-                            "en": "First names "
+                            "en": "First names"
                         },
-                        "value": " firstNames"
+                        "value": "firstNames"
                     },
                     {
                         "name": {
-                            "en": "City names "
+                            "en": "City names"
                         },
-                        "value": " cityNames"
+                        "value": "cityNames"
                     },
                     {
                         "name": {
-                            "en": "Country names "
+                            "en": "Country names"
                         },
-                        "value": " countryNames"
+                        "value": "countryNames"
                     },
                     {
                         "name": {
-                            "en": "Jobs "
+                            "en": "Jobs"
                         },
-                        "value": " jobs"
+                        "value": "jobs"
                     },
                     {
                         "name": {
-                            "en": "Fruits "
+                            "en": "Fruits"
                         },
-                        "value": " fruits"
+                        "value": "fruits"
                     },
                     {
                         "name": {
-                            "en": "Drinks "
+                            "en": "Drinks"
                         },
-                        "value": " drinks"
+                        "value": "drinks"
                     },
                     {
                         "name": {
-                            "en": "Animals "
+                            "en": "Animals"
                         },
-                        "value": " animals"
+                        "value": "animals"
                     },
                     {
                         "name": {
                             "en": "English words starting with \"t\""
                         },
-                        "value": " wordStartingWithT"
+                        "value": "wordStartingWithT"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_neuro_random_item_generation/items/random_item_generation_category"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_random_item_generation/items/random_item_generation_category"
             }
         }
     }

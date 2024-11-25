@@ -1,7 +1,7 @@
 {
     "q_generic_confounders_schema": {
         "description": "Measures variables that could impact study outcomes.",
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/q_generic_confounders_schema",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/q_generic_confounders_schema",
         "data_elements": {
             "confounders_session_id": {
                 "description": "Unique identifier for the confounders assessment session.",
@@ -12,7 +12,7 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/confounders_session_id"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/confounders_session_id"
             },
             "confounders_duration": {
                 "description": "Total duration of the confounders assessment.",
@@ -23,12 +23,12 @@
                     "xsd:decimal"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/confounders_duration"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/confounders_duration"
             },
             "is_regular_smoker": {
                 "description": "Indicates if the participant is a regular smoker.",
                 "question": {
-                    "en": "Have you been a regular smoker or not within the last 3 years?"
+                    "en": "[LEGACY]\nHave you been a regular smoker or not within the last 3 years?"
                 },
                 "datatype": [
                     "xsd:boolean"
@@ -47,12 +47,12 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/is_regular_smoker"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/is_regular_smoker"
             },
             "smoking_hx": {
                 "description": "Indicates the participant's smoking history.",
                 "question": {
-                    "en": "Have you ever smoked regularly (more than a few times a month for at least two months)?This includes tobacco, cannabis, vapes, e-cigarettes, hookah, or pipes."
+                    "en": "[LEGACY]\nHave you ever smoked regularly (more than a few times a month for at least two months)?\nThis includes tobacco, cannabis, vapes, e-cigarettes, hookah, or pipes."
                 },
                 "datatype": [
                     "xsd:string"
@@ -60,52 +60,52 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "I've never smoked regularly "
+                            "en": "I've never smoked regularly"
                         },
                         "value": "never"
                     },
                     {
                         "name": {
-                            "en": "I used to smoke "
+                            "en": "I used to smoke"
                         },
-                        "value": " past"
+                        "value": "past"
                     },
                     {
                         "name": {
-                            "en": "I currently smoke "
+                            "en": "I currently smoke"
                         },
-                        "value": " currently"
+                        "value": "currently"
                     },
                     {
                         "name": {
                             "en": "Prefer not to answer"
                         },
-                        "value": " noAnswer"
+                        "value": "noAnswer"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/smoking_hx"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/smoking_hx"
             },
             "age_start_smoking": {
                 "description": "Indicates the age at which the participant started smoking.",
                 "question": {
-                    "en": "At what age did you start smoking?"
+                    "en": "[LEGACY]\nAt what age did you start smoking?"
                 },
                 "datatype": [
                     "xsd:decimal"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/age_start_smoking"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/age_start_smoking"
             },
             "age_stop_smoking": {
                 "description": "Indicates the age at which the participant stopped smoking.",
                 "question": {
-                    "en": "At what age did you stop?"
+                    "en": "[LEGACY]\nAt what age did you stop?"
                 },
                 "datatype": [
                     "xsd:decimal"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/age_stop_smoking"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/age_stop_smoking"
             },
             "smoking_types___1": {
                 "description": "Reports if the participant has used smoking type 1."
@@ -134,7 +134,7 @@
             "smoking_freq": {
                 "description": "Indicates how often the participant smokes.",
                 "question": {
-                    "en": "How often do/did you smoke?"
+                    "en": "[LEGACY]\nHow often do/did you smoke?"
                 },
                 "datatype": [
                     "xsd:string"
@@ -142,42 +142,42 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Multiple times a day "
+                            "en": "Multiple times a day"
                         },
                         "value": "multipleTimes"
                     },
                     {
                         "name": {
-                            "en": "About once a day "
+                            "en": "About once a day"
                         },
-                        "value": " onceDay"
+                        "value": "onceDay"
                     },
                     {
                         "name": {
-                            "en": "A few times a week "
+                            "en": "A few times a week"
                         },
-                        "value": " fewWeek"
+                        "value": "fewWeek"
                     },
                     {
                         "name": {
-                            "en": "A few times a month "
+                            "en": "A few times a month"
                         },
-                        "value": " fewMonth"
+                        "value": "fewMonth"
                     },
                     {
                         "name": {
-                            "en": "A few times a year "
+                            "en": "A few times a year"
                         },
-                        "value": " fewYear"
+                        "value": "fewYear"
                     },
                     {
                         "name": {
                             "en": "Prefer not to answer"
                         },
-                        "value": " noAnswer"
+                        "value": "noAnswer"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/smoking_freq"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/smoking_freq"
             },
             "alcohol_yn": {
                 "description": "Indicates if the participant consumes alcohol.",
@@ -190,29 +190,29 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Yes "
+                            "en": "Yes"
                         },
                         "value": "yes"
                     },
                     {
                         "name": {
-                            "en": "No "
+                            "en": "No"
                         },
-                        "value": " no"
+                        "value": "no"
                     },
                     {
                         "name": {
                             "en": "Prefer not to answer"
                         },
-                        "value": " noAnswer"
+                        "value": "noAnswer"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/alcohol_yn"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/alcohol_yn"
             },
             "alcohol_freq": {
                 "description": "Indicates how often the participant consumes alcohol.",
                 "question": {
-                    "en": "How often do you have at least one drink containing alcohol?Drinks can be beer, wine, shots of liquor, cocktails containing a shot of liquor"
+                    "en": "How often do you have at least one drink containing alcohol?\nDrinks can be beer, wine, shots of liquor, cocktails containing a shot of liquor"
                 },
                 "datatype": [
                     "xsd:integer"
@@ -220,25 +220,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Monthly or less "
+                            "en": "Monthly or less"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2 - 4 times a month "
+                            "en": "2 - 4 times a month"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "2 - 3 times a week "
+                            "en": "2 - 3 times a week"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "4 or more times a week "
+                            "en": "4 or more times a week"
                         },
                         "value": 4
                     },
@@ -249,12 +249,12 @@
                         "value": 5
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/alcohol_freq"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/alcohol_freq"
             },
             "alcohol_amt": {
                 "description": "Reports the amount of alcohol the participant consumed.",
                 "question": {
-                    "en": "How many drinks containing alcohol do you have on a typical day when you are drinking?One drink is 12 oz. beer, 5 oz. wine, 1.5 oz. (one shot) liquor"
+                    "en": "How many drinks containing alcohol do you have on a typical day when you are drinking?\nOne drink is 12 oz. beer, 5 oz. wine, 1.5 oz. (one shot) liquor"
                 },
                 "datatype": [
                     "xsd:integer"
@@ -262,31 +262,31 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0 - 2 "
+                            "en": "0 - 2"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "3 - 4 "
+                            "en": "3 - 4"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "5 - 6 "
+                            "en": "5 - 6"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "7 - 9 "
+                            "en": "7 - 9"
                         },
                         "value": 4
                     },
                     {
                         "name": {
-                            "en": "10 or more "
+                            "en": "10 or more"
                         },
                         "value": 5
                     },
@@ -297,7 +297,7 @@
                         "value": 6
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/alcohol_amt"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/alcohol_amt"
             },
             "alcohol_drinks": {
                 "description": "The number of alcoholic drinks the participant typically consumes.",
@@ -310,42 +310,42 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Never in the past year "
+                            "en": "Never in the past year"
                         },
                         "value": "neverInThePastYear"
                     },
                     {
                         "name": {
-                            "en": "Less than monthly "
+                            "en": "Less than monthly"
                         },
-                        "value": " lessThanMonthly"
+                        "value": "lessThanMonthly"
                     },
                     {
                         "name": {
-                            "en": "Monthly "
+                            "en": "Monthly"
                         },
-                        "value": " monthly"
+                        "value": "monthly"
                     },
                     {
                         "name": {
-                            "en": "Weekly "
+                            "en": "Weekly"
                         },
-                        "value": " weekly"
+                        "value": "weekly"
                     },
                     {
                         "name": {
-                            "en": "Daily or almost daily "
+                            "en": "Daily or almost daily"
                         },
-                        "value": " daily"
+                        "value": "daily"
                     },
                     {
                         "name": {
                             "en": "Prefer not to answer"
                         },
-                        "value": " noAnswer"
+                        "value": "noAnswer"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/alcohol_drinks"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/alcohol_drinks"
             },
             "alcohol_today": {
                 "description": "Reports if the participant consumed alcohol today.",
@@ -369,7 +369,7 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/alcohol_today"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/alcohol_today"
             },
             "drinks_today_number": {
                 "description": "The number of alcoholic drinks the participant has consumed today.",
@@ -380,7 +380,7 @@
                     "xsd:decimal"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/drinks_today_number"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/drinks_today_number"
             },
             "alcohol_rehab": {
                 "description": "Indicates if the participant has undergone rehabilitation for alcohol use.",
@@ -393,42 +393,42 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Never in the past year "
+                            "en": "Never in the past year"
                         },
                         "value": "neverInThePastYear"
                     },
                     {
                         "name": {
-                            "en": "Less than monthly "
+                            "en": "Less than monthly"
                         },
-                        "value": " lessThanMonthly"
+                        "value": "lessThanMonthly"
                     },
                     {
                         "name": {
-                            "en": "Monthly "
+                            "en": "Monthly"
                         },
-                        "value": " monthly"
+                        "value": "monthly"
                     },
                     {
                         "name": {
-                            "en": "Weekly "
+                            "en": "Weekly"
                         },
-                        "value": " weekly"
+                        "value": "weekly"
                     },
                     {
                         "name": {
-                            "en": "Daily or almost daily "
+                            "en": "Daily or almost daily"
                         },
-                        "value": " daily"
+                        "value": "daily"
                     },
                     {
                         "name": {
                             "en": "Prefer not to answer"
                         },
-                        "value": " noAnswer"
+                        "value": "noAnswer"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/alcohol_rehab"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/alcohol_rehab"
             },
             "current_recovery_alcohol": {
                 "description": "Indicates if the participant is currently in recovery for alcohol use.",
@@ -452,7 +452,7 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/current_recovery_alcohol"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/current_recovery_alcohol"
             },
             "caffeine_intake": {
                 "description": "Reports the participant's caffeine intake.",
@@ -463,7 +463,7 @@
                     "xsd:decimal"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/caffeine_intake"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/caffeine_intake"
             },
             "caffeine_intake_today": {
                 "description": "The amount of caffeine the participant has consumed today.",
@@ -474,7 +474,7 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/caffeine_intake_today"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/caffeine_intake_today"
             },
             "hydration": {
                 "description": "Indicates if the participant feels hydrated.",
@@ -485,7 +485,7 @@
                     "xsd:decimal"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/hydration"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/hydration"
             },
             "hydration_today": {
                 "description": "Indicates if the participant feels adequately hydrated today.",
@@ -496,7 +496,7 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/hydration_today"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/hydration_today"
             },
             "dental_problems": {
                 "description": "Indicates if the participant has dental problems or issues.",
@@ -520,7 +520,7 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/dental_problems"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/dental_problems"
             },
             "seasonal_allergies": {
                 "description": "Indicates if the participant has any seasonal allergies.",
@@ -544,7 +544,7 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/seasonal_allergies"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/seasonal_allergies"
             },
             "seasonal_allergies_options___1": {
                 "description": "Indicates if the participant has seasonal allergies to tree pollen."
@@ -561,7 +561,7 @@
             "tired_measure": {
                 "description": "Indicates if the participant feels tired or fatigued.",
                 "question": {
-                    "en": "How tired are you?0=not tired at all, 10=extremely tired"
+                    "en": "How tired are you?\n0=not tired at all, 10=extremely tired"
                 },
                 "datatype": [
                     "xsd:integer"
@@ -569,61 +569,61 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0 "
+                            "en": "0"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1 "
+                            "en": "1"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2 "
+                            "en": "2"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3 "
+                            "en": "3"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "4 "
+                            "en": "4"
                         },
                         "value": 4
                     },
                     {
                         "name": {
-                            "en": "5 "
+                            "en": "5"
                         },
                         "value": 5
                     },
                     {
                         "name": {
-                            "en": "6 "
+                            "en": "6"
                         },
                         "value": 6
                     },
                     {
                         "name": {
-                            "en": "7 "
+                            "en": "7"
                         },
                         "value": 7
                     },
                     {
                         "name": {
-                            "en": "8 "
+                            "en": "8"
                         },
                         "value": 8
                     },
                     {
                         "name": {
-                            "en": "9 "
+                            "en": "9"
                         },
                         "value": 9
                     },
@@ -634,29 +634,29 @@
                         "value": 10
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/tired_measure"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/tired_measure"
             },
             "height": {
                 "description": "The participant's height in centimeters or inches.",
                 "question": {
-                    "en": "Height (inches)"
+                    "en": "Height"
                 },
                 "datatype": [
                     "xsd:decimal"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/height"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/height"
             },
             "weight": {
                 "description": "The participant's weight in kilograms or pounds.",
                 "question": {
-                    "en": "Weight (pounds)"
+                    "en": "Weight"
                 },
                 "datatype": [
                     "xsd:decimal"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/weight"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/weight"
             },
             "unit": {
                 "description": "The measurement unit used for the participant's responses (e.g., kilograms or pounds).",
@@ -669,7 +669,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Metric "
+                            "en": "Metric"
                         },
                         "value": 1
                     },
@@ -680,7 +680,7 @@
                         "value": 2
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/unit"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/unit"
             },
             "symptoms___1": {
                 "description": "Indicates if the participant reports experiencing symptom 1."
@@ -810,13 +810,13 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "None "
+                            "en": "None"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Only some "
+                            "en": "Only some"
                         },
                         "value": 2
                     },
@@ -827,7 +827,7 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/current_neuro_dx"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/current_neuro_dx"
             },
             "respiratory_conditions___1": {
                 "description": "Indicates if the participant has a diagnosis of bronchitis."
@@ -876,7 +876,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Yes "
+                            "en": "Yes"
                         },
                         "value": "yes"
                     },
@@ -884,10 +884,10 @@
                         "name": {
                             "en": "No"
                         },
-                        "value": " no"
+                        "value": "no"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/covid_past"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/covid_past"
             },
             "cpap_conditions___1": {
                 "description": "Indicates if the participant has used CPAP therapy for obstructive sleep apnea."
@@ -918,7 +918,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Yes "
+                            "en": "Yes"
                         },
                         "value": "yes"
                     },
@@ -926,10 +926,10 @@
                         "name": {
                             "en": "No"
                         },
-                        "value": " no"
+                        "value": "no"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/exposed_environmental_pollution"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/exposed_environmental_pollution"
             },
             "breathe_today": {
                 "description": "Indicates if the participant is experiencing difficulty breathing today.",
@@ -942,7 +942,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Yes "
+                            "en": "Yes"
                         },
                         "value": "yes"
                     },
@@ -950,10 +950,10 @@
                         "name": {
                             "en": "No"
                         },
-                        "value": " no"
+                        "value": "no"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/breathe_today"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/breathe_today"
             },
             "breathe_today_difficulty": {
                 "description": "Reports if the participant experienced breathing difficulty today.",
@@ -966,24 +966,24 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Slight Difficulty "
+                            "en": "Slight Difficulty"
                         },
                         "value": "slightDifficulty"
                     },
                     {
                         "name": {
-                            "en": "Moderate Difficulty "
+                            "en": "Moderate Difficulty"
                         },
-                        "value": " moderateDifficulty"
+                        "value": "moderateDifficulty"
                     },
                     {
                         "name": {
                             "en": "Significant Difficulty"
                         },
-                        "value": " significantDifficulty"
+                        "value": "significantDifficulty"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/breathe_today_difficulty"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/breathe_today_difficulty"
             },
             "cough_today": {
                 "description": "Indicates if the participant has coughed today.",
@@ -996,7 +996,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Yes "
+                            "en": "Yes"
                         },
                         "value": "yes"
                     },
@@ -1004,15 +1004,15 @@
                         "name": {
                             "en": "No"
                         },
-                        "value": " no"
+                        "value": "no"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/cough_today"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/cough_today"
             },
             "cough_today_severity": {
                 "description": "Severity of the participant's cough today.",
                 "question": {
-                    "en": "What is the severity of your cough?\nA selection of 10 being means the most severe."
+                    "en": "What is the severity of your cough?"
                 },
                 "datatype": [
                     "xsd:integer"
@@ -1020,55 +1020,55 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "1 "
+                            "en": "1"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2 "
+                            "en": "2"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3 "
+                            "en": "3"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "4 "
+                            "en": "4"
                         },
                         "value": 4
                     },
                     {
                         "name": {
-                            "en": "5 "
+                            "en": "5"
                         },
                         "value": 5
                     },
                     {
                         "name": {
-                            "en": "6 "
+                            "en": "6"
                         },
                         "value": 6
                     },
                     {
                         "name": {
-                            "en": "7 "
+                            "en": "7"
                         },
                         "value": 7
                     },
                     {
                         "name": {
-                            "en": "8 "
+                            "en": "8"
                         },
                         "value": 8
                     },
                     {
                         "name": {
-                            "en": "9 "
+                            "en": "9"
                         },
                         "value": 9
                     },
@@ -1079,7 +1079,7 @@
                         "value": 10
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/cough_today_severity"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/cough_today_severity"
             },
             "circulatory_conditions___1": {
                 "description": "Indicates if the participant has a diagnosis of cardiovascular disease."
@@ -1125,36 +1125,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "None "
+                            "en": "None"
                         },
                         "value": "none"
                     },
                     {
                         "name": {
-                            "en": "Mild "
+                            "en": "Mild"
                         },
-                        "value": " mild"
+                        "value": "mild"
                     },
                     {
                         "name": {
-                            "en": "Moderate "
+                            "en": "Moderate"
                         },
-                        "value": " moderate"
+                        "value": "moderate"
                     },
                     {
                         "name": {
-                            "en": "Severe "
+                            "en": "Severe"
                         },
-                        "value": " severe"
+                        "value": "severe"
                     },
                     {
                         "name": {
                             "en": "Extreme or cannot do"
                         },
-                        "value": " extreme"
+                        "value": "extreme"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/ph_standing"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/ph_standing"
             },
             "ph_take_care": {
                 "description": "Indicates if the participant has difficulty taking care of themselves due to physical health issues.",
@@ -1167,36 +1167,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "None "
+                            "en": "None"
                         },
                         "value": "none"
                     },
                     {
                         "name": {
-                            "en": "Mild "
+                            "en": "Mild"
                         },
-                        "value": " mild"
+                        "value": "mild"
                     },
                     {
                         "name": {
-                            "en": "Moderate "
+                            "en": "Moderate"
                         },
-                        "value": " moderate"
+                        "value": "moderate"
                     },
                     {
                         "name": {
-                            "en": "Severe "
+                            "en": "Severe"
                         },
-                        "value": " severe"
+                        "value": "severe"
                     },
                     {
                         "name": {
                             "en": "Extreme or cannot do"
                         },
-                        "value": " extreme"
+                        "value": "extreme"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/ph_take_care"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/ph_take_care"
             },
             "ph_learn_task": {
                 "description": "Indicates if the participant has difficulty learning new tasks due to physical health issues.",
@@ -1209,36 +1209,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "None "
+                            "en": "None"
                         },
                         "value": "none"
                     },
                     {
                         "name": {
-                            "en": "Mild "
+                            "en": "Mild"
                         },
-                        "value": " mild"
+                        "value": "mild"
                     },
                     {
                         "name": {
-                            "en": "Moderate "
+                            "en": "Moderate"
                         },
-                        "value": " moderate"
+                        "value": "moderate"
                     },
                     {
                         "name": {
-                            "en": "Severe "
+                            "en": "Severe"
                         },
-                        "value": " severe"
+                        "value": "severe"
                     },
                     {
                         "name": {
                             "en": "Extreme or cannot do"
                         },
-                        "value": " extreme"
+                        "value": "extreme"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/ph_learn_task"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/ph_learn_task"
             },
             "ph_problem_join": {
                 "description": "Indicates if the participant has problems joining social activities due to physical health.",
@@ -1251,36 +1251,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "None "
+                            "en": "None"
                         },
                         "value": "none"
                     },
                     {
                         "name": {
-                            "en": "Mild "
+                            "en": "Mild"
                         },
-                        "value": " mild"
+                        "value": "mild"
                     },
                     {
                         "name": {
-                            "en": "Moderate "
+                            "en": "Moderate"
                         },
-                        "value": " moderate"
+                        "value": "moderate"
                     },
                     {
                         "name": {
-                            "en": "Severe "
+                            "en": "Severe"
                         },
-                        "value": " severe"
+                        "value": "severe"
                     },
                     {
                         "name": {
                             "en": "Extreme or cannot do"
                         },
-                        "value": " extreme"
+                        "value": "extreme"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/ph_problem_join"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/ph_problem_join"
             },
             "ph_health_problem": {
                 "description": "Indicates if the participant has a health problem that affects their daily life.",
@@ -1293,36 +1293,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "None "
+                            "en": "None"
                         },
                         "value": "none"
                     },
                     {
                         "name": {
-                            "en": "Mild "
+                            "en": "Mild"
                         },
-                        "value": " mild"
+                        "value": "mild"
                     },
                     {
                         "name": {
-                            "en": "Moderate "
+                            "en": "Moderate"
                         },
-                        "value": " moderate"
+                        "value": "moderate"
                     },
                     {
                         "name": {
-                            "en": "Severe "
+                            "en": "Severe"
                         },
-                        "value": " severe"
+                        "value": "severe"
                     },
                     {
                         "name": {
                             "en": "Extreme or cannot do"
                         },
-                        "value": " extreme"
+                        "value": "extreme"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/ph_health_problem"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/ph_health_problem"
             },
             "ph_concentrating": {
                 "description": "Indicates if the participant has difficulty concentrating due to physical health issues.",
@@ -1335,36 +1335,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "None "
+                            "en": "None"
                         },
                         "value": "none"
                     },
                     {
                         "name": {
-                            "en": "Mild "
+                            "en": "Mild"
                         },
-                        "value": " mild"
+                        "value": "mild"
                     },
                     {
                         "name": {
-                            "en": "Moderate "
+                            "en": "Moderate"
                         },
-                        "value": " moderate"
+                        "value": "moderate"
                     },
                     {
                         "name": {
-                            "en": "Severe "
+                            "en": "Severe"
                         },
-                        "value": " severe"
+                        "value": "severe"
                     },
                     {
                         "name": {
                             "en": "Extreme or cannot do"
                         },
-                        "value": " extreme"
+                        "value": "extreme"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/ph_concentrating"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/ph_concentrating"
             },
             "ph_walking": {
                 "description": "Reports if the participant experiences physical health issues while walking.",
@@ -1377,36 +1377,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "None "
+                            "en": "None"
                         },
                         "value": "none"
                     },
                     {
                         "name": {
-                            "en": "Mild "
+                            "en": "Mild"
                         },
-                        "value": " mild"
+                        "value": "mild"
                     },
                     {
                         "name": {
-                            "en": "Moderate "
+                            "en": "Moderate"
                         },
-                        "value": " moderate"
+                        "value": "moderate"
                     },
                     {
                         "name": {
-                            "en": "Severe "
+                            "en": "Severe"
                         },
-                        "value": " severe"
+                        "value": "severe"
                     },
                     {
                         "name": {
                             "en": "Extreme or cannot do"
                         },
-                        "value": " extreme"
+                        "value": "extreme"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/ph_walking"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/ph_walking"
             },
             "ph_washing": {
                 "description": "Reports if the participant experiences physical health issues while washing.",
@@ -1419,36 +1419,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "None "
+                            "en": "None"
                         },
                         "value": "none"
                     },
                     {
                         "name": {
-                            "en": "Mild "
+                            "en": "Mild"
                         },
-                        "value": " mild"
+                        "value": "mild"
                     },
                     {
                         "name": {
-                            "en": "Moderate "
+                            "en": "Moderate"
                         },
-                        "value": " moderate"
+                        "value": "moderate"
                     },
                     {
                         "name": {
-                            "en": "Severe "
+                            "en": "Severe"
                         },
-                        "value": " severe"
+                        "value": "severe"
                     },
                     {
                         "name": {
                             "en": "Extreme or cannot do"
                         },
-                        "value": " extreme"
+                        "value": "extreme"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/ph_washing"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/ph_washing"
             },
             "ph_get_dressed": {
                 "description": "Indicates if the participant has difficulty getting dressed due to physical health issues.",
@@ -1461,36 +1461,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "None "
+                            "en": "None"
                         },
                         "value": "none"
                     },
                     {
                         "name": {
-                            "en": "Mild "
+                            "en": "Mild"
                         },
-                        "value": " mild"
+                        "value": "mild"
                     },
                     {
                         "name": {
-                            "en": "Moderate "
+                            "en": "Moderate"
                         },
-                        "value": " moderate"
+                        "value": "moderate"
                     },
                     {
                         "name": {
-                            "en": "Severe "
+                            "en": "Severe"
                         },
-                        "value": " severe"
+                        "value": "severe"
                     },
                     {
                         "name": {
                             "en": "Extreme or cannot do"
                         },
-                        "value": " extreme"
+                        "value": "extreme"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/ph_get_dressed"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/ph_get_dressed"
             },
             "ph_dealing_people": {
                 "description": "Indicates if the participant has difficulty dealing with people due to physical health issues.",
@@ -1503,36 +1503,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "None "
+                            "en": "None"
                         },
                         "value": "none"
                     },
                     {
                         "name": {
-                            "en": "Mild "
+                            "en": "Mild"
                         },
-                        "value": " mild"
+                        "value": "mild"
                     },
                     {
                         "name": {
-                            "en": "Moderate "
+                            "en": "Moderate"
                         },
-                        "value": " moderate"
+                        "value": "moderate"
                     },
                     {
                         "name": {
-                            "en": "Severe "
+                            "en": "Severe"
                         },
-                        "value": " severe"
+                        "value": "severe"
                     },
                     {
                         "name": {
                             "en": "Extreme or cannot do"
                         },
-                        "value": " extreme"
+                        "value": "extreme"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/ph_dealing_people"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/ph_dealing_people"
             },
             "ph_friendship": {
                 "description": "Indicates if the participant has difficulty maintaining friendships due to physical health issues.",
@@ -1545,36 +1545,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "None "
+                            "en": "None"
                         },
                         "value": "none"
                     },
                     {
                         "name": {
-                            "en": "Mild "
+                            "en": "Mild"
                         },
-                        "value": " mild"
+                        "value": "mild"
                     },
                     {
                         "name": {
-                            "en": "Moderate "
+                            "en": "Moderate"
                         },
-                        "value": " moderate"
+                        "value": "moderate"
                     },
                     {
                         "name": {
-                            "en": "Severe "
+                            "en": "Severe"
                         },
-                        "value": " severe"
+                        "value": "severe"
                     },
                     {
                         "name": {
                             "en": "Extreme or cannot do"
                         },
-                        "value": " extreme"
+                        "value": "extreme"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/ph_friendship"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/ph_friendship"
             },
             "ph_day_to_day_work": {
                 "description": "Reports if the participant's physical health affects their day-to-day work.",
@@ -1587,36 +1587,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "None "
+                            "en": "None"
                         },
                         "value": "none"
                     },
                     {
                         "name": {
-                            "en": "Mild "
+                            "en": "Mild"
                         },
-                        "value": " mild"
+                        "value": "mild"
                     },
                     {
                         "name": {
-                            "en": "Moderate "
+                            "en": "Moderate"
                         },
-                        "value": " moderate"
+                        "value": "moderate"
                     },
                     {
                         "name": {
-                            "en": "Severe "
+                            "en": "Severe"
                         },
-                        "value": " severe"
+                        "value": "severe"
                     },
                     {
                         "name": {
                             "en": "Extreme or cannot do"
                         },
-                        "value": " extreme"
+                        "value": "extreme"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/ph_day_to_day_work"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/ph_day_to_day_work"
             },
             "physical_health_freq": {
                 "description": "Indicates how frequently the participant experiences physical health issues.",
@@ -1627,7 +1627,7 @@
                     "xsd:decimal"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/physical_health_freq"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/physical_health_freq"
             },
             "phys_health_impact": {
                 "description": "Indicates if the participant's physical health impacts their daily life.",
@@ -1638,7 +1638,7 @@
                     "xsd:decimal"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/phys_health_impact"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/phys_health_impact"
             },
             "phys_health_limited": {
                 "description": "Indicates if the participant's physical health is limiting their daily activities.",
@@ -1649,7 +1649,7 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/phys_health_limited"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/phys_health_limited"
             },
             "medications___1": {
                 "description": "Indicates if the participant is currently taking medication 1."
@@ -1737,30 +1737,30 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Does not apply "
+                            "en": "Does not apply"
                         },
                         "value": "doesNotApply"
                     },
                     {
                         "name": {
-                            "en": "Yes "
+                            "en": "Yes"
                         },
-                        "value": " yes"
+                        "value": "yes"
                     },
                     {
                         "name": {
-                            "en": "No "
+                            "en": "No"
                         },
-                        "value": " no"
+                        "value": "no"
                     },
                     {
                         "name": {
-                            "en": "Prefer no to answer"
+                            "en": "Prefer not to answer"
                         },
-                        "value": " noAnswer"
+                        "value": "noAnswer"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/menstruate"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/menstruate"
             },
             "menstruate_no": {
                 "description": "Indicates if the participant does not menstruate.",
@@ -1773,35 +1773,35 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "I am pregnant "
+                            "en": "I am pregnant"
                         },
                         "value": "pregnant"
                     },
                     {
                         "name": {
-                            "en": "I have an IUD "
+                            "en": "I have an IUD"
                         },
-                        "value": " iud"
+                        "value": "iud"
                     },
                     {
                         "name": {
-                            "en": "I have gone through menopause "
+                            "en": "I have gone through menopause"
                         },
-                        "value": " menopause"
+                        "value": "menopause"
                     },
                     {
                         "name": {
                             "en": "Other"
                         },
-                        "value": " other"
+                        "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/menstruate_no"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/menstruate_no"
             },
             "menstrual_cycle_status": {
                 "description": "Indicates the participant's menstrual cycle status.",
                 "question": {
-                    "en": "Where in your cycle are you?(We ask because this may affect your voice.)"
+                    "en": "Where in your cycle are you? We ask because this may affect your voice."
                 },
                 "datatype": [
                     "xsd:string"
@@ -1809,30 +1809,30 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Menstruating "
+                            "en": "Menstruating"
                         },
                         "value": "menstruating"
                     },
                     {
                         "name": {
-                            "en": "Premenstrual "
+                            "en": "Premenstrual"
                         },
-                        "value": " premenstrual"
+                        "value": "premenstrual"
                     },
                     {
                         "name": {
-                            "en": "Postmenstrual "
+                            "en": "Postmenstrual"
                         },
-                        "value": " postmenstrual"
+                        "value": "postmenstrual"
                     },
                     {
                         "name": {
                             "en": "Prefer not to answer"
                         },
-                        "value": " noAnswer"
+                        "value": "noAnswer"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/menstrual_cycle_status"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/menstrual_cycle_status"
             },
             "voice_activity___1": {
                 "description": "Indicates the first type of voice activity the participant engaged in."
@@ -1864,12 +1864,12 @@
                     "xsd:decimal"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/hours_voice_activity"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/hours_voice_activity"
             },
             "reading_aloud": {
                 "description": "Indicates if the participant is reading aloud.",
                 "question": {
-                    "en": "\"How good do you think you are at reading out loud in [English/Spanish/French], that is reading out loud without making mistakes and understanding what you read at a normal rate?\""
+                    "en": "How good do you think you are at reading out loud in [English/Spanish/French], that is reading out loud without making mistakes and understanding what you read at a normal rate?"
                 },
                 "datatype": [
                     "xsd:string"
@@ -1877,40 +1877,40 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Excellent "
+                            "en": "Excellent"
                         },
                         "value": "excellent"
                     },
                     {
                         "name": {
-                            "en": "Very good "
+                            "en": "Very good"
                         },
-                        "value": " veryGood"
+                        "value": "veryGood"
                     },
                     {
                         "name": {
-                            "en": "Good "
+                            "en": "Good"
                         },
-                        "value": " good"
+                        "value": "good"
                     },
                     {
                         "name": {
-                            "en": "Fair "
+                            "en": "Fair"
                         },
-                        "value": " fair"
+                        "value": "fair"
                     },
                     {
                         "name": {
                             "en": "Poor"
                         },
-                        "value": " poor"
+                        "value": "poor"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/reading_aloud"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/reading_aloud"
             },
             "smoking_types": {
                 "question": {
-                    "en": "Please select smoking types used (Check all that apply)"
+                    "en": "[LEGACY]\nChecklist of different types (choose all that apply):"
                 },
                 "datatype": [
                     "xsd:integer"
@@ -1918,43 +1918,43 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Tobacco cigarettes "
+                            "en": "Tobacco cigarettes"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Cannabis joints bong pipe "
+                            "en": "Cannabis joints, bong, pipe"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "Vapes "
+                            "en": "Vapes"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "e-cigarettes "
+                            "en": "e-cigarettes"
                         },
                         "value": 4
                     },
                     {
                         "name": {
-                            "en": "Hookah "
+                            "en": "Hookah"
                         },
                         "value": 5
                     },
                     {
                         "name": {
-                            "en": "Pipes "
+                            "en": "Pipes"
                         },
                         "value": 6
                     },
                     {
                         "name": {
-                            "en": "Other (Please specify) "
+                            "en": "Other"
                         },
                         "value": 7
                     },
@@ -1965,7 +1965,7 @@
                         "value": 8
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/smoking_types"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/smoking_types"
             },
             "seasonal_allergies_options": {
                 "question": {
@@ -1977,19 +1977,19 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Nasal congestion or obstruction "
+                            "en": "Nasal congestion or obstruction"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Cough "
+                            "en": "Cough"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "Scratchy or sore throat "
+                            "en": "Scratchy or sore throat"
                         },
                         "value": 3
                     },
@@ -2000,7 +2000,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/seasonal_allergies_options"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/seasonal_allergies_options"
             },
             "symptoms": {
                 "question": {
@@ -2012,37 +2012,37 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Anxiety or nervousness "
+                            "en": "Anxiety or nervousness"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Confusion "
+                            "en": "Confusion"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "Dizziness "
+                            "en": "Dizziness"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "Frequent or severe headache or migraine "
+                            "en": "Frequent or severe headache or migraine"
                         },
                         "value": 4
                     },
                     {
                         "name": {
-                            "en": "Sleep disturbance "
+                            "en": "Sleep disturbance"
                         },
                         "value": 5
                     },
                     {
                         "name": {
-                            "en": "Speech difficulty "
+                            "en": "Speech difficulty"
                         },
                         "value": 6
                     },
@@ -2053,7 +2053,7 @@
                         "value": 7
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/symptoms"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/symptoms"
             },
             "ear_med_history": {
                 "question": {
@@ -2065,13 +2065,13 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Chronic ear infection "
+                            "en": "Chronic ear infection"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Cochlear implant "
+                            "en": "Cochlear implant"
                         },
                         "value": 2
                     },
@@ -2082,7 +2082,7 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/ear_med_history"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/ear_med_history"
             },
             "nose_med_history": {
                 "question": {
@@ -2099,7 +2099,7 @@
                         "value": 1
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/nose_med_history"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/nose_med_history"
             },
             "throat_med_history": {
                 "question": {
@@ -2111,67 +2111,67 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Pre-cancerous throat lesion (e.g. laryngeal leukoplakia or keratosis "
+                            "en": "Pre-cancerous throat lesion (e.g. laryngeal leukoplakia or keratosis"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Reflux (heartburn) "
+                            "en": "Reflux (heartburn)"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "Reinke's edema polypoid corditis or smoker's larynx "
+                            "en": "Reinke's edema, polypoid corditis, or smoker's larynx"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "Sjögren's syndrome "
+                            "en": "Sjögren's syndrome"
                         },
                         "value": 4
                     },
                     {
                         "name": {
-                            "en": "Swallowing disorders (dysphagia) "
+                            "en": "Swallowing disorders (dysphagia)"
                         },
                         "value": 5
                     },
                     {
                         "name": {
-                            "en": "Throat cancer "
+                            "en": "Throat cancer"
                         },
                         "value": 6
                     },
                     {
                         "name": {
-                            "en": "Thyroid disease "
+                            "en": "Thyroid disease"
                         },
                         "value": 7
                     },
                     {
                         "name": {
-                            "en": "Velopharyngeal insufficiency "
+                            "en": "Velopharyngeal insufficiency"
                         },
                         "value": 8
                     },
                     {
                         "name": {
-                            "en": "Vocal fold dysfunction paradoxical vocal fold motion or inducible laryngeal obstruction "
+                            "en": "Vocal fold dysfunction, paradoxical vocal fold motion, or inducible laryngeal obstruction"
                         },
                         "value": 9
                     },
                     {
                         "name": {
-                            "en": "Vocal fold polyp nodule or cyst "
+                            "en": "Vocal fold polyp, nodule, or cyst"
                         },
                         "value": 10
                     },
                     {
                         "name": {
-                            "en": "Vocal hemorrhage or bleed "
+                            "en": "Vocal hemorrhage or bleed"
                         },
                         "value": 11
                     },
@@ -2182,7 +2182,7 @@
                         "value": 12
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/throat_med_history"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/throat_med_history"
             },
             "head_med_history": {
                 "question": {
@@ -2194,7 +2194,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Radiation around head and neck "
+                            "en": "Radiation around head and neck"
                         },
                         "value": 1
                     },
@@ -2205,7 +2205,7 @@
                         "value": 2
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/head_med_history"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/head_med_history"
             },
             "ear_surgical": {
                 "question": {
@@ -2217,7 +2217,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Chronic ear surgery (e.g. mastoid) "
+                            "en": "Chronic ear surgery (e.g. mastoid)"
                         },
                         "value": 1
                     },
@@ -2228,7 +2228,7 @@
                         "value": 2
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/ear_surgical"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/ear_surgical"
             },
             "nose_surgical": {
                 "question": {
@@ -2240,7 +2240,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Septoplasty/Rhinoplasty "
+                            "en": "Septoplasty/Rhinoplasty"
                         },
                         "value": 1
                     },
@@ -2251,7 +2251,7 @@
                         "value": 2
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/nose_surgical"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/nose_surgical"
             },
             "throat_surgical": {
                 "question": {
@@ -2263,19 +2263,19 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Airway surgery "
+                            "en": "Airway surgery"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Throat surgery "
+                            "en": "Throat surgery"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "Thyroid surgery "
+                            "en": "Thyroid surgery"
                         },
                         "value": 3
                     },
@@ -2286,7 +2286,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/throat_surgical"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/throat_surgical"
             },
             "head_surgical": {
                 "question": {
@@ -2298,7 +2298,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Head/Neck cancer (e.g. oropharyngeal cancer) "
+                            "en": "Head/Neck cancer (e.g. oropharyngeal cancer)"
                         },
                         "value": 1
                     },
@@ -2309,7 +2309,7 @@
                         "value": 2
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/head_surgical"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/head_surgical"
             },
             "neurological_history": {
                 "question": {
@@ -2321,31 +2321,31 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Brain tumor "
+                            "en": "Brain tumor"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Dysarthria "
+                            "en": "Dysarthria"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "Epilepsy "
+                            "en": "Epilepsy"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "Multiple sclerosis "
+                            "en": "Multiple sclerosis"
                         },
                         "value": 4
                     },
                     {
                         "name": {
-                            "en": "Traumatic brain injury "
+                            "en": "Traumatic brain injury"
                         },
                         "value": 5
                     },
@@ -2356,7 +2356,7 @@
                         "value": 6
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/neurological_history"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/neurological_history"
             },
             "respiratory_conditions": {
                 "question": {
@@ -2368,43 +2368,43 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Bronchiectasis "
+                            "en": "Bronchiectasis"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Cancer (lung or metastatic) "
+                            "en": "Cancer (lung or metastatic)"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "Emphysema "
+                            "en": "Emphysema"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "Interstitial lung disease (sarcoidosis pulmonary fibrosis) "
+                            "en": "Interstitial lung disease (sarcoidosis, pulmonary fibrosis)"
                         },
                         "value": 4
                     },
                     {
                         "name": {
-                            "en": "Pneumothorax or atelectasis (collapsed lung) "
+                            "en": "Pneumothorax or atelectasis (collapsed lung)"
                         },
                         "value": 5
                     },
                     {
                         "name": {
-                            "en": "Pulmonary hypertension "
+                            "en": "Pulmonary hypertension"
                         },
                         "value": 6
                     },
                     {
                         "name": {
-                            "en": "Radiation to the chest "
+                            "en": "Radiation to the chest"
                         },
                         "value": 7
                     },
@@ -2415,7 +2415,7 @@
                         "value": 8
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/respiratory_conditions"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/respiratory_conditions"
             },
             "lung_or_metastatic": {
                 "question": {
@@ -2427,7 +2427,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Lung "
+                            "en": "Lung"
                         },
                         "value": 1
                     },
@@ -2438,7 +2438,7 @@
                         "value": 2
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/lung_or_metastatic"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/lung_or_metastatic"
             },
             "covid": {
                 "question": {
@@ -2450,7 +2450,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "COVID in the past year "
+                            "en": "COVID in the past year"
                         },
                         "value": "past_year"
                     },
@@ -2458,10 +2458,10 @@
                         "name": {
                             "en": "Long COVID (symptoms persisted at least four weeks after initial infection)"
                         },
-                        "value": " long"
+                        "value": "long"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/covid"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/covid"
             },
             "cpap_conditions": {
                 "question": {
@@ -2473,7 +2473,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Active CPAP use "
+                            "en": "Active CPAP use"
                         },
                         "value": 1
                     },
@@ -2484,11 +2484,11 @@
                         "value": 2
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/cpap_conditions"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/cpap_conditions"
             },
             "resp_medical_history": {
                 "question": {
-                    "en": "Have you had any of the interventions mentioned below? (check all that apply)\n\nRespiratory medical history"
+                    "en": "Respiratory medical history"
                 },
                 "datatype": [
                     "xsd:integer"
@@ -2496,19 +2496,19 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Craniofacial or chest wall trauma "
+                            "en": "Craniofacial or chest wall trauma"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Previous lobectomy "
+                            "en": "Previous lobectomy"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "Prior chest/airway surgery "
+                            "en": "Prior chest/airway surgery"
                         },
                         "value": 3
                     },
@@ -2519,7 +2519,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/resp_medical_history"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/resp_medical_history"
             },
             "circulatory_conditions": {
                 "question": {
@@ -2531,31 +2531,31 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Atrial fibrillation "
+                            "en": "Atrial fibrillation"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Cardiac condition "
+                            "en": "Cardiac condition"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "Chronic pericarditis "
+                            "en": "Chronic pericarditis"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "Congestive heart failure "
+                            "en": "Congestive heart failure"
                         },
                         "value": 4
                     },
                     {
                         "name": {
-                            "en": "Coronary heart disease "
+                            "en": "Coronary heart disease"
                         },
                         "value": 5
                     },
@@ -2566,7 +2566,7 @@
                         "value": 6
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/circulatory_conditions"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/circulatory_conditions"
             },
             "circulatory_med_history": {
                 "question": {
@@ -2578,25 +2578,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Chronic kidney disease "
+                            "en": "Chronic kidney disease"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Diabetes "
+                            "en": "Diabetes"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "Infectious disease "
+                            "en": "Infectious disease"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "Obesity "
+                            "en": "Obesity"
                         },
                         "value": 4
                     },
@@ -2607,11 +2607,11 @@
                         "value": 5
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/circulatory_med_history"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/circulatory_med_history"
             },
             "medications": {
                 "question": {
-                    "en": "Do you currently take or use any of these medications or substances? (Check all that apply)"
+                    "en": "Do you currently take or use any of these medications or substances? Please check all that apply"
                 },
                 "datatype": [
                     "xsd:integer"
@@ -2619,103 +2619,103 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Antibiotics "
+                            "en": "Antibiotics"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Anti-histamines (allergy medications) "
+                            "en": "Anti-histamines (allergy medications)"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "Anti-Hypertensive Medications (Blood Pressure Medication) "
+                            "en": "Anti-Hypertensive Medications (Blood Pressure Medication)"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "Diuretics (ex: Lasix) "
+                            "en": "Diuretics (ex: Lasix)"
                         },
                         "value": 4
                     },
                     {
                         "name": {
-                            "en": "Decongestants "
+                            "en": "Decongestants"
                         },
                         "value": 5
                     },
                     {
                         "name": {
-                            "en": "Muscle relaxants (ex: Baclofen) "
+                            "en": "Muscle relaxants (ex: Baclofen)"
                         },
                         "value": 6
                     },
                     {
                         "name": {
-                            "en": "Hormone use "
+                            "en": "Hormone use"
                         },
                         "value": 7
                     },
                     {
                         "name": {
-                            "en": "Inhaled corticosteroids "
+                            "en": "Inhaled corticosteroids"
                         },
                         "value": 8
                     },
                     {
                         "name": {
-                            "en": "Oral steroids "
+                            "en": "Oral steroids"
                         },
                         "value": 9
                     },
                     {
                         "name": {
-                            "en": "Anti-anxiety medications: (ex: Benzodiazepine) "
+                            "en": "Anti-anxiety medications: (ex: Benzodiazepine)"
                         },
                         "value": 10
                     },
                     {
                         "name": {
-                            "en": "Chronic Pain medication "
+                            "en": "Chronic Pain medication"
                         },
                         "value": 11
                     },
                     {
                         "name": {
-                            "en": "Psychotropic/antipsychotic medications (ex: Clozapine) "
+                            "en": "Psychotropic/antipsychotic medications (ex: Clozapine)"
                         },
                         "value": 12
                     },
                     {
                         "name": {
-                            "en": "Antidepressants (ex: amitryptiline) "
+                            "en": "Antidepressants (ex: amitryptiline)"
                         },
                         "value": 13
                     },
                     {
                         "name": {
-                            "en": "Immune suppressors (ex: Methotrexate) "
+                            "en": "Immune suppressors (ex: Methotrexate)"
                         },
                         "value": 14
                     },
                     {
                         "name": {
-                            "en": "Reflux medications (ex: Pantoprazole Nexium) "
+                            "en": "Reflux medications (ex: Pantoprazole, Nexium)"
                         },
                         "value": 15
                     },
                     {
                         "name": {
-                            "en": "Anticholinergics (ex: Ventolin) "
+                            "en": "Anticholinergics (ex: Ventolin)"
                         },
                         "value": 16
                     },
                     {
                         "name": {
-                            "en": "Anticoagulants (blood thinners) "
+                            "en": "Anticoagulants (blood thinners)"
                         },
                         "value": 17
                     },
@@ -2726,7 +2726,7 @@
                         "value": 18
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/medications"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/medications"
             },
             "hormone_use": {
                 "question": {
@@ -2738,19 +2738,19 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Oral contraceptive "
+                            "en": "Oral contraceptive"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Hormonal replacement therapy (HRT) "
+                            "en": "Hormonal replacement therapy (HRT)"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "Androgenic steroids "
+                            "en": "Androgenic steroids"
                         },
                         "value": 3
                     },
@@ -2761,7 +2761,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/hormone_use"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/hormone_use"
             },
             "pain_medication": {
                 "question": {
@@ -2773,28 +2773,28 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "NSAIDs (ex: Ibuprofen/Advil/Cerebrex) "
+                            "en": "NSAIDs (ex: Ibuprofen/Advil/Cerebrex)"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Morphine/Oxycodone "
+                            "en": "Morphine/Oxycodone"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "Neuro-modulators (ex: Gabapentin Lyrica)"
+                            "en": "Neuro-modulators (ex: Gabapentin, Lyrica)"
                         },
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/pain_medication"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/pain_medication"
             },
             "voice_activity": {
                 "question": {
-                    "en": "Do you do one of these jobs or hobbies that requires using your voice for many hours a day? (check all that apply)"
+                    "en": "Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply"
                 },
                 "datatype": [
                     "xsd:integer"
@@ -2802,37 +2802,37 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Bartender "
+                            "en": "Bartender"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Waiter receptionist "
+                            "en": "Waiter, receptionist"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "Speaking  (secretary call center attorney salesperson) "
+                            "en": "Speaking (secretary, call center, attorney, salesperson)"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "Teacher "
+                            "en": "Teacher"
                         },
                         "value": 4
                     },
                     {
                         "name": {
-                            "en": "Singer "
+                            "en": "Singer"
                         },
                         "value": 5
                     },
                     {
                         "name": {
-                            "en": "Cheerleading "
+                            "en": "Cheerleading"
                         },
                         "value": 6
                     },
@@ -2843,7 +2843,7 @@
                         "value": 7
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_confounders/items/voice_activity"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/voice_activity"
             }
         }
     }

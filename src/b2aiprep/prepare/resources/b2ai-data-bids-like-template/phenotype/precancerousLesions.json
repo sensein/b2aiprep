@@ -1,7 +1,7 @@
 {
     "d_voice_precancerous_lesions_schema": {
         "description": "Measures features of precancerous lesions.",
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_precancerous_lesions/d_voice_precancerous_lesions_schema",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/d_voice_precancerous_lesions_schema",
         "data_elements": {
             "diagnois_pl_gsd_ls": {
                 "description": "Indicates if the participant has a precancerous vocal fold lesion confirmed by laryngoscopy or stroboscopy.",
@@ -14,24 +14,24 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Yes "
+                            "en": "Yes"
                         },
                         "value": "yes"
                     },
                     {
                         "name": {
-                            "en": "No "
+                            "en": "No"
                         },
-                        "value": " no"
+                        "value": "no"
                     },
                     {
                         "name": {
                             "en": "Not certain"
                         },
-                        "value": " notCertain"
+                        "value": "notCertain"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_precancerous_lesions/items/diagnois_pl_gsd_ls"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnois_pl_gsd_ls"
             },
             "diagnois_pl_gsd_bp": {
                 "description": "Indicates if the participant has a precancerous vocal fold lesion confirmed by biopsy or pathology.",
@@ -44,24 +44,24 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Yes "
+                            "en": "Yes"
                         },
                         "value": "yes"
                     },
                     {
                         "name": {
-                            "en": "No "
+                            "en": "No"
                         },
-                        "value": " no"
+                        "value": "no"
                     },
                     {
                         "name": {
                             "en": "Not certain"
                         },
-                        "value": " notCertain"
+                        "value": "notCertain"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_precancerous_lesions/items/diagnois_pl_gsd_bp"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnois_pl_gsd_bp"
             },
             "diagnosis_pl_ds___keratosis": {
                 "description": "Indicates if the participant has been diagnosed with keratosis."
@@ -86,7 +86,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "With dysplasia "
+                            "en": "With dysplasia"
                         },
                         "value": "withDysplasia"
                     },
@@ -94,10 +94,10 @@
                         "name": {
                             "en": "Without dysplasia"
                         },
-                        "value": " withoutDysplasia"
+                        "value": "withoutDysplasia"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_precancerous_lesions/items/diagnosis_pl_ds_l"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_ds_l"
             },
             "diagnosis_pl_ds_l_wd_g": {
                 "description": "Indicates if the participant has leukoplakia with dysplasia.",
@@ -110,24 +110,24 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Low grade "
+                            "en": "Low grade"
                         },
                         "value": "lowGrade"
                     },
                     {
                         "name": {
-                            "en": "Moderate grade "
+                            "en": "Moderate grade"
                         },
-                        "value": " moderateGrade"
+                        "value": "moderateGrade"
                     },
                     {
                         "name": {
                             "en": "High grade"
                         },
-                        "value": " highGrade"
+                        "value": "highGrade"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_precancerous_lesions/items/diagnosis_pl_ds_l_wd_g"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_ds_l_wd_g"
             },
             "diagnosis_pl_ds_e": {
                 "description": "Indicates if the participant has erythroplakia.",
@@ -140,7 +140,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "With dysplasia "
+                            "en": "With dysplasia"
                         },
                         "value": "withDysplasia"
                     },
@@ -148,10 +148,10 @@
                         "name": {
                             "en": "Without dysplasia"
                         },
-                        "value": " withoutDysplasia"
+                        "value": "withoutDysplasia"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_precancerous_lesions/items/diagnosis_pl_ds_e"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_ds_e"
             },
             "diagnosis_pl_ds_e_wd_g": {
                 "description": "Indicates if the participant has erythroplakia with dysplasia.",
@@ -164,24 +164,24 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Low grade "
+                            "en": "Low grade"
                         },
                         "value": "lowGrade"
                     },
                     {
                         "name": {
-                            "en": "Moderate grade "
+                            "en": "Moderate grade"
                         },
-                        "value": " moderateGrade"
+                        "value": "moderateGrade"
                     },
                     {
                         "name": {
                             "en": "High grade"
                         },
-                        "value": " highGrade"
+                        "value": "highGrade"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_precancerous_lesions/items/diagnosis_pl_ds_e_wd_g"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_ds_e_wd_g"
             },
             "diagnosis_pl_etiology___past_or_present_smoking": {
                 "description": "Indicates if the participant has a history of smoking as a risk factor for their precancerous lesion."
@@ -213,29 +213,29 @@
                     "en": "Overall Severity"
                 },
                 "datatype": [
-                    "xsd:integer"
+                    "xsd:string"
                 ],
                 "choices": [
                     {
                         "name": {
-                            "en": "MI "
+                            "en": "MI"
                         },
-                        "value": 0
+                        "value": "MI"
                     },
                     {
                         "name": {
-                            "en": " MO "
+                            "en": "MO"
                         },
-                        "value": 1
+                        "value": "MO"
                     },
                     {
                         "name": {
-                            "en": " SE"
+                            "en": "SE"
                         },
-                        "value": 2
+                        "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_os_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_os_1"
             },
             "diagnosis_pl_degree_os_2": {
                 "description": "Indicates an alternative measure of the overall severity of the participant’s precancerous lesion.",
@@ -248,7 +248,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Consistent "
+                            "en": "Consistent"
                         },
                         "value": "consistent"
                     },
@@ -256,10 +256,10 @@
                         "name": {
                             "en": "Intermittent"
                         },
-                        "value": " intermittent"
+                        "value": "intermittent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_os_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_os_2"
             },
             "diagnosis_pl_degree_r_1": {
                 "description": "Indicates the roughness of the participant’s voice due to the precancerous lesion.",
@@ -267,29 +267,29 @@
                     "en": "Roughness"
                 },
                 "datatype": [
-                    "xsd:integer"
+                    "xsd:string"
                 ],
                 "choices": [
                     {
                         "name": {
-                            "en": "MI "
+                            "en": "MI"
                         },
-                        "value": 0
+                        "value": "MI"
                     },
                     {
                         "name": {
-                            "en": " MO "
+                            "en": "MO"
                         },
-                        "value": 1
+                        "value": "MO"
                     },
                     {
                         "name": {
-                            "en": " SE"
+                            "en": "SE"
                         },
-                        "value": 2
+                        "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_r_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_r_1"
             },
             "diagnosis_pl_degree_r_2": {
                 "description": "Indicates an alternative measure of the roughness of the participant’s voice due to the precancerous lesion.",
@@ -302,7 +302,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Consistent "
+                            "en": "Consistent"
                         },
                         "value": "consistent"
                     },
@@ -310,10 +310,10 @@
                         "name": {
                             "en": "Intermittent"
                         },
-                        "value": " intermittent"
+                        "value": "intermittent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_r_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_r_2"
             },
             "diagnosis_pl_degree_b_1": {
                 "description": "Indicates the breathiness of the participant’s voice due to the precancerous lesion.",
@@ -321,29 +321,29 @@
                     "en": "Breathiness"
                 },
                 "datatype": [
-                    "xsd:integer"
+                    "xsd:string"
                 ],
                 "choices": [
                     {
                         "name": {
-                            "en": "MI "
+                            "en": "MI"
                         },
-                        "value": 0
+                        "value": "MI"
                     },
                     {
                         "name": {
-                            "en": " MO "
+                            "en": "MO"
                         },
-                        "value": 1
+                        "value": "MO"
                     },
                     {
                         "name": {
-                            "en": " SE"
+                            "en": "SE"
                         },
-                        "value": 2
+                        "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_b_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_b_1"
             },
             "diagnosis_pl_degree_b_2": {
                 "description": "Indicates an alternative measure of the breathiness of the participant’s voice due to the precancerous lesion.",
@@ -356,7 +356,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Consistent "
+                            "en": "Consistent"
                         },
                         "value": "consistent"
                     },
@@ -364,10 +364,10 @@
                         "name": {
                             "en": "Intermittent"
                         },
-                        "value": " intermittent"
+                        "value": "intermittent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_b_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_b_2"
             },
             "diagnosis_pl_degree_s_1": {
                 "description": "Indicates the strain in the participant’s voice due to the precancerous lesion.",
@@ -375,29 +375,29 @@
                     "en": "Strain"
                 },
                 "datatype": [
-                    "xsd:integer"
+                    "xsd:string"
                 ],
                 "choices": [
                     {
                         "name": {
-                            "en": "MI "
+                            "en": "MI"
                         },
-                        "value": 0
+                        "value": "MI"
                     },
                     {
                         "name": {
-                            "en": " MO "
+                            "en": "MO"
                         },
-                        "value": 1
+                        "value": "MO"
                     },
                     {
                         "name": {
-                            "en": " SE"
+                            "en": "SE"
                         },
-                        "value": 2
+                        "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_s_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_s_1"
             },
             "diagnosis_pl_degree_s_2": {
                 "description": "Indicates an alternative measure of the strain in the participant’s voice due to the precancerous lesion.",
@@ -410,7 +410,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Consistent "
+                            "en": "Consistent"
                         },
                         "value": "consistent"
                     },
@@ -418,10 +418,10 @@
                         "name": {
                             "en": "Intermittent"
                         },
-                        "value": " intermittent"
+                        "value": "intermittent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_s_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_s_2"
             },
             "diagnosis_pl_degree_p_1": {
                 "description": "Indicates the pitch of the participant’s voice due to the precancerous lesion.",
@@ -429,29 +429,29 @@
                     "en": "Pitch"
                 },
                 "datatype": [
-                    "xsd:integer"
+                    "xsd:string"
                 ],
                 "choices": [
                     {
                         "name": {
-                            "en": "MI "
+                            "en": "MI"
                         },
-                        "value": 0
+                        "value": "MI"
                     },
                     {
                         "name": {
-                            "en": " MO "
+                            "en": "MO"
                         },
-                        "value": 1
+                        "value": "MO"
                     },
                     {
                         "name": {
-                            "en": " SE"
+                            "en": "SE"
                         },
-                        "value": 2
+                        "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_p_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_p_1"
             },
             "diagnosis_pl_degree_p_2": {
                 "description": "Indicates an alternative measure of the pitch of the participant’s voice due to the precancerous lesion.",
@@ -464,7 +464,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Consistent "
+                            "en": "Consistent"
                         },
                         "value": "consistent"
                     },
@@ -472,10 +472,10 @@
                         "name": {
                             "en": "Intermittent"
                         },
-                        "value": " intermittent"
+                        "value": "intermittent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_p_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_p_2"
             },
             "diagnosis_pl_degree_l_1": {
                 "description": "Indicates the loudness of the participant’s voice due to the precancerous lesion.",
@@ -483,29 +483,29 @@
                     "en": "Loudness"
                 },
                 "datatype": [
-                    "xsd:integer"
+                    "xsd:string"
                 ],
                 "choices": [
                     {
                         "name": {
-                            "en": "MI "
+                            "en": "MI"
                         },
-                        "value": 0
+                        "value": "MI"
                     },
                     {
                         "name": {
-                            "en": " MO "
+                            "en": "MO"
                         },
-                        "value": 1
+                        "value": "MO"
                     },
                     {
                         "name": {
-                            "en": " SE"
+                            "en": "SE"
                         },
-                        "value": 2
+                        "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_l_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_l_1"
             },
             "diagnosis_pl_degree_l_2": {
                 "description": "Indicates an alternative measure of the loudness of the participant’s voice due to the precancerous lesion.",
@@ -518,7 +518,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Consistent "
+                            "en": "Consistent"
                         },
                         "value": "consistent"
                     },
@@ -526,10 +526,10 @@
                         "name": {
                             "en": "Intermittent"
                         },
-                        "value": " intermittent"
+                        "value": "intermittent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_l_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_l_2"
             },
             "diagnosis_pl_degree_comments": {
                 "description": "Provides additional comments about the resonance of the participant’s voice due to the precancerous lesion.",
@@ -542,7 +542,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Normal "
+                            "en": "Normal"
                         },
                         "value": "normal"
                     },
@@ -550,10 +550,10 @@
                         "name": {
                             "en": "Other"
                         },
-                        "value": " other"
+                        "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_comments"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_degree_comments"
             },
             "diagnosis_pl_treatment": {
                 "description": "Indicates if the participant has undergone any treatment for their precancerous lesion.",
@@ -566,7 +566,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Yes "
+                            "en": "Yes"
                         },
                         "value": "yes"
                     },
@@ -574,10 +574,10 @@
                         "name": {
                             "en": "No"
                         },
-                        "value": " no"
+                        "value": "no"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_precancerous_lesions/items/diagnosis_pl_treatment"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_treatment"
             },
             "diagnosis_pl_treatment_select___surveillance_only": {
                 "description": "Indicates if the participant is under surveillance only as treatment for their precancerous lesion."
@@ -610,30 +610,30 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Keratosis "
+                            "en": "Keratosis"
                         },
                         "value": "keratosis"
                     },
                     {
                         "name": {
-                            "en": "Leukoplakia "
+                            "en": "Leukoplakia"
                         },
-                        "value": " leukoplakia"
+                        "value": "leukoplakia"
                     },
                     {
                         "name": {
-                            "en": "Erythroplakia "
+                            "en": "Erythroplakia"
                         },
-                        "value": " erythroplakia"
+                        "value": "erythroplakia"
                     },
                     {
                         "name": {
                             "en": "Other"
                         },
-                        "value": " other"
+                        "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_precancerous_lesions/items/diagnosis_pl_ds"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_ds"
             },
             "diagnosis_pl_etiology": {
                 "question": {
@@ -645,24 +645,24 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Past or present smoking "
+                            "en": "Past or present smoking"
                         },
                         "value": "past_or_present_smoking"
                     },
                     {
                         "name": {
-                            "en": "Laryngopharyngeal reflux "
+                            "en": "Laryngopharyngeal reflux"
                         },
-                        "value": " laryngopharyngeal_reflux"
+                        "value": "laryngopharyngeal_reflux"
                     },
                     {
                         "name": {
                             "en": "Other irritants"
                         },
-                        "value": " other_irritants"
+                        "value": "other_irritants"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_precancerous_lesions/items/diagnosis_pl_etiology"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_etiology"
             },
             "diagnosis_pl_ds_ll": {
                 "question": {
@@ -674,36 +674,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Right vocal fold "
+                            "en": "Right vocal fold"
                         },
                         "value": "right_vocal_fold"
                     },
                     {
                         "name": {
-                            "en": "Left vocal fold "
+                            "en": "Left vocal fold"
                         },
-                        "value": " left_vocal_fold"
+                        "value": "left_vocal_fold"
                     },
                     {
                         "name": {
-                            "en": "Both vocal folds "
+                            "en": "Both vocal folds"
                         },
-                        "value": " both_vocal_folds"
+                        "value": "both_vocal_folds"
                     },
                     {
                         "name": {
-                            "en": "Ventricular folds (right or left) "
+                            "en": "Ventricular folds (right or left)"
                         },
-                        "value": " ventricular_folds"
+                        "value": "ventricular_folds"
                     },
                     {
                         "name": {
                             "en": "Subglottal areas"
                         },
-                        "value": " subglottal_areas"
+                        "value": "subglottal_areas"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_precancerous_lesions/items/diagnosis_pl_ds_ll"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_ds_ll"
             },
             "diagnosis_pl_treatment_select": {
                 "question": {
@@ -715,48 +715,48 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Surveillance only (previous diagnosis) "
+                            "en": "Surveillance only (previous diagnosis)"
                         },
                         "value": "surveillance_only"
                     },
                     {
                         "name": {
-                            "en": "Laser resection "
+                            "en": "Laser resection"
                         },
-                        "value": " laser_resection"
+                        "value": "laser_resection"
                     },
                     {
                         "name": {
-                            "en": "Laser ablation "
+                            "en": "Laser ablation"
                         },
-                        "value": " laser_ablation"
+                        "value": "laser_ablation"
                     },
                     {
                         "name": {
-                            "en": "Microlaryngeal surgery without laser "
+                            "en": "Microlaryngeal surgery without laser"
                         },
-                        "value": " microlaryngeal_surgery_without_laser"
+                        "value": "microlaryngeal_surgery_without_laser"
                     },
                     {
                         "name": {
-                            "en": "Radiotherapy for persistent or recurrent lesions "
+                            "en": "Radiotherapy for persistent or recurrent lesions"
                         },
-                        "value": " radiotherapy_persistent_or_recurrent_lesions"
+                        "value": "radiotherapy_persistent_or_recurrent_lesions"
                     },
                     {
                         "name": {
-                            "en": "Voice/speech therapy "
+                            "en": "Voice/speech therapy"
                         },
-                        "value": " voice_or_speech_therapy"
+                        "value": "voice_or_speech_therapy"
                     },
                     {
                         "name": {
                             "en": "Other"
                         },
-                        "value": " other"
+                        "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_precancerous_lesions/items/diagnosis_pl_treatment_select"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_precancerous_lesions/items/diagnosis_pl_treatment_select"
             }
         }
     }

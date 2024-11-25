@@ -1,7 +1,7 @@
 {
     "q_voice_voice_problem_severity_schema": {
         "description": "Measures the impact and seriousness of voice disorders.",
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_voice_voice_problem_severity/q_voice_voice_problem_severity_schema",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_voice_voice_problem_severity/q_voice_voice_problem_severity_schema",
         "data_elements": {
             "voice_severity_session_id": {
                 "description": "Unique identifier for the voice severity session.",
@@ -12,7 +12,7 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_voice_voice_problem_severity/items/voice_severity_session_id"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_voice_voice_problem_severity/items/voice_severity_session_id"
             },
             "voice_severity_duration": {
                 "description": "Duration of the assessment for the severity of the participant's voice issues.",
@@ -23,37 +23,38 @@
                     "xsd:decimal"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_voice_voice_problem_severity/items/voice_severity_duration"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_voice_voice_problem_severity/items/voice_severity_duration"
             },
             "describe_the_severity_of_a": {
                 "description": "Asks the participant to describe the severity of a specific condition or symptom.",
                 "question": {
-                    "en": "Describe the severity of auditory-perceptual attributes of a voice problem*Overall severity scale (0-100)"
+                    "en": "Describe the severity of auditory-perceptual attributes of a voice problem\n*Overall severity scale (0-100)"
                 },
                 "datatype": [
+                    "xsd:string",
                     "xsd:integer"
                 ],
                 "choices": [
                     {
                         "name": {
-                            "en": "0 "
+                            "en": "0"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "  "
+                            "en": ""
                         },
-                        "value": 1
+                        "value": ""
                     },
                     {
                         "name": {
-                            "en": " 100"
+                            "en": "100"
                         },
-                        "value": 2
+                        "value": 100
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_voice_voice_problem_severity/items/describe_the_severity_of_a"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_voice_voice_problem_severity/items/describe_the_severity_of_a"
             }
         }
     }

@@ -1,7 +1,7 @@
 {
     "d_neuro_alzheimers_disease_mild_cognitive_impairme_schema": {
         "description": "Measures cognitive decline and related symptoms.",
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/d_neuro_alzheimers_disease_mild_cognitive_impairme_schema",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/d_neuro_alzheimers_disease_mild_cognitive_impairme_schema",
         "data_elements": {
             "diagnosis_alz_dementia_mci_causes": {
                 "description": "Indicates if other causes of cognitive or functional changes have been excluded in the participant’s diagnosis.",
@@ -14,24 +14,24 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "No "
+                            "en": "No"
                         },
                         "value": "no"
                     },
                     {
                         "name": {
-                            "en": "Yes "
+                            "en": "Yes"
                         },
-                        "value": " yes"
+                        "value": "yes"
                     },
                     {
                         "name": {
                             "en": "Not certain"
                         },
-                        "value": " notCertain"
+                        "value": "notCertain"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_causes"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_causes"
             },
             "diagnosis_alz_dementia_mci_dt": {
                 "description": "Specifies the type of dementia or cognitive impairment in the participant.",
@@ -44,48 +44,48 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Mild Cognitive Impairment (MCI) "
+                            "en": "Mild Cognitive Impairment (MCI)"
                         },
                         "value": "mci"
                     },
                     {
                         "name": {
-                            "en": "Typical Alzheimer's Disease (AD) "
+                            "en": "Typical Alzheimer's Disease (AD)"
                         },
-                        "value": " ad"
+                        "value": "ad"
                     },
                     {
                         "name": {
-                            "en": "Frontotemporal Dementia (FTD) "
+                            "en": "Frontotemporal Dementia (FTD)"
                         },
-                        "value": " ftd"
+                        "value": "ftd"
                     },
                     {
                         "name": {
-                            "en": "Lewy Body Dementia (LBD) "
+                            "en": "Lewy Body Dementia (LBD)"
                         },
-                        "value": " lbd"
+                        "value": "lbd"
                     },
                     {
                         "name": {
-                            "en": "Vascular Dementia (VaD) "
+                            "en": "Vascular Dementia (VaD)"
                         },
-                        "value": " vad"
+                        "value": "vad"
                     },
                     {
                         "name": {
-                            "en": "Mixed Dementia (e.g. AD and VaD) "
+                            "en": "Mixed Dementia (e.g., AD and VaD)"
                         },
-                        "value": " mixed"
+                        "value": "mixed"
                     },
                     {
                         "name": {
                             "en": "Other"
                         },
-                        "value": " other"
+                        "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_dt"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_dt"
             },
             "diagnosis_alz_dementia_mci_etiology___genetic_factors": {
                 "description": "Indicates if genetic factors are suspected or known to be the etiology of the participant’s cognitive impairment or dementia."
@@ -128,30 +128,30 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "CDR 0.5 (Very mild impairment) "
+                            "en": "CDR 0.5 (Very mild impairment)"
                         },
                         "value": "cdr0_5"
                     },
                     {
                         "name": {
-                            "en": "CDR 1 (Mild impairment) "
+                            "en": "CDR 1 (Mild impairment)"
                         },
-                        "value": " cdr1"
+                        "value": "cdr1"
                     },
                     {
                         "name": {
-                            "en": "CDR 2 (Moderate impairment) "
+                            "en": "CDR 2 (Moderate impairment)"
                         },
-                        "value": " cdr2"
+                        "value": "cdr2"
                     },
                     {
                         "name": {
                             "en": "CDR 3 (Severe impairment)"
                         },
-                        "value": " cdr3"
+                        "value": "cdr3"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ds_cdr"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ds_cdr"
             },
             "diagnosis_alz_dementia_mci_ca_rudas_score": {
                 "description": "Specifies the participant’s Rowland Universal Dementia Assessment Scale (RUDAS) score.",
@@ -162,7 +162,7 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ca_rudas_score"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ca_rudas_score"
             },
             "diagnosis_alz_dementia_mci_ca_mmse_score": {
                 "description": "Specifies the participant’s Mini-Mental State Examination (MMSE) score.",
@@ -173,7 +173,7 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ca_mmse_score"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ca_mmse_score"
             },
             "diagnosis_alz_dementia_mci_ca_moca_score": {
                 "description": "Specifies the participant’s Montreal Cognitive Assessment (MoCA) score.",
@@ -184,7 +184,7 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ca_moca_score"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ca_moca_score"
             },
             "diagnosis_alz_dementia_mci_ca_adas_cog_score": {
                 "description": "Specifies the participant’s Alzheimer’s Disease Assessment Scale-Cognitive Subscale (ADAS-Cog) score.",
@@ -195,7 +195,7 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ca_adas_cog_score"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ca_adas_cog_score"
             },
             "diagnosis_alz_dementia_mci_ca_other": {
                 "description": "Specifies if another cognitive assessment tool was used for the participant.",
@@ -206,7 +206,7 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ca_other"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ca_other"
             },
             "diagnosis_alz_dementia_mci_ca_other_score": {
                 "description": "Specifies the score from another cognitive assessment tool used for the participant.",
@@ -217,7 +217,7 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ca_other_score"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ca_other_score"
             },
             "diagnosis_alz_dementia_mci_treatment_obtained": {
                 "description": "Indicates if the participant has undergone any treatment for Alzheimer’s disease, cognitive impairment, or other types of dementia.",
@@ -230,7 +230,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Yes "
+                            "en": "Yes"
                         },
                         "value": "yes"
                     },
@@ -238,10 +238,10 @@
                         "name": {
                             "en": "No"
                         },
-                        "value": " no"
+                        "value": "no"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_treatment_obtained"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_treatment_obtained"
             },
             "diagnosis_alz_dementia_mci_treatment_obtained_yes___medications": {
                 "description": "Indicates if the participant has taken medications as treatment for Alzheimer’s disease or cognitive impairment."
@@ -289,36 +289,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Genetic factors "
+                            "en": "Genetic factors"
                         },
                         "value": "genetic_factors"
                     },
                     {
                         "name": {
-                            "en": "Age-related changes "
+                            "en": "Age-related changes"
                         },
-                        "value": " age_related_changes"
+                        "value": "age_related_changes"
                     },
                     {
                         "name": {
-                            "en": "Other medical conditions (e.g. vascular factors traumatic brain injury) "
+                            "en": "Other medical conditions (e.g., vascular factors, traumatic brain injury)"
                         },
-                        "value": " other_medical_conditions"
+                        "value": "other_medical_conditions"
                     },
                     {
                         "name": {
-                            "en": "Substance-related (e.g. alcohol-induced cognitive impairment) "
+                            "en": "Substance-related (e.g., alcohol-induced cognitive impairment)"
                         },
-                        "value": " substance_related"
+                        "value": "substance_related"
                     },
                     {
                         "name": {
                             "en": "Other"
                         },
-                        "value": " other"
+                        "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_etiology"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_etiology"
             },
             "diagnosis_alz_dementia_mci_etiology_gf": {
                 "question": {
@@ -330,24 +330,24 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Familial Alzheimer's disease (e.g. mutations in APP PSEN1 PSEN2 genes) "
+                            "en": "Familial Alzheimer's disease (e.g., mutations in APP, PSEN1, PSEN2 genes)"
                         },
                         "value": "familial_alzheimers_disease"
                     },
                     {
                         "name": {
-                            "en": "Apolipoprotein E (APOE) ε4 allele "
+                            "en": "Apolipoprotein E (APOE) ε4 allele"
                         },
-                        "value": " apolipoprotein_e"
+                        "value": "apolipoprotein_e"
                     },
                     {
                         "name": {
                             "en": "Other genetic factors"
                         },
-                        "value": " other_genetic_factors"
+                        "value": "other_genetic_factors"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_etiology_gf"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_etiology_gf"
             },
             "diagnosis_alz_dementia_mci_ds": {
                 "question": {
@@ -359,7 +359,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Mild cognitive impairment (MCI) "
+                            "en": "Mild cognitive impairment (MCI)"
                         },
                         "value": "mci"
                     },
@@ -367,10 +367,10 @@
                         "name": {
                             "en": "Clinical dementia rating (CDR) staging"
                         },
-                        "value": " cdr"
+                        "value": "cdr"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ds"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_ds"
             },
             "diagnosis_alz_dementia_mci_treatment_obtained_yes": {
                 "question": {
@@ -382,7 +382,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Medications "
+                            "en": "Medications"
                         },
                         "value": "medications"
                     },
@@ -390,10 +390,10 @@
                         "name": {
                             "en": "Non-pharmacological interventions"
                         },
-                        "value": " npi"
+                        "value": "npi"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_treatment_obtained_yes"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_treatment_obtained_yes"
             },
             "diagnosis_alz_dementia_mci_treatment_obtained_yes_medications": {
                 "question": {
@@ -405,24 +405,24 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Cholinesterase inhibitors (e.g. Donepezil Rivastigmine Galantamine) "
+                            "en": "Cholinesterase inhibitors (e.g., Donepezil, Rivastigmine, Galantamine)"
                         },
                         "value": "cholinesterase_inhibitors"
                     },
                     {
                         "name": {
-                            "en": "NMDA receptor antagonist (e.g. Memantine) "
+                            "en": "NMDA receptor antagonist (e.g., Memantine)"
                         },
-                        "value": " nmda_receptor_antagonist"
+                        "value": "nmda_receptor_antagonist"
                     },
                     {
                         "name": {
                             "en": "Other"
                         },
-                        "value": " other"
+                        "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_treatment_obtained_yes_medications"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_treatment_obtained_yes_medications"
             },
             "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi": {
                 "question": {
@@ -434,48 +434,48 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Day program "
+                            "en": "Day program"
                         },
                         "value": "day_program"
                     },
                     {
                         "name": {
-                            "en": "Cognitive stimulation therapy "
+                            "en": "Cognitive stimulation therapy"
                         },
-                        "value": " cognitive_simulation_therapy"
+                        "value": "cognitive_simulation_therapy"
                     },
                     {
                         "name": {
-                            "en": "Reality orientation therapy "
+                            "en": "Reality orientation therapy"
                         },
-                        "value": " reality_orientation_therapy"
+                        "value": "reality_orientation_therapy"
                     },
                     {
                         "name": {
-                            "en": "Reminiscence therapy "
+                            "en": "Reminiscence therapy"
                         },
-                        "value": " reminiscence_therapy"
+                        "value": "reminiscence_therapy"
                     },
                     {
                         "name": {
-                            "en": "Physical exercise program "
+                            "en": "Physical exercise program"
                         },
-                        "value": " physical_exercise_program"
+                        "value": "physical_exercise_program"
                     },
                     {
                         "name": {
-                            "en": "Dietary modifications "
+                            "en": "Dietary modifications"
                         },
-                        "value": " dietary_modifications"
+                        "value": "dietary_modifications"
                     },
                     {
                         "name": {
                             "en": "Other"
                         },
-                        "value": " other"
+                        "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_treatment_obtained_yes_npi"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_alzheimers_disease_mild_cognitive_impairme/items/diagnosis_alz_dementia_mci_treatment_obtained_yes_npi"
             }
         }
     }

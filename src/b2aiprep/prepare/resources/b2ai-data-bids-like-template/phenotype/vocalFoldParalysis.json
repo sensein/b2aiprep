@@ -1,7 +1,7 @@
 {
     "d_voice_unilateral_vocal_fold_paralysis_schema": {
         "description": "Measures characteristics of vocal fold paralysis.",
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_unilateral_vocal_fold_paralysis/d_voice_unilateral_vocal_fold_paralysis_schema",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/d_voice_unilateral_vocal_fold_paralysis_schema",
         "data_elements": {
             "diagnosis_vfp_gsd": {
                 "description": "Indicates if the participant has vocal fold paralysis (VFP) confirmed by laryngoscopy or stroboscopy.",
@@ -14,13 +14,13 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "No "
+                            "en": "No"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "Yes "
+                            "en": "Yes"
                         },
                         "value": 1
                     },
@@ -31,7 +31,7 @@
                         "value": 2
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_vfp_gsd"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_vfp_gsd"
             },
             "diagnosis_vfp_etiology": {
                 "description": "Specifies the etiology or cause of the participant’s vocal fold paralysis (VFP).",
@@ -44,25 +44,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Idiopathic "
+                            "en": "Idiopathic"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Iatrogenic (surgery/intubation) "
+                            "en": "Iatrogenic (surgery/intubation)"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "Tumor invading RLN "
+                            "en": "Tumor invading RLN"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "Radiation "
+                            "en": "Radiation"
                         },
                         "value": 4
                     },
@@ -73,7 +73,7 @@
                         "value": 5
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_vfp_etiology"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_vfp_etiology"
             },
             "diagnosis_vfp_iatrogenic": {
                 "description": "Indicates if the participant's vocal fold paralysis (VFP) is related to surgery or intubation.",
@@ -86,37 +86,37 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Thyroidectomy "
+                            "en": "Thyroidectomy"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "ACDF "
+                            "en": "ACDF"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "Lung surgery "
+                            "en": "Lung surgery"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "Heart Surgery "
+                            "en": "Heart Surgery"
                         },
                         "value": 4
                     },
                     {
                         "name": {
-                            "en": "Intubation "
+                            "en": "Intubation"
                         },
                         "value": 5
                     },
                     {
                         "name": {
-                            "en": "Brain Surgery "
+                            "en": "Brain Surgery"
                         },
                         "value": 6
                     },
@@ -127,7 +127,7 @@
                         "value": 7
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_vfp_iatrogenic"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_vfp_iatrogenic"
             },
             "diagnosis_vfp_tumor": {
                 "description": "Indicates if the participant’s vocal fold paralysis (VFP) is caused by a tumor invading the recurrent laryngeal nerve (RLN).",
@@ -140,13 +140,13 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Brain "
+                            "en": "Brain"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Chest "
+                            "en": "Chest"
                         },
                         "value": 2
                     },
@@ -157,7 +157,7 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_vfp_tumor"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_vfp_tumor"
             },
             "diagnosis_vfp_dse": {
                 "description": "Specifies the degree of the participant’s glottic gap.",
@@ -170,19 +170,19 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "No glottic gap "
+                            "en": "No glottic gap"
                         },
                         "value": 4
                     },
                     {
                         "name": {
-                            "en": "Small "
+                            "en": "Small"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Moderate "
+                            "en": "Moderate"
                         },
                         "value": 2
                     },
@@ -193,7 +193,7 @@
                         "value": 3
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_vfp_dse"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_vfp_dse"
             },
             "diagnosis_degree_os": {
                 "description": "Indicates the overall severity of the participant’s vocal fold paralysis (VFP).",
@@ -201,29 +201,29 @@
                     "en": "Overall Severity"
                 },
                 "datatype": [
-                    "xsd:integer"
+                    "xsd:string"
                 ],
                 "choices": [
                     {
                         "name": {
-                            "en": "MI "
+                            "en": "MI"
                         },
-                        "value": 0
+                        "value": "MI"
                     },
                     {
                         "name": {
-                            "en": " MO "
+                            "en": "MO"
                         },
-                        "value": 1
+                        "value": "MO"
                     },
                     {
                         "name": {
-                            "en": " SE"
+                            "en": "SE"
                         },
-                        "value": 2
+                        "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_os"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_os"
             },
             "diagnosis_degree_os_2": {
                 "description": "Indicates an alternative measure of the overall severity of the participant’s condition.",
@@ -236,7 +236,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Consistent "
+                            "en": "Consistent"
                         },
                         "value": 1
                     },
@@ -247,7 +247,7 @@
                         "value": 2
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_os_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_os_2"
             },
             "diagnosis_degree_r": {
                 "description": "Indicates the roughness of the participant’s voice.",
@@ -255,29 +255,29 @@
                     "en": "Roughness"
                 },
                 "datatype": [
-                    "xsd:integer"
+                    "xsd:string"
                 ],
                 "choices": [
                     {
                         "name": {
-                            "en": "MI "
+                            "en": "MI"
                         },
-                        "value": 0
+                        "value": "MI"
                     },
                     {
                         "name": {
-                            "en": " MO "
+                            "en": "MO"
                         },
-                        "value": 1
+                        "value": "MO"
                     },
                     {
                         "name": {
-                            "en": " SE"
+                            "en": "SE"
                         },
-                        "value": 2
+                        "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_r"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_r"
             },
             "diagnosis_degree_r_2": {
                 "description": "Indicates an alternative measure of the roughness of the participant’s voice.",
@@ -290,7 +290,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Consistent "
+                            "en": "Consistent"
                         },
                         "value": 1
                     },
@@ -301,7 +301,7 @@
                         "value": 2
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_r_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_r_2"
             },
             "diagnosis_degree_b": {
                 "description": "Indicates the breathiness of the participant’s voice.",
@@ -309,29 +309,29 @@
                     "en": "Breathiness"
                 },
                 "datatype": [
-                    "xsd:integer"
+                    "xsd:string"
                 ],
                 "choices": [
                     {
                         "name": {
-                            "en": "MI "
+                            "en": "MI"
                         },
-                        "value": 0
+                        "value": "MI"
                     },
                     {
                         "name": {
-                            "en": " MO "
+                            "en": "MO"
                         },
-                        "value": 1
+                        "value": "MO"
                     },
                     {
                         "name": {
-                            "en": " SE"
+                            "en": "SE"
                         },
-                        "value": 2
+                        "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_b"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_b"
             },
             "diagnosis_degree_b_2": {
                 "description": "Indicates an alternative measure of the breathiness of the participant’s voice.",
@@ -344,7 +344,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Consistent "
+                            "en": "Consistent"
                         },
                         "value": 1
                     },
@@ -355,7 +355,7 @@
                         "value": 2
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_b_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_b_2"
             },
             "diagnosis_degree_s": {
                 "description": "Indicates the strain in the participant’s voice.",
@@ -363,29 +363,29 @@
                     "en": "Strain"
                 },
                 "datatype": [
-                    "xsd:integer"
+                    "xsd:string"
                 ],
                 "choices": [
                     {
                         "name": {
-                            "en": "MI "
+                            "en": "MI"
                         },
-                        "value": 0
+                        "value": "MI"
                     },
                     {
                         "name": {
-                            "en": " MO "
+                            "en": "MO"
                         },
-                        "value": 1
+                        "value": "MO"
                     },
                     {
                         "name": {
-                            "en": " SE"
+                            "en": "SE"
                         },
-                        "value": 2
+                        "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_s"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_s"
             },
             "diagnosis_degree_s_2": {
                 "description": "Indicates an alternative measure of the strain in the participant’s voice.",
@@ -398,7 +398,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Consistent "
+                            "en": "Consistent"
                         },
                         "value": 1
                     },
@@ -409,7 +409,7 @@
                         "value": 2
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_s_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_s_2"
             },
             "diagnosis_degree_p": {
                 "description": "Indicates the pitch of the participant’s voice.",
@@ -417,29 +417,29 @@
                     "en": "Pitch"
                 },
                 "datatype": [
-                    "xsd:integer"
+                    "xsd:string"
                 ],
                 "choices": [
                     {
                         "name": {
-                            "en": "MI "
+                            "en": "MI"
                         },
-                        "value": 0
+                        "value": "MI"
                     },
                     {
                         "name": {
-                            "en": " MO "
+                            "en": "MO"
                         },
-                        "value": 1
+                        "value": "MO"
                     },
                     {
                         "name": {
-                            "en": " SE"
+                            "en": "SE"
                         },
-                        "value": 2
+                        "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_p"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_p"
             },
             "diagnosis_degree_p_2": {
                 "description": "Indicates an alternative measure of the pitch of the participant’s voice.",
@@ -452,7 +452,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Consistent "
+                            "en": "Consistent"
                         },
                         "value": 1
                     },
@@ -463,7 +463,7 @@
                         "value": 2
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_p_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_p_2"
             },
             "diagnosis_degree_l": {
                 "description": "Indicates the loudness of the participant’s voice.",
@@ -471,29 +471,29 @@
                     "en": "Loudness"
                 },
                 "datatype": [
-                    "xsd:integer"
+                    "xsd:string"
                 ],
                 "choices": [
                     {
                         "name": {
-                            "en": "MI "
+                            "en": "MI"
                         },
-                        "value": 0
+                        "value": "MI"
                     },
                     {
                         "name": {
-                            "en": " MO "
+                            "en": "MO"
                         },
-                        "value": 1
+                        "value": "MO"
                     },
                     {
                         "name": {
-                            "en": " SE"
+                            "en": "SE"
                         },
-                        "value": 2
+                        "value": "SE"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_l"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_l"
             },
             "diagnosis_degree_l_2": {
                 "description": "Indicates an alternative measure of the loudness of the participant’s voice.",
@@ -506,7 +506,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Consistent "
+                            "en": "Consistent"
                         },
                         "value": 1
                     },
@@ -517,7 +517,7 @@
                         "value": 2
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_l_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_l_2"
             },
             "diagnosis_degree_comments": {
                 "description": "Provides additional comments about the resonance of the participant’s voice.",
@@ -530,7 +530,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Normal "
+                            "en": "Normal"
                         },
                         "value": 1
                     },
@@ -541,7 +541,7 @@
                         "value": 2
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_comments"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_comments"
             }
         }
     }

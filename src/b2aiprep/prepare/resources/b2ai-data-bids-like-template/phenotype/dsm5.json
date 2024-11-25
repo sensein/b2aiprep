@@ -1,7 +1,7 @@
 {
     "q_mood_dsm5_adult_schema": {
         "description": "Measures criteria according to DSM-5 standards.",
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/q_mood_dsm5_adult_schema",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/q_mood_dsm5_adult_schema",
         "data_elements": {
             "dsm_5_session_id": {
                 "description": "Unique identifier for the DSM-5 session.",
@@ -12,7 +12,7 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/dsm_5_session_id"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/dsm_5_session_id"
             },
             "dsm_5_duration": {
                 "description": "Total duration of the DSM-5 assessment.",
@@ -23,7 +23,7 @@
                     "xsd:decimal"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/dsm_5_duration"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/dsm_5_duration"
             },
             "little_interest": {
                 "description": "Indicates if the participant has little interest or pleasure in doing things.",
@@ -36,25 +36,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0=None (Not at all) "
+                            "en": "0=None (Not at all)"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1=Slight (Rare less than a day or two) "
+                            "en": "1=Slight (Rare, less than a day or two)"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2=Mild (Several days) "
+                            "en": "2=Mild (Several days)"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3=Moderate (More than half the days) "
+                            "en": "3=Moderate (More than half the days)"
                         },
                         "value": 3
                     },
@@ -65,7 +65,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/little_interest"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/little_interest"
             },
             "feeling_down": {
                 "description": "Indicates if the participant is feeling down or sad.",
@@ -78,25 +78,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0=None (Not at all) "
+                            "en": "0=None (Not at all)"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1=Slight (Rare less than a day or two) "
+                            "en": "1=Slight (Rare, less than a day or two)"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2=Mild (Several days) "
+                            "en": "2=Mild (Several days)"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3=Moderate (More than half the days) "
+                            "en": "3=Moderate (More than half the days)"
                         },
                         "value": 3
                     },
@@ -107,7 +107,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/feeling_down"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/feeling_down"
             },
             "feeling_more_irritated": {
                 "description": "Indicates if the participant feels more irritated than usual.",
@@ -120,25 +120,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0=None (Not at all) "
+                            "en": "0=None (Not at all)"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1=Slight (Rare less than a day or two) "
+                            "en": "1=Slight (Rare, less than a day or two)"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2=Mild (Several days) "
+                            "en": "2=Mild (Several days)"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3=Moderate (More than half the days) "
+                            "en": "3=Moderate (More than half the days)"
                         },
                         "value": 3
                     },
@@ -149,7 +149,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/feeling_more_irritated"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/feeling_more_irritated"
             },
             "sleeping_less": {
                 "description": "Indicates if the participant is sleeping less than usual.",
@@ -162,25 +162,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0=None (Not at all) "
+                            "en": "0=None (Not at all)"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1=Slight (Rare less than a day or two) "
+                            "en": "1=Slight (Rare, less than a day or two)"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2=Mild (Several days) "
+                            "en": "2=Mild (Several days)"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3=Moderate (More than half the days) "
+                            "en": "3=Moderate (More than half the days)"
                         },
                         "value": 3
                     },
@@ -191,7 +191,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/sleeping_less"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/sleeping_less"
             },
             "starting_more_projects": {
                 "description": "Indicates if the participant is starting more projects than they can manage.",
@@ -204,25 +204,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0=None (Not at all) "
+                            "en": "0=None (Not at all)"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1=Slight (Rare less than a day or two) "
+                            "en": "1=Slight (Rare, less than a day or two)"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2=Mild (Several days) "
+                            "en": "2=Mild (Several days)"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3=Moderate (More than half the days) "
+                            "en": "3=Moderate (More than half the days)"
                         },
                         "value": 3
                     },
@@ -233,7 +233,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/starting_more_projects"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/starting_more_projects"
             },
             "feeling_nervous": {
                 "description": "Indicates if the participant feels nervous.",
@@ -246,25 +246,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0=None (Not at all) "
+                            "en": "0=None (Not at all)"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1=Slight (Rare less than a day or two) "
+                            "en": "1=Slight (Rare, less than a day or two)"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2=Mild (Several days) "
+                            "en": "2=Mild (Several days)"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3=Moderate (More than half the days) "
+                            "en": "3=Moderate (More than half the days)"
                         },
                         "value": 3
                     },
@@ -275,7 +275,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/feeling_nervous"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/feeling_nervous"
             },
             "feeling_panic": {
                 "description": "Indicates if the participant feels panic or overwhelming fear.",
@@ -288,25 +288,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0=None (Not at all) "
+                            "en": "0=None (Not at all)"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1=Slight (Rare less than a day or two) "
+                            "en": "1=Slight (Rare, less than a day or two)"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2=Mild (Several days) "
+                            "en": "2=Mild (Several days)"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3=Moderate (More than half the days) "
+                            "en": "3=Moderate (More than half the days)"
                         },
                         "value": 3
                     },
@@ -317,7 +317,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/feeling_panic"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/feeling_panic"
             },
             "avoiding_situations": {
                 "description": "Indicates if the participant is avoiding certain situations due to stress or anxiety.",
@@ -330,25 +330,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0=None (Not at all) "
+                            "en": "0=None (Not at all)"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1=Slight (Rare less than a day or two) "
+                            "en": "1=Slight (Rare, less than a day or two)"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2=Mild (Several days) "
+                            "en": "2=Mild (Several days)"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3=Moderate (More than half the days) "
+                            "en": "3=Moderate (More than half the days)"
                         },
                         "value": 3
                     },
@@ -359,7 +359,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/avoiding_situations"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/avoiding_situations"
             },
             "unexplained_aches": {
                 "description": "Indicates if the participant experiences unexplained aches or pains.",
@@ -372,25 +372,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0=None (Not at all) "
+                            "en": "0=None (Not at all)"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1=Slight (Rare less than a day or two) "
+                            "en": "1=Slight (Rare, less than a day or two)"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2=Mild (Several days) "
+                            "en": "2=Mild (Several days)"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3=Moderate (More than half the days) "
+                            "en": "3=Moderate (More than half the days)"
                         },
                         "value": 3
                     },
@@ -401,7 +401,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/unexplained_aches"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/unexplained_aches"
             },
             "illness_not_taken_serious": {
                 "description": "Reports if the participant feels that their illness is not taken seriously by others.",
@@ -414,25 +414,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0=None (Not at all) "
+                            "en": "0=None (Not at all)"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1=Slight (Rare less than a day or two) "
+                            "en": "1=Slight (Rare, less than a day or two)"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2=Mild (Several days) "
+                            "en": "2=Mild (Several days)"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3=Moderate (More than half the days) "
+                            "en": "3=Moderate (More than half the days)"
                         },
                         "value": 3
                     },
@@ -443,7 +443,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/illness_not_taken_serious"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/illness_not_taken_serious"
             },
             "self_harm": {
                 "description": "Indicates if the participant has a history of self-harm.",
@@ -456,25 +456,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0=None (Not at all) "
+                            "en": "0=None (Not at all)"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1=Slight (Rare less than a day or two) "
+                            "en": "1=Slight (Rare, less than a day or two)"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2=Mild (Several days) "
+                            "en": "2=Mild (Several days)"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3=Moderate (More than half the days) "
+                            "en": "3=Moderate (More than half the days)"
                         },
                         "value": 3
                     },
@@ -485,7 +485,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/self_harm"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/self_harm"
             },
             "hearing_things": {
                 "description": "Indicates if the participant has experienced auditory hallucinations.",
@@ -498,25 +498,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0=None (Not at all) "
+                            "en": "0=None (Not at all)"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1=Slight (Rare less than a day or two) "
+                            "en": "1=Slight (Rare, less than a day or two)"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2=Mild (Several days) "
+                            "en": "2=Mild (Several days)"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3=Moderate (More than half the days) "
+                            "en": "3=Moderate (More than half the days)"
                         },
                         "value": 3
                     },
@@ -527,7 +527,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/hearing_things"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/hearing_things"
             },
             "someone_hear_thoughts": {
                 "description": "Indicates if the participant believes that others can hear their thoughts.",
@@ -540,25 +540,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0=None (Not at all) "
+                            "en": "0=None (Not at all)"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1=Slight (Rare less than a day or two) "
+                            "en": "1=Slight (Rare, less than a day or two)"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2=Mild (Several days) "
+                            "en": "2=Mild (Several days)"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3=Moderate (More than half the days) "
+                            "en": "3=Moderate (More than half the days)"
                         },
                         "value": 3
                     },
@@ -569,7 +569,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/someone_hear_thoughts"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/someone_hear_thoughts"
             },
             "sleep_quality": {
                 "description": "Indicates the participant's subjective assessment of their sleep quality.",
@@ -582,25 +582,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0=None (Not at all) "
+                            "en": "0=None (Not at all)"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1=Slight (Rare less than a day or two) "
+                            "en": "1=Slight (Rare, less than a day or two)"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2=Mild (Several days) "
+                            "en": "2=Mild (Several days)"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3=Moderate (More than half the days) "
+                            "en": "3=Moderate (More than half the days)"
                         },
                         "value": 3
                     },
@@ -611,7 +611,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/sleep_quality"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/sleep_quality"
             },
             "memory_issues": {
                 "description": "Reports if the participant is experiencing memory issues.",
@@ -624,25 +624,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0=None (Not at all) "
+                            "en": "0=None (Not at all)"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1=Slight (Rare less than a day or two) "
+                            "en": "1=Slight (Rare, less than a day or two)"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2=Mild (Several days) "
+                            "en": "2=Mild (Several days)"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3=Moderate (More than half the days) "
+                            "en": "3=Moderate (More than half the days)"
                         },
                         "value": 3
                     },
@@ -653,7 +653,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/memory_issues"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/memory_issues"
             },
             "unpleasant_thoughts": {
                 "description": "Reports if the participant experienced unpleasant thoughts recently.",
@@ -666,25 +666,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0=None (Not at all) "
+                            "en": "0=None (Not at all)"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1=Slight (Rare less than a day or two) "
+                            "en": "1=Slight (Rare, less than a day or two)"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2=Mild (Several days) "
+                            "en": "2=Mild (Several days)"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3=Moderate (More than half the days) "
+                            "en": "3=Moderate (More than half the days)"
                         },
                         "value": 3
                     },
@@ -695,7 +695,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/unpleasant_thoughts"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/unpleasant_thoughts"
             },
             "repeat_acts": {
                 "description": "Indicates if the participant repeats certain actions or behaviors.",
@@ -708,25 +708,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0=None (Not at all) "
+                            "en": "0=None (Not at all)"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1=Slight (Rare less than a day or two) "
+                            "en": "1=Slight (Rare, less than a day or two)"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2=Mild (Several days) "
+                            "en": "2=Mild (Several days)"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3=Moderate (More than half the days) "
+                            "en": "3=Moderate (More than half the days)"
                         },
                         "value": 3
                     },
@@ -737,7 +737,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/repeat_acts"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/repeat_acts"
             },
             "feeling_detached": {
                 "description": "Indicates if the participant feels detached from reality or their surroundings.",
@@ -750,25 +750,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0=None (Not at all) "
+                            "en": "0=None (Not at all)"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1=Slight (Rare less than a day or two) "
+                            "en": "1=Slight (Rare, less than a day or two)"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2=Mild (Several days) "
+                            "en": "2=Mild (Several days)"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3=Moderate (More than half the days) "
+                            "en": "3=Moderate (More than half the days)"
                         },
                         "value": 3
                     },
@@ -779,7 +779,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/feeling_detached"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/feeling_detached"
             },
             "no_purpose": {
                 "description": "Indicates if the participant feels like they have no purpose.",
@@ -792,25 +792,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0=None (Not at all) "
+                            "en": "0=None (Not at all)"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1=Slight (Rare less than a day or two) "
+                            "en": "1=Slight (Rare, less than a day or two)"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2=Mild (Several days) "
+                            "en": "2=Mild (Several days)"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3=Moderate (More than half the days) "
+                            "en": "3=Moderate (More than half the days)"
                         },
                         "value": 3
                     },
@@ -821,7 +821,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/no_purpose"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/no_purpose"
             },
             "isolated": {
                 "description": "Indicates if the participant feels isolated or alone.",
@@ -834,25 +834,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0=None (Not at all) "
+                            "en": "0=None (Not at all)"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1=Slight (Rare less than a day or two) "
+                            "en": "1=Slight (Rare, less than a day or two)"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2=Mild (Several days) "
+                            "en": "2=Mild (Several days)"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3=Moderate (More than half the days) "
+                            "en": "3=Moderate (More than half the days)"
                         },
                         "value": 3
                     },
@@ -863,7 +863,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/isolated"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/isolated"
             },
             "drinking_more": {
                 "description": "Indicates if the participant is consuming more alcohol.",
@@ -876,25 +876,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0=None (Not at all) "
+                            "en": "0=None (Not at all)"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1=Slight (Rare less than a day or two) "
+                            "en": "1=Slight (Rare, less than a day or two)"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2=Mild (Several days) "
+                            "en": "2=Mild (Several days)"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3=Moderate (More than half the days) "
+                            "en": "3=Moderate (More than half the days)"
                         },
                         "value": 3
                     },
@@ -905,7 +905,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/drinking_more"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/drinking_more"
             },
             "smoking_more": {
                 "description": "Indicates if the participant is smoking more than usual.",
@@ -918,25 +918,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0=None (Not at all) "
+                            "en": "0=None (Not at all)"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1=Slight (Rare less than a day or two) "
+                            "en": "1=Slight (Rare, less than a day or two)"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2=Mild (Several days) "
+                            "en": "2=Mild (Several days)"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3=Moderate (More than half the days) "
+                            "en": "3=Moderate (More than half the days)"
                         },
                         "value": 3
                     },
@@ -947,7 +947,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/smoking_more"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/smoking_more"
             },
             "medication_use": {
                 "description": "Indicates the participant's use of medications during the study.",
@@ -960,25 +960,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0=None (Not at all) "
+                            "en": "0=None (Not at all)"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1=Slight (Rare less than a day or two) "
+                            "en": "1=Slight (Rare, less than a day or two)"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2=Mild (Several days) "
+                            "en": "2=Mild (Several days)"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3=Moderate (More than half the days) "
+                            "en": "3=Moderate (More than half the days)"
                         },
                         "value": 3
                     },
@@ -989,7 +989,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/medication_use"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/medication_use"
             },
             "q1_happy": {
                 "description": "Response to question 1: 'Is the participant feeling happy?'",
@@ -1002,25 +1002,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "I do not feel happier or more cheerful than usual. "
+                            "en": "I do not feel happier or more cheerful than usual."
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "I occasionally feel happier or more cheerful than usual. "
+                            "en": "I occasionally feel happier or more cheerful than usual."
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "I often feel happier or more cheerful than usual. "
+                            "en": "I often feel happier or more cheerful than usual."
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "I feel happier or more cheerful than usual most of the time. "
+                            "en": "I feel happier or more cheerful than usual most of the time."
                         },
                         "value": 4
                     },
@@ -1031,7 +1031,7 @@
                         "value": 5
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/q1_happy"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/q1_happy"
             },
             "q2_self_confident": {
                 "description": "Asks how self-confident the participant feels in general.",
@@ -1044,25 +1044,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "I do not feel more self-confident than usual. "
+                            "en": "I do not feel more self-confident than usual."
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "I occasionally feel more self-confident than usual. "
+                            "en": "I occasionally feel more self-confident than usual."
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "I often feel more self-confident than usual. "
+                            "en": "I often feel more self-confident than usual."
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "I frequently feel more self-confident than usual. "
+                            "en": "I frequently feel more self-confident than usual."
                         },
                         "value": 4
                     },
@@ -1073,7 +1073,7 @@
                         "value": 5
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/q2_self_confident"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/q2_self_confident"
             },
             "q3_sleep": {
                 "description": "Response to question 3: 'Is the participant experiencing trouble sleeping?'",
@@ -1086,25 +1086,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "I do not need less sleep than usual. "
+                            "en": "I do not need less sleep than usual."
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "I occasionally need less sleep than usual. "
+                            "en": "I occasionally need less sleep than usual."
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "I often need less sleep than usual. "
+                            "en": "I often need less sleep than usual."
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "I frequently need less sleep than usual. "
+                            "en": "I frequently need less sleep than usual."
                         },
                         "value": 4
                     },
@@ -1115,7 +1115,7 @@
                         "value": 5
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/q3_sleep"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/q3_sleep"
             },
             "q4_talk": {
                 "description": "Response to question 4: 'Does the participant talk about a specific topic?'",
@@ -1128,25 +1128,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "I do not talk more than usual. "
+                            "en": "I do not talk more than usual."
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "I occasionally talk more than usual. "
+                            "en": "I occasionally talk more than usual."
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "I often talk more than usual. "
+                            "en": "I often talk more than usual."
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "I frequently talk more than usual. "
+                            "en": "I frequently talk more than usual."
                         },
                         "value": 4
                     },
@@ -1157,7 +1157,7 @@
                         "value": 5
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/q4_talk"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/q4_talk"
             },
             "q5_active": {
                 "description": "Inquires how active or energetic the participant feels throughout the day.",
@@ -1170,25 +1170,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "I have not been more active (either socially sexually at work home or school) than usual. "
+                            "en": "I have not been more active (either socially, sexually, at work, home, or school) than usual."
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "I have occasionally been more active than usual. "
+                            "en": "I have occasionally been more active than usual."
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "I have often been more active than usual. "
+                            "en": "I have often been more active than usual."
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "I have frequently been more active than usual. "
+                            "en": "I have frequently been more active than usual."
                         },
                         "value": 4
                     },
@@ -1199,7 +1199,7 @@
                         "value": 5
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/q5_active"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/q5_active"
             },
             "social_phobia_1": {
                 "description": "Response to social phobia item 1, indicating the participant's level of discomfort in social situations.",
@@ -1212,25 +1212,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Never "
+                            "en": "Never"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "Occasionally "
+                            "en": "Occasionally"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Half of the time "
+                            "en": "Half of the time"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "Most of the time "
+                            "en": "Most of the time"
                         },
                         "value": 3
                     },
@@ -1241,7 +1241,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/social_phobia_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/social_phobia_1"
             },
             "social_phobia_2": {
                 "description": "Response to social phobia item 2, assessing the participant's level of discomfort in social situations.",
@@ -1254,25 +1254,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Never "
+                            "en": "Never"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "Occasionally "
+                            "en": "Occasionally"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Half of the time "
+                            "en": "Half of the time"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "Most of the time "
+                            "en": "Most of the time"
                         },
                         "value": 3
                     },
@@ -1283,7 +1283,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/social_phobia_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/social_phobia_2"
             },
             "social_phobia_3": {
                 "description": "Indicates if the participant experiences social phobia related to situation 3.",
@@ -1296,25 +1296,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Never "
+                            "en": "Never"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "Occasionally "
+                            "en": "Occasionally"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Half of the time "
+                            "en": "Half of the time"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "Most of the time "
+                            "en": "Most of the time"
                         },
                         "value": 3
                     },
@@ -1325,7 +1325,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/social_phobia_3"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/social_phobia_3"
             },
             "social_phobia_4": {
                 "description": "Indicates if the participant experiences social phobia in scenario 4.",
@@ -1338,25 +1338,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Never "
+                            "en": "Never"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "Occasionally "
+                            "en": "Occasionally"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Half of the time "
+                            "en": "Half of the time"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "Most of the time "
+                            "en": "Most of the time"
                         },
                         "value": 3
                     },
@@ -1367,7 +1367,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/social_phobia_4"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/social_phobia_4"
             },
             "social_phobia_5": {
                 "description": "Indicates if the participant experiences social phobia in scenario 5.",
@@ -1380,25 +1380,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Never "
+                            "en": "Never"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "Occasionally "
+                            "en": "Occasionally"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Half of the time "
+                            "en": "Half of the time"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "Most of the time "
+                            "en": "Most of the time"
                         },
                         "value": 3
                     },
@@ -1409,7 +1409,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/social_phobia_5"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/social_phobia_5"
             },
             "social_phobia_6": {
                 "description": "Indicates if the participant experiences social phobia in scenario 6.",
@@ -1422,25 +1422,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Never "
+                            "en": "Never"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "Occasionally "
+                            "en": "Occasionally"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Half of the time "
+                            "en": "Half of the time"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "Most of the time "
+                            "en": "Most of the time"
                         },
                         "value": 3
                     },
@@ -1451,7 +1451,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/social_phobia_6"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/social_phobia_6"
             },
             "social_phobia_7": {
                 "description": "Indicates the participant's level of social phobia based on scenario 7.",
@@ -1464,25 +1464,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Never "
+                            "en": "Never"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "Occasionally "
+                            "en": "Occasionally"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Half of the time "
+                            "en": "Half of the time"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "Most of the time "
+                            "en": "Most of the time"
                         },
                         "value": 3
                     },
@@ -1493,7 +1493,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/social_phobia_7"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/social_phobia_7"
             },
             "social_phobia_8": {
                 "description": "Indicates if the participant experiences social phobia in scenario 8.",
@@ -1506,25 +1506,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Never "
+                            "en": "Never"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "Occasionally "
+                            "en": "Occasionally"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Half of the time "
+                            "en": "Half of the time"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "Most of the time "
+                            "en": "Most of the time"
                         },
                         "value": 3
                     },
@@ -1535,7 +1535,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/social_phobia_8"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/social_phobia_8"
             },
             "social_phobia_9": {
                 "description": "Indicates if the participant experiences social phobia in scenario 9.",
@@ -1548,25 +1548,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Never "
+                            "en": "Never"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "Occasionally "
+                            "en": "Occasionally"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Half of the time "
+                            "en": "Half of the time"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "Most of the time "
+                            "en": "Most of the time"
                         },
                         "value": 3
                     },
@@ -1577,7 +1577,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/social_phobia_9"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/social_phobia_9"
             },
             "social_phobia_10": {
                 "description": "Indicates if the participant has social phobia in a specific scenario (item 10).",
@@ -1590,25 +1590,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Never "
+                            "en": "Never"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "Occasionally "
+                            "en": "Occasionally"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "Half of the time "
+                            "en": "Half of the time"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "Most of the time "
+                            "en": "Most of the time"
                         },
                         "value": 3
                     },
@@ -1619,7 +1619,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_dsm5_adult/items/social_phobia_10"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_dsm5_adult/items/social_phobia_10"
             }
         }
     }

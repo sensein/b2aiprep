@@ -1,12 +1,12 @@
 {
     "d_mood_bipolar_disorder_schema": {
         "description": "Measures symptoms and behaviors related to bipolar disorder.",
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_mood_bipolar_disorder/d_mood_bipolar_disorder_schema",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/d_mood_bipolar_disorder_schema",
         "data_elements": {
             "diagnosis_bipolar_gsd": {
                 "description": "Specifies the participant’s diagnosis of bipolar disorder.",
                 "question": {
-                    "en": "Diagnosis"
+                    "en": "Diagnosis\n\n(Legacy)"
                 },
                 "datatype": [
                     "xsd:string"
@@ -14,35 +14,35 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Bipolar I disorder "
+                            "en": "Bipolar I disorder"
                         },
                         "value": "bipolar_1"
                     },
                     {
                         "name": {
-                            "en": "Bipolar II disorder "
+                            "en": "Bipolar II disorder"
                         },
-                        "value": " bipolar_2"
+                        "value": "bipolar_2"
                     },
                     {
                         "name": {
-                            "en": "Cyclothymic disorder (cyclothymia) "
+                            "en": "Cyclothymic disorder (cyclothymia)"
                         },
-                        "value": " cyclothymia"
+                        "value": "cyclothymia"
                     },
                     {
                         "name": {
                             "en": "Other specified and unspecified bipolar and related disorders"
                         },
-                        "value": " other"
+                        "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_gsd"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_gsd"
             },
             "diagnosis_bipolar_gsd_interview": {
                 "description": "Indicates if a structured clinical interview was conducted for diagnosing the participant’s bipolar disorder.",
                 "question": {
-                    "en": "Was a structured clinical interview done?"
+                    "en": "Was a structured clinical interview done?\n\n(Legacy)"
                 },
                 "datatype": [
                     "xsd:boolean"
@@ -61,12 +61,12 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_gsd_interview"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_gsd_interview"
             },
             "diagnosis_bipolar_gsd_oqu": {
                 "description": "Indicates if an objective questionnaire was used in the diagnosis of the participant’s bipolar disorder.",
                 "question": {
-                    "en": "Was an objective questionnaire used?"
+                    "en": "Was an objective questionnaire used?\n\n(Legacy)"
                 },
                 "datatype": [
                     "xsd:boolean"
@@ -85,12 +85,12 @@
                         "value": 0
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_gsd_oqu"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_gsd_oqu"
             },
             "diagnosis_bipolar_gsd_oquw": {
                 "description": "Specifies which objective questionnaire was used in diagnosing the participant’s bipolar disorder.",
                 "question": {
-                    "en": "Which objective questionnaire was used?"
+                    "en": "Which objective questionnaire was used?\n\n(Legacy)"
                 },
                 "datatype": [
                     "xsd:string"
@@ -98,35 +98,35 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Patient Health Questionnaire (PHQ-9) "
+                            "en": "Patient Health Questionnaire (PHQ-9)"
                         },
                         "value": "phq9"
                     },
                     {
                         "name": {
-                            "en": "HAM-D "
+                            "en": "HAM-D"
                         },
-                        "value": " hamD"
+                        "value": "hamD"
                     },
                     {
                         "name": {
-                            "en": "Beck Depression Inventory (BDI) "
+                            "en": "Beck Depression Inventory (BDI)"
                         },
-                        "value": " bdi"
+                        "value": "bdi"
                     },
                     {
                         "name": {
                             "en": "Other"
                         },
-                        "value": " other"
+                        "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_gsd_oquw"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_gsd_oquw"
             },
             "diagnosis_bipolar_subtype_active": {
                 "description": "Specifies the active subtype of the participant’s bipolar disorder.",
                 "question": {
-                    "en": "Disease Subtype"
+                    "en": "Disease Subtype\n\n(Legacy)"
                 },
                 "datatype": [
                     "xsd:string"
@@ -134,7 +134,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Active "
+                            "en": "Active"
                         },
                         "value": "active"
                     },
@@ -142,15 +142,15 @@
                         "name": {
                             "en": "Recurrent"
                         },
-                        "value": " recurrent"
+                        "value": "recurrent"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_subtype_active"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_subtype_active"
             },
             "diagnosis_bipolar_psychotic": {
                 "description": "Indicates if the participant has psychotic symptoms associated with bipolar disorder.",
                 "question": {
-                    "en": "Psychotic Symptoms"
+                    "en": "Psychotic Symptoms\n\n(Legacy)"
                 },
                 "datatype": [
                     "xsd:string"
@@ -158,7 +158,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "With "
+                            "en": "With"
                         },
                         "value": "with"
                     },
@@ -166,15 +166,15 @@
                         "name": {
                             "en": "Without"
                         },
-                        "value": " without"
+                        "value": "without"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_psychotic"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_psychotic"
             },
             "diagnosis_bipolar_severity": {
                 "description": "Indicates the severity of the participant’s bipolar disorder.",
                 "question": {
-                    "en": "Disease Severity"
+                    "en": "Disease Severity\n\n(Legacy)"
                 },
                 "datatype": [
                     "xsd:string"
@@ -182,24 +182,24 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Mild "
+                            "en": "Mild"
                         },
                         "value": "mild"
                     },
                     {
                         "name": {
-                            "en": "Moderate "
+                            "en": "Moderate"
                         },
-                        "value": " moderate"
+                        "value": "moderate"
                     },
                     {
                         "name": {
                             "en": "Severe"
                         },
-                        "value": " severe"
+                        "value": "severe"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_severity"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_severity"
             }
         }
     }

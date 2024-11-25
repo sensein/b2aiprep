@@ -1,7 +1,7 @@
 {
     "q_mood_ptsd_adult_schema": {
         "description": "Measures trauma-related symptoms.",
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_ptsd_adult/q_mood_ptsd_adult_schema",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_ptsd_adult/q_mood_ptsd_adult_schema",
         "data_elements": {
             "ptsd_session_id": {
                 "description": "Unique identifier for the PTSD assessment session.",
@@ -12,7 +12,7 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_ptsd_adult/items/ptsd_session_id"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_ptsd_adult/items/ptsd_session_id"
             },
             "ptsd_duration": {
                 "description": "Reports the duration of post-traumatic stress disorder (PTSD) symptoms the participant is experiencing.",
@@ -23,7 +23,7 @@
                     "xsd:decimal"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_ptsd_adult/items/ptsd_duration"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_ptsd_adult/items/ptsd_duration"
             },
             "traumatic_event": {
                 "description": "Reports if the participant has experienced a traumatic event recently.",
@@ -34,7 +34,7 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_ptsd_adult/items/traumatic_event"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_ptsd_adult/items/traumatic_event"
             },
             "flashbacks": {
                 "description": "Indicates if the participant experiences flashbacks to stressful or traumatic events.",
@@ -47,25 +47,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0=Not at all "
+                            "en": "0=Not at all"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1=A little bit "
+                            "en": "1=A little bit"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2=Moderately "
+                            "en": "2=Moderately"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3=Quite a bit "
+                            "en": "3=Quite a bit"
                         },
                         "value": 3
                     },
@@ -76,7 +76,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_ptsd_adult/items/flashbacks"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_ptsd_adult/items/flashbacks"
             },
             "emotionally_upset": {
                 "description": "Indicates if the participant feels emotionally upset during the session.",
@@ -89,25 +89,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0=Not at all "
+                            "en": "0=Not at all"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1=A little bit "
+                            "en": "1=A little bit"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2=Moderately "
+                            "en": "2=Moderately"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3=Quite a bit "
+                            "en": "3=Quite a bit"
                         },
                         "value": 3
                     },
@@ -118,7 +118,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_ptsd_adult/items/emotionally_upset"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_ptsd_adult/items/emotionally_upset"
             },
             "avoiding_reminders": {
                 "description": "Indicates if the participant is avoiding reminders of traumatic events.",
@@ -131,25 +131,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0=Not at all "
+                            "en": "0=Not at all"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1=A little bit "
+                            "en": "1=A little bit"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2=Moderately "
+                            "en": "2=Moderately"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3=Quite a bit "
+                            "en": "3=Quite a bit"
                         },
                         "value": 3
                     },
@@ -160,7 +160,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_ptsd_adult/items/avoiding_reminders"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_ptsd_adult/items/avoiding_reminders"
             },
             "thinking_stressful_event": {
                 "description": "Reports if the participant is thinking about a stressful event during the session.",
@@ -173,25 +173,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0=Not at all "
+                            "en": "0=Not at all"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1=A little bit "
+                            "en": "1=A little bit"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2=Moderately "
+                            "en": "2=Moderately"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3=Quite a bit "
+                            "en": "3=Quite a bit"
                         },
                         "value": 3
                     },
@@ -202,7 +202,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_ptsd_adult/items/thinking_stressful_event"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_ptsd_adult/items/thinking_stressful_event"
             },
             "neg_emotional_state": {
                 "description": "Indicates if the participant is experiencing negative emotional states.",
@@ -215,25 +215,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0=Not at all "
+                            "en": "0=Not at all"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1=A little bit "
+                            "en": "1=A little bit"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2=Moderately "
+                            "en": "2=Moderately"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3=Quite a bit "
+                            "en": "3=Quite a bit"
                         },
                         "value": 3
                     },
@@ -244,7 +244,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_ptsd_adult/items/neg_emotional_state"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_ptsd_adult/items/neg_emotional_state"
             },
             "losing_interest": {
                 "description": "Indicates if the participant is losing interest in things they usually enjoy.",
@@ -257,25 +257,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0=Not at all "
+                            "en": "0=Not at all"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1=A little bit "
+                            "en": "1=A little bit"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2=Moderately "
+                            "en": "2=Moderately"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3=Quite a bit "
+                            "en": "3=Quite a bit"
                         },
                         "value": 3
                     },
@@ -286,7 +286,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_ptsd_adult/items/losing_interest"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_ptsd_adult/items/losing_interest"
             },
             "super_alert": {
                 "description": "Indicates if the participant is highly alert during the session.",
@@ -299,25 +299,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0=Not at all "
+                            "en": "0=Not at all"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1=A little bit "
+                            "en": "1=A little bit"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2=Moderately "
+                            "en": "2=Moderately"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3=Quite a bit "
+                            "en": "3=Quite a bit"
                         },
                         "value": 3
                     },
@@ -328,7 +328,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_ptsd_adult/items/super_alert"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_ptsd_adult/items/super_alert"
             },
             "feeling_jumpy": {
                 "description": "Indicates if the participant feels jumpy or anxious.",
@@ -341,25 +341,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0=Not at all "
+                            "en": "0=Not at all"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1=A little bit "
+                            "en": "1=A little bit"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2=Moderately "
+                            "en": "2=Moderately"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3=Quite a bit "
+                            "en": "3=Quite a bit"
                         },
                         "value": 3
                     },
@@ -370,7 +370,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_ptsd_adult/items/feeling_jumpy"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_ptsd_adult/items/feeling_jumpy"
             },
             "irritable": {
                 "description": "Indicates if the participant feels irritable or easily annoyed.",
@@ -383,25 +383,25 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0=Not at all "
+                            "en": "0=Not at all"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1=A little bit "
+                            "en": "1=A little bit"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2=Moderately "
+                            "en": "2=Moderately"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3=Quite a bit "
+                            "en": "3=Quite a bit"
                         },
                         "value": 3
                     },
@@ -412,7 +412,7 @@
                         "value": 4
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_ptsd_adult/items/irritable"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_ptsd_adult/items/irritable"
             }
         }
     }

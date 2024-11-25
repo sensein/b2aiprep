@@ -1,7 +1,7 @@
 {
     "d_neuro_parkinsons_disease_schema": {
         "description": "Measures symptoms and progression of Parkinson's disease.",
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/d_neuro_parkinsons_disease_schema",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/d_neuro_parkinsons_disease_schema",
         "data_elements": {
             "diagnosis_parkinsons_gsd_category_1___bradykinesia": {
                 "description": "Indicates if the participant has bradykinesia as part of their Parkinson’s disease diagnosis."
@@ -21,7 +21,7 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_gsd_category_1_calculation"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_gsd_category_1_calculation"
             },
             "diagnosis_parkinsons_gsd_category_2___cerebellar_abnormalities": {
                 "description": "Indicates if the participant has cerebellar abnormalities as part of the exclusion criteria for Parkinson’s disease diagnosis."
@@ -59,7 +59,7 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_gsd_category_2_calculation"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_gsd_category_2_calculation"
             },
             "diagnosis_parkinsons_gsd_category_3___response_dopaminergic_therapy": {
                 "description": "Indicates if the participant's Parkinson's diagnosis includes response to dopaminergic therapy under GSD category 3."
@@ -82,7 +82,7 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_gsd_category_3_calculation"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_gsd_category_3_calculation"
             },
             "diagnosis_parkinsons_gsd_calculation": {
                 "description": "Calculated score for Parkinson's disease diagnosis based on the GSD (Global Severity of Disease) scale.",
@@ -93,7 +93,7 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_gsd_calculation"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_gsd_calculation"
             },
             "diagnosis_parkinsons_disease_subtype": {
                 "description": "Indicates the subtype of Parkinson's disease diagnosed in the participant.",
@@ -106,48 +106,48 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Idiopathic Parkinson's Disease (IPD) "
+                            "en": "Idiopathic Parkinson's Disease (IPD)"
                         },
                         "value": "ipd"
                     },
                     {
                         "name": {
-                            "en": "Multiple System Atrophy (MSA) "
+                            "en": "Multiple System Atrophy (MSA)"
                         },
-                        "value": " msa"
+                        "value": "msa"
                     },
                     {
                         "name": {
-                            "en": "Progressive Supranuclear Palsy (PSP) "
+                            "en": "Progressive Supranuclear Palsy (PSP)"
                         },
-                        "value": " psp"
+                        "value": "psp"
                     },
                     {
                         "name": {
-                            "en": "Corticobasal Degeneration (CBD) "
+                            "en": "Corticobasal Degeneration (CBD)"
                         },
-                        "value": " cbd"
+                        "value": "cbd"
                     },
                     {
                         "name": {
-                            "en": "Dementia with Lewy Bodies (DLB) "
+                            "en": "Dementia with Lewy Bodies (DLB)"
                         },
-                        "value": " dlb"
+                        "value": "dlb"
                     },
                     {
                         "name": {
-                            "en": "Other Parkinsonism or Atypical Parkinsonism "
+                            "en": "Other Parkinsonism or Atypical Parkinsonism"
                         },
-                        "value": " other"
+                        "value": "other"
                     },
                     {
                         "name": {
                             "en": "Not Sure / Undetermined"
                         },
-                        "value": " notSure"
+                        "value": "notSure"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_disease_subtype"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_disease_subtype"
             },
             "diagnosis_parkinsons_etiology": {
                 "description": "Indicates the etiology or cause of the participant's Parkinson's diagnosis.",
@@ -160,24 +160,24 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Idiopathic (unknown cause) "
+                            "en": "Idiopathic (unknown cause)"
                         },
                         "value": "idiopathic"
                     },
                     {
                         "name": {
-                            "en": "Familial Parkinson's Disease "
+                            "en": "Familial Parkinson's Disease"
                         },
-                        "value": " familialParkinsonsDisease"
+                        "value": "familialParkinsonsDisease"
                     },
                     {
                         "name": {
                             "en": "Environmental factors"
                         },
-                        "value": " environmentalFactors"
+                        "value": "environmentalFactors"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_etiology"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_etiology"
             },
             "diagnosis_parkinsons_ds": {
                 "description": "Indicates the diagnostic subcategory of the participant's Parkinson's disease.",
@@ -190,36 +190,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Stage 1 (Unilateral involvement only) "
+                            "en": "Stage 1 (Unilateral involvement only)"
                         },
                         "value": "stage1"
                     },
                     {
                         "name": {
-                            "en": "Stage 2 (Bilateral involvement without impairment of balance) "
+                            "en": "Stage 2 (Bilateral involvement without impairment of balance)"
                         },
-                        "value": " stage2"
+                        "value": "stage2"
                     },
                     {
                         "name": {
-                            "en": "Stage 3 (Bilateral involvement with mild to moderate impairment of balance) "
+                            "en": "Stage 3 (Bilateral involvement with mild to moderate impairment of balance)"
                         },
-                        "value": " stage3"
+                        "value": "stage3"
                     },
                     {
                         "name": {
-                            "en": "Stage 4 (Severe disability but still able to walk or stand unassisted) "
+                            "en": "Stage 4 (Severe disability but still able to walk or stand unassisted)"
                         },
-                        "value": " stage4"
+                        "value": "stage4"
                     },
                     {
                         "name": {
                             "en": "Stage 5 (Wheelchair-bound or bedridden unless aided)"
                         },
-                        "value": " stage5"
+                        "value": "stage5"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_ds"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_ds"
             },
             "diagnosis_parkinsons_ma___updrs": {
                 "description": "Indicates the participant's motor assessment score on the UPDRS (Unified Parkinson's Disease Rating Scale)."
@@ -238,30 +238,30 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Part I (Intellectual function mood behavior) score "
+                            "en": "Part I (Intellectual function, mood, behavior) score"
                         },
                         "value": "partI"
                     },
                     {
                         "name": {
-                            "en": "Part II (Activities of daily living) score "
+                            "en": "Part II (Activities of daily living) score"
                         },
-                        "value": " partII"
+                        "value": "partII"
                     },
                     {
                         "name": {
-                            "en": "Part III (Motor Examination) score "
+                            "en": "Part III (Motor Examination) score"
                         },
-                        "value": " partIII"
+                        "value": "partIII"
                     },
                     {
                         "name": {
                             "en": "Part IV (Motor complications) score"
                         },
-                        "value": " partIV"
+                        "value": "partIV"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_ma_uprds"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_ma_uprds"
             },
             "diagnosis_parkinsons_ma_updrs_part_i_score": {
                 "description": "Score from Part I of the MDS-UPDRS, assessing non-motor aspects of daily living.",
@@ -272,7 +272,7 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_ma_updrs_part_i_score"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_ma_updrs_part_i_score"
             },
             "diagnosis_parkinsons_ma_updrs_part_ii_score": {
                 "description": "Score from Part II of the MDS-UPDRS, assessing the participant's activities of daily living.",
@@ -283,7 +283,7 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_ma_updrs_part_ii_score"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_ma_updrs_part_ii_score"
             },
             "diagnosis_parkinsons_ma_updrs_part_iii_score": {
                 "description": "Score from Part III of the MDS-UPDRS, assessing motor symptoms in Parkinson's disease.",
@@ -294,7 +294,7 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_ma_updrs_part_iii_score"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_ma_updrs_part_iii_score"
             },
             "diagnosis_parkinsons_ma_updrs_part_iv_score": {
                 "description": "Score from Part IV of the MDS-UPDRS, assessing complications of therapy in Parkinson's disease.",
@@ -305,7 +305,7 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_ma_updrs_part_iv_score"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_ma_updrs_part_iv_score"
             },
             "diagnosis_parkinsons_non_motor_symptoms": {
                 "description": "Indicates if the participant has non-motor symptoms associated with Parkinson's disease.",
@@ -318,7 +318,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Yes "
+                            "en": "Yes"
                         },
                         "value": "yes"
                     },
@@ -326,10 +326,10 @@
                         "name": {
                             "en": "No"
                         },
-                        "value": " no"
+                        "value": "no"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_non_motor_symptoms"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_non_motor_symptoms"
             },
             "diagnosis_parkinsons_non_motor_symptoms_yes": {
                 "description": "Indicates specific non-motor symptoms that the participant experiences as part of Parkinson's disease.",
@@ -340,7 +340,7 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_non_motor_symptoms_yes"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_non_motor_symptoms_yes"
             },
             "diagnosis_parkinsons_treatment_obtained": {
                 "description": "Indicates if the participant has received treatment for Parkinson's disease.",
@@ -353,7 +353,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Yes "
+                            "en": "Yes"
                         },
                         "value": "yes"
                     },
@@ -361,10 +361,10 @@
                         "name": {
                             "en": "No"
                         },
-                        "value": " no"
+                        "value": "no"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_treatment_obtained"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_treatment_obtained"
             },
             "diagnosis_parkinsons_treatment_obtained_yes___medications": {
                 "description": "Indicates if the participant is receiving medication for Parkinson's disease."
@@ -412,24 +412,24 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Bradykinesia "
+                            "en": "Bradykinesia"
                         },
                         "value": "bradykinesia"
                     },
                     {
                         "name": {
-                            "en": "Tremor "
+                            "en": "Tremor"
                         },
-                        "value": " tremor"
+                        "value": "tremor"
                     },
                     {
                         "name": {
                             "en": "Rigidity"
                         },
-                        "value": " rigidity"
+                        "value": "rigidity"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_gsd_category_1"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_gsd_category_1"
             },
             "diagnosis_parkinsons_gsd_category_2": {
                 "question": {
@@ -441,60 +441,60 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Cerebellar abnormalities "
+                            "en": "Cerebellar abnormalities"
                         },
                         "value": "cerebellar_abnormalities"
                     },
                     {
                         "name": {
-                            "en": "Supranuclear gaze palsy "
+                            "en": "Supranuclear gaze palsy"
                         },
-                        "value": " supranuclear_gaze_palsy"
+                        "value": "supranuclear_gaze_palsy"
                     },
                     {
                         "name": {
-                            "en": "Diagnosis of behavioral variant of frontotemporal dementia or primary progressive aphasia within 5 years of disease onset "
+                            "en": "Diagnosis of behavioral variant of frontotemporal dementia or primary progressive aphasia within 5 years of disease onset"
                         },
-                        "value": " bvf_ftd_ppa"
+                        "value": "bvf_ftd_ppa"
                     },
                     {
                         "name": {
-                            "en": "Parkinsonian features restricted to the lower limbs for more than 3 years "
+                            "en": "Parkinsonian features restricted to the lower limbs for more than 3 years"
                         },
-                        "value": " lower_limbs"
+                        "value": "lower_limbs"
                     },
                     {
                         "name": {
-                            "en": "Treatment with a dopamine receptor blocker or dopamine depleting agent consistent with drug-induced parkinsonism "
+                            "en": "Treatment with a dopamine receptor blocker or dopamine depleting agent consistent with drug-induced parkinsonism"
                         },
-                        "value": " dopamine_treatment"
+                        "value": "dopamine_treatment"
                     },
                     {
                         "name": {
-                            "en": "Absence of a response to high-dose levodopa despite at least moderate disease severity "
+                            "en": "Absence of a response to high-dose levodopa despite at least moderate disease severity"
                         },
-                        "value": " absence_of_response"
+                        "value": "absence_of_response"
                     },
                     {
                         "name": {
-                            "en": "Cortical sensory loss clear limb ideomotor apraxia or progressive aphasia "
+                            "en": "Cortical sensory loss, clear limb ideomotor apraxia, or progressive aphasia"
                         },
-                        "value": " cortical_sensory_loss"
+                        "value": "cortical_sensory_loss"
                     },
                     {
                         "name": {
-                            "en": "Normal functional imaging of the dopaminergic system (\"DAT scan\") "
+                            "en": "Normal functional imaging of the dopaminergic system (\"DAT scan\")"
                         },
-                        "value": " dat_scan"
+                        "value": "dat_scan"
                     },
                     {
                         "name": {
                             "en": "Diagnosis of alternative condition causing parkinsonism which could be causing the symptoms"
                         },
-                        "value": " alternative_condition"
+                        "value": "alternative_condition"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_gsd_category_2"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_gsd_category_2"
             },
             "diagnosis_parkinsons_gsd_category_3": {
                 "question": {
@@ -506,30 +506,30 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Clear beneficial response to dopaminergic therapy "
+                            "en": "Clear beneficial response to dopaminergic therapy"
                         },
                         "value": "response_dopaminergic_therapy"
                     },
                     {
                         "name": {
-                            "en": "Presence of levodopa-induced dyskinesia "
+                            "en": "Presence of levodopa-induced dyskinesia"
                         },
-                        "value": " levodopa_induced_dyskinesia"
+                        "value": "levodopa_induced_dyskinesia"
                     },
                     {
                         "name": {
-                            "en": "Rest tremor of a limb "
+                            "en": "Rest tremor of a limb"
                         },
-                        "value": " rest_tremor"
+                        "value": "rest_tremor"
                     },
                     {
                         "name": {
                             "en": "The presence of either olfactory loss or cardiac sympathetic denervation on MIBG scintigraphy (although the latter is rarely done in current practice)"
                         },
-                        "value": " mibg"
+                        "value": "mibg"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_gsd_category_3"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_gsd_category_3"
             },
             "diagnosis_parkinsons_ma": {
                 "question": {
@@ -541,7 +541,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Unified Parkinson's Disease Rating Scale (UPDRS) "
+                            "en": "Unified Parkinson's Disease Rating Scale (UPDRS)"
                         },
                         "value": "updrs"
                     },
@@ -549,10 +549,10 @@
                         "name": {
                             "en": "Other motor assessment tool"
                         },
-                        "value": " other"
+                        "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_ma"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_ma"
             },
             "diagnosis_parkinsons_treatment_obtained_yes": {
                 "question": {
@@ -564,7 +564,7 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Medications "
+                            "en": "Medications"
                         },
                         "value": "medications"
                     },
@@ -572,10 +572,10 @@
                         "name": {
                             "en": "Non-pharmacological interventions"
                         },
-                        "value": " npi"
+                        "value": "npi"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_treatment_obtained_yes"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_treatment_obtained_yes"
             },
             "diagnosis_parkinsons_treatment_obtained_yes_medications": {
                 "question": {
@@ -587,36 +587,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Levodopa "
+                            "en": "Levodopa"
                         },
                         "value": "levodopa"
                     },
                     {
                         "name": {
-                            "en": "Dopamine agonists "
+                            "en": "Dopamine agonists"
                         },
-                        "value": " dopamine_agonists"
+                        "value": "dopamine_agonists"
                     },
                     {
                         "name": {
-                            "en": "MAO-B inhibitors "
+                            "en": "MAO-B inhibitors"
                         },
-                        "value": " mao_b"
+                        "value": "mao_b"
                     },
                     {
                         "name": {
-                            "en": "Amantadine "
+                            "en": "Amantadine"
                         },
-                        "value": " amantadine"
+                        "value": "amantadine"
                     },
                     {
                         "name": {
                             "en": "Other"
                         },
-                        "value": " other"
+                        "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_treatment_obtained_yes_medications"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_treatment_obtained_yes_medications"
             },
             "diagnosis_parkinsons_treatment_obtained_yes_npi": {
                 "question": {
@@ -628,36 +628,36 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "Physical therapy "
+                            "en": "Physical therapy"
                         },
                         "value": "physical_therapy"
                     },
                     {
                         "name": {
-                            "en": "Occupational therapy "
+                            "en": "Occupational therapy"
                         },
-                        "value": " occupational_therapy"
+                        "value": "occupational_therapy"
                     },
                     {
                         "name": {
-                            "en": "Speech therapy "
+                            "en": "Speech therapy"
                         },
-                        "value": " speech_therapy"
+                        "value": "speech_therapy"
                     },
                     {
                         "name": {
-                            "en": "Deep Brain Stimulation (DBS) therapy "
+                            "en": "Deep Brain Stimulation (DBS) therapy"
                         },
-                        "value": " dbs"
+                        "value": "dbs"
                     },
                     {
                         "name": {
                             "en": "Other"
                         },
-                        "value": " other"
+                        "value": "other"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_treatment_obtained_yes_npi"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_parkinsons_disease/items/diagnosis_parkinsons_treatment_obtained_yes_npi"
             }
         }
     }

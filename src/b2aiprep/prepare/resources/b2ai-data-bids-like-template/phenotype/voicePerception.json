@@ -1,7 +1,7 @@
 {
     "q_generic_voice_perception_schema": {
         "description": "Measures how participants perceive voice quality.",
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_perception/q_generic_voice_perception_schema",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_voice_perception/q_generic_voice_perception_schema",
         "data_elements": {
             "voice_perception_session_id": {
                 "description": "Unique identifier for the voice perception session.",
@@ -12,7 +12,7 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_perception/items/voice_perception_session_id"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_voice_perception/items/voice_perception_session_id"
             },
             "voice_perception_duration": {
                 "description": "Total duration of the voice perception assessment.",
@@ -23,12 +23,12 @@
                     "xsd:decimal"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_perception/items/voice_perception_duration"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_voice_perception/items/voice_perception_duration"
             },
             "voice_quality_perception": {
                 "description": "Indicates the participant's perception of their voice quality.",
                 "question": {
-                    "en": "How would rate your voice quality today from 1-10?1 is the lowest quality and 10 is the best voice quality"
+                    "en": "How would rate your voice quality today from 1-10?\n1 is the lowest quality and 10 is the best voice quality"
                 },
                 "datatype": [
                     "xsd:integer"
@@ -36,55 +36,55 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "1 "
+                            "en": "1"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2 "
+                            "en": "2"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3 "
+                            "en": "3"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "4 "
+                            "en": "4"
                         },
                         "value": 4
                     },
                     {
                         "name": {
-                            "en": "5 "
+                            "en": "5"
                         },
                         "value": 5
                     },
                     {
                         "name": {
-                            "en": "6 "
+                            "en": "6"
                         },
                         "value": 6
                     },
                     {
                         "name": {
-                            "en": "7 "
+                            "en": "7"
                         },
                         "value": 7
                     },
                     {
                         "name": {
-                            "en": "8 "
+                            "en": "8"
                         },
                         "value": 8
                     },
                     {
                         "name": {
-                            "en": "9 "
+                            "en": "9"
                         },
                         "value": 9
                     },
@@ -95,7 +95,7 @@
                         "value": 10
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_generic_voice_perception/items/voice_quality_perception"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_voice_perception/items/voice_quality_perception"
             }
         }
     }

@@ -1,7 +1,7 @@
 {
     "q_mood_custom_affect_scale_schema": {
         "description": "Measures emotional states.",
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_custom_affect_scale/q_mood_custom_affect_scale_schema",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/q_mood_custom_affect_scale_schema",
         "data_elements": {
             "custom_affect_scale_session_id": {
                 "description": "Unique identifier for the custom affect scale session.",
@@ -12,7 +12,7 @@
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_custom_affect_scale/items/custom_affect_scale_session_id"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/custom_affect_scale_session_id"
             },
             "custom_affect_scale_duration": {
                 "description": "Total duration of the custom affect scale assessment.",
@@ -23,7 +23,7 @@
                     "xsd:decimal"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_custom_affect_scale/items/custom_affect_scale_duration"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/custom_affect_scale_duration"
             },
             "sad_or_down": {
                 "description": "Indicates if the participant feels sad or down.",
@@ -36,61 +36,61 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0 "
+                            "en": "0"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1 "
+                            "en": "1"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2 "
+                            "en": "2"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3 "
+                            "en": "3"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "4 "
+                            "en": "4"
                         },
                         "value": 4
                     },
                     {
                         "name": {
-                            "en": "5 "
+                            "en": "5"
                         },
                         "value": 5
                     },
                     {
                         "name": {
-                            "en": "6 "
+                            "en": "6"
                         },
                         "value": 6
                     },
                     {
                         "name": {
-                            "en": "7 "
+                            "en": "7"
                         },
                         "value": 7
                     },
                     {
                         "name": {
-                            "en": "8 "
+                            "en": "8"
                         },
                         "value": 8
                     },
                     {
                         "name": {
-                            "en": "9 "
+                            "en": "9"
                         },
                         "value": 9
                     },
@@ -101,7 +101,7 @@
                         "value": 10
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_custom_affect_scale/items/sad_or_down"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/sad_or_down"
             },
             "joyful": {
                 "description": "Indicates if the participant feels joyful.",
@@ -114,61 +114,61 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0 "
+                            "en": "0"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1 "
+                            "en": "1"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2 "
+                            "en": "2"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3 "
+                            "en": "3"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "4 "
+                            "en": "4"
                         },
                         "value": 4
                     },
                     {
                         "name": {
-                            "en": "5 "
+                            "en": "5"
                         },
                         "value": 5
                     },
                     {
                         "name": {
-                            "en": "6 "
+                            "en": "6"
                         },
                         "value": 6
                     },
                     {
                         "name": {
-                            "en": "7 "
+                            "en": "7"
                         },
                         "value": 7
                     },
                     {
                         "name": {
-                            "en": "8 "
+                            "en": "8"
                         },
                         "value": 8
                     },
                     {
                         "name": {
-                            "en": "9 "
+                            "en": "9"
                         },
                         "value": 9
                     },
@@ -179,7 +179,7 @@
                         "value": 10
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_custom_affect_scale/items/joyful"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/joyful"
             },
             "motivated": {
                 "description": "Assesses the level of motivation or drive the participant exhibits in performing tasks.",
@@ -192,61 +192,61 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0 "
+                            "en": "0"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1 "
+                            "en": "1"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2 "
+                            "en": "2"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3 "
+                            "en": "3"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "4 "
+                            "en": "4"
                         },
                         "value": 4
                     },
                     {
                         "name": {
-                            "en": "5 "
+                            "en": "5"
                         },
                         "value": 5
                     },
                     {
                         "name": {
-                            "en": "6 "
+                            "en": "6"
                         },
                         "value": 6
                     },
                     {
                         "name": {
-                            "en": "7 "
+                            "en": "7"
                         },
                         "value": 7
                     },
                     {
                         "name": {
-                            "en": "8 "
+                            "en": "8"
                         },
                         "value": 8
                     },
                     {
                         "name": {
-                            "en": "9 "
+                            "en": "9"
                         },
                         "value": 9
                     },
@@ -257,7 +257,7 @@
                         "value": 10
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_custom_affect_scale/items/motivated"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/motivated"
             },
             "lack_of_pleasure": {
                 "description": "Indicates if the participant feels a lack of pleasure or interest in doing things.",
@@ -270,61 +270,61 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0 "
+                            "en": "0"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1 "
+                            "en": "1"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2 "
+                            "en": "2"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3 "
+                            "en": "3"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "4 "
+                            "en": "4"
                         },
                         "value": 4
                     },
                     {
                         "name": {
-                            "en": "5 "
+                            "en": "5"
                         },
                         "value": 5
                     },
                     {
                         "name": {
-                            "en": "6 "
+                            "en": "6"
                         },
                         "value": 6
                     },
                     {
                         "name": {
-                            "en": "7 "
+                            "en": "7"
                         },
                         "value": 7
                     },
                     {
                         "name": {
-                            "en": "8 "
+                            "en": "8"
                         },
                         "value": 8
                     },
                     {
                         "name": {
-                            "en": "9 "
+                            "en": "9"
                         },
                         "value": 9
                     },
@@ -335,7 +335,7 @@
                         "value": 10
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_custom_affect_scale/items/lack_of_pleasure"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/lack_of_pleasure"
             },
             "tired": {
                 "description": "Indicates if the participant feels tired during the assessment.",
@@ -348,61 +348,61 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0 "
+                            "en": "0"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1 "
+                            "en": "1"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2 "
+                            "en": "2"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3 "
+                            "en": "3"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "4 "
+                            "en": "4"
                         },
                         "value": 4
                     },
                     {
                         "name": {
-                            "en": "5 "
+                            "en": "5"
                         },
                         "value": 5
                     },
                     {
                         "name": {
-                            "en": "6 "
+                            "en": "6"
                         },
                         "value": 6
                     },
                     {
                         "name": {
-                            "en": "7 "
+                            "en": "7"
                         },
                         "value": 7
                     },
                     {
                         "name": {
-                            "en": "8 "
+                            "en": "8"
                         },
                         "value": 8
                     },
                     {
                         "name": {
-                            "en": "9 "
+                            "en": "9"
                         },
                         "value": 9
                     },
@@ -413,7 +413,7 @@
                         "value": 10
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_custom_affect_scale/items/tired"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/tired"
             },
             "energetic": {
                 "description": "Indicates if the participant feels energetic or lively.",
@@ -426,61 +426,61 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0 "
+                            "en": "0"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1 "
+                            "en": "1"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2 "
+                            "en": "2"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3 "
+                            "en": "3"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "4 "
+                            "en": "4"
                         },
                         "value": 4
                     },
                     {
                         "name": {
-                            "en": "5 "
+                            "en": "5"
                         },
                         "value": 5
                     },
                     {
                         "name": {
-                            "en": "6 "
+                            "en": "6"
                         },
                         "value": 6
                     },
                     {
                         "name": {
-                            "en": "7 "
+                            "en": "7"
                         },
                         "value": 7
                     },
                     {
                         "name": {
-                            "en": "8 "
+                            "en": "8"
                         },
                         "value": 8
                     },
                     {
                         "name": {
-                            "en": "9 "
+                            "en": "9"
                         },
                         "value": 9
                     },
@@ -491,7 +491,7 @@
                         "value": 10
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_custom_affect_scale/items/energetic"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/energetic"
             },
             "agitated": {
                 "description": "Indicates if the participant feels agitated.",
@@ -504,61 +504,61 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0 "
+                            "en": "0"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1 "
+                            "en": "1"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2 "
+                            "en": "2"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3 "
+                            "en": "3"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "4 "
+                            "en": "4"
                         },
                         "value": 4
                     },
                     {
                         "name": {
-                            "en": "5 "
+                            "en": "5"
                         },
                         "value": 5
                     },
                     {
                         "name": {
-                            "en": "6 "
+                            "en": "6"
                         },
                         "value": 6
                     },
                     {
                         "name": {
-                            "en": "7 "
+                            "en": "7"
                         },
                         "value": 7
                     },
                     {
                         "name": {
-                            "en": "8 "
+                            "en": "8"
                         },
                         "value": 8
                     },
                     {
                         "name": {
-                            "en": "9 "
+                            "en": "9"
                         },
                         "value": 9
                     },
@@ -569,7 +569,7 @@
                         "value": 10
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_custom_affect_scale/items/agitated"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/agitated"
             },
             "irritated": {
                 "description": "Indicates if the participant feels irritated or annoyed.",
@@ -582,61 +582,61 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0 "
+                            "en": "0"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1 "
+                            "en": "1"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2 "
+                            "en": "2"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3 "
+                            "en": "3"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "4 "
+                            "en": "4"
                         },
                         "value": 4
                     },
                     {
                         "name": {
-                            "en": "5 "
+                            "en": "5"
                         },
                         "value": 5
                     },
                     {
                         "name": {
-                            "en": "6 "
+                            "en": "6"
                         },
                         "value": 6
                     },
                     {
                         "name": {
-                            "en": "7 "
+                            "en": "7"
                         },
                         "value": 7
                     },
                     {
                         "name": {
-                            "en": "8 "
+                            "en": "8"
                         },
                         "value": 8
                     },
                     {
                         "name": {
-                            "en": "9 "
+                            "en": "9"
                         },
                         "value": 9
                     },
@@ -647,7 +647,7 @@
                         "value": 10
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_custom_affect_scale/items/irritated"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/irritated"
             },
             "lonely": {
                 "description": "Indicates if the participant feels lonely.",
@@ -660,61 +660,61 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0 "
+                            "en": "0"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1 "
+                            "en": "1"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2 "
+                            "en": "2"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3 "
+                            "en": "3"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "4 "
+                            "en": "4"
                         },
                         "value": 4
                     },
                     {
                         "name": {
-                            "en": "5 "
+                            "en": "5"
                         },
                         "value": 5
                     },
                     {
                         "name": {
-                            "en": "6 "
+                            "en": "6"
                         },
                         "value": 6
                     },
                     {
                         "name": {
-                            "en": "7 "
+                            "en": "7"
                         },
                         "value": 7
                     },
                     {
                         "name": {
-                            "en": "8 "
+                            "en": "8"
                         },
                         "value": 8
                     },
                     {
                         "name": {
-                            "en": "9 "
+                            "en": "9"
                         },
                         "value": 9
                     },
@@ -725,7 +725,7 @@
                         "value": 10
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_custom_affect_scale/items/lonely"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/lonely"
             },
             "concentrated": {
                 "description": "Indicates if the participant is able to concentrate.",
@@ -738,61 +738,61 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0 "
+                            "en": "0"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1 "
+                            "en": "1"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2 "
+                            "en": "2"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3 "
+                            "en": "3"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "4 "
+                            "en": "4"
                         },
                         "value": 4
                     },
                     {
                         "name": {
-                            "en": "5 "
+                            "en": "5"
                         },
                         "value": 5
                     },
                     {
                         "name": {
-                            "en": "6 "
+                            "en": "6"
                         },
                         "value": 6
                     },
                     {
                         "name": {
-                            "en": "7 "
+                            "en": "7"
                         },
                         "value": 7
                     },
                     {
                         "name": {
-                            "en": "8 "
+                            "en": "8"
                         },
                         "value": 8
                     },
                     {
                         "name": {
-                            "en": "9 "
+                            "en": "9"
                         },
                         "value": 9
                     },
@@ -803,7 +803,7 @@
                         "value": 10
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_custom_affect_scale/items/concentrated"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/concentrated"
             },
             "relaxed": {
                 "description": "Indicates if the participant feels relaxed.",
@@ -816,61 +816,61 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0 "
+                            "en": "0"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1 "
+                            "en": "1"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2 "
+                            "en": "2"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3 "
+                            "en": "3"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "4 "
+                            "en": "4"
                         },
                         "value": 4
                     },
                     {
                         "name": {
-                            "en": "5 "
+                            "en": "5"
                         },
                         "value": 5
                     },
                     {
                         "name": {
-                            "en": "6 "
+                            "en": "6"
                         },
                         "value": 6
                     },
                     {
                         "name": {
-                            "en": "7 "
+                            "en": "7"
                         },
                         "value": 7
                     },
                     {
                         "name": {
-                            "en": "8 "
+                            "en": "8"
                         },
                         "value": 8
                     },
                     {
                         "name": {
-                            "en": "9 "
+                            "en": "9"
                         },
                         "value": 9
                     },
@@ -881,7 +881,7 @@
                         "value": 10
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_custom_affect_scale/items/relaxed"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/relaxed"
             },
             "worried": {
                 "description": "Indicates if the participant feels worried or anxious.",
@@ -894,61 +894,61 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0 "
+                            "en": "0"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1 "
+                            "en": "1"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2 "
+                            "en": "2"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3 "
+                            "en": "3"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "4 "
+                            "en": "4"
                         },
                         "value": 4
                     },
                     {
                         "name": {
-                            "en": "5 "
+                            "en": "5"
                         },
                         "value": 5
                     },
                     {
                         "name": {
-                            "en": "6 "
+                            "en": "6"
                         },
                         "value": 6
                     },
                     {
                         "name": {
-                            "en": "7 "
+                            "en": "7"
                         },
                         "value": 7
                     },
                     {
                         "name": {
-                            "en": "8 "
+                            "en": "8"
                         },
                         "value": 8
                     },
                     {
                         "name": {
-                            "en": "9 "
+                            "en": "9"
                         },
                         "value": 9
                     },
@@ -959,7 +959,7 @@
                         "value": 10
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_custom_affect_scale/items/worried"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/worried"
             },
             "desire_to_escape": {
                 "description": "Indicates if the participant has a desire to escape stressful situations.",
@@ -972,61 +972,61 @@
                 "choices": [
                     {
                         "name": {
-                            "en": "0 "
+                            "en": "0"
                         },
                         "value": 0
                     },
                     {
                         "name": {
-                            "en": "1 "
+                            "en": "1"
                         },
                         "value": 1
                     },
                     {
                         "name": {
-                            "en": "2 "
+                            "en": "2"
                         },
                         "value": 2
                     },
                     {
                         "name": {
-                            "en": "3 "
+                            "en": "3"
                         },
                         "value": 3
                     },
                     {
                         "name": {
-                            "en": "4 "
+                            "en": "4"
                         },
                         "value": 4
                     },
                     {
                         "name": {
-                            "en": "5 "
+                            "en": "5"
                         },
                         "value": 5
                     },
                     {
                         "name": {
-                            "en": "6 "
+                            "en": "6"
                         },
                         "value": 6
                     },
                     {
                         "name": {
-                            "en": "7 "
+                            "en": "7"
                         },
                         "value": 7
                     },
                     {
                         "name": {
-                            "en": "8 "
+                            "en": "8"
                         },
                         "value": 8
                     },
                     {
                         "name": {
-                            "en": "9 "
+                            "en": "9"
                         },
                         "value": 9
                     },
@@ -1037,7 +1037,7 @@
                         "value": 10
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/65734f24a32b69ed8dca2e92567cbb580cc0d492/activities/q_mood_custom_affect_scale/items/desire_to_escape"
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_custom_affect_scale/items/desire_to_escape"
             }
         }
     }
