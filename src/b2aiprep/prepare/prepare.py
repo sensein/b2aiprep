@@ -39,7 +39,7 @@ import logging
 import os
 import traceback
 from pathlib import Path
-from typing import List
+from typing import List, Tuple
 
 import numpy as np
 import pandas as pd
@@ -351,3 +351,40 @@ def validate_bids_data(
     with pydra.Submitter(plugin="cf") as run:
         run(extract_task)
     _logger.info("Process completed.")
+
+
+def clean_phenotype_data(df: pd.DataFrame, phenotype: dict) -> Tuple[pd.DataFrame, dict]:
+    """Remove known errors occurring in the phenotype dataframe."""
+    # the alcohol_amt column has dates instead of values
+    date_fix_map = {
+        "4-Mar": "3 - 4",
+        "6-May": "5 - 6",
+        "9-Jul": "7 - 9",
+    }
+    df['alcohol_amt'] = df['alcohol_amt'].apply(lambda x: date_fix_map[x] if x in date_fix_map else x)
+
+    # remove columns with minimal data science utility (free-text, all null values, etc)
+    columns_to_drop = []
+    for col in [
+        # contain free-text / PHI
+        'state_province',
+        'other_edu_level', 'other_household_specify',
+        'diagnosis_alz_dementia_mci_ds_cdr', 'diagnosis_alz_dementia_mci_ca_rudas_score',
+        'diagnosis_alz_dementia_mci_ca_mmse_score', 'diagnosis_alz_dementia_mci_ca_moca_score',
+        'diagnosis_alz_dementia_mci_ca_adas_cog_score', 'diagnosis_alz_dementia_mci_ca_other',
+        'diagnosis_alz_dementia_mci_ca_other_score',
+        # extremely sensitive / contains PHI
+        'traumatic_event',
+        # all null values
+        'is_regular_smoker'
+    ]:
+        if col in df:
+            columns_to_drop.append(col)
+    
+    if len(columns_to_drop) > 0:
+        df = df.drop(columns=columns_to_drop)
+        phenotype = {
+            k: v for k, v in phenotype.items() if k not in columns_to_drop
+        }
+
+    return df, phenotype
