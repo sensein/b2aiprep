@@ -245,8 +245,6 @@ def create_derived_dataset(bids_path, outdir):
     bids_path = Path(bids_path)
     outdir = Path(outdir)
     outdir.mkdir(parents=True, exist_ok=True)
-    outdir = Path(outdir)
-    outdir.mkdir(parents=True, exist_ok=True)
     audio_paths = get_audio_paths(bids_dir_path=bids_path)
     audio_paths = [x["path"] for x in audio_paths]
     _LOGGER.info("Loading derived data")
