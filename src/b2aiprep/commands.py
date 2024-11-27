@@ -1,6 +1,7 @@
 """Commands available through the CLI."""
 
 import csv
+from functools import partial
 import json
 import logging
 import os
@@ -9,6 +10,7 @@ import tarfile
 import typing as t
 from glob import glob
 from pathlib import Path
+from importlib import resources
 
 import click
 import numpy as np
@@ -42,8 +44,9 @@ from streamlit import config as _config
 from streamlit.web.bootstrap import run
 from tqdm import tqdm
 
+from pyarrow.parquet import SortingColumn
 from b2aiprep.prepare.bids import get_audio_paths, redcap_to_bids, validate_bids_folder
-from b2aiprep.prepare.prepare import extract_features_workflow, validate_bids_data
+from b2aiprep.prepare.prepare import extract_features_workflow, validate_bids_data, clean_phenotype_data
 
 # from b2aiprep.synthetic_data import generate_synthetic_tabular_data
 
@@ -188,7 +191,6 @@ def prepare_bids(
 
 def load_audio_features(
     audio_paths,
-    file_extension,
 ) -> t.Generator[t.Dict[str, t.Any], None, None]:
     """Load audio features from individual files and yield dictionaries amenable to HuggingFace's Dataset from_generator."""
     for wav_path in tqdm(audio_paths, total=len(audio_paths), desc="Extracting features"):
@@ -212,77 +214,181 @@ def load_audio_features(
             elif item["linkId"] == "recording_duration":
                 output["recording_duration"] = item["answer"][0]["valueString"]
 
-        feature_path = features_dir / f"{wav_path.stem}_transcription.txt"
-        with open(feature_path, "r", encoding="utf-8") as text_file:
-            transcription = text_file.read()
-        output["transcription"] = transcription
+        # feature_path = features_dir / f"{wav_path.stem}_transcription.txt"
+        # with open(feature_path, "r", encoding="utf-8") as text_file:
+        #     transcription = text_file.read()
+        # output["transcription"] = transcription
 
-        for feature_name in ["speaker_embedding", "specgram", "melfilterbank", "mfcc", "opensmile"]:
-            feature_path = features_dir / f"{wav_path.stem}_{feature_name}.{file_extension}"
-            if not feature_path.exists():
-                continue
-            if feature_name == "speaker_embedding":
-                output["speaker_embedding"] = torch.load(feature_path)
-            else:
-                data = torch.load(feature_path)
-                if len(data) == 1:
-                    key = next(iter(data.keys()))
-                    data[key] = data[key].numpy().astype(np.float32)
-                output.update(torch.load(feature_path))
+        pt_file = features_dir / f"{wav_path.stem}_features.pt"
+        features = torch.load(pt_file)
+        output['spectrogram'] = features['torchaudio']['spectrogram'].numpy().astype(np.float32)
+        # for feature_name in ["speaker_embedding", "specgram", "melfilterbank", "mfcc", "opensmile"]:
+        #     feature_path = features_dir / f"{wav_path.stem}_{feature_name}.{file_extension}"
+        #     if not feature_path.exists():
+        #         continue
+        #     if feature_name == "speaker_embedding":
+        #         output["speaker_embedding"] = torch.load(feature_path)
+        #     else:
+        #         data = torch.load(feature_path)
+        #         if len(data) == 1:
+        #             key = next(iter(data.keys()))
+        #             data[key] = data[key].numpy().astype(np.float32)
+        #         output.update(torch.load(feature_path))
 
         # load transcription
-        feature_path = features_dir / f"{wav_path.stem}_transcription.txt"
-        if feature_path.exists():
-            output["transcription"] = feature_path.read_text()
+        # feature_path = features_dir / f"{wav_path.stem}_transcription.txt"
+        # if feature_path.exists():
+        #     output["transcription"] = feature_path.read_text()
 
         yield output
 
+def spectrogram_generator(
+    audio_paths,
+) -> t.Generator[t.Dict[str, t.Any], None, None]:
+    """Load audio features from individual files and yield dictionaries amenable to HuggingFace's Dataset from_generator."""
+    for wav_path in tqdm(audio_paths, total=len(audio_paths), desc="Extracting features"):
+        output = {}
+        pt_file = wav_path.parent / f"{wav_path.stem}_features.pt"
+        features = torch.load(pt_file)
+
+        output['participant_id'] = wav_path.stem.split('_')[0][4:] # skip "sub-" prefix
+        output['session_id'] = wav_path.stem.split('_')[1][4:] # skip "ses-" prefix
+        output['task_name'] = wav_path.stem.split('_')[2][5:] # skip "task-" prefix
+        output['spectrogram'] = features['torchaudio']['spectrogram'].numpy().astype(np.float32)
+
+        yield output
 
 @click.command()
 @click.argument("bids_path", type=click.Path(exists=True))
 @click.argument("outdir", type=click.Path())
 def create_derived_dataset(bids_path, outdir):
+    """Create a derived dataset from voice/phenotype data in BIDS format.
+    
+    The derived dataset output loads data from generated .pt files, which have
+    the following keys:
+     - pitch
+     - mfcc
+     - mel_spectrogram
+     - mel_filter_bank (== mel_spectrogram)
+     - spectrogram
+     - transcription
+
+    For output, we grab only the spectrograms. For a subset of tasks, we include
+    the transcriptions in the metadata.
+
+    derivatives/b2aiprep/
+    ├── spectrogram.parquet
+    ├── phenotype.tsv
+    ├── phenotype.json
+    ├── static_features.tsv
+    ├── static_features.json
+    """
     bids_path = Path(bids_path)
     outdir = Path(outdir)
     outdir.mkdir(parents=True, exist_ok=True)
     audio_paths = get_audio_paths(bids_dir_path=bids_path)
     audio_paths = [x["path"] for x in audio_paths]
+
+    audio_paths = sorted(
+        audio_paths,
+        # sort first by subject, then session, then by task
+        key=lambda x: (x.stem.split('_')[0], x.stem.split('_')[1], x.stem.split('_')[2])
+    )
+
+    # remove known subjects without any audio
+    SUBJECTS_TO_REMOVE = {"6e6216b7-1f2a-407f-9dcd-22052b704b82"}
+    n = len(audio_paths)
+    for participant_id in SUBJECTS_TO_REMOVE:
+        audio_paths = [x for x in audio_paths if f"sub-{participant_id}" not in str(x)]
+
+    if len(audio_paths) < n:
+        _LOGGER.info(f"Removed {n - len(audio_paths)} records due to hard-coded subject removal.")
+
+    _LOGGER.info("Loading spectrograms into a single HF dataset.")
+    audio_feature_generator = partial(
+        spectrogram_generator,
+        audio_paths=audio_paths,
+    )
+
+    # sort the dataset by identifier and task_name
+    ds = Dataset.from_generator(audio_feature_generator, num_proc=1, keep_in_memory=False)
+    sorting_columns = [
+        SortingColumn(column_index=0, descending=False),
+        SortingColumn(column_index=1, descending=False),
+        SortingColumn(column_index=2, descending=False),
+    ]
+    ds.to_parquet(
+        outdir.joinpath("spectrograms.parquet").as_posix(),
+        compression="zstd",
+        compression_level=3,
+        use_dictionary=["participant_id", "session_id", "task_name"],
+        write_statistics=True,
+        data_page_size=1_048_576,
+        # enable page index for better filtering
+        write_page_index=True,
+        # sort should help readers more efficiently read data
+        # requires us to have manually sorted the data (as we have done above)
+        sorting_columns=sorting_columns,
+    )
+    _LOGGER.info("Parquet dataset created.")
     _LOGGER.info("Loading derived data")
     static_features = []
-    for filename in audio_paths:
+    for filename in tqdm(audio_paths, desc="Loading static features", total=len(audio_paths)):
         filename = str(filename)
         pt_file = Path(filename.replace(".wav", "_features.pt"))
         if not pt_file.exists():
             continue
+        
+        for participant_id in SUBJECTS_TO_REMOVE:
+            if f"sub-{participant_id}" in str(pt_file):
+                _LOGGER.info(f"Skipping subject {participant_id}")
+                continue
+
         features = torch.load(pt_file)
         subj_info = {
-            "participant": str(pt_file).split("sub-")[1].split("/ses-")[0],
-            "task": str(pt_file).split("task-")[1].split("_features")[0],
+            "participant_id": str(pt_file).split("sub-")[1].split("/ses-")[0],
+            "session_id": str(pt_file).split("ses-")[1].split("/audio")[0],
+            "task_name": str(pt_file).split("task-")[1].split("_features")[0],
         }
+
+        transcription = features.get("transcription", None)
+        if transcription is not None:
+            transcription = transcription.text
+            if subj_info['task_name'].lower().startswith('free-Speech') or \
+                subj_info['task_name'].lower().startswith('audio-check') or \
+                subj_info['task_name'].lower().startswith('open-response-questions'):
+                # we omit tasks where free speech occurs
+                transcription = None
+        subj_info["transcription"] = transcription
+        
         for key in ["opensmile", "praat_parselmouth", "torchaudio_squim"]:
             subj_info.update(features.get(key, {}))
-        subj_info["duration"] = features.get("duration", None)
-        dynamic = features["torchaudio"]
-        dynamic["transcription"] = features.get("transcription", None)
-        if dynamic["transcription"] is not None:
-            subj_info["transcription"] = dynamic["transcription"].text
+
         static_features.append(subj_info)
-        outfile = (
-            outdir
-            / f"sub-{subj_info['participant']}"
-            / f"sub-{subj_info['participant']}_task-{subj_info['task']}_temporalfeatures.pt"
-        )
-        if not outfile.parent.exists():
-            outfile.parent.mkdir(parents=True, exist_ok=True)
-        torch.save(dynamic, outfile)
+
     df_static = pd.DataFrame(static_features)
-    df_static.to_csv(outdir / "static_features.csv", index=False)
+    df_static.to_csv(outdir / "static_features.tsv", sep="\t", index=False)
+    # load in the JSON with descriptions of each feature and copy it over
+    # write it out again so formatting is consistent between JSONs
+    static_features_json_file = resources.files("b2aiprep").joinpath("prepare", "resources", "static_features.json")
+    static_features_json = json.load(static_features_json_file.open())
+    with open(outdir / "static_features.json", "w") as f:
+        json.dump(static_features_json, f, indent=2)
     _LOGGER.info("Finished creating static and dynamic features")
 
     _LOGGER.info("Creating merged phenotype data.")
 
     # first initialize a dataframe with all the record IDs which are equivalent to participant IDs.
     df = pd.read_csv(bids_path.joinpath("participants.tsv"), sep="\t")
+
+    # remove subject
+    idx = df['record_id'].isin(SUBJECTS_TO_REMOVE)
+    if idx.sum() > 0:
+        _LOGGER.info(f"Removing {idx.sum()} records from phenotype due to hard-coded subject removal.")
+        df = df.loc[~idx]
+
+    # temporarily keep record_id as the column name to enable joining the dataframes together
+    # later we will rename this to participant_id
     df = df[["record_id"]]
     with open(bids_path.joinpath("participants.json"), "r") as f:
         participants = json.load(f)
@@ -307,6 +413,9 @@ def create_derived_dataset(bids_path, outdir):
         ),
     )
 
+    if len(phenotype_files) == 0:
+        _LOGGER.warning("No phenotype files found.")
+
     for phenotype_filepath in phenotype_files:
         df_add = pd.read_csv(phenotype_filepath, sep="\t")
         phenotype_name = phenotype_filepath.stem
@@ -322,12 +431,20 @@ def create_derived_dataset(bids_path, outdir):
         df = df.merge(df_add, on="record_id", how="left")
         with open(bids_path.joinpath("phenotype", f"{phenotype_name}.json"), "r") as f:
             phenotype_add = json.load(f)
+        # add the data elements to the overall phenotype dict
+        if len(phenotype_add) != 1:
+            # we expect there to only be one key
+            _LOGGER.warning(f"Unexpected keys in phenotype file {phenotype_filepath.stem}: {phenotype_add.keys()}")
+        else:
+            phenotype_add = next(iter(phenotype_add.values()))["data_elements"]
         phenotype.update(phenotype_add)
-
     df = df.rename(columns={"record_id": "participant_id"})
-    df.to_csv(outdir.joinpath("phenotype.tsv"), sep="\t", index=False)
 
-    # write out phenotype
+    # fix some data values and remove columns we do not want to publish at this time
+    df, phenotype = clean_phenotype_data(df, phenotype)
+
+    # write out phenotype data and data dictionary
+    df.to_csv(outdir.joinpath("phenotype.tsv"), sep="\t", index=False)
     with open(outdir.joinpath("phenotype.json"), "w") as f:
         json.dump(phenotype, f, indent=2)
     _LOGGER.info("Finished creating merged phenotype data.")
