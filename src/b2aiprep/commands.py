@@ -245,28 +245,23 @@ def create_derived_dataset(bids_path, outdir):
     bids_path = Path(bids_path)
     outdir = Path(outdir)
     outdir.mkdir(parents=True, exist_ok=True)
+    outdir = Path(outdir)
+    outdir.mkdir(parents=True, exist_ok=True)
     audio_paths = get_audio_paths(bids_dir_path=bids_path)
     audio_paths = [x["path"] for x in audio_paths]
     _LOGGER.info("Loading derived data")
     static_features = []
     for filename in audio_paths:
-        filename = str(filename)
-        pt_file = Path(filename.replace(".wav", "_features.pt"))
-        if not pt_file.exists():
-            continue
-        features = torch.load(pt_file)
+        features = torch.load(filename)
         subj_info = {
-            "participant": str(pt_file).split("sub-")[1].split("/ses-")[0],
-            "task": str(pt_file).split("task-")[1].split("_features")[0],
+            "participant": filename.split("sub-")[1].split("/ses-")[0],
+            "task": filename.split("task-")[1].split("_features")[0],
         }
         for key in ["opensmile", "praat_parselmouth", "torchaudio_squim"]:
             subj_info.update(features.get(key, {}))
-        subj_info["duration"] = features.get("duration", None)
+        static_features.append(subj_info)
         dynamic = features["torchaudio"]
         dynamic["transcription"] = features.get("transcription", None)
-        if dynamic["transcription"] is not None:
-            subj_info["transcription"] = dynamic["transcription"].text
-        static_features.append(subj_info)
         outfile = (
             outdir
             / f"sub-{subj_info['participant']}"
