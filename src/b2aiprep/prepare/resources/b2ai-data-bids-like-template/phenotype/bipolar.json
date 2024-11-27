@@ -1,23 +1,227 @@
 {
-    "diagnosis_bipolar_gsd": {
-        "description": "Specifies the participant’s diagnosis of bipolar disorder."
-    },
-    "diagnosis_bipolar_gsd_interview": {
-        "description": "Indicates if a structured clinical interview was conducted for diagnosing the participant’s bipolar disorder."
-    },
-    "diagnosis_bipolar_gsd_oqu": {
-        "description": "Indicates if an objective questionnaire was used in the diagnosis of the participant’s bipolar disorder."
-    },
-    "diagnosis_bipolar_gsd_oquw": {
-        "description": "Specifies which objective questionnaire was used in diagnosing the participant’s bipolar disorder."
-    },
-    "diagnosis_bipolar_subtype_active": {
-        "description": "Specifies the active subtype of the participant’s bipolar disorder."
-    },
-    "diagnosis_bipolar_psychotic": {
-        "description": "Indicates if the participant has psychotic symptoms associated with bipolar disorder."
-    },
-    "diagnosis_bipolar_severity": {
-        "description": "Indicates the severity of the participant’s bipolar disorder."
+    "d_mood_bipolar_disorder_schema": {
+        "description": "Measures symptoms and behaviors related to bipolar disorder.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/d_mood_bipolar_disorder_schema",
+        "data_elements": {
+            "diagnosis_bipolar_gsd": {
+                "description": "Specifies the participant’s diagnosis of bipolar disorder.",
+                "question": {
+                    "en": "Diagnosis\n\n(Legacy)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Bipolar I disorder"
+                        },
+                        "value": "bipolar_1"
+                    },
+                    {
+                        "name": {
+                            "en": "Bipolar II disorder"
+                        },
+                        "value": "bipolar_2"
+                    },
+                    {
+                        "name": {
+                            "en": "Cyclothymic disorder (cyclothymia)"
+                        },
+                        "value": "cyclothymia"
+                    },
+                    {
+                        "name": {
+                            "en": "Other specified and unspecified bipolar and related disorders"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_gsd",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bipolar_gsd_interview": {
+                "description": "Indicates if a structured clinical interview was conducted for diagnosing the participant’s bipolar disorder.",
+                "question": {
+                    "en": "Was a structured clinical interview done?\n\n(Legacy)"
+                },
+                "datatype": [
+                    "xsd:boolean"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 0
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_gsd_interview",
+                "valueType": [
+                    "xsd:boolean"
+                ]
+            },
+            "diagnosis_bipolar_gsd_oqu": {
+                "description": "Indicates if an objective questionnaire was used in the diagnosis of the participant’s bipolar disorder.",
+                "question": {
+                    "en": "Was an objective questionnaire used?\n\n(Legacy)"
+                },
+                "datatype": [
+                    "xsd:boolean"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 0
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_gsd_oqu",
+                "valueType": [
+                    "xsd:boolean"
+                ]
+            },
+            "diagnosis_bipolar_gsd_oquw": {
+                "description": "Specifies which objective questionnaire was used in diagnosing the participant’s bipolar disorder.",
+                "question": {
+                    "en": "Which objective questionnaire was used?\n\n(Legacy)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Patient Health Questionnaire (PHQ-9)"
+                        },
+                        "value": "phq9"
+                    },
+                    {
+                        "name": {
+                            "en": "HAM-D"
+                        },
+                        "value": "hamD"
+                    },
+                    {
+                        "name": {
+                            "en": "Beck Depression Inventory (BDI)"
+                        },
+                        "value": "bdi"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_gsd_oquw",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bipolar_subtype_active": {
+                "description": "Specifies the active subtype of the participant’s bipolar disorder.",
+                "question": {
+                    "en": "Disease Subtype\n\n(Legacy)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Active"
+                        },
+                        "value": "active"
+                    },
+                    {
+                        "name": {
+                            "en": "Recurrent"
+                        },
+                        "value": "recurrent"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_subtype_active",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bipolar_psychotic": {
+                "description": "Indicates if the participant has psychotic symptoms associated with bipolar disorder.",
+                "question": {
+                    "en": "Psychotic Symptoms\n\n(Legacy)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "With"
+                        },
+                        "value": "with"
+                    },
+                    {
+                        "name": {
+                            "en": "Without"
+                        },
+                        "value": "without"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_psychotic",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bipolar_severity": {
+                "description": "Indicates the severity of the participant’s bipolar disorder.",
+                "question": {
+                    "en": "Disease Severity\n\n(Legacy)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Mild"
+                        },
+                        "value": "mild"
+                    },
+                    {
+                        "name": {
+                            "en": "Moderate"
+                        },
+                        "value": "moderate"
+                    },
+                    {
+                        "name": {
+                            "en": "Severe"
+                        },
+                        "value": "severe"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_severity",
+                "valueType": [
+                    "xsd:string"
+                ]
+            }
+        }
     }
 }

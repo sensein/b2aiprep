@@ -1,8 +1,8 @@
 import json
 import os
+import tempfile
 from pathlib import Path
 from tempfile import TemporaryDirectory
-import tempfile
 from unittest.mock import MagicMock, mock_open, patch
 
 import pandas as pd
@@ -10,6 +10,8 @@ from pydantic import BaseModel
 
 from b2aiprep.prepare.bids import (
     _df_to_dict,
+    construct_all_tsvs_from_jsons,
+    construct_tsv_from_json,
     create_file_dir,
     get_df_of_repeat_instrument,
     get_instrument_for_name,
@@ -18,8 +20,6 @@ from b2aiprep.prepare.bids import (
     questionnaire_mapping,
     redcap_to_bids,
     write_pydantic_model_to_bids_file,
-    construct_all_tsvs_from_jsons,
-    construct_tsv_from_json,
 )
 from b2aiprep.prepare.constants import AUDIO_TASKS, RepeatInstrument
 from b2aiprep.prepare.utils import initialize_data_directory
@@ -155,11 +155,32 @@ def test_redcap_to_bids():
 def test_construct_tsv_from_json():
     with tempfile.TemporaryDirectory() as temp_dir:
         # Create a sample DataFrame
-        data = {"record_id": [1, 2, 3, 4], "col1": ["A", "B", "C", "D"], "col2": [10, 20, 30, 40]}
+        data = {
+            "record_id": [1, 2, 3, 4],
+            "element_1": ["A", "B", "C", "D"],
+            "element_2": [10, 20, 30, 40],
+        }
         df = pd.DataFrame(data)
 
         # Create a sample JSON file
-        json_data = {"record_id": {"description": ""}, "col1": {"description": ""}}
+        json_data = {
+            "schema_name": {
+                "description": "Description of the schema.",
+                "data_elements": {
+                    "record_id": {},
+                    "element_1": {
+                        "description": "Description of the first element.",
+                        "question": {"en": "Question text for the first element."},
+                        "datatype": ["xsd:string"],
+                    },
+                    "element_2": {
+                        "description": "Description of the second element.",
+                        "question": {"en": "Question text for the second element."},
+                        "datatype": ["xsd:decimal"],
+                    },
+                },
+            }
+        }
         json_path = os.path.join(temp_dir, "sample.json")
         with open(json_path, "w") as f:
             json.dump(json_data, f)
@@ -173,29 +194,70 @@ def test_construct_tsv_from_json():
 
         # Load TSV file and check content
         result_df = pd.read_csv(tsv_path, sep="\t")
-        assert list(result_df.columns) == ["record_id", "col1"]
-        assert result_df.shape == (4, 2)  # Check number of rows and columns
+        assert list(result_df.columns) == ["record_id", "element_1", "element_2"]
+        assert result_df.shape == (4, 3)  # Check number of rows and columns
 
 
 def test_construct_all_tsvs_from_jsons():
     with tempfile.TemporaryDirectory() as temp_dir, tempfile.TemporaryDirectory() as output_dir:
         # Create a sample DataFrame
-        data = {"record_id": [1, 2, 3, 4], "col1": ["A", "B", "C", "D"], "col2": [10, 20, 30, 40]}
+        data = {
+            "record_id": [1, 2, 3, 4],
+            "element_1": ["A", "B", "C", "D"],
+            "element_2": [10, 20, 30, 40],
+            "element_3": ["X", "Y", "Z", "W"],
+        }
         df = pd.DataFrame(data)
 
-        # Create multiple sample JSON files
-        json_data_1 = {"record_id": {"description": ""}, "col1": {"description": ""}}
+        # Create multiple sample JSON files with the updated structure
+        json_data_1 = {
+            "schema_name": {
+                "description": "Schema 1 description.",
+                "data_elements": {
+                    "record_id": {},
+                    "element_1": {
+                        "description": "Description for element_1.",
+                        "question": {"en": "Question text for element_1."},
+                        "datatype": ["xsd:string"],
+                    },
+                },
+            }
+        }
         json_path_1 = os.path.join(temp_dir, "sample1.json")
         with open(json_path_1, "w") as f:
             json.dump(json_data_1, f)
 
-        json_data_2 = {"record_id": {"description": ""}, "col2": {"description": ""}}
+        json_data_2 = {
+            "schema_name": {
+                "description": "Schema 2 description.",
+                "data_elements": {
+                    "record_id": {},
+                    "element_2": {
+                        "description": "Description for element_2.",
+                        "question": {"en": "Question text for element_2."},
+                        "datatype": ["xsd:decimal"],
+                    },
+                },
+            }
+        }
         json_path_2 = os.path.join(temp_dir, "sample2.json")
         with open(json_path_2, "w") as f:
             json.dump(json_data_2, f)
 
-        # Create an excluded file that should not be processed
-        json_data_excluded = {"record_id": {"description": ""}, "excluded_col": {"description": ""}}
+        # Create an excluded file
+        json_data_excluded = {
+            "schema_name": {
+                "description": "Excluded schema description.",
+                "data_elements": {
+                    "record_id": {},
+                    "element_3": {
+                        "description": "Description for element_3.",
+                        "question": {"en": "Question text for element_3."},
+                        "datatype": ["xsd:string"],
+                    },
+                },
+            }
+        }
         excluded_json_path = os.path.join(temp_dir, "excluded.json")
         with open(excluded_json_path, "w") as f:
             json.dump(json_data_excluded, f)
@@ -216,9 +278,9 @@ def test_construct_all_tsvs_from_jsons():
 
         # Load TSV files and check content
         result_df_1 = pd.read_csv(tsv_path_1, sep="\t")
-        assert list(result_df_1.columns) == ["record_id", "col1"]
+        assert list(result_df_1.columns) == ["record_id", "element_1"]
         assert result_df_1.shape == (4, 2)  # Check number of rows and columns
 
         result_df_2 = pd.read_csv(tsv_path_2, sep="\t")
-        assert list(result_df_2.columns) == ["record_id", "col2"]
+        assert list(result_df_2.columns) == ["record_id", "element_2"]
         assert result_df_2.shape == (4, 2)  # Check number of rows and columns

@@ -1,62 +1,847 @@
 {
-    "adhd_session_id": {
-        "description": "Unique identifier for the ADHD session."
-    },
-    "adhd_duration": {
-        "description": "Duration of ADHD-related assessments."
-    },
-    "wrapping_up": {
-        "description": "Indicates if the session is nearing completion."
-    },
-    "things_in_order": {
-        "description": "Indicates if the participant prefers to keep things in order."
-    },
-    "remembering_appt": {
-        "description": "Reports if the participant has trouble remembering appointments."
-    },
-    "avoidance": {
-        "description": "Indicates if the participant avoids reminders of stressful or traumatic events."
-    },
-    "fidget": {
-        "description": "Indicates if the participant is fidgeting during the session."
-    },
-    "overly_active": {
-        "description": "Indicates if the participant is overly active or restless."
-    },
-    "careless": {
-        "description": "Indicates if the participant feels careless about their actions or responsibilities."
-    },
-    "difficulty_attention": {
-        "description": "Indicates if the participant has difficulty paying attention."
-    },
-    "difficulty_concentrating": {
-        "description": "Indicates if the participant has difficulty concentrating."
-    },
-    "misplace": {
-        "description": "Indicates if the participant often misplaces things."
-    },
-    "distracted": {
-        "description": "Indicates if the participant feels distracted during the session."
-    },
-    "remain_seated": {
-        "description": "Indicates if the participant is able to remain seated for long periods."
-    },
-    "restless": {
-        "description": "Indicates if the participant feels restless."
-    },
-    "difficulty_unwinding": {
-        "description": "Indicates if the participant has difficulty unwinding or relaxing after stressful events."
-    },
-    "talking_too_much": {
-        "description": "Indicates if the participant feels they are talking too much."
-    },
-    "finish_other_sent": {
-        "description": "Indicates if the participant finishes others' sentences."
-    },
-    "difficulty_waiting": {
-        "description": "Indicates if the participant has difficulty waiting for others."
-    },
-    "interrupt_others": {
-        "description": "Indicates if the participant tends to interrupt others during conversations."
+    "q_mood_adhd_adult_schema": {
+        "description": "Measures attention-related behaviors and symptoms.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/q_mood_adhd_adult_schema",
+        "data_elements": {
+            "adhd_session_id": {
+                "description": "Unique identifier for the ADHD session.",
+                "question": {
+                    "en": "Session ID"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/adhd_session_id",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "adhd_duration": {
+                "description": "Duration of ADHD-related assessments.",
+                "question": {
+                    "en": "Questionnaire Duration (seconds)"
+                },
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/adhd_duration",
+                "minValue": 0.0,
+                "valueType": [
+                    "xsd:decimal"
+                ]
+            },
+            "wrapping_up": {
+                "description": "Indicates if the session is nearing completion.",
+                "question": {
+                    "en": "How often do you have trouble wrapping up the final details of a project, once the challenging parts have been done?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Rarely"
+                        },
+                        "value": "rarely"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Often"
+                        },
+                        "value": "often"
+                    },
+                    {
+                        "name": {
+                            "en": "Very Often"
+                        },
+                        "value": "veryOften"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/wrapping_up",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "things_in_order": {
+                "description": "Indicates if the participant prefers to keep things in order.",
+                "question": {
+                    "en": "How often do you have difficulty getting things in order when you have to do a task that requires organization?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Rarely"
+                        },
+                        "value": "rarely"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Often"
+                        },
+                        "value": "often"
+                    },
+                    {
+                        "name": {
+                            "en": "Very Often"
+                        },
+                        "value": "veryOften"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/things_in_order",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "remembering_appt": {
+                "description": "Reports if the participant has trouble remembering appointments.",
+                "question": {
+                    "en": "How often do you have problems remembering appointments or obligations?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Rarely"
+                        },
+                        "value": "rarely"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Often"
+                        },
+                        "value": "often"
+                    },
+                    {
+                        "name": {
+                            "en": "Very Often"
+                        },
+                        "value": "veryOften"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/remembering_appt",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "avoidance": {
+                "description": "Indicates if the participant avoids reminders of stressful or traumatic events.",
+                "question": {
+                    "en": "When you have a task that requires a lot of thought, how often do you avoid or delay getting started?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Rarely"
+                        },
+                        "value": "rarely"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Often"
+                        },
+                        "value": "often"
+                    },
+                    {
+                        "name": {
+                            "en": "Very Often"
+                        },
+                        "value": "veryOften"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/avoidance",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "fidget": {
+                "description": "Indicates if the participant is fidgeting during the session.",
+                "question": {
+                    "en": "How often do you fidget or squirm with your hands or feet when you have to sit down for a long time?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Rarely"
+                        },
+                        "value": "rarely"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Often"
+                        },
+                        "value": "often"
+                    },
+                    {
+                        "name": {
+                            "en": "Very Often"
+                        },
+                        "value": "veryOften"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/fidget",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "overly_active": {
+                "description": "Indicates if the participant is overly active or restless.",
+                "question": {
+                    "en": "How often do you feel overly active and compelled to do things, like you were driven by a motor?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Rarely"
+                        },
+                        "value": "rarely"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Often"
+                        },
+                        "value": "often"
+                    },
+                    {
+                        "name": {
+                            "en": "Very Often"
+                        },
+                        "value": "veryOften"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/overly_active",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "careless": {
+                "description": "Indicates if the participant feels careless about their actions or responsibilities.",
+                "question": {
+                    "en": "How often do you make careless mistakes when you have to work on a boring or difficult project?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Rarely"
+                        },
+                        "value": "rarely"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Often"
+                        },
+                        "value": "often"
+                    },
+                    {
+                        "name": {
+                            "en": "Very Often"
+                        },
+                        "value": "veryOften"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/careless",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "difficulty_attention": {
+                "description": "Indicates if the participant has difficulty paying attention.",
+                "question": {
+                    "en": "How often do you have difficulty keeping your attention when you are doing boring or repetitive work?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Rarely"
+                        },
+                        "value": "rarely"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Often"
+                        },
+                        "value": "often"
+                    },
+                    {
+                        "name": {
+                            "en": "Very Often"
+                        },
+                        "value": "veryOften"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/difficulty_attention",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "difficulty_concentrating": {
+                "description": "Indicates if the participant has difficulty concentrating.",
+                "question": {
+                    "en": "How often do you have difficulty concentrating on what people say to you, even when they are speaking to you directly?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Rarely"
+                        },
+                        "value": "rarely"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Often"
+                        },
+                        "value": "often"
+                    },
+                    {
+                        "name": {
+                            "en": "Very Often"
+                        },
+                        "value": "veryOften"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/difficulty_concentrating",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "misplace": {
+                "description": "Indicates if the participant often misplaces things.",
+                "question": {
+                    "en": "How often do you misplace or have difficulty finding things at home or at work?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Rarely"
+                        },
+                        "value": "rarely"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Often"
+                        },
+                        "value": "often"
+                    },
+                    {
+                        "name": {
+                            "en": "Very Often"
+                        },
+                        "value": "veryOften"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/misplace",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "distracted": {
+                "description": "Indicates if the participant feels distracted during the session.",
+                "question": {
+                    "en": "How often are you distracted by activity or noise around you?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Rarely"
+                        },
+                        "value": "rarely"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Often"
+                        },
+                        "value": "often"
+                    },
+                    {
+                        "name": {
+                            "en": "Very Often"
+                        },
+                        "value": "veryOften"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/distracted",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "remain_seated": {
+                "description": "Indicates if the participant is able to remain seated for long periods.",
+                "question": {
+                    "en": "How often do you leave your seat in meetings or other situations in which you are expected to remain seated?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Rarely"
+                        },
+                        "value": "rarely"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Often"
+                        },
+                        "value": "often"
+                    },
+                    {
+                        "name": {
+                            "en": "Very Often"
+                        },
+                        "value": "veryOften"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/remain_seated",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "restless": {
+                "description": "Indicates if the participant feels restless.",
+                "question": {
+                    "en": "How often do you feel restless or fidgety?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Rarely"
+                        },
+                        "value": "rarely"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Often"
+                        },
+                        "value": "often"
+                    },
+                    {
+                        "name": {
+                            "en": "Very Often"
+                        },
+                        "value": "veryOften"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/restless",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "difficulty_unwinding": {
+                "description": "Indicates if the participant has difficulty unwinding or relaxing after stressful events.",
+                "question": {
+                    "en": "How often do you have difficulty unwinding and relaxing when you have time to yourself?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Rarely"
+                        },
+                        "value": "rarely"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Often"
+                        },
+                        "value": "often"
+                    },
+                    {
+                        "name": {
+                            "en": "Very Often"
+                        },
+                        "value": "veryOften"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/difficulty_unwinding",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "talking_too_much": {
+                "description": "Indicates if the participant feels they are talking too much.",
+                "question": {
+                    "en": "How often do you find yourself talking too much when you are in social situations?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Rarely"
+                        },
+                        "value": "rarely"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Often"
+                        },
+                        "value": "often"
+                    },
+                    {
+                        "name": {
+                            "en": "Very Often"
+                        },
+                        "value": "veryOften"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/talking_too_much",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "finish_other_sent": {
+                "description": "Indicates if the participant finishes others' sentences.",
+                "question": {
+                    "en": "When you're in a conversation, how often do you find yourself finishing the sentences of the people you are talking to, before they can finish them themselves?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Rarely"
+                        },
+                        "value": "rarely"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Often"
+                        },
+                        "value": "often"
+                    },
+                    {
+                        "name": {
+                            "en": "Very Often"
+                        },
+                        "value": "veryOften"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/finish_other_sent",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "difficulty_waiting": {
+                "description": "Indicates if the participant has difficulty waiting for others.",
+                "question": {
+                    "en": "How often do you have difficulty waiting your turn in situations when turn taking is required?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Rarely"
+                        },
+                        "value": "rarely"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Often"
+                        },
+                        "value": "often"
+                    },
+                    {
+                        "name": {
+                            "en": "Very Often"
+                        },
+                        "value": "veryOften"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/difficulty_waiting",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "interrupt_others": {
+                "description": "Indicates if the participant tends to interrupt others during conversations.",
+                "question": {
+                    "en": "How often do you interrupt others when they are busy?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Rarely"
+                        },
+                        "value": "rarely"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Often"
+                        },
+                        "value": "often"
+                    },
+                    {
+                        "name": {
+                            "en": "Very Often"
+                        },
+                        "value": "veryOften"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_mood_adhd_adult/items/interrupt_others",
+                "valueType": [
+                    "xsd:string"
+                ]
+            }
+        }
     }
 }

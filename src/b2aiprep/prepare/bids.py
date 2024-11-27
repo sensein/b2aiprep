@@ -542,8 +542,13 @@ def construct_tsv_from_json(
     with open(json_file_path, "r") as f:
         json_data = json.load(f)
 
-    # Extract column names from the JSON file
-    column_labels = list(json_data.keys())
+    first_key = next(iter(json_data))
+
+    column_labels = []
+    if "data_elements" in json_data[first_key]:
+        column_labels = list(json_data[first_key]["data_elements"])
+    else:
+        column_labels = list(json_data.keys())
 
     # Filter column labels to only include those that exist in the DataFrame
     valid_columns = [col for col in column_labels if col in df.columns]
