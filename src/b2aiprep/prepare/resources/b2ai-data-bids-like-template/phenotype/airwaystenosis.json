@@ -1,86 +1,699 @@
 {
-    "diagnosis_as_pft": {
-        "description": "Indicates if the participant has undergone pulmonary function testing in the past three months."
-    },
-    "diagnosis_as_gsd": {
-        "description": "Indicates if the participant has airway stenosis confirmed by laryngoscopy, bronchoscopy, or CT imaging."
-    },
-    "diagnosis_as_gsd_yes___bronchoscopy": {
-        "description": "Indicates if the participant’s airway stenosis was confirmed by bronchoscopy or laryngoscopy."
-    },
-    "diagnosis_as_gsd_yes___ct": {
-        "description": "Indicates if the participant’s airway stenosis was confirmed by CT imaging."
-    },
-    "diagnosis_as_ds": {
-        "description": "Specifies the subtype of the participant’s airway stenosis."
-    },
-    "diagnosis_as_ds_bvfi_gs": {
-        "description": "Indicates if the participant has bilateral vocal fold immobility or glottic stenosis as a subtype of airway stenosis."
-    },
-    "diagnosis_as_etiology": {
-        "description": "Specifies the etiology or cause of the participant’s airway stenosis."
-    },
-    "diagnosis_as_etiology_auto_immune": {
-        "description": "Indicates if the participant’s airway stenosis is caused by an autoimmune or granulomatous disease."
-    },
-    "diagnosis_as_ds_mcg": {
-        "description": "Indicates the degree of the participant’s stenosis based on the Myer-Cotton Grade."
-    },
-    "diagnosis_as_ds_bc": {
-        "description": "Indicates the degree of the participant’s stenosis based on the Bogdasarian Classification."
-    },
-    "diagnosis_as_ds_agw": {
-        "description": "Indicates the anterior glottic web classification of the participant’s airway stenosis according to Cohen."
-    },
-    "diagnosis_as_ds_ac": {
-        "description": "Indicates the grade of stenosis of the participant’s supraglottic stenosis according to the Aziz Classification."
-    },
-    "diagnosis_as_ds_ac_grade_4": {
-        "description": "Indicates the grade of supraglottic stenosis based on the Aziz Classification."
-    },
-    "diagnosis_as_ds_ods": {
-        "description": "Indicates the overall subjective classification of the participant’s airway stenosis."
-    },
-    "diagnosis_as_ds_eps": {
-        "description": "Indicates the estimated percentage of stenosis from 0 to 100."
-    },
-    "diagnosis_as_treatment___no_treatment": {
-        "description": "Indicates if the participant has received no treatment for their airway stenosis."
-    },
-    "diagnosis_as_treatment___surgery": {
-        "description": "Indicates if the participant has undergone surgery as treatment for their airway stenosis."
-    },
-    "diagnosis_as_treatment___in_office_treatment": {
-        "description": "Indicates if the participant has undergone in-office treatment for their airway stenosis."
-    },
-    "diagnosis_as_treatment_surgery___endoscopic_intervention": {
-        "description": "Indicates if the participant has undergone endoscopic intervention with laser and balloon dilation and steroid injection as surgery for airway stenosis."
-    },
-    "diagnosis_as_treatment_surgery___endoscopic_excision": {
-        "description": "Indicates if the participant has undergone endoscopic laser wedge excision with balloon dilation and steroid injection as surgery for airway stenosis."
-    },
-    "diagnosis_as_treatment_surgery___laryngotracheal_reconstruction": {
-        "description": "Indicates if the participant has undergone open laryngotracheal reconstruction as surgery for airway stenosis."
-    },
-    "diagnosis_as_treatment_surgery___laryngotracheoplasty": {
-        "description": "Indicates if the participant has undergone laryngotracheoplasty (Maddern procedure) as surgery for airway stenosis."
-    },
-    "diagnosis_as_treatment_surgery___tracheostomy": {
-        "description": "Indicates if the participant has undergone a tracheostomy as surgery for airway stenosis."
-    },
-    "diagnosis_as_treatment_surgery___other": {
-        "description": "Indicates if the participant has undergone another type of surgery for airway stenosis."
-    },
-    "diagnosis_as_treatment_in_office___steroid_injections_sole": {
-        "description": "Indicates if the participant has undergone awake steroid injection(s) as the sole treatment for airway stenosis."
-    },
-    "diagnosis_as_treatment_in_office___steroid_injections_adjunct": {
-        "description": "Indicates if the participant has undergone awake steroid injection(s) as an adjunct treatment for airway stenosis."
-    },
-    "diagnosis_as_treatment_in_office___dilation": {
-        "description": "Indicates if the participant has undergone in-office or awake dilation as treatment for airway stenosis."
-    },
-    "diagnosis_as_treatment_in_office___laser": {
-        "description": "Indicates if the participant has undergone in-office or awake laser treatment for airway stenosis."
+    "d_resp_airway_stenosis_schema": {
+        "description": "Measures the severity and characteristics of airway stenosis.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/d_resp_airway_stenosis_schema",
+        "data_elements": {
+            "diagnosis_as_pft": {
+                "description": "Indicates if the participant has undergone pulmonary function testing in the past three months.",
+                "question": {
+                    "en": "Has the patient had pulmonary function testing within the past 3 months?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "Not certain"
+                        },
+                        "value": "notCertain"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_pft",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_as_gsd": {
+                "description": "Indicates if the participant has airway stenosis confirmed by laryngoscopy, bronchoscopy, or CT imaging.",
+                "question": {
+                    "en": "Does the patient have airway stenosis confirmed by a laryngoscopy, bronchoscopy or CT imaging?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "Not certain"
+                        },
+                        "value": "notCertain"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_gsd",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_as_gsd_yes___bronchoscopy": {
+                "description": "Indicates if the participant’s airway stenosis was confirmed by bronchoscopy or laryngoscopy."
+            },
+            "diagnosis_as_gsd_yes___ct": {
+                "description": "Indicates if the participant’s airway stenosis was confirmed by CT imaging."
+            },
+            "diagnosis_as_ds": {
+                "description": "Specifies the subtype of the participant’s airway stenosis.",
+                "question": {
+                    "en": "Disease Subtype"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Subglottic Stenosis"
+                        },
+                        "value": "subglotticStenosis"
+                    },
+                    {
+                        "name": {
+                            "en": "Bilateral Vocal fold immobility or Glottic Stenosis"
+                        },
+                        "value": "bilateralVocalFoldImmobilityGlotticStenosis"
+                    },
+                    {
+                        "name": {
+                            "en": "Supraglottic Stenosis"
+                        },
+                        "value": "supraglotticStenosis"
+                    },
+                    {
+                        "name": {
+                            "en": "Tracheal Stenosis"
+                        },
+                        "value": "trachealStenosis"
+                    },
+                    {
+                        "name": {
+                            "en": "Multi-Level Upper Airway Stenosis"
+                        },
+                        "value": "multilevelUpperAirwayStenosis"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_as_ds_bvfi_gs": {
+                "description": "Indicates if the participant has bilateral vocal fold immobility or glottic stenosis as a subtype of airway stenosis.",
+                "question": {
+                    "en": "Bilateral Vocal fold immobility or Glottic Stenosis Subtype"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Posterior Glottic Stenosis"
+                        },
+                        "value": "posteriorGlotticStenosis"
+                    },
+                    {
+                        "name": {
+                            "en": "Bilateral Vocal Fold Paralysis"
+                        },
+                        "value": "bilateralVocalFoldParalysis"
+                    },
+                    {
+                        "name": {
+                            "en": "Anterior glottic Web"
+                        },
+                        "value": "anteriorGlotticWeb"
+                    },
+                    {
+                        "name": {
+                            "en": "Not certain or TBD"
+                        },
+                        "value": "tbd"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_bvfi_gs",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_as_etiology": {
+                "description": "Specifies the etiology or cause of the participant’s airway stenosis.",
+                "question": {
+                    "en": "What is the etiology?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Not certain or TBD"
+                        },
+                        "value": "tbd"
+                    },
+                    {
+                        "name": {
+                            "en": "Iatrogenic (surgery or intubation)"
+                        },
+                        "value": "iatrogenic"
+                    },
+                    {
+                        "name": {
+                            "en": "Idiopathic"
+                        },
+                        "value": "idiopathic"
+                    },
+                    {
+                        "name": {
+                            "en": "Auto-immune or granulomatous disease"
+                        },
+                        "value": "autoImmune"
+                    },
+                    {
+                        "name": {
+                            "en": "Radiation"
+                        },
+                        "value": "radiation"
+                    },
+                    {
+                        "name": {
+                            "en": "GERD"
+                        },
+                        "value": "gerd"
+                    },
+                    {
+                        "name": {
+                            "en": "Caustic Injury or Inhalation Injury"
+                        },
+                        "value": "causticInjuryInhalationInjury"
+                    },
+                    {
+                        "name": {
+                            "en": "Infectious (Diphtheria, TB, Bacterial Tracheitis, other)"
+                        },
+                        "value": "infectious"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_etiology",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_as_etiology_auto_immune": {
+                "description": "Indicates if the participant’s airway stenosis is caused by an autoimmune or granulomatous disease.",
+                "question": {
+                    "en": "Auto-immune or granulomatous disease Subcategory"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Granulomatosis with polyangiitis (GPA) (Formerly known as Wegner's disease)"
+                        },
+                        "value": "gpa"
+                    },
+                    {
+                        "name": {
+                            "en": "Relapsing Polychondritis"
+                        },
+                        "value": "relapsingPolychondritis"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_etiology_auto_immune",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_as_ds_mcg": {
+                "description": "Indicates the degree of the participant’s stenosis based on the Myer-Cotton Grade.",
+                "question": {
+                    "en": "Degree of Stenosis (Myer-Cotton Grade)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Grade I"
+                        },
+                        "value": "gradeI"
+                    },
+                    {
+                        "name": {
+                            "en": "Grade II"
+                        },
+                        "value": "gradeII"
+                    },
+                    {
+                        "name": {
+                            "en": "Grade III"
+                        },
+                        "value": "gradeIII"
+                    },
+                    {
+                        "name": {
+                            "en": "Grade IV"
+                        },
+                        "value": "gradeIV"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_mcg",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_as_ds_bc": {
+                "description": "Indicates the degree of the participant’s stenosis based on the Bogdasarian Classification.",
+                "question": {
+                    "en": "Degree of Stenosis (Bogdasarian Classification)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "(a) Class 1"
+                        },
+                        "value": "class1"
+                    },
+                    {
+                        "name": {
+                            "en": "(b) Class 2"
+                        },
+                        "value": "class2"
+                    },
+                    {
+                        "name": {
+                            "en": "(c) Class 3"
+                        },
+                        "value": "class3"
+                    },
+                    {
+                        "name": {
+                            "en": "(d) Class 4"
+                        },
+                        "value": "class4"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_bc",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_as_ds_agw": {
+                "description": "Indicates the anterior glottic web classification of the participant’s airway stenosis according to Cohen.",
+                "question": {
+                    "en": "Anterior Glottic Web classification (Cohen)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Grade 1 (0-35% obstruction)"
+                        },
+                        "value": "grade1"
+                    },
+                    {
+                        "name": {
+                            "en": "Grade 2 (35-50% obstruction)"
+                        },
+                        "value": "grade2"
+                    },
+                    {
+                        "name": {
+                            "en": "Grade 3 (51-75% obstruction)"
+                        },
+                        "value": "grade3"
+                    },
+                    {
+                        "name": {
+                            "en": "Grade 4 (76-100% obstruction)"
+                        },
+                        "value": "grade4"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_agw",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_as_ds_ac": {
+                "description": "Indicates the grade of stenosis of the participant’s supraglottic stenosis according to the Aziz Classification.",
+                "question": {
+                    "en": "Grade of Stenosis (Aziz Classification of Supraglottic Stenosis)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Grade 1"
+                        },
+                        "value": "grade1"
+                    },
+                    {
+                        "name": {
+                            "en": "Grade 2"
+                        },
+                        "value": "grade2"
+                    },
+                    {
+                        "name": {
+                            "en": "Grade 3"
+                        },
+                        "value": "grade3"
+                    },
+                    {
+                        "name": {
+                            "en": "Grade 4"
+                        },
+                        "value": "grade4"
+                    },
+                    {
+                        "name": {
+                            "en": "Unsure"
+                        },
+                        "value": "unsure"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_ac",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_as_ds_ac_grade_4": {
+                "description": "Indicates the grade of supraglottic stenosis based on the Aziz Classification.",
+                "question": {
+                    "en": "Grade of Stenosis (Aziz Classification of Supraglottic Stenosis)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Grade 4T"
+                        },
+                        "value": "grade4t"
+                    },
+                    {
+                        "name": {
+                            "en": "Grade 4G"
+                        },
+                        "value": "grade4g"
+                    },
+                    {
+                        "name": {
+                            "en": "Grade 4TG"
+                        },
+                        "value": "grade4tg"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_ac_grade_4",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_as_ds_ods": {
+                "description": "Indicates the overall subjective classification of the participant’s airway stenosis.",
+                "question": {
+                    "en": "How would you subjectively classify the overall degree of stenosis?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Mild"
+                        },
+                        "value": "mild"
+                    },
+                    {
+                        "name": {
+                            "en": "Moderate"
+                        },
+                        "value": "moderate"
+                    },
+                    {
+                        "name": {
+                            "en": "Severe"
+                        },
+                        "value": "severe"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_ods",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_as_ds_eps": {
+                "description": "Indicates the estimated percentage of stenosis from 0 to 100.",
+                "question": {
+                    "en": "How would you subjectively estimate the percent of stenosis from 0 to 100?"
+                },
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_eps",
+                "valueType": [
+                    "xsd:decimal"
+                ]
+            },
+            "diagnosis_as_treatment___no_treatment": {
+                "description": "Indicates if the participant has received no treatment for their airway stenosis."
+            },
+            "diagnosis_as_treatment___surgery": {
+                "description": "Indicates if the participant has undergone surgery as treatment for their airway stenosis."
+            },
+            "diagnosis_as_treatment___in_office_treatment": {
+                "description": "Indicates if the participant has undergone in-office treatment for their airway stenosis."
+            },
+            "diagnosis_as_treatment_surgery___endoscopic_intervention": {
+                "description": "Indicates if the participant has undergone endoscopic intervention with laser and balloon dilation and steroid injection as surgery for airway stenosis."
+            },
+            "diagnosis_as_treatment_surgery___endoscopic_excision": {
+                "description": "Indicates if the participant has undergone endoscopic laser wedge excision with balloon dilation and steroid injection as surgery for airway stenosis."
+            },
+            "diagnosis_as_treatment_surgery___laryngotracheal_reconstruction": {
+                "description": "Indicates if the participant has undergone open laryngotracheal reconstruction as surgery for airway stenosis."
+            },
+            "diagnosis_as_treatment_surgery___laryngotracheoplasty": {
+                "description": "Indicates if the participant has undergone laryngotracheoplasty (Maddern procedure) as surgery for airway stenosis."
+            },
+            "diagnosis_as_treatment_surgery___tracheostomy": {
+                "description": "Indicates if the participant has undergone a tracheostomy as surgery for airway stenosis."
+            },
+            "diagnosis_as_treatment_surgery___other": {
+                "description": "Indicates if the participant has undergone another type of surgery for airway stenosis."
+            },
+            "diagnosis_as_treatment_in_office___steroid_injections_sole": {
+                "description": "Indicates if the participant has undergone awake steroid injection(s) as the sole treatment for airway stenosis."
+            },
+            "diagnosis_as_treatment_in_office___steroid_injections_adjunct": {
+                "description": "Indicates if the participant has undergone awake steroid injection(s) as an adjunct treatment for airway stenosis."
+            },
+            "diagnosis_as_treatment_in_office___dilation": {
+                "description": "Indicates if the participant has undergone in-office or awake dilation as treatment for airway stenosis."
+            },
+            "diagnosis_as_treatment_in_office___laser": {
+                "description": "Indicates if the participant has undergone in-office or awake laser treatment for airway stenosis."
+            },
+            "diagnosis_as_gsd_yes": {
+                "question": {
+                    "en": "Confirmed by"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Confirmed by bronchoscopy or laryngoscopy"
+                        },
+                        "value": "bronchoscopy"
+                    },
+                    {
+                        "name": {
+                            "en": "Confirmed by CT imaging"
+                        },
+                        "value": "ct"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_gsd_yes",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_as_treatment": {
+                "question": {
+                    "en": "What treatment has the patient undergone for their stenosis?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "No treatment"
+                        },
+                        "value": "no_treatment"
+                    },
+                    {
+                        "name": {
+                            "en": "Surgery"
+                        },
+                        "value": "surgery"
+                    },
+                    {
+                        "name": {
+                            "en": "In-office treatment"
+                        },
+                        "value": "in_office_treatment"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_treatment",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_as_treatment_surgery": {
+                "question": {
+                    "en": "Surgery options"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Endoscopic intervention with Laser and Balloon dilation and steroid injection"
+                        },
+                        "value": "endoscopic_intervention"
+                    },
+                    {
+                        "name": {
+                            "en": "Endoscopic laser wedge excision with balloon dilation and steroid injection"
+                        },
+                        "value": "endoscopic_excision"
+                    },
+                    {
+                        "name": {
+                            "en": "Open Laryngotracheal reconstruction"
+                        },
+                        "value": "laryngotracheal_reconstruction"
+                    },
+                    {
+                        "name": {
+                            "en": "Laryngotracheoplasty (Maddern procedure)"
+                        },
+                        "value": "laryngotracheoplasty"
+                    },
+                    {
+                        "name": {
+                            "en": "Tracheostomy"
+                        },
+                        "value": "tracheostomy"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_treatment_surgery",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_as_treatment_in_office": {
+                "question": {
+                    "en": "In-office/awake treatment options"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Awake Steroid injection(s) as sole treatment"
+                        },
+                        "value": "steroid_injections_sole"
+                    },
+                    {
+                        "name": {
+                            "en": "Awake Steroid injection(s) as adjunct treatment"
+                        },
+                        "value": "steroid_injections_adjunct"
+                    },
+                    {
+                        "name": {
+                            "en": "In-office or awake dilation"
+                        },
+                        "value": "dilation"
+                    },
+                    {
+                        "name": {
+                            "en": "In-office or awake laser"
+                        },
+                        "value": "laser"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_treatment_in_office",
+                "valueType": [
+                    "xsd:string"
+                ]
+            }
+        }
     }
 }

@@ -1,104 +1,562 @@
 {
-    "diagnosis_als_gsd_category_1": {
-        "description": "Indicates the participant's ALS diagnosis under GSD category 1."
-    },
-    "diagnosis_als_gsd_category_2": {
-        "description": "Indicates if the participant meets the criteria for ALS GSD Category 2."
-    },
-    "diagnosis_als_gsd_category_3": {
-        "description": "Indicates the participant's ALS diagnosis under GSD category 3."
-    },
-    "diagnosis_als_gsd_calculation": {
-        "description": "Calculation for the participant's ALS GSD diagnosis."
-    },
-    "diagnosis_als_disease_subtype": {
-        "description": "Indicates the subtype of ALS diagnosed in the participant."
-    },
-    "diagnosis_als_disease_subtype_familial": {
-        "description": "Indicates if the participant has been diagnosed with familial ALS."
-    },
-    "diagnosis_als_etiology___genetic_factors": {
-        "description": "Indicates if the participant's ALS diagnosis is linked to genetic factors."
-    },
-    "diagnosis_als_etiology___environmental_factors": {
-        "description": "Indicates if the participant's ALS diagnosis is linked to environmental factors."
-    },
-    "diagnosis_als_etiology_genetic_factors___c9orf72": {
-        "description": "Indicates if the participant's ALS diagnosis is linked to the C9orf72 genetic factor."
-    },
-    "diagnosis_als_etiology_genetic_factors___sod1": {
-        "description": "Indicates if the participant's ALS diagnosis is linked to the SOD1 genetic factor."
-    },
-    "diagnosis_als_etiology_genetic_factors___other": {
-        "description": "Indicates if the participant's ALS diagnosis is linked to other genetic factors not listed."
-    },
-    "diagnosis_als_cp___upper_motor_neuron": {
-        "description": "Indicates if the participant's ALS diagnosis includes upper motor neuron involvement."
-    },
-    "diagnosis_als_cp___lower_motor_neuron": {
-        "description": "Indicates if the participant has lower motor neuron involvement as part of their ALS diagnosis."
-    },
-    "diagnosis_als_cp___bulbar_symptoms": {
-        "description": "Indicates if the participant has bulbar symptoms as part of their ALS diagnosis."
-    },
-    "diagnosis_als_cp___respiratory_involvement": {
-        "description": "Indicates if the participant has respiratory involvement as part of their ALS diagnosis."
-    },
-    "diagnosis_als_dp": {
-        "description": "Indicates if the participant has a diagnosis of ALS with dementia."
-    },
-    "diagnosis_als_na_alsfrs_r_score": {
-        "description": "The participant's score on the ALS Functional Rating Scale-Revised (ALSFRS-R)."
-    },
-    "diagnosis_als_na_fvc_percentage": {
-        "description": "Indicates the participant's forced vital capacity (FVC) percentage for ALS diagnosis."
-    },
-    "diagnosis_als_treatment_and_management": {
-        "description": "Indicates the treatment and management plan for the participant's ALS diagnosis."
-    },
-    "diagnosis_als_treatment_and_management_yes___medications": {
-        "description": "Indicates if the participant is receiving medications as part of ALS treatment."
-    },
-    "diagnosis_als_treatment_and_management_yes___supportive_care": {
-        "description": "Indicates if the participant is receiving supportive care as part of ALS management."
-    },
-    "diagnosis_als_treatment_and_management_yes_medications___riluzole": {
-        "description": "Indicates if the participant is receiving riluzole as part of ALS treatment."
-    },
-    "diagnosis_als_treatment_and_management_yes_medications___edaravone": {
-        "description": "Indicates if the participant is receiving edaravone as part of ALS treatment."
-    },
-    "diagnosis_als_treatment_and_management_yes_medications___sodium": {
-        "description": "Indicates if the participant is receiving sodium as part of ALS treatment."
-    },
-    "diagnosis_als_treatment_and_management_yes_medications___tofersen": {
-        "description": "Indicates if the participant is receiving Tofersen as part of ALS treatment."
-    },
-    "diagnosis_als_treatment_and_management_yes_medications___symptomatic_treatment": {
-        "description": "Indicates if the participant is receiving symptomatic treatment as part of ALS management."
-    },
-    "diagnosis_als_treatment_and_management_yes_medications___other": {
-        "description": "Indicates if the participant is receiving other medications as part of ALS treatment."
-    },
-    "diagnosis_als_treatment_and_management_yes_supportive_care___physical_therapy": {
-        "description": "Indicates if the participant has received physical therapy as part of ALS management."
-    },
-    "diagnosis_als_treatment_and_management_yes_supportive_care___occupational_therapy": {
-        "description": "Indicates if the participant is receiving occupational therapy as part of ALS treatment and supportive care."
-    },
-    "diagnosis_als_treatment_and_management_yes_supportive_care___speech_therapy": {
-        "description": "Indicates if the participant has received speech therapy as part of ALS management."
-    },
-    "diagnosis_als_treatment_and_management_yes_supportive_care___respiratory_support": {
-        "description": "Indicates if the participant has received respiratory support as part of ALS management."
-    },
-    "diagnosis_als_treatment_and_management_yes_supportive_care___nutrition_support": {
-        "description": "Indicates if the participant has received nutrition support as part of ALS management."
-    },
-    "diagnosis_als_treatment_and_management_yes_supportive_care___psychotherapy": {
-        "description": "Indicates if the participant has received psychotherapy as part of ALS management."
-    },
-    "diagnosis_als_treatment_and_management_yes_supportive_care___other": {
-        "description": "Indicates if the participant has received other forms of supportive care for ALS."
+    "d_neuro_amyotrophic_lateral_sclerosis_als_schema": {
+        "description": "Measures symptoms and progression of ALS.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/d_neuro_amyotrophic_lateral_sclerosis_als_schema",
+        "data_elements": {
+            "diagnosis_als_gsd_category_1": {
+                "description": "Indicates the participant's ALS diagnosis under GSD category 1.",
+                "question": {
+                    "en": "(1) Progressive motor impairment documented by history or repeated clinical assessment, preceded by normal motor function;"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Not certain"
+                        },
+                        "value": "notCertain"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_gsd_category_1",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_als_gsd_category_2": {
+                "description": "Indicates if the participant meets the criteria for ALS GSD Category 2.",
+                "question": {
+                    "en": "(2) presence of UMN and LMN signs in at least 1 body region (with UMN and LMN dysfunction noted in the same body region if only one body region is involved) or LMN dysfunction in at least 2 body regions;"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Not certain"
+                        },
+                        "value": "notCertain"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_gsd_category_2",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_als_gsd_category_3": {
+                "description": "Indicates the participant's ALS diagnosis under GSD category 3.",
+                "question": {
+                    "en": "(3) investigations excluding other disease processes."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Not certain"
+                        },
+                        "value": "notCertain"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_gsd_category_3",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_als_gsd_calculation": {
+                "description": "Calculation for the participant's ALS GSD diagnosis.",
+                "question": {
+                    "en": "Does the patient meet the diagnostic criteria for Amyotrophic Lateral Sclerosis (ALS) based on the criteria above?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_gsd_calculation",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_als_disease_subtype": {
+                "description": "Indicates the subtype of ALS diagnosed in the participant.",
+                "question": {
+                    "en": "Specify the type of ALS in the patient:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Sporadic ALS"
+                        },
+                        "value": "sporadicAls"
+                    },
+                    {
+                        "name": {
+                            "en": "Familial ALS"
+                        },
+                        "value": "familialAls"
+                    },
+                    {
+                        "name": {
+                            "en": "Spinal/limb-onset ALS"
+                        },
+                        "value": "spinalAls"
+                    },
+                    {
+                        "name": {
+                            "en": "Bulbar-onset ALS"
+                        },
+                        "value": "bulbarAls"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_disease_subtype",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_als_disease_subtype_familial": {
+                "description": "Indicates if the participant has been diagnosed with familial ALS.",
+                "question": {
+                    "en": "If you selected \"Familial ALS\", please specify the genetic mutation if known:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_disease_subtype_familial",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_als_etiology___genetic_factors": {
+                "description": "Indicates if the participant's ALS diagnosis is linked to genetic factors."
+            },
+            "diagnosis_als_etiology___environmental_factors": {
+                "description": "Indicates if the participant's ALS diagnosis is linked to environmental factors."
+            },
+            "diagnosis_als_etiology_genetic_factors___c9orf72": {
+                "description": "Indicates if the participant's ALS diagnosis is linked to the C9orf72 genetic factor."
+            },
+            "diagnosis_als_etiology_genetic_factors___sod1": {
+                "description": "Indicates if the participant's ALS diagnosis is linked to the SOD1 genetic factor."
+            },
+            "diagnosis_als_etiology_genetic_factors___other": {
+                "description": "Indicates if the participant's ALS diagnosis is linked to other genetic factors not listed."
+            },
+            "diagnosis_als_cp___upper_motor_neuron": {
+                "description": "Indicates if the participant's ALS diagnosis includes upper motor neuron involvement."
+            },
+            "diagnosis_als_cp___lower_motor_neuron": {
+                "description": "Indicates if the participant has lower motor neuron involvement as part of their ALS diagnosis."
+            },
+            "diagnosis_als_cp___bulbar_symptoms": {
+                "description": "Indicates if the participant has bulbar symptoms as part of their ALS diagnosis."
+            },
+            "diagnosis_als_cp___respiratory_involvement": {
+                "description": "Indicates if the participant has respiratory involvement as part of their ALS diagnosis."
+            },
+            "diagnosis_als_dp": {
+                "description": "Indicates if the participant has a diagnosis of ALS with dementia.",
+                "question": {
+                    "en": "Please provide information on the current stage and progression of ALS:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Early Stage"
+                        },
+                        "value": "earlyStage"
+                    },
+                    {
+                        "name": {
+                            "en": "Intermediate Stage"
+                        },
+                        "value": "intermediateStage"
+                    },
+                    {
+                        "name": {
+                            "en": "Advanced Stage"
+                        },
+                        "value": "advancedStage"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_dp",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_als_na_alsfrs_r_score": {
+                "description": "The participant's score on the ALS Functional Rating Scale-Revised (ALSFRS-R).",
+                "question": {
+                    "en": "Revised ALS Functional Rating Scale (ALSFRS-R) score:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_na_alsfrs_r_score",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_als_na_fvc_percentage": {
+                "description": "Indicates the participant's forced vital capacity (FVC) percentage for ALS diagnosis.",
+                "question": {
+                    "en": "Forced Vital Capacity (FVC) percentage (if measured):"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_na_fvc_percentage",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_als_treatment_and_management": {
+                "description": "Indicates the treatment and management plan for the participant's ALS diagnosis.",
+                "question": {
+                    "en": "Has the patient undergone any treatment or interventions for ALS?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_treatment_and_management",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_als_treatment_and_management_yes___medications": {
+                "description": "Indicates if the participant is receiving medications as part of ALS treatment."
+            },
+            "diagnosis_als_treatment_and_management_yes___supportive_care": {
+                "description": "Indicates if the participant is receiving supportive care as part of ALS management."
+            },
+            "diagnosis_als_treatment_and_management_yes_medications___riluzole": {
+                "description": "Indicates if the participant is receiving riluzole as part of ALS treatment."
+            },
+            "diagnosis_als_treatment_and_management_yes_medications___edaravone": {
+                "description": "Indicates if the participant is receiving edaravone as part of ALS treatment."
+            },
+            "diagnosis_als_treatment_and_management_yes_medications___sodium": {
+                "description": "Indicates if the participant is receiving sodium as part of ALS treatment."
+            },
+            "diagnosis_als_treatment_and_management_yes_medications___tofersen": {
+                "description": "Indicates if the participant is receiving Tofersen as part of ALS treatment."
+            },
+            "diagnosis_als_treatment_and_management_yes_medications___symptomatic_treatment": {
+                "description": "Indicates if the participant is receiving symptomatic treatment as part of ALS management."
+            },
+            "diagnosis_als_treatment_and_management_yes_medications___other": {
+                "description": "Indicates if the participant is receiving other medications as part of ALS treatment."
+            },
+            "diagnosis_als_treatment_and_management_yes_supportive_care___physical_therapy": {
+                "description": "Indicates if the participant has received physical therapy as part of ALS management."
+            },
+            "diagnosis_als_treatment_and_management_yes_supportive_care___occupational_therapy": {
+                "description": "Indicates if the participant is receiving occupational therapy as part of ALS treatment and supportive care."
+            },
+            "diagnosis_als_treatment_and_management_yes_supportive_care___speech_therapy": {
+                "description": "Indicates if the participant has received speech therapy as part of ALS management."
+            },
+            "diagnosis_als_treatment_and_management_yes_supportive_care___respiratory_support": {
+                "description": "Indicates if the participant has received respiratory support as part of ALS management."
+            },
+            "diagnosis_als_treatment_and_management_yes_supportive_care___nutrition_support": {
+                "description": "Indicates if the participant has received nutrition support as part of ALS management."
+            },
+            "diagnosis_als_treatment_and_management_yes_supportive_care___psychotherapy": {
+                "description": "Indicates if the participant has received psychotherapy as part of ALS management."
+            },
+            "diagnosis_als_treatment_and_management_yes_supportive_care___other": {
+                "description": "Indicates if the participant has received other forms of supportive care for ALS."
+            },
+            "diagnosis_als_etiology": {
+                "question": {
+                    "en": "What is the suspected or known etiology of ALS in the patient?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Genetic factors"
+                        },
+                        "value": "genetic_factors"
+                    },
+                    {
+                        "name": {
+                            "en": "Environmental factors"
+                        },
+                        "value": "environmental_factors"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_etiology",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_als_etiology_genetic_factors": {
+                "question": {
+                    "en": "Genetic Factors"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "C9orf72 mutation"
+                        },
+                        "value": "c9orf72"
+                    },
+                    {
+                        "name": {
+                            "en": "SOD1 mutation"
+                        },
+                        "value": "sod1"
+                    },
+                    {
+                        "name": {
+                            "en": "Other genetic factors"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_etiology_genetic_factors",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_als_cp": {
+                "question": {
+                    "en": "Describe the clinical features and symptoms of ALS in the patient:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Upper Motor Neuron Signs (e.g., spasticity, hyperreflexia)"
+                        },
+                        "value": "upper_motor_neuron"
+                    },
+                    {
+                        "name": {
+                            "en": "Lower Motor Neuron Signs (e.g., muscle weakness, atrophy, fasciculations)"
+                        },
+                        "value": "lower_motor_neuron"
+                    },
+                    {
+                        "name": {
+                            "en": "Bulbar Symptoms (e.g., dysarthria, dysphagia)"
+                        },
+                        "value": "bulbar_symptoms"
+                    },
+                    {
+                        "name": {
+                            "en": "Respiratory Involvement"
+                        },
+                        "value": "respiratory_involvement"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_cp",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_als_treatment_and_management_yes": {
+                "question": {
+                    "en": "Yes"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Medications"
+                        },
+                        "value": "medications"
+                    },
+                    {
+                        "name": {
+                            "en": "Supportive Care"
+                        },
+                        "value": "supportive_care"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_treatment_and_management_yes",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_als_treatment_and_management_yes_medications": {
+                "question": {
+                    "en": "Medications (if applicable):"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Riluzole"
+                        },
+                        "value": "riluzole"
+                    },
+                    {
+                        "name": {
+                            "en": "Edaravone"
+                        },
+                        "value": "edaravone"
+                    },
+                    {
+                        "name": {
+                            "en": "Sodium phenylbutyrate/taurursodiol"
+                        },
+                        "value": "sodium"
+                    },
+                    {
+                        "name": {
+                            "en": "Tofersen"
+                        },
+                        "value": "tofersen"
+                    },
+                    {
+                        "name": {
+                            "en": "Symptomatic treatment (e.g., for spasticity, pain)"
+                        },
+                        "value": "symptomatic_treatment"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_treatment_and_management_yes_medications",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_als_treatment_and_management_yes_supportive_care": {
+                "question": {
+                    "en": "Supportive Care:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Physical therapy"
+                        },
+                        "value": "physical_therapy"
+                    },
+                    {
+                        "name": {
+                            "en": "Occupational therapy"
+                        },
+                        "value": "occupational_therapy"
+                    },
+                    {
+                        "name": {
+                            "en": "Speech therapy"
+                        },
+                        "value": "speech_therapy"
+                    },
+                    {
+                        "name": {
+                            "en": "Respiratory support (e.g., non-invasive ventilation)"
+                        },
+                        "value": "respiratory_support"
+                    },
+                    {
+                        "name": {
+                            "en": "Nutrition and swallowing support"
+                        },
+                        "value": "nutrition_support"
+                    },
+                    {
+                        "name": {
+                            "en": "Psychotherapy"
+                        },
+                        "value": "psychotherapy"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_neuro_amyotrophic_lateral_sclerosis_als/items/diagnosis_als_treatment_and_management_yes_supportive_care",
+                "valueType": [
+                    "xsd:string"
+                ]
+            }
+        }
     }
 }

@@ -1,89 +1,489 @@
 {
-    "ef_select_language": {
-        "description": "Indicates the participant’s selected language for the study."
-    },
-    "ef_any_vision_related_req": {
-        "description": "Indicates if the participant has any vision-related requirements to assist with reading text in the study."
-    },
-    "ef_vision_a11y_options___1": {
-        "description": "Indicates if the participant requires changes to the font size as part of the study’s accessibility features."
-    },
-    "ef_vision_a11y_options___2": {
-        "description": "Indicates if the participant requires changes to the font color (high contrast mode) as part of the study’s accessibility features."
-    },
-    "ef_vision_a11y_options___3": {
-        "description": "Indicates if the participant requires the use of a screen reader as part of the study’s accessibility features."
-    },
-    "ef_vision_a11y_options___4": {
-        "description": "Indicates if the participant requires a person to read the text to them as part of the study’s accessibility features."
-    },
-    "ef_any_hearing_related_req": {
-        "description": "Indicates if the participant has any hearing-related requirements to assist with listening to sound files in the study."
-    },
-    "ef_hearing_a11y_options___1": {
-        "description": "Indicates if the participant requires an increase in volume as part of the study’s accessibility features."
-    },
-    "ef_hearing_a11y_options___2": {
-        "description": "Indicates if the participant requires closed captions as part of the study’s accessibility features."
-    },
-    "ef_hearing_a11y_options___3": {
-        "description": "Indicates if the participant prefers to use haptic feedback (vibrations) instead of audio cues as part of the study’s accessibility features."
-    },
-    "ef_any_physical_challenges": {
-        "description": "Indicates if the participant has any physical challenges that may affect their ability to navigate the application using a touch screen."
-    },
-    "ef_physical_a11y_options___1": {
-        "description": "Indicates if the participant requires an increase in button size as part of the study’s accessibility features."
-    },
-    "ef_physical_a11y_options___2": {
-        "description": "Indicates if the participant requires the use of an alternative keyboard connected to the app."
-    },
-    "ef_physical_a11y_options___3": {
-        "description": "Indicates if the participant would prefer to navigate the survey using voice commands instead of the touch screen."
-    },
-    "ef_any_cognitive_challeges": {
-        "description": "Indicates if the participant has any cognitive challenges, including difficulty reading, that may require assistance in answering questions and following directions in the study."
-    },
-    "ef_cognitive_a11y_options___1": {
-        "description": "Indicates if the participant prefers to have the questions read aloud using text-to-speech as part of the study’s accessibility features."
-    },
-    "ef_cognitive_a11y_options___2": {
-        "description": "Indicates if the participant prefers to have a person read the text to them as part of the study’s accessibility features."
-    },
-    "ef_cognitive_a11y_options___3": {
-        "description": "Indicates if the participant prefers to speak their answers instead of typing them as part of the study’s accessibility features."
-    },
-    "ef_completed_by___1": {
-        "description": "Indicates if the responses in the survey were completed by the participant themselves."
-    },
-    "ef_completed_by___2": {
-        "description": "Indicates if the responses in the survey were completed by an assistant."
-    },
-    "ef_completed_by___3": {
-        "description": "Indicates if the responses in the survey were completed by a parent or caregiver."
-    },
-    "ef_primary_language": {
-        "description": "Indicates the primary language spoken by the participant."
-    },
-    "ef_primary_language_other": {
-        "description": "If the participant's primary language is not listed, this field specifies the language."
-    },
-    "ef_fluent_languages___1": {
-        "description": "Indicates if the participant speaks no additional languages fluently."
-    },
-    "ef_fluent_languages___2": {
-        "description": "Indicates if the participant speaks English fluently in addition to their primary language."
-    },
-    "ef_fluent_languages___3": {
-        "description": "Indicates if the participant speaks French fluently in addition to their primary language."
-    },
-    "ef_fluent_languages___4": {
-        "description": "Indicates if the participant speaks Spanish fluently in addition to their primary language."
-    },
-    "ef_fluent_languages___5": {
-        "description": "Indicates if the participant speaks any other language fluently, and provides the details."
-    },
-    "ef_fluent_language_other": {
-        "description": "If the participant speaks another language fluently that is not listed, this field specifies the language."
+    "enrollment_form_schema": {
+        "description": "Measures participant registration details.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/enrollment_form_schema",
+        "data_elements": {
+            "ef_select_language": {
+                "description": "Indicates the participant’s selected language for the study.",
+                "question": {
+                    "en": "Select a language"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "English"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Français"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Español"
+                        },
+                        "value": 3
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_select_language",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "ef_any_vision_related_req": {
+                "description": "Indicates if the participant has any vision-related requirements to assist with reading text in the study.",
+                "question": {
+                    "en": "This application requires you to read text to answer questions. Do you have any vision-related requirements we can assist with?"
+                },
+                "datatype": [
+                    "xsd:boolean"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 0
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_any_vision_related_req",
+                "valueType": [
+                    "xsd:boolean"
+                ]
+            },
+            "ef_vision_a11y_options___1": {
+                "description": "Indicates if the participant requires changes to the font size as part of the study’s accessibility features."
+            },
+            "ef_vision_a11y_options___2": {
+                "description": "Indicates if the participant requires changes to the font color (high contrast mode) as part of the study’s accessibility features."
+            },
+            "ef_vision_a11y_options___3": {
+                "description": "Indicates if the participant requires the use of a screen reader as part of the study’s accessibility features."
+            },
+            "ef_vision_a11y_options___4": {
+                "description": "Indicates if the participant requires a person to read the text to them as part of the study’s accessibility features."
+            },
+            "ef_any_hearing_related_req": {
+                "description": "Indicates if the participant has any hearing-related requirements to assist with listening to sound files in the study.",
+                "question": {
+                    "en": "This application may present some sound files for you to listen to. Do you have any hearing-related requirements we can assist with?"
+                },
+                "datatype": [
+                    "xsd:boolean"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 0
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_any_hearing_related_req",
+                "valueType": [
+                    "xsd:boolean"
+                ]
+            },
+            "ef_hearing_a11y_options___1": {
+                "description": "Indicates if the participant requires an increase in volume as part of the study’s accessibility features."
+            },
+            "ef_hearing_a11y_options___2": {
+                "description": "Indicates if the participant requires closed captions as part of the study’s accessibility features."
+            },
+            "ef_hearing_a11y_options___3": {
+                "description": "Indicates if the participant prefers to use haptic feedback (vibrations) instead of audio cues as part of the study’s accessibility features."
+            },
+            "ef_any_physical_challenges": {
+                "description": "Indicates if the participant has any physical challenges that may affect their ability to navigate the application using a touch screen.",
+                "question": {
+                    "en": "This application requires you to navigate through the questions using a touch screen. Do you have any physical challenges we can accommodate?"
+                },
+                "datatype": [
+                    "xsd:boolean"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 0
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_any_physical_challenges",
+                "valueType": [
+                    "xsd:boolean"
+                ]
+            },
+            "ef_physical_a11y_options___1": {
+                "description": "Indicates if the participant requires an increase in button size as part of the study’s accessibility features."
+            },
+            "ef_physical_a11y_options___2": {
+                "description": "Indicates if the participant requires the use of an alternative keyboard connected to the app."
+            },
+            "ef_physical_a11y_options___3": {
+                "description": "Indicates if the participant would prefer to navigate the survey using voice commands instead of the touch screen."
+            },
+            "ef_any_cognitive_challeges": {
+                "description": "Indicates if the participant has any cognitive challenges, including difficulty reading, that may require assistance in answering questions and following directions in the study.",
+                "question": {
+                    "en": "This application requires you to read text, answer questions, and follow directions. Do you have any cognitive challenges, including difficulty reading, that we can assist with?"
+                },
+                "datatype": [
+                    "xsd:boolean"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 0
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_any_cognitive_challeges",
+                "valueType": [
+                    "xsd:boolean"
+                ]
+            },
+            "ef_cognitive_a11y_options___1": {
+                "description": "Indicates if the participant prefers to have the questions read aloud using text-to-speech as part of the study’s accessibility features."
+            },
+            "ef_cognitive_a11y_options___2": {
+                "description": "Indicates if the participant prefers to have a person read the text to them as part of the study’s accessibility features."
+            },
+            "ef_cognitive_a11y_options___3": {
+                "description": "Indicates if the participant prefers to speak their answers instead of typing them as part of the study’s accessibility features."
+            },
+            "ef_completed_by___1": {
+                "description": "Indicates if the responses in the survey were completed by the participant themselves."
+            },
+            "ef_completed_by___2": {
+                "description": "Indicates if the responses in the survey were completed by an assistant."
+            },
+            "ef_completed_by___3": {
+                "description": "Indicates if the responses in the survey were completed by a parent or caregiver."
+            },
+            "ef_primary_language": {
+                "description": "Indicates the primary language spoken by the participant.",
+                "question": {
+                    "en": "What is your primary language?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "English"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "French"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Spanish"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Other (Please specify below)"
+                        },
+                        "value": 4
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_primary_language",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "ef_primary_language_other": {
+                "description": "If the participant's primary language is not listed, this field specifies the language.",
+                "question": {
+                    "en": "If primary language is \"other\", please specify:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_primary_language_other",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "ef_fluent_languages___1": {
+                "description": "Indicates if the participant speaks no additional languages fluently."
+            },
+            "ef_fluent_languages___2": {
+                "description": "Indicates if the participant speaks English fluently in addition to their primary language."
+            },
+            "ef_fluent_languages___3": {
+                "description": "Indicates if the participant speaks French fluently in addition to their primary language."
+            },
+            "ef_fluent_languages___4": {
+                "description": "Indicates if the participant speaks Spanish fluently in addition to their primary language."
+            },
+            "ef_fluent_languages___5": {
+                "description": "Indicates if the participant speaks any other language fluently, and provides the details."
+            },
+            "ef_fluent_language_other": {
+                "description": "If the participant speaks another language fluently that is not listed, this field specifies the language.",
+                "question": {
+                    "en": "If you speak any other languages fluently, please specify:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_fluent_language_other",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "ef_vision_a11y_options": {
+                "question": {
+                    "en": "Yes, I would like to use some of the accessibility features of the app"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "I would like to change the font size"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "I would like to change the font color (high contrast mode)"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "I would like to use a screen reader"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "I would like a person to read the text to me"
+                        },
+                        "value": 4
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_vision_a11y_options",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "ef_hearing_a11y_options": {
+                "question": {
+                    "en": "Yes, I would like to use some of the accessibility features of the app"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "I would like to turn up the volume"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "I would like to turn on closed captions"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "I would like to use haptic feedback (vibrations) instead of audio cues"
+                        },
+                        "value": 3
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_hearing_a11y_options",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "ef_physical_a11y_options": {
+                "question": {
+                    "en": "Yes, I would like to use some of the accessibility features of the app"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "I would like to increase the size of the buttons"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "I have an alternative keyboard I'd like to connect instead"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "I would like to navigate the survey using voice commands instead of the touch screen"
+                        },
+                        "value": 3
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_physical_a11y_options",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "ef_cognitive_a11y_options": {
+                "question": {
+                    "en": "Yes, I would like to use some of the accessibility features of the app"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "I would like the questions to be read to me using text-to-speech"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "I would like a person to read the text to me"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "I would like to speak my answers instead of typing them"
+                        },
+                        "value": 3
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_cognitive_a11y_options",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "ef_completed_by": {
+                "question": {
+                    "en": "Check all that apply"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Self"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Assistant"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Parent/Caregiver"
+                        },
+                        "value": 3
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_completed_by",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "ef_fluent_languages": {
+                "question": {
+                    "en": "Do you speak any additional language(s) fluently (similar to a native speaker)?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "English"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "French"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Spanish"
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Other (please specify below)"
+                        },
+                        "value": 5
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/enrollment_form/items/ef_fluent_languages",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            }
+        }
     }
 }

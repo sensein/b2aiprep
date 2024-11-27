@@ -1,14 +1,125 @@
 {
-    "random_session_id": {
-        "description": "Unique identifier for a random session."
-    },
-    "random_recording_acoustic_task_id": {
-        "description": "Unique identifier for a random recording acoustic task."
-    },
-    "random_duration": {
-        "description": "Total duration of a randomly assigned task or session."
-    },
-    "random_item_generation_category": {
-        "description": "Category assigned for random item generation in the session."
+    "q_neuro_random_item_generation_schema": {
+        "description": "Measures variables for various study purposes.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_random_item_generation/q_neuro_random_item_generation_schema",
+        "data_elements": {
+            "random_session_id": {
+                "description": "Unique identifier for a random session.",
+                "question": {
+                    "en": "Session ID"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_random_item_generation/items/random_session_id",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "random_recording_acoustic_task_id": {
+                "description": "Unique identifier for a random recording acoustic task.",
+                "question": {
+                    "en": "Acoustic Task ID"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_random_item_generation/items/random_recording_acoustic_task_id",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "random_duration": {
+                "description": "Total duration of a randomly assigned task or session.",
+                "question": {
+                    "en": "Questionnaire Duration (seconds)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_random_item_generation/items/random_duration",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "random_item_generation_category": {
+                "description": "Category assigned for random item generation in the session.",
+                "question": {
+                    "en": "Random item generation category"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Numbers"
+                        },
+                        "value": "numbers"
+                    },
+                    {
+                        "name": {
+                            "en": "Letters"
+                        },
+                        "value": "letters"
+                    },
+                    {
+                        "name": {
+                            "en": "First names"
+                        },
+                        "value": "firstNames"
+                    },
+                    {
+                        "name": {
+                            "en": "City names"
+                        },
+                        "value": "cityNames"
+                    },
+                    {
+                        "name": {
+                            "en": "Country names"
+                        },
+                        "value": "countryNames"
+                    },
+                    {
+                        "name": {
+                            "en": "Jobs"
+                        },
+                        "value": "jobs"
+                    },
+                    {
+                        "name": {
+                            "en": "Fruits"
+                        },
+                        "value": "fruits"
+                    },
+                    {
+                        "name": {
+                            "en": "Drinks"
+                        },
+                        "value": "drinks"
+                    },
+                    {
+                        "name": {
+                            "en": "Animals"
+                        },
+                        "value": "animals"
+                    },
+                    {
+                        "name": {
+                            "en": "English words starting with \"t\""
+                        },
+                        "value": "wordStartingWithT"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_random_item_generation/items/random_item_generation_category",
+                "valueType": [
+                    "xsd:string"
+                ]
+            }
+        }
     }
 }
