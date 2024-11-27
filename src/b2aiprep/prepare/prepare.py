@@ -366,16 +366,18 @@ def clean_phenotype_data(df: pd.DataFrame, phenotype: dict) -> Tuple[pd.DataFram
     # remove columns with minimal data science utility (free-text, all null values, etc)
     columns_to_drop = []
     for col in [
-        # contain free-text / PHI
+        # the following columns contain free-text
         'state_province',
-        'other_edu_level', 'other_household_specify',
+        'other_edu_level', 'others_household_specify',
         'diagnosis_alz_dementia_mci_ds_cdr', 'diagnosis_alz_dementia_mci_ca_rudas_score',
         'diagnosis_alz_dementia_mci_ca_mmse_score', 'diagnosis_alz_dementia_mci_ca_moca_score',
         'diagnosis_alz_dementia_mci_ca_adas_cog_score', 'diagnosis_alz_dementia_mci_ca_other',
         'diagnosis_alz_dementia_mci_ca_other_score',
-        # extremely sensitive / contains PHI
+        'diagnosis_parkinsons_ma_uprds', 'diagnosis_parkinsons_ma_updrs_part_i_score',
+        'diagnosis_parkinsons_ma_updrs_part_ii_score', 'diagnosis_parkinsons_ma_updrs_part_iii_score',
+        'diagnosis_parkinsons_ma_updrs_part_iv_score', 'diagnosis_parkinsons_non_motor_symptoms_yes',
         'traumatic_event',
-        # all null values
+        # following columns have all null values
         'is_regular_smoker'
     ]:
         if col in df:
