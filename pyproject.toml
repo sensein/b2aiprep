@@ -44,7 +44,8 @@ dev = [
     "pytest",
     "pytest-benchmark",
     "pre-commit",
-    "ruff"
+    "ruff",
+    "responses"
 ]
 
 [project.scripts]
