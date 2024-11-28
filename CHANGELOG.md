@@ -1,3 +1,38 @@
+# 1.0.0 (Thu Nov 28 2024)
+
+#### 💥 Breaking Change
+
+- add another orcid [#96](https://github.com/sensein/b2aiprep/pull/96) ([@alistairewj](https://github.com/alistairewj))
+
+#### 🚀 Enhancement
+
+- 97 add phenotype json code [#98](https://github.com/sensein/b2aiprep/pull/98) ([@satra](https://github.com/satra) satra@node1703.inband [@ibevers](https://github.com/ibevers) [@alistairewj](https://github.com/alistairewj))
+- 89 add data elements to descriptions [#90](https://github.com/sensein/b2aiprep/pull/90) ([@ibevers](https://github.com/ibevers) satra@node1703.inband [@satra](https://github.com/satra))
+
+#### 🐛 Bug Fix
+
+- refactor derivative generation [#94](https://github.com/sensein/b2aiprep/pull/94) ([@satra](https://github.com/satra) satra@node1703.inband)
+- enh: refactor options for prepare_bids [#93](https://github.com/sensein/b2aiprep/pull/93) ([@satra](https://github.com/satra))
+- Corpus 3 release fixes [#86](https://github.com/sensein/b2aiprep/pull/86) ([@ibevers](https://github.com/ibevers) [@alistairewj](https://github.com/alistairewj) [@satra](https://github.com/satra))
+- [WIP] Fixes for b2aiprep for data release [#91](https://github.com/sensein/b2aiprep/pull/91) ([@satra](https://github.com/satra))
+- Merge branch 'alistair/corpus_3' into corpus-3-release-fixes [#80](https://github.com/sensein/b2aiprep/pull/80) ([@ibevers](https://github.com/ibevers))
+
+#### ⚠️ Pushed to `main`
+
+- fix column name in data removal and add remaining free-text columns ([@alistairewj](https://github.com/alistairewj))
+- add citation file ([@alistairewj](https://github.com/alistairewj))
+- update creation of the derived dataset intended for publication ([@alistairewj](https://github.com/alistairewj))
+- add description of features extracted from audio ([@alistairewj](https://github.com/alistairewj))
+
+#### Authors: 4
+
+- [@ibevers](https://github.com/ibevers)
+- Alistair Johnson ([@alistairewj](https://github.com/alistairewj))
+- satra (satra@node1703.inband)
+- Satrajit Ghosh ([@satra](https://github.com/satra))
+
+---
+
 # 0.20.0 (Mon Sep 16 2024)
 
 #### 🚀 Enhancement
