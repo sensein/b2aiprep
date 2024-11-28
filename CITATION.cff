@@ -21,6 +21,7 @@ authors:
   orcid: "https://orcid.org/0000-0002-5403-9002"
 - family-names: "Ng"
   given-names: "Evan"
+  orcid: "https://orcid.org/0009-0006-8554-5414"
 title: "Bridge2AI Data Processing Library"
 version: 0.21.0
 date-released: 2024-11-27
