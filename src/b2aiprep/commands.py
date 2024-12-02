@@ -18,6 +18,7 @@ import pandas as pd
 import pkg_resources
 import pydra
 import torch
+from librosa import amplitude_to_db
 from datasets import Dataset
 from pydra.mark import annotate
 from senselab.audio.data_structures.audio import Audio
@@ -246,6 +247,12 @@ def spectrogram_generator(
     audio_paths,
 ) -> t.Generator[t.Dict[str, t.Any], None, None]:
     """Load audio features from individual files and yield dictionaries amenable to HuggingFace's Dataset from_generator."""
+    audio_paths = sorted(
+        audio_paths,
+        # sort first by subject, then by task
+        key=lambda x: (x.stem.split('_')[0], x.stem.split('_')[2])
+    )
+
     for wav_path in tqdm(audio_paths, total=len(audio_paths), desc="Extracting features"):
         output = {}
         pt_file = wav_path.parent / f"{wav_path.stem}_features.pt"
@@ -254,7 +261,11 @@ def spectrogram_generator(
         output['participant_id'] = wav_path.stem.split('_')[0][4:] # skip "sub-" prefix
         output['session_id'] = wav_path.stem.split('_')[1][4:] # skip "ses-" prefix
         output['task_name'] = wav_path.stem.split('_')[2][5:] # skip "task-" prefix
-        output['spectrogram'] = features['torchaudio']['spectrogram'].numpy().astype(np.float32)
+
+        spectrogram = amplitude_to_db(features['torchaudio']['spectrogram'].numpy().astype(np.float32))
+        # skip every other column
+        spectrogram = spectrogram[:, ::2]
+        output['spectrogram'] = spectrogram
 
         yield output
 
@@ -291,8 +302,8 @@ def create_derived_dataset(bids_path, outdir):
 
     audio_paths = sorted(
         audio_paths,
-        # sort first by subject, then session, then by task
-        key=lambda x: (x.stem.split('_')[0], x.stem.split('_')[1], x.stem.split('_')[2])
+        # sort first by subject, then by task
+        key=lambda x: (x.stem.split('_')[0], x.stem.split('_')[2])
     )
 
     # remove known subjects without any audio
@@ -311,24 +322,22 @@ def create_derived_dataset(bids_path, outdir):
     )
 
     # sort the dataset by identifier and task_name
-    ds = Dataset.from_generator(audio_feature_generator, num_proc=1, keep_in_memory=False)
-    sorting_columns = [
-        SortingColumn(column_index=0, descending=False),
-        SortingColumn(column_index=1, descending=False),
-        SortingColumn(column_index=2, descending=False),
-    ]
+    ds = Dataset.from_generator(audio_feature_generator, num_proc=1)
     ds.to_parquet(
-        outdir.joinpath("spectrograms.parquet").as_posix(),
-        compression="zstd",
+        str(outdir.joinpath("spectrograms.parquet")),
+        compression="zstd",  # Better compression ratio than snappy, still good speed
         compression_level=3,
-        use_dictionary=["participant_id", "session_id", "task_name"],
+        use_dictionary=["participant_id", "session_id", "task_name"],  # Enable dictionary encoding for strings
         write_statistics=True,
-        data_page_size=1_048_576,
         # enable page index for better filtering
+        data_page_size=1_048_576,  # 1MB pages
         write_page_index=True,
         # sort should help readers more efficiently read data
         # requires us to have manually sorted the data (as we have done above)
-        sorting_columns=sorting_columns,
+        sorting_columns=(
+            SortingColumn(column_index=0, descending=False),
+            SortingColumn(column_index=2, descending=False),
+        ),
     )
     _LOGGER.info("Parquet dataset created.")
     _LOGGER.info("Loading derived data")
