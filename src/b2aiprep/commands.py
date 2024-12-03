@@ -18,7 +18,6 @@ import pandas as pd
 import pkg_resources
 import pydra
 import torch
-from librosa import amplitude_to_db
 from datasets import Dataset
 from pydra.mark import annotate
 from senselab.audio.data_structures.audio import Audio
@@ -262,7 +261,10 @@ def spectrogram_generator(
         output['session_id'] = wav_path.stem.split('_')[1][4:] # skip "ses-" prefix
         output['task_name'] = wav_path.stem.split('_')[2][5:] # skip "task-" prefix
 
-        spectrogram = amplitude_to_db(features['torchaudio']['spectrogram'].numpy().astype(np.float32))
+        spectrogram = features['torchaudio']['spectrogram']
+        spectrogram = 10.0 * torch.log10(torch.maximum(spectrogram, torch.tensor(1e-10)))
+        spectrogram = torch.maximum(spectrogram, spectrogram.max() - 80)
+        spectrogram = spectrogram.numpy().astype(np.float32)
         # skip every other column
         spectrogram = spectrogram[:, ::2]
         output['spectrogram'] = spectrogram
