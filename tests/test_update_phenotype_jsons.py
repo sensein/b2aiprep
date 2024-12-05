@@ -1,6 +1,8 @@
 import json
 import os
 import tempfile
+import unittest
+from unittest.mock import patch
 
 import pytest
 import requests
@@ -10,6 +12,7 @@ from b2aiprep.prepare.update_phenotype_jsons import (
     generate_phenotype_jsons,
     get_reproschema_raw_url,
     is_url_resolvable,
+    populate_data_element,
     search_string_in_json_files,
 )
 
@@ -154,3 +157,54 @@ def test_generate_phenotype_jsons():
                 generated_content = json.load(generated_file)
                 # Assert generated JSON content matches real JSON content
                 assert generated_content == real_content, f"Mismatch in file: {file_name}"
+
+
+class TestPopulateDataElement(unittest.TestCase):
+    def setUp(self):
+        # Create a temporary reproschema item file for testing
+        self.temp_file = tempfile.NamedTemporaryFile(
+            delete=False, mode="w", encoding="utf-8", suffix=".json"
+        )
+        self.reproschema_item = {
+            "question": "What is your age?",
+            "responseOptions": {
+                "valueType": "integer",
+                "maxValue": 120,
+                "minValue": 0,
+                "choices": [{"value": 1, "label": "Option 1"}, {"value": 2, "label": "Option 2"}],
+            },
+        }
+        json.dump(self.reproschema_item, self.temp_file)
+        self.temp_file.close()
+        self.output_phenotype_dict = {}
+
+    def tearDown(self):
+        # Clean up temporary file
+        try:
+            os.remove(self.temp_file.name)
+        except FileNotFoundError:
+            pass
+
+    @patch(
+        "b2aiprep.prepare.update_phenotype_jsons.get_reproschema_raw_url",
+        return_value="http://example.com/reproschema",
+    )
+    def test_populate_data_element(self, mock_get_reproschema_raw_url):
+        # Import the function to test
+
+        # Call the function with the test data
+        key = "test_key"
+        phenotype_file_name = "test_phenotype.json"
+        populate_data_element(
+            self.output_phenotype_dict, key, self.temp_file.name, phenotype_file_name
+        )
+
+        # Verify the output
+        self.assertIn(key, self.output_phenotype_dict)
+        entry = self.output_phenotype_dict[key]
+        self.assertEqual(entry["question"], self.reproschema_item["question"])
+        self.assertEqual(entry["datatype"], self.reproschema_item["responseOptions"]["valueType"])
+        self.assertEqual(entry["maxValue"], self.reproschema_item["responseOptions"]["maxValue"])
+        self.assertEqual(entry["minValue"], self.reproschema_item["responseOptions"]["minValue"])
+        self.assertEqual(entry["choices"], self.reproschema_item["responseOptions"]["choices"])
+        self.assertEqual(entry["termURL"], "http://example.com/reproschema")
