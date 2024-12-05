@@ -169,18 +169,37 @@ def get_all_schema_paths(directory):
     return schema_paths
 
 
-# def get_activity_schema_path(item_path):
-#     activity_dir = os.path.join(item_path.split('/activities/', 1)[0], 'activities', item_path.split('/activities/', 1)[-1].split('/')[0])
-#     schema_paths = []
-#     for root, _, files in os.walk(activity_dir):
-#         for file in files:
-#             if file.endswith('schema'):
-#                 schema_paths.append(os.path.join(root, file))
-#     if len(schema_paths) == 1:
-#         return schema_paths[0]
-#     else:
-#         # print(schema_paths)
-#         raise ValueError(f"Wrong number of schema paths: {len(schema_paths)}")
+def get_activity_schema_path(item_path):
+    """Retrieve the schema path for a given activity.
+
+    Args:
+        item_path (str): Path to an item within the activities directory.
+
+    Returns:
+        str: Path to the schema file if exactly one schema is found.
+
+    Raises:
+        ValueError: If no schema files or multiple schema files are found.
+    """
+    # Determine the activity directory based on the item path
+    activity_dir = os.path.join(
+        item_path.split("/activities/", 1)[0],
+        "activities",
+        item_path.split("/activities/", 1)[-1].split("/")[0],
+    )
+
+    # Collect all schema file paths within the activity directory
+    schema_paths = []
+    for root, _, files in os.walk(activity_dir):
+        for file in files:
+            if file.endswith("schema"):
+                schema_paths.append(os.path.join(root, file))
+
+    # Return the schema path if exactly one is found, otherwise raise an error
+    if len(schema_paths) == 1:
+        return schema_paths[0]
+    else:
+        raise ValueError(f"Wrong number of schema paths: {len(schema_paths)}")
 
 
 # import copy
