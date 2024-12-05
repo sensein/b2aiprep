@@ -10,6 +10,7 @@ import responses
 
 from b2aiprep.prepare.update_phenotype_jsons import (
     generate_phenotype_jsons,
+    get_activity_schema_path,
     get_all_schema_paths,
     get_reproschema_raw_url,
     is_url_resolvable,
@@ -237,3 +238,62 @@ def test_get_all_schema_paths():
 
         # Assert the correct number of schema files
         assert len(result) == 2
+
+
+def create_activity_structure(base_path, activity_name, schema_files=None):
+    """Helper function to create a test activity structure with schema files."""
+    activity_dir = os.path.join(base_path, "activities", activity_name)
+    os.makedirs(activity_dir, exist_ok=True)
+    if schema_files:
+        for schema_file in schema_files:
+            with open(os.path.join(activity_dir, schema_file), "w") as f:
+                f.write("dummy schema content")
+    return activity_dir
+
+
+def test_get_activity_schema_path_single_schema():
+    """Test retrieving a single schema file."""
+    with tempfile.TemporaryDirectory() as temp_dir:
+        # Create test activity structure
+        activity_name = "test_activity"
+        create_activity_structure(temp_dir, activity_name, schema_files=["activity.schema"])
+
+        # Construct item path
+        item_path = os.path.join(temp_dir, "activities", activity_name, "item.json")
+
+        # Test function
+        result = get_activity_schema_path(item_path)
+        expected_path = os.path.join(temp_dir, "activities", activity_name, "activity.schema")
+        assert result == expected_path
+
+
+def test_get_activity_schema_path_no_schema():
+    """Test raising an error when no schema files are found."""
+    with tempfile.TemporaryDirectory() as temp_dir:
+        # Create test activity structure without schemas
+        activity_name = "test_activity"
+        create_activity_structure(temp_dir, activity_name)
+
+        # Construct item path
+        item_path = os.path.join(temp_dir, "activities", activity_name, "item.json")
+
+        # Test function
+        with pytest.raises(ValueError, match="Wrong number of schema paths: 0"):
+            get_activity_schema_path(item_path)
+
+
+def test_get_activity_schema_path_multiple_schemas():
+    """Test raising an error when multiple schema files are found."""
+    with tempfile.TemporaryDirectory() as temp_dir:
+        # Create test activity structure with multiple schemas
+        activity_name = "test_activity"
+        create_activity_structure(
+            temp_dir, activity_name, schema_files=["schema1.schema", "schema2.schema"]
+        )
+
+        # Construct item path
+        item_path = os.path.join(temp_dir, "activities", activity_name, "item.json")
+
+        # Test function
+        with pytest.raises(ValueError, match="Wrong number of schema paths: 2"):
+            get_activity_schema_path(item_path)
