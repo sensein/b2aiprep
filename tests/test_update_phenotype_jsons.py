@@ -130,35 +130,43 @@ def test_get_reproschema_raw_url_failure():
     assert get_reproschema_raw_url(path, checksum=CHECKSUM) is False
 
 
+import pytest
+
+
 def test_generate_phenotype_jsons():
-    # Adjust the path based on your directory structure
-    phenotype_path = (
-        "./b2aiprep/src/b2aiprep/prepare/resources/b2ai-data-bids-like-template/phenotype"
-    )
-
-    # Get real JSON file names
-    real_json_files = [f for f in os.listdir(phenotype_path) if f.endswith(".json")]
-
+    """Test generate_phenotype_jsons to ensure JSON files are generated correctly."""
+    # Set up a temporary phenotype directory with test data
     with tempfile.TemporaryDirectory() as temp_dir:
+        phenotype_dir = os.path.join(temp_dir, "phenotype")
+        os.makedirs(phenotype_dir)
+
+        # Mock real JSON files
+        real_json_files = ["file1.json", "file2.json"]
+        file_descriptions = {f: f"Description for {f}" for f in real_json_files}
+        for file_name in real_json_files:
+            file_path = os.path.join(phenotype_dir, file_name)
+            with open(file_path, "w", encoding="utf-8") as f:
+                json.dump({"key": "value"}, f)
+
+        # Mock the activities directory
+        activities_dir = os.path.join(temp_dir, "activities")
+        os.makedirs(activities_dir)
+
         # Call the function to generate JSON files
-        generate_phenotype_jsons(temp_dir)
+        generate_phenotype_jsons(activities_dir, file_descriptions)
 
-        # List files in the temp directory
-        generated_files = os.listdir(temp_dir)
-
-        # Check all real JSON file names are in the temp directory
+        # Check all real JSON file names exist in the phenotype directory
+        generated_files = os.listdir(phenotype_dir)
         for file_name in real_json_files:
             assert file_name in generated_files, f"Missing file: {file_name}"
 
-        # Validate contents of each JSON file
-        for file_name in real_json_files:
-            real_path = os.path.join(phenotype_path, file_name)
-            generated_path = os.path.join(temp_dir, file_name)
-            with open(real_path, "r") as real_file, open(generated_path, "r") as generated_file:
-                real_content = json.load(real_file)
+            # Validate contents of each JSON file
+            generated_path = os.path.join(phenotype_dir, file_name)
+            with open(generated_path, "r", encoding="utf-8") as generated_file:
                 generated_content = json.load(generated_file)
-                # Assert generated JSON content matches real JSON content
-                assert generated_content == real_content, f"Mismatch in file: {file_name}"
+                assert "description" in generated_content
+                assert generated_content["description"] == file_descriptions[file_name]
+                assert "key" in generated_content["data_elements"]
 
 
 class TestPopulateDataElement(unittest.TestCase):

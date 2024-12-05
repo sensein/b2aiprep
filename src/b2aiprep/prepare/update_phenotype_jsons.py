@@ -203,11 +203,9 @@ def get_activity_schema_path(item_path):
         raise ValueError(f"Wrong number of schema paths: {len(schema_paths)}")
 
 
-# Directory containing the phenotype .json files
-phenotype_dir = "b2aiprep/src/b2aiprep/prepare/resources/b2ai-data-bids-like-template/phenotype"
-
-
-def process_phenotype_file(phenotype_file_name, b2ai_redcap2rs_activities_dir, file_descriptions):
+def process_phenotype_file(
+    phenotype_file_name, b2ai_redcap2rs_activities_dir, file_description, phenotype_dir
+):
     """Process a single phenotype file and update its structure with metadata.
 
     Args:
@@ -273,7 +271,7 @@ def process_phenotype_file(phenotype_file_name, b2ai_redcap2rs_activities_dir, f
     return {activity_schema_name: output_phenotype_dict}
 
 
-def main(b2ai_redcap2rs_activities_dir, file_descriptions):
+def generate_phenotype_jsons(b2ai_redcap2rs_activities_dir, file_descriptions):
     """Process all phenotype files in the phenotype directory.
 
     Args:
@@ -282,7 +280,13 @@ def main(b2ai_redcap2rs_activities_dir, file_descriptions):
 
     Raises:
         ValueError: If schema files are improperly linked or misconfigured.
+
     """
+
+    phenotype_dir = os.path.abspath(
+        "src/b2aiprep/prepare/resources/b2ai-data-bids-like-template/phenotype"
+    )
+
     for phenotype_file_name in os.listdir(phenotype_dir):
         # Skip non-JSON or template files
         if (
@@ -292,7 +296,7 @@ def main(b2ai_redcap2rs_activities_dir, file_descriptions):
             continue
 
         updated_dict = process_phenotype_file(
-            phenotype_file_name, b2ai_redcap2rs_activities_dir, file_descriptions
+            phenotype_file_name, b2ai_redcap2rs_activities_dir, file_descriptions, phenotype_dir
         )
 
         # Save updated JSON
@@ -332,6 +336,3 @@ def main(b2ai_redcap2rs_activities_dir, file_descriptions):
 #     print(single_entry_fields)
 #     print(single_entry_fields_count)
 
-
-def generate_phenotype_jsons():
-    pass
