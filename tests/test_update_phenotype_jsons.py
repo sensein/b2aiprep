@@ -10,6 +10,7 @@ import responses
 
 from b2aiprep.prepare.update_phenotype_jsons import (
     generate_phenotype_jsons,
+    get_all_schema_paths,
     get_reproschema_raw_url,
     is_url_resolvable,
     populate_data_element,
@@ -208,3 +209,31 @@ class TestPopulateDataElement(unittest.TestCase):
         self.assertEqual(entry["minValue"], self.reproschema_item["responseOptions"]["minValue"])
         self.assertEqual(entry["choices"], self.reproschema_item["responseOptions"]["choices"])
         self.assertEqual(entry["termURL"], "http://example.com/reproschema")
+
+
+def test_get_all_schema_paths():
+    """Test retrieving all schema file paths within a directory."""
+    # Create a temporary directory structure
+    with tempfile.TemporaryDirectory() as temp_dir:
+        # Create test files
+        schema_file_1 = os.path.join(temp_dir, "file1.schema")
+        schema_file_2 = os.path.join(temp_dir, "subdir", "file2.schema")
+        non_schema_file = os.path.join(temp_dir, "file3.txt")
+        subdir = os.path.join(temp_dir, "subdir")
+        os.makedirs(subdir, exist_ok=True)
+
+        # Write files
+        open(schema_file_1, "w").close()
+        open(schema_file_2, "w").close()
+        open(non_schema_file, "w").close()
+
+        # Run the function
+        result = get_all_schema_paths(temp_dir)
+
+        # Assert that only schema files are included
+        assert schema_file_1 in result
+        assert schema_file_2 in result
+        assert non_schema_file not in result
+
+        # Assert the correct number of schema files
+        assert len(result) == 2
