@@ -1,3 +1,4 @@
+import copy
 import json
 import os
 
@@ -202,84 +203,104 @@ def get_activity_schema_path(item_path):
         raise ValueError(f"Wrong number of schema paths: {len(schema_paths)}")
 
 
-# import copy
+# Directory containing the phenotype .json files
+phenotype_dir = "b2aiprep/src/b2aiprep/prepare/resources/b2ai-data-bids-like-template/phenotype"
 
 
-# matching_non_item_files = {}
-# multiple_item_files = []
-# non_matching = []
+def process_phenotype_file(phenotype_file_name, b2ai_redcap2rs_activities_dir, file_descriptions):
+    """Process a single phenotype file and update its structure with metadata.
 
-# # Specify the phenotype_dir containing the .json files
-# phenotype_dir = "/Users/isaacbevers/sensein/b2ai-wrapper/b2aiprep/src/b2aiprep/prepare/resources/b2ai-data-bids-like-template/phenotype"
+    Args:
+        phenotype_file_name (str): The name of the phenotype JSON file.
+        b2ai_redcap2rs_activities_dir (str): Directory containing activity schemas.
+        file_descriptions (dict): Mapping of file names to descriptions.
 
-# def main():
-#     # Loop through each file in the phenotype_dir
-#     for phenotype_file_name in os.listdir(phenotype_dir):
-#         # Check if the file ends with .json and is not "<measurement_tool_name>.json"
-#         if phenotype_file_name.endswith(".json") and phenotype_file_name != "<measurement_tool_name>.json":
-#             file_path = os.path.join(phenotype_dir, phenotype_file_name)
+    Returns:
+        dict: Updated phenotype dictionary.
+    """
+    file_path = os.path.join(phenotype_dir, phenotype_file_name)
+    with open(file_path, "r", encoding="utf-8") as file:
+        phenotype_file_dict = json.load(file)
+
+    # Unnest to make output idempotent
+    if len(phenotype_file_dict) == 1:
+        key = next(iter(phenotype_file_dict))
+        if "data_elements" in phenotype_file_dict[key]:
+            phenotype_file_dict = phenotype_file_dict[key]["data_elements"]
+
+    activity_schema_path = ""
+    output_phenotype_dict = copy.deepcopy(phenotype_file_dict)
+    matching_non_item_files = {}
+    multiple_item_files = []
+    non_matching = []
+
+    # Process each key in the phenotype file
+    for key in phenotype_file_dict:
+        if "___" in key:
+            new_key = key.split("___")[0]
+            if new_key not in phenotype_file_dict:
+                key = new_key
+                output_phenotype_dict[key] = {}
+
+        file_paths = search_string_in_json_files(b2ai_redcap2rs_activities_dir, key)
+        if file_paths:
+            item_file_paths = [path for path in file_paths if "item" in path]
+            if item_file_paths and len(item_file_paths) == 1:
+                populate_data_element(
+                    output_phenotype_dict, key, item_file_paths[0], phenotype_file_name
+                )
+                if not activity_schema_path:
+                    activity_schema_path = get_activity_schema_path(item_file_paths[0])
+            elif item_file_paths and len(item_file_paths) > 1:
+                for path in item_file_paths:
+                    if os.path.basename(path) == key:
+                        if not activity_schema_path:
+                            activity_schema_path = get_activity_schema_path(path)
+                        populate_data_element(output_phenotype_dict, key, path, phenotype_file_name)
+                multiple_item_files.append(item_file_paths)
+            else:
+                matching_non_item_files[key] = file_paths
+        else:
+            non_matching.append(key)
+
+    # Update output dictionary with metadata
+    activity_schema_name = os.path.basename(activity_schema_path)
+    output_phenotype_dict = {
+        "description": file_descriptions[phenotype_file_name],
+        "url": get_reproschema_raw_url(activity_schema_path),
+        "data_elements": output_phenotype_dict,
+    }
+    return {activity_schema_name: output_phenotype_dict}
 
 
-#             with open(file_path, 'r', encoding='utf-8') as file:
-#                 phenotype_file_dict = json.load(file)
+def main(b2ai_redcap2rs_activities_dir, file_descriptions):
+    """Process all phenotype files in the phenotype directory.
 
-#             # unnest to make output idempotent
-#             if len(phenotype_file_dict) == 1:
-#                 key = next(iter(phenotype_file_dict))
-#                 if "data_elements" in phenotype_file_dict[key]:
-#                     phenotype_file_dict = phenotype_file_dict[key]["data_elements"]
+    Args:
+        b2ai_redcap2rs_activities_dir (str): Directory containing activity schemas.
+        file_descriptions (dict): Mapping of file names to descriptions.
 
-#             activity_schema_path = ""
-#             output_phenotype_dict = copy.deepcopy(phenotype_file_dict)
-#             for key in phenotype_file_dict:
-#                 if '___' in key:
-#                     new_key = key.split('___')[0]
-#                     if new_key not in phenotype_file_dict:
-#                         key = new_key
-#                         output_phenotype_dict[key] = {}
+    Raises:
+        ValueError: If schema files are improperly linked or misconfigured.
+    """
+    for phenotype_file_name in os.listdir(phenotype_dir):
+        # Skip non-JSON or template files
+        if (
+            not phenotype_file_name.endswith(".json")
+            or phenotype_file_name == "<measurement_tool_name>.json"
+        ):
+            continue
 
-#                 file_paths = search_string_in_json_files(b2ai_redcap2rs_activities_dir, key)
-#                 if file_paths:
-#                     item_file_paths = [path for path in file_paths if "item" in path]
-#                     if item_file_paths and len(item_file_paths) == 1:
-#                         populate_data_element(output_phenotype_dict, key, item_file_paths[0], phenotype_file_name)
-#                         if not activity_schema_path:
-#                             activity_schema_path = get_activity_schema_path(item_file_paths[0])
-#                     elif item_file_paths and len(item_file_paths) > 1:
-#                         # select the correct one
-#                         for path in item_file_paths:
-#                             if os.path.basename(path) == key:
-#                                 if not activity_schema_path:
-#                                     activity_schema_path = get_activity_schema_path(path)
-#                                 populate_data_element(output_phenotype_dict, key, path, phenotype_file_name)
-#                         multiple_item_files.append(item_file_paths)
-#                     else:
-#                         matching_non_item_files[key] = file_paths
-#                 else:
-#                     non_matching.append(key)
-#             print(activity_schema_path)
+        updated_dict = process_phenotype_file(
+            phenotype_file_name, b2ai_redcap2rs_activities_dir, file_descriptions
+        )
 
-#             activity_schema_name = os.path.basename(activity_schema_path)
-#             output_phenotype_dict = {"data_elements": output_phenotype_dict}
-#             output_phenotype_dict["description"] = file_descriptions[phenotype_file_name]
-#             output_phenotype_dict["url"] = get_reproschema_raw_url(activity_schema_path)
-#             output_phenotype_dict = {
-#                     "description": output_phenotype_dict["description"],
-#                     "url": output_phenotype_dict["url"],
-#                     "data_elements": output_phenotype_dict["data_elements"]
-#                 }
-#             output_phenotype_dict = {activity_schema_name: output_phenotype_dict}
-#             # output_phenotype_dict = dict(sorted(output_phenotype_dict.items()))
-#             # output_phenotype_dict = dict(sorted(output_phenotype_dict.items(), key=lambda item: len(str(item[1]))))
+        # Save updated JSON
+        file_path = os.path.join(phenotype_dir, phenotype_file_name)
+        with open(file_path, "w", encoding="utf-8") as file:
+            json.dump(updated_dict, file, ensure_ascii=False, indent=4)
 
-#             # TODO
-#             # output_phenotype_dict[phenotype_file_name]["url"] =
-#             #phenotype_file_dict[phenotype_file_name][data elements] =
-#             # if phenotype_file_name not in output_phenotype_dict:
-#             #     output_phenotype_dict = {phenotype_file_name: RS ASSESSMENT NAME}
-#             # print(output_phenotype_dict)
-#             with open(file_path, 'w', encoding='utf-8') as file:
-#                 json.dump(output_phenotype_dict, file, ensure_ascii=False, indent=4)
+
 # """
 # {
 #   [assessment_name]: {
