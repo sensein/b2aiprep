@@ -8,6 +8,9 @@ import pytest
 import requests
 import responses
 
+from b2aiprep.prepare.resources.phenotype_json_descriptions import (
+    PHENOTYPE_JSON_FILE_DESCRIPTIONS,
+)
 from b2aiprep.prepare.update_phenotype_jsons import (
     generate_phenotype_jsons,
     get_activity_schema_path,
@@ -130,9 +133,6 @@ def test_get_reproschema_raw_url_failure():
     assert get_reproschema_raw_url(path, checksum=CHECKSUM) is False
 
 
-import pytest
-
-
 def test_generate_phenotype_jsons():
     """Test generate_phenotype_jsons to ensure JSON files are generated correctly."""
     # Set up a temporary phenotype directory with test data
@@ -142,7 +142,8 @@ def test_generate_phenotype_jsons():
 
         # Mock real JSON files
         real_json_files = ["file1.json", "file2.json"]
-        file_descriptions = {f: f"Description for {f}" for f in real_json_files}
+        # file_descriptions = {f: f"Description for {f}" for f in real_json_files}
+        file_descriptions = PHENOTYPE_JSON_FILE_DESCRIPTIONS
         for file_name in real_json_files:
             file_path = os.path.join(phenotype_dir, file_name)
             with open(file_path, "w", encoding="utf-8") as f:
@@ -153,7 +154,7 @@ def test_generate_phenotype_jsons():
         os.makedirs(activities_dir)
 
         # Call the function to generate JSON files
-        generate_phenotype_jsons(activities_dir, file_descriptions)
+        generate_phenotype_jsons(activities_dir, file_descriptions, phenotype_dir=phenotype_dir)
 
         # Check all real JSON file names exist in the phenotype directory
         generated_files = os.listdir(phenotype_dir)

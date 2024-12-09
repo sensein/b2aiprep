@@ -10,41 +10,6 @@ B2AI_REDCAP2RS_ACTIVITIES_DIR = (
 
 CHECKSUM = "24cbb461c2ff6556f047dd4bc1275b4b08d52eb8"
 
-FILE_DESCRIPTIONS = {
-    "laryngealDystonia.json": "Measures symptoms and characteristics of laryngeal dystonia.",
-    "demographics.json": "Measures participant background details.",
-    "adhd.json": "Measures attention-related behaviors and symptoms.",
-    "airwaystenosis.json": "Measures the severity and characteristics of airway stenosis.",
-    "als.json": "Measures symptoms and progression of ALS.",
-    "alzheimers.json": "Measures cognitive decline and related symptoms.",
-    "benignLesion.json": "Measures features of benign lesions.",
-    "bipolar.json": "Measures symptoms and behaviors related to bipolar disorder.",
-    "confounders.json": "Measures variables that could impact study outcomes.",
-    "customAffectScale.json": "Measures emotional states.",
-    "depression.json": "Measures severity and impact of depressive symptoms.",
-    "dsm5.json": "Measures criteria according to DSM-5 standards.",
-    "dyspnea.json": "Measures the presence and severity of dyspnea.",
-    "eligibility.json": "Measures participant eligibility for the study.",
-    "enrollment.json": "Measures participant registration details.",
-    "gad7.json": "Measures severity of generalized anxiety.",
-    "laryngealCancer.json": "Measures characteristics of laryngeal cancer.",
-    "leicester.json": "Measures specific health or psychological attributes.",
-    "panas.json": "Measures positive and negative affect.",
-    "parkinsons.json": "Measures symptoms and progression of Parkinson's disease.",
-    "participant.json": "Measures general study-related information.",
-    "phq9.json": "Measures severity of depressive symptoms.",
-    "precancerousLesions.json": "Measures features of precancerous lesions.",
-    "ptsd.json": "Measures trauma-related symptoms.",
-    "random.json": "Measures variables for various study purposes.",
-    "stroop.json": "Measures cognitive control and processing speed.",
-    "vhi10.json": "Measures perceived impact of voice disorders.",
-    "vocab.json": "Measures language and word knowledge.",
-    "vocalFoldParalysis.json": "Measures characteristics of vocal fold paralysis.",
-    "voicePerception.json": "Measures how participants perceive voice quality.",
-    "voiceSeverity.json": "Measures the impact and seriousness of voice disorders.",
-    "winograd.json": "Measures language comprehension and reasoning.",
-}
-
 
 def search_string_in_json_files(directory, search_string):
     """Searches for a string in JSON files within a directory.
@@ -204,7 +169,7 @@ def get_activity_schema_path(item_path):
 
 
 def process_phenotype_file(
-    phenotype_file_name, b2ai_redcap2rs_activities_dir, file_description, phenotype_dir
+    phenotype_file_name, b2ai_redcap2rs_activities_dir, file_descriptions, phenotype_dir
 ):
     """Process a single phenotype file and update its structure with metadata.
 
@@ -271,7 +236,7 @@ def process_phenotype_file(
     return {activity_schema_name: output_phenotype_dict}
 
 
-def generate_phenotype_jsons(b2ai_redcap2rs_activities_dir, file_descriptions):
+def generate_phenotype_jsons(b2ai_redcap2rs_activities_dir, file_descriptions, phenotype_dir=None):
     """Process all phenotype files in the phenotype directory.
 
     Args:
@@ -282,10 +247,10 @@ def generate_phenotype_jsons(b2ai_redcap2rs_activities_dir, file_descriptions):
         ValueError: If schema files are improperly linked or misconfigured.
 
     """
-
-    phenotype_dir = os.path.abspath(
-        "src/b2aiprep/prepare/resources/b2ai-data-bids-like-template/phenotype"
-    )
+    if not phenotype_dir:
+        phenotype_dir = os.path.abspath(
+            "src/b2aiprep/prepare/resources/b2ai-data-bids-like-template/phenotype"
+        )
 
     for phenotype_file_name in os.listdir(phenotype_dir):
         # Skip non-JSON or template files
@@ -335,4 +300,3 @@ def generate_phenotype_jsons(b2ai_redcap2rs_activities_dir, file_descriptions):
 #         single_entry_fields[key] = len(single_entry_fields[key])
 #     print(single_entry_fields)
 #     print(single_entry_fields_count)
-
