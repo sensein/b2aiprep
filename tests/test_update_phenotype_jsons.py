@@ -1,12 +1,20 @@
 import json
+import os
+import tempfile
+import unittest
+from unittest.mock import patch
 
 import pytest
 import requests
 import responses
 
 from b2aiprep.prepare.update_phenotype_jsons import (
+    generate_phenotype_jsons,
+    get_activity_schema_path,
+    get_all_schema_paths,
     get_reproschema_raw_url,
     is_url_resolvable,
+    populate_data_element,
     search_string_in_json_files,
 )
 
@@ -120,3 +128,180 @@ def test_get_reproschema_raw_url_failure():
     responses.add(responses.GET, expected_url, status=404)
 
     assert get_reproschema_raw_url(path, checksum=CHECKSUM) is False
+
+
+import pytest
+
+
+def test_generate_phenotype_jsons():
+    """Test generate_phenotype_jsons to ensure JSON files are generated correctly."""
+    # Set up a temporary phenotype directory with test data
+    with tempfile.TemporaryDirectory() as temp_dir:
+        phenotype_dir = os.path.join(temp_dir, "phenotype")
+        os.makedirs(phenotype_dir)
+
+        # Mock real JSON files
+        real_json_files = ["file1.json", "file2.json"]
+        file_descriptions = {f: f"Description for {f}" for f in real_json_files}
+        for file_name in real_json_files:
+            file_path = os.path.join(phenotype_dir, file_name)
+            with open(file_path, "w", encoding="utf-8") as f:
+                json.dump({"key": "value"}, f)
+
+        # Mock the activities directory
+        activities_dir = os.path.join(temp_dir, "activities")
+        os.makedirs(activities_dir)
+
+        # Call the function to generate JSON files
+        generate_phenotype_jsons(activities_dir, file_descriptions)
+
+        # Check all real JSON file names exist in the phenotype directory
+        generated_files = os.listdir(phenotype_dir)
+        for file_name in real_json_files:
+            assert file_name in generated_files, f"Missing file: {file_name}"
+
+            # Validate contents of each JSON file
+            generated_path = os.path.join(phenotype_dir, file_name)
+            with open(generated_path, "r", encoding="utf-8") as generated_file:
+                generated_content = json.load(generated_file)
+                assert "description" in generated_content
+                assert generated_content["description"] == file_descriptions[file_name]
+                assert "key" in generated_content["data_elements"]
+
+
+class TestPopulateDataElement(unittest.TestCase):
+    def setUp(self):
+        # Create a temporary reproschema item file for testing
+        self.temp_file = tempfile.NamedTemporaryFile(
+            delete=False, mode="w", encoding="utf-8", suffix=".json"
+        )
+        self.reproschema_item = {
+            "question": "What is your age?",
+            "responseOptions": {
+                "valueType": "integer",
+                "maxValue": 120,
+                "minValue": 0,
+                "choices": [{"value": 1, "label": "Option 1"}, {"value": 2, "label": "Option 2"}],
+            },
+        }
+        json.dump(self.reproschema_item, self.temp_file)
+        self.temp_file.close()
+        self.output_phenotype_dict = {}
+
+    def tearDown(self):
+        # Clean up temporary file
+        try:
+            os.remove(self.temp_file.name)
+        except FileNotFoundError:
+            pass
+
+    @patch(
+        "b2aiprep.prepare.update_phenotype_jsons.get_reproschema_raw_url",
+        return_value="http://example.com/reproschema",
+    )
+    def test_populate_data_element(self, mock_get_reproschema_raw_url):
+        # Import the function to test
+
+        # Call the function with the test data
+        key = "test_key"
+        phenotype_file_name = "test_phenotype.json"
+        populate_data_element(
+            self.output_phenotype_dict, key, self.temp_file.name, phenotype_file_name
+        )
+
+        # Verify the output
+        self.assertIn(key, self.output_phenotype_dict)
+        entry = self.output_phenotype_dict[key]
+        self.assertEqual(entry["question"], self.reproschema_item["question"])
+        self.assertEqual(entry["datatype"], self.reproschema_item["responseOptions"]["valueType"])
+        self.assertEqual(entry["maxValue"], self.reproschema_item["responseOptions"]["maxValue"])
+        self.assertEqual(entry["minValue"], self.reproschema_item["responseOptions"]["minValue"])
+        self.assertEqual(entry["choices"], self.reproschema_item["responseOptions"]["choices"])
+        self.assertEqual(entry["termURL"], "http://example.com/reproschema")
+
+
+def test_get_all_schema_paths():
+    """Test retrieving all schema file paths within a directory."""
+    # Create a temporary directory structure
+    with tempfile.TemporaryDirectory() as temp_dir:
+        # Create test files
+        schema_file_1 = os.path.join(temp_dir, "file1.schema")
+        schema_file_2 = os.path.join(temp_dir, "subdir", "file2.schema")
+        non_schema_file = os.path.join(temp_dir, "file3.txt")
+        subdir = os.path.join(temp_dir, "subdir")
+        os.makedirs(subdir, exist_ok=True)
+
+        # Write files
+        open(schema_file_1, "w").close()
+        open(schema_file_2, "w").close()
+        open(non_schema_file, "w").close()
+
+        # Run the function
+        result = get_all_schema_paths(temp_dir)
+
+        # Assert that only schema files are included
+        assert schema_file_1 in result
+        assert schema_file_2 in result
+        assert non_schema_file not in result
+
+        # Assert the correct number of schema files
+        assert len(result) == 2
+
+
+def create_activity_structure(base_path, activity_name, schema_files=None):
+    """Helper function to create a test activity structure with schema files."""
+    activity_dir = os.path.join(base_path, "activities", activity_name)
+    os.makedirs(activity_dir, exist_ok=True)
+    if schema_files:
+        for schema_file in schema_files:
+            with open(os.path.join(activity_dir, schema_file), "w") as f:
+                f.write("dummy schema content")
+    return activity_dir
+
+
+def test_get_activity_schema_path_single_schema():
+    """Test retrieving a single schema file."""
+    with tempfile.TemporaryDirectory() as temp_dir:
+        # Create test activity structure
+        activity_name = "test_activity"
+        create_activity_structure(temp_dir, activity_name, schema_files=["activity.schema"])
+
+        # Construct item path
+        item_path = os.path.join(temp_dir, "activities", activity_name, "item.json")
+
+        # Test function
+        result = get_activity_schema_path(item_path)
+        expected_path = os.path.join(temp_dir, "activities", activity_name, "activity.schema")
+        assert result == expected_path
+
+
+def test_get_activity_schema_path_no_schema():
+    """Test raising an error when no schema files are found."""
+    with tempfile.TemporaryDirectory() as temp_dir:
+        # Create test activity structure without schemas
+        activity_name = "test_activity"
+        create_activity_structure(temp_dir, activity_name)
+
+        # Construct item path
+        item_path = os.path.join(temp_dir, "activities", activity_name, "item.json")
+
+        # Test function
+        with pytest.raises(ValueError, match="Wrong number of schema paths: 0"):
+            get_activity_schema_path(item_path)
+
+
+def test_get_activity_schema_path_multiple_schemas():
+    """Test raising an error when multiple schema files are found."""
+    with tempfile.TemporaryDirectory() as temp_dir:
+        # Create test activity structure with multiple schemas
+        activity_name = "test_activity"
+        create_activity_structure(
+            temp_dir, activity_name, schema_files=["schema1.schema", "schema2.schema"]
+        )
+
+        # Construct item path
+        item_path = os.path.join(temp_dir, "activities", activity_name, "item.json")
+
+        # Test function
+        with pytest.raises(ValueError, match="Wrong number of schema paths: 2"):
+            get_activity_schema_path(item_path)
