@@ -4,6 +4,10 @@ import os
 
 import requests
 
+from b2aiprep.prepare.resources.phenotype_json_descriptions import (
+    PHENOTYPE_JSON_FILE_DESCRIPTIONS,
+)
+
 B2AI_REDCAP2RS_ACTIVITIES_DIR = (
     "/Users/isaacbevers/sensein/reproschema-wrapper/b2ai-redcap2rs/activities"
 )
@@ -236,7 +240,11 @@ def process_phenotype_file(
     return {activity_schema_name: output_phenotype_dict}
 
 
-def generate_phenotype_jsons(b2ai_redcap2rs_activities_dir, file_descriptions, phenotype_dir=None):
+def generate_phenotype_jsons(
+    b2ai_redcap2rs_activities_dir,
+    file_descriptions=PHENOTYPE_JSON_FILE_DESCRIPTIONS,
+    phenotype_dir=None,
+):
     """Process all phenotype files in the phenotype directory.
 
     Args:
@@ -268,35 +276,3 @@ def generate_phenotype_jsons(b2ai_redcap2rs_activities_dir, file_descriptions, p
         file_path = os.path.join(phenotype_dir, phenotype_file_name)
         with open(file_path, "w", encoding="utf-8") as file:
             json.dump(updated_dict, file, ensure_ascii=False, indent=4)
-
-
-# """
-# {
-#   [assessment_name]: {
-#     "description": [description text],
-#     "url": [reproschema_url],
-#     "data elements": {
-# """
-# phenotype_dir = "/Users/isaacbevers/sensein/b2ai-wrapper/b2aiprep/src/b2aiprep/prepare/resources/b2ai-data-bids-like-template/phenotype"
-
-# def count_items_with_only_descriptions():
-#     single_entry_fields = {}
-#     for phenotype_file_name in os.listdir(phenotype_dir):
-#         if phenotype_file_name.endswith(".json") and phenotype_file_name != "<measurement_tool_name>.json":
-#             single_entry_fields[phenotype_file_name] = []
-#             file_path = os.path.join(phenotype_dir, phenotype_file_name)
-
-#             # Open and load the JSON file
-#             with open(file_path, 'r', encoding='utf-8') as file:
-#                 phenotype_file_dict = json.load(file)
-
-#             for key in phenotype_file_dict:
-#                 if len(phenotype_file_dict[key]) < 2:
-#                     single_entry_fields[phenotype_file_name].append(key)
-
-#     single_entry_fields_count = 0
-#     for key in single_entry_fields:
-#         single_entry_fields_count += len(single_entry_fields[key])
-#         single_entry_fields[key] = len(single_entry_fields[key])
-#     print(single_entry_fields)
-#     print(single_entry_fields_count)
