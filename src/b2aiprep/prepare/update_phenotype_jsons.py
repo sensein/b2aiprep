@@ -16,14 +16,14 @@ CHECKSUM = "24cbb461c2ff6556f047dd4bc1275b4b08d52eb8"
 
 
 def search_string_in_json_files(directory, search_string):
-    """Searches for a string in JSON files within a directory.
+    """Searches JSON files in a directory for a specific string.
 
     Args:
-        directory (str): Path to the directory to search in.
-        search_string (str): String to search for in JSON files and filenames.
+        directory (str): Path of the directory to search.
+        search_string (str): String to look for in JSON content or filenames.
 
     Returns:
-        list: List of file paths where the search string is found.
+        list[str]: List of file paths containing the search string.
     """
     matching_files = []
 
@@ -46,14 +46,13 @@ def search_string_in_json_files(directory, search_string):
 
 
 def is_url_resolvable(url):
-    """
-    Checks if the URL is resolvable.
+    """Checks if a URL can be accessed.
 
-    Parameters:
-        url (str): The URL to check.
+    Args:
+        url (str): The URL to test.
 
     Returns:
-        bool: True if the URL is resolvable, False otherwise.
+        bool: True if the URL is accessible, False otherwise.
     """
     try:
         response = requests.get(url)
@@ -63,16 +62,15 @@ def is_url_resolvable(url):
 
 
 def get_reproschema_raw_url(path, checksum=CHECKSUM, branch="main"):
-    """
-    Generates a raw GitHub URL for a file in the project.
+    """Generates a raw GitHub URL for a given file path.
 
-    Parameters:
-        path (str): Path to the file in the project.
-        checksum (str): The checksum of the file (default is a specific value).
-        branch (str): Branch name (default is 'main').
+    Args:
+        path (str): File path in the project.
+        checksum (str): Checksum of the file (default is provided value).
+        branch (str): Git branch name (default is 'main').
 
     Returns:
-        str: The raw GitHub URL.
+        str | bool: The raw GitHub URL if resolvable, False otherwise.
     """
     path = path.split("/b2ai-redcap2rs/", 1)[-1]
     url = f"https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/{checksum}/{path}"
@@ -83,20 +81,16 @@ def get_reproschema_raw_url(path, checksum=CHECKSUM, branch="main"):
 
 
 def populate_data_element(output_phenotype_dict, key, item_file_path, phenotype_file_name):
-    """
-    Populates phenotype data from a reproschema item file into a dictionary.
+    """Populates phenotype data from a JSON item file into a dictionary.
 
     Args:
         output_phenotype_dict (dict): Dictionary to populate with phenotype data.
         key (str): Key for the phenotype entry in the dictionary.
-        item_file_path (str): Path to the reproschema item JSON file.
-        phenotype_file_name (str): Name of the phenotype file for reference.
+        item_file_path (str): Path to the JSON file.
+        phenotype_file_name (str): Name of the phenotype file.
 
-    Populates:
-        - Question text.
-        - Datatype and value constraints (max/min values, value type).
-        - Choices for response options if available.
-        - Term URL derived from the reproschema item file path.
+    Returns:
+        None: The dictionary is modified in place.
     """
     with open(item_file_path, "r", encoding="utf-8") as file:
         reproschema_item = json.load(file)
@@ -122,14 +116,13 @@ def populate_data_element(output_phenotype_dict, key, item_file_path, phenotype_
 
 
 def get_all_schema_paths(directory):
-    """
-    Retrieve all file paths ending with 'schema' within a directory.
+    """Finds all file paths ending with 'schema' in a directory.
 
     Args:
         directory (str): Root directory to search for schema files.
 
     Returns:
-        list: List of paths to files ending with 'schema'.
+        list[str]: List of paths to schema files.
     """
     schema_paths = []
     for root, _, files in os.walk(directory):
@@ -140,16 +133,16 @@ def get_all_schema_paths(directory):
 
 
 def get_activity_schema_path(item_path):
-    """Retrieve the schema path for a given activity.
+    """Gets the schema path for a given activity.
 
     Args:
         item_path (str): Path to an item within the activities directory.
 
     Returns:
-        str: Path to the schema file if exactly one schema is found.
+        str: Path to the schema file.
 
     Raises:
-        ValueError: If no schema files or multiple schema files are found.
+        ValueError: If no schema or multiple schema files are found.
     """
     # Determine the activity directory based on the item path
     activity_dir = os.path.join(
@@ -175,15 +168,16 @@ def get_activity_schema_path(item_path):
 def process_phenotype_file(
     phenotype_file_name, b2ai_redcap2rs_activities_dir, file_descriptions, phenotype_dir
 ):
-    """Process a single phenotype file and update its structure with metadata.
+    """Processes a phenotype JSON file and updates its structure.
 
     Args:
-        phenotype_file_name (str): The name of the phenotype JSON file.
+        phenotype_file_name (str): Name of the phenotype JSON file.
         b2ai_redcap2rs_activities_dir (str): Directory containing activity schemas.
-        file_descriptions (dict): Mapping of file names to descriptions.
+        file_descriptions (dict): Descriptions of phenotype files.
+        phenotype_dir (str): Directory of phenotype files.
 
     Returns:
-        dict: Updated phenotype dictionary.
+        dict: Updated phenotype data structure.
     """
     file_path = os.path.join(phenotype_dir, phenotype_file_name)
     with open(file_path, "r", encoding="utf-8") as file:
@@ -245,15 +239,12 @@ def generate_phenotype_jsons(
     file_descriptions=PHENOTYPE_JSON_FILE_DESCRIPTIONS,
     phenotype_dir=None,
 ):
-    """Process all phenotype files in the phenotype directory.
+    """Processes all phenotype JSON files in a directory.
 
     Args:
-        b2ai_redcap2rs_activities_dir (str): Directory containing activity schemas.
+        b2ai_redcap2rs_activities_dir (str): Directory with activity schemas.
         file_descriptions (dict): Mapping of file names to descriptions.
-
-    Raises:
-        ValueError: If schema files are improperly linked or misconfigured.
-
+        phenotype_dir (str, optional): Directory of phenotype files.
     """
     if not phenotype_dir:
         phenotype_dir = os.path.abspath(
