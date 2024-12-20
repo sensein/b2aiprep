@@ -234,7 +234,7 @@ def process_phenotype_file(
     return {activity_schema_name: output_phenotype_dict}
 
 
-def generate_phenotype_jsons(
+def update_phenotype_jsons(
     b2ai_redcap2rs_activities_dir,
     file_descriptions=PHENOTYPE_JSON_FILE_DESCRIPTIONS,
     phenotype_dir=None,

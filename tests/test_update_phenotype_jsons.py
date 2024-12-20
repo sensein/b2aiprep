@@ -9,17 +9,17 @@ import pytest
 import requests
 import responses
 
-from b2aiprep.prepare.resources.phenotype_json_descriptions import (
-    PHENOTYPE_JSON_FILE_DESCRIPTIONS,
-)
-from b2aiprep.prepare.update_phenotype_jsons import (
-    generate_phenotype_jsons,
+from b2aiprep.prepare.phenotype import (
     get_activity_schema_path,
     get_all_schema_paths,
     get_reproschema_raw_url,
     is_url_resolvable,
     populate_data_element,
     search_string_in_json_files,
+    update_phenotype_jsons,
+)
+from b2aiprep.prepare.resources.phenotype_json_descriptions import (
+    PHENOTYPE_JSON_FILE_DESCRIPTIONS,
 )
 
 B2AI_REDCAP2RS_ACTIVITIES_DIR = (
@@ -138,8 +138,8 @@ def test_get_reproschema_raw_url_failure():
     assert get_reproschema_raw_url(path, checksum=CHECKSUM) is False
 
 
-def test_generate_phenotype_jsons():
-    """Test generate_phenotype_jsons to ensure JSON files are generated correctly."""
+def test_update_phenotype_jsons():
+    """Test update_phenotype_jsons to ensure JSON files are generated correctly."""
     # Set up a temporary phenotype directory with test data
     real_phenotype_dir = os.path.abspath(
         "src/b2aiprep/prepare/resources/b2ai-data-bids-like-template/phenotype"
@@ -165,7 +165,7 @@ def test_generate_phenotype_jsons():
                     with json_file_path.open("w") as json_file:
                         json.dump({}, json_file)  # Write an empty JSON object
 
-        generate_phenotype_jsons(activities_dir, file_descriptions, phenotype_dir=phenotype_dir)
+        update_phenotype_jsons(activities_dir, file_descriptions, phenotype_dir=phenotype_dir)
 
         generated_phenotype_json_paths = [
             os.path.join(phenotype_dir, item) for item in os.listdir(phenotype_dir)
