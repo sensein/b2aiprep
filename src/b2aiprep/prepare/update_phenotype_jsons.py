@@ -38,8 +38,7 @@ def search_string_in_json_files(directory, search_string):
                 # Check if the search string is in the JSON content or file name
                 if search_string in str(data) or search_string in file_name:
                     matching_files.append(file_path)
-            except (json.JSONDecodeError, FileNotFoundError, IOError):
-                # Ignore files that are not JSON or cannot be read
+            except (json.JSONDecodeError, FileNotFoundError, IOError, UnicodeDecodeError):
                 continue
 
     return matching_files
@@ -248,9 +247,8 @@ def generate_phenotype_jsons(
     """
     if not phenotype_dir:
         phenotype_dir = os.path.abspath(
-            "src/b2aiprep/prepare/resources/b2ai-data-bids-like-template/phenotype"
+            "b2aiprep/src/b2aiprep/prepare/resources/b2ai-data-bids-like-template/phenotype"
         )
-
     for phenotype_file_name in os.listdir(phenotype_dir):
         # Skip non-JSON or template files
         if (
