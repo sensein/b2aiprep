@@ -196,6 +196,7 @@ def process_phenotype_file(
 
     # Process each key in the phenotype file
     for key in phenotype_file_dict:
+        print(key)
         if "___" in key:
             new_key = key.split("___")[0]
             if new_key not in phenotype_file_dict:
@@ -251,6 +252,7 @@ def generate_phenotype_jsons(
         )
     for phenotype_file_name in os.listdir(phenotype_dir):
         # Skip non-JSON or template files
+        print("PHENOTYPE FILE: ", phenotype_file_name)
         if (
             not phenotype_file_name.endswith(".json")
             or phenotype_file_name == "<measurement_tool_name>.json"
