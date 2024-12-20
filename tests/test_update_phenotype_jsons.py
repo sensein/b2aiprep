@@ -225,7 +225,7 @@ class TestPopulateDataElement(unittest.TestCase):
             pass
 
     @patch(
-        "b2aiprep.prepare.update_phenotype_jsons.get_reproschema_raw_url",
+        "b2aiprep.prepare.phenotype.get_reproschema_raw_url",
         return_value="http://example.com/reproschema",
     )
     def test_populate_data_element(self, mock_get_reproschema_raw_url):
