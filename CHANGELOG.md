@@ -1,3 +1,21 @@
+# 1.1.0 (Fri Jan 17 2025)
+
+#### 🚀 Enhancement
+
+- Spectrogram improvements [#99](https://github.com/sensein/b2aiprep/pull/99) ([@alistairewj](https://github.com/alistairewj))
+
+#### 🐛 Bug Fix
+
+- 100 refactor and tests for phenotype json code [#101](https://github.com/sensein/b2aiprep/pull/101) ([@ibevers](https://github.com/ibevers))
+- Update ci.yml with workflow_dispatch [#106](https://github.com/sensein/b2aiprep/pull/106) ([@ibevers](https://github.com/ibevers))
+
+#### Authors: 2
+
+- [@ibevers](https://github.com/ibevers)
+- Alistair Johnson ([@alistairewj](https://github.com/alistairewj))
+
+---
+
 # 1.0.0 (Thu Nov 28 2024)
 
 #### 💥 Breaking Change
