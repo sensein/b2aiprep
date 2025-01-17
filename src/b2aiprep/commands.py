@@ -12,6 +12,7 @@ from glob import glob
 from pathlib import Path
 from importlib import resources
 
+from b2aiprep.prepare.derived_data import feature_extraction_generator, spectrogram_generator
 import click
 import numpy as np
 import pandas as pd
@@ -188,76 +189,6 @@ def prepare_bids(
 
     _LOGGER.info("Process completed.")
 
-
-def load_audio_features(
-    audio_paths,
-) -> t.Generator[t.Dict[str, t.Any], None, None]:
-    """Load audio features from individual files and yield dictionaries amenable to HuggingFace's Dataset from_generator."""
-    for wav_path in tqdm(audio_paths, total=len(audio_paths), desc="Extracting features"):
-        wav_path = Path(wav_path).resolve()
-        audio_dir = wav_path.parent
-        features_dir = audio_dir.parent / "audio"
-
-        output = {}
-        # get the subject_id and session_id for this data
-        # TODO: we should appropriately load these as FHIR resources to validate the data
-        metadata_filepath = wav_path.parent.joinpath(wav_path.stem + "_recording-metadata.json")
-        metadata = json.loads(metadata_filepath.read_text())
-
-        for item in metadata["item"]:
-            if item["linkId"] == "record_id":
-                output["subject_id"] = item["answer"][0]["valueString"]
-            elif item["linkId"] == "recording_session_id":
-                output["session_id"] = item["answer"][0]["valueString"]
-            elif item["linkId"] == "recording_name":
-                output["recording_name"] = item["answer"][0]["valueString"]
-            elif item["linkId"] == "recording_duration":
-                output["recording_duration"] = item["answer"][0]["valueString"]
-
-        # feature_path = features_dir / f"{wav_path.stem}_transcription.txt"
-        # with open(feature_path, "r", encoding="utf-8") as text_file:
-        #     transcription = text_file.read()
-        # output["transcription"] = transcription
-
-        pt_file = features_dir / f"{wav_path.stem}_features.pt"
-        features = torch.load(pt_file)
-        output['spectrogram'] = features['torchaudio']['spectrogram'].numpy().astype(np.float32)
-        # for feature_name in ["speaker_embedding", "specgram", "melfilterbank", "mfcc", "opensmile"]:
-        #     feature_path = features_dir / f"{wav_path.stem}_{feature_name}.{file_extension}"
-        #     if not feature_path.exists():
-        #         continue
-        #     if feature_name == "speaker_embedding":
-        #         output["speaker_embedding"] = torch.load(feature_path)
-        #     else:
-        #         data = torch.load(feature_path)
-        #         if len(data) == 1:
-        #             key = next(iter(data.keys()))
-        #             data[key] = data[key].numpy().astype(np.float32)
-        #         output.update(torch.load(feature_path))
-
-        # load transcription
-        # feature_path = features_dir / f"{wav_path.stem}_transcription.txt"
-        # if feature_path.exists():
-        #     output["transcription"] = feature_path.read_text()
-
-        yield output
-
-def spectrogram_generator(
-    audio_paths,
-) -> t.Generator[t.Dict[str, t.Any], None, None]:
-    """Load audio features from individual files and yield dictionaries amenable to HuggingFace's Dataset from_generator."""
-    for wav_path in tqdm(audio_paths, total=len(audio_paths), desc="Extracting features"):
-        output = {}
-        pt_file = wav_path.parent / f"{wav_path.stem}_features.pt"
-        features = torch.load(pt_file)
-
-        output['participant_id'] = wav_path.stem.split('_')[0][4:] # skip "sub-" prefix
-        output['session_id'] = wav_path.stem.split('_')[1][4:] # skip "ses-" prefix
-        output['task_name'] = wav_path.stem.split('_')[2][5:] # skip "task-" prefix
-        output['spectrogram'] = features['torchaudio']['spectrogram'].numpy().astype(np.float32)
-
-        yield output
-
 @click.command()
 @click.argument("bids_path", type=click.Path(exists=True))
 @click.argument("outdir", type=click.Path())
@@ -291,8 +222,8 @@ def create_derived_dataset(bids_path, outdir):
 
     audio_paths = sorted(
         audio_paths,
-        # sort first by subject, then session, then by task
-        key=lambda x: (x.stem.split('_')[0], x.stem.split('_')[1], x.stem.split('_')[2])
+        # sort first by subject, then by task
+        key=lambda x: (x.stem.split('_')[0], x.stem.split('_')[2])
     )
 
     # remove known subjects without any audio
@@ -305,31 +236,44 @@ def create_derived_dataset(bids_path, outdir):
         _LOGGER.info(f"Removed {n - len(audio_paths)} records due to hard-coded subject removal.")
 
     _LOGGER.info("Loading spectrograms into a single HF dataset.")
-    audio_feature_generator = partial(
-        spectrogram_generator,
-        audio_paths=audio_paths,
-    )
 
-    # sort the dataset by identifier and task_name
-    ds = Dataset.from_generator(audio_feature_generator, num_proc=1, keep_in_memory=False)
-    sorting_columns = [
-        SortingColumn(column_index=0, descending=False),
-        SortingColumn(column_index=1, descending=False),
-        SortingColumn(column_index=2, descending=False),
-    ]
-    ds.to_parquet(
-        outdir.joinpath("spectrograms.parquet").as_posix(),
-        compression="zstd",
-        compression_level=3,
-        use_dictionary=["participant_id", "session_id", "task_name"],
-        write_statistics=True,
-        data_page_size=1_048_576,
-        # enable page index for better filtering
-        write_page_index=True,
-        # sort should help readers more efficiently read data
-        # requires us to have manually sorted the data (as we have done above)
-        sorting_columns=sorting_columns,
-    )
+    for feature_name in ['spectrogram', 'mfcc']:
+        if feature_name == 'mfcc':
+            use_byte_stream_split = True
+            audio_feature_generator = partial(
+                feature_extraction_generator,
+                audio_paths=audio_paths,
+                feature_name=feature_name,
+            )
+        else:
+            use_byte_stream_split = False
+            audio_feature_generator = partial(
+                spectrogram_generator,
+                audio_paths=audio_paths,
+            )
+
+
+        # sort the dataset by identifier and task_name
+        ds = Dataset.from_generator(audio_feature_generator, num_proc=1)
+        ds.to_parquet(
+            str(outdir.joinpath(f"{feature_name}.parquet")),
+            version="2.6",
+            compression="zstd",  # Better compression ratio than snappy, still good speed
+            compression_level=3,
+            use_dictionary=["participant_id", "session_id", "task_name"],  # Enable dictionary encoding for strings
+            write_statistics=True,
+            # enable page index for better filtering
+            data_page_size=1_048_576,  # 1MB pages
+            write_page_index=True,
+            use_byte_stream_split=use_byte_stream_split,
+            # sort should help readers more efficiently read data
+            # requires us to have manually sorted the data (as we have done above)
+            sorting_columns=(
+                SortingColumn(column_index=0, descending=False),
+                SortingColumn(column_index=2, descending=False),
+            ),
+        )
+
     _LOGGER.info("Parquet dataset created.")
     _LOGGER.info("Loading derived data")
     static_features = []
@@ -354,7 +298,7 @@ def create_derived_dataset(bids_path, outdir):
         transcription = features.get("transcription", None)
         if transcription is not None:
             transcription = transcription.text
-            if subj_info['task_name'].lower().startswith('free-Speech') or \
+            if subj_info['task_name'].lower().startswith('free-speech') or \
                 subj_info['task_name'].lower().startswith('audio-check') or \
                 subj_info['task_name'].lower().startswith('open-response-questions'):
                 # we omit tasks where free speech occurs
