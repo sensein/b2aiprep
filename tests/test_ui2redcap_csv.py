@@ -1,5 +1,5 @@
 import pytest
-from bids_audio import parse_survey, parse_audio
+from b2aiprep.ui_to_redcap_csv import parse_survey, parse_audio
 import pandas as pd
 
 
