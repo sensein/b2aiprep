@@ -690,3 +690,38 @@ def createbatchcsv(input_dir, out_file):
             write.writerow([Path(item).absolute().as_posix()])
 
     print(f"csv of audiofiles generated at: {out_file}")
+
+
+@click.command()
+@click.argument("src_dir", type=str)
+@click.argument("dest_dir", type=str)
+def reproschema_audio_to_folder(src_dir, dest_dir):
+
+    # src_dir is the top level directory for which the audio files for reproschema ui are located
+    # dest_dir is where the folder containing the audio files will be saved
+    # it is expected to contain a folder containing the audio files based on recording_id 
+    # Ensure destination directory exists
+    if not os.path.exists(dest_dir):
+        os.makedirs(dest_dir)
+
+    # Walk through the source directory recursively
+    for root, dirs, files in os.walk(src_dir):
+        for file in files:
+            # Check if the file is a .wav file
+            if file.lower().endswith('.wav'):
+                try:
+                    base_filename = os.path.splitext(file)[0]
+                    uuid_list = base_filename.split('-')[1:]
+                    file_uuid = "-".join(uuid_list)
+                except IndexError:
+                    print(f"Skipping {file} because UUID could not be extracted.")
+                    continue
+                
+                # Generate the full destination path with the UUID as the filename
+                dest_file_path = os.path.join(dest_dir, f"{file_uuid}.wav")
+                
+                # Move and rename the file
+                src_file_path = os.path.join(root, file)
+                shutil.copy(src_file_path, dest_file_path)
+
+    print(f"audiofiles generated at: {dest_dir}")

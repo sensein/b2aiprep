@@ -101,7 +101,7 @@ def fetch_json_options_number(raw_url):
 
 
 def parse_audio(audio_list):
-
+    # peds specific tasks
     protocol_order = {
         "ready_for_school": [],
         "favorite_show_movie": [],
@@ -122,9 +122,15 @@ def parse_audio(audio_list):
     }
 
     for name in audio_list:
+        found = False
         for order in protocol_order:
             if order in name:
                 protocol_order[order].append(name)
+                found = True
+                break
+        if not found:
+            protocol_order["other"].append(name)
+            
 
     for questions in protocol_order:
         protocol_order[questions] = sorted(protocol_order[questions])
