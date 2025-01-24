@@ -24,7 +24,9 @@ dependencies = [
     "senselab~=0.22.0",
     "matplotlib>=3.8.3",
     "fhir.resources==7.1.0",
-    "streamlit"
+    "streamlit",
+    "pydub>=0.25.1",
+    
 ]
 
 [tool.setuptools.packages.find]
