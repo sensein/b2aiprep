@@ -6,6 +6,13 @@ from b2aiprep.prepare.utils import fetch_json_options_number, get_wav_duration
 
 
 def parse_survey(survey_data, record_id, session_path):
+    """
+    Function that generates a list of data frames in order to generate a redcap csv
+    Args: 
+        survey_data is the raw json generated from reproschema ui
+        record_id is the id tat identifies the participant
+        session_path is the path containing the session id
+    """
     session_id = session_path.split("/")[0]
     questionnaire_name = survey_data[0]["used"][1].split("/")[-1]
     questions_answers = dict()
@@ -55,7 +62,12 @@ def parse_survey(survey_data, record_id, session_path):
     return [df]
 
 def parse_audio(audio_list, dummy_audio_files=False):
-    # peds specific tasks
+    """
+    Function that generates a list of Json's to be converted into a redcap csv based on audio files.
+    Args: 
+        audio_list is a list of paths to each audio files
+        dummy_audio_files is an optional variable for testing 
+    """
     protocol_order = {
         "ready_for_school": [],
         "favorite_show_movie": [],
