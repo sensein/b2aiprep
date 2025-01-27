@@ -25,9 +25,7 @@ dependencies = [
     "matplotlib>=3.8.3",
     "fhir.resources==7.1.0",
     "streamlit",
-    "pydub>=0.25.1",
-    "ffmpeg-python==0.2.0"
-    
+
 ]
 
 [tool.setuptools.packages.find]
