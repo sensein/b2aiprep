@@ -1,9 +1,8 @@
-from pydub.utils import mediainfo
 from pathlib import Path
 import re
 import pandas as pd
 from datetime import datetime
-from b2aiprep.prepare.utils import fetch_json_options_number
+from b2aiprep.prepare.utils import fetch_json_options_number, get_wav_duration
 
 
 def parse_survey(survey_data, record_id, session_path):
@@ -101,8 +100,7 @@ def parse_audio(audio_list):
 
         record_id = Path(file_path).parent.parent.name
         session = Path(file_path).parent.name
-        info = mediainfo(file_path)
-        duration = float(info['duration'])
+        duration = get_wav_duration(file_path)
         file_name = file_path.split("/")[-1]
         file_size = Path(file_path).stat().st_size
         recording_id = re.search(r'([a-f0-9\-]{36})\.', file_name).group(1)

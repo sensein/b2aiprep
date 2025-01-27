@@ -3,6 +3,7 @@ import importlib.resources as pkg_resources
 import json
 import logging
 import os
+import wave
 import shutil
 import time
 from pathlib import Path
@@ -337,3 +338,18 @@ def fetch_json_options_number(raw_url):
         return
     except ValueError:
         _LOGGER.info("Error parsing JSON data")
+
+def get_wav_duration(file_path):
+    """
+    Function to retrieve duration of .wav audio file
+    Args:
+        file_path: The url to the given audio files.
+    """
+    with wave.open(file_path, 'rb') as audio_file:
+        # Get the total number of frames
+        frames = audio_file.getnframes()
+        # Get the frame rate (samples per second)
+        rate = audio_file.getframerate()
+        # Calculate duration in seconds
+        duration = frames / float(rate)
+    return duration
