@@ -7,6 +7,7 @@ import shutil
 import time
 from pathlib import Path
 from typing import Dict, List
+import requests
 
 import pandas as pd
 
@@ -312,3 +313,27 @@ def retry(func, max_retries=3, delay=0.5, exceptions=(Exception,)):
                     raise
 
     return wrapper
+
+def fetch_json_options_number(raw_url):
+    """
+    Function to retrieve how many options a specific reproschema item contains.
+
+    Args:
+        raw_url: The github raw url to the given reproschema item.
+    """
+    try:
+        # fix url due to the split
+        raw_url = raw_url.replace("combined", "questionnaires")
+        # Make a GET request to the raw URL
+        response = requests.get(raw_url, verify=True)
+        response.raise_for_status()  # Raise an error for bad responses (4xx, 5xx)
+
+        # Parse the JSON data
+        json_data = response.json()
+        return len(json_data["responseOptions"]["choices"])
+
+    except requests.exceptions.RequestException as e:
+        _LOGGER.info(f"Error fetching data: {e}")
+        return
+    except ValueError:
+        _LOGGER.info("Error parsing JSON data")

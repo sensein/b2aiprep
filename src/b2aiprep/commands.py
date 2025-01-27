@@ -11,7 +11,7 @@ import typing as t
 from glob import glob
 from pathlib import Path
 from importlib import resources
-
+from collections import OrderedDict
 from b2aiprep.prepare.derived_data import feature_extraction_generator, spectrogram_generator
 import click
 import numpy as np
@@ -48,6 +48,7 @@ from tqdm import tqdm
 from pyarrow.parquet import SortingColumn
 from b2aiprep.prepare.bids import get_audio_paths, redcap_to_bids, validate_bids_folder
 from b2aiprep.prepare.prepare import extract_features_workflow, validate_bids_data, clean_phenotype_data
+from b2aiprep.prepare.reproschema_to_redcap import parse_survey, parse_audio
 
 # from b2aiprep.synthetic_data import generate_synthetic_tabular_data
 
@@ -189,12 +190,13 @@ def prepare_bids(
 
     _LOGGER.info("Process completed.")
 
+
 @click.command()
 @click.argument("bids_path", type=click.Path(exists=True))
 @click.argument("outdir", type=click.Path())
 def create_derived_dataset(bids_path, outdir):
     """Create a derived dataset from voice/phenotype data in BIDS format.
-    
+
     The derived dataset output loads data from generated .pt files, which have
     the following keys:
      - pitch
@@ -252,7 +254,6 @@ def create_derived_dataset(bids_path, outdir):
                 audio_paths=audio_paths,
             )
 
-
         # sort the dataset by identifier and task_name
         ds = Dataset.from_generator(audio_feature_generator, num_proc=1)
         ds.to_parquet(
@@ -260,7 +261,8 @@ def create_derived_dataset(bids_path, outdir):
             version="2.6",
             compression="zstd",  # Better compression ratio than snappy, still good speed
             compression_level=3,
-            use_dictionary=["participant_id", "session_id", "task_name"],  # Enable dictionary encoding for strings
+            # Enable dictionary encoding for strings
+            use_dictionary=["participant_id", "session_id", "task_name"],
             write_statistics=True,
             # enable page index for better filtering
             data_page_size=1_048_576,  # 1MB pages
@@ -282,7 +284,7 @@ def create_derived_dataset(bids_path, outdir):
         pt_file = Path(filename.replace(".wav", "_features.pt"))
         if not pt_file.exists():
             continue
-        
+
         for participant_id in SUBJECTS_TO_REMOVE:
             if f"sub-{participant_id}" in str(pt_file):
                 _LOGGER.info(f"Skipping subject {participant_id}")
@@ -299,12 +301,12 @@ def create_derived_dataset(bids_path, outdir):
         if transcription is not None:
             transcription = transcription.text
             if subj_info['task_name'].lower().startswith('free-speech') or \
-                subj_info['task_name'].lower().startswith('audio-check') or \
-                subj_info['task_name'].lower().startswith('open-response-questions'):
+                    subj_info['task_name'].lower().startswith('audio-check') or \
+                    subj_info['task_name'].lower().startswith('open-response-questions'):
                 # we omit tasks where free speech occurs
                 transcription = None
         subj_info["transcription"] = transcription
-        
+
         for key in ["opensmile", "praat_parselmouth", "torchaudio_squim"]:
             subj_info.update(features.get(key, {}))
 
@@ -314,7 +316,8 @@ def create_derived_dataset(bids_path, outdir):
     df_static.to_csv(outdir / "static_features.tsv", sep="\t", index=False)
     # load in the JSON with descriptions of each feature and copy it over
     # write it out again so formatting is consistent between JSONs
-    static_features_json_file = resources.files("b2aiprep").joinpath("prepare", "resources", "static_features.json")
+    static_features_json_file = resources.files("b2aiprep").joinpath(
+        "prepare", "resources", "static_features.json")
     static_features_json = json.load(static_features_json_file.open())
     with open(outdir / "static_features.json", "w") as f:
         json.dump(static_features_json, f, indent=2)
@@ -328,7 +331,8 @@ def create_derived_dataset(bids_path, outdir):
     # remove subject
     idx = df['record_id'].isin(SUBJECTS_TO_REMOVE)
     if idx.sum() > 0:
-        _LOGGER.info(f"Removing {idx.sum()} records from phenotype due to hard-coded subject removal.")
+        _LOGGER.info(
+            f"Removing {idx.sum()} records from phenotype due to hard-coded subject removal.")
         df = df.loc[~idx]
 
     # temporarily keep record_id as the column name to enable joining the dataframes together
@@ -378,7 +382,8 @@ def create_derived_dataset(bids_path, outdir):
         # add the data elements to the overall phenotype dict
         if len(phenotype_add) != 1:
             # we expect there to only be one key
-            _LOGGER.warning(f"Unexpected keys in phenotype file {phenotype_filepath.stem}: {phenotype_add.keys()}")
+            _LOGGER.warning(
+                f"Unexpected keys in phenotype file {phenotype_filepath.stem}: {phenotype_add.keys()}")
         else:
             phenotype_add = next(iter(phenotype_add.values()))["data_elements"]
         phenotype.update(phenotype_add)
@@ -696,10 +701,11 @@ def createbatchcsv(input_dir, out_file):
 @click.argument("src_dir", type=str)
 @click.argument("dest_dir", type=str)
 def reproschema_audio_to_folder(src_dir, dest_dir):
+    """Reorganizes audio from a ReproSchema export into a single folder."""
 
     # src_dir is the top level directory for which the audio files for reproschema ui are located
     # dest_dir is where the folder containing the audio files will be saved
-    # it is expected to contain a folder containing the audio files based on recording_id 
+    # it is expected to contain a folder containing the audio files based on recording_id
     # Ensure destination directory exists
     if not os.path.exists(dest_dir):
         os.makedirs(dest_dir)
@@ -716,12 +722,78 @@ def reproschema_audio_to_folder(src_dir, dest_dir):
                 except IndexError:
                     print(f"Skipping {file} because UUID could not be extracted.")
                     continue
-                
+
                 # Generate the full destination path with the UUID as the filename
                 dest_file_path = os.path.join(dest_dir, f"{file_uuid}.wav")
-                
+
                 # Move and rename the file
                 src_file_path = os.path.join(root, file)
                 shutil.copy(src_file_path, dest_file_path)
 
-    print(f"audiofiles generated at: {dest_dir}")
+    _LOGGER.info(f"audio files generated at: {dest_dir}")
+
+
+@click.command()
+@click.argument("audio_dir", type=str)
+@click.argument("survey_file", type=str)
+@click.argument("redcap_csv", type=str)
+def reproschema_to_redcap(audio_dir, survey_file, redcap_csv):
+    """Generates redcap csv given the audio and survey data from reproschema ui"""
+
+    folder = Path(survey_file)
+    sub_folders = sorted([str(f) for f in folder.iterdir() if f.is_dir()])
+
+    if not folder.is_dir():
+        raise FileNotFoundError(
+            f"{folder} does not exist."
+        )
+
+    merged_questionnaire_data = []
+    # load each file recursively within the folder into its own key
+    for subject in sub_folders:
+        content = OrderedDict()
+        for file in Path(subject).rglob("*"):
+            if file.is_file():
+                filename = str(file.relative_to(subject))
+                with open(f"{subject}/{filename}", 'r') as f:
+                    content[filename] = json.load(f)
+
+        for questionnaire in content.keys():
+            try:
+                record_id = (subject.split("/")[-1]).split()[0]
+                survey_data = content[questionnaire]
+                merged_questionnaire_data += parse_survey(
+                    survey_data, record_id, questionnaire)
+            except Exception:
+                continue
+
+    survey_df = pd.concat(merged_questionnaire_data, ignore_index=True)
+    Path(redcap_csv).mkdir(parents=True, exist_ok=True)
+    filename = "survey_redcap.csv"
+    file_path = os.path.join(redcap_csv, filename)
+    survey_df.to_csv(file_path, index=False)
+
+    audio_folders = Path(audio_dir)
+    audio_sub_folders = sorted(
+        [str(f) for f in audio_folders.iterdir() if f.is_dir()])
+    if not audio_folders.is_dir():
+        raise FileNotFoundError(
+            f"{audio_folders} does not exist."
+        )
+    merged_csv = []
+    for subject in audio_sub_folders:
+        audio_list = []
+        for file in Path(subject).glob("**/*"):
+            if file.is_file() and str(file).endswith(".wav"):
+                audio_list.append(str(file))
+
+        merged_csv += parse_audio(audio_list)
+
+    csv_path = os.path.join(redcap_csv, "audio-redcap.csv")
+    audio_df = pd.DataFrame(merged_csv)
+    audio_df.to_csv(csv_path, index=False)
+
+    merged_df = [survey_df, audio_df]
+    output_df = pd.concat(merged_df, ignore_index=True)
+    merged_csv_path = os.path.join(redcap_csv, "merged-redcap.csv")
+    output_df.to_csv(merged_csv_path, index=False)
