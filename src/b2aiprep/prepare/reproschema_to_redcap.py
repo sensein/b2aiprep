@@ -102,10 +102,11 @@ def parse_audio(audio_list, dummy_audio_files=False):
         session = Path(file_path).parent.name
         if dummy_audio_files:
             duration = 0
+            file_size = 0
         else:
             duration = get_wav_duration(file_path)
+            file_size = Path(file_path).stat().st_size
         file_name = file_path.split("/")[-1]
-        file_size = Path(file_path).stat().st_size
         recording_id = re.search(r'([a-f0-9\-]{36})\.', file_name).group(1)
         acoustic_task = re.search(r"^(.*?)(_\d+)", file_name).group(1)
         if acoustic_prev != acoustic_task:
