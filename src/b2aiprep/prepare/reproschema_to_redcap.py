@@ -54,7 +54,7 @@ def parse_survey(survey_data, record_id, session_path):
     df = pd.DataFrame(questions_answers)
     return [df]
 
-def parse_audio(audio_list):
+def parse_audio(audio_list, dummy_audio_files=False):
     # peds specific tasks
     protocol_order = {
         "ready_for_school": [],
@@ -100,7 +100,10 @@ def parse_audio(audio_list):
 
         record_id = Path(file_path).parent.parent.name
         session = Path(file_path).parent.name
-        duration = get_wav_duration(file_path)
+        if dummy_audio_files:
+            duration = 0
+        else:
+            duration = get_wav_duration(file_path)
         file_name = file_path.split("/")[-1]
         file_size = Path(file_path).stat().st_size
         recording_id = re.search(r'([a-f0-9\-]{36})\.', file_name).group(1)
