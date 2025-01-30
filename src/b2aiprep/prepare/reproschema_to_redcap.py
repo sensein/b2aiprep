@@ -56,7 +56,7 @@ def parse_survey(survey_data, record_id, session_path):
 
     questions_answers[f"{questionnaire_name}_duration"] = [duration]
 
-    questions_answers[f"{questionnaire_name}_sessionId"] = [session_id]
+    questions_answers[f"{questionnaire_name}_session_id"] = [session_id]
 
     df = pd.DataFrame(questions_answers)
     return [df]
@@ -106,8 +106,11 @@ def parse_audio(audio_list, dummy_audio_files=False):
 
     audio_output_list = []
     count = 1
+    acoustic_task_count = 1
     acoustic_count = 1
     acoustic_prev = None
+    acoustic_tasks = set()
+    #acoustic_task_dict = dict()
     for file_path in (flattened_list):
 
         record_id = Path(file_path).parent.parent.name
@@ -121,6 +124,28 @@ def parse_audio(audio_list, dummy_audio_files=False):
         file_name = file_path.split("/")[-1]
         recording_id = re.search(r'([a-f0-9\-]{36})\.', file_name).group(1)
         acoustic_task = re.search(r"^(.*?)(_\d+)", file_name).group(1)
+        if acoustic_task not in acoustic_tasks:
+            
+            acoustic_tasks.add(acoustic_task)
+            acoustic_task_dict = {
+                "record_id" : record_id,
+                "redcap_repeat_instrument": "Acoustic Task",
+                "redcap_repeat_instance": acoustic_task_count ,
+                "acoustic_task_id": f"{acoustic_task}-{session}",
+                "acoustic_task_session_id": session,
+                "acoustic_task_name": acoustic_task,
+                "acoustic_task_cohort": "Pediatrics",
+                "acoustic_task_status": "Completed",
+                "acoustic_task_duration": duration
+            }
+            audio_output_list.append(acoustic_task_dict)
+            acoustic_task_count += 1
+        else:
+            for index in audio_output_list:
+                if "acoustic_task_id" in index:
+                    if acoustic_task == index["acoustic_task_name"]:
+                        index["acoustic_task_duration"] += duration
+
         if acoustic_prev != acoustic_task:
             acoustic_count = 1
         file_dict = {
@@ -128,9 +153,9 @@ def parse_audio(audio_list, dummy_audio_files=False):
             "redcap_repeat_instrument": "Recording",
             "redcap_repeat_instance": count,
             "recording_id": recording_id,
-            "recording_acoustic_task_id": f"{acoustic_task}-{acoustic_count}",
+            "recording_acoustic_task_id": f"{acoustic_task}-{session}",
             "recording_session_id": session,
-            "recording_name": f"{recording_id}.wav",
+            "recording_name": f"{acoustic_task}-{acoustic_count}",
             "recording_duration": duration,
             "recording_size": file_size,
             "recording_profile_name": "Speech",

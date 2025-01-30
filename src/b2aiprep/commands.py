@@ -50,6 +50,7 @@ from b2aiprep.prepare.bids import get_audio_paths, redcap_to_bids, validate_bids
 from b2aiprep.prepare.prepare import extract_features_workflow, validate_bids_data, clean_phenotype_data
 from b2aiprep.prepare.reproschema_to_redcap import parse_survey, parse_audio
 
+
 # from b2aiprep.synthetic_data import generate_synthetic_tabular_data
 
 _LOGGER = logging.getLogger(__name__)
@@ -157,7 +158,6 @@ def prepare_bids(
     if cache is None:
         cache = Path(bids_dir_path).parent / "b2aiprep_cache"
     os.makedirs(cache, exist_ok=True)
-
     if redcap_csv_path is not None and audio_dir_path is not None:
         _LOGGER.info("Organizing data into BIDS-like directory structure...")
         redcap_to_bids(Path(redcap_csv_path), Path(bids_dir_path), Path(audio_dir_path))
@@ -701,12 +701,13 @@ def createbatchcsv(input_dir, out_file):
 @click.argument("src_dir", type=str)
 @click.argument("dest_dir", type=str)
 def reproschema_audio_to_folder(src_dir, dest_dir):
-    """Reorganizes audio from a ReproSchema export into a single folder."""
-
-    # src_dir is the top level directory for which the audio files for reproschema ui are located
-    # dest_dir is where the folder containing the audio files will be saved
-    # it is expected to contain a folder containing the audio files based on recording_id
-    # Ensure destination directory exists
+    """
+    Reorganizes audio from a ReproSchema export into a single folder.
+    src_dir is the top level directory for which the audio files for reproschema ui are located
+    dest_dir is where the folder containing the audio files will be saved
+    it is expected to contain a folder containing the audio files based on recording_id
+    Ensure destination directory exists
+    """
     if not os.path.exists(dest_dir):
         os.makedirs(dest_dir)
 
@@ -737,8 +738,17 @@ def reproschema_audio_to_folder(src_dir, dest_dir):
 @click.argument("audio_dir", type=str)
 @click.argument("survey_file", type=str)
 @click.argument("redcap_csv", type=str)
-def reproschema_to_redcap(audio_dir, survey_file, redcap_csv):
-    """Generates redcap csv given the audio and survey data from reproschema ui"""
+@click.option("--participant_group", type=str, default=None, show_default=True)
+def reproschema_to_redcap(audio_dir, survey_file, redcap_csv, participant_group):
+    """
+    Generates redcap csv given the audio and survey data from reproschema ui
+    
+    audio_dir is the directory containing the audio files
+    survey_file is the location of the surveys generated from reproschem ui
+    redcap_csv is the path to store the newly generated redcap csv
+    --participant_group is an optional. It replaces a redcap repeat instance to Participant
+    
+    """
 
     folder = Path(survey_file)
     sub_folders = sorted([str(f) for f in folder.iterdir() if f.is_dir()])
@@ -750,6 +760,7 @@ def reproschema_to_redcap(audio_dir, survey_file, redcap_csv):
 
     merged_questionnaire_data = []
     # load each file recursively within the folder into its own key
+    subject_count = 1
     for subject in sub_folders:
         content = OrderedDict()
         for file in Path(subject).rglob("*"):
@@ -757,8 +768,8 @@ def reproschema_to_redcap(audio_dir, survey_file, redcap_csv):
                 filename = str(file.relative_to(subject))
                 with open(f"{subject}/{filename}", 'r') as f:
                     content[filename] = json.load(f)
-
-        for questionnaire in content.keys():
+        
+        for questionnaire in content.keys(): # activity files
             try:
                 record_id = (subject.split("/")[-1]).split()[0]
                 survey_data = content[questionnaire]
@@ -766,12 +777,21 @@ def reproschema_to_redcap(audio_dir, survey_file, redcap_csv):
                     survey_data, record_id, questionnaire)
             except Exception:
                 continue
+        session_id =  [f.name for f in os.scandir(subject) if f.is_dir()]
+        session_df =  pd.DataFrame({
+            "record_id": (subject.split("/")[-1]).split()[0],
+            "redcap_repeat_instrument": ["Session"],
+            "redcap_repeat_instance": [1],
+            "session_id": session_id, 
+            "session_status": ["Completed"],
+            "session_is_control_participant": ["No"],
+            "session_duration": ["0.0"],
+            "session_site": ["Sickkids"]})
+        merged_questionnaire_data += [session_df]
+        subject_count += 1
 
     survey_df = pd.concat(merged_questionnaire_data, ignore_index=True)
     Path(redcap_csv).mkdir(parents=True, exist_ok=True)
-    filename = "survey_redcap.csv"
-    file_path = os.path.join(redcap_csv, filename)
-    survey_df.to_csv(file_path, index=False)
 
     audio_folders = Path(audio_dir)
     audio_sub_folders = sorted(
@@ -780,8 +800,21 @@ def reproschema_to_redcap(audio_dir, survey_file, redcap_csv):
         raise FileNotFoundError(
             f"{audio_folders} does not exist."
         )
+
     merged_csv = []
     for subject in audio_sub_folders:
+        audio_session_id =  [f.name for f in os.scandir(subject) if f.is_dir()]
+        audio_session_dict =  {
+            "record_id": (subject.split("/")[-1]).split()[0],
+            "redcap_repeat_instrument": "Session",
+            "redcap_repeat_instance": 1,
+            "session_id": audio_session_id[0], 
+            "session_status": "Completed",
+            "session_is_control_participant": "No",
+            "session_duration": 0.0,
+            "session_site": "Sickkids"}
+        merged_csv.append(audio_session_dict)
+
         audio_list = []
         for file in Path(subject).glob("**/*"):
             if file.is_file() and str(file).endswith(".wav"):
@@ -789,11 +822,24 @@ def reproschema_to_redcap(audio_dir, survey_file, redcap_csv):
 
         merged_csv += parse_audio(audio_list)
 
-    csv_path = os.path.join(redcap_csv, "audio-redcap.csv")
     audio_df = pd.DataFrame(merged_csv)
-    audio_df.to_csv(csv_path, index=False)
 
     merged_df = [survey_df, audio_df]
     output_df = pd.concat(merged_df, ignore_index=True)
+
+    all_columns_path = "b2aiprep/src/b2aiprep/prepare/resources/all_columns.json"
+
+    with open(all_columns_path, 'r') as file:
+        all_columns = json.load(file)
+    
+    columns_to_add = [col for col in all_columns if col not in output_df.columns]
+    new_df = pd.DataFrame(columns=columns_to_add)
+
+    df_final = pd.concat([output_df, new_df], axis=1)
+    # Option to save on post processing the redcap csv
+    if participant_group is not None:
+        df_final['redcap_repeat_instrument'] = df_final['redcap_repeat_instrument'].replace(
+            participant_group, 'Participant')
+
     merged_csv_path = os.path.join(redcap_csv, "merged-redcap.csv")
-    output_df.to_csv(merged_csv_path, index=False)
+    df_final.to_csv(merged_csv_path, index=False)
