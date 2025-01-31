@@ -32,12 +32,12 @@ PHENOTYPE_JSON_FILE_DESCRIPTIONS = {
     "voicePerception.json": "Measures how participants perceive voice quality.",
     "voiceSeverity.json": "Measures the impact and seriousness of voice disorders.",
     "winograd.json": "Measures language comprehension and reasoning.",
-    "medical_conditions_schema.json": "Measures medical conditions for kids.",
-    "peds_vhi_10_schema.json": "Measures perceived impact of voice disorders for kids.",
-    "peds_voice_outcome_survey_schema.json": "Measures voice outcome for kids.",
+    "medical_conditions.json": "Measures medical conditions for kids.",
+    "pedsvhi10.json": "Measures perceived impact of voice disorders for kids.",
+    "peds_voice_outcome_survey.json": "Measures voice outcome for kids.",
     "peds_voice_related_qol.json": "Measures voice quality of life for kids.",
-    "phqa_schema.json": "Measures severity of depressive symptoms for kids",
-    "q_generic_demographics_schema.json": "Measures participant background details for kids.",
-    "subjectparticipant_basic_information_schema.json": "Gets basic information for kids",
-    "subjectparticipant_contact_information_schema.json": "Gets Age for kids"
+    "phqa.json": "Measures severity of depressive symptoms for kids",
+    "q_generic_demographics.json": "Measures participant background details for kids.",
+    "subjectparticipant_basic_information.json": "Gets basic information for kids",
+    "subjectparticipant_contact_information.json": "Gets Age for kids"
 }
