@@ -20,13 +20,6 @@ GENERAL_QUESTIONNAIRES = [
     "alzheimers",
     "parkinsons",
     "als",
-    # "medical_conditions_schema",
-    # "peds_vhi_10_schema",
-    # "peds_voice_related_qol",
-    # "phqa_schema",
-    # "q_generic_demographics_schema",
-    # "subjectparticipant_basic_information_schema",
-    # "subjectparticipant_contact_information_schema"
 
 ]
 
@@ -215,16 +208,16 @@ class RepeatInstrument(Enum):
 
     MEDICAL_CONDITIONS = Instrument(
         session_id="medical_conditions_schema_session_id",
-        name="medical_conditions_schema",
-        text="medical_conditions_schema",
-        schema_name="medical_conditions_schema",
+        name="medical_conditions",
+        text="medical_conditions",
+        schema_name="medical_conditions",
     )
 
     PEDS_VHI10 = Instrument(
         session_id="peds_vhi_10_schema_session_id",
-        name="peds_vhi_10_schema",
-        text="peds_vhi_10_schema",
-        schema_name="peds_vhi_10_schema",
+        name="pedsvhi10",
+        text="pedsvhi10",
+        schema_name="pedsvhi10",
     )
 
     QOL = Instrument(
@@ -243,30 +236,30 @@ class RepeatInstrument(Enum):
 
     PEDS_DEMOGRAPHICS = Instrument(
         session_id="record_id",
-        name="q_generic_demographics_schema",
-        text="q_generic_demographics_schema",
-        schema_name="q_generic_demographics_schema",
+        name="q_generic_demographics",
+        text="q_generic_demographics",
+        schema_name="q_generic_demographics",
     )
 
     PEDS_BASIC_INFO = Instrument(
         session_id="record_id",
-        name="subjectparticipant_basic_information_schema",
+        name="subjectparticipant_basic_information",
         text="Participant",
-        schema_name="subjectparticipant_basic_information_schema",
+        schema_name="subjectparticipant_basic_information",
     )
 
     PEDS_CONTACT_INFO = Instrument(
         session_id="record_id",
-        name="subjectparticipant_contact_information_schema",
-        text="subjectparticipant_contact_information_schema",
-        schema_name="subjectparticipant_contact_information_schema",
+        name="subjectparticipant_contact_information",
+        text="subjectparticipant_contact_information",
+        schema_name="subjectparticipant_contact_information",
     )
 
     PEDS_OUTCOME_SURVEY = Instrument(
         session_id="record_id",
-        name="peds_voice_outcome_survey_schema",
-        text="peds_voice_outcome_survey_schema",
-        schema_name="peds_voice_outcome_survey_schema",
+        name="peds_voice_outcome_survey",
+        text="peds_voice_outcome_survey",
+        schema_name="peds_voice_outcome_survey",
     )
 
 
