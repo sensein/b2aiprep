@@ -1,0 +1,16 @@
+[
+    "qol_intro",
+    "qol_q1",
+    "qol_q2",
+    "qol_q3",
+    "qol_q4",
+    "qol_q5",
+    "qol_q6",
+    "qol_q7",
+    "qol_q8",
+    "qol_q9",
+    "peds_voice_related_qol_schema_start_time",
+    "peds_voice_related_qol_schema_end_time",
+    "peds_voice_related_qol_schema_duration",
+    "peds_voice_related_qol_schema_session_id"
+]

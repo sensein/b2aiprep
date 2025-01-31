@@ -1,0 +1,632 @@
+{
+    "q_generic_demographics": {
+        "description":  "Measures participant background details for kids.",
+        "url": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/",
+        "data_elements": {
+            "q_generic_demographics_schema_session_id": {
+                "description": "The unique identifier for the kids demographics session.",
+                "question": {
+                    "en": "Session ID"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "q_generic_demographics_schema_duration": {
+                "description": "Duration of the kids demographics session.",
+                "question": {
+                    "en": "Questionnaire Duration (seconds)"
+                },
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/",
+                "minValue": 0.0,
+                "valueType": [
+                    "xsd:decimal"
+                ]
+            },
+            "city": {
+                "description": "items/city",
+                "question": {
+                    "en": "City"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "state_province": {
+                "description": "items/state_province",
+                "question": {
+                    "en": "State/Province"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "zipcode": {
+                "description": "items/zipcode",
+                "question": {
+                    "en": "Zipcode/Postal Code"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "country": {
+                "description": "items/country",
+                "question": {
+                    "en": "Country"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "USA"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Canada"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "gender_identity": {
+                "description": "items/gender_identity",
+                "question": {
+                    "en": "What is your gender identity?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Female gender identity"
+                        },
+                        "value": "female"
+                    },
+                    {
+                        "name": {
+                            "en": "Male gender identity"
+                        },
+                        "value": " male"
+                    },
+                    {
+                        "name": {
+                            "en": "Non-binary or genderqueer gender identity"
+                        },
+                        "value": " nonBinary"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": " other"
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": " noAnswer"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "other_gender_identity": {
+                "description": "items/other_gender_identity",
+                "question": {
+                    "en": "If you selected \"other\" for gender identity, please specify:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "race": {
+                "description": "items/race",
+                "question": {
+                    "en": "Which race category best describes you? Choose all that apply"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "American Indian or Alaska Native"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Asian"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Black or African American"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Native Hawaiian or other Pacific Islander"
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "White"
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Canadian Indigenous or Aboriginal"
+                        },
+                        "value": 6
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": 7
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": 8
+                    }
+                ],
+                "multipleChoice": true,
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "other_race_specify": {
+                "description": "items/other_race_specify",
+                "question": {
+                    "en": "If race not listed above, please specify:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "primary_language": {
+                "description": "items/primary_language",
+                "question": {
+                    "en": "What language do you primarily speak?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "English"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "French"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Mandarin Chinese"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Punjabi"
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Spanish"
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Arabic"
+                        },
+                        "value": 6
+                    },
+                    {
+                        "name": {
+                            "en": "Tagalog"
+                        },
+                        "value": 7
+                    },
+                    {
+                        "name": {
+                            "en": "Italian"
+                        },
+                        "value": 8
+                    },
+                    {
+                        "name": {
+                            "en": "German"
+                        },
+                        "value": 9
+                    },
+                    {
+                        "name": {
+                            "en": "Other, Please Specify"
+                        },
+                        "value": 10
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "other_primary_language": {
+                "description": "items/other_primary_language",
+                "question": {
+                    "en": "If you selected \"other\" primary language, please specify:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "first_language": {
+                "description": "items/first_language",
+                "question": {
+                    "en": "What was your first language?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "English"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "French"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Mandarin Chinese"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Punjabi"
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Spanish"
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Arabic"
+                        },
+                        "value": 6
+                    },
+                    {
+                        "name": {
+                            "en": "Tagalog"
+                        },
+                        "value": 7
+                    },
+                    {
+                        "name": {
+                            "en": "Italian"
+                        },
+                        "value": 8
+                    },
+                    {
+                        "name": {
+                            "en": "German"
+                        },
+                        "value": 9
+                    },
+                    {
+                        "name": {
+                            "en": "Other, Please Specify"
+                        },
+                        "value": 10
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "other_first_language": {
+                "description": "items/other_first_language",
+                "question": {
+                    "en": "If you selected \"other\" first language, please specify:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "edu_level": {
+                "description": "items/edu_level",
+                "question": {
+                    "en": "What is your child's highest level of education?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "No formal education"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Some elementary school"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Some secondary or high school education"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "High School or secondary school degree complete"
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": 11
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": 12
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "other_edu_level": {
+                "description": "items/other_edu_level",
+                "question": {
+                    "en": "If you selected \"other\" level of education, please specify:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "hearing": {
+                "description": "items/hearing",
+                "question": {
+                    "en": "Are you deaf or do you have serious difficulty hearing?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": " yes"
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": " noAnswer"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "vision": {
+                "description": "items/vision",
+                "question": {
+                    "en": "Are you blind or do you have serious difficulty seeing, even when wearing glasses?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": " yes"
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": " noAnswer"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "cognition": {
+                "description": "items/cognition",
+                "question": {
+                    "en": "Because of a physical, mental, or emotional condition, do you have serious difficulty concentrating, remembering, or making decisions?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": " yes"
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": " noAnswer"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mobility": {
+                "description": "items/mobility",
+                "question": {
+                    "en": "Do you have serious difficulty walking or climbing stairs?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": " yes"
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": " noAnswer"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "self_care": {
+                "description": "items/self_care",
+                "question": {
+                    "en": "Do you have difficulty dressing or bathing?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": " yes"
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": " noAnswer"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            }
+        }
+    }
+}

@@ -1,0 +1,386 @@
+{
+    "phqa": {
+        "description": "Measures severity of depressive symptoms for kids",
+        "url": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/",
+        "data_elements": {
+            "phqa_schema_session_id": {
+                "description": "The unique identifier for phqa session.",
+                "question": {
+                    "en": "Session ID"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "phqa_schema_duration": {
+                "description": "Duration of the phqa session.",
+                "question": {
+                    "en": "Questionnaire Duration (seconds)"
+                },
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/",
+                "minValue": 0.0,
+                "valueType": [
+                    "xsd:decimal"
+                ]
+            },
+            "phqa_intro": {
+                "description": "phqa_intro",
+                "question": {
+                    "en": "How often have you been bothered by each of the following symptoms during the past two weeks? For each symptom select the answer that best describes how you have been feeling"
+                },
+                "choices": null
+            },
+            "phqa_q1": {
+                "description": "items/phqa_q1",
+                "question": {
+                    "en": "Feeling down, depressed, irritable, or hopeless?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Not at all"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Several Days"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "More than half the days"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Nearly every day"
+                        },
+                        "value": 3
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "phqa_q2": {
+                "description": "items/phqa_q2",
+                "question": {
+                    "en": "Little interest or pleasure in doing things?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Not at all"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Several Days"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "More than half the days"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Nearly every day"
+                        },
+                        "value": 3
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "phqa_q3": {
+                "description": "items/phqa_q3",
+                "question": {
+                    "en": "Trouble falling asleep, staying asleep, or sleeping too much?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Not at all"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Several Days"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "More than half the days"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Nearly every day"
+                        },
+                        "value": 3
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "phqa_q4": {
+                "description": "items/phqa_q4",
+                "question": {
+                    "en": "Poor appetite, weight loss, or overeating?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Not at all"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Several Days"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "More than half the days"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Nearly every day"
+                        },
+                        "value": 3
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "phqa_q5": {
+                "description": "items/phqa_q5",
+                "question": {
+                    "en": "Feeling tired, or having little energy?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Not at all"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Several Days"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "More than half the days"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Nearly every day"
+                        },
+                        "value": 3
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "phqa_q6": {
+                "description": "items/phqa_q6",
+                "question": {
+                    "en": "Feeling bad about yourself \u2013 or feeling that you are a failure, or that you have let yourself or your family down?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Not at all"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Several Days"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "More than half the days"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Nearly every day"
+                        },
+                        "value": 3
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "phqa_q7": {
+                "description": "items/phqa_q7",
+                "question": {
+                    "en": "Trouble concentrating on things like school work, reading, or watching TV?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Not at all"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Several Days"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "More than half the days"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Nearly every day"
+                        },
+                        "value": 3
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "phqa_q8": {
+                "description": "items/phqa_q8",
+                "question": {
+                    "en": "Moving or speaking so slowly that other people could have noticed? Or the opposite \u2013 being so fidgety or restless that you were moving around a lot more than usual?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Not at all"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Several Days"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "More than half the days"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Nearly every day"
+                        },
+                        "value": 3
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "phqa_q9": {
+                "description": "items/phqa_q9",
+                "question": {
+                    "en": "Thoughts that you would be better off dead, or of hurting yourself in some way?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Not at all"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Several Days"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "More than half the days"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Nearly every day"
+                        },
+                        "value": 3
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            }
+        }
+    }
+}

@@ -1,0 +1,23 @@
+[
+    "city",
+    "state_province",
+    "zipcode",
+    "country",
+    "gender_identity",
+    "other_gender_identity",
+    "race",
+    "other_race_specify",
+    "primary_language",
+    "other_primary_language",
+    "first_language",
+    "other_first_language",
+    "edu_level",
+    "other_edu_level",
+    "hearing",
+    "vision",
+    "cognition",
+    "mobility",
+    "self_care",
+    "q_generic_demographics_schema_duration",
+    "q_generic_demographics_schema_session_id"
+]

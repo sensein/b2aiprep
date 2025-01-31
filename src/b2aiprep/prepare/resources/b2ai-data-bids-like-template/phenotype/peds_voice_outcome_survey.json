@@ -1,0 +1,201 @@
+{
+    "peds_voice_outcome_survey": {
+        "description": "Measures voice outcome for kids.",
+        "url": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/",
+        "data_elements": {
+            "peds_voice_outcome_survey_schema_session_id": {
+                "description": "The unique identifier for the voice outcome session.",
+                "question": {
+                    "en": "Session ID"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_voice_handicap_index_vhi10/items/vhi_session_id",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_voice_outcome_survey_schema_duration": {
+                "description": "Duration of the voice outcome.",
+                "question": {
+                    "en": "Questionnaire Duration (seconds)"
+                },
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_voice_handicap_index_vhi10/items/vhi_duration",
+                "minValue": 0.0,
+                "valueType": [
+                    "xsd:decimal"
+                ]
+            },
+            "outcome_survey_q1": {
+                "description": "outcome_survey_q1",
+                "question": {
+                    "en": "To what extent does you child\u2019s voice limit his or her ability to be understood in a noisy area?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Limited a lot"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Limited a little"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Not limited at all"
+                        },
+                        "value": 3
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "outcome_survey_q2": {
+                "description": "outcome_survey_q2",
+                "question": {
+                    "en": "During the past 2 weeks, to what extent has your child\u2019s voice interfered with his or her normal social activities or with his or her school?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Not at all"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Slightly"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Moderately"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Quite a bit"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Extremely"
+                        },
+                        "value": 4
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "outcome_survey_q3": {
+                "description": "outcome_survey_q3",
+                "question": {
+                    "en": "How often does you child have trouble with food or liquids \u201cgoing down the wrong pipe\u201d when he or she eats food or drinks liquid and begins to cough after eating or drinking?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "All the time"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Most of the time"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Rarely"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": 4
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "outcome_survey_q4": {
+                "description": "outcome_survey_q4",
+                "question": {
+                    "en": "Do you find your child \u201cstraining\u201d when he or she speaks because of his or her voice problem?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Not at all"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "A little bit"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Moderately"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Quite a bit"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Extremely"
+                        },
+                        "value": 4
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            }
+        }
+    }
+}

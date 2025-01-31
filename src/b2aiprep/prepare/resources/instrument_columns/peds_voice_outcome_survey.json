@@ -1,0 +1,10 @@
+[
+    "outcome_survey_q1",
+    "outcome_survey_q2",
+    "outcome_survey_q3",
+    "outcome_survey_q4",
+    "peds_voice_outcome_survey_schema_start_time",
+    "peds_voice_outcome_survey_schema_end_time",
+    "peds_voice_outcome_survey_schema_duration",
+    "peds_voice_outcome_survey_schema_session_id"
+]

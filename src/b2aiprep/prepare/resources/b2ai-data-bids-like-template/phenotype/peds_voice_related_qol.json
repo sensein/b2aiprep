@@ -1,0 +1,494 @@
+{
+    "peds_voice_related_qol": {
+        "description": "Measures voice quality of life for kids.",
+        "url": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/",
+        "data_elements": {
+            "peds_voice_related_qol_schema_session_id": {
+                "description": "The unique identifier for qol session.",
+                "question": {
+                    "en": "Session ID"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_voice_related_qol_schema_duration": {
+                "description": "Duration of the qol session.",
+                "question": {
+                    "en": "Questionnaire Duration (seconds)"
+                },
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/",
+                "minValue": 0.0,
+                "valueType": [
+                    "xsd:decimal"
+                ]
+            },
+            "qol_intro": {
+                "description": "qol_intro",
+                "question": {
+                    "en": "Please answer these questions based on what your child’s voice (your own voice if you are a teenage respondent) has been like over the last 2 weeks. Consider how severe the problem is, when you get it and how frequently it happens. Please rate each item below on how bad it is (the amount of each problem). Because of my child’s voice, how much of a problem is this?"
+                },
+                "choices": null
+            },
+            "qol_q1": {
+                "description": "qol_q1",
+                "question": {
+                    "en": "My child/ I has trouble speaking loudly or being heard in noisy situations."
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None, not a problem"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "A small amount"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "A moderate amount"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "A lot"
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Problem is \u201cas bad as it can be\u201d"
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Not applicable"
+                        },
+                        "value": 6
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "qol_q2": {
+                "description": "qol_q2",
+                "question": {
+                    "en": "My child/ I runs out of air and needs to take frequent breaths when talking."
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None, not a problem"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "A small amount"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "A moderate amount"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "A lot"
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Problem is \u201cas bad as it can be\u201d"
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Not applicable"
+                        },
+                        "value": 6
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "qol_q3": {
+                "description": "qol_q3",
+                "question": {
+                    "en": "My child/ I sometimes does not know what will come out when they begin speaking"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None, not a problem"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "A small amount"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "A moderate amount"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "A lot"
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Problem is \u201cas bad as it can be\u201d"
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Not applicable"
+                        },
+                        "value": 6
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "qol_q4": {
+                "description": "qol_q4",
+                "question": {
+                    "en": "My child/ I is sometimes anxious or frustrated (because of their voice)."
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None, not a problem"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "A small amount"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "A moderate amount"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "A lot"
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Problem is \u201cas bad as it can be\u201d"
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Not applicable"
+                        },
+                        "value": 6
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "qol_q5": {
+                "description": "qol_q5",
+                "question": {
+                    "en": "My child/ I is sometimes depressed (because of their voice)."
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None, not a problem"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "A small amount"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "A moderate amount"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "A lot"
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Problem is \u201cas bad as it can be\u201d"
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Not applicable"
+                        },
+                        "value": 6
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "qol_q6": {
+                "description": "qol_q6",
+                "question": {
+                    "en": "My child/ I has trouble using the phone or speaking with friends in person."
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None, not a problem"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "A small amount"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "A moderate amount"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "A lot"
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Problem is \u201cas bad as it can be\u201d"
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Not applicable"
+                        },
+                        "value": 6
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "qol_q7": {
+                "description": "qol_q7",
+                "question": {
+                    "en": "My child/ I has trouble doing their schoolwork or job (because of their voice)."
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None, not a problem"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "A small amount"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "A moderate amount"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "A lot"
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Problem is \u201cas bad as it can be\u201d"
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Not applicable"
+                        },
+                        "value": 6
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "qol_q8": {
+                "description": "qol_q8",
+                "question": {
+                    "en": "My child/ I has to repeat themselves to be understood"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None, not a problem"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "A small amount"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "A moderate amount"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "A lot"
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Problem is \u201cas bad as it can be\u201d"
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Not applicable"
+                        },
+                        "value": 6
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "qol_q9": {
+                "description": "qol_q9",
+                "question": {
+                    "en": "My child has become less outgoing (because of their voice)."
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None, not a problem"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "A small amount"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "A moderate amount"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "A lot"
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Problem is \u201cas bad as it can be\u201d"
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Not applicable"
+                        },
+                        "value": 6
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            }
+        }
+    }
+}
