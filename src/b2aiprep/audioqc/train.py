@@ -1,8 +1,16 @@
 """Implements functions for training AudioQC using a process similar to MRIQC."""
 
 
-def get_features_df_with_site(features_path, participants_path):
-    return
+import pandas as pd
+
+
+def get_features_df_with_site(features_csv_path, participants_tsv_path):
+    features_df = pd.read_csv(features_csv_path)
+    participants_df = pd.read_csv(participants_tsv_path, sep="\t")
+    participant_to_site = dict(zip(participants_df["record_id"], participants_df["session_site"]))
+    features_df["site"] = features_df["participant"].map(participant_to_site)
+    # features_only_df = features_df.drop(columns=['site', 'participant', 'task'])  # Exclude non-feature columns
+    return features_df
 
 
 def site_wise_normalization():
@@ -17,7 +25,7 @@ def winnow():
     return
 
 
-def add_labels(labels_csv = None):
+def add_labels(labels_csv=None):
     return
 
 
@@ -42,7 +50,12 @@ def inner_loop():
 
 
 def outer_loop():
+    features_csv_path = "/Users/isaacbevers/sensein/b2ai-wrapper/b2ai-data/bridge2ai-voice-corpus-3/derived/static_features.csv"
+    participants_tsv_path = "/Users/isaacbevers/sensein/b2ai-wrapper/b2ai-data/bridge2ai-voice-corpus-3/bids/bids/participants.tsv"
+    get_features_df_with_site(features_csv_path=features_csv_path, participants_tsv_path=participants_tsv_path)
+    
     return
+
 
 """
 best_inner_loop_models = []
