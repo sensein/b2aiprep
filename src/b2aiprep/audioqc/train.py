@@ -1,14 +1,14 @@
 """Implements functions for training AudioQC using a process similar to MRIQC."""
 
+from itertools import combinations
+
 import numpy as np
 import pandas as pd
 from sklearn.ensemble import ExtraTreesClassifier, RandomForestClassifier
 from sklearn.impute import SimpleImputer
-from sklearn.metrics import accuracy_score
 from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
-from itertools import chain, combinations
 
 
 def get_features_df_with_site(features_csv_path, participants_tsv_path):
@@ -265,14 +265,18 @@ def svm_train(features_df, label_column="label", cv_folds=5):
     X, y, _ = preprocess_data(features_df, label_column)
 
     # Define hyperparameter grids for linear SVC and RBF SVC
-    param_grid_lin = {'C': [0.1, 1, 10, 100]}
-    param_grid_rbf = {'C': [0.1, 1, 10, 100], 'gamma': [0.001, 0.01, 0.1, 1]}
+    param_grid_lin = {"C": [0.1, 1, 10, 100]}
+    param_grid_rbf = {"C": [0.1, 1, 10, 100], "gamma": [0.001, 0.01, 0.1, 1]}
 
     # Grid search for Linear SVC
-    best_svc_lin, best_params_lin, best_score_lin = grid_search_cross_val(SVC(kernel="linear"), param_grid_lin, X, y, cv=cv_folds)
+    best_svc_lin, best_params_lin, best_score_lin = grid_search_cross_val(
+        SVC(kernel="linear"), param_grid_lin, X, y, cv=cv_folds
+    )
 
     # Grid search for RBF SVC
-    best_svc_rbf, best_params_rbf, best_score_rbf = grid_search_cross_val(SVC(kernel="rbf"), param_grid_rbf, X, y, cv=cv_folds)
+    best_svc_rbf, best_params_rbf, best_score_rbf = grid_search_cross_val(
+        SVC(kernel="rbf"), param_grid_rbf, X, y, cv=cv_folds
+    )
 
     print(f"Best Linear SVC {best_params_lin}, CV Accuracy: {best_score_lin:.4f}")
     print(f"Best RBF SVC {best_params_rbf}, CV Accuracy: {best_score_rbf:.4f}")
@@ -281,7 +285,7 @@ def svm_train(features_df, label_column="label", cv_folds=5):
         "best_linear_svc": best_svc_lin,
         "best_rbf_svc": best_svc_rbf,
         "cv_accuracy_linear": best_score_lin,
-        "cv_accuracy_rbf": best_score_rbf
+        "cv_accuracy_rbf": best_score_rbf,
     }
 
 
@@ -308,15 +312,13 @@ def rfc_train(features_df, label_column="label", cv_folds=5):
     }
 
     # Grid search for Random Forest
-    best_rfc, best_params_rfc, best_score_rfc = grid_search_cross_val(RandomForestClassifier(random_state=42), param_grid_rfc, X, y, cv=cv_folds)
+    best_rfc, best_params_rfc, best_score_rfc = grid_search_cross_val(
+        RandomForestClassifier(random_state=42), param_grid_rfc, X, y, cv=cv_folds
+    )
 
     print(f"Best Random Forest {best_params_rfc}, CV Accuracy: {best_score_rfc:.4f}")
 
-    return {
-        "best_rfc": best_rfc,
-        "cv_accuracy_rfc": best_score_rfc
-    }
-
+    return {"best_rfc": best_rfc, "cv_accuracy_rfc": best_score_rfc}
 
 
 def inner_loop(features_df, label_column="label", cv_folds=5):
@@ -336,30 +338,36 @@ def inner_loop(features_df, label_column="label", cv_folds=5):
     """
     best_model = None
     best_score = 0
-    feature_elimination_steps = ['normalize', 'eliminate', 'winnow']
-    feature_elimination_combos = [set(combo) for i in range(len(feature_elimination_steps) + 1) 
-                                  for combo in combinations(feature_elimination_steps, i)]
+    feature_elimination_steps = ["normalize", "eliminate", "winnow"]
+    feature_elimination_combos = [
+        set(combo)
+        for i in range(len(feature_elimination_steps) + 1)
+        for combo in combinations(feature_elimination_steps, i)
+    ]
 
     for feature_elimination_combo in feature_elimination_combos:
         # Generate feature-transformed dataset
         features_transformed = features_df.copy()
 
         # Apply normalization if selected
-        normalize_modes = ['center', 'scale', 'both'] if 'normalize' in feature_elimination_combo else [None]
+        normalize_modes = (
+            ["center", "scale", "both"] if "normalize" in feature_elimination_combo else [None]
+        )
         for mode in normalize_modes:
             transformed_data = features_transformed.copy()
 
             if mode:
                 transformed_data = site_wise_normalization(transformed_data, mode=mode)
-            if 'eliminate' in feature_elimination_combo:
+            if "eliminate" in feature_elimination_combo:
                 transformed_data = site_predictability_feature_elimination(transformed_data)
-            if 'winnow' in feature_elimination_combo:
+            if "winnow" in feature_elimination_combo:
                 transformed_data = winnow_feature_selection(transformed_data)
 
             # Train and evaluate SVM models
             svm_results = svm_train(transformed_data, label_column=label_column, cv_folds=cv_folds)
             best_svm_model, best_svm_score = (
-                svm_results["best_linear_svc"] if svm_results["cv_accuracy_linear"] > svm_results["cv_accuracy_rbf"]
+                svm_results["best_linear_svc"]
+                if svm_results["cv_accuracy_linear"] > svm_results["cv_accuracy_rbf"]
                 else svm_results["best_rbf_svc"]
             ), max(svm_results["cv_accuracy_linear"], svm_results["cv_accuracy_rbf"])
 
@@ -368,29 +376,61 @@ def inner_loop(features_df, label_column="label", cv_folds=5):
             best_rfc_model, best_rfc_score = rfc_results["best_rfc"], rfc_results["cv_accuracy_rfc"]
 
             # Select the best model
-            for model, score in [(best_svm_model, best_svm_score), (best_rfc_model, best_rfc_score)]:
+            for model, score in [
+                (best_svm_model, best_svm_score),
+                (best_rfc_model, best_rfc_score),
+            ]:
                 if score > best_score:
                     best_model, best_score = model, score
-                    
 
-def outer_loop():
-    features_csv_path = "/Users/isaacbevers/sensein/b2ai-wrapper/b2ai-data/bridge2ai-voice-corpus-3/derived/static_features.csv"
-    participants_tsv_path = "/Users/isaacbevers/sensein/b2ai-wrapper/b2ai-data/bridge2ai-voice-corpus-3/bids/bids/participants.tsv"
-    get_features_df_with_site(
+
+def outer_loop(features_csv_path, participants_tsv_path, label_column="label", cv_folds=5):
+    """
+    Performs an outer-loop cross-validation process using a leave-one-site-out (LoSo) approach.
+    Trains models using the inner loop, selects the best-performing model across all sites,
+    and performs cross-validation across all sites with the best model.
+
+    Args:
+        features_csv_path (str): Path to the features CSV file.
+        participants_tsv_path (str): Path to the participants TSV file.
+        label_column (str): Name of the classification label column.
+        cv_folds (int): Number of cross-validation folds.
+
+    Returns:
+        best_final_model: The best-trained model after evaluation.
+    """
+    # Load dataset with site labels
+    features_df = get_features_df_with_site(
         features_csv_path=features_csv_path, participants_tsv_path=participants_tsv_path
     )
-    
-    return
 
+    unique_sites = features_df["site"].unique()
+    best_inner_loop_models = []
 
-"""
-best_inner_loop_models = []
-for sites:
-    hold a site out
-    best_fold_model = inner()
-    best_inner_loop_models.append(best_fold_model)
-best_best_inner_model = best(best_inner_loop_models)
-final_model = cross_validation_across_sites(best_best_inner_model)
-external_dataset_evaluation(final_model)
+    # Leave-One-Site-Out (LoSo) Cross-Validation
+    for site in unique_sites:
+        print(f"Processing site: {site}")
 
-"""
+        # Hold out one site as the test set
+        train_df = features_df[features_df["site"] != site].copy()
+        test_df = features_df[features_df["site"] == site].copy()
+
+        # Train model using the inner loop
+        best_fold_model, best_fold_score = inner_loop(train_df, label_column, cv_folds)
+
+        print(f"Best model for site {site}: {best_fold_model} with CV score {best_fold_score:.4f}")
+        best_inner_loop_models.append((best_fold_model, best_fold_score))
+
+    # Select the best model across all sites
+    best_inner_model = max(best_inner_loop_models, key=lambda x: x[1])[0]
+    print(f"Best model selected from inner loop: {best_inner_model}")
+
+    # Perform cross-validation across all sites with the best model
+    final_model = cross_validation_across_sites(
+        features_df, best_inner_model, label_column, cv_folds
+    )
+
+    # Evaluate the final model on an external dataset
+    external_dataset_evaluation(final_model)
+
+    return final_model
