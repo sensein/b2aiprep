@@ -2,14 +2,13 @@
 
 import numpy as np
 import pandas as pd
-from sklearn.ensemble import ExtraTreesClassifier
-from sklearn.model_selection import train_test_split
-from sklearn.svm import SVC
-from sklearn.model_selection import GridSearchCV
-from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import accuracy_score
+from sklearn.ensemble import ExtraTreesClassifier, RandomForestClassifier
 from sklearn.impute import SimpleImputer
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import GridSearchCV, train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVC
+from itertools import chain, combinations
 
 
 def get_features_df_with_site(features_csv_path, participants_tsv_path):
@@ -251,148 +250,128 @@ def grid_search_cross_val(model, param_grid, X, y, cv=5):
     return grid_search.best_estimator_, grid_search.best_params_, grid_search.best_score_
 
 
-def svm_train(features_df, label_column="label", test_size=0.2, random_state=42):
+def svm_train(features_df, label_column="label", cv_folds=5):
     """
-    Trains Support Vector Machines (SVM) with hyperparameter tuning to predict labels ('accept', 'exclude', 'unsure').
+    Trains and evaluates Support Vector Machines (SVM) using cross-validation.
 
-    Parameters:
-    - features_df (pd.DataFrame): DataFrame containing features and the label column.
-    - label_column (str): Name of the column containing classification labels (default: "label").
-    - test_size (float): Fraction of data to use for testing (default: 0.2).
-    - random_state (int): Random seed for reproducibility.
+    Args:
+        features_df (pd.DataFrame): DataFrame containing features and label column.
+        label_column (str): Name of the classification label column.
+        cv_folds (int): Number of cross-validation folds.
 
     Returns:
-    - dict: Contains best models and their test accuracies.
+        dict: Contains best models and cross-validation scores.
     """
-
-    # Ensure label column exists
-    if label_column not in features_df.columns:
-        raise ValueError(f"Label column '{label_column}' not found in DataFrame.")
-
-    # Separate features and labels
-    X = features_df.drop(columns=[label_column])  # Features
-    y = features_df[label_column]  # Labels
-
-    # Check for NaN values
-    if X.isna().sum().sum() > 0:
-        print("Warning: NaN values detected in features. Imputing missing values...")
-        imputer = SimpleImputer(strategy="mean")  # Fill NaN with mean of the column
-        X = pd.DataFrame(imputer.fit_transform(X), columns=X.columns)
-
-    # Split dataset into train and test sets
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=test_size, stratify=y, random_state=random_state
-    )
-
-    # Standardize features (SVM performs better with standardized inputs)
-    scaler = StandardScaler()
-    X_train_scaled = scaler.fit_transform(X_train)
-    X_test_scaled = scaler.transform(X_test)
+    X, y, _ = preprocess_data(features_df, label_column)
 
     # Define hyperparameter grids for linear SVC and RBF SVC
     param_grid_lin = {'C': [0.1, 1, 10, 100]}
     param_grid_rbf = {'C': [0.1, 1, 10, 100], 'gamma': [0.001, 0.01, 0.1, 1]}
 
-    # Perform Grid Search for Linear SVC
-    grid_search_lin = GridSearchCV(SVC(kernel="linear"), param_grid_lin, cv=5, scoring="accuracy")
-    grid_search_lin.fit(X_train_scaled, y_train)
-    best_svc_lin = grid_search_lin.best_estimator_
+    # Grid search for Linear SVC
+    best_svc_lin, best_params_lin, best_score_lin = grid_search_cross_val(SVC(kernel="linear"), param_grid_lin, X, y, cv=cv_folds)
 
-    # Perform Grid Search for RBF SVC
-    grid_search_rbf = GridSearchCV(SVC(kernel="rbf"), param_grid_rbf, cv=5, scoring="accuracy")
-    grid_search_rbf.fit(X_train_scaled, y_train)
-    best_svc_rbf = grid_search_rbf.best_estimator_
+    # Grid search for RBF SVC
+    best_svc_rbf, best_params_rbf, best_score_rbf = grid_search_cross_val(SVC(kernel="rbf"), param_grid_rbf, X, y, cv=cv_folds)
 
-    # Evaluate the best models on test set
-    y_pred_lin = best_svc_lin.predict(X_test_scaled)
-    y_pred_rbf = best_svc_rbf.predict(X_test_scaled)
+    print(f"Best Linear SVC {best_params_lin}, CV Accuracy: {best_score_lin:.4f}")
+    print(f"Best RBF SVC {best_params_rbf}, CV Accuracy: {best_score_rbf:.4f}")
 
-    acc_lin = accuracy_score(y_test, y_pred_lin)
-    acc_rbf = accuracy_score(y_test, y_pred_rbf)
-
-    # Print results
-    print(f"Best Linear SVC (C={grid_search_lin.best_params_['C']}), Test Accuracy: {acc_lin:.4f}")
-    print(f"Best RBF SVC (C={grid_search_rbf.best_params_['C']}, gamma={grid_search_rbf.best_params_['gamma']}), Test Accuracy: {acc_rbf:.4f}")
-
-    # Return best models and accuracies
     return {
         "best_linear_svc": best_svc_lin,
         "best_rbf_svc": best_svc_rbf,
-        "accuracy_linear": acc_lin,
-        "accuracy_rbf": acc_rbf
+        "cv_accuracy_linear": best_score_lin,
+        "cv_accuracy_rbf": best_score_rbf
     }
 
 
-def train_random_forest(features_df, label_column="label", test_size=0.2, random_state=42):
+def rfc_train(features_df, label_column="label", cv_folds=5):
     """
-    Trains a Random Forest Classifier (RFC) with hyperparameter tuning using GridSearchCV.
+    Trains and evaluates a Random Forest Classifier (RFC) using cross-validation.
 
-    Parameters:
-    - features_df (pd.DataFrame): DataFrame containing features and the label column.
-    - label_column (str): Name of the column containing classification labels (default: "label").
-    - test_size (float): Fraction of data to use for testing (default: 0.2).
-    - random_state (int): Random seed for reproducibility.
+    Args:
+        features_df (pd.DataFrame): DataFrame containing features and label column.
+        label_column (str): Name of the classification label column.
+        cv_folds (int): Number of cross-validation folds.
 
     Returns:
-    - dict: Contains best model and its test accuracy.
+        dict: Contains best RFC model and its cross-validation score.
     """
-
-    # Ensure label column exists
-    if label_column not in features_df.columns:
-        raise ValueError(f"Label column '{label_column}' not found in DataFrame.")
-
-    # Separate features and labels
-    X = features_df.drop(columns=[label_column])  # Features
-    y = features_df[label_column]  # Labels
-
-    # Check for NaN values and impute missing data
-    if X.isna().sum().sum() > 0:
-        print("Warning: NaN values detected in features. Imputing missing values...")
-        imputer = SimpleImputer(strategy="mean")  # Fill NaN with mean of the column
-        X = pd.DataFrame(imputer.fit_transform(X), columns=X.columns)
-
-    # Split dataset into train and test sets
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=test_size, stratify=y, random_state=random_state
-    )
-
-    # Standardize features (optional for tree-based models, but helps when combined with other models)
-    scaler = StandardScaler()
-    X_train_scaled = scaler.fit_transform(X_train)
-    X_test_scaled = scaler.transform(X_test)
+    X, y, _ = preprocess_data(features_df, label_column)
 
     # Define hyperparameter grid for Random Forest
-    param_grid = {
-        "n_estimators": [50, 100, 200],  # Number of trees
-        "max_depth": [None, 10, 20],  # Maximum depth of trees
-        "min_samples_split": [2, 5, 10],  # Minimum samples required to split an internal node
-        "min_samples_leaf": [1, 2, 4],  # Minimum number of samples required to be at a leaf node
+    param_grid_rfc = {
+        "n_estimators": [50, 100, 200],
+        "max_depth": [None, 10, 20],
+        "min_samples_split": [2, 5, 10],
+        "min_samples_leaf": [1, 2, 4],
     }
 
-    # Perform Grid Search for Random Forest
-    grid_search = GridSearchCV(RandomForestClassifier(random_state=random_state), param_grid, cv=5, scoring="accuracy", n_jobs=-1)
-    grid_search.fit(X_train_scaled, y_train)
-    best_rfc = grid_search.best_estimator_
+    # Grid search for Random Forest
+    best_rfc, best_params_rfc, best_score_rfc = grid_search_cross_val(RandomForestClassifier(random_state=42), param_grid_rfc, X, y, cv=cv_folds)
 
-    # Evaluate the best model on test set
-    y_pred = best_rfc.predict(X_test_scaled)
-    acc = accuracy_score(y_test, y_pred)
+    print(f"Best Random Forest {best_params_rfc}, CV Accuracy: {best_score_rfc:.4f}")
 
-    # Print results
-    print(f"Best Random Forest Model: {grid_search.best_params_}, Test Accuracy: {acc:.4f}")
-
-    # Return best model and accuracy
     return {
         "best_rfc": best_rfc,
-        "accuracy": acc
+        "cv_accuracy_rfc": best_score_rfc
     }
 
 
 
+def inner_loop(features_df, label_column="label", cv_folds=5):
+    """
+    Performs an inner-loop search over feature preprocessing configurations,
+    trains SVM and RFC models, and selects the best-performing model.
 
-def inner_loop():
-    return
+    Args:
+        features_df (pd.DataFrame): DataFrame containing features and labels.
+        label_column (str): Name of the classification label column.
+        cv_folds (int): Number of cross-validation folds.
 
+    Returns:
+        tuple:
+            - best_model (sklearn estimator): The best-performing model.
+            - best_score (float): The best cross-validation accuracy score.
+    """
+    best_model = None
+    best_score = 0
+    feature_elimination_steps = ['normalize', 'eliminate', 'winnow']
+    feature_elimination_combos = [set(combo) for i in range(len(feature_elimination_steps) + 1) 
+                                  for combo in combinations(feature_elimination_steps, i)]
+
+    for feature_elimination_combo in feature_elimination_combos:
+        # Generate feature-transformed dataset
+        features_transformed = features_df.copy()
+
+        # Apply normalization if selected
+        normalize_modes = ['center', 'scale', 'both'] if 'normalize' in feature_elimination_combo else [None]
+        for mode in normalize_modes:
+            transformed_data = features_transformed.copy()
+
+            if mode:
+                transformed_data = site_wise_normalization(transformed_data, mode=mode)
+            if 'eliminate' in feature_elimination_combo:
+                transformed_data = site_predictability_feature_elimination(transformed_data)
+            if 'winnow' in feature_elimination_combo:
+                transformed_data = winnow_feature_selection(transformed_data)
+
+            # Train and evaluate SVM models
+            svm_results = svm_train(transformed_data, label_column=label_column, cv_folds=cv_folds)
+            best_svm_model, best_svm_score = (
+                svm_results["best_linear_svc"] if svm_results["cv_accuracy_linear"] > svm_results["cv_accuracy_rbf"]
+                else svm_results["best_rbf_svc"]
+            ), max(svm_results["cv_accuracy_linear"], svm_results["cv_accuracy_rbf"])
+
+            # Train and evaluate RFC model
+            rfc_results = rfc_train(transformed_data, label_column=label_column, cv_folds=cv_folds)
+            best_rfc_model, best_rfc_score = rfc_results["best_rfc"], rfc_results["cv_accuracy_rfc"]
+
+            # Select the best model
+            for model, score in [(best_svm_model, best_svm_score), (best_rfc_model, best_rfc_score)]:
+                if score > best_score:
+                    best_model, best_score = model, score
+                    
 
 def outer_loop():
     features_csv_path = "/Users/isaacbevers/sensein/b2ai-wrapper/b2ai-data/bridge2ai-voice-corpus-3/derived/static_features.csv"
@@ -400,7 +379,7 @@ def outer_loop():
     get_features_df_with_site(
         features_csv_path=features_csv_path, participants_tsv_path=participants_tsv_path
     )
-
+    
     return
 
 
