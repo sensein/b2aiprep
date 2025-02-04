@@ -216,6 +216,17 @@ def wav_to_features(
     return all_features
 
 
+def extract_features_sequentially(
+    bids_dir_path: Path,
+    transcription_model_size: str = "tiny",
+    with_sensitive: bool = True
+):
+    audio_paths = get_audio_paths(bids_dir_path=bids_dir_path)
+    audio_paths = sorted(audio_paths, key=lambda wave_file: wave_file["size"] )
+    for audio_file in audio_paths:
+        extract_single(audio_file["path"], transcription_model_size, with_sensitive)
+
+
 def extract_features_workflow(
     bids_dir_path: Path,
     transcription_model_size: str = "tiny",

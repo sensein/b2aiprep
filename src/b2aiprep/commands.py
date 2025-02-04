@@ -47,7 +47,7 @@ from tqdm import tqdm
 
 from pyarrow.parquet import SortingColumn
 from b2aiprep.prepare.bids import get_audio_paths, redcap_to_bids, validate_bids_folder
-from b2aiprep.prepare.prepare import extract_features_workflow, validate_bids_data, clean_phenotype_data
+from b2aiprep.prepare.prepare import extract_features_workflow, extract_features_sequentially,validate_bids_data, clean_phenotype_data
 from b2aiprep.prepare.reproschema_to_redcap import parse_survey, parse_audio
 
 
@@ -111,6 +111,7 @@ def redcap2bids(
 @click.option("-a", "--address", type=str, default=None, show_default=True)
 @click.option("-p", "--percentile", type=int, default=100, show_default=True)
 @click.option("-s", "--subject_id", type=str, default=None, show_default=True)
+@click.option("--is_sequential", type=bool, default=False, show_default=True)
 def prepare_bids(
     bids_dir_path,
     redcap_csv_path,
@@ -125,6 +126,7 @@ def prepare_bids(
     address,
     percentile,
     subject_id,
+    is_sequential
 ):
     """Organizes the data into a BIDS-like directory structure and extracts audio features.
 
@@ -154,6 +156,7 @@ def prepare_bids(
         address: Dask scheduler address for distributed processing. If provided, uses Dask instead of concurrent.futures
         percentile: Percentile threshold for processing. Use to process subset of data
         subject_id: Specific subject ID to process. If provided, only processes this subject
+        is_sequential: Specifies whether to extract audio features sequentially
     """
     if cache is None:
         cache = Path(bids_dir_path).parent / "b2aiprep_cache"
@@ -164,18 +167,25 @@ def prepare_bids(
         _LOGGER.info("Data organization complete.")
 
     _LOGGER.info("Beginning audio feature extraction...")
-    extract_features_workflow(
-        Path(bids_dir_path),
-        transcription_model_size=transcription_model_size,
-        n_cores=n_cores,
-        with_sensitive=with_sensitive,
-        overwrite=overwrite,
-        cache_dir=cache,
-        plugin="dask" if address is not None else "cf",
-        address=address,
-        percentile=percentile,
-        subject_id=subject_id,
-    )
+
+    if(is_sequential):
+        extract_features_sequentially(
+            Path(bids_dir_path),
+            transcription_model_size=transcription_model_size, 
+            with_sensitive=with_sensitive)
+    else:
+        extract_features_workflow(
+            Path(bids_dir_path),
+            transcription_model_size=transcription_model_size,
+            n_cores=n_cores,
+            with_sensitive=with_sensitive,
+            overwrite=overwrite,
+            cache_dir=cache,
+            plugin="dask" if address is not None else "cf",
+            address=address,
+            percentile=percentile,
+            subject_id=subject_id,
+        )
     _LOGGER.info("Audio feature extraction complete.")
 
     if validate:

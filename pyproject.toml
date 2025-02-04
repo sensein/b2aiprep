@@ -21,7 +21,7 @@ classifiers = [
 ]
 requires-python = ">=3.10, <3.13"
 dependencies = [
-    "senselab~=0.22.0",
+    "senselab~=0.28.0",
     "matplotlib>=3.8.3",
     "fhir.resources==7.1.0",
     "streamlit",

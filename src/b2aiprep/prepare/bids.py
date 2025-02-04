@@ -229,8 +229,9 @@ def get_df_of_repeat_instrument(df: DataFrame, instrument: Instrument) -> pd.Dat
     """
 
     columns = instrument.get_columns()
-    idx = df["redcap_repeat_instrument"] == instrument.text
+    
 
+    idx = df["redcap_repeat_instrument"] == instrument.text
     columns_present = [c for c in columns if c in df.columns]
     dff = df.loc[idx, columns_present].copy()
     if len(columns_present) < len(columns):
@@ -424,12 +425,12 @@ def output_participant_data_to_fhir(
     recording_instrument = get_instrument_for_name("recordings")
 
     sessions_df = pd.DataFrame(columns=session_instrument.columns)
+
     # validated questionnaires are asked per session
     for session in participant["sessions"]:
         sessions_row = {key: session[key] for key in session_instrument.columns}
         sessions_df = pd.concat([sessions_df, pd.DataFrame([sessions_row])], ignore_index=True)
         session_id = session["session_id"]
-
         # TODO: prepare a session resource to use as the encounter reference for
         # each session questionnaire
         session_path = subject_path / f"ses-{session_id}"
@@ -552,7 +553,6 @@ def construct_tsv_from_json(
 
     # Filter column labels to only include those that exist in the DataFrame
     valid_columns = [col for col in column_labels if col in df.columns]
-
     if not valid_columns:
         raise ValueError("No valid columns found in DataFrame that match JSON file")
 
@@ -680,7 +680,6 @@ def redcap_to_bids(
     # In this case, repeat instruments are not necessarily repeatedly collected.
     # Rather they are entries that correspond with specific activities.
     repeat_instruments: t.List[RepeatInstrument] = list(RepeatInstrument.__members__.values())
-
     # we use the RepeatInstrument values to create a dict that maps the instrument
     # record_id: dictionary where keys=column names and values=values for that record_id
     # i.e. we end up with dataframe_dicts = {
@@ -692,7 +691,6 @@ def redcap_to_bids(
     dataframe_dicts: t.Dict[RepeatInstrument, pd.DataFrame] = {}
     for repeat_instrument in repeat_instruments:
         instrument = repeat_instrument.value
-
         # load in the df based on the instrument
         questionnaire_df = get_df_of_repeat_instrument(df, instrument)
         _LOGGER.info(f"Number of {instrument.name} entries: {len(questionnaire_df)}")
@@ -759,7 +757,7 @@ def redcap_to_bids(
                     session[key] = None
                 else:
                     session[key] = df_by_session_id[session_id]
-
+    
     # participants is a list of dictionaries; each dictionary has the same RedCap fields
     # but it respects the nesting / hierarchy present in the original data collection
     # TODO: maybe this warning should go in the main function
