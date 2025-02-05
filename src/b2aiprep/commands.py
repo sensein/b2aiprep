@@ -796,7 +796,7 @@ def reproschema_to_redcap(audio_dir, survey_file, redcap_csv, participant_group)
             "session_status": ["Completed"],
             "session_is_control_participant": ["No"],
             "session_duration": ["0.0"],
-            "session_site": ["Sickkids"]})
+            "session_site": ["SickKids"]})
         merged_questionnaire_data += [session_df]
         subject_count += 1
 
@@ -822,7 +822,7 @@ def reproschema_to_redcap(audio_dir, survey_file, redcap_csv, participant_group)
             "session_status": "Completed",
             "session_is_control_participant": "No",
             "session_duration": 0.0,
-            "session_site": "Sickkids"}
+            "session_site": "SickKids"}
         merged_csv.append(audio_session_dict)
 
         audio_list = []
@@ -836,11 +836,9 @@ def reproschema_to_redcap(audio_dir, survey_file, redcap_csv, participant_group)
 
     merged_df = [survey_df, audio_df]
     output_df = pd.concat(merged_df, ignore_index=True)
-
-    all_columns_path = "b2aiprep/src/b2aiprep/prepare/resources/all_columns.json"
-
-    with open(all_columns_path, 'r') as file:
-        all_columns = json.load(file)
+    
+    all_columns_path = resources.files("b2aiprep").joinpath("prepare", "resources", "all_columns.json")
+    all_columns = json.load(all_columns_path.open())
     
     columns_to_add = [col for col in all_columns if col not in output_df.columns]
     new_df = pd.DataFrame(columns=columns_to_add)
