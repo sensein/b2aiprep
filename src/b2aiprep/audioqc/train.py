@@ -139,13 +139,14 @@ def site_predictability_feature_elimination(
     return features_df.drop(columns=features_to_remove)
 
 
-def winnow_feature_selection(features_df, snr_threshold=1.0):
+def winnow_feature_selection(features_df, snr_threshold=1.0, min_features_to_keep=MIN_FEATURES_TO_KEEP):
     """
     Perform Winnow-based feature selection using ExtraTreesClassifier.
 
     Args:
         features_df (pd.DataFrame): DataFrame containing features along with 'site', 'participant', and 'task' columns.
         snr_threshold (float): Minimum SNR threshold for feature retention.
+        min_features_to_keep (int): Minimum number of features to retain.
 
     Returns:
         pd.DataFrame: DataFrame with retained features and original metadata columns.
@@ -176,16 +177,26 @@ def winnow_feature_selection(features_df, snr_threshold=1.0):
     snr = feature_importances / random_feature_importance
 
     # Select features where SNR exceeds the threshold
-    selected_features = feature_names[snr > snr_threshold].tolist()
+    features_to_keep = feature_names[snr > snr_threshold].tolist()
 
     # Avoid including the synthetic "random_noise" feature
-    if "random_noise" in selected_features:
-        selected_features.remove("random_noise")
+    if "random_noise" in features_to_keep:
+        features_to_keep.remove("random_noise")
 
-    print(f"Removed {X.shape[1] - len(selected_features)} low-SNR features.")
+    # Ensure at least min_features_to_keep are retained
+    if len(features_to_keep) < min_features_to_keep:
+        # Sort features by their SNR in descending order
+        sorted_features = [f for f, s in sorted(zip(feature_names, snr), key=lambda x: x[1], reverse=True)]
+        # Exclude the "random_noise" feature from the sorted list
+        sorted_features = [f for f in sorted_features if f != "random_noise"]
+        # Select the top features to meet the minimum requirement
+        features_to_keep = sorted_features[:min_features_to_keep]
+
+    print(f"Retained {len(features_to_keep)} features after applying SNR threshold and minimum feature constraint.")
 
     # Return the original DataFrame with only selected features and metadata columns
-    return features_df[metadata_columns + selected_features]
+    return features_df[metadata_columns + features_to_keep]
+
 
 
 def add_random_labels(
@@ -356,15 +367,15 @@ def inner_loop(features_df, label_column="label", cv_folds=5):
     """
     best_model = None
     best_score = 0
-    feature_elimination_steps = ["normalize", "eliminate", "winnow"]
-    feature_elimination_combos = [
+    preprocessing_steps = ["normalize", "eliminate", "winnow"]
+    preprocessing_combos = [
         set(combo)
-        for i in range(len(feature_elimination_steps) + 1)
-        for combo in combinations(feature_elimination_steps, i)
+        for i in range(len(preprocessing_steps) + 1)
+        for combo in combinations(preprocessing_steps, i)
     ]
-    feature_elimination_combos = [set(["eliminate"])]
+    preprocessing_combos = [set(["eliminate", "winnow"])]
 
-    for feature_elimination_combo in feature_elimination_combos:
+    for feature_elimination_combo in preprocessing_combos:
         # Generate feature-transformed dataset
         features_transformed = features_df.copy()
 
