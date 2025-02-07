@@ -432,7 +432,8 @@ def inner_loop(features_df, label_column="label", cv_folds=10):
 def outer_loop(features_csv_path, participants_tsv_path, label_column="label", cv_folds=5):
     """Performs an outer-loop cross-validation process using a leave-one-site-out (LoSo) approach.
     Trains models using the inner loop, selects the best-performing model across all site folds,
-    and then trains a new model with the best hyperparameters on all data.
+    and then trains a new model with the best hyperparameters on all data, applying the same
+    preprocessing steps that led to the best model.
 
     Args:
         features_csv_path (str): Path to the features CSV file.
@@ -464,7 +465,9 @@ def outer_loop(features_csv_path, participants_tsv_path, label_column="label", c
         test_df = features_df[features_df["site"] == site].copy()
 
         # Train model using the inner loop (now also returning best steps)
-        best_fold_model, best_fold_score, best_fold_steps = inner_loop(train_df, label_column, cv_folds)
+        best_fold_model, best_fold_score, best_fold_steps = inner_loop(
+            train_df, label_column, cv_folds
+        )
 
         # Evaluate the best model on the test set
         X_test, y_test = preprocess_data(test_df, label_column=label_column)
@@ -487,12 +490,28 @@ def outer_loop(features_csv_path, participants_tsv_path, label_column="label", c
         f"and preprocessing steps {best_preprocessing_steps}"
     )
 
-    # Train a new model on all data using the best hyperparameters
+    # Apply the best preprocessing steps to the entire dataset
+    best_perm, best_mode = best_preprocessing_steps
+    features_transformed = features_df.copy()
+
+    # If there's a chosen mode (e.g., "center"), apply site-wise normalization
+    if best_mode:
+        features_transformed = site_wise_normalization(features_transformed, mode=best_mode)
+
+    # If "eliminate" was in the best permutation, apply site predictability feature elimination
+    if "eliminate" in best_perm:
+        features_transformed = site_predictability_feature_elimination(features_transformed)
+
+    # If "winnow" was in the best permutation, apply winnow feature selection
+    if "winnow" in best_perm:
+        features_transformed = winnow_feature_selection(features_transformed)
+
+    # Preprocess and train a new model on all data using the best hyperparameters
     best_model_class = type(best_inner_model)
     best_model_params = best_inner_model.get_params()
     final_model = best_model_class(**best_model_params)
 
-    X_all, y_all = preprocess_data(features_df)
+    X_all, y_all = preprocess_data(features_transformed, label_column=label_column)
     final_model.fit(X_all, y_all)
 
     # Optionally evaluate on external dataset if desired
