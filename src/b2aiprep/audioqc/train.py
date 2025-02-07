@@ -386,7 +386,7 @@ def inner_loop(features_df, label_column="label", cv_folds=5):
         for combination in combinations(preprocessing_steps, r)
         for permutation in permutations(combination)
     ]
-
+    preprocessing_permutations = [set(["normalize"])]
     for preprocessing_permutation in preprocessing_permutations:
         # Generate feature-transformed dataset
         features_transformed = features_df.copy()
@@ -395,6 +395,7 @@ def inner_loop(features_df, label_column="label", cv_folds=5):
         normalize_modes = (
             ["center", "scale", "both"] if "normalize" in preprocessing_permutation else [None]
         )
+        normalize_modes = ["center"]
         for mode in normalize_modes:
             transformed_data = features_transformed.copy()
 
@@ -473,9 +474,11 @@ def outer_loop(features_csv_path, participants_tsv_path, label_column="label", c
         )
         best_inner_loop_models.append((best_fold_model, best_model_score))
 
-    # Select the best model across all sites
-    best_inner_model = max(best_inner_loop_models, key=lambda x: x[1])[0]
-    logger.info(f"Best model selected from inner loop: {best_inner_model}")
+    # Select the best model and its score across all sites
+    best_inner_model, best_model_score = max(best_inner_loop_models, key=lambda x: x[1])
+    print(
+        f"Best model selected from inner loop: {best_inner_model} with a score of {best_model_score:.4f}"
+    )
 
     # Perform cross-validation across all sites with the best model
     final_model = cross_validation_across_sites(
