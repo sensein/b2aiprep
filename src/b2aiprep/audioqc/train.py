@@ -268,29 +268,9 @@ def preprocess_data(features_df, label_column="label"):
     return X_scaled, y
 
 
-def grid_search_cross_val(model, param_grid, X, y, cv=5):
+def svm_train(X, y, cv_folds=5):
     """
-    Performs Grid Search with Cross-Validation for hyperparameter tuning.
-
-    Args:
-        model (sklearn estimator): The machine learning model to tune.
-        param_grid (dict): Dictionary with hyperparameter options.
-        X (pd.DataFrame or np.array): Feature matrix.
-        y (pd.Series or np.array): Labels.
-        cv (int, optional): Number of cross-validation folds (default: 5).
-
-    Returns:
-        best_model: The best model found during grid search.
-        best_params (dict): Best hyperparameters found.
-        best_score (float): Best cross-validation accuracy score.
-    """
-    grid_search = GridSearchCV(model, param_grid, cv=cv, scoring="accuracy", n_jobs=-1)
-    grid_search.fit(X, y)
-    return grid_search.best_estimator_, grid_search.best_params_, grid_search.best_score_
-
-
-def svm_train(X, y, cv_folds=10):
-    """Trains and evaluates Support Vector Machines (SVM) using cross-validation.
+    Trains and evaluates Support Vector Machines (SVM) using cross-validation.
 
     Args:
         X (pd.DataFrame or np.array): Feature matrix.
@@ -298,33 +278,36 @@ def svm_train(X, y, cv_folds=10):
         cv_folds (int): Number of cross-validation folds.
 
     Returns:
-        dict: Contains best models (linear and RBF) and their cross-validation scores.
+        dict: Contains the best SVM model and its cross-validation score.
     """
-    param_grid_lin = {"C": [0.1, 1, 10, 100]}
-    param_grid_rbf = {"C": [0.1, 1, 10, 100], "gamma": [0.001, 0.01, 0.1, 1]}
+    param_grid_svm = {
+        "C": [1e-3, 1e-2, 1e-1, 1, 10, 100, 1000],  # Regularization parameter
+        "kernel": ["linear", "poly", "rbf", "sigmoid"],  # Kernel types
+        "gamma": ["scale", "auto", 1e-3, 1e-2, 1e-1, 1, 10],  # Kernel coefficient
+        "degree": [2, 3, 4, 5, 6],  # Degree for 'poly' kernel
+        "coef0": [0.0, 0.1, 0.5, 1.0],  # Independent term in kernel function
+        "class_weight": [None, "balanced"],  # Class weight options
+    }
 
-    best_svc_lin, best_params_lin, best_score_lin = grid_search_cross_val(
-        SVC(kernel="linear"), param_grid_lin, X, y, cv=cv_folds
-    )
-    best_svc_rbf, best_params_rbf, best_score_rbf = grid_search_cross_val(
-        SVC(kernel="rbf"), param_grid_rbf, X, y, cv=cv_folds
-    )
+    grid_search = GridSearchCV(SVC(), param_grid_svm, cv=cv_folds, scoring="accuracy", n_jobs=-1)
+    grid_search.fit(X, y)
 
-    logger.info(f"Best Linear SVC {best_params_lin}, CV Accuracy: {best_score_lin:.4f}")
-    logger.info(f"Best RBF SVC {best_params_rbf}, CV Accuracy: {best_score_rbf:.4f}")
+    best_svc = grid_search.best_estimator_
+    best_params = grid_search.best_params_
+    best_score = grid_search.best_score_
+
+    logger.info(f"Best SVM {best_params}, CV Accuracy: {best_score:.4f}")
 
     return {
-        "best_linear_svc": best_svc_lin,
-        "best_params_lin": best_params_lin,
-        "best_rbf_svc": best_svc_rbf,
-        "best_params_rbf": best_params_rbf,
-        "cv_accuracy_linear": best_score_lin,
-        "cv_accuracy_rbf": best_score_rbf,
+        "best_svc": best_svc,
+        "best_params": best_params,
+        "cv_accuracy": best_score,
     }
 
 
-def rfc_train(X, y, cv_folds=10):
-    """Trains and evaluates a Random Forest Classifier (RFC) using cross-validation.
+def rfc_train(X, y, cv_folds=5):
+    """
+    Trains and evaluates a Random Forest Classifier (RFC) using cross-validation.
 
     Args:
         X (pd.DataFrame or np.array): Feature matrix.
@@ -335,22 +318,35 @@ def rfc_train(X, y, cv_folds=10):
         dict: Contains the best RFC model and its cross-validation score.
     """
     param_grid_rfc = {
-        "n_estimators": [50, 100, 200],
-        "max_depth": [None, 10, 20],
-        "min_samples_split": [2, 5, 10],
-        "min_samples_leaf": [1, 2, 4],
+        "n_estimators": [100, 200, 500, 1000],  # Number of trees
+        "max_depth": [None, 10, 20, 30, 40, 50],  # Maximum depth of trees
+        "min_samples_split": [2, 5, 10, 20],  # Minimum samples required to split a node
+        "min_samples_leaf": [1, 2, 4, 8],  # Minimum samples required at each leaf node
+        "max_features": ["auto", "sqrt", "log2", None],  # Number of features to consider for split
+        "bootstrap": [True, False],  # Whether bootstrap samples are used
+        "criterion": ["gini", "entropy"],  # Function to measure the quality of a split
+        "class_weight": [None, "balanced", "balanced_subsample"],  # Class weight options
     }
 
-    best_rfc, best_params_rfc, best_score_rfc = grid_search_cross_val(
-        RandomForestClassifier(random_state=42), param_grid_rfc, X, y, cv=cv_folds
+    grid_search = GridSearchCV(
+        RandomForestClassifier(random_state=42),
+        param_grid_rfc,
+        cv=cv_folds,
+        scoring="accuracy",
+        n_jobs=-1,
     )
+    grid_search.fit(X, y)
 
-    logger.info(f"Best Random Forest {best_params_rfc}, CV Accuracy: {best_score_rfc:.4f}")
+    best_rfc = grid_search.best_estimator_
+    best_params = grid_search.best_params_
+    best_score = grid_search.best_score_
+
+    logger.info(f"Best Random Forest {best_params}, CV Accuracy: {best_score:.4f}")
 
     return {
         "best_rfc": best_rfc,
-        "best_params_rfc": best_params_rfc,
-        "cv_accuracy_rfc": best_score_rfc,
+        "best_params": best_params,
+        "cv_accuracy": best_score,
     }
 
 
@@ -392,7 +388,7 @@ def train_final_model(
     return final_model
 
 
-def inner_loop(features_df, label_column="label", cv_folds=10):
+def inner_loop(features_df, label_column="label", cv_folds=5):
     """Performs an inner-loop search over feature preprocessing configurations,
     trains SVM and RFC models, and selects the best-performing model.
 
