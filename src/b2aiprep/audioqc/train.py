@@ -289,7 +289,7 @@ def grid_search_cross_val(model, param_grid, X, y, cv=5):
     return grid_search.best_estimator_, grid_search.best_params_, grid_search.best_score_
 
 
-def svm_train(X, y, cv_folds=5):
+def svm_train(X, y, cv_folds=10):
     """Trains and evaluates Support Vector Machines (SVM) using cross-validation.
 
     Args:
@@ -300,7 +300,6 @@ def svm_train(X, y, cv_folds=5):
     Returns:
         dict: Contains best models (linear and RBF) and their cross-validation scores.
     """
-
     param_grid_lin = {"C": [0.1, 1, 10, 100]}
     param_grid_rbf = {"C": [0.1, 1, 10, 100], "gamma": [0.001, 0.01, 0.1, 1]}
 
@@ -316,13 +315,15 @@ def svm_train(X, y, cv_folds=5):
 
     return {
         "best_linear_svc": best_svc_lin,
+        "best_params_lin": best_params_lin,
         "best_rbf_svc": best_svc_rbf,
+        "best_params_rbf": best_params_rbf,
         "cv_accuracy_linear": best_score_lin,
         "cv_accuracy_rbf": best_score_rbf,
     }
 
 
-def rfc_train(X, y, cv_folds=5):
+def rfc_train(X, y, cv_folds=10):
     """Trains and evaluates a Random Forest Classifier (RFC) using cross-validation.
 
     Args:
@@ -333,7 +334,6 @@ def rfc_train(X, y, cv_folds=5):
     Returns:
         dict: Contains the best RFC model and its cross-validation score.
     """
-
     param_grid_rfc = {
         "n_estimators": [50, 100, 200],
         "max_depth": [None, 10, 20],
@@ -347,7 +347,11 @@ def rfc_train(X, y, cv_folds=5):
 
     logger.info(f"Best Random Forest {best_params_rfc}, CV Accuracy: {best_score_rfc:.4f}")
 
-    return {"best_rfc": best_rfc, "cv_accuracy_rfc": best_score_rfc}
+    return {
+        "best_rfc": best_rfc,
+        "best_params_rfc": best_params_rfc,
+        "cv_accuracy_rfc": best_score_rfc,
+    }
 
 
 def inner_loop(features_df, label_column="label", cv_folds=10):
