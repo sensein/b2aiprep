@@ -1,6 +1,6 @@
 """Implements functions for training AudioQC using a process similar to MRIQC."""
 
-from itertools import combinations
+from itertools import combinations, permutations
 
 import numpy as np
 import pandas as pd
@@ -9,6 +9,7 @@ from sklearn.impute import SimpleImputer
 from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
+from tqdm import tqdm
 
 MIN_FEATURES_TO_KEEP = 64  # in feature selection
 
@@ -139,7 +140,9 @@ def site_predictability_feature_elimination(
     return features_df.drop(columns=features_to_remove)
 
 
-def winnow_feature_selection(features_df, snr_threshold=1.0, min_features_to_keep=MIN_FEATURES_TO_KEEP):
+def winnow_feature_selection(
+    features_df, snr_threshold=1.0, min_features_to_keep=MIN_FEATURES_TO_KEEP
+):
     """
     Perform Winnow-based feature selection using ExtraTreesClassifier.
 
@@ -186,17 +189,20 @@ def winnow_feature_selection(features_df, snr_threshold=1.0, min_features_to_kee
     # Ensure at least min_features_to_keep are retained
     if len(features_to_keep) < min_features_to_keep:
         # Sort features by their SNR in descending order
-        sorted_features = [f for f, s in sorted(zip(feature_names, snr), key=lambda x: x[1], reverse=True)]
+        sorted_features = [
+            f for f, s in sorted(zip(feature_names, snr), key=lambda x: x[1], reverse=True)
+        ]
         # Exclude the "random_noise" feature from the sorted list
         sorted_features = [f for f in sorted_features if f != "random_noise"]
         # Select the top features to meet the minimum requirement
         features_to_keep = sorted_features[:min_features_to_keep]
 
-    print(f"Retained {len(features_to_keep)} features after applying SNR threshold and minimum feature constraint.")
+    print(
+        f"Retained {len(features_to_keep)} features after applying SNR threshold and minimum feature constraint."
+    )
 
     # Return the original DataFrame with only selected features and metadata columns
     return features_df[metadata_columns + features_to_keep]
-
 
 
 def add_random_labels(
@@ -368,29 +374,31 @@ def inner_loop(features_df, label_column="label", cv_folds=5):
     best_model = None
     best_score = 0
     preprocessing_steps = ["normalize", "eliminate", "winnow"]
-    preprocessing_combos = [
-        set(combo)
-        for i in range(len(preprocessing_steps) + 1)
-        for combo in combinations(preprocessing_steps, i)
-    ]
-    preprocessing_combos = [set(["eliminate", "winnow"])]
 
-    for feature_elimination_combo in preprocessing_combos:
+    # Generate all permutations of all non-empty combinations of preprocessing_steps
+    preprocessing_permutations = [
+        list(permutation)
+        for r in range(1, len(preprocessing_steps) + 1)
+        for combination in combinations(preprocessing_steps, r)
+        for permutation in permutations(combination)
+    ]
+
+    for preprocessing_permutation in preprocessing_permutations:
         # Generate feature-transformed dataset
         features_transformed = features_df.copy()
 
         # Apply normalization if selected
         normalize_modes = (
-            ["center", "scale", "both"] if "normalize" in feature_elimination_combo else [None]
+            ["center", "scale", "both"] if "normalize" in preprocessing_permutation else [None]
         )
         for mode in normalize_modes:
             transformed_data = features_transformed.copy()
 
             if mode:
                 transformed_data = site_wise_normalization(transformed_data, mode=mode)
-            if "eliminate" in feature_elimination_combo:
+            if "eliminate" in preprocessing_permutation:
                 transformed_data = site_predictability_feature_elimination(transformed_data)
-            if "winnow" in feature_elimination_combo:
+            if "winnow" in preprocessing_permutation:
                 transformed_data = winnow_feature_selection(transformed_data)
 
             # Train and evaluate SVM models
@@ -441,7 +449,7 @@ def outer_loop(features_csv_path, participants_tsv_path, label_column="label", c
     best_inner_loop_models = []
 
     # Leave-One-Site-Out (LoSo) Cross-Validation
-    for site in unique_sites:
+    for site in tqdm(unique_sites):
         print(f"Processing site: {site}")
 
         # Hold out one site as the test set
