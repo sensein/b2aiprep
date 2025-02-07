@@ -16,6 +16,7 @@ logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 MIN_FEATURES_TO_KEEP = 64  # in feature selection
+DEBUG_MODE = True
 
 
 def get_features_df_with_site(features_csv_path, participants_tsv_path):
@@ -231,29 +232,39 @@ def add_random_labels(
     return df
 
 
-def preprocess_data(features_df, label_column="label"):
+def preprocess_data(features_df, preprocessing_steps, label_column="label"):
     """
-    Preprocesses data by handling missing values and standardizing features.
+    Preprocesses data by handling missing values, standardizing features,
+    and applying specified preprocessing steps.
 
     Args:
         features_df (pd.DataFrame): DataFrame containing features and labels.
+        preprocessing_steps (tuple): A tuple containing:
+            - A set of preprocessing steps to apply ({"normalize", "eliminate", "winnow"}).
+            - A string representing the normalization mode ("center", "scale", "both", or None).
         label_column (str): Name of the column containing classification labels (default: "label").
 
     Returns:
         X_scaled (np.array): Scaled feature matrix.
         y (pd.Series): Labels.
-        scaler (StandardScaler): Scaler used for transformations.
     """
     if label_column not in features_df.columns:
         raise ValueError(f"Label column '{label_column}' not found in DataFrame.")
 
-    # Separate features and labels
-    X = features_df.drop(columns=[label_column, "site", "participant", "task"])
-    X = X[:15]  # TODO REMOVE
+    transformed_data = features_df.copy()
+    X = transformed_data.drop(columns=[label_column, "site", "participant", "task"])
+    y = transformed_data[label_column]
     logger.info(X.shape)
-    y = features_df[label_column]
-    y = y[:15]  # TODO REMOVE
     logger.info(y.shape)
+
+    steps, mode = preprocessing_steps  # Extract preprocessing steps and mode
+    for step in steps:
+        if step == "normalize" and mode:
+            transformed_data = site_wise_normalization(transformed_data, mode=mode)
+        elif step == "eliminate":
+            transformed_data = site_predictability_feature_elimination(transformed_data)
+        elif step == "winnow":
+            transformed_data = winnow_feature_selection(transformed_data)
 
     # Handle missing values
     if X.isna().sum().sum() > 0:
@@ -317,16 +328,27 @@ def rfc_train(X, y, cv_folds=5):
     Returns:
         dict: Contains the best RFC model and its cross-validation score.
     """
-    param_grid_rfc = {
-        "n_estimators": [100, 200, 500, 1000],  # Number of trees
-        "max_depth": [None, 10, 20, 30, 40, 50],  # Maximum depth of trees
-        "min_samples_split": [2, 5, 10, 20],  # Minimum samples required to split a node
-        "min_samples_leaf": [1, 2, 4, 8],  # Minimum samples required at each leaf node
-        "max_features": ["auto", "sqrt", "log2", None],  # Number of features to consider for split
-        "bootstrap": [True, False],  # Whether bootstrap samples are used
-        "criterion": ["gini", "entropy"],  # Function to measure the quality of a split
-        "class_weight": [None, "balanced", "balanced_subsample"],  # Class weight options
-    }
+    if DEBUG_MODE:
+        param_grid_rfc = {
+            "n_estimators": [10, 50],  # Small number of trees for speed
+            "max_depth": [5, 10],  # Shallow trees
+            "min_samples_split": [2, 5],  # Default and stricter split
+            "min_samples_leaf": [1, 2],  # Default and slightly larger leaf nodes
+            "max_features": ["sqrt"],  # Use sqrt of features (default)
+            "bootstrap": [True],  # Bootstrap only
+            "criterion": ["gini"],  # Default impurity criterion
+        }
+    else:
+        param_grid_rfc = {
+            "n_estimators": [100, 200, 500, 1000],
+            "max_depth": [None, 10, 20, 30, 40, 50],
+            "min_samples_split": [2, 5, 10, 20],
+            "min_samples_leaf": [1, 2, 4, 8],
+            "max_features": ["auto", "sqrt", "log2", None],
+            "bootstrap": [True, False],
+            "criterion": ["gini", "entropy"],
+            "class_weight": [None, "balanced", "balanced_subsample"],
+        }
 
     grid_search = GridSearchCV(
         RandomForestClassifier(random_state=42),
@@ -366,10 +388,10 @@ def train_final_model(
     Returns:
         final_model: The newly trained model using the best hyperparameters on all data.
     """
-    best_perm, best_mode = best_preprocessing_steps
+    best_steps, best_mode = best_preprocessing_steps
     features_transformed = features_df.copy()
 
-    for step in best_perm:
+    for step in best_steps:
         if step == "normalize" and best_mode:
             features_transformed = site_wise_normalization(features_transformed, mode=best_mode)
         elif step == "eliminate":
@@ -407,14 +429,16 @@ def inner_loop(features_df, label_column="label", cv_folds=5):
     best_score = 0
     best_steps = None
 
-    preprocessing_steps = ["normalize", "eliminate", "winnow"]
-    preprocessing_permutations = [
-        list(permutation)
-        for r in range(1, len(preprocessing_steps) + 1)
-        for combination in combinations(preprocessing_steps, r)
-        for permutation in permutations(combination)
-    ]
-    preprocessing_permutations = [set(["normalize"])]
+    if DEBUG_MODE:
+        preprocessing_permutations = [["winnow"]]  # Only use winnow in debug mode
+    else:
+        preprocessing_steps = ["normalize", "eliminate", "winnow"]
+        preprocessing_permutations = [
+            list(permutation)
+            for r in range(1, len(preprocessing_steps) + 1)
+            for combination in combinations(preprocessing_steps, r)
+            for permutation in permutations(combination)
+        ]
 
     for preprocessing_permutation in preprocessing_permutations:
         features_transformed = features_df.copy()
@@ -423,7 +447,6 @@ def inner_loop(features_df, label_column="label", cv_folds=5):
         normalize_modes = (
             ["center", "scale", "both"] if "normalize" in preprocessing_permutation else [None]
         )
-        normalize_modes = ["center"]
 
         for mode in normalize_modes:
             transformed_data = features_transformed.copy()
