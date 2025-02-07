@@ -427,7 +427,7 @@ def outer_loop(features_csv_path, participants_tsv_path, label_column="label", c
     """
     Performs an outer-loop cross-validation process using a leave-one-site-out (LoSo) approach.
     Trains models using the inner loop, selects the best-performing model across all site folds,
-    and performs cross-validation across all sites with the best model.
+    and then trains a new model with the best hyperparameters on all data.
 
     Args:
         features_csv_path (str): Path to the features CSV file.
@@ -436,7 +436,7 @@ def outer_loop(features_csv_path, participants_tsv_path, label_column="label", c
         cv_folds (int): Number of cross-validation folds.
 
     Returns:
-        best_final_model: The best-trained model after evaluation.
+        best_final_model: The newly trained model using the best hyperparameters on all data.
     """
     # Load dataset with site labels
     features_df = get_features_df_with_site(
@@ -460,8 +460,7 @@ def outer_loop(features_csv_path, participants_tsv_path, label_column="label", c
         best_fold_model, best_fold_score = inner_loop(train_df, label_column, cv_folds)
 
         # Evaluate the best model on the test set
-        X_test = test_df.drop(columns=[label_column, "site", "participant", "task"])
-        y_test = test_df[label_column]
+        X_test, y_test = preprocess_data(test_df)
         best_model_score = best_fold_model.score(X_test, y_test)
 
         print(
@@ -475,13 +474,16 @@ def outer_loop(features_csv_path, participants_tsv_path, label_column="label", c
         f"Best model selected from inner loop: {best_inner_model} with a score of {best_model_score:.4f}"
     )
 
-    # Perform cross-validation across all sites with the best model
-    final_model = cross_validation_across_sites(
-        features_df, best_inner_model, label_column, cv_folds
-    )
+    # Train a new model on all data using the best hyperparameters
+    best_model_class = type(best_inner_model)
+    best_model_params = best_inner_model.get_params()
+    final_model = best_model_class(**best_model_params)
 
-    # Evaluate the final model on an external dataset
-    external_dataset_evaluation(final_model)
+    X_all, y_all = preprocess_data(features_df)
+    final_model.fit(X_all, y_all)
+
+    # Optionally evaluate on external dataset if desired
+    # external_dataset_evaluation(final_model)
 
     return final_model
 
