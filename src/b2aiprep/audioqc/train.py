@@ -1,5 +1,5 @@
 """Implements functions for training AudioQC using a process similar to MRIQC."""
-
+import logging
 from itertools import combinations, permutations
 
 import numpy as np
@@ -10,6 +10,9 @@ from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 from tqdm import tqdm
+
+logging.basicConfig(level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
 MIN_FEATURES_TO_KEEP = 64  # in feature selection
 
@@ -95,7 +98,7 @@ def site_predictability_feature_elimination(
 
     # Get initial accuracy (baseline)
     initial_accuracy = site_predictor.score(X_test, y_test)
-    print(f"Initial site prediction accuracy: {initial_accuracy:.2f}")
+    logger.info(f"Initial site prediction accuracy: {initial_accuracy:.2f}")
 
     # Define stopping criteria
     num_sites = len(np.unique(y))  # Number of unique sites
@@ -123,19 +126,19 @@ def site_predictability_feature_elimination(
 
         # Get new accuracy
         new_accuracy = site_predictor.score(X_test, y_test)
-        print(
+        logger.info(
             f"Iteration {iteration + 1}: Removed '{most_predictive_feature}', New Accuracy: {new_accuracy:.2f}"
         )
 
         # Check stopping conditions
         if new_accuracy <= chance_level:
-            print("Stopping: Site prediction accuracy is near chance level.")
+            logger.info("Stopping: Site prediction accuracy is near chance level.")
             break
 
         iteration += 1
 
-    print(f"Final removed features: {features_to_remove}")
-    print(f"Final site prediction accuracy: {new_accuracy:.2f}")
+    logger.info(f"Final removed features: {features_to_remove}")
+    logger.info(f"Final site prediction accuracy: {new_accuracy:.2f}")
 
     return features_df.drop(columns=features_to_remove)
 
@@ -197,7 +200,7 @@ def winnow_feature_selection(
         # Select the top features to meet the minimum requirement
         features_to_keep = sorted_features[:min_features_to_keep]
 
-    print(
+    logger.info(
         f"Retained {len(features_to_keep)} features after applying SNR threshold and minimum feature constraint."
     )
 
@@ -246,14 +249,14 @@ def preprocess_data(features_df, label_column="label"):
     # Separate features and labels
     X = features_df.drop(columns=[label_column, "site", "participant", "task"])
     X = X[:15]  # TODO REMOVE
-    print(X.shape)
+    logger.info(X.shape)
     y = features_df[label_column]
     y = y[:15]  # TODO REMOVE
-    print(y.shape)
+    logger.info(y.shape)
 
     # Handle missing values
     if X.isna().sum().sum() > 0:
-        print("Warning: NaN values detected. Imputing missing values...")
+        logger.info("Warning: NaN values detected. Imputing missing values...")
         imputer = SimpleImputer(strategy="mean")
         X = pd.DataFrame(imputer.fit_transform(X), columns=X.columns)
 
@@ -313,8 +316,8 @@ def svm_train(features_df, label_column="label", cv_folds=5):
         SVC(kernel="rbf"), param_grid_rbf, X, y, cv=cv_folds
     )
 
-    print(f"Best Linear SVC {best_params_lin}, CV Accuracy: {best_score_lin:.4f}")
-    print(f"Best RBF SVC {best_params_rbf}, CV Accuracy: {best_score_rbf:.4f}")
+    logger.info(f"Best Linear SVC {best_params_lin}, CV Accuracy: {best_score_lin:.4f}")
+    logger.info(f"Best RBF SVC {best_params_rbf}, CV Accuracy: {best_score_rbf:.4f}")
 
     return {
         "best_linear_svc": best_svc_lin,
@@ -351,7 +354,7 @@ def rfc_train(features_df, label_column="label", cv_folds=5):
         RandomForestClassifier(random_state=42), param_grid_rfc, X, y, cv=cv_folds
     )
 
-    print(f"Best Random Forest {best_params_rfc}, CV Accuracy: {best_score_rfc:.4f}")
+    logger.info(f"Best Random Forest {best_params_rfc}, CV Accuracy: {best_score_rfc:.4f}")
 
     return {"best_rfc": best_rfc, "cv_accuracy_rfc": best_score_rfc}
 
@@ -450,7 +453,7 @@ def outer_loop(features_csv_path, participants_tsv_path, label_column="label", c
 
     # Leave-One-Site-Out (LoSo) Cross-Validation
     for site in tqdm(unique_sites):
-        print(f"Processing site: {site}")
+        logger.info(f"Processing site: {site}")
 
         # Hold out one site as the test set
         train_df = features_df[features_df["site"] != site].copy()
@@ -459,12 +462,12 @@ def outer_loop(features_csv_path, participants_tsv_path, label_column="label", c
         # Train model using the inner loop
         best_fold_model, best_fold_score = inner_loop(train_df, label_column, cv_folds)
 
-        print(f"Best model for site {site}: {best_fold_model} with CV score {best_fold_score:.4f}")
+        logger.info(f"Best model for site {site}: {best_fold_model} with CV score {best_fold_score:.4f}")
         best_inner_loop_models.append((best_fold_model, best_fold_score))
 
     # Select the best model across all sites
     best_inner_model = max(best_inner_loop_models, key=lambda x: x[1])[0]
-    print(f"Best model selected from inner loop: {best_inner_model}")
+    logger.info(f"Best model selected from inner loop: {best_inner_model}")
 
     # Perform cross-validation across all sites with the best model
     final_model = cross_validation_across_sites(
