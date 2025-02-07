@@ -388,25 +388,12 @@ def train_final_model(
     Returns:
         final_model: The newly trained model using the best hyperparameters on all data.
     """
-    best_steps, best_mode = best_preprocessing_steps
-    features_transformed = features_df.copy()
+    X_all, y_all = preprocess_data(features_df, best_preprocessing_steps, label_column=label_column)
 
-    for step in best_steps:
-        if step == "normalize" and best_mode:
-            features_transformed = site_wise_normalization(features_transformed, mode=best_mode)
-        elif step == "eliminate":
-            features_transformed = site_predictability_feature_elimination(features_transformed)
-        elif step == "winnow":
-            features_transformed = winnow_feature_selection(features_transformed)
-
-    # Preprocess and train a new model on all data using the best hyperparameters
     best_model_class = type(best_inner_model)
     best_model_params = best_inner_model.get_params()
     final_model = best_model_class(**best_model_params)
-
-    X_all, y_all = preprocess_data(features_transformed, label_column=label_column)
     final_model.fit(X_all, y_all)
-
     return final_model
 
 
@@ -430,7 +417,7 @@ def inner_loop(features_df, label_column="label", cv_folds=5):
     best_steps = None
 
     if DEBUG_MODE:
-        preprocessing_permutations = [["winnow"]]  # Only use winnow in debug mode
+        preprocessing_permutations = [["winnow"]]
     else:
         preprocessing_steps = ["normalize", "eliminate", "winnow"]
         preprocessing_permutations = [
@@ -441,39 +428,24 @@ def inner_loop(features_df, label_column="label", cv_folds=5):
         ]
 
     for preprocessing_permutation in preprocessing_permutations:
-        features_transformed = features_df.copy()
-
-        # Apply normalization if selected
+        # If "normalize" is chosen, try each of its modes; otherwise just [None]
         normalize_modes = (
             ["center", "scale", "both"] if "normalize" in preprocessing_permutation else [None]
         )
 
         for mode in normalize_modes:
-            transformed_data = features_transformed.copy()
-            if mode:
-                transformed_data = site_wise_normalization(transformed_data, mode=mode)
-            if "eliminate" in preprocessing_permutation:
-                transformed_data = site_predictability_feature_elimination(transformed_data)
-            if "winnow" in preprocessing_permutation:
-                transformed_data = winnow_feature_selection(transformed_data)
-
-            # Preprocess data and train models
-            X, y = preprocess_data(transformed_data, label_column=label_column)
+            # Preprocess data once with the chosen steps/mode
+            X, y = preprocess_data(
+                features_df.copy(), (preprocessing_permutation, mode), label_column=label_column
+            )
 
             svm_results = svm_train(X, y, cv_folds=cv_folds)
             rfc_results = rfc_train(X, y, cv_folds=cv_folds)
 
-            # Extract best models and their scores
-            best_svm_model = svm_results["best_svc"]
-            best_svm_score = svm_results["cv_accuracy"]
-
-            best_rfc_model = rfc_results["best_rfc"]
-            best_rfc_score = rfc_results["cv_accuracy"]
-
-            # Track the best model and store the preprocessing steps
+            # Compare SVM vs. RFC
             for model, score in [
-                (best_svm_model, best_svm_score),
-                (best_rfc_model, best_rfc_score),
+                (svm_results["best_svc"], svm_results["cv_accuracy"]),
+                (rfc_results["best_rfc"], rfc_results["cv_accuracy"]),
             ]:
                 if score > best_score:
                     best_model = model
