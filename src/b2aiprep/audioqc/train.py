@@ -414,7 +414,6 @@ def inner_loop(features_df, label_column="label", cv_folds=5):
         for combination in combinations(preprocessing_steps, r)
         for permutation in permutations(combination)
     ]
-    # Example override: only "normalize" for demonstration
     preprocessing_permutations = [set(["normalize"])]
 
     for preprocessing_permutation in preprocessing_permutations:
@@ -424,7 +423,6 @@ def inner_loop(features_df, label_column="label", cv_folds=5):
         normalize_modes = (
             ["center", "scale", "both"] if "normalize" in preprocessing_permutation else [None]
         )
-        # Example override: only "center" for demonstration
         normalize_modes = ["center"]
 
         for mode in normalize_modes:
@@ -436,18 +434,18 @@ def inner_loop(features_df, label_column="label", cv_folds=5):
             if "winnow" in preprocessing_permutation:
                 transformed_data = winnow_feature_selection(transformed_data)
 
-            # Preprocess once, then pass X, y to trainers
+            # Preprocess data and train models
             X, y = preprocess_data(transformed_data, label_column=label_column)
 
             svm_results = svm_train(X, y, cv_folds=cv_folds)
-            best_svm_model, best_svm_score = (
-                svm_results["best_linear_svc"]
-                if svm_results["cv_accuracy_linear"] > svm_results["cv_accuracy_rbf"]
-                else svm_results["best_rbf_svc"]
-            ), max(svm_results["cv_accuracy_linear"], svm_results["cv_accuracy_rbf"])
-
             rfc_results = rfc_train(X, y, cv_folds=cv_folds)
-            best_rfc_model, best_rfc_score = rfc_results["best_rfc"], rfc_results["cv_accuracy_rfc"]
+
+            # Extract best models and their scores
+            best_svm_model = svm_results["best_svc"]
+            best_svm_score = svm_results["cv_accuracy"]
+
+            best_rfc_model = rfc_results["best_rfc"]
+            best_rfc_score = rfc_results["cv_accuracy"]
 
             # Track the best model and store the preprocessing steps
             for model, score in [
@@ -457,7 +455,6 @@ def inner_loop(features_df, label_column="label", cv_folds=5):
                 if score > best_score:
                     best_model = model
                     best_score = score
-                    # Store both the set of steps and the normalization mode used
                     best_steps = (preprocessing_permutation, mode)
 
     return best_model, best_score, best_steps
@@ -498,7 +495,7 @@ def outer_loop(features_csv_path, participants_tsv_path, label_column="label", c
         train_df = features_df[features_df["site"] != site].copy()
         test_df = features_df[features_df["site"] == site].copy()
 
-        # Train model using the inner loop (now also returning best steps)
+        # Train model using the inner loop
         best_fold_model, best_fold_score, best_fold_steps = inner_loop(
             train_df, label_column, cv_folds
         )
@@ -514,7 +511,7 @@ def outer_loop(features_csv_path, participants_tsv_path, label_column="label", c
         )
         best_inner_loop_models.append((best_fold_model, best_fold_score, best_fold_steps))
 
-    # Select the best model and its score across all sites
+    # Select the best model across all sites
     best_inner_model, best_model_score, best_preprocessing_steps = max(
         best_inner_loop_models, key=lambda x: x[1]
     )
@@ -525,6 +522,7 @@ def outer_loop(features_csv_path, participants_tsv_path, label_column="label", c
         f"and preprocessing steps {best_preprocessing_steps}"
     )
 
+    # Train the final model using the best preprocessing steps
     final_model = train_final_model(
         features_df, best_inner_model, best_preprocessing_steps, label_column
     )
