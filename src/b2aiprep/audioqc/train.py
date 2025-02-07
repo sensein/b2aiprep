@@ -291,14 +291,23 @@ def svm_train(X, y, cv_folds=5):
     Returns:
         dict: Contains the best SVM model and its cross-validation score.
     """
-    param_grid_svm = {
-        "C": [1e-3, 1e-2, 1e-1, 1, 10, 100, 1000],  # Regularization parameter
-        "kernel": ["linear", "poly", "rbf", "sigmoid"],  # Kernel types
-        "gamma": ["scale", "auto", 1e-3, 1e-2, 1e-1, 1, 10],  # Kernel coefficient
-        "degree": [2, 3, 4, 5, 6],  # Degree for 'poly' kernel
-        "coef0": [0.0, 0.1, 0.5, 1.0],  # Independent term in kernel function
-        "class_weight": [None, "balanced"],  # Class weight options
-    }
+    if DEBUG_MODE:
+        # Minimal search space for speed
+        param_grid_svm = {
+            "C": [1e-3, 1e-2],  # Very small range for quick tests
+            "kernel": ["linear", "rbf"],
+            "gamma": ["scale", "auto"],
+        }
+    else:
+        # Larger search space
+        param_grid_svm = {
+            "C": [1e-3, 1e-2, 1e-1, 1, 10, 100, 1000],
+            "kernel": ["linear", "poly", "rbf", "sigmoid"],
+            "gamma": ["scale", "auto", 1e-3, 1e-2, 1e-1, 1, 10],
+            "degree": [2, 3, 4, 5, 6],
+            "coef0": [0.0, 0.1, 0.5, 1.0],
+            "class_weight": [None, "balanced"],
+        }
 
     grid_search = GridSearchCV(SVC(), param_grid_svm, cv=cv_folds, scoring="accuracy", n_jobs=-1)
     grid_search.fit(X, y)
