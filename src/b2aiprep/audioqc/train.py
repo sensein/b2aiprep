@@ -10,6 +10,8 @@ from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 
+MIN_FEATURES_TO_KEEP = 64  # in feature selection
+
 
 def get_features_df_with_site(features_csv_path, participants_tsv_path):
     features_df = pd.read_csv(features_csv_path)
@@ -33,7 +35,7 @@ def site_wise_normalization(features_df, site_column="site", mode="both"):
     Returns:
         pd.DataFrame: Normalized feature DataFrame.
     """
-    non_feature_cols = ['label', 'site', 'participant', 'task']
+    non_feature_cols = ["label", "site", "participant", "task"]
     features_only = features_df.drop(columns=non_feature_cols)
     normalized_features = features_only.copy()
 
@@ -56,17 +58,20 @@ def site_wise_normalization(features_df, site_column="site", mode="both"):
     return normalized_features
 
 
-def site_predictability_feature_elimination(features_df, max_features_to_remove=67):
+def site_predictability_feature_elimination(
+    features_df, max_features_to_remove=100, min_features_to_keep=MIN_FEATURES_TO_KEEP
+):
     """
     Implements Site-Predictability-Based Feature Elimination using ExtraTreesClassifier.
 
     This function iteratively removes the most predictive feature for site classification
-    until either the classifier's performance is near chance level or a predefined
-    maximum number of features is removed.
+    until either the classifier's performance is near chance level, a predefined
+    maximum number of features is removed, or the minimum number of features to keep is reached.
 
     Args:
         features_df (pd.DataFrame): DataFrame containing features along with 'site', 'participant', and 'task' columns.
-        max_features_to_remove (int, optional): Maximum number of features to remove. Default is 67 (131 - 64).
+        max_features_to_remove (int, optional): Maximum number of features to remove. Default is 67.
+        min_features_to_keep (int, optional): Minimum number of features to retain. Default is 64.
 
     Returns:
         tuple:
@@ -99,7 +104,7 @@ def site_predictability_feature_elimination(features_df, max_features_to_remove=
     features_to_remove = []
     iteration = 0
 
-    while iteration < max_features_to_remove:
+    while iteration < max_features_to_remove and len(X_train.columns) > min_features_to_keep:
         # Get feature importances
         feature_importances = site_predictor.feature_importances_
 
@@ -147,7 +152,7 @@ def winnow_feature_selection(features_df, snr_threshold=1.0):
     """
     # Preserve metadata columns
     metadata_columns = ["site", "participant", "task", "label"]
-    
+
     # Extract feature matrix and target labels
     X = features_df.drop(columns=metadata_columns)
     y = features_df["site"]
@@ -222,11 +227,11 @@ def preprocess_data(features_df, label_column="label"):
         raise ValueError(f"Label column '{label_column}' not found in DataFrame.")
 
     # Separate features and labels
-    X = features_df.drop(columns=[label_column, 'site', 'participant', 'task'])
-    X = X[:15] # TODO REMOVE
+    X = features_df.drop(columns=[label_column, "site", "participant", "task"])
+    X = X[:15]  # TODO REMOVE
     print(X.shape)
     y = features_df[label_column]
-    y = y[:15] # TODO REMOVE
+    y = y[:15]  # TODO REMOVE
     print(y.shape)
 
     # Handle missing values
@@ -357,7 +362,7 @@ def inner_loop(features_df, label_column="label", cv_folds=5):
         for i in range(len(feature_elimination_steps) + 1)
         for combo in combinations(feature_elimination_steps, i)
     ]
-    feature_elimination_combos = [set(["winnow"])]
+    feature_elimination_combos = [set(["eliminate"])]
 
     for feature_elimination_combo in feature_elimination_combos:
         # Generate feature-transformed dataset
@@ -453,7 +458,7 @@ def outer_loop(features_csv_path, participants_tsv_path, label_column="label", c
     return final_model
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     features_csv_path = "/Users/isaacbevers/sensein/b2ai-wrapper/b2ai-data/bridge2ai-voice-corpus-3/derived/static_features.csv"
     participants_tsv_path = "/Users/isaacbevers/sensein/b2ai-wrapper/b2ai-data/bridge2ai-voice-corpus-3/bids/bids/participants.tsv"
     outer_loop(features_csv_path=features_csv_path, participants_tsv_path=participants_tsv_path)
