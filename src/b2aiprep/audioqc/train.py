@@ -367,10 +367,12 @@ def inner_loop(features_df, label_column="label", cv_folds=10):
         tuple:
             - best_model (sklearn estimator): The best-performing model.
             - best_score (float): The best cross-validation accuracy score.
+            - best_steps (tuple): The preprocessing steps that yielded the best-performing model.
     """
-
     best_model = None
     best_score = 0
+    best_steps = None
+
     preprocessing_steps = ["normalize", "eliminate", "winnow"]
     preprocessing_permutations = [
         list(permutation)
@@ -413,19 +415,22 @@ def inner_loop(features_df, label_column="label", cv_folds=10):
             rfc_results = rfc_train(X, y, cv_folds=cv_folds)
             best_rfc_model, best_rfc_score = rfc_results["best_rfc"], rfc_results["cv_accuracy_rfc"]
 
+            # Track the best model and store the preprocessing steps
             for model, score in [
                 (best_svm_model, best_svm_score),
                 (best_rfc_model, best_rfc_score),
             ]:
                 if score > best_score:
-                    best_model, best_score = model, score
+                    best_model = model
+                    best_score = score
+                    # Store both the set of steps and the normalization mode used
+                    best_steps = (preprocessing_permutation, mode)
 
-    return best_model, best_score
+    return best_model, best_score, best_steps
 
 
 def outer_loop(features_csv_path, participants_tsv_path, label_column="label", cv_folds=5):
-    """
-    Performs an outer-loop cross-validation process using a leave-one-site-out (LoSo) approach.
+    """Performs an outer-loop cross-validation process using a leave-one-site-out (LoSo) approach.
     Trains models using the inner loop, selects the best-performing model across all site folds,
     and then trains a new model with the best hyperparameters on all data.
 
@@ -436,7 +441,9 @@ def outer_loop(features_csv_path, participants_tsv_path, label_column="label", c
         cv_folds (int): Number of cross-validation folds.
 
     Returns:
-        best_final_model: The newly trained model using the best hyperparameters on all data.
+        tuple:
+            - best_final_model: The newly trained model using the best hyperparameters on all data.
+            - best_preprocessing_steps (tuple): The preprocessing steps used by the best model.
     """
     # Load dataset with site labels
     features_df = get_features_df_with_site(
@@ -456,22 +463,28 @@ def outer_loop(features_csv_path, participants_tsv_path, label_column="label", c
         train_df = features_df[features_df["site"] != site].copy()
         test_df = features_df[features_df["site"] == site].copy()
 
-        # Train model using the inner loop
-        best_fold_model, best_fold_score = inner_loop(train_df, label_column, cv_folds)
+        # Train model using the inner loop (now also returning best steps)
+        best_fold_model, best_fold_score, best_fold_steps = inner_loop(train_df, label_column, cv_folds)
 
         # Evaluate the best model on the test set
-        X_test, y_test = preprocess_data(test_df)
+        X_test, y_test = preprocess_data(test_df, label_column=label_column)
         best_model_score = best_fold_model.score(X_test, y_test)
 
         print(
-            f"Best model for site {site}: {best_fold_model} with test score {best_model_score:.4f}"
+            f"Best model for site {site}: {best_fold_model} "
+            f"with test score {best_model_score:.4f} "
+            f"and preprocessing steps {best_fold_steps}"
         )
-        best_inner_loop_models.append((best_fold_model, best_model_score))
+        best_inner_loop_models.append((best_fold_model, best_fold_score, best_fold_steps))
 
     # Select the best model and its score across all sites
-    best_inner_model, best_model_score = max(best_inner_loop_models, key=lambda x: x[1])
+    best_inner_model, best_model_score, best_preprocessing_steps = max(
+        best_inner_loop_models, key=lambda x: x[1]
+    )
     print(
-        f"Best model selected from inner loop: {best_inner_model} with a score of {best_model_score:.4f}"
+        f"Best model selected from inner loop: {best_inner_model} "
+        f"with a score of {best_model_score:.4f} "
+        f"and preprocessing steps {best_preprocessing_steps}"
     )
 
     # Train a new model on all data using the best hyperparameters
@@ -485,7 +498,7 @@ def outer_loop(features_csv_path, participants_tsv_path, label_column="label", c
     # Optionally evaluate on external dataset if desired
     # external_dataset_evaluation(final_model)
 
-    return final_model
+    return final_model, best_preprocessing_steps
 
 
 if __name__ == "__main__":
