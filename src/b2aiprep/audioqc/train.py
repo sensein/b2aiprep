@@ -20,7 +20,7 @@ def get_features_df_with_site(features_csv_path, participants_tsv_path):
     return features_df
 
 
-def site_wise_normalization(features_df, features, site_column="site", mode="both"):
+def site_wise_normalization(features_df, site_column="site", mode="both"):
     """
     Perform site-wise normalization using median and interquartile range (IQR).
 
@@ -33,11 +33,13 @@ def site_wise_normalization(features_df, features, site_column="site", mode="bot
     Returns:
         pd.DataFrame: Normalized feature DataFrame.
     """
-    normalized_features = features.copy()
+    non_feature_cols = ['label', 'site', 'participant', 'task']
+    features_only = features_df.drop(columns=non_feature_cols)
+    normalized_features = features_only.copy()
 
     for site in features_df[site_column].unique():
         site_mask = features_df[site_column] == site
-        site_data = features[site_mask]
+        site_data = features_only[site_mask]
 
         median = site_data.median()
         iqr = site_data.quantile(0.75) - site_data.quantile(0.25)  # Interquartile Range (IQR)
@@ -48,6 +50,8 @@ def site_wise_normalization(features_df, features, site_column="site", mode="bot
             normalized_features.loc[site_mask] = site_data / iqr
         elif mode == "both":
             normalized_features.loc[site_mask] = (site_data - median) / iqr
+
+    normalized_features[non_feature_cols] = features_df[non_feature_cols]
 
     return normalized_features
 
@@ -71,7 +75,7 @@ def site_predictability_feature_elimination(features_df, max_features_to_remove=
             - pd.DataFrame: DataFrame with remaining features after elimination.
     """
     # Drop non-AQM columns (site labels are the target variable)
-    X = features_df.drop(columns=["site", "participant", "task"])
+    X = features_df.drop(columns=["site", "participant", "task", "label"])
     y = features_df["site"]
 
     # Split data into train and test sets
@@ -127,22 +131,26 @@ def site_predictability_feature_elimination(features_df, max_features_to_remove=
     print(f"Final removed features: {features_to_remove}")
     print(f"Final site prediction accuracy: {new_accuracy:.2f}")
 
-    return features_to_remove, new_accuracy, X_train
+    return features_df.drop(columns=features_to_remove)
 
 
-def winnow_feature_selection(X, y, snr_threshold=1.0):
+def winnow_feature_selection(features_df, snr_threshold=1.0):
     """
     Perform Winnow-based feature selection using ExtraTreesClassifier.
 
     Args:
-        X (pd.DataFrame): Feature matrix.
-        y (pd.Series): Target labels (e.g., site).
+        features_df (pd.DataFrame): DataFrame containing features along with 'site', 'participant', and 'task' columns.
         snr_threshold (float): Minimum SNR threshold for feature retention.
 
     Returns:
-        pd.DataFrame: Reduced feature set with low SNR features removed.
+        pd.DataFrame: DataFrame with retained features and original metadata columns.
     """
-    X = X.copy()
+    # Preserve metadata columns
+    metadata_columns = ["site", "participant", "task", "label"]
+    
+    # Extract feature matrix and target labels
+    X = features_df.drop(columns=metadata_columns)
+    y = features_df["site"]
 
     # Generate a synthetic random feature (noise)
     np.random.seed(42)
@@ -165,13 +173,14 @@ def winnow_feature_selection(X, y, snr_threshold=1.0):
     # Select features where SNR exceeds the threshold
     selected_features = feature_names[snr > snr_threshold].tolist()
 
-    # Avoid ValueError: Only remove "random_noise" if it exists
+    # Avoid including the synthetic "random_noise" feature
     if "random_noise" in selected_features:
         selected_features.remove("random_noise")
 
     print(f"Removed {X.shape[1] - len(selected_features)} low-SNR features.")
 
-    return X[selected_features]
+    # Return the original DataFrame with only selected features and metadata columns
+    return features_df[metadata_columns + selected_features]
 
 
 def add_random_labels(
@@ -213,8 +222,12 @@ def preprocess_data(features_df, label_column="label"):
         raise ValueError(f"Label column '{label_column}' not found in DataFrame.")
 
     # Separate features and labels
-    X = features_df.drop(columns=[label_column])
+    X = features_df.drop(columns=[label_column, 'site', 'participant', 'task'])
+    X = X[:15] # TODO REMOVE
+    print(X.shape)
     y = features_df[label_column]
+    y = y[:15] # TODO REMOVE
+    print(y.shape)
 
     # Handle missing values
     if X.isna().sum().sum() > 0:
@@ -344,6 +357,7 @@ def inner_loop(features_df, label_column="label", cv_folds=5):
         for i in range(len(feature_elimination_steps) + 1)
         for combo in combinations(feature_elimination_steps, i)
     ]
+    feature_elimination_combos = [set(["winnow"])]
 
     for feature_elimination_combo in feature_elimination_combos:
         # Generate feature-transformed dataset
@@ -382,6 +396,7 @@ def inner_loop(features_df, label_column="label", cv_folds=5):
             ]:
                 if score > best_score:
                     best_model, best_score = model, score
+    return (best_model, best_score)
 
 
 def outer_loop(features_csv_path, participants_tsv_path, label_column="label", cv_folds=5):
@@ -403,6 +418,8 @@ def outer_loop(features_csv_path, participants_tsv_path, label_column="label", c
     features_df = get_features_df_with_site(
         features_csv_path=features_csv_path, participants_tsv_path=participants_tsv_path
     )
+
+    features_df = add_random_labels(features_df)
 
     unique_sites = features_df["site"].unique()
     best_inner_loop_models = []
@@ -434,3 +451,9 @@ def outer_loop(features_csv_path, participants_tsv_path, label_column="label", c
     external_dataset_evaluation(final_model)
 
     return final_model
+
+
+if __name__=="__main__":
+    features_csv_path = "/Users/isaacbevers/sensein/b2ai-wrapper/b2ai-data/bridge2ai-voice-corpus-3/derived/static_features.csv"
+    participants_tsv_path = "/Users/isaacbevers/sensein/b2ai-wrapper/b2ai-data/bridge2ai-voice-corpus-3/bids/bids/participants.tsv"
+    outer_loop(features_csv_path=features_csv_path, participants_tsv_path=participants_tsv_path)
