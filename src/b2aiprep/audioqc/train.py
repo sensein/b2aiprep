@@ -1,4 +1,5 @@
 """Implements functions for training AudioQC using a process similar to MRIQC."""
+
 import logging
 from itertools import combinations, permutations
 
@@ -429,7 +430,7 @@ def inner_loop(features_df, label_column="label", cv_folds=5):
 def outer_loop(features_csv_path, participants_tsv_path, label_column="label", cv_folds=5):
     """
     Performs an outer-loop cross-validation process using a leave-one-site-out (LoSo) approach.
-    Trains models using the inner loop, selects the best-performing model across all sites,
+    Trains models using the inner loop, selects the best-performing model across all site folds,
     and performs cross-validation across all sites with the best model.
 
     Args:
@@ -462,8 +463,15 @@ def outer_loop(features_csv_path, participants_tsv_path, label_column="label", c
         # Train model using the inner loop
         best_fold_model, best_fold_score = inner_loop(train_df, label_column, cv_folds)
 
-        logger.info(f"Best model for site {site}: {best_fold_model} with CV score {best_fold_score:.4f}")
-        best_inner_loop_models.append((best_fold_model, best_fold_score))
+        # Evaluate the best model on the test set
+        X_test = test_df.drop(columns=[label_column, "site", "participant", "task"])
+        y_test = test_df[label_column]
+        best_model_score = best_fold_model.score(X_test, y_test)
+
+        print(
+            f"Best model for site {site}: {best_fold_model} with test score {best_model_score:.4f}"
+        )
+        best_inner_loop_models.append((best_fold_model, best_model_score))
 
     # Select the best model across all sites
     best_inner_model = max(best_inner_loop_models, key=lambda x: x[1])[0]
