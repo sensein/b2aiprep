@@ -265,7 +265,7 @@ def preprocess_data(features_df, label_column="label"):
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
 
-    return X_scaled, y, scaler
+    return X_scaled, y
 
 
 def grid_search_cross_val(model, param_grid, X, y, cv=5):
@@ -289,30 +289,24 @@ def grid_search_cross_val(model, param_grid, X, y, cv=5):
     return grid_search.best_estimator_, grid_search.best_params_, grid_search.best_score_
 
 
-def svm_train(features_df, label_column="label", cv_folds=5):
-    """
-    Trains and evaluates Support Vector Machines (SVM) using cross-validation.
+def svm_train(X, y, cv_folds=5):
+    """Trains and evaluates Support Vector Machines (SVM) using cross-validation.
 
     Args:
-        features_df (pd.DataFrame): DataFrame containing features and label column.
-        label_column (str): Name of the classification label column.
+        X (pd.DataFrame or np.array): Feature matrix.
+        y (pd.Series or np.array): Labels.
         cv_folds (int): Number of cross-validation folds.
 
     Returns:
-        dict: Contains best models and cross-validation scores.
+        dict: Contains best models (linear and RBF) and their cross-validation scores.
     """
-    X, y, _ = preprocess_data(features_df, label_column)
 
-    # Define hyperparameter grids for linear SVC and RBF SVC
     param_grid_lin = {"C": [0.1, 1, 10, 100]}
     param_grid_rbf = {"C": [0.1, 1, 10, 100], "gamma": [0.001, 0.01, 0.1, 1]}
 
-    # Grid search for Linear SVC
     best_svc_lin, best_params_lin, best_score_lin = grid_search_cross_val(
         SVC(kernel="linear"), param_grid_lin, X, y, cv=cv_folds
     )
-
-    # Grid search for RBF SVC
     best_svc_rbf, best_params_rbf, best_score_rbf = grid_search_cross_val(
         SVC(kernel="rbf"), param_grid_rbf, X, y, cv=cv_folds
     )
@@ -328,21 +322,18 @@ def svm_train(features_df, label_column="label", cv_folds=5):
     }
 
 
-def rfc_train(features_df, label_column="label", cv_folds=5):
-    """
-    Trains and evaluates a Random Forest Classifier (RFC) using cross-validation.
+def rfc_train(X, y, cv_folds=5):
+    """Trains and evaluates a Random Forest Classifier (RFC) using cross-validation.
 
     Args:
-        features_df (pd.DataFrame): DataFrame containing features and label column.
-        label_column (str): Name of the classification label column.
+        X (pd.DataFrame or np.array): Feature matrix.
+        y (pd.Series or np.array): Labels.
         cv_folds (int): Number of cross-validation folds.
 
     Returns:
-        dict: Contains best RFC model and its cross-validation score.
+        dict: Contains the best RFC model and its cross-validation score.
     """
-    X, y, _ = preprocess_data(features_df, label_column)
 
-    # Define hyperparameter grid for Random Forest
     param_grid_rfc = {
         "n_estimators": [50, 100, 200],
         "max_depth": [None, 10, 20],
@@ -350,7 +341,6 @@ def rfc_train(features_df, label_column="label", cv_folds=5):
         "min_samples_leaf": [1, 2, 4],
     }
 
-    # Grid search for Random Forest
     best_rfc, best_params_rfc, best_score_rfc = grid_search_cross_val(
         RandomForestClassifier(random_state=42), param_grid_rfc, X, y, cv=cv_folds
     )
@@ -360,9 +350,8 @@ def rfc_train(features_df, label_column="label", cv_folds=5):
     return {"best_rfc": best_rfc, "cv_accuracy_rfc": best_score_rfc}
 
 
-def inner_loop(features_df, label_column="label", cv_folds=5):
-    """
-    Performs an inner-loop search over feature preprocessing configurations,
+def inner_loop(features_df, label_column="label", cv_folds=10):
+    """Performs an inner-loop search over feature preprocessing configurations,
     trains SVM and RFC models, and selects the best-performing model.
 
     Args:
@@ -375,30 +364,31 @@ def inner_loop(features_df, label_column="label", cv_folds=5):
             - best_model (sklearn estimator): The best-performing model.
             - best_score (float): The best cross-validation accuracy score.
     """
+
     best_model = None
     best_score = 0
     preprocessing_steps = ["normalize", "eliminate", "winnow"]
-
-    # Generate all permutations of all non-empty combinations of preprocessing_steps
     preprocessing_permutations = [
         list(permutation)
         for r in range(1, len(preprocessing_steps) + 1)
         for combination in combinations(preprocessing_steps, r)
         for permutation in permutations(combination)
     ]
+    # Example override: only "normalize" for demonstration
     preprocessing_permutations = [set(["normalize"])]
+
     for preprocessing_permutation in preprocessing_permutations:
-        # Generate feature-transformed dataset
         features_transformed = features_df.copy()
 
         # Apply normalization if selected
         normalize_modes = (
             ["center", "scale", "both"] if "normalize" in preprocessing_permutation else [None]
         )
+        # Example override: only "center" for demonstration
         normalize_modes = ["center"]
+
         for mode in normalize_modes:
             transformed_data = features_transformed.copy()
-
             if mode:
                 transformed_data = site_wise_normalization(transformed_data, mode=mode)
             if "eliminate" in preprocessing_permutation:
@@ -406,26 +396,27 @@ def inner_loop(features_df, label_column="label", cv_folds=5):
             if "winnow" in preprocessing_permutation:
                 transformed_data = winnow_feature_selection(transformed_data)
 
-            # Train and evaluate SVM models
-            svm_results = svm_train(transformed_data, label_column=label_column, cv_folds=cv_folds)
+            # Preprocess once, then pass X, y to trainers
+            X, y = preprocess_data(transformed_data, label_column=label_column)
+
+            svm_results = svm_train(X, y, cv_folds=cv_folds)
             best_svm_model, best_svm_score = (
                 svm_results["best_linear_svc"]
                 if svm_results["cv_accuracy_linear"] > svm_results["cv_accuracy_rbf"]
                 else svm_results["best_rbf_svc"]
             ), max(svm_results["cv_accuracy_linear"], svm_results["cv_accuracy_rbf"])
 
-            # Train and evaluate RFC model
-            rfc_results = rfc_train(transformed_data, label_column=label_column, cv_folds=cv_folds)
+            rfc_results = rfc_train(X, y, cv_folds=cv_folds)
             best_rfc_model, best_rfc_score = rfc_results["best_rfc"], rfc_results["cv_accuracy_rfc"]
 
-            # Select the best model
             for model, score in [
                 (best_svm_model, best_svm_score),
                 (best_rfc_model, best_rfc_score),
             ]:
                 if score > best_score:
                     best_model, best_score = model, score
-    return (best_model, best_score)
+
+    return best_model, best_score
 
 
 def outer_loop(features_csv_path, participants_tsv_path, label_column="label", cv_folds=5):
