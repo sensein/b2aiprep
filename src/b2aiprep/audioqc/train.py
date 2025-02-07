@@ -433,7 +433,7 @@ def outer_loop(features_csv_path, participants_tsv_path, label_column="label", c
     """Performs an outer-loop cross-validation process using a leave-one-site-out (LoSo) approach.
     Trains models using the inner loop, selects the best-performing model across all site folds,
     and then trains a new model with the best hyperparameters on all data, applying the same
-    preprocessing steps that led to the best model.
+    preprocessing steps that led to the best model in the exact order.
 
     Args:
         features_csv_path (str): Path to the features CSV file.
@@ -490,21 +490,17 @@ def outer_loop(features_csv_path, participants_tsv_path, label_column="label", c
         f"and preprocessing steps {best_preprocessing_steps}"
     )
 
-    # Apply the best preprocessing steps to the entire dataset
+    # Apply the best preprocessing steps to the entire dataset in the exact order
     best_perm, best_mode = best_preprocessing_steps
     features_transformed = features_df.copy()
 
-    # If there's a chosen mode (e.g., "center"), apply site-wise normalization
-    if best_mode:
-        features_transformed = site_wise_normalization(features_transformed, mode=best_mode)
-
-    # If "eliminate" was in the best permutation, apply site predictability feature elimination
-    if "eliminate" in best_perm:
-        features_transformed = site_predictability_feature_elimination(features_transformed)
-
-    # If "winnow" was in the best permutation, apply winnow feature selection
-    if "winnow" in best_perm:
-        features_transformed = winnow_feature_selection(features_transformed)
+    for step in best_perm:
+        if step == "normalize" and best_mode:
+            features_transformed = site_wise_normalization(features_transformed, mode=best_mode)
+        elif step == "eliminate":
+            features_transformed = site_predictability_feature_elimination(features_transformed)
+        elif step == "winnow":
+            features_transformed = winnow_feature_selection(features_transformed)
 
     # Preprocess and train a new model on all data using the best hyperparameters
     best_model_class = type(best_inner_model)
@@ -518,6 +514,7 @@ def outer_loop(features_csv_path, participants_tsv_path, label_column="label", c
     # external_dataset_evaluation(final_model)
 
     return final_model, best_preprocessing_steps
+
 
 
 if __name__ == "__main__":
