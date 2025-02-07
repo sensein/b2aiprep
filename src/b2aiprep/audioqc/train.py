@@ -354,6 +354,44 @@ def rfc_train(X, y, cv_folds=10):
     }
 
 
+def train_final_model(
+    features_df, best_inner_model, best_preprocessing_steps, label_column="label"
+):
+    """
+    Applies the best preprocessing steps to the entire dataset in the exact order
+    and trains a new model on all data using the best hyperparameters.
+
+    Args:
+        features_df (pd.DataFrame): The complete dataset with features and labels.
+        best_inner_model (sklearn estimator): The best-performing model from the inner loop.
+        best_preprocessing_steps (tuple): The preprocessing steps used by the best model.
+        label_column (str): Name of the classification label column.
+
+    Returns:
+        final_model: The newly trained model using the best hyperparameters on all data.
+    """
+    best_perm, best_mode = best_preprocessing_steps
+    features_transformed = features_df.copy()
+
+    for step in best_perm:
+        if step == "normalize" and best_mode:
+            features_transformed = site_wise_normalization(features_transformed, mode=best_mode)
+        elif step == "eliminate":
+            features_transformed = site_predictability_feature_elimination(features_transformed)
+        elif step == "winnow":
+            features_transformed = winnow_feature_selection(features_transformed)
+
+    # Preprocess and train a new model on all data using the best hyperparameters
+    best_model_class = type(best_inner_model)
+    best_model_params = best_inner_model.get_params()
+    final_model = best_model_class(**best_model_params)
+
+    X_all, y_all = preprocess_data(features_transformed, label_column=label_column)
+    final_model.fit(X_all, y_all)
+
+    return final_model
+
+
 def inner_loop(features_df, label_column="label", cv_folds=10):
     """Performs an inner-loop search over feature preprocessing configurations,
     trains SVM and RFC models, and selects the best-performing model.
@@ -484,37 +522,18 @@ def outer_loop(features_csv_path, participants_tsv_path, label_column="label", c
     best_inner_model, best_model_score, best_preprocessing_steps = max(
         best_inner_loop_models, key=lambda x: x[1]
     )
+
     print(
         f"Best model selected from inner loop: {best_inner_model} "
         f"with a score of {best_model_score:.4f} "
         f"and preprocessing steps {best_preprocessing_steps}"
     )
 
-    # Apply the best preprocessing steps to the entire dataset in the exact order
-    best_perm, best_mode = best_preprocessing_steps
-    features_transformed = features_df.copy()
+    final_model = train_final_model(
+        features_df, best_inner_model, best_preprocessing_steps, label_column
+    )
 
-    for step in best_perm:
-        if step == "normalize" and best_mode:
-            features_transformed = site_wise_normalization(features_transformed, mode=best_mode)
-        elif step == "eliminate":
-            features_transformed = site_predictability_feature_elimination(features_transformed)
-        elif step == "winnow":
-            features_transformed = winnow_feature_selection(features_transformed)
-
-    # Preprocess and train a new model on all data using the best hyperparameters
-    best_model_class = type(best_inner_model)
-    best_model_params = best_inner_model.get_params()
-    final_model = best_model_class(**best_model_params)
-
-    X_all, y_all = preprocess_data(features_transformed, label_column=label_column)
-    final_model.fit(X_all, y_all)
-
-    # Optionally evaluate on external dataset if desired
-    # external_dataset_evaluation(final_model)
-
-    return final_model, best_preprocessing_steps
-
+    return final_model
 
 
 if __name__ == "__main__":
