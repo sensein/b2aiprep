@@ -142,6 +142,25 @@ def load_redcap_csv(file_path):
         return None
 
 
+def insert_missing_columns(df: DataFrame) -> DataFrame:
+    """
+    Adds any missing columns to the dataframe.
+
+    Parameters
+    ----------
+    df: DataFrame
+        The DataFrame to update.
+
+    """
+    all_columns_path = files("b2aiprep").joinpath("prepare", "resources", "all_columns.json")
+    all_columns = json.load(all_columns_path.open())
+    columns_to_add = [col for col in all_columns if col not in df.columns]
+    for column in columns_to_add:
+        df[column] = np.nan
+    
+    return df
+
+
 def validate_redcap_df_column_names(df: DataFrame) -> DataFrame:
     """RedCap allows two distinct export formats: raw data or with labels.
     The raw data format exports column names as coded entries, e.g. "record_id".
@@ -661,6 +680,9 @@ def redcap_to_bids(
     # the export process is (2), then manually copy (1) header over (2). so we validate that this
     # manual step has been done here.
     validate_redcap_df_column_names(df)
+
+    # ensures that no columns are missing in the dataframe
+    df = insert_missing_columns(df)
 
     construct_tsv_from_json(  # construct participants.tsv
         df=df,
