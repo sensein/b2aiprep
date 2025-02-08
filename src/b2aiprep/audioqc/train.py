@@ -251,11 +251,10 @@ def preprocess_data(features_df, preprocessing_steps, label_column="label"):
     if label_column not in features_df.columns:
         raise ValueError(f"Label column '{label_column}' not found in DataFrame.")
 
-    transformed_data = features_df.copy()
-    X = transformed_data.drop(columns=[label_column, "site", "participant", "task"])
-    y = transformed_data[label_column]
-    logger.info(X.shape)
-    logger.info(y.shape)
+    if DEBUG_MODE:
+        transformed_data = features_df.groupby("site").head(10).copy().reset_index(drop=True)
+    else:
+        transformed_data = features_df.copy().reset_index(drop=True)
 
     steps, mode = preprocessing_steps  # Extract preprocessing steps and mode
     for step in steps:
@@ -265,6 +264,11 @@ def preprocess_data(features_df, preprocessing_steps, label_column="label"):
             transformed_data = site_predictability_feature_elimination(transformed_data)
         elif step == "winnow":
             transformed_data = winnow_feature_selection(transformed_data)
+
+    X = transformed_data.drop(columns=[label_column, "site", "participant", "task"])
+    y = transformed_data[label_column]
+    logger.info(X.shape)
+    logger.info(y.shape)
 
     # Handle missing values
     if X.isna().sum().sum() > 0:
@@ -294,9 +298,9 @@ def svm_train(X, y, cv_folds=5):
     if DEBUG_MODE:
         # Minimal search space for speed
         param_grid_svm = {
-            "C": [1e-3, 1e-2],  # Very small range for quick tests
-            "kernel": ["linear", "rbf"],
-            "gamma": ["scale", "auto"],
+            "C": [1e-3, 1],
+            "kernel": ["linear"],  # Only one kernel
+            "gamma": ["scale"],  # Single gamma setting
         }
     else:
         # Larger search space
@@ -339,13 +343,13 @@ def rfc_train(X, y, cv_folds=5):
     """
     if DEBUG_MODE:
         param_grid_rfc = {
-            "n_estimators": [10, 50],  # Small number of trees for speed
-            "max_depth": [5, 10],  # Shallow trees
-            "min_samples_split": [2, 5],  # Default and stricter split
-            "min_samples_leaf": [1, 2],  # Default and slightly larger leaf nodes
-            "max_features": ["sqrt"],  # Use sqrt of features (default)
-            "bootstrap": [True],  # Bootstrap only
-            "criterion": ["gini"],  # Default impurity criterion
+            "n_estimators": [10],
+            "max_depth": [5],
+            "min_samples_split": [2],
+            "min_samples_leaf": [1],
+            "max_features": ["sqrt"],
+            "bootstrap": [True],
+            "criterion": ["gini"],
         }
     else:
         param_grid_rfc = {
@@ -496,8 +500,8 @@ def outer_loop(features_csv_path, participants_tsv_path, label_column="label", c
         logger.info(f"Processing site: {site}")
 
         # Hold out one site as the test set
-        train_df = features_df[features_df["site"] != site].copy()
-        test_df = features_df[features_df["site"] == site].copy()
+        train_df = features_df[features_df["site"] != site].copy().reset_index(drop=True)
+        test_df = features_df[features_df["site"] == site].copy().reset_index(drop=True)
 
         # Train model using the inner loop
         best_fold_model, best_fold_score, best_fold_steps = inner_loop(
@@ -505,7 +509,7 @@ def outer_loop(features_csv_path, participants_tsv_path, label_column="label", c
         )
 
         # Evaluate the best model on the test set
-        X_test, y_test = preprocess_data(test_df, label_column=label_column)
+        X_test, y_test = preprocess_data(test_df, best_fold_steps, label_column=label_column)
         best_model_score = best_fold_model.score(X_test, y_test)
 
         print(
@@ -537,4 +541,11 @@ def outer_loop(features_csv_path, participants_tsv_path, label_column="label", c
 if __name__ == "__main__":
     features_csv_path = "/Users/isaacbevers/sensein/b2ai-wrapper/b2ai-data/bridge2ai-voice-corpus-3/derived/static_features.csv"
     participants_tsv_path = "/Users/isaacbevers/sensein/b2ai-wrapper/b2ai-data/bridge2ai-voice-corpus-3/bids/bids/participants.tsv"
-    outer_loop(features_csv_path=features_csv_path, participants_tsv_path=participants_tsv_path)
+    final_model = outer_loop(
+        features_csv_path=features_csv_path, participants_tsv_path=participants_tsv_path
+    )
+    # Save the final model to disk using joblib
+    import joblib
+
+    joblib.dump(final_model, "final_model.joblib")
+    print("Model saved as final_model.joblib")

@@ -15,13 +15,13 @@ For each site (Outer Loop - Leave-One-Site-Out Cross-Validation):
             Split the training data into train/validation folds
             Train the model on the training fold
             Evaluate on the validation fold
-        
+
         Select the best preprocessing/model configuration based on average validation performance
 
     Train the final model with the best hyperparameters & preprocessing on all N-1 training sites
     Evaluate on the held-out site
 512 models
-    
+
 for each site:
     hold out one site
     training data = remaining sites data
@@ -36,7 +36,29 @@ pick the best model across all the possible configurations
 
 
 
+## Overall Training Process:
+```
+For each site (Outer Loop - Leave-One-Site-Out Cross-Validation):
+    Hold out one site as the test set
+    Train on the remaining N-1 sites
 
+    For each hyperparameter configuration (Inner Loop - Grid/Random Search):
+        Select a combination of:
+            - Preprocessing method (normalization + feature selection)
+            - Model type (SVC-lin, SVC-rbf, RFC)
+            - Classifier hyperparameters (C, gamma, tree depth, etc.)
+
+        For each fold in cross-validation (Inner Loop - Cross-Validation):
+            Split the training data into train/validation folds
+            Train the model on the training fold
+            Evaluate on the validation fold
+
+        Select the best preprocessing/model configuration based on average validation performance
+
+    Train the final model with the best hyperparameters & preprocessing on all N-1 training sites
+    Evaluate on the held-out site
+
+```
 
 
 best_inner_loop_models = []
