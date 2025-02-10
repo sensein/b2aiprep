@@ -20,6 +20,7 @@ GENERAL_QUESTIONNAIRES = [
     "alzheimers",
     "parkinsons",
     "als",
+
 ]
 
 AUDIO_TASKS = (
@@ -204,6 +205,64 @@ class RepeatInstrument(Enum):
         text="Participant",
         schema_name="dneuroamyotrophiclateralsclerosisalsschema",
     )
+
+    MEDICAL_CONDITIONS = Instrument(
+        session_id="medical_conditions_schema_session_id",
+        name="medical_conditions",
+        text="medical_conditions",
+        schema_name="medical_conditions",
+    )
+
+    PEDS_VHI10 = Instrument(
+        session_id="peds_vhi_10_schema_session_id",
+        name="pedsvhi10",
+        text="pedsvhi10",
+        schema_name="pedsvhi10",
+    )
+
+    QOL = Instrument(
+        session_id="peds_voice_related_qol_schema_session_id",
+        name="peds_voice_related_qol",
+        text="peds_voice_related_qol",
+        schema_name="peds_voice_related_qol",
+    )
+
+    PHQA = Instrument(
+        session_id="phqa_schema_session_id",
+        name="phqa_schema",
+        text="phqa_schema",
+        schema_name="phqa_schema",
+    )
+
+    PEDS_DEMOGRAPHICS = Instrument(
+        session_id="record_id",
+        name="q_generic_demographics",
+        text="q_generic_demographics",
+        schema_name="q_generic_demographics",
+    )
+
+    PEDS_BASIC_INFO = Instrument(
+        session_id="record_id",
+        name="subjectparticipant_basic_information",
+        text="Participant",
+        schema_name="subjectparticipant_basic_information",
+    )
+
+    PEDS_CONTACT_INFO = Instrument(
+        session_id="record_id",
+        name="subjectparticipant_contact_information",
+        text="subjectparticipant_contact_information",
+        schema_name="subjectparticipant_contact_information",
+    )
+
+    PEDS_OUTCOME_SURVEY = Instrument(
+        session_id="record_id",
+        name="peds_voice_outcome_survey",
+        text="peds_voice_outcome_survey",
+        schema_name="peds_voice_outcome_survey",
+    )
+
+
     # data where the row has a specific repeat instrument, filtered to by the text argument
     SESSION = Instrument(
         session_id="session_id", name="sessions", text="Session", schema_name="sessionschema"
@@ -346,6 +405,14 @@ VALIDATED_QUESTIONNAIRES = [
     RepeatInstrument.NEURO_WORDCOLOR_STROOP,
     RepeatInstrument.NEURO_PRODUCTIVE_VOCABULARY,
     RepeatInstrument.NEURO_RANDOM_ITEM_GENERATION,
+    RepeatInstrument.MEDICAL_CONDITIONS,
+    RepeatInstrument.PEDS_VHI10,
+    RepeatInstrument.QOL,
+    RepeatInstrument.PHQA,
+    RepeatInstrument.PEDS_DEMOGRAPHICS,
+    RepeatInstrument.PEDS_BASIC_INFO,
+    RepeatInstrument.PEDS_CONTACT_INFO,
+    RepeatInstrument.PEDS_OUTCOME_SURVEY 
 ]
 
 REPEAT_INSTRUMENT_PREFIX_MAPPING = {

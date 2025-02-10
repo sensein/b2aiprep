@@ -1,0 +1,983 @@
+{
+    "medical_conditions": {
+        "description": "Measures medical conditions for kids.",
+        "url": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/",
+        "data_elements": {
+            "medical_conditions_schema_session_id": {
+                "description": "The unique identifier for the medical conditions session.",
+                "question": {
+                    "en": "Session ID"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_voice_handicap_index_vhi10/items/vhi_session_id",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "medical_conditions_schema_duration": {
+                "description": "Duration of the medical condition session.",
+                "question": {
+                    "en": "Questionnaire Duration (seconds)"
+                },
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_voice_handicap_index_vhi10/items/vhi_duration",
+                "minValue": 0.0,
+                "valueType": [
+                    "xsd:decimal"
+                ]
+            },
+            "voice_disorders": {
+                "description": "voice_disorders",
+                "question": {
+                    "en": "Does your child have a history of a voice disorder (check all that apply): "
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Vocal nodules or polyps"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Unilateral vocal cord paralysis"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Bilateral vocal cord paralysis"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Acid reflux disease (GERD)"
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Scarring of the larynx or vocal cords from disease or previous surgery"
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Airway stenosis (bilateral vocal fold paralysis laryngeal stenosis)"
+                        },
+                        "value": 6
+                    }
+                ],
+                "multipleChoice": true,
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "psychological_disorders": {
+                "description": "psychological_disorders",
+                "question": {
+                    "en": "Does your child have a history of a psychological disorders or mood problems (check all that apply):"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Anxiety disorder "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "ADHD"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Autism Spectrum Disorder (ASD)"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Depression or Major Depressive Disorder"
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Eating Disorder (ED)"
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Insomnia/sleep disorder"
+                        },
+                        "value": 6
+                    },
+                    {
+                        "name": {
+                            "en": "Obsessive-Compulsive Disorder (OCD)"
+                        },
+                        "value": 7
+                    },
+                    {
+                        "name": {
+                            "en": "Panic Disorder"
+                        },
+                        "value": 8
+                    },
+                    {
+                        "name": {
+                            "en": "Social Anxiety Disorder"
+                        },
+                        "value": 9
+                    },
+                    {
+                        "name": {
+                            "en": "Other psychiatric disorders"
+                        },
+                        "value": 10
+                    }
+                ],
+                "multipleChoice": true,
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "psychological_disorders_other": {
+                "description": "psychological_disorders_other",
+                "question": {
+                    "en": "Other psychiatric disorders \u2013 please write the condition here "
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "airway_conditions": {
+                "description": "airway_conditions",
+                "question": {
+                    "en": "Does your child have a history of a breathing or airway conditions (check all that apply): "
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Asthma"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Recurrent Croup (>3 episodes per year)"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Bronchiolitis"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "RSV"
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Chronic cough"
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Subglottic stenosis"
+                        },
+                        "value": 6
+                    },
+                    {
+                        "name": {
+                            "en": "Vocal cord webs"
+                        },
+                        "value": 7
+                    },
+                    {
+                        "name": {
+                            "en": "Has your child ever had airway surgery?"
+                        },
+                        "value": 8
+                    },
+                    {
+                        "name": {
+                            "en": "Has your child ever been intubated?"
+                        },
+                        "value": 9
+                    },
+                    {
+                        "name": {
+                            "en": "Does your child have a tracheostomy?"
+                        },
+                        "value": 10
+                    }
+                ],
+                "multipleChoice": true,
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "sleep_apnea": {
+                "description": "sleep_apnea",
+                "question": {
+                    "en": "Does your child have a history of a snoring or obstructive sleep apnea? (check all that apply): "
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Snoring"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Gasping for air at night"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Obstructive Sleep apnea (diagnosed on a sleep study)"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Has your child had a sleep study?"
+                        },
+                        "value": 4
+                    }
+                ],
+                "multipleChoice": true,
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "tonsillectomy": {
+                "description": "tonsillectomy",
+                "question": {
+                    "en": "Have they had a tonsillectomy?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "tonsillectomy_date": {
+                "description": "tonsillectomy_date",
+                "question": {
+                    "en": "What was the date of the surgery?"
+                },
+                "datatype": [
+                    "xsd:date"
+                ],
+                "valueType": [
+                    "xsd:date"
+                ],
+                "choices": null
+            },
+            "adenoidectomy": {
+                "description": "adenoidectomy",
+                "question": {
+                    "en": "Have they had an adenoidectomy?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "adenoidectomy_date": {
+                "description": "adenoidectomy_date",
+                "question": {
+                    "en": "What was the date of the surgery?"
+                },
+                "datatype": [
+                    "xsd:date"
+                ],
+                "valueType": [
+                    "xsd:date"
+                ],
+                "choices": null
+            },
+            "lingual_tonsillectomy": {
+                "description": "lingual_tonsillectomy",
+                "question": {
+                    "en": "Have they had an lingual tonsillectomy?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "lingual_tonsillectomy_date": {
+                "description": "lingual_tonsillectomy_date",
+                "question": {
+                    "en": "What was the date of the surgery?"
+                },
+                "datatype": [
+                    "xsd:date"
+                ],
+                "valueType": [
+                    "xsd:date"
+                ],
+                "choices": null
+            },
+            "hearing_loss": {
+                "description": "hearing_loss",
+                "question": {
+                    "en": "Does your child have a history of hearing loss or associated conditions? (check all that apply):"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Cholesteatoma"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Hearing loss"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Mild Hearing loss "
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Deafness"
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Ear tubes"
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Cochlear implantation (Bilateral)"
+                        },
+                        "value": 6
+                    },
+                    {
+                        "name": {
+                            "en": "Vocal cord webs"
+                        },
+                        "value": 7
+                    },
+                    {
+                        "name": {
+                            "en": "Cochlear implantation (Unilateral) "
+                        },
+                        "value": 8
+                    },
+                    {
+                        "name": {
+                            "en": "Tympanic Membrane Perforation"
+                        },
+                        "value": 9
+                    },
+                    {
+                        "name": {
+                            "en": "CMV (cytomegalovirus)"
+                        },
+                        "value": 10
+                    }
+                ],
+                "multipleChoice": true,
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "thyroglossal_duct_cyst": {
+                "description": "thyroglossal_duct_cyst",
+                "question": {
+                    "en": "Does your child have a history of a thyroglossal duct cyst?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "thyroglossal_duct_cyst_surgery": {
+                "description": "thyroglossal_duct_cyst_surgery",
+                "question": {
+                    "en": "Have they had surgery for this? "
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "thyroglossal_duct_cyst_date": {
+                "description": "thyroglossal_duct_cyst_date",
+                "question": {
+                    "en": "What was the date of the surgery?"
+                },
+                "datatype": [
+                    "xsd:date"
+                ],
+                "valueType": [
+                    "xsd:date"
+                ],
+                "choices": null
+            },
+            "branchial_cleft_cyst": {
+                "description": "branchial_cleft_cyst",
+                "question": {
+                    "en": "Does your child have a history of a branchial cleft cyst?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "branchial_cleft_cyst_surgery": {
+                "description": "branchial_cleft_cyst_surgery",
+                "question": {
+                    "en": "Have they had surgery for this? "
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "branchial_cleft_cyst_date": {
+                "description": "branchial_cleft_cyst_date",
+                "question": {
+                    "en": "What was the date of the surgery?"
+                },
+                "datatype": [
+                    "xsd:date"
+                ],
+                "valueType": [
+                    "xsd:date"
+                ],
+                "choices": null
+            },
+            "dermoid_cyst": {
+                "description": "dermoid_cyst",
+                "question": {
+                    "en": "Does your child have a history of a dermoid cyst?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "dermoid_cyst_surgery": {
+                "description": "dermoid_cyst_surgery",
+                "question": {
+                    "en": "Have they had surgery for this? "
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "dermoid_cyst_date": {
+                "description": "dermoid_cyst_date",
+                "question": {
+                    "en": "What was the date of the surgery?"
+                },
+                "datatype": [
+                    "xsd:date"
+                ],
+                "valueType": [
+                    "xsd:date"
+                ],
+                "choices": null
+            },
+            "thyroid_nodule_or_cancer": {
+                "description": "thyroid_nodule_or_cancer",
+                "question": {
+                    "en": "Does your child have a history of a thyroid nodule or cancer"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "thyroid_nodule_or_cancer_surgery": {
+                "description": "thyroid_nodule_or_cancer_surgery",
+                "question": {
+                    "en": "Have they had surgery for this? "
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "thyroid_nodule_or_cancer_date": {
+                "description": "thyroid_nodule_or_cancer_date",
+                "question": {
+                    "en": "What was the date of the surgery?"
+                },
+                "datatype": [
+                    "xsd:date"
+                ],
+                "valueType": [
+                    "xsd:date"
+                ],
+                "choices": null
+            },
+            "enlarged_lymph_node": {
+                "description": "enlarged_lymph_node",
+                "question": {
+                    "en": "Does your child have a history of an enlarged lymph node?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "enlarged_lymph_node_surgery": {
+                "description": "enlarged_lymph_node_surgery",
+                "question": {
+                    "en": "Have they had surgery for this? "
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "enlarged_lymph_node_date": {
+                "description": "enlarged_lymph_node_date",
+                "question": {
+                    "en": "What was the date of the surgery?"
+                },
+                "datatype": [
+                    "xsd:date"
+                ],
+                "valueType": [
+                    "xsd:date"
+                ],
+                "choices": null
+            },
+            "neck_mass_other": {
+                "description": "neck_mass_other",
+                "question": {
+                    "en": "Other \u2013 please write condition here:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "conditions": {
+                "description": "conditions",
+                "question": {
+                    "en": "Does your child have any of the following conditions (check all that apply):"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Osteogenesis imperfecta"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Trisomy 21 (Down\u2019s Syndrome)"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Prematurity"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Congenital heart disease"
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Tracheoesophageal fistula"
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Esophageal atresia"
+                        },
+                        "value": 6
+                    },
+                    {
+                        "name": {
+                            "en": "Cystic fibrosis"
+                        },
+                        "value": 7
+                    },
+                    {
+                        "name": {
+                            "en": "Rheumatoid arthritis"
+                        },
+                        "value": 8
+                    },
+                    {
+                        "name": {
+                            "en": "Granulomatosis with polyangitis"
+                        },
+                        "value": 9
+                    },
+                    {
+                        "name": {
+                            "en": "Mucopolysaccharidosis"
+                        },
+                        "value": 10
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": 11
+                    }
+                ],
+                "multipleChoice": true,
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "conditions_other": {
+                "description": "conditions_other",
+                "question": {
+                    "en": "Other (Please list here):"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "issues_2_weeks": {
+                "description": "issues_2_weeks",
+                "question": {
+                    "en": "Has your child had any of the following in the 2 weeks?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Wheezing or trouble breathing "
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Dry cough"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Wet, productive cough"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Nasal congestion"
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "Sneezing"
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "Ear infection"
+                        },
+                        "value": 6
+                    },
+                    {
+                        "name": {
+                            "en": "Stridor"
+                        },
+                        "value": 7
+                    },
+                    {
+                        "name": {
+                            "en": "Croup"
+                        },
+                        "value": 8
+                    },
+                    {
+                        "name": {
+                            "en": "Sorethroat/tonsillitis"
+                        },
+                        "value": 9
+                    }
+                ],
+                "multipleChoice": true,
+                "valueType": [
+                    "xsd:integer"
+                ]
+            }
+        }
+    }
+}

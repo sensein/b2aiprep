@@ -1,0 +1,1156 @@
+{
+    "peds_vhi_10_schema": {
+        "description": "Measures perceived impact of voice disorders for kids.",
+        "url": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/",
+        "data_elements": {
+            "peds_vhi_10_schema_session_id": {
+                "description": "The unique identifier for the Voice Handicap Index session.",
+                "question": {
+                    "en": "Session ID"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_voice_handicap_index_vhi10/items/vhi_session_id",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_vhi_10_schema_duration": {
+                "description": "Duration of the Voice Handicap Index session.",
+                "question": {
+                    "en": "Questionnaire Duration (seconds)"
+                },
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_voice_handicap_index_vhi10/items/vhi_duration",
+                "minValue": 0.0,
+                "valueType": [
+                    "xsd:decimal"
+                ]
+            },
+            "child_talkativeness": {
+                "description": "child_talkativeness",
+                "question": {
+                    "en": "I would rate my child's talkativeness as the following:"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "1 (Quiet Talker)"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "2"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "3 (Average Talker)"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "4"
+                        },
+                        "value": 4
+                    },
+                    {
+                        "name": {
+                            "en": "5"
+                        },
+                        "value": 5
+                    },
+                    {
+                        "name": {
+                            "en": "6"
+                        },
+                        "value": 6
+                    },
+                    {
+                        "name": {
+                            "en": "7 (Extremely Talkative)"
+                        },
+                        "value": 7
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "vhi_10_question_1": {
+                "description": "vhi_10_question_1",
+                "question": {
+                    "en": "My child\u2019s voice makes it difficult for people to hear him/her."
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": 4
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "vhi_10_question_2": {
+                "description": "vhi_10_question_2",
+                "question": {
+                    "en": "People have difficulty understanding my child in a noisy room."
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": 4
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "vhi_10_question_3": {
+                "description": "vhi_10_question_3",
+                "question": {
+                    "en": "At home, we have difficulty hearing my child when he/she calls through the house."
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": 4
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "vhi_10_question_4": {
+                "description": "vhi_10_question_4",
+                "question": {
+                    "en": "My child tends to avoid communicating because of his/her voice."
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": 4
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "vhi_10_question_5": {
+                "description": "vhi_10_question_5",
+                "question": {
+                    "en": "My child speaks with friends, neighbours, or relatives less often because of his/her voice."
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": 4
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "vhi_10_question_6": {
+                "description": "vhi_10_question_6",
+                "question": {
+                    "en": "People ask my child to repeat him/herself when speaking face-to-face."
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": 4
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "vhi_10_question_7": {
+                "description": "vhi_10_question_7",
+                "question": {
+                    "en": "My child\u2019s voice difficulties restrict personal, educational and social activities."
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": 4
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "vhi_10_question_8": {
+                "description": "vhi_10_question_8",
+                "question": {
+                    "en": "My child runs out of air when talking."
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": 4
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "vhi_10_question_9": {
+                "description": "vhi_10_question_9",
+                "question": {
+                    "en": "The sound of my child\u2019s voice changes throughout the day"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": 4
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "vhi_10_question_10": {
+                "description": "vhi_10_question_10",
+                "question": {
+                    "en": "People ask, \u201cWhat\u2019s wrong with your child\u2019s voice?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": 4
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "vhi_10_question_11": {
+                "description": "vhi_10_question_11",
+                "question": {
+                    "en": "My child\u2019s voice sounds dry, raspy, and/or hoarse."
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": 4
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "vhi_10_question_12": {
+                "description": "vhi_10_question_12",
+                "question": {
+                    "en": "The quality of my child\u2019s voice is unpredictable"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": 4
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "vhi_10_question_13": {
+                "description": "vhi_10_question_13",
+                "question": {
+                    "en": "My child uses a great deal of effort to speak (e.g., straining)"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": 4
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "vhi_10_question_14": {
+                "description": "vhi_10_question_14",
+                "question": {
+                    "en": "My child\u2019s voice is worse in the evening"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": 4
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "vhi_10_question_15": {
+                "description": "vhi_10_question_15",
+                "question": {
+                    "en": "My child\u2019s voice \u201cgives out\u201d when speaking."
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": 4
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "vhi_10_question_16": {
+                "description": "vhi_10_question_16",
+                "question": {
+                    "en": "My child has to yell in order for others to hear him/her."
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": 4
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "vhi_10_question_17": {
+                "description": "vhi_10_question_17",
+                "question": {
+                    "en": "My child appears tense when talking with others because of his/her voice."
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": 4
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "vhi_10_question_18": {
+                "description": "vhi_10_question_18",
+                "question": {
+                    "en": "People seem irritated with my child\u2019s voice"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": 4
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "vhi_10_question_19": {
+                "description": "vhi_10_question_19",
+                "question": {
+                    "en": "I find other people don\u2019t understand my child\u2019s voice problem."
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": 4
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "vhi_10_question_20": {
+                "description": "vhi_10_question_20",
+                "question": {
+                    "en": "My child is frustrated with his/her voice problem"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": 4
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "vhi_10_question_21": {
+                "description": "vhi_10_question_21",
+                "question": {
+                    "en": "My child is less out-going because of his/her voice problem."
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": 4
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "vhi_10_question_22": {
+                "description": "vhi_10_question_22",
+                "question": {
+                    "en": "My child is annoyed when people ask him/her to repeat."
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": 4
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "vhi_10_question_23": {
+                "description": "vhi_10_question_23",
+                "question": {
+                    "en": "My child is embarrassed when people ask him/her to repeat."
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": 2
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": 3
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": 4
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "voice_severity_rating": {
+                "description": "voice_severity_rating",
+                "question": {
+                    "en": "Please place \u201cX\u201d mark anywhere along this line to indicate the severity of your child\u2019s voice problem"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ],
+                "minValue": 0,
+                "maxValue": 10,
+                "choices": [
+                    {
+                        "name": "Normal",
+                        "value": 0
+                    },
+                    {
+                        "value": 1
+                    },
+                    {
+                        "value": 2
+                    },
+                    {
+                        "value": 3
+                    },
+                    {
+                        "value": 4
+                    },
+                    {
+                        "value": 5
+                    },
+                    {
+                        "value": 6
+                    },
+                    {
+                        "value": 7
+                    },
+                    {
+                        "value": 8
+                    },
+                    {
+                        "value": 9
+                    },
+                    {
+                        "name": "Severe",
+                        "value": 10
+                    }
+                ]
+            }
+        }
+    }
+}

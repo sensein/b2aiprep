@@ -1,0 +1,50 @@
+{
+    "subjectparticipant_contact_information": {
+        "description": "Measures perceived impact of voice disorders for kids.",
+        "url": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/",
+        "data_elements": {
+            "subjectparticipant_contact_information_schema_session_id": {
+                "description": "The unique identifier for qol session.",
+                "question": {
+                    "en": "Session ID"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "subjectparticipant_contact_information_schema_duration": {
+                "description": "Duration of the qol session.",
+                "question": {
+                    "en": "Questionnaire Duration (seconds)"
+                },
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/",
+                "minValue": 0.0,
+                "valueType": [
+                    "xsd:decimal"
+                ]
+            },
+            "age": {
+                "description": "items/age",
+                "question": {
+                    "en": "Age"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ],
+                "choices": null
+            }
+        }
+    }
+}
