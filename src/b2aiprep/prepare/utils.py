@@ -365,7 +365,7 @@ def extract_silent_segment(audio_data=None):
        return (start_time, end_time)
     else:
         duration = get_wav_duration(audio_data)
-        if duration == 0.0 or duration <= 0.1:
+        if duration <= 0.1:
             raise ValueError(f"Audio file {audio_data} is too short")
         elif duration <= 0.5:
             start_time = 0.0
