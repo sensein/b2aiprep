@@ -62,7 +62,7 @@ from tqdm import tqdm
 
 from b2aiprep.prepare.bids import get_audio_paths
 from b2aiprep.prepare.constants import SPEECH_TASKS
-from b2aiprep.prepare.utils import retry
+from b2aiprep.prepare.utils import retry, compute_snr, compute_low_to_high_ratio_from_spectrograms
 
 SUBJECT_ID = "sub"
 SESSION_ID = "ses"
@@ -166,6 +166,11 @@ def extract_single(
             _logger.error(f"Transcription: An error occurred with transcription: {e}")
             _logger.error(traceback.print_exc())
         features["sensitive_features"] = ["audio_path", "speaker_embedding", "transcription"]
+    features["snr"] = compute_snr(wav_path)
+    features["L/H_ratio"] = compute_low_to_high_ratio_from_spectrograms(
+        features["torchaudio"]["spectrogram"],
+        audio_16k.sampling_rate,
+        (win_length * audio_16k.sampling_rate) // 1000) # n_fft
     logging.disable(logging.NOTSET)
     _logger.setLevel(logging.INFO)
 

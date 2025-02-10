@@ -110,7 +110,6 @@ def parse_audio(audio_list, dummy_audio_files=False):
     acoustic_count = 1
     acoustic_prev = None
     acoustic_tasks = set()
-    #acoustic_task_dict = dict()
     for file_path in (flattened_list):
 
         record_id = Path(file_path).parent.parent.name
@@ -125,7 +124,6 @@ def parse_audio(audio_list, dummy_audio_files=False):
         recording_id = re.search(r'([a-f0-9\-]{36})\.', file_name).group(1)
         acoustic_task = re.search(r"^(.*?)(_\d+)", file_name).group(1)
         if acoustic_task not in acoustic_tasks:
-            
             acoustic_tasks.add(acoustic_task)
             acoustic_task_dict = {
                 "record_id" : record_id,
@@ -141,6 +139,8 @@ def parse_audio(audio_list, dummy_audio_files=False):
             audio_output_list.append(acoustic_task_dict)
             acoustic_task_count += 1
         else:
+            # each question asked has it's own duration, thus we must sum all
+            # durations up to get the full duration of the questionnaire
             for index in audio_output_list:
                 if "acoustic_task_id" in index:
                     if acoustic_task == index["acoustic_task_name"]:
