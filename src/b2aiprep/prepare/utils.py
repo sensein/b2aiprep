@@ -376,7 +376,7 @@ def extract_silent_segment(audio_data=None):
 def compute_rms_power(sound):
     """Compute RMS power of a given sound."""
     intensity = sound.to_intensity()
-    power = np.mean(intensity.values[0])  # Averaging over all frames
+    power = np.sqrt(np.mean(np.square(intensity.values)))
     return power
 
 def estimate_noise_power(sound, start_time, end_time):
@@ -388,7 +388,6 @@ def compute_snr(file_path):
     """
     Computes SNR for a given audio file
     """
-    #print(file_path)
     sound = parselmouth.Sound(str(file_path))
     signal_power = compute_rms_power(sound)
     # Estimate noise power using a known silent section (adjust times accordingly)
@@ -401,14 +400,12 @@ def compute_snr(file_path):
 
 def compute_low_to_high_ratio_from_spectrograms(spectrogram, sample_rate, n_fft, low_freq_threshold=4000):
     """
-    Computes the average low-to-high frequency ratio for a given spectrogram.
+    Computes the average low-to-high frequency ratio in db for a given spectrogram.
 
     Parameters:
     -----------
     spectrogram : torch.Tensor
-        A 2D tensor representing the spectrogram of the audio signal. The shape of the tensor is 
-        (num_frames, num_freq_bins), where `num_frames` is the number of time frames and 
-        `num_freq_bins` is the number of frequency bins (determined by `n_fft`).
+        A 2D tensor representing the spectrogram of the audio signal.
 
     sample_rate : int
         The sample rate of the audio signal, used to calculate the frequency bin resolution.
@@ -418,14 +415,11 @@ def compute_low_to_high_ratio_from_spectrograms(spectrogram, sample_rate, n_fft,
         in the spectrogram.
 
     low_freq_threshold : int, optional
-        The frequency threshold (in Hz) that separates low and high frequencies. By default, this is set 
-        to 4000 Hz, meaning that frequencies below 4000 Hz will be considered low, and frequencies above 
-        4000 Hz will be considered high.
-
+        The frequency threshold (in Hz) that separates low and high frequencies. By default, this is
+        set to 4000 Hz.
     Returns:
     --------
-    float
-        The average low-to-high frequency ratio across all time frames in the spectrogram.
+        The average low-to-high frequency ratio in db.
 
     """
     # Frequency bin resolution
@@ -443,5 +437,7 @@ def compute_low_to_high_ratio_from_spectrograms(spectrogram, sample_rate, n_fft,
     # Low-to-high ratio (avoid division by zero)
     epsilon = 1e-10
     low_to_high_ratio = low_freq_energy / (high_freq_energy + epsilon)
-    average_ratio = low_to_high_ratio.mean().item()
-    return average_ratio
+    # Convert the linear ratio to dB
+    low_to_high_ratio_db = 10 * torch.log10(low_to_high_ratio)
+    average_ratio_db = low_to_high_ratio_db.mean().item()
+    return average_ratio_db
