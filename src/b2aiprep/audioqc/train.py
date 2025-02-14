@@ -249,8 +249,10 @@ def preprocess_data(features_df, preprocessing_steps, label_column="label"):
         label_column (str): Name of the column containing classification labels (default: "label").
 
     Returns:
-        X_scaled (np.array): Scaled feature matrix.
-        y (pd.Series): Labels.
+        tuple:
+            - X_scaled (np.array): Scaled feature matrix.
+            - y (pd.Series): Labels.
+            - selected_features (list): List of selected feature names.
     """
     if label_column not in features_df.columns:
         raise ValueError(f"Label column '{label_column}' not found in DataFrame.")
@@ -269,22 +271,29 @@ def preprocess_data(features_df, preprocessing_steps, label_column="label"):
         elif step == "winnow":
             transformed_data = winnow_feature_selection(transformed_data)
 
-    X = transformed_data.drop(columns=[label_column, "site", "participant", "task"])
+    # Extract selected features after preprocessing
+    selected_features = list(
+        transformed_data.drop(columns=[label_column, "site", "participant", "task"]).columns
+    )
+
+    X = transformed_data[selected_features]  # Keep only selected features
     y = transformed_data[label_column]
-    logger.info(X.shape)
-    logger.info(y.shape)
+
+    logger.info(f"Selected {len(selected_features)} features for training.")
 
     # Handle missing values
     if X.isna().sum().sum() > 0:
         logger.info("Warning: NaN values detected. Imputing missing values...")
         imputer = SimpleImputer(strategy="mean")
-        X = pd.DataFrame(imputer.fit_transform(X), columns=X.columns)
+        X = pd.DataFrame(
+            imputer.fit_transform(X), columns=selected_features
+        )  # Assign correct columns
 
     # Standardize features
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
 
-    return X_scaled, y, list(X.columns)
+    return X_scaled, y, selected_features
 
 
 def svm_train(X, y, cv_folds=5):
