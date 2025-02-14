@@ -1,7 +1,9 @@
-import os
 import json
-import joblib
+import os
 from datetime import datetime
+
+import joblib
+import pandas as pd
 
 
 def save_model(output_dir, model, metadata, feature_importance=None, removed_features=None):
@@ -36,7 +38,10 @@ def save_training_results(base_output_dir, final_model, best_preprocessing_steps
     save_model(
         os.path.join(run_dir, "final_model"),
         final_model,
-        metadata={"best_preprocessing_steps": best_preprocessing_steps, "best_model_score": best_model_score},
+        metadata={
+            "best_preprocessing_steps": best_preprocessing_steps,
+            "best_model_score": best_model_score,
+        },
     )
 
     return run_dir

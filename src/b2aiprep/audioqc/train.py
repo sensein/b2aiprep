@@ -1,10 +1,13 @@
 """Implements functions for training AudioQC using a process similar to MRIQC."""
 
 import logging
+import os
+from datetime import datetime
 from itertools import combinations, permutations
 
 import numpy as np
 import pandas as pd
+from save import save_model
 from sklearn.ensemble import ExtraTreesClassifier, RandomForestClassifier
 from sklearn.impute import SimpleImputer
 from sklearn.model_selection import GridSearchCV, train_test_split
@@ -410,7 +413,7 @@ def train_final_model(
     return final_model
 
 
-def inner_loop(features_df, label_column="label", cv_folds=5):
+def inner_loop(features_df, label_column="label", cv_folds=5, output_dir="training_results"):
     """Performs an inner-loop search over feature preprocessing configurations,
     trains SVM and RFC models, and selects the best-performing model.
 
@@ -441,25 +444,41 @@ def inner_loop(features_df, label_column="label", cv_folds=5):
         ]
 
     for preprocessing_permutation in preprocessing_permutations:
-        # If "normalize" is chosen, try each of its modes; otherwise just [None]
         normalize_modes = (
             ["center", "scale", "both"] if "normalize" in preprocessing_permutation else [None]
         )
 
         for mode in normalize_modes:
-            # Preprocess data once with the chosen steps/mode
             X, y = preprocess_data(
-                features_df.copy(), (preprocessing_permutation, mode), label_column=label_column
+                features_df.copy(), (preprocessing_permutation, mode), label_column
             )
 
             svm_results = svm_train(X, y, cv_folds=cv_folds)
             rfc_results = rfc_train(X, y, cv_folds=cv_folds)
 
-            # Compare SVM vs. RFC
-            for model, score in [
-                (svm_results["best_svc"], svm_results["cv_accuracy"]),
-                (rfc_results["best_rfc"], rfc_results["cv_accuracy"]),
+            for model_type, results in [
+                ("SVM", svm_results),
+                ("RandomForest", rfc_results),
             ]:
+                model = results["best_svc"] if model_type == "SVM" else results["best_rfc"]
+                score = results["cv_accuracy"]
+
+                # Save model for this preprocessing step
+                step_dir = os.path.join(
+                    output_dir, "inner_loop", "_".join(preprocessing_permutation)
+                )
+                os.makedirs(step_dir, exist_ok=True)
+
+                save_model(
+                    os.path.join(step_dir, model_type),
+                    model,
+                    metadata={
+                        "preprocessing_steps": preprocessing_permutation,
+                        "mode": mode,
+                        "cv_score": score,
+                    },
+                )
+
                 if score > best_score:
                     best_model = model
                     best_score = score
@@ -468,7 +487,13 @@ def inner_loop(features_df, label_column="label", cv_folds=5):
     return best_model, best_score, best_steps
 
 
-def outer_loop(features_csv_path, participants_tsv_path, label_column="label", cv_folds=5):
+def outer_loop(
+    features_csv_path,
+    participants_tsv_path,
+    label_column="label",
+    cv_folds=5,
+    base_output_dir="training_results",
+):
     """Performs an outer-loop cross-validation process using a leave-one-site-out (LoSo) approach.
     Trains models using the inner loop, selects the best-performing model across all site folds,
     and then trains a new model with the best hyperparameters on all data, applying the same
@@ -485,56 +510,73 @@ def outer_loop(features_csv_path, participants_tsv_path, label_column="label", c
             - best_final_model: The newly trained model using the best hyperparameters on all data.
             - best_preprocessing_steps (tuple): The preprocessing steps used by the best model.
     """
-    # Load dataset with site labels
-    features_df = get_features_df_with_site(
-        features_csv_path=features_csv_path, participants_tsv_path=participants_tsv_path
-    )
+    # Create a unique directory for this training run
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    run_dir = os.path.join(base_output_dir, f"training_run_{timestamp}")
+    os.makedirs(run_dir, exist_ok=True)
 
+    features_df = get_features_df_with_site(features_csv_path, participants_tsv_path)
     features_df = add_random_labels(features_df)
 
     unique_sites = features_df["site"].unique()
     best_inner_loop_models = []
 
-    # Leave-One-Site-Out (LoSo) Cross-Validation
     for site in tqdm(unique_sites):
         logger.info(f"Processing site: {site}")
 
-        # Hold out one site as the test set
         train_df = features_df[features_df["site"] != site].copy().reset_index(drop=True)
         test_df = features_df[features_df["site"] == site].copy().reset_index(drop=True)
 
-        # Train model using the inner loop
         best_fold_model, best_fold_score, best_fold_steps = inner_loop(
-            train_df, label_column, cv_folds
+            train_df, label_column, cv_folds, run_dir
         )
 
-        # Evaluate the best model on the test set
-        X_test, y_test = preprocess_data(test_df, best_fold_steps, label_column=label_column)
+        X_test, y_test = preprocess_data(test_df, best_fold_steps, label_column)
         best_model_score = best_fold_model.score(X_test, y_test)
 
         print(
-            f"Best model for site {site}: {best_fold_model} "
-            f"with test score {best_model_score:.4f} "
-            f"and preprocessing steps {best_fold_steps}"
+            f"Best model for site {site}: {best_fold_model} with test score {best_model_score:.4f}"
         )
+
         best_inner_loop_models.append((best_fold_model, best_fold_score, best_fold_steps))
 
-    # Select the best model across all sites
+        # Save best model for this site
+        site_dir = os.path.join(run_dir, "outer_loop", f"site_{site}")
+        os.makedirs(site_dir, exist_ok=True)
+        save_model(
+            site_dir,
+            best_fold_model,
+            metadata={
+                "site": site,
+                "best_preprocessing_steps": best_fold_steps,
+                "test_score": best_model_score,
+            },
+        )
+
     best_inner_model, best_model_score, best_preprocessing_steps = max(
         best_inner_loop_models, key=lambda x: x[1]
     )
 
-    print(
-        f"Best model selected from inner loop: {best_inner_model} "
-        f"with a score of {best_model_score:.4f} "
-        f"and preprocessing steps {best_preprocessing_steps}"
-    )
+    print(f"Best model selected: {best_inner_model} with score {best_model_score:.4f}")
 
-    # Train the final model using the best preprocessing steps
+    # Train final model
     final_model = train_final_model(
         features_df, best_inner_model, best_preprocessing_steps, label_column
     )
 
+    # Save final model
+    final_model_dir = os.path.join(run_dir, "final_model")
+    os.makedirs(final_model_dir, exist_ok=True)
+    save_model(
+        final_model_dir,
+        final_model,
+        metadata={
+            "best_preprocessing_steps": best_preprocessing_steps,
+            "best_model_score": best_model_score,
+        },
+    )
+
+    print(f"Training run saved at: {run_dir}")
     return final_model
 
 
