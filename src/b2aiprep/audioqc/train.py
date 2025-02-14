@@ -1,5 +1,6 @@
 """Implements functions for training AudioQC using a process similar to MRIQC."""
 
+import json
 import logging
 import os
 from datetime import datetime
@@ -514,6 +515,20 @@ def outer_loop(
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     run_dir = os.path.join(base_output_dir, f"training_run_{timestamp}")
     os.makedirs(run_dir, exist_ok=True)
+
+    # Save training run metadata
+    training_run_metadata = {
+        "timestamp": timestamp,
+        "min_features_to_keep": MIN_FEATURES_TO_KEEP,
+        "debug_mode": DEBUG_MODE,
+        "cv_folds": cv_folds,
+        "label_column": label_column,
+        "features_csv_path": features_csv_path,
+        "participants_tsv_path": participants_tsv_path,
+    }
+
+    with open(os.path.join(run_dir, "training_run_metadata.json"), "w") as f:
+        json.dump(training_run_metadata, f, indent=4, ensure_ascii=False)
 
     features_df = get_features_df_with_site(features_csv_path, participants_tsv_path)
     features_df = add_random_labels(features_df)
