@@ -477,6 +477,8 @@ def inner_loop(features_df, label_column="label", cv_folds=5, output_dir="traini
                         "preprocessing_steps": preprocessing_permutation,
                         "mode": mode,
                         "cv_score": score,
+                        "model_type": type(model).__name__,
+                        "hyperparameters": model.get_params(),
                     },
                 )
 
@@ -565,6 +567,8 @@ def outer_loop(
                 "site": site,
                 "best_preprocessing_steps": best_fold_steps,
                 "test_score": best_model_score,
+                "model_type": type(best_fold_model).__name__,
+                "hyperparameters": best_fold_model.get_params(),
             },
         )
 
@@ -588,6 +592,8 @@ def outer_loop(
         metadata={
             "best_preprocessing_steps": best_preprocessing_steps,
             "best_model_score": best_model_score,
+            "model_type": type(final_model).__name__,
+            "hyperparameters": final_model.get_params(),
         },
     )
 

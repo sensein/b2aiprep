@@ -13,9 +13,11 @@ def save_model(output_dir, model, metadata, feature_importance=None, removed_fea
     # Save model
     joblib.dump(model, os.path.join(output_dir, "model.joblib"))
 
-    # Save metadata
+    # Save metadata with model type and hyperparameters
+    metadata.update({"model_type": type(model).__name__, "hyperparameters": model.get_params()})
+
     with open(os.path.join(output_dir, "training_metadata.json"), "w") as f:
-        json.dump(metadata, f, indent=4)
+        json.dump(metadata, f, indent=4, ensure_ascii=False)
 
     # Save feature importance (if available)
     if feature_importance is not None:
