@@ -113,7 +113,7 @@ def site_predictability_feature_elimination(
     # Start feature elimination loop
     features_to_remove = []
     iteration = 0
-
+    new_accuracy = 0
     while iteration < max_features_to_remove and len(X_train.columns) > min_features_to_keep:
         # Get feature importances
         feature_importances = site_predictor.feature_importances_
@@ -434,8 +434,8 @@ def inner_loop(features_df, label_column="label", cv_folds=5, output_dir="traini
     best_steps = None
 
     if DEBUG_MODE:
-        preprocessing_permutations = [["winnow"]]
-    else:
+        # preprocessing_permutations = [["winnow", "normalize"]]
+        # else:
         preprocessing_steps = ["normalize", "eliminate", "winnow"]
         preprocessing_permutations = [
             list(permutation)
@@ -466,8 +466,9 @@ def inner_loop(features_df, label_column="label", cv_folds=5, output_dir="traini
 
                 # Save model for this preprocessing step
                 step_dir = os.path.join(
-                    output_dir, "inner_loop", "_".join(preprocessing_permutation)
+                    output_dir, "inner_loop", "_".join(preprocessing_permutation), model_type
                 )
+
                 os.makedirs(step_dir, exist_ok=True)
 
                 save_model(
@@ -544,8 +545,10 @@ def outer_loop(
         train_df = features_df[features_df["site"] != site].copy().reset_index(drop=True)
         test_df = features_df[features_df["site"] == site].copy().reset_index(drop=True)
 
+        site_dir = os.path.join(run_dir, f"site_{site}")
+        os.makedirs(site_dir, exist_ok=True)
         best_fold_model, best_fold_score, best_fold_steps = inner_loop(
-            train_df, label_column, cv_folds, run_dir
+            train_df, label_column, cv_folds, site_dir
         )
 
         X_test, y_test = preprocess_data(test_df, best_fold_steps, label_column)
@@ -558,8 +561,6 @@ def outer_loop(
         best_inner_loop_models.append((best_fold_model, best_fold_score, best_fold_steps))
 
         # Save best model for this site
-        site_dir = os.path.join(run_dir, "outer_loop", f"site_{site}")
-        os.makedirs(site_dir, exist_ok=True)
         save_model(
             site_dir,
             best_fold_model,
