@@ -284,7 +284,7 @@ def preprocess_data(features_df, preprocessing_steps, label_column="label"):
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
 
-    return X_scaled, y
+    return X_scaled, y, list(X.columns)
 
 
 def svm_train(X, y, cv_folds=5):
@@ -405,13 +405,15 @@ def train_final_model(
     Returns:
         final_model: The newly trained model using the best hyperparameters on all data.
     """
-    X_all, y_all = preprocess_data(features_df, best_preprocessing_steps, label_column=label_column)
+    X_all, y_all, selected_features = preprocess_data(
+        features_df, best_preprocessing_steps, label_column=label_column
+    )
 
     best_model_class = type(best_inner_model)
     best_model_params = best_inner_model.get_params()
     final_model = best_model_class(**best_model_params)
     final_model.fit(X_all, y_all)
-    return final_model
+    return final_model, selected_features
 
 
 def inner_loop(features_df, label_column="label", cv_folds=5, output_dir="training_results"):
@@ -422,27 +424,27 @@ def inner_loop(features_df, label_column="label", cv_folds=5, output_dir="traini
         features_df (pd.DataFrame): DataFrame containing features and labels.
         label_column (str): Name of the classification label column.
         cv_folds (int): Number of cross-validation folds.
+        output_dir (str): Directory where model results are saved.
 
     Returns:
         tuple:
             - best_model (sklearn estimator): The best-performing model.
             - best_score (float): The best cross-validation accuracy score.
             - best_steps (tuple): The preprocessing steps that yielded the best-performing model.
+            - selected_features (list): List of selected feature column names.
     """
     best_model = None
     best_score = 0
     best_steps = None
+    selected_features = None  # To store feature names for best model
 
-    if DEBUG_MODE:
-        # preprocessing_permutations = [["winnow", "normalize"]]
-        # else:
-        preprocessing_steps = ["normalize", "eliminate", "winnow"]
-        preprocessing_permutations = [
-            list(permutation)
-            for r in range(1, len(preprocessing_steps) + 1)
-            for combination in combinations(preprocessing_steps, r)
-            for permutation in permutations(combination)
-        ]
+    preprocessing_steps = ["normalize", "eliminate", "winnow"]
+    preprocessing_permutations = [
+        list(permutation)
+        for r in range(1, len(preprocessing_steps) + 1)
+        for combination in combinations(preprocessing_steps, r)
+        for permutation in permutations(combination)
+    ]
 
     for preprocessing_permutation in preprocessing_permutations:
         normalize_modes = (
@@ -450,8 +452,10 @@ def inner_loop(features_df, label_column="label", cv_folds=5, output_dir="traini
         )
 
         for mode in normalize_modes:
-            X, y = preprocess_data(
-                features_df.copy(), (preprocessing_permutation, mode), label_column
+            transformed_data = features_df.copy().reset_index(drop=True)
+
+            X, y, selected_feature_names = preprocess_data(
+                transformed_data, (preprocessing_permutation, mode), label_column
             )
 
             svm_results = svm_train(X, y, cv_folds=cv_folds)
@@ -466,10 +470,14 @@ def inner_loop(features_df, label_column="label", cv_folds=5, output_dir="traini
 
                 # Save model for this preprocessing step
                 step_dir = os.path.join(
-                    output_dir, "inner_loop", "_".join(preprocessing_permutation), model_type
+                    output_dir, "inner_loop", "_".join(preprocessing_permutation)
                 )
-
                 os.makedirs(step_dir, exist_ok=True)
+
+                # Save selected features
+                feature_file = os.path.join(step_dir, "selected_features.json")
+                with open(feature_file, "w") as f:
+                    json.dump(selected_features, f, indent=4)
 
                 save_model(
                     os.path.join(step_dir, model_type),
@@ -487,8 +495,11 @@ def inner_loop(features_df, label_column="label", cv_folds=5, output_dir="traini
                     best_model = model
                     best_score = score
                     best_steps = (preprocessing_permutation, mode)
+                    selected_features = (
+                        selected_feature_names  # Update selected features for best model
+                    )
 
-    return best_model, best_score, best_steps
+    return best_model, best_score, best_steps, selected_features
 
 
 def outer_loop(
@@ -547,11 +558,11 @@ def outer_loop(
 
         site_dir = os.path.join(run_dir, f"site_{site}")
         os.makedirs(site_dir, exist_ok=True)
-        best_fold_model, best_fold_score, best_fold_steps = inner_loop(
+        best_fold_model, best_fold_score, best_fold_steps, selected_features = inner_loop(
             train_df, label_column, cv_folds, site_dir
         )
 
-        X_test, y_test = preprocess_data(test_df, best_fold_steps, label_column)
+        X_test, y_test, selected_features = preprocess_data(test_df, best_fold_steps, label_column)
         best_model_score = best_fold_model.score(X_test, y_test)
 
         print(
@@ -570,6 +581,7 @@ def outer_loop(
                 "test_score": best_model_score,
                 "model_type": type(best_fold_model).__name__,
                 "hyperparameters": best_fold_model.get_params(),
+                "selected_features": selected_features,
             },
         )
 
@@ -580,7 +592,7 @@ def outer_loop(
     print(f"Best model selected: {best_inner_model} with score {best_model_score:.4f}")
 
     # Train final model
-    final_model = train_final_model(
+    final_model, selected_features = train_final_model(
         features_df, best_inner_model, best_preprocessing_steps, label_column
     )
 
@@ -595,6 +607,7 @@ def outer_loop(
             "best_model_score": best_model_score,
             "model_type": type(final_model).__name__,
             "hyperparameters": final_model.get_params(),
+            "selected_features": selected_features,
         },
     )
 
