@@ -1,5 +1,6 @@
 """Implements functions for training AudioQC using a process similar to MRIQC."""
 
+import argparse
 import json
 import logging
 import os
@@ -639,13 +640,19 @@ def outer_loop(
 
 
 if __name__ == "__main__":
-    features_csv_path = "/Users/isaacbevers/sensein/b2ai-wrapper/b2ai-data/bridge2ai-voice-corpus-3/derived/static_features.csv"
-    participants_tsv_path = "/Users/isaacbevers/sensein/b2ai-wrapper/b2ai-data/bridge2ai-voice-corpus-3/bids/bids/participants.tsv"
-    final_model = outer_loop(
-        features_csv_path=features_csv_path, participants_tsv_path=participants_tsv_path
+    parser = argparse.ArgumentParser(description="Train AudioQC model using MRIQC-like pipeline.")
+    parser.add_argument("--features_csv", required=True, help="Path to the features CSV file.")
+    parser.add_argument(
+        "--participants_tsv", required=True, help="Path to the participants TSV file."
     )
-    # Save the final model to disk using joblib
-    import joblib
+    parser.add_argument(
+        "--output_dir", required=True, help="Base directory for saving training results."
+    )
 
-    joblib.dump(final_model, "final_model.joblib")
-    print("Model saved as final_model.joblib")
+    args = parser.parse_args()
+
+    outer_loop(
+        features_csv_path=args.features_csv,
+        participants_tsv_path=args.participants_tsv,
+        base_output_dir=args.output_dir,
+    )
