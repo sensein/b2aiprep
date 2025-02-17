@@ -1,25 +1,22 @@
 """Commands available through the CLI."""
 
 import csv
-from functools import partial
 import json
 import logging
 import os
 import shutil
-import tarfile
-import typing as t
+from functools import partial
 from glob import glob
-from pathlib import Path
 from importlib import resources
+from pathlib import Path
 
-from b2aiprep.prepare.derived_data import feature_extraction_generator, spectrogram_generator
 import click
-import numpy as np
 import pandas as pd
 import pkg_resources
 import pydra
 import torch
 from datasets import Dataset
+from pyarrow.parquet import SortingColumn
 from pydra.mark import annotate
 from senselab.audio.data_structures.audio import Audio
 from senselab.audio.tasks.features_extraction.opensmile import (
@@ -45,9 +42,13 @@ from streamlit import config as _config
 from streamlit.web.bootstrap import run
 from tqdm import tqdm
 
-from pyarrow.parquet import SortingColumn
-from b2aiprep.prepare.bids import get_audio_paths, redcap_to_bids, validate_bids_folder
-from b2aiprep.prepare.prepare import extract_features_workflow, validate_bids_data, clean_phenotype_data
+# from b2aiprep.prepare.bids import get_audio_paths, redcap_to_bids, validate_bids_folder
+# from b2aiprep.prepare.prepare import extract_features_workflow, validate_bids_data, clean_phenotype_data
+from b2aiprep.audioqc.train import train_qc_classifier
+from b2aiprep.prepare.derived_data import (
+    feature_extraction_generator,
+    spectrogram_generator,
+)
 
 # from b2aiprep.synthetic_data import generate_synthetic_tabular_data
 
@@ -95,106 +96,107 @@ def redcap2bids(
     )
 
 
-@click.command()
-@click.argument("bids_dir_path", type=click.Path())
-@click.option("--redcap_csv_path", type=click.Path(exists=True), default=None, show_default=True)
-@click.option("--audio_dir_path", type=click.Path(exists=True), default=None, show_default=True)
-@click.option("-z", "--tar_file_path", type=click.Path(), default=None, show_default=True)
-@click.option("-t", "--transcription_model_size", type=str, default="tiny", show_default=True)
-@click.option("-n", "--n_cores", type=int, default=8, show_default=True)
-@click.option("--with_sensitive/--no-with_sensitive", type=bool, default=True, show_default=True)
-@click.option("--overwrite/--no-overwrite", type=bool, default=False, show_default=True)
-@click.option("--validate/--no-validate", type=bool, default=False, show_default=True)
-@click.option("-c", "--cache", type=click.Path(), default=None, show_default=True)
-@click.option("-a", "--address", type=str, default=None, show_default=True)
-@click.option("-p", "--percentile", type=int, default=100, show_default=True)
-@click.option("-s", "--subject_id", type=str, default=None, show_default=True)
-def prepare_bids(
-    bids_dir_path,
-    redcap_csv_path,
-    audio_dir_path,
-    tar_file_path,
-    transcription_model_size,
-    n_cores,
-    with_sensitive,
-    overwrite,
-    validate,
-    cache,
-    address,
-    percentile,
-    subject_id,
-):
-    """Organizes the data into a BIDS-like directory structure and extracts audio features.
+# @click.command()
+# @click.argument("bids_dir_path", type=click.Path())
+# @click.option("--redcap_csv_path", type=click.Path(exists=True), default=None, show_default=True)
+# @click.option("--audio_dir_path", type=click.Path(exists=True), default=None, show_default=True)
+# @click.option("-z", "--tar_file_path", type=click.Path(), default=None, show_default=True)
+# @click.option("-t", "--transcription_model_size", type=str, default="tiny", show_default=True)
+# @click.option("-n", "--n_cores", type=int, default=8, show_default=True)
+# @click.option("--with_sensitive/--no-with_sensitive", type=bool, default=True, show_default=True)
+# @click.option("--overwrite/--no-overwrite", type=bool, default=False, show_default=True)
+# @click.option("--validate/--no-validate", type=bool, default=False, show_default=True)
+# @click.option("-c", "--cache", type=click.Path(), default=None, show_default=True)
+# @click.option("-a", "--address", type=str, default=None, show_default=True)
+# @click.option("-p", "--percentile", type=int, default=100, show_default=True)
+# @click.option("-s", "--subject_id", type=str, default=None, show_default=True)
+# def prepare_bids(
+#     bids_dir_path,
+#     redcap_csv_path,
+#     audio_dir_path,
+#     tar_file_path,
+#     transcription_model_size,
+#     n_cores,
+#     with_sensitive,
+#     overwrite,
+#     validate,
+#     cache,
+#     address,
+#     percentile,
+#     subject_id,
+# ):
+#     """Organizes the data into a BIDS-like directory structure and extracts audio features.
 
-    This command follows a specific workflow:
-    1. If both redcap_csv_path and audio_dir_path are provided:
-       - Converts REDCap data to BIDS format
-       - Organizes audio files into the BIDS structure
-    2. Runs audio feature extraction on the BIDS directory:
-       - Uses specified transcription model
-       - Processes in parallel using n_cores
-       - Can use Dask for distributed processing if address is provided
-       - Can filter by percentile or specific subject
-    3. Optionally validates the BIDS structure if --validate is set
-    4. Creates a compressed tar file if tar_file_path is specified
+#     This command follows a specific workflow:
+#     1. If both redcap_csv_path and audio_dir_path are provided:
+#        - Converts REDCap data to BIDS format
+#        - Organizes audio files into the BIDS structure
+#     2. Runs audio feature extraction on the BIDS directory:
+#        - Uses specified transcription model
+#        - Processes in parallel using n_cores
+#        - Can use Dask for distributed processing if address is provided
+#        - Can filter by percentile or specific subject
+#     3. Optionally validates the BIDS structure if --validate is set
+#     4. Creates a compressed tar file if tar_file_path is specified
 
-    Args:
-        bids_dir_path: Path to store BIDS-like data
-        redcap_csv_path: Path to the REDCap CSV file. Required with audio_dir_path for initial BIDS creation
-        audio_dir_path: Path to directory with audio files. Required with redcap_csv_path for initial BIDS creation
-        tar_file_path: Path to store tar file. If provided, creates a compressed archive of the BIDS directory
-        transcription_model_size: Size of transcription model ('tiny', 'small', 'medium', or 'large')
-        n_cores: Number of cores to run feature extraction on. Ignored if using Dask
-        with_sensitive: Whether to include sensitive data in the output
-        overwrite: Whether to overwrite existing files during processing
-        validate: Whether to validate the BIDS folder structure after processing
-        cache: Path to cache directory. Defaults to 'b2aiprep_cache' in parent of bids_dir_path
-        address: Dask scheduler address for distributed processing. If provided, uses Dask instead of concurrent.futures
-        percentile: Percentile threshold for processing. Use to process subset of data
-        subject_id: Specific subject ID to process. If provided, only processes this subject
-    """
-    if cache is None:
-        cache = Path(bids_dir_path).parent / "b2aiprep_cache"
-    os.makedirs(cache, exist_ok=True)
+#     Args:
+#         bids_dir_path: Path to store BIDS-like data
+#         redcap_csv_path: Path to the REDCap CSV file. Required with audio_dir_path for initial BIDS creation
+#         audio_dir_path: Path to directory with audio files. Required with redcap_csv_path for initial BIDS creation
+#         tar_file_path: Path to store tar file. If provided, creates a compressed archive of the BIDS directory
+#         transcription_model_size: Size of transcription model ('tiny', 'small', 'medium', or 'large')
+#         n_cores: Number of cores to run feature extraction on. Ignored if using Dask
+#         with_sensitive: Whether to include sensitive data in the output
+#         overwrite: Whether to overwrite existing files during processing
+#         validate: Whether to validate the BIDS folder structure after processing
+#         cache: Path to cache directory. Defaults to 'b2aiprep_cache' in parent of bids_dir_path
+#         address: Dask scheduler address for distributed processing. If provided, uses Dask instead of concurrent.futures
+#         percentile: Percentile threshold for processing. Use to process subset of data
+#         subject_id: Specific subject ID to process. If provided, only processes this subject
+#     """
+#     if cache is None:
+#         cache = Path(bids_dir_path).parent / "b2aiprep_cache"
+#     os.makedirs(cache, exist_ok=True)
 
-    if redcap_csv_path is not None and audio_dir_path is not None:
-        _LOGGER.info("Organizing data into BIDS-like directory structure...")
-        redcap_to_bids(Path(redcap_csv_path), Path(bids_dir_path), Path(audio_dir_path))
-        _LOGGER.info("Data organization complete.")
+#     if redcap_csv_path is not None and audio_dir_path is not None:
+#         _LOGGER.info("Organizing data into BIDS-like directory structure...")
+#         redcap_to_bids(Path(redcap_csv_path), Path(bids_dir_path), Path(audio_dir_path))
+#         _LOGGER.info("Data organization complete.")
 
-    _LOGGER.info("Beginning audio feature extraction...")
-    extract_features_workflow(
-        Path(bids_dir_path),
-        transcription_model_size=transcription_model_size,
-        n_cores=n_cores,
-        with_sensitive=with_sensitive,
-        overwrite=overwrite,
-        cache_dir=cache,
-        plugin="dask" if address is not None else "cf",
-        address=address,
-        percentile=percentile,
-        subject_id=subject_id,
-    )
-    _LOGGER.info("Audio feature extraction complete.")
+#     _LOGGER.info("Beginning audio feature extraction...")
+#     extract_features_workflow(
+#         Path(bids_dir_path),
+#         transcription_model_size=transcription_model_size,
+#         n_cores=n_cores,
+#         with_sensitive=with_sensitive,
+#         overwrite=overwrite,
+#         cache_dir=cache,
+#         plugin="dask" if address is not None else "cf",
+#         address=address,
+#         percentile=percentile,
+#         subject_id=subject_id,
+#     )
+#     _LOGGER.info("Audio feature extraction complete.")
 
-    if validate:
-        # Below code checks to see if we have all the expected feature/transcript files.
-        validate_bids_folder(Path(bids_dir_path))
+#     if validate:
+#         # Below code checks to see if we have all the expected feature/transcript files.
+#         validate_bids_folder(Path(bids_dir_path))
 
-    if tar_file_path is not None:
-        _LOGGER.info("Saving .tar file with processed data...")
-        with tarfile.open(tar_file_path, "w:gz") as tar:
-            tar.add(bids_dir_path, arcname=os.path.basename(bids_dir_path))
-        _LOGGER.info(f"Saved processed data .tar file at: {tar_file_path}")
+#     if tar_file_path is not None:
+#         _LOGGER.info("Saving .tar file with processed data...")
+#         with tarfile.open(tar_file_path, "w:gz") as tar:
+#             tar.add(bids_dir_path, arcname=os.path.basename(bids_dir_path))
+#         _LOGGER.info(f"Saved processed data .tar file at: {tar_file_path}")
 
-    _LOGGER.info("Process completed.")
+#     _LOGGER.info("Process completed.")
+
 
 @click.command()
 @click.argument("bids_path", type=click.Path(exists=True))
 @click.argument("outdir", type=click.Path())
 def create_derived_dataset(bids_path, outdir):
     """Create a derived dataset from voice/phenotype data in BIDS format.
-    
+
     The derived dataset output loads data from generated .pt files, which have
     the following keys:
      - pitch
@@ -223,7 +225,7 @@ def create_derived_dataset(bids_path, outdir):
     audio_paths = sorted(
         audio_paths,
         # sort first by subject, then by task
-        key=lambda x: (x.stem.split('_')[0], x.stem.split('_')[2])
+        key=lambda x: (x.stem.split("_")[0], x.stem.split("_")[2]),
     )
 
     # remove known subjects without any audio
@@ -237,8 +239,8 @@ def create_derived_dataset(bids_path, outdir):
 
     _LOGGER.info("Loading spectrograms into a single HF dataset.")
 
-    for feature_name in ['spectrogram', 'mfcc']:
-        if feature_name == 'mfcc':
+    for feature_name in ["spectrogram", "mfcc"]:
+        if feature_name == "mfcc":
             use_byte_stream_split = True
             audio_feature_generator = partial(
                 feature_extraction_generator,
@@ -252,7 +254,6 @@ def create_derived_dataset(bids_path, outdir):
                 audio_paths=audio_paths,
             )
 
-
         # sort the dataset by identifier and task_name
         ds = Dataset.from_generator(audio_feature_generator, num_proc=1)
         ds.to_parquet(
@@ -260,7 +261,11 @@ def create_derived_dataset(bids_path, outdir):
             version="2.6",
             compression="zstd",  # Better compression ratio than snappy, still good speed
             compression_level=3,
-            use_dictionary=["participant_id", "session_id", "task_name"],  # Enable dictionary encoding for strings
+            use_dictionary=[
+                "participant_id",
+                "session_id",
+                "task_name",
+            ],  # Enable dictionary encoding for strings
             write_statistics=True,
             # enable page index for better filtering
             data_page_size=1_048_576,  # 1MB pages
@@ -282,7 +287,7 @@ def create_derived_dataset(bids_path, outdir):
         pt_file = Path(filename.replace(".wav", "_features.pt"))
         if not pt_file.exists():
             continue
-        
+
         for participant_id in SUBJECTS_TO_REMOVE:
             if f"sub-{participant_id}" in str(pt_file):
                 _LOGGER.info(f"Skipping subject {participant_id}")
@@ -298,13 +303,15 @@ def create_derived_dataset(bids_path, outdir):
         transcription = features.get("transcription", None)
         if transcription is not None:
             transcription = transcription.text
-            if subj_info['task_name'].lower().startswith('free-speech') or \
-                subj_info['task_name'].lower().startswith('audio-check') or \
-                subj_info['task_name'].lower().startswith('open-response-questions'):
+            if (
+                subj_info["task_name"].lower().startswith("free-speech")
+                or subj_info["task_name"].lower().startswith("audio-check")
+                or subj_info["task_name"].lower().startswith("open-response-questions")
+            ):
                 # we omit tasks where free speech occurs
                 transcription = None
         subj_info["transcription"] = transcription
-        
+
         for key in ["opensmile", "praat_parselmouth", "torchaudio_squim"]:
             subj_info.update(features.get(key, {}))
 
@@ -314,7 +321,9 @@ def create_derived_dataset(bids_path, outdir):
     df_static.to_csv(outdir / "static_features.tsv", sep="\t", index=False)
     # load in the JSON with descriptions of each feature and copy it over
     # write it out again so formatting is consistent between JSONs
-    static_features_json_file = resources.files("b2aiprep").joinpath("prepare", "resources", "static_features.json")
+    static_features_json_file = resources.files("b2aiprep").joinpath(
+        "prepare", "resources", "static_features.json"
+    )
     static_features_json = json.load(static_features_json_file.open())
     with open(outdir / "static_features.json", "w") as f:
         json.dump(static_features_json, f, indent=2)
@@ -326,9 +335,11 @@ def create_derived_dataset(bids_path, outdir):
     df = pd.read_csv(bids_path.joinpath("participants.tsv"), sep="\t")
 
     # remove subject
-    idx = df['record_id'].isin(SUBJECTS_TO_REMOVE)
+    idx = df["record_id"].isin(SUBJECTS_TO_REMOVE)
     if idx.sum() > 0:
-        _LOGGER.info(f"Removing {idx.sum()} records from phenotype due to hard-coded subject removal.")
+        _LOGGER.info(
+            f"Removing {idx.sum()} records from phenotype due to hard-coded subject removal."
+        )
         df = df.loc[~idx]
 
     # temporarily keep record_id as the column name to enable joining the dataframes together
@@ -378,7 +389,9 @@ def create_derived_dataset(bids_path, outdir):
         # add the data elements to the overall phenotype dict
         if len(phenotype_add) != 1:
             # we expect there to only be one key
-            _LOGGER.warning(f"Unexpected keys in phenotype file {phenotype_filepath.stem}: {phenotype_add.keys()}")
+            _LOGGER.warning(
+                f"Unexpected keys in phenotype file {phenotype_filepath.stem}: {phenotype_add.keys()}"
+            )
         else:
             phenotype_add = next(iter(phenotype_add.values()))["data_elements"]
         phenotype.update(phenotype_add)
@@ -690,3 +703,16 @@ def createbatchcsv(input_dir, out_file):
             write.writerow([Path(item).absolute().as_posix()])
 
     print(f"csv of audiofiles generated at: {out_file}")
+
+
+@click.command()
+@click.argument("features_csv_path", type=click.Path(exists=True))
+@click.argument("participants_tsv_path", type=click.Path(exists=True))
+@click.argument("base_output_dir", type=click.Path())
+def train_qc(features_csv_path, participants_tsv_path, base_output_dir):
+    """Train the AudioQC classifier."""
+    train_qc_classifier(
+        features_csv_path=features_csv_path,
+        participants_tsv_path=participants_tsv_path,
+        base_output_dir=base_output_dir,
+    )
