@@ -271,6 +271,10 @@ def preprocess_data(features_df, preprocessing_steps, label_column="label"):
         elif step == "winnow":
             transformed_data = winnow_feature_selection(transformed_data)
 
+    # Identify columns that are entirely NaN and replace only those with zeroes
+    nan_columns = transformed_data.columns[transformed_data.isna().all()]
+    transformed_data[nan_columns] = 0
+
     # Extract selected features after preprocessing
     selected_features = list(
         transformed_data.drop(columns=[label_column, "site", "participant", "task"]).columns
@@ -455,6 +459,9 @@ def inner_loop(features_df, label_column="label", cv_folds=5, output_dir="traini
         for permutation in permutations(combination)
     ]
 
+    # if DEBUG_MODE:
+    #     preprocessing_permutations = [["normalize"]]
+
     for preprocessing_permutation in preprocessing_permutations:
         normalize_modes = (
             ["center", "scale", "both"] if "normalize" in preprocessing_permutation else [None]
@@ -571,7 +578,14 @@ def outer_loop(
             train_df, label_column, cv_folds, site_dir
         )
 
-        X_test, y_test, selected_features = preprocess_data(test_df, best_fold_steps, label_column)
+        test_steps = None
+        if "normalize" in best_fold_steps[0]:
+            test_steps = (["normalize"], best_fold_steps[1])
+        else:
+            test_steps = ([], None)
+        test_df = test_df[selected_features + [label_column, "site", "participant", "task"]]
+        # preprocess but only with normalize
+        X_test, y_test, _ = preprocess_data(test_df, test_steps, label_column)
         best_model_score = best_fold_model.score(X_test, y_test)
 
         print(
