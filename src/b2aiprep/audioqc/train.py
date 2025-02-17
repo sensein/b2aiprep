@@ -9,13 +9,14 @@ from itertools import combinations, permutations
 
 import numpy as np
 import pandas as pd
-from save import save_model
 from sklearn.ensemble import ExtraTreesClassifier, RandomForestClassifier
 from sklearn.impute import SimpleImputer
 from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 from tqdm import tqdm
+
+from b2aiprep.audioqc.save import save_model
 
 logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
@@ -519,7 +520,7 @@ def inner_loop(features_df, label_column="label", cv_folds=5, output_dir="traini
     return best_model, best_score, best_steps, selected_features
 
 
-def outer_loop(
+def train_qc_classifier(
     features_csv_path,
     participants_tsv_path,
     label_column="label",
@@ -651,7 +652,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    outer_loop(
+    train_qc_classifier(
         features_csv_path=args.features_csv,
         participants_tsv_path=args.participants_tsv,
         base_output_dir=args.output_dir,
