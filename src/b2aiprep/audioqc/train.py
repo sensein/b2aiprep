@@ -9,6 +9,7 @@ from itertools import combinations, permutations
 
 import numpy as np
 import pandas as pd
+from joblib import Parallel, delayed
 from sklearn.ensemble import ExtraTreesClassifier, RandomForestClassifier
 from sklearn.impute import SimpleImputer
 from sklearn.model_selection import GridSearchCV, train_test_split
@@ -526,29 +527,29 @@ def train_qc_classifier(
     label_column="label",
     cv_folds=5,
     base_output_dir="training_results",
+    n_jobs=-1,  # Enables parallel processing with automatic CPU allocation
 ):
     """Performs an outer-loop cross-validation process using a leave-one-site-out (LoSo) approach.
     Trains models using the inner loop, selects the best-performing model across all site folds,
-    and then trains a new model with the best hyperparameters on all data, applying the same
-    preprocessing steps that led to the best model in the exact order.
+    and then trains a new model with the best hyperparameters on all data.
 
     Args:
         features_csv_path (str): Path to the features CSV file.
         participants_tsv_path (str): Path to the participants TSV file.
         label_column (str): Name of the classification label column.
         cv_folds (int): Number of cross-validation folds.
+        base_output_dir (str): Output directory for saved models.
+        n_jobs (int): Number of parallel jobs (-1 = all available CPUs).
 
     Returns:
-        tuple:
-            - best_final_model: The newly trained model using the best hyperparameters on all data.
-            - best_preprocessing_steps (tuple): The preprocessing steps used by the best model.
+        final_model: The trained model using the best hyperparameters.
     """
     # Create a unique directory for this training run
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     run_dir = os.path.join(base_output_dir, f"training_run_{timestamp}")
     os.makedirs(run_dir, exist_ok=True)
 
-    # Save training run metadata
+    # Save training metadata
     training_run_metadata = {
         "timestamp": timestamp,
         "min_features_to_keep": MIN_FEATURES_TO_KEEP,
@@ -557,46 +558,44 @@ def train_qc_classifier(
         "label_column": label_column,
         "features_csv_path": features_csv_path,
         "participants_tsv_path": participants_tsv_path,
+        "n_jobs": n_jobs,
     }
-
     with open(os.path.join(run_dir, "training_run_metadata.json"), "w") as f:
         json.dump(training_run_metadata, f, indent=4, ensure_ascii=False)
 
+    # Load and process data
     features_df = get_features_df_with_site(features_csv_path, participants_tsv_path)
     features_df = add_random_labels(features_df)
-
     unique_sites = features_df["site"].unique()
-    best_inner_loop_models = []
 
-    for site in tqdm(unique_sites):
+    # Define function for parallel execution
+    def process_site(site):
+        """Handles inner loop training for a single site."""
         logger.info(f"Processing site: {site}")
 
         train_df = features_df[features_df["site"] != site].copy().reset_index(drop=True)
         test_df = features_df[features_df["site"] == site].copy().reset_index(drop=True)
-
         site_dir = os.path.join(run_dir, f"site_{site}")
         os.makedirs(site_dir, exist_ok=True)
+
+        # Run inner loop training
         best_fold_model, best_fold_score, best_fold_steps, selected_features = inner_loop(
             train_df, label_column, cv_folds, site_dir
         )
 
-        test_steps = None
-        if "normalize" in best_fold_steps[0]:
-            test_steps = (["normalize"], best_fold_steps[1])
-        else:
-            test_steps = ([], None)
+        # Apply best preprocessing to test set
+        test_steps = (
+            (["normalize"], best_fold_steps[1]) if "normalize" in best_fold_steps[0] else ([], None)
+        )
         test_df = test_df[selected_features + [label_column, "site", "participant", "task"]]
-        # preprocess but only with normalize
         X_test, y_test, _ = preprocess_data(test_df, test_steps, label_column)
         best_model_score = best_fold_model.score(X_test, y_test)
 
-        print(
+        logger.info(
             f"Best model for site {site}: {best_fold_model} with test score {best_model_score:.4f}"
         )
 
-        best_inner_loop_models.append((best_fold_model, best_fold_score, best_fold_steps))
-
-        # Save best model for this site
+        # Save best model for site
         save_model(
             site_dir,
             best_fold_model,
@@ -610,13 +609,20 @@ def train_qc_classifier(
             },
         )
 
+        return best_fold_model, best_fold_score, best_fold_steps
+
+    # Run inner loop training in parallel across sites
+    best_inner_loop_models = Parallel(n_jobs=n_jobs)(
+        delayed(process_site)(site) for site in tqdm(unique_sites)
+    )
+
+    # Select the best model from all sites
     best_inner_model, best_model_score, best_preprocessing_steps = max(
         best_inner_loop_models, key=lambda x: x[1]
     )
+    logger.info(f"Best model selected: {best_inner_model} with score {best_model_score:.4f}")
 
-    print(f"Best model selected: {best_inner_model} with score {best_model_score:.4f}")
-
-    # Train final model
+    # Train final model with best parameters
     final_model, selected_features = train_final_model(
         features_df, best_inner_model, best_preprocessing_steps, label_column
     )
@@ -636,7 +642,7 @@ def train_qc_classifier(
         },
     )
 
-    print(f"Training run saved at: {run_dir}")
+    logger.info(f"Training run saved at: {run_dir}")
     return final_model
 
 
