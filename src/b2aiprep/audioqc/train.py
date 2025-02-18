@@ -15,7 +15,6 @@ from sklearn.impute import SimpleImputer
 from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
-from tqdm import tqdm
 
 from b2aiprep.audioqc.save import save_model
 
@@ -613,7 +612,7 @@ def train_qc_classifier(
 
     # Run inner loop training in parallel across sites
     best_inner_loop_models = Parallel(n_jobs=n_jobs)(
-        delayed(process_site)(site) for site in tqdm(unique_sites)
+        delayed(process_site)(site) for site in unique_sites
     )
 
     # Select the best model from all sites
