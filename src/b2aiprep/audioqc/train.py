@@ -287,6 +287,7 @@ def preprocess_data(features_df, preprocessing_steps, label_column="label"):
     )
 
     X = transformed_data[selected_features]  # Keep only selected features
+    X.replace([np.inf, -np.inf], np.nan, inplace=True)
     y = transformed_data[label_column]
 
     logger.info(f"Selected {len(selected_features)} features for training.")
