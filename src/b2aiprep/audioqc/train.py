@@ -278,6 +278,8 @@ def preprocess_data(features_df, preprocessing_steps, label_column="label"):
             transformed_data = winnow_feature_selection(transformed_data)
 
     # Identify columns that are entirely NaN and replace only those with zeroes
+    transformed_data.replace([np.inf, -np.inf], np.nan, inplace=True)
+
     nan_columns = transformed_data.columns[transformed_data.isna().all()]
     transformed_data[nan_columns] = 0
 
@@ -287,7 +289,6 @@ def preprocess_data(features_df, preprocessing_steps, label_column="label"):
     )
 
     X = transformed_data[selected_features]  # Keep only selected features
-    X.replace([np.inf, -np.inf], np.nan, inplace=True)
     y = transformed_data[label_column]
 
     logger.info(f"Selected {len(selected_features)} features for training.")
