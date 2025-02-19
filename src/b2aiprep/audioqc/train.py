@@ -48,7 +48,9 @@ def site_wise_normalization(features_df, site_column="site", mode="both"):
         pd.DataFrame: Normalized feature DataFrame.
     """
     non_feature_cols = ["label", "site", "participant", "task"]
-    features_only = features_df.drop(columns=non_feature_cols)
+    # features_only = features_df.drop(columns=non_feature_cols)
+    features_only = features_df.select_dtypes(include=[np.number])
+
     normalized_features = features_only.copy()
 
     for site in features_df[site_column].unique():
@@ -92,7 +94,8 @@ def site_predictability_feature_elimination(
             - pd.DataFrame: DataFrame with remaining features after elimination.
     """
     # Drop non-AQM columns (site labels are the target variable)
-    X = features_df.drop(columns=["site", "participant", "task", "label"])
+    # X = features_df.drop(columns=["site", "participant", "task", "label"])
+    X = features_df.select_dtypes(include=[np.number])
     y = features_df["site"]
 
     # Split data into train and test sets
@@ -169,7 +172,8 @@ def winnow_feature_selection(
     metadata_columns = ["site", "participant", "task", "label"]
 
     # Extract feature matrix and target labels
-    X = features_df.drop(columns=metadata_columns)
+    X = features_df.select_dtypes(include=[np.number])
+    # X = features_df.drop(columns=metadata_columns)
     y = features_df["site"]
 
     # Generate a synthetic random feature (noise)
