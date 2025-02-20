@@ -68,7 +68,7 @@ def site_wise_normalization(features_df, site_column="site", mode="both"):
             normalized_features.loc[site_mask] = (site_data - median) / iqr
 
     normalized_features[non_feature_cols] = features_df[non_feature_cols]
-
+    normalized_features.replace([np.inf, -np.inf], np.nan, inplace=True)
     return normalized_features
 
 
@@ -242,22 +242,34 @@ def add_random_labels(
     return df
 
 
-def impute_missing_values(X, selected_features):
+def impute_missing_values(X):
     """
-    Handles missing values in the dataset by imputing them with the mean.
+    Handles missing values in the dataset by dropping columns that are entirely NaN
+    and imputing the remaining numeric columns with the mean.
 
     Args:
-        X (pd.DataFrame): The feature matrix.
-        selected_features (list): List of selected feature names.
+        X (pd.DataFrame): The feature matrix, including both numeric and non-numeric columns.
 
     Returns:
         pd.DataFrame: The feature matrix with imputed values.
     """
-    if X.isna().sum().sum() > 0:
-        logger.info("Warning: NaN values detected. Imputing missing values...")
+    # Separate numeric and non-numeric columns
+    numeric_X = X.select_dtypes(include=["number"])
+    non_numeric_X = X.select_dtypes(include=["object", "string"])
+
+    # Drop columns that are entirely NaN in numeric data
+    numeric_X = numeric_X.dropna(axis=1, how="all")
+
+    if numeric_X.isna().sum().sum() > 0:
+        logger.info("Warning: NaN values detected in numeric features. Imputing missing values...")
         imputer = SimpleImputer(strategy="mean")
-        X = pd.DataFrame(imputer.fit_transform(X), columns=selected_features)
-    return X
+        # Keep original column names
+        numeric_X = pd.DataFrame(imputer.fit_transform(numeric_X), columns=numeric_X.columns)
+
+    # Recombine numeric and non-numeric data
+    X_imputed = pd.concat([numeric_X, non_numeric_X], axis=1)
+
+    return X_imputed
 
 
 def preprocess_data(features_df, preprocessing_steps, label_column="label"):
@@ -291,6 +303,7 @@ def preprocess_data(features_df, preprocessing_steps, label_column="label"):
         if step == "normalize" and mode:
             transformed_data = site_wise_normalization(transformed_data, mode=mode)
         elif step == "eliminate":
+            transformed_data = impute_missing_values(transformed_data)
             transformed_data = site_predictability_feature_elimination(transformed_data)
         elif step == "winnow":
             transformed_data = winnow_feature_selection(transformed_data)
@@ -306,7 +319,7 @@ def preprocess_data(features_df, preprocessing_steps, label_column="label"):
     y = transformed_data[label_column]
 
     logger.info(f"Selected {len(selected_features)} features for training.")
-    X = impute_missing_values(X, selected_features)
+    X = impute_missing_values(X)
 
     # Standardize features
     scaler = StandardScaler()
