@@ -105,6 +105,14 @@ def site_predictability_feature_elimination(
 
     # Train initial ExtraTreesClassifier to predict site labels
     site_predictor = ExtraTreesClassifier(n_estimators=100, random_state=42)
+
+    if X.isna().sum().sum() > 0:
+        logger.error(
+            f"NaN detected before training! Columns with NaNs: {X.columns[X.isna().any()].tolist()}"
+        )
+        logger.error(f"NaN counts: {X.isna().sum()}")
+        raise ValueError("NaNs detected in training data.")
+
     site_predictor.fit(X_train, y_train)
 
     # Get initial accuracy (baseline)
@@ -269,6 +277,10 @@ def impute_missing_values(X):
     # Recombine numeric and non-numeric data
     X_imputed = pd.concat([numeric_X, non_numeric_X], axis=1)
 
+    # **Check if NaNs still remain**
+    if numeric_X.isna().sum().sum() > 0:
+        logger.error("NaNs remain AFTER imputation!")
+
     return X_imputed
 
 
@@ -303,7 +315,7 @@ def preprocess_data(features_df, preprocessing_steps, label_column="label"):
         if step == "normalize" and mode:
             transformed_data = site_wise_normalization(transformed_data, mode=mode)
         elif step == "eliminate":
-            transformed_data = impute_missing_values(transformed_data)
+
             transformed_data = site_predictability_feature_elimination(transformed_data)
         elif step == "winnow":
             transformed_data = winnow_feature_selection(transformed_data)
