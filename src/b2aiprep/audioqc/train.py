@@ -315,7 +315,7 @@ def preprocess_data(features_df, preprocessing_steps, label_column="label"):
         if step == "normalize" and mode:
             transformed_data = site_wise_normalization(transformed_data, mode=mode)
         elif step == "eliminate":
-
+            transformed_data = impute_missing_values(transformed_data)
             transformed_data = site_predictability_feature_elimination(transformed_data)
         elif step == "winnow":
             transformed_data = winnow_feature_selection(transformed_data)
