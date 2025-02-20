@@ -242,6 +242,24 @@ def add_random_labels(
     return df
 
 
+def impute_missing_values(X, selected_features):
+    """
+    Handles missing values in the dataset by imputing them with the mean.
+
+    Args:
+        X (pd.DataFrame): The feature matrix.
+        selected_features (list): List of selected feature names.
+
+    Returns:
+        pd.DataFrame: The feature matrix with imputed values.
+    """
+    if X.isna().sum().sum() > 0:
+        logger.info("Warning: NaN values detected. Imputing missing values...")
+        imputer = SimpleImputer(strategy="mean")
+        X = pd.DataFrame(imputer.fit_transform(X), columns=selected_features)
+    return X
+
+
 def preprocess_data(features_df, preprocessing_steps, label_column="label"):
     """
     Preprocesses data by handling missing values, standardizing features,
@@ -279,27 +297,16 @@ def preprocess_data(features_df, preprocessing_steps, label_column="label"):
 
     # Identify columns that are entirely NaN and replace only those with zeroes
     transformed_data.replace([np.inf, -np.inf], np.nan, inplace=True)
-
     nan_columns = transformed_data.columns[transformed_data.isna().all()]
     transformed_data[nan_columns] = 0
-
-    # Extract selected features after preprocessing
     selected_features = list(
         transformed_data.drop(columns=[label_column, "site", "participant", "task"]).columns
     )
-
     X = transformed_data[selected_features]  # Keep only selected features
     y = transformed_data[label_column]
 
     logger.info(f"Selected {len(selected_features)} features for training.")
-
-    # Handle missing values
-    if X.isna().sum().sum() > 0:
-        logger.info("Warning: NaN values detected. Imputing missing values...")
-        imputer = SimpleImputer(strategy="mean")
-        X = pd.DataFrame(
-            imputer.fit_transform(X), columns=selected_features
-        )  # Assign correct columns
+    X = impute_missing_values(X, selected_features)
 
     # Standardize features
     scaler = StandardScaler()
