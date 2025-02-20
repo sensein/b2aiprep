@@ -312,9 +312,7 @@ def preprocess_data(features_df, preprocessing_steps, label_column="label"):
     transformed_data.replace([np.inf, -np.inf], np.nan, inplace=True)
     nan_columns = transformed_data.columns[transformed_data.isna().all()]
     transformed_data[nan_columns] = 0
-    selected_features = list(
-        transformed_data.drop(columns=[label_column, "site", "participant", "task"]).columns
-    )
+    selected_features = transformed_data.select_dtypes(include=["number"]).columns.tolist()
     X = transformed_data[selected_features]  # Keep only selected features
     y = transformed_data[label_column]
 
