@@ -361,12 +361,12 @@ def svm_train(X, y, cv_folds=5):
     else:
         # Larger search space
         param_grid_svm = {
-            "C": [1e-3, 1e-2, 1e-1, 1, 10, 100, 1000],
-            "kernel": ["linear", "poly", "rbf", "sigmoid"],
-            "gamma": ["scale", "auto", 1e-3, 1e-2, 1e-1, 1, 10],
-            "degree": [2, 3, 4, 5, 6],
-            "coef0": [0.0, 0.1, 0.5, 1.0],
-            "class_weight": [None, "balanced"],
+            "C": [1e-3, 1e-1, 1, 10, 100],
+            "kernel": ["linear", "poly", "rbf"],
+            "gamma": ["scale", 1e-2, 1e-1, 1],
+            "degree": [2, 3, 4],
+            "coef0": [0.0, 0.5],
+            "class_weight": ["balanced"],
         }
 
     grid_search = GridSearchCV(SVC(), param_grid_svm, cv=cv_folds, scoring="accuracy", n_jobs=-1)
@@ -409,14 +409,14 @@ def rfc_train(X, y, cv_folds=5):
         }
     else:
         param_grid_rfc = {
-            "n_estimators": [100, 200, 500, 1000],
-            "max_depth": [None, 10, 20, 30, 40, 50],
-            "min_samples_split": [2, 5, 10, 20],
-            "min_samples_leaf": [1, 2, 4, 8],
-            "max_features": ["auto", "sqrt", "log2", None],
-            "bootstrap": [True, False],
+            "n_estimators": [100, 500],
+            "max_depth": [None, 10, 30],
+            "min_samples_split": [2, 10],
+            "min_samples_leaf": [1, 2, 4],
+            "max_features": ["auto", "sqrt", "log2"],
+            "bootstrap": [True],
             "criterion": ["gini", "entropy"],
-            "class_weight": [None, "balanced", "balanced_subsample"],
+            "class_weight": ["balanced"],
         }
 
     grid_search = GridSearchCV(
