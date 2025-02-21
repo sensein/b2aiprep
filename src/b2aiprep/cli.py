@@ -21,7 +21,7 @@ from b2aiprep.commands import (  # gensynthtabdata,
 @click.group()
 @click.option(
     "--log-level",
-    default="INFO",
+    default="WARNING",
     type=click.Choice(["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]),
     help="Set the log level for the CLI.",
 )
@@ -49,6 +49,7 @@ cli.add_command(createbatchcsv)
 cli.add_command(create_derived_dataset)
 cli.add_command(reproschema_audio_to_folder)
 cli.add_command(reproschema_to_redcap)
+
 
 if __name__ == "__main__":
     # include main to enable python debugging

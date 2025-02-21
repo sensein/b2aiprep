@@ -1,25 +1,22 @@
 """Commands available through the CLI."""
 
 import csv
-from functools import partial
 import json
 import logging
 import os
 import shutil
-import tarfile
-import typing as t
+from functools import partial
 from glob import glob
-from pathlib import Path
 from importlib import resources
 from collections import OrderedDict
 from b2aiprep.prepare.derived_data import feature_extraction_generator, spectrogram_generator
 import click
-import numpy as np
 import pandas as pd
 import pkg_resources
 import pydra
 import torch
 from datasets import Dataset
+from pyarrow.parquet import SortingColumn
 from pydra.mark import annotate
 from senselab.audio.data_structures.audio import Audio
 from senselab.audio.tasks.features_extraction.opensmile import (
@@ -49,7 +46,6 @@ from pyarrow.parquet import SortingColumn
 from b2aiprep.prepare.bids import get_audio_paths, redcap_to_bids, validate_bids_folder
 from b2aiprep.prepare.prepare import extract_features_workflow, extract_features_sequentially,validate_bids_data, clean_phenotype_data
 from b2aiprep.prepare.reproschema_to_redcap import parse_survey, parse_audio
-
 
 # from b2aiprep.synthetic_data import generate_synthetic_tabular_data
 
@@ -95,6 +91,7 @@ def redcap2bids(
         outdir=Path(outdir),
         audiodir=audiodir,
     )
+
 
 
 @click.command()
@@ -188,17 +185,18 @@ def prepare_bids(
         )
     _LOGGER.info("Audio feature extraction complete.")
 
-    if validate:
-        # Below code checks to see if we have all the expected feature/transcript files.
-        validate_bids_folder(Path(bids_dir_path))
+#     if validate:
+#         # Below code checks to see if we have all the expected feature/transcript files.
+#         validate_bids_folder(Path(bids_dir_path))
 
-    if tar_file_path is not None:
-        _LOGGER.info("Saving .tar file with processed data...")
-        with tarfile.open(tar_file_path, "w:gz") as tar:
-            tar.add(bids_dir_path, arcname=os.path.basename(bids_dir_path))
-        _LOGGER.info(f"Saved processed data .tar file at: {tar_file_path}")
+#     if tar_file_path is not None:
+#         _LOGGER.info("Saving .tar file with processed data...")
+#         with tarfile.open(tar_file_path, "w:gz") as tar:
+#             tar.add(bids_dir_path, arcname=os.path.basename(bids_dir_path))
+#         _LOGGER.info(f"Saved processed data .tar file at: {tar_file_path}")
 
-    _LOGGER.info("Process completed.")
+#     _LOGGER.info("Process completed.")
+
 
 
 @click.command()
@@ -235,7 +233,7 @@ def create_derived_dataset(bids_path, outdir):
     audio_paths = sorted(
         audio_paths,
         # sort first by subject, then by task
-        key=lambda x: (x.stem.split('_')[0], x.stem.split('_')[2])
+        key=lambda x: (x.stem.split("_")[0], x.stem.split("_")[2]),
     )
 
     # remove known subjects without any audio
@@ -249,8 +247,8 @@ def create_derived_dataset(bids_path, outdir):
 
     _LOGGER.info("Loading spectrograms into a single HF dataset.")
 
-    for feature_name in ['spectrogram', 'mfcc']:
-        if feature_name == 'mfcc':
+    for feature_name in ["spectrogram", "mfcc"]:
+        if feature_name == "mfcc":
             use_byte_stream_split = True
             audio_feature_generator = partial(
                 feature_extraction_generator,
@@ -271,8 +269,10 @@ def create_derived_dataset(bids_path, outdir):
             version="2.6",
             compression="zstd",  # Better compression ratio than snappy, still good speed
             compression_level=3,
+
             # Enable dictionary encoding for strings
             use_dictionary=["participant_id", "session_id", "task_name"],
+
             write_statistics=True,
             # enable page index for better filtering
             data_page_size=1_048_576,  # 1MB pages
@@ -310,9 +310,11 @@ def create_derived_dataset(bids_path, outdir):
         transcription = features.get("transcription", None)
         if transcription is not None:
             transcription = transcription.text
+
             if subj_info['task_name'].lower().startswith('free-speech') or \
                     subj_info['task_name'].lower().startswith('audio-check') or \
                     subj_info['task_name'].lower().startswith('open-response-questions'):
+
                 # we omit tasks where free speech occurs
                 transcription = None
         subj_info["transcription"] = transcription
@@ -339,7 +341,7 @@ def create_derived_dataset(bids_path, outdir):
     df = pd.read_csv(bids_path.joinpath("participants.tsv"), sep="\t")
 
     # remove subject
-    idx = df['record_id'].isin(SUBJECTS_TO_REMOVE)
+    idx = df["record_id"].isin(SUBJECTS_TO_REMOVE)
     if idx.sum() > 0:
         _LOGGER.info(
             f"Removing {idx.sum()} records from phenotype due to hard-coded subject removal.")

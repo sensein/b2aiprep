@@ -1,0 +1,10 @@
+{
+    "timestamp": "2025-02-21_12-10-09",
+    "min_features_to_keep": 64,
+    "debug_mode": true,
+    "cv_folds": 5,
+    "label_column": "label",
+    "features_csv_path": "/Users/isaacbevers/sensein/b2ai-wrapper/b2ai-data/bridge2ai-voice-corpus-3/derived/static_features.csv",
+    "participants_tsv_path": "/Users/isaacbevers/sensein/b2ai-wrapper/b2ai-data/bridge2ai-voice-corpus-3/bids/bids/participants.tsv",
+    "n_jobs": -1
+}
