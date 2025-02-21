@@ -318,6 +318,7 @@ def preprocess_data(features_df, preprocessing_steps, label_column="label"):
             transformed_data = impute_missing_values(transformed_data)
             transformed_data = site_predictability_feature_elimination(transformed_data)
         elif step == "winnow":
+            transformed_data = impute_missing_values(transformed_data)
             transformed_data = winnow_feature_selection(transformed_data)
 
     # Identify columns that are entirely NaN and replace only those with zeroes
