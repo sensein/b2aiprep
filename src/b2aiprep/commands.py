@@ -92,7 +92,25 @@ def redcap2bids(
     outdir,
     audiodir,
 ):
-    """Converts REDCap data into BIDS format and organizes audio files."""
+    """Organizes into BIDS-like without features.
+
+    This function processes a REDCap data file and optionally links audio files
+    to structure them in a format similar to the Brain Imaging Data Structure (BIDS).
+
+    Args:
+        filename (str): Path to the REDCap data file.
+        outdir (str, optional): Directory where the converted BIDS-like data
+                                will be saved. Defaults to "output" in the current working directory.
+        audiodir (str, optional): Directory containing associated audio files.
+                                  If not provided, only the REDCap data is processed.
+
+    Raises:
+        ValueError: If the specified output directory path exists but is not a directory.
+
+    Returns:
+        None: Saves the structured data in the specified output directory.
+    """
+
     outdir = Path(outdir)
     if outdir.exists() and not outdir.is_dir():
         raise ValueError(f"Output path {outdir} is not a directory.")
@@ -136,7 +154,7 @@ def prepare_bids(
     subject_id,
     is_sequential,
 ):
-    """Organizes the data into a BIDS-like directory structure and extracts audio features.
+    """Organizes into BIDS-like with features.
 
     This command follows a specific workflow:
     1. If both redcap_csv_path and audio_dir_path are provided:
@@ -214,7 +232,7 @@ def prepare_bids(
 @click.argument("bids_path", type=click.Path(exists=True))
 @click.argument("outdir", type=click.Path())
 def create_derived_dataset(bids_path, outdir):
-    """Create a derived dataset from voice/phenotype data in BIDS format.
+    """Creates derived dataset from BIDS data.
 
     The derived dataset output loads data from generated .pt files, which have
     the following keys:
@@ -430,7 +448,7 @@ def validate(
     bids_dir_path,
     fix,
 ):
-    """Organizes the data into a BIDS-like directory structure.
+    """Organizes data into BIDS-like structure.
 
     redcap_csv_path: path to the redcap csv\n
     audio_dir_path: path to directory with audio files\n
@@ -483,7 +501,7 @@ def convert(
     transcribe,
     opensmile,
 ):
-    """Processes an audio file to extract various features and saves them.
+    """Extracts features from one audio file.
 
     This function loads an audio file, extracts relevant features such as
     spectrogram, mel filter bank, MFCCs, speaker embeddings, and OpenSMILE
@@ -564,6 +582,29 @@ def batchconvert(
     speech2text,
     opensmile,
 ):
+    """Extracts features from audio file list (CSV).
+
+    This function reads a CSV file containing a list of audio file paths (or paths with metadata)
+    and extracts various audio features such as spectrogram, mel filter bank, MFCCs,
+    speaker embeddings, and OpenSMILE features. It uses Pydra for parallel processing
+    and supports optional transcription and dataset generation.
+
+    Args:
+        csvfile (str): Path to the CSV file containing audio file paths (with optional metadata).
+        outdir (str, optional): Directory where extracted features will be saved. Defaults to the current working directory.
+        n_mels (int, optional): Number of mel filter banks for mel spectrogram extraction. Defaults to 20.
+        n_coeff (int, optional): Number of coefficients for MFCC extraction. Defaults to 20.
+        win_length (int, optional): Window length for spectrogram computation. Defaults to 20.
+        hop_length (int, optional): Hop length for spectrogram computation. Defaults to 10.
+        plugin (tuple, optional): Pydra plugin and arguments for parallel execution. Defaults to ["cf", "n_procs=1"].
+        cache (str, optional): Directory for caching intermediate results. Defaults to "cache-wf" in the current directory.
+        dataset (bool, optional): Whether to compile extracted features into a dataset. Defaults to False.
+        speech2text (bool, optional): Whether to transcribe audio files. Defaults to False.
+        opensmile (tuple, optional): OpenSMILE feature set and function type. Defaults to ["eGeMAPSv02", "Functionals"].
+
+    Returns:
+        None: Saves extracted features as PyTorch tensor files and optionally compiles them into a dataset.
+    """
     plugin_args = dict()
     for item in plugin[1].split():
         key, value = item.split("=")
@@ -679,7 +720,7 @@ def batchconvert(
 @click.argument("file2", type=click.Path(exists=True))
 @click.option("--device", type=str, default=None, show_default=True)
 def verify(file1, file2, device):
-    """Performs speaker verification by comparing two audio files.
+    """Performs speaker verification.
 
     This function loads two audio files, resamples them to 16 kHz, and
     computes a speaker verification score to determine whether they
@@ -717,8 +758,23 @@ def transcribe(
     device,
     language,
 ):
-    """
-    Transcribes the audio_file.
+    """Transcribes an audio file.
+
+    This function loads an audio file, applies a specified Whisper model for
+    transcription, and outputs the transcribed text. It supports multi-language
+    transcription and allows specifying the device for inference.
+
+    Args:
+        audio_file (str): Path to the input audio file.
+        model (str, optional): Path or identifier for the speech-to-text model.
+                              Defaults to "openai/whisper-tiny".
+        device (str, optional): Device to use for inference (e.g., "cpu" or "cuda").
+                                Defaults to "cpu".
+        language (str, optional): Language code for the audio file. Defaults to "en"
+                                  (English), but supports multi-language transcription.
+
+    Returns:
+        None: Prints the transcribed text to the console.
     """
     audio_data = Audio.from_filepath(audio_file)
     hf_model = HFModel(path_or_uri=model)
@@ -735,7 +791,7 @@ def transcribe(
 @click.argument("input_dir", type=str)
 @click.argument("out_file", type=str)
 def createbatchcsv(input_dir, out_file):
-    """Generates a CSV file listing all .wav audio files in a given directory.
+    """Generates CSV list of .wav paths.
 
     This function scans a specified top-level directory for .wav files in all
     subdirectories, then saves a CSV file containing the absolute paths of
@@ -774,12 +830,20 @@ def createbatchcsv(input_dir, out_file):
 @click.argument("src_dir", type=str)
 @click.argument("dest_dir", type=str)
 def reproschema_audio_to_folder(src_dir, dest_dir):
-    """
-    Reorganizes audio from a ReproSchema export into a single folder.
-    src_dir is the top level directory for which the audio files for reproschema ui are located
-    dest_dir is where the folder containing the audio files will be saved
-    it is expected to contain a folder containing the audio files based on recording_id
-    Ensure destination directory exists
+    """Flattens .wav files using UUIDs as filenames.
+
+    This function scans a source directory for .wav audio files, extracts their UUIDs
+    from the filenames, and copies them to a specified destination directory with
+    the UUID as the new filename.
+
+    Args:
+        src_dir (str): Path to the top-level directory containing the audio files
+                      in the ReproSchema export structure.
+        dest_dir (str): Path to the directory where the reorganized audio files
+                        will be saved.
+
+    Returns:
+        None: Copies audio files to the destination folder and logs the output.
     """
     if not os.path.exists(dest_dir):
         os.makedirs(dest_dir)
@@ -814,7 +878,7 @@ def reproschema_audio_to_folder(src_dir, dest_dir):
 @click.option("--participant_group", type=str, default=None, show_default=True)
 def reproschema_to_redcap(audio_dir, survey_file, redcap_csv, participant_group):
     """
-    Generates redcap csv given the audio and survey data from reproschema ui
+    Converts reproschema ui data to redcap CSV.
 
     audio_dir is the directory containing the audio files
     survey_file is the location of the surveys generated from reproschem ui
