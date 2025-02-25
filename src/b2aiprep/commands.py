@@ -1,25 +1,24 @@
 """Commands available through the CLI."""
 
 import csv
-from functools import partial
 import json
 import logging
 import os
 import shutil
 import tarfile
-import typing as t
-from glob import glob
-from pathlib import Path
-from importlib import resources
 from collections import OrderedDict
-from b2aiprep.prepare.derived_data import feature_extraction_generator, spectrogram_generator
+from functools import partial
+from glob import glob
+from importlib import resources
+from pathlib import Path
+
 import click
-import numpy as np
 import pandas as pd
 import pkg_resources
 import pydra
 import torch
 from datasets import Dataset
+from pyarrow.parquet import SortingColumn
 from pydra.mark import annotate
 from senselab.audio.data_structures.audio import Audio
 from senselab.audio.tasks.features_extraction.opensmile import (
@@ -45,11 +44,18 @@ from streamlit import config as _config
 from streamlit.web.bootstrap import run
 from tqdm import tqdm
 
-from pyarrow.parquet import SortingColumn
 from b2aiprep.prepare.bids import get_audio_paths, redcap_to_bids, validate_bids_folder
-from b2aiprep.prepare.prepare import extract_features_workflow, extract_features_sequentially,validate_bids_data, clean_phenotype_data
-from b2aiprep.prepare.reproschema_to_redcap import parse_survey, parse_audio
-
+from b2aiprep.prepare.derived_data import (
+    feature_extraction_generator,
+    spectrogram_generator,
+)
+from b2aiprep.prepare.prepare import (
+    clean_phenotype_data,
+    extract_features_sequentially,
+    extract_features_workflow,
+    validate_bids_data,
+)
+from b2aiprep.prepare.reproschema_to_redcap import parse_audio, parse_survey
 
 # from b2aiprep.synthetic_data import generate_synthetic_tabular_data
 
@@ -59,6 +65,20 @@ _LOGGER = logging.getLogger(__name__)
 @click.command()
 @click.argument("bids_dir", type=click.Path(exists=True))
 def dashboard(bids_dir: str):
+    """Launches a dashboard for exploring BIDS data.
+
+    This function starts a Streamlit-based dashboard for visualizing and exploring
+    BIDS-formatted data.
+
+    Args:
+        bids_dir (str): Path to the BIDS directory to be explored.
+
+    Raises:
+        ValueError: If the specified path does not exist or is not a directory.
+
+    Returns:
+        None: The function launches the dashboard and does not return a value.
+    """
     bids_path = Path(bids_dir).resolve()
     if not bids_path.exists():
         raise ValueError(f"Input path {bids_path} does not exist.")
@@ -85,6 +105,25 @@ def redcap2bids(
     outdir,
     audiodir,
 ):
+    """Organizes into BIDS-like without features.
+
+    This function processes a REDCap data file and optionally links audio files
+    to structure them in a format similar to the Brain Imaging Data Structure (BIDS).
+
+    Args:
+        filename (str): Path to the REDCap data file.
+        outdir (str, optional): Directory where the converted BIDS-like data
+                                will be saved. Defaults to "output" in the current working directory.
+        audiodir (str, optional): Directory containing associated audio files.
+                                  If not provided, only the REDCap data is processed.
+
+    Raises:
+        ValueError: If the specified output directory path exists but is not a directory.
+
+    Returns:
+        None: Saves the structured data in the specified output directory.
+    """
+
     outdir = Path(outdir)
     if outdir.exists() and not outdir.is_dir():
         raise ValueError(f"Output path {outdir} is not a directory.")
@@ -126,9 +165,9 @@ def prepare_bids(
     address,
     percentile,
     subject_id,
-    is_sequential
+    is_sequential,
 ):
-    """Organizes the data into a BIDS-like directory structure and extracts audio features.
+    """Organizes into BIDS-like with features.
 
     This command follows a specific workflow:
     1. If both redcap_csv_path and audio_dir_path are provided:
@@ -168,11 +207,12 @@ def prepare_bids(
 
     _LOGGER.info("Beginning audio feature extraction...")
 
-    if(is_sequential):
+    if is_sequential:
         extract_features_sequentially(
             Path(bids_dir_path),
-            transcription_model_size=transcription_model_size, 
-            with_sensitive=with_sensitive)
+            transcription_model_size=transcription_model_size,
+            with_sensitive=with_sensitive,
+        )
     else:
         extract_features_workflow(
             Path(bids_dir_path),
@@ -205,7 +245,7 @@ def prepare_bids(
 @click.argument("bids_path", type=click.Path(exists=True))
 @click.argument("outdir", type=click.Path())
 def create_derived_dataset(bids_path, outdir):
-    """Create a derived dataset from voice/phenotype data in BIDS format.
+    """Creates derived dataset from BIDS data.
 
     The derived dataset output loads data from generated .pt files, which have
     the following keys:
@@ -235,7 +275,7 @@ def create_derived_dataset(bids_path, outdir):
     audio_paths = sorted(
         audio_paths,
         # sort first by subject, then by task
-        key=lambda x: (x.stem.split('_')[0], x.stem.split('_')[2])
+        key=lambda x: (x.stem.split("_")[0], x.stem.split("_")[2]),
     )
 
     # remove known subjects without any audio
@@ -249,8 +289,8 @@ def create_derived_dataset(bids_path, outdir):
 
     _LOGGER.info("Loading spectrograms into a single HF dataset.")
 
-    for feature_name in ['spectrogram', 'mfcc']:
-        if feature_name == 'mfcc':
+    for feature_name in ["spectrogram", "mfcc"]:
+        if feature_name == "mfcc":
             use_byte_stream_split = True
             audio_feature_generator = partial(
                 feature_extraction_generator,
@@ -310,9 +350,11 @@ def create_derived_dataset(bids_path, outdir):
         transcription = features.get("transcription", None)
         if transcription is not None:
             transcription = transcription.text
-            if subj_info['task_name'].lower().startswith('free-speech') or \
-                    subj_info['task_name'].lower().startswith('audio-check') or \
-                    subj_info['task_name'].lower().startswith('open-response-questions'):
+            if (
+                subj_info["task_name"].lower().startswith("free-speech")
+                or subj_info["task_name"].lower().startswith("audio-check")
+                or subj_info["task_name"].lower().startswith("open-response-questions")
+            ):
                 # we omit tasks where free speech occurs
                 transcription = None
         subj_info["transcription"] = transcription
@@ -327,7 +369,8 @@ def create_derived_dataset(bids_path, outdir):
     # load in the JSON with descriptions of each feature and copy it over
     # write it out again so formatting is consistent between JSONs
     static_features_json_file = resources.files("b2aiprep").joinpath(
-        "prepare", "resources", "static_features.json")
+        "prepare", "resources", "static_features.json"
+    )
     static_features_json = json.load(static_features_json_file.open())
     with open(outdir / "static_features.json", "w") as f:
         json.dump(static_features_json, f, indent=2)
@@ -339,10 +382,11 @@ def create_derived_dataset(bids_path, outdir):
     df = pd.read_csv(bids_path.joinpath("participants.tsv"), sep="\t")
 
     # remove subject
-    idx = df['record_id'].isin(SUBJECTS_TO_REMOVE)
+    idx = df["record_id"].isin(SUBJECTS_TO_REMOVE)
     if idx.sum() > 0:
         _LOGGER.info(
-            f"Removing {idx.sum()} records from phenotype due to hard-coded subject removal.")
+            f"Removing {idx.sum()} records from phenotype due to hard-coded subject removal."
+        )
         df = df.loc[~idx]
 
     # temporarily keep record_id as the column name to enable joining the dataframes together
@@ -393,7 +437,8 @@ def create_derived_dataset(bids_path, outdir):
         if len(phenotype_add) != 1:
             # we expect there to only be one key
             _LOGGER.warning(
-                f"Unexpected keys in phenotype file {phenotype_filepath.stem}: {phenotype_add.keys()}")
+                f"Unexpected keys in phenotype file {phenotype_filepath.stem}: {phenotype_add.keys()}"
+            )
         else:
             phenotype_add = next(iter(phenotype_add.values()))["data_elements"]
         phenotype.update(phenotype_add)
@@ -416,16 +461,19 @@ def validate(
     bids_dir_path,
     fix,
 ):
-    """Organizes the data into a BIDS-like directory structure.
+    """Validates data in BIDS structure.
 
-    redcap_csv_path: path to the redcap csv\n
-    audio_dir_path: path to directory with audio files\n
-    bids_dir_path: path to store bids-like data\n
-    tar_file_path: path to store tar file\n
-    transcription_model_size: tiny, small, medium, or large\n
-    n_cores: number of cores to run feature extraction on\n
-    with_sensitive: whether to include sensitive data
+    This function checks the integrity and structure of a BIDS directory and
+    optionally fixes detected issues.
+
+    Args:
+        bids_dir_path (str): Path to the BIDS directory to validate.
+        fix (bool): If True, attempts to fix detected issues in the BIDS structure.
+
+    Returns:
+        None: Performs validation and optionally fixes errors in-place.
     """
+
     validate_bids_data(
         bids_dir_path=Path(bids_dir_path),
         fix=fix,
@@ -469,6 +517,28 @@ def convert(
     transcribe,
     opensmile,
 ):
+    """Extracts features from one audio file.
+
+    This function loads an audio file, extracts relevant features such as
+    spectrogram, mel filter bank, MFCCs, speaker embeddings, and OpenSMILE
+    features, and optionally transcribes the audio. The extracted features
+    are then saved as a PyTorch tensor file.
+
+    Args:
+        filename (str): Path to the input audio file.
+        subject (str, optional): Identifier for the subject associated with the audio.
+        task (str, optional): Identifier for the task related to the audio.
+        outdir (str, optional): Directory where the extracted features will be saved. Defaults to the current working directory.
+        n_mels (int, optional): Number of mel filter banks for mel spectrogram extraction. Defaults to 20.
+        win_length (int, optional): Window length for spectrogram computation. Defaults to 20.
+        hop_length (int, optional): Hop length for spectrogram computation. Defaults to 10.
+        transcribe (bool, optional): Whether to transcribe the audio. Defaults to False.
+        opensmile (str, optional): OpenSMILE feature set to use. Defaults to "eGeMAPSv02".
+
+    Returns:
+        dict: Extracted features including spectrogram, mel filter bank, MFCCs, speaker embeddings,
+              sample rate, OpenSMILE features, and optional transcription.
+    """
     os.makedirs(outdir, exist_ok=True)
     audio = Audio.from_filepath(filename)
     features = {}
@@ -528,6 +598,29 @@ def batchconvert(
     speech2text,
     opensmile,
 ):
+    """Extracts features from audio file list (CSV).
+
+    This function reads a CSV file containing a list of audio file paths (or paths with metadata)
+    and extracts various audio features such as spectrogram, mel filter bank, MFCCs,
+    speaker embeddings, and OpenSMILE features. It uses Pydra for parallel processing
+    and supports optional transcription and dataset generation.
+
+    Args:
+        csvfile (str): Path to the CSV file containing audio file paths (with optional metadata).
+        outdir (str, optional): Directory where extracted features will be saved. Defaults to the current working directory.
+        n_mels (int, optional): Number of mel filter banks for mel spectrogram extraction. Defaults to 20.
+        n_coeff (int, optional): Number of coefficients for MFCC extraction. Defaults to 20.
+        win_length (int, optional): Window length for spectrogram computation. Defaults to 20.
+        hop_length (int, optional): Hop length for spectrogram computation. Defaults to 10.
+        plugin (tuple, optional): Pydra plugin and arguments for parallel execution. Defaults to ["cf", "n_procs=1"].
+        cache (str, optional): Directory for caching intermediate results. Defaults to "cache-wf" in the current directory.
+        dataset (bool, optional): Whether to compile extracted features into a dataset. Defaults to False.
+        speech2text (bool, optional): Whether to transcribe audio files. Defaults to False.
+        opensmile (tuple, optional): OpenSMILE feature set and function type. Defaults to ["eGeMAPSv02", "Functionals"].
+
+    Returns:
+        None: Saves extracted features as PyTorch tensor files and optionally compiles them into a dataset.
+    """
     plugin_args = dict()
     for item in plugin[1].split():
         key, value = item.split("=")
@@ -643,6 +736,20 @@ def batchconvert(
 @click.argument("file2", type=click.Path(exists=True))
 @click.option("--device", type=str, default=None, show_default=True)
 def verify(file1, file2, device):
+    """Performs speaker verification.
+
+    This function loads two audio files, resamples them to 16 kHz, and
+    computes a speaker verification score to determine whether they
+    belong to the same speaker.
+
+    Args:
+        file1 (str): Path to the first audio file.
+        file2 (str): Path to the second audio file.
+        device (str, optional): Device to use for processing. Defaults to None.
+
+    Returns:
+        None: Prints the verification score and prediction result.
+    """
     audio1 = Audio.from_filepath(file1)
     audio2 = Audio.from_filepath(file2)
     resampled_audios = resample_audios([audio1, audio2], resample_rate=16000)
@@ -667,8 +774,23 @@ def transcribe(
     device,
     language,
 ):
-    """
-    Transcribes the audio_file.
+    """Transcribes an audio file.
+
+    This function loads an audio file, applies a specified Whisper model for
+    transcription, and outputs the transcribed text. It supports multi-language
+    transcription and allows specifying the device for inference.
+
+    Args:
+        audio_file (str): Path to the input audio file.
+        model (str, optional): Path or identifier for the speech-to-text model.
+                              Defaults to "openai/whisper-tiny".
+        device (str, optional): Device to use for inference (e.g., "cpu" or "cuda").
+                                Defaults to "cpu".
+        language (str, optional): Language code for the audio file. Defaults to "en"
+                                  (English), but supports multi-language transcription.
+
+    Returns:
+        None: Prints the transcribed text to the console.
     """
     audio_data = Audio.from_filepath(audio_file)
     hf_model = HFModel(path_or_uri=model)
@@ -685,6 +807,19 @@ def transcribe(
 @click.argument("input_dir", type=str)
 @click.argument("out_file", type=str)
 def createbatchcsv(input_dir, out_file):
+    """Generates CSV list of .wav paths.
+
+    This function scans a specified top-level directory for .wav files in all
+    subdirectories, then saves a CSV file containing the absolute paths of
+    the detected audio files.
+
+    Args:
+        input_dir (str): Path to the top-level directory containing institution subdirectories (e.g., MIT, UCF).
+        out_file (str): Path to the output CSV file where the list of audio files will be saved.
+
+    Returns:
+        None: The function writes the output directly to a CSV file and prints the output file path.
+    """
 
     # input_dir is the top level directory of the b2ai Production directory from Wasabi
     # it is expected to contain subfolders with each institution e.g. MIT, UCF, etc.
@@ -711,12 +846,20 @@ def createbatchcsv(input_dir, out_file):
 @click.argument("src_dir", type=str)
 @click.argument("dest_dir", type=str)
 def reproschema_audio_to_folder(src_dir, dest_dir):
-    """
-    Reorganizes audio from a ReproSchema export into a single folder.
-    src_dir is the top level directory for which the audio files for reproschema ui are located
-    dest_dir is where the folder containing the audio files will be saved
-    it is expected to contain a folder containing the audio files based on recording_id
-    Ensure destination directory exists
+    """Flattens .wav files using UUIDs as filenames.
+
+    This function scans a source directory for .wav audio files, extracts their UUIDs
+    from the filenames, and copies them to a specified destination directory with
+    the UUID as the new filename.
+
+    Args:
+        src_dir (str): Path to the top-level directory containing the audio files
+                      in the ReproSchema export structure.
+        dest_dir (str): Path to the directory where the reorganized audio files
+                        will be saved.
+
+    Returns:
+        None: Copies audio files to the destination folder and logs the output.
     """
     if not os.path.exists(dest_dir):
         os.makedirs(dest_dir)
@@ -725,10 +868,10 @@ def reproschema_audio_to_folder(src_dir, dest_dir):
     for root, dirs, files in os.walk(src_dir):
         for file in files:
             # Check if the file is a .wav file
-            if file.lower().endswith('.wav'):
+            if file.lower().endswith(".wav"):
                 try:
                     base_filename = os.path.splitext(file)[0]
-                    uuid_list = base_filename.split('-')[1:]
+                    uuid_list = base_filename.split("-")[1:]
                     file_uuid = "-".join(uuid_list)
                 except IndexError:
                     print(f"Skipping {file} because UUID could not be extracted.")
@@ -750,23 +893,30 @@ def reproschema_audio_to_folder(src_dir, dest_dir):
 @click.argument("redcap_csv", type=str)
 @click.option("--participant_group", type=str, default=None, show_default=True)
 def reproschema_to_redcap(audio_dir, survey_file, redcap_csv, participant_group):
-    """
-    Generates redcap csv given the audio and survey data from reproschema ui
-    
-    audio_dir is the directory containing the audio files
-    survey_file is the location of the surveys generated from reproschem ui
-    redcap_csv is the path to store the newly generated redcap csv
-    --participant_group is an optional. It replaces a redcap repeat instance to Participant
-    
+    """Converts reproschema ui data to redcap CSV.
+
+    This function processes survey data and audio metadata from ReproSchema UI exports
+    and formats them into a REDCap-compatible CSV file.
+
+    Args:
+        audio_dir (str): Path to the directory containing the audio files.
+        survey_file (str): Path to the directory containing survey data exported from ReproSchema UI.
+        redcap_csv (str): Path to save the generated REDCap-compatible CSV file.
+        participant_group (str, optional): Optional argument to replace a REDCap repeat
+                                          instance with "Participant".
+
+    Raises:
+        FileNotFoundError: If the survey directory or audio directory does not exist.
+
+    Returns:
+        None: Saves the converted data as a CSV file at the specified location.
     """
 
     folder = Path(survey_file)
     sub_folders = sorted([str(f) for f in folder.iterdir() if f.is_dir()])
 
     if not folder.is_dir():
-        raise FileNotFoundError(
-            f"{folder} does not exist."
-        )
+        raise FileNotFoundError(f"{folder} does not exist.")
 
     merged_questionnaire_data = []
     # load each file recursively within the folder into its own key
@@ -776,27 +926,29 @@ def reproschema_to_redcap(audio_dir, survey_file, redcap_csv, participant_group)
         for file in Path(subject).rglob("*"):
             if file.is_file():
                 filename = str(file.relative_to(subject))
-                with open(f"{subject}/{filename}", 'r') as f:
+                with open(f"{subject}/{filename}", "r") as f:
                     content[filename] = json.load(f)
-        
-        for questionnaire in content.keys(): # activity files
+
+        for questionnaire in content.keys():  # activity files
             try:
                 record_id = (subject.split("/")[-1]).split()[0]
                 survey_data = content[questionnaire]
-                merged_questionnaire_data += parse_survey(
-                    survey_data, record_id, questionnaire)
+                merged_questionnaire_data += parse_survey(survey_data, record_id, questionnaire)
             except Exception:
                 continue
-        session_id =  [f.name for f in os.scandir(subject) if f.is_dir()]
-        session_df =  pd.DataFrame({
-            "record_id": (subject.split("/")[-1]).split()[0],
-            "redcap_repeat_instrument": ["Session"],
-            "redcap_repeat_instance": [1],
-            "session_id": session_id, 
-            "session_status": ["Completed"],
-            "session_is_control_participant": ["No"],
-            "session_duration": ["0.0"],
-            "session_site": ["SickKids"]})
+        session_id = [f.name for f in os.scandir(subject) if f.is_dir()]
+        session_df = pd.DataFrame(
+            {
+                "record_id": (subject.split("/")[-1]).split()[0],
+                "redcap_repeat_instrument": ["Session"],
+                "redcap_repeat_instance": [1],
+                "session_id": session_id,
+                "session_status": ["Completed"],
+                "session_is_control_participant": ["No"],
+                "session_duration": ["0.0"],
+                "session_site": ["SickKids"],
+            }
+        )
         merged_questionnaire_data += [session_df]
         subject_count += 1
 
@@ -804,25 +956,23 @@ def reproschema_to_redcap(audio_dir, survey_file, redcap_csv, participant_group)
     Path(redcap_csv).mkdir(parents=True, exist_ok=True)
 
     audio_folders = Path(audio_dir)
-    audio_sub_folders = sorted(
-        [str(f) for f in audio_folders.iterdir() if f.is_dir()])
+    audio_sub_folders = sorted([str(f) for f in audio_folders.iterdir() if f.is_dir()])
     if not audio_folders.is_dir():
-        raise FileNotFoundError(
-            f"{audio_folders} does not exist."
-        )
+        raise FileNotFoundError(f"{audio_folders} does not exist.")
 
     merged_csv = []
     for subject in audio_sub_folders:
-        audio_session_id =  [f.name for f in os.scandir(subject) if f.is_dir()]
-        audio_session_dict =  {
+        audio_session_id = [f.name for f in os.scandir(subject) if f.is_dir()]
+        audio_session_dict = {
             "record_id": (subject.split("/")[-1]).split()[0],
             "redcap_repeat_instrument": "Session",
             "redcap_repeat_instance": 1,
-            "session_id": audio_session_id[0], 
+            "session_id": audio_session_id[0],
             "session_status": "Completed",
             "session_is_control_participant": "No",
             "session_duration": 0.0,
-            "session_site": "SickKids"}
+            "session_site": "SickKids",
+        }
         merged_csv.append(audio_session_dict)
 
         audio_list = []
@@ -836,18 +986,21 @@ def reproschema_to_redcap(audio_dir, survey_file, redcap_csv, participant_group)
 
     merged_df = [survey_df, audio_df]
     output_df = pd.concat(merged_df, ignore_index=True)
-    
-    all_columns_path = resources.files("b2aiprep").joinpath("prepare", "resources", "all_columns.json")
+
+    all_columns_path = resources.files("b2aiprep").joinpath(
+        "prepare", "resources", "all_columns.json"
+    )
     all_columns = json.load(all_columns_path.open())
-    
+
     columns_to_add = [col for col in all_columns if col not in output_df.columns]
     new_df = pd.DataFrame(columns=columns_to_add)
 
     df_final = pd.concat([output_df, new_df], axis=1)
     # Option to save on post processing the redcap csv
     if participant_group is not None:
-        df_final['redcap_repeat_instrument'] = df_final['redcap_repeat_instrument'].replace(
-            participant_group, 'Participant')
+        df_final["redcap_repeat_instrument"] = df_final["redcap_repeat_instrument"].replace(
+            participant_group, "Participant"
+        )
 
     merged_csv_path = os.path.join(redcap_csv, "merged-redcap.csv")
     df_final.to_csv(merged_csv_path, index=False)
