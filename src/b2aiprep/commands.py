@@ -65,7 +65,20 @@ _LOGGER = logging.getLogger(__name__)
 @click.command()
 @click.argument("bids_dir", type=click.Path(exists=True))
 def dashboard(bids_dir: str):
-    """Launches a dashboard for exploring BIDS data."""
+    """Launches a dashboard for exploring BIDS data.
+
+    This function starts a Streamlit-based dashboard for visualizing and exploring
+    BIDS-formatted data.
+
+    Args:
+        bids_dir (str): Path to the BIDS directory to be explored.
+
+    Raises:
+        ValueError: If the specified path does not exist or is not a directory.
+
+    Returns:
+        None: The function launches the dashboard and does not return a value.
+    """
     bids_path = Path(bids_dir).resolve()
     if not bids_path.exists():
         raise ValueError(f"Input path {bids_path} does not exist.")
@@ -877,14 +890,23 @@ def reproschema_audio_to_folder(src_dir, dest_dir):
 @click.argument("redcap_csv", type=str)
 @click.option("--participant_group", type=str, default=None, show_default=True)
 def reproschema_to_redcap(audio_dir, survey_file, redcap_csv, participant_group):
-    """
-    Converts reproschema ui data to redcap CSV.
+    """Converts reproschema ui data to redcap CSV.
 
-    audio_dir is the directory containing the audio files
-    survey_file is the location of the surveys generated from reproschem ui
-    redcap_csv is the path to store the newly generated redcap csv
-    --participant_group is an optional. It replaces a redcap repeat instance to Participant
+    This function processes survey data and audio metadata from ReproSchema UI exports
+    and formats them into a REDCap-compatible CSV file.
 
+    Args:
+        audio_dir (str): Path to the directory containing the audio files.
+        survey_file (str): Path to the directory containing survey data exported from ReproSchema UI.
+        redcap_csv (str): Path to save the generated REDCap-compatible CSV file.
+        participant_group (str, optional): Optional argument to replace a REDCap repeat
+                                          instance with "Participant".
+
+    Raises:
+        FileNotFoundError: If the survey directory or audio directory does not exist.
+
+    Returns:
+        None: Saves the converted data as a CSV file at the specified location.
     """
 
     folder = Path(survey_file)
