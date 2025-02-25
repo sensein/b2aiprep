@@ -5,6 +5,13 @@ A simple Python package to prepare acoustic data for the Bridge2AI voice project
 **Caution:** this package is under active development and interfaces may change rapidly.
 
 ## Installation
+
+MacOS with Mx (ARM) chip only: Make sure that you have the ARM version of python installed.
+Run this to check:
+```
+[path/to/your/python] -c "import platform; print(platform.machine())
+```
+
 Requires a Python >= 3.10, <3.12 environment
 
 ```
@@ -68,7 +75,7 @@ b2aiprep-cli --help
 
     Outfile is the path to and name of the csv file to be generated, e.g. `audiofiles.csv`
 
-   The csv file will have a header named `filename` with all the filenames listed under. 
+   The csv file will have a header named `filename` with all the filenames listed under.
 
 5. Verify if two audio files are from the same speaker
 
@@ -95,7 +102,7 @@ b2aiprep-cli --help
     b2aiprep-cli transcribe data/vc_source.wav
     ```
 
-    Or use a different model. Note that the large model may take some time to download. 
+    Or use a different model. Note that the large model may take some time to download.
 
     ```bash
     b2aiprep-cli transcribe data/vc_source.wav --model_id 'openai/whisper-large-v3' --return_timestamps true
