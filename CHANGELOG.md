@@ -1,3 +1,20 @@
+# 1.2.0 (Tue Feb 25 2025)
+
+#### 🚀 Enhancement
+
+- 115 fix comments in commandspy [#129](https://github.com/sensein/b2aiprep/pull/129) ([@ibevers](https://github.com/ibevers))
+
+#### 🐛 Bug Fix
+
+- Created Script to generate redcap csv based on peds data and created reproschema-audio-to-folder command to cli [#116](https://github.com/sensein/b2aiprep/pull/116) ([@Evan8456](https://github.com/Evan8456))
+
+#### Authors: 2
+
+- [@ibevers](https://github.com/ibevers)
+- Evan Ng ([@Evan8456](https://github.com/Evan8456))
+
+---
+
 # 1.1.0 (Fri Jan 17 2025)
 
 #### 🚀 Enhancement
