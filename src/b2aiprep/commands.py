@@ -461,16 +461,19 @@ def validate(
     bids_dir_path,
     fix,
 ):
-    """Organizes data into BIDS-like structure.
+    """Validates data in BIDS structure.
 
-    redcap_csv_path: path to the redcap csv\n
-    audio_dir_path: path to directory with audio files\n
-    bids_dir_path: path to store bids-like data\n
-    tar_file_path: path to store tar file\n
-    transcription_model_size: tiny, small, medium, or large\n
-    n_cores: number of cores to run feature extraction on\n
-    with_sensitive: whether to include sensitive data
+    This function checks the integrity and structure of a BIDS directory and
+    optionally fixes detected issues.
+
+    Args:
+        bids_dir_path (str): Path to the BIDS directory to validate.
+        fix (bool): If True, attempts to fix detected issues in the BIDS structure.
+
+    Returns:
+        None: Performs validation and optionally fixes errors in-place.
     """
+
     validate_bids_data(
         bids_dir_path=Path(bids_dir_path),
         fix=fix,
