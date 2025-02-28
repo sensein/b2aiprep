@@ -9,8 +9,10 @@ import time
 from pathlib import Path
 from typing import Dict, List
 import requests
-
+import parselmouth
+import numpy as np
 import pandas as pd
+import torch
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -353,3 +355,89 @@ def get_wav_duration(file_path):
         # Calculate duration in seconds
         duration = frames / float(rate)
     return duration
+
+def extract_silent_segment(audio_data=None):
+    """Returns a the silent segment of the audio file"""
+    # by default
+    start_time = 0.0
+    end_time = 0.5
+    if audio_data is None: 
+       return (start_time, end_time)
+    else:
+        duration = get_wav_duration(audio_data)
+        if duration <= 0.1:
+            raise ValueError(f"Audio file {audio_data} is too short")
+        elif duration <= 0.5:
+            start_time = 0.0
+            end_time = 0.1
+
+    return (start_time, end_time)
+
+def compute_rms_power(sound):
+    """Compute RMS power of a given sound."""
+    intensity = sound.to_intensity()
+    power = np.sqrt(np.mean(np.square(intensity.values)))
+    return power
+
+def estimate_noise_power(sound, start_time, end_time):
+    """Compute RMS power of the noise portion (assumed to be a silent section)."""
+    noise_segment = sound.extract_part(from_time=start_time, to_time=end_time, preserve_times=True)
+    return compute_rms_power(noise_segment)
+
+def compute_snr(file_path):
+    """
+    Computes SNR for a given audio file
+    """
+    sound = parselmouth.Sound(str(file_path))
+    signal_power = compute_rms_power(sound)
+    # Estimate noise power using a known silent section (adjust times accordingly)
+    start_time, end_time = extract_silent_segment(str(file_path))
+    noise_power = estimate_noise_power(sound, start_time, end_time)
+    snr = 10 * np.log10(signal_power / noise_power) if noise_power > 0 else float("inf")
+    
+    return snr
+
+
+def compute_low_to_high_ratio_from_spectrograms(spectrogram, sample_rate, n_fft, low_freq_threshold=4000):
+    """
+    Computes the average low-to-high frequency ratio in db for a given spectrogram.
+
+    Parameters:
+    -----------
+    spectrogram : torch.Tensor
+        A 2D tensor representing the spectrogram of the audio signal.
+
+    sample_rate : int
+        The sample rate of the audio signal, used to calculate the frequency bin resolution.
+
+    n_fft : int
+        The size of the FFT (Fast Fourier Transform), which determines the number of frequency bins 
+        in the spectrogram.
+
+    low_freq_threshold : int, optional
+        The frequency threshold (in Hz) that separates low and high frequencies. By default, this is
+        set to 4000 Hz.
+    Returns:
+    --------
+        The average low-to-high frequency ratio in db.
+
+    """
+    # Frequency bin resolution
+    freq_bin_resolution = sample_rate / n_fft
+    low_freq_bin = int(low_freq_threshold // freq_bin_resolution)
+    
+    # Frequency range indices
+    low_freq_range = (0, low_freq_bin)
+    high_freq_range = (low_freq_bin + 1, n_fft // 2)
+    
+    # Extract low and high frequency energy
+    low_freq_energy = spectrogram[:, low_freq_range[0]:low_freq_range[1]].sum(dim=1)
+    high_freq_energy = spectrogram[:, high_freq_range[0]:high_freq_range[1]].sum(dim=1)
+    
+    # Low-to-high ratio (avoid division by zero)
+    epsilon = 1e-10
+    low_to_high_ratio = low_freq_energy / (high_freq_energy + epsilon)
+    # Convert the linear ratio to dB
+    low_to_high_ratio_db = 10 * torch.log10(low_to_high_ratio)
+    average_ratio_db = low_to_high_ratio_db.mean().item()
+    return average_ratio_db
