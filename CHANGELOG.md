@@ -1,3 +1,15 @@
+# 1.3.0 (Thu Mar 13 2025)
+
+#### 🚀 Enhancement
+
+- 127 update setup.py and readme to ensure arm python on mac [#128](https://github.com/sensein/b2aiprep/pull/128) ([@ibevers](https://github.com/ibevers))
+
+#### Authors: 1
+
+- [@ibevers](https://github.com/ibevers)
+
+---
+
 # 1.2.0 (Tue Feb 25 2025)
 
 #### 🚀 Enhancement
