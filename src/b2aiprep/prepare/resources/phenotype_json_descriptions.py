@@ -16,6 +16,7 @@ PHENOTYPE_JSON_FILE_DESCRIPTIONS = {
     "eligibility.json": "Measures participant eligibility for the study.",
     "enrollment.json": "Measures participant registration details.",
     "gad7.json": "Measures severity of generalized anxiety.",
+    "glotticinsufficiency.json": "Measures the characteristics of glottic insufficiency.",
     "laryngealCancer.json": "Measures characteristics of laryngeal cancer.",
     "leicester.json": "Measures specific health or psychological attributes.",
     "panas.json": "Measures positive and negative affect.",
