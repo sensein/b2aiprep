@@ -45,6 +45,33 @@
                     "xsd:string"
                 ]
             },
+            "glottic_insufficiency": {
+                "description": "Indicates if the participant has glottic insufficiency.",
+                "question": {
+                    "en": "Glottic Insufficiency / Presbyphonia"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Unchecked"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Checked"
+                        },
+                        "value": 1
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/subjectparticipant_eligible_studies/items/glottic_insufficiency",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
             "laryng_cancer": {
                 "description": "Indicates if the participant has laryngeal cancer.",
                 "question": {
@@ -230,6 +257,33 @@
                     }
                 ],
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/subjectparticipant_eligible_studies/items/als",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "huntingtons": {
+                "description": "Indicates if the participant has Huntington's.",
+                "question": {
+                    "en": "Huntington's Disease"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Unchecked"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Checked"
+                        },
+                        "value": 1
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/subjectparticipant_eligible_studies/items/huntingtons",
                 "valueType": [
                     "xsd:integer"
                 ]
