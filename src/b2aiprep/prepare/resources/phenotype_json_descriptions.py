@@ -19,6 +19,7 @@ PHENOTYPE_JSON_FILE_DESCRIPTIONS = {
     "laryngealCancer.json": "Measures characteristics of laryngeal cancer.",
     "leicester.json": "Measures specific health or psychological attributes.",
     "panas.json": "Measures positive and negative affect.",
+    "huntingtons.json": "Measures the symptoms and progression of Huntington's disease.",
     "parkinsons.json": "Measures symptoms and progression of Parkinson's disease.",
     "participant.json": "Measures general study-related information.",
     "phq9.json": "Measures severity of depressive symptoms.",

@@ -15,6 +15,7 @@
     "airwaystenosis": "drespairwaystenosisschema",
     "alzheimers": "dneuroalzheimersdiseasemildcognitiveimpairmeschema",
     "parkinsons": "dneuroparkinsonsdiseaseschema",
+    "huntingtons": "dneuroparkinsonsdiseaseschema",
     "als": "dneuroamyotrophiclateralsclerosisalsschema",
     "demographics": "qgenericdemographicsschema",
     "confounders": "qgenericconfoundersschema",
