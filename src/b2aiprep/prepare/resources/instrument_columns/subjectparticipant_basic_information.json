@@ -2,6 +2,7 @@
     "record_id",
     "consent_status",
     "contact_participant",
+    "age",
     "subjectparticipant_basic_information_schema_start_time",
     "subjectparticipant_basic_information_schema_end_time",
     "subjectparticipant_basic_information_schema_duration",

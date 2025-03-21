@@ -70,6 +70,7 @@
   "ef_fluent_language_other": "If you speak any other languages fluently, please specify:",
   "ef_dob": "What is your date of birth?",
   "ef_cond_prompt": "(Check all that apply if you currently have the condition)",
+  "ef_glottic_insufficiency": "Glottic Insufficiency",
   "ef_laryng_cancer": "Laryngeal Cancer",
   "ef_laryngitis": "Laryngitis",
   "ef_benign_cord_lesion": "Lesions of the vocal cord (nodule, polyp, cyst)",
