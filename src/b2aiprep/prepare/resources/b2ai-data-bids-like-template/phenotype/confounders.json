@@ -32,6 +32,465 @@
                     "xsd:decimal"
                 ]
             },
+            "smoking_entire_life": {
+                "description": "items/smoking_entire_life",
+                "question": {
+                    "en": "Have you smoked at least 100 cigarettes in your entire life? (There are 20 cigarettes in a pack.)?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_generic_confounders/items/smoking_entire_life",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Don't know"
+                        },
+                        "value": "doNotKnow"
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": "noAnswer"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "smoking_occurrence": {
+                "description": "items/smoking_occurrence",
+                "question": {
+                    "en": "Do you now smoke cigarettes every day, some days, or not at all?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_generic_confounders/items/smoking_occurrence",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Every day"
+                        },
+                        "value": "everyDay"
+                    },
+                    {
+                        "name": {
+                            "en": "Some days"
+                        },
+                        "value": "someDays"
+                    },
+                    {
+                        "name": {
+                            "en": "Not at all"
+                        },
+                        "value": "notAtAll"
+                    },
+                    {
+                        "name": {
+                            "en": "Don't know"
+                        },
+                        "value": "doNotKnow"
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": "noAnswer"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "smoking_age_regular_cigarette_smoking": {
+                "description": "items/smoking_age_regular_cigarette_smoking",
+                "question": {
+                    "en": "How old were you when you first started regular cigarette smoking?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_generic_confounders/items/smoking_age_regular_cigarette_smoking",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Specify"
+                        },
+                        "value": "specify"
+                    },
+                    {
+                        "name": {
+                            "en": "Don't know"
+                        },
+                        "value": "doNotKnow"
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": "noAnswer"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "smoking_age_regular_cigarette_smoking_age": {
+                "description": "items/smoking_age_regular_cigarette_smoking_age",
+                "question": {
+                    "en": "Age:"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_generic_confounders/items/smoking_age_regular_cigarette_smoking_age",
+                "maxValue": 125,
+                "valueType": [
+                    "xsd:integer"
+                ],
+                "choices": null
+            },
+            "smoking_age_stopped": {
+                "description": "items/smoking_age_stopped",
+                "question": {
+                    "en": "If you have completely stopped smoking cigarettes, about how old were you when you stopped?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_generic_confounders/items/smoking_age_stopped",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Specify"
+                        },
+                        "value": "specify"
+                    },
+                    {
+                        "name": {
+                            "en": "Don't know"
+                        },
+                        "value": "doNotKnow"
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": "noAnswer"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "smoking_age_stopped_age": {
+                "description": "items/smoking_age_stopped_age",
+                "question": {
+                    "en": "Age when you stopped smoking:"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_generic_confounders/items/smoking_age_stopped_age",
+                "maxValue": 125,
+                "valueType": [
+                    "xsd:integer"
+                ],
+                "choices": null
+            },
+            "smoking_years_cigarettes": {
+                "description": "items/smoking_years_cigarettes",
+                "question": {
+                    "en": "How many years have you or did you smoke cigarettes?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_generic_confounders/items/smoking_years_cigarettes",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Specify"
+                        },
+                        "value": "specify"
+                    },
+                    {
+                        "name": {
+                            "en": "Don't know"
+                        },
+                        "value": "doNotKnow"
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": "noAnswer"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "smoking_years_cigarettes_years": {
+                "description": "items/smoking_years_cigarettes_years",
+                "question": {
+                    "en": "Number of years:"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_generic_confounders/items/smoking_years_cigarettes_years",
+                "maxValue": 125,
+                "valueType": [
+                    "xsd:integer"
+                ],
+                "choices": null
+            },
+            "smoking_cigarettes_day_current_avg": {
+                "description": "items/smoking_cigarettes_day_current_avg",
+                "question": {
+                    "en": "On average, how many cigarettes do you smoke per day now? (There are 20 cigarettes in a pack.)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_generic_confounders/items/smoking_cigarettes_day_current_avg",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Specify"
+                        },
+                        "value": "specify"
+                    },
+                    {
+                        "name": {
+                            "en": "Don't know"
+                        },
+                        "value": "doNotKnow"
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": "noAnswer"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "smoking_cigarettes_day_current_avg_number": {
+                "description": "items/smoking_cigarettes_day_current_avg_number",
+                "question": {
+                    "en": "Number of cigarettes per day:"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_generic_confounders/items/smoking_cigarettes_day_current_avg_number",
+                "maxValue": 1000,
+                "valueType": [
+                    "xsd:integer"
+                ],
+                "choices": null
+            },
+            "smoking_cigarettes_day_past_avg": {
+                "description": "items/smoking_cigarettes_day_past_avg",
+                "question": {
+                    "en": "On average, over the entire time that you smoked, how many cigarettes did you smoke each day? (There are 20 cigarettes in a pack.)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_generic_confounders/items/smoking_cigarettes_day_past_avg",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Specify"
+                        },
+                        "value": "specify"
+                    },
+                    {
+                        "name": {
+                            "en": "Don't know"
+                        },
+                        "value": "doNotKnow"
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": "noAnswer"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "smoking_cigarettes_day_past_avg_number": {
+                "description": "items/smoking_cigarettes_day_past_avg_number",
+                "question": {
+                    "en": "Number of cigarettes per day:"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_generic_confounders/items/smoking_cigarettes_day_past_avg_number",
+                "maxValue": 1000,
+                "valueType": [
+                    "xsd:integer"
+                ],
+                "choices": null
+            },
+            "smoking_marijuana": {
+                "description": "items/smoking_marijuana",
+                "question": {
+                    "en": "In the PAST THREE MONTHS, how often have you used marijuana (cannabis, pot, grass, hash, etc.)?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_generic_confounders/items/smoking_marijuana",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Once or twice"
+                        },
+                        "value": "onceOrTwice"
+                    },
+                    {
+                        "name": {
+                            "en": "Monthly"
+                        },
+                        "value": "monthly"
+                    },
+                    {
+                        "name": {
+                            "en": "Weekly"
+                        },
+                        "value": "weekly"
+                    },
+                    {
+                        "name": {
+                            "en": "Daily or almost daily"
+                        },
+                        "value": "dailyOrAlmostDaily"
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": "noAnswer"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "smoking_electronic": {
+                "description": "items/smoking_electronic",
+                "question": {
+                    "en": "Have you ever used an electronic nicotine product, even one or two times?\n(Electronic nicotine products include e- cigarettes, vape pens, hookah pens, personal vaporizers and mods, e-cigars, e-pipes, and e-hookahs.)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_generic_confounders/items/smoking_electronic",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Don't know"
+                        },
+                        "value": "doNotKnow"
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": "noAnswer"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "smoking_electronic_current_occurence": {
+                "description": "items/smoking_electronic_current_occurence",
+                "question": {
+                    "en": "Do you now use electronic nicotine products?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_generic_confounders/items/smoking_electronic_current_occurence",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Every day"
+                        },
+                        "value": "everyDay"
+                    },
+                    {
+                        "name": {
+                            "en": "Some days"
+                        },
+                        "value": "someDays"
+                    },
+                    {
+                        "name": {
+                            "en": "Not at all"
+                        },
+                        "value": "notAtAll"
+                    },
+                    {
+                        "name": {
+                            "en": "Don't know"
+                        },
+                        "value": "doNotKnow"
+                    },
+                    {
+                        "name": {
+                            "en": "Prefer not to answer"
+                        },
+                        "value": "noAnswer"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
             "is_regular_smoker": {
                 "description": "Indicates if the participant is a regular smoker.",
                 "question": {
