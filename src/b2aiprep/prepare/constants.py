@@ -11,6 +11,7 @@ GENERAL_QUESTIONNAIRES = [
     "enrollment",
     "vocalFoldParalysis",
     "laryngealDystonia",
+    "glotticinsufficiency"
     "precancerousLesions",
     "laryngealCancer",
     "benignLesion",
@@ -18,6 +19,7 @@ GENERAL_QUESTIONNAIRES = [
     "depression",
     "airwaystenosis",
     "alzheimers",
+    "huntingtons",
     "parkinsons",
     "als",
 
@@ -151,6 +153,12 @@ class RepeatInstrument(Enum):
         text="Participant",
         schema_name="dvoicelaryngealdystoniaschema",
     )
+    GLOTTIC_INSUFFICIENCY = Instrument(
+        session_id="record_id",
+        name="glotticinsufficiency",
+        text="Participant",
+        schema_name="dvoiceglotticinsufficiencypresbyphoniaschema",
+    )
     PRECANCEROUS_LESIONS = Instrument(
         session_id="record_id",
         name="precancerousLesions",
@@ -192,6 +200,12 @@ class RepeatInstrument(Enum):
         name="alzheimers",
         text="Participant",
         schema_name="dneuroalzheimersdiseasemildcognitiveimpairmeschema",
+    )
+    HUNTINGTONS = Instrument(
+        session_id="record_id",
+        name="huntingtons",
+        text="Participant",
+        schema_name="dneurohuntingtonsdiseaseschema",
     )
     PARKINSONS = Instrument(
         session_id="record_id",
