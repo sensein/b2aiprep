@@ -11,7 +11,7 @@ GENERAL_QUESTIONNAIRES = [
     "enrollment",
     "vocalFoldParalysis",
     "laryngealDystonia",
-    "glotticinsufficiency"
+    "glotticinsufficiency",
     "precancerousLesions",
     "laryngealCancer",
     "benignLesion",
