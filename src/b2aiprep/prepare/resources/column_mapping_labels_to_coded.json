@@ -100,7 +100,7 @@
     "Has the patient undergone any treatment for his condition?": "diagnosis_bl_treatment",
     "Select all that apply:": "diagnosis_uvfp_treatment_select",
     "Other, please specify": "diagnosis_pl_treatment_other",
-    "Laryngeal microsurgery": "diagnosis_bl_treatment_lm",
+    "Laryngeal microsurgery": "diagnosis_bl_treatment_lm",    
     "Did the patient get a laryngoscopy/stroboscopy confirming the presence of a suspicious laryngeal lesion?": "diagnois_lc_gsd_sll",
     "Does the patient have laryngeal cancer confirmed by biopsy/pathology report?": "diagnosis_lc_gsd_bpr",
     "Did the patient undergo other types of scans?  (Select all that apply).": "diagnosis_lc_gsd_uots",
