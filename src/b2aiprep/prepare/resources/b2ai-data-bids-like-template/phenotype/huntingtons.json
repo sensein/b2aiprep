@@ -78,8 +78,8 @@
                     "xsd:decimal"
                 ],
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_neuro_huntingtons_disease/items/hd_cag_repeat_length",
-                "maxValue": NaN,
-                "minValue": NaN,
+                "maxValue": null,
+                "minValue": null,
                 "valueType": [
                     "xsd:decimal"
                 ],
@@ -194,8 +194,8 @@
                     "xsd:decimal"
                 ],
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_neuro_huntingtons_disease/items/hd_uhdrs_total_motor_score",
-                "maxValue": NaN,
-                "minValue": NaN,
+                "maxValue": null,
+                "minValue": null,
                 "valueType": [
                     "xsd:decimal"
                 ],
@@ -212,8 +212,8 @@
                     "xsd:decimal"
                 ],
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_neuro_huntingtons_disease/items/hd_uhdrs_speech_training",
-                "maxValue": NaN,
-                "minValue": NaN,
+                "maxValue": null,
+                "minValue": null,
                 "valueType": [
                     "xsd:decimal"
                 ],
@@ -230,8 +230,8 @@
                     "xsd:decimal"
                 ],
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_neuro_huntingtons_disease/items/hd_uhdrs_total_chorea_score",
-                "maxValue": NaN,
-                "minValue": NaN,
+                "maxValue": null,
+                "minValue": null,
                 "valueType": [
                     "xsd:decimal"
                 ],
@@ -248,8 +248,8 @@
                     "xsd:decimal"
                 ],
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_neuro_huntingtons_disease/items/hd_dcl",
-                "maxValue": NaN,
-                "minValue": NaN,
+                "maxValue": null,
+                "minValue": null,
                 "valueType": [
                     "xsd:decimal"
                 ],
@@ -312,17 +312,17 @@
                     "xsd:string"
                 ]
             },
-            "hd_finances": {
+            "hd_finullces": {
                 "description": {
-                    "en": "Finances:"
+                    "en": "Finullces:"
                 },
                 "question": {
-                    "en": "Finances:"
+                    "en": "Finullces:"
                 },
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_neuro_huntingtons_disease/items/hd_finances",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_neuro_huntingtons_disease/items/hd_finullces",
                 "choices": [
                     {
                         "name": {
