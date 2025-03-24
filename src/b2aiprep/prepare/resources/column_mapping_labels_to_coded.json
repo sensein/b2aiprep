@@ -100,7 +100,7 @@
     "Has the patient undergone any treatment for his condition?": "diagnosis_bl_treatment",
     "Select all that apply:": "diagnosis_uvfp_treatment_select",
     "Other, please specify": "diagnosis_pl_treatment_other",
-    "Laryngeal microsurgery": "diagnosis_bl_treatment_lm",    
+    "Laryngeal microsurgery": "diagnosis_bl_treatment_lm",
     "Did the patient get a laryngoscopy/stroboscopy confirming the presence of a suspicious laryngeal lesion?": "diagnois_lc_gsd_sll",
     "Does the patient have laryngeal cancer confirmed by biopsy/pathology report?": "diagnosis_lc_gsd_bpr",
     "Did the patient undergo other types of scans?  (Select all that apply).": "diagnosis_lc_gsd_uots",
@@ -185,10 +185,7 @@
     "Psychotic Symptoms    (Legacy)": "diagnosis_bipolar_psychotic_depression",
     "Describe life events that may relate to the diagnosis    (Legacy)": "diagnosis_bipolar_etiology_depression",
     "Disease Severity    (Legacy)": "diagnosis_bipolar_severity_depression",
-    "Have you ever been prescribed medication for mental or emotional problems (e.g., antidepressants, anxiolytics, antipsychotics, mood stabilizers, etc.)?": "diagnosis_ad_prescribed_medication",
-    "Please list any current psychiatric medications (to the best of your recollection), including medication names, dosage, and how many times per day.": "mbd_current_medication",
     "Please list any previous psychiatric medications (to the best of your recollection), including medication names,  approximate dates you were taking them, and why they were discontinued.": "diagnosis_ad_previous_medication",
-    "Have you ever seen a mental health professional for talk therapy (could include social workers, psychiatrists, etc.)?": "diagnosis_ad_see_mental_health_professional",
     "Please briefly describe your psychotherapy history (e.g.,  dates, reasons for seeking therapy, etc.).": "diagnosis_ad_describe_psychotherapy",
     "List any current medications/therapies    (Legacy)": "diagnosis_bipolar_current_med_therapies_depression",
     "List any former medications/therapies    (Legacy)": "diagnosis_bipolar_former_med_therapies_depression",
@@ -1441,5 +1438,12 @@
     "Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply (choice=Teacher)": "voice_activity_4",
     "Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply (choice=Singer)": "voice_activity_5",
     "Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply (choice=Cheerleading)": "voice_activity_6",
-    "Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply (choice=Other)": "voice_activity_7"
+    "Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply (choice=Other)": "voice_activity_7",
+    "Please list any active psychiatric problems and medical problems.": "mph_active_psy_medical_problems",
+    "Please list any historical psychiatric problems and medical problems.": "mph_hist_psy_medical_problems",
+    "Have you ever been prescribed medication for mental or emotional problems (e.g., antidepressants, anxiolytics, antipsychotics, mood stabilizers, etc.)?": "mph_prescribed_medication",
+    "Please list any current psychiatric medications (to the best of your recollection), including medication names, dosage, and how many times per day.": "mph_current_medication",
+    "Please list any previous psychiatric medications (to the best of your recollection), including medication names,\napproximate dates you were taking them, and why they were discontinued.": "mph_previous_medication",
+    "Have you ever seen a mental health professional for talk therapy (could include social workers, psychiatrists, etc.)?": "mph_see_mental_health_professional",
+    "Please briefly describe your psychotherapy history (e.g., dates, reasons for seeking therapy, etc.).": "mph_describe_psychotherapy"
 }

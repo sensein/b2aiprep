@@ -350,6 +350,12 @@ class RepeatInstrument(Enum):
         text="Q - Mood - Panas",
         schema_name="qmoodpanasschema",
     )
+    MOOD_PARTICIPANT_HISTORY = Instrument(
+        session_id="mph_session_id",
+        name="mood_participant_history",
+        text="Q - Mood - Participant History",
+        schema_name="qmoodparticipanthistoryschema",
+    )
     MOOD_CUSTOM_AFFECT = Instrument(
         session_id="custom_affect_scale_session_id",
         name="customAffectScale",
