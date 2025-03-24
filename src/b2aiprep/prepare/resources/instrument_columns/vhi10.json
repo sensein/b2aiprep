@@ -10,5 +10,6 @@
     "voice_clarity",
     "voice_upsetting",
     "voice_handicapped",
-    "ask_whats_wrong_voice"
+    "ask_whats_wrong_voice",
+    "vhi_10_calc_score"
 ]

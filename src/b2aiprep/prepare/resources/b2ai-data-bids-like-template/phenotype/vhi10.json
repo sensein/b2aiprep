@@ -481,6 +481,21 @@
                 "valueType": [
                     "xsd:string"
                 ]
+            },
+            "vhi_10_calc_score": {
+                "description": "Total score",
+                "question": {
+                    "en": "VHI-10 Score:"
+                },
+                "dataType": [
+                    "xsd:integer"
+                ],
+                "choices": null,
+                "minValue": 0.0,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_generic_voice_handicap_index_vhi10/items/vhi_10_calc_score",
+                "valueType": [
+                    "xsd:integer"
+                ]
             }
         }
     }
