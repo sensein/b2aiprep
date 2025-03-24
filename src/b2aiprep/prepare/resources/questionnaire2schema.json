@@ -35,5 +35,6 @@
     "winograd": "qneurowinogradschemasschema",
     "stroop": "qneurowordcolorstroopschema",
     "vocab": "qneuroproductivevocabularyschema",
-    "random": "qneurorandomitemgenerationschema"
+    "random": "qneurorandomitemgenerationschema",
+    "moodParticipantHistory": "qmoodparticipanthistoryschema"
 }
