@@ -39,7 +39,7 @@ import logging
 import os
 import traceback
 from pathlib import Path
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 
 import numpy as np
 import pandas as pd
@@ -68,6 +68,23 @@ SUBJECT_ID = "sub"
 SESSION_ID = "ses"
 AUDIO_ID = "audio"
 RESAMPLE_RATE = 16000
+SPECTROGRAM_SHAPE = 201
+# Parcelmouth feature groupings
+FEATURE_EXTRACTION_SPEECH_RATE = ['speaking_rate', 'articulation_rate',
+                                  'phonation_ratio', 'pause_rate', 'mean_pause_duration']
+FEATURE_EXTRACTION_DURATION = ['duration']
+FEATURE_EXTRACTION_PITCH_AND_INTENSITY = [
+    'mean_f0_hertz', 'std_f0_hertz', 'mean_intensity_db', 'std_intensity_db', 'range_ratio_intensity_db']
+FEATURE_EXTRACTION_HARMONIC_DESCRIPTORS = ['mean_hnr_db', 'std_hnr_db', 'spectral_slope',
+                                           'spectral_tilt', 'cepstral_peak_prominence_mean', 'cepstral_peak_prominence_std']
+FEATURE_EXTRACTION_FORMANTS = ['mean_f1_loc', 'std_f1_loc', 'mean_b1_loc',
+                               'std_b1_loc', 'mean_f2_loc', 'std_f2_loc', 'mean_b2_loc', 'std_b2_loc']
+FEATURE_EXTRACTION_SPECTRAL_MOMENTS = ['spectral_gravity',
+                                       'spectral_std_dev', 'spectral_skewness', 'spectral_kurtosis']
+FEATURE_EXTRACTION_JITTER = ['local_jitter', 'localabsolute_jitter',
+                             'rap_jitter', 'ppq5_jitter', 'ddp_jitter']
+FEATURE_EXTRACTION_SHIMMER = ['local_shimmer', 'localDB_shimmer',
+                              'apq3_shimmer', 'apq5_shimmer', 'apq11_shimmer', 'dda_shimmer']
 
 _logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -79,8 +96,8 @@ def extract_single(
     with_sensitive: bool,
     overwrite: bool = False,
     device: DeviceType = DeviceType.CPU,
+    update: bool = False,
 ):
-
     wav_path = Path(wav_path)
     # Define the save directory for features
     audio_dir = wav_path.parent
@@ -88,9 +105,13 @@ def extract_single(
     features_dir.mkdir(exist_ok=True)
     save_to = features_dir / f"{wav_path.stem}_features.pt"
 
+    preloaded_pt = {}
     if save_to.exists() and not overwrite:
-        _logger.info(f"{save_to} already exists. Skipping.")
-        return save_to
+        if not update:
+            _logger.info(f"{save_to} already exists. Skipping.")
+            return save_to
+        else:
+            preloaded_pt = torch.load(save_to, map_location='cpu', weights_only=False)
 
     logging.disable(logging.ERROR)
     # Load audio
@@ -107,7 +128,8 @@ def extract_single(
 
     is_speech_task = any([v.replace(" ", "-") in wav_path.name for v in SPEECH_TASKS])
 
-    parsel_mouth_config = False
+    opensmile = True
+    torchaudio_squim = True
     parsel_mouth_config = {
         "time_step": hop_length / 1000,
         "window_length": win_length / 1000,
@@ -124,19 +146,97 @@ def extract_single(
         "plugin": "serial",
     }
     # Extract features
+    if update and not overwrite:
+        if "opensmile" in preloaded_pt:
+            opensmile = False
+        if "praat_parselmouth" in preloaded_pt:
+            praat_features = list(preloaded_pt["praat_parselmouth"].keys())
+            parsel_mouth_config = {
+                "time_step": hop_length / 1000,
+                "window_length": win_length / 1000,
+                "plugin": "serial",
+                "speech_rate": False,
+                "intensity_descriptors": False,
+                "harmonicity_descriptors": False,
+                "formants": False,
+                "spectral_moments": False,
+                "pitch": False,
+                "slope_tilt": False,
+                "cpp_descriptors": False,
+                "duration": False,
+                "jitter": False,
+                "shimmer": False,
+            }
+            if not all(features in praat_features for features in FEATURE_EXTRACTION_SPEECH_RATE):
+                parsel_mouth_config["speech_rate"] = True
+
+            if not all(features in praat_features for features in FEATURE_EXTRACTION_DURATION):
+                parsel_mouth_config["duration"] = True
+
+            if not all(features in praat_features for features in FEATURE_EXTRACTION_PITCH_AND_INTENSITY):
+                parsel_mouth_config["pitch"] = True
+                parsel_mouth_config["intensity_descriptors"] = True
+
+            if not all(features in praat_features for features in FEATURE_EXTRACTION_HARMONIC_DESCRIPTORS):
+                parsel_mouth_config["cpp_descriptors"] = True
+                parsel_mouth_config["slope_tilt"] = True
+                parsel_mouth_config["harmonicity_descriptors"] = True
+
+            if not all(features in praat_features for features in FEATURE_EXTRACTION_FORMANTS):
+                parsel_mouth_config["formants"] = True
+
+            if not all(features in praat_features for features in FEATURE_EXTRACTION_SPECTRAL_MOMENTS):
+                parsel_mouth_config["spectral_moments"] = True
+
+            if not all(features in praat_features for features in FEATURE_EXTRACTION_JITTER):
+                parsel_mouth_config["jitter"] = True
+
+            if not all(features in praat_features for features in FEATURE_EXTRACTION_SHIMMER):
+                parsel_mouth_config["shimmer"] = True
+        if "torchaudio" in preloaded_pt:
+            spectrogram = preloaded_pt["torchaudio"]["spectrogram"]
+            if spectrogram.shape[0] == SPECTROGRAM_SHAPE:
+                torch_config = False
+        if "torchaudio_squim" in preloaded_pt:
+            torchaudio_squim = False
+
     features = extract_features_from_audios(
         audios=[audio_16k],
-        opensmile=True,
+        opensmile=opensmile,
         parselmouth=parsel_mouth_config,
         torchaudio=torch_config,
-        torchaudio_squim=True,
+        torchaudio_squim=torchaudio_squim,
     ).pop()
-    features["parselmouth_config"] = parsel_mouth_config
-    features["torch_config"] = torch_config
-    features["is_speech_task"] = is_speech_task
-    features["sample_rate"] = audio_16k.sampling_rate
-    features["duration"] = len(audio_16k.waveform) / audio_16k.sampling_rate
-    features["sensitive_features"] = None
+
+    if update and not overwrite:
+        # if squim was not in previous release
+        if "torchaudio_squim" not in preloaded_pt and "torchaudio_squim" in features :
+            preloaded_pt["torchaudio_squim"] = features["torchaudio_squim"]
+        if "opensmile" not in preloaded_pt and "opensmile" in features:
+            preloaded_pt["opensmile"] = features["opensmile"]
+        if "torchaudio" not in preloaded_pt and "torchaudio" in features:
+            preloaded_pt["torchaudio"] = features["torchaudio"]
+        if "praat_parselmouth" not in preloaded_pt and "praat_parselmouth" in features:
+            preloaded_pt["praat_parselmouth"] = features["praat_parselmouth"]
+
+        # case where the first generation was using n_fft = 1024 and we need to replace
+        if preloaded_pt["torchaudio"]["spectrogram"].shape[0] != SPECTROGRAM_SHAPE:
+            preloaded_pt["torchaudio"] = features["torchaudio"]
+
+        # combine to have all features
+        if "praat_parselmouth" in features and "praat_parselmouth" in preloaded_pt:
+            preloaded_pt["praat_parselmouth"] = {
+                **preloaded_pt["praat_parselmouth"], **features["praat_parselmouth"]}
+        features = preloaded_pt
+
+    if not update:
+        features["parselmouth_config"] = parsel_mouth_config
+        features["torch_config"] = torch_config
+        features["is_speech_task"] = is_speech_task
+        features["sample_rate"] = audio_16k.sampling_rate
+        features["duration"] = len(audio_16k.waveform) / audio_16k.sampling_rate
+        features["sensitive_features"] = None
+
     if with_sensitive:
         features["audio_path"] = wav_path
         try:
@@ -219,12 +319,18 @@ def wav_to_features(
 def extract_features_sequentially(
     bids_dir_path: Path,
     transcription_model_size: str = "tiny",
-    with_sensitive: bool = True
+    with_sensitive: bool = True,
+    update: bool = False
 ):
     audio_paths = get_audio_paths(bids_dir_path=bids_dir_path)
-    audio_paths = sorted(audio_paths, key=lambda wave_file: wave_file["size"] )
+    audio_paths = sorted(audio_paths, key=lambda wave_file: wave_file["size"])
+
     for audio_file in audio_paths:
-        extract_single(audio_file["path"], transcription_model_size, with_sensitive)
+        extract_single(
+            wav_path=audio_file["path"],
+            transcription_model_size=transcription_model_size,
+            with_sensitive=with_sensitive,
+            update=update)
 
 
 def extract_features_workflow(
@@ -238,6 +344,7 @@ def extract_features_workflow(
     cache_dir: str | os.PathLike = None,
     percentile: int = 100,
     subject_id: str = None,
+    update: bool = False
 ):
     """Run a Pydra workflow to extract audio features from BIDS-like directory.
 
@@ -296,6 +403,7 @@ def extract_features_workflow(
         with_sensitive=with_sensitive,
         overwrite=overwrite,
         cache_dir=cache_dir,
+        update=update
     )
     extract_task.split("wav_path", wav_path=audio_paths)
     if plugin == "dask":
@@ -372,7 +480,8 @@ def clean_phenotype_data(df: pd.DataFrame, phenotype: dict) -> Tuple[pd.DataFram
         "6-May": "5 - 6",
         "9-Jul": "7 - 9",
     }
-    df['alcohol_amt'] = df['alcohol_amt'].apply(lambda x: date_fix_map[x] if x in date_fix_map else x)
+    df['alcohol_amt'] = df['alcohol_amt'].apply(
+        lambda x: date_fix_map[x] if x in date_fix_map else x)
 
     # remove columns with minimal data science utility (free-text, all null values, etc)
     columns_to_drop = []
@@ -393,7 +502,7 @@ def clean_phenotype_data(df: pd.DataFrame, phenotype: dict) -> Tuple[pd.DataFram
     ]:
         if col in df:
             columns_to_drop.append(col)
-    
+
     if len(columns_to_drop) > 0:
         df = df.drop(columns=columns_to_drop)
         phenotype = {
