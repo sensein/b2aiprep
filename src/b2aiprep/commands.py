@@ -151,6 +151,7 @@ def redcap2bids(
 @click.option("-p", "--percentile", type=int, default=100, show_default=True)
 @click.option("-s", "--subject_id", type=str, default=None, show_default=True)
 @click.option("--is_sequential", type=bool, default=False, show_default=True)
+@click.option("--update", type=bool, default=False, show_default=True)
 def prepare_bids(
     bids_dir_path,
     redcap_csv_path,
@@ -166,6 +167,7 @@ def prepare_bids(
     percentile,
     subject_id,
     is_sequential,
+    update
 ):
     """Organizes into BIDS-like with features.
 
@@ -196,6 +198,7 @@ def prepare_bids(
         percentile: Percentile threshold for processing. Use to process subset of data
         subject_id: Specific subject ID to process. If provided, only processes this subject
         is_sequential: Specifies whether to extract audio features sequentially
+        update: Specifies whether to update the pre-existing extractions and store it in a separate update folder 
     """
     if cache is None:
         cache = Path(bids_dir_path).parent / "b2aiprep_cache"
@@ -204,18 +207,26 @@ def prepare_bids(
         _LOGGER.info("Organizing data into BIDS-like directory structure...")
         redcap_to_bids(Path(redcap_csv_path), Path(bids_dir_path), Path(audio_dir_path))
         _LOGGER.info("Data organization complete.")
+    shadow = None
+    if update:
+        shadow = f"{bids_dir_path}_update" 
+        os.makedirs(bids_dir_path, exist_ok=True)
+        shutil.copytree(bids_dir_path, shadow, dirs_exist_ok=True)
 
     _LOGGER.info("Beginning audio feature extraction...")
-
+    bids_path = Path(bids_dir_path)
+    if update and not overwrite:
+        bids_path = Path(shadow)
     if is_sequential:
         extract_features_sequentially(
-            Path(bids_dir_path),
+            bids_path,
             transcription_model_size=transcription_model_size,
             with_sensitive=with_sensitive,
+            update=update,
         )
     else:
         extract_features_workflow(
-            Path(bids_dir_path),
+            bids_path,
             transcription_model_size=transcription_model_size,
             n_cores=n_cores,
             with_sensitive=with_sensitive,
@@ -225,12 +236,13 @@ def prepare_bids(
             address=address,
             percentile=percentile,
             subject_id=subject_id,
+            update=update,
         )
     _LOGGER.info("Audio feature extraction complete.")
 
     if validate:
         # Below code checks to see if we have all the expected feature/transcript files.
-        validate_bids_folder(Path(bids_dir_path))
+        validate_bids_folder(bids_path)
 
     if tar_file_path is not None:
         _LOGGER.info("Saving .tar file with processed data...")
