@@ -316,7 +316,7 @@ def wav_to_features(
     return all_features
 
 
-def generate_features_workflow(
+def generate_features_wrapper(
     bids_path,
     transcription_model_size,
     n_cores,
