@@ -1082,3 +1082,45 @@ def reproschema_to_redcap(audio_dir, survey_file, redcap_csv, participant_group)
 
     merged_csv_path = os.path.join(redcap_csv, "merged-redcap.csv")
     df_final.to_csv(merged_csv_path, index=False)
+
+
+@click.command()
+@click.argument("bids_src_dir", type=str)
+@click.argument("dest_dir", type=str)
+def bids2shadow(bids_src_dir, dest_dir):
+    """
+
+    This function scans the bids folder for all the .pt files, and copies all of the
+    .pt files over to the target directory, while maintaining bids structure.
+
+    Args:
+        src_dir (str): Path to the  directory containing the pytorch files
+
+        dest_dir (str): Path to the directory where we wish to have the shadow tree
+
+    Returns:
+        None: Copies audio files to the destination folder and logs the output.
+    """
+   # Convert to Path objects
+    src_dir = Path(bids_src_dir)
+    target_dir = Path(dest_dir)
+
+    # Ensure the target directory exists
+    target_dir.mkdir(parents=True, exist_ok=True)
+
+    # Walk through the source directory
+    for root, dirs, files in os.walk(src_dir):
+        # Filter for .pt files
+        for file in files:
+            if file.endswith('.pt'):
+                # Create the relative path to the source directory
+                relative_path = Path(root).relative_to(src_dir)
+                target_path = target_dir / relative_path
+
+                # Ensure the target directory exists
+                target_path.mkdir(parents=True, exist_ok=True)
+
+                # Copy the .pt file
+                shutil.copy(Path(root) / file, target_path / file)
+
+    _LOGGER.info(f".pt files have been added to {dest_dir}")
