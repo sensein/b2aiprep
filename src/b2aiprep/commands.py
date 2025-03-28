@@ -54,7 +54,7 @@ from b2aiprep.prepare.prepare import (
     extract_features_sequentially,
     extract_features_workflow,
     validate_bids_data,
-    generate_features_workflow
+    generate_features_wrapper
 )
 from b2aiprep.prepare.reproschema_to_redcap import parse_audio, parse_survey
 
@@ -207,7 +207,7 @@ def prepare_bids(
         _LOGGER.info("Data organization complete.")
     bids_path = Path(bids_dir_path)
 
-    generate_features_workflow(
+    generate_features_wrapper(
         bids_path=bids_path,
         transcription_model_size=transcription_model_size,
         n_cores=n_cores,
@@ -292,7 +292,7 @@ def generate_audio_features(source_bids_dir_path,
 
     _LOGGER.info("Beginning audio feature extraction...")
 
-    generate_features_workflow(
+    generate_features_wrapper(
         bids_path=bids_path,
         transcription_model_size=transcription_model_size,
         n_cores=n_cores,
@@ -1089,14 +1089,12 @@ def reproschema_to_redcap(audio_dir, survey_file, redcap_csv, participant_group)
 @click.argument("dest_dir", type=str)
 def bids2shadow(bids_src_dir, dest_dir):
     """
-
     This function scans the bids folder for all the .pt files, and copies all of the
     .pt files over to the target directory, while maintaining bids structure.
 
     Args:
-        src_dir (str): Path to the  directory containing the pytorch files
-
-        dest_dir (str): Path to the directory where we wish to have the shadow tree
+        bids_src_dir: Path to the  directory containing the pytorch files
+        dest_dir: Path to the directory where we wish to have the shadow tree
     """
    # Convert to Path objects
     src_dir = Path(bids_src_dir)
