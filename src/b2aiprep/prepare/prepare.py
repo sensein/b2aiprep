@@ -316,6 +316,42 @@ def wav_to_features(
     return all_features
 
 
+def generate_features_workflow(
+    bids_path,
+    transcription_model_size,
+    n_cores,
+    with_sensitive,
+    overwrite,
+    cache,
+    address,
+    percentile,
+    subject_id,
+    update=False,
+    is_sequential=False
+
+):
+    if is_sequential:
+        extract_features_sequentially(
+            bids_path,
+            transcription_model_size=transcription_model_size,
+            with_sensitive=with_sensitive,
+            update=update,
+        )
+    else:
+        extract_features_workflow(
+            bids_path,
+            transcription_model_size=transcription_model_size,
+            n_cores=n_cores,
+            with_sensitive=with_sensitive,
+            overwrite=overwrite,
+            cache_dir=cache,
+            plugin="dask" if address is not None else "cf",
+            address=address,
+            percentile=percentile,
+            subject_id=subject_id,
+            update=update,
+        )
+
 def extract_features_sequentially(
     bids_dir_path: Path,
     transcription_model_size: str = "tiny",

@@ -36,19 +36,20 @@ def setup_temp_files():
         yield redcap_csv_path, audio_dir, bids_dir_path, tar_file_path
 
 
-def test_prepare_bids_cli(setup_temp_files):
+
+
+
+def test_generate_audio_features_cli_update(setup_temp_files):
     """Test the 'b2aiprep-cli prepbidslikedata' command using subprocess."""
     redcap_csv_path, audio_dir, bids_dir_path, tar_file_path = setup_temp_files
-
+    update = "True"
+    shadow_path = f"{Path(bids_dir_path)}_update"
     # Define the CLI command
     command = [
         "b2aiprep-cli",
-        "prepare-bids",
+        "generate-audio-features",
         bids_dir_path,
-        "--redcap_csv_path",
-        redcap_csv_path,
-        "--audio_dir_path",
-        audio_dir,
+        shadow_path,
         "--tar_file_path",
         tar_file_path,
         "-t",
@@ -58,7 +59,10 @@ def test_prepare_bids_cli(setup_temp_files):
         "--with_sensitive",
         "--overwrite",
         "--validate",
+        "--update",
+        update
     ]
+   
     # Run the CLI command
     result = subprocess.run(command, capture_output=True, text=True)
 
@@ -68,3 +72,4 @@ def test_prepare_bids_cli(setup_temp_files):
     # Additional assertions can be added to check output files
     assert os.path.exists(bids_dir_path), "BIDS directory was not created"
     assert os.path.exists(tar_file_path), "Tar file was not created"
+    assert os.path.exists(shadow_path), "shadow tree was not created"
