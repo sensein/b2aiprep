@@ -1097,9 +1097,6 @@ def bids2shadow(bids_src_dir, dest_dir):
         src_dir (str): Path to the  directory containing the pytorch files
 
         dest_dir (str): Path to the directory where we wish to have the shadow tree
-
-    Returns:
-        None: Copies audio files to the destination folder and logs the output.
     """
    # Convert to Path objects
     src_dir = Path(bids_src_dir)
