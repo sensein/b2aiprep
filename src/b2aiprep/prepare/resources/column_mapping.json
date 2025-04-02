@@ -413,6 +413,7 @@
   "diagnosis_bipolar_current_med_therapies": "List any current medications/therapies    (Legacy)",
   "diagnosis_bipolar_former_med_therapies": "List any former medications/therapies    (Legacy)",
   "dmdd_diagnosed_dd": "Have you been diagnosed with a depressive disorder?",
+  "dmdd_diagnosed_dd_selection": "Major Depressive Disorder",
   "diagnosis_depression_gsd": "Diagnosis     (Legacy)",
   "diagnosis_depression_clinical_subcategory": "Clinical depression (major depressive disorder) Subcategory    (Legacy)",
   "diagnosis_depression_gsd_interview": "Was a structured clinical interview done?    (Legacy)",

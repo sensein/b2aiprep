@@ -3,6 +3,75 @@
         "description": "Measures severity and impact of depressive symptoms.",
         "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/d_mood_depression_or_major_depressive_disorder_schema",
         "data_elements": {
+            "dmdd_diagnosed_dd_selection":{
+                "description": "Major Depressive Disorder",
+                "question": {
+                    "en": "Major Depressive Disorder"
+                },
+                "dataType": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "6B43 Adjustment disorder"
+                        },
+                        "value": "6B43"
+                    },
+                    {
+                        "name": {
+                            "en": "6B20 OCD"
+                        },
+                        "value": "6B20"
+                    },
+                    {
+                        "name": {
+                            "en": "6A70 Single episode depressive disorder"
+                        },
+                        "value": "6A70"
+                    },
+                    {
+                        "name": {
+                            "en": "6A71 Recurrent depressive disorder"
+                        },
+                        "value": "6A71"
+                    },
+                    {
+                        "name": {
+                            "en": "6A72 Dysthymic disorder"
+                        },
+                        "value": "6A72"
+                    },
+                    {
+                        "name": {
+                            "en": "6A73 Mixed depressive and anxiety disorder"
+                        },
+                        "value": "6A73"
+                    },
+                    {
+                        "name": {
+                            "en": "GA34.41 Premenstrual dysphoric disorder"
+                        },
+                        "value": "GA34.41"
+                    },
+                    {
+                        "name": {
+                            "en": "6A7Y Other specified depressive disorders"
+                        },
+                        "value": "6A7Y"
+                    },
+                    {
+                        "name": {
+                            "en": "6A7Z Depressive disorders, unspecified"
+                        },
+                        "value": "6A7Z"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_mood_depression_or_major_depressive_disorder/items/dmdd_diagnosed_dd_selection",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
             "diagnosis_depression_gsd": {
                 "description": "Indicates the participant’s diagnosis of depression.",
                 "question": {
