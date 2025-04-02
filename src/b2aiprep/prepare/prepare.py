@@ -60,6 +60,15 @@ from senselab.utils.data_structures import (
 )
 from tqdm import tqdm
 
+from b2aiprep.prepare.constants import (
+    FEATURE_EXTRACTION_SPEECH_RATE,
+    FEATURE_EXTRACTION_DURATION,
+    FEATURE_EXTRACTION_PITCH_AND_INTENSITY,
+    FEATURE_EXTRACTION_HARMONIC_DESCRIPTORS,
+    FEATURE_EXTRACTION_FORMANTS,
+    FEATURE_EXTRACTION_SPECTRAL_MOMENTS,
+    FEATURE_EXTRACTION_JITTER, FEATURE_EXTRACTION_SHIMMER)
+
 from b2aiprep.prepare.bids import get_audio_paths
 from b2aiprep.prepare.constants import SPEECH_TASKS
 from b2aiprep.prepare.utils import retry
@@ -70,21 +79,6 @@ AUDIO_ID = "audio"
 RESAMPLE_RATE = 16000
 SPECTROGRAM_SHAPE = 201
 # Parcelmouth feature groupings
-FEATURE_EXTRACTION_SPEECH_RATE = ['speaking_rate', 'articulation_rate',
-                                  'phonation_ratio', 'pause_rate', 'mean_pause_duration']
-FEATURE_EXTRACTION_DURATION = ['duration']
-FEATURE_EXTRACTION_PITCH_AND_INTENSITY = [
-    'mean_f0_hertz', 'std_f0_hertz', 'mean_intensity_db', 'std_intensity_db', 'range_ratio_intensity_db']
-FEATURE_EXTRACTION_HARMONIC_DESCRIPTORS = ['mean_hnr_db', 'std_hnr_db', 'spectral_slope',
-                                           'spectral_tilt', 'cepstral_peak_prominence_mean', 'cepstral_peak_prominence_std']
-FEATURE_EXTRACTION_FORMANTS = ['mean_f1_loc', 'std_f1_loc', 'mean_b1_loc',
-                               'std_b1_loc', 'mean_f2_loc', 'std_f2_loc', 'mean_b2_loc', 'std_b2_loc']
-FEATURE_EXTRACTION_SPECTRAL_MOMENTS = ['spectral_gravity',
-                                       'spectral_std_dev', 'spectral_skewness', 'spectral_kurtosis']
-FEATURE_EXTRACTION_JITTER = ['local_jitter', 'localabsolute_jitter',
-                             'rap_jitter', 'ppq5_jitter', 'ddp_jitter']
-FEATURE_EXTRACTION_SHIMMER = ['local_shimmer', 'localDB_shimmer',
-                              'apq3_shimmer', 'apq5_shimmer', 'apq11_shimmer', 'dda_shimmer']
 
 _logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -351,6 +345,7 @@ def generate_features_wrapper(
             subject_id=subject_id,
             update=update,
         )
+
 
 def extract_features_sequentially(
     bids_dir_path: Path,
