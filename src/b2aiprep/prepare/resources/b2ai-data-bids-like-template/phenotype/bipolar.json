@@ -3,6 +3,51 @@
         "description": "Measures symptoms and behaviors related to bipolar disorder.",
         "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/d_mood_bipolar_disorder_schema",
         "data_elements": {
+            "mbd_diagnosed_bm_selection": {
+                "description": "mbd_diagnosed_bm_selection",
+                "question": {
+                    "en": "Bipolar I and II Disorders"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "6A60 Bipolar type I disorder"
+                        },
+                        "value": "6A60"
+                    },
+                    {
+                        "name": {
+                            "en": "6A61 Bipolar type II disorder"
+                        },
+                        "value": "6A61"
+                    },
+                    {
+                        "name": {
+                            "en": "6A62 Cyclothymic disorder"
+                        },
+                        "value": "6A62"
+                    },
+                    {
+                        "name": {
+                            "en": "6A6Y Other specified bipolar or related disorders"
+                        },
+                        "value": "6A6Y"
+                    },
+                    {
+                        "name": {
+                            "en": "6A6Z Bipolar or related disorders, unspecified"
+                        },
+                        "value": "6A6Z"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_mood_bipolar_disorder/items/mbd_diagnosed_bm_selection",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
             "diagnosis_bipolar_gsd": {
                 "description": "Specifies the participant’s diagnosis of bipolar disorder.",
                 "question": {
