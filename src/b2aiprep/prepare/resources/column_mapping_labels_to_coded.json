@@ -169,6 +169,7 @@
     "Have you ever seen things other people can't see or heard things other people can't hear?": "mbd_ever_seen_heard",
     "Major Depressive Disorder": "dmdd_diagnosed_dd_selection",
     "Have you ever had a manic episode (i.e., While not under the influence of substances, a distinct period of abnormally and persistently elevated, expansive, or irritable mood and abnormally and persistently goal-directed behavior or energy, lasting at least 1 week and present most of the day, nearly every day)?": "mbd_had_manic_episode",
+    "Bipolar I and II Disorders": "mbd_diagnosed_bm_selection",
     "Diagnosis    (Legacy)": "diagnosis_bipolar_gsd",
     "Was a structured clinical interview done?    (Legacy)": "diagnosis_depression_gsd_interview",
     "Was an objective questionnaire used?    (Legacy)": "diagnosis_depression_gsd_oqu",
