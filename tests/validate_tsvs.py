@@ -192,7 +192,7 @@ def validate(questionnaire, dfs, answer_key):
                             assert float(index) >= 0
 
             except Exception:
-                with open('error_log.txt', 'a') as file:
+                with open('error_log.txt', 'w') as file:
                     file.write(
                         f"{questionnaire} value: {index} in columns {column} does not match the json phenotype \n")
                     file.write(f"Columns: {column}\n")
