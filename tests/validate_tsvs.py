@@ -4,25 +4,72 @@ import pandas as pd
 import math
 import argparse
 import pycountry
-us_state_abbr = {
-    "AL": "Alabama", "AK": "Alaska", "AZ": "Arizona", "AR": "Arkansas", "CA": "California",
-    "CO": "Colorado", "CT": "Connecticut", "DE": "Delaware", "FL": "Florida", "GA": "Georgia",
-    "HI": "Hawaii", "ID": "Idaho", "IL": "Illinois", "IN": "Indiana", "IA": "Iowa", "KS": "Kansas",
-    "KY": "Kentucky", "LA": "Louisiana", "ME": "Maine", "MD": "Maryland", "MA": "Massachusetts",
-    "MI": "Michigan", "MN": "Minnesota", "MS": "Mississippi", "MO": "Missouri", "MT": "Montana",
-    "NE": "Nebraska", "NV": "Nevada", "NH": "New Hampshire", "NJ": "New Jersey", "NM": "New Mexico",
-    "NY": "New York", "NC": "North Carolina", "ND": "North Dakota", "OH": "Ohio", "OK": "Oklahoma",
-    "OR": "Oregon", "PA": "Pennsylvania", "RI": "Rhode Island", "SC": "South Carolina", "SD": "South Dakota",
-    "TN": "Tennessee", "TX": "Texas", "UT": "Utah", "VT": "Vermont", "VA": "Virginia", "WA": "Washington",
-    "WV": "West Virginia", "WI": "Wisconsin", "WY": "Wyoming"
+import iso639
+us_state_abbr= {
+    "AL": "ALABAMA", 
+    "AK": "ALASKA", 
+    "AZ": "ARIZONA", 
+    "AR": "ARKANSAS", 
+    "CA": "CALIFORNIA", 
+    "CO": "COLORADO", 
+    "CT": "CONNECTICUT", 
+    "DE": "DELAWARE", 
+    "FL": "FLORIDA", 
+    "GA": "GEORGIA", 
+    "HI": "HAWAII", 
+    "ID": "IDAHO", 
+    "IL": "ILLINOIS", 
+    "IN": "INDIANA", 
+    "IA": "IOWA", 
+    "KS": "KANSAS", 
+    "KY": "KENTUCKY", 
+    "LA": "LOUISIANA", 
+    "ME": "MAINE", 
+    "MD": "MARYLAND", 
+    "MA": "MASSACHUSETTS", 
+    "MI": "MICHIGAN", 
+    "MN": "MINNESOTA", 
+    "MS": "MISSISSIPPI", 
+    "MO": "MISSOURI", 
+    "MT": "MONTANA", 
+    "NE": "NEBRASKA", 
+    "NV": "NEVADA", 
+    "NH": "NEW HAMPSHIRE", 
+    "NJ": "NEW JERSEY", 
+    "NM": "NEW MEXICO", 
+    "NY": "NEW YORK", 
+    "NC": "NORTH CAROLINA", 
+    "ND": "NORTH DAKOTA", 
+    "OH": "OHIO", 
+    "OK": "OKLAHOMA", 
+    "OR": "OREGON", 
+    "PA": "PENNSYLVANIA", 
+    "RI": "RHODE ISLAND", 
+    "SC": "SOUTH CAROLINA", 
+    "SD": "SOUTH DAKOTA", 
+    "TN": "TENNESSEE", 
+    "TX": "TEXAS", 
+    "UT": "UTAH", 
+    "VT": "VERMONT", 
+    "VA": "VIRGINIA", 
+    "WA": "WASHINGTON", 
+    "WV": "WEST VIRGINIA", 
+    "WI": "WISCONSIN", 
+    "WY": "WYOMING"
 }
-
 # Dictionary of Canadian provinces and their abbreviations
 ca_province_abbr = {
-    "AB": "Alberta", "BC": "British Columbia", "MB": "Manitoba", "NB": "New Brunswick", "NL": "Newfoundland and Labrador",
-    "NS": "Nova Scotia", "ON": "Ontario", "PE": "Prince Edward Island", "QC": "Quebec", "SK": "Saskatchewan"
+    "AB": "ALBERTA", 
+    "BC": "BRITISH COLUMBIA", 
+    "MB": "MANITOBA", 
+    "NB": "NEW BRUNSWICK", 
+    "NL": "NEWFOUNDLAND AND LABRADOR", 
+    "NS": "NOVA SCOTIA", 
+    "ON": "ONTARIO", 
+    "PE": "PRINCE EDWARD ISLAND", 
+    "QC": "QUEBEC", 
+    "SK": "SASKATCHEWAN"
 }
-
 
 def is_state_or_province(input_string):
     # Normalize input (to handle both full names and abbreviations)
@@ -33,19 +80,18 @@ def is_state_or_province(input_string):
 def is_language(language_name):
     # Check if the input string matches a valid language in pycountry
     try:
-        # pycountry provides languages using ISO 639-1 or ISO 639-2 codes, so we check by name
-        # title() for case-insensitivity
-
         language_name = language_name.split(",")
 
         for lang in language_name:
-            language = pycountry.languages.get(name=lang.strip().title())
-        if language:
-            return True
-    except KeyError:
+            if iso639.to_name(lang):  # Try to find language by code
+                return True
+            elif iso639.to_code(lang):  # Try to find language by name
+                return True
+
+    except Exception:
         return False
 
-    return False
+    return True
 
 
 def extract_data_elements(name, questionnaire):
