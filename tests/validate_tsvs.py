@@ -3,6 +3,35 @@ import json
 import pandas as pd
 import math
 import argparse
+import pycountry
+
+def is_state_or_province(input_string):
+    # Convert input to title case to match pycountry format
+    input_string = input_string.title()
+
+    # Check U.S. states
+    us_states = [subdivision.name for subdivision in pycountry.subdivisions.get(country_code='US')]
+    
+    # Check Canadian provinces
+    ca_provinces = [subdivision.name for subdivision in pycountry.subdivisions.get(country_code='CA')]
+    
+    # Check if input string matches any U.S. state or Canadian province
+    if input_string in us_states or input_string in ca_provinces:
+        return True
+    return False
+
+def is_language(language_name):
+    # Check if the input string matches a valid language in pycountry
+    try:
+        # pycountry provides languages using ISO 639-1 or ISO 639-2 codes, so we check by name
+        language = pycountry.languages.get(name=language_name.title())  # title() for case-insensitivity
+        if language:
+            return True
+    except KeyError:
+        return False
+    
+    return False
+
 
 def extract_data_elements(name, questionnaire):
     columns = {}
@@ -81,6 +110,26 @@ def validate(questionnaire, dfs, answer_key):
                         if isinstance(index, float) and index.is_integer():
                             index = str(int(index))
                         assert index in choices
+                    else:
+                        if column == "state_province":
+                            assert is_state_or_province(index)
+                        elif column == "ef_fluent_language_other":
+                            assert is_language(column)
+                        elif column == "diagnosis_as_ds_eps" or column == "diagnosis_as_ds_eps":
+                            assert index.is_integer()
+                            index = float(index)
+                            assert index >= 0 and index <= 100
+                        elif columns == "phys_health_impact" or column == "phys_health_limited":
+                            assert index.is_integer()
+                            index = float(index)
+                            assert index >= 0 and index <= 30
+                        elif columns == "hours_voice_activity":
+                            assert index.is_integer()
+                            index = float(index)
+                            assert index >= 0 and index <= 24
+                        if isinstance(index, float) and index.is_integer():
+                            assert float(index) >= 0
+
             except Exception:
                 with open('error_log.txt', 'a') as file:
                     file.write(
