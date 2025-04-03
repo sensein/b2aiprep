@@ -441,6 +441,7 @@
   "diagnosis_bipolar_current_med_therapies_depression": "List any current medications/therapies    (Legacy)",
   "diagnosis_bipolar_former_med_therapies_depression": "List any former medications/therapies    (Legacy)",
   "diagnosis_diagnosed_ad": "Have you been diagnosed with an anxiety disorder?",
+  "diagnosis_diagnosed_ad_selection": "Anxiety Disorder",
   "diagnosis_ad_active_psy_med_problems": "Please select any active psychiatric problems and medical problems (select all that apply).",
   "diagnosis_ad_active_psy_med_prob_other": "Please specify",
   "diagnosis_ad_hist_psy_med_problems": "Please select any historical psychiatric problems and medical problems (select all that apply).",
