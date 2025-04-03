@@ -4,20 +4,36 @@ import pandas as pd
 import math
 import argparse
 import pycountry
+us_state_abbr = {
+    "AL": "Alabama", "AK": "Alaska", "AZ": "Arizona", "AR": "Arkansas", "CA": "California", 
+    "CO": "Colorado", "CT": "Connecticut", "DE": "Delaware", "FL": "Florida", "GA": "Georgia", 
+    "HI": "Hawaii", "ID": "Idaho", "IL": "Illinois", "IN": "Indiana", "IA": "Iowa", "KS": "Kansas", 
+    "KY": "Kentucky", "LA": "Louisiana", "ME": "Maine", "MD": "Maryland", "MA": "Massachusetts", 
+    "MI": "Michigan", "MN": "Minnesota", "MS": "Mississippi", "MO": "Missouri", "MT": "Montana", 
+    "NE": "Nebraska", "NV": "Nevada", "NH": "New Hampshire", "NJ": "New Jersey", "NM": "New Mexico", 
+    "NY": "New York", "NC": "North Carolina", "ND": "North Dakota", "OH": "Ohio", "OK": "Oklahoma", 
+    "OR": "Oregon", "PA": "Pennsylvania", "RI": "Rhode Island", "SC": "South Carolina", "SD": "South Dakota", 
+    "TN": "Tennessee", "TX": "Texas", "UT": "Utah", "VT": "Vermont", "VA": "Virginia", "WA": "Washington", 
+    "WV": "West Virginia", "WI": "Wisconsin", "WY": "Wyoming"
+}
 
+# Dictionary of Canadian provinces and their abbreviations
+ca_province_abbr = {
+    "AB": "Alberta", "BC": "British Columbia", "MB": "Manitoba", "NB": "New Brunswick", "NL": "Newfoundland and Labrador", 
+    "NS": "Nova Scotia", "ON": "Ontario", "PE": "Prince Edward Island", "QC": "Quebec", "SK": "Saskatchewan"
+}
 def is_state_or_province(input_string):
-    # Convert input to title case to match pycountry format
-    input_string = input_string.title()
+    # Normalize input (to handle both full names and abbreviations)
+    input_string = input_string.strip().title()  # Strip spaces and use title-case to match the full names
 
-    # Check U.S. states
-    us_states = [subdivision.name for subdivision in pycountry.subdivisions.get(country_code='US')]
-    
-    # Check Canadian provinces
-    ca_provinces = [subdivision.name for subdivision in pycountry.subdivisions.get(country_code='CA')]
-    
-    # Check if input string matches any U.S. state or Canadian province
-    if input_string in us_states or input_string in ca_provinces:
+    # Check for U.S. state (full name or abbreviation)
+    if input_string in us_state_abbr.values() or input_string in us_state_abbr:
         return True
+
+    # Check for Canadian province (full name or abbreviation)
+    if input_string in ca_province_abbr.values() or input_string in ca_province_abbr:
+        return True
+
     return False
 
 def is_language(language_name):
@@ -114,7 +130,7 @@ def validate(questionnaire, dfs, answer_key):
                         if column == "state_province":
                             assert is_state_or_province(index)
                         elif column == "ef_fluent_language_other":
-                            assert is_language(column)
+                            assert is_language(index)
                         elif column == "diagnosis_as_ds_eps" or column == "diagnosis_as_ds_eps":
                             assert index.is_integer()
                             index = float(index)
