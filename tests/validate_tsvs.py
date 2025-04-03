@@ -5,47 +5,46 @@ import math
 import argparse
 import pycountry
 us_state_abbr = {
-    "AL": "Alabama", "AK": "Alaska", "AZ": "Arizona", "AR": "Arkansas", "CA": "California", 
-    "CO": "Colorado", "CT": "Connecticut", "DE": "Delaware", "FL": "Florida", "GA": "Georgia", 
-    "HI": "Hawaii", "ID": "Idaho", "IL": "Illinois", "IN": "Indiana", "IA": "Iowa", "KS": "Kansas", 
-    "KY": "Kentucky", "LA": "Louisiana", "ME": "Maine", "MD": "Maryland", "MA": "Massachusetts", 
-    "MI": "Michigan", "MN": "Minnesota", "MS": "Mississippi", "MO": "Missouri", "MT": "Montana", 
-    "NE": "Nebraska", "NV": "Nevada", "NH": "New Hampshire", "NJ": "New Jersey", "NM": "New Mexico", 
-    "NY": "New York", "NC": "North Carolina", "ND": "North Dakota", "OH": "Ohio", "OK": "Oklahoma", 
-    "OR": "Oregon", "PA": "Pennsylvania", "RI": "Rhode Island", "SC": "South Carolina", "SD": "South Dakota", 
-    "TN": "Tennessee", "TX": "Texas", "UT": "Utah", "VT": "Vermont", "VA": "Virginia", "WA": "Washington", 
+    "AL": "Alabama", "AK": "Alaska", "AZ": "Arizona", "AR": "Arkansas", "CA": "California",
+    "CO": "Colorado", "CT": "Connecticut", "DE": "Delaware", "FL": "Florida", "GA": "Georgia",
+    "HI": "Hawaii", "ID": "Idaho", "IL": "Illinois", "IN": "Indiana", "IA": "Iowa", "KS": "Kansas",
+    "KY": "Kentucky", "LA": "Louisiana", "ME": "Maine", "MD": "Maryland", "MA": "Massachusetts",
+    "MI": "Michigan", "MN": "Minnesota", "MS": "Mississippi", "MO": "Missouri", "MT": "Montana",
+    "NE": "Nebraska", "NV": "Nevada", "NH": "New Hampshire", "NJ": "New Jersey", "NM": "New Mexico",
+    "NY": "New York", "NC": "North Carolina", "ND": "North Dakota", "OH": "Ohio", "OK": "Oklahoma",
+    "OR": "Oregon", "PA": "Pennsylvania", "RI": "Rhode Island", "SC": "South Carolina", "SD": "South Dakota",
+    "TN": "Tennessee", "TX": "Texas", "UT": "Utah", "VT": "Vermont", "VA": "Virginia", "WA": "Washington",
     "WV": "West Virginia", "WI": "Wisconsin", "WY": "Wyoming"
 }
 
 # Dictionary of Canadian provinces and their abbreviations
 ca_province_abbr = {
-    "AB": "Alberta", "BC": "British Columbia", "MB": "Manitoba", "NB": "New Brunswick", "NL": "Newfoundland and Labrador", 
+    "AB": "Alberta", "BC": "British Columbia", "MB": "Manitoba", "NB": "New Brunswick", "NL": "Newfoundland and Labrador",
     "NS": "Nova Scotia", "ON": "Ontario", "PE": "Prince Edward Island", "QC": "Quebec", "SK": "Saskatchewan"
 }
+
+
 def is_state_or_province(input_string):
     # Normalize input (to handle both full names and abbreviations)
-    input_string = input_string.strip().title()  # Strip spaces and use title-case to match the full names
+    input_string = input_string.strip().upper()
+    return (input_string in ca_province_abbr.values() or input_string in ca_province_abbr) or (input_string in us_state_abbr.values() or input_string in us_state_abbr)
 
-    # Check for U.S. state (full name or abbreviation)
-    if input_string in us_state_abbr.values() or input_string in us_state_abbr:
-        return True
-
-    # Check for Canadian province (full name or abbreviation)
-    if input_string in ca_province_abbr.values() or input_string in ca_province_abbr:
-        return True
-
-    return False
 
 def is_language(language_name):
     # Check if the input string matches a valid language in pycountry
     try:
         # pycountry provides languages using ISO 639-1 or ISO 639-2 codes, so we check by name
-        language = pycountry.languages.get(name=language_name.title())  # title() for case-insensitivity
+        # title() for case-insensitivity
+
+        language_name = language_name.split(",")
+
+        for lang in language_name:
+            language = pycountry.languages.get(name=lang.strip().title())
         if language:
             return True
     except KeyError:
         return False
-    
+
     return False
 
 
@@ -177,8 +176,8 @@ if __name__ == '__main__':
     # Parse the arguments
     args = parser.parse_args()
 
-    folder_path_jsons = args.phenotype_path 
-    folder_path_tsvs = args.tsv_path 
+    folder_path_jsons = args.phenotype_path
+    folder_path_tsvs = args.tsv_path
     data = get_json_data_from_folder(folder_path_jsons)
     columns = dict()
     for questionnaire in data:
