@@ -13,7 +13,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_mood_participant_history/items/dmdd_diagnosed_dd",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_mood_depression_or_major_depressive_disorder/items/dmdd_diagnosed_dd",
                 "choices": [
                     {
                         "name": {
@@ -96,7 +96,7 @@
                         "value": "6A7Z"
                     }
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_mood_depression_or_major_depressive_disorder/items/dmdd_diagnosed_dd_selection",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_mood_depression_or_major_depressive_disorder/items/dmdd_diagnosed_dd_selection",
                 "valueType": [
                     "xsd:string"
                 ]
@@ -369,7 +369,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_mood_participant_history/items/dmdd_how_many_depressive_episodes",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_mood_depression_or_major_depressive_disorder/items/dmdd_how_many_depressive_episodes",
                 "choices": [
                     {
                         "name": {
@@ -410,7 +410,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_mood_participant_history/items/diagnosis_bipolar_etiology_depression",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_bipolar_etiology_depression",
                 "valueType": [
                     "xsd:string"
                 ],
@@ -426,7 +426,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_mood_participant_history/items/dmdd_see_mental_health_professional",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_mood_depression_or_major_depressive_disorder/items/dmdd_see_mental_health_professional",
                 "choices": [
                     {
                         "name": {
