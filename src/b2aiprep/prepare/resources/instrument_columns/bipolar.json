@@ -6,6 +6,14 @@
     "diagnosis_bipolar_gsd_oquw",
     "diagnosis_bipolar_subtype_active",
     "diagnosis_bipolar_psychotic",
-    "diagnosis_bipolar_severity"
+    "diagnosis_bipolar_severity",
+    "mbd_diagnosed_bm",
+    "mbd_diagnosed_bipolar_i_ii_other",
+    "mbd_ever_seen_heard",
+    "mbd_had_manic_episode",
+    "mbd_many_depressive_episodes",
+    "mbd_many_manic_episodes",
+    "mbd_prescribed_medication",
+    "mbd_see_mental_health_professional"
 
 ]
