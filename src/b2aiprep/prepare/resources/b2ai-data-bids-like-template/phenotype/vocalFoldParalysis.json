@@ -608,6 +608,80 @@
                 "valueType": [
                     "xsd:integer"
                 ]
+            },
+            "diagnosis_uvfp_ds": {
+                "description": {
+                    "en": "On which side is the paralysis?"
+                },
+                "question": {
+                    "en": "On which side is the paralysis?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_uvfp_ds",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Left"
+                        },
+                        "value": "left"
+                    },
+                    {
+                        "name": {
+                            "en": "Right"
+                        },
+                        "value": "right"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_degree_l_nature": {
+                "description": {
+                    "en": "Loudness\n(Indicate the nature of the abnormality):"
+                },
+                "question": {
+                    "en": "Loudness\n(Indicate the nature of the abnormality):"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_degree_l_nature",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "diagnosis_uvfp_treatment": {
+                "description": {
+                    "en": "Has the patient undergone any treatment for their condition?"
+                },
+                "question": {
+                    "en": "Has the patient undergone any treatment for their condition?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_unilateral_vocal_fold_paralysis/items/diagnosis_uvfp_treatment",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
             }
         }
     }

@@ -841,6 +841,70 @@
                 "valueType": [
                     "xsd:string"
                 ]
+            },
+            "diagnosis_pl_ds_k": {
+                "description": {
+                    "en": "Keratosis"
+                },
+                "question": {
+                    "en": "Keratosis"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_precancerous_lesions/items/diagnosis_pl_ds_k",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "With dysplasia"
+                        },
+                        "value": "withDysplasia"
+                    },
+                    {
+                        "name": {
+                            "en": "Without dysplasia"
+                        },
+                        "value": "withoutDysplasia"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_pl_ds_k_wd_g": {
+                "description": {
+                    "en": "Keratosis with dysplasia"
+                },
+                "question": {
+                    "en": "Keratosis with dysplasia"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_precancerous_lesions/items/diagnosis_pl_ds_k_wd_g",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Low grade"
+                        },
+                        "value": "lowGrade"
+                    },
+                    {
+                        "name": {
+                            "en": "Moderate grade"
+                        },
+                        "value": "moderateGrade"
+                    },
+                    {
+                        "name": {
+                            "en": "High grade"
+                        },
+                        "value": "highGrade"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
             }
         }
     }
