@@ -693,6 +693,111 @@
                 "valueType": [
                     "xsd:string"
                 ]
+            },
+            "diagnosis_as_as": {
+                "description": {
+                    "en": "Does this patient have audible stridor at rest or when talking?"
+                },
+                "question": {
+                    "en": "Does this patient have audible stridor at rest or when talking?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_resp_airway_stenosis/items/diagnosis_as_as",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "Not certain"
+                        },
+                        "value": "notCertain"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_as_as_s": {
+                "description": {
+                    "en": "Can you subjectively classify the severity of the stridor?"
+                },
+                "question": {
+                    "en": "Can you subjectively classify the severity of the stridor?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_resp_airway_stenosis/items/diagnosis_as_as_s",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Mild"
+                        },
+                        "value": "mild"
+                    },
+                    {
+                        "name": {
+                            "en": "Moderate"
+                        },
+                        "value": "moderate"
+                    },
+                    {
+                        "name": {
+                            "en": "Severe"
+                        },
+                        "value": "severe"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_as_as_c": {
+                "description": {
+                    "en": "Is the stridor:"
+                },
+                "question": {
+                    "en": "Is the stridor:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_resp_airway_stenosis/items/diagnosis_as_as_c",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Inspiratory"
+                        },
+                        "value": "inspiratory"
+                    },
+                    {
+                        "name": {
+                            "en": "Expiratory"
+                        },
+                        "value": "expiratory"
+                    },
+                    {
+                        "name": {
+                            "en": "Biphasic"
+                        },
+                        "value": "biphasic"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
             }
         }
     }
