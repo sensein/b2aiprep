@@ -42,5 +42,6 @@ PHENOTYPE_JSON_FILE_DESCRIPTIONS = {
     "q_generic_demographics.json": "Measures participant background details for kids.",
     "subjectparticipant_basic_information.json": "Gets basic information for kids",
     "subjectparticipant_contact_information.json": "Gets Age for kids",
-    "q_mood_participant_history.json": "Gets Participant history for Mood protocol"
+    "q_mood_participant_history.json": "Gets Participant history for Mood protocol",
+    "chronicCough.json": "Measures un-explained cough"
 }
