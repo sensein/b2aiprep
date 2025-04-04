@@ -46,5 +46,20 @@
     "stroop_item_time_14",
     "stroop_item_stimulus_15",
     "stroop_item_color_15",
-    "stroop_item_time_15"
+    "stroop_item_time_15",
+    "stroop_item_correct_1",
+    "stroop_item_correct_2",
+    "stroop_item_correct_3",
+    "stroop_item_correct_4",
+    "stroop_item_correct_5",
+    "stroop_item_correct_6",
+    "stroop_item_correct_7",
+    "stroop_item_correct_8",
+    "stroop_item_correct_9",
+    "stroop_item_correct_10",
+    "stroop_item_correct_11",
+    "stroop_item_correct_12",
+    "stroop_item_correct_13",
+    "stroop_item_correct_14",
+    "stroop_item_correct_15"
 ]
