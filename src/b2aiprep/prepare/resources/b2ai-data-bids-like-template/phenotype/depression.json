@@ -3,7 +3,36 @@
         "description": "Measures severity and impact of depressive symptoms.",
         "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/d_mood_depression_or_major_depressive_disorder_schema",
         "data_elements": {
-            "dmdd_diagnosed_dd_selection":{
+            "dmdd_diagnosed_dd": {
+                "description": {
+                    "en": "Have you been diagnosed with a depressive disorder?"
+                },
+                "question": {
+                    "en": "Have you been diagnosed with a depressive disorder?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_mood_participant_history/items/dmdd_diagnosed_dd",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "dmdd_diagnosed_dd_selection": {
                 "description": "Major Depressive Disorder",
                 "question": {
                     "en": "Major Depressive Disorder"
@@ -326,6 +355,92 @@
                     }
                 ],
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_depression_or_major_depressive_disorder/items/diagnosis_bipolar_severity_depression",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "dmdd_how_many_depressive_episodes": {
+                "description": {
+                    "en": "Approximately how many depressive episodes have you had in your life (feeling down and depressed more days than not over two weeks)?"
+                },
+                "question": {
+                    "en": "Approximately how many depressive episodes have you had in your life (feeling down and depressed more days than not over two weeks)?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_mood_participant_history/items/dmdd_how_many_depressive_episodes",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None"
+                        },
+                        "value": "none"
+                    },
+                    {
+                        "name": {
+                            "en": "More than two"
+                        },
+                        "value": "moreThanTwo"
+                    },
+                    {
+                        "name": {
+                            "en": "More than five"
+                        },
+                        "value": "moreThanFive"
+                    },
+                    {
+                        "name": {
+                            "en": "Not sure"
+                        },
+                        "value": "notSure"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bipolar_etiology_depression": {
+                "description": {
+                    "en": "Describe life events that may relate to the diagnosis\n\n(Legacy)"
+                },
+                "question": {
+                    "en": "Describe life events that may relate to the diagnosis\n\n(Legacy)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_mood_participant_history/items/diagnosis_bipolar_etiology_depression",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "dmdd_see_mental_health_professional": {
+                "description": {
+                    "en": "Have you ever seen a mental health professional for talk therapy (could include social workers, psychiatrists, etc.)?\n\nMOVED IT TO \"Q - Mood - Participant History\""
+                },
+                "question": {
+                    "en": "Have you ever seen a mental health professional for talk therapy (could include social workers, psychiatrists, etc.)?\n\nMOVED IT TO \"Q - Mood - Participant History\""
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_mood_participant_history/items/dmdd_see_mental_health_professional",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
                 "valueType": [
                     "xsd:string"
                 ]
