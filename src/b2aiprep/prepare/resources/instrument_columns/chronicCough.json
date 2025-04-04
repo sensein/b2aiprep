@@ -1,0 +1,19 @@
+[
+    "diagnosis_ucc_persisted",
+    "diagnosis_ucc_hsoe",
+    "diagnosis_ucc_hspd",
+    "diagnosis_ucc_cuae",
+    "diagnosis_ucc_hcxob",
+    "diagnosis_ucc_cxcob",
+    "diagnosis_ucc_huse",
+    "diagnosis_ucc_oai",
+    "diagnosis_ucc_pdapc",
+    "diagnosis_ucc_gediapc",
+    "diagnosis_ucc_atot",
+    "diagnosis_ucc_huatot",
+    "diagnosis_ucc_hurada",
+    "diagnosis_ucc_rada",
+    "diagnosis_ucc_at",
+    "diagnosis_ucc_at_s",
+    "diagnosis_ucc_at_s_other"
+]

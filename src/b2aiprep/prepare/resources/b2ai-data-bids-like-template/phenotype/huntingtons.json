@@ -1,7 +1,7 @@
 {
     "d_neuro_huntingtons_disease": {
         "description": "Measures perceived impact of voice disorders for kids.",
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_generic_confounders/q_generic_confounders_schema",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/d_neuro_huntingtons_disease_schema",
         "data_elements": {
             "hd_confirmed_by_genetic_testing": {
                 "description": {
@@ -13,7 +13,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_neuro_huntingtons_disease/items/hd_confirmed_by_genetic_testing",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_confirmed_by_genetic_testing",
                 "choices": [
                     {
                         "name": {
@@ -48,7 +48,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_neuro_huntingtons_disease/items/hd_cag_repeat_length_known",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_cag_repeat_length_known",
                 "choices": [
                     {
                         "name": {
@@ -77,7 +77,7 @@
                 "datatype": [
                     "xsd:decimal"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_neuro_huntingtons_disease/items/hd_cag_repeat_length",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_cag_repeat_length",
                 "maxValue": null,
                 "minValue": null,
                 "valueType": [
@@ -95,7 +95,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_neuro_huntingtons_disease/items/hd_confirmed_by_consistent_clinical_presentation",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_confirmed_by_consistent_clinical_presentation",
                 "choices": [
                     {
                         "name": {
@@ -130,7 +130,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_neuro_huntingtons_disease/items/hd_disease_subtype",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_disease_subtype",
                 "choices": [
                     {
                         "name": {
@@ -177,7 +177,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_neuro_huntingtons_disease/items/hd_motor_exam",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_motor_exam",
                 "valueType": [
                     "xsd:string"
                 ],
@@ -193,7 +193,7 @@
                 "datatype": [
                     "xsd:decimal"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_neuro_huntingtons_disease/items/hd_uhdrs_total_motor_score",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_uhdrs_total_motor_score",
                 "maxValue": null,
                 "minValue": null,
                 "valueType": [
@@ -211,7 +211,7 @@
                 "datatype": [
                     "xsd:decimal"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_neuro_huntingtons_disease/items/hd_uhdrs_speech_training",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_uhdrs_speech_training",
                 "maxValue": null,
                 "minValue": null,
                 "valueType": [
@@ -229,7 +229,7 @@
                 "datatype": [
                     "xsd:decimal"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_neuro_huntingtons_disease/items/hd_uhdrs_total_chorea_score",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_uhdrs_total_chorea_score",
                 "maxValue": null,
                 "minValue": null,
                 "valueType": [
@@ -247,7 +247,7 @@
                 "datatype": [
                     "xsd:decimal"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_neuro_huntingtons_disease/items/hd_dcl",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_dcl",
                 "maxValue": null,
                 "minValue": null,
                 "valueType": [
@@ -265,7 +265,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_neuro_huntingtons_disease/items/hd_total_func_cap_rating_scale",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_total_func_cap_rating_scale",
                 "valueType": [
                     "xsd:string"
                 ],
@@ -281,7 +281,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_neuro_huntingtons_disease/items/hd_occupation",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_occupation",
                 "choices": [
                     {
                         "name": {
@@ -322,7 +322,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_neuro_huntingtons_disease/items/hd_finullces",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_finullces",
                 "choices": [
                     {
                         "name": {
@@ -363,7 +363,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_neuro_huntingtons_disease/items/hd_domestic_chores",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_domestic_chores",
                 "choices": [
                     {
                         "name": {
@@ -398,7 +398,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_neuro_huntingtons_disease/items/hd_activities_of_daily_living",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_activities_of_daily_living",
                 "choices": [
                     {
                         "name": {
@@ -439,7 +439,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_neuro_huntingtons_disease/items/hd_care_level",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_care_level",
                 "choices": [
                     {
                         "name": {
@@ -474,7 +474,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_neuro_huntingtons_disease/items/hd_any_treatment",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_any_treatment",
                 "choices": [
                     {
                         "name": {
@@ -509,7 +509,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_neuro_huntingtons_disease/items/hd_type_of_treatment",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_type_of_treatment",
                 "choices": [
                     {
                         "name": {
@@ -539,7 +539,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_neuro_huntingtons_disease/items/hd_medications_selection",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_medications_selection",
                 "choices": [
                     {
                         "name": {
@@ -581,7 +581,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_neuro_huntingtons_disease/items/hd_neuroleptic_specify",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_neuroleptic_specify",
                 "valueType": [
                     "xsd:string"
                 ],
@@ -597,7 +597,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_neuro_huntingtons_disease/items/hd_vmat2_inhibitor_specify",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_vmat2_inhibitor_specify",
                 "valueType": [
                     "xsd:string"
                 ],
@@ -613,7 +613,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_neuro_huntingtons_disease/items/hd_antidepressant_specify",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_antidepressant_specify",
                 "valueType": [
                     "xsd:string"
                 ],
@@ -629,7 +629,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_neuro_huntingtons_disease/items/hd_slp_therapy_selection",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_slp_therapy_selection",
                 "choices": [
                     {
                         "name": {

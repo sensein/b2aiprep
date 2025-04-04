@@ -1,0 +1,624 @@
+{
+    "d_resp_unexplained_chronic_cough_schema": {
+        "description": "Measures perceived impact of voice disorders for kids.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_resp_unexplained_chronic_cough/d_resp_unexplained_chronic_cough_schema",
+        "data_elements": {
+            "diagnosis_ucc_persisted": {
+                "description": {
+                    "en": "Has the cough persisted longer than eight weeks?"
+                },
+                "question": {
+                    "en": "Has the cough persisted longer than eight weeks?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_resp_unexplained_chronic_cough/items/diagnosis_ucc_persisted",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "Not certain"
+                        },
+                        "value": "notCertain"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ucc_hsoe": {
+                "description": {
+                    "en": "Does the patient have a history of smoking or occupational exposures?"
+                },
+                "question": {
+                    "en": "Does the patient have a history of smoking or occupational exposures?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_resp_unexplained_chronic_cough/items/diagnosis_ucc_hsoe",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "Not certain"
+                        },
+                        "value": "notCertain"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ucc_hspd": {
+                "description": {
+                    "en": "Does the patient have a history of pulmonary disease? (Select all that apply)"
+                },
+                "question": {
+                    "en": "Does the patient have a history of pulmonary disease? (Select all that apply)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_resp_unexplained_chronic_cough/items/diagnosis_ucc_hspd",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Lung cancer"
+                        },
+                        "value": "lung_cancer"
+                    },
+                    {
+                        "name": {
+                            "en": "COPD"
+                        },
+                        "value": "copd"
+                    },
+                    {
+                        "name": {
+                            "en": "Asthma"
+                        },
+                        "value": "asthma"
+                    },
+                    {
+                        "name": {
+                            "en": "TB infection"
+                        },
+                        "value": "tb_infection"
+                    },
+                    {
+                        "name": {
+                            "en": "Bronchiectasis"
+                        },
+                        "value": "bronchiectasis"
+                    },
+                    {
+                        "name": {
+                            "en": "Pulmonary granuloma"
+                        },
+                        "value": "pulmonary_granuloma"
+                    },
+                    {
+                        "name": {
+                            "en": "Idiopathic pulmonary fibrosis"
+                        },
+                        "value": "idiopathic_pulmonary_fibrosis"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "multipleChoice": true,
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ucc_cuae": {
+                "description": {
+                    "en": "Has the chronic cough remained unexplained after evaluation and therapeutic intervention?"
+                },
+                "question": {
+                    "en": "Has the chronic cough remained unexplained after evaluation and therapeutic intervention?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_resp_unexplained_chronic_cough/items/diagnosis_ucc_cuae",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "Not certain"
+                        },
+                        "value": "notCertain"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ucc_hcxob": {
+                "description": {
+                    "en": "Has the patient had a chest x-ray, CT chest or bronchoscopy?"
+                },
+                "question": {
+                    "en": "Has the patient had a chest x-ray, CT chest or bronchoscopy?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_resp_unexplained_chronic_cough/items/diagnosis_ucc_hcxob",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "Not certain"
+                        },
+                        "value": "notCertain"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ucc_cxcob": {
+                "description": {
+                    "en": "Select all that apply"
+                },
+                "question": {
+                    "en": "Select all that apply"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_resp_unexplained_chronic_cough/items/diagnosis_ucc_cxcob",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Chest X-ray"
+                        },
+                        "value": "chest_xray"
+                    },
+                    {
+                        "name": {
+                            "en": "CT Chest"
+                        },
+                        "value": "ct_chest"
+                    },
+                    {
+                        "name": {
+                            "en": "Bronchoscopy"
+                        },
+                        "value": "bronchoscopy"
+                    }
+                ],
+                "multipleChoice": true,
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ucc_huse": {
+                "description": {
+                    "en": "Has the patient undergone spirometry evaluation (pulmonary function tests)?"
+                },
+                "question": {
+                    "en": "Has the patient undergone spirometry evaluation (pulmonary function tests)?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_resp_unexplained_chronic_cough/items/diagnosis_ucc_huse",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "Not certain"
+                        },
+                        "value": "notCertain"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ucc_oai": {
+                "description": {
+                    "en": "Is the patient on ACE-inhibitors (example: lisinopril; captopril)?"
+                },
+                "question": {
+                    "en": "Is the patient on ACE-inhibitors (example: lisinopril; captopril)?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_resp_unexplained_chronic_cough/items/diagnosis_ucc_oai",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "Not certain"
+                        },
+                        "value": "notCertain"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ucc_pdapc": {
+                "description": {
+                    "en": "Has postnasal drainage been addressed as a potential cause of the cough (through nasal sprays and antihistamines)?"
+                },
+                "question": {
+                    "en": "Has postnasal drainage been addressed as a potential cause of the cough (through nasal sprays and antihistamines)?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_resp_unexplained_chronic_cough/items/diagnosis_ucc_pdapc",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "Not certain"
+                        },
+                        "value": "notCertain"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ucc_gediapc": {
+                "description": {
+                    "en": "Has gastro-esophageal disease been investigated as a possible cause of the cough?"
+                },
+                "question": {
+                    "en": "Has gastro-esophageal disease been investigated as a possible cause of the cough?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_resp_unexplained_chronic_cough/items/diagnosis_ucc_gediapc",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "Not certain"
+                        },
+                        "value": "notCertain"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ucc_atot": {
+                "description": {
+                    "en": "How was it investigated? (Select all that apply)"
+                },
+                "question": {
+                    "en": "How was it investigated? (Select all that apply)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_resp_unexplained_chronic_cough/items/diagnosis_ucc_atot",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Trial of proton pump inhibitor"
+                        },
+                        "value": "trial_of_proton_pump_inhibitor"
+                    },
+                    {
+                        "name": {
+                            "en": "pH-impedance probe or Bravo probe"
+                        },
+                        "value": "phimpedance_probe_or_bravo_probe"
+                    },
+                    {
+                        "name": {
+                            "en": "EGD/TNE"
+                        },
+                        "value": "egd_or_tne"
+                    },
+                    {
+                        "name": {
+                            "en": "Other (H2-blocker, lifestyle change, alginates)"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "multipleChoice": true,
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ucc_huatot": {
+                "description": {
+                    "en": "Has the patient undergone allergy testing or allergy therapy?"
+                },
+                "question": {
+                    "en": "Has the patient undergone allergy testing or allergy therapy?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_resp_unexplained_chronic_cough/items/diagnosis_ucc_huatot",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "Not certain"
+                        },
+                        "value": "notCertain"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ucc_hurada": {
+                "description": {
+                    "en": "Has the patient undergone assessment that includes bronchial hyperresponsiveness and eosinophilic bronchitis (sputum eosinophilia or exhaled nitric oxide), or a therapeutic corticosteroid trial?"
+                },
+                "question": {
+                    "en": "Has the patient undergone assessment that includes bronchial hyperresponsiveness and eosinophilic bronchitis (sputum eosinophilia or exhaled nitric oxide), or a therapeutic corticosteroid trial?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_resp_unexplained_chronic_cough/items/diagnosis_ucc_hurada",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "Not certain"
+                        },
+                        "value": "notCertain"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ucc_rada": {
+                "description": {
+                    "en": "Result"
+                },
+                "question": {
+                    "en": "Result"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_resp_unexplained_chronic_cough/items/diagnosis_ucc_rada",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Positive for reactive airway disease"
+                        },
+                        "value": "positive"
+                    },
+                    {
+                        "name": {
+                            "en": "Negative for reactive airway disease"
+                        },
+                        "value": "negative"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ucc_at": {
+                "description": {
+                    "en": "Has the patient undergone any treatment for this condition?"
+                },
+                "question": {
+                    "en": "Has the patient undergone any treatment for this condition?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_resp_unexplained_chronic_cough/items/diagnosis_ucc_at",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Not Certain"
+                        },
+                        "value": "notCertain"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ucc_at_s": {
+                "description": {
+                    "en": "Select all that apply"
+                },
+                "question": {
+                    "en": "Select all that apply"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_resp_unexplained_chronic_cough/items/diagnosis_ucc_at_s",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Therapeutic trial of multimodality speech pathology therapy"
+                        },
+                        "value": "multimodality_speech_pathology_therapy"
+                    },
+                    {
+                        "name": {
+                            "en": "Therapeutic trial of gabapentin/amitriptyline or other neuromodulator"
+                        },
+                        "value": "neuromodulator"
+                    },
+                    {
+                        "name": {
+                            "en": "Unilateral or bilateral superior laryngeal nerve block"
+                        },
+                        "value": "superior_laryngeal_nerve_block"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "multipleChoice": true,
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ucc_at_s_other": {
+                "description": {
+                    "en": "Please Specify"
+                },
+                "question": {
+                    "en": "Please Specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_resp_unexplained_chronic_cough/items/diagnosis_ucc_at_s_other",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            }
+        }
+    }
+}

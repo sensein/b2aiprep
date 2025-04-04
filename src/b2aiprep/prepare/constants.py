@@ -38,6 +38,7 @@ GENERAL_QUESTIONNAIRES = [
     "huntingtons",
     "parkinsons",
     "als",
+    "chronicCough"
 
 ]
 
@@ -234,6 +235,13 @@ class RepeatInstrument(Enum):
         name="als",
         text="Participant",
         schema_name="dneuroamyotrophiclateralsclerosisalsschema",
+    )
+
+    CHRONIC_COUGH = Instrument(
+        session_id="record_id",
+        name="chronicCough",
+        text="Participant",
+        schema_name="drespunexplainedchroniccoughschema",
     )
 
     MEDICAL_CONDITIONS = Instrument(

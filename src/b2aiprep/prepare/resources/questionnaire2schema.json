@@ -36,5 +36,6 @@
     "stroop": "qneurowordcolorstroopschema",
     "vocab": "qneuroproductivevocabularyschema",
     "random": "qneurorandomitemgenerationschema",
-    "moodParticipantHistory": "qmoodparticipanthistoryschema"
+    "moodParticipantHistory": "qmoodparticipanthistoryschema",
+    "chronicCough": "drespunexplainedchroniccoughschema"
 }

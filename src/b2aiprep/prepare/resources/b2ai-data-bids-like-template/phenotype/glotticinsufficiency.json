@@ -1,7 +1,7 @@
 {
     "d_voice_glottic_insufficiency_presbyphonia": {
         "description": "Measures perceived impact of voice disorders for kids.",
-        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_generic_confounders/q_generic_confounders_schema",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/d_voice_glottic_insufficiency_presbyphonia_schema",
         "data_elements": {
             "diagnois_gi_gsd": {
                 "description": {
@@ -13,7 +13,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnois_gi_gsd",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnois_gi_gsd",
                 "choices": [
                     {
                         "name": {
@@ -48,7 +48,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_d",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_d",
                 "choices": [
                     {
                         "name": {
@@ -89,7 +89,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_d_other",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_d_other",
                 "valueType": [
                     "xsd:string"
                 ],
@@ -105,7 +105,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_d_aoc",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_d_aoc",
                 "choices": [
                     {
                         "name": {
@@ -146,7 +146,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_d_aoc_other",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_d_aoc_other",
                 "valueType": [
                     "xsd:string"
                 ],
@@ -162,7 +162,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_dogg",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_dogg",
                 "choices": [
                     {
                         "name": {
@@ -197,7 +197,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_slogg",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_slogg",
                 "choices": [
                     {
                         "name": {
@@ -239,7 +239,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_text",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_text",
                 "valueType": [
                     "xsd:string"
                 ],
@@ -255,7 +255,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_legend",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_legend",
                 "valueType": [
                     "xsd:string"
                 ],
@@ -271,7 +271,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_os_1",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_os_1",
                 "choices": [
                     {
                         "name": {
@@ -308,7 +308,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_os_2",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_os_2",
                 "choices": [
                     {
                         "name": {
@@ -337,7 +337,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_r_1",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_r_1",
                 "choices": [
                     {
                         "name": {
@@ -374,7 +374,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_r_2",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_r_2",
                 "choices": [
                     {
                         "name": {
@@ -403,7 +403,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_b_1",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_b_1",
                 "choices": [
                     {
                         "name": {
@@ -440,7 +440,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_b_2",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_b_2",
                 "choices": [
                     {
                         "name": {
@@ -469,7 +469,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_s_1",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_s_1",
                 "choices": [
                     {
                         "name": {
@@ -506,7 +506,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_s_2",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_s_2",
                 "choices": [
                     {
                         "name": {
@@ -535,7 +535,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_p_1",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_p_1",
                 "choices": [
                     {
                         "name": {
@@ -572,7 +572,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_p_nature",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_p_nature",
                 "valueType": [
                     "xsd:string"
                 ],
@@ -588,7 +588,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_p_2",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_p_2",
                 "choices": [
                     {
                         "name": {
@@ -617,7 +617,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_l_1",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_l_1",
                 "choices": [
                     {
                         "name": {
@@ -654,7 +654,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_l_nature",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_l_nature",
                 "valueType": [
                     "xsd:string"
                 ],
@@ -670,7 +670,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_l_2",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_l_2",
                 "choices": [
                     {
                         "name": {
@@ -699,7 +699,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_comments",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_comments",
                 "choices": [
                     {
                         "name": {
@@ -728,7 +728,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_comments_other",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_comments_other",
                 "valueType": [
                     "xsd:string"
                 ],
@@ -744,7 +744,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_comments_other_2",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_comments_other_2",
                 "valueType": [
                     "xsd:string"
                 ],
@@ -760,7 +760,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_treatment",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_treatment",
                 "choices": [
                     {
                         "name": {
@@ -789,7 +789,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_treatment_select",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_treatment_select",
                 "choices": [
                     {
                         "name": {
@@ -831,7 +831,7 @@
                 "datatype": [
                     "xsd:string"
                 ],
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_treatment_other",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_treatment_other",
                 "valueType": [
                     "xsd:string"
                 ],
