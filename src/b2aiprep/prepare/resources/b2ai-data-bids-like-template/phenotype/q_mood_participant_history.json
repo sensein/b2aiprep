@@ -1,5 +1,5 @@
 {
-    "q_mood_participant_history": {
+    "q_mood_participant_history_schema": {
         "description": "Measures perceived impact of voice disorders for kids.",
         "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_generic_confounders/q_generic_confounders_schema",
         "data_elements": {

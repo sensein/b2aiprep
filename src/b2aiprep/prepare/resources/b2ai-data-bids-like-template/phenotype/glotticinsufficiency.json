@@ -1,5 +1,5 @@
 {
-    "d_voice_glottic_insufficiency_presbyphonia": {
+    "d_voice_glottic_insufficiency_presbyphonia_schema": {
         "description": "Measures perceived impact of voice disorders for kids.",
         "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/d_voice_glottic_insufficiency_presbyphonia_schema",
         "data_elements": {

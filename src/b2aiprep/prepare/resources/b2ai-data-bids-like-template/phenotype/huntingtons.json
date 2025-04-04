@@ -1,5 +1,5 @@
 {
-    "d_neuro_huntingtons_disease": {
+    "d_neuro_huntingtons_disease_schema": {
         "description": "Measures perceived impact of voice disorders for kids.",
         "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/d_neuro_huntingtons_disease_schema",
         "data_elements": {
