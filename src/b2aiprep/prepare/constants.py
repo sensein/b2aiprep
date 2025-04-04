@@ -22,8 +22,8 @@ GENERAL_QUESTIONNAIRES = [
     "huntingtons",
     "parkinsons",
     "als",
-    "chronicCough"
-
+    "chronicCough",
+    "muscleTension"
 ]
 
 AUDIO_TASKS = (
@@ -226,6 +226,13 @@ class RepeatInstrument(Enum):
         name="chronicCough",
         text="Participant",
         schema_name="drespunexplainedchroniccoughschema",
+    )
+
+    MUSCLE_TENSION = Instrument(
+        session_id="record_id",
+        name="muscleTension",
+        text="Participant",
+        schema_name="dvoicemuscletensiondysphoniamtdschema",
     )
 
     MEDICAL_CONDITIONS = Instrument(
@@ -433,6 +440,9 @@ VALIDATED_QUESTIONNAIRES = [
     RepeatInstrument.NEURO_WORDCOLOR_STROOP,
     RepeatInstrument.NEURO_PRODUCTIVE_VOCABULARY,
     RepeatInstrument.NEURO_RANDOM_ITEM_GENERATION,
+    RepeatInstrument.HUNTINGTONS,
+    RepeatInstrument.GLOTTIC_INSUFFICIENCY,
+    RepeatInstrument.MUSCLE_TENSION,
     RepeatInstrument.MEDICAL_CONDITIONS,
     RepeatInstrument.PEDS_VHI10,
     RepeatInstrument.QOL,
