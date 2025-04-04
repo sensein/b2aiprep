@@ -39,7 +39,8 @@ GENERAL_QUESTIONNAIRES = [
     "parkinsons",
     "als",
     "chronicCough",
-    "muscleTension"
+    "muscleTension",
+    "laryngitis"
 ]
 
 AUDIO_TASKS = (
@@ -249,6 +250,13 @@ class RepeatInstrument(Enum):
         name="muscleTension",
         text="Participant",
         schema_name="dvoicemuscletensiondysphoniamtdschema",
+    )
+
+    LARYNGITIS = Instrument(
+        session_id="record_id",
+        name="laryngitis",
+        text="Participant",
+        schema_name="dvoicelaryngitisschema",
     )
 
     MEDICAL_CONDITIONS = Instrument(

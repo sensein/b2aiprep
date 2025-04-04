@@ -38,5 +38,6 @@
     "random": "qneurorandomitemgenerationschema",
     "moodParticipantHistory": "qmoodparticipanthistoryschema",
     "chronicCough": "drespunexplainedchroniccoughschema",
-    "muscleTension": "dvoicemuscletensiondysphoniamtdschema"
+    "muscleTension": "dvoicemuscletensiondysphoniamtdschema",
+    "laryngitis.json": "dvoicelaryngitisschema"
 }
