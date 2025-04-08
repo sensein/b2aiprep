@@ -1,0 +1,654 @@
+{
+    "d_neuro_huntingtons_disease_schema": {
+        "description": "Measures perceived impact of voice disorders for kids.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/d_neuro_huntingtons_disease_schema",
+        "data_elements": {
+            "hd_confirmed_by_genetic_testing": {
+                "description": {
+                    "en": "Does the patient have Huntington's disease (HD) confirmed by genetic testing?"
+                },
+                "question": {
+                    "en": "Does the patient have Huntington's disease (HD) confirmed by genetic testing?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_confirmed_by_genetic_testing",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Not certain"
+                        },
+                        "value": "notCertain"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "hd_cag_repeat_length_known": {
+                "description": {
+                    "en": "Is the CAG repeat length known?"
+                },
+                "question": {
+                    "en": "Is the CAG repeat length known?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_cag_repeat_length_known",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "hd_cag_repeat_length": {
+                "description": {
+                    "en": "What is the CAG repeat length?"
+                },
+                "question": {
+                    "en": "What is the CAG repeat length?"
+                },
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_cag_repeat_length",
+                "maxValue": null,
+                "minValue": null,
+                "valueType": [
+                    "xsd:decimal"
+                ],
+                "choices": null
+            },
+            "hd_confirmed_by_consistent_clinical_presentation": {
+                "description": {
+                    "en": "Does the patient have Huntington's disease confirmed by consistent clinical presentation with genetically\nconfirmed family history?"
+                },
+                "question": {
+                    "en": "Does the patient have Huntington's disease confirmed by consistent clinical presentation with genetically\nconfirmed family history?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_confirmed_by_consistent_clinical_presentation",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Not certain"
+                        },
+                        "value": "notCertain"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "hd_disease_subtype": {
+                "description": {
+                    "en": "Disease Subtype"
+                },
+                "question": {
+                    "en": "Disease Subtype"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_disease_subtype",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Pediatric Onset"
+                        },
+                        "value": "pediatricOnset"
+                    },
+                    {
+                        "name": {
+                            "en": "Juvenile Onset"
+                        },
+                        "value": "juvenileOnset"
+                    },
+                    {
+                        "name": {
+                            "en": "Adult Onset"
+                        },
+                        "value": "adultOnset"
+                    },
+                    {
+                        "name": {
+                            "en": "Late Onset"
+                        },
+                        "value": "lateOnset"
+                    },
+                    {
+                        "name": {
+                            "en": "Unknown"
+                        },
+                        "value": "unknown"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "hd_motor_exam": {
+                "description": {
+                    "en": "Motor Exam"
+                },
+                "question": {
+                    "en": "Motor Exam"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_motor_exam",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "hd_uhdrs_total_motor_score": {
+                "description": {
+                    "en": "UHDRS total motor score"
+                },
+                "question": {
+                    "en": "UHDRS total motor score"
+                },
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_uhdrs_total_motor_score",
+                "maxValue": null,
+                "minValue": null,
+                "valueType": [
+                    "xsd:decimal"
+                ],
+                "choices": null
+            },
+            "hd_uhdrs_speech_training": {
+                "description": {
+                    "en": "UHDRS speech training"
+                },
+                "question": {
+                    "en": "UHDRS speech training"
+                },
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_uhdrs_speech_training",
+                "maxValue": null,
+                "minValue": null,
+                "valueType": [
+                    "xsd:decimal"
+                ],
+                "choices": null
+            },
+            "hd_uhdrs_total_chorea_score": {
+                "description": {
+                    "en": "UHDRS total chorea score"
+                },
+                "question": {
+                    "en": "UHDRS total chorea score"
+                },
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_uhdrs_total_chorea_score",
+                "maxValue": null,
+                "minValue": null,
+                "valueType": [
+                    "xsd:decimal"
+                ],
+                "choices": null
+            },
+            "hd_dcl": {
+                "description": {
+                    "en": "DCL (Diagnostic Confidence Level)"
+                },
+                "question": {
+                    "en": "DCL (Diagnostic Confidence Level)"
+                },
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_dcl",
+                "maxValue": null,
+                "minValue": null,
+                "valueType": [
+                    "xsd:decimal"
+                ],
+                "choices": null
+            },
+            "hd_total_func_cap_rating_scale": {
+                "description": {
+                    "en": "HD Total Functional Capacity Rating Scale"
+                },
+                "question": {
+                    "en": "HD Total Functional Capacity Rating Scale"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_total_func_cap_rating_scale",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "hd_occupation": {
+                "description": {
+                    "en": "Occupation"
+                },
+                "question": {
+                    "en": "Occupation"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_occupation",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "0 = unable"
+                        },
+                        "value": "unable"
+                    },
+                    {
+                        "name": {
+                            "en": "1 = marginal work only"
+                        },
+                        "value": "marginalWorkOnly"
+                    },
+                    {
+                        "name": {
+                            "en": "2 = reduced capacity for usual job"
+                        },
+                        "value": "reducedCapacityForUsualJob"
+                    },
+                    {
+                        "name": {
+                            "en": "3 = normal"
+                        },
+                        "value": "normal"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "hd_finullces": {
+                "description": {
+                    "en": "Finullces:"
+                },
+                "question": {
+                    "en": "Finullces:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_finullces",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "0 = unable"
+                        },
+                        "value": "unable"
+                    },
+                    {
+                        "name": {
+                            "en": "1 = major assistance"
+                        },
+                        "value": "majorAssistance"
+                    },
+                    {
+                        "name": {
+                            "en": "2 = slight assistance"
+                        },
+                        "value": "slightAssistance"
+                    },
+                    {
+                        "name": {
+                            "en": "3 = normal"
+                        },
+                        "value": "normal"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "hd_domestic_chores": {
+                "description": {
+                    "en": "Domestic chores:"
+                },
+                "question": {
+                    "en": "Domestic chores:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_domestic_chores",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "0 = unable"
+                        },
+                        "value": "unable"
+                    },
+                    {
+                        "name": {
+                            "en": "1 = impaired"
+                        },
+                        "value": "impaired"
+                    },
+                    {
+                        "name": {
+                            "en": "2 = normal"
+                        },
+                        "value": "normal"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "hd_activities_of_daily_living": {
+                "description": {
+                    "en": "Activities of daily living:"
+                },
+                "question": {
+                    "en": "Activities of daily living:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_activities_of_daily_living",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "0 = total care"
+                        },
+                        "value": "totalCare"
+                    },
+                    {
+                        "name": {
+                            "en": "1 = gross tasks only"
+                        },
+                        "value": "grossTasksOnly"
+                    },
+                    {
+                        "name": {
+                            "en": "2 = minimal impairment"
+                        },
+                        "value": "minimalImpairment"
+                    },
+                    {
+                        "name": {
+                            "en": "3 = normal"
+                        },
+                        "value": "normal"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "hd_care_level": {
+                "description": {
+                    "en": "Care level:"
+                },
+                "question": {
+                    "en": "Care level:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_care_level",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "0 = full time skilled nursing"
+                        },
+                        "value": "fullTimeSkilledNursing"
+                    },
+                    {
+                        "name": {
+                            "en": "1 = home or chronic care"
+                        },
+                        "value": "homeOrChronicCare"
+                    },
+                    {
+                        "name": {
+                            "en": "2 = home"
+                        },
+                        "value": "home"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "hd_any_treatment": {
+                "description": {
+                    "en": "Has the patient undergone any treatment for Huntington's disease?"
+                },
+                "question": {
+                    "en": "Has the patient undergone any treatment for Huntington's disease?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_any_treatment",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Not certain"
+                        },
+                        "value": "notCertain"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "hd_type_of_treatment": {
+                "description": {
+                    "en": "Please select the type of treatment:"
+                },
+                "question": {
+                    "en": "Please select the type of treatment:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_type_of_treatment",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Medications"
+                        },
+                        "value": "medications"
+                    },
+                    {
+                        "name": {
+                            "en": "Prior or current SLP therapy"
+                        },
+                        "value": "slp_therapy"
+                    }
+                ],
+                "multipleChoice": true,
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "hd_medications_selection": {
+                "description": {
+                    "en": "Please select all that apply and provide further details if available"
+                },
+                "question": {
+                    "en": "Please select all that apply and provide further details if available"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_medications_selection",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Neuroleptic"
+                        },
+                        "value": "neuroleptic"
+                    },
+                    {
+                        "name": {
+                            "en": "VMAT2 inhibitor"
+                        },
+                        "value": "vmat2_inhibitor"
+                    },
+                    {
+                        "name": {
+                            "en": "Antidepressant"
+                        },
+                        "value": "antidepressant"
+                    },
+                    {
+                        "name": {
+                            "en": "Benzodiazepine"
+                        },
+                        "value": "benzodiazepine"
+                    }
+                ],
+                "multipleChoice": true,
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "hd_neuroleptic_specify": {
+                "description": {
+                    "en": "Neuroleptic selected. Please specify"
+                },
+                "question": {
+                    "en": "Neuroleptic selected. Please specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_neuroleptic_specify",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "hd_vmat2_inhibitor_specify": {
+                "description": {
+                    "en": "VMAT2 inhibitor selected. Please specify"
+                },
+                "question": {
+                    "en": "VMAT2 inhibitor selected. Please specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_vmat2_inhibitor_specify",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "hd_antidepressant_specify": {
+                "description": {
+                    "en": "Antidepressant selected. Please specify"
+                },
+                "question": {
+                    "en": "Antidepressant selected. Please specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_antidepressant_specify",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "hd_slp_therapy_selection": {
+                "description": {
+                    "en": "Prior or current SLP therapy selected. Please select all that apply:"
+                },
+                "question": {
+                    "en": "Prior or current SLP therapy selected. Please select all that apply:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_neuro_huntingtons_disease/items/hd_slp_therapy_selection",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Prior"
+                        },
+                        "value": "prior"
+                    },
+                    {
+                        "name": {
+                            "en": "Current"
+                        },
+                        "value": "current"
+                    }
+                ],
+                "multipleChoice": true,
+                "valueType": [
+                    "xsd:string"
+                ]
+            }
+        }
+    }
+}

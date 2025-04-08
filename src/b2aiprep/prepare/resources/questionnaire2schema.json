@@ -6,6 +6,7 @@
     "eligibility": "subjectparticipanteligiblestudiesschema",
     "enrollment": "enrollmentformschema",
     "vocalFoldParalysis": "dvoicevocalfoldparalysisschema",
+    "glotticinsufficiency": "dvoiceglotticinsufficiencypresbyphoniaschema",
     "laryngealdystonia": "dvoicelaryngealdystoniaschema",
     "precancerouseLesions": "dvoiceprecancerouslesionsschema",
     "laryngealcancer": "dvoicelaryngealcancerschema",
@@ -15,6 +16,7 @@
     "airwaystenosis": "drespairwaystenosisschema",
     "alzheimers": "dneuroalzheimersdiseasemildcognitiveimpairmeschema",
     "parkinsons": "dneuroparkinsonsdiseaseschema",
+    "huntingtons": "dneurohuntingtonsdiseaseschema",
     "als": "dneuroamyotrophiclateralsclerosisalsschema",
     "demographics": "qgenericdemographicsschema",
     "confounders": "qgenericconfoundersschema",
@@ -33,5 +35,9 @@
     "winograd": "qneurowinogradschemasschema",
     "stroop": "qneurowordcolorstroopschema",
     "vocab": "qneuroproductivevocabularyschema",
-    "random": "qneurorandomitemgenerationschema"
+    "random": "qneurorandomitemgenerationschema",
+    "moodParticipantHistory": "qmoodparticipanthistoryschema",
+    "chronicCough": "drespunexplainedchroniccoughschema",
+    "muscleTension": "dvoicemuscletensiondysphoniamtdschema",
+    "laryngitis.json": "dvoicelaryngitisschema"
 }

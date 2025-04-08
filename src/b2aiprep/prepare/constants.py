@@ -27,6 +27,7 @@ GENERAL_QUESTIONNAIRES = [
     "enrollment",
     "vocalFoldParalysis",
     "laryngealDystonia",
+    "glotticinsufficiency",
     "precancerousLesions",
     "laryngealCancer",
     "benignLesion",
@@ -34,9 +35,12 @@ GENERAL_QUESTIONNAIRES = [
     "depression",
     "airwaystenosis",
     "alzheimers",
+    "huntingtons",
     "parkinsons",
     "als",
-
+    "chronicCough",
+    "muscleTension",
+    "laryngitis"
 ]
 
 AUDIO_TASKS = (
@@ -167,6 +171,12 @@ class RepeatInstrument(Enum):
         text="Participant",
         schema_name="dvoicelaryngealdystoniaschema",
     )
+    GLOTTIC_INSUFFICIENCY = Instrument(
+        session_id="record_id",
+        name="glotticinsufficiency",
+        text="Participant",
+        schema_name="dvoiceglotticinsufficiencypresbyphoniaschema",
+    )
     PRECANCEROUS_LESIONS = Instrument(
         session_id="record_id",
         name="precancerousLesions",
@@ -209,6 +219,12 @@ class RepeatInstrument(Enum):
         text="Participant",
         schema_name="dneuroalzheimersdiseasemildcognitiveimpairmeschema",
     )
+    HUNTINGTONS = Instrument(
+        session_id="record_id",
+        name="huntingtons",
+        text="Participant",
+        schema_name="dneurohuntingtonsdiseaseschema",
+    )
     PARKINSONS = Instrument(
         session_id="record_id",
         name="parkinsons",
@@ -220,6 +236,27 @@ class RepeatInstrument(Enum):
         name="als",
         text="Participant",
         schema_name="dneuroamyotrophiclateralsclerosisalsschema",
+    )
+
+    CHRONIC_COUGH = Instrument(
+        session_id="record_id",
+        name="chronicCough",
+        text="Participant",
+        schema_name="drespunexplainedchroniccoughschema",
+    )
+
+    MUSCLE_TENSION = Instrument(
+        session_id="record_id",
+        name="muscleTension",
+        text="Participant",
+        schema_name="dvoicemuscletensiondysphoniamtdschema",
+    )
+
+    LARYNGITIS = Instrument(
+        session_id="record_id",
+        name="laryngitis",
+        text="Participant",
+        schema_name="dvoicelaryngitisschema",
     )
 
     MEDICAL_CONDITIONS = Instrument(
@@ -352,6 +389,12 @@ class RepeatInstrument(Enum):
         text="Q - Mood - Panas",
         schema_name="qmoodpanasschema",
     )
+    MOOD_PARTICIPANT_HISTORY = Instrument(
+        session_id="mph_session_id",
+        name="mood_participant_history",
+        text="Q - Mood - Participant History",
+        schema_name="qmoodparticipanthistoryschema",
+    )
     MOOD_CUSTOM_AFFECT = Instrument(
         session_id="custom_affect_scale_session_id",
         name="customAffectScale",
@@ -421,6 +464,9 @@ VALIDATED_QUESTIONNAIRES = [
     RepeatInstrument.NEURO_WORDCOLOR_STROOP,
     RepeatInstrument.NEURO_PRODUCTIVE_VOCABULARY,
     RepeatInstrument.NEURO_RANDOM_ITEM_GENERATION,
+    RepeatInstrument.HUNTINGTONS,
+    RepeatInstrument.GLOTTIC_INSUFFICIENCY,
+    RepeatInstrument.MUSCLE_TENSION,
     RepeatInstrument.MEDICAL_CONDITIONS,
     RepeatInstrument.PEDS_VHI10,
     RepeatInstrument.QOL,

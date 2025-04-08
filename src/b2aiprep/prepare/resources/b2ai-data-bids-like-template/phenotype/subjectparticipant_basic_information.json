@@ -77,6 +77,20 @@
                     "xsd:integer"
                 ]
             },
+            "age": {
+                "description": "Age",
+                "question": {
+                    "en": "Age"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": null,
+                "valueType": [
+                    "xsd:integer"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/subjectparticipant_basic_information/items/age"
+            },
             "contact_participant": {
                 "description": "contact_participant",
                 "question": {

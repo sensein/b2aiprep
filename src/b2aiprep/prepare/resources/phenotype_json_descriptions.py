@@ -16,9 +16,11 @@ PHENOTYPE_JSON_FILE_DESCRIPTIONS = {
     "eligibility.json": "Measures participant eligibility for the study.",
     "enrollment.json": "Measures participant registration details.",
     "gad7.json": "Measures severity of generalized anxiety.",
+    "glotticinsufficiency.json": "Measures the characteristics of glottic insufficiency.",
     "laryngealCancer.json": "Measures characteristics of laryngeal cancer.",
     "leicester.json": "Measures specific health or psychological attributes.",
     "panas.json": "Measures positive and negative affect.",
+    "huntingtons.json": "Measures the symptoms and progression of Huntington's disease.",
     "parkinsons.json": "Measures symptoms and progression of Parkinson's disease.",
     "participant.json": "Measures general study-related information.",
     "phq9.json": "Measures severity of depressive symptoms.",
@@ -39,5 +41,9 @@ PHENOTYPE_JSON_FILE_DESCRIPTIONS = {
     "phqa.json": "Measures severity of depressive symptoms for kids",
     "q_generic_demographics.json": "Measures participant background details for kids.",
     "subjectparticipant_basic_information.json": "Gets basic information for kids",
-    "subjectparticipant_contact_information.json": "Gets Age for kids"
+    "subjectparticipant_contact_information.json": "Gets Age for kids",
+    "q_mood_participant_history.json": "Gets Participant history for Mood protocol",
+    "chronicCough.json": "Measures un-explained cough",
+    "muscleTension.json": "Measures muscle tension",
+    "laryngitis.json" : "Measures laryngitis"
 }
