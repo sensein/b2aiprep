@@ -418,7 +418,7 @@ def create_derived_dataset(bids_path, outdir):
                 _LOGGER.info(f"Skipping subject {participant_id}")
                 continue
 
-        features = torch.load(pt_file)
+        features = torch.load(pt_file, weights_only=False)
         subj_info = {
             "participant_id": str(pt_file).split("sub-")[1].split("/ses-")[0],
             "session_id": str(pt_file).split("ses-")[1].split("/audio")[0],
@@ -497,6 +497,7 @@ def create_derived_dataset(bids_path, outdir):
         _LOGGER.warning("No phenotype files found.")
 
     for phenotype_filepath in phenotype_files:
+        
         df_add = pd.read_csv(phenotype_filepath, sep="\t")
         phenotype_name = phenotype_filepath.stem
         if phenotype_name in ["participant", "eligibility", "enrollment"]:
@@ -504,6 +505,10 @@ def create_derived_dataset(bids_path, outdir):
         # check for overlapping columns
         for col in df_add.columns:
             if col == "record_id":
+                continue
+            if col in ["state_province", "country", "gender_identity", "other_edu_level", "hearing", "vision", "cognition", "mobility", "self_care"]:
+                _LOGGER.warning(f"Column '{col}' already exists. Skipping it from {phenotype_filepath.name}.")
+                df_add = df_add.drop(columns=[col])
                 continue
             if col in df.columns:
                 raise ValueError(f"Column {col} already exists in the dataframe")
