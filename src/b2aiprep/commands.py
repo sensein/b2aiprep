@@ -54,6 +54,7 @@ from b2aiprep.prepare.prepare import (
     extract_features_sequentially,
     extract_features_workflow,
     validate_bids_data,
+    generate_features_wrapper
 )
 from b2aiprep.prepare.reproschema_to_redcap import parse_audio, parse_survey
 
@@ -204,33 +205,24 @@ def prepare_bids(
         _LOGGER.info("Organizing data into BIDS-like directory structure...")
         redcap_to_bids(Path(redcap_csv_path), Path(bids_dir_path), Path(audio_dir_path))
         _LOGGER.info("Data organization complete.")
+    bids_path = Path(bids_dir_path)
 
-    _LOGGER.info("Beginning audio feature extraction...")
-
-    if is_sequential:
-        extract_features_sequentially(
-            Path(bids_dir_path),
-            transcription_model_size=transcription_model_size,
-            with_sensitive=with_sensitive,
-        )
-    else:
-        extract_features_workflow(
-            Path(bids_dir_path),
-            transcription_model_size=transcription_model_size,
-            n_cores=n_cores,
-            with_sensitive=with_sensitive,
-            overwrite=overwrite,
-            cache_dir=cache,
-            plugin="dask" if address is not None else "cf",
-            address=address,
-            percentile=percentile,
-            subject_id=subject_id,
-        )
-    _LOGGER.info("Audio feature extraction complete.")
+    generate_features_wrapper(
+        bids_path=bids_path,
+        transcription_model_size=transcription_model_size,
+        n_cores=n_cores,
+        with_sensitive=with_sensitive,
+        overwrite=overwrite,
+        cache=cache,
+        address=address,
+        percentile=percentile,
+        subject_id= subject_id,
+        is_sequential=is_sequential
+    )
 
     if validate:
         # Below code checks to see if we have all the expected feature/transcript files.
-        validate_bids_folder(Path(bids_dir_path))
+        validate_bids_folder(bids_path)
 
     if tar_file_path is not None:
         _LOGGER.info("Saving .tar file with processed data...")
@@ -240,6 +232,92 @@ def prepare_bids(
 
     _LOGGER.info("Process completed.")
 
+
+@click.command()
+@click.argument("source_bids_dir_path", type=click.Path())
+@click.argument("target_bids_dir_path", type=click.Path())
+@click.option("-z", "--tar_file_path", type=click.Path(), default=None, show_default=True)
+@click.option("-t", "--transcription_model_size", type=str, default="tiny", show_default=True)
+@click.option("-n", "--n_cores", type=int, default=8, show_default=True)
+@click.option("--with_sensitive/--no-with_sensitive", type=bool, default=True, show_default=True)
+@click.option("--overwrite/--no-overwrite", type=bool, default=False, show_default=True)
+@click.option("--validate/--no-validate", type=bool, default=False, show_default=True)
+@click.option("-c", "--cache", type=click.Path(), default=None, show_default=True)
+@click.option("-a", "--address", type=str, default=None, show_default=True)
+@click.option("-p", "--percentile", type=int, default=100, show_default=True)
+@click.option("-s", "--subject_id", type=str, default=None, show_default=True)
+@click.option("--is_sequential", type=bool, default=False, show_default=True)
+@click.option("--update", type=bool, default=False, show_default=True)
+def generate_audio_features(source_bids_dir_path,
+                            target_bids_dir_path,
+                            tar_file_path,
+                            transcription_model_size,
+                            n_cores,
+                            with_sensitive,
+                            overwrite,
+                            validate,
+                            cache,
+                            address,
+                            percentile,
+                            subject_id,
+                            is_sequential,
+                            update):
+    """
+    Generates features given bids folder
+
+    Args:
+        source_bids_dir_path: Path to store BIDS-like data
+        target_bids_dir_path: PAth to target folder to store feature extractions
+        tar_file_path: Path to store tar file. If provided, creates a compressed archive of the target directory
+        transcription_model_size: Size of transcription model ('tiny', 'small', 'medium', or 'large')
+        n_cores: Number of cores to run feature extraction on. Ignored if using Dask
+        with_sensitive: Whether to include sensitive data in the output
+        overwrite: Whether to overwrite existing files during processing
+        validate: Whether to validate the BIDS folder structure after processing
+        cache: Path to cache directory. Defaults to 'b2aiprep_cache' in parent of bids_dir_path
+        address: Dask scheduler address for distributed processing. If provided, uses Dask instead of concurrent.futures
+        percentile: Percentile threshold for processing. Use to process subset of data
+        subject_id: Specific subject ID to process. If provided, only processes this subject
+        is_sequential: Specifies whether to extract audio features sequentially
+        update: Specifies if we wish to update by creating target folder and storing extracts there
+    """
+    os.makedirs(source_bids_dir_path, exist_ok=True)
+    if update: 
+        shadow = target_bids_dir_path
+        os.makedirs(target_bids_dir_path, exist_ok=True)
+        shutil.copytree(source_bids_dir_path, shadow, dirs_exist_ok=True)
+        bids_path = Path(target_bids_dir_path)
+    else:
+        bids_path = Path(source_bids_dir_path)
+
+    _LOGGER.info("Beginning audio feature extraction...")
+
+    generate_features_wrapper(
+        bids_path=bids_path,
+        transcription_model_size=transcription_model_size,
+        n_cores=n_cores,
+        with_sensitive = with_sensitive,
+        overwrite=overwrite,
+        cache=cache,
+        address=address,
+        percentile=percentile,
+        subject_id= subject_id,
+        update=update,
+        is_sequential=is_sequential
+    )
+
+    _LOGGER.info("Audio feature extraction complete.")
+    if validate:
+        # Below code checks to see if we have all the expected feature/transcript files.
+        validate_bids_folder(bids_path)
+    
+    if tar_file_path is not None:
+        _LOGGER.info("Saving .tar file with processed data...")
+        with tarfile.open(tar_file_path, "w:gz") as tar:
+            tar.add(target_bids_dir_path, arcname=os.path.basename(target_bids_dir_path))
+        _LOGGER.info(f"Saved processed data .tar file at: {tar_file_path}")
+
+    _LOGGER.info("Process completed.")
 
 @click.command()
 @click.argument("bids_path", type=click.Path(exists=True))
@@ -1004,3 +1082,40 @@ def reproschema_to_redcap(audio_dir, survey_file, redcap_csv, participant_group)
 
     merged_csv_path = os.path.join(redcap_csv, "merged-redcap.csv")
     df_final.to_csv(merged_csv_path, index=False)
+
+
+@click.command()
+@click.argument("bids_src_dir", type=str)
+@click.argument("dest_dir", type=str)
+def bids2shadow(bids_src_dir, dest_dir):
+    """
+    This function scans the bids folder for all the .pt files, and copies all of the
+    .pt files over to the target directory, while maintaining bids structure.
+
+    Args:
+        bids_src_dir: Path to the  directory containing the pytorch files
+        dest_dir: Path to the directory where we wish to have the shadow tree
+    """
+   # Convert to Path objects
+    src_dir = Path(bids_src_dir)
+    target_dir = Path(dest_dir)
+
+    # Ensure the target directory exists
+    target_dir.mkdir(parents=True, exist_ok=True)
+
+    # Walk through the source directory
+    for root, dirs, files in os.walk(src_dir):
+        # Filter for .pt files
+        for file in files:
+            if file.endswith('.pt'):
+                # Create the relative path to the source directory
+                relative_path = Path(root).relative_to(src_dir)
+                target_path = target_dir / relative_path
+
+                # Ensure the target directory exists
+                target_path.mkdir(parents=True, exist_ok=True)
+
+                # Copy the .pt file
+                shutil.copy(Path(root) / file, target_path / file)
+
+    _LOGGER.info(f".pt files have been added to {dest_dir}")
