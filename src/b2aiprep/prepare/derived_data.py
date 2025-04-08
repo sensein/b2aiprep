@@ -19,7 +19,7 @@ def spectrogram_generator(
     for wav_path in tqdm(audio_paths, total=len(audio_paths), desc="Extracting features"):
         output = {}
         pt_file = wav_path.parent / f"{wav_path.stem}_features.pt"
-        features = torch.load(pt_file)
+        features = torch.load(pt_file, weights_only=False)
 
         output['participant_id'] = wav_path.stem.split('_')[0][4:] # skip "sub-" prefix
         output['session_id'] = wav_path.stem.split('_')[1][4:] # skip "ses-" prefix
@@ -67,7 +67,7 @@ def load_audio_features(
         # output["transcription"] = transcription
 
         pt_file = features_dir / f"{wav_path.stem}_features.pt"
-        features = torch.load(pt_file)
+        features = torch.load(pt_file, weights_only=False)
         output['spectrogram'] = features['torchaudio']['spectrogram'].numpy().astype(np.float32)
         # for feature_name in ["speaker_embedding", "specgram", "melfilterbank", "mfcc", "opensmile"]:
         #     feature_path = features_dir / f"{wav_path.stem}_{feature_name}.{file_extension}"
@@ -105,7 +105,7 @@ def feature_extraction_generator(
     for wav_path in tqdm(audio_paths, total=len(audio_paths), desc="Extracting features"):
         output = {}
         pt_file = wav_path.parent / f"{wav_path.stem}_features.pt"
-        features = torch.load(pt_file)
+        features = torch.load(pt_file, weights_only=False)
 
         output['participant_id'] = wav_path.stem.split('_')[0][4:] # skip "sub-" prefix
         output['session_id'] = wav_path.stem.split('_')[1][4:] # skip "ses-" prefix

@@ -418,7 +418,7 @@ def create_derived_dataset(bids_path, outdir):
                 _LOGGER.info(f"Skipping subject {participant_id}")
                 continue
 
-        features = torch.load(pt_file)
+        features = torch.load(pt_file, weights_only=False)
         subj_info = {
             "participant_id": str(pt_file).split("sub-")[1].split("/ses-")[0],
             "session_id": str(pt_file).split("ses-")[1].split("/audio")[0],
