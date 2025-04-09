@@ -67,7 +67,9 @@ from b2aiprep.prepare.constants import (
     FEATURE_EXTRACTION_HARMONIC_DESCRIPTORS,
     FEATURE_EXTRACTION_FORMANTS,
     FEATURE_EXTRACTION_SPECTRAL_MOMENTS,
-    FEATURE_EXTRACTION_JITTER, FEATURE_EXTRACTION_SHIMMER)
+    FEATURE_EXTRACTION_JITTER, FEATURE_EXTRACTION_SHIMMER,
+    ALLOWED_COLUMNS,
+)
 
 from b2aiprep.prepare.bids import get_audio_paths
 from b2aiprep.prepare.constants import SPEECH_TASKS
@@ -539,5 +541,11 @@ def clean_phenotype_data(df: pd.DataFrame, phenotype: dict) -> Tuple[pd.DataFram
         phenotype = {
             k: v for k, v in phenotype.items() if k not in columns_to_drop
         }
+    
+    # remove columns which are outside of our allow list
+    for c in ALLOWED_COLUMNS:
+        if c not in df:
+            _logger.info(f"Removing unrecognized column: {c}")
+            df = df.drop(columns=c)
 
     return df, phenotype
