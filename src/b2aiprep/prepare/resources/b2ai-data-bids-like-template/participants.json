@@ -3453,19 +3453,19 @@
         "description": "Category assigned for random item generation in the session."
     },
     "smoking_years_cigarettes_years": {
-        "description": "items/smoking_years_cigarettes_years"
+        "description": "Indicates number of years participant has smoked"
     },
     "phqa_q6": {
-        "description": "items/phqa_q6"
+        "description": "Asks if participant feels back about themselves"
     },
     "hd_dcl": {
         "description": "DCL (Diagnostic Confidence Level)"
     },
     "smoking_cigarettes_day_current_avg": {
-        "description": "items/smoking_cigarettes_day_current_avg"
+        "description": "Indicates number of cigarettes participant smokes in a day on average"
     },
     "smoking_age_regular_cigarette_smoking_age": {
-        "description": "items/smoking_age_regular_cigarette_smoking_age"
+        "description": "How old the participant was when they first started cigarette smoking"
     },
     "diagnosis_l_degree_comments": {
         "description": "Comments about resonance"
@@ -3489,7 +3489,7 @@
         "description": "Has gastro-esophageal disease been investigated as a possible cause of the cough?"
     },
     "smoking_entire_life": {
-        "description": "items/smoking_entire_life"
+        "description": "Indicates if participant has been smoking their entire life"
     },
     "subjectparticipant_basic_information_schema_duration": {
         "description": "Duration of the kids basic information session."
@@ -3516,16 +3516,16 @@
         "description": "Please specify"
     },
     "outcome_survey_q3": {
-        "description": "outcome_survey_q3"
+        "description": "How often does participant have trouble with food or liquids"
     },
     "qol_q6": {
-        "description": "qol_q6"
+        "description": "If participant has trouble using the phone or speaking with friends in person."
     },
     "diagnosis_bipolar_etiology_depression": {
         "description": "Describe life events that may relate to the diagnosis\n\n(Legacy)"
     },
     "vhi_10_question_22": {
-        "description": "vhi_10_question_22"
+        "description": "Indicates if participant is annoyed when people ask him/her to repeat"
     },
     "diagnosis_l_acute_or_chronic": {
         "description": "Is it acute or chronic laryngitis?"
@@ -3534,7 +3534,7 @@
         "description": "Overall Severity"
     },
     "phqa_q2": {
-        "description": "items/phqa_q2"
+        "description": "Indicates if participant has little interest or pleasure in doing things"
     },
     "diagnosis_gi_treatment": {
         "description": "Has the patient undergone any treatment for his condition?"
@@ -3543,7 +3543,7 @@
         "description": "Degree of dysphonia\n\nCAPE-V scale"
     },
     "vhi_10_question_7": {
-        "description": "vhi_10_question_7"
+        "description": "Indicates if participant has voice difficulties that restrict personal, educational and social activities."
     },
     "diagnosis_l_sd": {
         "description": "For how long (in weeks) have symptoms been present?"
@@ -3558,7 +3558,7 @@
         "description": "Major Depressive Disorder"
     },
     "other_primary_language": {
-        "description": "items/other_primary_language"
+        "description": "Indicates participant's primary language that is not listed"
     },
     "stroop_item_correct_7": {
         "description": "Item 7\nCorrect?"
@@ -3570,7 +3570,7 @@
         "description": "Breathiness"
     },
     "smoking_age_stopped": {
-        "description": "items/smoking_age_stopped"
+        "description": "Age participant stopped smoking"
     },
     "outcome_survey_q4": {
         "description": "outcome_survey_q4"
@@ -3585,7 +3585,7 @@
         "description": "The unique identifier for the voice outcome session."
     },
     "vhi_10_question_5": {
-        "description": "vhi_10_question_5"
+        "description": "Whether participant speaks with friends, neighbours, or relatives less often because of his/her voice."
     },
     "diagnosis_l_determined_by": {
         "description": "Determined by (Select all that apply):"
@@ -3627,10 +3627,10 @@
         "description": "Please specify"
     },
     "qol_q7": {
-        "description": "qol_q7"
+        "description": "Indicates whether participant has trouble doing their schoolwork or job (because of their voice)."
     },
     "vhi_10_question_10": {
-        "description": "vhi_10_question_10"
+        "description": "Indicates if People ask, \"What's wrong with your child's voice?\""
     },
     "diagnosis_l_treatment_mt_other": {
         "description": "Other, please specify"
@@ -3651,25 +3651,25 @@
         "description": "Has the patient undergone spirometry evaluation (pulmonary function tests)?"
     },
     "qol_q5": {
-        "description": "qol_q5"
+        "description": "Asks if participant and parent are sometimes depressed (because of their voice)."
     },
     "peds_voice_related_qol_schema_session_id": {
         "description": "The unique identifier for qol session."
     },
     "qol_intro": {
-        "description": "qol_intro"
+        "description": "Intro to Quality of life survey"
     },
     "diagnosis_ucc_hcxob": {
         "description": "Has the patient had a chest x-ray, CT chest or bronchoscopy?"
     },
     "vhi_10_question_12": {
-        "description": "vhi_10_question_12"
+        "description": "Asks if voice is unpredictable."
     },
     "hd_uhdrs_total_chorea_score": {
         "description": "UHDRS total chorea score"
     },
     "phqa_q7": {
-        "description": "items/phqa_q7"
+        "description": "Indicates if participant has trouble concentrating on things like school work, reading, or watching TV"
     },
     "mbd_prescribed_medication": {
         "description": "Have you ever been prescribed medication for mental or emotional problems (e.g., antidepressants, anxiolytics, antipsychotics, mood stabilizers, etc.)?\n\nMOVED IT TO 'Q - Mood - Participant History'"
@@ -3693,10 +3693,10 @@
         "description": "Breathiness"
     },
     "smoking_cigarettes_day_past_avg": {
-        "description": "items/smoking_cigarettes_day_past_avg"
+        "description": "Number of cigarettes smoked per day"
     },
     "vhi_10_question_6": {
-        "description": "vhi_10_question_6"
+        "description": "People ask my child to repeat him/herself when speaking face-to-face."
     },
     "diagnosis_degree_l_nature": {
         "description": "Loudness\n(Indicate the nature of the abnormality):"
@@ -3708,7 +3708,7 @@
         "description": "Does the patient have a history of smoking or occupational exposures?"
     },
     "other_race_specify": {
-        "description": "items/other_race_specify"
+        "description": "Specify other race"
     },
     "mph_describe_psychotherapy": {
         "description": "Please briefly describe your psychotherapy history (e.g., dates, reasons for seeking therapy, etc.)."
@@ -3717,7 +3717,7 @@
         "description": "Pitch\n(Indicate the nature of the abnormality):"
     },
     "smoking_age_regular_cigarette_smoking": {
-        "description": "items/smoking_age_regular_cigarette_smoking"
+        "description": "How old the participant was when they first started cigarette smoking"
     },
     "hd_cag_repeat_length_known": {
         "description": "Is the CAG repeat length known?"
@@ -3726,19 +3726,19 @@
         "description": "Item 15\nCorrect?"
     },
     "smoking_occurrence": {
-        "description": "items/smoking_occurrence"
+        "description": "How often the participant smoked."
     },
     "hd_domestic_chores": {
         "description": "Domestic chores:"
     },
     "qol_q8": {
-        "description": "qol_q8"
+        "description": "Asks if paritcipant has to repeat themselves to be understood"
     },
     "phqa_q1": {
-        "description": "items/phqa_q1"
+        "description": "Indicates if participant is Feeling down, depressed, irritable, or hopeless"
     },
     "phqa_q8": {
-        "description": "items/phqa_q8"
+        "description": "Moving or speaking so slowly that other people could have noticed? Or the opposite – being so fidgety or restless that you were moving around a lot more than usual?"
     },
     "diagnosis_l_degree_os_2": {
         "description": "Overall Severity"
@@ -3750,25 +3750,25 @@
         "description": "Item 14\nCorrect?"
     },
     "phqa_q4": {
-        "description": "items/phqa_q4"
+        "description": "Asks if participant has poor appetite, weight loss, or overeating"
     },
     "vhi_10_question_11": {
-        "description": "vhi_10_question_11"
+        "description": "Asks if participant's voice sounds dry, raspy, and/or hoarse."
     },
     "smoking_electronic": {
-        "description": "items/smoking_electronic"
+        "description": "Indicates if participant uses electronic nicotine products"
     },
     "diagnosis_gi_degree_l_1": {
         "description": "Loudness"
     },
     "vhi_10_question_20": {
-        "description": "vhi_10_question_20"
+        "description": "Asks if participant is frustrated with his/her voice problem."
     },
     "diagnosis_gi_degree_r_2": {
         "description": "Roughness"
     },
     "phqa_q9": {
-        "description": "items/phqa_q9"
+        "description": "Asks if participant would be better off dead, or of hurting yourself in some way"
     },
     "enlarged_lymph_node": {
         "description": "enlarged_lymph_node"
@@ -3786,10 +3786,10 @@
         "description": "Disease Subtype"
     },
     "phqa_intro": {
-        "description": "phqa_intro"
+        "description": "Introduction to phqa questionnaire"
     },
     "zipcode": {
-        "description": "items/zipcode"
+        "description": "Participant's zipcode"
     },
     "vocabulary_item_correct_6": {
         "description": "Item 6\nCorrect?"
@@ -3807,16 +3807,16 @@
         "description": "Have you ever had a manic episode (i.e., While not under the influence of substances, a distinct period of abnormally and persistently elevated, expansive, or irritable mood and abnormally and persistently goal-directed behavior or energy, lasting at least 1 week and present most of the day, nearly every day)?"
     },
     "smoking_cigarettes_day_past_avg_number": {
-        "description": "items/smoking_cigarettes_day_past_avg_number"
+        "description": "Number of cigarettes smoked per day"
     },
     "vhi_10_question_15": {
-        "description": "vhi_10_question_15"
+        "description": "Ask if child's voice \"gives out\" when speaking."
     },
     "mbd_many_depressive_episodes": {
         "description": "Approximately how many depressive episodes have you had in your life (feeling down and depressed more days than not over two weeks)?"
     },
     "phqa_q3": {
-        "description": "items/phqa_q3"
+        "description": "Indicates if participant is having trouble falling asleep, staying asleep, or sleeping too much"
     },
     "diagnosis_ucc_rada": {
         "description": "Result"
@@ -3825,7 +3825,7 @@
         "description": "Has the patient undergone any treatment for this condition?"
     },
     "smoking_marijuana": {
-        "description": "items/smoking_marijuana"
+        "description": "Indicates how often participant smokes marijuana"
     },
     "peds_vhi_10_schema_duration": {
         "description": "Duration of the Voice Handicap Index session."
@@ -3861,13 +3861,13 @@
         "description": "Item 5\nCorrect?"
     },
     "smoking_years_cigarettes": {
-        "description": "items/smoking_years_cigarettes"
+        "description": "Number of years smoked"
     },
     "stroop_item_correct_13": {
         "description": "Item 13\nCorrect?"
     },
     "smoking_age_stopped_age": {
-        "description": "items/smoking_age_stopped_age"
+        "description": "Indicates age for when participant stopped smoking"
     },
     "diagnosis_mtd_gsd_evaluations": {
         "description": "Does the patient have MTD as determined by qualitative expert team evaluations? (Select all that apply)"
@@ -3888,10 +3888,10 @@
         "description": "Breathiness"
     },
     "vhi_10_question_14": {
-        "description": "vhi_10_question_14"
+        "description": "Asks if child's voice is worse in the evening."
     },
     "vhi_10_question_3": {
-        "description": "vhi_10_question_3"
+        "description": "Asks if there is difficulty heating child when he/she calls through the house."
     },
     "diagnosis_gi_dogg": {
         "description": "Please assess degree of glottic gap:"
@@ -3909,7 +3909,7 @@
         "description": "Select all that apply"
     },
     "phqa_q5": {
-        "description": "items/phqa_q5"
+        "description": "Asking if participant is feeling tired, or has little energy"
     },
     "diagnosis_l_degree_p_2": {
         "description": "Pitch"
@@ -3924,7 +3924,7 @@
         "description": "Additional Features\n(for example, diplophonia, fry, falsetto, asthenia, aphonia, pitch instability, tremor, wet/gurgly, or other relevant terms):"
     },
     "city": {
-        "description": "items/city"
+        "description": "Indicates what city they are from"
     },
     "mph_see_mental_health_professional": {
         "description": "Have you ever seen a mental health professional for talk therapy (could include social workers, psychiatrists, etc.)?"
@@ -3963,10 +3963,10 @@
         "description": "Has the patient undergone any treatment for their condition?"
     },
     "conditions_other": {
-        "description": "conditions_other"
+        "description": "Indicates other conditions participants may have"
     },
     "smoking_cigarettes_day_current_avg_number": {
-        "description": "items/smoking_cigarettes_day_current_avg_number"
+        "description": "Number of cigarettes per day"
     },
     "dermoid_cyst": {
         "description": "dermoid_cyst"
@@ -3975,10 +3975,10 @@
         "description": "UHDRS speech training"
     },
     "vhi_10_question_23": {
-        "description": "vhi_10_question_23"
+        "description": "Asks if child is embarrassed when people ask him/her to repeat."
     },
     "vhi_10_question_19": {
-        "description": "vhi_10_question_19"
+        "description": "Asks if other people don't understand my child's voice problem."
     },
     "hd_neuroleptic_specify": {
         "description": "Neuroleptic selected. Please specify"
@@ -3987,7 +3987,7 @@
         "description": "Duration of the voice outcome."
     },
     "vhi_10_question_9": {
-        "description": "vhi_10_question_9"
+        "description": "Asks how often child's voice changes throughout the day."
     },
     "mbd_many_manic_episodes": {
         "description": "Approximately how many manic episodes have you had in your life?"
@@ -4002,7 +4002,7 @@
         "description": "Duration of the medical condition session."
     },
     "primary_language": {
-        "description": "items/primary_language"
+        "description": "Indicates participant primary language"
     },
     "branchial_cleft_cyst": {
         "description": "branchial_cleft_cyst"
@@ -4038,7 +4038,7 @@
         "description": "Strain"
     },
     "vhi_10_question_21": {
-        "description": "vhi_10_question_21"
+        "description": "Asks if child is less out-going because of his/her voice problem."
     },
     "diagnosis_ucc_cuae": {
         "description": "Has the chronic cough remained unexplained after evaluation and therapeutic intervention?"
@@ -4050,13 +4050,13 @@
         "description": "Is the patient on ACE-inhibitors (example: lisinopril; captopril)?"
     },
     "adenoidectomy": {
-        "description": "adenoidectomy"
+        "description": "Indicates if participant has had an adenoidectomy"
     },
     "vhi_10_question_18": {
-        "description": "vhi_10_question_18"
+        "description": "Asks if people seem irritated with my child's voice."
     },
     "qol_q1": {
-        "description": "qol_q1"
+        "description": "Indicates if participant has trouble speaking loudly or being heard in noisy situations"
     },
     "hd_any_treatment": {
         "description": "Has the patient undergone any treatment for Huntington's disease?"
@@ -4089,7 +4089,7 @@
         "description": "The unique identifier for qol session."
     },
     "vhi_10_question_4": {
-        "description": "vhi_10_question_4"
+        "description": "Asks if child tends to avoid communicating because of his/her voice."
     },
     "hd_medications_selection": {
         "description": "Please select all that apply and provide further details if available"
@@ -4101,7 +4101,7 @@
         "description": "The unique identifier for the kids demographics session."
     },
     "edu_level": {
-        "description": "items/edu_level"
+        "description": "Indiciates participants level of education"
     },
     "neck_mass_other": {
         "description": "neck_mass_other"
@@ -4134,19 +4134,19 @@
         "description": "Keratosis"
     },
     "vhi_10_question_2": {
-        "description": "vhi_10_question_2"
+        "description": "Asks if people have difficulty understanding my child in a noisy room."
     },
     "laryngitis": {
-        "description": "Laryngitis"
+        "description": "Indicates if participant has laryngitis"
     },
     "vhi_10_question_17": {
-        "description": "vhi_10_question_17"
+        "description": "Asks if child appears tense when talking with others because of his/her voice."
     },
     "diagnosis_l_degree_text": {
         "description": "Degree of dysphonia\n\nCAPE-V scale"
     },
     "vhi_10_question_13": {
-        "description": "vhi_10_question_13"
+        "description": "If child uses a great deal of effort to speak (e.g., straining)."
     },
     "tonsillectomy": {
         "description": "tonsillectomy"
@@ -4161,13 +4161,13 @@
         "description": "Strain"
     },
     "first_language": {
-        "description": "items/first_language"
+        "description": "Indiciates participants first language"
     },
     "diagnosis_ucc_at_s_other": {
         "description": "Please Specify"
     },
     "vhi_10_question_8": {
-        "description": "vhi_10_question_8"
+        "description": "Indicates if child runs out of air when talking."
     },
     "diagnosis_gi_degree_p_1": {
         "description": "Pitch"
@@ -4182,7 +4182,7 @@
         "description": "Please specify"
     },
     "vhi_10_question_1": {
-        "description": "vhi_10_question_1"
+        "description": "Indicates if vhild's voice makes it difficult for people to hear him/her."
     },
     "stroop_item_correct_11": {
         "description": "Item 11\nCorrect?"
@@ -4191,10 +4191,10 @@
         "description": "Occupation"
     },
     "other_first_language": {
-        "description": "items/other_first_language"
+        "description": "If you selected other first language, please specify:"
     },
     "vhi_10_question_16": {
-        "description": "vhi_10_question_16"
+        "description": "My child has to yell in order for others to hear him/her."
     },
     "phqa_schema_duration": {
         "description": "Duration of the phqa session."
@@ -4203,10 +4203,10 @@
         "description": "qol_q3"
     },
     "other_gender_identity": {
-        "description": "items/other_gender_identity"
+        "description": "If you selected \"other\" for gender identity, please specify:"
     },
     "thyroglossal_duct_cyst": {
-        "description": "thyroglossal_duct_cyst"
+        "description": "Indicates if participant has thyroglossal duct cysts"
     },
     "diagnosis_ucc_hspd": {
         "description": "Does the patient have a history of pulmonary disease? (Select all that apply)"
@@ -4215,7 +4215,7 @@
         "description": "Loudness"
     },
     "outcome_survey_q2": {
-        "description": "outcome_survey_q2"
+        "description": "During the past 2 weeks, to what extent has your child's voice interfered with his or her normal social activities or with his or her school?"
     },
     "subjectparticipant_basic_information_schema_session_id": {
         "description": "The unique identifier for kids basic information session."
@@ -4224,10 +4224,10 @@
         "description": "Does the patient have laryngitis as determined by qualitative evaluations?"
     },
     "voice_severity_rating": {
-        "description": "voice_severity_rating"
+        "description": "Overall Severity Rating of Voice"
     },
     "vocabulary_item_correct_3": {
-        "description": "Item 3\nCorrect?"
+        "description": "Item 3 Correct?"
     },
     "diagnosis_ucc_persisted": {
         "description": "Has the cough persisted longer than eight weeks?"
@@ -4314,7 +4314,7 @@
         "description": "Select all that apply:"
     },
     "smoking_electronic_current_occurence": {
-        "description": "items/smoking_electronic_current_occurence"
+        "description": "Indicates if participant uses electronic nicotine products and how often"
     },
     "hd_finances": {
         "description": "Finances:"
