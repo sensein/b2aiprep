@@ -163,13 +163,30 @@ def clean_phenotype_data(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFr
         lambda x: date_fix_map[x] if x in date_fix_map else x)
 
     # remove columns which are empty
-    # columns_to_drop = df.columns[df.isnull().all()].tolist()
-    # df, phenotype = _drop_columns_from_df_and_data_dict(
-    #     df,
-    #     phenotype,
-    #     columns_to_drop,
-    #     message="Removing empty columns"
-    # )
+    df, phenotype = _drop_columns_from_df_and_data_dict(
+        df,
+        phenotype,
+        columns_to_drop=[
+            "consent_status",
+            "enrollment_institution",
+            "subjectparticipant_eligible_studies_complete",
+            "ef_primary_language_other",
+            "ef_fluent_language_other",
+            "session_site",
+        ],
+        message="Removing empty columns"
+    )
+
+    # remove columns which should not be there
+    df, phenotype = _drop_columns_from_df_and_data_dict(
+        df,
+        phenotype,
+        columns_to_drop=[
+            "recording_id",
+            "recording_acoustic_task_id",
+        ],
+        message="Removing columns that should not be there"
+    )
 
     # remove columns with minimal data science utility (free-text, all null values, etc)
     df, phenotype = _drop_columns_from_df_and_data_dict(
@@ -198,6 +215,8 @@ def clean_phenotype_data(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFr
 def load_phenotype_data(bids_path: Path) -> t.Tuple[pd.DataFrame, t.Dict[str, t.Any]]:
     # load in the participants.tsv which has all phenotype data merged
     df = pd.read_csv(bids_path.joinpath("participants.tsv"), sep="\t")
+    with open(bids_path.joinpath("participants.json"), "r") as f:
+        phenotype = json.load(f)
 
     # remove subject
     idx = df["record_id"].isin(PARTICIPANT_ID_TO_REMOVE)
@@ -207,14 +226,37 @@ def load_phenotype_data(bids_path: Path) -> t.Tuple[pd.DataFrame, t.Dict[str, t.
         )
         df = df.loc[~idx]
 
-    with open(bids_path.joinpath("participants.json"), "r") as f:
-        participants = json.load(f)
-    phenotype = {"participant_id": participants["record_id"]}
 
     # fix some data values and remove columns we do not want to publish at this time
     df, phenotype = clean_phenotype_data(df, phenotype)
 
-    return df, phenotype
+    # create columns missing in the original data
+    df["sex_at_birth"] = None
+    for sex_at_birth in ["Male", "Female"]:
+        # case-sensitive match
+        idx = df["gender_identity"].str.contains(sex_at_birth) & df["specify_gender_identity"].notnull()
+        df.loc[idx, "sex_at_birth"] = sex_at_birth
+
+    # re-order columns
+    phenotype_reordered = {}
+    columns = []
+    for c in df.columns:
+        if c == "specify_gender_identity":
+            continue
+
+        if c == "gender_identity":
+            columns.append("sex_at_birth")
+            phenotype_reordered["sex_at_birth"] = {
+                "description": "The sex at birth for the individual."
+            }
+        elif c == "sex_at_birth":
+            continue
+        else:
+            columns.append(c)
+            phenotype_reordered[c] = phenotype[c]
+
+    df = df[columns]
+    return df, phenotype_reordered
 
 def is_audio_sensitive(task_name: str) -> bool:
    return task_name.lower().startswith("free-speech") \

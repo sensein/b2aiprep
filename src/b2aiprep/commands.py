@@ -464,26 +464,26 @@ def create_derived_dataset(bids_path, outdir):
             )
 
         # sort the dataset by identifier and task_name
-        ds = Dataset.from_generator(audio_feature_generator, num_proc=1)
-        ds.to_parquet(
-            str(outdir.joinpath(f"{feature_name}.parquet")),
-            version="2.6",
-            compression="zstd",  # Better compression ratio than snappy, still good speed
-            compression_level=3,
-            # Enable dictionary encoding for strings
-            use_dictionary=["participant_id", "session_id", "task_name"],
-            write_statistics=True,
-            # enable page index for better filtering
-            data_page_size=1_048_576,  # 1MB pages
-            write_page_index=True,
-            use_byte_stream_split=use_byte_stream_split,
-            # sort should help readers more efficiently read data
-            # requires us to have manually sorted the data (as we have done above)
-            sorting_columns=(
-                SortingColumn(column_index=0, descending=False),
-                SortingColumn(column_index=2, descending=False),
-            ),
-        )
+        # ds = Dataset.from_generator(audio_feature_generator, num_proc=1)
+        # ds.to_parquet(
+        #     str(outdir.joinpath(f"{feature_name}.parquet")),
+        #     version="2.6",
+        #     compression="zstd",  # Better compression ratio than snappy, still good speed
+        #     compression_level=3,
+        #     # Enable dictionary encoding for strings
+        #     use_dictionary=["participant_id", "session_id", "task_name"],
+        #     write_statistics=True,
+        #     # enable page index for better filtering
+        #     data_page_size=1_048_576,  # 1MB pages
+        #     write_page_index=True,
+        #     use_byte_stream_split=use_byte_stream_split,
+        #     # sort should help readers more efficiently read data
+        #     # requires us to have manually sorted the data (as we have done above)
+        #     sorting_columns=(
+        #         SortingColumn(column_index=0, descending=False),
+        #         SortingColumn(column_index=2, descending=False),
+        #     ),
+        # )
 
     _LOGGER.info("Parquet dataset created.")
 
