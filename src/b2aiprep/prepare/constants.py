@@ -121,9 +121,20 @@ SPEECH_TASKS = (
     "Word-color Stroop",
 )
 
-PARTICIPANT_ID_TO_REMOVE: t.List[str] = json.loads(
-    files("b2aiprep").joinpath("resources", "participant_id_to_exclude.json").read_text()
-)
+def _load_participant_exclusions() -> t.List[str]:
+    """Load the participant IDs to exclude from the dataset.
+
+    Returns
+    -------
+    list
+        The participant IDs to exclude.
+    """
+    b2ai_resources = files("b2aiprep").joinpath("prepare").joinpath("resources")
+    if b2ai_resources.joinpath("participant_id_to_exclude_v2.json").exists():
+        return json.loads(b2ai_resources.joinpath("participant_id_to_exclude_v2.json").read_text())
+    return json.loads(b2ai_resources.joinpath("participant_id_to_exclude.json").read_text())
+
+PARTICIPANT_ID_TO_REMOVE: t.List[str] = _load_participant_exclusions()
 
 class Instrument(BaseModel):
     """Instruments are associated with fixed sets of columns and a string
