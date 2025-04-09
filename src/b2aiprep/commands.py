@@ -44,7 +44,7 @@ from streamlit import config as _config
 from streamlit.web.bootstrap import run
 from tqdm import tqdm
 
-from b2aiprep.prepare.bids import get_audio_paths, redcap_to_bids, validate_bids_folder
+from b2aiprep.prepare.bids import get_paths, get_audio_paths, redcap_to_bids, validate_bids_folder
 from b2aiprep.prepare.derived_data import (
     feature_extraction_generator,
     spectrogram_generator,
@@ -347,8 +347,14 @@ def create_derived_dataset(bids_path, outdir):
     bids_path = Path(bids_path)
     outdir = Path(outdir)
     outdir.mkdir(parents=True, exist_ok=True)
-    audio_paths = get_audio_paths(bids_dir_path=bids_path)
+    audio_paths = get_paths(bids_path, file_extension=".pt")
     audio_paths = [x["path"] for x in audio_paths]
+    # remove _features at the end of the file stem
+    audio_paths = [
+        x.parent.joinpath(x.stem[:-9]).with_suffix('.wav')
+        if "_features" in x.name else x
+        for x in audio_paths 
+    ]
 
     audio_paths = sorted(
         audio_paths,
@@ -506,7 +512,12 @@ def create_derived_dataset(bids_path, outdir):
             if col == "record_id":
                 continue
             if col in df.columns:
-                raise ValueError(f"Column {col} already exists in the dataframe")
+                idxMisMatchNotNone = df[col].notna() & df_add[col].notna()
+                idxMisMatchNotNone &= (df[col] != df_add[col])
+                if idxMisMatchNotNone.any():
+                    raise ValueError(f"Column {col} already exists in the dataframe with different values.")
+                else:
+                    df = df.drop(col, axis=1, errors="ignore")
 
         df = df.merge(df_add, on="record_id", how="left")
         with open(bids_path.joinpath("phenotype", f"{phenotype_name}.json"), "r") as f:
