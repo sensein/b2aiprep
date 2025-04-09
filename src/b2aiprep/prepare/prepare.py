@@ -541,11 +541,17 @@ def clean_phenotype_data(df: pd.DataFrame, phenotype: dict) -> Tuple[pd.DataFram
         phenotype = {
             k: v for k, v in phenotype.items() if k not in columns_to_drop
         }
+
+    # remove columns which are outside of our allow list from v1
+    for col in df.columns:
+        if col not in set(ALLOWED_COLUMNS):
+            _logger.info(f"Removing unrecognized column: {col}")
+            columns_to_drop.append(col)
     
-    # remove columns which are outside of our allow list
-    for c in ALLOWED_COLUMNS:
-        if c not in df:
-            _logger.info(f"Removing unrecognized column: {c}")
-            df = df.drop(columns=c)
+    if len(columns_to_drop) > 0:
+        df = df.drop(columns=columns_to_drop)
+        phenotype = {
+            k: v for k, v in phenotype.items() if k not in columns_to_drop
+        }
 
     return df, phenotype
