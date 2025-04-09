@@ -68,7 +68,6 @@ from b2aiprep.prepare.constants import (
     FEATURE_EXTRACTION_FORMANTS,
     FEATURE_EXTRACTION_SPECTRAL_MOMENTS,
     FEATURE_EXTRACTION_JITTER, FEATURE_EXTRACTION_SHIMMER,
-    ALLOWED_COLUMNS,
 )
 
 from b2aiprep.prepare.bids import get_audio_paths
@@ -503,55 +502,3 @@ def validate_bids_data(
     with pydra.Submitter(plugin="cf") as run:
         run(extract_task)
     _logger.info("Process completed.")
-
-
-def clean_phenotype_data(df: pd.DataFrame, phenotype: dict) -> Tuple[pd.DataFrame, dict]:
-    """Remove known errors occurring in the phenotype dataframe."""
-    # the alcohol_amt column has dates instead of values
-    date_fix_map = {
-        "4-Mar": "3 - 4",
-        "6-May": "5 - 6",
-        "9-Jul": "7 - 9",
-    }
-    df['alcohol_amt'] = df['alcohol_amt'].apply(
-        lambda x: date_fix_map[x] if x in date_fix_map else x)
-
-    # remove columns with minimal data science utility (free-text, all null values, etc)
-    columns_to_drop = []
-    for col in [
-        # the following columns contain free-text
-        'state_province',
-        'other_edu_level', 'others_household_specify',
-        'diagnosis_alz_dementia_mci_ds_cdr', 'diagnosis_alz_dementia_mci_ca_rudas_score',
-        'diagnosis_alz_dementia_mci_ca_mmse_score', 'diagnosis_alz_dementia_mci_ca_moca_score',
-        'diagnosis_alz_dementia_mci_ca_adas_cog_score', 'diagnosis_alz_dementia_mci_ca_other',
-        'diagnosis_alz_dementia_mci_ca_other_score',
-        'diagnosis_parkinsons_ma_uprds', 'diagnosis_parkinsons_ma_updrs_part_i_score',
-        'diagnosis_parkinsons_ma_updrs_part_ii_score', 'diagnosis_parkinsons_ma_updrs_part_iii_score',
-        'diagnosis_parkinsons_ma_updrs_part_iv_score', 'diagnosis_parkinsons_non_motor_symptoms_yes',
-        'traumatic_event',
-        # following columns have all null values
-        'is_regular_smoker'
-    ]:
-        if col in df:
-            columns_to_drop.append(col)
-
-    if len(columns_to_drop) > 0:
-        df = df.drop(columns=columns_to_drop)
-        phenotype = {
-            k: v for k, v in phenotype.items() if k not in columns_to_drop
-        }
-
-    # remove columns which are outside of our allow list from v1
-    for col in df.columns:
-        if col not in set(ALLOWED_COLUMNS):
-            _logger.info(f"Removing unrecognized column: {col}")
-            columns_to_drop.append(col)
-    
-    if len(columns_to_drop) > 0:
-        df = df.drop(columns=columns_to_drop)
-        phenotype = {
-            k: v for k, v in phenotype.items() if k not in columns_to_drop
-        }
-
-    return df, phenotype
