@@ -68,7 +68,6 @@ from b2aiprep.prepare.constants import (
     FEATURE_EXTRACTION_FORMANTS,
     FEATURE_EXTRACTION_SPECTRAL_MOMENTS,
     FEATURE_EXTRACTION_JITTER, FEATURE_EXTRACTION_SHIMMER,
-    ALLOWED_COLUMNS,
 )
 
 from b2aiprep.prepare.bids import get_audio_paths
@@ -503,76 +502,3 @@ def validate_bids_data(
     with pydra.Submitter(plugin="cf") as run:
         run(extract_task)
     _logger.info("Process completed.")
-
-def _drop_columns_from_df_and_data_dict(
-        df: pd.DataFrame,
-        phenotype: dict,
-        columns_to_drop: List[str],
-        message: str
-):
-    """Drop columns from the DataFrame and phenotype dictionary."""
-    columns_to_drop_in_df = []
-    for col in columns_to_drop:
-        if col in df:
-            columns_to_drop_in_df.append(col)
-
-    if len(columns_to_drop_in_df) > 0:
-        _logger.info(message + f": {columns_to_drop_in_df}")
-        df = df.drop(columns=columns_to_drop_in_df)
-        phenotype = {
-            k: v for k, v in phenotype.items() if k not in columns_to_drop_in_df
-        }
-    return df, phenotype
-
-def clean_phenotype_data(df: pd.DataFrame, phenotype: dict) -> Tuple[pd.DataFrame, dict]:
-    """Remove known errors occurring in the phenotype dataframe."""
-    # the alcohol_amt column has dates instead of values
-    date_fix_map = {
-        "4-Mar": "3 - 4",
-        "6-May": "5 - 6",
-        "9-Jul": "7 - 9",
-    }
-    df['alcohol_amt'] = df['alcohol_amt'].apply(
-        lambda x: date_fix_map[x] if x in date_fix_map else x)
-
-    # remove columns which are empty
-    columns_to_drop = df.columns[df.isnull().all()].tolist()
-    df, phenotype = _drop_columns_from_df_and_data_dict(
-        df,
-        phenotype,
-        columns_to_drop,
-        message="Removing empty columns"
-    )
-
-    # remove columns with minimal data science utility (free-text, all null values, etc)
-    df, phenotype = _drop_columns_from_df_and_data_dict(
-        df,
-        phenotype,
-        # the following columns contain free-text
-        columns_to_drop=[
-            'state_province',
-            'other_edu_level', 'others_household_specify',
-            'diagnosis_alz_dementia_mci_ds_cdr', 'diagnosis_alz_dementia_mci_ca_rudas_score',
-            'diagnosis_alz_dementia_mci_ca_mmse_score', 'diagnosis_alz_dementia_mci_ca_moca_score',
-            'diagnosis_alz_dementia_mci_ca_adas_cog_score', 'diagnosis_alz_dementia_mci_ca_other',
-            'diagnosis_alz_dementia_mci_ca_other_score',
-            'diagnosis_parkinsons_ma_uprds', 'diagnosis_parkinsons_ma_updrs_part_i_score',
-            'diagnosis_parkinsons_ma_updrs_part_ii_score', 'diagnosis_parkinsons_ma_updrs_part_iii_score',
-            'diagnosis_parkinsons_ma_updrs_part_iv_score', 'diagnosis_parkinsons_non_motor_symptoms_yes',
-            'traumatic_event',
-            # following columns have all null values
-            'is_regular_smoker',
-        ],
-        message="Removing columns with free-text"
-    )
-
-    # remove columns which are outside of our allow list from v1
-    columns_to_drop = set(ALLOWED_COLUMNS) - set(df.columns)
-    df, phenotype = _drop_columns_from_df_and_data_dict(
-        df,
-        phenotype,
-        columns_to_drop,
-        message="Removing columns not in v1"
-    )
-
-    return df, phenotype

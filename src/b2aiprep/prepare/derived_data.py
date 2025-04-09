@@ -1,10 +1,17 @@
+import logging
 import typing as t
 from pathlib import Path
 import json
 
 import numpy as np
+import pandas as pd
 import torch
 from tqdm import tqdm
+
+from b2aiprep.prepare.constants import PARTICIPANT_ID_TO_REMOVE
+
+
+_LOGGER = logging.getLogger(__name__)
 
 def spectrogram_generator(
     audio_paths,
@@ -123,3 +130,93 @@ def feature_extraction_generator(
         output[feature_name] = data
 
         yield output
+
+def _drop_columns_from_df_and_data_dict(
+        df: pd.DataFrame,
+        phenotype: dict,
+        columns_to_drop: t.List[str],
+        message: str
+):
+    """Drop columns from the DataFrame and phenotype dictionary."""
+    columns_to_drop_in_df = []
+    for col in columns_to_drop:
+        if col in df:
+            columns_to_drop_in_df.append(col)
+
+    if len(columns_to_drop_in_df) > 0:
+        _LOGGER.info(message + f": {columns_to_drop_in_df}")
+        df = df.drop(columns=columns_to_drop_in_df)
+        phenotype = {
+            k: v for k, v in phenotype.items() if k not in columns_to_drop_in_df
+        }
+    return df, phenotype
+
+def clean_phenotype_data(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
+    """Remove known errors occurring in the phenotype dataframe."""
+    # the alcohol_amt column has dates instead of values
+    date_fix_map = {
+        "4-Mar": "3 - 4",
+        "6-May": "5 - 6",
+        "9-Jul": "7 - 9",
+    }
+    df['alcohol_amt'] = df['alcohol_amt'].apply(
+        lambda x: date_fix_map[x] if x in date_fix_map else x)
+
+    # remove columns which are empty
+    # columns_to_drop = df.columns[df.isnull().all()].tolist()
+    # df, phenotype = _drop_columns_from_df_and_data_dict(
+    #     df,
+    #     phenotype,
+    #     columns_to_drop,
+    #     message="Removing empty columns"
+    # )
+
+    # remove columns with minimal data science utility (free-text, all null values, etc)
+    df, phenotype = _drop_columns_from_df_and_data_dict(
+        df,
+        phenotype,
+        # the following columns contain free-text
+        columns_to_drop=[
+            'state_province',
+            'other_edu_level', 'others_household_specify',
+            'diagnosis_alz_dementia_mci_ds_cdr', 'diagnosis_alz_dementia_mci_ca_rudas_score',
+            'diagnosis_alz_dementia_mci_ca_mmse_score', 'diagnosis_alz_dementia_mci_ca_moca_score',
+            'diagnosis_alz_dementia_mci_ca_adas_cog_score', 'diagnosis_alz_dementia_mci_ca_other',
+            'diagnosis_alz_dementia_mci_ca_other_score',
+            'diagnosis_parkinsons_ma_uprds', 'diagnosis_parkinsons_ma_updrs_part_i_score',
+            'diagnosis_parkinsons_ma_updrs_part_ii_score', 'diagnosis_parkinsons_ma_updrs_part_iii_score',
+            'diagnosis_parkinsons_ma_updrs_part_iv_score', 'diagnosis_parkinsons_non_motor_symptoms_yes',
+            'traumatic_event',
+            # following columns have all null values
+            'is_regular_smoker',
+        ],
+        message="Removing columns with free-text"
+    )
+
+    return df, phenotype
+
+def load_phenotype_data(bids_path: Path) -> t.Tuple[pd.DataFrame, t.Dict[str, t.Any]]:
+    # load in the participants.tsv which has all phenotype data merged
+    df = pd.read_csv(bids_path.joinpath("participants.tsv"), sep="\t")
+
+    # remove subject
+    idx = df["record_id"].isin(PARTICIPANT_ID_TO_REMOVE)
+    if idx.sum() > 0:
+        _LOGGER.info(
+            f"Removing {idx.sum()} records from phenotype due to hard-coded subject removal."
+        )
+        df = df.loc[~idx]
+
+    with open(bids_path.joinpath("participants.json"), "r") as f:
+        participants = json.load(f)
+    phenotype = {"participant_id": participants["record_id"]}
+
+    # fix some data values and remove columns we do not want to publish at this time
+    df, phenotype = clean_phenotype_data(df, phenotype)
+
+    return df, phenotype
+
+def is_audio_sensitive(task_name: str) -> bool:
+   return task_name.lower().startswith("free-speech") \
+        or task_name.lower().startswith("audio-check") \
+        or task_name.lower().startswith("open-response-questions")

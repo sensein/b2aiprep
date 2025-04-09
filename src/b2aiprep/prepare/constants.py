@@ -121,8 +121,8 @@ SPEECH_TASKS = (
     "Word-color Stroop",
 )
 
-ALLOWED_COLUMNS: t.List[str] = json.loads(
-    files("b2aiprep").joinpath("prepare").joinpath("resources", "allowed_columns.json").read_text()
+PARTICIPANT_ID_TO_REMOVE: t.List[str] = json.loads(
+    files("b2aiprep").joinpath("resources", "participant_id_to_exclude.json").read_text()
 )
 
 class Instrument(BaseModel):
