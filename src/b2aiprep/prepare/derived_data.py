@@ -273,6 +273,9 @@ def load_phenotype_data(bids_path: Path) -> t.Tuple[pd.DataFrame, t.Dict[str, t.
     return df, phenotype_reordered
 
 def is_audio_sensitive(task_name: str) -> bool:
-   return task_name.lower().startswith("free-speech") \
-        or task_name.lower().startswith("audio-check") \
-        or task_name.lower().startswith("open-response-questions")
+   if task_name.startswith('task-'):
+       task_name = task_name[5:]
+   task_name = task_name.lower()
+   return task_name.startswith("free-speech") \
+        or task_name.startswith("audio-check") \
+        or task_name.startswith("open-response-questions")
