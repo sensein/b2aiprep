@@ -504,6 +504,25 @@ def validate_bids_data(
         run(extract_task)
     _logger.info("Process completed.")
 
+def _drop_columns_from_df_and_data_dict(
+        df: pd.DataFrame,
+        phenotype: dict,
+        columns_to_drop: List[str],
+        message: str
+):
+    """Drop columns from the DataFrame and phenotype dictionary."""
+    columns_to_drop_in_df = []
+    for col in columns_to_drop:
+        if col in df:
+            columns_to_drop_in_df.append(col)
+
+    if len(columns_to_drop_in_df) > 0:
+        _logger.info(message + f": {columns_to_drop_in_df}")
+        df = df.drop(columns=columns_to_drop_in_df)
+        phenotype = {
+            k: v for k, v in phenotype.items() if k not in columns_to_drop_in_df
+        }
+    return df, phenotype
 
 def clean_phenotype_data(df: pd.DataFrame, phenotype: dict) -> Tuple[pd.DataFrame, dict]:
     """Remove known errors occurring in the phenotype dataframe."""
@@ -516,42 +535,44 @@ def clean_phenotype_data(df: pd.DataFrame, phenotype: dict) -> Tuple[pd.DataFram
     df['alcohol_amt'] = df['alcohol_amt'].apply(
         lambda x: date_fix_map[x] if x in date_fix_map else x)
 
-    # remove columns with minimal data science utility (free-text, all null values, etc)
-    columns_to_drop = []
-    for col in [
-        # the following columns contain free-text
-        'state_province',
-        'other_edu_level', 'others_household_specify',
-        'diagnosis_alz_dementia_mci_ds_cdr', 'diagnosis_alz_dementia_mci_ca_rudas_score',
-        'diagnosis_alz_dementia_mci_ca_mmse_score', 'diagnosis_alz_dementia_mci_ca_moca_score',
-        'diagnosis_alz_dementia_mci_ca_adas_cog_score', 'diagnosis_alz_dementia_mci_ca_other',
-        'diagnosis_alz_dementia_mci_ca_other_score',
-        'diagnosis_parkinsons_ma_uprds', 'diagnosis_parkinsons_ma_updrs_part_i_score',
-        'diagnosis_parkinsons_ma_updrs_part_ii_score', 'diagnosis_parkinsons_ma_updrs_part_iii_score',
-        'diagnosis_parkinsons_ma_updrs_part_iv_score', 'diagnosis_parkinsons_non_motor_symptoms_yes',
-        'traumatic_event',
-        # following columns have all null values
-        'is_regular_smoker'
-    ]:
-        if col in df:
-            columns_to_drop.append(col)
+    # remove columns which are empty
+    columns_to_drop = df.columns[df.isnull().all()].tolist()
+    df, phenotype = _drop_columns_from_df_and_data_dict(
+        df,
+        phenotype,
+        columns_to_drop,
+        message="Removing empty columns"
+    )
 
-    if len(columns_to_drop) > 0:
-        df = df.drop(columns=columns_to_drop)
-        phenotype = {
-            k: v for k, v in phenotype.items() if k not in columns_to_drop
-        }
+    # remove columns with minimal data science utility (free-text, all null values, etc)
+    df, phenotype = _drop_columns_from_df_and_data_dict(
+        df,
+        phenotype,
+        # the following columns contain free-text
+        columns_to_drop=[
+            'state_province',
+            'other_edu_level', 'others_household_specify',
+            'diagnosis_alz_dementia_mci_ds_cdr', 'diagnosis_alz_dementia_mci_ca_rudas_score',
+            'diagnosis_alz_dementia_mci_ca_mmse_score', 'diagnosis_alz_dementia_mci_ca_moca_score',
+            'diagnosis_alz_dementia_mci_ca_adas_cog_score', 'diagnosis_alz_dementia_mci_ca_other',
+            'diagnosis_alz_dementia_mci_ca_other_score',
+            'diagnosis_parkinsons_ma_uprds', 'diagnosis_parkinsons_ma_updrs_part_i_score',
+            'diagnosis_parkinsons_ma_updrs_part_ii_score', 'diagnosis_parkinsons_ma_updrs_part_iii_score',
+            'diagnosis_parkinsons_ma_updrs_part_iv_score', 'diagnosis_parkinsons_non_motor_symptoms_yes',
+            'traumatic_event',
+            # following columns have all null values
+            'is_regular_smoker',
+        ],
+        message="Removing columns with free-text"
+    )
 
     # remove columns which are outside of our allow list from v1
-    for col in df.columns:
-        if col not in set(ALLOWED_COLUMNS):
-            _logger.info(f"Removing unrecognized column: {col}")
-            columns_to_drop.append(col)
-    
-    if len(columns_to_drop) > 0:
-        df = df.drop(columns=columns_to_drop)
-        phenotype = {
-            k: v for k, v in phenotype.items() if k not in columns_to_drop
-        }
+    columns_to_drop = set(ALLOWED_COLUMNS) - set(df.columns)
+    df, phenotype = _drop_columns_from_df_and_data_dict(
+        df,
+        phenotype,
+        columns_to_drop,
+        message="Removing columns not in v1"
+    )
 
     return df, phenotype
