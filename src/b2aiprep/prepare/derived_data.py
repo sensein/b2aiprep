@@ -182,8 +182,22 @@ def clean_phenotype_data(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFr
         df,
         phenotype,
         columns_to_drop=[
+            "acoustic_task_id",
+            "acoustic_task_session_id",
+            "acoustic_task_name",
+            "acoustic_task_cohort",
+            "acoustic_task_status",
+            "acoustic_task_duration",
             "recording_id",
+            "recording_session_id",
             "recording_acoustic_task_id",
+            "recording_name",
+            "recording_duration",
+            "recording_size",
+            "recording_profile_name",
+            "recording_profile_version",
+            "recording_input_gain",
+            "recording_microphone",
         ],
         message="Removing columns that should not be there"
     )
