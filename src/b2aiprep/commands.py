@@ -542,6 +542,40 @@ def create_derived_dataset(bids_path, outdir):
         json.dump(phenotype, f, indent=2)
     _LOGGER.info("Finished creating merged phenotype data.")
 
+@click.command()
+@click.argument("dataset_path", type=click.Path(exists=True))
+def validate_derived_dataset(dataset_path):
+    """Validates derived dataset.
+
+    This function checks the integrity and structure of a derived dataset
+    directory and optionally fixes detected issues.
+
+    Args:
+        dataset_path (str): Path to the derived dataset directory to validate.
+
+    Returns:
+        None: Performs validation and optionally fixes errors in-place.
+    """
+    dataset_path = Path(dataset_path)
+    
+    assert dataset_path.exists(), f"Dataset path {dataset_path} does not exist."
+    assert dataset_path.is_dir(), f"Dataset path {dataset_path} is not a directory."
+
+    # we expect spectrograms.parquet and mfcc.parquet to exist
+    assert dataset_path.joinpath("spectrogram.parquet").exists(), f"Dataset path {dataset_path} does not contain spectrogram.parquet."
+    assert dataset_path.joinpath("mfcc.parquet").exists(), f"Dataset path {dataset_path} does not contain mfcc.parquet."
+
+    for base_dataframe_name in ['static_features', 'phenotype']:
+        assert dataset_path.joinpath(f"{base_dataframe_name}.tsv").exists(), f"Dataset path {dataset_path} does not contain {base_dataframe_name}.tsv."
+        assert dataset_path.joinpath(f"{base_dataframe_name}.json").exists(), f"Dataset path {dataset_path} does not contain {base_dataframe_name}.json."
+        df = pd.read_csv(dataset_path.joinpath(f"{base_dataframe_name}.tsv"), sep="\t")
+        with open(dataset_path.joinpath(f"{base_dataframe_name}.json"), "r") as f:
+            info = json.load(f)
+        missing_columns = []
+        for column in info.keys():
+            if column not in df.columns:
+                missing_columns.append(column)
+        assert len(missing_columns) == 0, f"Columns not found in {base_dataframe_name}.tsv: {missing_columns}"
 
 @click.command()
 @click.argument("bids_dir_path", type=click.Path())
