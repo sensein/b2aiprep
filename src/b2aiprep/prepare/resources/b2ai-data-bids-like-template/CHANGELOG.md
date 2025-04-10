@@ -13,7 +13,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   - Update license reference.
   - Removed ReferencesAndLinks key.
   - Update dataset name.
-- `_recording-metadata` suffix removed from audio metadata files.
 
 ### Removed
 
