@@ -2,11 +2,9 @@
     "BIDSVersion": "1.9.0",
     "License": "LICENSE.txt",
     "Name": "Bridge2AI-Voice: An ethically-sourced, diverse voice dataset linked to health information (Audio included)",
-    "ReferencesAndLinks": {
-        "SourceLicenseTermsAI-READI": {
-            "description": "The license terms are based on those of the AI-READI dataset",
-            "link": "https://zenodo.org/doi/10.5281/zenodo.10642458",
-            "DOI": "10.5281/zenodo.10642458"
-        }
+    "SourceLicenseTermsAI-READI": {
+        "description": "The license terms are based on those of the AI-READI dataset",
+        "link": "https://zenodo.org/doi/10.5281/zenodo.10642458",
+        "DOI": "10.5281/zenodo.10642458"
     }
 }
