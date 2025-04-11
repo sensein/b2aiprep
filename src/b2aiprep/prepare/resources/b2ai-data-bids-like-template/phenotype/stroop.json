@@ -155,6 +155,35 @@
                     "xsd:string"
                 ]
             },
+            "stroop_item_correct_1": {
+                "description": {
+                    "en": "Item 1\nCorrect?"
+                },
+                "question": {
+                    "en": "Item 1\nCorrect?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/q_neuro_wordcolor_stroop/items/stroop_item_correct_1",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
             "stroop_item_stimulus_2": {
                 "description": "Stimulus presented for Stroop item 2.",
                 "question": {
@@ -1691,6 +1720,411 @@
                 ],
                 "choices": null,
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_neuro_wordcolor_stroop/items/stroop_item_time_15",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_correct_10": {
+                "description": {
+                    "en": "Item 10\nCorrect?"
+                },
+                "question": {
+                    "en": "Item 10\nCorrect?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/q_neuro_wordcolor_stroop/items/stroop_item_correct_10",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_correct_11": {
+                "description": {
+                    "en": "Item 11\nCorrect?"
+                },
+                "question": {
+                    "en": "Item 11\nCorrect?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/q_neuro_wordcolor_stroop/items/stroop_item_correct_11",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_correct_12": {
+                "description": {
+                    "en": "Item 12\nCorrect?"
+                },
+                "question": {
+                    "en": "Item 12\nCorrect?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/q_neuro_wordcolor_stroop/items/stroop_item_correct_12",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_correct_13": {
+                "description": {
+                    "en": "Item 13\nCorrect?"
+                },
+                "question": {
+                    "en": "Item 13\nCorrect?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/q_neuro_wordcolor_stroop/items/stroop_item_correct_13",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_correct_14": {
+                "description": {
+                    "en": "Item 14\nCorrect?"
+                },
+                "question": {
+                    "en": "Item 14\nCorrect?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/q_neuro_wordcolor_stroop/items/stroop_item_correct_14",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_correct_15": {
+                "description": {
+                    "en": "Item 15\nCorrect?"
+                },
+                "question": {
+                    "en": "Item 15\nCorrect?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/q_neuro_wordcolor_stroop/items/stroop_item_correct_15",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_correct_2": {
+                "description": {
+                    "en": "Item 2\nCorrect?"
+                },
+                "question": {
+                    "en": "Item 2\nCorrect?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/q_neuro_wordcolor_stroop/items/stroop_item_correct_2",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_correct_3": {
+                "description": {
+                    "en": "Item 3\nCorrect?"
+                },
+                "question": {
+                    "en": "Item 3\nCorrect?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/q_neuro_wordcolor_stroop/items/stroop_item_correct_3",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_correct_4": {
+                "description": {
+                    "en": "Item 4\nCorrect?"
+                },
+                "question": {
+                    "en": "Item 4\nCorrect?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/q_neuro_wordcolor_stroop/items/stroop_item_correct_4",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_correct_5": {
+                "description": {
+                    "en": "Item 5\nCorrect?"
+                },
+                "question": {
+                    "en": "Item 5\nCorrect?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/q_neuro_wordcolor_stroop/items/stroop_item_correct_5",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },"stroop_item_correct_6": {
+                "description": {
+                    "en": "Item 6\nCorrect?"
+                },
+                "question": {
+                    "en": "Item 6\nCorrect?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/q_neuro_wordcolor_stroop/items/stroop_item_correct_6",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_correct_7": {
+                "description": {
+                    "en": "Item 7\nCorrect?"
+                },
+                "question": {
+                    "en": "Item 7\nCorrect?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/q_neuro_wordcolor_stroop/items/stroop_item_correct_7",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_correct_8": {
+                "description": {
+                    "en": "Item 8\nCorrect?"
+                },
+                "question": {
+                    "en": "Item 8\nCorrect?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/q_neuro_wordcolor_stroop/items/stroop_item_correct_8",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_correct_9": {
+                "description": {
+                    "en": "Item 9\nCorrect?"
+                },
+                "question": {
+                    "en": "Item 9\nCorrect?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/q_neuro_wordcolor_stroop/items/stroop_item_correct_9",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
                 "valueType": [
                     "xsd:string"
                 ]

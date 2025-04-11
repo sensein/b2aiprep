@@ -45,6 +45,48 @@ AUDIO_FOLDER = "audio"
 RESAMPLE_RATE = 16000
 _LOGGER = logging.getLogger(__name__)
 
+def get_paths(
+        dir_path: str | os.PathLike,
+        file_extension: str,
+):
+    """Retrieve all file paths from a BIDS-like directory structure.
+
+    This function traverses the specified BIDS directory, collecting paths to
+    files with the provided extension from all subject and session directories that match the
+    expected naming conventions.
+
+    Args:
+      bids_dir_path: The root directory of the BIDS dataset.
+      file_extension: The file extension to search for (e.g., ".wav").
+
+    Returns:
+      list[dict[str, Path | int]]:
+        A list of dictionaries, each containing the path to an audio file and
+        its size in bytes.
+    """
+    paths: list[dict[str, Path | int]] = []
+
+    # Iterate over each subject directory.
+    for sub_file in os.listdir(dir_path):
+        subject_dir_path = os.path.join(dir_path, sub_file)
+        if sub_file.startswith(SUBJECT_PREFIX) and os.path.isdir(subject_dir_path):
+            # Iterate over each session directory within a subject.
+            for session_dir_path in os.listdir(subject_dir_path):
+                audio_path = os.path.join(subject_dir_path, session_dir_path, AUDIO_FOLDER)
+                if session_dir_path.startswith(SESSION_PREFIX) and os.path.isdir(audio_path):
+                    # _logger.info(audio_path)
+                    # Iterate over each audio file in the voice directory.
+                    for audio_file in os.listdir(audio_path):
+                        if audio_file.endswith(file_extension):
+                            file_path = Path(os.path.join(audio_path, audio_file))
+                            paths.append(
+                                {
+                                    "path": file_path.absolute(),
+                                    "subject": file_path.name.split("_")[0].split("sub-")[1],
+                                    "size": file_path.stat().st_size,
+                                }
+                            )
+    return paths
 
 def get_audio_paths(
     bids_dir_path: str | os.PathLike,
@@ -63,29 +105,10 @@ def get_audio_paths(
         A list of dictionaries, each containing the path to an audio file and
         its size in bytes.
     """
-    audio_paths: list[dict[str, Path | int]] = []
-
-    # Iterate over each subject directory.
-    for sub_file in os.listdir(bids_dir_path):
-        subject_dir_path = os.path.join(bids_dir_path, sub_file)
-        if sub_file.startswith(SUBJECT_PREFIX) and os.path.isdir(subject_dir_path):
-            # Iterate over each session directory within a subject.
-            for session_dir_path in os.listdir(subject_dir_path):
-                audio_path = os.path.join(subject_dir_path, session_dir_path, AUDIO_FOLDER)
-                if session_dir_path.startswith(SESSION_PREFIX) and os.path.isdir(audio_path):
-                    # _logger.info(audio_path)
-                    # Iterate over each audio file in the voice directory.
-                    for audio_file in os.listdir(audio_path):
-                        if audio_file.endswith(".wav"):
-                            audio_file_path = Path(os.path.join(audio_path, audio_file))
-                            audio_paths.append(
-                                {
-                                    "path": audio_file_path.absolute(),
-                                    "subject": audio_file_path.name.split("_")[0].split("sub-")[1],
-                                    "size": audio_file_path.stat().st_size,
-                                }
-                            )
-    return audio_paths
+    return get_paths(
+        dir_path=bids_dir_path,
+        file_extension=".wav",
+    )
 
 
 def batch_elements(elements: t.List[t.Any], batch_size: int) -> t.List[t.List[t.Any]]:

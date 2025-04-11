@@ -1,4 +1,5 @@
 [
+    "dmdd_diagnosed_dd_selection",
     "diagnosis_depression_gsd",
     "diagnosis_depression_clinical_subcategory",
     "diagnosis_depression_gsd_interview",
@@ -6,5 +7,9 @@
     "diagnosis_depression_gsd_oquw",
     "diagnosis_bipolar_subtype_active_depression",
     "diagnosis_bipolar_psychotic_depression",
-    "diagnosis_bipolar_severity_depression"
+    "diagnosis_bipolar_severity_depression",
+    "dmdd_diagnosed_dd",
+    "dmdd_how_many_depressive_episodes",
+    "diagnosis_bipolar_etiology_depression",
+    "dmdd_see_mental_health_professional"
 ]

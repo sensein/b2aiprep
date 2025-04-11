@@ -3,6 +3,80 @@
         "description": "Measures symptoms and behaviors related to bipolar disorder.",
         "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/d_mood_bipolar_disorder_schema",
         "data_elements": {
+            "mbd_diagnosed_bm": {
+                "description": {
+                    "en": "Have you been diagnosed with Bipolar Disorder?"
+                },
+                "question": {
+                    "en": "Have you been diagnosed with Bipolar Disorder?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_mood_bipolar_disorder/items/mbd_diagnosed_bm",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mbd_diagnosed_bm_selection": {
+                "description": "mbd_diagnosed_bm_selection",
+                "question": {
+                    "en": "Bipolar I and II Disorders"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "6A60 Bipolar type I disorder"
+                        },
+                        "value": "6A60"
+                    },
+                    {
+                        "name": {
+                            "en": "6A61 Bipolar type II disorder"
+                        },
+                        "value": "6A61"
+                    },
+                    {
+                        "name": {
+                            "en": "6A62 Cyclothymic disorder"
+                        },
+                        "value": "6A62"
+                    },
+                    {
+                        "name": {
+                            "en": "6A6Y Other specified bipolar or related disorders"
+                        },
+                        "value": "6A6Y"
+                    },
+                    {
+                        "name": {
+                            "en": "6A6Z Bipolar or related disorders, unspecified"
+                        },
+                        "value": "6A6Z"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_mood_bipolar_disorder/items/mbd_diagnosed_bm_selection",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
             "diagnosis_bipolar_gsd": {
                 "description": "Specifies the participant’s diagnosis of bipolar disorder.",
                 "question": {
@@ -218,6 +292,239 @@
                     }
                 ],
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_severity",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mbd_diagnosed_bipolar_i_ii_other": {
+                "description": {
+                    "en": "Were you diagnosed with Bipolar I, Bipolar II, or Other/unspecified?"
+                },
+                "question": {
+                    "en": "Were you diagnosed with Bipolar I, Bipolar II, or Other/unspecified?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_mood_bipolar_disorder/items/mbd_diagnosed_bipolar_i_ii_other",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Bipolar I"
+                        },
+                        "value": "bipolar_1"
+                    },
+                    {
+                        "name": {
+                            "en": "Bipolar II"
+                        },
+                        "value": "bipolar_2"
+                    },
+                    {
+                        "name": {
+                            "en": "Other/unspecified"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mbd_ever_seen_heard": {
+                "description": {
+                    "en": "Have you ever seen things other people can't see or heard things other people can't hear?"
+                },
+                "question": {
+                    "en": "Have you ever seen things other people can't see or heard things other people can't hear?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_mood_bipolar_disorder/items/mbd_ever_seen_heard",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mbd_had_manic_episode": {
+                "description": {
+                    "en": "Have you ever had a manic episode (i.e., While not under the influence of substances, a distinct period of abnormally and persistently elevated, expansive, or irritable mood and abnormally and persistently goal-directed behavior or energy, lasting at least 1 week and present most of the day, nearly every day)?"
+                },
+                "question": {
+                    "en": "Have you ever had a manic episode (i.e., While not under the influence of substances, a distinct period of abnormally and persistently elevated, expansive, or irritable mood and abnormally and persistently goal-directed behavior or energy, lasting at least 1 week and present most of the day, nearly every day)?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_mood_bipolar_disorder/items/mbd_had_manic_episode",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mbd_many_depressive_episodes": {
+                "description": {
+                    "en": "Approximately how many depressive episodes have you had in your life (feeling down and depressed more days than not over two weeks)?"
+                },
+                "question": {
+                    "en": "Approximately how many depressive episodes have you had in your life (feeling down and depressed more days than not over two weeks)?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_mood_bipolar_disorder/items/mbd_many_depressive_episodes",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None"
+                        },
+                        "value": "none"
+                    },
+                    {
+                        "name": {
+                            "en": "More than two"
+                        },
+                        "value": "moreThanTwo"
+                    },
+                    {
+                        "name": {
+                            "en": "More than five"
+                        },
+                        "value": "moreThanFive"
+                    },
+                    {
+                        "name": {
+                            "en": "Not sure"
+                        },
+                        "value": "notSure"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mbd_many_manic_episodes": {
+                "description": {
+                    "en": "Approximately how many manic episodes have you had in your life?"
+                },
+                "question": {
+                    "en": "Approximately how many manic episodes have you had in your life?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_mood_bipolar_disorder/items/mbd_many_manic_episodes",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None"
+                        },
+                        "value": "none"
+                    },
+                    {
+                        "name": {
+                            "en": "More than two"
+                        },
+                        "value": "moreThanTwo"
+                    },
+                    {
+                        "name": {
+                            "en": "More than five"
+                        },
+                        "value": "moreThanFive"
+                    },
+                    {
+                        "name": {
+                            "en": "Not sure"
+                        },
+                        "value": "notSure"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mbd_prescribed_medication": {
+                "description": {
+                    "en": "Have you ever been prescribed medication for mental or emotional problems (e.g., antidepressants, anxiolytics, antipsychotics, mood stabilizers, etc.)?\n\nMOVED IT TO \"Q - Mood - Participant History\""
+                },
+                "question": {
+                    "en": "Have you ever been prescribed medication for mental or emotional problems (e.g., antidepressants, anxiolytics, antipsychotics, mood stabilizers, etc.)?\n\nMOVED IT TO \"Q - Mood - Participant History\""
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_mood_bipolar_disorder/items/mbd_prescribed_medication",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mbd_see_mental_health_professional": {
+                "description": {
+                    "en": "Have you ever seen a mental health professional for talk therapy (could include social workers, psychiatrists, etc.)?\n\nMOVED IT TO \"Q - Mood - Participant History\""
+                },
+                "question": {
+                    "en": "Have you ever seen a mental health professional for talk therapy (could include social workers, psychiatrists, etc.)?\n\nMOVED IT TO \"Q - Mood - Participant History\""
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_mood_bipolar_disorder/items/mbd_see_mental_health_professional",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
                 "valueType": [
                     "xsd:string"
                 ]

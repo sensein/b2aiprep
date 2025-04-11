@@ -1,0 +1,210 @@
+{
+    "q_mood_participant_history_schema": {
+        "description": "Measures perceived impact of voice disorders for kids.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_generic_confounders/q_generic_confounders_schema",
+        "data_elements": {
+            "mph_session_id": {
+                "description": {
+                    "en": "Session ID"
+                },
+                "question": {
+                    "en": "Session ID"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_mood_participant_history/items/mph_session_id",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "mph_started_at": {
+                "description": {
+                    "en": "Questionnaire Started At"
+                },
+                "question": {
+                    "en": "Questionnaire Started At"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_mood_participant_history/items/mph_started_at",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "mph_completed_at": {
+                "description": {
+                    "en": "Questionnaire Completed At"
+                },
+                "question": {
+                    "en": "Questionnaire Completed At"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_mood_participant_history/items/mph_completed_at",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "mph_duration": {
+                "description": {
+                    "en": "Questionnaire Duration (seconds)"
+                },
+                "question": {
+                    "en": "Questionnaire Duration (seconds)"
+                },
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_mood_participant_history/items/mph_duration",
+                "valueType": [
+                    "xsd:decimal"
+                ],
+                "choices": null
+            },
+            "mph_active_psy_medical_problems": {
+                "description": {
+                    "en": "Please list any active psychiatric problems and medical problems."
+                },
+                "question": {
+                    "en": "Please list any active psychiatric problems and medical problems."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_mood_participant_history/items/mph_active_psy_medical_problems",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "mph_hist_psy_medical_problems": {
+                "description": {
+                    "en": "Please list any historical psychiatric problems and medical problems."
+                },
+                "question": {
+                    "en": "Please list any historical psychiatric problems and medical problems."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_mood_participant_history/items/mph_hist_psy_medical_problems",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "mph_prescribed_medication": {
+                "description": {
+                    "en": "Have you ever been prescribed medication for mental or emotional problems (e.g., antidepressants, anxiolytics, antipsychotics, mood stabilizers, etc.)?"
+                },
+                "question": {
+                    "en": "Have you ever been prescribed medication for mental or emotional problems (e.g., antidepressants, anxiolytics, antipsychotics, mood stabilizers, etc.)?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_mood_participant_history/items/mph_prescribed_medication",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mph_current_medication": {
+                "description": {
+                    "en": "Please list any current psychiatric medications (to the best of your recollection), including medication names, dosage, and how many times per day."
+                },
+                "question": {
+                    "en": "Please list any current psychiatric medications (to the best of your recollection), including medication names, dosage, and how many times per day."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_mood_participant_history/items/mph_current_medication",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "mph_previous_medication": {
+                "description": {
+                    "en": "Please list any previous psychiatric medications (to the best of your recollection), including medication names,\napproximate dates you were taking them, and why they were discontinued."
+                },
+                "question": {
+                    "en": "Please list any previous psychiatric medications (to the best of your recollection), including medication names,\napproximate dates you were taking them, and why they were discontinued."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_mood_participant_history/items/mph_previous_medication",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "mph_see_mental_health_professional": {
+                "description": {
+                    "en": "Have you ever seen a mental health professional for talk therapy (could include social workers, psychiatrists, etc.)?"
+                },
+                "question": {
+                    "en": "Have you ever seen a mental health professional for talk therapy (could include social workers, psychiatrists, etc.)?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_mood_participant_history/items/mph_see_mental_health_professional",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mph_describe_psychotherapy": {
+                "description": {
+                    "en": "Please briefly describe your psychotherapy history (e.g., dates, reasons for seeking therapy, etc.)."
+                },
+                "question": {
+                    "en": "Please briefly describe your psychotherapy history (e.g., dates, reasons for seeking therapy, etc.)."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_mood_participant_history/items/mph_describe_psychotherapy",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            }
+        }
+    }
+}

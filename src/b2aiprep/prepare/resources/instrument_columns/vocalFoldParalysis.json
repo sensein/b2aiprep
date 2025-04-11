@@ -21,5 +21,8 @@
     "diagnosis_vfp_treatment",
     "diagnosis_vfp_treatment_surgery",
     "diagnosis_vfp_treatment_surgery_thyroplasty",
-    "diagnosis_vfp_treatment_surgery_vfia"
+    "diagnosis_vfp_treatment_surgery_vfia",
+    "diagnosis_uvfp_ds",
+    "diagnosis_degree_l_nature",
+    "diagnosis_uvfp_treatment"
 ]

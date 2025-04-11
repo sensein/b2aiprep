@@ -86,6 +86,7 @@ def main():
         'dmdd_prescribed_medication',
         'dmdd_see_mental_health_professional',
         'diagnosis_diagnosed_ad',
+        'diagnosis_diagnosed_ad_selection',
         'diagnosis_ad_active_psy_med_problems___adhd',
         'diagnosis_ad_active_psy_med_problems___anxiety',
         'diagnosis_ad_active_psy_med_problems___ocd',

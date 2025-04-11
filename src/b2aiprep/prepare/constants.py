@@ -5,12 +5,68 @@ from importlib.resources import files
 
 from pydantic import BaseModel
 
+FEATURE_EXTRACTION_SPEECH_RATE = (
+    "speaking_rate",
+    "articulation_rate",
+    "phonation_ratio",
+    "pause_rate",
+    "mean_pause_duration",
+)
+FEATURE_EXTRACTION_DURATION = "duration"
+FEATURE_EXTRACTION_PITCH_AND_INTENSITY = (
+    "mean_f0_hertz",
+    "std_f0_hertz",
+    "mean_intensity_db",
+    "std_intensity_db",
+    "range_ratio_intensity_db",
+)
+FEATURE_EXTRACTION_HARMONIC_DESCRIPTORS = (
+    "mean_hnr_db",
+    "std_hnr_db",
+    "spectral_slope",
+    "spectral_tilt",
+    "cepstral_peak_prominence_mean",
+    "cepstral_peak_prominence_std",
+)
+FEATURE_EXTRACTION_FORMANTS = (
+    "mean_f1_loc",
+    "std_f1_loc",
+    "mean_b1_loc",
+    "std_b1_loc",
+    "mean_f2_loc",
+    "std_f2_loc",
+    "mean_b2_loc",
+    "std_b2_loc",
+)
+FEATURE_EXTRACTION_SPECTRAL_MOMENTS = (
+    "spectral_gravity",
+    "spectral_std_dev",
+    "spectral_skewness",
+    "spectral_kurtosis",
+)
+FEATURE_EXTRACTION_JITTER = (
+    "local_jitter",
+    "localabsolute_jitter",
+    "rap_jitter",
+    "ppq5_jitter",
+    "ddp_jitter",
+)
+FEATURE_EXTRACTION_SHIMMER = (
+    "local_shimmer",
+    "localDB_shimmer",
+    "apq3_shimmer",
+    "apq5_shimmer",
+    "apq11_shimmer",
+    "dda_shimmer",
+)
+
 GENERAL_QUESTIONNAIRES = [
     "participant",
     "eligibility",
     "enrollment",
     "vocalFoldParalysis",
     "laryngealDystonia",
+    "glotticinsufficiency",
     "precancerousLesions",
     "laryngealCancer",
     "benignLesion",
@@ -18,9 +74,12 @@ GENERAL_QUESTIONNAIRES = [
     "depression",
     "airwaystenosis",
     "alzheimers",
+    "huntingtons",
     "parkinsons",
     "als",
-
+    "chronicCough",
+    "muscleTension",
+    "laryngitis",
 ]
 
 AUDIO_TASKS = (
@@ -62,6 +121,35 @@ SPEECH_TASKS = (
     "Word-color Stroop",
 )
 
+def _load_participant_exclusions() -> t.List[str]:
+    """Load the participant IDs to exclude from the dataset.
+
+    Returns
+    -------
+    list
+        The participant IDs to exclude.
+    """
+    b2ai_resources = files("b2aiprep").joinpath("prepare").joinpath("resources")
+    if b2ai_resources.joinpath("participant_id_to_exclude_v2.json").exists():
+        return json.loads(b2ai_resources.joinpath("participant_id_to_exclude_v2.json").read_text())
+    return json.loads(b2ai_resources.joinpath("participant_id_to_exclude.json").read_text())
+
+PARTICIPANT_ID_TO_REMOVE: t.List[str] = _load_participant_exclusions()
+
+def _load_audio_filestem_exclusions() -> t.List[str]:
+    """Load the audio filestems to exclude from the dataset.
+
+    Returns
+    -------
+    list
+        The audio filestems to exclude.
+    """
+    b2ai_resources = files("b2aiprep").joinpath("prepare").joinpath("resources")
+    if b2ai_resources.joinpath("audio_filestem_to_exclude.json").exists():
+        return json.loads(b2ai_resources.joinpath("audio_filestem_to_exclude.json").read_text())
+    return []
+
+AUDIO_FILESTEMS_TO_REMOVE: t.List[str] = _load_audio_filestem_exclusions()
 
 class Instrument(BaseModel):
     """Instruments are associated with fixed sets of columns and a string
@@ -137,7 +225,10 @@ class RepeatInstrument(Enum):
         schema_name="subjectparticipanteligiblestudiesschema",
     )
     ENROLLMENT = Instrument(
-        session_id="record_id", name="enrollment", text="Participant", schema_name="enrollmentformschema"
+        session_id="record_id",
+        name="enrollment",
+        text="Participant",
+        schema_name="enrollmentformschema",
     )
     VOCAL_FOLD_PARALYSIS = Instrument(
         session_id="record_id",
@@ -150,6 +241,12 @@ class RepeatInstrument(Enum):
         name="laryngealDystonia",
         text="Participant",
         schema_name="dvoicelaryngealdystoniaschema",
+    )
+    GLOTTIC_INSUFFICIENCY = Instrument(
+        session_id="record_id",
+        name="glotticinsufficiency",
+        text="Participant",
+        schema_name="dvoiceglotticinsufficiencypresbyphoniaschema",
     )
     PRECANCEROUS_LESIONS = Instrument(
         session_id="record_id",
@@ -193,6 +290,12 @@ class RepeatInstrument(Enum):
         text="Participant",
         schema_name="dneuroalzheimersdiseasemildcognitiveimpairmeschema",
     )
+    HUNTINGTONS = Instrument(
+        session_id="record_id",
+        name="huntingtons",
+        text="Participant",
+        schema_name="dneurohuntingtonsdiseaseschema",
+    )
     PARKINSONS = Instrument(
         session_id="record_id",
         name="parkinsons",
@@ -204,6 +307,27 @@ class RepeatInstrument(Enum):
         name="als",
         text="Participant",
         schema_name="dneuroamyotrophiclateralsclerosisalsschema",
+    )
+
+    CHRONIC_COUGH = Instrument(
+        session_id="record_id",
+        name="chronicCough",
+        text="Participant",
+        schema_name="drespunexplainedchroniccoughschema",
+    )
+
+    MUSCLE_TENSION = Instrument(
+        session_id="record_id",
+        name="muscleTension",
+        text="Participant",
+        schema_name="dvoicemuscletensiondysphoniamtdschema",
+    )
+
+    LARYNGITIS = Instrument(
+        session_id="record_id",
+        name="laryngitis",
+        text="Participant",
+        schema_name="dvoicelaryngitisschema",
     )
 
     MEDICAL_CONDITIONS = Instrument(
@@ -262,7 +386,6 @@ class RepeatInstrument(Enum):
         schema_name="peds_voice_outcome_survey",
     )
 
-
     # data where the row has a specific repeat instrument, filtered to by the text argument
     SESSION = Instrument(
         session_id="session_id", name="sessions", text="Session", schema_name="sessionschema"
@@ -274,7 +397,10 @@ class RepeatInstrument(Enum):
         schema_name="acoustictaskschema",
     )
     RECORDING = Instrument(
-        session_id="recording_id", name="recordings", text="Recording", schema_name="recordingschema"
+        session_id="recording_id",
+        name="recordings",
+        text="Recording",
+        schema_name="recordingschema",
     )
     GENERIC_DEMOGRAPHICS = Instrument(
         session_id="demographics_session_id",
@@ -335,6 +461,12 @@ class RepeatInstrument(Enum):
         name="panas",
         text="Q - Mood - Panas",
         schema_name="qmoodpanasschema",
+    )
+    MOOD_PARTICIPANT_HISTORY = Instrument(
+        session_id="mph_session_id",
+        name="mood_participant_history",
+        text="Q - Mood - Participant History",
+        schema_name="qmoodparticipanthistoryschema",
     )
     MOOD_CUSTOM_AFFECT = Instrument(
         session_id="custom_affect_scale_session_id",
@@ -405,6 +537,9 @@ VALIDATED_QUESTIONNAIRES = [
     RepeatInstrument.NEURO_WORDCOLOR_STROOP,
     RepeatInstrument.NEURO_PRODUCTIVE_VOCABULARY,
     RepeatInstrument.NEURO_RANDOM_ITEM_GENERATION,
+    RepeatInstrument.HUNTINGTONS,
+    RepeatInstrument.GLOTTIC_INSUFFICIENCY,
+    RepeatInstrument.MUSCLE_TENSION,
     RepeatInstrument.MEDICAL_CONDITIONS,
     RepeatInstrument.PEDS_VHI10,
     RepeatInstrument.QOL,
@@ -412,7 +547,7 @@ VALIDATED_QUESTIONNAIRES = [
     RepeatInstrument.PEDS_DEMOGRAPHICS,
     RepeatInstrument.PEDS_BASIC_INFO,
     RepeatInstrument.PEDS_CONTACT_INFO,
-    RepeatInstrument.PEDS_OUTCOME_SURVEY 
+    RepeatInstrument.PEDS_OUTCOME_SURVEY,
 ]
 
 REPEAT_INSTRUMENT_PREFIX_MAPPING = {

@@ -483,6 +483,64 @@
                 "valueType": [
                     "xsd:integer"
                 ]
+            },
+            "laryngitis": {
+                "description": {
+                    "en": "Laryngitis"
+                },
+                "question": {
+                    "en": "Laryngitis"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/enrollment_form/items/ef_laryngitis",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Unchecked"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Checked"
+                        },
+                        "value": 1
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "mtd": {
+                "description": {
+                    "en": "Muscle Tension Dysphonia (MTD)"
+                },
+                "question": {
+                    "en": "Muscle Tension Dysphonia (MTD)"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/enrollment_form/items/ef_mtd",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Unchecked"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "Checked"
+                        },
+                        "value": 1
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
             }
         }
     }

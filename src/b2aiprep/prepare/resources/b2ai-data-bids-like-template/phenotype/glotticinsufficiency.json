@@ -1,0 +1,842 @@
+{
+    "d_voice_glottic_insufficiency_presbyphonia_schema": {
+        "description": "Measures perceived impact of voice disorders for kids.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/d_voice_glottic_insufficiency_presbyphonia_schema",
+        "data_elements": {
+            "diagnois_gi_gsd": {
+                "description": {
+                    "en": "Does the patient have a benign lesion confirmed by laryngoscopy/stroboscopy?"
+                },
+                "question": {
+                    "en": "Does the patient have a benign lesion confirmed by laryngoscopy/stroboscopy?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnois_gi_gsd",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Not certain"
+                        },
+                        "value": "notCertain"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_gi_d": {
+                "description": {
+                    "en": "What is the glottic insufficiency diagnosis?"
+                },
+                "question": {
+                    "en": "What is the glottic insufficiency diagnosis?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_d",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Vocal fold atrophy related to aging (Presbyphonia)"
+                        },
+                        "value": "vocalFoldAtrophyRelatedToAging"
+                    },
+                    {
+                        "name": {
+                            "en": "Vocal fold atrophy related to other cause"
+                        },
+                        "value": "vocalFoldAtrophyRelatedToOtherCause"
+                    },
+                    {
+                        "name": {
+                            "en": "Bilateral sulcus"
+                        },
+                        "value": "bilateralSulcus"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_gi_d_other": {
+                "description": {
+                    "en": "Please specify"
+                },
+                "question": {
+                    "en": "Please specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_d_other",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "diagnosis_gi_d_aoc": {
+                "description": {
+                    "en": "What is the glottic insufficiency diagnosis?"
+                },
+                "question": {
+                    "en": "What is the glottic insufficiency diagnosis?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_d_aoc",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Severe illness"
+                        },
+                        "value": "severeIllness"
+                    },
+                    {
+                        "name": {
+                            "en": "Rapid weight loss"
+                        },
+                        "value": "rapidWeightLoss"
+                    },
+                    {
+                        "name": {
+                            "en": "Hormonal changes"
+                        },
+                        "value": "hormonalChanges"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_gi_d_aoc_other": {
+                "description": {
+                    "en": "Please specify"
+                },
+                "question": {
+                    "en": "Please specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_d_aoc_other",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "diagnosis_gi_dogg": {
+                "description": {
+                    "en": "Please assess degree of glottic gap:"
+                },
+                "question": {
+                    "en": "Please assess degree of glottic gap:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_dogg",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Small"
+                        },
+                        "value": "small"
+                    },
+                    {
+                        "name": {
+                            "en": "Moderate"
+                        },
+                        "value": "moderate"
+                    },
+                    {
+                        "name": {
+                            "en": "Large"
+                        },
+                        "value": "large"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_gi_slogg": {
+                "description": {
+                    "en": "Please assess shape/location of glottic gap. Choose all that apply."
+                },
+                "question": {
+                    "en": "Please assess shape/location of glottic gap. Choose all that apply."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_slogg",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Spindle shaped"
+                        },
+                        "value": "spindle_shaped"
+                    },
+                    {
+                        "name": {
+                            "en": "Anterior Glottic gap"
+                        },
+                        "value": "anterior_glottic_gap"
+                    },
+                    {
+                        "name": {
+                            "en": "Posterior glottic gap"
+                        },
+                        "value": "posterior_glottic_gap"
+                    },
+                    {
+                        "name": {
+                            "en": "Asymmetric"
+                        },
+                        "value": "asymmetric"
+                    }
+                ],
+                "multipleChoice": true,
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_gi_degree_text": {
+                "description": {
+                    "en": "Degree of dysphonia\n\nCAPE-V scale"
+                },
+                "question": {
+                    "en": "Degree of dysphonia\n\nCAPE-V scale"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_text",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "diagnosis_gi_degree_legend": {
+                "description": {
+                    "en": "Legend:\u00a0C- Sonsistent I = IntermittentMI = Mildly DeviantMO = Moderately DeviantSE = Severely Deviant"
+                },
+                "question": {
+                    "en": "Legend:\u00a0C- Sonsistent I = IntermittentMI = Mildly DeviantMO = Moderately DeviantSE = Severely Deviant"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_legend",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "diagnosis_gi_degree_os_1": {
+                "description": {
+                    "en": "Overall Severity"
+                },
+                "question": {
+                    "en": "Overall Severity"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_os_1",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "MI"
+                        },
+                        "value": "MI"
+                    },
+                    {
+                        "name": {
+                            "en": "MO"
+                        },
+                        "value": "MO"
+                    },
+                    {
+                        "name": {
+                            "en": "SE"
+                        },
+                        "value": "SE"
+                    }
+                ],
+                "maxValue": null,
+                "minValue": null,
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_gi_degree_os_2": {
+                "description": {
+                    "en": "Overall Severity"
+                },
+                "question": {
+                    "en": "Overall Severity"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_os_2",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Consistent"
+                        },
+                        "value": "consistent"
+                    },
+                    {
+                        "name": {
+                            "en": "Intermittent"
+                        },
+                        "value": "intermittent"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_gi_degree_r_1": {
+                "description": {
+                    "en": "Roughness"
+                },
+                "question": {
+                    "en": "Roughness"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_r_1",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "MI"
+                        },
+                        "value": "MI"
+                    },
+                    {
+                        "name": {
+                            "en": "MO"
+                        },
+                        "value": "MO"
+                    },
+                    {
+                        "name": {
+                            "en": "SE"
+                        },
+                        "value": "SE"
+                    }
+                ],
+                "maxValue": null,
+                "minValue": null,
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_gi_degree_r_2": {
+                "description": {
+                    "en": "Roughness"
+                },
+                "question": {
+                    "en": "Roughness"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_r_2",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Consistent"
+                        },
+                        "value": "consistent"
+                    },
+                    {
+                        "name": {
+                            "en": "Intermittent"
+                        },
+                        "value": "intermittent"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_gi_degree_b_1": {
+                "description": {
+                    "en": "Breathiness"
+                },
+                "question": {
+                    "en": "Breathiness"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_b_1",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "MI"
+                        },
+                        "value": "MI"
+                    },
+                    {
+                        "name": {
+                            "en": "MO"
+                        },
+                        "value": "MO"
+                    },
+                    {
+                        "name": {
+                            "en": "SE"
+                        },
+                        "value": "SE"
+                    }
+                ],
+                "maxValue": null,
+                "minValue": null,
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_gi_degree_b_2": {
+                "description": {
+                    "en": "Breathiness"
+                },
+                "question": {
+                    "en": "Breathiness"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_b_2",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Consistent"
+                        },
+                        "value": "consistent"
+                    },
+                    {
+                        "name": {
+                            "en": "Intermittent"
+                        },
+                        "value": "intermittent"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_gi_degree_s_1": {
+                "description": {
+                    "en": "Strain"
+                },
+                "question": {
+                    "en": "Strain"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_s_1",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "MI"
+                        },
+                        "value": "MI"
+                    },
+                    {
+                        "name": {
+                            "en": "MO"
+                        },
+                        "value": "MO"
+                    },
+                    {
+                        "name": {
+                            "en": "SE"
+                        },
+                        "value": "SE"
+                    }
+                ],
+                "maxValue": null,
+                "minValue": null,
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_gi_degree_s_2": {
+                "description": {
+                    "en": "Strain"
+                },
+                "question": {
+                    "en": "Strain"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_s_2",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Consistent"
+                        },
+                        "value": "consistent"
+                    },
+                    {
+                        "name": {
+                            "en": "Intermittent"
+                        },
+                        "value": "intermittent"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_gi_degree_p_1": {
+                "description": {
+                    "en": "Pitch"
+                },
+                "question": {
+                    "en": "Pitch"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_p_1",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "MI"
+                        },
+                        "value": "MI"
+                    },
+                    {
+                        "name": {
+                            "en": "MO"
+                        },
+                        "value": "MO"
+                    },
+                    {
+                        "name": {
+                            "en": "SE"
+                        },
+                        "value": "SE"
+                    }
+                ],
+                "maxValue": null,
+                "minValue": null,
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_gi_degree_p_nature": {
+                "description": {
+                    "en": "Pitch\n(Indicate the nature of the abnormality):"
+                },
+                "question": {
+                    "en": "Pitch\n(Indicate the nature of the abnormality):"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_p_nature",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "diagnosis_gi_degree_p_2": {
+                "description": {
+                    "en": "Pitch"
+                },
+                "question": {
+                    "en": "Pitch"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_p_2",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Consistent"
+                        },
+                        "value": "consistent"
+                    },
+                    {
+                        "name": {
+                            "en": "Intermittent"
+                        },
+                        "value": "intermittent"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_gi_degree_l_1": {
+                "description": {
+                    "en": "Loudness"
+                },
+                "question": {
+                    "en": "Loudness"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_l_1",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "MI"
+                        },
+                        "value": "MI"
+                    },
+                    {
+                        "name": {
+                            "en": "MO"
+                        },
+                        "value": "MO"
+                    },
+                    {
+                        "name": {
+                            "en": "SE"
+                        },
+                        "value": "SE"
+                    }
+                ],
+                "maxValue": null,
+                "minValue": null,
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_gi_degree_l_nature": {
+                "description": {
+                    "en": "Loudness\n(Indicate the nature of the abnormality):"
+                },
+                "question": {
+                    "en": "Loudness\n(Indicate the nature of the abnormality):"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_l_nature",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "diagnosis_gi_degree_l_2": {
+                "description": {
+                    "en": "Loudness"
+                },
+                "question": {
+                    "en": "Loudness"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_l_2",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Consistent"
+                        },
+                        "value": "consistent"
+                    },
+                    {
+                        "name": {
+                            "en": "Intermittent"
+                        },
+                        "value": "intermittent"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_gi_degree_comments": {
+                "description": {
+                    "en": "Comments about resonullce"
+                },
+                "question": {
+                    "en": "Comments about resonullce"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_comments",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Normal"
+                        },
+                        "value": "normal"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_gi_degree_comments_other": {
+                "description": {
+                    "en": "Please specify"
+                },
+                "question": {
+                    "en": "Please specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_comments_other",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "diagnosis_gi_degree_comments_other_2": {
+                "description": {
+                    "en": "Additional Features\n(for example, diplophonia, fry, falsetto, asthenia, aphonia, pitch instability, tremor, wet/gurgly, or other relevant terms):"
+                },
+                "question": {
+                    "en": "Additional Features\n(for example, diplophonia, fry, falsetto, asthenia, aphonia, pitch instability, tremor, wet/gurgly, or other relevant terms):"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_degree_comments_other_2",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "diagnosis_gi_treatment": {
+                "description": {
+                    "en": "Has the patient undergone any treatment for his condition?"
+                },
+                "question": {
+                    "en": "Has the patient undergone any treatment for his condition?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_treatment",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_gi_treatment_select": {
+                "description": {
+                    "en": "Select all that apply:"
+                },
+                "question": {
+                    "en": "Select all that apply:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_treatment_select",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Voice/speech therapy"
+                        },
+                        "value": "voice_or_speech_therapy"
+                    },
+                    {
+                        "name": {
+                            "en": "Injection laryngoplasty"
+                        },
+                        "value": "injection_laryngoplasty"
+                    },
+                    {
+                        "name": {
+                            "en": "Bilateral medialization thyroplasty"
+                        },
+                        "value": "bilateral_medialization_thyroplasty"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "multipleChoice": true,
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_gi_treatment_other": {
+                "description": {
+                    "en": "Other, please specify"
+                },
+                "question": {
+                    "en": "Other, please specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_voice_glottic_insufficiency_presbyphonia/items/diagnosis_gi_treatment_other",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            }
+        }
+    }
+}
