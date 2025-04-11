@@ -396,9 +396,9 @@ def create_derived_dataset(bids_path, outdir):
         _LOGGER.info(f"Removed {n - len(audio_paths)} records due to hard-coded participant removal.")
 
     static_features = []
-    for filename in tqdm(audio_paths, desc="Loading static features", total=len(audio_paths)):
-        filename = str(filename)
-        pt_file = Path(filename.replace(".wav", "_features.pt"))
+    for filepath in tqdm(audio_paths, desc="Loading static features", total=len(audio_paths)):
+        filename = str(filepath)
+        pt_file = filepath.parent.joinpath(f'{filepath.stem}_features.pt')
         if not pt_file.exists():
             continue
 
@@ -412,7 +412,7 @@ def create_derived_dataset(bids_path, outdir):
         transcription = features.get("transcription", None)
         if transcription is not None:
             transcription = transcription.text
-            if is_audio_sensitive(filename):
+            if is_audio_sensitive(filepath):
                 # we omit tasks where free speech occurs
                 transcription = None
         subj_info["transcription"] = transcription
