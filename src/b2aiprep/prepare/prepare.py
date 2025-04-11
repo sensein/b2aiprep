@@ -61,6 +61,7 @@ from senselab.utils.data_structures import (
 from tqdm import tqdm
 
 from b2aiprep.prepare.constants import (
+    AUDIO_FILESTEMS_TO_REMOVE,
     FEATURE_EXTRACTION_SPEECH_RATE,
     FEATURE_EXTRACTION_DURATION,
     FEATURE_EXTRACTION_PITCH_AND_INTENSITY,
@@ -502,3 +503,31 @@ def validate_bids_data(
     with pydra.Submitter(plugin="cf") as run:
         run(extract_task)
     _logger.info("Process completed.")
+
+def is_audio_sensitive(filepath: Path) -> bool:
+    return filepath.stem in AUDIO_FILESTEMS_TO_REMOVE
+
+def filter_audio_paths(audio_paths: List[Path]) -> List[Path]:
+    """Filter audio paths to remove audio check and sensitive audio files."""
+    
+    # remove audio-check
+    n_audio = len(audio_paths)
+    audio_paths = [
+        x for x in audio_paths if 'audio-check' not in x.stem.split("_")[2].lower()
+    ]
+    if len(audio_paths) < n_audio:
+        _logger.info(
+            f"Removed {n_audio - len(audio_paths)} audio check recordings."
+        )
+
+    n_audio = len(audio_paths)
+    audio_paths = [
+        x for x in audio_paths if not is_audio_sensitive(x)
+    ]
+    if len(audio_paths) < n_audio:
+        _logger.info(
+            f"Removed {n_audio - len(audio_paths)} records due to sensitive audio."
+        )
+    
+    return audio_paths
+    
