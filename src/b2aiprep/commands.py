@@ -49,13 +49,14 @@ from b2aiprep.prepare.constants import PARTICIPANT_ID_TO_REMOVE
 from b2aiprep.prepare.derived_data import (
     load_phenotype_data,
     feature_extraction_generator,
-    is_audio_sensitive,
     spectrogram_generator,
 )
 from b2aiprep.prepare.prepare import (
     extract_features_sequentially,
     extract_features_workflow,
+    filter_audio_paths,
     validate_bids_data,
+    is_audio_sensitive,
     generate_features_wrapper
 )
 from b2aiprep.prepare.reproschema_to_redcap import parse_audio, parse_survey
@@ -377,7 +378,7 @@ def create_derived_dataset(bids_path, outdir):
     )
 
     _LOGGER.info("Creating merged phenotype data.")
-    df, phenotype = load_phenotype_data(bids_path)
+    df, phenotype = load_phenotype_data(bids_path, phenotype_name='participants')
 
     # write out phenotype data and data dictionary
     df.to_csv(outdir.joinpath("phenotype.tsv"), sep="\t", index=False)
@@ -411,7 +412,7 @@ def create_derived_dataset(bids_path, outdir):
         transcription = features.get("transcription", None)
         if transcription is not None:
             transcription = transcription.text
-            if is_audio_sensitive(subj_info["task_name"]):
+            if is_audio_sensitive(filename):
                 # we omit tasks where free speech occurs
                 transcription = None
         subj_info["transcription"] = transcription
@@ -435,18 +436,8 @@ def create_derived_dataset(bids_path, outdir):
 
     _LOGGER.info("Loading spectrograms into a single HF dataset.")
 
-    outdir = Path(outdir)
-    outdir.mkdir(parents=True, exist_ok=True)
-
-    # remove sensitive audio from the spectrograms / mfcc
-    n_audio = len(audio_paths)
-    audio_paths = [
-        x for x in audio_paths if not is_audio_sensitive(x.stem.split("_")[2])
-    ]
-    if len(audio_paths) < n_audio:
-        _LOGGER.info(
-            f"Removed {n_audio - len(audio_paths)} records due to sensitive audio."
-        )
+    # remove audio check and sensitive audio from the spectrograms / mfcc
+    audio_paths = filter_audio_paths(audio_paths)
     
     for feature_name in ["spectrogram", "mfcc"]:
         if feature_name == "mfcc":
@@ -521,6 +512,87 @@ def validate_derived_dataset(dataset_path):
             if column not in df.columns:
                 missing_columns.append(column)
         assert len(missing_columns) == 0, f"Columns not found in {base_dataframe_name}.tsv: {missing_columns}"
+
+
+@click.command()
+@click.argument("bids_path", type=click.Path(exists=True))
+@click.argument("outdir", type=click.Path())
+def publish_bids_dataset(bids_path, outdir):
+    """Creates a publication ready version of a given BIDS dataset.
+
+    The publication ready version
+
+    - only includes audio (omits features)
+    - cleans/processes the various phenotype files and participants.tsv
+    - removes sensitive audio records
+    """
+    bids_path = Path(bids_path)
+
+    participant_filepath = bids_path.joinpath('participants.tsv')
+    if not participant_filepath.exists():
+        raise FileNotFoundError(f"Participant file {participant_filepath} does not exist.")
+
+    audio_paths = get_paths(bids_path, file_extension=".wav")
+    audio_paths = [x["path"] for x in audio_paths]
+
+    if len(audio_paths) == 0:
+        raise FileNotFoundError(
+            f"No audio files (.wav) found in {bids_path}. Please check the directory structure."
+        )
+
+    outdir = Path(outdir)
+    outdir.mkdir(parents=True, exist_ok=False) # do not overwrite any existing directories
+
+    _LOGGER.info("Processing participants.tsv.")
+    df, phenotype = load_phenotype_data(bids_path, phenotype_name='participants')
+
+    # write out phenotype data and data dictionary
+    df.to_csv(outdir.joinpath("participants.tsv"), sep="\t", index=False)
+    with open(outdir.joinpath("participants.json"), "w") as f:
+        json.dump(phenotype, f, indent=2)
+    _LOGGER.info("Finished processing participants data.")
+
+    # now process phenotypes
+    _LOGGER.info("Processing phenotype data.")
+    phenotype_base_path = bids_path.joinpath('phenotype')
+    phenotype_output_path = outdir.joinpath('phenotype')
+    phenotype_output_path.mkdir(parents=True, exist_ok=True)
+    for phenotype_filepath in phenotype_base_path.glob('*.tsv'):
+        _LOGGER.info(f"Processing {phenotype_filepath.stem}.")
+        # load in the phenotype data
+        df, phenotype = load_phenotype_data(phenotype_base_path, phenotype_name=phenotype_filepath.stem)
+        # write out phenotype data and data dictionary
+        df.to_csv(phenotype_output_path.joinpath(f"{phenotype_filepath.stem}.tsv"), sep="\t", index=False)
+        with open(phenotype_output_path.joinpath(f"{phenotype_filepath.stem}.json"), "w") as f:
+            json.dump(phenotype, f, indent=2)
+    _LOGGER.info("Finished processing phenotype data.")
+
+    _LOGGER.info("Loading spectrograms into a single HF dataset.")
+
+    audio_paths = sorted(
+        audio_paths,
+        # sort first by subject, then by task
+        key=lambda x: (x.stem.split("_")[0], x.stem.split("_")[2]),
+    )
+
+    # remove audio check and sensitive audio
+    audio_paths = filter_audio_paths(audio_paths)
+
+    _LOGGER.info(f"Copying {len(audio_paths)} recordings.")
+    for audio_path in tqdm(audio_paths, desc="Copying audio and metadata files", total=len(audio_paths)):
+        # copy to matching subfolder in output path
+        relative_audio_path = audio_path.relative_to(bids_path)
+        output_path = outdir.joinpath(relative_audio_path)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy(audio_path, output_path)
+        # copy over the associated .json file
+        json_path = audio_path.with_suffix('.json')
+        if json_path.exists():
+            shutil.copy(json_path, output_path.with_suffix('.json'))
+        else:
+            _LOGGER.warning(f"JSON metadata file missing for {relative_audio_path}")
+
+    _LOGGER.info("Finished copying audio files.")
 
 @click.command()
 @click.argument("bids_dir_path", type=click.Path())

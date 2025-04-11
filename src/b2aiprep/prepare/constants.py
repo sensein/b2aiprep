@@ -136,6 +136,21 @@ def _load_participant_exclusions() -> t.List[str]:
 
 PARTICIPANT_ID_TO_REMOVE: t.List[str] = _load_participant_exclusions()
 
+def _load_audio_filestem_exclusions() -> t.List[str]:
+    """Load the audio filestems to exclude from the dataset.
+
+    Returns
+    -------
+    list
+        The audio filestems to exclude.
+    """
+    b2ai_resources = files("b2aiprep").joinpath("prepare").joinpath("resources")
+    if b2ai_resources.joinpath("audio_filestem_to_exclude.json").exists():
+        return json.loads(b2ai_resources.joinpath("audio_filestem_to_exclude.json").read_text())
+    return []
+
+AUDIO_FILESTEMS_TO_REMOVE: t.List[str] = _load_audio_filestem_exclusions()
+
 class Instrument(BaseModel):
     """Instruments are associated with fixed sets of columns and a string
     value to subselect RedCap CSV rows."""

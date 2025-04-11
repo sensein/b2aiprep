@@ -8,7 +8,7 @@ import pandas as pd
 import torch
 from tqdm import tqdm
 
-from b2aiprep.prepare.constants import PARTICIPANT_ID_TO_REMOVE
+from b2aiprep.prepare.constants import AUDIO_FILESTEMS_TO_REMOVE, PARTICIPANT_ID_TO_REMOVE
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -152,14 +152,15 @@ def _drop_columns_from_df_and_data_dict(
 def clean_phenotype_data(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
     """Remove known errors occurring in the phenotype dataframe."""
     # the alcohol_amt column has dates instead of values
-    date_fix_map = {
-        "4-Mar": "3 - 4",
-        "6-May": "5 - 6",
-        "9-Jul": "7 - 9",
-    }
-    df["alcohol_amt"] = df["alcohol_amt"].apply(
-        lambda x: date_fix_map[x] if x in date_fix_map else x
-    )
+    if "alcohol_amt" in df:
+        date_fix_map = {
+            "4-Mar": "3 - 4",
+            "6-May": "5 - 6",
+            "9-Jul": "7 - 9",
+        }
+        df["alcohol_amt"] = df["alcohol_amt"].apply(
+            lambda x: date_fix_map[x] if x in date_fix_map else x
+        )
 
     # remove columns which are empty
     df, phenotype = _drop_columns_from_df_and_data_dict(
@@ -232,25 +233,7 @@ def clean_phenotype_data(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFr
 
     return df, phenotype
 
-
-def load_phenotype_data(bids_path: Path) -> t.Tuple[pd.DataFrame, t.Dict[str, t.Any]]:
-    # load in the participants.tsv which has all phenotype data merged
-    df = pd.read_csv(bids_path.joinpath("participants.tsv"), sep="\t")
-    with open(bids_path.joinpath("participants.json"), "r") as f:
-        phenotype = json.load(f)
-
-    # remove subject
-    idx = df["record_id"].isin(PARTICIPANT_ID_TO_REMOVE)
-    if idx.sum() > 0:
-        _LOGGER.info(
-            f"Removing {idx.sum()} records from phenotype due to hard-coded subject removal."
-        )
-        df = df.loc[~idx]
-
-    # fix some data values and remove columns we do not want to publish at this time
-    df, phenotype = clean_phenotype_data(df, phenotype)
-
-    # create columns missing in the original data
+def _add_sex_at_birth_column(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
     df["sex_at_birth"] = None
     for sex_at_birth in ["Male", "Female"]:
         # case-sensitive match
@@ -266,7 +249,12 @@ def load_phenotype_data(bids_path: Path) -> t.Tuple[pd.DataFrame, t.Dict[str, t.
     for c in df.columns:
         if c == "specify_gender_identity":
             continue
-
+        
+        if c == 'record_id' and c not in phenotype:
+            # for some reason record_id is not in many of the phenotype dict
+            phenotype['record_id'] = {
+                "description": "Unique identifier for each participant."
+            }
         if c == "gender_identity":
             columns.append("sex_at_birth")
             phenotype_reordered["sex_at_birth"] = {
@@ -281,13 +269,35 @@ def load_phenotype_data(bids_path: Path) -> t.Tuple[pd.DataFrame, t.Dict[str, t.
     df = df[columns]
     return df, phenotype_reordered
 
+def load_phenotype_data(base_path: Path, phenotype_name: str) -> t.Tuple[pd.DataFrame, t.Dict[str, t.Any]]:
+    # load in the participants.tsv which has all phenotype data merged
+    if phenotype_name.endswith('.tsv'):
+        phenotype_name = phenotype_name[:-4]
+    elif phenotype_name.endswith('.json'):
+        phenotype_name = phenotype_name[:-5]
+    df = pd.read_csv(base_path.joinpath(f"{phenotype_name}.tsv"), sep="\t")
+    with open(base_path.joinpath(f"{phenotype_name}.json"), "r") as f:
+        phenotype = json.load(f)
 
-def is_audio_sensitive(task_name: str) -> bool:
-    if task_name.startswith("task-"):
-        task_name = task_name[5:]
-    task_name = task_name.lower()
-    return (
-        task_name.startswith("free-speech")
-        or task_name.startswith("audio-check")
-        or task_name.startswith("open-response-questions")
-    )
+    # skip the first-level of the hierarchy if present, which is the name of the phenotype
+    if len(phenotype) == 1:
+        only_key = next(iter(phenotype))
+        if 'data_elements' in phenotype[only_key]:
+            phenotype = phenotype[only_key]['data_elements']
+
+    # remove hard-coded individuals
+    idx = df["record_id"].isin(PARTICIPANT_ID_TO_REMOVE)
+    if idx.sum() > 0:
+        _LOGGER.info(
+            f"Removing {idx.sum()} records from {phenotype_name}."
+        )
+        df = df.loc[~idx]
+
+    # fix some data values and remove columns we do not want to publish at this time
+    df, phenotype = clean_phenotype_data(df, phenotype)
+
+    # create columns missing in the original data
+    if ("gender_identity" in df.columns) and ("specify_gender_identity" in df.columns):
+        df, phenotype = _add_sex_at_birth_column(df, phenotype)
+
+    return df, phenotype
