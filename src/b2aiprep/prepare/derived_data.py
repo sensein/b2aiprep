@@ -9,6 +9,7 @@ import torch
 from tqdm import tqdm
 
 from b2aiprep.prepare.constants import AUDIO_FILESTEMS_TO_REMOVE, PARTICIPANT_ID_TO_REMOVE
+from b2aiprep.prepare.prepare import reduce_id_length, reduce_length_of_id
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -129,6 +130,9 @@ def feature_extraction_generator(
 
         data = data[:, ::2]
         output[feature_name] = data
+
+        output["participant_id"] = reduce_id_length(output["participant_id"])
+        output["session_id"] = reduce_id_length(output["session_id"])
 
         yield output
 
@@ -299,5 +303,9 @@ def load_phenotype_data(base_path: Path, phenotype_name: str) -> t.Tuple[pd.Data
     # create columns missing in the original data
     if ("gender_identity" in df.columns) and ("specify_gender_identity" in df.columns):
         df, phenotype = _add_sex_at_birth_column(df, phenotype)
+
+    # reduce record_id to 8 characters
+    df = reduce_length_of_id(df, id_name='record_id')
+    df = reduce_length_of_id(df, id_name='session_id')
 
     return df, phenotype

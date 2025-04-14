@@ -55,6 +55,8 @@ from b2aiprep.prepare.prepare import (
     extract_features_sequentially,
     extract_features_workflow,
     filter_audio_paths,
+    reduce_id_length,
+    reduce_length_of_id,
     validate_bids_data,
     is_audio_sensitive,
     generate_features_wrapper
@@ -422,6 +424,8 @@ def create_derived_dataset(bids_path, outdir):
         static_features.append(subj_info)
 
     df_static = pd.DataFrame(static_features)
+    df_static = reduce_length_of_id(df_static, "participant_id")
+    df_static = reduce_length_of_id(df_static, "session_id")
     df_static.to_csv(outdir / "static_features.tsv", sep="\t", index=False)
     # load in the JSON with descriptions of each feature and copy it over
     # write it out again so formatting is consistent between JSONs
@@ -587,17 +591,37 @@ def publish_bids_dataset(bids_path, outdir):
 
     _LOGGER.info(f"Copying {len(audio_paths)} recordings.")
     for audio_path in tqdm(audio_paths, desc="Copying audio and metadata files", total=len(audio_paths)):
-        # copy to matching subfolder in output path
-        relative_audio_path = audio_path.relative_to(bids_path)
-        output_path = outdir.joinpath(relative_audio_path)
-        output_path.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy(audio_path, output_path)
-        # copy over the associated .json file
         json_path = audio_path.with_suffix('.json')
-        if json_path.exists():
-            shutil.copy(json_path, output_path.with_suffix('.json'))
-        else:
-            _LOGGER.warning(f"JSON metadata file missing for {relative_audio_path}")
+
+        metadata = json.loads(json_path.read_text())
+        metadata_updated = {}
+        record_id = None
+        participant_id = None
+        session_id = None
+        for c in metadata:
+            if c == 'record_id':
+                metadata_updated['participant_id'] = reduce_id_length(metadata[c])
+                record_id = metadata[c]
+                participant_id = metadata_updated['participant_id']
+            elif c.endswith('session_id'):
+                metadata_updated[c] = reduce_id_length(metadata[c])
+                session_id = metadata[c]
+            else:
+                metadata_updated[c] = metadata[c]
+        
+        if record_id is None or participant_id is None:
+            raise ValueError(f"Could not find record_id or participant_id in {json_path}.")
+
+        audio_path_stem_ending = '_'.join(audio_path.stem.split("_")[2:])
+        output_path = bids_path.joinpath(
+            f'sub-{participant_id}/ses-{session_id}/audio/{audio_path_stem_ending}.wav'
+        )
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+
+        # copy over the associated .json file and audio data
+        with open(output_path.with_suffix('.json'), 'w') as fp:
+            json.dump(metadata_updated, fp, indent=2)
+        shutil.copy(audio_path, output_path)
 
     _LOGGER.info("Finished copying audio files.")
 
