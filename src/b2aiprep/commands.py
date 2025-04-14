@@ -397,7 +397,6 @@ def create_derived_dataset(bids_path, outdir):
 
     static_features = []
     for filepath in tqdm(audio_paths, desc="Loading static features", total=len(audio_paths)):
-        filename = str(filepath)
         pt_file = filepath.parent.joinpath(f'{filepath.stem}_features.pt')
         if not pt_file.exists():
             continue
@@ -575,6 +574,14 @@ def publish_bids_dataset(bids_path, outdir):
         key=lambda x: (x.stem.split("_")[0], x.stem.split("_")[2]),
     )
 
+    # remove known individuals
+    n = len(audio_paths)
+    for participant_id in PARTICIPANT_ID_TO_REMOVE:
+        audio_paths = [x for x in audio_paths if f"sub-{participant_id}" not in str(x)]
+
+    if len(audio_paths) < n:
+        _LOGGER.info(f"Removed {n - len(audio_paths)} records due to hard-coded participant removal.")
+
     # remove audio check and sensitive audio
     audio_paths = filter_audio_paths(audio_paths)
 
@@ -593,6 +600,11 @@ def publish_bids_dataset(bids_path, outdir):
             _LOGGER.warning(f"JSON metadata file missing for {relative_audio_path}")
 
     _LOGGER.info("Finished copying audio files.")
+
+    # copy over the standard bids template files
+    shutil.copy(bids_path.joinpath('README.md'), outdir)
+    shutil.copy(bids_path.joinpath('CHANGES.md'), outdir)
+    shutil.copy(bids_path.joinpath('dataset_description.json'), outdir)
 
 @click.command()
 @click.argument("bids_dir_path", type=click.Path())
