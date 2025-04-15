@@ -237,17 +237,23 @@ def clean_phenotype_data(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFr
 
     return df, phenotype
 
+def add_record_id_to_phenotype(phenotype: dict) -> dict:
+    if 'record_id' in list(phenotype.keys()):
+        return phenotype
+
+    phenotype_updated = {
+        'record_id': {
+            "description": "Unique identifier for each participant."
+        }
+    }
+    phenotype_updated.update(phenotype)
+    return phenotype_updated
+    
 def _rename_record_id_to_participant_id(df: pd.DataFrame, phenotype: dict) -> dict:
     phenotype_updated = {}
     for c in df.columns:
         if c in ('record_id', 'participant_id'):
-            if c not in phenotype:
-                # for some reason record_id is not in many of the phenotype dict
-                phenotype['participant_id'] = {
-                    "description": "Unique identifier for each participant."
-                }
-            else:
-                phenotype['participant_id'] = phenotype[c]
+            phenotype['participant_id'] = phenotype[c]
         else:
             phenotype_updated[c] = phenotype[c]
     phenotype = phenotype_updated
@@ -297,6 +303,13 @@ def load_phenotype_data(base_path: Path, phenotype_name: str) -> t.Tuple[pd.Data
     df = pd.read_csv(base_path.joinpath(f"{phenotype_name}.tsv"), sep="\t")
     with open(base_path.joinpath(f"{phenotype_name}.json"), "r") as f:
         phenotype = json.load(f)
+    
+    phenotype = add_record_id_to_phenotype(phenotype)
+
+    if len(phenotype) != df.shape[1]:
+        _LOGGER.warning(
+            f"Phenotype {phenotype_name} has {len(phenotype)} columns, but the data has {df.shape[1]} columns."
+        )
 
     # skip the first-level of the hierarchy if present, which is the name of the phenotype
     if len(phenotype) == 1:
