@@ -1,5 +1,6 @@
 """Commands available through the CLI."""
 
+from copy import deepcopy
 import csv
 import json
 import logging
@@ -594,20 +595,22 @@ def publish_bids_dataset(bids_path, outdir):
         json_path = audio_path.with_suffix('.json')
 
         metadata = json.loads(json_path.read_text())
-        metadata_updated = {}
         record_id = None
         participant_id = None
         session_id = None
-        for c in metadata:
-            if c == 'record_id':
-                metadata_updated['participant_id'] = reduce_id_length(metadata[c])
-                record_id = metadata[c]
-                participant_id = metadata_updated['participant_id']
-            elif c.endswith('session_id'):
-                metadata_updated[c] = reduce_id_length(metadata[c])
-                session_id = metadata[c]
-            else:
-                metadata_updated[c] = metadata[c]
+        for item in metadata['item']:
+            if 'linkId' not in item:
+                continue
+
+            if item['linkId'] == 'record_id':
+                record_id = item['answer'][0]['valueString']
+                item['answer'][0]['valueString'] = reduce_id_length(record_id)
+                participant_id = item['answer'][0]['valueString']
+            elif item['linkId'] == 'session_id':
+                item['answer'][0]['valueString'] = reduce_id_length(
+                    item['answer'][0]['valueString']
+                )
+                session_id = item['answer'][0]['valueString']
         
         if record_id is None or participant_id is None:
             raise ValueError(f"Could not find record_id or participant_id in {json_path}.")
@@ -620,7 +623,7 @@ def publish_bids_dataset(bids_path, outdir):
 
         # copy over the associated .json file and audio data
         with open(output_path.with_suffix('.json'), 'w') as fp:
-            json.dump(metadata_updated, fp, indent=2)
+            json.dump(metadata, fp, indent=2)
         shutil.copy(audio_path, output_path)
 
     _LOGGER.info("Finished copying audio files.")
