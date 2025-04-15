@@ -238,10 +238,9 @@ def clean_phenotype_data(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFr
     return df, phenotype
 
 def _rename_record_id_to_participant_id(df: pd.DataFrame, phenotype: dict) -> dict:
-    df = df.rename(columns={"record_id": "participant_id"})
     phenotype_updated = {}
     for c in df.columns:
-        if c == 'record_id':
+        if c in ('record_id', 'participant_id'):
             if c not in phenotype:
                 # for some reason record_id is not in many of the phenotype dict
                 phenotype['participant_id'] = {
@@ -252,6 +251,9 @@ def _rename_record_id_to_participant_id(df: pd.DataFrame, phenotype: dict) -> di
         else:
             phenotype_updated[c] = phenotype[c]
     phenotype = phenotype_updated
+
+    df = df.rename(columns={"record_id": "participant_id"})
+
     return df, phenotype
 
 def _add_sex_at_birth_column(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:

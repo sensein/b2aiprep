@@ -56,8 +56,9 @@ from b2aiprep.prepare.prepare import (
     extract_features_sequentially,
     extract_features_workflow,
     filter_audio_paths,
-    reduce_id_length,
+    get_value_from_metadata,
     reduce_length_of_id,
+    update_metadata_record_and_session_id,
     validate_bids_data,
     is_audio_sensitive,
     generate_features_wrapper
@@ -595,27 +596,10 @@ def publish_bids_dataset(bids_path, outdir):
         json_path = audio_path.with_suffix('.json')
 
         metadata = json.loads(json_path.read_text())
-        record_id = None
-        participant_id = None
-        session_id = None
-        for item in metadata['item']:
-            if 'linkId' not in item:
-                continue
 
-            if item['linkId'] == 'record_id':
-                record_id = item['answer'][0]['valueString']
-                item['answer'][0]['valueString'] = reduce_id_length(record_id)
-                participant_id = item['answer'][0]['valueString']
-                # rename to participant_id
-                item['linkId'] = 'participant_id'
-            elif (item['linkId'] == 'session_id') or (item['linkId'].endswith('_session_id')):
-                item['answer'][0]['valueString'] = reduce_id_length(
-                    item['answer'][0]['valueString']
-                )
-                session_id = item['answer'][0]['valueString']
-        
-        if record_id is None or participant_id is None:
-            raise ValueError(f"Could not find record_id or participant_id in {json_path}.")
+        update_metadata_record_and_session_id(metadata)
+        participant_id = get_value_from_metadata(metadata, linkid='participant_id', endswith=False)
+        session_id = get_value_from_metadata(metadata, linkid='session_id', endswith=True)
 
         audio_path_stem_ending = '_'.join(audio_path.stem.split("_")[2:])
         output_path = bids_path.joinpath(
