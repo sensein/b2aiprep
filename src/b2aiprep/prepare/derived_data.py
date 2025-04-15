@@ -293,6 +293,7 @@ def load_phenotype_data(base_path: Path, phenotype_name: str) -> t.Tuple[pd.Data
         phenotype_name = phenotype_name[:-4]
     elif phenotype_name.endswith('.json'):
         phenotype_name = phenotype_name[:-5]
+
     df = pd.read_csv(base_path.joinpath(f"{phenotype_name}.tsv"), sep="\t")
     with open(base_path.joinpath(f"{phenotype_name}.json"), "r") as f:
         phenotype = json.load(f)
@@ -314,14 +315,14 @@ def load_phenotype_data(base_path: Path, phenotype_name: str) -> t.Tuple[pd.Data
     # fix some data values and remove columns we do not want to publish at this time
     df, phenotype = clean_phenotype_data(df, phenotype)
 
-    # create columns missing in the original data
-    if ("gender_identity" in df.columns) and ("specify_gender_identity" in df.columns):
-        df, phenotype = _add_sex_at_birth_column(df, phenotype)
-
     # reduce record_id to 8 characters
     df = reduce_length_of_id(df, id_name='record_id')
     df = reduce_length_of_id(df, id_name='session_id')
 
     df, phenotype = _rename_record_id_to_participant_id(df, phenotype)
+
+    # create columns missing in the original data
+    if ("gender_identity" in df.columns) and ("specify_gender_identity" in df.columns):
+        df, phenotype = _add_sex_at_birth_column(df, phenotype)
 
     return df, phenotype
