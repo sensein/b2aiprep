@@ -252,15 +252,14 @@ def add_record_id_to_phenotype(phenotype: dict) -> dict:
 def _rename_record_id_to_participant_id(df: pd.DataFrame, phenotype: dict) -> dict:
     phenotype_updated = {}
     for c in df.columns:
-        if c in ('record_id', 'participant_id'):
+        if c == 'record_id':
             phenotype['participant_id'] = phenotype[c]
         else:
             phenotype_updated[c] = phenotype[c]
-    phenotype = phenotype_updated
 
     df = df.rename(columns={"record_id": "participant_id"})
 
-    return df, phenotype
+    return df, phenotype_updated
 
 def _add_sex_at_birth_column(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
     df["sex_at_birth"] = None
@@ -304,7 +303,8 @@ def load_phenotype_data(base_path: Path, phenotype_name: str) -> t.Tuple[pd.Data
     with open(base_path.joinpath(f"{phenotype_name}.json"), "r") as f:
         phenotype = json.load(f)
     
-    phenotype = add_record_id_to_phenotype(phenotype)
+    if df.shape[1] > 0 and df.columns[0] == 'record_id' and 'record_id' not in list(phenotype.keys()):
+        phenotype = add_record_id_to_phenotype(phenotype)
 
     if len(phenotype) != df.shape[1]:
         _LOGGER.warning(
@@ -332,10 +332,10 @@ def load_phenotype_data(base_path: Path, phenotype_name: str) -> t.Tuple[pd.Data
     df = reduce_length_of_id(df, id_name='record_id')
     df = reduce_length_of_id(df, id_name='session_id')
 
-    df, phenotype = _rename_record_id_to_participant_id(df, phenotype)
-
     # create columns missing in the original data
     if ("gender_identity" in df.columns) and ("specify_gender_identity" in df.columns):
         df, phenotype = _add_sex_at_birth_column(df, phenotype)
+
+    df, phenotype = _rename_record_id_to_participant_id(df, phenotype)
 
     return df, phenotype
