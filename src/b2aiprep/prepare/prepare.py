@@ -532,6 +532,9 @@ def filter_audio_paths(audio_paths: List[Path]) -> List[Path]:
     return audio_paths
 
 def reduce_id_length(x):
+    """Reduce length of ID."""
+    if pd.isnull(x):
+        return x
     return x.split('-')[0]
 
 def reduce_length_of_id(df: pd.DataFrame, id_name: str) -> pd.DataFrame:
