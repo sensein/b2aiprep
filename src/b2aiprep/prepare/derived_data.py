@@ -237,6 +237,23 @@ def clean_phenotype_data(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFr
 
     return df, phenotype
 
+def _rename_record_id_to_participant_id(df: pd.DataFrame, phenotype: dict) -> dict:
+    df = df.rename(columns={"record_id": "participant_id"})
+    phenotype_updated = {}
+    for c in df.columns:
+        if c == 'record_id':
+            if c not in phenotype:
+                # for some reason record_id is not in many of the phenotype dict
+                phenotype['participant_id'] = {
+                    "description": "Unique identifier for each participant."
+                }
+            else:
+                phenotype['participant_id'] = phenotype[c]
+        else:
+            phenotype_updated[c] = phenotype[c]
+    phenotype = phenotype_updated
+    return df, phenotype
+
 def _add_sex_at_birth_column(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
     df["sex_at_birth"] = None
     for sex_at_birth in ["Male", "Female"]:
@@ -253,12 +270,7 @@ def _add_sex_at_birth_column(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.Da
     for c in df.columns:
         if c == "specify_gender_identity":
             continue
-        
-        if c == 'record_id' and c not in phenotype:
-            # for some reason record_id is not in many of the phenotype dict
-            phenotype['record_id'] = {
-                "description": "Unique identifier for each participant."
-            }
+
         if c == "gender_identity":
             columns.append("sex_at_birth")
             phenotype_reordered["sex_at_birth"] = {
@@ -307,5 +319,7 @@ def load_phenotype_data(base_path: Path, phenotype_name: str) -> t.Tuple[pd.Data
     # reduce record_id to 8 characters
     df = reduce_length_of_id(df, id_name='record_id')
     df = reduce_length_of_id(df, id_name='session_id')
+
+    df, phenotype = _rename_record_id_to_participant_id(df, phenotype)
 
     return df, phenotype

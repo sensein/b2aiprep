@@ -606,7 +606,9 @@ def publish_bids_dataset(bids_path, outdir):
                 record_id = item['answer'][0]['valueString']
                 item['answer'][0]['valueString'] = reduce_id_length(record_id)
                 participant_id = item['answer'][0]['valueString']
-            elif item['linkId'] == 'session_id':
+                # rename to participant_id
+                item['linkId'] = 'participant_id'
+            elif (item['linkId'] == 'session_id') or (item['linkId'].endswith('_session_id')):
                 item['answer'][0]['valueString'] = reduce_id_length(
                     item['answer'][0]['valueString']
                 )
