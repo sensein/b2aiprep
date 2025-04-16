@@ -57,6 +57,7 @@ from b2aiprep.prepare.prepare import (
     extract_features_workflow,
     filter_audio_paths,
     get_value_from_metadata,
+    reduce_id_length,
     reduce_length_of_id,
     update_metadata_record_and_session_id,
     validate_bids_data,
@@ -461,6 +462,18 @@ def create_derived_dataset(bids_path, outdir):
 
         # sort the dataset by identifier and task_name
         ds = Dataset.from_generator(audio_feature_generator, num_proc=1)
+
+        # reduce length of participant_id and session_id
+        ds = ds.map(
+            partial(
+                lambda x: {
+                    'participant_id': reduce_id_length(x['participant_id']),
+                    'session_id': reduce_id_length(x['session_id']),
+                }
+            ),
+            remove_columns=['participant_id', 'session_id'],
+        )
+
         ds.to_parquet(
             str(outdir.joinpath(f"{feature_name}.parquet")),
             version="2.6",

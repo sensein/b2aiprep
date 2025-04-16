@@ -41,9 +41,6 @@ def spectrogram_generator(
         spectrogram = spectrogram[:, ::2]
         output["spectrogram"] = spectrogram
 
-        output["participant_id"] = reduce_id_length(output["participant_id"])
-        output["session_id"] = reduce_id_length(output["session_id"])
-
         yield output
 
 
@@ -133,9 +130,6 @@ def feature_extraction_generator(
 
         data = data[:, ::2]
         output[feature_name] = data
-
-        output["participant_id"] = reduce_id_length(output["participant_id"])
-        output["session_id"] = reduce_id_length(output["session_id"])
 
         yield output
 
