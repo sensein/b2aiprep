@@ -530,4 +530,42 @@ def filter_audio_paths(audio_paths: List[Path]) -> List[Path]:
         )
     
     return audio_paths
+
+def reduce_id_length(x):
+    """Reduce length of ID."""
+    if pd.isnull(x):
+        return x
+    return x.split('-')[0]
+
+def reduce_length_of_id(df: pd.DataFrame, id_name: str) -> pd.DataFrame:
+    """Reduce length of ID in the dataframe."""
+    for c in df.columns:
+        if c == id_name or c.endswith(id_name):
+            df[c] = df[c].apply(reduce_id_length)
     
+    return df
+
+def get_value_from_metadata(metadata: dict, linkid: str, endswith: bool = False) -> str:
+    for item in metadata['item']:
+        if 'linkId' not in item:
+            continue
+        if item['linkId'] == linkid:
+            return item['answer'][0]['valueString']
+        if endswith and item['linkId'].endswith(linkid):
+            return item['answer'][0]['valueString']
+    return None
+
+def update_metadata_record_and_session_id(metadata: dict):
+    for item in metadata['item']:
+        if 'linkId' not in item:
+            continue
+
+        if item['linkId'] == 'record_id':
+            record_id = item['answer'][0]['valueString']
+            item['answer'][0]['valueString'] = reduce_id_length(record_id)
+            # rename to participant_id
+            item['linkId'] = 'participant_id'
+        elif (item['linkId'] == 'session_id') or (item['linkId'].endswith('_session_id')):
+            item['answer'][0]['valueString'] = reduce_id_length(
+                item['answer'][0]['valueString']
+            )

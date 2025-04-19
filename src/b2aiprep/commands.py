@@ -1,5 +1,6 @@
 """Commands available through the CLI."""
 
+from copy import deepcopy
 import csv
 import json
 import logging
@@ -55,6 +56,10 @@ from b2aiprep.prepare.prepare import (
     extract_features_sequentially,
     extract_features_workflow,
     filter_audio_paths,
+    get_value_from_metadata,
+    reduce_id_length,
+    reduce_length_of_id,
+    update_metadata_record_and_session_id,
     validate_bids_data,
     is_audio_sensitive,
     generate_features_wrapper
@@ -397,7 +402,6 @@ def create_derived_dataset(bids_path, outdir):
 
     static_features = []
     for filepath in tqdm(audio_paths, desc="Loading static features", total=len(audio_paths)):
-        filename = str(filepath)
         pt_file = filepath.parent.joinpath(f'{filepath.stem}_features.pt')
         if not pt_file.exists():
             continue
@@ -423,6 +427,8 @@ def create_derived_dataset(bids_path, outdir):
         static_features.append(subj_info)
 
     df_static = pd.DataFrame(static_features)
+    df_static = reduce_length_of_id(df_static, "participant_id")
+    df_static = reduce_length_of_id(df_static, "session_id")
     df_static.to_csv(outdir / "static_features.tsv", sep="\t", index=False)
     # load in the JSON with descriptions of each feature and copy it over
     # write it out again so formatting is consistent between JSONs
@@ -456,6 +462,18 @@ def create_derived_dataset(bids_path, outdir):
 
         # sort the dataset by identifier and task_name
         ds = Dataset.from_generator(audio_feature_generator, num_proc=1)
+
+        # reduce length of participant_id and session_id
+        ds = ds.map(
+            partial(
+                lambda x: {
+                    'participant_id': reduce_id_length(x['participant_id']),
+                    'session_id': reduce_id_length(x['session_id']),
+                }
+            ),
+            remove_columns=['participant_id', 'session_id'],
+        )
+
         ds.to_parquet(
             str(outdir.joinpath(f"{feature_name}.parquet")),
             version="2.6",
@@ -575,24 +593,44 @@ def publish_bids_dataset(bids_path, outdir):
         key=lambda x: (x.stem.split("_")[0], x.stem.split("_")[2]),
     )
 
+    # remove known individuals
+    n = len(audio_paths)
+    for participant_id in PARTICIPANT_ID_TO_REMOVE:
+        audio_paths = [x for x in audio_paths if f"sub-{participant_id}" not in str(x)]
+
+    if len(audio_paths) < n:
+        _LOGGER.info(f"Removed {n - len(audio_paths)} records due to hard-coded participant removal.")
+
     # remove audio check and sensitive audio
     audio_paths = filter_audio_paths(audio_paths)
 
     _LOGGER.info(f"Copying {len(audio_paths)} recordings.")
     for audio_path in tqdm(audio_paths, desc="Copying audio and metadata files", total=len(audio_paths)):
-        # copy to matching subfolder in output path
-        relative_audio_path = audio_path.relative_to(bids_path)
-        output_path = outdir.joinpath(relative_audio_path)
-        output_path.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy(audio_path, output_path)
-        # copy over the associated .json file
         json_path = audio_path.with_suffix('.json')
-        if json_path.exists():
-            shutil.copy(json_path, output_path.with_suffix('.json'))
-        else:
-            _LOGGER.warning(f"JSON metadata file missing for {relative_audio_path}")
+
+        metadata = json.loads(json_path.read_text())
+
+        update_metadata_record_and_session_id(metadata)
+        participant_id = get_value_from_metadata(metadata, linkid='participant_id', endswith=False)
+        session_id = get_value_from_metadata(metadata, linkid='session_id', endswith=True)
+
+        audio_path_stem_ending = '_'.join(audio_path.stem.split("_")[2:])
+        output_path = bids_path.joinpath(
+            f'sub-{participant_id}/ses-{session_id}/audio/{audio_path_stem_ending}.wav'
+        )
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+
+        # copy over the associated .json file and audio data
+        with open(output_path.with_suffix('.json'), 'w') as fp:
+            json.dump(metadata, fp, indent=2)
+        shutil.copy(audio_path, output_path)
 
     _LOGGER.info("Finished copying audio files.")
+
+    # copy over the standard bids template files
+    shutil.copy(bids_path.joinpath('README.md'), outdir)
+    shutil.copy(bids_path.joinpath('CHANGES.md'), outdir)
+    shutil.copy(bids_path.joinpath('dataset_description.json'), outdir)
 
 @click.command()
 @click.argument("bids_dir_path", type=click.Path())

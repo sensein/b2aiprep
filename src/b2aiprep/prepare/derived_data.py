@@ -9,6 +9,7 @@ import torch
 from tqdm import tqdm
 
 from b2aiprep.prepare.constants import AUDIO_FILESTEMS_TO_REMOVE, PARTICIPANT_ID_TO_REMOVE
+from b2aiprep.prepare.prepare import reduce_id_length, reduce_length_of_id
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -233,6 +234,30 @@ def clean_phenotype_data(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFr
 
     return df, phenotype
 
+def add_record_id_to_phenotype(phenotype: dict) -> dict:
+    if 'record_id' in list(phenotype.keys()):
+        return phenotype
+
+    phenotype_updated = {
+        'record_id': {
+            "description": "Unique identifier for each participant."
+        }
+    }
+    phenotype_updated.update(phenotype)
+    return phenotype_updated
+    
+def _rename_record_id_to_participant_id(df: pd.DataFrame, phenotype: dict) -> dict:
+    phenotype_updated = {}
+    for c in df.columns:
+        if c == 'record_id':
+            phenotype['participant_id'] = phenotype[c]
+        else:
+            phenotype_updated[c] = phenotype[c]
+
+    df = df.rename(columns={"record_id": "participant_id"})
+
+    return df, phenotype_updated
+
 def _add_sex_at_birth_column(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
     df["sex_at_birth"] = None
     for sex_at_birth in ["Male", "Female"]:
@@ -249,12 +274,7 @@ def _add_sex_at_birth_column(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.Da
     for c in df.columns:
         if c == "specify_gender_identity":
             continue
-        
-        if c == 'record_id' and c not in phenotype:
-            # for some reason record_id is not in many of the phenotype dict
-            phenotype['record_id'] = {
-                "description": "Unique identifier for each participant."
-            }
+
         if c == "gender_identity":
             columns.append("sex_at_birth")
             phenotype_reordered["sex_at_birth"] = {
@@ -275,9 +295,18 @@ def load_phenotype_data(base_path: Path, phenotype_name: str) -> t.Tuple[pd.Data
         phenotype_name = phenotype_name[:-4]
     elif phenotype_name.endswith('.json'):
         phenotype_name = phenotype_name[:-5]
+
     df = pd.read_csv(base_path.joinpath(f"{phenotype_name}.tsv"), sep="\t")
     with open(base_path.joinpath(f"{phenotype_name}.json"), "r") as f:
         phenotype = json.load(f)
+    
+    if df.shape[1] > 0 and df.columns[0] == 'record_id' and 'record_id' not in list(phenotype.keys()):
+        phenotype = add_record_id_to_phenotype(phenotype)
+
+    if len(phenotype) != df.shape[1]:
+        _LOGGER.warning(
+            f"Phenotype {phenotype_name} has {len(phenotype)} columns, but the data has {df.shape[1]} columns."
+        )
 
     # skip the first-level of the hierarchy if present, which is the name of the phenotype
     if len(phenotype) == 1:
@@ -296,8 +325,14 @@ def load_phenotype_data(base_path: Path, phenotype_name: str) -> t.Tuple[pd.Data
     # fix some data values and remove columns we do not want to publish at this time
     df, phenotype = clean_phenotype_data(df, phenotype)
 
+    # reduce record_id to 8 characters
+    df = reduce_length_of_id(df, id_name='record_id')
+    df = reduce_length_of_id(df, id_name='session_id')
+
     # create columns missing in the original data
     if ("gender_identity" in df.columns) and ("specify_gender_identity" in df.columns):
         df, phenotype = _add_sex_at_birth_column(df, phenotype)
+
+    df, phenotype = _rename_record_id_to_participant_id(df, phenotype)
 
     return df, phenotype
