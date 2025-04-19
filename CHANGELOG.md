@@ -1,3 +1,15 @@
+# 2.1.0 (Sat Apr 19 2025)
+
+#### 🚀 Enhancement
+
+- patch for release v2.0.0 [#167](https://github.com/sensein/b2aiprep/pull/167) ([@alistairewj](https://github.com/alistairewj))
+
+#### Authors: 1
+
+- Alistair Johnson ([@alistairewj](https://github.com/alistairewj))
+
+---
+
 # 2.0.0 (Fri Apr 11 2025)
 
 #### 💥 Breaking Change
