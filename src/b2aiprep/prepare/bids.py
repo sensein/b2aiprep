@@ -34,10 +34,7 @@ from tqdm import tqdm
 
 from b2aiprep.prepare.constants import AUDIO_TASKS, Instrument, RepeatInstrument
 from b2aiprep.prepare.fhir_utils import convert_response_to_fhir
-from b2aiprep.prepare.utils import (
-    initialize_data_directory,
-    transform_str_for_bids_filename,
-)
+from b2aiprep.prepare.utils import initialize_data_directory
 
 SUBJECT_PREFIX = "sub"
 SESSION_PREFIX = "ses"
@@ -157,7 +154,7 @@ def insert_missing_columns(df: DataFrame) -> DataFrame:
     columns_to_add = [col for col in all_columns if col not in df.columns]
     for column in columns_to_add:
         df[column] = np.nan
-    
+
     return df
 
 
@@ -248,7 +245,6 @@ def get_df_of_repeat_instrument(df: DataFrame, instrument: Instrument) -> pd.Dat
     """
 
     columns = instrument.get_columns()
-    
 
     idx = df["redcap_repeat_instrument"] == instrument.text
     columns_present = [c for c in columns if c in df.columns]
@@ -331,15 +327,15 @@ def write_pydantic_model_to_bids_file(
     # sub-<participant_id>_ses-<session_id>_task-<task_name>_run-_metadata.json
     filename = f"sub-{subject_id}"
     if session_id is not None:
-        session_id = transform_str_for_bids_filename(session_id)
+        session_id = session_id.replace(" ", "-")
         filename += f"_ses-{session_id}"
     if task_name is not None:
-        task_name = transform_str_for_bids_filename(task_name)
+        task_name = task_name.replace(" ", "-")
         if recording_name is not None:
-            task_name = transform_str_for_bids_filename(recording_name)
+            task_name = recording_name.replace(" ", "-")
         filename += f"_task-{task_name}"
 
-    schema_name = transform_str_for_bids_filename(schema_name).replace("schema", "")
+    schema_name = schema_name.replace(" ", "-").replace("schema", "")
     schema_name = schema_name + "-metadata"
     filename += f"_{schema_name}.json"
 
@@ -462,7 +458,7 @@ def output_participant_data_to_fhir(
             if task is None:
                 continue
 
-            acoustic_task_name = transform_str_for_bids_filename(task["acoustic_task_name"])
+            acoustic_task_name = task["acoustic_task_name"].replace(" ", "-")
             fhir_data = convert_response_to_fhir(
                 task,
                 questionnaire_name=task_instrument.name,
@@ -523,9 +519,7 @@ def output_participant_data_to_fhir(
                         # copy file
                         ext = audio_file.suffix
 
-                        recording_name = transform_str_for_bids_filename(
-                            recording["recording_name"]
-                        )
+                        recording_name = recording["recording_name"].replace(" ", "-")
                         audio_file_destination = (
                             audio_output_path / f"{prefix}_task-{recording_name}{ext}"
                         )
@@ -779,7 +773,7 @@ def redcap_to_bids(
                     session[key] = None
                 else:
                     session[key] = df_by_session_id[session_id]
-    
+
     # participants is a list of dictionaries; each dictionary has the same RedCap fields
     # but it respects the nesting / hierarchy present in the original data collection
     # TODO: maybe this warning should go in the main function
