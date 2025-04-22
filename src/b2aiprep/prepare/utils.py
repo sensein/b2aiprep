@@ -15,11 +15,6 @@ import requests
 _LOGGER = logging.getLogger(__name__)
 
 
-def transform_str_for_bids_filename(filename: str):
-    """Replace spaces in a string with hyphens to match BIDS string format rules.."""
-    return filename.replace(" ", "-")
-
-
 def reformat_resources(input_dir: str, output_dir: str) -> None:
     """
     Converts lists from all JSON files in the input directory to dictionaries
