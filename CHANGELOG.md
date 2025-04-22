@@ -1,3 +1,15 @@
+# 2.2.0 (Tue Apr 22 2025)
+
+#### 🚀 Enhancement
+
+- Fix import problem [#132](https://github.com/sensein/b2aiprep/pull/132) ([@ibevers](https://github.com/ibevers))
+
+#### Authors: 1
+
+- [@ibevers](https://github.com/ibevers)
+
+---
+
 # 2.1.0 (Sat Apr 19 2025)
 
 #### 🚀 Enhancement
