@@ -562,7 +562,7 @@ class VBAIDataset(BIDSDataset):
                 f"sub-{subject_id}_ses-{session_id}_{task}_rec-{name}.pt",
             )
             try:
-                features = torch.load(str(audio_file))
+                features = torch.load(str(audio_file), weights_only=False)
                 audio_data.append(features["specgram"])
             except FileNotFoundError:
                 # assuming lbsnd file error is a file not found, usually it is

@@ -44,17 +44,15 @@ from streamlit import config as _config
 from streamlit.web.bootstrap import run
 from tqdm import tqdm
 
-from b2aiprep.prepare.bids import get_paths, get_audio_paths, redcap_to_bids, validate_bids_folder
+from b2aiprep.prepare.bids import get_paths, redcap_to_bids, validate_bids_folder
 from b2aiprep.prepare.derived_data import (
     feature_extraction_generator,
     spectrogram_generator,
 )
 from b2aiprep.prepare.prepare import (
     clean_phenotype_data,
-    extract_features_sequentially,
-    extract_features_workflow,
+    generate_features_wrapper,
     validate_bids_data,
-    generate_features_wrapper
 )
 from b2aiprep.prepare.reproschema_to_redcap import parse_audio, parse_survey
 
@@ -216,8 +214,8 @@ def prepare_bids(
         cache=cache,
         address=address,
         percentile=percentile,
-        subject_id= subject_id,
-        is_sequential=is_sequential
+        subject_id=subject_id,
+        is_sequential=is_sequential,
     )
 
     if validate:
@@ -248,20 +246,22 @@ def prepare_bids(
 @click.option("-s", "--subject_id", type=str, default=None, show_default=True)
 @click.option("--is_sequential", type=bool, default=False, show_default=True)
 @click.option("--update", type=bool, default=False, show_default=True)
-def generate_audio_features(source_bids_dir_path,
-                            target_bids_dir_path,
-                            tar_file_path,
-                            transcription_model_size,
-                            n_cores,
-                            with_sensitive,
-                            overwrite,
-                            validate,
-                            cache,
-                            address,
-                            percentile,
-                            subject_id,
-                            is_sequential,
-                            update):
+def generate_audio_features(
+    source_bids_dir_path,
+    target_bids_dir_path,
+    tar_file_path,
+    transcription_model_size,
+    n_cores,
+    with_sensitive,
+    overwrite,
+    validate,
+    cache,
+    address,
+    percentile,
+    subject_id,
+    is_sequential,
+    update,
+):
     """
     Generates features given bids folder
 
@@ -282,7 +282,7 @@ def generate_audio_features(source_bids_dir_path,
         update: Specifies if we wish to update by creating target folder and storing extracts there
     """
     os.makedirs(source_bids_dir_path, exist_ok=True)
-    if update: 
+    if update:
         shadow = target_bids_dir_path
         os.makedirs(target_bids_dir_path, exist_ok=True)
         shutil.copytree(source_bids_dir_path, shadow, dirs_exist_ok=True)
@@ -296,21 +296,21 @@ def generate_audio_features(source_bids_dir_path,
         bids_path=bids_path,
         transcription_model_size=transcription_model_size,
         n_cores=n_cores,
-        with_sensitive = with_sensitive,
+        with_sensitive=with_sensitive,
         overwrite=overwrite,
         cache=cache,
         address=address,
         percentile=percentile,
-        subject_id= subject_id,
+        subject_id=subject_id,
         update=update,
-        is_sequential=is_sequential
+        is_sequential=is_sequential,
     )
 
     _LOGGER.info("Audio feature extraction complete.")
     if validate:
         # Below code checks to see if we have all the expected feature/transcript files.
         validate_bids_folder(bids_path)
-    
+
     if tar_file_path is not None:
         _LOGGER.info("Saving .tar file with processed data...")
         with tarfile.open(tar_file_path, "w:gz") as tar:
@@ -318,6 +318,7 @@ def generate_audio_features(source_bids_dir_path,
         _LOGGER.info(f"Saved processed data .tar file at: {tar_file_path}")
 
     _LOGGER.info("Process completed.")
+
 
 @click.command()
 @click.argument("bids_path", type=click.Path(exists=True))
@@ -351,9 +352,8 @@ def create_derived_dataset(bids_path, outdir):
     audio_paths = [x["path"] for x in audio_paths]
     # remove _features at the end of the file stem
     audio_paths = [
-        x.parent.joinpath(x.stem[:-9]).with_suffix('.wav')
-        if "_features" in x.name else x
-        for x in audio_paths 
+        x.parent.joinpath(x.stem[:-9]).with_suffix(".wav") if "_features" in x.name else x
+        for x in audio_paths
     ]
 
     audio_paths = sorted(
@@ -513,9 +513,11 @@ def create_derived_dataset(bids_path, outdir):
                 continue
             if col in df.columns:
                 idxMisMatchNotNone = df[col].notna() & df_add[col].notna()
-                idxMisMatchNotNone &= (df[col] != df_add[col])
+                idxMisMatchNotNone &= df[col] != df_add[col]
                 if idxMisMatchNotNone.any():
-                    raise ValueError(f"Column {col} already exists in the dataframe with different values.")
+                    raise ValueError(
+                        f"Column {col} already exists in the dataframe with different values."
+                    )
                 else:
                     df = df.drop(col, axis=1, errors="ignore")
 
@@ -542,6 +544,7 @@ def create_derived_dataset(bids_path, outdir):
         json.dump(phenotype, f, indent=2)
     _LOGGER.info("Finished creating merged phenotype data.")
 
+
 @click.command()
 @click.argument("dataset_path", type=click.Path(exists=True))
 def validate_derived_dataset(dataset_path):
@@ -557,17 +560,25 @@ def validate_derived_dataset(dataset_path):
         None: Performs validation and optionally fixes errors in-place.
     """
     dataset_path = Path(dataset_path)
-    
+
     assert dataset_path.exists(), f"Dataset path {dataset_path} does not exist."
     assert dataset_path.is_dir(), f"Dataset path {dataset_path} is not a directory."
 
     # we expect spectrograms.parquet and mfcc.parquet to exist
-    assert dataset_path.joinpath("spectrogram.parquet").exists(), f"Dataset path {dataset_path} does not contain spectrogram.parquet."
-    assert dataset_path.joinpath("mfcc.parquet").exists(), f"Dataset path {dataset_path} does not contain mfcc.parquet."
+    assert dataset_path.joinpath(
+        "spectrogram.parquet"
+    ).exists(), f"Dataset path {dataset_path} does not contain spectrogram.parquet."
+    assert dataset_path.joinpath(
+        "mfcc.parquet"
+    ).exists(), f"Dataset path {dataset_path} does not contain mfcc.parquet."
 
-    for base_dataframe_name in ['static_features', 'phenotype']:
-        assert dataset_path.joinpath(f"{base_dataframe_name}.tsv").exists(), f"Dataset path {dataset_path} does not contain {base_dataframe_name}.tsv."
-        assert dataset_path.joinpath(f"{base_dataframe_name}.json").exists(), f"Dataset path {dataset_path} does not contain {base_dataframe_name}.json."
+    for base_dataframe_name in ["static_features", "phenotype"]:
+        assert dataset_path.joinpath(
+            f"{base_dataframe_name}.tsv"
+        ).exists(), f"Dataset path {dataset_path} does not contain {base_dataframe_name}.tsv."
+        assert dataset_path.joinpath(
+            f"{base_dataframe_name}.json"
+        ).exists(), f"Dataset path {dataset_path} does not contain {base_dataframe_name}.json."
         df = pd.read_csv(dataset_path.joinpath(f"{base_dataframe_name}.tsv"), sep="\t")
         with open(dataset_path.joinpath(f"{base_dataframe_name}.json"), "r") as f:
             info = json.load(f)
@@ -575,7 +586,10 @@ def validate_derived_dataset(dataset_path):
         for column in info.keys():
             if column not in df.columns:
                 missing_columns.append(column)
-        assert len(missing_columns) == 0, f"Columns not found in {base_dataframe_name}.tsv: {missing_columns}"
+        assert (
+            len(missing_columns) == 0
+        ), f"Columns not found in {base_dataframe_name}.tsv: {missing_columns}"
+
 
 @click.command()
 @click.argument("bids_dir_path", type=click.Path())
@@ -843,7 +857,7 @@ def batchconvert(
 
         def gen():
             for val in stored_results:
-                yield torch.load(val)
+                yield torch.load(val, weights_only=False)
 
         print(f"Input: {len(results)} files. Processed: {len(stored_results)}")
 
@@ -1141,7 +1155,7 @@ def bids2shadow(bids_src_dir, dest_dir):
         bids_src_dir: Path to the  directory containing the pytorch files
         dest_dir: Path to the directory where we wish to have the shadow tree
     """
-   # Convert to Path objects
+    # Convert to Path objects
     src_dir = Path(bids_src_dir)
     target_dir = Path(dest_dir)
 
@@ -1152,7 +1166,7 @@ def bids2shadow(bids_src_dir, dest_dir):
     for root, dirs, files in os.walk(src_dir):
         # Filter for .pt files
         for file in files:
-            if file.endswith('.pt'):
+            if file.endswith(".pt"):
                 # Create the relative path to the source directory
                 relative_path = Path(root).relative_to(src_dir)
                 target_path = target_dir / relative_path
