@@ -23,7 +23,9 @@ def load_features_for_recordings(
             raise ValueError(f"Unrecognized feature {feature}. Options: {feature_options}")
 
     for recording_id in df["recording_id"].unique():
-        output[recording_id] = torch.load(data_path / f"{recording_id}_features.pt")
+        output[recording_id] = torch.load(
+            data_path / f"{recording_id}_features.pt", weights_only=False
+        )
 
         # if requested, we subselect to the given feature
         if feature is not None:

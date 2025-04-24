@@ -1,6 +1,5 @@
 """Commands available through the CLI."""
 
-from copy import deepcopy
 import csv
 import json
 import logging
@@ -45,24 +44,22 @@ from streamlit import config as _config
 from streamlit.web.bootstrap import run
 from tqdm import tqdm
 
-from b2aiprep.prepare.bids import get_paths, get_audio_paths, redcap_to_bids, validate_bids_folder
+from b2aiprep.prepare.bids import get_paths, redcap_to_bids, validate_bids_folder
 from b2aiprep.prepare.constants import PARTICIPANT_ID_TO_REMOVE
 from b2aiprep.prepare.derived_data import (
-    load_phenotype_data,
     feature_extraction_generator,
+    load_phenotype_data,
     spectrogram_generator,
 )
 from b2aiprep.prepare.prepare import (
-    extract_features_sequentially,
-    extract_features_workflow,
     filter_audio_paths,
+    generate_features_wrapper,
     get_value_from_metadata,
+    is_audio_sensitive,
     reduce_id_length,
     reduce_length_of_id,
     update_metadata_record_and_session_id,
     validate_bids_data,
-    is_audio_sensitive,
-    generate_features_wrapper
 )
 from b2aiprep.prepare.reproschema_to_redcap import parse_audio, parse_survey
 
@@ -224,8 +221,8 @@ def prepare_bids(
         cache=cache,
         address=address,
         percentile=percentile,
-        subject_id= subject_id,
-        is_sequential=is_sequential
+        subject_id=subject_id,
+        is_sequential=is_sequential,
     )
 
     if validate:
@@ -256,20 +253,22 @@ def prepare_bids(
 @click.option("-s", "--subject_id", type=str, default=None, show_default=True)
 @click.option("--is_sequential", type=bool, default=False, show_default=True)
 @click.option("--update", type=bool, default=False, show_default=True)
-def generate_audio_features(source_bids_dir_path,
-                            target_bids_dir_path,
-                            tar_file_path,
-                            transcription_model_size,
-                            n_cores,
-                            with_sensitive,
-                            overwrite,
-                            validate,
-                            cache,
-                            address,
-                            percentile,
-                            subject_id,
-                            is_sequential,
-                            update):
+def generate_audio_features(
+    source_bids_dir_path,
+    target_bids_dir_path,
+    tar_file_path,
+    transcription_model_size,
+    n_cores,
+    with_sensitive,
+    overwrite,
+    validate,
+    cache,
+    address,
+    percentile,
+    subject_id,
+    is_sequential,
+    update,
+):
     """
     Generates features given bids folder
 
@@ -290,7 +289,7 @@ def generate_audio_features(source_bids_dir_path,
         update: Specifies if we wish to update by creating target folder and storing extracts there
     """
     os.makedirs(source_bids_dir_path, exist_ok=True)
-    if update: 
+    if update:
         shadow = target_bids_dir_path
         os.makedirs(target_bids_dir_path, exist_ok=True)
         shutil.copytree(source_bids_dir_path, shadow, dirs_exist_ok=True)
@@ -304,21 +303,21 @@ def generate_audio_features(source_bids_dir_path,
         bids_path=bids_path,
         transcription_model_size=transcription_model_size,
         n_cores=n_cores,
-        with_sensitive = with_sensitive,
+        with_sensitive=with_sensitive,
         overwrite=overwrite,
         cache=cache,
         address=address,
         percentile=percentile,
-        subject_id= subject_id,
+        subject_id=subject_id,
         update=update,
-        is_sequential=is_sequential
+        is_sequential=is_sequential,
     )
 
     _LOGGER.info("Audio feature extraction complete.")
     if validate:
         # Below code checks to see if we have all the expected feature/transcript files.
         validate_bids_folder(bids_path)
-    
+
     if tar_file_path is not None:
         _LOGGER.info("Saving .tar file with processed data...")
         with tarfile.open(tar_file_path, "w:gz") as tar:
@@ -326,6 +325,7 @@ def generate_audio_features(source_bids_dir_path,
         _LOGGER.info(f"Saved processed data .tar file at: {tar_file_path}")
 
     _LOGGER.info("Process completed.")
+
 
 @click.command()
 @click.argument("bids_path", type=click.Path(exists=True))
@@ -354,7 +354,7 @@ def create_derived_dataset(bids_path, outdir):
     """
     bids_path = Path(bids_path)
 
-    participant_filepath = bids_path.joinpath('participants.tsv')
+    participant_filepath = bids_path.joinpath("participants.tsv")
     if not participant_filepath.exists():
         raise FileNotFoundError(f"Participant file {participant_filepath} does not exist.")
 
@@ -371,9 +371,8 @@ def create_derived_dataset(bids_path, outdir):
 
     # remove _features at the end of the file stem
     audio_paths = [
-        x.parent.joinpath(x.stem[:-9]).with_suffix('.wav')
-        if "_features" in x.name else x
-        for x in audio_paths 
+        x.parent.joinpath(x.stem[:-9]).with_suffix(".wav") if "_features" in x.name else x
+        for x in audio_paths
     ]
 
     audio_paths = sorted(
@@ -383,7 +382,7 @@ def create_derived_dataset(bids_path, outdir):
     )
 
     _LOGGER.info("Creating merged phenotype data.")
-    df, phenotype = load_phenotype_data(bids_path, phenotype_name='participants')
+    df, phenotype = load_phenotype_data(bids_path, phenotype_name="participants")
 
     # write out phenotype data and data dictionary
     df.to_csv(outdir.joinpath("phenotype.tsv"), sep="\t", index=False)
@@ -398,11 +397,13 @@ def create_derived_dataset(bids_path, outdir):
         audio_paths = [x for x in audio_paths if f"sub-{participant_id}" not in str(x)]
 
     if len(audio_paths) < n:
-        _LOGGER.info(f"Removed {n - len(audio_paths)} records due to hard-coded participant removal.")
+        _LOGGER.info(
+            f"Removed {n - len(audio_paths)} records due to hard-coded participant removal."
+        )
 
     static_features = []
     for filepath in tqdm(audio_paths, desc="Loading static features", total=len(audio_paths)):
-        pt_file = filepath.parent.joinpath(f'{filepath.stem}_features.pt')
+        pt_file = filepath.parent.joinpath(f"{filepath.stem}_features.pt")
         if not pt_file.exists():
             continue
 
@@ -444,7 +445,7 @@ def create_derived_dataset(bids_path, outdir):
 
     # remove audio check and sensitive audio from the spectrograms / mfcc
     audio_paths = filter_audio_paths(audio_paths)
-    
+
     for feature_name in ["spectrogram", "mfcc"]:
         if feature_name == "mfcc":
             use_byte_stream_split = True
@@ -467,11 +468,11 @@ def create_derived_dataset(bids_path, outdir):
         ds = ds.map(
             partial(
                 lambda x: {
-                    'participant_id': reduce_id_length(x['participant_id']),
-                    'session_id': reduce_id_length(x['session_id']),
+                    "participant_id": reduce_id_length(x["participant_id"]),
+                    "session_id": reduce_id_length(x["session_id"]),
                 }
             ),
-            remove_columns=['participant_id', 'session_id'],
+            remove_columns=["participant_id", "session_id"],
         )
 
         ds.to_parquet(
@@ -496,6 +497,7 @@ def create_derived_dataset(bids_path, outdir):
 
     _LOGGER.info("Parquet dataset created.")
 
+
 @click.command()
 @click.argument("dataset_path", type=click.Path(exists=True))
 def validate_derived_dataset(dataset_path):
@@ -511,17 +513,25 @@ def validate_derived_dataset(dataset_path):
         None: Performs validation and optionally fixes errors in-place.
     """
     dataset_path = Path(dataset_path)
-    
+
     assert dataset_path.exists(), f"Dataset path {dataset_path} does not exist."
     assert dataset_path.is_dir(), f"Dataset path {dataset_path} is not a directory."
 
     # we expect spectrograms.parquet and mfcc.parquet to exist
-    assert dataset_path.joinpath("spectrogram.parquet").exists(), f"Dataset path {dataset_path} does not contain spectrogram.parquet."
-    assert dataset_path.joinpath("mfcc.parquet").exists(), f"Dataset path {dataset_path} does not contain mfcc.parquet."
+    assert dataset_path.joinpath(
+        "spectrogram.parquet"
+    ).exists(), f"Dataset path {dataset_path} does not contain spectrogram.parquet."
+    assert dataset_path.joinpath(
+        "mfcc.parquet"
+    ).exists(), f"Dataset path {dataset_path} does not contain mfcc.parquet."
 
-    for base_dataframe_name in ['static_features', 'phenotype']:
-        assert dataset_path.joinpath(f"{base_dataframe_name}.tsv").exists(), f"Dataset path {dataset_path} does not contain {base_dataframe_name}.tsv."
-        assert dataset_path.joinpath(f"{base_dataframe_name}.json").exists(), f"Dataset path {dataset_path} does not contain {base_dataframe_name}.json."
+    for base_dataframe_name in ["static_features", "phenotype"]:
+        assert dataset_path.joinpath(
+            f"{base_dataframe_name}.tsv"
+        ).exists(), f"Dataset path {dataset_path} does not contain {base_dataframe_name}.tsv."
+        assert dataset_path.joinpath(
+            f"{base_dataframe_name}.json"
+        ).exists(), f"Dataset path {dataset_path} does not contain {base_dataframe_name}.json."
         df = pd.read_csv(dataset_path.joinpath(f"{base_dataframe_name}.tsv"), sep="\t")
         with open(dataset_path.joinpath(f"{base_dataframe_name}.json"), "r") as f:
             info = json.load(f)
@@ -529,7 +539,9 @@ def validate_derived_dataset(dataset_path):
         for column in info.keys():
             if column not in df.columns:
                 missing_columns.append(column)
-        assert len(missing_columns) == 0, f"Columns not found in {base_dataframe_name}.tsv: {missing_columns}"
+        assert (
+            len(missing_columns) == 0
+        ), f"Columns not found in {base_dataframe_name}.tsv: {missing_columns}"
 
 
 @click.command()
@@ -546,7 +558,7 @@ def publish_bids_dataset(bids_path, outdir):
     """
     bids_path = Path(bids_path)
 
-    participant_filepath = bids_path.joinpath('participants.tsv')
+    participant_filepath = bids_path.joinpath("participants.tsv")
     if not participant_filepath.exists():
         raise FileNotFoundError(f"Participant file {participant_filepath} does not exist.")
 
@@ -559,10 +571,10 @@ def publish_bids_dataset(bids_path, outdir):
         )
 
     outdir = Path(outdir)
-    outdir.mkdir(parents=True, exist_ok=False) # do not overwrite any existing directories
+    outdir.mkdir(parents=True, exist_ok=False)  # do not overwrite any existing directories
 
     _LOGGER.info("Processing participants.tsv.")
-    df, phenotype = load_phenotype_data(bids_path, phenotype_name='participants')
+    df, phenotype = load_phenotype_data(bids_path, phenotype_name="participants")
 
     # write out phenotype data and data dictionary
     df.to_csv(outdir.joinpath("participants.tsv"), sep="\t", index=False)
@@ -572,15 +584,19 @@ def publish_bids_dataset(bids_path, outdir):
 
     # now process phenotypes
     _LOGGER.info("Processing phenotype data.")
-    phenotype_base_path = bids_path.joinpath('phenotype')
-    phenotype_output_path = outdir.joinpath('phenotype')
+    phenotype_base_path = bids_path.joinpath("phenotype")
+    phenotype_output_path = outdir.joinpath("phenotype")
     phenotype_output_path.mkdir(parents=True, exist_ok=True)
-    for phenotype_filepath in phenotype_base_path.glob('*.tsv'):
+    for phenotype_filepath in phenotype_base_path.glob("*.tsv"):
         _LOGGER.info(f"Processing {phenotype_filepath.stem}.")
         # load in the phenotype data
-        df, phenotype = load_phenotype_data(phenotype_base_path, phenotype_name=phenotype_filepath.stem)
+        df, phenotype = load_phenotype_data(
+            phenotype_base_path, phenotype_name=phenotype_filepath.stem
+        )
         # write out phenotype data and data dictionary
-        df.to_csv(phenotype_output_path.joinpath(f"{phenotype_filepath.stem}.tsv"), sep="\t", index=False)
+        df.to_csv(
+            phenotype_output_path.joinpath(f"{phenotype_filepath.stem}.tsv"), sep="\t", index=False
+        )
         with open(phenotype_output_path.joinpath(f"{phenotype_filepath.stem}.json"), "w") as f:
             json.dump(phenotype, f, indent=2)
     _LOGGER.info("Finished processing phenotype data.")
@@ -599,38 +615,43 @@ def publish_bids_dataset(bids_path, outdir):
         audio_paths = [x for x in audio_paths if f"sub-{participant_id}" not in str(x)]
 
     if len(audio_paths) < n:
-        _LOGGER.info(f"Removed {n - len(audio_paths)} records due to hard-coded participant removal.")
+        _LOGGER.info(
+            f"Removed {n - len(audio_paths)} records due to hard-coded participant removal."
+        )
 
     # remove audio check and sensitive audio
     audio_paths = filter_audio_paths(audio_paths)
 
     _LOGGER.info(f"Copying {len(audio_paths)} recordings.")
-    for audio_path in tqdm(audio_paths, desc="Copying audio and metadata files", total=len(audio_paths)):
-        json_path = audio_path.with_suffix('.json')
+    for audio_path in tqdm(
+        audio_paths, desc="Copying audio and metadata files", total=len(audio_paths)
+    ):
+        json_path = audio_path.with_suffix(".json")
 
         metadata = json.loads(json_path.read_text())
 
         update_metadata_record_and_session_id(metadata)
-        participant_id = get_value_from_metadata(metadata, linkid='participant_id', endswith=False)
-        session_id = get_value_from_metadata(metadata, linkid='session_id', endswith=True)
+        participant_id = get_value_from_metadata(metadata, linkid="participant_id", endswith=False)
+        session_id = get_value_from_metadata(metadata, linkid="session_id", endswith=True)
 
-        audio_path_stem_ending = '_'.join(audio_path.stem.split("_")[2:])
+        audio_path_stem_ending = "_".join(audio_path.stem.split("_")[2:])
         output_path = bids_path.joinpath(
-            f'sub-{participant_id}/ses-{session_id}/audio/{audio_path_stem_ending}.wav'
+            f"sub-{participant_id}/ses-{session_id}/audio/{audio_path_stem_ending}.wav"
         )
         output_path.parent.mkdir(parents=True, exist_ok=True)
 
         # copy over the associated .json file and audio data
-        with open(output_path.with_suffix('.json'), 'w') as fp:
+        with open(output_path.with_suffix(".json"), "w") as fp:
             json.dump(metadata, fp, indent=2)
         shutil.copy(audio_path, output_path)
 
     _LOGGER.info("Finished copying audio files.")
 
     # copy over the standard bids template files
-    shutil.copy(bids_path.joinpath('README.md'), outdir)
-    shutil.copy(bids_path.joinpath('CHANGES.md'), outdir)
-    shutil.copy(bids_path.joinpath('dataset_description.json'), outdir)
+    shutil.copy(bids_path.joinpath("README.md"), outdir)
+    shutil.copy(bids_path.joinpath("CHANGES.md"), outdir)
+    shutil.copy(bids_path.joinpath("dataset_description.json"), outdir)
+
 
 @click.command()
 @click.argument("bids_dir_path", type=click.Path())
@@ -898,7 +919,7 @@ def batchconvert(
 
         def gen():
             for val in stored_results:
-                yield torch.load(val)
+                yield torch.load(val, weights_only=False)
 
         print(f"Input: {len(results)} files. Processed: {len(stored_results)}")
 
@@ -1196,7 +1217,7 @@ def bids2shadow(bids_src_dir, dest_dir):
         bids_src_dir: Path to the  directory containing the pytorch files
         dest_dir: Path to the directory where we wish to have the shadow tree
     """
-   # Convert to Path objects
+    # Convert to Path objects
     src_dir = Path(bids_src_dir)
     target_dir = Path(dest_dir)
 
@@ -1207,7 +1228,7 @@ def bids2shadow(bids_src_dir, dest_dir):
     for root, dirs, files in os.walk(src_dir):
         # Filter for .pt files
         for file in files:
-            if file.endswith('.pt'):
+            if file.endswith(".pt"):
                 # Create the relative path to the source directory
                 relative_path = Path(root).relative_to(src_dir)
                 target_path = target_dir / relative_path
