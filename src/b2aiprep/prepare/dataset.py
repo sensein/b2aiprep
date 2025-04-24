@@ -31,8 +31,6 @@ from senselab.audio.data_structures.audio import Audio
 from soundfile import LibsndfileError
 from tqdm import tqdm
 
-from b2aiprep.prepare.utils import _transform_str_for_bids_filename
-
 
 class BIDSDataset:
     def __init__(self, data_path: t.Union[Path, str, os.PathLike]):
@@ -495,8 +493,9 @@ class VBAIDataset(BIDSDataset):
 
         subject_id = row["record_id"]
         session_id = row["recording_session_id"]
-        task = _transform_str_for_bids_filename(row["acoustic_task_name"])
-        name = _transform_str_for_bids_filename(row["recording_name"])
+        task = row["acoustic_task_name"].replace(" ", "-")
+        name = row["recording_name"].replace(" ", "-")
+
         audio_file = self.data_path.joinpath(
             f"sub-{subject_id}",
             f"ses-{session_id}",
@@ -521,8 +520,8 @@ class VBAIDataset(BIDSDataset):
         ):
             subject_id = row["record_id"]
             session_id = row["recording_session_id"]
-            task = _transform_str_for_bids_filename(row["acoustic_task_name"])
-            name = _transform_str_for_bids_filename(row["recording_name"])
+            task = row["acoustic_task_name"].replace(" ", "-")
+            name = row["recording_name"].replace(" ", "-")
             audio_file = self.data_path.joinpath(
                 f"sub-{subject_id}",
                 f"ses-{session_id}",
@@ -553,8 +552,8 @@ class VBAIDataset(BIDSDataset):
         ):
             subject_id = row["record_id"]
             session_id = row["recording_session_id"]
-            task = _transform_str_for_bids_filename(row["acoustic_task_name"])
-            name = _transform_str_for_bids_filename(row["recording_name"])
+            task = row["acoustic_task_name"].replace(" ", "-")
+            name = row["recording_name"].replace(" ", "-")
             audio_file = self.data_path.joinpath(
                 f"sub-{subject_id}",
                 f"ses-{session_id}",

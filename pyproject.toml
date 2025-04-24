@@ -24,8 +24,7 @@ dependencies = [
     "senselab~=0.28.0",
     "matplotlib>=3.8.3",
     "fhir.resources==7.1.0",
-    "streamlit",
-
+    "streamlit>=1.42.2",
 ]
 
 [tool.setuptools.packages.find]
@@ -51,6 +50,7 @@ dev = [
 
 [project.scripts]
 b2aiprep-cli = "b2aiprep.cli:cli"
+b2aiprep-dashboard = "b2aiprep.dashboard.entrypoint:main"
 
 [project.urls]
 Homepage = "https://github.com/sensein/b2aiprep"

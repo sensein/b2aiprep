@@ -45,13 +45,20 @@ from streamlit.web.bootstrap import run
 from tqdm import tqdm
 
 from b2aiprep.prepare.bids import get_paths, redcap_to_bids, validate_bids_folder
+from b2aiprep.prepare.constants import PARTICIPANT_ID_TO_REMOVE
 from b2aiprep.prepare.derived_data import (
     feature_extraction_generator,
+    load_phenotype_data,
     spectrogram_generator,
 )
 from b2aiprep.prepare.prepare import (
-    clean_phenotype_data,
+    filter_audio_paths,
     generate_features_wrapper,
+    get_value_from_metadata,
+    is_audio_sensitive,
+    reduce_id_length,
+    reduce_length_of_id,
+    update_metadata_record_and_session_id,
     validate_bids_data,
 )
 from b2aiprep.prepare.reproschema_to_redcap import parse_audio, parse_survey
@@ -346,10 +353,22 @@ def create_derived_dataset(bids_path, outdir):
     ├── static_features.json
     """
     bids_path = Path(bids_path)
-    outdir = Path(outdir)
-    outdir.mkdir(parents=True, exist_ok=True)
+
+    participant_filepath = bids_path.joinpath("participants.tsv")
+    if not participant_filepath.exists():
+        raise FileNotFoundError(f"Participant file {participant_filepath} does not exist.")
+
     audio_paths = get_paths(bids_path, file_extension=".pt")
     audio_paths = [x["path"] for x in audio_paths]
+
+    if len(audio_paths) == 0:
+        raise FileNotFoundError(
+            f"No feature files (.pt) found in {bids_path}. Please check the directory structure."
+        )
+
+    outdir = Path(outdir)
+    outdir.mkdir(parents=True, exist_ok=True)
+
     # remove _features at the end of the file stem
     audio_paths = [
         x.parent.joinpath(x.stem[:-9]).with_suffix(".wav") if "_features" in x.name else x
@@ -362,16 +381,70 @@ def create_derived_dataset(bids_path, outdir):
         key=lambda x: (x.stem.split("_")[0], x.stem.split("_")[2]),
     )
 
-    # remove known subjects without any audio
-    SUBJECTS_TO_REMOVE = {"6e6216b7-1f2a-407f-9dcd-22052b704b82"}
+    _LOGGER.info("Creating merged phenotype data.")
+    df, phenotype = load_phenotype_data(bids_path, phenotype_name="participants")
+
+    # write out phenotype data and data dictionary
+    df.to_csv(outdir.joinpath("phenotype.tsv"), sep="\t", index=False)
+    with open(outdir.joinpath("phenotype.json"), "w") as f:
+        json.dump(phenotype, f, indent=2)
+    _LOGGER.info("Finished creating merged phenotype data.")
+
+    _LOGGER.info("Loading audio static features.")
+    # remove known individuals
     n = len(audio_paths)
-    for participant_id in SUBJECTS_TO_REMOVE:
+    for participant_id in PARTICIPANT_ID_TO_REMOVE:
         audio_paths = [x for x in audio_paths if f"sub-{participant_id}" not in str(x)]
 
     if len(audio_paths) < n:
-        _LOGGER.info(f"Removed {n - len(audio_paths)} records due to hard-coded subject removal.")
+        _LOGGER.info(
+            f"Removed {n - len(audio_paths)} records due to hard-coded participant removal."
+        )
+
+    static_features = []
+    for filepath in tqdm(audio_paths, desc="Loading static features", total=len(audio_paths)):
+        pt_file = filepath.parent.joinpath(f"{filepath.stem}_features.pt")
+        if not pt_file.exists():
+            continue
+
+        features = torch.load(pt_file, weights_only=False)
+        subj_info = {
+            "participant_id": str(pt_file).split("sub-")[1].split("/ses-")[0],
+            "session_id": str(pt_file).split("ses-")[1].split("/audio")[0],
+            "task_name": str(pt_file).split("task-")[1].split("_features")[0],
+        }
+
+        transcription = features.get("transcription", None)
+        if transcription is not None:
+            transcription = transcription.text
+            if is_audio_sensitive(filepath):
+                # we omit tasks where free speech occurs
+                transcription = None
+        subj_info["transcription"] = transcription
+
+        for key in ["opensmile", "praat_parselmouth", "torchaudio_squim"]:
+            subj_info.update(features.get(key, {}))
+
+        static_features.append(subj_info)
+
+    df_static = pd.DataFrame(static_features)
+    df_static = reduce_length_of_id(df_static, "participant_id")
+    df_static = reduce_length_of_id(df_static, "session_id")
+    df_static.to_csv(outdir / "static_features.tsv", sep="\t", index=False)
+    # load in the JSON with descriptions of each feature and copy it over
+    # write it out again so formatting is consistent between JSONs
+    static_features_json_file = resources.files("b2aiprep").joinpath(
+        "prepare", "resources", "static_features.json"
+    )
+    static_features_json = json.load(static_features_json_file.open())
+    with open(outdir / "static_features.json", "w") as f:
+        json.dump(static_features_json, f, indent=2)
+    _LOGGER.info("Finished creating static features.")
 
     _LOGGER.info("Loading spectrograms into a single HF dataset.")
+
+    # remove audio check and sensitive audio from the spectrograms / mfcc
+    audio_paths = filter_audio_paths(audio_paths)
 
     for feature_name in ["spectrogram", "mfcc"]:
         if feature_name == "mfcc":
@@ -390,6 +463,18 @@ def create_derived_dataset(bids_path, outdir):
 
         # sort the dataset by identifier and task_name
         ds = Dataset.from_generator(audio_feature_generator, num_proc=1)
+
+        # reduce length of participant_id and session_id
+        ds = ds.map(
+            partial(
+                lambda x: {
+                    "participant_id": reduce_id_length(x["participant_id"]),
+                    "session_id": reduce_id_length(x["session_id"]),
+                }
+            ),
+            remove_columns=["participant_id", "session_id"],
+        )
+
         ds.to_parquet(
             str(outdir.joinpath(f"{feature_name}.parquet")),
             version="2.6",
@@ -411,138 +496,6 @@ def create_derived_dataset(bids_path, outdir):
         )
 
     _LOGGER.info("Parquet dataset created.")
-    _LOGGER.info("Loading derived data")
-    static_features = []
-    for filename in tqdm(audio_paths, desc="Loading static features", total=len(audio_paths)):
-        filename = str(filename)
-        pt_file = Path(filename.replace(".wav", "_features.pt"))
-        if not pt_file.exists():
-            continue
-
-        for participant_id in SUBJECTS_TO_REMOVE:
-            if f"sub-{participant_id}" in str(pt_file):
-                _LOGGER.info(f"Skipping subject {participant_id}")
-                continue
-
-        features = torch.load(pt_file, weights_only=False)
-        subj_info = {
-            "participant_id": str(pt_file).split("sub-")[1].split("/ses-")[0],
-            "session_id": str(pt_file).split("ses-")[1].split("/audio")[0],
-            "task_name": str(pt_file).split("task-")[1].split("_features")[0],
-        }
-
-        transcription = features.get("transcription", None)
-        if transcription is not None:
-            transcription = transcription.text
-            if (
-                subj_info["task_name"].lower().startswith("free-speech")
-                or subj_info["task_name"].lower().startswith("audio-check")
-                or subj_info["task_name"].lower().startswith("open-response-questions")
-            ):
-                # we omit tasks where free speech occurs
-                transcription = None
-        subj_info["transcription"] = transcription
-
-        for key in ["opensmile", "praat_parselmouth", "torchaudio_squim"]:
-            subj_info.update(features.get(key, {}))
-
-        static_features.append(subj_info)
-
-    df_static = pd.DataFrame(static_features)
-    df_static.to_csv(outdir / "static_features.tsv", sep="\t", index=False)
-    # load in the JSON with descriptions of each feature and copy it over
-    # write it out again so formatting is consistent between JSONs
-    static_features_json_file = resources.files("b2aiprep").joinpath(
-        "prepare", "resources", "static_features.json"
-    )
-    static_features_json = json.load(static_features_json_file.open())
-    with open(outdir / "static_features.json", "w") as f:
-        json.dump(static_features_json, f, indent=2)
-    _LOGGER.info("Finished creating static and dynamic features")
-
-    _LOGGER.info("Creating merged phenotype data.")
-
-    # first initialize a dataframe with all the record IDs which are equivalent to participant IDs.
-    df = pd.read_csv(bids_path.joinpath("participants.tsv"), sep="\t")
-
-    # remove subject
-    idx = df["record_id"].isin(SUBJECTS_TO_REMOVE)
-    if idx.sum() > 0:
-        _LOGGER.info(
-            f"Removing {idx.sum()} records from phenotype due to hard-coded subject removal."
-        )
-        df = df.loc[~idx]
-
-    # temporarily keep record_id as the column name to enable joining the dataframes together
-    # later we will rename this to participant_id
-    df = df[["record_id"]]
-    with open(bids_path.joinpath("participants.json"), "r") as f:
-        participants = json.load(f)
-    phenotype = {"participant_id": participants["record_id"]}
-
-    phenotype_files = list(bids_path.joinpath("phenotype").glob("*.tsv"))
-    phenotype_order = [
-        "eligibility",
-        "enrollment",
-        "participant",
-        "demographics",
-        "confounders",
-    ]
-    # order phenotype files by (1) the order of the list above then (2) alphabetically
-    # since sorts are stable, we can guarantee this by doing it in reverse
-    phenotype_files = sorted(phenotype_files)
-    phenotype_files = sorted(
-        phenotype_files,
-        key=lambda x: (
-            phenotype_order.index(x.stem) if x.stem in phenotype_order else 100,
-            x.stem,
-        ),
-    )
-
-    if len(phenotype_files) == 0:
-        _LOGGER.warning("No phenotype files found.")
-
-    for phenotype_filepath in phenotype_files:
-        df_add = pd.read_csv(phenotype_filepath, sep="\t")
-        phenotype_name = phenotype_filepath.stem
-        if phenotype_name in ["participant", "eligibility", "enrollment"]:
-            continue
-        # check for overlapping columns
-        for col in df_add.columns:
-            if col == "record_id":
-                continue
-            if col in df.columns:
-                idxMisMatchNotNone = df[col].notna() & df_add[col].notna()
-                idxMisMatchNotNone &= df[col] != df_add[col]
-                if idxMisMatchNotNone.any():
-                    raise ValueError(
-                        f"Column {col} already exists in the dataframe with different values."
-                    )
-                else:
-                    df = df.drop(col, axis=1, errors="ignore")
-
-        df = df.merge(df_add, on="record_id", how="left")
-        with open(bids_path.joinpath("phenotype", f"{phenotype_name}.json"), "r") as f:
-            phenotype_add = json.load(f)
-        # add the data elements to the overall phenotype dict
-        if len(phenotype_add) != 1:
-            # we expect there to only be one key
-            _LOGGER.warning(
-                f"Unexpected keys in phenotype file {phenotype_filepath.stem}: {phenotype_add.keys()}"
-            )
-        else:
-            phenotype_add = next(iter(phenotype_add.values()))["data_elements"]
-        phenotype.update(phenotype_add)
-    df = df.rename(columns={"record_id": "participant_id"})
-
-    # fix some data values and remove columns we do not want to publish at this time
-    df, phenotype = clean_phenotype_data(df, phenotype)
-
-    # write out phenotype data and data dictionary
-    df.to_csv(outdir.joinpath("phenotype.tsv"), sep="\t", index=False)
-    with open(outdir.joinpath("phenotype.json"), "w") as f:
-        json.dump(phenotype, f, indent=2)
-    _LOGGER.info("Finished creating merged phenotype data.")
 
 
 @click.command()
@@ -589,6 +542,115 @@ def validate_derived_dataset(dataset_path):
         assert (
             len(missing_columns) == 0
         ), f"Columns not found in {base_dataframe_name}.tsv: {missing_columns}"
+
+
+@click.command()
+@click.argument("bids_path", type=click.Path(exists=True))
+@click.argument("outdir", type=click.Path())
+def publish_bids_dataset(bids_path, outdir):
+    """Creates a publication ready version of a given BIDS dataset.
+
+    The publication ready version
+
+    - only includes audio (omits features)
+    - cleans/processes the various phenotype files and participants.tsv
+    - removes sensitive audio records
+    """
+    bids_path = Path(bids_path)
+
+    participant_filepath = bids_path.joinpath("participants.tsv")
+    if not participant_filepath.exists():
+        raise FileNotFoundError(f"Participant file {participant_filepath} does not exist.")
+
+    audio_paths = get_paths(bids_path, file_extension=".wav")
+    audio_paths = [x["path"] for x in audio_paths]
+
+    if len(audio_paths) == 0:
+        raise FileNotFoundError(
+            f"No audio files (.wav) found in {bids_path}. Please check the directory structure."
+        )
+
+    outdir = Path(outdir)
+    outdir.mkdir(parents=True, exist_ok=False)  # do not overwrite any existing directories
+
+    _LOGGER.info("Processing participants.tsv.")
+    df, phenotype = load_phenotype_data(bids_path, phenotype_name="participants")
+
+    # write out phenotype data and data dictionary
+    df.to_csv(outdir.joinpath("participants.tsv"), sep="\t", index=False)
+    with open(outdir.joinpath("participants.json"), "w") as f:
+        json.dump(phenotype, f, indent=2)
+    _LOGGER.info("Finished processing participants data.")
+
+    # now process phenotypes
+    _LOGGER.info("Processing phenotype data.")
+    phenotype_base_path = bids_path.joinpath("phenotype")
+    phenotype_output_path = outdir.joinpath("phenotype")
+    phenotype_output_path.mkdir(parents=True, exist_ok=True)
+    for phenotype_filepath in phenotype_base_path.glob("*.tsv"):
+        _LOGGER.info(f"Processing {phenotype_filepath.stem}.")
+        # load in the phenotype data
+        df, phenotype = load_phenotype_data(
+            phenotype_base_path, phenotype_name=phenotype_filepath.stem
+        )
+        # write out phenotype data and data dictionary
+        df.to_csv(
+            phenotype_output_path.joinpath(f"{phenotype_filepath.stem}.tsv"), sep="\t", index=False
+        )
+        with open(phenotype_output_path.joinpath(f"{phenotype_filepath.stem}.json"), "w") as f:
+            json.dump(phenotype, f, indent=2)
+    _LOGGER.info("Finished processing phenotype data.")
+
+    _LOGGER.info("Loading spectrograms into a single HF dataset.")
+
+    audio_paths = sorted(
+        audio_paths,
+        # sort first by subject, then by task
+        key=lambda x: (x.stem.split("_")[0], x.stem.split("_")[2]),
+    )
+
+    # remove known individuals
+    n = len(audio_paths)
+    for participant_id in PARTICIPANT_ID_TO_REMOVE:
+        audio_paths = [x for x in audio_paths if f"sub-{participant_id}" not in str(x)]
+
+    if len(audio_paths) < n:
+        _LOGGER.info(
+            f"Removed {n - len(audio_paths)} records due to hard-coded participant removal."
+        )
+
+    # remove audio check and sensitive audio
+    audio_paths = filter_audio_paths(audio_paths)
+
+    _LOGGER.info(f"Copying {len(audio_paths)} recordings.")
+    for audio_path in tqdm(
+        audio_paths, desc="Copying audio and metadata files", total=len(audio_paths)
+    ):
+        json_path = audio_path.with_suffix(".json")
+
+        metadata = json.loads(json_path.read_text())
+
+        update_metadata_record_and_session_id(metadata)
+        participant_id = get_value_from_metadata(metadata, linkid="participant_id", endswith=False)
+        session_id = get_value_from_metadata(metadata, linkid="session_id", endswith=True)
+
+        audio_path_stem_ending = "_".join(audio_path.stem.split("_")[2:])
+        output_path = bids_path.joinpath(
+            f"sub-{participant_id}/ses-{session_id}/audio/{audio_path_stem_ending}.wav"
+        )
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+
+        # copy over the associated .json file and audio data
+        with open(output_path.with_suffix(".json"), "w") as fp:
+            json.dump(metadata, fp, indent=2)
+        shutil.copy(audio_path, output_path)
+
+    _LOGGER.info("Finished copying audio files.")
+
+    # copy over the standard bids template files
+    shutil.copy(bids_path.joinpath("README.md"), outdir)
+    shutil.copy(bids_path.joinpath("CHANGES.md"), outdir)
+    shutil.copy(bids_path.joinpath("dataset_description.json"), outdir)
 
 
 @click.command()

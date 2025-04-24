@@ -135,8 +135,6 @@ def test_get_instrument_for_name():
 def test_redcap_to_bids():
     project_root = Path(__file__).parent.parent
     csv_file_path = project_root / "data/sdv_redcap_synthetic_data_1000_rows.csv"
-
-    # Check if the file exists before proceeding
     if not csv_file_path.exists():
         raise FileNotFoundError(f"CSV file not found at: {csv_file_path}")
 

@@ -9,6 +9,7 @@ from b2aiprep.commands import (  # gensynthtabdata,
     createbatchcsv,
     dashboard,
     prepare_bids,
+    publish_bids_dataset,
     redcap2bids,
     transcribe,
     validate,
@@ -51,6 +52,7 @@ cli.add_command(transcribe)
 cli.add_command(createbatchcsv)
 cli.add_command(create_derived_dataset)
 cli.add_command(validate_derived_dataset)
+cli.add_command(publish_bids_dataset)
 cli.add_command(reproschema_audio_to_folder)
 cli.add_command(reproschema_to_redcap)
 cli.add_command(generate_audio_features)

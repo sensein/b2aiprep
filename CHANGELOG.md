@@ -1,3 +1,55 @@
+# 2.2.0 (Tue Apr 22 2025)
+
+#### 🚀 Enhancement
+
+- Fix import problem [#132](https://github.com/sensein/b2aiprep/pull/132) ([@ibevers](https://github.com/ibevers))
+
+#### Authors: 1
+
+- [@ibevers](https://github.com/ibevers)
+
+---
+
+# 2.1.0 (Sat Apr 19 2025)
+
+#### 🚀 Enhancement
+
+- patch for release v2.0.0 [#167](https://github.com/sensein/b2aiprep/pull/167) ([@alistairewj](https://github.com/alistairewj))
+
+#### Authors: 1
+
+- Alistair Johnson ([@alistairewj](https://github.com/alistairewj))
+
+---
+
+# 2.0.0 (Fri Apr 11 2025)
+
+#### 💥 Breaking Change
+
+- Rel/v2 [#152](https://github.com/sensein/b2aiprep/pull/152) ([@Evan8456](https://github.com/Evan8456) [@alistairewj](https://github.com/alistairewj) [@ibevers](https://github.com/ibevers))
+
+#### 🐛 Bug Fix
+
+- publish bids [#165](https://github.com/sensein/b2aiprep/pull/165) ([@alistairewj](https://github.com/alistairewj))
+- Fix tests [#164](https://github.com/sensein/b2aiprep/pull/164) ([@ibevers](https://github.com/ibevers))
+- 161 remove recording metadata suffix [#162](https://github.com/sensein/b2aiprep/pull/162) ([@ibevers](https://github.com/ibevers))
+- 159 update dataset descriptionjson [#160](https://github.com/sensein/b2aiprep/pull/160) ([@ibevers](https://github.com/ibevers))
+- 157 update changesmd [#158](https://github.com/sensein/b2aiprep/pull/158) ([@ibevers](https://github.com/ibevers))
+- Fix audio removal [#156](https://github.com/sensein/b2aiprep/pull/156) ([@alistairewj](https://github.com/alistairewj))
+- Fix phenotype df [#155](https://github.com/sensein/b2aiprep/pull/155) ([@alistairewj](https://github.com/alistairewj))
+- Misc fixes to the derived dataset [#154](https://github.com/sensein/b2aiprep/pull/154) ([@alistairewj](https://github.com/alistairewj))
+- updated participants.json [#153](https://github.com/sensein/b2aiprep/pull/153) ([@Evan8456](https://github.com/Evan8456))
+- Add weights_only=False in torch.load [#151](https://github.com/sensein/b2aiprep/pull/151) ([@ibevers](https://github.com/ibevers))
+- remove columns which were not in v1 [#150](https://github.com/sensein/b2aiprep/pull/150) ([@alistairewj](https://github.com/alistairewj))
+
+#### Authors: 3
+
+- [@ibevers](https://github.com/ibevers)
+- Alistair Johnson ([@alistairewj](https://github.com/alistairewj))
+- Evan Ng ([@Evan8456](https://github.com/Evan8456))
+
+---
+
 # 1.3.0 (Thu Mar 13 2025)
 
 #### 🚀 Enhancement

@@ -3,21 +3,16 @@ import importlib.resources as pkg_resources
 import json
 import logging
 import os
-import wave
 import shutil
 import time
+import wave
 from pathlib import Path
 from typing import Dict, List
-import requests
 
 import pandas as pd
+import requests
 
 _LOGGER = logging.getLogger(__name__)
-
-
-def transform_str_for_bids_filename(filename: str):
-    """Replace spaces in a string with hyphens to match BIDS string format rules.."""
-    return filename.replace(" ", "-")
 
 
 def reformat_resources(input_dir: str, output_dir: str) -> None:
@@ -190,7 +185,7 @@ def initialize_data_directory(bids_dir_path: str) -> None:
         _LOGGER.info(f"Created directory: {bids_dir_path}")
 
     template_package = "b2aiprep.prepare.resources.b2ai-data-bids-like-template"
-    copy_package_resource(template_package, "CHANGES.md", bids_dir_path)
+    copy_package_resource(template_package, "CHANGELOG.md", bids_dir_path)
     copy_package_resource(template_package, "README.md", bids_dir_path)
     copy_package_resource(template_package, "dataset_description.json", bids_dir_path)
     copy_package_resource(template_package, "participants.json", bids_dir_path)
@@ -315,6 +310,7 @@ def retry(func, max_retries=3, delay=0.5, exceptions=(Exception,)):
 
     return wrapper
 
+
 def fetch_json_options_number(raw_url):
     """
     Function to retrieve how many options a specific reproschema item contains.
@@ -339,13 +335,14 @@ def fetch_json_options_number(raw_url):
     except ValueError:
         _LOGGER.info("Error parsing JSON data")
 
+
 def get_wav_duration(file_path):
     """
     Function to retrieve duration of .wav audio file
     Args:
         file_path: The url to the given audio files.
     """
-    with wave.open(file_path, 'rb') as audio_file:
+    with wave.open(file_path, "rb") as audio_file:
         # Get the total number of frames
         frames = audio_file.getnframes()
         # Get the frame rate (samples per second)

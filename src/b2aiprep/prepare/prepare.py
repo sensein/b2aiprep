@@ -61,6 +61,7 @@ from senselab.utils.data_structures import (
 from tqdm import tqdm
 
 from b2aiprep.prepare.constants import (
+    AUDIO_FILESTEMS_TO_REMOVE,
     FEATURE_EXTRACTION_SPEECH_RATE,
     FEATURE_EXTRACTION_DURATION,
     FEATURE_EXTRACTION_PITCH_AND_INTENSITY,
@@ -68,7 +69,6 @@ from b2aiprep.prepare.constants import (
     FEATURE_EXTRACTION_FORMANTS,
     FEATURE_EXTRACTION_SPECTRAL_MOMENTS,
     FEATURE_EXTRACTION_JITTER, FEATURE_EXTRACTION_SHIMMER,
-    ALLOWED_COLUMNS,
 )
 
 from b2aiprep.prepare.bids import get_audio_paths
@@ -504,54 +504,68 @@ def validate_bids_data(
         run(extract_task)
     _logger.info("Process completed.")
 
+def is_audio_sensitive(filepath: Path) -> bool:
+    return filepath.stem in AUDIO_FILESTEMS_TO_REMOVE
 
-def clean_phenotype_data(df: pd.DataFrame, phenotype: dict) -> Tuple[pd.DataFrame, dict]:
-    """Remove known errors occurring in the phenotype dataframe."""
-    # the alcohol_amt column has dates instead of values
-    date_fix_map = {
-        "4-Mar": "3 - 4",
-        "6-May": "5 - 6",
-        "9-Jul": "7 - 9",
-    }
-    df['alcohol_amt'] = df['alcohol_amt'].apply(
-        lambda x: date_fix_map[x] if x in date_fix_map else x)
-
-    # remove columns with minimal data science utility (free-text, all null values, etc)
-    columns_to_drop = []
-    for col in [
-        # the following columns contain free-text
-        'state_province',
-        'other_edu_level', 'others_household_specify',
-        'diagnosis_alz_dementia_mci_ds_cdr', 'diagnosis_alz_dementia_mci_ca_rudas_score',
-        'diagnosis_alz_dementia_mci_ca_mmse_score', 'diagnosis_alz_dementia_mci_ca_moca_score',
-        'diagnosis_alz_dementia_mci_ca_adas_cog_score', 'diagnosis_alz_dementia_mci_ca_other',
-        'diagnosis_alz_dementia_mci_ca_other_score',
-        'diagnosis_parkinsons_ma_uprds', 'diagnosis_parkinsons_ma_updrs_part_i_score',
-        'diagnosis_parkinsons_ma_updrs_part_ii_score', 'diagnosis_parkinsons_ma_updrs_part_iii_score',
-        'diagnosis_parkinsons_ma_updrs_part_iv_score', 'diagnosis_parkinsons_non_motor_symptoms_yes',
-        'traumatic_event',
-        # following columns have all null values
-        'is_regular_smoker'
-    ]:
-        if col in df:
-            columns_to_drop.append(col)
-
-    if len(columns_to_drop) > 0:
-        df = df.drop(columns=columns_to_drop)
-        phenotype = {
-            k: v for k, v in phenotype.items() if k not in columns_to_drop
-        }
-
-    # remove columns which are outside of our allow list from v1
-    for col in df.columns:
-        if col not in set(ALLOWED_COLUMNS):
-            _logger.info(f"Removing unrecognized column: {col}")
-            columns_to_drop.append(col)
+def filter_audio_paths(audio_paths: List[Path]) -> List[Path]:
+    """Filter audio paths to remove audio check and sensitive audio files."""
     
-    if len(columns_to_drop) > 0:
-        df = df.drop(columns=columns_to_drop)
-        phenotype = {
-            k: v for k, v in phenotype.items() if k not in columns_to_drop
-        }
+    # remove audio-check
+    n_audio = len(audio_paths)
+    audio_paths = [
+        x for x in audio_paths if 'audio-check' not in x.stem.split("_")[2].lower()
+    ]
+    if len(audio_paths) < n_audio:
+        _logger.info(
+            f"Removed {n_audio - len(audio_paths)} audio check recordings."
+        )
 
-    return df, phenotype
+    n_audio = len(audio_paths)
+    audio_paths = [
+        x for x in audio_paths if not is_audio_sensitive(x)
+    ]
+    if len(audio_paths) < n_audio:
+        _logger.info(
+            f"Removed {n_audio - len(audio_paths)} records due to sensitive audio."
+        )
+    
+    return audio_paths
+
+def reduce_id_length(x):
+    """Reduce length of ID."""
+    if pd.isnull(x):
+        return x
+    return x.split('-')[0]
+
+def reduce_length_of_id(df: pd.DataFrame, id_name: str) -> pd.DataFrame:
+    """Reduce length of ID in the dataframe."""
+    for c in df.columns:
+        if c == id_name or c.endswith(id_name):
+            df[c] = df[c].apply(reduce_id_length)
+    
+    return df
+
+def get_value_from_metadata(metadata: dict, linkid: str, endswith: bool = False) -> str:
+    for item in metadata['item']:
+        if 'linkId' not in item:
+            continue
+        if item['linkId'] == linkid:
+            return item['answer'][0]['valueString']
+        if endswith and item['linkId'].endswith(linkid):
+            return item['answer'][0]['valueString']
+    return None
+
+def update_metadata_record_and_session_id(metadata: dict):
+    for item in metadata['item']:
+        if 'linkId' not in item:
+            continue
+
+        if item['linkId'] == 'record_id':
+            record_id = item['answer'][0]['valueString']
+            item['answer'][0]['valueString'] = reduce_id_length(record_id)
+            # rename to participant_id
+            item['linkId'] = 'participant_id'
+        elif (item['linkId'] == 'session_id') or (item['linkId'].endswith('_session_id')):
+            item['answer'][0]['valueString'] = reduce_id_length(
+                item['answer'][0]['valueString']
+            )
