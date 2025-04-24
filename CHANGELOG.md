@@ -1,3 +1,15 @@
+# 2.3.0 (Thu Apr 24 2025)
+
+#### 🚀 Enhancement
+
+- 142 set weights only to false [#168](https://github.com/sensein/b2aiprep/pull/168) ([@ibevers](https://github.com/ibevers))
+
+#### Authors: 1
+
+- [@ibevers](https://github.com/ibevers)
+
+---
+
 # 2.2.0 (Tue Apr 22 2025)
 
 #### 🚀 Enhancement
