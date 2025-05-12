@@ -80,6 +80,7 @@ GENERAL_QUESTIONNAIRES = [
     "chronicCough",
     "muscleTension",
     "laryngitis",
+    "anxiety"
 ]
 
 AUDIO_TASKS = (
@@ -271,6 +272,12 @@ class RepeatInstrument(Enum):
         name="bipolar",
         text="Participant",
         schema_name="dmoodbipolardisorderschema",
+    )
+    ANXIETY = Instrument(
+        session_id="record_id",
+        name="anxiety",
+        text="Participant",
+        schema_name="dmoodanxietydisorderschema",
     )
     DEPRESSION = Instrument(
         session_id="record_id",

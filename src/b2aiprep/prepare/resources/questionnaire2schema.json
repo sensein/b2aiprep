@@ -12,6 +12,7 @@
     "laryngealcancer": "dvoicelaryngealcancerschema",
     "benignLesion": "dvoicebenignlesionsschema",
     "bipolar": "dmoodbipolardisorderschema",
+    "anxiety": "dmoodanxietydisorderschema",
     "depression": "dmooddepressionormajordepressivedisorderschema",
     "airwaystenosis": "drespairwaystenosisschema",
     "alzheimers": "dneuroalzheimersdiseasemildcognitiveimpairmeschema",
