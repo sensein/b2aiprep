@@ -25,6 +25,7 @@ dependencies = [
     "matplotlib>=3.8.3",
     "fhir.resources==7.1.0",
     "streamlit>=1.42.2",
+    "pyav~=14.1.0"
 ]
 
 [tool.setuptools.packages.find]
