@@ -1,0 +1,436 @@
+{
+    "d_mood_anxiety_disorder": {
+        "description": "Measures perceived impact of voice disorders for kids.",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_mood_anxiety_disorder/d_mood_anxiety_disorder_schema",
+        "data_elements": {
+            "diagnosis_diagnosed_ad": {
+                "description": {
+                    "en": "Have you been diagnosed with an anxiety disorder?"
+                },
+                "question": {
+                    "en": "Have you been diagnosed with an anxiety disorder?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_mood_anxiety_disorder/items/diagnosis_diagnosed_ad",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_diagnosed_ad_selection": {
+                "description": {
+                    "en": "Anxiety Disorder"
+                },
+                "question": {
+                    "en": "Anxiety Disorder"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_mood_anxiety_disorder/items/diagnosis_diagnosed_ad_selection",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "6B80 Anorexia nervosa"
+                        },
+                        "value": "6B80"
+                    },
+                    {
+                        "name": {
+                            "en": "6B81 Bulimia nervosa"
+                        },
+                        "value": "6B81"
+                    },
+                    {
+                        "name": {
+                            "en": "6B82 Binge eating disorder"
+                        },
+                        "value": "6B82"
+                    },
+                    {
+                        "name": {
+                            "en": "6B83 Avoidant-restrictive food intake disorder"
+                        },
+                        "value": "6B83"
+                    },
+                    {
+                        "name": {
+                            "en": "6B84 Pica"
+                        },
+                        "value": "6B84"
+                    },
+                    {
+                        "name": {
+                            "en": "6B85 Rumination-regurgitation disorder"
+                        },
+                        "value": "6B85"
+                    },
+                    {
+                        "name": {
+                            "en": "6B8Y Other specified feeding or eating disorders"
+                        },
+                        "value": "6B8Y"
+                    },
+                    {
+                        "name": {
+                            "en": "6B8Z Feeding or eating disorders, unspecified"
+                        },
+                        "value": "6B8Z"
+                    },
+                    {
+                        "name": {
+                            "en": "6B00 Generalized Anxiety Disorder"
+                        },
+                        "value": "6B00"
+                    },
+                    {
+                        "name": {
+                            "en": "6B01 Panic Disorder"
+                        },
+                        "value": "6B01"
+                    },
+                    {
+                        "name": {
+                            "en": "6B02 Agoraphobia"
+                        },
+                        "value": "6B02"
+                    },
+                    {
+                        "name": {
+                            "en": "6B04 Social Anxiety Disorder"
+                        },
+                        "value": "6B04"
+                    },
+                    {
+                        "name": {
+                            "en": "6B05 Separation Anxiety Disorder"
+                        },
+                        "value": "6B05"
+                    },
+                    {
+                        "name": {
+                            "en": "6B06 Selective Mutism"
+                        },
+                        "value": "6B06"
+                    },
+                    {
+                        "name": {
+                            "en": "6B0Y Other Specified Anxiety or Fear-Related Disorders"
+                        },
+                        "value": "6B0Y"
+                    },
+                    {
+                        "name": {
+                            "en": "6B0Z Anxiety or fear-related disorders, unspecified"
+                        },
+                        "value": "6B0Z"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ad_active_psy_med_problems": {
+                "description": {
+                    "en": "Please select any active psychiatric problems and medical problems (select all that apply).\n\nMOVED IT TO \"Q - Mood - Participant History\""
+                },
+                "question": {
+                    "en": "Please select any active psychiatric problems and medical problems (select all that apply).\n\nMOVED IT TO \"Q - Mood - Participant History\""
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_mood_anxiety_disorder/items/diagnosis_ad_active_psy_med_problems",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "ADHD"
+                        },
+                        "value": "adhd"
+                    },
+                    {
+                        "name": {
+                            "en": "Anxiety"
+                        },
+                        "value": "anxiety"
+                    },
+                    {
+                        "name": {
+                            "en": "OCD"
+                        },
+                        "value": "ocd"
+                    },
+                    {
+                        "name": {
+                            "en": "Stroke"
+                        },
+                        "value": "stroke"
+                    },
+                    {
+                        "name": {
+                            "en": "Epilepsy"
+                        },
+                        "value": "epilepsy"
+                    },
+                    {
+                        "name": {
+                            "en": "Laryngeal cancer"
+                        },
+                        "value": "laryngeal_cancer"
+                    },
+                    {
+                        "name": {
+                            "en": "Seasonal allergies"
+                        },
+                        "value": "seasonal_allergies"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "multipleChoice": true,
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ad_active_psy_med_prob_other": {
+                "description": {
+                    "en": "Please specify\n\nMOVED IT TO \"Q - Mood - Participant History\""
+                },
+                "question": {
+                    "en": "Please specify\n\nMOVED IT TO \"Q - Mood - Participant History\""
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_mood_anxiety_disorder/items/diagnosis_ad_active_psy_med_prob_other",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "diagnosis_ad_hist_psy_med_problems": {
+                "description": {
+                    "en": "Please select any historical psychiatric problems and medical problems (select all that apply).\n\nMOVED IT TO \"Q - Mood - Participant History\""
+                },
+                "question": {
+                    "en": "Please select any historical psychiatric problems and medical problems (select all that apply).\n\nMOVED IT TO \"Q - Mood - Participant History\""
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_mood_anxiety_disorder/items/diagnosis_ad_hist_psy_med_problems",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "ADHD"
+                        },
+                        "value": "adhd"
+                    },
+                    {
+                        "name": {
+                            "en": "Anxiety"
+                        },
+                        "value": "anxiety"
+                    },
+                    {
+                        "name": {
+                            "en": "OCD"
+                        },
+                        "value": "ocd"
+                    },
+                    {
+                        "name": {
+                            "en": "Stroke"
+                        },
+                        "value": "stroke"
+                    },
+                    {
+                        "name": {
+                            "en": "Epilepsy"
+                        },
+                        "value": "epilepsy"
+                    },
+                    {
+                        "name": {
+                            "en": "Laryngeal cancer"
+                        },
+                        "value": "laryngeal_cancer"
+                    },
+                    {
+                        "name": {
+                            "en": "Seasonal allergies"
+                        },
+                        "value": "seasonal_allergies"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "multipleChoice": true,
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ad_hist_psy_med_prob_other": {
+                "description": {
+                    "en": "Please specify\n\nMOVED IT TO \"Q - Mood - Participant History\""
+                },
+                "question": {
+                    "en": "Please specify\n\nMOVED IT TO \"Q - Mood - Participant History\""
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_mood_anxiety_disorder/items/diagnosis_ad_hist_psy_med_prob_other",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "diagnosis_ad_last_anxious_episode": {
+                "description": {
+                    "en": "When was your last anxious episode (feeling anxious more days than not over\ntwo weeks)?"
+                },
+                "question": {
+                    "en": "When was your last anxious episode (feeling anxious more days than not over\ntwo weeks)?"
+                },
+                "datatype": [
+                    "xsd:date"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_mood_anxiety_disorder/items/diagnosis_ad_last_anxious_episode",
+                "valueType": [
+                    "xsd:date"
+                ],
+                "choices": null
+            },
+            "diagnosis_ad_prescribed_medication": {
+                "description": {
+                    "en": "Have you ever been prescribed medication for mental or emotional problems (e.g., antidepressants, anxiolytics, antipsychotics, mood stabilizers, etc.)?\n\nMOVED IT TO \"Q - Mood - Participant History\""
+                },
+                "question": {
+                    "en": "Have you ever been prescribed medication for mental or emotional problems (e.g., antidepressants, anxiolytics, antipsychotics, mood stabilizers, etc.)?\n\nMOVED IT TO \"Q - Mood - Participant History\""
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_mood_anxiety_disorder/items/diagnosis_ad_prescribed_medication",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ad_current_medication": {
+                "description": {
+                    "en": "Please list any current psychiatric medications (to the best of your recollection), including medication names, dosage,\nand how many times per day.\n\n\nMOVED IT TO \"Q - Mood - Participant History\""
+                },
+                "question": {
+                    "en": "Please list any current psychiatric medications (to the best of your recollection), including medication names, dosage,\nand how many times per day.\n\n\nMOVED IT TO \"Q - Mood - Participant History\""
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_mood_anxiety_disorder/items/diagnosis_ad_current_medication",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "diagnosis_ad_previous_medication": {
+                "description": {
+                    "en": "Please list any previous psychiatric medications (to the best of your recollection), including medication names,\napproximate dates you were taking them, and why they were discontinued.\n\nMOVED IT TO \"Q - Mood - Participant History\""
+                },
+                "question": {
+                    "en": "Please list any previous psychiatric medications (to the best of your recollection), including medication names,\napproximate dates you were taking them, and why they were discontinued.\n\nMOVED IT TO \"Q - Mood - Participant History\""
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_mood_anxiety_disorder/items/diagnosis_ad_previous_medication",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "diagnosis_ad_see_mental_health_professional": {
+                "description": {
+                    "en": "Have you ever seen a mental health professional for talk therapy (could include social workers, psychiatrists, etc.)?\n\nMOVED IT TO \"Q - Mood - Participant History\""
+                },
+                "question": {
+                    "en": "Have you ever seen a mental health professional for talk therapy (could include social workers, psychiatrists, etc.)?\n\nMOVED IT TO \"Q - Mood - Participant History\""
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_mood_anxiety_disorder/items/diagnosis_ad_see_mental_health_professional",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ad_describe_psychotherapy": {
+                "description": {
+                    "en": "Please briefly describe your psychotherapy history (e.g.,\ndates, reasons for seeking therapy, etc.).\n\nMOVED IT TO \"Q - Mood - Participant History\""
+                },
+                "question": {
+                    "en": "Please briefly describe your psychotherapy history (e.g.,\ndates, reasons for seeking therapy, etc.).\n\nMOVED IT TO \"Q - Mood - Participant History\""
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/61278c480b3a82f24b189119bf97e112e608d114/activities/d_mood_anxiety_disorder/items/diagnosis_ad_describe_psychotherapy",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            }
+        }
+    }
+}

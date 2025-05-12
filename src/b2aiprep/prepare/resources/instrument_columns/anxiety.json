@@ -1,0 +1,14 @@
+[
+    "diagnosis_diagnosed_ad",
+    "diagnosis_diagnosed_ad_selection",
+    "diagnosis_ad_active_psy_med_problems",
+    "diagnosis_ad_active_psy_med_prob_other",
+    "diagnosis_ad_hist_psy_med_problems",
+    "diagnosis_ad_hist_psy_med_prob_other",
+    "diagnosis_ad_last_anxious_episode",
+    "diagnosis_ad_prescribed_medication",
+    "diagnosis_ad_current_medication",
+    "diagnosis_ad_previous_medication",
+    "diagnosis_ad_see_mental_health_professional",
+    "diagnosis_ad_describe_psychotherapy"
+]
