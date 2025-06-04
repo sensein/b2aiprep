@@ -1,3 +1,15 @@
+# 2.4.0 (Wed Jun 04 2025)
+
+#### 🚀 Enhancement
+
+- Fix/issue#174 [#179](https://github.com/sensein/b2aiprep/pull/179) ([@Evan8456](https://github.com/Evan8456))
+
+#### Authors: 1
+
+- Evan Ng ([@Evan8456](https://github.com/Evan8456))
+
+---
+
 # 2.3.0 (Thu Apr 24 2025)
 
 #### 🚀 Enhancement
