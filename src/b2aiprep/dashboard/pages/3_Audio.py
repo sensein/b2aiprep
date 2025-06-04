@@ -66,7 +66,7 @@ if len(audio_record_names) > 0:
     hop_length = st.number_input("Hop length", value=15)
     nfft = 1024
 
-    audio = Audio.from_filepath(str(audio_file))
+    audio = Audio(filepath=str(audio_file))
     audio = resample_audios([audio], 16000)[0]
     # set window and hop length to the same to not allow for good Griffin Lim reconstruction
     features_specgram = extract_spectrogram_from_audios(

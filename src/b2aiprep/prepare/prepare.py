@@ -111,8 +111,7 @@ def extract_single(
 
     logging.disable(logging.ERROR)
     # Load audio
-    audio_orig = Audio.from_filepath(wav_path)
-
+    audio_orig = Audio(filepath=wav_path)
     # Downmix to mono
     audio_orig = downmix_audios_to_mono([audio_orig])[0]
 
