@@ -739,7 +739,7 @@ def convert(
               sample rate, OpenSMILE features, and optional transcription.
     """
     os.makedirs(outdir, exist_ok=True)
-    audio = Audio.from_filepath(filename)
+    audio = Audio(filepath=filename)
     features = {}
     features["subject"] = subject
     features["task"] = task
@@ -842,7 +842,7 @@ def batchconvert(
         opensmile,
     ):
         os.makedirs(outdir, exist_ok=True)
-        audio = Audio.from_filepath(filename)
+        audio = Audio(filepath=filename)
         features = {}
         features["subject"] = subject
         features["task"] = task
@@ -949,8 +949,8 @@ def verify(file1, file2, device):
     Returns:
         None: Prints the verification score and prediction result.
     """
-    audio1 = Audio.from_filepath(file1)
-    audio2 = Audio.from_filepath(file2)
+    audio1 = Audio(filepath=file1)
+    audio2 = Audio(filepath=file2)
     resampled_audios = resample_audios([audio1, audio2], resample_rate=16000)
     audio_pair = (resampled_audios[0], resampled_audios[1])
     score, prediction = verify_speaker(audios=[audio_pair])[0]
@@ -991,7 +991,7 @@ def transcribe(
     Returns:
         None: Prints the transcribed text to the console.
     """
-    audio_data = Audio.from_filepath(audio_file)
+    audio_data = Audio(filepath=audio_file)
     hf_model = HFModel(path_or_uri=model)
     device = DeviceType(device.lower())
     language = Language.model_validate({"language_code": language})
