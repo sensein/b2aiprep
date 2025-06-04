@@ -45,5 +45,6 @@ PHENOTYPE_JSON_FILE_DESCRIPTIONS = {
     "q_mood_participant_history.json": "Gets Participant history for Mood protocol",
     "chronicCough.json": "Measures un-explained cough",
     "muscleTension.json": "Measures muscle tension",
-    "laryngitis.json" : "Measures laryngitis"
+    "laryngitis.json" : "Measures laryngitis",
+    "anxiety.json": "Measures anxiety"
 }

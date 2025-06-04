@@ -4516,5 +4516,41 @@
     },
     "voice_disorders___5": {
         "description": "Indicates if the participant identifies with voice_disorders category 5"
+    },
+    "diagnosis_diagnosed_ad": {
+        "description": "Indicates if the participant has been diagnosed with an anxiety disorder"
+    },
+    "diagnosis_diagnosed_ad_selection": {
+        "description": "Indicates what option participant selected for anxiety"
+    },
+    "diagnosis_ad_active_psy_med_problems": {
+        "description": "Indicates any active psychiatric problems and medical problems"
+    },
+    "diagnosis_ad_active_psy_med_prob_other": {
+        "description": "Specifies what other medication they are taking for their psychiatric problems"
+    },
+    "diagnosis_ad_hist_psy_med_problems": {
+        "description": "Specifies any history of medication they are taking for their psychiatric problems"
+    },
+    "diagnosis_ad_hist_psy_med_prob_other": {
+        "description": "Specifies what other history of medication they are taking for their psychiatric problems"
+    },
+    "diagnosis_ad_last_anxious_episode": {
+        "description": "Specifies when was participant's last anxious episode"
+    },
+    "diagnosis_ad_prescribed_medication": {
+        "description": "Indicates if participant has ever been prescribed medication for mental or emotional problems"
+    },
+    "diagnosis_ad_current_medication": {
+        "description": "Specifies any current psychiatric medications (to the best of your recollection),"
+    },
+    "diagnosis_ad_previous_medication": {
+        "description": "Specifies any previous psychiatric medications"
+    },
+    "diagnosis_ad_see_mental_health_professional": {
+        "description": "Indicates if participant hsa ever seen a mental health professional for talk therapy"
+    },
+    "diagnosis_ad_describe_psychotherapy": {
+        "description": "Briefly describes participants psychotherapy history"
     }
 }
