@@ -119,22 +119,6 @@ def get_audio_paths(
     )
 
 
-def batch_elements(elements: t.List[t.Any], batch_size: int) -> t.List[t.List[t.Any]]:
-    """Batch elements into lists of a specified size.
-
-    Args:
-      elements:
-        The elements to batch.
-      batch_size:
-        The size of each batch.
-
-    Returns:
-      list of list of any:
-        A list of lists, each containing a batch of elements.
-    """
-    return [elements[i : i + batch_size] for i in range(0, len(elements), batch_size)]
-
-
 def load_redcap_csv(file_path):
     """Load the RedCap CSV file into a DataFrame. Makes modifications to the data
     to ensure compatibility with downstream tooling.
