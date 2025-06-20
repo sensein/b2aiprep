@@ -22,6 +22,7 @@ from b2aiprep.prepare.bids import (
     load_redcap_csv,
     questionnaire_mapping,
     redcap_to_bids,
+    validate_redcap_df_column_names,
     write_pydantic_model_to_bids_file,
 )
 from b2aiprep.prepare.constants import AUDIO_TASKS, RepeatInstrument
@@ -612,3 +613,196 @@ def test_get_audio_paths_no_audio_files():
 
         # Should return empty list as no .wav files exist
         assert result == []
+
+
+def test_validate_redcap_df_column_names_all_coded():
+    """Test validate_redcap_df_column_names with all coded headers - should pass without error."""
+    # Create DataFrame with coded column names
+    mock_data = pd.DataFrame(
+        {
+            "record_id": [1, 2, 3],
+            "selected_language": ["English", "Spanish", "French"],
+            "consent_status": ["Consented", "Pending", "Declined"],
+        }
+    )
+
+    # Mock the column mapping to include these columns
+    mock_column_mapping = {
+        "record_id": "Record ID",
+        "selected_language": "Language",
+        "consent_status": "Consent Status",
+    }
+
+    with (
+        patch("b2aiprep.prepare.bids.files") as mock_files,
+        patch("json.loads", return_value=mock_column_mapping),
+    ):
+        mock_resource = MagicMock()
+        mock_resource.joinpath.return_value.read_text.return_value = "{}"
+        mock_files.return_value.joinpath.return_value = mock_resource
+
+        # Should not raise an exception
+        validate_redcap_df_column_names(mock_data)
+
+
+def test_validate_redcap_df_column_names_no_coded_headers():
+    """Test validate_redcap_df_column_names with no coded headers - should raise ValueError."""
+    # Create DataFrame with label column names only
+    mock_data = pd.DataFrame(
+        {
+            "Random Column": [1, 2, 3],
+            "Another Random": ["A", "B", "C"],
+            "Third Random": ["X", "Y", "Z"],
+        }
+    )
+
+    mock_column_mapping = {
+        "record_id": "Record ID",
+        "selected_language": "Language",
+        "consent_status": "Consent Status",
+    }
+
+    with (
+        patch("b2aiprep.prepare.bids.files") as mock_files,
+        patch("json.loads", return_value=mock_column_mapping),
+    ):
+        mock_resource = MagicMock()
+        mock_resource.joinpath.return_value.read_text.return_value = "{}"
+        mock_files.return_value.joinpath.return_value = mock_resource
+
+        with pytest.raises(ValueError, match="Dataframe has no coded headers"):
+            validate_redcap_df_column_names(mock_data)
+
+
+def test_validate_redcap_df_column_names_majority_label_headers():
+    """Test validate_redcap_df_column_names with majority label headers - raises ValueError."""
+    # Create DataFrame with mostly label column names
+    mock_data = pd.DataFrame(
+        {
+            "Record ID": [1, 2, 3],
+            "Language": ["English", "Spanish", "French"],
+            "Consent Status": ["Consented", "Pending", "Declined"],
+            "record_id": [1, 2, 3],  # Only one coded header
+        }
+    )
+
+    mock_column_mapping = {
+        "record_id": "Record ID",
+        "selected_language": "Language",
+        "consent_status": "Consent Status",
+    }
+
+    with (
+        patch("b2aiprep.prepare.bids.files") as mock_files,
+        patch("json.loads", return_value=mock_column_mapping),
+    ):
+        mock_resource = MagicMock()
+        mock_resource.joinpath.return_value.read_text.return_value = "{}"
+        mock_files.return_value.joinpath.return_value = mock_resource
+
+        with pytest.raises(
+            ValueError, match="Dataframe has label headers rather than coded headers"
+        ):
+            validate_redcap_df_column_names(mock_data)
+
+
+def test_validate_redcap_df_column_names_mixed_headers_warning():
+    """Test validate_redcap_df_column_names with mixed headers - should log warning."""
+    # Create DataFrame with mix of coded and label headers (but majority coded)
+    mock_data = pd.DataFrame(
+        {
+            "record_id": [1, 2, 3],
+            "selected_language": ["English", "Spanish", "French"],
+            "Language": ["English", "Spanish", "French"],  # One label header
+        }
+    )
+
+    mock_column_mapping = {
+        "record_id": "Record ID",
+        "selected_language": "Language",
+        "consent_status": "Consent Status",
+    }
+
+    with (
+        patch("b2aiprep.prepare.bids.files") as mock_files,
+        patch("json.loads", return_value=mock_column_mapping),
+        patch("b2aiprep.prepare.bids._LOGGER") as mock_logger,
+    ):
+        mock_resource = MagicMock()
+        mock_resource.joinpath.return_value.read_text.return_value = "{}"
+        mock_files.return_value.joinpath.return_value = mock_resource
+
+        validate_redcap_df_column_names(mock_data)
+
+        # Should have logged a warning about mixed headers
+        mock_logger.warning.assert_called()
+        warning_call = mock_logger.warning.call_args[0][0]
+        assert "mix of label and coded headers" in warning_call
+
+
+def test_validate_redcap_df_column_names_partial_coded_headers_warning():
+    """Test validate_redcap_df_column_names with some coded headers but not all - logs warning."""
+    # Create DataFrame with some coded headers and some unknown columns
+    mock_data = pd.DataFrame(
+        {
+            "record_id": [1, 2, 3],
+            "selected_language": ["English", "Spanish", "French"],
+            "unknown_column": ["A", "B", "C"],
+            "another_unknown": ["X", "Y", "Z"],
+        }
+    )
+
+    mock_column_mapping = {
+        "record_id": "Record ID",
+        "selected_language": "Language",
+        "consent_status": "Consent Status",
+    }
+
+    with (
+        patch("b2aiprep.prepare.bids.files") as mock_files,
+        patch("json.loads", return_value=mock_column_mapping),
+        patch("b2aiprep.prepare.bids._LOGGER") as mock_logger,
+    ):
+        mock_resource = MagicMock()
+        mock_resource.joinpath.return_value.read_text.return_value = "{}"
+        mock_files.return_value.joinpath.return_value = mock_resource
+
+        validate_redcap_df_column_names(mock_data)
+
+        # Should have logged a warning about partial coded headers
+        mock_logger.warning.assert_called()
+        warning_call = mock_logger.warning.call_args[0][0]
+        assert "coded headers" in warning_call and "/" in warning_call
+
+
+@patch("b2aiprep.prepare.bids.files")
+@patch("json.loads")
+def test_validate_redcap_df_column_names_file_loading(mock_json_loads, mock_files):
+    """Test that validate_redcap_df_column_names correctly loads the column mapping file."""
+    mock_data = pd.DataFrame(
+        {"record_id": [1, 2, 3], "selected_language": ["English", "Spanish", "French"]}
+    )
+
+    mock_column_mapping = {"record_id": "Record ID", "selected_language": "Language"}
+    mock_json_loads.return_value = mock_column_mapping
+
+    # Mock the chained file system access: files().joinpath().joinpath()
+    mock_final_resource = MagicMock()
+    mock_final_resource.read_text.return_value = "{}"
+
+    mock_resources_path = MagicMock()
+    mock_resources_path.joinpath.return_value = mock_final_resource
+
+    mock_prepare_path = MagicMock()
+    mock_prepare_path.joinpath.return_value = mock_resources_path
+
+    mock_files.return_value.joinpath.return_value = mock_prepare_path
+
+    validate_redcap_df_column_names(mock_data)
+
+    # Verify the correct file path was accessed
+    mock_files.assert_called_with("b2aiprep")
+    mock_files.return_value.joinpath.assert_called_with("prepare")
+    mock_prepare_path.joinpath.assert_called_with("resources")
+    mock_resources_path.joinpath.assert_called_with("column_mapping.json")
+    mock_final_resource.read_text.assert_called_once()
