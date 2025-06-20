@@ -23,6 +23,7 @@ from b2aiprep.prepare.bids import (
     output_participant_data_to_fhir,
     questionnaire_mapping,
     redcap_to_bids,
+    validate_bids_folder,
     validate_redcap_df_column_names,
     write_pydantic_model_to_bids_file,
 )
@@ -1238,3 +1239,235 @@ def test_output_participant_data_to_fhir_missing_audio_file(mock_warning):
             mock_warning.assert_called()
             warning_call = mock_warning.call_args[0][0]
             assert "No audio file found for recording" in warning_call
+
+
+def test_validate_bids_folder_all_files_present():
+    """Test validate_bids_folder when all files have features and transcripts."""
+    with TemporaryDirectory() as temp_dir:
+        temp_path = Path(temp_dir)
+
+        # Create BIDS directory structure
+        audio_dir = temp_path / "sub-001" / "ses-001" / "audio"
+        audio_dir.mkdir(parents=True)
+
+        # Create audio file
+        audio_file = audio_dir / "sub-001_ses-001_task-reading.wav"
+        audio_file.write_text("audio content")
+
+        # Create corresponding feature and transcript files
+        feature_file = audio_dir / "sub-001_ses-001_task-reading.pt"
+        feature_file.write_text("feature content")
+
+        transcript_file = audio_dir / "sub-001_ses-001_task-reading.txt"
+        transcript_file.write_text("transcript content")
+
+        with patch("b2aiprep.prepare.bids._LOGGER") as mock_logger:
+            validate_bids_folder(temp_path)
+
+            # Should log success message
+            mock_logger.info.assert_called_with("All audio files have been processed.")
+            mock_logger.warning.assert_not_called()
+
+
+def test_validate_bids_folder_missing_features():
+    """Test validate_bids_folder when audio files are missing feature files."""
+    with TemporaryDirectory() as temp_dir:
+        temp_path = Path(temp_dir)
+
+        # Create BIDS directory structure
+        audio_dir1 = temp_path / "sub-001" / "ses-001" / "audio"
+        audio_dir1.mkdir(parents=True)
+        audio_dir2 = temp_path / "sub-002" / "ses-001" / "audio"
+        audio_dir2.mkdir(parents=True)
+
+        # Create audio files
+        audio_file1 = audio_dir1 / "sub-001_ses-001_task-reading.wav"
+        audio_file1.write_text("audio content 1")
+        audio_file2 = audio_dir2 / "sub-002_ses-001_task-speaking.wav"
+        audio_file2.write_text("audio content 2")
+
+        # Create transcript files but no feature files
+        transcript_file1 = audio_dir1 / "sub-001_ses-001_task-reading.txt"
+        transcript_file1.write_text("transcript content 1")
+        transcript_file2 = audio_dir2 / "sub-002_ses-001_task-speaking.txt"
+        transcript_file2.write_text("transcript content 2")
+
+        with patch("b2aiprep.prepare.bids._LOGGER") as mock_logger:
+            validate_bids_folder(temp_path)
+
+            # Should log warning about missing features
+            mock_logger.warning.assert_called()
+            warning_calls = [call[0][0] for call in mock_logger.warning.call_args_list]
+            feature_warning = next(
+                (call for call in warning_calls if "Missing features" in call), None
+            )
+            assert feature_warning is not None
+            assert "Missing features for 2 / 2 audio files" in feature_warning
+
+
+def test_validate_bids_folder_missing_transcriptions():
+    """Test validate_bids_folder when audio files are missing transcription files."""
+    with TemporaryDirectory() as temp_dir:
+        temp_path = Path(temp_dir)
+
+        # Create BIDS directory structure
+        audio_dir = temp_path / "sub-001" / "ses-001" / "audio"
+        audio_dir.mkdir(parents=True)
+
+        # Create audio file
+        audio_file = audio_dir / "sub-001_ses-001_task-reading.wav"
+        audio_file.write_text("audio content")
+
+        # Create feature file but no transcript file
+        feature_file = audio_dir / "sub-001_ses-001_task-reading.pt"
+        feature_file.write_text("feature content")
+
+        with patch("b2aiprep.prepare.bids._LOGGER") as mock_logger:
+            validate_bids_folder(temp_path)
+
+            # Should log warning about missing transcriptions
+            mock_logger.warning.assert_called()
+            warning_calls = [call[0][0] for call in mock_logger.warning.call_args_list]
+            transcript_warning = next(
+                (call for call in warning_calls if "Missing transcriptions" in call), None
+            )
+            assert transcript_warning is not None
+            assert "Missing transcriptions for 1 / 1 audio files" in transcript_warning
+
+
+def test_validate_bids_folder_missing_both():
+    """Test validate_bids_folder when audio files are missing both features and transcriptions."""
+    with TemporaryDirectory() as temp_dir:
+        temp_path = Path(temp_dir)
+
+        # Create BIDS directory structure
+        audio_dir = temp_path / "sub-001" / "ses-001" / "audio"
+        audio_dir.mkdir(parents=True)
+
+        # Create audio file only (no features or transcripts)
+        audio_file = audio_dir / "sub-001_ses-001_task-reading.wav"
+        audio_file.write_text("audio content")
+
+        with patch("b2aiprep.prepare.bids._LOGGER") as mock_logger:
+            validate_bids_folder(temp_path)
+
+            # Should log warnings for both missing features and transcriptions
+            mock_logger.warning.assert_called()
+            warning_calls = [call[0][0] for call in mock_logger.warning.call_args_list]
+
+            feature_warning = next(
+                (call for call in warning_calls if "Missing features" in call), None
+            )
+            transcript_warning = next(
+                (call for call in warning_calls if "Missing transcriptions" in call), None
+            )
+
+            assert feature_warning is not None
+            assert transcript_warning is not None
+            assert "Missing features for 1 / 1 audio files" in feature_warning
+            assert "Missing transcriptions for 1 / 1 audio files" in transcript_warning
+
+
+def test_validate_bids_folder_partial_missing():
+    """Test validate_bids_folder with mixed scenarios - some files complete, some missing features/transcripts."""
+    with TemporaryDirectory() as temp_dir:
+        temp_path = Path(temp_dir)
+
+        # Create BIDS directory structure
+        audio_dir1 = temp_path / "sub-001" / "ses-001" / "audio"
+        audio_dir1.mkdir(parents=True)
+        audio_dir2 = temp_path / "sub-002" / "ses-001" / "audio"
+        audio_dir2.mkdir(parents=True)
+        audio_dir3 = temp_path / "sub-003" / "ses-001" / "audio"
+        audio_dir3.mkdir(parents=True)
+
+        # Create audio files
+        audio_file1 = audio_dir1 / "sub-001_ses-001_task-reading.wav"
+        audio_file1.write_text("audio content 1")
+        audio_file2 = audio_dir2 / "sub-002_ses-001_task-speaking.wav"
+        audio_file2.write_text("audio content 2")
+        audio_file3 = audio_dir3 / "sub-003_ses-001_task-counting.wav"
+        audio_file3.write_text("audio content 3")
+
+        # File 1: Complete (has both feature and transcript)
+        feature_file1 = audio_dir1 / "sub-001_ses-001_task-reading.pt"
+        feature_file1.write_text("feature content 1")
+        transcript_file1 = audio_dir1 / "sub-001_ses-001_task-reading.txt"
+        transcript_file1.write_text("transcript content 1")
+
+        # File 2: Missing feature only
+        transcript_file2 = audio_dir2 / "sub-002_ses-001_task-speaking.txt"
+        transcript_file2.write_text("transcript content 2")
+
+        # File 3: Missing transcript only
+        feature_file3 = audio_dir3 / "sub-003_ses-001_task-counting.pt"
+        feature_file3.write_text("feature content 3")
+
+        with patch("b2aiprep.prepare.bids._LOGGER") as mock_logger:
+            validate_bids_folder(temp_path)
+
+            # Should log warnings for both missing features and transcriptions
+            mock_logger.warning.assert_called()
+            warning_calls = [call[0][0] for call in mock_logger.warning.call_args_list]
+
+            feature_warning = next(
+                (call for call in warning_calls if "Missing features" in call), None
+            )
+            transcript_warning = next(
+                (call for call in warning_calls if "Missing transcriptions" in call), None
+            )
+
+            assert feature_warning is not None
+            assert transcript_warning is not None
+            assert "Missing features for 1 / 3 audio files" in feature_warning
+            assert "Missing transcriptions for 1 / 3 audio files" in transcript_warning
+
+
+def test_validate_bids_folder_no_audio_files():
+    """Test validate_bids_folder when there are no audio files in the directory."""
+    with TemporaryDirectory() as temp_dir:
+        temp_path = Path(temp_dir)
+
+        # Create BIDS directory structure but no audio files
+        audio_dir = temp_path / "sub-001" / "ses-001" / "audio"
+        audio_dir.mkdir(parents=True)
+
+        # Create some non-audio files
+        feature_file = audio_dir / "sub-001_ses-001_task-reading.pt"
+        feature_file.write_text("feature content")
+        transcript_file = audio_dir / "sub-001_ses-001_task-reading.txt"
+        transcript_file.write_text("transcript content")
+
+        with patch("b2aiprep.prepare.bids._LOGGER") as mock_logger:
+            validate_bids_folder(temp_path)
+
+            # Should log success since there are no audio files to validate
+            mock_logger.info.assert_called_with("All audio files have been processed.")
+            mock_logger.warning.assert_not_called()
+
+
+def test_validate_bids_folder_complex_filenames():
+    """Test validate_bids_folder with complex BIDS filenames."""
+    with TemporaryDirectory() as temp_dir:
+        temp_path = Path(temp_dir)
+
+        # Create BIDS directory structure
+        audio_dir = temp_path / "sub-001" / "ses-001" / "audio"
+        audio_dir.mkdir(parents=True)
+
+        # Create audio file with complex naming
+        audio_file = audio_dir / "sub-001_ses-001_task-reading_run-01.wav"
+        audio_file.write_text("audio content")
+
+        # Create corresponding feature and transcript files
+        feature_file = audio_dir / "sub-001_ses-001_task-reading_run-01.pt"
+        feature_file.write_text("feature content")
+        transcript_file = audio_dir / "sub-001_ses-001_task-reading_run-01.txt"
+        transcript_file.write_text("transcript content")
+
+        with patch("b2aiprep.prepare.bids._LOGGER") as mock_logger:
+            validate_bids_folder(temp_path)
+
+            # Should log success message
+            mock_logger.info.assert_called_with("All audio files have been processed.")
+            mock_logger.warning.assert_not_called()
