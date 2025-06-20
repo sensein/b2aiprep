@@ -20,6 +20,7 @@ from b2aiprep.prepare.bids import (
     get_paths,
     get_recordings_for_acoustic_task,
     load_redcap_csv,
+    output_participant_data_to_fhir,
     questionnaire_mapping,
     redcap_to_bids,
     validate_redcap_df_column_names,
@@ -806,3 +807,434 @@ def test_validate_redcap_df_column_names_file_loading(mock_json_loads, mock_file
     mock_prepare_path.joinpath.assert_called_with("resources")
     mock_resources_path.joinpath.assert_called_with("column_mapping.json")
     mock_final_resource.read_text.assert_called_once()
+
+
+def test_output_participant_data_to_fhir_basic():
+    """Test output_participant_data_to_fhir with basic participant data."""
+    with TemporaryDirectory() as temp_dir:
+        outdir = Path(temp_dir)
+
+        # Create minimal test participant data
+        participant = {
+            "record_id": "001",
+            "sessions": [
+                {
+                    "session_id": "session1",
+                    "acoustic_tasks": [
+                        {
+                            "acoustic_task_name": "Test Task",
+                            "acoustic_task_id": "task1",
+                            "recordings": [
+                                {
+                                    "recording_id": "rec1",
+                                    "recording_name": "Test Recording",
+                                }
+                            ],
+                        }
+                    ],
+                }
+            ],
+        }
+
+        # Mock the required functions
+        with (
+            patch("b2aiprep.prepare.bids.get_instrument_for_name") as mock_get_instrument,
+            patch("b2aiprep.prepare.bids.convert_response_to_fhir") as mock_convert_fhir,
+            patch("b2aiprep.prepare.bids.write_pydantic_model_to_bids_file") as mock_write_file,
+            patch("pandas.DataFrame.to_csv") as mock_to_csv,
+        ):
+            # Set up mock instruments
+            mock_session_instrument = MagicMock()
+            mock_session_instrument.columns = ["session_id"]
+            mock_task_instrument = MagicMock()
+            mock_task_instrument.name = "acoustic_tasks"
+            mock_task_instrument.schema_name = "acoustictaskschema"
+            mock_task_instrument.columns = ["acoustic_task_id", "acoustic_task_name"]
+            mock_recording_instrument = MagicMock()
+            mock_recording_instrument.name = "recordings"
+            mock_recording_instrument.schema_name = "recordingschema"
+            mock_recording_instrument.columns = ["recording_id", "recording_name"]
+
+            mock_get_instrument.side_effect = [
+                mock_session_instrument,
+                mock_task_instrument,
+                mock_recording_instrument,
+            ]
+
+            # Mock FHIR conversion
+            mock_fhir_data = MagicMock()
+            mock_convert_fhir.return_value = mock_fhir_data
+
+            # Call the function
+            output_participant_data_to_fhir(participant, outdir)
+
+            # Verify directory structure was created
+            subject_dir = outdir / "sub-001"
+            session_dir = subject_dir / "ses-session1"
+            audio_dir = session_dir / "audio"
+            assert audio_dir.exists()
+
+            # Verify FHIR conversion was called
+            assert mock_convert_fhir.call_count == 2  # Once for task, once for recording
+
+            # Verify files were written
+            assert mock_write_file.call_count == 2  # Once for task, once for recording
+
+            # Verify sessions.tsv was created
+            mock_to_csv.assert_called_once()
+            sessions_tsv_path = subject_dir / "sessions.tsv"
+            mock_to_csv.assert_called_with(sessions_tsv_path, sep="\t", index=False)
+
+
+def test_output_participant_data_to_fhir_with_audio_files():
+    """Test output_participant_data_to_fhir with audio file copying."""
+    with TemporaryDirectory() as temp_dir, TemporaryDirectory() as audio_temp_dir:
+        outdir = Path(temp_dir)
+        audiodir = Path(audio_temp_dir)
+
+        # Create a test audio file
+        test_audio_file = audiodir / "site1" / "rec1_test.wav"
+        test_audio_file.parent.mkdir(parents=True)
+        test_audio_file.write_text("fake audio content")
+
+        participant = {
+            "record_id": "001",
+            "sessions": [
+                {
+                    "session_id": "session1",
+                    "acoustic_tasks": [
+                        {
+                            "acoustic_task_name": "Test Task",
+                            "acoustic_task_id": "task1",
+                            "recordings": [
+                                {
+                                    "recording_id": "rec1",
+                                    "recording_name": "Test Recording",
+                                }
+                            ],
+                        }
+                    ],
+                }
+            ],
+        }
+
+        with (
+            patch("b2aiprep.prepare.bids.get_instrument_for_name") as mock_get_instrument,
+            patch("b2aiprep.prepare.bids.convert_response_to_fhir") as mock_convert_fhir,
+            patch("b2aiprep.prepare.bids.write_pydantic_model_to_bids_file"),
+            patch("pandas.DataFrame.to_csv"),
+        ):
+            # Set up mock instruments (similar to previous test)
+            mock_session_instrument = MagicMock()
+            mock_session_instrument.columns = ["session_id"]
+            mock_task_instrument = MagicMock()
+            mock_task_instrument.name = "acoustic_tasks"
+            mock_task_instrument.schema_name = "acoustictaskschema"
+            mock_task_instrument.columns = ["acoustic_task_id", "acoustic_task_name"]
+            mock_recording_instrument = MagicMock()
+            mock_recording_instrument.name = "recordings"
+            mock_recording_instrument.schema_name = "recordingschema"
+            mock_recording_instrument.columns = ["recording_id", "recording_name"]
+
+            mock_get_instrument.side_effect = [
+                mock_session_instrument,
+                mock_task_instrument,
+                mock_recording_instrument,
+            ]
+
+            mock_fhir_data = MagicMock()
+            mock_convert_fhir.return_value = mock_fhir_data
+
+            # Call the function with audiodir
+            output_participant_data_to_fhir(participant, outdir, audiodir)
+
+            # Verify audio file was copied
+            expected_audio_dest = (
+                outdir
+                / "sub-001"
+                / "ses-session1"
+                / "audio"
+                / "sub-001_ses-session1_task-Test-Recording.wav"
+            )
+            assert expected_audio_dest.exists()
+            assert expected_audio_dest.read_text() == "fake audio content"
+
+
+def test_output_participant_data_to_fhir_nonexistent_audiodir():
+    """Test output_participant_data_to_fhir with non-existent audio directory."""
+    with TemporaryDirectory() as temp_dir:
+        outdir = Path(temp_dir)
+        nonexistent_audiodir = Path(temp_dir) / "nonexistent"
+
+        participant = {
+            "record_id": "001",
+            "sessions": [
+                {
+                    "session_id": "session1",
+                    "acoustic_tasks": [
+                        {
+                            "acoustic_task_name": "Test Task",
+                            "acoustic_task_id": "task1",
+                            "recordings": [
+                                {
+                                    "recording_id": "rec1",
+                                    "recording_name": "Test Recording",
+                                }
+                            ],
+                        }
+                    ],
+                }
+            ],
+        }
+
+        with (
+            patch("b2aiprep.prepare.bids.get_instrument_for_name") as mock_get_instrument,
+            patch("b2aiprep.prepare.bids.convert_response_to_fhir") as mock_convert_fhir,
+            patch("b2aiprep.prepare.bids.write_pydantic_model_to_bids_file"),
+            patch("pandas.DataFrame.to_csv"),
+        ):
+            # Set up mock instruments
+            mock_session_instrument = MagicMock()
+            mock_session_instrument.columns = ["session_id"]
+            mock_task_instrument = MagicMock()
+            mock_task_instrument.name = "acoustic_tasks"
+            mock_task_instrument.schema_name = "acoustictaskschema"
+            mock_task_instrument.columns = ["acoustic_task_id", "acoustic_task_name"]
+            mock_recording_instrument = MagicMock()
+            mock_recording_instrument.name = "recordings"
+            mock_recording_instrument.schema_name = "recordingschema"
+            mock_recording_instrument.columns = ["recording_id", "recording_name"]
+
+            mock_get_instrument.side_effect = [
+                mock_session_instrument,
+                mock_task_instrument,
+                mock_recording_instrument,
+            ]
+
+            mock_fhir_data = MagicMock()
+            mock_convert_fhir.return_value = mock_fhir_data
+
+            # Should not raise error even with non-existent audiodir
+            output_participant_data_to_fhir(participant, outdir, nonexistent_audiodir)
+
+            # Verify function completed successfully
+            subject_dir = outdir / "sub-001"
+            assert subject_dir.exists()
+
+
+def test_output_participant_data_to_fhir_multiple_sessions():
+    """Test output_participant_data_to_fhir with multiple sessions and tasks."""
+    with TemporaryDirectory() as temp_dir:
+        outdir = Path(temp_dir)
+
+        participant = {
+            "record_id": "001",
+            "sessions": [
+                {
+                    "session_id": "session1",
+                    "acoustic_tasks": [
+                        {
+                            "acoustic_task_name": "Task 1",
+                            "acoustic_task_id": "task1",
+                            "recordings": [
+                                {
+                                    "recording_id": "rec1",
+                                    "recording_name": "Recording 1",
+                                }
+                            ],
+                        },
+                        {
+                            "acoustic_task_name": "Task 2",
+                            "acoustic_task_id": "task2",
+                            "recordings": [
+                                {
+                                    "recording_id": "rec2",
+                                    "recording_name": "Recording 2",
+                                }
+                            ],
+                        },
+                    ],
+                },
+                {
+                    "session_id": "session2",
+                    "acoustic_tasks": [
+                        {
+                            "acoustic_task_name": "Task 3",
+                            "acoustic_task_id": "task3",
+                            "recordings": [
+                                {
+                                    "recording_id": "rec3",
+                                    "recording_name": "Recording 3",
+                                }
+                            ],
+                        }
+                    ],
+                },
+            ],
+        }
+
+        with (
+            patch("b2aiprep.prepare.bids.get_instrument_for_name") as mock_get_instrument,
+            patch("b2aiprep.prepare.bids.convert_response_to_fhir") as mock_convert_fhir,
+            patch("b2aiprep.prepare.bids.write_pydantic_model_to_bids_file") as mock_write_file,
+            patch("pandas.DataFrame.to_csv"),
+        ):
+            # Set up mock instruments
+            mock_session_instrument = MagicMock()
+            mock_session_instrument.columns = ["session_id"]
+            mock_task_instrument = MagicMock()
+            mock_task_instrument.name = "acoustic_tasks"
+            mock_task_instrument.schema_name = "acoustictaskschema"
+            mock_task_instrument.columns = ["acoustic_task_id", "acoustic_task_name"]
+            mock_recording_instrument = MagicMock()
+            mock_recording_instrument.name = "recordings"
+            mock_recording_instrument.schema_name = "recordingschema"
+            mock_recording_instrument.columns = ["recording_id", "recording_name"]
+
+            mock_get_instrument.side_effect = [
+                mock_session_instrument,
+                mock_task_instrument,
+                mock_recording_instrument,
+            ]
+
+            mock_fhir_data = MagicMock()
+            mock_convert_fhir.return_value = mock_fhir_data
+
+            output_participant_data_to_fhir(participant, outdir)
+
+            # Verify directory structure for multiple sessions
+            session1_dir = outdir / "sub-001" / "ses-session1" / "audio"
+            session2_dir = outdir / "sub-001" / "ses-session2" / "audio"
+            assert session1_dir.exists()
+            assert session2_dir.exists()
+
+            # Verify FHIR conversion called for all tasks and recordings
+            # 3 tasks + 3 recordings = 6 calls
+            assert mock_convert_fhir.call_count == 6
+
+            # Verify write calls for all tasks and recordings
+            assert mock_write_file.call_count == 6
+
+
+def test_output_participant_data_to_fhir_none_task():
+    """Test output_participant_data_to_fhir handles None tasks gracefully."""
+    with TemporaryDirectory() as temp_dir:
+        outdir = Path(temp_dir)
+
+        participant = {
+            "record_id": "001",
+            "sessions": [
+                {
+                    "session_id": "session1",
+                    "acoustic_tasks": [
+                        None,  # This should be skipped
+                        {
+                            "acoustic_task_name": "Valid Task",
+                            "acoustic_task_id": "task1",
+                            "recordings": [
+                                {
+                                    "recording_id": "rec1",
+                                    "recording_name": "Valid Recording",
+                                }
+                            ],
+                        },
+                    ],
+                }
+            ],
+        }
+
+        with (
+            patch("b2aiprep.prepare.bids.get_instrument_for_name") as mock_get_instrument,
+            patch("b2aiprep.prepare.bids.convert_response_to_fhir") as mock_convert_fhir,
+            patch("b2aiprep.prepare.bids.write_pydantic_model_to_bids_file") as mock_write_file,
+            patch("pandas.DataFrame.to_csv"),
+        ):
+            # Set up mock instruments
+            mock_session_instrument = MagicMock()
+            mock_session_instrument.columns = ["session_id"]
+            mock_task_instrument = MagicMock()
+            mock_task_instrument.name = "acoustic_tasks"
+            mock_task_instrument.schema_name = "acoustictaskschema"
+            mock_task_instrument.columns = ["acoustic_task_id", "acoustic_task_name"]
+            mock_recording_instrument = MagicMock()
+            mock_recording_instrument.name = "recordings"
+            mock_recording_instrument.schema_name = "recordingschema"
+            mock_recording_instrument.columns = ["recording_id", "recording_name"]
+
+            mock_get_instrument.side_effect = [
+                mock_session_instrument,
+                mock_task_instrument,
+                mock_recording_instrument,
+            ]
+
+            mock_fhir_data = MagicMock()
+            mock_convert_fhir.return_value = mock_fhir_data
+
+            output_participant_data_to_fhir(participant, outdir)
+
+            # Should only process the valid task (1 task + 1 recording = 2 calls)
+            assert mock_convert_fhir.call_count == 2
+            assert mock_write_file.call_count == 2
+
+
+@patch("logging.warning")
+def test_output_participant_data_to_fhir_missing_audio_file(mock_warning):
+    """Test output_participant_data_to_fhir logs warning when audio file not found."""
+    with TemporaryDirectory() as temp_dir, TemporaryDirectory() as audio_temp_dir:
+        outdir = Path(temp_dir)
+        audiodir = Path(audio_temp_dir)
+
+        participant = {
+            "record_id": "001",
+            "sessions": [
+                {
+                    "session_id": "session1",
+                    "acoustic_tasks": [
+                        {
+                            "acoustic_task_name": "Test Task",
+                            "acoustic_task_id": "task1",
+                            "recordings": [
+                                {
+                                    "recording_id": "nonexistent_rec",
+                                    "recording_name": "Missing Recording",
+                                }
+                            ],
+                        }
+                    ],
+                }
+            ],
+        }
+
+        with (
+            patch("b2aiprep.prepare.bids.get_instrument_for_name") as mock_get_instrument,
+            patch("b2aiprep.prepare.bids.convert_response_to_fhir") as mock_convert_fhir,
+            patch("b2aiprep.prepare.bids.write_pydantic_model_to_bids_file"),
+            patch("pandas.DataFrame.to_csv"),
+        ):
+            # Set up mock instruments
+            mock_session_instrument = MagicMock()
+            mock_session_instrument.columns = ["session_id"]
+            mock_task_instrument = MagicMock()
+            mock_task_instrument.name = "acoustic_tasks"
+            mock_task_instrument.schema_name = "acoustictaskschema"
+            mock_task_instrument.columns = ["acoustic_task_id", "acoustic_task_name"]
+            mock_recording_instrument = MagicMock()
+            mock_recording_instrument.name = "recordings"
+            mock_recording_instrument.schema_name = "recordingschema"
+            mock_recording_instrument.columns = ["recording_id", "recording_name"]
+
+            mock_get_instrument.side_effect = [
+                mock_session_instrument,
+                mock_task_instrument,
+                mock_recording_instrument,
+            ]
+
+            mock_fhir_data = MagicMock()
+            mock_convert_fhir.return_value = mock_fhir_data
+
+            output_participant_data_to_fhir(participant, outdir, audiodir)
+
+            # Verify warning was logged for missing audio file
+            mock_warning.assert_called()
+            warning_call = mock_warning.call_args[0][0]
+            assert "No audio file found for recording" in warning_call
