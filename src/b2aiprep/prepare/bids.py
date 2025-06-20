@@ -42,9 +42,10 @@ AUDIO_FOLDER = "audio"
 RESAMPLE_RATE = 16000
 _LOGGER = logging.getLogger(__name__)
 
+
 def get_paths(
-        dir_path: str | os.PathLike,
-        file_extension: str,
+    dir_path: str | os.PathLike,
+    file_extension: str,
 ):
     """Retrieve all file paths from a BIDS-like directory structure.
 
@@ -76,14 +77,24 @@ def get_paths(
                     for audio_file in os.listdir(audio_path):
                         if audio_file.endswith(file_extension):
                             file_path = Path(os.path.join(audio_path, audio_file))
+
+                            # Extract subject ID more robustly
+                            filename_first_part = file_path.name.split("_")[0]
+                            if "sub-" in filename_first_part:
+                                subject_id = filename_first_part.split("sub-")[1]
+                            else:
+                                # Skip files that don't follow BIDS naming convention
+                                continue
+
                             paths.append(
                                 {
                                     "path": file_path.absolute(),
-                                    "subject": file_path.name.split("_")[0].split("sub-")[1],
+                                    "subject": subject_id,
                                     "size": file_path.stat().st_size,
                                 }
                             )
     return paths
+
 
 def get_audio_paths(
     bids_dir_path: str | os.PathLike,
