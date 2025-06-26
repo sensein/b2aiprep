@@ -7,15 +7,23 @@ import iso639
 
 
 def get_choices(choices):
+    solution_set = set()
     if isinstance(choices, list):
-        return [item['name']['en'].strip() for item in choices]
+        options = [item['name']['en'].strip() for item in choices]
+        for option in options:
+            option = option.replace("'", "")
+            option = option.replace("\"", "")
+            solution_set.add(option)
+    return solution_set
 
-def clean_number(s):
+
+def clean_number(num):
     try:
-        num = float(s)
-        return int(num) if num.is_integer() else num
+        clean_num = float(num)
+        return int(clean_num) if clean_num.is_integer() else clean_num
     except (ValueError, TypeError):
-        return s
+        return num
+
 
 def validate_participant_data(participant):
     participant_id = participant["participant_id"]
@@ -23,25 +31,36 @@ def validate_participant_data(participant):
         "prepare", "resources", "b2ai-data-bids-like-template", "participants.json").open())
     )
     for field in participant:
-        print(field)
         if field is not None:
             value = clean_number(participant[field])
-            
-            
+            if isinstance(value, str):
+                value = value.replace("'", "")
             if pd.isna(value):
-                continue 
-            if field not in ["redcap_repeat_instrument", "redcap_repeat_instance", "participant_id"]:  # fields that are redcap specific
-                if field =="sex_at_birth":
+                continue
+            # fields that are redcap specific
+            if field not in ["redcap_repeat_instrument", "redcap_repeat_instance", "participant_id"]:
+                if field == "sex_at_birth":
                     assert value in ["Male", "Female"]
                     continue
                 assert field in data_dictionary, f"Dataset {field} does not exist."
                 result_dict = data_dictionary[field]
                 if "choices" not in result_dict or result_dict["choices"] is None:
-                    pass
+                    options = set()
                 else:
-                    options = get_choices(result_dict["choices"])
-                    if options is not None:
-                        assert str(value) in options, f"The value {value} is not a valid answer for the {field} {options} field for participant {participant_id}"
+                    options = set(get_choices(result_dict["choices"]))
+
+                if "minValue" in result_dict and result_dict["minValue"] is not None:
+                    assert float(value) >= float(result_dict["minValue"])
+                if "maxValue" in result_dict and result_dict["maxValue"] is not None:
+                    assert float(value) <= float(result_dict["maxValue"])
+                    slide_options = set(
+                        range(int(result_dict["maxValue"] + 1)))
+                    slide_options = set(str(i) for i in slide_options)
+                    options = options.union(slide_options)
+
+                if len(options) != 0:
+                    assert str(
+                        value) in options, f"The value {value} is not a valid answer for the {field} {options} field for participant {participant_id}"
 
 
 def validate_derivatives(derivatives_csv_path):

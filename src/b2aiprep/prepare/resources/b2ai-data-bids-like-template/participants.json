@@ -1180,7 +1180,7 @@
     ]
   },
   "city": {
-    "description": "items/city",
+    "description": "Indicates what city they are from",
     "question": {
       "en": "City"
     },
@@ -1207,7 +1207,7 @@
     ]
   },
   "zipcode": {
-    "description": "items/zipcode",
+    "description": "Participant's zipcode",
     "question": {
       "en": "Zipcode/Postal Code"
     },
@@ -1292,7 +1292,7 @@
     ]
   },
   "other_gender_identity": {
-    "description": "items/other_gender_identity",
+    "description": "If you selected \"other\" for gender identity, please specify:",
     "question": {
       "en": "If you selected \"other\" for gender identity, please specify:"
     },
@@ -1367,7 +1367,7 @@
     ]
   },
   "other_race_specify": {
-    "description": "items/other_race_specify",
+    "description": "Specify other race",
     "question": {
       "en": "If race not listed above, please specify:"
     },
@@ -1380,7 +1380,7 @@
     "choices": null
   },
   "primary_language": {
-    "description": "items/primary_language",
+    "description": "Indicates participant primary language",
     "question": {
       "en": "What language do you primarily speak?"
     },
@@ -1454,7 +1454,7 @@
     ]
   },
   "other_primary_language": {
-    "description": "items/other_primary_language",
+    "description": "Indicates participant's primary language that is not listed",
     "question": {
       "en": "If you selected \"other\" primary language, please specify:"
     },
@@ -1467,7 +1467,7 @@
     "choices": null
   },
   "first_language": {
-    "description": "items/first_language",
+    "description": "Indiciates participants first language",
     "question": {
       "en": "What was your first language?"
     },
@@ -1541,7 +1541,7 @@
     ]
   },
   "other_first_language": {
-    "description": "items/other_first_language",
+    "description": "If you selected other first language, please specify:",
     "question": {
       "en": "If you selected \"other\" first language, please specify:"
     },
@@ -1554,7 +1554,7 @@
     "choices": null
   },
   "edu_level": {
-    "description": "items/edu_level",
+    "description": "Indiciates participants level of education",
     "question": {
       "en": "What is your child's highest level of education?"
     },
@@ -4459,7 +4459,7 @@
     "description": "Indicates if the participant is part of a feasibility study."
   },
   "age": {
-    "description": "items/age",
+    "description": "The age of the participant, measured in years.",
     "question": {
       "en": "Age"
     },
@@ -27235,7 +27235,7 @@
     "choices": null
   },
   "phqa_q1": {
-    "description": "items/phqa_q1",
+    "description": "Indicates if participant is Feeling down, depressed, irritable, or hopeless",
     "question": {
       "en": "Feeling down, depressed, irritable, or hopeless?"
     },
@@ -27273,7 +27273,7 @@
     ]
   },
   "phqa_q2": {
-    "description": "items/phqa_q2",
+    "description": "Indicates if participant has little interest or pleasure in doing things",
     "question": {
       "en": "Little interest or pleasure in doing things?"
     },
@@ -27311,7 +27311,7 @@
     ]
   },
   "phqa_q3": {
-    "description": "items/phqa_q3",
+    "description": "Indicates if participant is having trouble falling asleep, staying asleep, or sleeping too much",
     "question": {
       "en": "Trouble falling asleep, staying asleep, or sleeping too much?"
     },
@@ -27349,7 +27349,7 @@
     ]
   },
   "phqa_q4": {
-    "description": "items/phqa_q4",
+    "description": "Asks if participant has poor appetite, weight loss, or overeating",
     "question": {
       "en": "Poor appetite, weight loss, or overeating?"
     },
@@ -27387,7 +27387,7 @@
     ]
   },
   "phqa_q5": {
-    "description": "items/phqa_q5",
+    "description": "Asking if participant is feeling tired, or has little energy",
     "question": {
       "en": "Feeling tired, or having little energy?"
     },
@@ -27425,7 +27425,7 @@
     ]
   },
   "phqa_q6": {
-    "description": "items/phqa_q6",
+    "description": "Asks if participant feels back about themselves",
     "question": {
       "en": "Feeling bad about yourself \u2013 or feeling that you are a failure, or that you have let yourself or your family down?"
     },
@@ -27463,7 +27463,7 @@
     ]
   },
   "phqa_q7": {
-    "description": "items/phqa_q7",
+    "description": "Indicates if participant has trouble concentrating on things like school work, reading, or watching TV",
     "question": {
       "en": "Trouble concentrating on things like school work, reading, or watching TV?"
     },
@@ -27501,7 +27501,7 @@
     ]
   },
   "phqa_q8": {
-    "description": "items/phqa_q8",
+    "description": "Moving or speaking so slowly that other people could have noticed? Or the opposite – being so fidgety or restless that you were moving around a lot more than usual?",
     "question": {
       "en": "Moving or speaking so slowly that other people could have noticed? Or the opposite \u2013 being so fidgety or restless that you were moving around a lot more than usual?"
     },
@@ -27539,7 +27539,7 @@
     ]
   },
   "phqa_q9": {
-    "description": "items/phqa_q9",
+    "description": "Asks if participant would be better off dead, or of hurting yourself in some way",
     "question": {
       "en": "Thoughts that you would be better off dead, or of hurting yourself in some way?"
     },
@@ -27645,7 +27645,7 @@
     ]
   },
   "smoking_occurrence": {
-    "description": "items/smoking_occurrence",
+    "description": "How often the participant smoked.",
     "question": {
       "en": "Do you now smoke cigarettes every day, some days, or not at all?"
     },
@@ -27690,7 +27690,7 @@
     ]
   },
   "smoking_age_regular_cigarette_smoking": {
-    "description": "items/smoking_age_regular_cigarette_smoking",
+    "description": "How old the participant was when they first started cigarette smoking",
     "question": {
       "en": "How old were you when you first started regular cigarette smoking?"
     },
@@ -27723,7 +27723,7 @@
     ]
   },
   "smoking_age_regular_cigarette_smoking_age": {
-    "description": "items/smoking_age_regular_cigarette_smoking_age",
+    "description": "How old the participant was when they first started cigarette smoking",
     "question": {
       "en": "Age:"
     },
@@ -27732,13 +27732,14 @@
     ],
     "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_generic_confounders/items/smoking_age_regular_cigarette_smoking_age",
     "maxValue": 125,
+    "minValue": 0,
     "valueType": [
       "xsd:integer"
     ],
     "choices": null
   },
   "smoking_age_stopped": {
-    "description": "items/smoking_age_stopped",
+    "description": "Age participant stopped smoking",
     "question": {
       "en": "If you have completely stopped smoking cigarettes, about how old were you when you stopped?"
     },
@@ -27771,7 +27772,7 @@
     ]
   },
   "smoking_age_stopped_age": {
-    "description": "items/smoking_age_stopped_age",
+    "description": "Indicates age for when participant stopped smoking",
     "question": {
       "en": "Age when you stopped smoking:"
     },
@@ -27780,13 +27781,14 @@
     ],
     "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_generic_confounders/items/smoking_age_stopped_age",
     "maxValue": 125,
+    "minValue": 0,
     "valueType": [
       "xsd:integer"
     ],
     "choices": null
   },
   "smoking_years_cigarettes": {
-    "description": "items/smoking_years_cigarettes",
+    "description": "Indicates number of years participant has smoked",
     "question": {
       "en": "How many years have you or did you smoke cigarettes?"
     },
@@ -27819,7 +27821,7 @@
     ]
   },
   "smoking_years_cigarettes_years": {
-    "description": "items/smoking_years_cigarettes_years",
+    "description": "Indicates number of years participant has smoked",
     "question": {
       "en": "Number of years:"
     },
@@ -27828,13 +27830,14 @@
     ],
     "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_generic_confounders/items/smoking_years_cigarettes_years",
     "maxValue": 125,
+    "minValue": 0,
     "valueType": [
       "xsd:integer"
     ],
     "choices": null
   },
   "smoking_cigarettes_day_current_avg": {
-    "description": "items/smoking_cigarettes_day_current_avg",
+    "description": "Indicates number of cigarettes participant smokes in a day on average",
     "question": {
       "en": "On average, how many cigarettes do you smoke per day now? (There are 20 cigarettes in a pack.)"
     },
@@ -27867,7 +27870,7 @@
     ]
   },
   "smoking_cigarettes_day_current_avg_number": {
-    "description": "items/smoking_cigarettes_day_current_avg_number",
+    "description": "Number of cigarettes per day",
     "question": {
       "en": "Number of cigarettes per day:"
     },
@@ -27876,13 +27879,14 @@
     ],
     "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_generic_confounders/items/smoking_cigarettes_day_current_avg_number",
     "maxValue": 1000,
+    "minValue": 0,
     "valueType": [
       "xsd:integer"
     ],
     "choices": null
   },
   "smoking_cigarettes_day_past_avg": {
-    "description": "items/smoking_cigarettes_day_past_avg",
+    "description": "Number of cigarettes smoked per day",
     "question": {
       "en": "On average, over the entire time that you smoked, how many cigarettes did you smoke each day? (There are 20 cigarettes in a pack.)"
     },
@@ -27915,7 +27919,7 @@
     ]
   },
   "smoking_cigarettes_day_past_avg_number": {
-    "description": "items/smoking_cigarettes_day_past_avg_number",
+    "description": "Number of cigarettes smoked per day",
     "question": {
       "en": "Number of cigarettes per day:"
     },
@@ -27924,13 +27928,14 @@
     ],
     "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_generic_confounders/items/smoking_cigarettes_day_past_avg_number",
     "maxValue": 1000,
+    "minValue": 0,
     "valueType": [
       "xsd:integer"
     ],
     "choices": null
   },
   "smoking_marijuana": {
-    "description": "items/smoking_marijuana",
+    "description": "Indicates how often participant smokes marijuana",
     "question": {
       "en": "In the PAST THREE MONTHS, how often have you used marijuana (cannabis, pot, grass, hash, etc.)?"
     },
@@ -27981,7 +27986,7 @@
     ]
   },
   "smoking_electronic": {
-    "description": "items/smoking_electronic",
+    "description": "Indicates if participant uses electronic nicotine products and how often",
     "question": {
       "en": "Have you ever used an electronic nicotine product, even one or two times?\n(Electronic nicotine products include e- cigarettes, vape pens, hookah pens, personal vaporizers and mods, e-cigars, e-pipes, and e-hookahs.)"
     },
@@ -28020,7 +28025,7 @@
     ]
   },
   "smoking_electronic_current_occurence": {
-    "description": "items/smoking_electronic_current_occurence",
+    "description": "Indicates if participant uses electronic nicotine products and how often",
     "question": {
       "en": "Do you now use electronic nicotine products?"
     },
@@ -30053,6 +30058,8 @@
       "xsd:decimal"
     ],
     "choices": null,
+    "maxValue": 24,
+    "minValue": 0,
     "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/hours_voice_activity",
     "valueType": [
       "xsd:decimal"
