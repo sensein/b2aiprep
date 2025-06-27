@@ -60,7 +60,11 @@ from b2aiprep.prepare.prepare import (
     reduce_length_of_id,
     update_metadata_record_and_session_id,
     validate_bids_data,
+
 )
+
+from b2aiprep.prepare.data_validation import validate_derivatives
+
 from b2aiprep.prepare.reproschema_to_redcap import parse_audio, parse_survey
 
 # from b2aiprep.synthetic_data import generate_synthetic_tabular_data
@@ -677,6 +681,25 @@ def validate(
         bids_dir_path=Path(bids_dir_path),
         fix=fix,
     )
+
+@click.command()
+@click.argument("derivatives_csv_path", type=click.Path())
+def validate_data(derivatives_csv_path):
+    """
+    This function takes the phenotype data and validates each record.
+
+    Args:
+        derivatives_csv_path (str): Path to the csv to validate.
+       
+    Returns:
+        None: Performs validation
+
+    Args:
+        derivative_csv_path: Path to the derivatives csv
+    """
+    _LOGGER.info("Validating Phenotype Data...")
+    validate_derivatives(derivatives_csv_path=Path(derivatives_csv_path))
+
 
 
 # @click.command()
