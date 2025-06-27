@@ -11651,6 +11651,8 @@
       "xsd:decimal"
     ],
     "choices": null,
+    "maxValue": 100,
+    "minValue": 0,
     "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/d_resp_airway_stenosis/items/diagnosis_as_ds_eps",
     "valueType": [
       "xsd:decimal"
@@ -29803,6 +29805,8 @@
       "xsd:decimal"
     ],
     "choices": null,
+    "maxValue": 30,
+    "minValue": 0,
     "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/physical_health_freq",
     "valueType": [
       "xsd:decimal"
@@ -29817,6 +29821,8 @@
       "xsd:decimal"
     ],
     "choices": null,
+    "maxValue": 30,
+    "minValue": 0,
     "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/phys_health_impact",
     "valueType": [
       "xsd:decimal"
@@ -29831,6 +29837,8 @@
       "xsd:string"
     ],
     "choices": null,
+    "maxValue": 30,
+    "minValue": 0,
     "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/phys_health_limited",
     "valueType": [
       "xsd:string"

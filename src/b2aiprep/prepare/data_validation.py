@@ -2,8 +2,14 @@
 import pandas as pd
 from importlib import resources
 import json
-import pycountry
-import iso639
+
+# max height ever recorded
+MAX_HUMAN_HEIGHT_METRIC = 272
+MAX_HUMAN_HEIGHT_US_UNIT = 107
+
+# max weight in ever recorded
+MAX_HUMAN_WEIGHT_METRIC = 635
+MAX_HUMAN_WEIGHT_US_UNIT = 1400
 
 
 def get_choices(choices):
@@ -26,7 +32,7 @@ def clean_number(num):
 
 
 def validate_participant_data(participant):
-    participant_id = participant["participant_id"]
+    participant_id = participant.get("participant_id") or participant.get("record_id")
     data_dictionary = json.load((resources.files("b2aiprep").joinpath(
         "prepare", "resources", "b2ai-data-bids-like-template", "participants.json").open())
     )
@@ -39,6 +45,7 @@ def validate_participant_data(participant):
                 continue
             # fields that are redcap specific
             if field not in ["redcap_repeat_instrument", "redcap_repeat_instance", "participant_id"]:
+                # added in derivatives, not included in data dictionary
                 if field == "sex_at_birth":
                     assert value in ["Male", "Female"]
                     continue
@@ -50,9 +57,11 @@ def validate_participant_data(participant):
                     options = set(get_choices(result_dict["choices"]))
 
                 if "minValue" in result_dict and result_dict["minValue"] is not None:
-                    assert float(value) >= float(result_dict["minValue"])
+                    assert float(value) >= float(
+                        result_dict["minValue"]), f"The value {value} does not meet the minimum value allowed for {field} for particpant {participant_id}"
                 if "maxValue" in result_dict and result_dict["maxValue"] is not None:
-                    assert float(value) <= float(result_dict["maxValue"])
+                    assert float(value) <= float(
+                        result_dict["maxValue"]), f"The value {value} exceeds the max value for {field} for participant {participant_id}"
                     slide_options = set(
                         range(int(result_dict["maxValue"] + 1)))
                     slide_options = set(str(i) for i in slide_options)
@@ -61,6 +70,23 @@ def validate_participant_data(participant):
                 if len(options) != 0:
                     assert str(
                         value) in options, f"The value {value} is not a valid answer for the {field} {options} field for participant {participant_id}"
+
+                # fields with a history of have inconsistent values
+                if field == "Height":
+                    if result_dict["unit"] == "Metric":
+                        assert float(
+                            value) <= MAX_HUMAN_HEIGHT_METRIC, f"The height of {value} exceeds the max value for {field} for particpant {participant_id}"
+                    else:
+                        assert float(
+                            value) <= MAX_HUMAN_HEIGHT_US_UNIT, f"The value {value} exceeds the max value for {field} for participant {participant_id}"
+
+                if field == "Weight":
+                    if result_dict["unit"] == "Metric":
+                        assert float(
+                            value) <= MAX_HUMAN_WEIGHT_METRIC, f"The Weight of {value} exceeds the max value for {field} for particpant {participant_id}"
+                    else:
+                        assert float(
+                            value) <= MAX_HUMAN_WEIGHT_US_UNIT, f"The Weight of {value} exceeds the max value for {field} for participant {participant_id}"
 
 
 def validate_derivatives(derivatives_csv_path):

@@ -686,12 +686,18 @@ def validate(
 @click.argument("derivatives_csv_path", type=click.Path())
 def validate_data(derivatives_csv_path):
     """
-    This function takes the phenotype data and validates with with the data dictionary json's to ensure
-    validity.
+    This function takes the phenotype data and validates each record.
+
+    Args:
+        derivatives_csv_path (str): Path to the csv to validate.
+       
+    Returns:
+        None: Performs validation
 
     Args:
         derivative_csv_path: Path to the derivatives csv
     """
+    _LOGGER.info("Validating Phenotype Data...")
     validate_derivatives(derivatives_csv_path=Path(derivatives_csv_path))
 
 
