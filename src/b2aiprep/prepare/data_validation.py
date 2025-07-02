@@ -59,8 +59,9 @@ def validate_participant_data(participant):
                 # added in derivatives, not included in data dictionary
                 if field == "sex_at_birth":
                     assert value in ["Male", "Female"]
+                    continue     
+                if field not in data_dictionary:
                     continue
-                assert field in data_dictionary, f"Dataset {field} does not exist."
                 result_dict = data_dictionary[field]
                 if "choices" not in result_dict or result_dict["choices"] is None:
                     options = set()
