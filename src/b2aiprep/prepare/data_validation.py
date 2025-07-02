@@ -1,7 +1,7 @@
 from importlib import resources
 import json
 import pandas as pd
-
+from pathlib import Path
 # max height ever recorded
 MAX_HUMAN_HEIGHT_METRIC = 272
 MAX_HUMAN_HEIGHT_US_UNIT = 107
@@ -90,25 +90,25 @@ def validate_participant_data(participant):
                     )
 
                 # fields with a history of have inconsistent values
-                if field == "Height":
-                    if result_dict["unit"] == "Metric":
+                if field == "height" and "unit" in participant:
+                    if participant["unit"] == "Metric":
                         assert float(value) <= MAX_HUMAN_HEIGHT_METRIC, (
                             f"The height of {value} exceeds the "
                             f"max value for {field} for participant {participant_id}"
                         )
-                    else:
+                    elif participant["unit"] == "US customary units":
                         assert float(value) <= MAX_HUMAN_HEIGHT_US_UNIT, (
                             f"The value {value} exceeds the max "
                             f"value for {field} for participant {participant_id}"
                         )
 
-                if field == "Weight":
-                    if result_dict["unit"] == "Metric":
+                if field == "weight" and "unit" in participant:
+                    if participant["unit"] == "Metric":
                         assert float(value) <= MAX_HUMAN_WEIGHT_METRIC, (
                             f"The Weight of {value} exceeds the "
                             f"max value for {field} for participant {participant_id}"
                         )
-                    else:
+                    elif participant["unit"] == "US customary units":
                         assert float(value) <= MAX_HUMAN_WEIGHT_US_UNIT, (
                             f"The Weight of {value} exceeds the "
                             f"max value for {field} for participant {participant_id}"
@@ -119,7 +119,10 @@ def validate_derivatives(derivatives_csv_path):
     """
     Function parses the data frame and validates each record.
     """
-    df = pd.read_csv(derivatives_csv_path, sep='\t')
+    file_path = Path(derivatives_csv_path)
+    sep = '\t' if file_path.suffix.lower() == '.tsv' else ','
+
+    df = pd.read_csv(derivatives_csv_path, sep=sep)
     participants = df.to_dict(orient='records')
 
     for participant in participants:
