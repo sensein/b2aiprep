@@ -19,6 +19,7 @@ from b2aiprep.prepare.bids import (
     get_instrument_for_name,
     get_paths,
     get_recordings_for_acoustic_task,
+    insert_missing_columns,
     load_redcap_csv,
     output_participant_data_to_fhir,
     questionnaire_mapping,
@@ -235,6 +236,148 @@ def test_load_redcap_csv(mock_read_csv):
     assert df is not None
     assert "record_id" in df.columns
     assert "redcap_repeat_instrument" in df.columns
+
+
+@patch("b2aiprep.prepare.bids.files")
+@patch("json.load")
+def test_insert_missing_columns_with_missing_columns(mock_json_load, mock_files):
+    """Test insert_missing_columns when DataFrame is missing some expected columns."""
+    # Mock the expected columns from JSON file
+    expected_columns = ["record_id", "column_a", "column_b", "column_c", "column_d"]
+    mock_json_load.return_value = expected_columns
+
+    # Mock the file path chain
+    mock_path = MagicMock()
+    mock_path.open.return_value = MagicMock()
+    mock_files.return_value.joinpath.return_value.joinpath.return_value.joinpath.return_value = (
+        mock_path
+    )
+
+    # Create test DataFrame with only some of the expected columns
+    test_df = pd.DataFrame(
+        {
+            "record_id": [1, 2, 3],
+            "column_a": ["A", "B", "C"],
+            "column_b": [10, 20, 30],
+            # Missing column_c and column_d
+        }
+    )
+
+    # Call the function
+    result_df = insert_missing_columns(test_df)
+
+    # Verify all expected columns are present
+    assert set(result_df.columns) == set(expected_columns)
+
+    # Verify original data is preserved
+    assert list(result_df["record_id"]) == [1, 2, 3]
+    assert list(result_df["column_a"]) == ["A", "B", "C"]
+    assert list(result_df["column_b"]) == [10, 20, 30]
+
+    # Verify missing columns were added with NaN values
+    assert result_df["column_c"].isna().all()
+    assert result_df["column_d"].isna().all()
+
+    # Verify correct file path was accessed
+    mock_files.assert_called_with("b2aiprep")
+
+
+@patch("b2aiprep.prepare.bids.files")
+@patch("json.load")
+def test_insert_missing_columns_all_present(mock_json_load, mock_files):
+    """Test insert_missing_columns when DataFrame already has all expected columns."""
+    # Mock the expected columns from JSON file
+    expected_columns = ["record_id", "column_a", "column_b"]
+    mock_json_load.return_value = expected_columns
+
+    # Mock the file path chain
+    mock_path = MagicMock()
+    mock_path.open.return_value = MagicMock()
+    mock_files.return_value.joinpath.return_value.joinpath.return_value.joinpath.return_value = (
+        mock_path
+    )
+
+    # Create test DataFrame with all expected columns
+    test_df = pd.DataFrame(
+        {"record_id": [1, 2, 3], "column_a": ["A", "B", "C"], "column_b": [10, 20, 30]}
+    )
+
+    # Store original for comparison
+    original_columns = set(test_df.columns)
+    original_shape = test_df.shape
+
+    # Call the function
+    result_df = insert_missing_columns(test_df)
+
+    # Verify no new columns were added
+    assert set(result_df.columns) == original_columns
+    assert result_df.shape == original_shape
+
+    # Verify original data is unchanged
+    assert list(result_df["record_id"]) == [1, 2, 3]
+    assert list(result_df["column_a"]) == ["A", "B", "C"]
+    assert list(result_df["column_b"]) == [10, 20, 30]
+
+
+@patch("b2aiprep.prepare.bids.files")
+@patch("json.load")
+def test_insert_missing_columns_no_existing_columns(mock_json_load, mock_files):
+    """Test insert_missing_columns when DataFrame has none of the expected columns."""
+    # Mock the expected columns from JSON file
+    expected_columns = ["expected_col_1", "expected_col_2", "expected_col_3"]
+    mock_json_load.return_value = expected_columns
+
+    # Mock the file path chain
+    mock_path = MagicMock()
+    mock_path.open.return_value = MagicMock()
+    mock_files.return_value.joinpath.return_value.joinpath.return_value.joinpath.return_value = (
+        mock_path
+    )
+
+    # Create test DataFrame with completely different columns
+    test_df = pd.DataFrame({"existing_col_1": [1, 2, 3], "existing_col_2": ["A", "B", "C"]})
+
+    # Call the function
+    result_df = insert_missing_columns(test_df)
+
+    # Verify all expected columns were added
+    for col in expected_columns:
+        assert col in result_df.columns
+        assert result_df[col].isna().all()
+
+    # Verify original columns are preserved
+    assert "existing_col_1" in result_df.columns
+    assert "existing_col_2" in result_df.columns
+    assert list(result_df["existing_col_1"]) == [1, 2, 3]
+    assert list(result_df["existing_col_2"]) == ["A", "B", "C"]
+
+
+@patch("b2aiprep.prepare.bids.files")
+@patch("json.load")
+def test_insert_missing_columns_file_path_construction(mock_json_load, mock_files):
+    """Test that insert_missing_columns constructs the correct file path."""
+    # Mock the expected columns from JSON file
+    expected_columns = ["col1", "col2"]
+    mock_json_load.return_value = expected_columns
+
+    # Mock the file path chain - files().joinpath() is called with all args at once
+    mock_json_path = MagicMock()
+    mock_json_path.open.return_value = MagicMock()
+    mock_files.return_value.joinpath.return_value = mock_json_path
+
+    # Create minimal test DataFrame
+    test_df = pd.DataFrame({"existing": [1]})
+
+    # Call the function
+    insert_missing_columns(test_df)
+
+    # Verify the file path was constructed correctly
+    mock_files.assert_called_once_with("b2aiprep")
+    mock_files.return_value.joinpath.assert_called_once_with(
+        "prepare", "resources", "all_columns.json"
+    )
+    mock_json_path.open.assert_called_once()
+    mock_json_load.assert_called_once()
 
 
 def test_get_df_of_repeat_instrument():
