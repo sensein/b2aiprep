@@ -1,7 +1,7 @@
 import json
 import os
 import tempfile
-
+from pathlib import Path
 import pandas as pd
 import pytest
 
@@ -10,6 +10,8 @@ from b2aiprep.prepare.utils import (
     make_tsv_files,
     reformat_resources,
     remove_files_by_pattern,
+    fetch_json_options_number,
+    get_wav_duration,
 )
 
 
@@ -99,6 +101,17 @@ def test_remove_files_by_pattern():
         assert not os.path.exists(txt_file_path)
         assert os.path.exists(json_file_path)
 
+def test_fetch_json_options_number():   
+    json_url = "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/d056c9311cb682148f1ce46bd0fe4b9e43c851a0/activities/q_generic_gad7_anxiety/items/hard_to_sit_still"
+    actual = fetch_json_options_number(json_url)
+    expected_answer = 4
+    assert actual == expected_answer
+
+def test_get_wav_duration():
+    b2ai_wav_path = "data/test_audio2.wav"
+    actual = get_wav_duration(b2ai_wav_path)
+    expected  = 2.9257142857142857
+    assert actual == expected
 
 if __name__ == "__main__":
     pytest.main()
