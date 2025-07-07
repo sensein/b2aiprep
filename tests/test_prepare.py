@@ -12,7 +12,14 @@ from pathlib import Path
 import pytest
 import torch
 
-from b2aiprep.prepare.prepare import extract_features_workflow, extract_single, wav_to_features, extract_features_sequentially, extract_features_workflow
+from b2aiprep.prepare.prepare import (
+    extract_features_workflow,
+    extract_single,
+    wav_to_features,
+    extract_features_sequentially,
+    extract_features_workflow,
+    validate_bids_data
+)
 
 logging.basicConfig(level=logging.INFO)
 _logger = logging.getLogger(__name__)
@@ -148,7 +155,7 @@ def test_extract_single(setup_temp_files):
                              with_sensitive=False,
                              update=False)
 
-    assert os.path.exists(save_to), ".pt file was generated"
+    assert os.path.exists(save_to), ".pt file was not generated"
 
 
 def test_wav_to_features(setup_temp_files):
@@ -160,7 +167,7 @@ def test_wav_to_features(setup_temp_files):
                               with_sensitive=False)
 
     for paths in save_to:
-        assert os.path.exists(paths), ".pt file was generated"
+        assert os.path.exists(paths), ".pt file was not generated"
 
 
 def test_extract_features_sequentially(setup_bids_structure):
@@ -169,12 +176,18 @@ def test_extract_features_sequentially(setup_bids_structure):
     pt_files = list(bids_dir.rglob("*.pt"))
     assert pt_files
 
+
 def test_extract_features_workflow(setup_bids_structure):
     bids_dir = setup_bids_structure
     extract_features_workflow(bids_dir_path=bids_dir)
     pt_files = list(bids_dir.rglob("*.pt"))
-    assert pt_files
-    
+    assert pt_files, ".pt files were not generated"
+
+
+def test_validate_bids_data(setup_bids_structure):
+    bids_dir = setup_bids_structure
+    assert validate_bids_data(bids_dir_path=bids_dir) is None
+
 
 @pytest.mark.skipif(
     os.getenv("CI") == "true", reason="Skipping benchmarking test in CI environment"
