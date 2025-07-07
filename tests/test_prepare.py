@@ -1,5 +1,5 @@
 import logging
-
+import pandas as pd
 import csv
 import os
 import shutil
@@ -8,7 +8,7 @@ import subprocess
 import tempfile
 import wave
 from pathlib import Path
-
+import uuid
 import pytest
 import torch
 
@@ -18,7 +18,9 @@ from b2aiprep.prepare.prepare import (
     wav_to_features,
     extract_features_sequentially,
     extract_features_workflow,
-    validate_bids_data
+    validate_bids_data,
+    reduce_id_length,
+    reduce_length_of_id
 )
 
 logging.basicConfig(level=logging.INFO)
@@ -188,6 +190,43 @@ def test_validate_bids_data(setup_bids_structure):
     bids_dir = setup_bids_structure
     assert validate_bids_data(bids_dir_path=bids_dir) is None
 
+
+def test_reduce_id_length():
+    example_id = "5f0c5b34-b634-4564-b97c-b44435a3e0ff"
+    actual = reduce_id_length(example_id)
+    expected = "5f0c5b34"
+    assert actual == expected
+
+
+def test_reduce_length_of_id():
+    uuid_list = [
+        '8a7d5b46-84c0-4f36-9ae0-e84c21f0c9f7',
+        'd6b1a71e-9313-4141-9a8b-2170169ab74a',
+        'b3cf2bd4-4c83-430e-8238-c22a770f828e',
+        '7f16962f-2556-4be7-b6cf-7db062254646',
+        'f6832f4d-369c-4a7b-bde6-3a84f6e68280',
+        'fc9f9939-9d44-4743-a9c7-c2c8d8f6f14e',
+        'c9f4e3d5-5087-4d96-9e00-7c8584b0ff49',
+        '1ff15a6b-4ef0-40d5-bb4e-b5ec9d40d5f2',
+        'cd9ac2b3-1879-4214-95a0-bf8943bc1993',
+        '8fa44e90-9201-4f94-847b-32bfb285b747'
+    ]
+
+    # Create the DataFrame
+    df = pd.DataFrame({
+        "record_id": uuid_list
+    })
+    list_of_expected_id = []
+    for record_id in df["record_id"]:
+        list_of_expected_id.append(record_id[:record_id.find("-")])
+
+    df_modified = reduce_length_of_id(df, "record_id")
+    list_of_actual_id = []
+    for record_id in df_modified["record_id"]:
+        list_of_actual_id.append(record_id)
+
+    assert list_of_expected_id == list_of_actual_id
+    
 
 @pytest.mark.skipif(
     os.getenv("CI") == "true", reason="Skipping benchmarking test in CI environment"
