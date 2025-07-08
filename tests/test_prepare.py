@@ -22,7 +22,9 @@ from b2aiprep.prepare.prepare import (
     reduce_id_length,
     reduce_length_of_id,
     get_value_from_metadata,
-    update_metadata_record_and_session_id
+    update_metadata_record_and_session_id,
+    filter_audio_paths,
+    is_audio_sensitive
 )
 
 logging.basicConfig(level=logging.INFO)
@@ -192,6 +194,23 @@ def test_validate_bids_data(setup_bids_structure):
     bids_dir = setup_bids_structure
     assert validate_bids_data(bids_dir_path=bids_dir) is None
 
+def test_is_audio_sensitive():
+    file_path = Path("file_one_audio-check.wav")
+    assert is_audio_sensitive(filepath=file_path) == False
+    
+
+def test_filter_audio_paths():
+    audio_paths = [
+        Path("file_one_audio-check.wav"),
+        Path("file_two_sample_data.wav"),
+        Path("file_three_audio-check.wav"),
+        Path("file_four_normal_case.wav"),
+    ]
+    actual = filter_audio_paths(audio_paths=audio_paths)
+    expected = [
+        Path("file_two_sample_data.wav"),
+        Path("file_four_normal_case.wav")]
+    assert actual == expected
 
 def test_reduce_id_length():
     example_id = "5f0c5b34-b634-4564-b97c-b44435a3e0ff"
