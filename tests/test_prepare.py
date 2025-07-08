@@ -20,7 +20,9 @@ from b2aiprep.prepare.prepare import (
     extract_features_workflow,
     validate_bids_data,
     reduce_id_length,
-    reduce_length_of_id
+    reduce_length_of_id,
+    get_value_from_metadata,
+    update_metadata_record_and_session_id
 )
 
 logging.basicConfig(level=logging.INFO)
@@ -226,17 +228,56 @@ def test_reduce_length_of_id():
         list_of_actual_id.append(record_id)
 
     assert list_of_expected_id == list_of_actual_id
-    
 
-@pytest.mark.skipif(
-    os.getenv("CI") == "true", reason="Skipping benchmarking test in CI environment"
-)
-def test_extract_features_timing(benchmark, caplog, bids_files_path):
-    caplog.set_level(logging.INFO)
-    if bids_files_path is None:
-        _logger.error("Please provide the path to BIDS files using --bids-files-path")
-        return
-    result = benchmark(extract_features_workflow, bids_files_path)
-    _logger.info(str(result))
-    assert result is not None, "Benchmark failed"
-    assert len(result["features"]) > 0, "No features extracted"
+
+def test_get_value_from_metadata():
+    metadata = {
+        "item": [
+            {"linkId": "abc123", "answer": [{"valueString": "value1"}]},
+            {"linkId": "def456", "answer": [{"valueString": "value2"}]},
+            {"linkId": "xyz789", "answer": [{"valueString": "value3"}]},
+        ]
+    }
+    link_id = "abc123"
+    actual = get_value_from_metadata(metadata=metadata, linkid=link_id)
+    expected = "value1"
+    assert actual == expected
+
+
+def test_update_metadata_record_and_session_id():
+    metadata = {
+        "item": [
+            {"linkId": "record_id", "answer": [
+                {"valueString": "1a3f7e22-8d4b-4e3a-b36d-12a5c2e5b9d8"}]},
+            {"linkId": "session_id", "answer": [
+                {"valueString": "5d9e34a7-2c90-44bf-8b53-1bde7a67e3f2"}]},
+            {"linkId": "record_id", "answer": [
+                {"valueString": "c7f3a128-e10a-4d0d-9c7e-f1a4b5767d6b"}]},
+        ]
+    }
+    expected_metadata = {
+        "item": [
+            {"linkId": "participant_id", "answer": [
+                {"valueString": "1a3f7e22"}]},
+            {"linkId": "session_id", "answer": [
+                {"valueString": "5d9e34a7"}]},
+            {"linkId": "participant_id", "answer": [
+                {"valueString": "c7f3a128"}]},
+        ]
+    }
+    update_metadata_record_and_session_id(metadata=metadata)
+    assert metadata == expected_metadata
+
+
+# @pytest.mark.skipif(
+#     os.getenv("CI") == "true", reason="Skipping benchmarking test in CI environment"
+# )
+# def test_extract_features_timing(benchmark, caplog, bids_files_path):
+#     caplog.set_level(logging.INFO)
+#     if bids_files_path is None:
+#         _logger.error("Please provide the path to BIDS files using --bids-files-path")
+#         return
+#     result = benchmark(extract_features_workflow, bids_files_path)
+#     _logger.info(str(result))
+#     assert result is not None, "Benchmark failed"
+#     assert len(result["features"]) > 0, "No features extracted"
