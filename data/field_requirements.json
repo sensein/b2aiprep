@@ -1,0 +1,42 @@
+{
+    "diagnosis_as_ds_eps": {
+        "maxValue": 100,
+        "minValue": 0
+    },
+    "smoking_age_regular_cigarette_smoking_age": {
+        "maxValue": 125,
+        "minValue": 0
+    },
+    "smoking_age_stopped_age": {
+        "maxValue": 125,
+        "minValue": 0
+    },
+    "smoking_years_cigarettes_years": {
+        "maxValue": 125,
+        "minValue": 0
+    },
+    "smoking_cigarettes_day_current_avg_number": {
+        "maxValue": 1000,
+        "minValue": 0
+    },
+    "phys_health_impact": {
+        "maxValue": 30,
+        "minValue": 0
+    },
+    "phys_health_limited": {
+        "maxValue": 30,
+        "minValue": 0
+    },
+    "hours_voice_activity": {
+        "maxValue": 24,
+        "minValue": 0
+    },
+    "height": {
+        "maxValue": 272,
+        "minValue": 0
+    },
+    "weight": {
+        "maxValue": 635,
+        "minValue": 0
+    }
+}

@@ -3,22 +3,25 @@ import shutil
 import subprocess
 import tempfile
 from pathlib import Path
+from importlib import resources
+import json
 import pandas as pd
+
 import pytest
 
 from b2aiprep.prepare.data_validation import (
     validate_derivatives,
     validate_participant_data,
-    clean_number,
-    get_choices
+    Validator
 )
 
 
 @pytest.fixture
-def setup_temp_files():
+def setup_temp_files(tmp_path):
     """Fixture to set up temporary directories and files for testing."""
     # Paths to required data files
-    project_root = Path(__file__).parent.parent
+    field_requirements = json.load(
+        (Path(__file__).parent.parent / "data" / "field_requirements.json").open())
 
     # Synthetic record
     synthetic_record = {"record_id": "test_0001",
@@ -35,16 +38,20 @@ def setup_temp_files():
                         "tough_to_work": "Not difficult at all"}
     df = pd.DataFrame([synthetic_record])
 
+    data_dictionary = json.load((resources.files("b2aiprep").joinpath(
+        "prepare", "resources", "b2ai-data-bids-like-template", "participants.json").open())
+    )
+
     # Save sythetic df into temp directory
-    redcap_csv_path = os.path.join(tempfile.gettempdir(), "sdv_redcap_synthetic_data.csv")
+    redcap_csv_path = os.path.join(tmp_path, "sdv_redcap_synthetic_data.csv")
     df.to_csv(redcap_csv_path, index=False)
 
-    yield redcap_csv_path
+    yield redcap_csv_path, data_dictionary, field_requirements
 
 
 def test_validate_data_cli(setup_temp_files):
     """Test the 'b2aiprep-cli prepbidslikedata' command using subprocess."""
-    redcap_csv_path = setup_temp_files
+    redcap_csv_path, data_dictionary, field_requirements = setup_temp_files
 
     # Define the CLI command
     command = [
@@ -61,7 +68,7 @@ def test_validate_data_cli(setup_temp_files):
 
 
 def test_validate_derivatives(setup_temp_files):
-    redcap_csv_path = setup_temp_files
+    redcap_csv_path, data_dictionary, field_requirements = setup_temp_files
     assert validate_derivatives(redcap_csv_path) is None
 
 
@@ -81,14 +88,37 @@ def test_validate_participant_data():
     assert validate_participant_data(synthetic_record) is None
 
 
-def test_clean_number():
-    assert clean_number("5") == 5
-    assert clean_number("test") == "test"
-    assert clean_number(5.0) == 5
-    assert clean_number(3.14) == 3.14
+def test_validator_validate_choices(setup_temp_files):
+    redcap_csv_path, data_dictionary, field_requirements = setup_temp_files
+    field = "nervous_anxious"
+    value = "Not at all"
+
+    assert Validator(data_dictionary, "test_id_1", field_requirements).validate_choices(
+        field=field, value=value) is None
 
 
-def test_get_choices():
+def test_validator_validate_choices_wrong_choice(setup_temp_files):
+    redcap_csv_path, data_dictionary, field_requirements = setup_temp_files
+    field = "nervous_anxious"
+    value = "Not at all, but sometimes"
+
+    assert Validator(data_dictionary, "test_id_1", field_requirements).validate_choices(
+        field=field, value=value) == False
+
+
+def test_clean_number(setup_temp_files):
+    redcap_csv_path, data_dictionary, field_requirements = setup_temp_files
+    v = Validator(data_dictionary, "test_id_1", field_requirements)
+
+    assert v.clean("test") == "test"
+    assert v.clean("'field'") == "field"
+    assert v.clean(5.0) == 5
+    assert v.clean(3.14) == 3.14
+
+
+def test_get_choices(setup_temp_files):
+    redcap_csv_path, data_dictionary, field_requirements = setup_temp_files
+    v = Validator(data_dictionary, "test_id_1", field_requirements)
     choices = [
         {
             "name": {
@@ -116,7 +146,20 @@ def test_get_choices():
         }
     ]
 
-    actual = get_choices(choices=choices)
-    expected = {"Not at all","Several days", "More than half the days", "Nearly every day"}
+    actual = v.get_choices(choices=choices)
+    expected = {"Not at all", "Several days", "More than half the days", "Nearly every day"}
 
     assert actual == expected
+
+
+def test_validator_validate_range(setup_temp_files):
+    redcap_csv_path, data_dictionary, field_requirements = setup_temp_files
+    v = Validator(data_dictionary, "test_id_1", field_requirements)
+    assert v.validate_range("height", 171) is None # assumes metric
+    
+
+def test_validator_validate_range_incorrect_range(setup_temp_files):
+    redcap_csv_path, data_dictionary, field_requirements = setup_temp_files
+    v = Validator(data_dictionary, "test_id_1", field_requirements)
+    assert v.validate_range("height", 99999) == False #assumes metric
+   

@@ -2,117 +2,106 @@ from importlib import resources
 import json
 import pandas as pd
 from pathlib import Path
-# max height ever recorded
-MAX_HUMAN_HEIGHT_METRIC = 272
-MAX_HUMAN_HEIGHT_US_UNIT = 107
+import logging
 
-# max weight in ever recorded
-MAX_HUMAN_WEIGHT_METRIC = 635
-MAX_HUMAN_WEIGHT_US_UNIT = 1400
+WEIGHT_METRIC_TO_US_CONVERSION_FACTOR = 2.20462
+HEIGHT_METRIC_TO_US_CONVERSION_FACTOR = 0.393701
+
+class Validator():
+    logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
+    logger = logging.getLogger(__name__)
+
+    def __init__(self, data_dictionary, participant_id, field_requirements):
+        self.data_dictionary = data_dictionary
+        self.participant_id = participant_id
+        self.field_requirements = field_requirements
+
+    def clean(self, value):
+        if not isinstance(value, str):
+            clean_num = float(value)
+            return int(clean_num) if clean_num.is_integer() else clean_num
+        value = value.replace("'", "")
+        return value
+
+    def validate_choices(self, field, value):
+        result_dict = self.data_dictionary[field]
+        options = set()
+        if "choices" in result_dict and result_dict["choices"] is not None:
+            options = set(self.get_choices(result_dict["choices"]))
+
+        # edge case for for slider questions
+        if "maxValue" in result_dict and result_dict["maxValue"] is not None:
+            slide_options = set(
+                range(int(result_dict["maxValue"] + 1)))
+            slide_options = set(str(i) for i in slide_options)
+            options = options.union(slide_options)
+
+        if len(options) != 0 and str(value) not in options:
+            Validator.logger.error(
+                f"Invalid '{value}' for '{field}' (participant {self.participant_id})"
+            )
+            return False
+
+    def validate_range(self, field, value):
+        if field in self.field_requirements:
+            max_value = int(self.field_requirements[field]["maxValue"])
+            min_value = int(self.field_requirements[field]["minValue"])
+
+            if value not in range(min_value, max_value+1):
+                Validator.logger.error(
+                    f"Field {field} is out of range for (participant {self.participant_id})"
+                )
+                return False
+
+    def get_choices(self, choices):
+        """
+        Helper function to generate a set of possible answers to a given question based on
+        the data dictionary.
+        """
+        solution_set = set()
+        if isinstance(choices, list):
+            options = [item['name']['en'].strip() for item in choices]
+            for option in options:
+                option = option.replace("'", "")
+                option = option.replace("\"", "")
+                solution_set.add(option)
+        return solution_set
 
 
-def get_choices(choices):
-    """
-    Helper function to generate a set of possible answers to a given question based on
-    the data dictionary.
-    """
-    solution_set = set()
-    if isinstance(choices, list):
-        options = [item['name']['en'].strip() for item in choices]
-        for option in options:
-            option = option.replace("'", "")
-            option = option.replace("\"", "")
-            solution_set.add(option)
-    return solution_set
+def validate_fields(field, participant, data_dictionary):
+    field_requirements = json.load(
+        (Path(__file__).parent.parent.parent.parent / "data" / "field_requirements.json").open()
+    )
+    participant_id = participant.get("participant_id") or participant.get("record_id")
+    cleaner = Validator(data_dictionary=data_dictionary,
+                        participant_id=participant_id, field_requirements=field_requirements)
+    if field is not None:
+        value = cleaner.clean(participant[field])
+        if pd.isna(value):
+            return
+        if field not in data_dictionary:
+            return
+        cleaner.validate_choices(field, value)
 
+        # For height and weight edge case where value can be metric or imperial
+        if field == "height" and participant["unit"] != "Metric":
+            value = round(value * HEIGHT_METRIC_TO_US_CONVERSION_FACTOR)
 
-def clean_number(num):
-    """
-    Helper function to help with comparing the answer with the possible answers
-    with the expected answers from the data dictionary.
-    """
-    try:
-        clean_num = float(num)
-        return int(clean_num) if clean_num.is_integer() else clean_num
-    except (ValueError, TypeError):
-        return num
+        elif field == "weight" and participant["unit"] != "Metric":
+            value = round(value * WEIGHT_METRIC_TO_US_CONVERSION_FACTOR)
 
+        cleaner.validate_range(field, value)
 
 def validate_participant_data(participant):
     """
     Function validates each field with data dictionary and asserts whether value
     matches the expected answers. 
     """
-    participant_id = participant.get("participant_id") or participant.get("record_id")
     data_dictionary = json.load((resources.files("b2aiprep").joinpath(
         "prepare", "resources", "b2ai-data-bids-like-template", "participants.json").open())
     )
     for field in participant:
-        if field is not None:
-            value = clean_number(participant[field])
-            if isinstance(value, str):
-                value = value.replace("'", "")
-            if pd.isna(value):
-                continue
-            # fields that are redcap specific
-            if field not in ["redcap_repeat_instrument", "redcap_repeat_instance", "participant_id"]:
-                # added in derivatives, not included in data dictionary
-                if field == "sex_at_birth":
-                    assert value in ["Male", "Female"]
-                    continue     
-                if field not in data_dictionary:
-                    continue
-                result_dict = data_dictionary[field]
-                if "choices" not in result_dict or result_dict["choices"] is None:
-                    options = set()
-                else:
-                    options = set(get_choices(result_dict["choices"]))
-
-                if "minValue" in result_dict and result_dict["minValue"] is not None:
-                    assert float(value) >= float(result_dict["minValue"]), (
-                        f"The value {value} does not meet the minimum "
-                        f"value allowed for {field} for participant {participant_id}"
-                    )
-                if "maxValue" in result_dict and result_dict["maxValue"] is not None:
-                    assert float(value) <= float(result_dict["maxValue"]), (
-                        f"The value {value} exceeds the max value for "
-                        f"{field} for participant {participant_id}"
-                    )
-                    slide_options = set(
-                        range(int(result_dict["maxValue"] + 1)))
-                    slide_options = set(str(i) for i in slide_options)
-                    options = options.union(slide_options)
-
-                if len(options) != 0:
-                    assert str(value) in options, (
-                        f"The value {value} is not a valid answer for the {field} "
-                        f"field for participant {participant_id}"
-                    )
-
-                # fields with a history of have inconsistent values
-                if field == "height" and "unit" in participant:
-                    if participant["unit"] == "Metric":
-                        assert float(value) <= MAX_HUMAN_HEIGHT_METRIC, (
-                            f"The height of {value} exceeds the "
-                            f"max value for {field} for participant {participant_id}"
-                        )
-                    elif participant["unit"] == "US customary units":
-                        assert float(value) <= MAX_HUMAN_HEIGHT_US_UNIT, (
-                            f"The value {value} exceeds the max "
-                            f"value for {field} for participant {participant_id}"
-                        )
-
-                if field == "weight" and "unit" in participant:
-                    if participant["unit"] == "Metric":
-                        assert float(value) <= MAX_HUMAN_WEIGHT_METRIC, (
-                            f"The Weight of {value} exceeds the "
-                            f"max value for {field} for participant {participant_id}"
-                        )
-                    elif participant["unit"] == "US customary units":
-                        assert float(value) <= MAX_HUMAN_WEIGHT_US_UNIT, (
-                            f"The Weight of {value} exceeds the "
-                            f"max value for {field} for participant {participant_id}"
-                        )
+        validate_fields(field=field, participant=participant, data_dictionary=data_dictionary)
 
 
 def validate_derivatives(derivatives_csv_path):
