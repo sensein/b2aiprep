@@ -256,7 +256,6 @@ def test_convert_cli(setup_audio_files):
         ]
 
         result = subprocess.run(command, capture_output=True, text=True)
-        print(result)
         # Note: This command may fail due to audio processing requirements
         # We check that it at least starts without import errors
         assert (
