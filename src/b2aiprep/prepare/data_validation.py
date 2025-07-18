@@ -100,7 +100,7 @@ class Validator:
         if isinstance(choices, list):
             options = [item["name"]["en"].strip() for item in choices]
             for option in options:
-                # Edge case to remove apostrophes as csv asswers don't have apostrophes present
+                # Edge case to remove apostrophes as csv aswers don't have apostrophes present
                 option = option.replace('"', "")
                 solution_set.add(option)
         return solution_set
@@ -129,6 +129,8 @@ def validate_fields(field: str, participant: dict, data_dictionary: dict) -> Non
         field_requirements=field_requirements,
     )
     if field is not None:
+        # sanitize answers due to dataframes automatically adding trailing decimals and 
+        # assertions failing due to answers containing apostrophes
         value = cleaner.clean(participant[field])
         if pd.isna(value):
             return
