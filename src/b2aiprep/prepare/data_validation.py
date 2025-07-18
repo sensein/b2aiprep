@@ -91,7 +91,7 @@ class Validator:
         the data dictionary.
         
         Args:
-            choices: A list of possible aswers for a particular question.
+            choices: A list of possible answers for a particular question.
             
         Returns:
             set: A set containing all possible choices for a particular question.
@@ -100,7 +100,7 @@ class Validator:
         if isinstance(choices, list):
             options = [item["name"]["en"].strip() for item in choices]
             for option in options:
-                # Edge case to remove apostrophes as csv aswers don't have apostrophes present
+                # Edge case to remove apostrophes as csv answers don't have apostrophes present
                 option = option.replace('"', "")
                 solution_set.add(option)
         return solution_set
