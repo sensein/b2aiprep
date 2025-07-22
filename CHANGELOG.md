@@ -1,3 +1,15 @@
+# 2.6.0 (Tue Jul 22 2025)
+
+#### 🚀 Enhancement
+
+- Data validation [#187](https://github.com/sensein/b2aiprep/pull/187) ([@Evan8456](https://github.com/Evan8456))
+
+#### Authors: 1
+
+- Evan Ng ([@Evan8456](https://github.com/Evan8456))
+
+---
+
 # 2.5.0 (Tue Jul 22 2025)
 
 #### 🚀 Enhancement
