@@ -18650,8 +18650,6 @@
       "xsd:integer"
     ]
   },
-<<<<<<< HEAD
-=======
   "branchial_cleft_cyst_date": {
     "description": "branchial_cleft_cyst_date",
     "question": {
@@ -18665,7 +18663,6 @@
     ],
     "choices": null
   },
->>>>>>> main
   "dermoid_cyst": {
     "description": "dermoid_cyst",
     "question": {
@@ -18692,8 +18689,6 @@
       "xsd:integer"
     ]
   },
-<<<<<<< HEAD
-=======
   "dermoid_cyst_surgery": {
     "description": "dermoid_cyst_surgery",
     "question": {
@@ -18733,7 +18728,6 @@
     ],
     "choices": null
   },
->>>>>>> main
   "thyroid_nodule_or_cancer": {
     "description": "thyroid_nodule_or_cancer",
     "question": {
@@ -18877,8 +18871,6 @@
     ],
     "choices": null
   },
-<<<<<<< HEAD
-=======
   "conditions": {
     "description": "conditions",
     "question": {
@@ -18960,7 +18952,6 @@
       "xsd:integer"
     ]
   },
->>>>>>> main
   "conditions___11": {
     "description": "Indicates if the participant identifies with conditions category 11"
   },
@@ -19139,8 +19130,6 @@
   "voice_disorders___5": {
     "description": "Indicates if the participant identifies with voice_disorders category 5"
   },
-<<<<<<< HEAD
-=======
   "issues_2_weeks": {
     "description": "issues_2_weeks",
     "question": {
@@ -19210,7 +19199,6 @@
       "xsd:integer"
     ]
   },
->>>>>>> main
   "winograd_session_id": {
     "description": "Unique identifier for the Winograd schema session.",
     "question": {
@@ -48368,90 +48356,6 @@
       "xsd:string"
     ],
     "choices": null
-  },
-  "conditions": {
-    "description": {
-      "en": "Does your child have any of the following conditions (check all that apply):"
-    },
-    "question": {
-      "en": "Does your child have any of the following conditions (check all that apply):"
-    },
-    "datatype": [
-      "xsd:integer"
-    ],
-    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/conditions",
-    "choices": [
-      {
-        "name": {
-          "en": "Osteogenesis imperfecta"
-        },
-        "value": 1
-      },
-      {
-        "name": {
-          "en": "Trisomy 21 (Down\u2019s Syndrome)"
-        },
-        "value": 2
-      },
-      {
-        "name": {
-          "en": "Prematurity"
-        },
-        "value": 3
-      },
-      {
-        "name": {
-          "en": "Congenital heart disease"
-        },
-        "value": 4
-      },
-      {
-        "name": {
-          "en": "Tracheoesophageal fistula"
-        },
-        "value": 5
-      },
-      {
-        "name": {
-          "en": "Esophageal atresia"
-        },
-        "value": 6
-      },
-      {
-        "name": {
-          "en": "Cystic fibrosis"
-        },
-        "value": 7
-      },
-      {
-        "name": {
-          "en": "Rheumatoid arthritis"
-        },
-        "value": 8
-      },
-      {
-        "name": {
-          "en": "Granulomatosis with polyangitis"
-        },
-        "value": 9
-      },
-      {
-        "name": {
-          "en": "Mucopolysaccharidosis"
-        },
-        "value": 10
-      },
-      {
-        "name": {
-          "en": "Other"
-        },
-        "value": 11
-      }
-    ],
-    "multipleChoice": true,
-    "valueType": [
-      "xsd:integer"
-    ]
   },
   "issues_2_weeks": {
     "description": {
