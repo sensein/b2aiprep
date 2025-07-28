@@ -1,7 +1,7 @@
 {
     "medical_conditions": {
-        "description": "Measures medical conditions for kids.",
-        "url": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/",
+        "description": "Measures perceived impact of voice disorders for kids.",
+        "url": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/medical_conditions_schema",
         "data_elements": {
             "medical_conditions_schema_session_id": {
                 "description": "The unique identifier for the medical conditions session.",
@@ -33,13 +33,16 @@
                 ]
             },
             "voice_disorders": {
-                "description": "voice_disorders",
+                "description": {
+                    "en": "Does your child have a history of a voice disorder (check all that apply): "
+                },
                 "question": {
                     "en": "Does your child have a history of a voice disorder (check all that apply): "
                 },
                 "datatype": [
                     "xsd:integer"
                 ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/voice_disorders",
                 "choices": [
                     {
                         "name": {
@@ -76,6 +79,12 @@
                             "en": "Airway stenosis (bilateral vocal fold paralysis laryngeal stenosis)"
                         },
                         "value": 6
+                    },
+                    {
+                        "name": {
+                            "en": "Vocal cord webs"
+                        },
+                        "value": 7
                     }
                 ],
                 "multipleChoice": true,
@@ -83,14 +92,35 @@
                     "xsd:integer"
                 ]
             },
+            "voice_disorders___1": {
+                "description": "Indicates if the participant identifies with voice_disorders category 1."
+            },
+            "voice_disorders___2": {
+                "description": "Indicates if the participant identifies with voice_disorders category 2."
+            },
+            "voice_disorders___3": {
+                "description": "Indicates if the participant identifies with voice_disorders category 3."
+            },
+            "voice_disorders___4": {
+                "description": "Indicates if the participant identifies with voice_disorders category 4."
+            },
+            "voice_disorders___5": {
+                "description": "Indicates if the participant identifies with voice_disorders category 5."
+            },
+            "voice_disorders___6": {
+                "description": "Indicates if the participant identifies with voice_disorders category 6."
+            },
             "psychological_disorders": {
-                "description": "psychological_disorders",
+                "description": {
+                    "en": "Does your child have a history of a psychological disorders or mood problems (check all that apply):"
+                },
                 "question": {
                     "en": "Does your child have a history of a psychological disorders or mood problems (check all that apply):"
                 },
                 "datatype": [
                     "xsd:integer"
                 ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/psychological_disorders",
                 "choices": [
                     {
                         "name": {
@@ -158,27 +188,63 @@
                     "xsd:integer"
                 ]
             },
+            "psychological_disorders___1": {
+                "description": "Indicates if the participant identifies with psychological_disorders category 1."
+            },
+            "psychological_disorders___2": {
+                "description": "Indicates if the participant identifies with psychological_disorders category 2."
+            },
+            "psychological_disorders___3": {
+                "description": "Indicates if the participant identifies with psychological_disorders category 3."
+            },
+            "psychological_disorders___4": {
+                "description": "Indicates if the participant identifies with psychological_disorders category 4."
+            },
+            "psychological_disorders___5": {
+                "description": "Indicates if the participant identifies with psychological_disorders category 5."
+            },
+            "psychological_disorders___6": {
+                "description": "Indicates if the participant identifies with psychological_disorders category 6."
+            },
+            "psychological_disorders___7": {
+                "description": "Indicates if the participant identifies with psychological_disorders category 7."
+            },
+            "psychological_disorders___8": {
+                "description": "Indicates if the participant identifies with psychological_disorders category 8."
+            },
+            "psychological_disorders___9": {
+                "description": "Indicates if the participant identifies with psychological_disorders category 9."
+            },
+            "psychological_disorders___10": {
+                "description": "Indicates if the participant identifies with psychological_disorders category 10."
+            },
             "psychological_disorders_other": {
-                "description": "psychological_disorders_other",
+                "description": {
+                    "en": "Other psychiatric disorders \u2013 please write the condition here "
+                },
                 "question": {
                     "en": "Other psychiatric disorders \u2013 please write the condition here "
                 },
                 "datatype": [
                     "xsd:string"
                 ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/psychological_disorders_other",
                 "valueType": [
                     "xsd:string"
                 ],
                 "choices": null
             },
             "airway_conditions": {
-                "description": "airway_conditions",
+                "description": {
+                    "en": "Does your child have a history of a breathing or airway conditions (check all that apply): "
+                },
                 "question": {
                     "en": "Does your child have a history of a breathing or airway conditions (check all that apply): "
                 },
                 "datatype": [
                     "xsd:integer"
                 ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/airway_conditions",
                 "choices": [
                     {
                         "name": {
@@ -246,14 +312,47 @@
                     "xsd:integer"
                 ]
             },
+            "airway_conditions___1": {
+                "description": "Indicates if the participant identifies with airway_conditions category 1."
+            },
+            "airway_conditions___2": {
+                "description": "Indicates if the participant identifies with airway_conditions category 2."
+            },
+            "airway_conditions___3": {
+                "description": "Indicates if the participant identifies with airway_conditions category 3."
+            },
+            "airway_conditions___4": {
+                "description": "Indicates if the participant identifies with airway_conditions category 4."
+            },
+            "airway_conditions___5": {
+                "description": "Indicates if the participant identifies with airway_conditions category 5."
+            },
+            "airway_conditions___6": {
+                "description": "Indicates if the participant identifies with airway_conditions category 6."
+            },
+            "airway_conditions___7": {
+                "description": "Indicates if the participant identifies with airway_conditions category 7."
+            },
+            "airway_conditions___8": {
+                "description": "Indicates if the participant identifies with airway_conditions category 8."
+            },
+            "airway_conditions___9": {
+                "description": "Indicates if the participant identifies with airway_conditions category 9."
+            },
+            "airway_conditions___10": {
+                "description": "Indicates if the participant identifies with airway_conditions category 10."
+            },
             "sleep_apnea": {
-                "description": "sleep_apnea",
+                "description": {
+                    "en": "Does your child have a history of a snoring or obstructive sleep apnea? (check all that apply): "
+                },
                 "question": {
                     "en": "Does your child have a history of a snoring or obstructive sleep apnea? (check all that apply): "
                 },
                 "datatype": [
                     "xsd:integer"
                 ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/sleep_apnea",
                 "choices": [
                     {
                         "name": {
@@ -285,14 +384,45 @@
                     "xsd:integer"
                 ]
             },
+            "sleep_apnea___1": {
+                "description": "Indicates if the participant identifies with sleep_apnea category 1."
+            },
+            "sleep_apnea___2": {
+                "description": "Indicates if the participant identifies with sleep_apnea category 2."
+            },
+            "sleep_apnea___3": {
+                "description": "Indicates if the participant identifies with sleep_apnea category 3."
+            },
+            "sleep_apnea___4": {
+                "description": "Indicates if the participant identifies with sleep_apnea category 4."
+            },
+            "oAHI": {
+                "description": {
+                    "en": "What was the oAHI on the sleep study (to be competed by research assistant)"
+                },
+                "question": {
+                    "en": "What was the oAHI on the sleep study (to be competed by research assistant)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/oAHI",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
             "tonsillectomy": {
-                "description": "tonsillectomy",
+                "description": {
+                    "en": "Have they had a tonsillectomy?"
+                },
                 "question": {
                     "en": "Have they had a tonsillectomy?"
                 },
                 "datatype": [
                     "xsd:integer"
                 ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/tonsillectomy",
                 "choices": [
                     {
                         "name": {
@@ -312,26 +442,32 @@
                 ]
             },
             "tonsillectomy_date": {
-                "description": "tonsillectomy_date",
+                "description": {
+                    "en": "What was the date of the surgery?"
+                },
                 "question": {
                     "en": "What was the date of the surgery?"
                 },
                 "datatype": [
                     "xsd:date"
                 ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/tonsillectomy_date",
                 "valueType": [
                     "xsd:date"
                 ],
                 "choices": null
             },
             "adenoidectomy": {
-                "description": "adenoidectomy",
+                "description": {
+                    "en": "Have they had an adenoidectomy?"
+                },
                 "question": {
                     "en": "Have they had an adenoidectomy?"
                 },
                 "datatype": [
                     "xsd:integer"
                 ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/adenoidectomy",
                 "choices": [
                     {
                         "name": {
@@ -351,26 +487,32 @@
                 ]
             },
             "adenoidectomy_date": {
-                "description": "adenoidectomy_date",
+                "description": {
+                    "en": "What was the date of the surgery?"
+                },
                 "question": {
                     "en": "What was the date of the surgery?"
                 },
                 "datatype": [
                     "xsd:date"
                 ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/adenoidectomy_date",
                 "valueType": [
                     "xsd:date"
                 ],
                 "choices": null
             },
             "lingual_tonsillectomy": {
-                "description": "lingual_tonsillectomy",
+                "description": {
+                    "en": "Have they had an lingual tonsillectomy?"
+                },
                 "question": {
                     "en": "Have they had an lingual tonsillectomy?"
                 },
                 "datatype": [
                     "xsd:integer"
                 ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/lingual_tonsillectomy",
                 "choices": [
                     {
                         "name": {
@@ -390,26 +532,32 @@
                 ]
             },
             "lingual_tonsillectomy_date": {
-                "description": "lingual_tonsillectomy_date",
+                "description": {
+                    "en": "What was the date of the surgery?"
+                },
                 "question": {
                     "en": "What was the date of the surgery?"
                 },
                 "datatype": [
                     "xsd:date"
                 ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/lingual_tonsillectomy_date",
                 "valueType": [
                     "xsd:date"
                 ],
                 "choices": null
             },
             "hearing_loss": {
-                "description": "hearing_loss",
+                "description": {
+                    "en": "Does your child have a history of hearing loss or associated conditions? (check all that apply):"
+                },
                 "question": {
                     "en": "Does your child have a history of hearing loss or associated conditions? (check all that apply):"
                 },
                 "datatype": [
                     "xsd:integer"
                 ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/hearing_loss",
                 "choices": [
                     {
                         "name": {
@@ -477,14 +625,92 @@
                     "xsd:integer"
                 ]
             },
+            "hearing_loss___1": {
+                "description": "Indicates if the participant identifies with hearing_loss category 1."
+            },
+            "hearing_loss___2": {
+                "description": "Indicates if the participant identifies with hearing_loss category 2."
+            },
+            "hearing_loss___3": {
+                "description": "Indicates if the participant identifies with hearing_loss category 3."
+            },
+            "hearing_loss___4": {
+                "description": "Indicates if the participant identifies with hearing_loss category 4."
+            },
+            "hearing_loss___5": {
+                "description": "Indicates if the participant identifies with hearing_loss category 5."
+            },
+            "hearing_loss___6": {
+                "description": "Indicates if the participant identifies with hearing_loss category 6."
+            },
+            "hearing_loss___7": {
+                "description": "Indicates if the participant identifies with hearing_loss category 7."
+            },
+            "hearing_loss___8": {
+                "description": "Indicates if the participant identifies with hearing_loss category 8."
+            },
+            "hearing_loss___9": {
+                "description": "Indicates if the participant identifies with hearing_loss category 9."
+            },
+            "hearing_loss___10": {
+                "description": "Indicates if the participant identifies with hearing_loss category 10."
+            },
+            "neck_mass": {
+                "description": {
+                    "en": "Does your child have a history of a neck mass?"
+                },
+                "question": {
+                    "en": "Does your child have a history of a neck mass?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/neck_mass",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "neck_mass_other": {
+                "description": {
+                    "en": "If Yes, Please specify:"
+                },
+                "question": {
+                    "en": "If Yes, Please specify:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/neck_mass_other",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
             "thyroglossal_duct_cyst": {
-                "description": "thyroglossal_duct_cyst",
+                "description": {
+                    "en": "Does your child have a history of a thyroglossal duct cyst?"
+                },
                 "question": {
                     "en": "Does your child have a history of a thyroglossal duct cyst?"
                 },
                 "datatype": [
                     "xsd:integer"
                 ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/thyroglossal_duct_cyst",
                 "choices": [
                     {
                         "name": {
@@ -504,13 +730,16 @@
                 ]
             },
             "thyroglossal_duct_cyst_surgery": {
-                "description": "thyroglossal_duct_cyst_surgery",
+                "description": {
+                    "en": "Have they had surgery for this? "
+                },
                 "question": {
                     "en": "Have they had surgery for this? "
                 },
                 "datatype": [
                     "xsd:integer"
                 ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/thyroglossal_duct_cyst_surgery",
                 "choices": [
                     {
                         "name": {
@@ -530,26 +759,32 @@
                 ]
             },
             "thyroglossal_duct_cyst_date": {
-                "description": "thyroglossal_duct_cyst_date",
+                "description": {
+                    "en": "What was the date of the surgery?"
+                },
                 "question": {
                     "en": "What was the date of the surgery?"
                 },
                 "datatype": [
                     "xsd:date"
                 ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/thyroglossal_duct_cyst_date",
                 "valueType": [
                     "xsd:date"
                 ],
                 "choices": null
             },
             "branchial_cleft_cyst": {
-                "description": "branchial_cleft_cyst",
+                "description": {
+                    "en": "Does your child have a history of a branchial cleft cyst?"
+                },
                 "question": {
                     "en": "Does your child have a history of a branchial cleft cyst?"
                 },
                 "datatype": [
                     "xsd:integer"
                 ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/branchial_cleft_cyst",
                 "choices": [
                     {
                         "name": {
@@ -569,13 +804,16 @@
                 ]
             },
             "branchial_cleft_cyst_surgery": {
-                "description": "branchial_cleft_cyst_surgery",
+                "description": {
+                    "en": "Have they had surgery for this? "
+                },
                 "question": {
                     "en": "Have they had surgery for this? "
                 },
                 "datatype": [
                     "xsd:integer"
                 ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/branchial_cleft_cyst_surgery",
                 "choices": [
                     {
                         "name": {
@@ -595,26 +833,32 @@
                 ]
             },
             "branchial_cleft_cyst_date": {
-                "description": "branchial_cleft_cyst_date",
+                "description": {
+                    "en": "What was the date of the surgery?"
+                },
                 "question": {
                     "en": "What was the date of the surgery?"
                 },
                 "datatype": [
                     "xsd:date"
                 ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/branchial_cleft_cyst_date",
                 "valueType": [
                     "xsd:date"
                 ],
                 "choices": null
             },
             "dermoid_cyst": {
-                "description": "dermoid_cyst",
+                "description": {
+                    "en": "Does your child have a history of a dermoid cyst?"
+                },
                 "question": {
                     "en": "Does your child have a history of a dermoid cyst?"
                 },
                 "datatype": [
                     "xsd:integer"
                 ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/dermoid_cyst",
                 "choices": [
                     {
                         "name": {
@@ -634,13 +878,16 @@
                 ]
             },
             "dermoid_cyst_surgery": {
-                "description": "dermoid_cyst_surgery",
+                "description": {
+                    "en": "Have they had surgery for this? "
+                },
                 "question": {
                     "en": "Have they had surgery for this? "
                 },
                 "datatype": [
                     "xsd:integer"
                 ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/dermoid_cyst_surgery",
                 "choices": [
                     {
                         "name": {
@@ -660,26 +907,32 @@
                 ]
             },
             "dermoid_cyst_date": {
-                "description": "dermoid_cyst_date",
+                "description": {
+                    "en": "What was the date of the surgery?"
+                },
                 "question": {
                     "en": "What was the date of the surgery?"
                 },
                 "datatype": [
                     "xsd:date"
                 ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/dermoid_cyst_date",
                 "valueType": [
                     "xsd:date"
                 ],
                 "choices": null
             },
             "thyroid_nodule_or_cancer": {
-                "description": "thyroid_nodule_or_cancer",
+                "description": {
+                    "en": "Does your child have a history of a thyroid nodule or cancer"
+                },
                 "question": {
                     "en": "Does your child have a history of a thyroid nodule or cancer"
                 },
                 "datatype": [
                     "xsd:integer"
                 ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/thyroid_nodule_or_cancer",
                 "choices": [
                     {
                         "name": {
@@ -699,13 +952,16 @@
                 ]
             },
             "thyroid_nodule_or_cancer_surgery": {
-                "description": "thyroid_nodule_or_cancer_surgery",
+                "description": {
+                    "en": "Have they had surgery for this? "
+                },
                 "question": {
                     "en": "Have they had surgery for this? "
                 },
                 "datatype": [
                     "xsd:integer"
                 ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/thyroid_nodule_or_cancer_surgery",
                 "choices": [
                     {
                         "name": {
@@ -725,26 +981,32 @@
                 ]
             },
             "thyroid_nodule_or_cancer_date": {
-                "description": "thyroid_nodule_or_cancer_date",
+                "description": {
+                    "en": "What was the date of the surgery?"
+                },
                 "question": {
                     "en": "What was the date of the surgery?"
                 },
                 "datatype": [
                     "xsd:date"
                 ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/thyroid_nodule_or_cancer_date",
                 "valueType": [
                     "xsd:date"
                 ],
                 "choices": null
             },
             "enlarged_lymph_node": {
-                "description": "enlarged_lymph_node",
+                "description": {
+                    "en": "Does your child have a history of an enlarged lymph node?"
+                },
                 "question": {
                     "en": "Does your child have a history of an enlarged lymph node?"
                 },
                 "datatype": [
                     "xsd:integer"
                 ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/enlarged_lymph_node",
                 "choices": [
                     {
                         "name": {
@@ -764,13 +1026,16 @@
                 ]
             },
             "enlarged_lymph_node_surgery": {
-                "description": "enlarged_lymph_node_surgery",
+                "description": {
+                    "en": "Have they had surgery for this? "
+                },
                 "question": {
                     "en": "Have they had surgery for this? "
                 },
                 "datatype": [
                     "xsd:integer"
                 ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/enlarged_lymph_node_surgery",
                 "choices": [
                     {
                         "name": {
@@ -790,39 +1055,1112 @@
                 ]
             },
             "enlarged_lymph_node_date": {
-                "description": "enlarged_lymph_node_date",
+                "description": {
+                    "en": "What was the date of the surgery?"
+                },
                 "question": {
                     "en": "What was the date of the surgery?"
                 },
                 "datatype": [
                     "xsd:date"
                 ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/enlarged_lymph_node_date",
                 "valueType": [
                     "xsd:date"
                 ],
                 "choices": null
             },
-            "neck_mass_other": {
-                "description": "neck_mass_other",
+            "epistaxis": {
+                "description": {
+                    "en": "Does your child have a history of epistaxis?"
+                },
                 "question": {
-                    "en": "Other \u2013 please write condition here:"
+                    "en": "Does your child have a history of epistaxis?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/epistaxis",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "nasal_fracture": {
+                "description": {
+                    "en": "Does your child have a history of nasal fractures?"
+                },
+                "question": {
+                    "en": "Does your child have a history of nasal fractures?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/nasal_fracture",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "chronic_medical_conditions": {
+                "description": {
+                    "en": "Has your child ever been diagnosed with a chronic medical condition?"
+                },
+                "question": {
+                    "en": "Has your child ever been diagnosed with a chronic medical condition?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/chronic_medical_conditions",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "chronic_medical_conditions_specify": {
+                "description": {
+                    "en": "If yes, please specify:"
+                },
+                "question": {
+                    "en": "If yes, please specify:"
                 },
                 "datatype": [
                     "xsd:string"
                 ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/chronic_medical_conditions_specify",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "genetic_disorders": {
+                "description": {
+                    "en": "Has your child been diagnosed with any genetic syndromes?"
+                },
+                "question": {
+                    "en": "Has your child been diagnosed with any genetic syndromes?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/genetic_disorders",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "genetic_disorders_specify": {
+                "description": {
+                    "en": "If yes, please specify:"
+                },
+                "question": {
+                    "en": "If yes, please specify:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/genetic_disorders_specify",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "hospitalize_medical_conditions": {
+                "description": {
+                    "en": "Has your child ever been hospitalized for a medical condition?"
+                },
+                "question": {
+                    "en": "Has your child ever been hospitalized for a medical condition?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/hospitalize_medical_conditions",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "hospitalize_medical_conditions_specify": {
+                "description": {
+                    "en": "If yes, please specify:"
+                },
+                "question": {
+                    "en": "If yes, please specify:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/hospitalize_medical_conditions_specify",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "neurological_disorders": {
+                "description": {
+                    "en": "Does your child have any history of neurological disorders (e.g., cerebral palsy, muscular dystrophy)?"
+                },
+                "question": {
+                    "en": "Does your child have any history of neurological disorders (e.g., cerebral palsy, muscular dystrophy)?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/neurological_disorders",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "neurological_disorders_specify": {
+                "description": {
+                    "en": "If yes, please specify:"
+                },
+                "question": {
+                    "en": "If yes, please specify:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/neurological_disorders_specify",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "allergies": {
+                "description": {
+                    "en": "Does your child have any known allergies (food, environmental, or medication)?"
+                },
+                "question": {
+                    "en": "Does your child have any known allergies (food, environmental, or medication)?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/allergies",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "allergies_specify": {
+                "description": {
+                    "en": "If yes, please specify:"
+                },
+                "question": {
+                    "en": "If yes, please specify:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/allergies_specify",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "difficulty_swallowing": {
+                "description": {
+                    "en": "Has your child ever had difficulty swallowing liquids or solids?"
+                },
+                "question": {
+                    "en": "Has your child ever had difficulty swallowing liquids or solids?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/difficulty_swallowing",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "difficulty_swallowing_specify": {
+                "description": {
+                    "en": "If yes, please specify:"
+                },
+                "question": {
+                    "en": "If yes, please specify:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/difficulty_swallowing_specify",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "ear_infection": {
+                "description": {
+                    "en": "Has your child had any ear infections requiring antibiotics in the past year?"
+                },
+                "question": {
+                    "en": "Has your child had any ear infections requiring antibiotics in the past year?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/ear_infection",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "ear_infection_specify": {
+                "description": {
+                    "en": "If yes, please specify:"
+                },
+                "question": {
+                    "en": "If yes, please specify:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/ear_infection_specify",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "ear_tube": {
+                "description": {
+                    "en": "Has your child ever undergone ear tube placement (tympanostomy tubes)?"
+                },
+                "question": {
+                    "en": "Has your child ever undergone ear tube placement (tympanostomy tubes)?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/ear_tube",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "ear_tube_specify": {
+                "description": {
+                    "en": "If yes, please specify which procedure:"
+                },
+                "question": {
+                    "en": "If yes, please specify which procedure:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/ear_tube_specify",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "ear_tube_date": {
+                "description": {
+                    "en": "What was the date of the surgery?"
+                },
+                "question": {
+                    "en": "What was the date of the surgery?"
+                },
+                "datatype": [
+                    "xsd:date"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/ear_tube_date",
+                "valueType": [
+                    "xsd:date"
+                ],
+                "choices": null
+            },
+            "ent_evaluation": {
+                "description": {
+                    "en": "Has your child ever been evaluated by an ENT (ear, nose, and throat) specialist or speech-language pathologist for voice or swallowing concerns?"
+                },
+                "question": {
+                    "en": "Has your child ever been evaluated by an ENT (ear, nose, and throat) specialist or speech-language pathologist for voice or swallowing concerns?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/ent_evaluation",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "ent_evaluation_specify": {
+                "description": {
+                    "en": "If yes, please specify:"
+                },
+                "question": {
+                    "en": "If yes, please specify:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/ent_evaluation_specify",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "feeding_tube": {
+                "description": {
+                    "en": "Has your child ever required a feeding tube (NG tube, G-tube)?"
+                },
+                "question": {
+                    "en": "Has your child ever required a feeding tube (NG tube, G-tube)?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/feeding_tube",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "feeding_tube_specify": {
+                "description": {
+                    "en": "If yes, please specify:"
+                },
+                "question": {
+                    "en": "If yes, please specify:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/feeding_tube_specify",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "gerd": {
+                "description": {
+                    "en": "Has your child ever been diagnosed with reflux (GERD) or required medication for acid reflux?"
+                },
+                "question": {
+                    "en": "Has your child ever been diagnosed with reflux (GERD) or required medication for acid reflux?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/gerd",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "gerd_specify": {
+                "description": {
+                    "en": "If yes, please specify:"
+                },
+                "question": {
+                    "en": "If yes, please specify:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/gerd_specify",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "hearing_aid": {
+                "description": {
+                    "en": "Has your child ever been diagnosed with hearing loss or required hearing aids?"
+                },
+                "question": {
+                    "en": "Has your child ever been diagnosed with hearing loss or required hearing aids?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/hearing_aid",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "hearing_aid_specify": {
+                "description": {
+                    "en": "If yes, please specify:"
+                },
+                "question": {
+                    "en": "If yes, please specify:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/hearing_aid_specify",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "hoarse_voice": {
+                "description": {
+                    "en": "Has your child ever had a hoarse or weak voice for more than two weeks?"
+                },
+                "question": {
+                    "en": "Has your child ever had a hoarse or weak voice for more than two weeks?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/hoarse_voice",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "hoarse_voice_specify": {
+                "description": {
+                    "en": "If yes, please specify:"
+                },
+                "question": {
+                    "en": "If yes, please specify:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/hoarse_voice_specify",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "neurological_surgery": {
+                "description": {
+                    "en": "Has your child ever had any neurological or orthopedic surgeries that could affect breathing or speech?"
+                },
+                "question": {
+                    "en": "Has your child ever had any neurological or orthopedic surgeries that could affect breathing or speech?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/neurological_surgery",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "neurological_surgery_specify": {
+                "description": {
+                    "en": "If yes, please specify which procedure:"
+                },
+                "question": {
+                    "en": "If yes, please specify which procedure:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/neurological_surgery_specify",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "neurological_surgery_date": {
+                "description": {
+                    "en": "If yes, please specify which procedure and the date of the procedure"
+                },
+                "question": {
+                    "en": "If yes, please specify which procedure and the date of the procedure"
+                },
+                "datatype": [
+                    "xsd:date"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/neurological_surgery_date",
+                "valueType": [
+                    "xsd:date"
+                ],
+                "choices": null
+            },
+            "noisy_breathing": {
+                "description": {
+                    "en": "Has your child ever had a history of noisy breathing (stridor) or difficulty breathing?"
+                },
+                "question": {
+                    "en": "Has your child ever had a history of noisy breathing (stridor) or difficulty breathing?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/noisy_breathing",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "noisy_breathing_specify": {
+                "description": {
+                    "en": "If yes, please specify:"
+                },
+                "question": {
+                    "en": "If yes, please specify:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/noisy_breathing_specify",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "oxygen": {
+                "description": {
+                    "en": "Has your child ever required oxygen support, intubation, a ventilator, or a tracheostomy?"
+                },
+                "question": {
+                    "en": "Has your child ever required oxygen support, intubation, a ventilator, or a tracheostomy?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/oxygen",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "oxygen_specify": {
+                "description": {
+                    "en": "If yes, please specify:"
+                },
+                "question": {
+                    "en": "If yes, please specify:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/oxygen_specify",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "pediatric_medication": {
+                "description": {
+                    "en": "Is your child currently taking any medications that could affect voice, breathing, or swallowing? If so, please list them."
+                },
+                "question": {
+                    "en": "Is your child currently taking any medications that could affect voice, breathing, or swallowing? If so, please list them."
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/pediatric_medication",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "pediatric_medication_specify": {
+                "description": {
+                    "en": "If yes, please specify:"
+                },
+                "question": {
+                    "en": "If yes, please specify:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/pediatric_medication_specify",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "speech_disorder_and_speech_delay": {
+                "description": {
+                    "en": "Has your child ever been diagnosed with a voice disorder or speech delay?"
+                },
+                "question": {
+                    "en": "Has your child ever been diagnosed with a voice disorder or speech delay?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/speech_disorder_and_speech_delay",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "speech_disorder_and_speech_delay_specify": {
+                "description": {
+                    "en": "If yes, please specify:"
+                },
+                "question": {
+                    "en": "If yes, please specify:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/speech_disorder_and_speech_delay_specify",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "speech_therapy": {
+                "description": {
+                    "en": "Has your child ever had speech therapy for articulation or voice-related issues?"
+                },
+                "question": {
+                    "en": "Has your child ever had speech therapy for articulation or voice-related issues?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/speech_therapy",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "speech_therapy_specify": {
+                "description": {
+                    "en": "If yes, please specify:"
+                },
+                "question": {
+                    "en": "If yes, please specify:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/speech_therapy_specify",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "surgery": {
+                "description": {
+                    "en": "Has your child ever had surgery involving the throat, vocal cords, or airway?"
+                },
+                "question": {
+                    "en": "Has your child ever had surgery involving the throat, vocal cords, or airway?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/surgery",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "surgery_specify": {
+                "description": {
+                    "en": "If yes, please specify:"
+                },
+                "question": {
+                    "en": "If yes, please specify:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/surgery_specify",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "tonsillitis": {
+                "description": {
+                    "en": "Has your child had frequent throat infections or tonsillitis?"
+                },
+                "question": {
+                    "en": "Has your child had frequent throat infections or tonsillitis?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/tonsillitis",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "tonsillitis_specify": {
+                "description": {
+                    "en": "If yes, please specify how many:"
+                },
+                "question": {
+                    "en": "If yes, please specify how many:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/tonsillitis_specify",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "choices": null
+            },
+            "vocal_strain": {
+                "description": {
+                    "en": "Does your child experience frequent vocal strain or voice fatigue?"
+                },
+                "question": {
+                    "en": "Does your child experience frequent vocal strain or voice fatigue?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/vocal_strain",
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 2
+                    }
+                ],
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "vocal_strain_specify": {
+                "description": {
+                    "en": "If yes, please specify:"
+                },
+                "question": {
+                    "en": "If yes, please specify:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/vocal_strain_specify",
                 "valueType": [
                     "xsd:string"
                 ],
                 "choices": null
             },
             "conditions": {
-                "description": "conditions",
+                "description": {
+                    "en": "Does your child have any of the following conditions (check all that apply):"
+                },
                 "question": {
                     "en": "Does your child have any of the following conditions (check all that apply):"
                 },
                 "datatype": [
                     "xsd:integer"
                 ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/conditions",
                 "choices": [
                     {
                         "name": {
@@ -896,27 +2234,66 @@
                     "xsd:integer"
                 ]
             },
+            "conditions___1": {
+                "description": "Indicates if the participant identifies with conditions category 1."
+            },
+            "conditions___2": {
+                "description": "Indicates if the participant identifies with conditions category 2."
+            },
+            "conditions___3": {
+                "description": "Indicates if the participant identifies with conditions category 3."
+            },
+            "conditions___4": {
+                "description": "Indicates if the participant identifies with conditions category 4."
+            },
+            "conditions___5": {
+                "description": "Indicates if the participant identifies with conditions category 5."
+            },
+            "conditions___6": {
+                "description": "Indicates if the participant identifies with conditions category 6."
+            },
+            "conditions___7": {
+                "description": "Indicates if the participant identifies with conditions category 7."
+            },
+            "conditions___8": {
+                "description": "Indicates if the participant identifies with conditions category 8."
+            },
+            "conditions___9": {
+                "description": "Indicates if the participant identifies with conditions category 9."
+            },
+            "conditions___10": {
+                "description": "Indicates if the participant identifies with conditions category 10."
+            },
+            "conditions___11": {
+                "description": "Indicates if the participant identifies with conditions category 11."
+            },
             "conditions_other": {
-                "description": "conditions_other",
+                "description": {
+                    "en": "Other (Please list here):"
+                },
                 "question": {
                     "en": "Other (Please list here):"
                 },
                 "datatype": [
                     "xsd:string"
                 ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/conditions_other",
                 "valueType": [
                     "xsd:string"
                 ],
                 "choices": null
             },
             "issues_2_weeks": {
-                "description": "issues_2_weeks",
+                "description": {
+                    "en": "Has your child had any of the following in the 2 weeks?"
+                },
                 "question": {
                     "en": "Has your child had any of the following in the 2 weeks?"
                 },
                 "datatype": [
                     "xsd:integer"
                 ],
+                "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/issues_2_weeks",
                 "choices": [
                     {
                         "name": {
@@ -977,6 +2354,33 @@
                 "valueType": [
                     "xsd:integer"
                 ]
+            },
+            "issues_2_weeks___1": {
+                "description": "Indicates if the participant identifies with issues_2_weeks category 1."
+            },
+            "issues_2_weeks___2": {
+                "description": "Indicates if the participant identifies with issues_2_weeks category 2."
+            },
+            "issues_2_weeks___3": {
+                "description": "Indicates if the participant identifies with issues_2_weeks category 3."
+            },
+            "issues_2_weeks___4": {
+                "description": "Indicates if the participant identifies with issues_2_weeks category 4."
+            },
+            "issues_2_weeks___5": {
+                "description": "Indicates if the participant identifies with issues_2_weeks category 5."
+            },
+            "issues_2_weeks___6": {
+                "description": "Indicates if the participant identifies with issues_2_weeks category 6."
+            },
+            "issues_2_weeks___7": {
+                "description": "Indicates if the participant identifies with issues_2_weeks category 7."
+            },
+            "issues_2_weeks___8": {
+                "description": "Indicates if the participant identifies with issues_2_weeks category 8."
+            },
+            "issues_2_weeks___9": {
+                "description": "Indicates if the participant identifies with issues_2_weeks category 9."
             }
         }
     }
