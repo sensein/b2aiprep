@@ -18650,6 +18650,22 @@
       "xsd:integer"
     ]
   },
+<<<<<<< HEAD
+=======
+  "branchial_cleft_cyst_date": {
+    "description": "branchial_cleft_cyst_date",
+    "question": {
+      "en": "What was the date of the surgery?"
+    },
+    "datatype": [
+      "xsd:date"
+    ],
+    "valueType": [
+      "xsd:date"
+    ],
+    "choices": null
+  },
+>>>>>>> main
   "dermoid_cyst": {
     "description": "dermoid_cyst",
     "question": {
@@ -18676,6 +18692,48 @@
       "xsd:integer"
     ]
   },
+<<<<<<< HEAD
+=======
+  "dermoid_cyst_surgery": {
+    "description": "dermoid_cyst_surgery",
+    "question": {
+      "en": "Have they had surgery for this? "
+    },
+    "datatype": [
+      "xsd:integer"
+    ],
+    "choices": [
+      {
+        "name": {
+          "en": "Yes"
+        },
+        "value": 1
+      },
+      {
+        "name": {
+          "en": "No"
+        },
+        "value": 2
+      }
+    ],
+    "valueType": [
+      "xsd:integer"
+    ]
+  },
+  "dermoid_cyst_date": {
+    "description": "dermoid_cyst_date",
+    "question": {
+      "en": "What was the date of the surgery?"
+    },
+    "datatype": [
+      "xsd:date"
+    ],
+    "valueType": [
+      "xsd:date"
+    ],
+    "choices": null
+  },
+>>>>>>> main
   "thyroid_nodule_or_cancer": {
     "description": "thyroid_nodule_or_cancer",
     "question": {
@@ -18819,6 +18877,90 @@
     ],
     "choices": null
   },
+<<<<<<< HEAD
+=======
+  "conditions": {
+    "description": "conditions",
+    "question": {
+      "en": "Does your child have any of the following conditions (check all that apply):"
+    },
+    "datatype": [
+      "xsd:integer"
+    ],
+    "choices": [
+      {
+        "name": {
+          "en": "Osteogenesis imperfecta"
+        },
+        "value": 1
+      },
+      {
+        "name": {
+          "en": "Trisomy 21 (Down\u2019s Syndrome)"
+        },
+        "value": 2
+      },
+      {
+        "name": {
+          "en": "Prematurity"
+        },
+        "value": 3
+      },
+      {
+        "name": {
+          "en": "Congenital heart disease"
+        },
+        "value": 4
+      },
+      {
+        "name": {
+          "en": "Tracheoesophageal fistula"
+        },
+        "value": 5
+      },
+      {
+        "name": {
+          "en": "Esophageal atresia"
+        },
+        "value": 6
+      },
+      {
+        "name": {
+          "en": "Cystic fibrosis"
+        },
+        "value": 7
+      },
+      {
+        "name": {
+          "en": "Rheumatoid arthritis"
+        },
+        "value": 8
+      },
+      {
+        "name": {
+          "en": "Granulomatosis with polyangitis"
+        },
+        "value": 9
+      },
+      {
+        "name": {
+          "en": "Mucopolysaccharidosis"
+        },
+        "value": 10
+      },
+      {
+        "name": {
+          "en": "Other"
+        },
+        "value": 11
+      }
+    ],
+    "multipleChoice": true,
+    "valueType": [
+      "xsd:integer"
+    ]
+  },
+>>>>>>> main
   "conditions___11": {
     "description": "Indicates if the participant identifies with conditions category 11"
   },
@@ -18997,6 +19139,78 @@
   "voice_disorders___5": {
     "description": "Indicates if the participant identifies with voice_disorders category 5"
   },
+<<<<<<< HEAD
+=======
+  "issues_2_weeks": {
+    "description": "issues_2_weeks",
+    "question": {
+      "en": "Has your child had any of the following in the 2 weeks?"
+    },
+    "datatype": [
+      "xsd:integer"
+    ],
+    "choices": [
+      {
+        "name": {
+          "en": "Wheezing or trouble breathing "
+        },
+        "value": 1
+      },
+      {
+        "name": {
+          "en": "Dry cough"
+        },
+        "value": 2
+      },
+      {
+        "name": {
+          "en": "Wet, productive cough"
+        },
+        "value": 3
+      },
+      {
+        "name": {
+          "en": "Nasal congestion"
+        },
+        "value": 4
+      },
+      {
+        "name": {
+          "en": "Sneezing"
+        },
+        "value": 5
+      },
+      {
+        "name": {
+          "en": "Ear infection"
+        },
+        "value": 6
+      },
+      {
+        "name": {
+          "en": "Stridor"
+        },
+        "value": 7
+      },
+      {
+        "name": {
+          "en": "Croup"
+        },
+        "value": 8
+      },
+      {
+        "name": {
+          "en": "Sorethroat/tonsillitis"
+        },
+        "value": 9
+      }
+    ],
+    "multipleChoice": true,
+    "valueType": [
+      "xsd:integer"
+    ]
+  },
+>>>>>>> main
   "winograd_session_id": {
     "description": "Unique identifier for the Winograd schema session.",
     "question": {

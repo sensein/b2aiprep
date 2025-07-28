@@ -159,6 +159,7 @@
                 ],
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_generic_confounders/items/smoking_age_regular_cigarette_smoking_age",
                 "maxValue": 125,
+                "minValue": 0,
                 "valueType": [
                     "xsd:integer"
                 ],
@@ -207,6 +208,7 @@
                 ],
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_generic_confounders/items/smoking_age_stopped_age",
                 "maxValue": 125,
+                "minValue": 0,
                 "valueType": [
                     "xsd:integer"
                 ],
@@ -255,6 +257,7 @@
                 ],
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_generic_confounders/items/smoking_years_cigarettes_years",
                 "maxValue": 125,
+                "minValue": 0,
                 "valueType": [
                     "xsd:integer"
                 ],
@@ -303,6 +306,7 @@
                 ],
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_generic_confounders/items/smoking_cigarettes_day_current_avg_number",
                 "maxValue": 1000,
+                "minValue": 0,
                 "valueType": [
                     "xsd:integer"
                 ],
@@ -351,6 +355,7 @@
                 ],
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/refs/heads/main/activities/q_generic_confounders/items/smoking_cigarettes_day_past_avg_number",
                 "maxValue": 1000,
+                "minValue": 0,
                 "valueType": [
                     "xsd:integer"
                 ],
@@ -2219,6 +2224,8 @@
                     "xsd:decimal"
                 ],
                 "choices": null,
+                "maxValue": 30,
+                "minValue": 0,
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/physical_health_freq",
                 "valueType": [
                     "xsd:decimal"
@@ -2233,6 +2240,8 @@
                     "xsd:decimal"
                 ],
                 "choices": null,
+                "maxValue": 30,
+                "minValue": 0,
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/phys_health_impact",
                 "valueType": [
                     "xsd:decimal"
@@ -2247,6 +2256,8 @@
                     "xsd:string"
                 ],
                 "choices": null,
+                "maxValue": 30,
+                "minValue": 0,
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/phys_health_limited",
                 "valueType": [
                     "xsd:string"
@@ -2474,6 +2485,8 @@
                     "xsd:decimal"
                 ],
                 "choices": null,
+                "maxValue": 24,
+                "minValue": 0,
                 "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/q_generic_confounders/items/hours_voice_activity",
                 "valueType": [
                     "xsd:decimal"

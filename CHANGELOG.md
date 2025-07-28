@@ -1,3 +1,32 @@
+# 2.6.0 (Tue Jul 22 2025)
+
+#### 🚀 Enhancement
+
+- Data validation [#187](https://github.com/sensein/b2aiprep/pull/187) ([@Evan8456](https://github.com/Evan8456))
+
+#### Authors: 1
+
+- Evan Ng ([@Evan8456](https://github.com/Evan8456))
+
+---
+
+# 2.5.0 (Tue Jul 22 2025)
+
+#### 🚀 Enhancement
+
+- 181 add at least one test for each function [#183](https://github.com/sensein/b2aiprep/pull/183) ([@ibevers](https://github.com/ibevers) [@Evan8456](https://github.com/Evan8456))
+
+#### 🐛 Bug Fix
+
+- Added Anxiety [#173](https://github.com/sensein/b2aiprep/pull/173) ([@Evan8456](https://github.com/Evan8456))
+
+#### Authors: 2
+
+- [@ibevers](https://github.com/ibevers)
+- Evan Ng ([@Evan8456](https://github.com/Evan8456))
+
+---
+
 # 2.4.0 (Wed Jun 04 2025)
 
 #### 🚀 Enhancement

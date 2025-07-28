@@ -4,21 +4,22 @@ import click
 
 from b2aiprep.commands import (  # gensynthtabdata,
     batchconvert,
+    bids2shadow,
     convert,
     create_derived_dataset,
     createbatchcsv,
     dashboard,
+    generate_audio_features,
     prepare_bids,
     publish_bids_dataset,
     redcap2bids,
-    transcribe,
-    validate,
-    validate_derived_dataset,
-    verify,
     reproschema_audio_to_folder,
     reproschema_to_redcap,
-    generate_audio_features,
-    bids2shadow,
+    transcribe,
+    validate,
+    validate_data,
+    validate_derived_dataset,
+    verify,
 )
 
 
@@ -37,7 +38,6 @@ def cli(ctx, log_level):
     logging.basicConfig(
         level=log_level, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     )
-    _LOGGER = logging.getLogger(__name__)
 
 
 cli.add_command(dashboard)
@@ -51,6 +51,7 @@ cli.add_command(verify)
 cli.add_command(transcribe)
 cli.add_command(createbatchcsv)
 cli.add_command(create_derived_dataset)
+cli.add_command(validate_data)
 cli.add_command(validate_derived_dataset)
 cli.add_command(publish_bids_dataset)
 cli.add_command(reproschema_audio_to_folder)
