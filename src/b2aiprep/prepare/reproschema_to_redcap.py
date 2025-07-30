@@ -1,14 +1,34 @@
 from pathlib import Path
 import re
+import requests
 import pandas as pd
 from datetime import datetime
 from b2aiprep.prepare.utils import fetch_json_options_number, get_wav_duration
+
+def get_choice_name(url, value):
+    response = requests.get(url)
+
+    if response.status_code != 200:
+        return value
+
+    data = response.json()
+    choices = data.get("responseOptions", {}).get("choices", [])
+
+    for choice in choices:
+        if choice.get("value") == value:
+            name = choice.get("name", None)
+            if isinstance(name, dict) and "en" in name:
+                return name.get("en", value)
+            else:
+                return value
+
+    return value
 
 
 def parse_survey(survey_data, record_id, session_path):
     """
     Function that generates a list of data frames in order to generate a redcap csv
-    Args: 
+    Args:
         survey_data is the raw json generated from reproschema ui
         record_id is the id tat identifies the participant
         session_path is the path containing the session id
@@ -24,7 +44,8 @@ def parse_survey(survey_data, record_id, session_path):
     for i in range(len(survey_data)):
         if survey_data[i]["@type"] == "reproschema:Response":
             question = survey_data[i]["isAbout"].split("/")[-1]
-            answer = survey_data[i]["value"]
+            # answer = survey_data[i]["value"]
+            answer = get_choice_name(survey_data[i]["isAbout"], survey_data[i]["value"])
             if not isinstance(answer, list):
                 questions_answers[question] = [str(answer).capitalize()]
 
@@ -33,12 +54,10 @@ def parse_survey(survey_data, record_id, session_path):
 
                 for options in range(num):
                     if options in answer:
-                        questions_answers[f"""{question}___{options}"""] = [
-                            "Checked"]
+                        questions_answers[f"""{question}___{options}"""] = ["Checked"]
 
                     else:
-                        questions_answers[f"""{question}___{options}"""] = [
-                            "Unchecked"]
+                        questions_answers[f"""{question}___{options}"""] = ["Unchecked"]
 
         else:
             end_time = survey_data[i]["endedAtTime"]
@@ -61,12 +80,13 @@ def parse_survey(survey_data, record_id, session_path):
     df = pd.DataFrame(questions_answers)
     return [df]
 
+
 def parse_audio(audio_list, dummy_audio_files=False):
     """
     Function that generates a list of Json's to be converted into a redcap csv based on audio files.
-    Args: 
+    Args:
         audio_list is a list of paths to each audio files
-        dummy_audio_files is an optional variable for testing 
+        dummy_audio_files is an optional variable for testing
     """
     protocol_order = {
         "ready_for_school": [],
@@ -85,7 +105,7 @@ def parse_audio(audio_list, dummy_audio_files=False):
         "sentence": [],
         "picture_description": [],
         "passage": [],
-        "other": []
+        "other": [],
     }
 
     for name in audio_list:
@@ -101,8 +121,7 @@ def parse_audio(audio_list, dummy_audio_files=False):
     for questions in protocol_order:
         protocol_order[questions] = sorted(protocol_order[questions])
 
-    flattened_list = [
-        value for key in protocol_order for value in protocol_order[key]]
+    flattened_list = [value for key in protocol_order for value in protocol_order[key]]
 
     audio_output_list = []
     count = 1
@@ -110,8 +129,8 @@ def parse_audio(audio_list, dummy_audio_files=False):
     acoustic_count = 1
     acoustic_prev = None
     acoustic_tasks = set()
-    #acoustic_task_dict = dict()
-    for file_path in (flattened_list):
+    # acoustic_task_dict = dict()
+    for file_path in flattened_list:
 
         record_id = Path(file_path).parent.parent.name
         session = Path(file_path).parent.name
@@ -122,21 +141,21 @@ def parse_audio(audio_list, dummy_audio_files=False):
             duration = get_wav_duration(file_path)
             file_size = Path(file_path).stat().st_size
         file_name = file_path.split("/")[-1]
-        recording_id = re.search(r'([a-f0-9\-]{36})\.', file_name).group(1)
+        recording_id = re.search(r"([a-f0-9\-]{36})\.", file_name).group(1)
         acoustic_task = re.search(r"^(.*?)(_\d+)", file_name).group(1)
         if acoustic_task not in acoustic_tasks:
-            
+
             acoustic_tasks.add(acoustic_task)
             acoustic_task_dict = {
-                "record_id" : record_id,
+                "record_id": record_id,
                 "redcap_repeat_instrument": "Acoustic Task",
-                "redcap_repeat_instance": acoustic_task_count ,
+                "redcap_repeat_instance": acoustic_task_count,
                 "acoustic_task_id": f"{acoustic_task}-{session}",
                 "acoustic_task_session_id": session,
                 "acoustic_task_name": acoustic_task,
                 "acoustic_task_cohort": "Pediatrics",
                 "acoustic_task_status": "Completed",
-                "acoustic_task_duration": duration
+                "acoustic_task_duration": duration,
             }
             audio_output_list.append(acoustic_task_dict)
             acoustic_task_count += 1
@@ -161,7 +180,7 @@ def parse_audio(audio_list, dummy_audio_files=False):
             "recording_profile_name": "Speech",
             "recording_profile_version": "v1.0.0",
             "recording_input_gain": 0.0,
-            "recording_microphone": "ipad"
+            "recording_microphone": "ipad",
         }
 
         acoustic_prev = acoustic_task
