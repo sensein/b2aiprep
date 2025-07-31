@@ -11,11 +11,13 @@ The B2AIPrep library mainly requires two major things, a directory containing al
 The redcap csv should contain indexes of questionnaire data as well as records of their audio recordings. The folder containing the
 audio files should be of the following strucuture: 
 
+```
 /audio_files
 ├── 3e9d8f2f-973b-442b-9f9d-51cd32003288.wav
 ├── e582b7fa-8779-4663-bdef-8fb6c11e3f5d.wav
 ├── f5fcd7a7-2d6d-4a4f-bfbe-5f85973debf1.wav
 ├── 2d84d2ed-2446-42f6-9931-4bfb9be45c4b.wav
+```
 
 #### Pediatric Data Retrival
 
