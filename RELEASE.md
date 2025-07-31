@@ -15,7 +15,7 @@ audio files should be of the following strucuture:
 ├── 2d84d2ed-2446-42f6-9931-4bfb9be45c4b.wav
 ```
 
-#### Pediatric Data Retrival
+#### Pediatric Data Retrieval
 
 
 Pediatric data was collected using [reproschema-ui](https://github.com/ReproNim/reproschema-ui), which differs from the other protocols and requires additional preprocessing.
