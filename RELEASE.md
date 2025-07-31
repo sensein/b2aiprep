@@ -1,10 +1,6 @@
 # Release Process
 This document provides instructions for preparing and releasing the Bridge2AI Voice dataset for public and internal releases.
 
-## Table of Contents
-1. [Data Retrieval](#data-retrieval)
-2. [Data Formatting](#data-formatting)
-
 ---
 ### 1. Data Retrieval
 The B2AIPrep library mainly requires two major things, a directory containing all the audio files, and secondly a redcap csv.
