@@ -56,7 +56,7 @@ b2aiprep-cli prepare-bids <path/to/output/folder> \
 Note: Due to the potential size and quantity of the audio files, it is recommended to run this as a sbatch.
 
 Once the command is complete, you should have the following bids-like structure:
-
+```
 /bids_dataset
 ├── README
 ├── dataset_description.json
@@ -74,5 +74,5 @@ Once the command is complete, you should have the following bids-like structure:
 │   │       ├── sub-02_session_task-audio.wav
 │   │       └── sub-02_session_task-audio.pt
 └── participants.json
-
+```
 
