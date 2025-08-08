@@ -12,6 +12,22 @@ from transformers import AutoModel, AutoTokenizer
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
+# ask the user before running the page as we download the data dictionary
+st.write("""
+# Search the data dictionary
+
+This page downloads a model from HuggingFace and the data dictionary from GitHub.
+
+Please confirm you want to run this page.
+""")
+
+run_page = st.checkbox(
+    "Run the search page",
+    value=False,
+)
+
+if not run_page:
+    st.stop()
 
 def mean_pooling(model_output, attention_mask):
     """Mean pool the model output over the tokens factoring in attention."""
@@ -24,16 +40,29 @@ def mean_pooling(model_output, attention_mask):
     )
 
 
-@st.cache_data
-def load_model(model_path="sentence-transformers/all-MiniLM-L6-v2"):
+@st.cache_data(show_spinner=True, ttl=3600)
+def download_and_load_model(model_path="sentence-transformers/all-MiniLM-L6-v2"):
     # Load model from HuggingFace Hub
     tokenizer = AutoTokenizer.from_pretrained(model_path)
     model = AutoModel.from_pretrained(model_path)
 
     return tokenizer, model
 
+tokenizer, model = download_and_load_model()
 
-tokenizer, model = load_model()
+@st.cache_data(show_spinner=True, ttl=3600)
+def download_and_load_data_dictionary() -> pd.DataFrame:
+    """Load the data dictionary from the public release GitHub repo.
+
+    https://github.com/eipm/bridge2ai-redcap/
+
+    Returns:
+        pd.DataFrame: The data dictionary as a DataFrame.
+    """
+    data_dictionary_url = "https://raw.githubusercontent.com/eipm/bridge2ai-redcap/main/data/bridge2ai_voice_project_data_dictionary.csv"
+    return pd.read_csv(data_dictionary_url)
+
+rcdict = download_and_load_data_dictionary()
 
 
 def embed_sentences(text_list):
@@ -59,22 +88,6 @@ def embed_sentences(text_list):
 def embed_corpus(c):
     return embed_sentences(c)
 
-
-@st.cache_data
-def download_and_load_data_dictionary() -> pd.DataFrame:
-    """Load the data dictionary from the public release GitHub repo.
-
-    https://github.com/eipm/bridge2ai-redcap/
-
-    Returns:
-        pd.DataFrame: The data dictionary as a DataFrame.
-    """
-    data_dictionary_url = "https://raw.githubusercontent.com/eipm/bridge2ai-redcap\
-        /main/data/bridge2ai_voice_project_data_dictionary.csv"
-    return pd.read_csv(data_dictionary_url)
-
-
-rcdict = download_and_load_data_dictionary()
 
 
 def extract_descriptions(df: pd.DataFrame) -> t.Tuple[t.List[str], t.List[str]]:
