@@ -56,6 +56,8 @@ from b2aiprep.prepare.prepare import (
     generate_features_wrapper,
     get_value_from_metadata,
     is_audio_sensitive,
+    load_audio_to_remove,
+    load_remap_id_list,
     reduce_id_length,
     reduce_length_of_id,
     update_metadata_record_and_session_id,
@@ -551,7 +553,8 @@ def validate_derived_dataset(dataset_path):
 @click.command()
 @click.argument("bids_path", type=click.Path(exists=True))
 @click.argument("outdir", type=click.Path())
-def publish_bids_dataset(bids_path, outdir):
+@click.argument("publish_config_dir", type=click.Path(exists=True))
+def publish_bids_dataset(bids_path, outdir, publish_config_dir):
     """Creates a publication ready version of a given BIDS dataset.
 
     The publication ready version
@@ -559,8 +562,14 @@ def publish_bids_dataset(bids_path, outdir):
     - only includes audio (omits features)
     - cleans/processes the various phenotype files and participants.tsv
     - removes sensitive audio records
+
+    Requires publish_config_dir to contain
+    - participants_to_remove.json
+    - audio_to_remove.json
+    - id_remapping.json
     """
     bids_path = Path(bids_path)
+    publish_config_dir = Path(publish_config_dir)
 
     participant_filepath = bids_path.joinpath("participants.tsv")
     if not participant_filepath.exists():
@@ -623,6 +632,13 @@ def publish_bids_dataset(bids_path, outdir):
             f"Removed {n - len(audio_paths)} records due to hard-coded participant removal."
         )
 
+    # remove sensitive audio using user-provided reference data
+    audio_filestems_to_remove = load_audio_to_remove(publish_config_dir)
+    audio_paths = [
+        a for a in audio_paths
+        if a.stem not in audio_filestems_to_remove
+    ]
+
     # remove audio check and sensitive audio
     audio_paths = filter_audio_paths(audio_paths)
 
@@ -631,7 +647,7 @@ def publish_bids_dataset(bids_path, outdir):
         audio_paths, desc="Copying audio and metadata files", total=len(audio_paths)
     ):
         json_path = audio_path.with_suffix(".json")
-
+        json_path = Path(str(json_path).replace(".json","_recording-metadata.json"))
         metadata = json.loads(json_path.read_text())
 
         update_metadata_record_and_session_id(metadata)
@@ -639,11 +655,10 @@ def publish_bids_dataset(bids_path, outdir):
         session_id = get_value_from_metadata(metadata, linkid="session_id", endswith=True)
 
         audio_path_stem_ending = "_".join(audio_path.stem.split("_")[2:])
-        output_path = bids_path.joinpath(
+        output_path = outdir.joinpath(
             f"sub-{participant_id}/ses-{session_id}/audio/{audio_path_stem_ending}.wav"
         )
         output_path.parent.mkdir(parents=True, exist_ok=True)
-
         # copy over the associated .json file and audio data
         with open(output_path.with_suffix(".json"), "w") as fp:
             json.dump(metadata, fp, indent=2)
@@ -653,8 +668,31 @@ def publish_bids_dataset(bids_path, outdir):
 
     # copy over the standard bids template files
     shutil.copy(bids_path.joinpath("README.md"), outdir)
-    shutil.copy(bids_path.joinpath("CHANGES.md"), outdir)
+    shutil.copy(bids_path.joinpath("CHANGELOG.md"), outdir)
     shutil.copy(bids_path.joinpath("dataset_description.json"), outdir)
+
+    ids_to_remap = load_remap_id_list(publish_config_dir)
+    for path in outdir.rglob("*"):
+        if path.suffix == ".tsv" and path.is_file():
+            df = pd.read_csv(path, sep="\t")
+
+            if "participant_id" in df.columns:
+                df["participant_id"] = df["participant_id"].map(ids_to_remap).fillna(df["participant_id"])
+                df.to_csv(path, sep="\t", index=False)
+                _LOGGER.info(f"Updated TSV: {path}")
+            else:
+                _LOGGER.info(f"Skipped TSV (no 'participant_id' column): {path}")
+
+        elif path.is_dir():
+            folder_name = path.name
+            for old_id, new_id in ids_to_remap.items():
+                if old_id in folder_name:
+                    new_folder_name = folder_name.replace(old_id, new_id)
+                    new_folder_path = path.parent / new_folder_name
+                    path.rename(new_folder_path)
+                    _LOGGER.info(f" Renamed folder: {path} → {new_folder_path}")
+                    break
+
 
 
 @click.command()

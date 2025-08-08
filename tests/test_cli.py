@@ -6,9 +6,10 @@ import subprocess
 import tempfile
 import wave
 from pathlib import Path
-
+import json
 import pytest
 import torch
+import shutil
 
 
 def create_dummy_wav_file(filepath, duration_seconds=1.0, sample_rate=16000):
@@ -27,6 +28,24 @@ def create_dummy_wav_file(filepath, duration_seconds=1.0, sample_rate=16000):
             samples.append(struct.pack("<h", value))
 
         wav_file.writeframes(b"".join(samples))
+
+    # wrtie associated metadata file
+    mock_metedata_recording_json = {
+            "item": [
+                {
+                    "linkId": "record_id",
+                    "answer": [{"valueString": "001"}]
+                },
+                {
+                    "linkId": "session_id",
+                    "answer": [{"valueString": "001"}]
+                }
+            ]
+        }
+
+    metadata_path = filepath[:].replace(".wav", "_recording-metadata.json")
+    with open(metadata_path, "w") as f:
+        json.dump(mock_metedata_recording_json, f, indent=2)
 
 
 @pytest.fixture
@@ -100,11 +119,11 @@ def setup_bids_structure():
             "item": [
                 {
                     "linkId": "record_id",
-                    "answer": [{"valueString": "rec-001"}]
+                    "answer": [{"valueString": "001"}]
                 },
                 {
                     "linkId": "session_id",
-                    "answer": [{"valueString": "ses-001"}]
+                    "answer": [{"valueString": "001"}]
                 }
             ]
         }"""
@@ -122,7 +141,7 @@ def setup_bids_structure():
 
         # Create participants.tsv
         participants_file = bids_dir / "participants.tsv"
-        participants_file.write_text("participant_id\trecord_id\tsex\tage\nsub-001\trec-001\tF\t25")
+        participants_file.write_text("participant_id\trecord_id\tsex\tage\n001\t001\tF\t25")
 
         # Create participants.json (required for some commands)
         participants_json = bids_dir / "participants.json"
@@ -140,6 +159,7 @@ def setup_bids_structure():
         # Create README.md and CHANGES.md
         (bids_dir / "README.md").write_text("Test dataset")
         (bids_dir / "CHANGES.md").write_text("Version 1.0")
+        (bids_dir / "CHANGELOG.md").write_text("Version 1.0")
 
         yield bids_dir
 
@@ -389,7 +409,7 @@ def test_validate_derived_dataset_cli():
         assert result.returncode == 0, f"CLI command failed: {result.stderr}"
 
 
-def test_publish_bids_dataset_cli(setup_bids_structure):
+def test_publish_bids_dataset_cli_id_rename(setup_bids_structure):
     """Test the 'b2aiprep-cli publish-bids-dataset' command using subprocess."""
     bids_dir = setup_bids_structure
 
@@ -405,13 +425,81 @@ def test_publish_bids_dataset_cli(setup_bids_structure):
     with tempfile.TemporaryDirectory() as temp_base:
         # Create a unique output directory name to avoid conflicts
         outdir = os.path.join(temp_base, "output_dataset")
+        config_dir = Path(temp_base)/"publish_config"
+        config_dir.mkdir()
+        
+        audio_to_remove_path = config_dir  / f"audio_to_remove.json"
+        audio_to_remove_data = []
 
-        command = ["b2aiprep-cli", "publish-bids-dataset", str(bids_dir), outdir]
+        with open(audio_to_remove_path, "w") as f:
+            json.dump(audio_to_remove_data, f, indent=2)
+            
+        id_remapping_path = config_dir  / f"id_remapping.json"
+        id_remapping_data = {"001": "P001"}
+
+        with open(id_remapping_path , "w") as f:
+            json.dump(id_remapping_data, f, indent=2)
+            
+            
+        participants_to_remove_path = config_dir  / f"participants_to_remove.json"
+        participants_to_remove_data = {}
+
+        with open(participants_to_remove_path , "w") as f:
+            json.dump(participants_to_remove_data, f, indent=2)
+
+        command = ["b2aiprep-cli", "publish-bids-dataset", str(bids_dir), outdir, str(config_dir)]
 
         result = subprocess.run(command, capture_output=True, text=True)
         assert result.returncode == 0, f"CLI command failed: {result.stderr}"
         assert os.path.exists(outdir), "Output directory was not created"
+        # checked if participant_id was changed
+        assert os.path.exists(os.path.join(outdir, "sub-P001"))
+        
+def test_publish_bids_dataset_cli_remove_audio(setup_bids_structure):
+    """Test the 'b2aiprep-cli publish-bids-dataset' command using subprocess."""
+    bids_dir = setup_bids_structure
 
+    # Create phenotype directory structure
+    phenotype_dir = bids_dir / "phenotype"
+    phenotype_dir.mkdir()
+    (phenotype_dir / "questionnaire1.tsv").write_text("participant_id\trecord_id\ntest\trec-test")
+    (phenotype_dir / "questionnaire1.json").write_text(
+        '{"participant_id": {"Description": "Participant identifier"}, '
+        '"record_id": {"Description": "Record identifier"}}'
+    )
+
+    with tempfile.TemporaryDirectory() as temp_base:
+        # Create a unique output directory name to avoid conflicts
+        outdir = os.path.join(temp_base, "output_dataset")
+        config_dir = Path(temp_base)/"publish_config"
+        config_dir.mkdir()
+        
+        audio_to_remove_path = config_dir  / f"audio_to_remove.json"
+        audio_to_remove_data = ["sub-001_ses-001_task-reading"]
+
+        with open(audio_to_remove_path, "w") as f:
+            json.dump(audio_to_remove_data, f, indent=2)
+            
+        id_remapping_path = config_dir  / f"id_remapping.json"
+        id_remapping_data = {}
+
+        with open(id_remapping_path , "w") as f:
+            json.dump(id_remapping_data, f, indent=2)
+            
+            
+        participants_to_remove_path = config_dir  / f"participants_to_remove.json"
+        participants_to_remove_data = {}
+
+        with open(participants_to_remove_path , "w") as f:
+            json.dump(participants_to_remove_data, f, indent=2)
+
+        command = ["b2aiprep-cli", "publish-bids-dataset", str(bids_dir), outdir, str(config_dir)]
+
+        result = subprocess.run(command, capture_output=True, text=True)
+        assert result.returncode == 0, f"CLI command failed: {result.stderr}"
+        assert os.path.exists(outdir), "Output directory was not created"
+        # check if file/participant was removed
+        assert not os.path.exists(os.path.join(outdir, "sub-001"))
 
 def test_reproschema_audio_to_folder_cli():
     """Test the 'b2aiprep-cli reproschema-audio-to-folder' command using subprocess."""

@@ -8,7 +8,7 @@ import pandas as pd
 import torch
 from tqdm import tqdm
 
-from b2aiprep.prepare.constants import AUDIO_FILESTEMS_TO_REMOVE, PARTICIPANT_ID_TO_REMOVE
+from b2aiprep.prepare.constants import PARTICIPANT_ID_TO_REMOVE
 from b2aiprep.prepare.prepare import reduce_id_length, reduce_length_of_id
 
 _LOGGER = logging.getLogger(__name__)
@@ -228,6 +228,21 @@ def clean_phenotype_data(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFr
             "traumatic_event",
             # following columns have all null values
             "is_regular_smoker",
+            # pedatric columns
+            "city",
+            "state_province",
+            "zipcode",
+            # below could be considered for inclusion in the future
+            "tonsillectomy_date",
+            "adenoidectomy_date",
+            "branchial_cleft_cyst_date",
+            "ear_tube_date",
+            "dermoid_cyst_date",
+            "enlarged_lymph_node_date",
+            "lingual_tonsillectomy_date",
+            "neurological_surgery_date",
+            "thyroglossal_duct_cyst_date",
+            "thyroid_nodule_or_cancer_date",
         ],
         message="Removing columns with free-text",
     )
@@ -248,11 +263,11 @@ def add_record_id_to_phenotype(phenotype: dict) -> dict:
     
 def _rename_record_id_to_participant_id(df: pd.DataFrame, phenotype: dict) -> dict:
     phenotype_updated = {}
-    for c in df.columns:
-        if c == 'record_id':
-            phenotype['participant_id'] = phenotype[c]
+    for key, value in phenotype.items():
+        if key == 'record_id':
+            phenotype_updated['participant_id'] = value
         else:
-            phenotype_updated[c] = phenotype[c]
+            phenotype_updated[key] = value
 
     df = df.rename(columns={"record_id": "participant_id"})
 
@@ -299,6 +314,11 @@ def load_phenotype_data(base_path: Path, phenotype_name: str) -> t.Tuple[pd.Data
     df = pd.read_csv(base_path.joinpath(f"{phenotype_name}.tsv"), sep="\t")
     with open(base_path.joinpath(f"{phenotype_name}.json"), "r") as f:
         phenotype = json.load(f)
+    if phenotype_name != "participants":
+        data_elements = {}
+        for schema in phenotype:
+            data_elements.update(phenotype[schema].get("data_elements", {}))
+        phenotype = data_elements
     
     if df.shape[1] > 0 and df.columns[0] == 'record_id' and 'record_id' not in list(phenotype.keys()):
         phenotype = add_record_id_to_phenotype(phenotype)
