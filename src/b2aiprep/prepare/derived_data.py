@@ -228,6 +228,21 @@ def clean_phenotype_data(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFr
             "traumatic_event",
             # following columns have all null values
             "is_regular_smoker",
+            # pedatric columns
+            "city",
+            "state_province",
+            "zipcode",
+            # below could be considered for inclusion in the future
+            "tonsillectomy_date",
+            "adenoidectomy_date",
+            "branchial_cleft_cyst_date",
+            "ear_tube_date",
+            "dermoid_cyst_date",
+            "enlarged_lymph_node_date",
+            "lingual_tonsillectomy_date",
+            "neurological_surgery_date",
+            "thyroglossal_duct_cyst_date",
+            "thyroid_nodule_or_cancer_date",
         ],
         message="Removing columns with free-text",
     )
