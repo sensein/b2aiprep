@@ -7313,7 +7313,7 @@
     ]
   },
   "eligible_studies___1": {
-    "description": "Indicates if the participant is eligible for study 1."
+    "description": "Indicates if the participant is eligible for studies related to voice disorders."
   },
   "eligible_studies___2": {
     "description": "Indicates if the participant is eligible for studies related to neurological and neurodegenerative disorders."
@@ -7355,7 +7355,7 @@
     ]
   },
   "laryng_cancer": {
-    "description": "Indicates if the participant has laryngeal cancer.",
+    "description": "Indicates if the participant self-reported that they have laryngeal cancer.",
     "question": {
       "en": "Laryngeal Cancer"
     },
@@ -7382,7 +7382,7 @@
     ]
   },
   "benign_cord_lesion": {
-    "description": "Indicates if the participant has benign lesions of the vocal cord such as nodules, polyps, or cysts.",
+    "description": "Indicates if the participant self-reported that they have benign lesions of the vocal cord such as nodules, polyps, or cysts.",
     "question": {
       "en": "Lesions of the vocal cord (nodule, polyp, cyst)"
     },
@@ -7409,7 +7409,7 @@
     ]
   },
   "rrp": {
-    "description": "Indicates if the participant has recurrent laryngeal papilloma (RRP).",
+    "description": "Indicates if the participant self-reported that they have recurrent laryngeal papilloma (RRP).",
     "question": {
       "en": "Recurrent Laryngeal Papilloma (RRP)"
     },
@@ -7436,7 +7436,7 @@
     ]
   },
   "spas_dys": {
-    "description": "Indicates if the participant has spasmodic dysphonia or laryngeal tremor.",
+    "description": "Indicates if the participant self-reported that they have spasmodic dysphonia or laryngeal tremor.",
     "question": {
       "en": "Spasmodic Dysphonia / Laryngeal Tremor"
     },
@@ -7463,7 +7463,7 @@
     ]
   },
   "voc_fold_paralysis": {
-    "description": "Indicates if the participant has unilateral vocal fold paralysis.",
+    "description": "Indicates if the participant self-reported that they have unilateral vocal fold paralysis.",
     "question": {
       "en": "Unilateral Vocal Fold Paralysis"
     },
@@ -7490,7 +7490,7 @@
     ]
   },
   "alz_dementia_mci": {
-    "description": "Indicates if the participant has Alzheimer\u2019s, dementia, or mild cognitive impairment.",
+    "description": "Indicates if the participant self-reported that they have Alzheimer\u2019s, dementia, or mild cognitive impairment.",
     "question": {
       "en": "Alzheimer's, Dementia, or Mild Cognitive Impairment"
     },
@@ -7517,7 +7517,7 @@
     ]
   },
   "als": {
-    "description": "Indicates if the participant has Amyotrophic Lateral Sclerosis (ALS).",
+    "description": "Indicates if the participant self-reported that they have Amyotrophic Lateral Sclerosis (ALS).",
     "question": {
       "en": "Amyotrophic Lateral Sclerosis (ALS)"
     },
@@ -7544,7 +7544,7 @@
     ]
   },
   "parkinsons": {
-    "description": "Indicates if the participant has Parkinson\u2019s disease.",
+    "description": "Indicates if the participant self-reported that they have Parkinson\u2019s disease.",
     "question": {
       "en": "Parkinson's disease"
     },
@@ -7571,7 +7571,7 @@
     ]
   },
   "alcohol_subst_abuse": {
-    "description": "Indicates if the participant has alcohol or substance use disorder.",
+    "description": "Indicates if the participant self-reported that they have alcohol or substance use disorder.",
     "question": {
       "en": "Alcohol or Substance Use Disorder"
     },
@@ -7598,7 +7598,7 @@
     ]
   },
   "gad": {
-    "description": "Indicates if the participant has an anxiety disorder.",
+    "description": "Indicates if the participant self-reported that they have an anxiety disorder.",
     "question": {
       "en": "Anxiety Disorder"
     },
@@ -7625,7 +7625,7 @@
     ]
   },
   "add_adhd": {
-    "description": "Indicates if the participant has Attention-Deficit/Hyperactivity Disorder (ADHD).",
+    "description": "Indicates if the participant self-reported that they have Attention-Deficit/Hyperactivity Disorder (ADHD).",
     "question": {
       "en": "Attention-Deficit / Hyperactivity Disorder (ADHD)"
     },
@@ -7652,7 +7652,7 @@
     ]
   },
   "asd": {
-    "description": "Indicates if the participant has Autism Spectrum Disorder (ASD).",
+    "description": "Indicates if the participant self-reported that they have Autism Spectrum Disorder (ASD).",
     "question": {
       "en": "Autism Spectrum Disorder (ASD)"
     },
@@ -7679,7 +7679,7 @@
     ]
   },
   "bipolar": {
-    "description": "Indicates if the participant has Bipolar Disorder.",
+    "description": "Indicates if the participant self-reported that they have Bipolar Disorder.",
     "question": {
       "en": "Bipolar Disorder"
     },
@@ -7706,7 +7706,7 @@
     ]
   },
   "bpd": {
-    "description": "Indicates if the participant has Borderline Personality Disorder (BPD).",
+    "description": "Indicates if the participant self-reported that they have Borderline Personality Disorder (BPD).",
     "question": {
       "en": "Borderline Personality Disorder (BPD)"
     },
@@ -7733,7 +7733,7 @@
     ]
   },
   "depression": {
-    "description": "Indicates if the participant has depression or major depressive disorder.",
+    "description": "Indicates if the participant self-reported that they have depression or major depressive disorder.",
     "question": {
       "en": "Depression or Major Depressive Disorder"
     },
@@ -7760,7 +7760,7 @@
     ]
   },
   "ed": {
-    "description": "Indicates if the participant has an eating disorder (ED).",
+    "description": "Indicates if the participant self-reported that they have an eating disorder (ED).",
     "question": {
       "en": "Eating Disorder (ED)"
     },
@@ -7787,7 +7787,7 @@
     ]
   },
   "insomnia": {
-    "description": "Indicates if the participant has insomnia or other sleep disorders.",
+    "description": "Indicates if the participant self-reported that they have insomnia or other sleep disorders.",
     "question": {
       "en": "Insomnia / Sleep Disorder"
     },
@@ -7814,7 +7814,7 @@
     ]
   },
   "ocd": {
-    "description": "Indicates if the participant has Obsessive-Compulsive Disorder (OCD).",
+    "description": "Indicates if the participant self-reported that they have Obsessive-Compulsive Disorder (OCD).",
     "question": {
       "en": "Obsessive-Compulsive Disorder (OCD)"
     },
@@ -7841,7 +7841,7 @@
     ]
   },
   "panic": {
-    "description": "Indicates if the participant has panic disorder.",
+    "description": "Indicates if the participant self-reported that they have panic disorder.",
     "question": {
       "en": "Panic Disorder"
     },
@@ -7868,7 +7868,7 @@
     ]
   },
   "ptsd": {
-    "description": "Indicates if the participant has Post-Traumatic Stress Disorder (PTSD).",
+    "description": "Indicates if the participant self-reported that they have Post-Traumatic Stress Disorder (PTSD).",
     "question": {
       "en": "Post-Traumatic Stress Disorder (PTSD)"
     },
@@ -7895,7 +7895,7 @@
     ]
   },
   "schizophrenia": {
-    "description": "Indicates if the participant has schizophrenia.",
+    "description": "Indicates if the participant self-reported that they have schizophrenia.",
     "question": {
       "en": "Schizophrenia"
     },
@@ -7922,7 +7922,7 @@
     ]
   },
   "soc_anx_dis": {
-    "description": "Indicates if the participant has social anxiety disorder.",
+    "description": "Indicates if the participant self-reported that they have social anxiety disorder.",
     "question": {
       "en": "Social Anxiety Disorder"
     },
@@ -7949,7 +7949,7 @@
     ]
   },
   "other_psych": {
-    "description": "Indicates if the participant has other psychiatric disorders.",
+    "description": "Indicates if the participant self-reported that they have other psychiatric disorders.",
     "question": {
       "en": "Other Psychiatric Disorder"
     },
@@ -7976,7 +7976,7 @@
     ]
   },
   "asthma": {
-    "description": "Indicates if the participant has asthma.",
+    "description": "Indicates if the participant self-reported that they have asthma.",
     "question": {
       "en": "Asthma"
     },
@@ -8003,7 +8003,7 @@
     ]
   },
   "airway_stenosis": {
-    "description": "Indicates if the participant has airway stenosis, such as bilateral vocal fold paralysis or laryngeal stenosis.",
+    "description": "Indicates if the participant self-reported that they have airway stenosis, such as bilateral vocal fold paralysis or laryngeal stenosis.",
     "question": {
       "en": "Airway Stenosis (for example: bilateral vocal fold paralysis; laryngeal stenosis)"
     },
@@ -8030,7 +8030,7 @@
     ]
   },
   "chronic_cough": {
-    "description": "Indicates if the participant has chronic cough.",
+    "description": "Indicates if the participant self-reported that they have chronic cough.",
     "question": {
       "en": "Chronic Cough"
     },
@@ -8057,7 +8057,7 @@
     ]
   },
   "copd": {
-    "description": "Indicates if the participant has Chronic Obstructive Pulmonary Disease (COPD).",
+    "description": "Indicates if the participant self-reported that they have Chronic Obstructive Pulmonary Disease (COPD).",
     "question": {
       "en": "COPD"
     },
@@ -8084,7 +8084,7 @@
     ]
   },
   "osa": {
-    "description": "Indicates if the participant has obstructive sleep apnea (OSA).",
+    "description": "Indicates if the participant self-reported that they have obstructive sleep apnea (OSA).",
     "question": {
       "en": "Obstructive Sleep Apnea (OSA)"
     },
@@ -8131,7 +8131,7 @@
     ]
   },
   "diagnosis_vfp_gsd": {
-    "description": "Indicates if the participant has vocal fold paralysis (VFP) confirmed by laryngoscopy or stroboscopy.",
+    "description": "Indicates if the participant has vocal fold paralysis (VFP) confirmed by laryngoscopy or stroboscopy (GOLD STANDARD DIAGNOSIS).",
     "question": {
       "en": "Does the patient have VFP confirmed by laryngoscopy/stroboscopy?"
     },
@@ -8338,7 +8338,7 @@
     ]
   },
   "diagnosis_degree_os": {
-    "description": "Indicates the overall severity of the participant\u2019s vocal fold paralysis (VFP).",
+    "description": "Indicates the overall severity of the participant\u2019s dysphonia caused by the vocal fold paralysis as perceived by the clinician.",
     "question": {
       "en": "Overall Severity"
     },
