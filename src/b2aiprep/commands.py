@@ -636,6 +636,7 @@ def publish_bids_dataset(bids_path, outdir, publish_config_dir):
         a for a in audio_paths
         if a.stem in audio_filestems_to_remove
     ]
+    audio_paths = [] # update this once transcriptions are done and re-publish
 
     # remove audio check and sensitive audio
     audio_paths = filter_audio_paths(audio_paths)
@@ -667,7 +668,7 @@ def publish_bids_dataset(bids_path, outdir, publish_config_dir):
 
     # copy over the standard bids template files
     shutil.copy(bids_path.joinpath("README.md"), outdir)
-    shutil.copy(bids_path.joinpath("CHANGES.md"), outdir)
+    shutil.copy(bids_path.joinpath("CHANGELOG.md"), outdir)
     shutil.copy(bids_path.joinpath("dataset_description.json"), outdir)
 
 

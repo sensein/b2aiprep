@@ -314,6 +314,11 @@ def load_phenotype_data(base_path: Path, phenotype_name: str) -> t.Tuple[pd.Data
     df = pd.read_csv(base_path.joinpath(f"{phenotype_name}.tsv"), sep="\t")
     with open(base_path.joinpath(f"{phenotype_name}.json"), "r") as f:
         phenotype = json.load(f)
+    if phenotype_name != "participants":
+        data_elements = {}
+        for schema in phenotype:
+            data_elements = phenotype[schema]["data_elements"]
+        phenotype = data_elements
     
     if df.shape[1] > 0 and df.columns[0] == 'record_id' and 'record_id' not in list(phenotype.keys()):
         phenotype = add_record_id_to_phenotype(phenotype)
