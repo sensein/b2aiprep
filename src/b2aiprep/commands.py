@@ -56,6 +56,7 @@ from b2aiprep.prepare.prepare import (
     generate_features_wrapper,
     get_value_from_metadata,
     is_audio_sensitive,
+    load_audio_to_remove,
     reduce_id_length,
     reduce_length_of_id,
     update_metadata_record_and_session_id,
@@ -551,7 +552,8 @@ def validate_derived_dataset(dataset_path):
 @click.command()
 @click.argument("bids_path", type=click.Path(exists=True))
 @click.argument("outdir", type=click.Path())
-def publish_bids_dataset(bids_path, outdir):
+@click.argument("publish_config_dir", type=click.Path(exists=True))
+def publish_bids_dataset(bids_path, outdir, publish_config_dir):
     """Creates a publication ready version of a given BIDS dataset.
 
     The publication ready version
@@ -559,8 +561,13 @@ def publish_bids_dataset(bids_path, outdir):
     - only includes audio (omits features)
     - cleans/processes the various phenotype files and participants.tsv
     - removes sensitive audio records
+
+    Requires publish_config_dir to contain
+    - participants_to_remove.json
+    - audio_to_remove.json
     """
     bids_path = Path(bids_path)
+    publish_config_dir = Path(publish_config_dir)
 
     participant_filepath = bids_path.joinpath("participants.tsv")
     if not participant_filepath.exists():
@@ -622,6 +629,14 @@ def publish_bids_dataset(bids_path, outdir):
         _LOGGER.info(
             f"Removed {n - len(audio_paths)} records due to hard-coded participant removal."
         )
+    
+    # remove sensitive audio using user-provided reference data
+    audio_filestems_to_remove = load_audio_to_remove(publish_config_dir)
+    audio_paths = [
+        a for a in audio_paths
+        if a.stem in audio_filestems_to_remove
+    ]
+    audio_paths = [] # update this once transcriptions are done and re-publish
 
     # remove audio check and sensitive audio
     audio_paths = filter_audio_paths(audio_paths)
@@ -653,7 +668,7 @@ def publish_bids_dataset(bids_path, outdir):
 
     # copy over the standard bids template files
     shutil.copy(bids_path.joinpath("README.md"), outdir)
-    shutil.copy(bids_path.joinpath("CHANGES.md"), outdir)
+    shutil.copy(bids_path.joinpath("CHANGELOG.md"), outdir)
     shutil.copy(bids_path.joinpath("dataset_description.json"), outdir)
 
 

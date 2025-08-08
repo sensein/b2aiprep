@@ -35,6 +35,7 @@ Functions:
 
 """
 
+import json
 import logging
 import os
 import traceback
@@ -502,6 +503,20 @@ def validate_bids_data(
     with pydra.Submitter(plugin="cf") as run:
         run(extract_task)
     _logger.info("Process completed.")
+
+def load_audio_to_remove(publish_config_dir: Path) -> List[str]:
+    """Load list of audio file stems to remove from JSON file."""
+    audio_to_remove_path = publish_config_dir / "audio_to_remove.json"
+    if not audio_to_remove_path.exists():
+        raise FileNotFoundError(f"Audio to remove file {audio_to_remove_path} does not exist.")
+    
+    with open(audio_to_remove_path, 'r') as f:
+        data = json.load(f)
+    
+    if not isinstance(data, list):
+        raise ValueError(f"Audio to remove file {audio_to_remove_path} should contain a list of audio file stems.")
+    
+    return data
 
 def is_audio_sensitive(filepath: Path) -> bool:
     return filepath.stem in AUDIO_FILESTEMS_TO_REMOVE
