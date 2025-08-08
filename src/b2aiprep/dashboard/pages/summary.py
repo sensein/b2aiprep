@@ -5,17 +5,13 @@ import streamlit as st
 
 from b2aiprep.prepare.dataset import VBAIDataset
 
-from b2aiprep.dashboard.utils import create_bar_chart, display_summary, initialize_session_state, load_dataset
+from b2aiprep.dashboard.utils import create_bar_chart, display_summary, load_dataset
 
-st.set_page_config(
-    page_title="b2ai voice",
-    page_icon="👋",
-)
-
+st.set_page_config(page_title="Summary", page_icon="📊")
 
 st.write("# Bridge2AI Voice Data Dashboard")
 
-bids_dir = st.text_input(
+bids_dir = st.sidebar.text_input(
     "Path to BIDS-like formatted data folder",
     value=st.session_state.get("bids_dir", ""),
     help="Path to the BIDS-like formatted data folder.",
@@ -25,7 +21,7 @@ if not bids_dir:
     st.stop()
 
 bids_dir = Path(bids_dir).resolve()
-dataset = load_dataset(bids_dir)
+dataset: VBAIDataset = load_dataset(bids_dir)
 
 if dataset:
     st.success("BIDS formatted dataset found.")
@@ -43,38 +39,56 @@ st.markdown(
 
 st.markdown("## Session information")
 
-df = dataset.load_and_pivot_questionnaire("sessionschema")
-df_recordings = dataset.load_and_pivot_questionnaire("recordingschema")
+# cache the session data to avoid reloading on every interaction
+@st.cache_data(ttl=3600, show_spinner=True)
+def load_session_data():
+    """Load session data from the dataset."""
+    return dataset.load_and_pivot_questionnaire("sessionschema")
+
+@st.cache_data(ttl=3600, show_spinner=True)
+def load_recordings_data():
+    """Load recordings data from the dataset."""
+    return dataset.load_and_pivot_questionnaire("recordingschema")
+
+# add loading indicator
+df = load_session_data()
+df_recordings = load_recordings_data()
 
 display_summary(df, df_recordings)
 
-st.write("## Subjects by site")
-st.altair_chart(
-    create_bar_chart(
-        df[["record_id", "session_site"]].drop_duplicates(),
-        "session_site",
-        "count",
-        "Number of participants",
-        "Site",
+if "session_site" in df.columns:
+    st.write("## Subjects by site")
+    st.altair_chart(
+        create_bar_chart(
+            df[["participant_id", "session_site"]].drop_duplicates(),
+            "session_site",
+            "count",
+            "Number of participants",
+            "Site",
+        )
     )
-)
 
-st.write("## Sessions by site")
-st.altair_chart(create_bar_chart(df, "session_site", "count", "Number of sessions", "Site"))
+    st.write("## Sessions by site")
+    st.altair_chart(create_bar_chart(df, "session_site", "count", "Number of sessions", "Site"))
 
 st.write("## Session durations")
-session_durations = df["session_duration"].astype(float) / 3600.0
+session_durations = df["session_duration"].astype(float) / 60.0
 session_durations = session_durations.dropna()
 hist = (
     alt.Chart(session_durations.reset_index())
     .mark_bar()
     .encode(
-        alt.X("session_duration:Q", bin=alt.Bin(maxbins=20), title="Session duration (hours)"),
+        alt.X(
+            "session_duration:Q",
+            bin=alt.Bin(step=15),
+            scale=alt.Scale(domain=[0, 360]),
+            title="Session duration (minutes)"
+        ),
         y="count()",
     )
-    .properties(
-        width=600,
-        height=400,
+    .configure_axis(
+        labelFontSize=12,
+        titleFontSize=14,
     )
 )
 st.altair_chart(hist)

@@ -1,5 +1,10 @@
 import streamlit as st
 
+st.set_page_config(
+    page_title="Dashboard", layout="wide",
+    initial_sidebar_state="expanded"
+)
+
 summary_page = st.Page(
     "pages/summary.py",
     title="Summary of dataset",
@@ -37,10 +42,7 @@ pg = st.navigation(
         questionnaires_page,
         audio_page,
         search_page,
-        validate_page,
     ],
-    title="Dashboard",
-    sidebar_title="Navigation",
 )
 
 pg.run()

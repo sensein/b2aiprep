@@ -25,7 +25,8 @@ dependencies = [
     "matplotlib>=3.8.3",
     "fhir.resources==7.1.0",
     "streamlit>=1.42.2",
-    "av~=14.1.0"
+    "av~=14.1.0",
+    "soundfile"
 ]
 
 [tool.setuptools.packages.find]
@@ -47,6 +48,11 @@ dev = [
     "pre-commit",
     "ruff",
     "responses",
+    "senselab[audio]"
+]
+dashboard = [
+    "b2aiprep[doc]",
+    "streamlit>=1.42.2",
     "senselab[audio]"
 ]
 

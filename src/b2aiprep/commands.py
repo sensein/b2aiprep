@@ -14,7 +14,6 @@ from pathlib import Path
 
 import click
 import pandas as pd
-import pkg_resources
 import pydra
 import torch
 from datasets import Dataset
@@ -97,9 +96,8 @@ def dashboard(bids_dir: str):
         raise ValueError(f"Input path {bids_path} is not a directory.")
     _config.set_option("server.headless", True)
 
-    dashboard_path = pkg_resources.resource_filename("b2aiprep", "app/Dashboard.py")
+    dashboard_path = str(resources.files("b2aiprep").joinpath("dashboard/app.py"))
     run(dashboard_path, args=[bids_path.as_posix()], flag_options=[], is_hello=False)
-
 
 @click.command()
 @click.argument("filename", type=click.Path(exists=True))
