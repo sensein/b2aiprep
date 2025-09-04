@@ -570,7 +570,7 @@ def publish_bids_dataset(bids_path, outdir, publish_config_dir):
     """
     bids_path = Path(bids_path)
     publish_config_dir = Path(publish_config_dir)
-
+    ids_to_remap = load_remap_id_list(publish_config_dir)
     participant_filepath = bids_path.joinpath("participants.tsv")
     if not participant_filepath.exists():
         raise FileNotFoundError(f"Participant file {participant_filepath} does not exist.")
@@ -649,8 +649,11 @@ def publish_bids_dataset(bids_path, outdir, publish_config_dir):
         json_path = audio_path.with_suffix(".json")
         json_path = Path(str(json_path).replace(".json","_recording-metadata.json"))
         metadata = json.loads(json_path.read_text())
+        for old_id, new_id in ids_to_remap.items():
+            if old_id in metadata["id"]:
+                metadata["id"] = metadata["id"].replace(old_id, new_id)
 
-        update_metadata_record_and_session_id(metadata)
+        update_metadata_record_and_session_id(metadata, ids_to_remap)
         participant_id = get_value_from_metadata(metadata, linkid="participant_id", endswith=False)
         session_id = get_value_from_metadata(metadata, linkid="session_id", endswith=True)
 
@@ -671,7 +674,6 @@ def publish_bids_dataset(bids_path, outdir, publish_config_dir):
     shutil.copy(bids_path.joinpath("CHANGELOG.md"), outdir)
     shutil.copy(bids_path.joinpath("dataset_description.json"), outdir)
 
-    ids_to_remap = load_remap_id_list(publish_config_dir)
     for path in outdir.rglob("*"):
         if path.suffix == ".tsv" and path.is_file():
             df = pd.read_csv(path, sep="\t")
