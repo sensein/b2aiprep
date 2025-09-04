@@ -47,13 +47,12 @@ sessions = sorted([path.stem[4:] for path in session_paths])
 session = st.selectbox("Choose a session.", sessions)
 
 audio_files = sorted(dataset.find_audio(subject, session))
-audio_task_names = [
-    filename.stem[filename.stem.index('_task-')+6:] for filename in audio_files
-]
-audio_task_names = list(set(audio_task_names))
-audio_task_names.sort()
+audio_task_to_filename = {
+    filename.stem[filename.stem.index('_task-')+6:]: filename
+    for filename in audio_files
+}
 
-if len(audio_task_names) == 0:
+if len(audio_task_to_filename) == 0:
     st.write(
         f"""
         No audio recordings found for subject {subject} and session {session}.
@@ -63,14 +62,12 @@ if len(audio_task_names) == 0:
 else:
     st.write(
         f"""
-        {len(audio_task_names)} audio recordings for this session.
+        {len(audio_task_to_filename)} audio recordings for this session.
         """
     )
 
-task_name = st.selectbox("Choose a task.", audio_task_names)
-i = audio_task_names.index(task_name)
-
-audio_file = audio_files[i]
+task_name = st.selectbox("Choose a task.", list(audio_task_to_filename.keys()))
+audio_file = audio_task_to_filename[task_name]
 
 # st.markdown(f"Playing {rec_name}")
 st.audio(str(audio_file))

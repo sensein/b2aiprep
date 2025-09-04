@@ -270,11 +270,11 @@ class BIDSDataset:
 
         items = []
         for item in questionnaire_dict["item"]:
+            # Rename record_id to participant_id
+            link_id = item["linkId"]
+            if link_id == "record_id":
+                link_id = "participant_id"
             if "answer" in item:
-                # Rename record_id to participant_id
-                link_id = item["linkId"]
-                if link_id == "record_id":
-                    link_id = "participant_id"
                 items.append(
                     OrderedDict(
                         linkId=link_id,
@@ -282,10 +282,6 @@ class BIDSDataset:
                     )
                 )
             else:
-                # Rename record_id to participant_id
-                link_id = item["linkId"]
-                if link_id == "record_id":
-                    link_id = "participant_id"
                 items.append(
                     OrderedDict(
                         linkId=link_id,

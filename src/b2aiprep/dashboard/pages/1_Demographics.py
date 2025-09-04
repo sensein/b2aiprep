@@ -97,7 +97,7 @@ def extract_race_df(df):
         if len(unique_values) == 1:
             rename_dict[c] = unique_values[0]
         else:
-            st.warning(f"Column {c} has multiple unique values: {unique_values}. Using last value.")
+            st.warning(f"Column {c} has multiple unique values: {unique_values}. Using last value: {unique_values[-1]}.")
             rename_dict[c] = unique_values[-1]
     df_r.rename(columns=rename_dict, inplace=True)
 

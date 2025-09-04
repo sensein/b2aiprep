@@ -105,12 +105,12 @@ def display_summary_with_tsv_data(dataset, participants_df=None):
         session_counts = recordings_df.groupby(id_column)["session_id"].nunique()
         n_subj_gt_1 = (session_counts > 1).sum()
         max_num_sessions = session_counts.max() if not session_counts.empty else 0
-
+        percent_gt_1 = n_subj_gt_1 / n_subjects if n_subjects > 0 else 0.0
         st.write(
             f"""
             * {n_subjects} subjects have participated.
             * {n_sessions} unique sessions have been conducted.
-            * {n_subj_gt_1} subjects ({n_subj_gt_1/n_subjects:1.2%}) \
+            * {n_subj_gt_1} subjects ({percent_gt_1:1.2%}) \
                 have more than one session (max = {max_num_sessions}).
             * {n_recordings} recordings have been made.
             """
@@ -118,8 +118,6 @@ def display_summary_with_tsv_data(dataset, participants_df=None):
 
         return recordings_df
     else:
-        # Fallback to original method if no TSV data
-        import pandas as pd
         display_summary(pd.DataFrame(), recordings_df)
         return recordings_df
 
