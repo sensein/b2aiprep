@@ -650,7 +650,7 @@ def publish_bids_dataset(bids_path, outdir, publish_config_dir):
         json_path = Path(str(json_path).replace(".json","_recording-metadata.json"))
         metadata = json.loads(json_path.read_text())
         for old_id, new_id in ids_to_remap.items():
-            if old_id in metadata["id"]:
+            if "id" in metadata and old_id in metadata["id"]:
                 metadata["id"] = metadata["id"].replace(old_id, new_id)
 
         update_metadata_record_and_session_id(metadata, ids_to_remap)
@@ -684,16 +684,6 @@ def publish_bids_dataset(bids_path, outdir, publish_config_dir):
                 _LOGGER.info(f"Updated TSV: {path}")
             else:
                 _LOGGER.info(f"Skipped TSV (no 'participant_id' column): {path}")
-
-        elif path.is_dir():
-            folder_name = path.name
-            for old_id, new_id in ids_to_remap.items():
-                if old_id in folder_name:
-                    new_folder_name = folder_name.replace(old_id, new_id)
-                    new_folder_path = path.parent / new_folder_name
-                    path.rename(new_folder_path)
-                    _LOGGER.info(f" Renamed folder: {path} → {new_folder_path}")
-                    break
 
 
 
