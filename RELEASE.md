@@ -73,4 +73,24 @@ Once the command is complete, you should have the following bids-like structure:
 │   │       └── sub-02_session_task-audio.pt
 └── participants.json
 ```
+### Processing Data for Release
+Once the data has been been reformatted into a bids format, we need to make sure to remove any entries that could have
+sensitive information. To do this, we must for create a **Config** folder.
+
+The folder will contain 3 files:
+- `audio_to_remove.json` (File containing a list of sensitive audio files to remove)
+- `id_remapping.json` (File containing participant ids to change)
+- `participants_to_remove.json` (File containing list of participants to remove)
+
+Once the folder is generated, you can run the publish dataset command: 
+
+```
+b2aiprep-cli publish-bids-dataset <path/to/bids/folder> <path/to/audio/output/folder> <path/to/config>
+```
+
+The resulting output will be a update bids folder in the output directory with the sensitive participants and ids remove and renamed.
+
+Note: Only audio files, metadata fils and tsv's will be in the resulting output. No `.pt` will be present in the the resulting output. 
+
+At this point the resulting output folder is ready for release! 
 

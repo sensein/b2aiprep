@@ -35,11 +35,12 @@ Functions:
 
 """
 
+import json
 import logging
 import os
 import traceback
 from pathlib import Path
-from typing import List, Tuple, Optional
+from typing import List, Tuple, Optional, Dict
 
 import numpy as np
 import pandas as pd
@@ -61,7 +62,7 @@ from senselab.utils.data_structures import (
 from tqdm import tqdm
 
 from b2aiprep.prepare.constants import (
-    AUDIO_FILESTEMS_TO_REMOVE,
+    _load_audio_filestem_exclusions,
     FEATURE_EXTRACTION_SPEECH_RATE,
     FEATURE_EXTRACTION_DURATION,
     FEATURE_EXTRACTION_PITCH_AND_INTENSITY,
@@ -503,12 +504,27 @@ def validate_bids_data(
         run(extract_task)
     _logger.info("Process completed.")
 
+def load_audio_to_remove(publish_config_dir: Path) -> List[str]:
+    """Load list of audio file stems to remove from JSON file."""
+    audio_to_remove_path = publish_config_dir / "audio_to_remove.json"
+    if not audio_to_remove_path.exists():
+        raise FileNotFoundError(f"Audio to remove file {audio_to_remove_path} does not exist.")
+
+    with open(audio_to_remove_path, 'r') as f:
+        data = json.load(f)
+
+    if not isinstance(data, list):
+        raise ValueError(f"Audio to remove file {audio_to_remove_path} should contain a list of audio file stems.")
+    
+    return data
+
 def is_audio_sensitive(filepath: Path) -> bool:
-    return filepath.stem in AUDIO_FILESTEMS_TO_REMOVE
+    audio_to_remove = _load_audio_filestem_exclusions()
+    return filepath.stem in audio_to_remove
 
 def filter_audio_paths(audio_paths: List[Path]) -> List[Path]:
     """Filter audio paths to remove audio check and sensitive audio files."""
-    
+
     # remove audio-check
     n_audio = len(audio_paths)
     audio_paths = [
@@ -534,6 +550,7 @@ def reduce_id_length(x):
     """Reduce length of ID."""
     if pd.isnull(x):
         return x
+    x = str(x)
     return x.split('-')[0]
 
 def reduce_length_of_id(df: pd.DataFrame, id_name: str) -> pd.DataFrame:
@@ -543,6 +560,19 @@ def reduce_length_of_id(df: pd.DataFrame, id_name: str) -> pd.DataFrame:
             df[c] = df[c].apply(reduce_id_length)
     
     return df
+
+def load_remap_id_list(publish_config_dir: Path) -> Dict:
+    audio_to_remap_path = publish_config_dir / "id_remapping.json"
+    if not audio_to_remap_path.exists():
+        raise FileNotFoundError(f"Audio to remove file {audio_to_remap_path} does not exist.")
+
+    with open(audio_to_remap_path, 'r') as f:
+        data = json.load(f)
+
+    if not isinstance(data, dict):
+        raise ValueError(f"Audio to remove file {audio_to_remap_path} should contain a dict of participant_ids to new ids.")
+
+    return data
 
 def get_value_from_metadata(metadata: dict, linkid: str, endswith: bool = False) -> str:
     for item in metadata['item']:
@@ -554,12 +584,16 @@ def get_value_from_metadata(metadata: dict, linkid: str, endswith: bool = False)
             return item['answer'][0]['valueString']
     return None
 
-def update_metadata_record_and_session_id(metadata: dict):
+def update_metadata_record_and_session_id(metadata: dict, ids_to_remap: dict):
     for item in metadata['item']:
         if 'linkId' not in item:
             continue
 
         if item['linkId'] == 'record_id':
+            for old_id, new_id in ids_to_remap.items():
+                if old_id == item['answer'][0]['valueString']:
+                    item['answer'][0]['valueString'] = new_id
+                    break
             record_id = item['answer'][0]['valueString']
             item['answer'][0]['valueString'] = reduce_id_length(record_id)
             # rename to participant_id
