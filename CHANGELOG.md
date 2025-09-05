@@ -1,3 +1,21 @@
+# 2.7.0 (Fri Sep 05 2025)
+
+#### 🚀 Enhancement
+
+- fix dashboard to work with release v2.0 [#191](https://github.com/sensein/b2aiprep/pull/191) ([@alistairewj](https://github.com/alistairewj))
+
+#### 🐛 Bug Fix
+
+- Initial commit for release.md [#190](https://github.com/sensein/b2aiprep/pull/190) ([@Evan8456](https://github.com/Evan8456))
+- Added new fields for peds protocol [#189](https://github.com/sensein/b2aiprep/pull/189) ([@Evan8456](https://github.com/Evan8456))
+
+#### Authors: 2
+
+- Alistair Johnson ([@alistairewj](https://github.com/alistairewj))
+- Evan Ng ([@Evan8456](https://github.com/Evan8456))
+
+---
+
 # 2.6.0 (Tue Jul 22 2025)
 
 #### 🚀 Enhancement
