@@ -1,55 +1,132 @@
 import argparse
+from pathlib import Path
 import sys
 
 import altair as alt
 import pandas as pd
 import streamlit as st
 
+from b2aiprep.dashboard.utils import load_dataset
 from b2aiprep.prepare.dataset import VBAIDataset
 
 st.set_page_config(page_title="Demographics", page_icon="📈")
 
+if "bids_dir" not in st.session_state:
+    st.session_state.bids_dir = ""
+
+bids_dir = st.sidebar.text_input(
+    "Path to BIDS-like formatted data folder",
+    key="bids_dir",
+    value=st.session_state.get("bids_dir", ""),
+    placeholder="e.g. /path/to/bids/data",
+    help="Path to the BIDS-like formatted data folder.",
+)
+
+if not bids_dir:
+    st.stop()
+
+bids_dir = Path(bids_dir).resolve()
+dataset: VBAIDataset = load_dataset(bids_dir)
+
 st.markdown("# Demographics")
-st.sidebar.header("Demographics")
 st.write("""This page overviews the demographics of the dataset.""")
 
+@st.cache_data(ttl=3600, show_spinner=True)
+def load_participants():
+    """Load participants data from the dataset."""
+    return dataset.load_participants()
 
-def parse_args(args):
-    parser = argparse.ArgumentParser("Audio processing for BIDS data.")
-    parser.add_argument("bids_dir", help="Folder with the BIDS data")
-    return parser.parse_args(args)
+st.write("## Session demographics")
 
+df = load_participants()
+if df is None:
+    st.error("No participants data found. Please check the BIDS directory: {}".format(bids_dir))
+    st.stop()
 
-args = parse_args(sys.argv[1:])
-st.session_state.bids_dir = args.bids_dir
+st.write("### Participants")
+st.dataframe(df)
 
-dataset = VBAIDataset(st.session_state.bids_dir)
+st.markdown("## Age & Sex")
+sex_counts = df["sex_at_birth"].value_counts()
 
-schema_name = "qgenericdemographicsschema"
-df = dataset.load_and_pivot_questionnaire(schema_name)
+container = st.container()
+col1, col2 = container.columns(2)
 
-# st.markdown("## Age Distribution")
-# st.write(df['age'].describe())
+with col1:
+    age_hist = (
+        alt.Chart(df)
+        .mark_bar()
+        .encode(
+            x=alt.X("age:Q", bin=alt.Bin(maxbins=30), title="Age"),
+            y=alt.Y("count()", title="Count"),
+            tooltip=["age:Q", "count()"],
+        )
+        .configure_axis(labelFontSize=12, titleFontSize=14)
+    )
 
+    st.altair_chart(age_hist)
 
-st.markdown("## Gender Identity")
-gender_counts = df["gender_identity"].value_counts()
-st.bar_chart(gender_counts)
+with col2:
+    sex_chart = (
+        alt.Chart(sex_counts.reset_index())
+        .mark_arc(innerRadius=50, outerRadius=120)
+        .encode(
+            theta=alt.Theta("count:Q", title="Count"),
+            color=alt.Color(
+                "sex_at_birth:N", 
+                title="Sex at Birth",
+                scale=alt.Scale(scheme="category10")
+            ),
+            tooltip=["sex_at_birth:N", "count:Q"]
+        )
+        .resolve_scale(color="independent")
+        .properties(width=300, height=300)
+    )
 
+    st.altair_chart(sex_chart)
 
-st.markdown("## Sexual Orientation")
-orientation_counts = df["sexual_orientation"].value_counts()
-st.bar_chart(orientation_counts)
+def extract_race_df(df):
+    """Extract race data from df and re-shape to be easy to work with."""
+    r_columns = [col for col in df.columns if "race___" in col]
+    df_r = df[r_columns].copy()
 
+    rename_dict = {}
+    for c in df_r.columns:
+        # rename the column using the unique values
+        unique_values = df_r[c].dropna().unique()
+        if len(unique_values) == 1:
+            rename_dict[c] = unique_values[0]
+        else:
+            st.warning(f"Column {c} has multiple unique values: {unique_values}. Using last value: {unique_values[-1]}.")
+            rename_dict[c] = unique_values[-1]
+    df_r.rename(columns=rename_dict, inplace=True)
 
-st.markdown("## Race")
-race_columns = [col for col in df.columns if "race___" in col]
-race_counts = df[race_columns].sum()
-st.bar_chart(race_counts)
+    # keep it one-hot encoded
+    for c in df_r.columns:
+        df_r[c] = (df_r[c] == c).astype(int)
+    
+    return df_r
 
-st.markdown("## Ethnicity")
-ethnicity_counts = df["ethnicity"].value_counts()
-st.bar_chart(ethnicity_counts)
+st.write("## Race & Ethnicity")
+
+container = st.container()
+col1, col2 = container.columns(2)
+
+with col1:
+    race_columns = [col for col in df.columns if "race___" in col]
+    if not race_columns:
+        st.warning("Race data not found in the dataset.")
+    else:
+        # race-columns are in a weird format: each column name is race___#, but the values
+        # are the text version of the race. we need to make a new dataframe
+        df_r = extract_race_df(df)
+        # now we have a simple one-hot encoded dataframe
+        # we can make a bar chart of the counts
+        st.bar_chart(df_r.sum().sort_values(ascending=True))
+
+with col2:
+    ethnicity_counts = df["ethnicity"].value_counts()
+    st.bar_chart(ethnicity_counts)
 
 st.markdown("## Marital Status")
 marital_status_columns = [col for col in df.columns if "marital_status___" in col]

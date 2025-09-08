@@ -22,6 +22,8 @@ import re
 import typing as t
 from collections import OrderedDict
 from pathlib import Path
+from importlib.resources import files
+import json
 
 import numpy as np
 import pandas as pd
@@ -30,6 +32,7 @@ from fhir.resources.questionnaireresponse import QuestionnaireResponse
 from senselab.audio.data_structures.audio import Audio
 from soundfile import LibsndfileError
 from tqdm import tqdm
+
 
 
 class BIDSDataset:
@@ -51,8 +54,17 @@ class BIDSDataset:
             A list of questionnaires which have the given questionnaire suffix.
         """
         questionnaires = []
-        for questionnaire in self.data_path.rglob(f"sub-*_{questionnaire_name}.json"):
-            questionnaires.append(questionnaire)
+        
+        # Handle special cases for the new data structure
+        if questionnaire_name == "recordingschema":
+            # Find all audio metadata JSON files which contain recordingschema data
+            for audio_json in self.data_path.rglob("*/audio/*.json"):
+                questionnaires.append(audio_json)
+        else:
+            # Try the original approach first for backward compatibility
+            for questionnaire in self.data_path.rglob(f"sub-*_{questionnaire_name}.json"):
+                questionnaires.append(questionnaire)
+        
         return questionnaires
 
     def find_subject_questionnaires(self, subject_id: str) -> t.List[Path]:
@@ -258,17 +270,21 @@ class BIDSDataset:
 
         items = []
         for item in questionnaire_dict["item"]:
+            # Rename record_id to participant_id
+            link_id = item["linkId"]
+            if link_id == "record_id":
+                link_id = "participant_id"
             if "answer" in item:
                 items.append(
                     OrderedDict(
-                        linkId=item["linkId"],
+                        linkId=link_id,
                         **item["answer"][0],
                     )
                 )
             else:
                 items.append(
                     OrderedDict(
-                        linkId=item["linkId"],
+                        linkId=link_id,
                         valueString=None,
                     )
                 )
@@ -396,57 +412,111 @@ class VBAIDataset(BIDSDataset):
         """
         Loads all data for a questionnaire and pivots on the appropriate identifier column.
 
+        Parameters
+        ----------
+        questionnaire_name : str
+            The name of the questionnaire to load.
+
         Returns
         -------
         pd.DataFrame
-            A "wide" format dataframe with one row per loaded in questionnaire.
+            A "wide" format dataframe with questionnaire data. Returns empty DataFrame 
+            if columns are not found in participants.tsv.
         """
-        # search across all subjects and get any file ending in demographics
-        q_dfs = []
-
-        # create an "pivot_id" column which we pivot on
-        pivot_id = 0
-        for questionnaire in self.load_questionnaires(questionnaire_name):
-            # get the dataframe for this questionnaire
-            df = self.questionnaire_to_dataframe(questionnaire)
-            df["pivot_id"] = pivot_id
-            q_dfs.append(df)
-            pivot_id += 1
-
-        if len(q_dfs) == 0:
-            logging.warning(f"No data found for '{questionnaire_name}'")
+        # Load participants.tsv file
+        participants_file = self.data_path / "participants.tsv"
+        if not participants_file.exists():
+            logging.warning(f"participants.tsv file not found at {participants_file}")
             return pd.DataFrame()
 
-        # concatenate all the dataframes
-        pivoted_df = pd.concat(q_dfs)
+        participants_df = pd.read_csv(participants_file, sep="\t")
+        # Load questionnaire columns from instrument_columns resources
+        instrument_columns_path = files("b2aiprep").joinpath("prepare").joinpath("resources").joinpath("instrument_columns")
+        questionnaire_file = instrument_columns_path.joinpath(f"{questionnaire_name}.json")
+        
+        if not questionnaire_file.exists():
+            logging.warning(f"Questionnaire JSON file not found: {questionnaire_name}.json")
+            return pd.DataFrame()
+            
+        questionnaire_columns = json.loads(questionnaire_file.read_text())
 
-        # create a value column that merges valueString, valueBoolean, etc.
-        # https://hl7.org/fhir/r4/questionnaireresponse-definitions.html#QuestionnaireResponse.item.answer.value_x_
-        # boolean|decimal|integer|date|dateTime|time|string|uri|Attachment|Coding|Quantity|Reference(Any)
-        # currently we only support String/Boolean
-        value_columns = ["valueString", "valueBoolean"]
-        pivoted_df["value"] = None
-        pivoted_df = pivoted_df.reset_index(drop=True)
-        for col in value_columns:
-            if col in pivoted_df.columns:
-                pivoted_df["value"] = pivoted_df["value"].combine_first(pivoted_df[col])
+        # Filter to only include columns that exist in participants.tsv
+        available_columns = [col for col in questionnaire_columns if col in participants_df.columns]
+        
+        if not available_columns:
+            logging.warning(f"No columns from '{questionnaire_name}' questionnaire found in participants.tsv")
+            return pd.DataFrame()
 
-        # display where there are duplicate values of index
-        # st.write(pivoted_df[pivoted_df.duplicated(subset='index', keep=False)])
-        pivoted_df = pd.pivot(pivoted_df, index="pivot_id", columns="linkId", values="value")
+        # Select the available columns
+        questionnaire_df = participants_df[available_columns].copy()
+        
+        return questionnaire_df
 
-        # drop the pivot_id name from the index
-        pivoted_df = pivoted_df.reset_index(drop=True)
+    def load_participants(self) -> pd.DataFrame:
+        """
+        Loads the participants.tsv file and returns a dataframe with participant data.
 
-        # restore the original order of the columns, as pd.pivot removes it and sorts alphabetically
-        if len(q_dfs) > 0:
-            columns = q_dfs[-1]["linkId"].tolist()
-            columns = [col for col in columns if col in pivoted_df.columns]
-            # add in any columns which may be in pivoted
-            columns.extend([col for col in pivoted_df.columns if col not in columns])
-            pivoted_df = pivoted_df[columns]
+        Returns
+        -------
+        pd.DataFrame
+            A dataframe with participant data.
+        """
+        participants_file = self.data_path / "participants.tsv"
+        if not participants_file.exists():
+            logging.warning("participants.tsv file not found")
+            return pd.DataFrame()
 
-        return pivoted_df
+        try:
+            df = pd.read_csv(participants_file, sep='\t')
+            # Rename record_id to participant_id for consistency
+            if 'record_id' in df.columns:
+                df.rename(columns={'record_id': 'participant_id'}, inplace=True)
+            return df
+        except Exception as e:
+            logging.error(f"Error loading participants data: {e}")
+            return pd.DataFrame()
+
+    def _load_session_schema_from_participants_tsv(self) -> pd.DataFrame:
+        """
+        Load session schema data from the participants.tsv file.
+        
+        Returns
+        -------
+        pd.DataFrame
+            Session schema data with participant_id and session information.
+        """
+        participants_file = self.data_path / "participants.tsv"
+        if not participants_file.exists():
+            logging.warning("participants.tsv file not found")
+            return pd.DataFrame()
+        
+        try:
+            # Read the participants file
+            df = pd.read_csv(participants_file, sep='\t')
+            
+            # Select session-related columns
+            session_columns = [
+                'participant_id', 'session_id', 'session_status', 
+                'session_is_control_participant', 'session_duration'
+            ]
+            
+            # Only include columns that exist in the file
+            available_columns = [col for col in session_columns if col in df.columns]
+            
+            if not available_columns:
+                logging.warning("No session-related columns found in participants.tsv")
+                return pd.DataFrame()
+            
+            # Filter to rows that have session data (session_id is not null)
+            session_df = df[available_columns].copy()
+            if 'session_id' in session_df.columns:
+                session_df = session_df.dropna(subset=['session_id'])
+            
+            return session_df
+            
+        except Exception as e:
+            logging.error(f"Error loading session data from participants.tsv: {e}")
+            return pd.DataFrame()
 
     def _load_recording_and_acoustic_task_df(self) -> pd.DataFrame:
         """Loads recording schema dataframe with the acoustic task name.
@@ -491,7 +561,8 @@ class VBAIDataset(BIDSDataset):
 
         row = recording_df.loc[idx].iloc[0]
 
-        subject_id = row["record_id"]
+        # Use participant_id or fall back to record_id for backward compatibility
+        subject_id = row.get("participant_id", row.get("record_id"))
         session_id = row["recording_session_id"]
         task = row["acoustic_task_name"].replace(" ", "-")
         name = row["recording_name"].replace(" ", "-")
@@ -518,7 +589,8 @@ class VBAIDataset(BIDSDataset):
         for _, row in tqdm(
             recording_df.iterrows(), total=recording_df.shape[0], desc="Loading audio"
         ):
-            subject_id = row["record_id"]
+            # Use participant_id or fall back to record_id for backward compatibility
+            subject_id = row.get("participant_id", row.get("record_id"))
             session_id = row["recording_session_id"]
             task = row["acoustic_task_name"].replace(" ", "-")
             name = row["recording_name"].replace(" ", "-")
@@ -550,7 +622,8 @@ class VBAIDataset(BIDSDataset):
         for _, row in tqdm(
             recording_df.iterrows(), total=recording_df.shape[0], desc="Loading audio"
         ):
-            subject_id = row["record_id"]
+            # Use participant_id or fall back to record_id for backward compatibility
+            subject_id = row.get("participant_id", row.get("record_id"))
             session_id = row["recording_session_id"]
             task = row["acoustic_task_name"].replace(" ", "-")
             name = row["recording_name"].replace(" ", "-")
