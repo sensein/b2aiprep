@@ -150,7 +150,6 @@ def _load_audio_filestem_exclusions() -> t.List[str]:
         return json.loads(b2ai_resources.joinpath("audio_filestem_to_exclude.json").read_text())
     return []
 
-AUDIO_FILESTEMS_TO_REMOVE: t.List[str] = _load_audio_filestem_exclusions()
 
 class Instrument(BaseModel):
     """Instruments are associated with fixed sets of columns and a string

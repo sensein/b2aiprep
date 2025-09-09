@@ -80,7 +80,7 @@ def test_audio_csv():
                         "recording_profile_name": "Speech",
                         "recording_profile_version": "v1.0.0",
                         "recording_input_gain": 0.0,
-                        "recording_microphone": "ipad"},
+                        "recording_microphone": "USB-C to 3.5mm Headphone Jack Adapter"},
 
                        {"record_id": "99999",
                        "redcap_repeat_instrument": "Recording",
@@ -94,7 +94,7 @@ def test_audio_csv():
                         "recording_profile_name": "Speech",
                         "recording_profile_version": "v1.0.0",
                         "recording_input_gain": 0.0,
-                        "recording_microphone": "ipad"}]
+                        "recording_microphone": "USB-C to 3.5mm Headphone Jack Adapter"}]
 
     actual = parse_audio(audio_files, True)
     assert expected_output == actual
