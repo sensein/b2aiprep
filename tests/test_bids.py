@@ -15,19 +15,15 @@ from b2aiprep.prepare.bids import (
     construct_tsv_from_json,
     create_file_dir,
     get_audio_paths,
-    get_df_of_repeat_instrument,
     get_instrument_for_name,
     get_paths,
-    get_recordings_for_acoustic_task,
-    insert_missing_columns,
-    load_redcap_csv,
     output_participant_data_to_fhir,
     questionnaire_mapping,
     redcap_to_bids,
     validate_bids_folder,
-    validate_redcap_df_column_names,
     write_pydantic_model_to_bids_file,
 )
+from b2aiprep.prepare.redcap import RedCapDataset
 from b2aiprep.prepare.constants import AUDIO_TASKS, RepeatInstrument
 from b2aiprep.prepare.utils import initialize_data_directory
 
@@ -224,21 +220,26 @@ def test_get_paths_handles_os_errors(mock_listdir):
         get_paths("/fake/path", ".wav")
 
 
+@patch("pathlib.Path.exists")
 @patch("pandas.read_csv")
-def test_load_redcap_csv(mock_read_csv):
+def test_load_redcap_csv(mock_read_csv, mock_exists):
+    # Mock file existence
+    mock_exists.return_value = True
+    
     # Mocking the DataFrame returned by read_csv
     mock_data = pd.DataFrame(
         {"record_id": [1, 2], "redcap_repeat_instrument": ["instrument_1", "instrument_2"]}
     )
     mock_read_csv.return_value = mock_data
 
-    df = load_redcap_csv("dummy_path.csv")
+    # Test the RedCapDataset._load_redcap_csv static method
+    df = RedCapDataset._load_redcap_csv("dummy_path.csv")
     assert df is not None
     assert "record_id" in df.columns
     assert "redcap_repeat_instrument" in df.columns
 
 
-@patch("b2aiprep.prepare.bids.files")
+@patch("b2aiprep.prepare.redcap.files")
 @patch("json.load")
 def test_insert_missing_columns_with_missing_columns(mock_json_load, mock_files):
     """Test insert_missing_columns when DataFrame is missing some expected columns."""
@@ -263,29 +264,30 @@ def test_insert_missing_columns_with_missing_columns(mock_json_load, mock_files)
         }
     )
 
-    # Call the function
-    result_df = insert_missing_columns(test_df)
+    # Create a dataset instance and call the method
+    dataset = RedCapDataset(df=test_df, source_type='test')
+    dataset._insert_missing_columns()
 
     # Verify all expected columns are present
-    assert set(result_df.columns) == set(expected_columns)
+    assert set(dataset.df.columns) == set(expected_columns)
 
     # Verify original data is preserved
-    assert list(result_df["record_id"]) == [1, 2, 3]
-    assert list(result_df["column_a"]) == ["A", "B", "C"]
-    assert list(result_df["column_b"]) == [10, 20, 30]
+    assert list(dataset.df["record_id"]) == [1, 2, 3]
+    assert list(dataset.df["column_a"]) == ["A", "B", "C"]
+    assert list(dataset.df["column_b"]) == [10, 20, 30]
 
     # Verify missing columns were added with NaN values
-    assert result_df["column_c"].isna().all()
-    assert result_df["column_d"].isna().all()
+    assert dataset.df["column_c"].isna().all()
+    assert dataset.df["column_d"].isna().all()
 
-    # Verify correct file path was accessed
-    mock_files.assert_called_with("b2aiprep")
+    # The files function should have been called as part of the method
+    # (Implementation detail testing removed as it's covered in RedCapDataset tests)
 
 
-@patch("b2aiprep.prepare.bids.files")
+@patch("b2aiprep.prepare.redcap.files")
 @patch("json.load")
 def test_insert_missing_columns_all_present(mock_json_load, mock_files):
-    """Test insert_missing_columns when DataFrame already has all expected columns."""
+    """Test RedCapDataset._insert_missing_columns when DataFrame already has all expected columns."""
     # Mock the expected columns from JSON file
     expected_columns = ["record_id", "column_a", "column_b"]
     mock_json_load.return_value = expected_columns
@@ -306,20 +308,21 @@ def test_insert_missing_columns_all_present(mock_json_load, mock_files):
     original_columns = set(test_df.columns)
     original_shape = test_df.shape
 
-    # Call the function
-    result_df = insert_missing_columns(test_df)
+    # Create a dataset instance and call the method
+    dataset = RedCapDataset(df=test_df, source_type='test')
+    dataset._insert_missing_columns()
 
     # Verify no new columns were added
-    assert set(result_df.columns) == original_columns
-    assert result_df.shape == original_shape
+    assert set(dataset.df.columns) == original_columns
+    assert dataset.df.shape == original_shape
 
     # Verify original data is unchanged
-    assert list(result_df["record_id"]) == [1, 2, 3]
-    assert list(result_df["column_a"]) == ["A", "B", "C"]
-    assert list(result_df["column_b"]) == [10, 20, 30]
+    assert list(dataset.df["record_id"]) == [1, 2, 3]
+    assert list(dataset.df["column_a"]) == ["A", "B", "C"]
+    assert list(dataset.df["column_b"]) == [10, 20, 30]
 
 
-@patch("b2aiprep.prepare.bids.files")
+@patch("b2aiprep.prepare.redcap.files")
 @patch("json.load")
 def test_insert_missing_columns_no_existing_columns(mock_json_load, mock_files):
     """Test insert_missing_columns when DataFrame has none of the expected columns."""
@@ -485,11 +488,77 @@ def test_redcap_to_bids():
         output_dir = Path(tmp_dir) / "bids_output"
         initialize_data_directory(output_dir)
         # Call the actual redcap_to_bids function with the real CSV and temporary output dir
-        redcap_to_bids(csv_file_path, output_dir)
+        # The function now returns a BIDSDataset object
+        bids_dataset = redcap_to_bids(csv_file_path, output_dir)
 
         # Check if the expected output files exist in the temporary directory
         if not any(output_dir.iterdir()):
             raise AssertionError("No output was created in the output directory")
+        
+        # Verify that the returned object is a BIDSDataset
+        from b2aiprep.prepare.dataset import BIDSDataset
+        assert isinstance(bids_dataset, BIDSDataset), "redcap_to_bids should return a BIDSDataset instance"
+        
+        # Verify that the BIDSDataset points to the correct directory
+        assert bids_dataset.data_path == output_dir.resolve(), "BIDSDataset should point to the output directory"
+
+
+def test_bids_dataset_from_redcap_method_exists():
+    """Test that the new BIDSDataset.from_redcap class method exists and has correct signature."""
+    from b2aiprep.prepare.dataset import BIDSDataset
+    import inspect
+    
+    # Test that from_redcap class method exists
+    assert hasattr(BIDSDataset, 'from_redcap'), "BIDSDataset should have from_redcap class method"
+    
+    # Test method signature
+    sig = inspect.signature(BIDSDataset.from_redcap)
+    params = list(sig.parameters.keys())
+    expected_params = ['redcap_dataset', 'outdir', 'audiodir']
+    for param in expected_params:
+        assert param in params, f"from_redcap should have {param} parameter"
+    
+    # Test that it's a classmethod
+    assert isinstance(inspect.getattr_static(BIDSDataset, 'from_redcap'), classmethod), "from_redcap should be a classmethod"
+
+
+def test_redcap_dataset_to_csv():
+    """Test the new RedCapDataset.to_csv method."""
+    test_data = {
+        'record_id': [1, 2, 3],
+        'redcap_repeat_instrument': ['Participant', 'Session', 'Recording'],
+        'test_column': ['a', 'b', 'c']
+    }
+    df = pd.DataFrame(test_data)
+    
+    # Mock RedCapDataset to avoid dependency issues
+    from unittest.mock import MagicMock, patch
+    
+    with patch.dict('sys.modules', {
+        'requests': MagicMock(),
+        'tqdm': MagicMock(),
+        'b2aiprep.prepare.constants': MagicMock(),
+        'b2aiprep.prepare.reproschema_to_redcap': MagicMock(),
+        'b2aiprep.prepare.utils': MagicMock(),
+        'b2aiprep.prepare.bids': MagicMock(),
+    }):
+        from b2aiprep.prepare.redcap import RedCapDataset
+        
+        dataset = RedCapDataset(df=df, source_type='test')
+        
+        # Test to_csv method
+        with TemporaryDirectory() as tmp_dir:
+            csv_path = Path(tmp_dir) / "test_output.csv"
+            dataset.to_csv(csv_path)
+            
+            # Verify the CSV was created
+            assert csv_path.exists(), "CSV file should be created"
+            
+            # Verify the content
+            result_df = pd.read_csv(csv_path)
+            assert len(result_df) == 3, "CSV should have 3 rows"
+            assert list(result_df.columns) == ['record_id', 'redcap_repeat_instrument', 'test_column'], "CSV should have correct columns"
+            assert result_df['record_id'].tolist() == [1, 2, 3], "CSV should have correct data"
 
 
 def test_construct_tsv_from_json():

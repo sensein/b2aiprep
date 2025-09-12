@@ -1,5 +1,5 @@
 import pytest
-from b2aiprep.prepare.reproschema_to_redcap import parse_survey, parse_audio
+from b2aiprep.prepare.redcap import parse_survey, parse_audio
 import pandas as pd
 
 
