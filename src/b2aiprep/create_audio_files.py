@@ -10,7 +10,7 @@ def copy_wav_file(src_file_path, dest_directory, file_names):
         shutil.copy(src_file_path, dest_file_path)
 
 # Example usage
-src_file_path = '/path/to/your/source/file.wav'  # Update this with the path to your source file
+src_file_path = '/path/to/your/source/file.wav'
 dest_directory = '/Users/isaacbevers/sensein/b2ai-wrapper/b2ai-data/b2ai-data-bids-like-curated/sub-0aeebf70-44a5-4537-af1b-1c24840f104d/ses-C63E6402-5ECC-45B5-8A57-6FE638A766A5/audio'
 file_names = [
     "Animal-fluency_rec-Animal-fluency.wav",
