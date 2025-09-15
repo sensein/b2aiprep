@@ -337,28 +337,28 @@ class RepeatInstrument(Enum):
     )
 
     MEDICAL_CONDITIONS = Instrument(
-        session_id="medical_conditions_schema_session_id",
+        session_id="peds_mc_session_id",
         name="medical_conditions",
         text="medical_conditions",
         schema_name="medical_conditions",
     )
 
     PEDS_VHI10 = Instrument(
-        session_id="peds_vhi_10_schema_session_id",
+        session_id="peds_vhi_session_id",
         name="pedsvhi10",
         text="pedsvhi10",
         schema_name="pedsvhi10",
     )
 
     QOL = Instrument(
-        session_id="peds_voice_related_qol_schema_session_id",
+        session_id="peds_qol_session_id",
         name="peds_voice_related_qol",
         text="peds_voice_related_qol",
         schema_name="peds_voice_related_qol",
     )
 
     PHQA = Instrument(
-        session_id="phqa_schema_session_id",
+        session_id="peds_phqa_session_id",
         name="phqa_schema",
         text="phqa_schema",
         schema_name="phqa_schema",

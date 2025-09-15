@@ -1,0 +1,11 @@
+{
+    "q_generic_demographics_schema": "pediatric_q_generic_demographics",
+    "phqa_schema": "pediatric_q_generic_phqa",
+    "medical_conditions_schema": "pediatric_q_generic_medical_conditions",
+    "peds_vhi_10_schema":"pediatric_q_generic_vhi_10",
+    "peds_voice_outcome_survey_schema":"pediatric_q_generic_voice_outcome_survey",
+    "peds_voice_related_qol_schema": "pediatric_q_generic_voice_related_qol_survey",
+    "Session": "session",
+    "Acoustic Task": "acoustic_task",
+    "Recording": "recording"
+}

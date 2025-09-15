@@ -3,7 +3,7 @@
         "description": "Measures voice quality of life for kids.",
         "url": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/",
         "data_elements": {
-            "peds_voice_related_qol_schema_session_id": {
+            "peds_qol_session_id": {
                 "description": "The unique identifier for qol session.",
                 "question": {
                     "en": "Session ID"
@@ -17,7 +17,7 @@
                     "xsd:string"
                 ]
             },
-            "peds_voice_related_qol_schema_duration": {
+            "peds_qol_duration": {
                 "description": "Duration of the qol session.",
                 "question": {
                     "en": "Questionnaire Duration (seconds)"
@@ -32,15 +32,8 @@
                     "xsd:decimal"
                 ]
             },
-            "qol_intro": {
-                "description": "qol_intro",
-                "question": {
-                    "en": "Please answer these questions based on what your child’s voice (your own voice if you are a teenage respondent) has been like over the last 2 weeks. Consider how severe the problem is, when you get it and how frequently it happens. Please rate each item below on how bad it is (the amount of each problem). Because of my child’s voice, how much of a problem is this?"
-                },
-                "choices": null
-            },
-            "qol_q1": {
-                "description": "qol_q1",
+            "peds_qol_trouble_speaking_heard": {
+                "description": "peds_qol_trouble_speaking_heard",
                 "question": {
                     "en": "My child/ I has trouble speaking loudly or being heard in noisy situations."
                 },
@@ -89,8 +82,8 @@
                     "xsd:integer"
                 ]
             },
-            "qol_q2": {
-                "description": "qol_q2",
+            "peds_qol_out_of_air": {
+                "description": "peds_qol_out_of_air",
                 "question": {
                     "en": "My child/ I runs out of air and needs to take frequent breaths when talking."
                 },
@@ -139,8 +132,8 @@
                     "xsd:integer"
                 ]
             },
-            "qol_q3": {
-                "description": "qol_q3",
+            "peds_qol_come_out_speaking": {
+                "description": "peds_qol_come_out_speaking",
                 "question": {
                     "en": "My child/ I sometimes does not know what will come out when they begin speaking"
                 },
@@ -189,8 +182,8 @@
                     "xsd:integer"
                 ]
             },
-            "qol_q4": {
-                "description": "qol_q4",
+            "peds_qol_anxious_frustrated": {
+                "description": "peds_qol_anxious_frustrated",
                 "question": {
                     "en": "My child/ I is sometimes anxious or frustrated (because of their voice)."
                 },
@@ -239,8 +232,8 @@
                     "xsd:integer"
                 ]
             },
-            "qol_q5": {
-                "description": "qol_q5",
+            "peds_qol_depressed": {
+                "description": "peds_qol_depressed",
                 "question": {
                     "en": "My child/ I is sometimes depressed (because of their voice)."
                 },
@@ -289,8 +282,8 @@
                     "xsd:integer"
                 ]
             },
-            "qol_q6": {
-                "description": "qol_q6",
+            "peds_qol_trouble_phone_speaking": {
+                "description": "peds_qol_trouble_phone_speaking",
                 "question": {
                     "en": "My child/ I has trouble using the phone or speaking with friends in person."
                 },
@@ -339,8 +332,8 @@
                     "xsd:integer"
                 ]
             },
-            "qol_q7": {
-                "description": "qol_q7",
+            "peds_qol_trouble_doing_schoolwork": {
+                "description": "peds_qol_trouble_doing_schoolwork",
                 "question": {
                     "en": "My child/ I has trouble doing their schoolwork or job (because of their voice)."
                 },
@@ -389,8 +382,8 @@
                     "xsd:integer"
                 ]
             },
-            "qol_q8": {
-                "description": "qol_q8",
+            "peds_qol_repeat_understood": {
+                "description": "peds_qol_repeat_understood",
                 "question": {
                     "en": "My child/ I has to repeat themselves to be understood"
                 },
@@ -439,8 +432,8 @@
                     "xsd:integer"
                 ]
             },
-            "qol_q9": {
-                "description": "qol_q9",
+            "peds_qol_less_outgoing": {
+                "description": "peds_qol_less_outgoing",
                 "question": {
                     "en": "My child has become less outgoing (because of their voice)."
                 },

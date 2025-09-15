@@ -1,9 +1,9 @@
 {
     "q_generic_demographics": {
-        "description":  "Measures participant background details for kids.",
+        "description": "Measures participant background details for kids.",
         "url": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/",
         "data_elements": {
-            "q_generic_demographics_schema_session_id": {
+            "peds_demographics_session_id": {
                 "description": "The unique identifier for the kids demographics session.",
                 "question": {
                     "en": "Session ID"
@@ -58,7 +58,7 @@
                 ],
                 "choices": null
             },
-            "zipcode": {
+            "peds_zipcode": {
                 "description": "items/zipcode",
                 "question": {
                     "en": "Zipcode/Postal Code"
@@ -71,7 +71,7 @@
                 ],
                 "choices": null
             },
-            "country": {
+            "peds_country": {
                 "description": "items/country",
                 "question": {
                     "en": "Country"
@@ -97,7 +97,7 @@
                     "xsd:integer"
                 ]
             },
-            "gender_identity": {
+            "peds_gender_identity": {
                 "description": "items/gender_identity",
                 "question": {
                     "en": "What is your gender identity?"
@@ -141,7 +141,7 @@
                     "xsd:string"
                 ]
             },
-            "other_gender_identity": {
+            "peds_other_gender_identity": {
                 "description": "items/other_gender_identity",
                 "question": {
                     "en": "If you selected \"other\" for gender identity, please specify:"
@@ -154,7 +154,7 @@
                 ],
                 "choices": null
             },
-            "race": {
+            "peds_race": {
                 "description": "items/race",
                 "question": {
                     "en": "Which race category best describes you? Choose all that apply"
@@ -217,7 +217,7 @@
                     "xsd:integer"
                 ]
             },
-            "other_race_specify": {
+            "peds_other_race_specify": {
                 "description": "items/other_race_specify",
                 "question": {
                     "en": "If race not listed above, please specify:"
@@ -230,7 +230,7 @@
                 ],
                 "choices": null
             },
-            "primary_language": {
+            "peds_primary_language": {
                 "description": "items/primary_language",
                 "question": {
                     "en": "What language do you primarily speak?"
@@ -304,7 +304,7 @@
                     "xsd:integer"
                 ]
             },
-            "other_primary_language": {
+            "peds_other_primary_language": {
                 "description": "items/other_primary_language",
                 "question": {
                     "en": "If you selected \"other\" primary language, please specify:"
@@ -317,7 +317,7 @@
                 ],
                 "choices": null
             },
-            "first_language": {
+            "peds_first_language": {
                 "description": "items/first_language",
                 "question": {
                     "en": "What was your first language?"
@@ -391,7 +391,7 @@
                     "xsd:integer"
                 ]
             },
-            "other_first_language": {
+            "peds_other_first_language": {
                 "description": "items/other_first_language",
                 "question": {
                     "en": "If you selected \"other\" first language, please specify:"
@@ -404,7 +404,7 @@
                 ],
                 "choices": null
             },
-            "edu_level": {
+            "peds_edu_level": {
                 "description": "items/edu_level",
                 "question": {
                     "en": "What is your child's highest level of education?"
@@ -454,7 +454,7 @@
                     "xsd:integer"
                 ]
             },
-            "other_edu_level": {
+            "peds_other_edu_level": {
                 "description": "items/other_edu_level",
                 "question": {
                     "en": "If you selected \"other\" level of education, please specify:"
@@ -467,7 +467,7 @@
                 ],
                 "choices": null
             },
-            "hearing": {
+            "peds_hearing": {
                 "description": "items/hearing",
                 "question": {
                     "en": "Are you deaf or do you have serious difficulty hearing?"
@@ -499,7 +499,7 @@
                     "xsd:string"
                 ]
             },
-            "vision": {
+            "peds_vision": {
                 "description": "items/vision",
                 "question": {
                     "en": "Are you blind or do you have serious difficulty seeing, even when wearing glasses?"
@@ -531,7 +531,7 @@
                     "xsd:string"
                 ]
             },
-            "cognition": {
+            "peds_cognition": {
                 "description": "items/cognition",
                 "question": {
                     "en": "Because of a physical, mental, or emotional condition, do you have serious difficulty concentrating, remembering, or making decisions?"
@@ -563,7 +563,7 @@
                     "xsd:string"
                 ]
             },
-            "mobility": {
+            "peds_mobility": {
                 "description": "items/mobility",
                 "question": {
                     "en": "Do you have serious difficulty walking or climbing stairs?"
@@ -595,7 +595,7 @@
                     "xsd:string"
                 ]
             },
-            "self_care": {
+            "peds_self_care": {
                 "description": "items/self_care",
                 "question": {
                     "en": "Do you have difficulty dressing or bathing?"

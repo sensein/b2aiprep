@@ -3,7 +3,7 @@
         "description": "Measures severity of depressive symptoms for kids",
         "url": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/",
         "data_elements": {
-            "phqa_schema_session_id": {
+            "peds_phqa_session_id": {
                 "description": "The unique identifier for phqa session.",
                 "question": {
                     "en": "Session ID"
@@ -17,7 +17,7 @@
                     "xsd:string"
                 ]
             },
-            "phqa_schema_duration": {
+            "peds_phqa_duration": {
                 "description": "Duration of the phqa session.",
                 "question": {
                     "en": "Questionnaire Duration (seconds)"
@@ -32,14 +32,7 @@
                     "xsd:decimal"
                 ]
             },
-            "phqa_intro": {
-                "description": "phqa_intro",
-                "question": {
-                    "en": "How often have you been bothered by each of the following symptoms during the past two weeks? For each symptom select the answer that best describes how you have been feeling"
-                },
-                "choices": null
-            },
-            "phqa_q1": {
+            "peds_phqa_feeling_depressed": {
                 "description": "items/phqa_q1",
                 "question": {
                     "en": "Feeling down, depressed, irritable, or hopeless?"
@@ -77,7 +70,7 @@
                     "xsd:integer"
                 ]
             },
-            "phqa_q2": {
+            "peds_phqa_no_interest": {
                 "description": "items/phqa_q2",
                 "question": {
                     "en": "Little interest or pleasure in doing things?"
@@ -115,7 +108,7 @@
                     "xsd:integer"
                 ]
             },
-            "phqa_q3": {
+            "peds_phqa_trouble_sleeping": {
                 "description": "items/phqa_q3",
                 "question": {
                     "en": "Trouble falling asleep, staying asleep, or sleeping too much?"
@@ -153,7 +146,7 @@
                     "xsd:integer"
                 ]
             },
-            "phqa_q4": {
+            "peds_phqa_no_appetite": {
                 "description": "items/phqa_q4",
                 "question": {
                     "en": "Poor appetite, weight loss, or overeating?"
@@ -191,7 +184,7 @@
                     "xsd:integer"
                 ]
             },
-            "phqa_q5": {
+            "peds_phqa_no_energy": {
                 "description": "items/phqa_q5",
                 "question": {
                     "en": "Feeling tired, or having little energy?"
@@ -229,7 +222,7 @@
                     "xsd:integer"
                 ]
             },
-            "phqa_q6": {
+            "peds_phqa_feeling_bad_self": {
                 "description": "items/phqa_q6",
                 "question": {
                     "en": "Feeling bad about yourself \u2013 or feeling that you are a failure, or that you have let yourself or your family down?"
@@ -267,7 +260,7 @@
                     "xsd:integer"
                 ]
             },
-            "phqa_q7": {
+            "peds_phqa_trouble_concentrate": {
                 "description": "items/phqa_q7",
                 "question": {
                     "en": "Trouble concentrating on things like school work, reading, or watching TV?"
@@ -305,7 +298,7 @@
                     "xsd:integer"
                 ]
             },
-            "phqa_q8": {
+            "peds_phqa_move_speak_slow": {
                 "description": "items/phqa_q8",
                 "question": {
                     "en": "Moving or speaking so slowly that other people could have noticed? Or the opposite \u2013 being so fidgety or restless that you were moving around a lot more than usual?"
@@ -343,7 +336,7 @@
                     "xsd:integer"
                 ]
             },
-            "phqa_q9": {
+            "peds_phqa_thoughts_death": {
                 "description": "items/phqa_q9",
                 "question": {
                     "en": "Thoughts that you would be better off dead, or of hurting yourself in some way?"
