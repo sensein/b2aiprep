@@ -138,7 +138,8 @@ def redcap2bids(
     if audiodir is not None:
         audiodir = Path(audiodir)
     redcap_dataset = RedCapDataset.from_redcap(filename)
-    bids_dataset = BIDSDataset.from_redcap(redcap_dataset, outdir=Path(outdir), audiodir=audiodir)
+    
+    BIDSDataset.from_redcap(redcap_dataset, outdir=Path(outdir), audiodir=audiodir)
 
 
 @click.command()
@@ -569,7 +570,7 @@ def publish_bids_dataset(bids_path, outdir, publish_config_dir, skip_audio):
     
     # Create BIDSDataset instance and use the deidentify method
     bids_dataset = BIDSDataset(bids_path)
-    deidentified_dataset = bids_dataset.deidentify(
+    bids_dataset.deidentify(
         outdir=outdir, publish_config_dir=publish_config_dir, skip_audio=skip_audio
     )
     

@@ -394,20 +394,21 @@ class RedCapDataset:
             sessions = Path(subject).iterdir()
             for session in sessions:
                 if session.is_dir():
-                    session_files = list(session.glob("*.json"))
+                    session_files = list(session.glob("*.jsonld"))
                     for session_file in session_files:
                         try:
                             with open(session_file, 'r') as f:
                                 session_data = json.load(f)
-                            
-                            session_path = str(session.relative_to(subject))
-                            questionnaire_df_list = parse_survey(session_data, subject_count - 1, session_path)
-                            
-                            for df in questionnaire_df_list:
-                                merged_questionnaire_data.append(df)
+                        except json.JSONDecodeError as e:
+                            _LOGGER.warning(f"Failed to decode session file {session_file}: {str(e)}")
+                            continue
+                        
+                        session_path = str(session.relative_to(subject))
+                        questionnaire_df_list = parse_survey(session_data, subject_count - 1, session_path)
+                        
+                        for df in questionnaire_df_list:
+                            merged_questionnaire_data.append(df)
                                 
-                        except Exception as e:
-                            _LOGGER.warning(f"Failed to process session file {session_file}: {str(e)}")
         
         # Process audio data
         audio_files = []

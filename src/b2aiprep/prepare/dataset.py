@@ -681,9 +681,11 @@ class BIDSDataset:
         sessions_df = pd.DataFrame(columns=session_instrument.columns)
 
         # validated questionnaires are asked per session
+        sessions_rows = []
+
         for session in participant["sessions"]:
             sessions_row = {key: session[key] for key in session_instrument.columns}
-            sessions_df = pd.concat([sessions_df, pd.DataFrame([sessions_row])], ignore_index=True)
+            sessions_rows.append(sessions_row)
             session_id = session["session_id"]
             # TODO: prepare a session resource to use as the encounter reference for
             # each session questionnaire
@@ -767,6 +769,7 @@ class BIDSDataset:
                             else:
                                 audio_file_destination.write_bytes(audio_file.read_bytes())
         # Save sessions.tsv
+        sessions_df = pd.DataFrame(sessions_rows)
         if not os.path.exists(subject_path):
             os.mkdir(subject_path)
         sessions_tsv_path = subject_path / "sessions.tsv"
