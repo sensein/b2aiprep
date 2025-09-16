@@ -569,20 +569,11 @@ def publish_bids_dataset(bids_path, outdir, publish_config_dir, skip_audio):
     
     # Create BIDSDataset instance and use the deidentify method
     bids_dataset = BIDSDataset(bids_path)
-    deidentified_dataset = bids_dataset.deidentify(outdir=outdir, skip_audio=skip_audio)
+    deidentified_dataset = bids_dataset.deidentify(
+        outdir=outdir, publish_config_dir=publish_config_dir, skip_audio=skip_audio
+    )
     
     _LOGGER.info("Publication ready dataset created successfully.")
-
-    for path in outdir.rglob("*"):
-        if path.suffix == ".tsv" and path.is_file():
-            df = pd.read_csv(path, sep="\t")
-
-            if "participant_id" in df.columns:
-                df["participant_id"] = df["participant_id"].map(ids_to_remap).fillna(df["participant_id"])
-                df.to_csv(path, sep="\t", index=False)
-                _LOGGER.info(f"Updated TSV: {path}")
-            else:
-                _LOGGER.info(f"Skipped TSV (no 'participant_id' column): {path}")
 
 @click.command()
 @click.argument("bids_dir_path", type=click.Path())
