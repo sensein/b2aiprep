@@ -160,7 +160,6 @@ def parse_audio(audio_list, dummy_audio_files=False):
     acoustic_tasks = set()
     # acoustic_task_dict = dict()
     for file_path in flattened_list:
-
         record_id = Path(file_path).parent.parent.name
         session = Path(file_path).parent.name
         if dummy_audio_files:
@@ -315,7 +314,6 @@ class RedCapDataset:
                 'participant_group': participant_group
             }
         )
-        
         # Apply standard processing
         dataset._insert_missing_columns()
         
@@ -402,29 +400,57 @@ class RedCapDataset:
                         except json.JSONDecodeError as e:
                             _LOGGER.warning(f"Failed to decode session file {session_file}: {str(e)}")
                             continue
-                        
+                        record_id = (subject.split("/")[-1]).split()[0]
                         session_path = str(session.relative_to(subject))
-                        questionnaire_df_list = parse_survey(session_data, subject_count - 1, session_path)
-                        
+                        questionnaire_df_list = parse_survey(session_data, record_id, session_path)
+
                         for df in questionnaire_df_list:
                             merged_questionnaire_data.append(df)
-                                
-        
-        # Process audio data
-        audio_files = []
-        for audio_file in Path(audio_dir).rglob("*.wav"):
-            audio_files.append(str(audio_file))
-        
-        audio_data_list = parse_audio(audio_files)
-        
+
+                    session_id = [f.name for f in os.scandir(subject) if f.is_dir()]
+                    session_df = pd.DataFrame(
+                        {
+                            "record_id": (subject.split("/")[-1]).split()[0],
+                            "redcap_repeat_instrument": ["Session"],
+                            "redcap_repeat_instance": [1],
+                            "session_id": session_id,
+                            "session_status": ["Completed"],
+                            "session_is_control_participant": ["No"],
+                            "session_duration": ["0.0"],
+                            "session_site": ["SickKids"],
+                        }
+                    )
+                    merged_questionnaire_data += [session_df]
+
+        audio_folders = Path(audio_dir)
+        audio_sub_folders = sorted([str(f) for f in audio_folders.iterdir() if f.is_dir()])
+        merged_csv = []
+        for subject in audio_sub_folders:
+            audio_session_id = [f.name for f in os.scandir(subject) if f.is_dir()]
+            audio_session_dict = {
+                "record_id": (subject.split("/")[-1]).split()[0],
+                "redcap_repeat_instrument": "Session",
+                "redcap_repeat_instance": 1,
+                "session_id": audio_session_id[0],
+                "session_status": "Completed",
+                "session_is_control_participant": "No",
+                "session_duration": 0.0,
+                "session_site": "SickKids",
+            }
+            merged_csv.append(audio_session_dict)
+            # Process audio data
+            audio_files = []
+            for audio_file in Path(subject).rglob("*.wav"):
+                audio_files.append(str(audio_file))
+
+            merged_csv += parse_audio(audio_files)
+        audio_df = pd.DataFrame(merged_csv)
         # Convert audio data to DataFrames
-        audio_dfs = []
-        for audio_entry in audio_data_list:
-            audio_dfs.append(pd.DataFrame([audio_entry]))
-        
+        audio_dfs = [audio_df]
+
         # Combine all data
         all_dfs = merged_questionnaire_data + audio_dfs
-        
+
         if all_dfs:
             combined_df = pd.concat(all_dfs, ignore_index=True, sort=False)
             
@@ -496,8 +522,9 @@ class RedCapDataset:
         all_columns = json.load(all_columns_path.open())
         columns_to_add = [col for col in all_columns if col not in self.df.columns]
         
-        for column in columns_to_add:
-            self.df[column] = np.nan
+        if columns_to_add:
+            nan_cols = pd.DataFrame(np.nan, index=self.df.index, columns=columns_to_add)
+            self.df = pd.concat([self.df, nan_cols], axis=1)
         
         _LOGGER.info(f"Added {len(columns_to_add)} missing columns to DataFrame")
     
