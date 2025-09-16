@@ -46,12 +46,11 @@ from tqdm import tqdm
 from b2aiprep.prepare.bids import get_paths, validate_bids_folder
 from b2aiprep.prepare.redcap import RedCapDataset
 from b2aiprep.prepare.dataset import BIDSDataset
-from b2aiprep.prepare.constants import PARTICIPANT_ID_TO_REMOVE
 from b2aiprep.prepare.derived_data import (
     feature_extraction_generator,
-    load_phenotype_data,
     spectrogram_generator,
 )
+from b2aiprep.prepare.constants import _load_participant_exclusions
 from b2aiprep.prepare.prepare import (
     filter_audio_paths,
     generate_features_wrapper,
@@ -384,7 +383,7 @@ def create_derived_dataset(bids_path, outdir):
     )
 
     _LOGGER.info("Creating merged phenotype data.")
-    df, phenotype = load_phenotype_data(bids_path, phenotype_name="participants")
+    df, phenotype = BIDSDataset.load_phenotype_data(bids_path, phenotype_name="participants")
 
     # write out phenotype data and data dictionary
     df.to_csv(outdir.joinpath("phenotype.tsv"), sep="\t", index=False)
@@ -395,7 +394,8 @@ def create_derived_dataset(bids_path, outdir):
     _LOGGER.info("Loading audio static features.")
     # remove known individuals
     n = len(audio_paths)
-    for participant_id in PARTICIPANT_ID_TO_REMOVE:
+    participant_ids_to_remove = _load_participant_exclusions()
+    for participant_id in participant_ids_to_remove:
         audio_paths = [x for x in audio_paths if f"sub-{participant_id}" not in str(x)]
 
     if len(audio_paths) < n:
@@ -567,6 +567,7 @@ def publish_bids_dataset(bids_path, outdir, publish_config_dir, skip_audio):
     - id_remapping.json
     """
     bids_path = Path(bids_path)
+    publish_config_dir = Path(publish_config_dir)
     
     # Create BIDSDataset instance and use the deidentify method
     bids_dataset = BIDSDataset(bids_path)

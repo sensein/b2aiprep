@@ -209,7 +209,7 @@ def parse_audio(audio_list, dummy_audio_files=False):
             "recording_profile_name": "Speech",
             "recording_profile_version": "v1.0.0",
             "recording_input_gain": 0.0,
-            "recording_microphone": "ipad",
+            "recording_microphone": "USB-C to 3.5mm Headphone Jack Adapter",
         }
 
         acoustic_prev = acoustic_task

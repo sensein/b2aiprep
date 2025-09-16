@@ -8,7 +8,6 @@ import pandas as pd
 import torch
 from tqdm import tqdm
 
-from b2aiprep.prepare.constants import PARTICIPANT_ID_TO_REMOVE
 from b2aiprep.prepare.prepare import reduce_id_length, reduce_length_of_id
 
 _LOGGER = logging.getLogger(__name__)

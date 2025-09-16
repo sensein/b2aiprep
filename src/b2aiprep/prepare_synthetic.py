@@ -33,11 +33,11 @@ from importlib.resources import files
 from pydantic import BaseModel
 from tqdm import tqdm
 
-from b2aiprep.fhir_utils import (
+from b2aiprep.prepare.fhir_utils import (
     convert_response_to_fhir,
     is_empty_questionnaire_response,
 )
-from b2aiprep.constants import (
+from b2aiprep.prepare.constants import (
     Instrument,
     RepeatInstrument,
     AUDIO_TASKS,   
@@ -533,108 +533,24 @@ def redcap_to_bids(
         The path to the folder containing audio files. If omitted, no audio data will be included
         in the reorganized output.
     
+    Returns
+    -------
+    BIDSDataset
+        A BIDSDataset instance pointing to the created BIDS directory.
+    
     Raises
     ------
     ValueError
         If the RedCap CSV file is not found, or if the columns in the CSV file do not match
         the expected columns for the Bridge2AI data.
     """
-    df = load_redcap_csv(filename)
-
-    # It is possible for each column in the dataframe to have one of two names:
-    #   1. coded column names ("record_id")
-    #   2. text column names ("Record ID")
-    # for simplicity, we always map columns to coded columns before processing,
-    # that way we only ever need to manually subselect using one version of the column name
-    df = update_redcap_df_column_names(df)
-
-    # the repeat instrument columns also defines all the possible
-    # repeat instruments we would like to extract from the RedCap CSV
-    repeat_instruments: t.List[RepeatInstrument] = list(RepeatInstrument.__members__.values())
-
-    # we use the RepeatInstrument values to create a dict that maps the instrument
-    # i.e. we end up with dataframe_dicts = {
-    #       'demographics': {"session_id_1": {data}, ...}},
-    #       'confounders': {"session_id_1": {data}, ...}},
-    #    ...
-    #   }
-    dataframe_dicts: t.Dict[RepeatInstrument, pd.DataFrame] = {}
-    for repeat_instrument in repeat_instruments:
-        instrument = repeat_instrument.value
-
-        # load in the df based on the instrument
-        questionnaire_df = get_df_of_repeat_instrument(df, instrument)
-        _LOGGER.info(f"Number of {instrument.name} entries: {len(questionnaire_df)}")
-        dataframe_dicts[repeat_instrument] = questionnaire_df
-
-    # # create separate data frames for sets of columns
-    # # number of participants
-    # participants_df = get_df_of_repeat_instrument(
-    #     df, RepeatInstrument.PARTICIPANT.value
-    # )
-    # _LOGGER.info(f"Number of participants: {len(participants_df)}")
-
-    # # session info
-    # sessions_df = get_df_of_repeat_instrument(df, RepeatInstrument.SESSION.value)
-    # _LOGGER.info(f"Number of sessions: {len(sessions_df)}")
-
-    # # subject id (record_id) to accoustic_task_id and accoustic_task_name
-    # acoustic_tasks_df = get_df_of_repeat_instrument(
-    #     df, RepeatInstrument.ACOUSTIC_TASK.value
-    # )
-    # _LOGGER.info(f"Number of Acoustic Tasks: {len(acoustic_tasks_df)}")
-
-    # # recording info
-    # recordings_df = get_df_of_repeat_instrument(
-    #     df, RepeatInstrument.RECORDING.value
-    # )
-    # _LOGGER.info(f"Number of Recordings: {len(recordings_df)}")
-
-    participants_df = dataframe_dicts.pop(RepeatInstrument.PARTICIPANT)
-    sessions_df = dataframe_dicts.pop(RepeatInstrument.SESSION)
-    acoustic_tasks_df = dataframe_dicts.pop(RepeatInstrument.ACOUSTIC_TASK)
-    recordings_df = dataframe_dicts.pop(RepeatInstrument.RECORDING)
-
-    # convert the remaining dataframes to dictionaries indexed by session_id
-    for repeat_instrument, questionnaire_df in dataframe_dicts.items():
-        session_id_col = repeat_instrument.value.session_id
-        dataframe_dicts[repeat_instrument] = _df_to_dict(questionnaire_df, session_id_col)
-
-    # create a list of dict containing FHIR formatted version of everyone's data
-    participants = []
-    for participant in participants_df.to_dict("records"):
-        participants.append(participant)
-        participant["sessions"] = sessions_df[
-            sessions_df["record_id"] == participant["record_id"]
-        ].to_dict("records")
-
-        for session in participant["sessions"]:
-            # there can be multiple acoustic tasks per session
-            session_id = session["session_id"]
-            if str(session_id) == 'nan':
-                session_id = str(uuid.uuid4())
-            session["acoustic_tasks"] = acoustic_tasks_df[
-                acoustic_tasks_df["acoustic_task_session_id"] == session_id
-            ].to_dict("records")
-            for task in session["acoustic_tasks"]:
-                # there can be multiple recordings per acoustic task
-                task["recordings"] = recordings_df[
-                    recordings_df["recording_acoustic_task_id"]
-                    == task["acoustic_task_id"]
-                ].to_dict("records")
-
-            # there can be only one demographics per session
-            for key, df_by_session_id in dataframe_dicts.items():
-                if session_id not in df_by_session_id:
-                    _LOGGER.info(f"No {key} found for session {session_id}.")
-                    session[key] = None
-                else:
-                    session[key] = df_by_session_id[session_id]
-
-    # participants is a list of dictionaries; each dictionary has the same RedCap fields
-    # but it respects the nesting / hierarchy present in the original data collection
-    # TODO: maybe this warning should go in the main function
-    if (audiodir is not None) and (not audiodir.exists()):
-        logging.warning(f"{audiodir} path does not exist. No audio files will be reorganized.")
-    for participant in tqdm(participants, desc="Writing participant data to file"):
-        output_participant_data_to_fhir(participant, outdir, audiodir=audiodir)
+    from b2aiprep.prepare.redcap import RedCapDataset
+    from b2aiprep.prepare.dataset import BIDSDataset
+    
+    # Create RedCapDataset from CSV file
+    redcap_dataset = RedCapDataset.from_redcap(filename)
+    
+    # Convert to BIDS format using the new class method
+    bids_dataset = BIDSDataset.from_redcap(redcap_dataset, outdir, audiodir)
+    
+    return bids_dataset

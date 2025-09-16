@@ -838,7 +838,7 @@ class BIDSDataset:
 
         # Remove participants
         idx = df["participant_id"].isin(participant_ids_to_remove)
-        if idx.sum() > 0:
+        if idx.any():
             logging.info(f"Removing {idx.sum()} participants from phenotype data.")
             df = df.loc[~idx]
 
@@ -1009,7 +1009,15 @@ class BIDSDataset:
                 continue
             phenotype_updated[name] = value
 
-        df = df.rename(columns={"record_id": "participant_id"})
+        # Only rename if record_id exists and participant_id doesn't exist
+        if 'record_id' in df.columns and 'participant_id' not in df.columns:
+            df = df.rename(columns={"record_id": "participant_id"})
+        elif 'record_id' in df.columns and 'participant_id' in df.columns:
+            # If both exist, drop record_id since participant_id takes precedence
+            df = df.drop(columns=['record_id'])
+            # Remove record_id from phenotype_updated if it exists
+            phenotype_updated = {k: v for k, v in phenotype_updated.items() if k != 'record_id'}
+        
         return df, phenotype_updated
 
     def _add_sex_at_birth_column(self, df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
@@ -1053,7 +1061,7 @@ class BIDSDataset:
         return df
 
     @staticmethod
-    def load_remap_id_list(publish_config_dir: Path) -> Dict:
+    def load_remap_id_list(publish_config_dir: Path) -> t.Dict[str, str]:
         audio_to_remap_path = publish_config_dir / "id_remapping.json"
         if not audio_to_remap_path.exists():
             raise FileNotFoundError(f"ID remapping file {audio_to_remap_path} does not exist.")
@@ -1064,6 +1072,38 @@ class BIDSDataset:
         if not isinstance(data, dict):
             raise ValueError(f"ID remapping file {audio_to_remap_path} should contain a dict of participant_id:new_id.")
 
+        return data
+    
+    @staticmethod
+    def load_participant_ids_to_remove(publish_config_dir: Path) -> t.List[str]:
+        """Load list of participant IDs to remove from JSON file."""
+        participant_to_remove_path = publish_config_dir / "participant_ids_to_remove.json"
+        if not participant_to_remove_path.exists():
+            # If file doesn't exist, return empty list
+            return []
+
+        with open(participant_to_remove_path, 'r') as f:
+            data = json.load(f)
+
+        if not isinstance(data, list):
+            raise ValueError(f"Participant IDs to remove file {participant_to_remove_path} should contain a list of participant IDs.")
+        
+        return data
+    
+    @staticmethod
+    def load_audio_filestems_to_remove(publish_config_dir: Path) -> t.List[str]:
+        """Load list of audio file stems to remove from JSON file."""
+        audio_to_remove_path = publish_config_dir / "audio_filestems_to_remove.json"
+        if not audio_to_remove_path.exists():
+            # If file doesn't exist, return empty list
+            return []
+
+        with open(audio_to_remove_path, 'r') as f:
+            data = json.load(f)
+
+        if not isinstance(data, list):
+            raise ValueError(f"Audio filestems to remove file {audio_to_remove_path} should contain a list of audio file stems.")
+        
         return data
 
     def deidentify(self, outdir: t.Union[str, Path], publish_config_dir: Path, skip_audio: bool = False) -> 'BIDSDataset':
@@ -1087,8 +1127,8 @@ class BIDSDataset:
         outdir = Path(outdir)
         outdir.mkdir(parents=True, exist_ok=False)  # Don't overwrite existing directories
         
-        participant_ids_to_remap = load_remap_id_list(publish_config_dir)
-        participant_ids_to_remove = load_participant_ids_to_remove(publish_config_dir)
+        participant_ids_to_remap = BIDSDataset.load_remap_id_list(publish_config_dir)
+        participant_ids_to_remove = BIDSDataset.load_participant_ids_to_remove(publish_config_dir)
 
         # Check if source directory has required files
         participant_filepath = self.data_path.joinpath("participants.tsv")
@@ -1098,7 +1138,7 @@ class BIDSDataset:
         logging.info("Processing participants.tsv for deidentification.")
         df, phenotype = BIDSDataset.load_phenotype_data(self.data_path, "participants")
         df, phenotype = BIDSDataset._deidentify_phenotype(df, phenotype, participant_ids_to_remove, participant_ids_to_remap)
-        df, phenotype = BIDSDataset._clean_phenotype_data(df, phenotype)
+        df, phenotype = self._clean_phenotype_data(df, phenotype)
         
         # Write out deidentified phenotype data and data dictionary
         df.to_csv(outdir.joinpath("participants.tsv"), sep="\t", index=False)
@@ -1115,9 +1155,9 @@ class BIDSDataset:
             
             for phenotype_filepath in phenotype_base_path.glob("*.tsv"):
                 logging.info(f"Processing {phenotype_filepath.stem}.")
-                df_pheno, phenotype_dict = BIDSDataset.load_phenotype_data(self.data_path, phenotype_filepath.stem)
+                df_pheno, phenotype_dict = BIDSDataset.load_phenotype_data(phenotype_base_path, phenotype_filepath.stem)
                 df_pheno, phenotype_dict = BIDSDataset._deidentify_phenotype(df_pheno, phenotype_dict, participant_ids_to_remove, participant_ids_to_remap)
-                df_pheno, phenotype_dict = BIDSDataset._clean_phenotype_data(df_pheno, phenotype_dict)
+                df_pheno, phenotype_dict = self._clean_phenotype_data(df_pheno, phenotype_dict)
                 
                 # Write out phenotype data and data dictionary
                 df_pheno.to_csv(
@@ -1131,12 +1171,12 @@ class BIDSDataset:
         if not skip_audio:
             # Process audio files
             logging.info("Processing audio files for deidentification.")
-            audio_filestems_to_remove = load_audio_filestems_to_remove(publish_config_dir)
-            BIDSDataset._deidentify_audio_files(self.data_path, outdir, participant_ids_to_remove, audio_filestems_to_remove)
+            audio_filestems_to_remove = BIDSDataset.load_audio_filestems_to_remove(publish_config_dir)
+            BIDSDataset._deidentify_audio_files(self.data_path, outdir, participant_ids_to_remove, audio_filestems_to_remove, participant_ids_to_remap)
             logging.info("Finished processing audio files.")
         
         # Copy over the standard BIDS template files if they exist
-        for template_file in ["README.md", "CHANGELOG.md", "dataset_description.json"]:
+        for template_file in ["README.md", "CHANGES.md", "dataset_description.json"]:
             template_path = self.data_path.joinpath(template_file)
             if template_path.exists():
                 shutil.copy(template_path, outdir)
@@ -1164,7 +1204,8 @@ class BIDSDataset:
         data_path: Path,
         outdir: Path,
         exclude_participant_ids: t.List[str] = [],
-        exclude_audio_filestems: t.List[str] = []
+        exclude_audio_filestems: t.List[str] = [],
+        participant_ids_to_remap: t.Dict[str, str] = {}
     ):
         """
         Copy and deidentify audio files to the output directory.
@@ -1182,11 +1223,11 @@ class BIDSDataset:
         _LOGGER = logging.getLogger(__name__)
         
         # Get all audio paths
-        audio_paths = get_paths(self.data_path, file_extension=".wav")
+        audio_paths = get_paths(data_path, file_extension=".wav")
         audio_paths = [x["path"] for x in audio_paths]
         
         if len(audio_paths) == 0:
-            _LOGGER.warning(f"No audio files (.wav) found in {self.data_path}.")
+            _LOGGER.warning(f"No audio files (.wav) found in {data_path}.")
             return
         
         # Sort audio paths for consistent processing
@@ -1239,7 +1280,7 @@ class BIDSDataset:
             metadata = json.loads(json_path.read_text())
             
             # Update metadata with deidentified IDs
-            update_metadata_record_and_session_id(metadata)
+            update_metadata_record_and_session_id(metadata, participant_ids_to_remap)
             participant_id = get_value_from_metadata(metadata, linkid="participant_id", endswith=False)
             session_id = get_value_from_metadata(metadata, linkid="session_id", endswith=True)
             

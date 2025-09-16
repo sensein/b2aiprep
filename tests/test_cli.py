@@ -428,21 +428,21 @@ def test_publish_bids_dataset_cli_id_rename(setup_bids_structure):
         config_dir = Path(temp_base)/"publish_config"
         config_dir.mkdir()
         
-        audio_to_remove_path = config_dir  / f"audio_to_remove.json"
+        audio_to_remove_path = config_dir  / "audio_filestems_to_remove.json"
         audio_to_remove_data = []
 
         with open(audio_to_remove_path, "w") as f:
             json.dump(audio_to_remove_data, f, indent=2)
             
-        id_remapping_path = config_dir  / f"id_remapping.json"
+        id_remapping_path = config_dir  / "id_remapping.json"
         id_remapping_data = {"001": "P001"}
 
         with open(id_remapping_path , "w") as f:
             json.dump(id_remapping_data, f, indent=2)
             
             
-        participants_to_remove_path = config_dir  / f"participants_to_remove.json"
-        participants_to_remove_data = {}
+        participants_to_remove_path = config_dir  / "participant_ids_to_remove.json"
+        participants_to_remove_data = []
 
         with open(participants_to_remove_path , "w") as f:
             json.dump(participants_to_remove_data, f, indent=2)
@@ -474,21 +474,21 @@ def test_publish_bids_dataset_cli_remove_audio(setup_bids_structure):
         config_dir = Path(temp_base)/"publish_config"
         config_dir.mkdir()
         
-        audio_to_remove_path = config_dir  / f"audio_to_remove.json"
+        audio_to_remove_path = config_dir  / "audio_filestems_to_remove.json"
         audio_to_remove_data = ["sub-001_ses-001_task-reading"]
 
         with open(audio_to_remove_path, "w") as f:
             json.dump(audio_to_remove_data, f, indent=2)
             
-        id_remapping_path = config_dir  / f"id_remapping.json"
+        id_remapping_path = config_dir  / "id_remapping.json"
         id_remapping_data = {}
 
         with open(id_remapping_path , "w") as f:
             json.dump(id_remapping_data, f, indent=2)
             
             
-        participants_to_remove_path = config_dir  / f"participants_to_remove.json"
-        participants_to_remove_data = {}
+        participants_to_remove_path = config_dir  / "participant_ids_to_remove.json"
+        participants_to_remove_data = []
 
         with open(participants_to_remove_path , "w") as f:
             json.dump(participants_to_remove_data, f, indent=2)
