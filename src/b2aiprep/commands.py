@@ -43,13 +43,14 @@ from streamlit import config as _config
 from streamlit.web.bootstrap import run
 from tqdm import tqdm
 
-from b2aiprep.prepare.bids import get_paths, redcap_to_bids, validate_bids_folder
-from b2aiprep.prepare.constants import PARTICIPANT_ID_TO_REMOVE
+from b2aiprep.prepare.bids import get_paths, validate_bids_folder
+from b2aiprep.prepare.redcap import RedCapDataset
+from b2aiprep.prepare.dataset import BIDSDataset
 from b2aiprep.prepare.derived_data import (
     feature_extraction_generator,
-    load_phenotype_data,
     spectrogram_generator,
 )
+from b2aiprep.prepare.constants import _load_participant_exclusions
 from b2aiprep.prepare.prepare import (
     filter_audio_paths,
     generate_features_wrapper,
@@ -65,10 +66,6 @@ from b2aiprep.prepare.prepare import (
 )
 
 from b2aiprep.prepare.data_validation import validate_derivatives
-
-from b2aiprep.prepare.reproschema_to_redcap import parse_audio, parse_survey
-
-# from b2aiprep.synthetic_data import generate_synthetic_tabular_data
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -139,11 +136,9 @@ def redcap2bids(
         raise ValueError(f"Output path {outdir} is not a directory.")
     if audiodir is not None:
         audiodir = Path(audiodir)
-    redcap_to_bids(
-        filename,
-        outdir=Path(outdir),
-        audiodir=audiodir,
-    )
+    redcap_dataset = RedCapDataset.from_redcap(filename)
+    
+    BIDSDataset.from_redcap(redcap_dataset, outdir=Path(outdir), audiodir=audiodir)
 
 
 @click.command()
@@ -212,7 +207,9 @@ def prepare_bids(
     os.makedirs(cache, exist_ok=True)
     if redcap_csv_path is not None and audio_dir_path is not None:
         _LOGGER.info("Organizing data into BIDS-like directory structure...")
-        redcap_to_bids(Path(redcap_csv_path), Path(bids_dir_path), Path(audio_dir_path))
+        # Use the new RedCapDataset and BIDSDataset classes
+        redcap_dataset = RedCapDataset.from_redcap(redcap_csv_path)
+        bids_dataset = BIDSDataset.from_redcap(redcap_dataset, outdir=Path(bids_dir_path), audiodir=Path(audio_dir_path))
         _LOGGER.info("Data organization complete.")
     bids_path = Path(bids_dir_path)
 
@@ -386,7 +383,7 @@ def create_derived_dataset(bids_path, outdir):
     )
 
     _LOGGER.info("Creating merged phenotype data.")
-    df, phenotype = load_phenotype_data(bids_path, phenotype_name="participants")
+    df, phenotype = BIDSDataset.load_phenotype_data(bids_path, phenotype_name="participants")
 
     # write out phenotype data and data dictionary
     df.to_csv(outdir.joinpath("phenotype.tsv"), sep="\t", index=False)
@@ -397,7 +394,8 @@ def create_derived_dataset(bids_path, outdir):
     _LOGGER.info("Loading audio static features.")
     # remove known individuals
     n = len(audio_paths)
-    for participant_id in PARTICIPANT_ID_TO_REMOVE:
+    participant_ids_to_remove = _load_participant_exclusions()
+    for participant_id in participant_ids_to_remove:
         audio_paths = [x for x in audio_paths if f"sub-{participant_id}" not in str(x)]
 
     if len(audio_paths) < n:
@@ -552,7 +550,8 @@ def validate_derived_dataset(dataset_path):
 @click.argument("bids_path", type=click.Path(exists=True))
 @click.argument("outdir", type=click.Path())
 @click.argument("publish_config_dir", type=click.Path(exists=True))
-def publish_bids_dataset(bids_path, outdir, publish_config_dir):
+@click.option("--skip_audio/--no-skip_audio", type=bool, default=False, show_default=True, help="Skip processing audio files")
+def publish_bids_dataset(bids_path, outdir, publish_config_dir, skip_audio):
     """Creates a publication ready version of a given BIDS dataset.
 
     The publication ready version
@@ -560,6 +559,7 @@ def publish_bids_dataset(bids_path, outdir, publish_config_dir):
     - only includes audio (omits features)
     - cleans/processes the various phenotype files and participants.tsv
     - removes sensitive audio records
+    - applies deidentification procedures
 
     Requires publish_config_dir to contain
     - participants_to_remove.json
@@ -568,122 +568,14 @@ def publish_bids_dataset(bids_path, outdir, publish_config_dir):
     """
     bids_path = Path(bids_path)
     publish_config_dir = Path(publish_config_dir)
-    ids_to_remap = load_remap_id_list(publish_config_dir)
-    participant_filepath = bids_path.joinpath("participants.tsv")
-    if not participant_filepath.exists():
-        raise FileNotFoundError(f"Participant file {participant_filepath} does not exist.")
-
-    audio_paths = get_paths(bids_path, file_extension=".wav")
-    audio_paths = [x["path"] for x in audio_paths]
-
-    if len(audio_paths) == 0:
-        raise FileNotFoundError(
-            f"No audio files (.wav) found in {bids_path}. Please check the directory structure."
-        )
-
-    outdir = Path(outdir)
-    outdir.mkdir(parents=True, exist_ok=False)  # do not overwrite any existing directories
-
-    _LOGGER.info("Processing participants.tsv.")
-    df, phenotype = load_phenotype_data(bids_path, phenotype_name="participants")
-
-    # write out phenotype data and data dictionary
-    df.to_csv(outdir.joinpath("participants.tsv"), sep="\t", index=False)
-    with open(outdir.joinpath("participants.json"), "w") as f:
-        json.dump(phenotype, f, indent=2)
-    _LOGGER.info("Finished processing participants data.")
-
-    # now process phenotypes
-    _LOGGER.info("Processing phenotype data.")
-    phenotype_base_path = bids_path.joinpath("phenotype")
-    phenotype_output_path = outdir.joinpath("phenotype")
-    phenotype_output_path.mkdir(parents=True, exist_ok=True)
-    for phenotype_filepath in phenotype_base_path.glob("*.tsv"):
-        _LOGGER.info(f"Processing {phenotype_filepath.stem}.")
-        # load in the phenotype data
-        df, phenotype = load_phenotype_data(
-            phenotype_base_path, phenotype_name=phenotype_filepath.stem
-        )
-        # write out phenotype data and data dictionary
-        df.to_csv(
-            phenotype_output_path.joinpath(f"{phenotype_filepath.stem}.tsv"), sep="\t", index=False
-        )
-        with open(phenotype_output_path.joinpath(f"{phenotype_filepath.stem}.json"), "w") as f:
-            json.dump(phenotype, f, indent=2)
-    _LOGGER.info("Finished processing phenotype data.")
-
-    _LOGGER.info("Loading spectrograms into a single HF dataset.")
-
-    audio_paths = sorted(
-        audio_paths,
-        # sort first by subject, then by task
-        key=lambda x: (x.stem.split("_")[0], x.stem.split("_")[2]),
+    
+    # Create BIDSDataset instance and use the deidentify method
+    bids_dataset = BIDSDataset(bids_path)
+    bids_dataset.deidentify(
+        outdir=outdir, publish_config_dir=publish_config_dir, skip_audio=skip_audio
     )
-
-    # remove known individuals
-    n = len(audio_paths)
-    for participant_id in PARTICIPANT_ID_TO_REMOVE:
-        audio_paths = [x for x in audio_paths if f"sub-{participant_id}" not in str(x)]
-
-    if len(audio_paths) < n:
-        _LOGGER.info(
-            f"Removed {n - len(audio_paths)} records due to hard-coded participant removal."
-        )
-
-    # remove sensitive audio using user-provided reference data
-    audio_filestems_to_remove = load_audio_to_remove(publish_config_dir)
-    audio_paths = [
-        a for a in audio_paths
-        if a.stem not in audio_filestems_to_remove
-    ]
-
-    # remove audio check and sensitive audio
-    audio_paths = filter_audio_paths(audio_paths)
-
-    _LOGGER.info(f"Copying {len(audio_paths)} recordings.")
-    for audio_path in tqdm(
-        audio_paths, desc="Copying audio and metadata files", total=len(audio_paths)
-    ):
-        json_path = audio_path.with_suffix(".json")
-        json_path = Path(str(json_path).replace(".json","_recording-metadata.json"))
-        metadata = json.loads(json_path.read_text())
-        for old_id, new_id in ids_to_remap.items():
-            if "id" in metadata and old_id in metadata["id"]:
-                metadata["id"] = metadata["id"].replace(old_id, new_id)
-
-        update_metadata_record_and_session_id(metadata, ids_to_remap)
-        participant_id = get_value_from_metadata(metadata, linkid="participant_id", endswith=False)
-        session_id = get_value_from_metadata(metadata, linkid="session_id", endswith=True)
-
-        audio_path_stem_ending = "_".join(audio_path.stem.split("_")[2:])
-        output_path = outdir.joinpath(
-            f"sub-{participant_id}/ses-{session_id}/audio/{audio_path_stem_ending}.wav"
-        )
-        output_path.parent.mkdir(parents=True, exist_ok=True)
-        # copy over the associated .json file and audio data
-        with open(output_path.with_suffix(".json"), "w") as fp:
-            json.dump(metadata, fp, indent=2)
-        shutil.copy(audio_path, output_path)
-
-    _LOGGER.info("Finished copying audio files.")
-
-    # copy over the standard bids template files
-    shutil.copy(bids_path.joinpath("README.md"), outdir)
-    shutil.copy(bids_path.joinpath("CHANGELOG.md"), outdir)
-    shutil.copy(bids_path.joinpath("dataset_description.json"), outdir)
-
-    for path in outdir.rglob("*"):
-        if path.suffix == ".tsv" and path.is_file():
-            df = pd.read_csv(path, sep="\t")
-
-            if "participant_id" in df.columns:
-                df["participant_id"] = df["participant_id"].map(ids_to_remap).fillna(df["participant_id"])
-                df.to_csv(path, sep="\t", index=False)
-                _LOGGER.info(f"Updated TSV: {path}")
-            else:
-                _LOGGER.info(f"Skipped TSV (no 'participant_id' column): {path}")
-
-
+    
+    _LOGGER.info("Publication ready dataset created successfully.")
 
 @click.command()
 @click.argument("bids_dir_path", type=click.Path())
@@ -1146,7 +1038,7 @@ def reproschema_to_redcap(audio_dir, survey_file, redcap_csv, participant_group)
     """Converts reproschema ui data to redcap CSV.
 
     This function processes survey data and audio metadata from ReproSchema UI exports
-    and formats them into a REDCap-compatible CSV file.
+    and formats them into a REDCap-compatible CSV file using the new RedCapDataset class.
 
     Args:
         audio_dir (str): Path to the directory containing the audio files.
@@ -1161,99 +1053,21 @@ def reproschema_to_redcap(audio_dir, survey_file, redcap_csv, participant_group)
     Returns:
         None: Saves the converted data as a CSV file at the specified location.
     """
-
-    folder = Path(survey_file)
-    sub_folders = sorted([str(f) for f in folder.iterdir() if f.is_dir()])
-
-    if not folder.is_dir():
-        raise FileNotFoundError(f"{folder} does not exist.")
-
-    merged_questionnaire_data = []
-    # load each file recursively within the folder into its own key
-    subject_count = 1
-    for subject in sub_folders:
-        content = OrderedDict()
-        for file in Path(subject).rglob("*"):
-            if file.is_file():
-                filename = str(file.relative_to(subject))
-                with open(f"{subject}/{filename}", "r") as f:
-                    content[filename] = json.load(f)
-
-        for questionnaire in content.keys():  # activity files
-            try:
-                record_id = (subject.split("/")[-1]).split()[0]
-                survey_data = content[questionnaire]
-                merged_questionnaire_data += parse_survey(survey_data, record_id, questionnaire)
-            except Exception:
-                continue
-        session_id = [f.name for f in os.scandir(subject) if f.is_dir()]
-        session_df = pd.DataFrame(
-            {
-                "record_id": (subject.split("/")[-1]).split()[0],
-                "redcap_repeat_instrument": ["Session"],
-                "redcap_repeat_instance": [1],
-                "session_id": session_id,
-                "session_status": ["Completed"],
-                "session_is_control_participant": ["No"],
-                "session_duration": ["0.0"],
-                "session_site": ["SickKids"],
-            }
-        )
-        merged_questionnaire_data += [session_df]
-        subject_count += 1
-
-    survey_df = pd.concat(merged_questionnaire_data, ignore_index=True)
-    Path(redcap_csv).mkdir(parents=True, exist_ok=True)
-
-    audio_folders = Path(audio_dir)
-    audio_sub_folders = sorted([str(f) for f in audio_folders.iterdir() if f.is_dir()])
-    if not audio_folders.is_dir():
-        raise FileNotFoundError(f"{audio_folders} does not exist.")
-
-    merged_csv = []
-    for subject in audio_sub_folders:
-        audio_session_id = [f.name for f in os.scandir(subject) if f.is_dir()]
-        audio_session_dict = {
-            "record_id": (subject.split("/")[-1]).split()[0],
-            "redcap_repeat_instrument": "Session",
-            "redcap_repeat_instance": 1,
-            "session_id": audio_session_id[0],
-            "session_status": "Completed",
-            "session_is_control_participant": "No",
-            "session_duration": 0.0,
-            "session_site": "SickKids",
-        }
-        merged_csv.append(audio_session_dict)
-
-        audio_list = []
-        for file in Path(subject).glob("**/*"):
-            if file.is_file() and str(file).endswith(".wav"):
-                audio_list.append(str(file))
-
-        merged_csv += parse_audio(audio_list)
-
-    audio_df = pd.DataFrame(merged_csv)
-
-    merged_df = [survey_df, audio_df]
-    output_df = pd.concat(merged_df, ignore_index=True)
-
-    all_columns_path = resources.files("b2aiprep").joinpath(
-        "prepare", "resources", "all_columns.json"
+    # Use the new RedCapDataset class to handle ReproSchema conversion
+    dataset = RedCapDataset.from_reproschema(
+        audio_dir=audio_dir,
+        survey_dir=survey_file,
+        participant_group=participant_group
     )
-    all_columns = json.load(all_columns_path.open())
-
-    columns_to_add = [col for col in all_columns if col not in output_df.columns]
-    new_df = pd.DataFrame(columns=columns_to_add)
-
-    df_final = pd.concat([output_df, new_df], axis=1)
-    # Option to save on post processing the redcap csv
-    if participant_group is not None:
-        df_final["redcap_repeat_instrument"] = df_final["redcap_repeat_instrument"].replace(
-            participant_group, "Participant"
-        )
-
+    
+    # Ensure the output directory exists
+    Path(redcap_csv).mkdir(parents=True, exist_ok=True)
+    
+    # Save the converted data to CSV
     merged_csv_path = os.path.join(redcap_csv, "merged-redcap.csv")
-    df_final.to_csv(merged_csv_path, index=False)
+    dataset.df.to_csv(merged_csv_path, index=False)
+    
+    _LOGGER.info(f"Successfully converted ReproSchema data to RedCap CSV: {merged_csv_path}")
 
 
 @click.command()
