@@ -1,1 +1,12 @@
-record_id	redcap_repeat_instrument		redcap_repeat_instance	qol_intro	qol_q1	qol_q2	qol_q3	qol_q4	qol_q5	qol_q6	qol_q7	qol_q8	qol_q9	peds_voice_related_qol_schema_start_time	peds_voice_related_qol_schema_end_time	peds_voice_related_qol_schema_duration	peds_voice_related_qol_schema_session_id
+peds_qol_trouble_speaking_heard	peds_qol_out_of_air	
+peds_qol_come_out_speaking	
+peds_qol_anxious_frustrated	
+peds_qol_depressed	
+peds_qol_trouble_phone_speaking	
+peds_qol_trouble_doing_schoolwork	
+peds_qol_repeat_understood	
+peds_qol_less_outgoing	
+peds_qol_started_at	
+peds_qol_completed_at	
+peds_qol_duration	
+peds_qol_session_id	

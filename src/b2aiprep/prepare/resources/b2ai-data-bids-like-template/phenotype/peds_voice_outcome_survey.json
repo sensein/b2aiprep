@@ -3,7 +3,7 @@
         "description": "Measures voice outcome for kids.",
         "url": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/",
         "data_elements": {
-            "peds_voice_outcome_survey_schema_session_id": {
+            "peds_os_session_id": {
                 "description": "The unique identifier for the voice outcome session.",
                 "question": {
                     "en": "Session ID"
@@ -17,7 +17,7 @@
                     "xsd:string"
                 ]
             },
-            "peds_voice_outcome_survey_schema_duration": {
+            "peds_os_duration": {
                 "description": "Duration of the voice outcome.",
                 "question": {
                     "en": "Questionnaire Duration (seconds)"
@@ -32,8 +32,8 @@
                     "xsd:decimal"
                 ]
             },
-            "outcome_survey_q1": {
-                "description": "outcome_survey_q1",
+            "peds_os_limit_understood": {
+                "description": "peds_os_limit_understood",
                 "question": {
                     "en": "To what extent does you child\u2019s voice limit his or her ability to be understood in a noisy area?"
                 },
@@ -64,8 +64,8 @@
                     "xsd:integer"
                 ]
             },
-            "outcome_survey_q2": {
-                "description": "outcome_survey_q2",
+            "peds_os_interfered_activities": {
+                "description": "peds_os_interfered_activities",
                 "question": {
                     "en": "During the past 2 weeks, to what extent has your child\u2019s voice interfered with his or her normal social activities or with his or her school?"
                 },
@@ -108,8 +108,8 @@
                     "xsd:integer"
                 ]
             },
-            "outcome_survey_q3": {
-                "description": "outcome_survey_q3",
+            "peds_os_trouble_food_iquids": {
+                "description": "peds_os_trouble_food_iquids",
                 "question": {
                     "en": "How often does you child have trouble with food or liquids \u201cgoing down the wrong pipe\u201d when he or she eats food or drinks liquid and begins to cough after eating or drinking?"
                 },
@@ -152,8 +152,8 @@
                     "xsd:integer"
                 ]
             },
-            "outcome_survey_q4": {
-                "description": "outcome_survey_q4",
+            "peds_os_straining": {
+                "description": "peds_os_straining",
                 "question": {
                     "en": "Do you find your child \u201cstraining\u201d when he or she speaks because of his or her voice problem?"
                 },

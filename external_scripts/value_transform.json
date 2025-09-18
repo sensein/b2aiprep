@@ -1,0 +1,16 @@
+{
+    "No formal education": 1,
+    "Some elementary school": 2,
+    "Some secondary or high school education": 3,
+    "High School or secondary school degree complete": 4,
+    "Other, please specify": "other",
+    "preferNotToAnswer": "noAnswer",
+    "Male gender identity": "male",
+    "Female gender identity": "female",
+    "problemIs“asBadAsItCanBe”": "asBadAsItCanBe",
+    "7 (extremely talkative)": "7",
+    "3 (average talker)": "3",
+    "4 (average talker)": "4",
+    "1 (quiet talker)": "1"
+
+}

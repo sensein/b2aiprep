@@ -1150,7 +1150,7 @@
       "xsd:integer"
     ]
   },
-  "q_generic_demographics_schema_session_id": {
+  "peds_demographics_session_id": {
     "description": "The unique identifier for the kids demographics session.",
     "question": {
       "en": "Session ID"
@@ -1206,7 +1206,7 @@
       "xsd:string"
     ]
   },
-  "zipcode": {
+  "peds_zipcode": {
     "description": "Participant's zipcode",
     "question": {
       "en": "Zipcode/Postal Code"
@@ -1219,7 +1219,7 @@
     ],
     "choices": null
   },
-  "country": {
+  "peds_country": {
     "description": "The country where the participant resides.",
     "question": {
       "en": "Country"
@@ -1246,7 +1246,7 @@
       "xsd:integer"
     ]
   },
-  "gender_identity": {
+  "peds_gender_identity": {
     "description": "The participant's reported gender identity.",
     "question": {
       "en": "What is your gender identity?"
@@ -1291,7 +1291,7 @@
       "xsd:string"
     ]
   },
-  "other_gender_identity": {
+  "peds_other_gender_identity": {
     "description": "If you selected \"other\" for gender identity, please specify:",
     "question": {
       "en": "If you selected \"other\" for gender identity, please specify:"
@@ -1304,7 +1304,7 @@
     ],
     "choices": null
   },
-  "race": {
+  "peds_race": {
     "question": {
       "en": "Which race category best describes you? Choose all that apply"
     },
@@ -1366,7 +1366,7 @@
       "xsd:integer"
     ]
   },
-  "other_race_specify": {
+  "peds_other_race_specify": {
     "description": "Specify other race",
     "question": {
       "en": "If race not listed above, please specify:"
@@ -1379,7 +1379,7 @@
     ],
     "choices": null
   },
-  "primary_language": {
+  "peds_primary_language": {
     "description": "Indicates participant primary language",
     "question": {
       "en": "What language do you primarily speak?"
@@ -1453,7 +1453,7 @@
       "xsd:integer"
     ]
   },
-  "other_primary_language": {
+  "peds_other_primary_language": {
     "description": "Indicates participant's primary language that is not listed",
     "question": {
       "en": "If you selected \"other\" primary language, please specify:"
@@ -1466,7 +1466,7 @@
     ],
     "choices": null
   },
-  "first_language": {
+  "peds_first_language": {
     "description": "Indiciates participants first language",
     "question": {
       "en": "What was your first language?"
@@ -1540,7 +1540,7 @@
       "xsd:integer"
     ]
   },
-  "other_first_language": {
+  "peds_other_first_language": {
     "description": "If you selected other first language, please specify:",
     "question": {
       "en": "If you selected \"other\" first language, please specify:"
@@ -1553,7 +1553,7 @@
     ],
     "choices": null
   },
-  "edu_level": {
+  "peds_edu_level": {
     "description": "Indiciates participants level of education",
     "question": {
       "en": "What is your child's highest level of education?"
@@ -1603,7 +1603,7 @@
       "xsd:integer"
     ]
   },
-  "other_edu_level": {
+  "peds_other_edu_level": {
     "description": "Indicates if the participant has received an education level not listed in other options.",
     "question": {
       "en": "If you selected \"other\" level of education, please specify:"
@@ -1617,7 +1617,7 @@
       "xsd:string"
     ]
   },
-  "hearing": {
+  "peds_hearing": {
     "description": "Indicates if the participant has hearing issues.",
     "question": {
       "en": "Are you deaf or do you have serious difficulty hearing?"
@@ -1650,7 +1650,7 @@
       "xsd:string"
     ]
   },
-  "vision": {
+  "peds_vision": {
     "description": "Indicates if the participant has vision issues.",
     "question": {
       "en": "Are you blind or do you have serious difficulty seeing, even when wearing glasses?"
@@ -1683,7 +1683,7 @@
       "xsd:string"
     ]
   },
-  "cognition": {
+  "peds_cognition": {
     "description": "Reports on the participant's cognitive abilities or issues.",
     "question": {
       "en": "Because of a physical, mental, or emotional condition, do you have serious difficulty concentrating, remembering, or making decisions?"
@@ -1716,7 +1716,7 @@
       "xsd:string"
     ]
   },
-  "mobility": {
+  "peds_mobility": {
     "description": "Indicates the participant's level of mobility or movement.",
     "question": {
       "en": "Do you have serious difficulty walking or climbing stairs?"
@@ -1749,7 +1749,7 @@
       "xsd:string"
     ]
   },
-  "self_care": {
+  "peds_self_care": {
     "description": "Indicates if the participant engages in self-care activities.",
     "question": {
       "en": "Do you have difficulty dressing or bathing?"
@@ -2616,7 +2616,7 @@
     ],
     "choices": null
   },
-  "peds_vhi_10_schema_session_id": {
+  "peds_vhi_session_id": {
     "description": "The unique identifier for the Voice Handicap Index session.",
     "question": {
       "en": "Session ID"
@@ -2630,7 +2630,7 @@
       "xsd:string"
     ]
   },
-  "peds_vhi_10_schema_duration": {
+  "peds_vhi_duration": {
     "description": "Duration of the Voice Handicap Index session.",
     "question": {
       "en": "Questionnaire Duration (seconds)"
@@ -2645,8 +2645,8 @@
       "xsd:decimal"
     ]
   },
-  "child_talkativeness": {
-    "description": "child_talkativeness",
+  "peds_vhi_talkativeness": {
+    "description": "peds_vhi_talkativeness",
     "question": {
       "en": "I would rate my child's talkativeness as the following:"
     },
@@ -2701,8 +2701,8 @@
       "xsd:integer"
     ]
   },
-  "vhi_10_question_1": {
-    "description": "vhi_10_question_1",
+  "peds_voice_difficult_hear": {
+    "description": "peds_voice_difficult_hear",
     "question": {
       "en": "My child\u2019s voice makes it difficult for people to hear him/her."
     },
@@ -2745,8 +2745,8 @@
       "xsd:integer"
     ]
   },
-  "vhi_10_question_2": {
-    "description": "vhi_10_question_2",
+  "peds_difficulty_understanding": {
+    "description": "peds_difficulty_understanding",
     "question": {
       "en": "People have difficulty understanding my child in a noisy room."
     },
@@ -2789,8 +2789,8 @@
       "xsd:integer"
     ]
   },
-  "vhi_10_question_3": {
-    "description": "vhi_10_question_3",
+  "peds_difficulty_hearing": {
+    "description": "peds_difficulty_hearing",
     "question": {
       "en": "At home, we have difficulty hearing my child when he/she calls through the house."
     },
@@ -2833,8 +2833,8 @@
       "xsd:integer"
     ]
   },
-  "vhi_10_question_4": {
-    "description": "vhi_10_question_4",
+  "peds_avoid_communicating": {
+    "description": "peds_avoid_communicating",
     "question": {
       "en": "My child tends to avoid communicating because of his/her voice."
     },
@@ -2877,8 +2877,8 @@
       "xsd:integer"
     ]
   },
-  "vhi_10_question_5": {
-    "description": "vhi_10_question_5",
+  "peds_speaks_less": {
+    "description": "peds_speaks_less",
     "question": {
       "en": "My child speaks with friends, neighbours, or relatives less often because of his/her voice."
     },
@@ -2921,8 +2921,8 @@
       "xsd:integer"
     ]
   },
-  "vhi_10_question_6": {
-    "description": "vhi_10_question_6",
+  "peds_repeat_speaking": {
+    "description": "peds_repeat_speaking",
     "question": {
       "en": "People ask my child to repeat him/herself when speaking face-to-face."
     },
@@ -2965,8 +2965,8 @@
       "xsd:integer"
     ]
   },
-  "vhi_10_question_7": {
-    "description": "vhi_10_question_7",
+  "peds_voice_diffculities": {
+    "description": "peds_voice_diffculities",
     "question": {
       "en": "My child\u2019s voice difficulties restrict personal, educational and social activities."
     },
@@ -3009,8 +3009,8 @@
       "xsd:integer"
     ]
   },
-  "vhi_10_question_8": {
-    "description": "vhi_10_question_8",
+  "peds_out_of_air_talking": {
+    "description": "peds_out_of_air_talking",
     "question": {
       "en": "My child runs out of air when talking."
     },
@@ -3053,8 +3053,8 @@
       "xsd:integer"
     ]
   },
-  "vhi_10_question_9": {
-    "description": "vhi_10_question_9",
+  "peds_voice_changes": {
+    "description": "peds_voice_changes",
     "question": {
       "en": "The sound of my child\u2019s voice changes throughout the day"
     },
@@ -3097,8 +3097,8 @@
       "xsd:integer"
     ]
   },
-  "vhi_10_question_10": {
-    "description": "vhi_10_question_10",
+  "peds_wrong_with_voice": {
+    "description": "peds_wrong_with_voice",
     "question": {
       "en": "People ask, \u201cWhat\u2019s wrong with your child\u2019s voice?"
     },
@@ -3141,8 +3141,8 @@
       "xsd:integer"
     ]
   },
-  "vhi_10_question_11": {
-    "description": "vhi_10_question_11",
+  "peds_dry_raspy_hoarse": {
+    "description": "peds_dry_raspy_hoarse",
     "question": {
       "en": "My child\u2019s voice sounds dry, raspy, and/or hoarse."
     },
@@ -3185,8 +3185,8 @@
       "xsd:integer"
     ]
   },
-  "vhi_10_question_12": {
-    "description": "vhi_10_question_12",
+  "peds_unpredictable": {
+    "description": "peds_unpredictable",
     "question": {
       "en": "The quality of my child\u2019s voice is unpredictable"
     },
@@ -3229,8 +3229,8 @@
       "xsd:integer"
     ]
   },
-  "vhi_10_question_13": {
-    "description": "vhi_10_question_13",
+  "peds_straining": {
+    "description": "peds_straining",
     "question": {
       "en": "My child uses a great deal of effort to speak (e.g., straining)"
     },
@@ -3273,8 +3273,8 @@
       "xsd:integer"
     ]
   },
-  "vhi_10_question_14": {
-    "description": "vhi_10_question_14",
+  "peds_worse_in_evening": {
+    "description": "peds_worse_in_evening",
     "question": {
       "en": "My child\u2019s voice is worse in the evening"
     },
@@ -3317,8 +3317,8 @@
       "xsd:integer"
     ]
   },
-  "vhi_10_question_15": {
-    "description": "vhi_10_question_15",
+  "peds_gives_out": {
+    "description": "peds_gives_out",
     "question": {
       "en": "My child\u2019s voice \u201cgives out\u201d when speaking."
     },
@@ -3361,8 +3361,8 @@
       "xsd:integer"
     ]
   },
-  "vhi_10_question_16": {
-    "description": "vhi_10_question_16",
+  "peds_yell_to_hear": {
+    "description": "peds_yell_to_hear",
     "question": {
       "en": "My child has to yell in order for others to hear him/her."
     },
@@ -3405,8 +3405,8 @@
       "xsd:integer"
     ]
   },
-  "vhi_10_question_17": {
-    "description": "vhi_10_question_17",
+  "peds_tense_talking": {
+    "description": "peds_tense_talking",
     "question": {
       "en": "My child appears tense when talking with others because of his/her voice."
     },
@@ -3449,8 +3449,8 @@
       "xsd:integer"
     ]
   },
-  "vhi_10_question_18": {
-    "description": "vhi_10_question_18",
+  "peds_seem_irritated": {
+    "description": "peds_seem_irritated",
     "question": {
       "en": "People seem irritated with my child\u2019s voice"
     },
@@ -3493,8 +3493,8 @@
       "xsd:integer"
     ]
   },
-  "vhi_10_question_19": {
-    "description": "vhi_10_question_19",
+  "peds_other_not_understand": {
+    "description": "peds_other_not_understand",
     "question": {
       "en": "I find other people don\u2019t understand my child\u2019s voice problem."
     },
@@ -3537,8 +3537,8 @@
       "xsd:integer"
     ]
   },
-  "vhi_10_question_20": {
-    "description": "vhi_10_question_20",
+  "peds_frustrated_voice": {
+    "description": "peds_frustrated_voice",
     "question": {
       "en": "My child is frustrated with his/her voice problem"
     },
@@ -3581,8 +3581,8 @@
       "xsd:integer"
     ]
   },
-  "vhi_10_question_21": {
-    "description": "vhi_10_question_21",
+  "peds_less_out_going": {
+    "description": "peds_less_out_going",
     "question": {
       "en": "My child is less out-going because of his/her voice problem."
     },
@@ -3625,8 +3625,8 @@
       "xsd:integer"
     ]
   },
-  "vhi_10_question_22": {
-    "description": "vhi_10_question_22",
+  "peds_annoyed_repeat": {
+    "description": "peds_annoyed_repeat",
     "question": {
       "en": "My child is annoyed when people ask him/her to repeat."
     },
@@ -3669,8 +3669,8 @@
       "xsd:integer"
     ]
   },
-  "vhi_10_question_23": {
-    "description": "vhi_10_question_23",
+  "peds_embarrassed_repeat": {
+    "description": "peds_embarrassed_repeat",
     "question": {
       "en": "My child is embarrassed when people ask him/her to repeat."
     },
@@ -3713,8 +3713,8 @@
       "xsd:integer"
     ]
   },
-  "voice_severity_rating": {
-    "description": "voice_severity_rating",
+  "peds_severity_voice_problem": {
+    "description": "peds_severity_voice_problem",
     "question": {
       "en": "Please place \u201cX\u201d mark anywhere along this line to indicate the severity of your child\u2019s voice problem"
     },
@@ -17272,25 +17272,25 @@
       "xsd:string"
     ]
   },
-  "race___1": {
+  "peds_race___2": {
     "description": "Indicates if the participant identifies with race category 1."
   },
-  "race___2": {
+  "peds_race___3": {
     "description": "Indicates if the participant identifies with race category 2."
   },
-  "race___3": {
+  "peds_race___4": {
     "description": "Indicates if the participant identifies with race category 3."
   },
-  "race___4": {
+  "peds_race___5": {
     "description": "Indicates if the participant identifies with race category 4."
   },
-  "race___5": {
+  "peds_race___6": {
     "description": "Indicates if the participant identifies with race category 5."
   },
-  "race___6": {
+  "peds_race___7": {
     "description": "Indicates if the participant identifies with race category 6."
   },
-  "race___7": {
+  "peds_race___8": {
     "description": "Indicates if the participant identifies with race category 7."
   },
   "race___8": {
@@ -18029,7 +18029,7 @@
       "xsd:integer"
     ]
   },
-  "medical_conditions_schema_session_id": {
+  "peds_mc_session_id": {
     "description": "The unique identifier for the medical conditions session.",
     "question": {
       "en": "Session ID"
@@ -18043,7 +18043,7 @@
       "xsd:string"
     ]
   },
-  "medical_conditions_schema_duration": {
+  "peds_mc_duration": {
     "description": "Duration of the medical condition session.",
     "question": {
       "en": "Questionnaire Duration (seconds)"
@@ -18059,13 +18059,16 @@
     ]
   },
   "voice_disorders": {
-    "description": "voice_disorders",
+    "description": {
+      "en": "Does your child have a history of a voice disorder (check all that apply): "
+    },
     "question": {
       "en": "Does your child have a history of a voice disorder (check all that apply): "
     },
     "datatype": [
       "xsd:integer"
     ],
+    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/voice_disorders",
     "choices": [
       {
         "name": {
@@ -18102,6 +18105,12 @@
           "en": "Airway stenosis (bilateral vocal fold paralysis laryngeal stenosis)"
         },
         "value": 6
+      },
+      {
+        "name": {
+          "en": "Vocal cord webs"
+        },
+        "value": 7
       }
     ],
     "multipleChoice": true,
@@ -18110,13 +18119,16 @@
     ]
   },
   "psychological_disorders": {
-    "description": "psychological_disorders",
+    "description": {
+      "en": "Does your child have a history of a psychological disorders or mood problems (check all that apply):"
+    },
     "question": {
       "en": "Does your child have a history of a psychological disorders or mood problems (check all that apply):"
     },
     "datatype": [
       "xsd:integer"
     ],
+    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/psychological_disorders",
     "choices": [
       {
         "name": {
@@ -18184,7 +18196,7 @@
       "xsd:integer"
     ]
   },
-  "psychological_disorders_other": {
+  "peds_mc_psych_disorders_other": {
     "description": "psychological_disorders_other",
     "question": {
       "en": "Other psychiatric disorders \u2013 please write the condition here "
@@ -18197,14 +18209,17 @@
     ],
     "choices": null
   },
-  "airway_conditions": {
-    "description": "airway_conditions",
+  "peds_mc_breathing_conditions": {
+    "description": {
+      "en": "Does your child have a history of a breathing or airway conditions (check all that apply): "
+    },
     "question": {
       "en": "Does your child have a history of a breathing or airway conditions (check all that apply): "
     },
     "datatype": [
       "xsd:integer"
     ],
+    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/airway_conditions",
     "choices": [
       {
         "name": {
@@ -18272,44 +18287,47 @@
       "xsd:integer"
     ]
   },
-  "airway_conditions___0": {
+  "peds_mc_breathing_conditions___asthma": {
     "description": "Indicates if the participant identifies with airway_conditions category 0"
   },
-  "airway_conditions___1": {
+  "peds_mc_breathing_conditions___recurrent_croup": {
     "description": "Indicates if the participant identifies with airway_conditions category 1"
   },
-  "airway_conditions___2": {
+  "peds_mc_breathing_conditions___bronchiolitis": {
     "description": "Indicates if the participant identifies with airway_conditions category 2"
   },
-  "airway_conditions___3": {
+  "peds_mc_breathing_conditions___rsv": {
     "description": "Indicates if the participant identifies with airway_conditions category 3"
   },
-  "airway_conditions___4": {
+  "peds_mc_breathing_conditions___chronic_cough": {
     "description": "Indicates if the participant identifies with airway_conditions category 4"
   },
-  "airway_conditions___5": {
+  "peds_mc_breathing_conditions___subglottic_stenosis": {
     "description": "Indicates if the participant identifies with airway_conditions category 5"
   },
-  "airway_conditions___6": {
+  "peds_mc_breathing_conditions___vocal_cord_webs": {
     "description": "Indicates if the participant identifies with airway_conditions category 6"
   },
-  "airway_conditions___7": {
+  "peds_mc_breathing_conditions___airway_surgery": {
     "description": "Indicates if the participant identifies with airway_conditions category 7"
   },
-  "airway_conditions___8": {
+  "peds_mc_breathing_conditions___intubated": {
     "description": "Indicates if the participant identifies with airway_conditions category 8"
   },
-  "airway_conditions___9": {
+  "peds_mc_breathing_conditions___tracheostomy": {
     "description": "Indicates if the participant identifies with airway_conditions category 9"
   },
   "sleep_apnea": {
-    "description": "sleep_apnea",
+    "description": {
+      "en": "Does your child have a history of a snoring or obstructive sleep apnea? (check all that apply): "
+    },
     "question": {
       "en": "Does your child have a history of a snoring or obstructive sleep apnea? (check all that apply): "
     },
     "datatype": [
       "xsd:integer"
     ],
+    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/sleep_apnea",
     "choices": [
       {
         "name": {
@@ -18341,14 +18359,17 @@
       "xsd:integer"
     ]
   },
-  "tonsillectomy": {
-    "description": "tonsillectomy",
+  "peds_mc_tonsillectomy": {
+    "description": {
+      "en": "Have they had a tonsillectomy?"
+    },
     "question": {
       "en": "Have they had a tonsillectomy?"
     },
     "datatype": [
       "xsd:integer"
     ],
+    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/tonsillectomy",
     "choices": [
       {
         "name": {
@@ -18367,20 +18388,23 @@
       "xsd:integer"
     ]
   },
-  "tonsillectomy_date": {
-    "description": "tonsillectomy_date",
+  "peds_mc_tonsillectomy_date": {
+    "description": {
+      "en": "What was the date of the surgery?"
+    },
     "question": {
       "en": "What was the date of the surgery?"
     },
     "datatype": [
       "xsd:date"
     ],
+    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/tonsillectomy_date",
     "valueType": [
       "xsd:date"
     ],
     "choices": null
   },
-  "adenoidectomy": {
+  "peds_mc_adenoidectomy": {
     "description": "adenoidectomy",
     "question": {
       "en": "Have they had an adenoidectomy?"
@@ -18406,20 +18430,23 @@
       "xsd:integer"
     ]
   },
-  "adenoidectomy_date": {
-    "description": "adenoidectomy_date",
+  "peds_mc_adenoidectomy_date": {
+    "description": {
+      "en": "What was the date of the surgery?"
+    },
     "question": {
       "en": "What was the date of the surgery?"
     },
     "datatype": [
       "xsd:date"
     ],
+    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/adenoidectomy_date",
     "valueType": [
       "xsd:date"
     ],
     "choices": null
   },
-  "lingual_tonsillectomy": {
+  "peds_mc_lingual_tonsillectomy": {
     "description": "lingual_tonsillectomy",
     "question": {
       "en": "Have they had an lingual tonsillectomy?"
@@ -18445,8 +18472,10 @@
       "xsd:integer"
     ]
   },
-  "lingual_tonsillectomy_date": {
-    "description": "lingual_tonsillectomy_date",
+  "peds_mc_lingual_tonsillectomy_date": {
+    "description": {
+      "en": "What was the date of the surgery?"
+    },
     "question": {
       "en": "What was the date of the surgery?"
     },
@@ -18459,7 +18488,9 @@
     "choices": null
   },
   "hearing_loss": {
-    "description": "hearing_loss",
+    "description": {
+      "en": "Does your child have a history of hearing loss or associated conditions? (check all that apply):"
+    },
     "question": {
       "en": "Does your child have a history of hearing loss or associated conditions? (check all that apply):"
     },
@@ -18559,14 +18590,17 @@
       "xsd:integer"
     ]
   },
-  "thyroglossal_duct_cyst_surgery": {
-    "description": "thyroglossal_duct_cyst_surgery",
+  "peds_mc_neck_mass_thyroglossal_duct_cyst_surgery": {
+    "description": {
+      "en": "Have they had surgery for this? "
+    },
     "question": {
       "en": "Have they had surgery for this? "
     },
     "datatype": [
       "xsd:integer"
     ],
+    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/thyroglossal_duct_cyst_surgery",
     "choices": [
       {
         "name": {
@@ -18585,14 +18619,17 @@
       "xsd:integer"
     ]
   },
-  "thyroglossal_duct_cyst_date": {
-    "description": "thyroglossal_duct_cyst_date",
+  "peds_mc_neck_mass_thyroglossal_duct_cyst_surgery_date": {
+    "description": {
+      "en": "What was the date of the surgery?"
+    },
     "question": {
       "en": "What was the date of the surgery?"
     },
     "datatype": [
       "xsd:date"
     ],
+    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/thyroglossal_duct_cyst_date",
     "valueType": [
       "xsd:date"
     ],
@@ -18624,14 +18661,17 @@
       "xsd:integer"
     ]
   },
-  "branchial_cleft_cyst_surgery": {
-    "description": "branchial_cleft_cyst_surgery",
+  "peds_mc_neck_mass_branchial_cleft_cyst_surgery": {
+    "description": {
+      "en": "Have they had surgery for this? "
+    },
     "question": {
       "en": "Have they had surgery for this? "
     },
     "datatype": [
       "xsd:integer"
     ],
+    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/branchial_cleft_cyst_surgery",
     "choices": [
       {
         "name": {
@@ -18650,14 +18690,17 @@
       "xsd:integer"
     ]
   },
-  "branchial_cleft_cyst_date": {
-    "description": "branchial_cleft_cyst_date",
+  "peds_mc_neck_mass_branchial_cleft_cyst_surgery_date": {
+    "description": {
+      "en": "What was the date of the surgery?"
+    },
     "question": {
       "en": "What was the date of the surgery?"
     },
     "datatype": [
       "xsd:date"
     ],
+    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/branchial_cleft_cyst_date",
     "valueType": [
       "xsd:date"
     ],
@@ -18689,14 +18732,17 @@
       "xsd:integer"
     ]
   },
-  "dermoid_cyst_surgery": {
-    "description": "dermoid_cyst_surgery",
+  "peds_mc_neck_mass_dermoid_cyst_surgery": {
+    "description": {
+      "en": "Have they had surgery for this? "
+    },
     "question": {
       "en": "Have they had surgery for this? "
     },
     "datatype": [
       "xsd:integer"
     ],
+    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/dermoid_cyst_surgery",
     "choices": [
       {
         "name": {
@@ -18715,14 +18761,17 @@
       "xsd:integer"
     ]
   },
-  "dermoid_cyst_date": {
-    "description": "dermoid_cyst_date",
+  "peds_mc_neck_mass_dermoid_cyst_surgery_date": {
+    "description": {
+      "en": "What was the date of the surgery?"
+    },
     "question": {
       "en": "What was the date of the surgery?"
     },
     "datatype": [
       "xsd:date"
     ],
+    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/dermoid_cyst_date",
     "valueType": [
       "xsd:date"
     ],
@@ -18754,14 +18803,17 @@
       "xsd:integer"
     ]
   },
-  "thyroid_nodule_or_cancer_surgery": {
-    "description": "thyroid_nodule_or_cancer_surgery",
+  "peds_mc_neck_mass_hyroid_nodule_or_cancer_surgery": {
+    "description": {
+      "en": "Have they had surgery for this? "
+    },
     "question": {
       "en": "Have they had surgery for this? "
     },
     "datatype": [
       "xsd:integer"
     ],
+    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/thyroid_nodule_or_cancer_surgery",
     "choices": [
       {
         "name": {
@@ -18780,14 +18832,17 @@
       "xsd:integer"
     ]
   },
-  "thyroid_nodule_or_cancer_date": {
-    "description": "thyroid_nodule_or_cancer_date",
+  "peds_mc_neck_mass_hyroid_nodule_or_cancer_surgery_date": {
+    "description": {
+      "en": "What was the date of the surgery?"
+    },
     "question": {
       "en": "What was the date of the surgery?"
     },
     "datatype": [
       "xsd:date"
     ],
+    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/thyroid_nodule_or_cancer_date",
     "valueType": [
       "xsd:date"
     ],
@@ -18819,14 +18874,17 @@
       "xsd:integer"
     ]
   },
-  "enlarged_lymph_node_surgery": {
-    "description": "enlarged_lymph_node_surgery",
+  "peds_mc_neck_mass_enlarged_lymph_node_surgery": {
+    "description": {
+      "en": "Have they had surgery for this? "
+    },
     "question": {
       "en": "Have they had surgery for this? "
     },
     "datatype": [
       "xsd:integer"
     ],
+    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/enlarged_lymph_node_surgery",
     "choices": [
       {
         "name": {
@@ -18845,20 +18903,23 @@
       "xsd:integer"
     ]
   },
-  "enlarged_lymph_node_date": {
-    "description": "enlarged_lymph_node_date",
+  "peds_mc_neck_mass_enlarged_lymph_node_surgery_date": {
+    "description": {
+      "en": "What was the date of the surgery?"
+    },
     "question": {
       "en": "What was the date of the surgery?"
     },
     "datatype": [
       "xsd:date"
     ],
+    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/enlarged_lymph_node_date",
     "valueType": [
       "xsd:date"
     ],
     "choices": null
   },
-  "neck_mass_other": {
+  "peds_mc_neck_mass_other": {
     "description": "neck_mass_other",
     "question": {
       "en": "Other \u2013 please write condition here:"
@@ -18955,37 +19016,37 @@
   "conditions___11": {
     "description": "Indicates if the participant identifies with conditions category 11"
   },
-  "conditions___1": {
+  "peds_mc_conditions___trisomy21": {
     "description": "Indicates if the participant identifies with conditions category 1"
   },
-  "conditions___10": {
+  "peds_mc_conditions___other": {
     "description": "Indicates if the participant identifies with conditions category 0"
   },
-  "conditions___2": {
+  "peds_mc_conditions___prematurity": {
     "description": "Indicates if the participant identifies with conditions category 2"
   },
-  "conditions___3": {
+  "peds_mc_conditions___congenital_heart_disease": {
     "description": "Indicates if the participant identifies with conditions category 3"
   },
-  "conditions___4": {
+  "peds_mc_conditions___tracheoesophageal_fistula": {
     "description": "Indicates if the participant identifies with conditions category 4"
   },
-  "conditions___5": {
+  "peds_mc_conditions___esophageal_atresia": {
     "description": "Indicates if the participant identifies with conditions category 5"
   },
-  "conditions___6": {
+  "peds_mc_conditions___cystic_fibrosis": {
     "description": "Indicates if the participant identifies with conditions category 6"
   },
-  "conditions___7": {
+  "peds_mc_conditions___rheumatoid_arthritis": {
     "description": "Indicates if the participant identifies with conditions category 7"
   },
-  "conditions___8": {
+  "peds_mc_conditions___granulomatosis_with_polyangitis": {
     "description": "Indicates if the participant identifies with conditions category 8"
   },
-  "conditions___9": {
+  "peds_mc_conditions___mucopolysaccharidosis": {
     "description": "Indicates if the participant identifies with conditions category 9"
   },
-  "conditions_other": {
+  "peds_mc_conditions_other_specified": {
     "description": "conditions_other",
     "question": {
       "en": "Other (Please list here):"
@@ -19013,131 +19074,134 @@
   "diagnosis_vfp_treatment_surgery_vfia": {
     "description": "Indicates if the participant identifies with diagnosis_vfp_treatment_surgery_vfi category a"
   },
-  "hearing_loss___0": {
+  "peds_mc_hearing_loss___cholesteatoma": {
     "description": "Indicates if the participant identifies with hearing_loss category 0"
   },
-  "hearing_loss___1": {
+  "peds_mc_hearing_loss___hearing_loss": {
     "description": "Indicates if the participant identifies with hearing_loss category 1"
   },
-  "hearing_loss___2": {
+  "peds_mc_hearing_loss___mild_hearing_loss": {
     "description": "Indicates if the participant identifies with hearing_loss category 2"
   },
-  "hearing_loss___3": {
+  "peds_mc_hearing_loss___deafness": {
     "description": "Indicates if the participant identifies with hearing_loss category 3"
   },
-  "hearing_loss___4": {
+  "peds_mc_hearing_loss___ear_tubes": {
     "description": "Indicates if the participant identifies with hearing_loss category 4"
   },
-  "hearing_loss___5": {
+  "peds_mc_hearing_loss___cochlear_implantation_bilateral": {
     "description": "Indicates if the participant identifies with hearing_loss category 5"
   },
-  "hearing_loss___6": {
+  "peds_mc_hearing_loss___vocal_cord_webs": {
     "description": "Indicates if the participant identifies with hearing_loss category 6"
   },
-  "hearing_loss___7": {
+  "peds_mc_hearing_loss___cochlear_implantation_unilateral": {
     "description": "Indicates if the participant identifies with hearing_loss category 7"
   },
-  "hearing_loss___8": {
+  "peds_mc_hearing_loss___tympanic_membrane_perforation": {
     "description": "Indicates if the participant identifies with hearing_loss category 8"
   },
-  "hearing_loss___9": {
+  "peds_mc_hearing_loss___cmv": {
     "description": "Indicates if the participant identifies with hearing_loss category 9"
   },
-  "issues_2_weeks___0": {
+  "peds_mc_l2w___wheezing_or_trouble_breathing": {
     "description": "Indicates if the participant identifies with issues_2_weeks category 0"
   },
-  "issues_2_weeks___1": {
+  "peds_mc_l2w___dry_cough": {
     "description": "Indicates if the participant identifies with issues_2_weeks category 1"
   },
-  "issues_2_weeks___2": {
+  "peds_mc_l2w___wet_productive_cough": {
     "description": "Indicates if the participant identifies with issues_2_weeks category 2"
   },
-  "issues_2_weeks___3": {
+  "peds_mc_l2w___nasal_congestion": {
     "description": "Indicates if the participant identifies with issues_2_weeks category 3"
   },
-  "issues_2_weeks___4": {
+  "peds_mc_l2w___sneezing": {
     "description": "Indicates if the participant identifies with issues_2_weeks category 4"
   },
-  "issues_2_weeks___5": {
+  "peds_mc_l2w___ear_infection": {
     "description": "Indicates if the participant identifies with issues_2_weeks category 5"
   },
-  "issues_2_weeks___6": {
+  "peds_mc_l2w___stridor": {
     "description": "Indicates if the participant identifies with issues_2_weeks category 6"
   },
-  "issues_2_weeks___7": {
+  "peds_mc_l2w___croup": {
     "description": "Indicates if the participant identifies with issues_2_weeks category 7"
   },
-  "issues_2_weeks___8": {
+  "peds_mc_l2w___sorethroat_or_tonsillitis": {
     "description": "Indicates if the participant identifies with issues_2_weeks category 8"
   },
-  "psychological_disorders___0": {
+  "peds_mc_psych_disorders___anxiety_disorder": {
     "description": "Indicates if the participant identifies with psychological_disorders category 0"
   },
-  "psychological_disorders___1": {
+  "peds_mc_psych_disorders___adhd": {
     "description": "Indicates if the participant identifies with psychological_disorders category 1"
   },
-  "psychological_disorders___2": {
+  "peds_mc_psych_disorders___asd": {
     "description": "Indicates if the participant identifies with psychological_disorders category 2"
   },
-  "psychological_disorders___3": {
+  "peds_mc_psych_disorders___depression": {
     "description": "Indicates if the participant identifies with psychological_disorders category 3"
   },
-  "psychological_disorders___4": {
+  "peds_mc_psych_disorders___eating_disorder": {
     "description": "Indicates if the participant identifies with psychological_disorders category 4"
   },
-  "psychological_disorders___5": {
+  "peds_mc_psych_disorders___insomnia_or_sleep_disorder": {
     "description": "Indicates if the participant identifies with psychological_disorders category 5"
   },
-  "psychological_disorders___6": {
+  "peds_mc_psych_disorders___ocd": {
     "description": "Indicates if the participant identifies with psychological_disorders category 6"
   },
-  "psychological_disorders___7": {
+  "peds_mc_psych_disorders___panic": {
     "description": "Indicates if the participant identifies with psychological_disorders category 7"
   },
-  "psychological_disorders___8": {
+  "peds_mc_psych_disorders___social_anxiety_disorder": {
     "description": "Indicates if the participant identifies with psychological_disorders category 8"
   },
-  "psychological_disorders___9": {
+  "peds_mc_psych_disorders___other": {
     "description": "Indicates if the participant identifies with psychological_disorders category 9"
   },
-  "sleep_apnea___0": {
+  "peds_mc_snoring_apnea___snoring": {
     "description": "Indicates if the participant identifies with sleep_apnea category 0"
   },
-  "sleep_apnea___1": {
+  "peds_mc_snoring_apnea___gasping": {
     "description": "Indicates if the participant identifies with sleep_apnea category 1"
   },
-  "sleep_apnea___2": {
+  "peds_mc_snoring_apnea___obstructive_sleep_apnea": {
     "description": "Indicates if the participant identifies with sleep_apnea category 2"
   },
-  "sleep_apnea___3": {
+  "peds_mc_snoring_apnea___had_sleep_study": {
     "description": "Indicates if the participant identifies with sleep_apnea category 3"
   },
-  "voice_disorders___0": {
+  "peds_mc_voice_disorders___vocal_nodules_or_polyps": {
     "description": "Indicates if the participant identifies with voice_disorders category 0"
   },
-  "voice_disorders___1": {
+  "peds_mc_voice_disorders___unilateral_vocal_cord_paralysis": {
     "description": "Indicates if the participant identifies with voice_disorders category 1"
   },
-  "voice_disorders___2": {
+  "peds_mc_voice_disorders___bilateral_vocal_cord_paralysis": {
     "description": "Indicates if the participant identifies with voice_disorders category 2"
   },
-  "voice_disorders___3": {
+  "peds_mc_voice_disorders___acid_reflux_disease": {
     "description": "Indicates if the participant identifies with voice_disorders category 3"
   },
-  "voice_disorders___4": {
+  "peds_mc_voice_disorders___scarring": {
     "description": "Indicates if the participant identifies with voice_disorders category 4"
   },
-  "voice_disorders___5": {
+  "peds_mc_voice_disorders___airway_stenosis": {
     "description": "Indicates if the participant identifies with voice_disorders category 5"
   },
-  "issues_2_weeks": {
-    "description": "issues_2_weeks",
+  "peds_mc_l2w": {
+    "description": {
+      "en": "Has your child had any of the following in the 2 weeks?"
+    },
     "question": {
       "en": "Has your child had any of the following in the 2 weeks?"
     },
     "datatype": [
       "xsd:integer"
     ],
+    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/issues_2_weeks",
     "choices": [
       {
         "name": {
@@ -27200,7 +27264,7 @@
       "xsd:integer"
     ]
   },
-  "phqa_schema_session_id": {
+  "peds_phqa_session_id": {
     "description": "The unique identifier for phqa session.",
     "question": {
       "en": "Session ID"
@@ -27214,7 +27278,7 @@
       "xsd:string"
     ]
   },
-  "phqa_schema_duration": {
+  "peds_phqa_duration": {
     "description": "Duration of the phqa session.",
     "question": {
       "en": "Questionnaire Duration (seconds)"
@@ -27229,14 +27293,7 @@
       "xsd:decimal"
     ]
   },
-  "phqa_intro": {
-    "description": "phqa_intro",
-    "question": {
-      "en": "How often have you been bothered by each of the following symptoms during the past two weeks? For each symptom select the answer that best describes how you have been feeling"
-    },
-    "choices": null
-  },
-  "phqa_q1": {
+  "peds_phqa_feeling_depressed": {
     "description": "Indicates if participant is Feeling down, depressed, irritable, or hopeless",
     "question": {
       "en": "Feeling down, depressed, irritable, or hopeless?"
@@ -27274,7 +27331,7 @@
       "xsd:integer"
     ]
   },
-  "phqa_q2": {
+  "peds_phqa_no_interest": {
     "description": "Indicates if participant has little interest or pleasure in doing things",
     "question": {
       "en": "Little interest or pleasure in doing things?"
@@ -27312,7 +27369,7 @@
       "xsd:integer"
     ]
   },
-  "phqa_q3": {
+  "peds_phqa_trouble_sleeping": {
     "description": "Indicates if participant is having trouble falling asleep, staying asleep, or sleeping too much",
     "question": {
       "en": "Trouble falling asleep, staying asleep, or sleeping too much?"
@@ -27350,7 +27407,7 @@
       "xsd:integer"
     ]
   },
-  "phqa_q4": {
+  "peds_phqa_no_appetite": {
     "description": "Asks if participant has poor appetite, weight loss, or overeating",
     "question": {
       "en": "Poor appetite, weight loss, or overeating?"
@@ -27388,7 +27445,7 @@
       "xsd:integer"
     ]
   },
-  "phqa_q5": {
+  "peds_phqa_no_energy": {
     "description": "Asking if participant is feeling tired, or has little energy",
     "question": {
       "en": "Feeling tired, or having little energy?"
@@ -27426,7 +27483,7 @@
       "xsd:integer"
     ]
   },
-  "phqa_q6": {
+  "peds_phqa_feeling_bad_self": {
     "description": "Asks if participant feels back about themselves",
     "question": {
       "en": "Feeling bad about yourself \u2013 or feeling that you are a failure, or that you have let yourself or your family down?"
@@ -27464,7 +27521,7 @@
       "xsd:integer"
     ]
   },
-  "phqa_q7": {
+  "peds_phqa_trouble_concentrate": {
     "description": "Indicates if participant has trouble concentrating on things like school work, reading, or watching TV",
     "question": {
       "en": "Trouble concentrating on things like school work, reading, or watching TV?"
@@ -27502,8 +27559,8 @@
       "xsd:integer"
     ]
   },
-  "phqa_q8": {
-    "description": "Moving or speaking so slowly that other people could have noticed? Or the opposite – being so fidgety or restless that you were moving around a lot more than usual?",
+  "peds_phqa_move_speak_slow": {
+    "description": "Moving or speaking so slowly that other people could have noticed? Or the opposite \u2013 being so fidgety or restless that you were moving around a lot more than usual?",
     "question": {
       "en": "Moving or speaking so slowly that other people could have noticed? Or the opposite \u2013 being so fidgety or restless that you were moving around a lot more than usual?"
     },
@@ -27540,7 +27597,7 @@
       "xsd:integer"
     ]
   },
-  "phqa_q9": {
+  "peds_phqa_thoughts_death": {
     "description": "Asks if participant would be better off dead, or of hurting yourself in some way",
     "question": {
       "en": "Thoughts that you would be better off dead, or of hurting yourself in some way?"
@@ -34321,7 +34378,7 @@
       "xsd:integer"
     ]
   },
-  "peds_voice_outcome_survey_schema_session_id": {
+  "peds_os_session_id": {
     "description": "The unique identifier for the voice outcome session.",
     "question": {
       "en": "Session ID"
@@ -34335,7 +34392,7 @@
       "xsd:string"
     ]
   },
-  "peds_voice_outcome_survey_schema_duration": {
+  "peds_os_duration": {
     "description": "Duration of the voice outcome.",
     "question": {
       "en": "Questionnaire Duration (seconds)"
@@ -34350,8 +34407,8 @@
       "xsd:decimal"
     ]
   },
-  "outcome_survey_q1": {
-    "description": "outcome_survey_q1",
+  "peds_os_limit_understood": {
+    "description": "peds_os_limit_understood",
     "question": {
       "en": "To what extent does you child\u2019s voice limit his or her ability to be understood in a noisy area?"
     },
@@ -34382,8 +34439,8 @@
       "xsd:integer"
     ]
   },
-  "outcome_survey_q2": {
-    "description": "outcome_survey_q2",
+  "peds_os_interfered_activities": {
+    "description": "peds_os_interfered_activities",
     "question": {
       "en": "During the past 2 weeks, to what extent has your child\u2019s voice interfered with his or her normal social activities or with his or her school?"
     },
@@ -34426,8 +34483,8 @@
       "xsd:integer"
     ]
   },
-  "outcome_survey_q3": {
-    "description": "outcome_survey_q3",
+  "peds_os_trouble_food_iquids": {
+    "description": "peds_os_trouble_food_iquids",
     "question": {
       "en": "How often does you child have trouble with food or liquids \u201cgoing down the wrong pipe\u201d when he or she eats food or drinks liquid and begins to cough after eating or drinking?"
     },
@@ -34470,8 +34527,8 @@
       "xsd:integer"
     ]
   },
-  "outcome_survey_q4": {
-    "description": "outcome_survey_q4",
+  "peds_os_straining": {
+    "description": "peds_os_straining",
     "question": {
       "en": "Do you find your child \u201cstraining\u201d when he or she speaks because of his or her voice problem?"
     },
@@ -43229,7 +43286,7 @@
     ],
     "choices": null
   },
-  "peds_voice_related_qol_schema_session_id": {
+  "peds_qol_session_id": {
     "description": "The unique identifier for qol session.",
     "question": {
       "en": "Session ID"
@@ -43243,7 +43300,7 @@
       "xsd:string"
     ]
   },
-  "peds_voice_related_qol_schema_duration": {
+  "peds_qol_duration": {
     "description": "Duration of the qol session.",
     "question": {
       "en": "Questionnaire Duration (seconds)"
@@ -43265,8 +43322,8 @@
     },
     "choices": null
   },
-  "qol_q1": {
-    "description": "qol_q1",
+  "peds_qol_trouble_speaking_heard": {
+    "description": "peds_qol_trouble_speaking_heard",
     "question": {
       "en": "My child/ I has trouble speaking loudly or being heard in noisy situations."
     },
@@ -43315,8 +43372,8 @@
       "xsd:integer"
     ]
   },
-  "qol_q2": {
-    "description": "qol_q2",
+  "peds_qol_out_of_air": {
+    "description": "peds_qol_out_of_air",
     "question": {
       "en": "My child/ I runs out of air and needs to take frequent breaths when talking."
     },
@@ -43365,8 +43422,8 @@
       "xsd:integer"
     ]
   },
-  "qol_q3": {
-    "description": "qol_q3",
+  "peds_qol_come_out_speaking": {
+    "description": "peds_qol_come_out_speaking",
     "question": {
       "en": "My child/ I sometimes does not know what will come out when they begin speaking"
     },
@@ -43415,8 +43472,8 @@
       "xsd:integer"
     ]
   },
-  "qol_q4": {
-    "description": "qol_q4",
+  "peds_qol_anxious_frustrated": {
+    "description": "peds_qol_anxious_frustrated",
     "question": {
       "en": "My child/ I is sometimes anxious or frustrated (because of their voice)."
     },
@@ -43465,8 +43522,8 @@
       "xsd:integer"
     ]
   },
-  "qol_q5": {
-    "description": "qol_q5",
+  "peds_qol_depressed": {
+    "description": "peds_qol_depressed",
     "question": {
       "en": "My child/ I is sometimes depressed (because of their voice)."
     },
@@ -43515,8 +43572,8 @@
       "xsd:integer"
     ]
   },
-  "qol_q6": {
-    "description": "qol_q6",
+  "peds_qol_trouble_phone_speaking": {
+    "description": "peds_qol_trouble_phone_speaking",
     "question": {
       "en": "My child/ I has trouble using the phone or speaking with friends in person."
     },
@@ -43565,8 +43622,8 @@
       "xsd:integer"
     ]
   },
-  "qol_q7": {
-    "description": "qol_q7",
+  "peds_qol_trouble_doing_schoolwork": {
+    "description": "peds_qol_trouble_doing_schoolwork",
     "question": {
       "en": "My child/ I has trouble doing their schoolwork or job (because of their voice)."
     },
@@ -43615,8 +43672,8 @@
       "xsd:integer"
     ]
   },
-  "qol_q8": {
-    "description": "qol_q8",
+  "peds_qol_repeat_understood": {
+    "description": "peds_qol_repeat_understood",
     "question": {
       "en": "My child/ I has to repeat themselves to be understood"
     },
@@ -43665,8 +43722,8 @@
       "xsd:integer"
     ]
   },
-  "qol_q9": {
-    "description": "qol_q9",
+  "peds_qol_less_outgoing": {
+    "description": "peds_qol_less_outgoing",
     "question": {
       "en": "My child has become less outgoing (because of their voice)."
     },
@@ -46579,277 +46636,19 @@
       "xsd:string"
     ]
   },
-  "voice_disorders": {
-    "description": {
-      "en": "Does your child have a history of a voice disorder (check all that apply): "
-    },
-    "question": {
-      "en": "Does your child have a history of a voice disorder (check all that apply): "
-    },
-    "datatype": [
-      "xsd:integer"
-    ],
-    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/voice_disorders",
-    "choices": [
-      {
-        "name": {
-          "en": "Vocal nodules or polyps"
-        },
-        "value": 1
-      },
-      {
-        "name": {
-          "en": "Unilateral vocal cord paralysis"
-        },
-        "value": 2
-      },
-      {
-        "name": {
-          "en": "Bilateral vocal cord paralysis"
-        },
-        "value": 3
-      },
-      {
-        "name": {
-          "en": "Acid reflux disease (GERD)"
-        },
-        "value": 4
-      },
-      {
-        "name": {
-          "en": "Scarring of the larynx or vocal cords from disease or previous surgery"
-        },
-        "value": 5
-      },
-      {
-        "name": {
-          "en": "Airway stenosis (bilateral vocal fold paralysis laryngeal stenosis)"
-        },
-        "value": 6
-      },
-      {
-        "name": {
-          "en": "Vocal cord webs"
-        },
-        "value": 7
-      }
-    ],
-    "multipleChoice": true,
-    "valueType": [
-      "xsd:integer"
-    ]
-  },
-  "voice_disorders___6": {
+  "peds_mc_voice_disorders___vocal_cord_webs": {
     "description": "Indicates if the participant identifies with voice_disorders category 6."
-  },
-  "psychological_disorders": {
-    "description": {
-      "en": "Does your child have a history of a psychological disorders or mood problems (check all that apply):"
-    },
-    "question": {
-      "en": "Does your child have a history of a psychological disorders or mood problems (check all that apply):"
-    },
-    "datatype": [
-      "xsd:integer"
-    ],
-    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/psychological_disorders",
-    "choices": [
-      {
-        "name": {
-          "en": "Anxiety disorder "
-        },
-        "value": 1
-      },
-      {
-        "name": {
-          "en": "ADHD"
-        },
-        "value": 2
-      },
-      {
-        "name": {
-          "en": "Autism Spectrum Disorder (ASD)"
-        },
-        "value": 3
-      },
-      {
-        "name": {
-          "en": "Depression or Major Depressive Disorder"
-        },
-        "value": 4
-      },
-      {
-        "name": {
-          "en": "Eating Disorder (ED)"
-        },
-        "value": 5
-      },
-      {
-        "name": {
-          "en": "Insomnia/sleep disorder"
-        },
-        "value": 6
-      },
-      {
-        "name": {
-          "en": "Obsessive-Compulsive Disorder (OCD)"
-        },
-        "value": 7
-      },
-      {
-        "name": {
-          "en": "Panic Disorder"
-        },
-        "value": 8
-      },
-      {
-        "name": {
-          "en": "Social Anxiety Disorder"
-        },
-        "value": 9
-      },
-      {
-        "name": {
-          "en": "Other psychiatric disorders"
-        },
-        "value": 10
-      }
-    ],
-    "multipleChoice": true,
-    "valueType": [
-      "xsd:integer"
-    ]
   },
   "psychological_disorders___10": {
     "description": "Indicates if the participant identifies with psychological_disorders category 10."
   },
-  "airway_conditions": {
-    "description": {
-      "en": "Does your child have a history of a breathing or airway conditions (check all that apply): "
-    },
-    "question": {
-      "en": "Does your child have a history of a breathing or airway conditions (check all that apply): "
-    },
-    "datatype": [
-      "xsd:integer"
-    ],
-    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/airway_conditions",
-    "choices": [
-      {
-        "name": {
-          "en": "Asthma"
-        },
-        "value": 1
-      },
-      {
-        "name": {
-          "en": "Recurrent Croup (>3 episodes per year)"
-        },
-        "value": 2
-      },
-      {
-        "name": {
-          "en": "Bronchiolitis"
-        },
-        "value": 3
-      },
-      {
-        "name": {
-          "en": "RSV"
-        },
-        "value": 4
-      },
-      {
-        "name": {
-          "en": "Chronic cough"
-        },
-        "value": 5
-      },
-      {
-        "name": {
-          "en": "Subglottic stenosis"
-        },
-        "value": 6
-      },
-      {
-        "name": {
-          "en": "Vocal cord webs"
-        },
-        "value": 7
-      },
-      {
-        "name": {
-          "en": "Has your child ever had airway surgery?"
-        },
-        "value": 8
-      },
-      {
-        "name": {
-          "en": "Has your child ever been intubated?"
-        },
-        "value": 9
-      },
-      {
-        "name": {
-          "en": "Does your child have a tracheostomy?"
-        },
-        "value": 10
-      }
-    ],
-    "multipleChoice": true,
-    "valueType": [
-      "xsd:integer"
-    ]
-  },
   "airway_conditions___10": {
     "description": "Indicates if the participant identifies with airway_conditions category 10."
-  },
-  "sleep_apnea": {
-    "description": {
-      "en": "Does your child have a history of a snoring or obstructive sleep apnea? (check all that apply): "
-    },
-    "question": {
-      "en": "Does your child have a history of a snoring or obstructive sleep apnea? (check all that apply): "
-    },
-    "datatype": [
-      "xsd:integer"
-    ],
-    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/sleep_apnea",
-    "choices": [
-      {
-        "name": {
-          "en": "Snoring"
-        },
-        "value": 1
-      },
-      {
-        "name": {
-          "en": "Gasping for air at night"
-        },
-        "value": 2
-      },
-      {
-        "name": {
-          "en": "Obstructive Sleep apnea (diagnosed on a sleep study)"
-        },
-        "value": 3
-      },
-      {
-        "name": {
-          "en": "Has your child had a sleep study?"
-        },
-        "value": 4
-      }
-    ],
-    "multipleChoice": true,
-    "valueType": [
-      "xsd:integer"
-    ]
   },
   "sleep_apnea___4": {
     "description": "Indicates if the participant identifies with sleep_apnea category 4."
   },
-  "oAHI": {
+  "peds_mc_snoring_apnea_had_sleep_study_oahi": {
     "description": {
       "en": "What was the oAHI on the sleep study (to be competed by research assistant)"
     },
@@ -46864,161 +46663,6 @@
       "xsd:string"
     ],
     "choices": null
-  },
-  "tonsillectomy": {
-    "description": {
-      "en": "Have they had a tonsillectomy?"
-    },
-    "question": {
-      "en": "Have they had a tonsillectomy?"
-    },
-    "datatype": [
-      "xsd:integer"
-    ],
-    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/tonsillectomy",
-    "choices": [
-      {
-        "name": {
-          "en": "Yes"
-        },
-        "value": 1
-      },
-      {
-        "name": {
-          "en": "No"
-        },
-        "value": 2
-      }
-    ],
-    "valueType": [
-      "xsd:integer"
-    ]
-  },
-  "tonsillectomy_date": {
-    "description": {
-      "en": "What was the date of the surgery?"
-    },
-    "question": {
-      "en": "What was the date of the surgery?"
-    },
-    "datatype": [
-      "xsd:date"
-    ],
-    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/tonsillectomy_date",
-    "valueType": [
-      "xsd:date"
-    ],
-    "choices": null
-  },
-  "adenoidectomy_date": {
-    "description": {
-      "en": "What was the date of the surgery?"
-    },
-    "question": {
-      "en": "What was the date of the surgery?"
-    },
-    "datatype": [
-      "xsd:date"
-    ],
-    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/adenoidectomy_date",
-    "valueType": [
-      "xsd:date"
-    ],
-    "choices": null
-  },
-  "lingual_tonsillectomy_date": {
-    "description": {
-      "en": "What was the date of the surgery?"
-    },
-    "question": {
-      "en": "What was the date of the surgery?"
-    },
-    "datatype": [
-      "xsd:date"
-    ],
-    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/lingual_tonsillectomy_date",
-    "valueType": [
-      "xsd:date"
-    ],
-    "choices": null
-  },
-  "hearing_loss": {
-    "description": {
-      "en": "Does your child have a history of hearing loss or associated conditions? (check all that apply):"
-    },
-    "question": {
-      "en": "Does your child have a history of hearing loss or associated conditions? (check all that apply):"
-    },
-    "datatype": [
-      "xsd:integer"
-    ],
-    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/hearing_loss",
-    "choices": [
-      {
-        "name": {
-          "en": "Cholesteatoma"
-        },
-        "value": 1
-      },
-      {
-        "name": {
-          "en": "Hearing loss"
-        },
-        "value": 2
-      },
-      {
-        "name": {
-          "en": "Mild Hearing loss "
-        },
-        "value": 3
-      },
-      {
-        "name": {
-          "en": "Deafness"
-        },
-        "value": 4
-      },
-      {
-        "name": {
-          "en": "Ear tubes"
-        },
-        "value": 5
-      },
-      {
-        "name": {
-          "en": "Cochlear implantation (Bilateral)"
-        },
-        "value": 6
-      },
-      {
-        "name": {
-          "en": "Vocal cord webs"
-        },
-        "value": 7
-      },
-      {
-        "name": {
-          "en": "Cochlear implantation (Unilateral) "
-        },
-        "value": 8
-      },
-      {
-        "name": {
-          "en": "Tympanic Membrane Perforation"
-        },
-        "value": 9
-      },
-      {
-        "name": {
-          "en": "CMV (cytomegalovirus)"
-        },
-        "value": 10
-      }
-    ],
-    "multipleChoice": true,
-    "valueType": [
-      "xsd:integer"
-    ]
   },
   "hearing_loss___10": {
     "description": "Indicates if the participant identifies with hearing_loss category 10."
@@ -47052,232 +46696,7 @@
       "xsd:integer"
     ]
   },
-  "thyroglossal_duct_cyst_surgery": {
-    "description": {
-      "en": "Have they had surgery for this? "
-    },
-    "question": {
-      "en": "Have they had surgery for this? "
-    },
-    "datatype": [
-      "xsd:integer"
-    ],
-    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/thyroglossal_duct_cyst_surgery",
-    "choices": [
-      {
-        "name": {
-          "en": "Yes"
-        },
-        "value": 1
-      },
-      {
-        "name": {
-          "en": "No"
-        },
-        "value": 2
-      }
-    ],
-    "valueType": [
-      "xsd:integer"
-    ]
-  },
-  "thyroglossal_duct_cyst_date": {
-    "description": {
-      "en": "What was the date of the surgery?"
-    },
-    "question": {
-      "en": "What was the date of the surgery?"
-    },
-    "datatype": [
-      "xsd:date"
-    ],
-    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/thyroglossal_duct_cyst_date",
-    "valueType": [
-      "xsd:date"
-    ],
-    "choices": null
-  },
-  "branchial_cleft_cyst_surgery": {
-    "description": {
-      "en": "Have they had surgery for this? "
-    },
-    "question": {
-      "en": "Have they had surgery for this? "
-    },
-    "datatype": [
-      "xsd:integer"
-    ],
-    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/branchial_cleft_cyst_surgery",
-    "choices": [
-      {
-        "name": {
-          "en": "Yes"
-        },
-        "value": 1
-      },
-      {
-        "name": {
-          "en": "No"
-        },
-        "value": 2
-      }
-    ],
-    "valueType": [
-      "xsd:integer"
-    ]
-  },
-  "branchial_cleft_cyst_date": {
-    "description": {
-      "en": "What was the date of the surgery?"
-    },
-    "question": {
-      "en": "What was the date of the surgery?"
-    },
-    "datatype": [
-      "xsd:date"
-    ],
-    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/branchial_cleft_cyst_date",
-    "valueType": [
-      "xsd:date"
-    ],
-    "choices": null
-  },
-  "dermoid_cyst_surgery": {
-    "description": {
-      "en": "Have they had surgery for this? "
-    },
-    "question": {
-      "en": "Have they had surgery for this? "
-    },
-    "datatype": [
-      "xsd:integer"
-    ],
-    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/dermoid_cyst_surgery",
-    "choices": [
-      {
-        "name": {
-          "en": "Yes"
-        },
-        "value": 1
-      },
-      {
-        "name": {
-          "en": "No"
-        },
-        "value": 2
-      }
-    ],
-    "valueType": [
-      "xsd:integer"
-    ]
-  },
-  "dermoid_cyst_date": {
-    "description": {
-      "en": "What was the date of the surgery?"
-    },
-    "question": {
-      "en": "What was the date of the surgery?"
-    },
-    "datatype": [
-      "xsd:date"
-    ],
-    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/dermoid_cyst_date",
-    "valueType": [
-      "xsd:date"
-    ],
-    "choices": null
-  },
-  "thyroid_nodule_or_cancer_surgery": {
-    "description": {
-      "en": "Have they had surgery for this? "
-    },
-    "question": {
-      "en": "Have they had surgery for this? "
-    },
-    "datatype": [
-      "xsd:integer"
-    ],
-    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/thyroid_nodule_or_cancer_surgery",
-    "choices": [
-      {
-        "name": {
-          "en": "Yes"
-        },
-        "value": 1
-      },
-      {
-        "name": {
-          "en": "No"
-        },
-        "value": 2
-      }
-    ],
-    "valueType": [
-      "xsd:integer"
-    ]
-  },
-  "thyroid_nodule_or_cancer_date": {
-    "description": {
-      "en": "What was the date of the surgery?"
-    },
-    "question": {
-      "en": "What was the date of the surgery?"
-    },
-    "datatype": [
-      "xsd:date"
-    ],
-    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/thyroid_nodule_or_cancer_date",
-    "valueType": [
-      "xsd:date"
-    ],
-    "choices": null
-  },
-  "enlarged_lymph_node_surgery": {
-    "description": {
-      "en": "Have they had surgery for this? "
-    },
-    "question": {
-      "en": "Have they had surgery for this? "
-    },
-    "datatype": [
-      "xsd:integer"
-    ],
-    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/enlarged_lymph_node_surgery",
-    "choices": [
-      {
-        "name": {
-          "en": "Yes"
-        },
-        "value": 1
-      },
-      {
-        "name": {
-          "en": "No"
-        },
-        "value": 2
-      }
-    ],
-    "valueType": [
-      "xsd:integer"
-    ]
-  },
-  "enlarged_lymph_node_date": {
-    "description": {
-      "en": "What was the date of the surgery?"
-    },
-    "question": {
-      "en": "What was the date of the surgery?"
-    },
-    "datatype": [
-      "xsd:date"
-    ],
-    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/enlarged_lymph_node_date",
-    "valueType": [
-      "xsd:date"
-    ],
-    "choices": null
-  },
-  "epistaxis": {
+  "peds_mc_epistaxis": {
     "description": {
       "en": "Does your child have a history of epistaxis?"
     },
@@ -47306,7 +46725,7 @@
       "xsd:integer"
     ]
   },
-  "nasal_fracture": {
+  "peds_mc_nasal_fractures": {
     "description": {
       "en": "Does your child have a history of nasal fractures?"
     },
@@ -47335,7 +46754,7 @@
       "xsd:integer"
     ]
   },
-  "chronic_medical_conditions": {
+  "peds_mc_chronic_medical_condition": {
     "description": {
       "en": "Has your child ever been diagnosed with a chronic medical condition?"
     },
@@ -47364,7 +46783,7 @@
       "xsd:integer"
     ]
   },
-  "chronic_medical_conditions_specify": {
+  "peds_mc_chronic_medical_condition_specified": {
     "description": {
       "en": "If yes, please specify:"
     },
@@ -47380,7 +46799,7 @@
     ],
     "choices": null
   },
-  "genetic_disorders": {
+  "peds_mc_genetic_syndromes": {
     "description": {
       "en": "Has your child been diagnosed with any genetic syndromes?"
     },
@@ -47409,7 +46828,7 @@
       "xsd:integer"
     ]
   },
-  "genetic_disorders_specify": {
+  "peds_mc_genetic_syndromes_specified": {
     "description": {
       "en": "If yes, please specify:"
     },
@@ -47425,7 +46844,7 @@
     ],
     "choices": null
   },
-  "hospitalize_medical_conditions": {
+  "peds_mc_hospitalized": {
     "description": {
       "en": "Has your child ever been hospitalized for a medical condition?"
     },
@@ -47454,7 +46873,7 @@
       "xsd:integer"
     ]
   },
-  "hospitalize_medical_conditions_specify": {
+  "peds_mc_hospitalized_specified": {
     "description": {
       "en": "If yes, please specify:"
     },
@@ -47470,7 +46889,7 @@
     ],
     "choices": null
   },
-  "neurological_disorders": {
+  "peds_mc_neurological_disorders": {
     "description": {
       "en": "Does your child have any history of neurological disorders (e.g., cerebral palsy, muscular dystrophy)?"
     },
@@ -47499,7 +46918,7 @@
       "xsd:integer"
     ]
   },
-  "neurological_disorders_specify": {
+  "peds_mc_neurological_disorders_specified": {
     "description": {
       "en": "If yes, please specify:"
     },
@@ -47515,7 +46934,7 @@
     ],
     "choices": null
   },
-  "allergies": {
+  "peds_mc_allergies": {
     "description": {
       "en": "Does your child have any known allergies (food, environmental, or medication)?"
     },
@@ -47544,7 +46963,7 @@
       "xsd:integer"
     ]
   },
-  "allergies_specify": {
+  "peds_mc_allergies_specified": {
     "description": {
       "en": "If yes, please specify:"
     },
@@ -47560,7 +46979,7 @@
     ],
     "choices": null
   },
-  "difficulty_swallowing": {
+  "peds_mc_dif_swallowing": {
     "description": {
       "en": "Has your child ever had difficulty swallowing liquids or solids?"
     },
@@ -47589,7 +47008,7 @@
       "xsd:integer"
     ]
   },
-  "difficulty_swallowing_specify": {
+  "peds_mc_dif_swallowing_specified": {
     "description": {
       "en": "If yes, please specify:"
     },
@@ -47605,7 +47024,7 @@
     ],
     "choices": null
   },
-  "ear_infection": {
+  "peds_mc_ear_inf_ant_py": {
     "description": {
       "en": "Has your child had any ear infections requiring antibiotics in the past year?"
     },
@@ -47634,7 +47053,7 @@
       "xsd:integer"
     ]
   },
-  "ear_infection_specify": {
+  "peds_mc_ear_inf_ant_py_specified": {
     "description": {
       "en": "If yes, please specify:"
     },
@@ -47650,7 +47069,7 @@
     ],
     "choices": null
   },
-  "ear_tube": {
+  "peds_mc_etp": {
     "description": {
       "en": "Has your child ever undergone ear tube placement (tympanostomy tubes)?"
     },
@@ -47679,7 +47098,7 @@
       "xsd:integer"
     ]
   },
-  "ear_tube_specify": {
+  "peds_mc_etp_procedure": {
     "description": {
       "en": "If yes, please specify which procedure:"
     },
@@ -47695,7 +47114,7 @@
     ],
     "choices": null
   },
-  "ear_tube_date": {
+  "peds_mc_etp_procedure_date": {
     "description": {
       "en": "What was the date of the surgery?"
     },
@@ -47711,7 +47130,7 @@
     ],
     "choices": null
   },
-  "ent_evaluation": {
+  "peds_mc_eval_voice_swal_c": {
     "description": {
       "en": "Has your child ever been evaluated by an ENT (ear, nose, and throat) specialist or speech-language pathologist for voice or swallowing concerns?"
     },
@@ -47740,7 +47159,7 @@
       "xsd:integer"
     ]
   },
-  "ent_evaluation_specify": {
+  "peds_mc_eval_voice_swal_c_specified": {
     "description": {
       "en": "If yes, please specify:"
     },
@@ -47756,7 +47175,7 @@
     ],
     "choices": null
   },
-  "feeding_tube": {
+  "peds_mc_ft": {
     "description": {
       "en": "Has your child ever required a feeding tube (NG tube, G-tube)?"
     },
@@ -47785,7 +47204,7 @@
       "xsd:integer"
     ]
   },
-  "feeding_tube_specify": {
+  "peds_mc_ft_specified": {
     "description": {
       "en": "If yes, please specify:"
     },
@@ -47801,7 +47220,7 @@
     ],
     "choices": null
   },
-  "gerd": {
+  "peds_mc_reflux": {
     "description": {
       "en": "Has your child ever been diagnosed with reflux (GERD) or required medication for acid reflux?"
     },
@@ -47830,7 +47249,7 @@
       "xsd:integer"
     ]
   },
-  "gerd_specify": {
+  "peds_mc_reflux_specified": {
     "description": {
       "en": "If yes, please specify:"
     },
@@ -47846,7 +47265,7 @@
     ],
     "choices": null
   },
-  "hearing_aid": {
+  "peds_mc_hl": {
     "description": {
       "en": "Has your child ever been diagnosed with hearing loss or required hearing aids?"
     },
@@ -47875,7 +47294,7 @@
       "xsd:integer"
     ]
   },
-  "hearing_aid_specify": {
+  "peds_mc_hl_specified": {
     "description": {
       "en": "If yes, please specify:"
     },
@@ -47891,7 +47310,7 @@
     ],
     "choices": null
   },
-  "hoarse_voice": {
+  "peds_mc_hw_voice_2_w": {
     "description": {
       "en": "Has your child ever had a hoarse or weak voice for more than two weeks?"
     },
@@ -47920,7 +47339,7 @@
       "xsd:integer"
     ]
   },
-  "hoarse_voice_specify": {
+  "peds_mc_hw_voice_2_w_specified": {
     "description": {
       "en": "If yes, please specify:"
     },
@@ -47936,7 +47355,7 @@
     ],
     "choices": null
   },
-  "neurological_surgery": {
+  "peds_mc_no_surgeries": {
     "description": {
       "en": "Has your child ever had any neurological or orthopedic surgeries that could affect breathing or speech?"
     },
@@ -47965,7 +47384,7 @@
       "xsd:integer"
     ]
   },
-  "neurological_surgery_specify": {
+  "peds_mc_no_surgeries_procedure": {
     "description": {
       "en": "If yes, please specify which procedure:"
     },
@@ -47981,7 +47400,7 @@
     ],
     "choices": null
   },
-  "neurological_surgery_date": {
+  "peds_mc_no_surgeries_procedure_date": {
     "description": {
       "en": "If yes, please specify which procedure and the date of the procedure"
     },
@@ -47997,7 +47416,7 @@
     ],
     "choices": null
   },
-  "noisy_breathing": {
+  "peds_mc_stridor": {
     "description": {
       "en": "Has your child ever had a history of noisy breathing (stridor) or difficulty breathing?"
     },
@@ -48026,7 +47445,7 @@
       "xsd:integer"
     ]
   },
-  "noisy_breathing_specify": {
+  "peds_mc_stridor_specified": {
     "description": {
       "en": "If yes, please specify:"
     },
@@ -48042,7 +47461,7 @@
     ],
     "choices": null
   },
-  "oxygen": {
+  "peds_mc_ox_sup": {
     "description": {
       "en": "Has your child ever required oxygen support, intubation, a ventilator, or a tracheostomy?"
     },
@@ -48071,7 +47490,7 @@
       "xsd:integer"
     ]
   },
-  "oxygen_specify": {
+  "peds_mc_ox_sup_specified": {
     "description": {
       "en": "If yes, please specify:"
     },
@@ -48087,7 +47506,7 @@
     ],
     "choices": null
   },
-  "pediatric_medication": {
+  "peds_mc_meds": {
     "description": {
       "en": "Is your child currently taking any medications that could affect voice, breathing, or swallowing? If so, please list them."
     },
@@ -48116,7 +47535,7 @@
       "xsd:integer"
     ]
   },
-  "pediatric_medication_specify": {
+  "peds_mc_meds_specified": {
     "description": {
       "en": "If yes, please specify:"
     },
@@ -48132,7 +47551,7 @@
     ],
     "choices": null
   },
-  "speech_disorder_and_speech_delay": {
+  "peds_mc_v_dis": {
     "description": {
       "en": "Has your child ever been diagnosed with a voice disorder or speech delay?"
     },
@@ -48161,7 +47580,7 @@
       "xsd:integer"
     ]
   },
-  "speech_disorder_and_speech_delay_specify": {
+  "peds_mc_v_dis_specified": {
     "description": {
       "en": "If yes, please specify:"
     },
@@ -48177,7 +47596,7 @@
     ],
     "choices": null
   },
-  "speech_therapy": {
+  "peds_mc_a_therapy": {
     "description": {
       "en": "Has your child ever had speech therapy for articulation or voice-related issues?"
     },
@@ -48206,7 +47625,7 @@
       "xsd:integer"
     ]
   },
-  "speech_therapy_specify": {
+  "peds_mc_a_therapy_specified": {
     "description": {
       "en": "If yes, please specify:"
     },
@@ -48222,7 +47641,7 @@
     ],
     "choices": null
   },
-  "surgery": {
+  "peds_mc_surgery_t_vc_a": {
     "description": {
       "en": "Has your child ever had surgery involving the throat, vocal cords, or airway?"
     },
@@ -48251,7 +47670,7 @@
       "xsd:integer"
     ]
   },
-  "surgery_specify": {
+  "peds_mc_surgery_t_vc_a_specified": {
     "description": {
       "en": "If yes, please specify:"
     },
@@ -48267,7 +47686,7 @@
     ],
     "choices": null
   },
-  "tonsillitis": {
+  "peds_mc_fr_inf_tons": {
     "description": {
       "en": "Has your child had frequent throat infections or tonsillitis?"
     },
@@ -48296,7 +47715,7 @@
       "xsd:integer"
     ]
   },
-  "tonsillitis_specify": {
+  "peds_mc_fr_inf_tons_specified": {
     "description": {
       "en": "If yes, please specify how many:"
     },
@@ -48312,7 +47731,7 @@
     ],
     "choices": null
   },
-  "vocal_strain": {
+  "peds_mc_fr_v_f": {
     "description": {
       "en": "Does your child experience frequent vocal strain or voice fatigue?"
     },
@@ -48341,7 +47760,7 @@
       "xsd:integer"
     ]
   },
-  "vocal_strain_specify": {
+  "peds_mc_fr_v_f_specified": {
     "description": {
       "en": "If yes, please specify:"
     },
@@ -48356,78 +47775,6 @@
       "xsd:string"
     ],
     "choices": null
-  },
-  "issues_2_weeks": {
-    "description": {
-      "en": "Has your child had any of the following in the 2 weeks?"
-    },
-    "question": {
-      "en": "Has your child had any of the following in the 2 weeks?"
-    },
-    "datatype": [
-      "xsd:integer"
-    ],
-    "termURL": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/9b2b20498ca242a0e19301cd873d06c5a9068d2f/peds-protocol-questionnaires/activities/medical_conditions/items/issues_2_weeks",
-    "choices": [
-      {
-        "name": {
-          "en": "Wheezing or trouble breathing "
-        },
-        "value": 1
-      },
-      {
-        "name": {
-          "en": "Dry cough"
-        },
-        "value": 2
-      },
-      {
-        "name": {
-          "en": "Wet, productive cough"
-        },
-        "value": 3
-      },
-      {
-        "name": {
-          "en": "Nasal congestion"
-        },
-        "value": 4
-      },
-      {
-        "name": {
-          "en": "Sneezing"
-        },
-        "value": 5
-      },
-      {
-        "name": {
-          "en": "Ear infection"
-        },
-        "value": 6
-      },
-      {
-        "name": {
-          "en": "Stridor"
-        },
-        "value": 7
-      },
-      {
-        "name": {
-          "en": "Croup"
-        },
-        "value": 8
-      },
-      {
-        "name": {
-          "en": "Sorethroat/tonsillitis"
-        },
-        "value": 9
-      }
-    ],
-    "multipleChoice": true,
-    "valueType": [
-      "xsd:integer"
-    ]
   },
   "issues_2_weeks___9": {
     "description": "Indicates if the participant identifies with issues_2_weeks category 9."

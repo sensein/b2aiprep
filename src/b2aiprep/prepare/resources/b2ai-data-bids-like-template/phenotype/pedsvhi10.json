@@ -3,7 +3,7 @@
         "description": "Measures perceived impact of voice disorders for kids.",
         "url": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/",
         "data_elements": {
-            "peds_vhi_10_schema_session_id": {
+            "peds_vhi_session_id": {
                 "description": "The unique identifier for the Voice Handicap Index session.",
                 "question": {
                     "en": "Session ID"
@@ -17,7 +17,7 @@
                     "xsd:string"
                 ]
             },
-            "peds_vhi_10_schema_duration": {
+            "peds_vhi_duration": {
                 "description": "Duration of the Voice Handicap Index session.",
                 "question": {
                     "en": "Questionnaire Duration (seconds)"
@@ -32,8 +32,8 @@
                     "xsd:decimal"
                 ]
             },
-            "child_talkativeness": {
-                "description": "child_talkativeness",
+            "peds_vhi_talkativeness": {
+                "description": "peds_vhi_talkativeness",
                 "question": {
                     "en": "I would rate my child's talkativeness as the following:"
                 },
@@ -88,8 +88,8 @@
                     "xsd:integer"
                 ]
             },
-            "vhi_10_question_1": {
-                "description": "vhi_10_question_1",
+            "peds_voice_difficult_hear": {
+                "description": "peds_voice_difficult_hear",
                 "question": {
                     "en": "My child\u2019s voice makes it difficult for people to hear him/her."
                 },
@@ -132,8 +132,8 @@
                     "xsd:integer"
                 ]
             },
-            "vhi_10_question_2": {
-                "description": "vhi_10_question_2",
+            "peds_difficulty_understanding": {
+                "description": "peds_difficulty_understanding",
                 "question": {
                     "en": "People have difficulty understanding my child in a noisy room."
                 },
@@ -176,8 +176,8 @@
                     "xsd:integer"
                 ]
             },
-            "vhi_10_question_3": {
-                "description": "vhi_10_question_3",
+            "peds_difficulty_hearing": {
+                "description": "peds_difficulty_hearing",
                 "question": {
                     "en": "At home, we have difficulty hearing my child when he/she calls through the house."
                 },
@@ -220,8 +220,8 @@
                     "xsd:integer"
                 ]
             },
-            "vhi_10_question_4": {
-                "description": "vhi_10_question_4",
+            "peds_avoid_communicating": {
+                "description": "peds_avoid_communicating",
                 "question": {
                     "en": "My child tends to avoid communicating because of his/her voice."
                 },
@@ -264,8 +264,8 @@
                     "xsd:integer"
                 ]
             },
-            "vhi_10_question_5": {
-                "description": "vhi_10_question_5",
+            "peds_speaks_less": {
+                "description": "peds_speaks_less",
                 "question": {
                     "en": "My child speaks with friends, neighbours, or relatives less often because of his/her voice."
                 },
@@ -308,8 +308,8 @@
                     "xsd:integer"
                 ]
             },
-            "vhi_10_question_6": {
-                "description": "vhi_10_question_6",
+            "peds_repeat_speaking": {
+                "description": "peds_repeat_speaking",
                 "question": {
                     "en": "People ask my child to repeat him/herself when speaking face-to-face."
                 },
@@ -352,8 +352,8 @@
                     "xsd:integer"
                 ]
             },
-            "vhi_10_question_7": {
-                "description": "vhi_10_question_7",
+            "peds_voice_diffculities": {
+                "description": "peds_voice_diffculities",
                 "question": {
                     "en": "My child\u2019s voice difficulties restrict personal, educational and social activities."
                 },
@@ -396,8 +396,8 @@
                     "xsd:integer"
                 ]
             },
-            "vhi_10_question_8": {
-                "description": "vhi_10_question_8",
+            "peds_out_of_air_talking": {
+                "description": "peds_out_of_air_talking",
                 "question": {
                     "en": "My child runs out of air when talking."
                 },
@@ -484,8 +484,8 @@
                     "xsd:integer"
                 ]
             },
-            "vhi_10_question_10": {
-                "description": "vhi_10_question_10",
+            "peds_wrong_with_voice": {
+                "description": "peds_wrong_with_voice",
                 "question": {
                     "en": "People ask, \u201cWhat\u2019s wrong with your child\u2019s voice?"
                 },
@@ -528,8 +528,8 @@
                     "xsd:integer"
                 ]
             },
-            "vhi_10_question_11": {
-                "description": "vhi_10_question_11",
+            "peds_dry_raspy_hoarse": {
+                "description": "peds_dry_raspy_hoarse",
                 "question": {
                     "en": "My child\u2019s voice sounds dry, raspy, and/or hoarse."
                 },
@@ -572,8 +572,8 @@
                     "xsd:integer"
                 ]
             },
-            "vhi_10_question_12": {
-                "description": "vhi_10_question_12",
+            "peds_unpredictable": {
+                "description": "peds_unpredictable",
                 "question": {
                     "en": "The quality of my child\u2019s voice is unpredictable"
                 },
@@ -616,8 +616,8 @@
                     "xsd:integer"
                 ]
             },
-            "vhi_10_question_13": {
-                "description": "vhi_10_question_13",
+            "peds_straining": {
+                "description": "peds_straining",
                 "question": {
                     "en": "My child uses a great deal of effort to speak (e.g., straining)"
                 },
@@ -660,8 +660,8 @@
                     "xsd:integer"
                 ]
             },
-            "vhi_10_question_14": {
-                "description": "vhi_10_question_14",
+            "peds_worse_in_evening": {
+                "description": "peds_worse_in_evening",
                 "question": {
                     "en": "My child\u2019s voice is worse in the evening"
                 },
@@ -704,8 +704,8 @@
                     "xsd:integer"
                 ]
             },
-            "vhi_10_question_15": {
-                "description": "vhi_10_question_15",
+            "peds_gives_out": {
+                "description": "peds_gives_out",
                 "question": {
                     "en": "My child\u2019s voice \u201cgives out\u201d when speaking."
                 },
@@ -748,8 +748,8 @@
                     "xsd:integer"
                 ]
             },
-            "vhi_10_question_16": {
-                "description": "vhi_10_question_16",
+            "peds_yell_to_hear": {
+                "description": "peds_yell_to_hear",
                 "question": {
                     "en": "My child has to yell in order for others to hear him/her."
                 },
@@ -792,8 +792,8 @@
                     "xsd:integer"
                 ]
             },
-            "vhi_10_question_17": {
-                "description": "vhi_10_question_17",
+            "peds_tense_talking": {
+                "description": "peds_tense_talking",
                 "question": {
                     "en": "My child appears tense when talking with others because of his/her voice."
                 },
@@ -836,8 +836,8 @@
                     "xsd:integer"
                 ]
             },
-            "vhi_10_question_18": {
-                "description": "vhi_10_question_18",
+            "peds_seem_irritated": {
+                "description": "peds_seem_irritated",
                 "question": {
                     "en": "People seem irritated with my child\u2019s voice"
                 },
@@ -880,8 +880,8 @@
                     "xsd:integer"
                 ]
             },
-            "vhi_10_question_19": {
-                "description": "vhi_10_question_19",
+            "peds_other_not_understand": {
+                "description": "peds_other_not_understand",
                 "question": {
                     "en": "I find other people don\u2019t understand my child\u2019s voice problem."
                 },
@@ -924,8 +924,8 @@
                     "xsd:integer"
                 ]
             },
-            "vhi_10_question_20": {
-                "description": "vhi_10_question_20",
+            "peds_frustrated_voice": {
+                "description": "peds_frustrated_voice",
                 "question": {
                     "en": "My child is frustrated with his/her voice problem"
                 },
@@ -968,8 +968,8 @@
                     "xsd:integer"
                 ]
             },
-            "vhi_10_question_21": {
-                "description": "vhi_10_question_21",
+            "peds_less_out_going": {
+                "description": "peds_less_out_going",
                 "question": {
                     "en": "My child is less out-going because of his/her voice problem."
                 },
@@ -1012,8 +1012,8 @@
                     "xsd:integer"
                 ]
             },
-            "vhi_10_question_22": {
-                "description": "vhi_10_question_22",
+            "peds_annoyed_repeat": {
+                "description": "peds_annoyed_repeat",
                 "question": {
                     "en": "My child is annoyed when people ask him/her to repeat."
                 },
@@ -1056,8 +1056,8 @@
                     "xsd:integer"
                 ]
             },
-            "vhi_10_question_23": {
-                "description": "vhi_10_question_23",
+            "peds_embarrassed_repeat": {
+                "description": "peds_embarrassed_repeat",
                 "question": {
                     "en": "My child is embarrassed when people ask him/her to repeat."
                 },
@@ -1100,8 +1100,8 @@
                     "xsd:integer"
                 ]
             },
-            "voice_severity_rating": {
-                "description": "voice_severity_rating",
+            "peds_severity_voice_problem": {
+                "description": "peds_severity_voice_problem",
                 "question": {
                     "en": "Please place \u201cX\u201d mark anywhere along this line to indicate the severity of your child\u2019s voice problem"
                 },
