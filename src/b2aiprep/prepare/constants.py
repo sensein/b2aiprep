@@ -135,8 +135,6 @@ def _load_participant_exclusions() -> t.List[str]:
         return json.loads(b2ai_resources.joinpath("participant_id_to_exclude_v2.json").read_text())
     return json.loads(b2ai_resources.joinpath("participant_id_to_exclude.json").read_text())
 
-PARTICIPANT_ID_TO_REMOVE: t.List[str] = _load_participant_exclusions()
-
 def _load_audio_filestem_exclusions() -> t.List[str]:
     """Load the audio filestems to exclude from the dataset.
 
@@ -149,7 +147,6 @@ def _load_audio_filestem_exclusions() -> t.List[str]:
     if b2ai_resources.joinpath("audio_filestem_to_exclude.json").exists():
         return json.loads(b2ai_resources.joinpath("audio_filestem_to_exclude.json").read_text())
     return []
-
 
 class Instrument(BaseModel):
     """Instruments are associated with fixed sets of columns and a string

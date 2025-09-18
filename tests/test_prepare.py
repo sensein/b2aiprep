@@ -17,7 +17,6 @@ from b2aiprep.prepare.prepare import (
     extract_single,
     wav_to_features,
     extract_features_sequentially,
-    extract_features_workflow,
     validate_bids_data,
     reduce_id_length,
     reduce_length_of_id,
