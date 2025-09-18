@@ -304,7 +304,16 @@ class RedCapDataset:
     
         # Convert ReproSchema to RedCap format
         df = cls._convert_reproschema_to_redcap(audio_dir, survey_dir, participant_group)
-        
+
+        #remap reproschema columns to their redcap equivalents
+        current_file = Path(__file__)
+        resource_path = current_file.parent / "resources" / "field_remap.json"
+
+        with open(resource_path, "r") as f:
+            column_mapping = json.load(f)
+
+        df.rename(columns=column_mapping, inplace=True)
+
         dataset = cls(
             df=df, 
             source_type='reproschema', 
