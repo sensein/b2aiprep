@@ -11,7 +11,6 @@ from b2aiprep.commands import (  # gensynthtabdata,
     dashboard,
     generate_audio_features,
     prepare_bids,
-    publish_bids_dataset,
     redcap2bids,
     reproschema_audio_to_folder,
     reproschema_to_redcap,
@@ -20,6 +19,7 @@ from b2aiprep.commands import (  # gensynthtabdata,
     validate_data,
     validate_derived_dataset,
     verify,
+    publish_bids_dataset,
 )
 
 
