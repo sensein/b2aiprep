@@ -77,7 +77,7 @@ class BIDSDataset:
         initialize_data_directory(outdir)
 
         # Subselect the RedCap dataframe and output components to individual files in the phenotype directory
-        cls._construct_all_tsvs_from_jsons(
+        BIDSDataset._construct_all_tsvs_from_jsons(
             df=redcap_dataset.df,
             input_dir=os.path.join(outdir, "phenotype"),
             output_dir=os.path.join(outdir, "phenotype"),
@@ -869,6 +869,9 @@ class BIDSDataset:
         Returns:
             Tuple of (deidentified_df, deidentified_phenotype_dict)
         """
+        # Remove sensitive columns
+        df, phenotype = BIDSDataset._remove_sensitive_columns(df, phenotype)
+
         # Rename record_id to participant_id
         if "record_id" in df.columns:
             df, phenotype = BIDSDataset._rename_record_id_to_participant_id(df, phenotype)
@@ -910,7 +913,6 @@ class BIDSDataset:
         # Remove unwanted columns
         df, phenotype = BIDSDataset._remove_empty_columns(df, phenotype)
         df, phenotype = BIDSDataset._remove_system_columns(df, phenotype)
-        df, phenotype = BIDSDataset._remove_low_utility_columns(df, phenotype)
         
         # Add derived columns
         if ("gender_identity" in df.columns) and ("specify_gender_identity" in df.columns):
@@ -976,8 +978,8 @@ class BIDSDataset:
         )
 
     @staticmethod
-    def _remove_low_utility_columns(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
-        """Remove columns with minimal data science utility (free-text, all null values, etc)."""
+    def _remove_sensitive_columns(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
+        """Remove columns with sensitive data (free-text, geo-location, etc)."""
         columns_to_drop = [
             "state_province",
             "other_edu_level",
@@ -1001,6 +1003,9 @@ class BIDSDataset:
             "city",
             "state_province",
             "zipcode",
+            "other_race_specify",
+            "other_primary_language",
+            "conditions_other",
             # below could be considered for inclusion in the future
             "tonsillectomy_date",
             "adenoidectomy_date",
