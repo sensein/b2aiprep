@@ -545,7 +545,6 @@ def validate_derived_dataset(dataset_path):
             len(missing_columns) == 0
         ), f"Columns not found in {base_dataframe_name}.tsv: {missing_columns}"
 
-
 @click.command()
 @click.argument("bids_path", type=click.Path(exists=True))
 @click.argument("outdir", type=click.Path())
