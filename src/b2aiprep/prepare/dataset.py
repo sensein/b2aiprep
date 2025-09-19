@@ -35,7 +35,7 @@ from soundfile import LibsndfileError
 from tqdm import tqdm
 
 from b2aiprep.prepare.constants import RepeatInstrument, Instrument
-from b2aiprep.prepare.utils import initialize_data_directory
+from b2aiprep.prepare.utils import copy_package_resource, remove_files_by_pattern
 from b2aiprep.prepare.fhir_utils import convert_response_to_fhir
 from b2aiprep.prepare.prepare import (
     filter_audio_paths, 
@@ -75,16 +75,8 @@ class BIDSDataset:
         
         outdir = Path(outdir)
         initialize_data_directory(outdir)
-        
-        # Construct participants.tsv
-        cls._construct_tsv_from_json(
-            df=redcap_dataset.df,
-            json_file_path=os.path.join(outdir, "participants.json"),
-            output_dir=str(outdir),
-            output_file_name="participants.tsv",
-        )
 
-        # Construct phenotype tsvs
+        # Subselect the RedCap dataframe and output components to individual files in the phenotype directory
         cls._construct_all_tsvs_from_jsons(
             df=redcap_dataset.df,
             input_dir=os.path.join(outdir, "phenotype"),
@@ -148,6 +140,29 @@ class BIDSDataset:
         
         # Return a new BIDSDataset instance pointing to the created directory
         return cls(outdir)
+
+    @staticmethod
+    def _initialize_data_directory(bids_dir_path: str) -> None:
+        """Initializes the data directory using the template.
+
+        Args:
+            bids_dir_path (str): The path to the BIDS directory where the data should be initialized.
+
+        Returns:
+            None
+        """
+        if not os.path.exists(bids_dir_path):
+            os.makedirs(bids_dir_path)
+            logging.info(f"Created directory: {bids_dir_path}")
+
+        template_package = "b2aiprep.prepare.resources.b2ai-data-bids-like-template"
+        copy_package_resource(template_package, "CHANGELOG.md", bids_dir_path)
+        copy_package_resource(template_package, "README.md", bids_dir_path)
+        copy_package_resource(template_package, "dataset_description.json", bids_dir_path)
+        copy_package_resource(template_package, "participants.json", bids_dir_path)
+        copy_package_resource(template_package, "phenotype", bids_dir_path)
+        phenotype_path = Path(bids_dir_path).joinpath("phenotype")
+        remove_files_by_pattern(phenotype_path, "<measurement_tool_name>*")
 
     def find_questionnaires(self, questionnaire_name: str) -> t.List[Path]:
         """
@@ -504,27 +519,35 @@ class BIDSDataset:
         return df.to_dict("index")
 
     @staticmethod
-    def _construct_tsv_from_json(
-        df: pd.DataFrame, json_file_path: str, output_dir: str, output_file_name: t.Optional[str] = None
-    ) -> None:
-        """Construct a TSV file from a DataFrame and a JSON file specifying column labels.
+    def _dataframe_to_tsv(df: pd.DataFrame, tsv_path: str) -> None:
+        """Construct a TSV file from a DataFrame.
+
+        Args:
+            df: DataFrame containing the data.
+            tsv_path: Path to the output TSV file.
+        """
+        # Save the combined DataFrame to a TSV file
+        df.to_csv(tsv_path, sep="\t", index=False)
+        logging.info(f"TSV file created and saved to: {tsv_path}")
+
+    @staticmethod
+    def _subselect_dataframe_using_json(
+        df: pd.DataFrame, json_data: dict
+    ) -> pd.DataFrame:
+        """Extracts a subset of columns from a DataFrame using the given JSON file,
+        removes duplicates, and returns a new DataFrame.
 
         Combines entries so that there is one row per record_id.
 
         Args:
             df: DataFrame containing the data.
-            json_file_path: Path to the JSON file with the column labels.
-            output_dir: Output directory where the TSV file will be saved.
-            output_file_name: The name of the output TSV file.
-                If not provided, the JSON file name is used with a .tsv extension.
+            json_data: Dictionary containing the column labels.
 
         Raises:
             ValueError: If no valid columns found in DataFrame that match JSON file.
         """
-        # Load the column labels from the JSON file
-        with open(json_file_path, "r") as f:
-            json_data = json.load(f)
 
+        # The phenotype JSON files are nested below a key that corresponds to the schema name
         first_key = next(iter(json_data))
 
         column_labels = []
@@ -546,17 +569,7 @@ class BIDSDataset:
 
         # Combine entries so there is one row per record_id
         combined_df = selected_df.groupby("record_id").first().reset_index()
-
-        # Define the output file name and path
-        if output_file_name is None:
-            output_file_name = os.path.splitext(os.path.basename(json_file_path))[0] + ".tsv"
-
-        tsv_path = os.path.join(output_dir, output_file_name)
-
-        # Save the combined DataFrame to a TSV file
-        combined_df.to_csv(tsv_path, sep="\t", index=False)
-
-        logging.info(f"TSV file created and saved to: {tsv_path}")
+        return combined_df
 
     @staticmethod
     def _construct_all_tsvs_from_jsons(
@@ -583,14 +596,31 @@ class BIDSDataset:
         # Ensure output directory exists
         os.makedirs(output_dir, exist_ok=True)
 
+        # Construct participants.tsv
+        with open(os.path.join(input_dir, "participants.json"), "r") as f:
+            json_data = json.load(f)
+        df_subselected = BIDSDataset._subselect_dataframe_using_json(
+            df=df,
+            json_data=json_data,
+        )
+        df_subselected, json_data = BIDSDataset._clean_phenotype_data(df_subselected, json_data)
+        BIDSDataset._dataframe_to_tsv(df_subselected, os.path.join(output_dir, "participants.tsv"))
+        with open(os.path.join(output_dir, "participants.json"), "w") as f:
+            json.dump(json_data, f, indent=2)
+
         # Iterate over all files in the input directory
         for filename in os.listdir(input_dir):
             # Process only JSON files that are not excluded
             if filename.endswith(".json") and filename not in excluded_files:
-                json_file_path = os.path.join(input_dir, filename)
+                with open(os.path.join(input_dir, filename), "r") as f:
+                    json_data = json.load(f)
 
                 # Construct the TSV file from the JSON file
-                BIDSDataset._construct_tsv_from_json(df=df, json_file_path=json_file_path, output_dir=output_dir)
+                df_subselected = BIDSDataset._subselect_dataframe_using_json(df=df, json_data=json_data)
+                df_subselected, json_data = BIDSDataset._clean_phenotype_data(df_subselected, json_data)
+                BIDSDataset._dataframe_to_tsv(df_subselected, os.path.join(output_dir, filename.replace(".json", ".tsv")))
+                with open(os.path.join(output_dir, filename), "w") as f:
+                    json.dump(json_data, f, indent=2)
 
     @staticmethod
     def _get_instrument_for_name(name: str) -> Instrument:
@@ -680,6 +710,13 @@ class BIDSDataset:
 
         sessions_df = pd.DataFrame(columns=session_instrument.columns)
 
+        if audiodir is not None:
+            # audio files are under a folder with the site name,
+            # so we need to recursively glob
+            audio_files = list(audiodir.rglob(f"*.wav"))
+        else:
+            audio_files = []
+
         # validated questionnaires are asked per session
         sessions_rows = []
 
@@ -737,37 +774,37 @@ class BIDSDataset:
                     )
 
                     # we also need to organize the audio file
-                    if audiodir is not None:
-                        # audio files are under a folder with the site name,
-                        # so we need to recursively glob
-                        audio_files = list(audiodir.rglob(f"{recording['recording_id']}*"))
-                        if len(audio_files) == 0:
+                    audio_files_for_recording = [
+                        audio_file for audio_file in audio_files if recording['recording_id'] in audio_file.name
+                    ]
+                    if len(audio_files_for_recording) == 0:
+                        logging.warning(
+                            f"No audio file found for recording "
+                            f"{recording['recording_id']}."
+                        )
+                    else:
+                        if len(audio_files_for_recording) > 1:
                             logging.warning(
-                                f"No audio file found for recording "
-                                f"{recording['recording_id']}."
+                                f"Multiple audio files found for recording "
+                                f"{recording['recording_id']}. "
+                                f"Using only {audio_files[0]}"
+                            )
+                        audio_file = audio_files[0]
+
+                        # copy file
+                        ext = audio_file.suffix
+
+                        recording_name = recording["recording_name"].replace(" ", "-")
+                        audio_file_destination = (
+                            audio_output_path / f"{prefix}_task-{recording_name}{ext}"
+                        )
+                        if audio_file_destination.exists():
+                            logging.warning(
+                                f"Audio file {audio_file_destination} already exists. Skipping."
                             )
                         else:
-                            if len(audio_files) > 1:
-                                logging.warning(
-                                    f"Multiple audio files found for recording "
-                                    f"{recording['recording_id']}. "
-                                    f"Using only {audio_files[0]}"
-                                )
-                            audio_file = audio_files[0]
+                            audio_file_destination.write_bytes(audio_file.read_bytes())
 
-                            # copy file
-                            ext = audio_file.suffix
-
-                            recording_name = recording["recording_name"].replace(" ", "-")
-                            audio_file_destination = (
-                                audio_output_path / f"{prefix}_task-{recording_name}{ext}"
-                            )
-                            if audio_file_destination.exists():
-                                logging.warning(
-                                    f"Audio file {audio_file_destination} already exists. Skipping."
-                                )
-                            else:
-                                audio_file_destination.write_bytes(audio_file.read_bytes())
         # Save sessions.tsv
         sessions_df = pd.DataFrame(sessions_rows)
         if not os.path.exists(subject_path):
@@ -855,7 +892,8 @@ class BIDSDataset:
 
         return df, phenotype
 
-    def _clean_phenotype_data(self, df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
+    @staticmethod
+    def _clean_phenotype_data(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
         """
         Apply data cleaning operations to phenotype data.
         
@@ -867,20 +905,24 @@ class BIDSDataset:
             Tuple of (cleaned_df, cleaned_phenotype_dict)
         """
         # Fix alcohol column date values
-        df = self._fix_alcohol_column(df)
+        df = BIDSDataset._fix_alcohol_column(df)
         
         # Remove unwanted columns
-        df, phenotype = self._remove_empty_columns(df, phenotype)
-        df, phenotype = self._remove_system_columns(df, phenotype)
-        df, phenotype = self._remove_low_utility_columns(df, phenotype)
+        df, phenotype = BIDSDataset._remove_empty_columns(df, phenotype)
+        df, phenotype = BIDSDataset._remove_system_columns(df, phenotype)
+        df, phenotype = BIDSDataset._remove_low_utility_columns(df, phenotype)
         
         # Add derived columns
         if ("gender_identity" in df.columns) and ("specify_gender_identity" in df.columns):
-            df, phenotype = self._add_sex_at_birth_column(df, phenotype)
+            df, phenotype = BIDSDataset._add_sex_at_birth_column(df, phenotype)
+
+        # Rename columns for usability
+        df, phenotype = BIDSDataset._rename_columns(df, phenotype)
 
         return df, phenotype
 
-    def _fix_alcohol_column(self, df: pd.DataFrame) -> pd.DataFrame:
+    @staticmethod
+    def _fix_alcohol_column(df: pd.DataFrame) -> pd.DataFrame:
         """Fix known date values in the alcohol_amt column."""
         if "alcohol_amt" in df:
             date_fix_map = {
@@ -893,7 +935,8 @@ class BIDSDataset:
             )
         return df
 
-    def _remove_empty_columns(self, df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
+    @staticmethod
+    def _remove_empty_columns(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
         """Remove columns that are empty."""
         columns_to_drop = [
             "consent_status",
@@ -903,11 +946,12 @@ class BIDSDataset:
             "ef_fluent_language_other",
             "session_site",
         ]
-        return self._drop_columns_from_df_and_data_dict(
+        return BIDSDataset._drop_columns_from_df_and_data_dict(
             df, phenotype, columns_to_drop, "Removing empty columns"
         )
 
-    def _remove_system_columns(self, df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
+    @staticmethod
+    def _remove_system_columns(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
         """Remove system/technical columns that shouldn't be in the final dataset."""
         columns_to_drop = [
             "acoustic_task_id",
@@ -927,11 +971,12 @@ class BIDSDataset:
             "recording_input_gain",
             "recording_microphone",
         ]
-        return self._drop_columns_from_df_and_data_dict(
+        return BIDSDataset._drop_columns_from_df_and_data_dict(
             df, phenotype, columns_to_drop, "Removing system columns"
         )
 
-    def _remove_low_utility_columns(self, df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
+    @staticmethod
+    def _remove_low_utility_columns(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
         """Remove columns with minimal data science utility (free-text, all null values, etc)."""
         columns_to_drop = [
             "state_province",
@@ -968,12 +1013,23 @@ class BIDSDataset:
             "thyroglossal_duct_cyst_date",
             "thyroid_nodule_or_cancer_date",
         ]
-        return self._drop_columns_from_df_and_data_dict(
+        return BIDSDataset._drop_columns_from_df_and_data_dict(
             df, phenotype, columns_to_drop, "Removing low utility / PHI containing columns"
         )
+    
+    @staticmethod
+    def _rename_columns(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
+        """Rename columns for improved usability."""
+        column_rename_map = {
+            "diagnois_gi_gsd": "diagnois_gi_gold_standard_diagnosis",
+        }
+        df = df.rename(columns=column_rename_map)
+        phenotype = {k: v for k, v in phenotype.items() if k in column_rename_map}
+        return df, phenotype
 
+    @staticmethod
     def _drop_columns_from_df_and_data_dict(
-        self, df: pd.DataFrame, phenotype: dict, columns_to_drop: t.List[str], message: str
+        df: pd.DataFrame, phenotype: dict, columns_to_drop: t.List[str], message: str
     ) -> t.Tuple[pd.DataFrame, dict]:
         """Drop columns from the DataFrame and phenotype dictionary."""
         columns_to_drop_in_df = [col for col in columns_to_drop if col in df.columns]
@@ -986,7 +1042,7 @@ class BIDSDataset:
         return df, phenotype
 
     @staticmethod
-    def add_record_id_to_phenotype(phenotype: dict) -> dict:
+    def _add_record_id_to_phenotype(phenotype: dict) -> dict:
         """Add record_id to phenotype metadata if missing."""
         if 'record_id' in phenotype:
             return phenotype
@@ -1138,7 +1194,6 @@ class BIDSDataset:
         logging.info("Processing participants.tsv for deidentification.")
         df, phenotype = BIDSDataset.load_phenotype_data(self.data_path, "participants")
         df, phenotype = BIDSDataset._deidentify_phenotype(df, phenotype, participant_ids_to_remove, participant_ids_to_remap)
-        df, phenotype = self._clean_phenotype_data(df, phenotype)
         
         # Write out deidentified phenotype data and data dictionary
         df.to_csv(outdir.joinpath("participants.tsv"), sep="\t", index=False)
@@ -1157,7 +1212,6 @@ class BIDSDataset:
                 logging.info(f"Processing {phenotype_filepath.stem}.")
                 df_pheno, phenotype_dict = BIDSDataset.load_phenotype_data(phenotype_base_path, phenotype_filepath.stem)
                 df_pheno, phenotype_dict = BIDSDataset._deidentify_phenotype(df_pheno, phenotype_dict, participant_ids_to_remove, participant_ids_to_remap)
-                df_pheno, phenotype_dict = self._clean_phenotype_data(df_pheno, phenotype_dict)
                 
                 # Write out phenotype data and data dictionary
                 df_pheno.to_csv(
@@ -1184,21 +1238,6 @@ class BIDSDataset:
         logging.info("Deidentification completed.")
         return BIDSDataset(outdir)
 
-    def clean(self, df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
-        """
-        Apply data cleaning operations to the phenotype data.
-        
-        This method is kept for backward compatibility but now delegates to the more specific methods.
-        
-        Args:
-            df: DataFrame containing the phenotype data
-            phenotype: Dictionary containing the phenotype metadata
-            
-        Returns:
-            Tuple of (cleaned_df, cleaned_phenotype_dict)
-        """
-        return self._clean_phenotype_data(df, phenotype)
-    
     @staticmethod
     def _deidentify_audio_files(
         data_path: Path,
