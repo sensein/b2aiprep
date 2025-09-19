@@ -6,12 +6,6 @@ A simple Python package to prepare acoustic data for the Bridge2AI voice project
 
 ## Installation
 
-MacOS with Mx (ARM) chip only: Make sure that you have the ARM version of python installed.
-Run this to check:
-```
-[path/to/your/python] -c "import platform; print(platform.machine())
-```
-
 Requires a Python >= 3.10, <3.12 environment
 
 ```
@@ -19,11 +13,37 @@ pip install b2aiprep
 ```
 
 ## Usage
+
 See commands available through the CLI:
 
 ```bash
 b2aiprep-cli --help
 ```
+
+## BIDS data
+
+This package provides conversion from a RedCap/file-based custom structure into [BIDS](https://bids-standard.github.io/bids-starter-kit/folders_and_files/folders.html) for downstream analysis. In addition, utilities are provided for working with the BIDS-like structured data and to support data analysis of voice and questionnaire data.
+
+The overall pipeline is as follows:
+
+- (Optional) Data are converted from ReproSchema data files into a CSV structure which mirrors a custom built app for data collection
+- The RedCap CSV is converted into individual CSV files
+    - The source CSV has a block-structure due to the use of repeat instruments to group questionnaire responses for distinct portions of a data collection. For convenience, these are split into individual phenotype files grouped by the protocol. Specifically, the phenotype specific columns are extracted (TODO: also filter out rows with all nans in the BIDS dataset creation step).
+    - Cleaning of the phenotype CSV occurs here, including tidying mistakes due to ETL, dropping all null columns, and renaming columns for usability
+- Metadata for each audio recording is output as a JSON file in the BIDS subject/session/audio folder hierarchy
+- Audio is reorganized into a BIDS subject/session/audio folder hierarchy
+
+Convert a RedCap CSV and a folder of audio files into the BIDS format:
+
+```sh
+b2aiprep-cli redcap2bids bridge2ai_voice_data.csv --outdir output --audiodir audio
+```
+
+The `audiodir` option above can be omitted, in which case no audio data is reorganized.
+
+See the [tutorial.ipynb](docs/tutorial.ipynb) for a few use examples of data in the BIDS-like format.
+
+## Command overview
 
 1. Convert an audio file to features:
 
@@ -108,20 +128,6 @@ b2aiprep-cli --help
     b2aiprep-cli transcribe data/vc_source.wav --model_id 'openai/whisper-large-v3' --return_timestamps true
     ```
 
-## BIDS-like data
-
-This package provides conversion from a RedCap/file-based custom structure into a [BIDS-like](https://bids-standard.github.io/bids-starter-kit/folders_and_files/folders.html) structure for downstream analysis. In addition, utilities are provided for working with the BIDS-like structured data and to support data analysis of voice and questionnaire data.
-
-Convert a RedCap CSV and a folder of audio files into the BIDS format:
-
-```sh
-b2aiprep-cli redcap2bids bridge2ai_voice_data.csv --outdir output --audiodir audio
-```
-
-The `audiodir` option above can be omitted, in which case no audio data is reorganized.
-
-See the [tutorial.ipynb](docs/tutorial.ipynb) for a few use examples of data in the BIDS-like format.
-
 ## Summer School Data Preparation
 This command organizes the data with the BIDS-like conversion tool, extracts audio features, and saves the whole thing
 as a .tar file for easy distribution for the Bridge2AI Summer School:
@@ -142,3 +148,11 @@ A dashboard is provided to help navigate the data in the BIDS format. Launch the
 streamlit run src/b2aiprep/app/Dashboard.py [path to BIDS directory]
 ```
 After the Streamlit dashboard opens, please wait for the BIDS data to be loaded while on the Dashboard page, as an error regarding a non-initialized `bids_dir` directory may pop up if the BIDS data has not been fully loaded.
+
+## Troubleshooting
+
+MacOS with Mx (ARM) chip only: Make sure that you have the ARM version of python installed.
+Run this to check:
+```
+[path/to/your/python] -c "import platform; print(platform.machine())
+```
