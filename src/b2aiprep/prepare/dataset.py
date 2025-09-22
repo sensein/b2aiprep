@@ -74,7 +74,7 @@ class BIDSDataset:
         # Use instance methods instead of importing from bids module
         
         outdir = Path(outdir)
-        initialize_data_directory(outdir)
+        BIDSDataset._initialize_data_directory(outdir)
 
         # Subselect the RedCap dataframe and output components to individual files in the phenotype directory
         BIDSDataset._construct_all_tsvs_from_jsons(
@@ -572,6 +572,17 @@ class BIDSDataset:
         return combined_df
 
     @staticmethod
+    def _process_phenotype_tsv_and_json(df: pd.DataFrame, input_dir: str, output_dir: str, filename: str) -> None:
+        """Process phenotype data."""
+        with open(os.path.join(input_dir, filename), "r") as f:
+            json_data = json.load(f)
+        df_subselected = BIDSDataset._subselect_dataframe_using_json(df=df, json_data=json_data)
+        df_subselected, json_data = BIDSDataset._clean_phenotype_data(df_subselected, json_data)
+        BIDSDataset._dataframe_to_tsv(df_subselected, os.path.join(output_dir, filename.replace(".json", ".tsv")))
+        with open(os.path.join(output_dir, filename), "w") as f:
+            json.dump(json_data, f, indent=2)
+
+    @staticmethod
     def _construct_all_tsvs_from_jsons(
         df: pd.DataFrame,
         input_dir: str,
@@ -596,31 +607,13 @@ class BIDSDataset:
         # Ensure output directory exists
         os.makedirs(output_dir, exist_ok=True)
 
-        # Construct participants.tsv
-        with open(os.path.join(input_dir, "participants.json"), "r") as f:
-            json_data = json.load(f)
-        df_subselected = BIDSDataset._subselect_dataframe_using_json(
-            df=df,
-            json_data=json_data,
-        )
-        df_subselected, json_data = BIDSDataset._clean_phenotype_data(df_subselected, json_data)
-        BIDSDataset._dataframe_to_tsv(df_subselected, os.path.join(output_dir, "participants.tsv"))
-        with open(os.path.join(output_dir, "participants.json"), "w") as f:
-            json.dump(json_data, f, indent=2)
+        # TODO: do we need to change input_dir to process participants.json ?
 
-        # Iterate over all files in the input directory
         for filename in os.listdir(input_dir):
-            # Process only JSON files that are not excluded
             if filename.endswith(".json") and filename not in excluded_files:
-                with open(os.path.join(input_dir, filename), "r") as f:
-                    json_data = json.load(f)
-
-                # Construct the TSV file from the JSON file
-                df_subselected = BIDSDataset._subselect_dataframe_using_json(df=df, json_data=json_data)
-                df_subselected, json_data = BIDSDataset._clean_phenotype_data(df_subselected, json_data)
-                BIDSDataset._dataframe_to_tsv(df_subselected, os.path.join(output_dir, filename.replace(".json", ".tsv")))
-                with open(os.path.join(output_dir, filename), "w") as f:
-                    json.dump(json_data, f, indent=2)
+                BIDSDataset._process_phenotype_tsv_and_json(
+                    df=df, input_dir=input_dir, output_dir=output_dir, filename=filename
+                )
 
     @staticmethod
     def _get_instrument_for_name(name: str) -> Instrument:
@@ -787,9 +780,9 @@ class BIDSDataset:
                             logging.warning(
                                 f"Multiple audio files found for recording "
                                 f"{recording['recording_id']}. "
-                                f"Using only {audio_files[0]}"
+                                f"Using only {audio_files_for_recording[0]}"
                             )
-                        audio_file = audio_files[0]
+                        audio_file = audio_files_for_recording[0]
 
                         # copy file
                         ext = audio_file.suffix
@@ -1029,7 +1022,7 @@ class BIDSDataset:
             "diagnois_gi_gsd": "diagnois_gi_gold_standard_diagnosis",
         }
         df = df.rename(columns=column_rename_map)
-        phenotype = {k: v for k, v in phenotype.items() if k in column_rename_map}
+        phenotype = {column_rename_map.get(k, k): v for k, v in phenotype.items()}
         return df, phenotype
 
     @staticmethod
