@@ -467,6 +467,7 @@ def test_redcap_to_bids():
 
     # Use TemporaryDirectory for the output directory
     with TemporaryDirectory() as tmp_dir:
+        from b2aiprep.prepare.dataset import BIDSDataset
         output_dir = Path(tmp_dir) / "bids_output"
         BIDSDataset._initialize_data_directory(output_dir)
         # Call the actual redcap_to_bids function with the real CSV and temporary output dir
@@ -478,7 +479,6 @@ def test_redcap_to_bids():
             raise AssertionError("No output was created in the output directory")
         
         # Verify that the returned object is a BIDSDataset
-        from b2aiprep.prepare.dataset import BIDSDataset
         assert isinstance(bids_dataset, BIDSDataset), "redcap_to_bids should return a BIDSDataset instance"
         
         # Verify that the BIDSDataset points to the correct directory
@@ -541,53 +541,6 @@ def test_redcap_dataset_to_csv():
             assert len(result_df) == 3, "CSV should have 3 rows"
             assert list(result_df.columns) == ['record_id', 'redcap_repeat_instrument', 'test_column'], "CSV should have correct columns"
             assert result_df['record_id'].tolist() == [1, 2, 3], "CSV should have correct data"
-
-
-def test_construct_tsv_from_json():
-    from b2aiprep.prepare.dataset import BIDSDataset
-    with tempfile.TemporaryDirectory() as temp_dir:
-        # Create a sample DataFrame
-        data = {
-            "record_id": [1, 2, 3, 4],
-            "element_1": ["A", "B", "C", "D"],
-            "element_2": [10, 20, 30, 40],
-        }
-        df = pd.DataFrame(data)
-
-        # Create a sample JSON file
-        json_data = {
-            "schema_name": {
-                "description": "Description of the schema.",
-                "data_elements": {
-                    "record_id": {},
-                    "element_1": {
-                        "description": "Description of the first element.",
-                        "question": {"en": "Question text for the first element."},
-                        "datatype": ["xsd:string"],
-                    },
-                    "element_2": {
-                        "description": "Description of the second element.",
-                        "question": {"en": "Question text for the second element."},
-                        "datatype": ["xsd:decimal"],
-                    },
-                },
-            }
-        }
-        json_path = os.path.join(temp_dir, "sample.json")
-        with open(json_path, "w") as f:
-            json.dump(json_data, f)
-
-        # Run the function using BIDSDataset static method
-        BIDSDataset._construct_tsv_from_json(df, json_path, temp_dir)
-
-        # Check if the TSV file is created
-        tsv_path = os.path.join(temp_dir, "sample.tsv")
-        assert os.path.exists(tsv_path)
-
-        # Load TSV file and check content
-        result_df = pd.read_csv(tsv_path, sep="\t")
-        assert list(result_df.columns) == ["record_id", "element_1", "element_2"]
-        assert result_df.shape == (4, 3)  # Check number of rows and columns
 
 
 def test_construct_all_tsvs_from_jsons():

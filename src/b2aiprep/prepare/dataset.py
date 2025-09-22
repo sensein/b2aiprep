@@ -1113,17 +1113,20 @@ class BIDSDataset:
             if c == "specify_gender_identity":
                 continue
             elif c == "gender_identity":
+                first_key = next(iter(phenotype))
                 columns.append(c)
                 columns.append("sex_at_birth")
-                phenotype_reordered[c] = phenotype[c]
+                phenotype_reordered[c] = phenotype[first_key]["data_elements"][c]
                 phenotype_reordered["sex_at_birth"] = {
                     "description": "The sex at birth for the individual."
                 }
             elif c == "sex_at_birth":
                 continue
             else:
+                first_key = next(iter(phenotype))
                 columns.append(c)
-                phenotype_reordered[c] = phenotype[c]
+                if c in phenotype[first_key]["data_elements"]:
+                    phenotype_reordered[c] = phenotype[first_key]["data_elements"][c]
 
         df = df[columns]
         return df, phenotype_reordered
