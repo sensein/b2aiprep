@@ -18,7 +18,6 @@ from b2aiprep.prepare.bids import (
 from b2aiprep.prepare_synthetic import redcap_to_bids
 from b2aiprep.prepare.redcap import RedCapDataset
 from b2aiprep.prepare.constants import AUDIO_TASKS, RepeatInstrument
-from b2aiprep.prepare.utils import initialize_data_directory
 
 
 def test_get_paths():
@@ -469,7 +468,7 @@ def test_redcap_to_bids():
     # Use TemporaryDirectory for the output directory
     with TemporaryDirectory() as tmp_dir:
         output_dir = Path(tmp_dir) / "bids_output"
-        initialize_data_directory(output_dir)
+        BIDSDataset._initialize_data_directory(output_dir)
         # Call the actual redcap_to_bids function with the real CSV and temporary output dir
         # The function now returns a BIDSDataset object
         bids_dataset = redcap_to_bids(csv_file_path, output_dir)
