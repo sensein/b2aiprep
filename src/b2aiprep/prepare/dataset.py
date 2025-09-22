@@ -76,6 +76,17 @@ class BIDSDataset:
         outdir = Path(outdir)
         BIDSDataset._initialize_data_directory(outdir)
 
+        # TODO Adding this back as participants.json is structured slightly differently and can't be generated
+        # properly with _construct_all_tsvs_from_jsons(). 
+        
+        # for participants.tsv
+        BIDSDataset._construct_tsv_from_json(
+            df=redcap_dataset.df,
+            json_file_path=os.path.join(outdir, "participants.json"),
+            output_dir=str(outdir),
+            output_file_name="participants.tsv",
+        )
+
         # Subselect the RedCap dataframe and output components to individual files in the phenotype directory
         BIDSDataset._construct_all_tsvs_from_jsons(
             df=redcap_dataset.df,
@@ -502,7 +513,6 @@ class BIDSDataset:
         """
         if index_col not in df.columns:
             raise ValueError(f"Index column {index_col} not found in DataFrame.")
-
         if df[index_col].isnull().any():
             logging.warning(
                 f"Found {df[index_col].isnull().sum()} null value(s) for {index_col}. Removing."
@@ -581,6 +591,64 @@ class BIDSDataset:
         BIDSDataset._dataframe_to_tsv(df_subselected, os.path.join(output_dir, filename.replace(".json", ".tsv")))
         with open(os.path.join(output_dir, filename), "w") as f:
             json.dump(json_data, f, indent=2)
+
+
+    @staticmethod
+    def _construct_tsv_from_json(
+        df: pd.DataFrame, json_file_path: str, output_dir: str, output_file_name: t.Optional[str] = None
+    ) -> None:
+        """Construct a TSV file from a DataFrame and a JSON file specifying column labels.
+
+        Combines entries so that there is one row per record_id.
+
+        Args:
+            df: DataFrame containing the data.
+            json_file_path: Path to the JSON file with the column labels.
+            output_dir: Output directory where the TSV file will be saved.
+            output_file_name: The name of the output TSV file.
+                If not provided, the JSON file name is used with a .tsv extension.
+
+        Raises:
+            ValueError: If no valid columns found in DataFrame that match JSON file.
+        """
+        # Load the column labels from the JSON file
+        with open(json_file_path, "r") as f:
+            json_data = json.load(f)
+
+        first_key = next(iter(json_data))
+
+        column_labels = []
+        if "data_elements" in json_data[first_key]:
+            column_labels = list(json_data[first_key]["data_elements"])
+        else:
+            column_labels = list(json_data.keys())
+
+        # Filter column labels to only include those that exist in the DataFrame
+        valid_columns = [col for col in column_labels if col in df.columns]
+        if not valid_columns:
+            raise ValueError("No valid columns found in DataFrame that match JSON file")
+
+        if "record_id" not in valid_columns:
+            valid_columns = ["record_id"] + valid_columns
+
+        # Select the relevant columns from the DataFrame
+        selected_df = df[valid_columns]
+
+        # Combine entries so there is one row per record_id
+        combined_df = selected_df.groupby("record_id").first().reset_index()
+
+        # Define the output file name and path
+        if output_file_name is None:
+            output_file_name = os.path.splitext(os.path.basename(json_file_path))[0] + ".tsv"
+
+        tsv_path = os.path.join(output_dir, output_file_name)
+
+        # Save the combined DataFrame to a TSV file
+        combined_df.to_csv(tsv_path, sep="\t", index=False)
+
+        logging.info(f"TSV file created and saved to: {tsv_path}")
+
+
 
     @staticmethod
     def _construct_all_tsvs_from_jsons(

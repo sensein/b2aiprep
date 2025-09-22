@@ -542,6 +542,51 @@ def test_redcap_dataset_to_csv():
             assert list(result_df.columns) == ['record_id', 'redcap_repeat_instrument', 'test_column'], "CSV should have correct columns"
             assert result_df['record_id'].tolist() == [1, 2, 3], "CSV should have correct data"
 
+def test_construct_tsv_from_json():
+    with tempfile.TemporaryDirectory() as temp_dir:
+        # Create a sample DataFrame
+        data = {
+            "record_id": [1, 2, 3, 4],
+            "element_1": ["A", "B", "C", "D"],
+            "element_2": [10, 20, 30, 40],
+        }
+        df = pd.DataFrame(data)
+
+        # Create a sample JSON file
+        json_data = {
+            "schema_name": {
+                "description": "Description of the schema.",
+                "data_elements": {
+                    "record_id": {},
+                    "element_1": {
+                        "description": "Description of the first element.",
+                        "question": {"en": "Question text for the first element."},
+                        "datatype": ["xsd:string"],
+                    },
+                    "element_2": {
+                        "description": "Description of the second element.",
+                        "question": {"en": "Question text for the second element."},
+                        "datatype": ["xsd:decimal"],
+                    },
+                },
+            }
+        }
+        json_path = os.path.join(temp_dir, "sample.json")
+        with open(json_path, "w") as f:
+            json.dump(json_data, f)
+
+        # Run the function using BIDSDataset static method
+        from b2aiprep.prepare.dataset import BIDSDataset
+        BIDSDataset._construct_tsv_from_json(df, json_path, temp_dir)
+
+        # Check if the TSV file is created
+        tsv_path = os.path.join(temp_dir, "sample.tsv")
+        assert os.path.exists(tsv_path)
+
+        # Load TSV file and check content
+        result_df = pd.read_csv(tsv_path, sep="\t")
+        assert list(result_df.columns) == ["record_id", "element_1", "element_2"]
+        assert result_df.shape == (4, 3)  # Check number of rows and columns
 
 def test_construct_all_tsvs_from_jsons():
     with tempfile.TemporaryDirectory() as temp_dir, tempfile.TemporaryDirectory() as output_dir:

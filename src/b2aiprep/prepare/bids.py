@@ -119,11 +119,11 @@ def get_audio_paths(
 
 # NOTE: The following functions have been moved to the RedCapDataset class in redcap.py:
 # - load_redcap_csv
-# - insert_missing_columns  
+# - insert_missing_columns
 # - validate_redcap_df_column_names
 # - get_df_of_repeat_instrument
 # - get_recordings_for_acoustic_task
-# 
+#
 # They are kept here as deprecated wrappers for backward compatibility.
 
 
@@ -169,6 +169,7 @@ def write_pydantic_model_to_bids_file(
         output_path.mkdir(parents=True, exist_ok=False)
     with open(output_path / filename, "w") as f:
         f.write(data.json(indent=2))
+
 
 def create_file_dir(participant_id, session_id):
     """Create a file directory structure which follows BIDS.
