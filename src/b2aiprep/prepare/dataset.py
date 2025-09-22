@@ -834,7 +834,7 @@ class BIDSDataset:
 
         # Add record_id to phenotype if missing
         if df.shape[1] > 0 and df.columns[0] == 'record_id' and 'record_id' not in list(phenotype.keys()):
-            phenotype = BIDSDataset.add_record_id_to_phenotype(phenotype)
+            phenotype = BIDSDataset._add_record_id_to_phenotype(phenotype)
 
         # Validate column count
         if len(phenotype) != df.shape[1]:
@@ -1095,7 +1095,8 @@ class BIDSDataset:
         
         return df, phenotype_updated
 
-    def _add_sex_at_birth_column(self, df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
+    @staticmethod
+    def _add_sex_at_birth_column(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
         """Add sex_at_birth column derived from gender_identity and specify_gender_identity."""
         df["sex_at_birth"] = None
         for sex_at_birth in ["Male", "Female"]:

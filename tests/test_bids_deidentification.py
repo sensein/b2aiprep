@@ -443,10 +443,10 @@ class TestBIDSDatasetClean:
         assert "acoustic_task_id" not in df_system.columns
         assert "acoustic_task_id" not in phenotype_system
         
-        # Test removing low utility columns
-        df_low, phenotype_low = dataset._remove_low_utility_columns(df, phenotype)
-        assert "state_province" not in df_low.columns
-        assert "state_province" not in phenotype_low
+        # Test removing sensitive columns
+        df_sensitive, phenotype_sensitive = dataset._remove_sensitive_columns(df, phenotype)
+        assert "state_province" not in df_sensitive.columns
+        assert "state_province" not in phenotype_sensitive
 
     def test_add_sex_at_birth_column(self):
         """Test the _add_sex_at_birth_column method."""
