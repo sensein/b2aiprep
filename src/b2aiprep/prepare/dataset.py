@@ -73,15 +73,17 @@ class BIDSDataset:
         """
         # Use instance methods instead of importing from bids module
         
-        outdir = Path(outdir)
+        outdir = Path(outdir).as_posix()
         BIDSDataset._initialize_data_directory(outdir)
 
         # for participants.tsv we skip cleaning the phenotype data
+        # also note that participants files are in the root outdir folder,
+        # not the phenotype subfolder
         BIDSDataset._process_phenotype_tsv_and_json(
             df=redcap_dataset.df,
-            json_file_path=os.path.join(outdir, "participants.json"),
-            output_dir=str(outdir),
-            output_file_name="participants.tsv",
+            input_dir=outdir,
+            output_dir=outdir,
+            filename="participants.json",
             clean_phenotype_data=False,
         )
 
@@ -145,7 +147,7 @@ class BIDSDataset:
             audiodir = None
             
         for participant in tqdm(participants, desc="Writing participant data to file"):
-            cls._output_participant_data_to_fhir(participant, outdir, audiodir=audiodir)
+            cls._output_participant_data_to_fhir(participant, Path(outdir), audiodir=audiodir)
         
         # Return a new BIDSDataset instance pointing to the created directory
         return cls(outdir)
@@ -169,6 +171,7 @@ class BIDSDataset:
         copy_package_resource(template_package, "README.md", bids_dir_path)
         copy_package_resource(template_package, "dataset_description.json", bids_dir_path)
         copy_package_resource(template_package, "participants.json", bids_dir_path)
+        copy_package_resource(template_package, "participants.tsv", bids_dir_path)
         copy_package_resource(template_package, "phenotype", bids_dir_path)
         phenotype_path = Path(bids_dir_path).joinpath("phenotype")
         remove_files_by_pattern(phenotype_path, "<measurement_tool_name>*")
@@ -619,11 +622,7 @@ class BIDSDataset:
         # Ensure output directory exists
         os.makedirs(output_dir, exist_ok=True)
 
-        # TODO: do we need to change input_dir to process participants.json ?
-
         for filename in os.listdir(input_dir):
-            if filename == "participants.json":
-                continue
             if filename.endswith(".json") and filename not in excluded_files:
                 BIDSDataset._process_phenotype_tsv_and_json(
                     df=df, input_dir=input_dir, output_dir=output_dir, filename=filename,
