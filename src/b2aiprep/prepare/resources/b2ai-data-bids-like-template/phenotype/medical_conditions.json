@@ -312,6 +312,9 @@
           "xsd:integer"
         ]
       },
+       "peds_mc_breathing_conditions___asthma": {
+        "description": "Indicates if the participant identifies with airway_conditions category 1."
+      },
       "peds_mc_breathing_conditions___recurrent_croup": {
         "description": "Indicates if the participant identifies with airway_conditions category 1."
       },

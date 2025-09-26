@@ -520,8 +520,10 @@ class BIDSDataset:
             )
             df = df.dropna(subset=[index_col])
 
+        non_unique = df[df[index_col].duplicated(keep=False)]
         if df[index_col].nunique() < df.shape[0]:
-            raise ValueError(f"Non-unique {index_col} values found.")
+            raise ValueError(f"Non-unique {index_col} values found. {non_unique}")
+        
 
         # *copy* the given column into the index, preserving the original column
         # so that it is output in the later call to to_dict()
