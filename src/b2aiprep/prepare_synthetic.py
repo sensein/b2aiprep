@@ -31,7 +31,6 @@ import pandas as pd
 from pandas import DataFrame
 from importlib.resources import files
 from pydantic import BaseModel
-from tqdm import tqdm
 
 from b2aiprep.prepare.fhir_utils import (
     convert_response_to_fhir,

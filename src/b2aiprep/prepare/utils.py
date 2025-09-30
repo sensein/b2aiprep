@@ -170,30 +170,6 @@ def remove_files_by_pattern(directory: str, pattern: str) -> None:
         except OSError as e:
             print(f"Error removing file {file_path}: {e}")
 
-
-def initialize_data_directory(bids_dir_path: str) -> None:
-    """Initializes the data directory using the template.
-
-    Args:
-        bids_dir_path (str): The path to the BIDS directory where the data should be initialized.
-
-    Returns:
-        None
-    """
-    if not os.path.exists(bids_dir_path):
-        os.makedirs(bids_dir_path)
-        _LOGGER.info(f"Created directory: {bids_dir_path}")
-
-    template_package = "b2aiprep.prepare.resources.b2ai-data-bids-like-template"
-    copy_package_resource(template_package, "CHANGELOG.md", bids_dir_path)
-    copy_package_resource(template_package, "README.md", bids_dir_path)
-    copy_package_resource(template_package, "dataset_description.json", bids_dir_path)
-    copy_package_resource(template_package, "participants.json", bids_dir_path)
-    copy_package_resource(template_package, "phenotype", bids_dir_path)
-    phenotype_path = Path(bids_dir_path).joinpath("phenotype")
-    remove_files_by_pattern(phenotype_path, "<measurement_tool_name>*")
-
-
 def open_json_as_dict(file_path):
     with open(file_path, "r") as file:
         return json.load(file)

@@ -17272,6 +17272,9 @@
       "xsd:string"
     ]
   },
+  "peds_race___1": {
+    "description": "Indicates if the participant identifies with race category 1."
+  },
   "peds_race___2": {
     "description": "Indicates if the participant identifies with race category 1."
   },
@@ -17292,9 +17295,6 @@
   },
   "peds_race___8": {
     "description": "Indicates if the participant identifies with race category 7."
-  },
-  "race___8": {
-    "description": "Indicates if the participant identifies with race category 8."
   },
   "ethnicity": {
     "description": "Indicates the participant's ethnicity.",

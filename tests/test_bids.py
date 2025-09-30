@@ -18,8 +18,7 @@ from b2aiprep.prepare.bids import (
 from b2aiprep.prepare_synthetic import redcap_to_bids
 from b2aiprep.prepare.redcap import RedCapDataset
 from b2aiprep.prepare.constants import AUDIO_TASKS, RepeatInstrument
-from b2aiprep.prepare.utils import initialize_data_directory
-
+from b2aiprep.prepare.dataset import BIDSDataset
 
 def test_get_paths():
     """Test get_paths function with a proper BIDS-like directory structure."""
@@ -437,7 +436,6 @@ def test_write_pydantic_model_to_bids_file(mock_open):
 
 
 def test_df_to_dict():
-    from b2aiprep.prepare.dataset import BIDSDataset
     mock_data = pd.DataFrame({"index_col": ["A", "B", "C"], "data_col": [1, 2, 3]})
 
     result = BIDSDataset._df_to_dict(mock_data, "index_col")
@@ -449,7 +447,6 @@ def test_df_to_dict():
 
 
 def test_get_instrument_for_name():
-    from b2aiprep.prepare.dataset import BIDSDataset
     # Use an actual instrument name from RepeatInstrument
     instrument_name = "participant"
 
@@ -466,20 +463,21 @@ def test_redcap_to_bids():
     if not csv_file_path.exists():
         raise FileNotFoundError(f"CSV file not found at: {csv_file_path}")
 
+    # Create RedCapDataset from CSV file
+    redcap_dataset = RedCapDataset.from_redcap(csv_file_path)
+    
     # Use TemporaryDirectory for the output directory
     with TemporaryDirectory() as tmp_dir:
         output_dir = Path(tmp_dir) / "bids_output"
-        initialize_data_directory(output_dir)
-        # Call the actual redcap_to_bids function with the real CSV and temporary output dir
-        # The function now returns a BIDSDataset object
-        bids_dataset = redcap_to_bids(csv_file_path, output_dir)
 
+        # Convert to BIDS format using the new class method
+        bids_dataset = BIDSDataset.from_redcap(redcap_dataset, output_dir, audiodir=None)
+        
         # Check if the expected output files exist in the temporary directory
         if not any(output_dir.iterdir()):
             raise AssertionError("No output was created in the output directory")
         
         # Verify that the returned object is a BIDSDataset
-        from b2aiprep.prepare.dataset import BIDSDataset
         assert isinstance(bids_dataset, BIDSDataset), "redcap_to_bids should return a BIDSDataset instance"
         
         # Verify that the BIDSDataset points to the correct directory
@@ -488,7 +486,6 @@ def test_redcap_to_bids():
 
 def test_bids_dataset_from_redcap_method_exists():
     """Test that the new BIDSDataset.from_redcap class method exists and has correct signature."""
-    from b2aiprep.prepare.dataset import BIDSDataset
     import inspect
     
     # Test that from_redcap class method exists
@@ -543,9 +540,7 @@ def test_redcap_dataset_to_csv():
             assert list(result_df.columns) == ['record_id', 'redcap_repeat_instrument', 'test_column'], "CSV should have correct columns"
             assert result_df['record_id'].tolist() == [1, 2, 3], "CSV should have correct data"
 
-
-def test_construct_tsv_from_json():
-    from b2aiprep.prepare.dataset import BIDSDataset
+def test_process_phenotype_tsv_and_json():
     with tempfile.TemporaryDirectory() as temp_dir:
         # Create a sample DataFrame
         data = {
@@ -579,7 +574,9 @@ def test_construct_tsv_from_json():
             json.dump(json_data, f)
 
         # Run the function using BIDSDataset static method
-        BIDSDataset._construct_tsv_from_json(df, json_path, temp_dir)
+        BIDSDataset._process_phenotype_tsv_and_json(
+            df, input_dir=temp_dir, output_dir=temp_dir, filename="sample.json"
+        )
 
         # Check if the TSV file is created
         tsv_path = os.path.join(temp_dir, "sample.tsv")
@@ -589,7 +586,6 @@ def test_construct_tsv_from_json():
         result_df = pd.read_csv(tsv_path, sep="\t")
         assert list(result_df.columns) == ["record_id", "element_1", "element_2"]
         assert result_df.shape == (4, 3)  # Check number of rows and columns
-
 
 def test_construct_all_tsvs_from_jsons():
     with tempfile.TemporaryDirectory() as temp_dir, tempfile.TemporaryDirectory() as output_dir:
@@ -656,7 +652,6 @@ def test_construct_all_tsvs_from_jsons():
             json.dump(json_data_excluded, f)
 
         # Run the function using BIDSDataset static method
-        from b2aiprep.prepare.dataset import BIDSDataset
         BIDSDataset._construct_all_tsvs_from_jsons(
             df, input_dir=temp_dir, output_dir=output_dir, excluded_files=["excluded.json"]
         )
