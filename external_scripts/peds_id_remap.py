@@ -70,7 +70,7 @@ if __name__ == "__main__":
     parser.add_argument("--load_lookup", type=str, help="Path to a look up table")
 
     args = parser.parse_args()
-    df = pd.read_csv(args.input_path)
+    df = pd.read_csv(args.input_path, sep='\t')
     id_column = ""
     if "record_id" in df.columns:
         id_column = "record_id"
