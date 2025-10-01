@@ -1,18 +1,11 @@
-import json
+
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest.mock import patch
 
-import numpy as np
 import pandas as pd
 import pytest
-import torch
 
-from b2aiprep.prepare.derived_data import (
-    feature_extraction_generator,
-    load_audio_features,
-    spectrogram_generator,
-)
 from b2aiprep.prepare.dataset import BIDSDataset
 
 @pytest.fixture

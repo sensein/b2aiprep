@@ -29,14 +29,13 @@ from pandas import DataFrame
 from tqdm import tqdm
 
 from b2aiprep.prepare.constants import AUDIO_TASKS, Instrument, RepeatInstrument
-from b2aiprep.prepare.utils import initialize_data_directory, fetch_json_options_number, get_wav_duration
+from b2aiprep.prepare.utils import fetch_json_options_number, get_wav_duration
 
 # ReproSchema parsing functions (moved from reproschema_to_redcap.py)
 
 def get_choice_name(url, value):
     """Get the choice name from a ReproSchema URL and value."""
     response = requests.get(url)
-
     if response.status_code != 200:
         return value
 
@@ -80,8 +79,7 @@ def parse_survey(survey_data, record_id, session_path):
 
             else:
                 num = fetch_json_options_number(survey_data[i]["isAbout"])
-
-                for options in range(num):
+                for options in range(1, num + 1):
                     if options in answer:
                         questions_answers[f"""{question}___{options}"""] = ["Checked"]
 
@@ -430,7 +428,6 @@ class RedCapDataset:
                         }
                     )
                     merged_questionnaire_data += [session_df]
-
         audio_folders = Path(audio_dir)
         audio_sub_folders = sorted([str(f) for f in audio_folders.iterdir() if f.is_dir()])
         merged_csv = []

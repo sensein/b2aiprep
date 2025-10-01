@@ -34,7 +34,6 @@ from tqdm import tqdm
 
 from b2aiprep.prepare.constants import AUDIO_TASKS, Instrument, RepeatInstrument
 from b2aiprep.prepare.fhir_utils import convert_response_to_fhir
-from b2aiprep.prepare.utils import initialize_data_directory
 from b2aiprep.prepare.redcap import RedCapDataset
 
 SUBJECT_PREFIX = "sub"
@@ -120,11 +119,11 @@ def get_audio_paths(
 
 # NOTE: The following functions have been moved to the RedCapDataset class in redcap.py:
 # - load_redcap_csv
-# - insert_missing_columns  
+# - insert_missing_columns
 # - validate_redcap_df_column_names
 # - get_df_of_repeat_instrument
 # - get_recordings_for_acoustic_task
-# 
+#
 # They are kept here as deprecated wrappers for backward compatibility.
 
 
@@ -170,40 +169,6 @@ def write_pydantic_model_to_bids_file(
         output_path.mkdir(parents=True, exist_ok=False)
     with open(output_path / filename, "w") as f:
         f.write(data.json(indent=2))
-
-
-def _df_to_dict(df: pd.DataFrame, index_col: str) -> t.Dict[str, t.Any]:
-    """Convert a DataFrame to a dictionary of dictionaries, with the given column as the index.
-
-    Retains the index column within the dictionary.
-
-    Args:
-        df: DataFrame to convert.
-        index_col: Column to use as the index.
-
-    Returns:
-        Dictionary of dictionaries.
-
-    Raises:
-        ValueError: If index column not found in DataFrame or non-unique values found.
-    """
-    if index_col not in df.columns:
-        raise ValueError(f"Index column {index_col} not found in DataFrame.")
-
-    if df[index_col].isnull().any():
-        _LOGGER.warn(
-            f"Found {df[index_col].isnull().sum()} null value(s) for {index_col}. Removing."
-        )
-        df = df.dropna(subset=[index_col])
-
-    if df[index_col].nunique() < df.shape[0]:
-        raise ValueError(f"Non-unique {index_col} values found.")
-
-    # *copy* the given column into the index, preserving the original column
-    # so that it is output in the later call to to_dict()
-    df.index = df[index_col]
-
-    return df.to_dict("index")
 
 
 def create_file_dir(participant_id, session_id):
