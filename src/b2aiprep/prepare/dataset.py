@@ -991,6 +991,7 @@ class BIDSDataset:
         """Remove columns with sensitive data (free-text, geo-location, etc)."""
         columns_to_drop = [
             "state_province",
+            "zipcode"
             "other_edu_level",
             "others_household_specify",
             "diagnosis_alz_dementia_mci_ds_cdr",
