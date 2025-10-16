@@ -27,7 +27,7 @@ dependencies = [
     "streamlit>=1.42.2",
     "av~=14.1.0",
     "soundfile",
-    "torch~=2.8.0"
+    "torchaudio~=2.8.0"
 ]
 
 [tool.setuptools.packages.find]
