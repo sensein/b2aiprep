@@ -867,7 +867,7 @@ class BIDSDataset:
         return df, phenotype
 
     @staticmethod
-    def _deidentify_phenotype(df: pd.DataFrame, phenotype: dict, participant_ids_to_remove: t.List[str] = [], participant_ids_to_remap: dict = {}) -> t.Tuple[pd.DataFrame, dict]:
+    def _deidentify_phenotype(df: pd.DataFrame, phenotype: dict, participant_ids_to_remove: t.List[str] = [], participant_ids_to_remap: dict = {}, participant_session_id_to_remap: dict = {}) -> t.Tuple[pd.DataFrame, dict]:
         """
         Apply deidentification operations to phenotype data.
         
@@ -899,8 +899,14 @@ class BIDSDataset:
             logging.info(f"Remapped {n_different} / {len(ids_before)} IDs for 'participant_id'")
 
         # Reduce ID length (remap IDs)
-        if "session_id" in df.columns:
-            df = BIDSDataset._reduce_id_length(df, "session_id")
+        # if "session_id" in df.columns:
+        #     df = BIDSDataset._reduce_id_length(df, "session_id")
+        
+        if participant_session_id_to_remap and "session_id" in df.columns:
+            ids_before = df["session_id"]
+            df["session_id"] = df["session_id"].map(participant_ids_to_remap).fillna(df["session_id"])
+            n_different = (ids_before != df["session_id"]).sum()
+            logging.info(f"Remapped {n_different} / {len(ids_before)} IDs for 'session_id'")
 
         return df, phenotype
 
@@ -1170,6 +1176,20 @@ class BIDSDataset:
         return data
     
     @staticmethod
+    def load_remap_session_id_list(publish_config_dir: Path) -> t.Dict[str, str]:
+        session_id_to_remap_path = publish_config_dir / "session_id_remapping.json"
+        if not session_id_to_remap_path.exists():
+            raise FileNotFoundError(f"ID remapping file {session_id_to_remap_path} does not exist.")
+
+        with open(session_id_to_remap_path, 'r') as f:
+            data = json.load(f)
+
+        if not isinstance(data, dict):
+            raise ValueError(f"ID remapping file {session_id_to_remap_path} should contain a dict of session_id:new_id.")
+
+        return data
+    
+    @staticmethod
     def load_participant_ids_to_remove(publish_config_dir: Path) -> t.List[str]:
         """Load list of participant IDs to remove from JSON file."""
         participant_to_remove_path = publish_config_dir / "participant_ids_to_remove.json"
@@ -1224,6 +1244,7 @@ class BIDSDataset:
         
         participant_ids_to_remap = BIDSDataset.load_remap_id_list(publish_config_dir)
         participant_ids_to_remove = BIDSDataset.load_participant_ids_to_remove(publish_config_dir)
+        participant_session_id_to_remap = BIDSDataset.load_remap_session_id_list(publish_config_dir)
 
         # Check if source directory has required files
         participant_filepath = self.data_path.joinpath("participants.tsv")
@@ -1232,7 +1253,7 @@ class BIDSDataset:
         
         logging.info("Processing participants.tsv for deidentification.")
         df, phenotype = BIDSDataset.load_phenotype_data(self.data_path, "participants")
-        df, phenotype = BIDSDataset._deidentify_phenotype(df, phenotype, participant_ids_to_remove, participant_ids_to_remap)
+        df, phenotype = BIDSDataset._deidentify_phenotype(df, phenotype, participant_ids_to_remove, participant_ids_to_remap, participant_session_id_to_remap)
         
         # Write out deidentified phenotype data and data dictionary
         df.to_csv(outdir.joinpath("participants.tsv"), sep="\t", index=False)
@@ -1250,7 +1271,7 @@ class BIDSDataset:
             for phenotype_filepath in phenotype_base_path.glob("*.tsv"):
                 logging.info(f"Processing {phenotype_filepath.stem}.")
                 df_pheno, phenotype_dict = BIDSDataset.load_phenotype_data(phenotype_base_path, phenotype_filepath.stem)
-                df_pheno, phenotype_dict = BIDSDataset._deidentify_phenotype(df_pheno, phenotype_dict, participant_ids_to_remove, participant_ids_to_remap)
+                df_pheno, phenotype_dict = BIDSDataset._deidentify_phenotype(df_pheno, phenotype_dict, participant_ids_to_remove, participant_ids_to_remap, participant_session_id_to_remap)
                 
                 # Write out phenotype data and data dictionary
                 df_pheno.to_csv(

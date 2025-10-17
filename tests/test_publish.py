@@ -56,6 +56,7 @@ class TestPublishCommandRefactor:
         (config_path / "participant_ids_to_remove.json").write_text("[]")
         (config_path / "audio_filestems_to_remove.json").write_text("[]")
         (config_path / "id_remapping.json").write_text("{}")
+        (config_path / "session_id_remapping.json").write_text("{}")
         
         yield str(config_path)
         
@@ -246,7 +247,7 @@ class TestPublishCommandBackwardCompatibility:
         (temp_config_dir / "participant_ids_to_remove.json").write_text("[]")
         (temp_config_dir / "audio_filestems_to_remove.json").write_text("[]")
         (temp_config_dir / "id_remapping.json").write_text("{}")
-        
+        (temp_config_dir / "session_id_remapping.json").write_text("{}")
         try:
             # Run the new command
             result = runner.invoke(publish_bids_dataset, [temp_bids_dir, str(temp_output_dir), str(temp_config_dir)])
