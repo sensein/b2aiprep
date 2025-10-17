@@ -24,6 +24,7 @@ class TestBIDSDatasetDeidentification:
         (publish_config_dir / "id_remapping.json").write_text("{}")
         (publish_config_dir / "participant_ids_to_remove.json").write_text("[]")
         (publish_config_dir / "audio_filestems_to_remove.json").write_text("[]")
+        (publish_config_dir / "session_id_remapping.json").write_text("{}")
 
     @pytest.fixture
     def temp_bids_dir(self):

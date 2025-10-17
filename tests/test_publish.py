@@ -56,6 +56,7 @@ class TestPublishCommandRefactor:
         (config_path / "participant_ids_to_remove.json").write_text("[]")
         (config_path / "audio_filestems_to_remove.json").write_text("[]")
         (config_path / "id_remapping.json").write_text("{}")
+        (config_path / "session_id_remapping.json").write_text("{}")
         
         yield str(config_path)
         
