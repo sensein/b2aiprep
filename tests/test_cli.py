@@ -440,6 +440,12 @@ def test_publish_bids_dataset_cli_id_rename(setup_bids_structure):
         with open(id_remapping_path , "w") as f:
             json.dump(id_remapping_data, f, indent=2)
             
+        session_id_remapping_path = config_dir  / "session_id_remapping.json"
+        session_id_remapping_data = {}
+        
+        with open(session_id_remapping_path , "w") as f:
+            json.dump(session_id_remapping_data, f, indent=2)
+            
             
         participants_to_remove_path = config_dir  / "participant_ids_to_remove.json"
         participants_to_remove_data = []
@@ -485,6 +491,12 @@ def test_publish_bids_dataset_cli_remove_audio(setup_bids_structure):
 
         with open(id_remapping_path , "w") as f:
             json.dump(id_remapping_data, f, indent=2)
+            
+        session_id_remapping_path = config_dir  / "session_id_remapping.json"
+        session_id_remapping_data = {}
+        
+        with open(session_id_remapping_path , "w") as f:
+            json.dump(session_id_remapping_data, f, indent=2)
             
             
         participants_to_remove_path = config_dir  / "participant_ids_to_remove.json"
