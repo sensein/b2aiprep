@@ -584,7 +584,7 @@ def get_value_from_metadata(metadata: dict, linkid: str, endswith: bool = False)
             return item['answer'][0]['valueString']
     return None
 
-def update_metadata_record_and_session_id(metadata: dict, ids_to_remap: dict):
+def update_metadata_record_and_session_id(metadata: dict, ids_to_remap: dict, participant_session_id_to_remap: dict):
     for item in metadata['item']:
         if 'linkId' not in item:
             continue
@@ -599,6 +599,10 @@ def update_metadata_record_and_session_id(metadata: dict, ids_to_remap: dict):
             # rename to participant_id
             item['linkId'] = 'participant_id'
         elif (item['linkId'] == 'session_id') or (item['linkId'].endswith('_session_id')):
+            for old_id, new_id in participant_session_id_to_remap.items():
+                if old_id == item['answer'][0]['valueString']:
+                    item['answer'][0]['valueString'] = new_id
+                    break
             item['answer'][0]['valueString'] = reduce_id_length(
                 item['answer'][0]['valueString']
             )

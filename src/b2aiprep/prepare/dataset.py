@@ -902,11 +902,14 @@ class BIDSDataset:
         # if "session_id" in df.columns:
         #     df = BIDSDataset._reduce_id_length(df, "session_id")
         
-        if participant_session_id_to_remap and "session_id" in df.columns:
-            ids_before = df["session_id"]
-            df["session_id"] = df["session_id"].map(participant_ids_to_remap).fillna(df["session_id"])
-            n_different = (ids_before != df["session_id"]).sum()
-            logging.info(f"Remapped {n_different} / {len(ids_before)} IDs for 'session_id'")
+        if participant_session_id_to_remap:
+            for col in df.columns:
+                if "session_id" in col:
+                    #df[col] = df[col].astype(str).str.rstrip("-")  # Remove trailing '-'
+                    ids_before = df[col].copy()
+                    df[col] = df[col].map(participant_session_id_to_remap).fillna(df[col])
+                    n_different = (ids_before != df[col]).sum()
+                    logging.info(f"Remapped {n_different} / {len(ids_before)} IDs for '{col}'")
 
         return df, phenotype
 
@@ -1192,6 +1195,33 @@ class BIDSDataset:
         return data
     
     @staticmethod
+    def combine_sessions(folder_path: Path) ->  t.Dict[str, str]:
+        folder = Path(folder_path)
+        session_files = list(folder.rglob("sessions.tsv"))
+
+        if not session_files:
+            raise FileNotFoundError(f"No 'sessions.tsv' files found under {folder_path}")
+
+        dfs = []
+        for f in session_files:
+            try:
+                df = pd.read_csv(f, sep='\t')
+                dfs.append(df)
+            except Exception as e:
+                print(f" Could not read {f}: {e}")
+
+        combined = pd.concat(dfs, ignore_index=True)
+
+        # Sort so all rows of a record_id appear together
+        if 'record_id' in combined.columns and 'session_id' in combined.columns:
+            combined.sort_values(by=['record_id', 'session_id'], inplace=True)
+        
+        combined['session_number'] = combined.groupby('record_id').cumcount() + 1
+        session_id_dict = combined.set_index('session_id')['session_number'].astype(str).to_dict()
+                
+        return session_id_dict
+
+    @staticmethod
     def load_participant_ids_to_remove(publish_config_dir: Path) -> t.List[str]:
         """Load list of participant IDs to remove from JSON file."""
         participant_to_remove_path = publish_config_dir / "participant_ids_to_remove.json"
@@ -1246,7 +1276,7 @@ class BIDSDataset:
         
         participant_ids_to_remap = BIDSDataset.load_remap_id_list(publish_config_dir)
         participant_ids_to_remove = BIDSDataset.load_participant_ids_to_remove(publish_config_dir)
-        participant_session_id_to_remap = BIDSDataset.load_remap_session_id_list(publish_config_dir)
+        participant_session_id_to_remap = BIDSDataset.combine_sessions(self.data_path)
 
         # Check if source directory has required files
         participant_filepath = self.data_path.joinpath("participants.tsv")
@@ -1288,7 +1318,7 @@ class BIDSDataset:
             # Process audio files
             logging.info("Processing audio files for deidentification.")
             audio_filestems_to_remove = BIDSDataset.load_audio_filestems_to_remove(publish_config_dir)
-            BIDSDataset._deidentify_audio_files(self.data_path, outdir, participant_ids_to_remove, audio_filestems_to_remove, participant_ids_to_remap)
+            BIDSDataset._deidentify_audio_files(self.data_path, outdir, participant_ids_to_remove, audio_filestems_to_remove, participant_ids_to_remap, participant_session_id_to_remap)
             logging.info("Finished processing audio files.")
         
         # Copy over the standard BIDS template files if they exist
@@ -1306,7 +1336,8 @@ class BIDSDataset:
         outdir: Path,
         exclude_participant_ids: t.List[str] = [],
         exclude_audio_filestems: t.List[str] = [],
-        participant_ids_to_remap: t.Dict[str, str] = {}
+        participant_ids_to_remap: t.Dict[str, str] = {},
+        participant_session_id_to_remap: t.Dict[str, str] = {}
     ):
         """
         Copy and deidentify audio files to the output directory.
@@ -1381,7 +1412,7 @@ class BIDSDataset:
             metadata = json.loads(json_path.read_text())
             
             # Update metadata with deidentified IDs
-            update_metadata_record_and_session_id(metadata, participant_ids_to_remap)
+            update_metadata_record_and_session_id(metadata, participant_ids_to_remap, participant_session_id_to_remap)
             participant_id = get_value_from_metadata(metadata, linkid="participant_id", endswith=False)
             session_id = get_value_from_metadata(metadata, linkid="session_id", endswith=True)
             
