@@ -1210,7 +1210,7 @@ class BIDSDataset:
                 df = pd.read_csv(f, sep='\t')
                 dfs.append(df)
             except Exception as e:
-                print(f" Could not read {f}: {e}")
+                _LOGGER.error(f" Could not read {f}: {e}")
 
         combined = pd.concat(dfs, ignore_index=True)
 
