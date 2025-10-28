@@ -1196,11 +1196,13 @@ class BIDSDataset:
     
     @staticmethod
     def combine_sessions(folder_path: Path) ->  t.Dict[str, str]:
+        _LOGGER = logging.getLogger(__name__)
         folder = Path(folder_path)
         session_files = list(folder.rglob("sessions.tsv"))
 
         if not session_files:
-            raise FileNotFoundError(f"No 'sessions.tsv' files found under {folder_path}")
+            _LOGGER.warning((f"No 'sessions.tsv' files found under {folder_path}"))
+            return {}
 
         dfs = []
         for f in session_files:
