@@ -1195,7 +1195,11 @@ class BIDSDataset:
         return data
     
     @staticmethod
-    def combine_sessions(folder_path: Path) ->  t.Dict[str, str]:
+    def map_sequential_session_ids(folder_path: Path) ->  t.Dict[str, str]:
+        """
+            Function retrieves all session ids for all participants from the sessions.tsv files and maps them to an integer.
+            If there are mutliple session exists for a participant, the seqiential will increase sequentially.
+        """
         _LOGGER = logging.getLogger(__name__)
         folder = Path(folder_path)
         session_files = list(folder.rglob("sessions.tsv"))
@@ -1278,7 +1282,7 @@ class BIDSDataset:
         
         participant_ids_to_remap = BIDSDataset.load_remap_id_list(publish_config_dir)
         participant_ids_to_remove = BIDSDataset.load_participant_ids_to_remove(publish_config_dir)
-        participant_session_id_to_remap = BIDSDataset.combine_sessions(self.data_path)
+        participant_session_id_to_remap = BIDSDataset.map_sequential_session_ids(self.data_path)
 
         # Check if source directory has required files
         participant_filepath = self.data_path.joinpath("participants.tsv")

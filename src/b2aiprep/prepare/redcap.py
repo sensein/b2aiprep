@@ -414,6 +414,9 @@ class RedCapDataset:
 
         merged_questionnaire_data = []
         subject_count = 1
+        # we want the audio session_ids from the audio portion of the reproschema as we dont want multiple session id's
+        # so we generate a dictionary mapping the audio session ids with each participant and process the reproschema
+        # files using that mapping. The end result is only the audio session id's being used for bids conversion.
         session_ids_dict = map_folders_to_session_ids(audio_dir)
         # Process survey data
         for subject in sub_folders:
