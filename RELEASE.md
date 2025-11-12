@@ -41,6 +41,12 @@ In the end, we should have an audio folder with all the .wav files contained in 
 
 Note: Before proceeding to the next step, please ensure that the record_id match the folder names downloaded from reproschema-ui.
 
+**Optional**: We can run the `clean_redcap.py` script, located in the `external_scripts` folder, to fix any known reproschema to redcap issues.
+
+```
+python clean_redcap.py <path/to/redcap_csv> <path/to/output/fixed_redcap_csv>
+```
+
 ### 2. Data Formatting & Feature Extraction
 Once the redcap csv and audio files are ready, we can begin formatting the data and extraction feaatures from the audio files.
 To do this, run the following commands: 
