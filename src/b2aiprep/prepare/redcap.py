@@ -52,16 +52,42 @@ def get_choice_name(url, value):
 
     return value
 
+def map_folders_to_session_ids(base_dir):
+    """
+    Function that generates a dictionary mapping record ids to session ids
+    Args:
+        base_dir is the directory to participants audio recordings
+    """
+    mapping = {}
+    # Loop through each folder of reproschema to retrieve session ids
+    for folder_name in os.listdir(base_dir):
+        folder_path = os.path.join(base_dir, folder_name)
+        if os.path.isdir(folder_path):
+            # Get the first (inner) folder inside
+            inner_folders = [
+                f for f in os.listdir(folder_path)
+                if os.path.isdir(os.path.join(folder_path, f))
+            ]
+            if inner_folders:
+                # Assume only one session folder inside
+                session_id = inner_folders[0]
+                mapping[folder_name] = session_id
+    return mapping
 
-def parse_survey(survey_data, record_id, session_path):
+def parse_survey(survey_data, record_id, session_path, session_dict):
     """
     Function that generates a list of data frames in order to generate a redcap csv
     Args:
         survey_data is the raw json generated from reproschema ui
         record_id is the id that identifies the participant
         session_path is the path containing the session id
+        session_dict is a dict mapping record ids to their sessions
     """
-    session_id = session_path.split("/")[0]
+    if record_id in session_dict:
+        session_id = session_dict[record_id]
+    else:
+        session_id = session_path.split("/")[0]
+        _LOGGER.warning(f"Recording session_id for {record_id} is missing, replacing with session id used for questionnaires")
     questionnaire_name = survey_data[0]["used"][1].split("/")[-1]
     questions_answers = dict()
     questions_answers["record_id"] = [record_id]
@@ -388,7 +414,10 @@ class RedCapDataset:
 
         merged_questionnaire_data = []
         subject_count = 1
-        
+        # we want the audio session_ids from the audio portion of the reproschema as we dont want multiple session id's
+        # so we generate a dictionary mapping the audio session ids with each participant and process the reproschema
+        # files using that mapping. The end result is only the audio session id's being used for bids conversion.
+        session_ids_dict = map_folders_to_session_ids(audio_dir)
         # Process survey data
         for subject in sub_folders:
             content = OrderedDict()
@@ -409,25 +438,11 @@ class RedCapDataset:
                             continue
                         record_id = (subject.split("/")[-1]).split()[0]
                         session_path = str(session.relative_to(subject))
-                        questionnaire_df_list = parse_survey(session_data, record_id, session_path)
+                        questionnaire_df_list = parse_survey(session_data, record_id, session_path, session_ids_dict)
 
                         for df in questionnaire_df_list:
                             merged_questionnaire_data.append(df)
 
-                    session_id = [f.name for f in os.scandir(subject) if f.is_dir()]
-                    session_df = pd.DataFrame(
-                        {
-                            "record_id": (subject.split("/")[-1]).split()[0],
-                            "redcap_repeat_instrument": ["Session"],
-                            "redcap_repeat_instance": [1],
-                            "session_id": session_id,
-                            "session_status": ["Completed"],
-                            "session_is_control_participant": ["No"],
-                            "session_duration": ["0.0"],
-                            "session_site": ["SickKids"],
-                        }
-                    )
-                    merged_questionnaire_data += [session_df]
         audio_folders = Path(audio_dir)
         audio_sub_folders = sorted([str(f) for f in audio_folders.iterdir() if f.is_dir()])
         merged_csv = []

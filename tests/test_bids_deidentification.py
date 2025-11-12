@@ -24,7 +24,6 @@ class TestBIDSDatasetDeidentification:
         (publish_config_dir / "id_remapping.json").write_text("{}")
         (publish_config_dir / "participant_ids_to_remove.json").write_text("[]")
         (publish_config_dir / "audio_filestems_to_remove.json").write_text("[]")
-        (publish_config_dir / "session_id_remapping.json").write_text("{}")
 
     @pytest.fixture
     def temp_bids_dir(self):
@@ -105,6 +104,15 @@ class TestBIDSDatasetDeidentification:
             json_file = audio_file.parent / f"{audio_file.stem}_recording-metadata.json"
             with open(json_file, "w") as f:
                 json.dump(metadata, f, indent=2)
+                
+            session_data = {
+                "record_id": ["participant001", "participant002"],
+                "session_id": ["session001", "session002"],
+            }
+            session_df = pd.DataFrame(session_data)
+            session_dir = bids_path / f"sub-{participant}"
+            session_tsv = session_dir/ f"sessions.tsv"
+            session_df.to_csv(session_tsv, sep="\t", index=False)
 
         # Create BIDS template files
         (bids_path / "README.md").write_text("# Test BIDS Dataset")

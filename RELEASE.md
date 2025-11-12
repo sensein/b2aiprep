@@ -41,14 +41,28 @@ In the end, we should have an audio folder with all the .wav files contained in 
 
 Note: Before proceeding to the next step, please ensure that the record_id match the folder names downloaded from reproschema-ui.
 
-### 2. Data Formatting & Feature Extraction
-Once the redcap csv and audio files are ready, we can begin formatting the data and extraction feaatures from the audio files.
-To do this, run the following command: 
+**Optional**: We can run the `clean_redcap.py` script, located in the `external_scripts` folder, to fix any known reproschema to redcap issues.
 
 ```
-b2aiprep-cli prepare-bids <path/to/output/folder> \
-    --redcap_csv_path <path/to/redcap_csv> \
-    --audio_dir_path <path/to/audio/files> \
+python clean_redcap.py <path/to/redcap_csv> <path/to/output/fixed_redcap_csv>
+```
+
+### 2. Data Formatting & Feature Extraction
+Once the redcap csv and audio files are ready, we can begin formatting the data and extraction feaatures from the audio files.
+To do this, run the following commands: 
+
+Converting to Bids:
+```
+b2aiprep-cli redcap2bids <path/to/redcap_csv> \
+    <path/to/output/bids_folder> \
+    --audio_dir <path/to/audio/files>
+```
+
+Feature Extraction:
+```
+b2aiprep-cli generate-audio-features <path/to/redcap_csv> \
+    <path/to/input/bids_folder> \
+    <path/to/output/folder \
     --is_sequential True
 ```
 Note: Due to the potential size and quantity of the audio files, it is recommended to run this as a sbatch.

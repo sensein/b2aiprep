@@ -82,7 +82,6 @@ if __name__ == "__main__":
         )
 
     id_list = list(set(df[id_column].tolist()))
-    id_list = sorted(id_list, key=lambda x: (int(x[:3]), x[3:]))
 
     secret_key = generate_or_load_seed()
     lookup = build_lookup_table(id_list, secret_key, args.load_lookup)
