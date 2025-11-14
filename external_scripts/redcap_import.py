@@ -77,7 +77,7 @@ def modify_neckmass(csv_path):
         "peds_mc_neck_mass___dermoid_cyst",
         "peds_mc_neck_mass___enlarged_lymph_node",
     ]:
-        df[col] = df[col].fillna("").str.strip().str.lower()
+        df[col] = df[col].astype("string").fillna("").str.strip().str.lower()
         df[col] = df[col].apply(lambda x: "1" if x == "Yes" or x == "yes" else "0")
 
     df.to_csv(csv_path, index=False)
@@ -191,6 +191,7 @@ def clean_up(df):
     csv_string = df.to_csv(index=False)
     csv_string = csv_string.replace("preferNotToAnswer", "noAnswer")
     csv_string = csv_string.replace("problemIs“asBadAsItCanBe”", "asBadAsItCanBe")
+    csv_string = csv_string.replace(".0", "")
 
     return csv_string
 
