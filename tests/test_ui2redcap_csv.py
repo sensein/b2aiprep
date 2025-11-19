@@ -48,7 +48,7 @@ def test_parse_survey():
      'subjectparticipant_contact_information_schema_session_id': ['7896a213-caca-499b-941f-da5eb4d44566-']}
                                 )
 
-    actual_df = parse_survey(contents, record_id, session_path)[0]
+    actual_df = parse_survey(contents, record_id, session_path, {})[0]
 
     assert expected_df.equals(actual_df)
 
