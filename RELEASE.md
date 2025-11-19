@@ -79,6 +79,16 @@ Once the folder is generated, you can run the deidentify dataset command:
 ```
 b2aiprep-cli deidentify-bids-dataset <path/to/bids/folder> <path/to/audio/output/folder> <path/to/config>
 ```
+### 3. Processing Data & De-identifying Data
+Once the data has been been reformatted into a bids format, we need to make sure to remove any entries that could have
+sensitive information. To do this, we must for create a **Config** folder.
+
+The folder will contain 3 files:
+- `audio_filestems_to_remove.json` (File containing a list of sensitive audio files to remove)
+- `id_remapping.json` (File containing participant ids to change)
+- `participants_to_remove.json` (File containing list of participants to remove)
+
+Once the folder is generated, you can run the publish dataset command: 
 
 The output will be in BIDS format. The primary changes are:
 
