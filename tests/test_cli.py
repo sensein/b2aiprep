@@ -419,8 +419,8 @@ def test_validate_derived_dataset_cli():
         assert result.returncode == 0, f"CLI command failed: {result.stderr}"
 
 
-def test_publish_bids_dataset_cli_id_rename(setup_bids_structure):
-    """Test the 'b2aiprep-cli publish-bids-dataset' command using subprocess."""
+def test_deidentify_bids_dataset_cli_id_rename(setup_bids_structure):
+    """Test the 'b2aiprep-cli deidentify-bids-dataset' command using subprocess."""
     bids_dir = setup_bids_structure
 
     # Create phenotype directory structure
@@ -456,7 +456,7 @@ def test_publish_bids_dataset_cli_id_rename(setup_bids_structure):
         with open(participants_to_remove_path , "w") as f:
             json.dump(participants_to_remove_data, f, indent=2)
 
-        command = ["b2aiprep-cli", "publish-bids-dataset", str(bids_dir), outdir, str(config_dir)]
+        command = ["b2aiprep-cli", "deidentify-bids-dataset", str(bids_dir), outdir, str(config_dir)]
 
         result = subprocess.run(command, capture_output=True, text=True)
         assert result.returncode == 0, f"CLI command failed: {result.stderr}"
@@ -464,8 +464,8 @@ def test_publish_bids_dataset_cli_id_rename(setup_bids_structure):
         # checked if participant_id was changed
         assert os.path.exists(os.path.join(outdir, "sub-P001"))
         
-def test_publish_bids_dataset_cli_remove_audio(setup_bids_structure):
-    """Test the 'b2aiprep-cli publish-bids-dataset' command using subprocess."""
+def test_deidentify_bids_dataset_cli_remove_audio(setup_bids_structure):
+    """Test the 'b2aiprep-cli deidentify-bids-dataset' command using subprocess."""
     bids_dir = setup_bids_structure
 
     # Create phenotype directory structure
@@ -501,7 +501,7 @@ def test_publish_bids_dataset_cli_remove_audio(setup_bids_structure):
         with open(participants_to_remove_path , "w") as f:
             json.dump(participants_to_remove_data, f, indent=2)
 
-        command = ["b2aiprep-cli", "publish-bids-dataset", str(bids_dir), outdir, str(config_dir)]
+        command = ["b2aiprep-cli", "deidentify-bids-dataset", str(bids_dir), outdir, str(config_dir)]
 
         result = subprocess.run(command, capture_output=True, text=True)
         assert result.returncode == 0, f"CLI command failed: {result.stderr}"

@@ -275,7 +275,7 @@ def generate_audio_features(
 
     Args:
         source_bids_dir_path: Path to store BIDS-like data
-        target_bids_dir_path: PAth to target folder to store feature extractions
+        target_bids_dir_path: Path to target folder to store feature extractions
         tar_file_path: Path to store tar file. If provided, creates a compressed archive of the target directory
         transcription_model_size: Size of transcription model ('tiny', 'small', 'medium', or 'large')
         n_cores: Number of cores to run feature extraction on. Ignored if using Dask
@@ -289,14 +289,21 @@ def generate_audio_features(
         is_sequential: Specifies whether to extract audio features sequentially
         update: Specifies if we wish to update by creating target folder and storing extracts there
     """
-    os.makedirs(source_bids_dir_path, exist_ok=True)
+    os.makedirs(source_bids_dir_path, exist_ok=True)   
+    if source_bids_dir_path != target_bids_dir_path:
+        shutil.copytree(source_bids_dir_path, target_bids_dir_path, dirs_exist_ok=True)
+    else:
+        _LOGGER.warning("Target folder is the same a source folder, will extract features in source folder...")
+
     if update:
         shadow = target_bids_dir_path
         os.makedirs(target_bids_dir_path, exist_ok=True)
         shutil.copytree(source_bids_dir_path, shadow, dirs_exist_ok=True)
         bids_path = Path(target_bids_dir_path)
-    else:
+    elif source_bids_dir_path == target_bids_dir_path:
         bids_path = Path(source_bids_dir_path)
+    else:
+        bids_path = Path(target_bids_dir_path)
 
     _LOGGER.info("Beginning audio feature extraction...")
 
@@ -430,8 +437,6 @@ def create_derived_dataset(bids_path, outdir):
         static_features.append(subj_info)
 
     df_static = pd.DataFrame(static_features)
-    df_static = reduce_length_of_id(df_static, "participant_id")
-    df_static = reduce_length_of_id(df_static, "session_id")
     df_static.to_csv(outdir / "static_features.tsv", sep="\t", index=False)
     # load in the JSON with descriptions of each feature and copy it over
     # write it out again so formatting is consistent between JSONs
@@ -465,18 +470,6 @@ def create_derived_dataset(bids_path, outdir):
 
         # sort the dataset by identifier and task_name
         ds = Dataset.from_generator(audio_feature_generator, num_proc=1)
-
-        # reduce length of participant_id and session_id
-        ds = ds.map(
-            partial(
-                lambda x: {
-                    "participant_id": reduce_id_length(x["participant_id"]),
-                    "session_id": reduce_id_length(x["session_id"]),
-                }
-            ),
-            remove_columns=["participant_id", "session_id"],
-        )
-
         ds.to_parquet(
             str(outdir.joinpath(f"{feature_name}.parquet")),
             version="2.6",
@@ -550,10 +543,10 @@ def validate_derived_dataset(dataset_path):
 @click.argument("outdir", type=click.Path())
 @click.argument("publish_config_dir", type=click.Path(exists=True))
 @click.option("--skip_audio/--no-skip_audio", type=bool, default=False, show_default=True, help="Skip processing audio files")
-def publish_bids_dataset(bids_path, outdir, publish_config_dir, skip_audio):
-    """Creates a publication ready version of a given BIDS dataset.
+def deidentify_bids_dataset(bids_path, outdir, publish_config_dir, skip_audio):
+    """Creates a deidentified version of a given BIDS dataset.
 
-    The publication ready version
+    The deidentified ready version
 
     - only includes audio (omits features)
     - cleans/processes the various phenotype files and participants.tsv

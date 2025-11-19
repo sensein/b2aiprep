@@ -1,4 +1,4 @@
-"""Tests for the publish_bids_dataset command."""
+"""Tests for the deidentify_bids_dataset command."""
 
 import tempfile
 import shutil
@@ -9,12 +9,12 @@ from click.testing import CliRunner
 
 import pytest
 
-from b2aiprep.commands import publish_bids_dataset
+from b2aiprep.commands import deidentify_bids_dataset
 from b2aiprep.prepare.dataset import BIDSDataset
 
 
 class TestPublishCommandRefactor:
-    """Test cases for the publish_bids_dataset command."""
+    """Test cases for the deidentify_bids_dataset command."""
 
     @pytest.fixture
     def temp_bids_dir(self):
@@ -73,7 +73,7 @@ class TestPublishCommandRefactor:
             mock_deidentify.return_value = mock_deidentified
             
             # Run the command
-            result = runner.invoke(publish_bids_dataset, [temp_bids_dir, temp_output_dir, temp_publish_config_dir])
+            result = runner.invoke(deidentify_bids_dataset, [temp_bids_dir, temp_output_dir, temp_publish_config_dir])
             
             # Check that the command succeeded
             assert result.exit_code == 0
@@ -91,7 +91,7 @@ class TestPublishCommandRefactor:
             mock_deidentify.return_value = mock_deidentified
             
             # Run the command with --skip_audio
-            result = runner.invoke(publish_bids_dataset, [
+            result = runner.invoke(deidentify_bids_dataset, [
                 temp_bids_dir, temp_output_dir, temp_publish_config_dir, '--skip_audio'
             ])
             
@@ -111,7 +111,7 @@ class TestPublishCommandRefactor:
             mock_deidentify.return_value = mock_deidentified
             
             # Run the command with --no-skip_audio (explicit)
-            result = runner.invoke(publish_bids_dataset, [
+            result = runner.invoke(deidentify_bids_dataset, [
                 temp_bids_dir, temp_output_dir, temp_publish_config_dir, '--no-skip_audio'
             ])
             
@@ -133,7 +133,7 @@ class TestPublishCommandRefactor:
             mock_bids_class.return_value = mock_instance
             
             # Run the command
-            result = runner.invoke(publish_bids_dataset, [temp_bids_dir, temp_output_dir, temp_publish_config_dir])
+            result = runner.invoke(deidentify_bids_dataset, [temp_bids_dir, temp_output_dir, temp_publish_config_dir])
             
             # Check that the command succeeded
             assert result.exit_code == 0
@@ -154,7 +154,7 @@ class TestPublishCommandRefactor:
             mock_deidentify.return_value = mock_deidentified
             
             # Run the command
-            result = runner.invoke(publish_bids_dataset, [temp_bids_dir, temp_output_dir, temp_publish_config_dir])
+            result = runner.invoke(deidentify_bids_dataset, [temp_bids_dir, temp_output_dir, temp_publish_config_dir])
             
             # Check that the command succeeded
             assert result.exit_code == 0
@@ -171,7 +171,7 @@ class TestPublishCommandRefactor:
             mock_deidentify.side_effect = FileNotFoundError("Test error")
             
             # Run the command
-            result = runner.invoke(publish_bids_dataset, [temp_bids_dir, temp_output_dir, temp_publish_config_dir])
+            result = runner.invoke(deidentify_bids_dataset, [temp_bids_dir, temp_output_dir, temp_publish_config_dir])
             
             # Check that the command failed
             assert result.exit_code != 0
@@ -182,7 +182,7 @@ class TestPublishCommandRefactor:
         runner = CliRunner()
         
         # Run the command with --help
-        result = runner.invoke(publish_bids_dataset, ['--help'])
+        result = runner.invoke(deidentify_bids_dataset, ['--help'])
         
         # Check that the command succeeded
         assert result.exit_code == 0
@@ -196,7 +196,7 @@ class TestPublishCommandRefactor:
         runner = CliRunner()
         
         # Run the command without mocking (will use actual implementation)
-        result = runner.invoke(publish_bids_dataset, [temp_bids_dir, temp_output_dir, temp_publish_config_dir])
+        result = runner.invoke(deidentify_bids_dataset, [temp_bids_dir, temp_output_dir, temp_publish_config_dir])
         
         # Check that the command succeeded
         assert result.exit_code == 0
@@ -247,9 +247,10 @@ class TestPublishCommandBackwardCompatibility:
         (temp_config_dir / "participant_ids_to_remove.json").write_text("[]")
         (temp_config_dir / "audio_filestems_to_remove.json").write_text("[]")
         (temp_config_dir / "id_remapping.json").write_text("{}")
+        (temp_config_dir / "session_id_remapping.json").write_text("{}")
         try:
             # Run the new command
-            result = runner.invoke(publish_bids_dataset, [temp_bids_dir, str(temp_output_dir), str(temp_config_dir)])
+            result = runner.invoke(deidentify_bids_dataset, [temp_bids_dir, str(temp_output_dir), str(temp_config_dir)])
             
             # Check that the command succeeded
             assert result.exit_code == 0
