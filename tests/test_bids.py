@@ -12,7 +12,7 @@ from pydantic import BaseModel
 from b2aiprep.prepare.bids import (
     get_audio_paths,
     get_paths,
-    validate_bids_folder,
+    validate_bids_folder_audios,
     write_pydantic_model_to_bids_file,
 )
 from b2aiprep.prepare_synthetic import redcap_to_bids
@@ -1029,7 +1029,7 @@ def test_validate_bids_folder_all_files_present():
         transcript_file.write_text("transcript content")
 
         with patch("b2aiprep.prepare.bids._LOGGER") as mock_logger:
-            validate_bids_folder(temp_path)
+            validate_bids_folder_audios(temp_path)
 
             # Should log success message
             mock_logger.info.assert_called_with("All audio files have been processed.")
@@ -1060,7 +1060,7 @@ def test_validate_bids_folder_missing_features():
         transcript_file2.write_text("transcript content 2")
 
         with patch("b2aiprep.prepare.bids._LOGGER") as mock_logger:
-            validate_bids_folder(temp_path)
+            validate_bids_folder_audios(temp_path)
 
             # Should log warning about missing features
             mock_logger.warning.assert_called()
@@ -1090,7 +1090,7 @@ def test_validate_bids_folder_missing_transcriptions():
         feature_file.write_text("feature content")
 
         with patch("b2aiprep.prepare.bids._LOGGER") as mock_logger:
-            validate_bids_folder(temp_path)
+            validate_bids_folder_audios(temp_path)
 
             # Should log warning about missing transcriptions
             mock_logger.warning.assert_called()
@@ -1116,7 +1116,7 @@ def test_validate_bids_folder_missing_both():
         audio_file.write_text("audio content")
 
         with patch("b2aiprep.prepare.bids._LOGGER") as mock_logger:
-            validate_bids_folder(temp_path)
+            validate_bids_folder_audios(temp_path)
 
             # Should log warnings for both missing features and transcriptions
             mock_logger.warning.assert_called()
@@ -1171,7 +1171,7 @@ def test_validate_bids_folder_partial_missing():
         feature_file3.write_text("feature content 3")
 
         with patch("b2aiprep.prepare.bids._LOGGER") as mock_logger:
-            validate_bids_folder(temp_path)
+            validate_bids_folder_audios(temp_path)
 
             # Should log warnings for both missing features and transcriptions
             mock_logger.warning.assert_called()
@@ -1206,7 +1206,7 @@ def test_validate_bids_folder_no_audio_files():
         transcript_file.write_text("transcript content")
 
         with patch("b2aiprep.prepare.bids._LOGGER") as mock_logger:
-            validate_bids_folder(temp_path)
+            validate_bids_folder_audios(temp_path)
 
             # Should log success since there are no audio files to validate
             mock_logger.info.assert_called_with("All audio files have been processed.")
@@ -1233,7 +1233,7 @@ def test_validate_bids_folder_complex_filenames():
         transcript_file.write_text("transcript content")
 
         with patch("b2aiprep.prepare.bids._LOGGER") as mock_logger:
-            validate_bids_folder(temp_path)
+            validate_bids_folder_audios(temp_path)
 
             # Should log success message
             mock_logger.info.assert_called_with("All audio files have been processed.")

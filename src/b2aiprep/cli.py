@@ -18,6 +18,7 @@ from b2aiprep.commands import (  # gensynthtabdata,
     validate,
     validate_data,
     validate_derived_dataset,
+    validate_feature_extraction,
     verify,
     publish_bids_dataset,
 )
@@ -58,6 +59,7 @@ cli.add_command(reproschema_audio_to_folder)
 cli.add_command(reproschema_to_redcap)
 cli.add_command(generate_audio_features)
 cli.add_command(bids2shadow)
+cli.add_command(validate_feature_extraction)
 
 if __name__ == "__main__":
     # include main to enable python debugging
