@@ -444,8 +444,40 @@ def construct_all_tsvs_from_jsons(
             # Construct the TSV file from the JSON file
             construct_tsv_from_json(df=df, json_file_path=json_file_path, output_dir=output_dir)
 
-def validate_bids_folder(bids_dir_path: Path):
-    """Validate the BIDS-like folder structure.
+
+def validate_bids_audio_features(bids_dir_path: Path, report_path: Path = None):
+    """Validate the audio features of the BIDS-like folder structure.
+
+    This function checks that all audio files have corresponding feature
+    files and transcriptions.
+
+    Args:
+        bids_dir_path: The root directory of the BIDS dataset.
+        report_path: where to save a file reporting the validation results
+    """
+    audio_paths = [x["path"] for x in get_audio_paths(bids_dir_path)]
+    missing_features = []
+    missing_transcriptions = []
+    for audio_path in audio_paths:
+        audio_path = Path(audio_path)
+        audio_dir = audio_path.parent
+        features_dir = audio_dir.parent / "audio"
+        feature_files = [file for file in features_dir.glob(f"{audio_path.stem}*.pt")]
+        if len(feature_files) == 0:
+            missing_features.append(audio_path)
+        elif len(feature_files) == 1:
+            features = torch.load(feature_files[0],weights_only=False)
+
+        else:
+            raise ValueError(f"{audio_path} has more than one associated feature file")
+
+
+
+
+
+
+def validate_bids_folder_audios(bids_dir_path: Path):
+    """Validate the audio aspect of the BIDS-like folder structure.
 
     This function checks that all audio files have corresponding feature
     files and transcriptions.
@@ -466,6 +498,7 @@ def validate_bids_folder(bids_dir_path: Path):
         feature_files = [file for file in features_dir.glob(f"{audio_path.stem}*.txt")]
         if len(feature_files) == 0:
             missing_transcriptions.append(audio_path)
+
     if len(missing_transcriptions) > 0:
         _LOGGER.warning(
             f"Missing transcriptions for {len(missing_transcriptions)} / "
@@ -476,4 +509,4 @@ def validate_bids_folder(bids_dir_path: Path):
             f"Missing features for {len(missing_features)} / {len(audio_paths)} audio files"
         )
     else:
-        _LOGGER.info("All audio files have been processed.")
+        _LOGGER.info(f"All {len(audio_paths)} audio files have been processed.")
