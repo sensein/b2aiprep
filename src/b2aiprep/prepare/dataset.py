@@ -1425,7 +1425,7 @@ class BIDSDataset:
             # Create output path with deidentified structure
             audio_path_stem_ending = "_".join(audio_path.stem.split("_")[2:])
             output_path = outdir.joinpath(
-                f"sub-{participant_id}/ses-{session_id}/audio/{audio_path_stem_ending}.wav"
+                f"sub-{participant_id}/ses-{session_id}/audio/sub-{participant_id}_ses-{session_id}_{audio_path_stem_ending}.wav"
             )
             output_path.parent.mkdir(parents=True, exist_ok=True)
             
