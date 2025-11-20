@@ -66,7 +66,7 @@ The folder will contain 3 files:
 - `id_remapping.json` (File containing participant ids to change)
 - `participants_to_remove.json` (File containing list of participants to remove)
 
-Once the folder is generated, you can run the publish dataset command: 
+Once the folder is generated, you can run the deidentify dataset command: 
 
 ```
 b2aiprep-cli deidentify-bids-dataset <path/to/bids/folder> <path/to/audio/output/folder> <path/to/config>
@@ -108,9 +108,16 @@ Once the command is complete, you should have the following bids-like structure:
 ```
 
 ### 5. Creating Derived Dataset
-Run the following derive dataset: 
+Run the following to create the derived dataset: 
 ```
 b2aiprep-cli create-derived-dataset <path/to/input/bids_folder>  \ 
     <path/to/output/derive_folder> 
 ```
+The following command will generate:
+    1. `phenotype.tsv`- File containging all phenotype data for each participant
+    2. `static_features.tsv`- File containging features extracted for each audio recording
+    3. `mfcc.parquet` - Parquet file containing all the Mel-Frequency Cepstral Coefficients for each audio recording
+    4. `spectrogram.parquet`- Parquet file conntaining all spectrograms for each audio recording
+    
+
 Once this command is done, you will have a dataset ready to release! Congratulations!

@@ -399,17 +399,6 @@ def create_derived_dataset(bids_path, outdir):
     _LOGGER.info("Finished creating merged phenotype data.")
 
     _LOGGER.info("Loading audio static features.")
-    # remove known individuals
-    n = len(audio_paths)
-    participant_ids_to_remove = _load_participant_exclusions()
-    for participant_id in participant_ids_to_remove:
-        audio_paths = [x for x in audio_paths if f"sub-{participant_id}" not in str(x)]
-
-    if len(audio_paths) < n:
-        _LOGGER.info(
-            f"Removed {n - len(audio_paths)} records due to hard-coded participant removal."
-        )
-
     static_features = []
     for filepath in tqdm(audio_paths, desc="Loading static features", total=len(audio_paths)):
         pt_file = filepath.parent.joinpath(f"{filepath.stem}_features.pt")
@@ -449,9 +438,6 @@ def create_derived_dataset(bids_path, outdir):
     _LOGGER.info("Finished creating static features.")
 
     _LOGGER.info("Loading spectrograms into a single HF dataset.")
-
-    # remove audio check and sensitive audio from the spectrograms / mfcc
-    audio_paths = filter_audio_paths(audio_paths)
 
     for feature_name in ["spectrogram", "mfcc"]:
         if feature_name == "mfcc":
@@ -546,7 +532,7 @@ def validate_derived_dataset(dataset_path):
 def deidentify_bids_dataset(bids_path, outdir, publish_config_dir, skip_audio):
     """Creates a deidentified version of a given BIDS dataset.
 
-    The deidentified ready version
+    The deidentified version of the dataset: 
 
     - only includes audio (omits features)
     - cleans/processes the various phenotype files and participants.tsv

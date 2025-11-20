@@ -188,11 +188,20 @@ def clean_up(df):
     df.loc[df["redcap_repeat_instrument"].fillna("") == "", "redcap_repeat_instance"] = ""
     df.loc[df["peds_edu_level"] == "preferNotToAnswer", "peds_edu_level"] = "12"
     df.loc[df["peds_edu_level"] == "other", "peds_edu_level"] = "11"
+    df.loc[df["peds_edu_level"] == "highSchoolOrSecondarySchoolDegreeComplete", "peds_edu_level"] = "4"
+
+    df["peds_severity_voice_problem"] = (
+        pd.to_numeric(df["peds_severity_voice_problem"], errors="coerce")
+        .astype("Int64")
+    )
+
+    df["peds_vhi_talkativeness"] = (
+        pd.to_numeric(df["peds_vhi_talkativeness"], errors="coerce")
+        .astype("Int64")
+    )
     csv_string = df.to_csv(index=False)
     csv_string = csv_string.replace("preferNotToAnswer", "noAnswer")
     csv_string = csv_string.replace("problemIs“asBadAsItCanBe”", "asBadAsItCanBe")
-    csv_string = csv_string.replace(".0", "")
-
     return csv_string
 
 
