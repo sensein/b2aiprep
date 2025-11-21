@@ -491,7 +491,7 @@ class RedCapDataset:
         # remove specific entry as it was a user input error
         idx = df["record_id"].str.len() > 5
         _LOGGER.info(f"Removing {idx.sum()} rows with invalid record_id length: {df.loc[idx, 'record_id'].tolist()}")
-        df.drop(df[idx].index, inplace=True)
+        df = df.drop(df[idx].index)
 
         # inconsistencies with certain record_ids and fixing mistake put having inputted 021sm and 022ls as the
         # record ids for 022sm and 024ls respectively.
