@@ -1039,13 +1039,13 @@ def reproschema_to_redcap(audio_dir, survey_file, redcap_csv, participant_group)
     )
     
     # Ensure the output directory exists
-    Path(redcap_csv).mkdir(parents=True, exist_ok=True)
-    
+    redcap_csv_path = Path(redcap_csv)
+    redcap_csv_path.mkdir(parents=True, exist_ok=True)
+
     # Save the converted data to CSV
-    merged_csv_path = os.path.join(redcap_csv, "merged-redcap.csv")
-    dataset.df.to_csv(merged_csv_path, index=False)
+    dataset.df.to_csv(redcap_csv_path, index=False)
     
-    _LOGGER.info(f"Successfully converted ReproSchema data to RedCap CSV: {merged_csv_path}")
+    _LOGGER.info(f"Successfully converted ReproSchema data to RedCap CSV: {redcap_csv_path}")
 
 
 @click.command()
