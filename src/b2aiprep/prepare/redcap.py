@@ -392,6 +392,7 @@ class RedCapDataset:
         audio_dir: t.Union[str, Path], 
         survey_dir: t.Union[str, Path],
         participant_group: str = None,
+        disable_manual_fixes: bool = False,
         *,
         resolve_choice_names: bool = True,
     ) -> 'RedCapDataset':
@@ -418,7 +419,7 @@ class RedCapDataset:
     
         # Convert ReproSchema to RedCap format
         df = cls._convert_reproschema_to_redcap(
-            audio_dir, survey_dir, participant_group, resolve_choice_names=resolve_choice_names
+            audio_dir, survey_dir, participant_group, resolve_choice_names=resolve_choice_names, disable_manual_fixes=disable_manual_fixes
         )
 
         #remap reproschema columns to their redcap equivalents
@@ -482,10 +483,25 @@ class RedCapDataset:
         return data
     
     @staticmethod
+    def _clean_reproschema_df(df: DataFrame) -> DataFrame:
+        # inconsistencies with certain record_ids and fixing mistake put having inputted 021sm and 022ls as the
+        # record ids for 022sm and 024ls respectively.
+        df["record_id"] = df["record_id"].astype(str).str.replace(r'[\s-]+', '', regex=True)
+        # re-parse it to always be 3 digits followed by 2 letters
+        df["record_id"] = df["record_id"].apply(lambda x: re.sub(r'(\d{1,3})([a-zA-Z]{2})$', lambda m: f"{int(m.group(1)):03}{m.group(2)}", x))
+
+        # remove specific entry as it was a user input error
+        idx = df["record_id"].str.len() > 5
+        _LOGGER.info(f"Removing {idx.sum()} rows with invalid record_id length: {df.loc[idx, 'record_id'].tolist()}")
+        df.drop(df[idx].index, inplace=True)
+        return df
+
+    @staticmethod
     def _convert_reproschema_to_redcap(
         audio_dir: t.Union[str, Path], 
         survey_dir: t.Union[str, Path], 
         participant_group: str = None,
+        disable_manual_fixes: bool = False,
         *,
         resolve_choice_names: bool = True,
     ) -> DataFrame:
@@ -496,6 +512,8 @@ class RedCapDataset:
             audio_dir: Path to audio files directory
             survey_dir: Path to survey data directory  
             participant_group: Optional participant group identifier
+            disable_manual_fixes: If True, disables manual fixes for known data issues
+
             
         Returns:
             DataFrame in RedCap format
@@ -580,6 +598,8 @@ class RedCapDataset:
         if all_dfs:
             combined_df = pd.concat(all_dfs, ignore_index=True, sort=False)
             
+            if not disable_manual_fixes:
+                combined_df = RedCapDataset._clean_reproschema_df(combined_df)
             # Handle participant group replacement
             if participant_group:
                 combined_df["redcap_repeat_instrument"] = combined_df["redcap_repeat_instrument"].replace(
