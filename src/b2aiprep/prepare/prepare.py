@@ -687,7 +687,7 @@ def validate_bids_audio_features(bids_dir_path: Path, report_path: Path = None):
             )
 
     if report_path:
-        report_file = report_path / "missing_features.json"
+        report_file = report_path #/ "missing_features.json"
         _logger.info(f"Placing missing features details info into {report_file}")
         with open(report_file, "w") as f:
             json.dump(
