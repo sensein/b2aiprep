@@ -112,7 +112,6 @@ def parse_survey(
         session_id = session_dict[record_id]
     else:
         session_id = session_path.split("/")[0]
-        _LOGGER.warning(f"Recording session_id for {record_id} is missing, replacing with session id used for questionnaires")
     questionnaire_name = survey_data[0]["used"][1].split("/")[-1]
     questions_answers = dict()
     questions_answers["record_id"] = [record_id]
@@ -131,7 +130,7 @@ def parse_survey(
 
         missing = [u for u in unique_urls if u not in choices_cache]
         if missing:
-            _LOGGER.info(
+            _LOGGER.debug(
                 f"Fetching {len(missing)} ReproSchema items to resolve labels (disable with resolve_choice_names=False)."
             )
             session = http_session or requests.Session()
@@ -154,7 +153,7 @@ def parse_survey(
                     choices_cache[url] = mapping
                     choices_count_cache[url] = len(choices)
                 except Exception as e:
-                    _LOGGER.info(f"Failed to resolve choices for {url}: {e}")
+                    _LOGGER.warning(f"Failed to resolve choices for {url}: {e}")
                     choices_cache[url] = {}
                     choices_count_cache[url] = 0
 
