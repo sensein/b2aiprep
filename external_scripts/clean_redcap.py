@@ -13,8 +13,6 @@ def find_replace_in_csv(filepath):
     # inconsistencies with certain record_ids and fixing mistake put having inputted 021sm and 022ls as the
     # record ids for 022sm and 024ls respectively.
     modifications = {
-        "021 sm,Participant,1,Consented,Yes,2025-06-10T16:37:26": "022 sm,Participant,1,Consented,Yes,2025-06-10T16:37:26",
-        "022 ls,Participant,1,Consented,Yes,2025-06-17T13:35:09.710Z": "024 ls,Participant,1,Consented,Yes,2025-06-17T13:35:09.710Z",
         " js,": "js,",
         " ls,": "ls,",
         " sm,": "sm,",

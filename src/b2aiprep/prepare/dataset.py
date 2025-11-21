@@ -676,15 +676,17 @@ class BIDSDataset:
         # sub-<participant_id>_ses-<session_id>_task-<task_name>_run-_metadata.json
         filename = f"sub-{subject_id}"
         if session_id is not None:
-            session_id = session_id.replace(" ", "-")
+            session_id = session_id.replace(" ", "-").replace("_", "-")
             filename += f"_ses-{session_id}"
         if task_name is not None:
             task_name = task_name.replace(" ", "-")
+            task_name = task_name.replace("_", "-")
             if recording_name is not None:
                 task_name = recording_name.replace(" ", "-")
+                task_name = recording_name.replace("_", "-")
             filename += f"_task-{task_name}"
 
-        schema_name = schema_name.replace(" ", "-").replace("schema", "")
+        schema_name = schema_name.replace(" ", "-").replace("schema", "").replace("_", "-")
         schema_name = schema_name + "-metadata"
         filename += f"_{schema_name}.json"
 
@@ -745,7 +747,7 @@ class BIDSDataset:
                 if task is None:
                     continue
 
-                acoustic_task_name = task["acoustic_task_name"].replace(" ", "-")
+                acoustic_task_name = task["acoustic_task_name"].replace(" ", "-").replace("_", "-")
                 fhir_data = convert_response_to_fhir(
                     task,
                     questionnaire_name=task_instrument.name,
@@ -803,7 +805,7 @@ class BIDSDataset:
                         # copy file
                         ext = audio_file.suffix
 
-                        recording_name = recording["recording_name"].replace(" ", "-")
+                        recording_name = recording["recording_name"].replace(" ", "-").replace("_", "-")
                         audio_file_destination = (
                             audio_output_path / f"{prefix}_task-{recording_name}{ext}"
                         )
@@ -1425,7 +1427,7 @@ class BIDSDataset:
             # Create output path with deidentified structure
             audio_path_stem_ending = "_".join(audio_path.stem.split("_")[2:])
             output_path = outdir.joinpath(
-                f"sub-{participant_id}/ses-{session_id}/audio/{audio_path_stem_ending}.wav"
+                f"sub-{participant_id}/ses-{session_id}/audio/sub-{participant_id}_ses-{session_id}_{audio_path_stem_ending}.wav"
             )
             output_path.parent.mkdir(parents=True, exist_ok=True)
             

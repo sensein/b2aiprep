@@ -94,7 +94,7 @@ def extract_items(participant_json: dict, outline: list) -> t.List[dict]:
         elif answer_value == "nan":
             answer = None
         else:
-            answer = [{"valueString": answer_value}]
+            answer = [{"valueString": answer_value.replace("_", "-")}]
         item = {
             "linkId": question,
             "answer": answer,
