@@ -391,7 +391,6 @@ class RedCapDataset:
         cls, 
         audio_dir: t.Union[str, Path], 
         survey_dir: t.Union[str, Path],
-        participant_group: str = None,
         disable_manual_fixes: bool = False,
         *,
         resolve_choice_names: bool = True,
@@ -402,7 +401,6 @@ class RedCapDataset:
         Args:
             audio_dir: Path to directory containing audio files
             survey_dir: Path to directory containing survey data
-            participant_group: Optional participant group identifier
             resolve_choice_names: If True, makes web calls to resolve ReproSchema
                 choice labels for scalar answers and to expand multi-select into
                 checkbox columns. If False or if requests fail, falls back to coded
@@ -418,6 +416,7 @@ class RedCapDataset:
         _LOGGER.info(f"Loading ReproSchema data from audio_dir: {audio_dir}, survey_dir: {survey_dir}")
     
         # Convert ReproSchema to RedCap format
+        participant_group = "subjectparticipant_basic_information_schema"
         df = cls._convert_reproschema_to_redcap(
             audio_dir, survey_dir, participant_group, resolve_choice_names=resolve_choice_names, disable_manual_fixes=disable_manual_fixes
         )
@@ -484,8 +483,7 @@ class RedCapDataset:
     
     @staticmethod
     def _clean_reproschema_df(df: DataFrame) -> DataFrame:
-        # inconsistencies with certain record_ids and fixing mistake put having inputted 021sm and 022ls as the
-        # record ids for 022sm and 024ls respectively.
+        # remove extra characters present in record_id
         df["record_id"] = df["record_id"].astype(str).str.replace(r'[\s-]+', '', regex=True)
         # re-parse it to always be 3 digits followed by 2 letters
         df["record_id"] = df["record_id"].apply(lambda x: re.sub(r'(\d{1,3})([a-zA-Z]{2})$', lambda m: f"{int(m.group(1)):03}{m.group(2)}", x))
@@ -494,13 +492,34 @@ class RedCapDataset:
         idx = df["record_id"].str.len() > 5
         _LOGGER.info(f"Removing {idx.sum()} rows with invalid record_id length: {df.loc[idx, 'record_id'].tolist()}")
         df.drop(df[idx].index, inplace=True)
+
+        # inconsistencies with certain record_ids and fixing mistake put having inputted 021sm and 022ls as the
+        # record ids for 022sm and 024ls respectively.
+        mapper = {
+            "021sm": "022sm",
+            "022ls": "024ls",
+        }
+        idx = df['redcap_repeat_instrument'] == 'subjectparticipant_basic_information_schema'
+        subset = df.loc[idx]
+        duplicate_ids = subset["record_id"].loc[subset["record_id"].duplicated(keep=False)].unique()
+        for record_id in duplicate_ids:
+            subset = df[idx & (df["record_id"] == record_id)].sort_values(by="subjectparticipant_basic_information_schema_start_time")
+            if subset.shape[0] > 2:
+                continue  # skip if more than 2 duplicates
+            df.loc[subset.index[1], "record_id"] = mapper[record_id]
+            _LOGGER.info(f"Corrected record_id from {record_id} to {mapper[record_id]} for index {subset.index[1]}")
+        
+        # raise warning if there are more duplicates
+        duplicated_idx = df.loc[idx, "record_id"].duplicated(keep=False)
+        if duplicated_idx.any():
+            final_duplicates = df.loc[idx, "record_id"].loc[duplicated_idx].unique()
+            _LOGGER.warning(f"Duplicate record_ids remain after correction: {final_duplicates.tolist()}")
         return df
 
     @staticmethod
     def _convert_reproschema_to_redcap(
-        audio_dir: t.Union[str, Path], 
-        survey_dir: t.Union[str, Path], 
-        participant_group: str = None,
+        audio_dir: t.Union[str, Path],
+        survey_dir: t.Union[str, Path],
         disable_manual_fixes: bool = False,
         *,
         resolve_choice_names: bool = True,
