@@ -520,6 +520,7 @@ class RedCapDataset:
     def _convert_reproschema_to_redcap(
         audio_dir: t.Union[str, Path],
         survey_dir: t.Union[str, Path],
+        participant_group: str = "subjectparticipant_basic_information_schema",
         disable_manual_fixes: bool = False,
         *,
         resolve_choice_names: bool = True,

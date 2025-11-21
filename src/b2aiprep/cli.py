@@ -12,7 +12,6 @@ from b2aiprep.commands import (  # gensynthtabdata,
     generate_audio_features,
     prepare_bids,
     redcap2bids,
-    reproschema_audio_to_folder,
     reproschema_to_redcap,
     transcribe,
     validate,
@@ -54,7 +53,6 @@ cli.add_command(create_derived_dataset)
 cli.add_command(validate_data)
 cli.add_command(validate_derived_dataset)
 cli.add_command(deidentify_bids_dataset)
-cli.add_command(reproschema_audio_to_folder)
 cli.add_command(reproschema_to_redcap)
 cli.add_command(generate_audio_features)
 cli.add_command(bids2shadow)

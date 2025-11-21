@@ -6,10 +6,9 @@ This document provides instructions for preparing and releasing the Bridge2AI Vo
 ```sh
 WORKING_DIR=${HOME}/data/bridge2ai/pediatric
 
-b2aiprep-cli reproschema-audio-to-folder $WORKING_DIR/Audio_300_Release $WORKING_DIR/audio_organized
-b2aiprep-cli reproschema-to-redcap $WORKING_DIR/audio_organized $WORKING_DIR/Survey_300_Release $WORKING_DIR/redcap.csv --participant_group subjectparticipant_basic_information_schema
-b2aiprep-cli redcap2bids $WORKING_DIR/redcap.csv --outdir $WORKING_DIR/bids --audiodir $WORKING_DIR/audio_organized
-b2aiprep-cli deidentify-bids-dataset $WORKING_DIR/bids $WORKING_DIR/audio_organized $WORKING_DIR/release_config
+b2aiprep-cli reproschema-to-redcap $WORKING_DIR/Audio_300_Release $WORKING_DIR/Survey_300_Release $WORKING_DIR/redcap.csv --participant_group subjectparticipant_basic_information_schema
+b2aiprep-cli redcap2bids $WORKING_DIR/redcap.csv --outdir $WORKING_DIR/bids --audiodir $WORKING_DIR/Audio_300_Release
+b2aiprep-cli deidentify-bids-dataset $WORKING_DIR/bids $WORKING_DIR/Audio_300_Release $WORKING_DIR/release_config
 ```
 
 ---
@@ -35,17 +34,10 @@ When first downloaded, the pediatric data consists of:
 - A **Survey folder** (questionnaire responses).
 - An **Audio folder** (voice recordings).
 
-
-To organize the audio files into the format shown above, run:
-
-```
-b2aiprep-cli reproschema-audio-to-folder <path/to/audio/folder> <path/to/audio/output/folder>
-```
-
 Pediatric data that has been downloaded from reproschema-ui does not have a redcap csv associated with it, so we must generate one. This can be done using the following command:
 
 ```
-b2aiprep-cli reproschema-to-redcap <path/to/audio/output/folder> <path/to/survey/folder> <path/to/output/redcap_csv> --participant_group subjectparticipant_basic_information_schema
+b2aiprep-cli reproschema-to-redcap <path/to/audio/folder> <path/to/survey/folder> <path/to/output/redcap_csv>
 ```
 
 In the end, we should have an audio folder with all the .wav files contained in it, and a redcap csv file.

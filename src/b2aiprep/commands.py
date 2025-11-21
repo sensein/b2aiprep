@@ -961,58 +961,12 @@ def createbatchcsv(input_dir, out_file):
 
     print(f"csv of audiofiles generated at: {out_file}")
 
-
-@click.command()
-@click.argument("src_dir", type=str)
-@click.argument("dest_dir", type=str)
-def reproschema_audio_to_folder(src_dir, dest_dir):
-    """Flattens .wav files using UUIDs as filenames.
-
-    This function scans a source directory for .wav audio files, extracts their UUIDs
-    from the filenames, and copies them to a specified destination directory with
-    the UUID as the new filename.
-
-    Args:
-        src_dir (str): Path to the top-level directory containing the audio files
-                      in the ReproSchema export structure.
-        dest_dir (str): Path to the directory where the reorganized audio files
-                        will be saved.
-
-    Returns:
-        None: Copies audio files to the destination folder and logs the output.
-    """
-    if not os.path.exists(dest_dir):
-        os.makedirs(dest_dir)
-
-    # Walk through the source directory recursively
-    for root, dirs, files in os.walk(src_dir):
-        for file in files:
-            # Check if the file is a .wav file
-            if file.lower().endswith(".wav"):
-                try:
-                    base_filename = os.path.splitext(file)[0]
-                    uuid_list = base_filename.split("-")[1:]
-                    file_uuid = "-".join(uuid_list)
-                except IndexError:
-                    print(f"Skipping {file} because UUID could not be extracted.")
-                    continue
-
-                # Generate the full destination path with the UUID as the filename
-                dest_file_path = os.path.join(dest_dir, f"{file_uuid}.wav")
-
-                # Move and rename the file
-                src_file_path = os.path.join(root, file)
-                shutil.copy(src_file_path, dest_file_path)
-
-    _LOGGER.info(f"audio files generated at: {dest_dir}")
-
-
 @click.command()
 @click.argument("audio_dir", type=str)
 @click.argument("survey_file", type=str)
 @click.argument("redcap_csv", type=str)
 @click.option("--disable-manual-fixes", is_flag=True, default=False, show_default=True, help="Disable manual fixes for known issues in ReproSchema data.")
-def reproschema_to_redcap(audio_dir, survey_file, redcap_csv, participant_group, disable_manual_fixes):
+def reproschema_to_redcap(audio_dir, survey_file, redcap_csv, disable_manual_fixes):
     """Converts reproschema ui data to redcap CSV.
 
     This function processes survey data and audio metadata from ReproSchema UI exports
