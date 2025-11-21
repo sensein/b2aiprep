@@ -1,6 +1,17 @@
 # Release Process
 This document provides instructions for preparing and releasing the Bridge2AI Voice dataset for public and internal releases.
 
+## Quick start
+
+```sh
+WORKING_DIR=${HOME}/data/bridge2ai/pediatric
+
+b2aiprep-cli reproschema-audio-to-folder $WORKING_DIR/Audio_300_Release $WORKING_DIR/audio_organized
+b2aiprep-cli reproschema-to-redcap $WORKING_DIR/audio_organized $WORKING_DIR/Survey_300_Release $WORKING_DIR/redcap.csv --participant_group subjectparticipant_basic_information_schema
+b2aiprep-cli redcap2bids $WORKING_DIR/redcap.csv --outdir $WORKING_DIR/bids --audiodir $WORKING_DIR/audio_organized
+b2aiprep-cli deidentify-bids-dataset $WORKING_DIR/bids $WORKING_DIR/audio_organized $WORKING_DIR/release_config
+```
+
 ---
 ### 1. Data Retrieval
 The B2AIPrep library mainly requires two major things, a directory containing all the audio files, and secondly a redcap csv.
@@ -55,7 +66,7 @@ Converting to Bids:
 ```
 b2aiprep-cli redcap2bids <path/to/redcap_csv> \
     <path/to/output/bids_folder> \
-    --audio_dir <path/to/audio/files>
+    --audiodir <path/to/audio/files>
 ```
 ### 3. Processing Data & De-identifying Data
 Once the data has been been reformatted into a bids format, we need to make sure to remove any entries that could have
