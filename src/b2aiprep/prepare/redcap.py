@@ -19,7 +19,7 @@ from collections import OrderedDict
 from datetime import datetime
 from pathlib import Path
 from importlib.resources import files
-from tempfile import NamedTemporaryFile
+# from tempfile import NamedTemporaryFile
 
 import requests
 
@@ -29,26 +29,33 @@ from pandas import DataFrame
 from tqdm import tqdm
 
 from b2aiprep.prepare.constants import AUDIO_TASKS, Instrument, RepeatInstrument
-from b2aiprep.prepare.utils import fetch_json_options_number, get_wav_duration
+from b2aiprep.prepare.utils import get_wav_duration
 
 # ReproSchema parsing functions (moved from reproschema_to_redcap.py)
 
 def get_choice_name(url, value):
-    """Get the choice name from a ReproSchema URL and value."""
-    response = requests.get(url)
-    if response.status_code != 200:
+    """Get the choice name from a ReproSchema URL and value.
+
+    Legacy, per-call network approach. Prefer using `parse_survey` with
+    prefetching to avoid repeated requests.
+    """
+    try:
+        response = requests.get(url, timeout=10)
+        if response.status_code != 200:
+            return value
+
+        data = response.json()
+        choices = data.get("responseOptions", {}).get("choices", [])
+
+        for choice in choices:
+            if choice.get("value") == value:
+                name = choice.get("name", None)
+                if isinstance(name, dict) and "en" in name:
+                    return name.get("en", value)
+                else:
+                    return name if isinstance(name, str) else value
+    except Exception:
         return value
-
-    data = response.json()
-    choices = data.get("responseOptions", {}).get("choices", [])
-
-    for choice in choices:
-        if choice.get("value") == value:
-            name = choice.get("name", None)
-            if isinstance(name, dict) and "en" in name:
-                return name.get("en", value)
-            else:
-                return value
 
     return value
 
@@ -74,14 +81,32 @@ def map_folders_to_session_ids(base_dir):
                 mapping[folder_name] = session_id
     return mapping
 
-def parse_survey(survey_data, record_id, session_path, session_dict):
+def parse_survey(
+    survey_data,
+    record_id,
+    session_path,
+    session_dict,
+    *,
+    resolve_choice_names: bool = True,
+    choices_cache: dict | None = None,
+    http_session: requests.Session | None = None,
+    timeout: float = 10.0,
+):
     """
-    Function that generates a list of data frames in order to generate a redcap csv
+    Function that generates a list of DataFrames to build a REDCap CSV.
+
     Args:
-        survey_data is the raw json generated from reproschema ui
-        record_id is the id that identifies the participant
-        session_path is the path containing the session id
-        session_dict is a dict mapping record ids to their sessions
+        survey_data: Raw JSON list from ReproSchema UI for a session
+        record_id: Participant identifier
+        session_path: Path containing the session id (relative)
+        session_dict: Mapping from record_id to audio session ids
+        resolve_choice_names: If True, perform web calls to resolve labels and
+            expand multi-select as REDCap checkbox columns. If False, do not
+            make web calls and fall back to coded values (multi-select stored
+            as a semicolon-joined string).
+        choices_cache: Optional dict URL -> {value: label} to reuse across calls
+        http_session: Optional requests.Session for fetching choice definitions
+        timeout: HTTP timeout in seconds
     """
     if record_id in session_dict:
         session_id = session_dict[record_id]
@@ -95,22 +120,82 @@ def parse_survey(survey_data, record_id, session_path, session_dict):
     questions_answers["redcap_repeat_instance"] = [1]
     start_time = survey_data[0]["startedAtTime"]
     end_time = survey_data[0]["endedAtTime"]
+    # Prefetch choice definitions once per survey for speed
+    choices_cache = {} if choices_cache is None else choices_cache
+    choices_count_cache: dict[str, int] = {}
+    if resolve_choice_names:
+        unique_urls = set()
+        for i in range(len(survey_data)):
+            if survey_data[i].get("@type") == "reproschema:Response" and "isAbout" in survey_data[i]:
+                unique_urls.add(survey_data[i]["isAbout"])
+
+        missing = [u for u in unique_urls if u not in choices_cache]
+        if missing:
+            _LOGGER.info(
+                f"Fetching {len(missing)} ReproSchema items to resolve labels (disable with resolve_choice_names=False)."
+            )
+            session = http_session or requests.Session()
+            for url in missing:
+                try:
+                    r = session.get(url, timeout=timeout)
+                    r.raise_for_status()
+                    data = r.json()
+                    mapping = {}
+                    choices = data.get("responseOptions", {}).get("choices", [])
+                    for c in choices:
+                        if not isinstance(c, dict):
+                            continue
+                        name = c.get("name")
+                        if isinstance(name, dict):
+                            label = name.get("en") or next(iter(name.values()), None)
+                        else:
+                            label = name
+                        mapping[c.get("value")] = label
+                    choices_cache[url] = mapping
+                    choices_count_cache[url] = len(choices)
+                except Exception as e:
+                    _LOGGER.info(f"Failed to resolve choices for {url}: {e}")
+                    choices_cache[url] = {}
+                    choices_count_cache[url] = 0
+
+        # For any URL already in cache but not in count cache, populate count if possible (only HTTP ones)
+        for url in unique_urls:
+            if url not in choices_count_cache:
+                # Best effort: use mapping length
+                mapping = choices_cache.get(url) or {}
+                choices_count_cache[url] = len(mapping)
+
+    def _resolve_value(url: str, raw_val):
+        if not resolve_choice_names:
+            return raw_val
+        mapping = choices_cache.get(url) or {}
+        if isinstance(raw_val, list):
+            return [mapping.get(v, v) for v in raw_val]
+        return mapping.get(raw_val, raw_val)
+
     for i in range(len(survey_data)):
         if survey_data[i]["@type"] == "reproschema:Response":
             question = survey_data[i]["isAbout"].split("/")[-1]
-            # answer = survey_data[i]["value"]
-            answer = get_choice_name(survey_data[i]["isAbout"], survey_data[i]["value"])
-            if not isinstance(answer, list):
-                questions_answers[question] = [str(answer).capitalize()]
-
+            raw_value = survey_data[i]["value"]
+            resolved = _resolve_value(survey_data[i]["isAbout"], raw_value)
+            if not isinstance(raw_value, list):
+                # Scalar answers: prefer resolved label if available
+                questions_answers[question] = [str(resolved).capitalize()]
             else:
-                num = fetch_json_options_number(survey_data[i]["isAbout"])
-                for options in range(1, num + 1):
-                    if options in answer:
-                        questions_answers[f"""{question}___{options}"""] = ["Checked"]
-
-                    else:
-                        questions_answers[f"""{question}___{options}"""] = ["Unchecked"]
+                # Multi-select answers. If we know the number of options, expand to checkbox columns.
+                url = survey_data[i]["isAbout"]
+                num = choices_count_cache.get(url)
+                # Determine if raw_value entries are numeric-like so we can match original REDCap checkbox convention
+                raw_value_strs = {str(v) for v in raw_value}
+                if num and isinstance(num, int) and num > 0 and all(v.isdigit() for v in raw_value_strs):
+                    for options in range(1, num + 1):
+                        if str(options) in raw_value_strs:
+                            questions_answers[f"{question}___{options}"] = ["Checked"]
+                        else:
+                            questions_answers[f"{question}___{options}"] = ["Unchecked"]
+                else:
+                    # Fallback: store semicolon-joined coded values when choices unknown or web disabled
+                    questions_answers[question] = [";".join(map(str, raw_value))]
 
         else:
             end_time = survey_data[i]["endedAtTime"]
@@ -307,7 +392,9 @@ class RedCapDataset:
         cls, 
         audio_dir: t.Union[str, Path], 
         survey_dir: t.Union[str, Path],
-        participant_group: str = None
+        participant_group: str = None,
+        *,
+        resolve_choice_names: bool = True,
     ) -> 'RedCapDataset':
         """
         Create a RedCapDataset from ReproSchema data.
@@ -316,6 +403,10 @@ class RedCapDataset:
             audio_dir: Path to directory containing audio files
             survey_dir: Path to directory containing survey data
             participant_group: Optional participant group identifier
+            resolve_choice_names: If True, makes web calls to resolve ReproSchema
+                choice labels for scalar answers and to expand multi-select into
+                checkbox columns. If False or if requests fail, falls back to coded
+                values (multi-select stored as semicolon-joined string) and logs info.
             
         Returns:
             RedCapDataset instance loaded with converted ReproSchema data
@@ -327,7 +418,9 @@ class RedCapDataset:
         _LOGGER.info(f"Loading ReproSchema data from audio_dir: {audio_dir}, survey_dir: {survey_dir}")
     
         # Convert ReproSchema to RedCap format
-        df = cls._convert_reproschema_to_redcap(audio_dir, survey_dir, participant_group)
+        df = cls._convert_reproschema_to_redcap(
+            audio_dir, survey_dir, participant_group, resolve_choice_names=resolve_choice_names
+        )
 
         #remap reproschema columns to their redcap equivalents
         current_file = Path(__file__)
@@ -393,7 +486,9 @@ class RedCapDataset:
     def _convert_reproschema_to_redcap(
         audio_dir: t.Union[str, Path], 
         survey_dir: t.Union[str, Path], 
-        participant_group: str = None
+        participant_group: str = None,
+        *,
+        resolve_choice_names: bool = True,
     ) -> DataFrame:
         """
         Convert ReproSchema data to RedCap format.
@@ -419,7 +514,10 @@ class RedCapDataset:
         # files using that mapping. The end result is only the audio session id's being used for bids conversion.
         session_ids_dict = map_folders_to_session_ids(audio_dir)
         # Process survey data
-        for subject in sub_folders:
+        http_session = requests.Session()
+        # Shared cache for choice definitions across all surveys to avoid refetching
+        choices_cache: dict[str, dict] = {}
+        for subject in tqdm(sub_folders, desc="Processing ReproSchema Surveys"):
             content = OrderedDict()
             content["record_id"] = subject_count
             subject_count += 1
@@ -438,7 +536,15 @@ class RedCapDataset:
                             continue
                         record_id = (subject.split("/")[-1]).split()[0]
                         session_path = str(session.relative_to(subject))
-                        questionnaire_df_list = parse_survey(session_data, record_id, session_path, session_ids_dict)
+                        questionnaire_df_list = parse_survey(
+                            session_data,
+                            record_id,
+                            session_path,
+                            session_ids_dict,
+                            resolve_choice_names=resolve_choice_names,
+                            choices_cache=choices_cache,
+                            http_session=http_session,
+                        )
 
                         for df in questionnaire_df_list:
                             merged_questionnaire_data.append(df)
@@ -446,7 +552,7 @@ class RedCapDataset:
         audio_folders = Path(audio_dir)
         audio_sub_folders = sorted([str(f) for f in audio_folders.iterdir() if f.is_dir()])
         merged_csv = []
-        for subject in audio_sub_folders:
+        for subject in tqdm(audio_sub_folders, desc="Processing ReproSchema Audio"):
             audio_session_id = [f.name for f in os.scandir(subject) if f.is_dir()]
             audio_session_dict = {
                 "record_id": (subject.split("/")[-1]).split()[0],
