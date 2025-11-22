@@ -142,12 +142,12 @@ class BIDSDataset:
                         session[key] = df_by_session_id[session_id]
 
         # Output participant data to FHIR format
-        if audiodir is not None and not Path(audiodir).exists():
-            logging.warning(f"{audiodir} path does not exist. No audio files will be reorganized.")
-            audiodir = None
-            
+        audio_files: t.List[Path] = []
+        if audiodir is not None and Path(audiodir).exists():
+            audio_files = list(Path(audiodir).rglob(f"*.wav"))
+
         for participant in tqdm(participants, desc="Writing participant data to file"):
-            cls._output_participant_data_to_fhir(participant, Path(outdir), audiodir=audiodir)
+            cls._output_participant_data_to_fhir(participant, Path(outdir), audio_files=audio_files)
         
         # Return a new BIDSDataset instance pointing to the created directory
         return cls(outdir)
@@ -697,20 +697,17 @@ class BIDSDataset:
 
     @staticmethod
     def _output_participant_data_to_fhir(
-        participant: dict, outdir: Path, audiodir: t.Optional[Path] = None
+        participant: dict, outdir: Path, audio_files: t.Optional[t.List[Path]] = None
     ):
         """Output participant data to FHIR format.
 
         Args:
             participant: The participant data dictionary.
             outdir: The output directory path.
-            audiodir: The audio directory path (optional).
+            audio_files: The list of audio file paths (optional).
         """
         participant_id = participant["record_id"]
         subject_path = outdir / f"sub-{participant_id}"
-
-        if audiodir is not None and not Path(audiodir).exists():
-            audiodir = None
 
         # TODO: prepare a Patient resource to use as the reference for each questionnaire
         # patient = create_fhir_patient(participant)
@@ -720,13 +717,6 @@ class BIDSDataset:
         recording_instrument = BIDSDataset._get_instrument_for_name("recordings")
 
         sessions_df = pd.DataFrame(columns=session_instrument.columns)
-
-        if audiodir is not None:
-            # audio files are under a folder with the site name,
-            # so we need to recursively glob
-            audio_files = list(audiodir.rglob(f"*.wav"))
-        else:
-            audio_files = []
 
         # validated questionnaires are asked per session
         sessions_rows = []

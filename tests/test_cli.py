@@ -9,7 +9,6 @@ from pathlib import Path
 import json
 import pytest
 import torch
-import shutil
 import pandas as pd
 
 
@@ -508,27 +507,6 @@ def test_deidentify_bids_dataset_cli_remove_audio(setup_bids_structure):
         assert os.path.exists(outdir), "Output directory was not created"
         # check if file/participant was removed
         assert not os.path.exists(os.path.join(outdir, "sub-001"))
-
-def test_reproschema_audio_to_folder_cli():
-    """Test the 'b2aiprep-cli reproschema-audio-to-folder' command using subprocess."""
-    with tempfile.TemporaryDirectory() as temp_dir:
-        src_dir = Path(temp_dir) / "src"
-        dest_dir = Path(temp_dir) / "dest"
-
-        # Create source structure with audio files
-        audio_subdir = src_dir / "subdir"
-        audio_subdir.mkdir(parents=True)
-
-        # Create audio file with UUID-like name
-        audio_file = audio_subdir / "ready_for_school_12345678-1234-1234-1234-123456789abc.wav"
-        create_dummy_wav_file(str(audio_file))
-
-        command = ["b2aiprep-cli", "reproschema-audio-to-folder", str(src_dir), str(dest_dir)]
-
-        result = subprocess.run(command, capture_output=True, text=True)
-        assert result.returncode == 0, f"CLI command failed: {result.stderr}"
-        assert dest_dir.exists(), "Destination directory was not created"
-
 
 def test_reproschema_to_redcap_cli():
     """Test the 'b2aiprep-cli reproschema-to-redcap' command using subprocess."""

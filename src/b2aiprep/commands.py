@@ -961,58 +961,12 @@ def createbatchcsv(input_dir, out_file):
 
     print(f"csv of audiofiles generated at: {out_file}")
 
-
-@click.command()
-@click.argument("src_dir", type=str)
-@click.argument("dest_dir", type=str)
-def reproschema_audio_to_folder(src_dir, dest_dir):
-    """Flattens .wav files using UUIDs as filenames.
-
-    This function scans a source directory for .wav audio files, extracts their UUIDs
-    from the filenames, and copies them to a specified destination directory with
-    the UUID as the new filename.
-
-    Args:
-        src_dir (str): Path to the top-level directory containing the audio files
-                      in the ReproSchema export structure.
-        dest_dir (str): Path to the directory where the reorganized audio files
-                        will be saved.
-
-    Returns:
-        None: Copies audio files to the destination folder and logs the output.
-    """
-    if not os.path.exists(dest_dir):
-        os.makedirs(dest_dir)
-
-    # Walk through the source directory recursively
-    for root, dirs, files in os.walk(src_dir):
-        for file in files:
-            # Check if the file is a .wav file
-            if file.lower().endswith(".wav"):
-                try:
-                    base_filename = os.path.splitext(file)[0]
-                    uuid_list = base_filename.split("-")[1:]
-                    file_uuid = "-".join(uuid_list)
-                except IndexError:
-                    print(f"Skipping {file} because UUID could not be extracted.")
-                    continue
-
-                # Generate the full destination path with the UUID as the filename
-                dest_file_path = os.path.join(dest_dir, f"{file_uuid}.wav")
-
-                # Move and rename the file
-                src_file_path = os.path.join(root, file)
-                shutil.copy(src_file_path, dest_file_path)
-
-    _LOGGER.info(f"audio files generated at: {dest_dir}")
-
-
 @click.command()
 @click.argument("audio_dir", type=str)
 @click.argument("survey_file", type=str)
 @click.argument("redcap_csv", type=str)
-@click.option("--participant_group", type=str, default=None, show_default=True)
-def reproschema_to_redcap(audio_dir, survey_file, redcap_csv, participant_group):
+@click.option("--disable-manual-fixes", is_flag=True, default=False, show_default=True, help="Disable manual fixes for known issues in ReproSchema data.")
+def reproschema_to_redcap(audio_dir, survey_file, redcap_csv, disable_manual_fixes):
     """Converts reproschema ui data to redcap CSV.
 
     This function processes survey data and audio metadata from ReproSchema UI exports
@@ -1022,8 +976,7 @@ def reproschema_to_redcap(audio_dir, survey_file, redcap_csv, participant_group)
         audio_dir (str): Path to the directory containing the audio files.
         survey_file (str): Path to the directory containing survey data exported from ReproSchema UI.
         redcap_csv (str): Path to save the generated REDCap-compatible CSV file.
-        participant_group (str, optional): Optional argument to replace a REDCap repeat
-                                          instance with "Participant".
+        disable_manual_fixes (bool): If True, disables manual fixes for known issues in ReproSchema data.
 
     Raises:
         FileNotFoundError: If the survey directory or audio directory does not exist.
@@ -1031,21 +984,21 @@ def reproschema_to_redcap(audio_dir, survey_file, redcap_csv, participant_group)
     Returns:
         None: Saves the converted data as a CSV file at the specified location.
     """
-    # Use the new RedCapDataset class to handle ReproSchema conversion
+    redcap_csv_path = Path(redcap_csv)
+    if redcap_csv_path.is_dir():
+        raise ValueError("redcap_csv argument must be a file path, not a directory.")
+
     dataset = RedCapDataset.from_reproschema(
         audio_dir=audio_dir,
         survey_dir=survey_file,
-        participant_group=participant_group
+        disable_manual_fixes=disable_manual_fixes,
     )
     
     # Ensure the output directory exists
-    Path(redcap_csv).mkdir(parents=True, exist_ok=True)
-    
-    # Save the converted data to CSV
-    merged_csv_path = os.path.join(redcap_csv, "merged-redcap.csv")
-    dataset.df.to_csv(merged_csv_path, index=False)
-    
-    _LOGGER.info(f"Successfully converted ReproSchema data to RedCap CSV: {merged_csv_path}")
+    redcap_csv_path.parent.mkdir(parents=True, exist_ok=True)
+
+    dataset.df.to_csv(redcap_csv_path, index=False)    
+    _LOGGER.info(f"Successfully converted ReproSchema data to RedCap CSV: {redcap_csv_path}")
 
 
 @click.command()
