@@ -19,7 +19,6 @@ from collections import OrderedDict
 from datetime import datetime
 from pathlib import Path
 from importlib.resources import files
-# from tempfile import NamedTemporaryFile
 
 import requests
 
