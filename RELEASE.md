@@ -1,5 +1,14 @@
 # Release Process
+
 This document provides instructions for preparing and releasing the Bridge2AI Voice dataset for public and internal releases.
+
+Required inputs:
+
+- A RedCap CSV
+    - If converting pediatric data, ReproSchema data must first be converted to the RedCap CSV format
+- A directory with audio recordings in .wav format
+
+Note that there are implicit assumptions made regarding the structured data and the .wav files, e.g. it is assumed the .wav files have a UUID in their filename which is referenced in the structured data.
 
 ## Quick start
 
@@ -12,57 +21,41 @@ b2aiprep-cli deidentify-bids-dataset $WORKING_DIR/bids $WORKING_DIR/Audio_300_Re
 ```
 
 ---
-### 1. Data Retrieval
-The B2AIPrep library mainly requires two major things, a directory containing all the audio files, and secondly a redcap csv.
-The redcap csv should contain indexes of questionnaire data as well as records of their audio recordings. The folder containing the
-audio files should be of the following strucuture: 
+### 1. (Optional) ReproSchema to RedCap conversion
 
-```
-/audio_files
-├── 3e9d8f2f-973b-442b-9f9d-51cd32003288.wav
-├── e582b7fa-8779-4663-bdef-8fb6c11e3f5d.wav
-├── f5fcd7a7-2d6d-4a4f-bfbe-5f85973debf1.wav
-├── 2d84d2ed-2446-42f6-9931-4bfb9be45c4b.wav
-```
-
-#### Pediatric Data Retrieval
-
+This process is required for the pediatric cohort, but can be skipped for the adult cohort.
 
 Pediatric data was collected using [reproschema-ui](https://github.com/ReproNim/reproschema-ui), which differs from the other protocols and requires additional preprocessing.
 
 When first downloaded, the pediatric data consists of:
+
 - A **Survey folder** (questionnaire responses).
 - An **Audio folder** (voice recordings).
 
-Pediatric data that has been downloaded from reproschema-ui does not have a redcap csv associated with it, so we must generate one. This can be done using the following command:
+The following command parses the survey folder and audio folder, acquires necessary reference data with HTTP calls to GitHub, and outputs a RedCap CSV file.
 
 ```
 b2aiprep-cli reproschema-to-redcap <path/to/audio/folder> <path/to/survey/folder> <path/to/output/redcap_csv>
 ```
 
-In the end, we should have an audio folder with all the .wav files contained in it, and a redcap csv file.
+Sanity check: The `record_id` column of the RedCap CSV should match the folder names in the survey data folder downloaded from reproschema-ui.
 
-Note: Before proceeding to the next step, please ensure that the record_id match the folder names downloaded from reproschema-ui.
+### 2. Convert RedCap to BIDS
 
-**Optional**: We can run the `clean_redcap.py` script, located in the `external_scripts` folder, to fix any known reproschema to redcap issues.
+The next step in the pipeline reorganizes the dataset to follow the [BIDS format](https://bids.neuroimaging.io/index.html). Briefly, BIDS is a folder structure with sessions nested under unique folders for each subject and certain metadata files required.
 
-```
-python clean_redcap.py <path/to/redcap_csv> <path/to/output/fixed_redcap_csv>
-```
+The following command will parse the RedCap CSV into multiple phenotype CSVs and reorganize the audio data to follow the BIDS folder structure:
 
-### 2. Data Formatting & Feature Extraction
-Once the redcap csv and audio files are ready, we can begin formatting the data and extraction feaatures from the audio files.
-To do this, run the following commands: 
-
-Converting to Bids:
 ```
 b2aiprep-cli redcap2bids <path/to/redcap_csv> \
     <path/to/output/bids_folder> \
     --audiodir <path/to/audio/files>
 ```
-### 3. Processing Data & De-identifying Data
+
+### 3. Deidentification
+
 Once the data has been been reformatted into a bids format, we need to make sure to remove any entries that could have
-sensitive information. To do this, we must for create a **Config** folder.
+sensitive information. To do this, the code requires a **Config** folder.
 
 The folder will contain 3 files:
 - `audio_filestems_to_remove.json` (File containing a list of sensitive audio files to remove)
@@ -75,21 +68,23 @@ Once the folder is generated, you can run the deidentify dataset command:
 b2aiprep-cli deidentify-bids-dataset <path/to/bids/folder> <path/to/audio/output/folder> <path/to/config>
 ```
 
-The resulting output will be a update bids folder in the output directory with the sensitive participants and ids remove and renamed.
+The output will be in BIDS format. The primary changes are:
 
-Note: Only audio files, metadata fils and tsv's will be in the resulting output.
+- participant IDs are modified
+- sensitive columns are removed
+- sensitive audio clips, particularly those which may contain protected health information, are removed
 
+### 4. Feature Extraction
 
-### 4. Feature Extraction:
 Run the following command to extract features: 
 ```
 b2aiprep-cli generate-audio-features <path/to/input/bids_folder> \
     <path/to/output/folder \
     --is_sequential True
 ```
-Note: Due to the potential size and quantity of the audio files, it is recommended to run this as a sbatch.
+Note: Due to the potential size and quantity of the audio files, this may take a while, and we typically run it on a cluster with slurm (sbatch).
 
-Once the command is complete, you should have the following bids-like structure:
+Once the command is complete, you should have the following output:
 ```
 /bids_dataset
 ├── README
@@ -107,10 +102,13 @@ Once the command is complete, you should have the following bids-like structure:
 │   │       ├── sub-02_session_task-audio.json
 │   │       ├── sub-02_session_task-audio.wav
 │   │       └── sub-02_session_task-audio.pt
+│  ...
 └── participants.json
 ```
 
-### 5. Creating Derived Dataset
+### 5. Publish
+
+For simplicity, the BIDS dataset is parsed into a small set of files for publication and wide dissemination. 
 Run the following to create the derived dataset: 
 ```
 b2aiprep-cli create-derived-dataset <path/to/input/bids_folder>  \ 
