@@ -976,6 +976,7 @@ def reproschema_to_redcap(audio_dir, survey_file, redcap_csv, disable_manual_fix
         audio_dir (str): Path to the directory containing the audio files.
         survey_file (str): Path to the directory containing survey data exported from ReproSchema UI.
         redcap_csv (str): Path to save the generated REDCap-compatible CSV file.
+        disable_manual_fixes (bool): If True, disables manual fixes for known issues in ReproSchema data.
 
     Raises:
         FileNotFoundError: If the survey directory or audio directory does not exist.
