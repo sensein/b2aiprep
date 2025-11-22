@@ -506,9 +506,11 @@ class RedCapDataset:
             subset = df[idx & (df["record_id"] == record_id)].sort_values(by="subjectparticipant_basic_information_schema_start_time")
             if subset.shape[0] > 2:
                 continue  # skip if more than 2 duplicates
-            df.loc[subset.index[1], "record_id"] = mapper[record_id]
-            _LOGGER.info(f"Corrected record_id from {record_id} to {mapper[record_id]} for index {subset.index[1]}")
-        
+            if record_id in mapper:
+                df.loc[subset.index[1], "record_id"] = mapper[record_id]
+                _LOGGER.info(f"Corrected record_id from {record_id} to {mapper[record_id]} for index {subset.index[1]}")
+            else:
+                _LOGGER.warning(f"Duplicate record_id '{record_id}' found, but no mapping available. Skipping correction for index {subset.index[1]}")
         # raise warning if there are more duplicates
         duplicated_idx = df.loc[idx, "record_id"].duplicated(keep=False)
         if duplicated_idx.any():
