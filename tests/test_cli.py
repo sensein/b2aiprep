@@ -9,7 +9,6 @@ from pathlib import Path
 import json
 import pytest
 import torch
-import shutil
 import pandas as pd
 
 

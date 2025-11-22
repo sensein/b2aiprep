@@ -2,18 +2,15 @@
 
 import json
 import logging
-import os
 import tempfile
 import shutil
 from pathlib import Path
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 import pandas as pd
 import pytest
 
 from b2aiprep.prepare.dataset import BIDSDataset
-from b2aiprep.prepare.constants import _load_participant_exclusions, _load_audio_filestem_exclusions
-
 
 class TestBIDSDatasetDeidentification:
     """Test cases for BIDSDataset deidentification methods."""

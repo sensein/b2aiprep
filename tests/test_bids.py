@@ -15,7 +15,6 @@ from b2aiprep.prepare.bids import (
     validate_bids_folder,
     write_pydantic_model_to_bids_file,
 )
-from b2aiprep.prepare_synthetic import redcap_to_bids
 from b2aiprep.prepare.redcap import RedCapDataset
 from b2aiprep.prepare.constants import AUDIO_TASKS, RepeatInstrument
 from b2aiprep.prepare.dataset import BIDSDataset

@@ -3,7 +3,6 @@ import json
 import pandas as pd
 import math
 import argparse
-import pycountry
 import iso639
 us_state_abbr= {
     "AL": "ALABAMA", 

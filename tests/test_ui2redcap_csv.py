@@ -1,4 +1,3 @@
-import pytest
 from b2aiprep.prepare.redcap import parse_survey, parse_audio
 import pandas as pd
 
