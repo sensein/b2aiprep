@@ -492,8 +492,7 @@ class RedCapDataset:
         _LOGGER.info(f"Removing {idx.sum()} rows with invalid record_id length: {df.loc[idx, 'record_id'].tolist()}")
         df = df.drop(df[idx].index)
 
-        # inconsistencies with certain record_ids and fixing mistake put having inputted 021sm and 022ls as the
-        # record ids for 022sm and 024ls respectively.
+        # Fixing the mistake of having inputted 021sm and 022ls as the record ids for 022sm and 024ls respectively.
         mapper = {
             "021sm": "022sm",
             "022ls": "024ls",
