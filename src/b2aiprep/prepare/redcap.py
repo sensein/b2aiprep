@@ -533,6 +533,10 @@ class RedCapDataset:
             survey_dir: Path to survey data directory  
             participant_group: Optional participant group identifier
             disable_manual_fixes: If True, disables manual fixes for known data issues
+            resolve_choice_names: If True, makes web calls to resolve ReproSchema
+                choice labels for scalar answers and to expand multi-select into
+                checkbox columns. If False or if requests fail, falls back to coded
+                values (multi-select stored as semicolon-joined string) and logs info.
 
             
         Returns:
