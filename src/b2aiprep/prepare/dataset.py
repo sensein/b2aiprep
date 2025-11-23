@@ -721,13 +721,15 @@ class BIDSDataset:
         # create an index of recording_id: audio_file for later use
         # ASSUMES that audio files are named with the recording_id in the filename
         # we use a defensive regex to grab uuid-like IDs from the stem just in case
-        p_uuid = re.compile('[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}')
-        audio_files_by_recording = {
-            p_uuid.search(audio_file.stem).groups(): audio_file
-            for audio_file in audio_files
-            if audio_file is not None
-        }
-
+        p_uuid = re.compile(r'[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}')
+        audio_files_by_recording: t.Dict[str, Path] = {}
+        for audio_file in audio_files:
+            if audio_file is None:
+                continue
+            match = p_uuid.search(audio_file.stem)
+            if not match:
+                continue
+            audio_files_by_recording[match.group(0)] = audio_file
 
         # we also need to organize the audio file
         audio_files_for_recording = [
