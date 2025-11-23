@@ -731,10 +731,6 @@ class BIDSDataset:
                 continue
             audio_files_by_recording[match.group(0)] = audio_file
 
-        # we also need to organize the audio file
-        audio_files_for_recording = [
-            audio_file for audio_file in audio_files if recording['recording_id'] in audio_file.name
-        ]
         # validated questionnaires are asked per session
         sessions_rows = []
 
