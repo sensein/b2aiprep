@@ -718,6 +718,21 @@ class BIDSDataset:
 
         sessions_df = pd.DataFrame(columns=session_instrument.columns)
 
+        # create an index of recording_id: audio_file for later use
+        # ASSUMES that audio files are named with the recording_id in the filename
+        # we use a defensive regex to grab uuid-like IDs from the stem just in case
+        p_uuid = re.compile('[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}')
+        audio_files_by_recording = {
+            p_uuid.search(audio_file.stem).groups(): audio_file
+            for audio_file in audio_files
+            if audio_file is not None
+        }
+
+
+        # we also need to organize the audio file
+        audio_files_for_recording = [
+            audio_file for audio_file in audio_files if recording['recording_id'] in audio_file.name
+        ]
         # validated questionnaires are asked per session
         sessions_rows = []
 
@@ -773,38 +788,27 @@ class BIDSDataset:
                         task_name=acoustic_task_name,
                         recording_name=recording["recording_name"],
                     )
+                    audio_file = audio_files_by_recording.get(recording["recording_id"], None)
 
-                    # we also need to organize the audio file
-                    audio_files_for_recording = [
-                        audio_file for audio_file in audio_files if recording['recording_id'] in audio_file.name
-                    ]
-                    if len(audio_files_for_recording) == 0:
+                    if not audio_file:
                         logging.warning(
-                            f"No audio file found for recording "
-                            f"{recording['recording_id']}."
+                            f"No audio file found for recording ID {recording['recording_id']}"
+                        )
+                        continue
+
+                    # copy file
+                    ext = audio_file.suffix
+
+                    recording_name = recording["recording_name"].replace(" ", "-").replace("_", "-")
+                    audio_file_destination = (
+                        audio_output_path / f"{prefix}_task-{recording_name}{ext}"
+                    )
+                    if audio_file_destination.exists():
+                        logging.warning(
+                            f"Audio file {audio_file_destination} already exists. Skipping."
                         )
                     else:
-                        if len(audio_files_for_recording) > 1:
-                            logging.warning(
-                                f"Multiple audio files found for recording "
-                                f"{recording['recording_id']}. "
-                                f"Using only {audio_files_for_recording[0]}"
-                            )
-                        audio_file = audio_files_for_recording[0]
-
-                        # copy file
-                        ext = audio_file.suffix
-
-                        recording_name = recording["recording_name"].replace(" ", "-").replace("_", "-")
-                        audio_file_destination = (
-                            audio_output_path / f"{prefix}_task-{recording_name}{ext}"
-                        )
-                        if audio_file_destination.exists():
-                            logging.warning(
-                                f"Audio file {audio_file_destination} already exists. Skipping."
-                            )
-                        else:
-                            audio_file_destination.write_bytes(audio_file.read_bytes())
+                        shutil.copyfile(audio_file, audio_file_destination)
 
         # Save sessions.tsv
         sessions_df = pd.DataFrame(sessions_rows)
