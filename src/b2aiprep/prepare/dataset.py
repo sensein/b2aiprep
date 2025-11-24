@@ -146,8 +146,25 @@ class BIDSDataset:
         if audiodir is not None and Path(audiodir).exists():
             audio_files = list(Path(audiodir).rglob(f"*.wav"))
 
+        # create an index of recording_id: audio_file for later use
+        # ASSUMES that audio files are named with the recording_id in the filename
+        # we use a defensive regex to grab uuid-like IDs from the stem just in case
+        p_uuid = re.compile(r'[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}')
+        audio_files_by_recording: t.Dict[str, Path] = {}
+        for audio_file in audio_files:
+            if audio_file is None:
+                continue
+            match = p_uuid.search(audio_file.stem)
+            if not match:
+                continue
+            audio_files_by_recording[match.group(0)] = audio_file
+
         for participant in tqdm(participants, desc="Writing participant data to file"):
-            cls._output_participant_data_to_fhir(participant, Path(outdir), audio_files=audio_files)
+            cls._output_participant_data_to_fhir(
+                participant,
+                Path(outdir),
+                audio_files_by_recording=audio_files_by_recording
+            )
         
         # Return a new BIDSDataset instance pointing to the created directory
         return cls(outdir)
@@ -697,7 +714,7 @@ class BIDSDataset:
 
     @staticmethod
     def _output_participant_data_to_fhir(
-        participant: dict, outdir: Path, audio_files: t.Optional[t.List[Path]] = None
+        participant: dict, outdir: Path, audio_files_by_recording: t.Optional[t.Dict[str, Path]] = None
     ):
         """Output participant data to FHIR format.
 
@@ -717,19 +734,6 @@ class BIDSDataset:
         recording_instrument = BIDSDataset._get_instrument_for_name("recordings")
 
         sessions_df = pd.DataFrame(columns=session_instrument.columns)
-
-        # create an index of recording_id: audio_file for later use
-        # ASSUMES that audio files are named with the recording_id in the filename
-        # we use a defensive regex to grab uuid-like IDs from the stem just in case
-        p_uuid = re.compile(r'[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}')
-        audio_files_by_recording: t.Dict[str, Path] = {}
-        for audio_file in audio_files:
-            if audio_file is None:
-                continue
-            match = p_uuid.search(audio_file.stem)
-            if not match:
-                continue
-            audio_files_by_recording[match.group(0)] = audio_file
 
         # validated questionnaires are asked per session
         sessions_rows = []
