@@ -20,6 +20,7 @@ from b2aiprep.commands import (  # gensynthtabdata,
     validate_feature_extraction,
     verify,
     deidentify_bids_dataset,
+    run_quality_control_on_audios
 )
 
 
@@ -58,6 +59,7 @@ cli.add_command(reproschema_to_redcap)
 cli.add_command(generate_audio_features)
 cli.add_command(bids2shadow)
 cli.add_command(validate_feature_extraction)
+cli.add_command(run_quality_control_on_audios)
 
 if __name__ == "__main__":
     # include main to enable python debugging

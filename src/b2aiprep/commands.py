@@ -64,11 +64,13 @@ from b2aiprep.prepare.prepare import (
     validate_bids_audio_features,
 
 )
+from b2aiprep.prepare.quality_control import quality_control_wrapper
 
 from b2aiprep.prepare.data_validation import validate_derivatives
 
 _LOGGER = logging.getLogger(__name__)
 
+import numpy as np
 
 @click.command()
 @click.argument("bids_dir", type=click.Path(exists=True))
@@ -343,6 +345,38 @@ def generate_audio_features(
 
 
 @click.command()
+@click.argument("bids_path", type=click.Path())
+@click.argument("output_metrics_path", type=click.Path())
+@click.option("-b", "--batch_size", type=int, default=8, show_default=True)
+@click.option("-n", "--num_cores", type=int, default=4, show_default=True)
+@click.option("--skip_windowing/--no-skip_windowing", type=bool, default=False, show_default=True)
+def run_quality_control_on_audios(
+    bids_path,
+    output_metrics_path,
+    batch_size,
+    num_cores,
+    skip_windowing,
+):
+
+    bids_path = Path(bids_path)
+
+    audio_paths = get_paths(bids_path, file_extension=".wav")
+    audio_paths = [x["path"] for x in audio_paths]
+
+    outdir = Path(output_metrics_path)
+    outdir.mkdir(parents=True, exist_ok=True)
+
+
+    quality_control_wrapper(
+        audio_paths=audio_paths,
+        outdir=outdir,
+        batch_size=batch_size,
+        num_cores=num_cores,
+        skip_windowing=skip_windowing
+    )
+
+
+@click.command()
 @click.argument("bids_path", type=click.Path(exists=True))
 @click.argument("outdir", type=click.Path())
 def create_derived_dataset(bids_path, outdir):
@@ -412,7 +446,7 @@ def create_derived_dataset(bids_path, outdir):
         if not pt_file.exists():
             continue
 
-        features = torch.load(pt_file, weights_only=False)
+        features = torch.load(pt_file, weights_only=False)#,map_location=torch.device('cpu'))
         subj_info = {
             "participant_id": str(pt_file).split("sub-")[1].split("/ses-")[0],
             "session_id": str(pt_file).split("ses-")[1].split("/audio")[0],
@@ -447,7 +481,7 @@ def create_derived_dataset(bids_path, outdir):
     _LOGGER.info("Loading spectrograms into a single HF dataset.")
 
     for feature_name in ["spectrogram", "mfcc"]:
-        if feature_name == "mfcc":
+        if feature_name != "spectrogram":
             use_byte_stream_split = True
             audio_feature_generator = partial(
                 feature_extraction_generator,
