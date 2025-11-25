@@ -107,10 +107,12 @@ def dashboard(bids_dir: str):
     show_default=True,
 )
 @click.option("--audiodir", type=click.Path(), default=None, show_default=True)
+@click.option("--max-audio-workers", type=int, default=4, show_default=True, help="Number of parallel threads for audio file copying")
 def redcap2bids(
     filename,
     outdir,
     audiodir,
+    max_audio_workers,
 ):
     """Organizes into BIDS-like without features.
 
@@ -123,6 +125,7 @@ def redcap2bids(
                                 will be saved. Defaults to "output" in the current working directory.
         audiodir (str, optional): Directory containing associated audio files.
                                   If not provided, only the REDCap data is processed.
+        max_audio_workers (int, optional): Number of parallel threads for audio copying. Defaults to 16.
 
     Raises:
         ValueError: If the specified output directory path exists but is not a directory.
@@ -138,7 +141,7 @@ def redcap2bids(
         audiodir = Path(audiodir)
     redcap_dataset = RedCapDataset.from_redcap(filename)
     
-    BIDSDataset.from_redcap(redcap_dataset, outdir=Path(outdir), audiodir=audiodir)
+    BIDSDataset.from_redcap(redcap_dataset, outdir=Path(outdir), audiodir=audiodir, max_audio_workers=max_audio_workers)
 
 
 @click.command()

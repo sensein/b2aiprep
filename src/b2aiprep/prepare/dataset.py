@@ -21,10 +21,11 @@ import os
 import re
 import shutil
 import typing as t
-from collections import OrderedDict
+from collections import OrderedDict, defaultdict
 from pathlib import Path
 from importlib.resources import files
 import json
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import numpy as np
 import pandas as pd
@@ -48,6 +49,37 @@ from pydantic import BaseModel
 from b2aiprep.prepare.redcap import RedCapDataset
 
 
+def _copy_audio_files_parallel(copy_tasks: t.List[t.Tuple[Path, Path]], max_workers: int = 16):
+    """Copy audio files in parallel using ThreadPoolExecutor.
+    
+    Args:
+        copy_tasks: List of (source_path, dest_path) tuples
+        max_workers: Number of parallel worker threads
+    """
+    def copy_one_file(src: Path, dst: Path) -> t.Optional[str]:
+        """Copy a single file, return error message if failed."""
+        try:
+            shutil.copyfile(src, dst)
+            return None
+        except Exception as e:
+            return f"Failed to copy {src} -> {dst}: {e}"
+    
+    if not copy_tasks:
+        return
+    
+    errors = []
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = {executor.submit(copy_one_file, src, dst): (src, dst) for src, dst in copy_tasks}
+        
+        for future in as_completed(futures):
+            error = future.result()
+            if error:
+                errors.append(error)
+                logging.error(error)
+    
+    if errors:
+        logging.warning(f"Encountered {len(errors)} errors during parallel audio copying")
+
 
 class BIDSDataset:
     def __init__(self, data_path: t.Union[Path, str, os.PathLike]):
@@ -58,7 +90,8 @@ class BIDSDataset:
         cls,
         redcap_dataset: RedCapDataset,
         outdir: t.Union[str, Path],
-        audiodir: t.Optional[t.Union[str, Path]] = None
+        audiodir: t.Optional[t.Union[str, Path]] = None,
+        max_audio_workers: int = 16
     ) -> 'BIDSDataset':
         """
         Create a BIDSDataset by converting a RedCapDataset to BIDS format.
@@ -67,6 +100,7 @@ class BIDSDataset:
             redcap_dataset: The RedCapDataset to convert
             outdir: Output directory for BIDS structure
             audiodir: Optional directory containing audio files
+            max_audio_workers: Number of parallel threads for audio copying (default: 16)
             
         Returns:
             BIDSDataset instance pointing to the created BIDS directory
@@ -115,24 +149,30 @@ class BIDSDataset:
             session_id_col = repeat_instrument.value.session_id
             dataframe_dicts[repeat_instrument] = cls._df_to_dict(questionnaire_df, session_id_col)
 
-        # Create participant hierarchy
+        logging.info("Creating dictionary lookups for BIDS hierarchy.")
+        sessions_by_participant = defaultdict(list)
+        for session in sessions_df.to_dict("records"):
+            sessions_by_participant[session["record_id"]].append(session)
+
+        tasks_by_session = defaultdict(list)
+        for task in acoustic_tasks_df.to_dict("records"):
+            tasks_by_session[task["acoustic_task_session_id"]].append(task)
+
+        recordings_by_task = defaultdict(list)
+        for recording in recordings_df.to_dict("records"):
+            recordings_by_task[recording["recording_acoustic_task_id"]].append(recording)
+
         participants = []
         for participant in participants_df.to_dict("records"):
             participants.append(participant)
-            participant["sessions"] = sessions_df[
-                sessions_df["record_id"] == participant["record_id"]
-            ].to_dict("records")
+            participant["sessions"] = sessions_by_participant.get(participant["record_id"], [])
 
             for session in participant["sessions"]:
                 session_id = session["session_id"]
-                session["acoustic_tasks"] = acoustic_tasks_df[
-                    acoustic_tasks_df["acoustic_task_session_id"] == session_id
-                ].to_dict("records")
+                session["acoustic_tasks"] = tasks_by_session.get(session_id, [])
                 
                 for task in session["acoustic_tasks"]:
-                    task["recordings"] = recordings_df[
-                        recordings_df["recording_acoustic_task_id"] == task["acoustic_task_id"]
-                    ].to_dict("records")
+                    task["recordings"] = recordings_by_task.get(task["acoustic_task_id"], [])
 
                 # Add questionnaire data per session
                 for key, df_by_session_id in dataframe_dicts.items():
@@ -163,7 +203,8 @@ class BIDSDataset:
             cls._output_participant_data_to_fhir(
                 participant,
                 Path(outdir),
-                audio_files_by_recording=audio_files_by_recording
+                audio_files_by_recording=audio_files_by_recording,
+                max_audio_workers=max_audio_workers
             )
         
         # Return a new BIDSDataset instance pointing to the created directory
@@ -692,15 +733,13 @@ class BIDSDataset:
         """
         # sub-<participant_id>_ses-<session_id>_task-<task_name>_run-_metadata.json
         filename = f"sub-{subject_id}"
-        if session_id is not None:
-            session_id = session_id.replace(" ", "-").replace("_", "-")
+        if session_id is not None and not (isinstance(session_id, float) and pd.isna(session_id)):
+            session_id = str(session_id).replace(" ", "-").replace("_", "-")
             filename += f"_ses-{session_id}"
-        if task_name is not None:
-            task_name = task_name.replace(" ", "-")
-            task_name = task_name.replace("_", "-")
-            if recording_name is not None:
-                task_name = recording_name.replace(" ", "-")
-                task_name = recording_name.replace("_", "-")
+        if task_name is not None and not (isinstance(task_name, float) and pd.isna(task_name)):
+            task_name = str(task_name).replace(" ", "-").replace("_", "-")
+            if recording_name is not None and not (isinstance(recording_name, float) and pd.isna(recording_name)):
+                task_name = str(recording_name).replace(" ", "-").replace("_", "-")
             filename += f"_task-{task_name}"
 
         schema_name = schema_name.replace(" ", "-").replace("schema", "").replace("_", "-")
@@ -714,14 +753,16 @@ class BIDSDataset:
 
     @staticmethod
     def _output_participant_data_to_fhir(
-        participant: dict, outdir: Path, audio_files_by_recording: t.Optional[t.Dict[str, Path]] = None
+        participant: dict, outdir: Path, audio_files_by_recording: t.Optional[t.Dict[str, Path]] = None,
+        max_audio_workers: int = 16
     ):
         """Output participant data to FHIR format.
 
         Args:
             participant: The participant data dictionary.
             outdir: The output directory path.
-            audio_files: The list of audio file paths (optional).
+            audio_files_by_recording: Dictionary mapping recording IDs to audio file paths (optional).
+            max_audio_workers: Number of parallel threads for audio copying (default: 16).
         """
         participant_id = participant["record_id"]
         subject_path = outdir / f"sub-{participant_id}"
@@ -734,6 +775,9 @@ class BIDSDataset:
         recording_instrument = BIDSDataset._get_instrument_for_name("recordings")
 
         sessions_df = pd.DataFrame(columns=session_instrument.columns)
+
+        # Collect all audio copy tasks for parallel execution
+        audio_copy_tasks = []
 
         # validated questionnaires are asked per session
         sessions_rows = []
@@ -753,8 +797,14 @@ class BIDSDataset:
             for task in session["acoustic_tasks"]:
                 if task is None:
                     continue
-
-                acoustic_task_name = task["acoustic_task_name"].replace(" ", "-").replace("_", "-")
+                
+                # Handle NaN/None values in acoustic_task_name
+                acoustic_task_name = task.get("acoustic_task_name")
+                if acoustic_task_name is None or (isinstance(acoustic_task_name, float) and pd.isna(acoustic_task_name)):
+                    logging.warning(f"Skipping task with missing acoustic_task_name for participant {participant_id}, session {session_id}")
+                    continue
+                
+                acoustic_task_name = acoustic_task_name.replace(" ", "-").replace("_", "-")
                 fhir_data = convert_response_to_fhir(
                     task,
                     questionnaire_name=task_instrument.name,
@@ -798,19 +848,19 @@ class BIDSDataset:
                         )
                         continue
 
-                    # copy file
+                    # Schedule audio copy (to be executed in parallel later)
                     ext = audio_file.suffix
-
                     recording_name = recording["recording_name"].replace(" ", "-").replace("_", "-")
                     audio_file_destination = (
                         audio_output_path / f"{prefix}_task-{recording_name}{ext}"
                     )
-                    if audio_file_destination.exists():
-                        logging.warning(
-                            f"Audio file {audio_file_destination} already exists. Skipping."
-                        )
-                    else:
-                        shutil.copyfile(audio_file, audio_file_destination)
+                    
+                    if not audio_file_destination.exists():
+                        audio_copy_tasks.append((audio_file, audio_file_destination))
+
+        # Execute all audio copies in parallel
+        if audio_copy_tasks:
+            _copy_audio_files_parallel(audio_copy_tasks, max_workers=max_audio_workers)
 
         # Save sessions.tsv
         sessions_df = pd.DataFrame(sessions_rows)
