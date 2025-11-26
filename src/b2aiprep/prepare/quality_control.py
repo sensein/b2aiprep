@@ -81,6 +81,8 @@ def quality_control_wrapper(
         subject, task = aduio_path_split[0], '-'.join(aduio_path_split[2:])
 
         audio_feature_path = audio_path.parent / f"{audio_path.stem}_features.pt"
+        if not audio_feature_path.exists():
+            continue
         features = torch.load(audio_feature_path, weights_only=False, map_location=torch.device('cpu'))
         audio_obj = Audio(filepath=audio_path)
 
