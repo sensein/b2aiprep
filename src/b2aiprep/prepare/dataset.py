@@ -1278,7 +1278,7 @@ class BIDSDataset:
         dfs = []
         for f in session_files:
             try:
-                df = pd.read_csv(f, sep='\t', dtypes={'session_id': str})
+                df = pd.read_csv(f, sep='\t', dtype={'session_id': str})
                 dfs.append(df)
             except Exception as e:
                 _LOGGER.error(f" Could not read {f}: {e}")
