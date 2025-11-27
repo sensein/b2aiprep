@@ -107,7 +107,7 @@ def dashboard(bids_dir: str):
     show_default=True,
 )
 @click.option("--audiodir", type=click.Path(), default=None, show_default=True)
-@click.option("--max-audio-workers", type=int, default=4, show_default=True, help="Number of parallel threads for audio file copying")
+@click.option("--max-audio-workers", type=int, default=16, show_default=True, help="Number of parallel threads for audio file copying")
 def redcap2bids(
     filename,
     outdir,

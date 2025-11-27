@@ -77,8 +77,20 @@ def _copy_audio_files_parallel(copy_tasks: t.List[t.Tuple[Path, Path]], max_work
                 errors.append(error)
                 logging.error(error)
     
-    if errors:
-        logging.warning(f"Encountered {len(errors)} errors during parallel audio copying")
+    if errors:        
+        failed_files = [err.split("->")[0].replace("Failed to copy", "").strip() for err in errors]  
+        total_files = len(copy_tasks)  
+        unique_error_types = set()  
+        for err in errors:  
+            # Try to extract the exception type from the error message  
+            if ":" in err:  
+                unique_error_types.add(err.split(":")[-1].strip())  
+        summary = (  
+            f"Encountered {len(errors)} errors out of {total_files} files during parallel audio copying.\n"  
+            f"Failed files (up to 5 shown): {failed_files[:5]}\n"  
+            f"Unique error types (up to 3 shown): {list(unique_error_types)[:3]}"  
+        )  
+        logging.warning(summary)  
 
 
 class BIDSDataset:
@@ -192,12 +204,17 @@ class BIDSDataset:
         p_uuid = re.compile(r'[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}')
         audio_files_by_recording: t.Dict[str, Path] = {}
         for audio_file in audio_files:
-            if audio_file is None:
-                continue
             match = p_uuid.search(audio_file.stem)
             if not match:
                 continue
-            audio_files_by_recording[match.group(0)] = audio_file
+            uuid = match.group(0)
+            if uuid in audio_files_by_recording:
+                logging.warning(
+                    f"Multiple audio files found for recording UUID {uuid}: "
+                    f"{audio_files_by_recording[uuid]} and {audio_file}. "
+                    "Only the last one will be retained."
+                )
+            audio_files_by_recording[uuid] = audio_file
 
         for participant in tqdm(participants, desc="Writing participant data to file"):
             cls._output_participant_data_to_fhir(
@@ -733,12 +750,12 @@ class BIDSDataset:
         """
         # sub-<participant_id>_ses-<session_id>_task-<task_name>_run-_metadata.json
         filename = f"sub-{subject_id}"
-        if session_id is not None and not (isinstance(session_id, float) and pd.isna(session_id)):
+        if pd.notna(session_id):
             session_id = str(session_id).replace(" ", "-").replace("_", "-")
             filename += f"_ses-{session_id}"
-        if task_name is not None and not (isinstance(task_name, float) and pd.isna(task_name)):
+        if pd.notna(task_name):
             task_name = str(task_name).replace(" ", "-").replace("_", "-")
-            if recording_name is not None and not (isinstance(recording_name, float) and pd.isna(recording_name)):
+            if pd.notna(recording_name):
                 task_name = str(recording_name).replace(" ", "-").replace("_", "-")
             filename += f"_task-{task_name}"
 
@@ -800,7 +817,7 @@ class BIDSDataset:
                 
                 # Handle NaN/None values in acoustic_task_name
                 acoustic_task_name = task.get("acoustic_task_name")
-                if acoustic_task_name is None or (isinstance(acoustic_task_name, float) and pd.isna(acoustic_task_name)):
+                if pd.isna(acoustic_task_name):
                     logging.warning(f"Skipping task with missing acoustic_task_name for participant {participant_id}, session {session_id}")
                     continue
                 
@@ -840,6 +857,8 @@ class BIDSDataset:
                         task_name=acoustic_task_name,
                         recording_name=recording["recording_name"],
                     )
+                    if audio_files_by_recording is None:
+                        continue
                     audio_file = audio_files_by_recording.get(recording["recording_id"], None)
 
                     if not audio_file:
@@ -1259,7 +1278,7 @@ class BIDSDataset:
         dfs = []
         for f in session_files:
             try:
-                df = pd.read_csv(f, sep='\t')
+                df = pd.read_csv(f, sep='\t', dtypes={'session_id': str})
                 dfs.append(df)
             except Exception as e:
                 _LOGGER.error(f" Could not read {f}: {e}")
