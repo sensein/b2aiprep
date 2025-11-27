@@ -1502,7 +1502,7 @@ class BIDSDataset:
                 json.dump(metadata, fp, indent=2)
 
             if features_path.exists():
-                new_features_path = output_path.parent / output_path.stem + "_features.pt"
+                new_features_path = output_path.parent / f"{output_path.stem}_features.pt"
                 shutil.copy(features_path, new_features_path)
             shutil.copy(audio_path, output_path)
 
