@@ -41,6 +41,7 @@ import os
 import traceback
 from pathlib import Path
 from typing import List, Tuple, Optional, Dict
+import time
 
 import numpy as np
 import pandas as pd
@@ -88,8 +89,6 @@ SPECTROGRAM_SHAPE = 201
 _logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
-import time
-
 #@python.define
 def extract_single(
     wav_path: str | os.PathLike,
@@ -117,26 +116,19 @@ def extract_single(
     save_to = features_dir / f"{wav_path.stem}_features.pt"
 
     _logger.info(f"Saving to {save_to} and does it exist {save_to.exists()}")
-    #logging.disable(logging.NOTSET)
-    #_logger.setLevel(logging.INFO)
-
     _logger.info(f"Working on audio {wav_path}")
 
     preloaded_pt = {}
     if save_to.exists() and not overwrite:
         if not update:
-            print('should exist')
             _logger.info(f"{save_to} already exists. Skipping.")
             return save_to
         else:
             preloaded_pt = torch.load(save_to, map_location='cpu', weights_only=False)
 
-    #logging.disable(logging.ERROR)
-
 
     start_time=time.perf_counter()
     # Load audio
-
     try:
         audio_orig = Audio(filepath=wav_path)
         _logger.info(f"Audio duration: {audio_orig.waveform.shape[-1]/audio_orig.sampling_rate}")
@@ -154,7 +146,6 @@ def extract_single(
     end_time = time.perf_counter()
     execution_time = end_time - start_time
     _logger.info(f"Execution time audio_loading: {execution_time} seconds")
-    print(f"Execution time audio_loading: {execution_time} seconds")
     win_length = 25
     hop_length = 10
 
@@ -250,7 +241,6 @@ def extract_single(
     end_time = time.perf_counter()
     execution_time = end_time - start_time
     _logger.info(f"Execution time extract_features: {execution_time} seconds")
-    print(f"Execution time extract_features: {execution_time} seconds")
 
 
     if update and not overwrite:
@@ -301,7 +291,6 @@ def extract_single(
         end_time = time.perf_counter()
         execution_time = end_time - start_time
         _logger.info(f"Execution time diarization: {execution_time} seconds")
-        print(f"Execution time diarization: {execution_time} seconds")
     except Exception as e:
         _logger.error(f"Diarization: An error occurred with diarization of {wav_path}: {e}")
         _logger.error(traceback.print_exc())
@@ -321,7 +310,6 @@ def extract_single(
             end_time = time.perf_counter()
             execution_time = end_time - start_time
             _logger.info(f"Execution time speaker_embedding: {execution_time} seconds")
-            print(f"Execution time speaker_embedding: {execution_time} seconds")
         except Exception as e:
             features["speaker_embedding"] = None
             _logger.error(
@@ -343,15 +331,12 @@ def extract_single(
             end_time = time.perf_counter()
             execution_time = end_time - start_time
             _logger.info(f"Execution time transcription: {execution_time} seconds")
-            print(f"Execution time transcription: {execution_time} seconds")
         except Exception as e:
             logging.disable(logging.NOTSET)
             _logger.error(f"Transcription: An error occurred with transcription of {wav_path}: {e}")
             _logger.error(traceback.print_exc())
 
         features["sensitive_features"] = ["audio_path", "speaker_embedding", "transcription"]
-    logging.disable(logging.ERROR)
-    logging.disable(logging.NOTSET)
     _logger.setLevel(logging.INFO)
 
     torch.save(features, save_to)
@@ -561,29 +546,6 @@ def extract_features_workflow(
     audio_paths = df.path.values.tolist()
     _logger.info(f"Running audio paths in order: {audio_paths}")
 
-    #New Pydra
-    """
-    _logger.info(f"Number of audio files: {len(audio_paths)}")
-    @workflow.define
-    def _wf(xs, transcription_model_size,with_sensitive,overwrite,update):
-        node = workflow.add(
-            extract_single(
-                transcription_model_size=transcription_model_size,
-                with_sensitive=with_sensitive,
-                overwrite=overwrite,
-                update=update
-                ).split(wav_path=xs),
-            name="map_resample_audio",
-        )
-        return node.out
-
-    worker = _select_worker(plugin)
-    res = _wf(xs=audio_paths, transcription_model_size=transcription_model_size, with_sensitive=with_sensitive, overwrite=overwrite,update=update)(
-        worker=worker, cache_root=cache_dir
-    )
-    return list(res.out)
-    """
-
     #OLD PYDRA
     _logger.info(f"Number of audio files: {len(audio_paths)}")
     # Run the task
@@ -638,22 +600,22 @@ def validate_bids_audio_features(bids_dir_path: Path, report_path: Path = None):
             for feature_name in ["torchaudio_squim","opensmile","torchaudio","praat_parselmouth","sparc","ppgs"]:
                 feature = features[feature_name]
                 
-                feature_list = missing_features.setdefault(feature_name,[])
+                feature_list = missing_features.setdefault(feature_name, [])
                 if feature is None:
                     feature_list.append(audio_path)
                 elif isinstance(feature, dict):
-                    for key,val in feature.items():
+                    for key, val in feature.items():
                         if torch.isnan(torch.tensor(val)).any().item():
                             feature_list.append(audio_path)
                             break
                 elif isinstance(feature, torch.Tensor):
-                    if torch.isnan(torch.tensor(val)).any().item():
+                    if torch.isnan(feature).any().item():
                         feature_list.append(audio_path)
                 elif isinstance(feature, np.ndarray):
                     if np.isnan(feature).any():
                         feature_list.append(audio_path)
                 elif isinstance(feature, float):
-                    if math.isnan(feature):
+                    if np.isnan(feature):
                         feature_list.append(audio_path)
                 else:
                     raise ValueError(f"{type(feature)} not supported in features")
