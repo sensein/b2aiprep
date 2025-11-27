@@ -52,6 +52,8 @@ b2aiprep-cli redcap2bids <path/to/redcap_csv> \
     --audiodir <path/to/audio/files>
 ```
 
+An optional `--max-audio-workers` controls the number of threads used for writing out audio files as writing of audio files is the speed bottleneck of this command.
+
 ### 3. Deidentification
 
 Once the data has been been reformatted into a bids format, we need to make sure to remove any entries that could have
