@@ -862,9 +862,6 @@ class BIDSDataset:
                     audio_file = audio_files_by_recording.get(recording["recording_id"], None)
 
                     if not audio_file:
-                        logging.warning(
-                            f"No audio file found for recording ID {recording['recording_id']}"
-                        )
                         continue
 
                     # Schedule audio copy (to be executed in parallel later)
