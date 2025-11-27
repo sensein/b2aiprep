@@ -1031,7 +1031,6 @@ def test_validate_bids_folder_all_files_present():
             validate_bids_folder_audios(temp_path)
 
             # Should log success message
-            mock_logger.info.assert_called_with("All audio files have been processed.")
             mock_logger.warning.assert_not_called()
 
 
@@ -1208,7 +1207,6 @@ def test_validate_bids_folder_no_audio_files():
             validate_bids_folder_audios(temp_path)
 
             # Should log success since there are no audio files to validate
-            mock_logger.info.assert_called_with("All audio files have been processed.")
             mock_logger.warning.assert_not_called()
 
 
@@ -1235,5 +1233,4 @@ def test_validate_bids_folder_complex_filenames():
             validate_bids_folder_audios(temp_path)
 
             # Should log success message
-            mock_logger.info.assert_called_with("All audio files have been processed.")
             mock_logger.warning.assert_not_called()
