@@ -347,7 +347,7 @@ def create_derived_dataset(bids_path, outdir):
         if not pt_file.exists():
             continue
 
-        features = torch.load(pt_file, weights_only=False)#,map_location=torch.device('cpu'))
+        features = torch.load(pt_file, weights_only=False)
         subj_info = {
             "participant_id": str(pt_file).split("sub-")[1].split("/ses-")[0],
             "session_id": str(pt_file).split("ses-")[1].split("/audio")[0],
