@@ -241,15 +241,11 @@ class BIDSDataset:
             os.makedirs(bids_dir_path)
             logging.info(f"Created directory: {bids_dir_path}")
 
-        template_package = "b2aiprep.prepare.resources.b2ai-data-bids-like-template"
+        template_package = "b2aiprep.template"
         copy_package_resource(template_package, "CHANGELOG.md", bids_dir_path)
         copy_package_resource(template_package, "README.md", bids_dir_path)
         copy_package_resource(template_package, "dataset_description.json", bids_dir_path)
-        copy_package_resource(template_package, "participants.json", bids_dir_path)
-        copy_package_resource(template_package, "participants.tsv", bids_dir_path)
         copy_package_resource(template_package, "phenotype", bids_dir_path)
-        phenotype_path = Path(bids_dir_path).joinpath("phenotype")
-        remove_files_by_pattern(phenotype_path, "<measurement_tool_name>*")
 
     def find_questionnaires(self, questionnaire_name: str) -> t.List[Path]:
         """

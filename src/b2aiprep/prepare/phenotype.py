@@ -247,9 +247,8 @@ def update_phenotype_jsons(
         phenotype_dir (str, optional): Directory of phenotype files.
     """
     if not phenotype_dir:
-        phenotype_dir = os.path.abspath(
-            "b2aiprep/src/b2aiprep/prepare/resources/b2ai-data-bids-like-template/phenotype"
-        )
+        from importlib.resources import files
+        phenotype_dir = str(files("b2aiprep.template").joinpath("phenotype"))
     for phenotype_file_name in os.listdir(phenotype_dir):
         # Skip non-JSON or template files
         print("PHENOTYPE FILE: ", phenotype_file_name)
