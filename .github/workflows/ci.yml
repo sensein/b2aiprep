@@ -12,16 +12,26 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        python-version: ["3.11", "3.10"]
+        python-version: ["3.11"]
 
     steps:
       - uses: actions/checkout@v3
         with:  # no need for the history
           fetch-depth: 1
+      
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+          cache-dependency-path: |
+            pyproject.toml
+            setup.py
 
       - name: Install dependencies
         run: |

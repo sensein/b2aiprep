@@ -862,9 +862,6 @@ class BIDSDataset:
                     audio_file = audio_files_by_recording.get(recording["recording_id"], None)
 
                     if not audio_file:
-                        logging.warning(
-                            f"No audio file found for recording ID {recording['recording_id']}"
-                        )
                         continue
 
                     # Schedule audio copy (to be executed in parallel later)
@@ -1477,6 +1474,7 @@ class BIDSDataset:
             audio_paths, desc="Copying audio and metadata files", total=len(audio_paths)
         ):
             json_path = audio_path.parent.joinpath(f'{audio_path.stem}_recording-metadata.json')
+            features_path = audio_path.parent.joinpath(f'{audio_path.stem}_features.pt')
             
             if not json_path.exists():
                 _LOGGER.warning(f"Metadata file {json_path} not found. Skipping {audio_path}.")
@@ -1499,6 +1497,10 @@ class BIDSDataset:
             # Copy over the associated .json file and audio data
             with open(output_path.with_suffix(".json"), "w") as fp:
                 json.dump(metadata, fp, indent=2)
+
+            if features_path.exists():
+                new_features_path = output_path.parent / f"{output_path.stem}_features.pt"
+                shutil.copy(features_path, new_features_path)
             shutil.copy(audio_path, output_path)
 
 

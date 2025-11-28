@@ -10,15 +10,16 @@ from b2aiprep.commands import (  # gensynthtabdata,
     createbatchcsv,
     dashboard,
     generate_audio_features,
-    prepare_bids,
     redcap2bids,
     reproschema_to_redcap,
     transcribe,
     validate,
     validate_data,
     validate_derived_dataset,
+    validate_feature_extraction,
     verify,
     deidentify_bids_dataset,
+    run_quality_control_on_audios
 )
 
 
@@ -41,7 +42,6 @@ def cli(ctx, log_level):
 
 cli.add_command(dashboard)
 cli.add_command(redcap2bids)
-cli.add_command(prepare_bids)
 cli.add_command(validate)
 # cli.add_command(gensynthtabdata)
 cli.add_command(convert)
@@ -56,6 +56,8 @@ cli.add_command(deidentify_bids_dataset)
 cli.add_command(reproschema_to_redcap)
 cli.add_command(generate_audio_features)
 cli.add_command(bids2shadow)
+cli.add_command(validate_feature_extraction)
+cli.add_command(run_quality_control_on_audios)
 
 if __name__ == "__main__":
     # include main to enable python debugging

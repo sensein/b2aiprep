@@ -444,8 +444,10 @@ def construct_all_tsvs_from_jsons(
             # Construct the TSV file from the JSON file
             construct_tsv_from_json(df=df, json_file_path=json_file_path, output_dir=output_dir)
 
-def validate_bids_folder(bids_dir_path: Path):
-    """Validate the BIDS-like folder structure.
+
+
+def validate_bids_folder_audios(bids_dir_path: Path):
+    """Validate the audio aspect of the BIDS-like folder structure.
 
     This function checks that all audio files have corresponding feature
     files and transcriptions.
@@ -466,6 +468,7 @@ def validate_bids_folder(bids_dir_path: Path):
         feature_files = [file for file in features_dir.glob(f"{audio_path.stem}*.txt")]
         if len(feature_files) == 0:
             missing_transcriptions.append(audio_path)
+
     if len(missing_transcriptions) > 0:
         _LOGGER.warning(
             f"Missing transcriptions for {len(missing_transcriptions)} / "
@@ -476,4 +479,4 @@ def validate_bids_folder(bids_dir_path: Path):
             f"Missing features for {len(missing_features)} / {len(audio_paths)} audio files"
         )
     else:
-        _LOGGER.info("All audio files have been processed.")
+        _LOGGER.info(f"All {len(audio_paths)} audio files have been processed.")

@@ -56,21 +56,23 @@ An optional `--max-audio-workers` controls the number of threads used for writin
 
 ### 3. Deidentification
 
-Once the data has been been reformatted into a bids format, we need to make sure to remove any entries that could have
-sensitive information. To do this, the code requires a **Config** folder.
+Once the data has been been reformatted into BIDS format, we need to make sure to remove any entries that could have
+sensitive information, referred to as deidentification. Deidentification requires creation of the following configuration files:
 
-The folder will contain 3 files:
 - `audio_filestems_to_remove.json` (File containing a list of sensitive audio files to remove)
 - `id_remapping.json` (File containing participant ids to change)
 - `participants_to_remove.json` (File containing list of participants to remove)
 
-Once the folder is generated, you can run the deidentify dataset command: 
+Create these files and place them in a folder, e.g. `deidentification_config` (the "config" folder).
+After creating these files, you can run the deidentify dataset command: 
 
 ```
-b2aiprep-cli deidentify-bids-dataset <path/to/bids/folder> <path/to/audio/output/folder> <path/to/config>
+b2aiprep-cli deidentify-bids-dataset <path/to/bids/folder> \
+    <path/to/audio/output/folder> \
+    <path/to/config>
 ```
 
-The output will be in BIDS format. The primary changes are:
+The output will be remain in BIDS format. The primary changes are:
 
 - participant IDs are modified
 - sensitive columns are removed
@@ -80,10 +82,12 @@ The output will be in BIDS format. The primary changes are:
 
 Run the following command to extract features: 
 ```
-b2aiprep-cli generate-audio-features <path/to/input/bids_folder> \
-    <path/to/output/folder \
+b2aiprep-cli generate-audio-features \
+    <path/to/input/bids_folder> \
+    <path/to/output/folder> \
     --is_sequential True
 ```
+
 Note: Due to the potential size and quantity of the audio files, this may take a while, and we typically run it on a cluster with slurm (sbatch).
 
 Once the command is complete, you should have the following output:
@@ -116,11 +120,5 @@ Run the following to create the derived dataset:
 b2aiprep-cli create-derived-dataset <path/to/input/bids_folder>  \ 
     <path/to/output/derive_folder> 
 ```
-The following command will generate:
-    1. `phenotype.tsv`- File containging all phenotype data for each participant
-    2. `static_features.tsv`- File containging features extracted for each audio recording
-    3. `mfcc.parquet` - Parquet file containing all the Mel-Frequency Cepstral Coefficients for each audio recording
-    4. `spectrogram.parquet`- Parquet file conntaining all spectrograms for each audio recording
-    
 
 Once this command is done, you will have a dataset ready to release! Congratulations!

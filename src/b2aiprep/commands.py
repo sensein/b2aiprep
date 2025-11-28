@@ -1,5 +1,4 @@
 """Commands available through the CLI."""
-
 import csv
 import json
 import logging
@@ -18,7 +17,7 @@ import pydra
 import torch
 from datasets import Dataset
 from pyarrow.parquet import SortingColumn
-from pydra.mark import annotate
+#from pydra.mark import annotate
 from senselab.audio.data_structures.audio import Audio
 from senselab.audio.tasks.features_extraction.opensmile import (
     extract_opensmile_features_from_audios,
@@ -43,7 +42,7 @@ from streamlit import config as _config
 from streamlit.web.bootstrap import run
 from tqdm import tqdm
 
-from b2aiprep.prepare.bids import get_paths, validate_bids_folder
+from b2aiprep.prepare.bids import get_paths, validate_bids_folder_audios
 from b2aiprep.prepare.redcap import RedCapDataset
 from b2aiprep.prepare.dataset import BIDSDataset
 from b2aiprep.prepare.derived_data import (
@@ -62,13 +61,16 @@ from b2aiprep.prepare.prepare import (
     reduce_length_of_id,
     update_metadata_record_and_session_id,
     validate_bids_data,
+    validate_bids_audio_features,
 
 )
+from b2aiprep.prepare.quality_control import quality_control_wrapper
 
 from b2aiprep.prepare.data_validation import validate_derivatives
 
 _LOGGER = logging.getLogger(__name__)
 
+import numpy as np
 
 @click.command()
 @click.argument("bids_dir", type=click.Path(exists=True))
@@ -143,105 +145,6 @@ def redcap2bids(
     
     BIDSDataset.from_redcap(redcap_dataset, outdir=Path(outdir), audiodir=audiodir, max_audio_workers=max_audio_workers)
 
-
-@click.command()
-@click.argument("bids_dir_path", type=click.Path())
-@click.option("--redcap_csv_path", type=click.Path(exists=True), default=None, show_default=True)
-@click.option("--audio_dir_path", type=click.Path(exists=True), default=None, show_default=True)
-@click.option("-z", "--tar_file_path", type=click.Path(), default=None, show_default=True)
-@click.option("-t", "--transcription_model_size", type=str, default="tiny", show_default=True)
-@click.option("-n", "--n_cores", type=int, default=8, show_default=True)
-@click.option("--with_sensitive/--no-with_sensitive", type=bool, default=True, show_default=True)
-@click.option("--overwrite/--no-overwrite", type=bool, default=False, show_default=True)
-@click.option("--validate/--no-validate", type=bool, default=False, show_default=True)
-@click.option("-c", "--cache", type=click.Path(), default=None, show_default=True)
-@click.option("-a", "--address", type=str, default=None, show_default=True)
-@click.option("-p", "--percentile", type=int, default=100, show_default=True)
-@click.option("-s", "--subject_id", type=str, default=None, show_default=True)
-@click.option("--is_sequential", type=bool, default=False, show_default=True)
-def prepare_bids(
-    bids_dir_path,
-    redcap_csv_path,
-    audio_dir_path,
-    tar_file_path,
-    transcription_model_size,
-    n_cores,
-    with_sensitive,
-    overwrite,
-    validate,
-    cache,
-    address,
-    percentile,
-    subject_id,
-    is_sequential,
-):
-    """Organizes into BIDS-like with features.
-
-    This command follows a specific workflow:
-    1. If both redcap_csv_path and audio_dir_path are provided:
-       - Converts REDCap data to BIDS format
-       - Organizes audio files into the BIDS structure
-    2. Runs audio feature extraction on the BIDS directory:
-       - Uses specified transcription model
-       - Processes in parallel using n_cores
-       - Can use Dask for distributed processing if address is provided
-       - Can filter by percentile or specific subject
-    3. Optionally validates the BIDS structure if --validate is set
-    4. Creates a compressed tar file if tar_file_path is specified
-
-    Args:
-        bids_dir_path: Path to store BIDS-like data
-        redcap_csv_path: Path to the REDCap CSV file. Required with audio_dir_path for initial BIDS creation
-        audio_dir_path: Path to directory with audio files. Required with redcap_csv_path for initial BIDS creation
-        tar_file_path: Path to store tar file. If provided, creates a compressed archive of the BIDS directory
-        transcription_model_size: Size of transcription model ('tiny', 'small', 'medium', or 'large')
-        n_cores: Number of cores to run feature extraction on. Ignored if using Dask
-        with_sensitive: Whether to include sensitive data in the output
-        overwrite: Whether to overwrite existing files during processing
-        validate: Whether to validate the BIDS folder structure after processing
-        cache: Path to cache directory. Defaults to 'b2aiprep_cache' in parent of bids_dir_path
-        address: Dask scheduler address for distributed processing. If provided, uses Dask instead of concurrent.futures
-        percentile: Percentile threshold for processing. Use to process subset of data
-        subject_id: Specific subject ID to process. If provided, only processes this subject
-        is_sequential: Specifies whether to extract audio features sequentially
-    """
-    if cache is None:
-        cache = Path(bids_dir_path).parent / "b2aiprep_cache"
-    os.makedirs(cache, exist_ok=True)
-    if redcap_csv_path is not None and audio_dir_path is not None:
-        _LOGGER.info("Organizing data into BIDS-like directory structure...")
-        # Use the new RedCapDataset and BIDSDataset classes
-        redcap_dataset = RedCapDataset.from_redcap(redcap_csv_path)
-        bids_dataset = BIDSDataset.from_redcap(redcap_dataset, outdir=Path(bids_dir_path), audiodir=Path(audio_dir_path))
-        _LOGGER.info("Data organization complete.")
-    bids_path = Path(bids_dir_path)
-
-    generate_features_wrapper(
-        bids_path=bids_path,
-        transcription_model_size=transcription_model_size,
-        n_cores=n_cores,
-        with_sensitive=with_sensitive,
-        overwrite=overwrite,
-        cache=cache,
-        address=address,
-        percentile=percentile,
-        subject_id=subject_id,
-        is_sequential=is_sequential,
-    )
-
-    if validate:
-        # Below code checks to see if we have all the expected feature/transcript files.
-        validate_bids_folder(bids_path)
-
-    if tar_file_path is not None:
-        _LOGGER.info("Saving .tar file with processed data...")
-        with tarfile.open(tar_file_path, "w:gz") as tar:
-            tar.add(bids_dir_path, arcname=os.path.basename(bids_dir_path))
-        _LOGGER.info(f"Saved processed data .tar file at: {tar_file_path}")
-
-    _LOGGER.info("Process completed.")
-
-
 @click.command()
 @click.argument("source_bids_dir_path", type=click.Path())
 @click.argument("target_bids_dir_path", type=click.Path())
@@ -255,6 +158,7 @@ def prepare_bids(
 @click.option("-a", "--address", type=str, default=None, show_default=True)
 @click.option("-p", "--percentile", type=int, default=100, show_default=True)
 @click.option("-s", "--subject_id", type=str, default=None, show_default=True)
+@click.option("-S", "--subject_file", type=str, default=None, show_default=True)
 @click.option("--is_sequential", type=bool, default=False, show_default=True)
 @click.option("--update", type=bool, default=False, show_default=True)
 def generate_audio_features(
@@ -270,6 +174,7 @@ def generate_audio_features(
     address,
     percentile,
     subject_id,
+    subject_file,
     is_sequential,
     update,
 ):
@@ -289,6 +194,7 @@ def generate_audio_features(
         address: Dask scheduler address for distributed processing. If provided, uses Dask instead of concurrent.futures
         percentile: Percentile threshold for processing. Use to process subset of data
         subject_id: Specific subject ID to process. If provided, only processes this subject
+        subject_file: File that lists specific subject IDs to process. If provided, only processes these subjects
         is_sequential: Specifies whether to extract audio features sequentially
         update: Specifies if we wish to update by creating target folder and storing extracts there
     """
@@ -320,6 +226,7 @@ def generate_audio_features(
         address=address,
         percentile=percentile,
         subject_id=subject_id,
+        subject_file=subject_file,
         update=update,
         is_sequential=is_sequential,
     )
@@ -327,7 +234,7 @@ def generate_audio_features(
     _LOGGER.info("Audio feature extraction complete.")
     if validate:
         # Below code checks to see if we have all the expected feature/transcript files.
-        validate_bids_folder(bids_path)
+        validate_bids_folder_audios(bids_path)
 
     if tar_file_path is not None:
         _LOGGER.info("Saving .tar file with processed data...")
@@ -336,6 +243,38 @@ def generate_audio_features(
         _LOGGER.info(f"Saved processed data .tar file at: {tar_file_path}")
 
     _LOGGER.info("Process completed.")
+
+
+@click.command()
+@click.argument("bids_path", type=click.Path())
+@click.argument("output_metrics_path", type=click.Path())
+@click.option("-b", "--batch_size", type=int, default=8, show_default=True)
+@click.option("-n", "--num_cores", type=int, default=4, show_default=True)
+@click.option("--skip_windowing/--no-skip_windowing", type=bool, default=False, show_default=True)
+def run_quality_control_on_audios(
+    bids_path,
+    output_metrics_path,
+    batch_size,
+    num_cores,
+    skip_windowing,
+):
+
+    bids_path = Path(bids_path)
+
+    audio_paths = get_paths(bids_path, file_extension=".wav")
+    audio_paths = [x["path"] for x in audio_paths]
+
+    outdir = Path(output_metrics_path)
+    outdir.mkdir(parents=True, exist_ok=True)
+
+
+    quality_control_wrapper(
+        audio_paths=audio_paths,
+        outdir=outdir,
+        batch_size=batch_size,
+        num_cores=num_cores,
+        skip_windowing=skip_windowing
+    )
 
 
 @click.command()
@@ -443,7 +382,7 @@ def create_derived_dataset(bids_path, outdir):
     _LOGGER.info("Loading spectrograms into a single HF dataset.")
 
     for feature_name in ["spectrogram", "mfcc"]:
-        if feature_name == "mfcc":
+        if feature_name != "spectrogram":
             use_byte_stream_split = True
             audio_feature_generator = partial(
                 feature_extraction_generator,
@@ -583,6 +522,23 @@ def validate(
         fix=fix,
     )
 
+
+@click.command()
+@click.argument("bids_dir_path", type=click.Path())
+@click.option("--report_path", type=click.Path(), default=None, show_default=True)
+def validate_feature_extraction(
+    bids_dir_path,
+    report_path
+):
+    bids_dir_path = Path(bids_dir_path)
+    report_path = Path(report_path) if report_path else None
+
+    validate_bids_audio_features(
+        bids_dir_path=bids_dir_path,
+        report_path=report_path
+    )
+
+
 @click.command()
 @click.argument("derivatives_csv_path", type=click.Path())
 def validate_data(derivatives_csv_path):
@@ -721,6 +677,7 @@ def batchconvert(
     speech2text,
     opensmile,
 ):
+    
     """Extracts features from audio file list (CSV).
 
     This function reads a CSV file containing a list of audio file paths (or paths with metadata)
@@ -743,6 +700,8 @@ def batchconvert(
 
     Returns:
         None: Saves extracted features as PyTorch tensor files and optionally compiles them into a dataset.
+    """
+    pass
     """
     plugin_args = dict()
     for item in plugin[1].split():
@@ -852,7 +811,7 @@ def batchconvert(
             ds.to_parquet(outdir / "b2aivoice.parquet")
 
         to_hf_dataset(gen, Path(outdir))
-
+"""
 
 @click.command()
 @click.argument("file1", type=click.Path(exists=True))
