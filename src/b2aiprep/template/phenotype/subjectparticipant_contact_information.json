@@ -1,49 +1,118 @@
 {
-    "subjectparticipant_contact_information": {
-        "description": "Measures perceived impact of voice disorders for kids.",
-        "url": "https://raw.githubusercontent.com/kind-lab/b2ai-peds-protocol/",
+    "subjectparticipant_contact_information_schema": {
+        "description": "",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/subjectparticipant_contact_information/subjectparticipant_contact_information_schema",
         "data_elements": {
-            "subjectparticipant_contact_information_schema_session_id": {
-                "description": "The unique identifier for qol session.",
+            "participant_study_id": {
+                "description": "",
                 "question": {
-                    "en": "Session ID"
+                    "en": "Participant Study ID"
                 },
                 "datatype": [
                     "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/",
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/subjectparticipant_contact_information/items/participant_study_id",
                 "valueType": [
                     "xsd:string"
                 ]
             },
-            "subjectparticipant_contact_information_schema_duration": {
-                "description": "Duration of the qol session.",
+            "first_name": {
+                "description": "",
                 "question": {
-                    "en": "Questionnaire Duration (seconds)"
+                    "en": "First Name"
                 },
                 "datatype": [
-                    "xsd:decimal"
+                    "xsd:string"
                 ],
                 "choices": null,
-                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/24cbb461c2ff6556f047dd4bc1275b4b08d52eb8/activities/",
-                "minValue": 0.0,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/subjectparticipant_contact_information/items/first_name",
                 "valueType": [
-                    "xsd:decimal"
+                    "xsd:string"
                 ]
             },
-            "age": {
-                "description": "items/age",
+            "last_name": {
+                "description": "",
                 "question": {
-                    "en": "Age"
+                    "en": "Last Name"
                 },
                 "datatype": [
-                    "xsd:integer"
+                    "xsd:string"
                 ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/subjectparticipant_contact_information/items/last_name",
                 "valueType": [
-                    "xsd:integer"
+                    "xsd:string"
+                ]
+            },
+            "dob": {
+                "description": "",
+                "question": {
+                    "en": "What is your date of birth?"
+                },
+                "datatype": [
+                    "xsd:date"
                 ],
-                "choices": null
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/subjectparticipant_contact_information/items/dob",
+                "valueType": [
+                    "xsd:date"
+                ]
+            },
+            "phone_number": {
+                "description": "",
+                "question": {
+                    "en": "Phone Number"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/subjectparticipant_contact_information/items/phone_number",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "email": {
+                "description": "",
+                "question": {
+                    "en": "Email"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/subjectparticipant_contact_information/items/email",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "contact_info_stored": {
+                "description": "",
+                "question": {
+                    "en": "[DEPRECATED] I want my contact information to be kept in a repository for this study which can be used to contact me to ask me to enroll in further studies or return important results. My information will not be shared with third parties."
+                },
+                "datatype": [
+                    "xsd:boolean"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 0
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/subjectparticipant_contact_information/items/contact_info_stored",
+                "valueType": [
+                    "xsd:boolean"
+                ]
             }
         }
     }

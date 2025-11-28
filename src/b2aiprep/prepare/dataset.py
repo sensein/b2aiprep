@@ -36,7 +36,7 @@ from soundfile import LibsndfileError
 from tqdm import tqdm
 
 from b2aiprep.prepare.constants import RepeatInstrument, Instrument
-from b2aiprep.prepare.utils import copy_package_resource, remove_files_by_pattern
+from b2aiprep.prepare.utils import copy_package_resource
 from b2aiprep.prepare.fhir_utils import convert_response_to_fhir
 from b2aiprep.prepare.prepare import (
     filter_audio_paths, 
@@ -48,6 +48,7 @@ from b2aiprep.prepare.bids import get_paths
 from pydantic import BaseModel
 from b2aiprep.prepare.redcap import RedCapDataset
 
+_LOGGER = logging.getLogger(__name__)
 
 def _copy_audio_files_parallel(copy_tasks: t.List[t.Tuple[Path, Path]], max_workers: int = 16):
     """Copy audio files in parallel using ThreadPoolExecutor.
@@ -122,17 +123,7 @@ class BIDSDataset:
         outdir = Path(outdir).as_posix()
         BIDSDataset._initialize_data_directory(outdir)
 
-        # for participants.tsv we skip cleaning the phenotype data
-        # also note that participants files are in the root outdir folder,
-        # not the phenotype subfolder
-        BIDSDataset._process_phenotype_tsv_and_json(
-            df=redcap_dataset.df,
-            input_dir=outdir,
-            output_dir=outdir,
-            filename="participants.json",
-            clean_phenotype_data=False,
-        )
-
+        logging.info("Converting RedCap dataset to BIDS-like format.")
         # Subselect the RedCap dataframe and output components to individual files in the phenotype directory
         BIDSDataset._construct_all_tsvs_from_jsons(
             df=redcap_dataset.df,
@@ -196,7 +187,7 @@ class BIDSDataset:
         # Output participant data to FHIR format
         audio_files: t.List[Path] = []
         if audiodir is not None and Path(audiodir).exists():
-            audio_files = list(Path(audiodir).rglob(f"*.wav"))
+            audio_files = list(Path(audiodir).rglob("*.wav"))
 
         # create an index of recording_id: audio_file for later use
         # ASSUMES that audio files are named with the recording_id in the filename
@@ -633,17 +624,13 @@ class BIDSDataset:
 
         # The phenotype JSON files are nested below a key that corresponds to the schema name
         first_key = next(iter(json_data))
-
-        column_labels = []
-        if "data_elements" in json_data[first_key]:
-            column_labels = list(json_data[first_key]["data_elements"])
-        else:
-            column_labels = list(json_data.keys())
+        column_labels = list(json_data[first_key]["data_elements"])
 
         # Filter column labels to only include those that exist in the DataFrame
         valid_columns = [col for col in column_labels if col in df.columns]
         if not valid_columns:
-            raise ValueError("No valid columns found in DataFrame that match JSON file")
+            _LOGGER.warning(f"No valid columns in dataframe for {first_key}")
+            return df.iloc[:, 0:0].copy() # return empty dataframe with same index
 
         if "record_id" not in valid_columns:
             valid_columns = ["record_id"] + valid_columns
@@ -660,12 +647,28 @@ class BIDSDataset:
         df: pd.DataFrame, input_dir: str, output_dir: str, filename: str,
         clean_phenotype_data: bool = True
     ) -> None:
-        """Process phenotype data."""
+        """
+        Create a stable, shareable phenotype artifact (TSV + JSON) driven by a schema.
+
+        Args:
+            df: DataFrame containing the data.
+            input_dir: Directory containing JSON file with column labels.
+            output_dir: Directory where the TSV and JSON files will be saved.
+            filename: The JSON filename to process.
+            clean_phenotype_data: Whether to clean the phenotype data (default: True).
+
+        Outputs:
+        - <output_dir>/<filename>.tsv: phenotype table constrained by the schema.
+        - <output_dir>/<filename>.json: schema (data dictionary) aligned to the TSV.
+        """
+        # Load in the JSON which defines the columns to output to this subset
         with open(os.path.join(input_dir, filename), "r") as f:
             json_data = json.load(f)
         df_subselected = BIDSDataset._subselect_dataframe_using_json(df=df, json_data=json_data)
         if clean_phenotype_data:
             df_subselected, json_data = BIDSDataset._clean_phenotype_data(df_subselected, json_data)
+        
+        # Output to a TSV/JSON file.
         BIDSDataset._dataframe_to_tsv(df_subselected, os.path.join(output_dir, filename.replace(".json", ".tsv")))
         with open(os.path.join(output_dir, filename), "w") as f:
             json.dump(json_data, f, indent=2)

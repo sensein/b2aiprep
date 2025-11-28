@@ -20,6 +20,13 @@ b2aiprep-cli redcap2bids $WORKING_DIR/redcap.csv --outdir $WORKING_DIR/bids --au
 b2aiprep-cli deidentify-bids-dataset $WORKING_DIR/bids $WORKING_DIR/de-identified-bids $WORKING_DIR/release_config
 ```
 
+### 0. (Optional) Update the template files
+---
+
+```sh
+python -m b2aiprep.cli update-bids-template --dry-run
+```
+
 ---
 ### 1. (Optional) ReproSchema to RedCap conversion
 
