@@ -1,0 +1,1222 @@
+{
+    "d_resp_copd_and_asthma_schema": {
+        "description": "",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/d_resp_copd_and_asthma_schema",
+        "data_elements": {
+            "diagnosis_ca_copd_asthma": {
+                "description": "",
+                "question": {
+                    "en": "Does the participant have COPD, asthma, or both?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "COPD only"
+                        },
+                        "value": "copd"
+                    },
+                    {
+                        "name": {
+                            "en": "Asthma only"
+                        },
+                        "value": "asthma"
+                    },
+                    {
+                        "name": {
+                            "en": "Both COPD and asthma"
+                        },
+                        "value": "bothCopdAsthma"
+                    },
+                    {
+                        "name": {
+                            "en": "Neither COPD nor asthma"
+                        },
+                        "value": "neitherCopdAsthma"
+                    },
+                    {
+                        "name": {
+                            "en": "Not Certain"
+                        },
+                        "value": "notCertain"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_copd_asthma",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ca_spirometry_test": {
+                "description": "",
+                "question": {
+                    "en": "Has the participant had a spirometry test?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_spirometry_test",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ca_spirometry_ce": {
+                "description": "",
+                "question": {
+                    "en": "Does the participant have clinical evidence of obstruction as diagnosed by spirometry?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_spirometry_ce",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ca_spirometry_verification": {
+                "description": "",
+                "question": {
+                    "en": "Please select one of the two options below for verification of the spirometry test. \n\nIf both are available, please select ATS/ERS"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "ATS/ERS criteria reported: FEV1/FVC < 5th percentile OR z score \u2264 -1.65"
+                        },
+                        "value": "atsErs"
+                    },
+                    {
+                        "name": {
+                            "en": "GOLD criteria reported: FEV1/FVC < 0.7 (postbronchodilator, or prebronchodilator if postbronchodilator not available)"
+                        },
+                        "value": "goldCriteria"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_spirometry_verification",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ca_fev1": {
+                "description": "",
+                "question": {
+                    "en": "What is the FEV1 (percent predicted) (if known)?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "0"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": {
+                            "en": "150"
+                        },
+                        "value": 150
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_fev1",
+                "valueType": [
+                    "xsd:integer"
+                ],
+                "maxValue": 150,
+                "minValue": 0
+            },
+            "diagnosis_ca_ats_ers_criteria_fev1": {
+                "description": "",
+                "question": {
+                    "en": "FEV1/FVC < 5th percentile OR z score \u2264 -1.65 ?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_ats_ers_criteria_fev1",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ca_ats_ers_criteria_fvc": {
+                "description": "",
+                "question": {
+                    "en": "FVC < 0.7 OR z score \u2264 -1.65 ?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_ats_ers_criteria_fvc",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ca_pft_lung": {
+                "description": "",
+                "question": {
+                    "en": "Is there a full PFT including lung volumes?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_pft_lung",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ca_restrictive": {
+                "description": "",
+                "question": {
+                    "en": "Is there evidence of restrictive ventilatory defect (TLC < 5th percentile or z score \u2264 -1.65)?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_restrictive",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ca_responsiveness_criteria": {
+                "description": "",
+                "question": {
+                    "en": "Did the participant meet the criteria for responsiveness on bronchodilator testing?\n\n(Increase in FEV1 or FVC by 200ml and 12 % from baseline with bronchodilators)?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Not Certain"
+                        },
+                        "value": "notCertain"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_responsiveness_criteria",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ca_asthma": {
+                "description": "",
+                "question": {
+                    "en": "Does the participant have a history of confirmed expiratory airflow variability?\n\n(Increase in FEV1 or FVC by \u2265200ml and \u226512 % from baseline with bronchodilators or ICS after 4 weeks therapy; or positive bronchial challenge testing)?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Not Certain"
+                        },
+                        "value": "notCertain"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_asthma",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ca_copd": {
+                "description": "",
+                "question": {
+                    "en": "Does the participant have disease subtype for COPD?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Not Certain"
+                        },
+                        "value": "notCertain"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_copd",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ca_copd_subtype": {
+                "description": "",
+                "question": {
+                    "en": "Please select all that apply:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Chronic bronchitis"
+                        },
+                        "value": "chronic_bronchitis"
+                    },
+                    {
+                        "name": {
+                            "en": "Emphysema"
+                        },
+                        "value": "emphysema"
+                    },
+                    {
+                        "name": {
+                            "en": "Eosinophilic (Type2high COPD)"
+                        },
+                        "value": "eosinophilic"
+                    },
+                    {
+                        "name": {
+                            "en": "Alpha-1 AntitrypsinDeficiency (AATD)"
+                        },
+                        "value": "aatd"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_copd_subtype",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "multipleChoice": true
+            },
+            "diagnosis_ca_mmrc_grade_score": {
+                "description": "",
+                "question": {
+                    "en": "What is the mMRC grade score?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_mmrc_grade_score",
+                "valueType": [
+                    "xsd:integer"
+                ],
+                "maxValue": 4,
+                "minValue": 0
+            },
+            "diagnosis_ca_cat_score": {
+                "description": "",
+                "question": {
+                    "en": "What is the CAT score?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_cat_score",
+                "valueType": [
+                    "xsd:integer"
+                ],
+                "maxValue": 40,
+                "minValue": 0
+            },
+            "diagnosis_ca_gold_group": {
+                "description": "",
+                "question": {
+                    "en": "What is the GOLD Group? (A/B/E)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "A"
+                        },
+                        "value": "a"
+                    },
+                    {
+                        "name": {
+                            "en": "B"
+                        },
+                        "value": "b"
+                    },
+                    {
+                        "name": {
+                            "en": "E"
+                        },
+                        "value": "e"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_gold_group",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ca_asthma_probability": {
+                "description": "",
+                "question": {
+                    "en": "Is the clinical probability of asthma high (e.g. allergic or eosinophilic phenotype, variable respiratory symptoms including wheezing, cough, chest tightness, dyspnea, etc)?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_asthma_probability",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ca_asthma_has_subtype": {
+                "description": "",
+                "question": {
+                    "en": "Does the participant have disease subtype for asthma?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Not Certain"
+                        },
+                        "value": "notCertain"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_asthma_has_subtype",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ca_asthma_subtype": {
+                "description": "",
+                "question": {
+                    "en": "Please select all that apply:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Allergic"
+                        },
+                        "value": "allergic"
+                    },
+                    {
+                        "name": {
+                            "en": "Eosinophilic"
+                        },
+                        "value": "eosinophilic"
+                    },
+                    {
+                        "name": {
+                            "en": "Type 2 low"
+                        },
+                        "value": "type_2_low"
+                    },
+                    {
+                        "name": {
+                            "en": "Obese"
+                        },
+                        "value": "obese"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_asthma_subtype",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "multipleChoice": true
+            },
+            "diagnosis_ca_asthma_subtype_other": {
+                "description": "",
+                "question": {
+                    "en": "Please specify:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_asthma_subtype_other",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ca_feno_within_12_months": {
+                "description": "",
+                "question": {
+                    "en": "Is the FeNO value available within last 12 months?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_feno_within_12_months",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ca_feno_value": {
+                "description": "",
+                "question": {
+                    "en": "Provide value (ppb)"
+                },
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_feno_value",
+                "valueType": [
+                    "xsd:decimal"
+                ],
+                "minValue": 0
+            },
+            "part_asthmaeosinop_hil": {
+                "description": "",
+                "question": {
+                    "en": "[DEPRECATED]\nAbsolute eosinophil count in last 12 months (highest value - cells per microliter (\u00b5L)?"
+                },
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/part_asthmaeosinop_hil",
+                "valueType": [
+                    "xsd:decimal"
+                ],
+                "minValue": 0
+            },
+            "diagnosis_ca_absolute_eosinophil_count": {
+                "description": "",
+                "question": {
+                    "en": "Absolute eosinophil count in last 12 months (highest value - cells per microliter (\u00b5L)?"
+                },
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_absolute_eosinophil_count",
+                "valueType": [
+                    "xsd:decimal"
+                ],
+                "minValue": 0
+            },
+            "diagnosis_ca_act_score": {
+                "description": "",
+                "question": {
+                    "en": "What is the ACT score on the most recent visit?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Controlled (>20)"
+                        },
+                        "value": "controlled"
+                    },
+                    {
+                        "name": {
+                            "en": "Not controlled (15-19)"
+                        },
+                        "value": "notControlled"
+                    },
+                    {
+                        "name": {
+                            "en": "Poorly controlled (< 15)"
+                        },
+                        "value": "poorlyControlled"
+                    },
+                    {
+                        "name": {
+                            "en": "Not Certain"
+                        },
+                        "value": "notCertain"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_act_score",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ca_pft_within_6_months": {
+                "description": "",
+                "question": {
+                    "en": "Has the participant had PFT within the past 6 months?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_pft_within_6_months",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ca_pft_file": {
+                "description": "",
+                "question": {
+                    "en": "Please upload results"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_pft_file",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ca_moderate_exacerbations_count": {
+                "description": "",
+                "question": {
+                    "en": "How many moderate (requiring OCS course) exacerbations in prior 12 months?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_moderate_exacerbations_count",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "diagnosis_ca_severe_exacerbations_count": {
+                "description": "",
+                "question": {
+                    "en": "How many severe (requiring hospitalization) exacerbations in prior 12 months ?"
+                },
+                "datatype": [
+                    "xsd:integer"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_severe_exacerbations_count",
+                "valueType": [
+                    "xsd:integer"
+                ]
+            },
+            "diagnosis_ca_pulmonary_symptoms": {
+                "description": "",
+                "question": {
+                    "en": "Does the participant have any of the following pulmonary symptoms? (Check all that apply)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Dyspnea"
+                        },
+                        "value": "dyspnea"
+                    },
+                    {
+                        "name": {
+                            "en": "Chronic Cough"
+                        },
+                        "value": "chronic_cough"
+                    },
+                    {
+                        "name": {
+                            "en": "Sputum production"
+                        },
+                        "value": "sputum_production"
+                    },
+                    {
+                        "name": {
+                            "en": "Wheezing"
+                        },
+                        "value": "wheezing"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_pulmonary_symptoms",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "multipleChoice": true
+            },
+            "part_copd": {
+                "description": "",
+                "question": {
+                    "en": "Check all that are present:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Chest CT - with emphysema changes, air trapping, or bronchiectasis"
+                        },
+                        "value": "chest_ct"
+                    },
+                    {
+                        "name": {
+                            "en": "CXR: with hyperlucency or hyperinflation or flattened diaphragms"
+                        },
+                        "value": "cxr"
+                    },
+                    {
+                        "name": {
+                            "en": "Chronic hypercapnic respiratory failure"
+                        },
+                        "value": "chrf"
+                    },
+                    {
+                        "name": {
+                            "en": "Pulse oximetry with hypoxia/oxygen dependent"
+                        },
+                        "value": "hypoxia"
+                    },
+                    {
+                        "name": {
+                            "en": "Interstitial Lung Disease"
+                        },
+                        "value": "ild"
+                    },
+                    {
+                        "name": {
+                            "en": "Pulmonary Hypertension"
+                        },
+                        "value": "pulmonary_hypertension"
+                    },
+                    {
+                        "name": {
+                            "en": "Respiratory failure requiring intubation within the last 12 months"
+                        },
+                        "value": "resp_failure_intubation"
+                    },
+                    {
+                        "name": {
+                            "en": "Respiratory failure requiring NIPPV within the last 12 months"
+                        },
+                        "value": "resp_failure_nippv"
+                    },
+                    {
+                        "name": {
+                            "en": "Pneumonia within the last 12 months"
+                        },
+                        "value": "pneumonia"
+                    },
+                    {
+                        "name": {
+                            "en": "Pneumothorax within the last 12 months"
+                        },
+                        "value": "pneumothorax"
+                    },
+                    {
+                        "name": {
+                            "en": "Pleural effusion within the last 12 months"
+                        },
+                        "value": "pleural_effusion"
+                    },
+                    {
+                        "name": {
+                            "en": "Prior history of thoracic or pleural space surgery (example: lobectomy, pleurodesis, etc)"
+                        },
+                        "value": "prior_history"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/part_copd",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "multipleChoice": true
+            },
+            "diagnosis_ca_current_smoker": {
+                "description": "",
+                "question": {
+                    "en": "Is participant a current smoker?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Not Certain"
+                        },
+                        "value": "notCertain"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_current_smoker",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ca_10_pack_year_tobacco_cigarette": {
+                "description": "",
+                "question": {
+                    "en": "Does the participant have at least a 10 pack year tobacco cigarette history?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Not Certain"
+                        },
+                        "value": "notCertain"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_10_pack_year_tobacco_cigarette",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ca_significant_inhalation_exposure_history": {
+                "description": "",
+                "question": {
+                    "en": "Does the participant have any other significant inhalation exposure history?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Not Certain"
+                        },
+                        "value": "notCertain"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_significant_inhalation_exposure_history",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ca_significant_inhalation_exposure_history_explanation": {
+                "description": "",
+                "question": {
+                    "en": "Please select all that apply (optional):"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Secondhand smoke"
+                        },
+                        "value": "secondhand_smoke"
+                    },
+                    {
+                        "name": {
+                            "en": "Biomass fuels"
+                        },
+                        "value": "biomass_fuels"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_significant_inhalation_exposure_history_explanation",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "multipleChoice": true
+            },
+            "diagnosis_ca_significant_inhalation_exposure_history_explanation_other": {
+                "description": "",
+                "question": {
+                    "en": "Please specify:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_significant_inhalation_exposure_history_explanation_other",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ca_environmental_allergy_history": {
+                "description": "",
+                "question": {
+                    "en": "Does the participant have a strong environmental allergy history?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Not Certain"
+                        },
+                        "value": "notCertain"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_environmental_allergy_history",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_ca_pharmacologic_treatment": {
+                "description": "",
+                "question": {
+                    "en": "What pharmacologic treatment is the participant currently receiving? (Select all that apply)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "LABA"
+                        },
+                        "value": "laba"
+                    },
+                    {
+                        "name": {
+                            "en": "LAMA"
+                        },
+                        "value": "lama"
+                    },
+                    {
+                        "name": {
+                            "en": "SABA"
+                        },
+                        "value": "saba"
+                    },
+                    {
+                        "name": {
+                            "en": "SAMA"
+                        },
+                        "value": "sama"
+                    },
+                    {
+                        "name": {
+                            "en": "ICS"
+                        },
+                        "value": "ics"
+                    },
+                    {
+                        "name": {
+                            "en": "PDE 4 inhibitor"
+                        },
+                        "value": "pde4"
+                    },
+                    {
+                        "name": {
+                            "en": "Methylxanthines"
+                        },
+                        "value": "methylxanthines"
+                    },
+                    {
+                        "name": {
+                            "en": "Biologics"
+                        },
+                        "value": "biologics"
+                    },
+                    {
+                        "name": {
+                            "en": "Systemic steroids"
+                        },
+                        "value": "systemic_steroids"
+                    },
+                    {
+                        "name": {
+                            "en": "Antibiotics"
+                        },
+                        "value": "antibiotics"
+                    },
+                    {
+                        "name": {
+                            "en": "Mucolytics"
+                        },
+                        "value": "mucolytics"
+                    },
+                    {
+                        "name": {
+                            "en": "PDE 3 and Inhibitor"
+                        },
+                        "value": "pde3"
+                    },
+                    {
+                        "name": {
+                            "en": "Leukotriene Inhibitors"
+                        },
+                        "value": "leukotriene_inhibitors"
+                    },
+                    {
+                        "name": {
+                            "en": "Others"
+                        },
+                        "value": "others"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_pharmacologic_treatment",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "multipleChoice": true
+            },
+            "diagnosis_ca_ics_dosage": {
+                "description": "",
+                "question": {
+                    "en": "Is the participant on low, medium or high dose ICS?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Low dose"
+                        },
+                        "value": "low"
+                    },
+                    {
+                        "name": {
+                            "en": "Medium dose"
+                        },
+                        "value": "medium"
+                    },
+                    {
+                        "name": {
+                            "en": "High dose"
+                        },
+                        "value": "high"
+                    },
+                    {
+                        "name": {
+                            "en": "Not Certain"
+                        },
+                        "value": "notCertain"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_resp_copd_and_asthma/items/diagnosis_ca_ics_dosage",
+                "valueType": [
+                    "xsd:string"
+                ]
+            }
+        }
+    }
+}

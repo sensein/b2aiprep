@@ -1,0 +1,842 @@
+{
+    "d_mood_bipolar_disorder_schema": {
+        "description": "",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_mood_bipolar_disorder/d_mood_bipolar_disorder_schema",
+        "data_elements": {
+            "mbd_diagnosed_bm": {
+                "description": "",
+                "question": {
+                    "en": "Have you been diagnosed with Bipolar Disorder?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_mood_bipolar_disorder/items/mbd_diagnosed_bm",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mbd_diagnosed_bm_selection": {
+                "description": "",
+                "question": {
+                    "en": "Bipolar I and II Disorders"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "6A60 Bipolar type I disorder"
+                        },
+                        "value": "6A60"
+                    },
+                    {
+                        "name": {
+                            "en": "6A61 Bipolar type II disorder"
+                        },
+                        "value": "6A61"
+                    },
+                    {
+                        "name": {
+                            "en": "6A62 Cyclothymic disorder"
+                        },
+                        "value": "6A62"
+                    },
+                    {
+                        "name": {
+                            "en": "6A6Y Other specified bipolar or related disorders"
+                        },
+                        "value": "6A6Y"
+                    },
+                    {
+                        "name": {
+                            "en": "6A6Z Bipolar or related disorders, unspecified"
+                        },
+                        "value": "6A6Z"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_mood_bipolar_disorder/items/mbd_diagnosed_bm_selection",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mbd_diagnosed_bipolar_i_ii_other": {
+                "description": "",
+                "question": {
+                    "en": "Were you diagnosed with Bipolar I, Bipolar II, or Other/unspecified?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Bipolar I"
+                        },
+                        "value": "bipolar_1"
+                    },
+                    {
+                        "name": {
+                            "en": "Bipolar II"
+                        },
+                        "value": "bipolar_2"
+                    },
+                    {
+                        "name": {
+                            "en": "Other/unspecified"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_mood_bipolar_disorder/items/mbd_diagnosed_bipolar_i_ii_other",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mbd_diagnosed_other": {
+                "description": "",
+                "question": {
+                    "en": "Please specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_mood_bipolar_disorder/items/mbd_diagnosed_other",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mbd_ever_seen_heard": {
+                "description": "",
+                "question": {
+                    "en": "Have you ever seen things other people can't see or heard things other people can't hear?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_mood_bipolar_disorder/items/mbd_ever_seen_heard",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mbd_had_manic_episode": {
+                "description": "",
+                "question": {
+                    "en": "Have you ever had a manic episode (i.e., While not under the influence of substances, a distinct period of abnormally and persistently elevated, expansive, or irritable mood and abnormally and persistently goal-directed behavior or energy, lasting at least 1 week and present most of the day, nearly every day)?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_mood_bipolar_disorder/items/mbd_had_manic_episode",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mbd_last_depressive_episode": {
+                "description": "",
+                "question": {
+                    "en": "When was your last depressive episode (feeling down and depressed more days than not over two weeks)?"
+                },
+                "datatype": [
+                    "xsd:date"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_mood_bipolar_disorder/items/mbd_last_depressive_episode",
+                "valueType": [
+                    "xsd:date"
+                ]
+            },
+            "mbd_many_depressive_episodes": {
+                "description": "",
+                "question": {
+                    "en": "Approximately how many depressive episodes have you had in your life (feeling down and depressed more days than not over two weeks)?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None"
+                        },
+                        "value": "none"
+                    },
+                    {
+                        "name": {
+                            "en": "More than two"
+                        },
+                        "value": "moreThanTwo"
+                    },
+                    {
+                        "name": {
+                            "en": "More than five"
+                        },
+                        "value": "moreThanFive"
+                    },
+                    {
+                        "name": {
+                            "en": "Not sure"
+                        },
+                        "value": "notSure"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_mood_bipolar_disorder/items/mbd_many_depressive_episodes",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mbd_last_manic_episode": {
+                "description": "",
+                "question": {
+                    "en": "When was your last manic episode?"
+                },
+                "datatype": [
+                    "xsd:date"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_mood_bipolar_disorder/items/mbd_last_manic_episode",
+                "valueType": [
+                    "xsd:date"
+                ]
+            },
+            "mbd_many_manic_episodes": {
+                "description": "",
+                "question": {
+                    "en": "Approximately how many manic episodes have you had in your life?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "None"
+                        },
+                        "value": "none"
+                    },
+                    {
+                        "name": {
+                            "en": "More than two"
+                        },
+                        "value": "moreThanTwo"
+                    },
+                    {
+                        "name": {
+                            "en": "More than five"
+                        },
+                        "value": "moreThanFive"
+                    },
+                    {
+                        "name": {
+                            "en": "Not sure"
+                        },
+                        "value": "notSure"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_mood_bipolar_disorder/items/mbd_many_manic_episodes",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bipolar_gsd": {
+                "description": "",
+                "question": {
+                    "en": "[DEPRECATED]\nDiagnosis"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Bipolar I disorder"
+                        },
+                        "value": "bipolar_1"
+                    },
+                    {
+                        "name": {
+                            "en": "Bipolar II disorder"
+                        },
+                        "value": "bipolar_2"
+                    },
+                    {
+                        "name": {
+                            "en": "Cyclothymic disorder (cyclothymia)"
+                        },
+                        "value": "cyclothymia"
+                    },
+                    {
+                        "name": {
+                            "en": "Other specified and unspecified bipolar and related disorders"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_gsd",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bipolar_gsd_interview": {
+                "description": "",
+                "question": {
+                    "en": "[DEPRECATED]\nWas a structured clinical interview done?"
+                },
+                "datatype": [
+                    "xsd:boolean"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 0
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_gsd_interview",
+                "valueType": [
+                    "xsd:boolean"
+                ]
+            },
+            "diagnosis_bipolar_gsd_oqu": {
+                "description": "",
+                "question": {
+                    "en": "[DEPRECATED]\nWas an objective questionnaire used?"
+                },
+                "datatype": [
+                    "xsd:boolean"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": 1
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": 0
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_gsd_oqu",
+                "valueType": [
+                    "xsd:boolean"
+                ]
+            },
+            "diagnosis_bipolar_gsd_oquw": {
+                "description": "",
+                "question": {
+                    "en": "[DEPRECATED]\nWhich objective questionnaire was used?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Patient Health Questionnaire (PHQ-9)"
+                        },
+                        "value": "phq9"
+                    },
+                    {
+                        "name": {
+                            "en": "HAM-D"
+                        },
+                        "value": "hamD"
+                    },
+                    {
+                        "name": {
+                            "en": "Beck Depression Inventory (BDI)"
+                        },
+                        "value": "bdi"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_gsd_oquw",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bipolar_gsd_oqu_other": {
+                "description": "",
+                "question": {
+                    "en": "[DEPRECATED]\nPlease specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_gsd_oqu_other",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mbd_active_psy_med_problems": {
+                "description": "",
+                "question": {
+                    "en": "[DEPRECATED]\nPlease select any active psychiatric problems and medical problems (select all that apply).\n\nMOVED IT TO \"Q - Mood - Participant History\""
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "ADHD"
+                        },
+                        "value": "adhd"
+                    },
+                    {
+                        "name": {
+                            "en": "Anxiety"
+                        },
+                        "value": "anxiety"
+                    },
+                    {
+                        "name": {
+                            "en": "OCD"
+                        },
+                        "value": "ocd"
+                    },
+                    {
+                        "name": {
+                            "en": "Stroke"
+                        },
+                        "value": "stroke"
+                    },
+                    {
+                        "name": {
+                            "en": "Epilepsy"
+                        },
+                        "value": "epilepsy"
+                    },
+                    {
+                        "name": {
+                            "en": "Laryngeal cancer"
+                        },
+                        "value": "laryngeal_cancer"
+                    },
+                    {
+                        "name": {
+                            "en": "Seasonal allergies"
+                        },
+                        "value": "seasonal_allergies"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_mood_bipolar_disorder/items/mbd_active_psy_med_problems",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "multipleChoice": true
+            },
+            "mbd_active_psy_med_prob_other": {
+                "description": "",
+                "question": {
+                    "en": "[DEPRECATED]\nPlease specify\n\nMOVED IT TO \"Q - Mood - Participant History\""
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_mood_bipolar_disorder/items/mbd_active_psy_med_prob_other",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mbd_hist_psy_med_problems": {
+                "description": "",
+                "question": {
+                    "en": "[DEPRECATED]\nPlease select any historical psychiatric problems and medical problems (select all that apply).\n\nMOVED IT TO \"Q - Mood - Participant History\""
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "ADHD"
+                        },
+                        "value": "adhd"
+                    },
+                    {
+                        "name": {
+                            "en": "Anxiety"
+                        },
+                        "value": "anxiety"
+                    },
+                    {
+                        "name": {
+                            "en": "OCD"
+                        },
+                        "value": "ocd"
+                    },
+                    {
+                        "name": {
+                            "en": "Stroke"
+                        },
+                        "value": "stroke"
+                    },
+                    {
+                        "name": {
+                            "en": "Epilepsy"
+                        },
+                        "value": "epilepsy"
+                    },
+                    {
+                        "name": {
+                            "en": "Laryngeal cancer"
+                        },
+                        "value": "laryngeal_cancer"
+                    },
+                    {
+                        "name": {
+                            "en": "Seasonal allergies"
+                        },
+                        "value": "seasonal_allergies"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_mood_bipolar_disorder/items/mbd_hist_psy_med_problems",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "multipleChoice": true
+            },
+            "mbd_hist_psy_med_prob_other": {
+                "description": "",
+                "question": {
+                    "en": "[DEPRECATED]\nPlease specify\n\nMOVED IT TO \"Q - Mood - Participant History\""
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_mood_bipolar_disorder/items/mbd_hist_psy_med_prob_other",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bipolar_active_problems": {
+                "description": "",
+                "question": {
+                    "en": "[DEPRECATED]\nEnter list of active problems"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_active_problems",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bipolar_history_problems": {
+                "description": "",
+                "question": {
+                    "en": "[DEPRECATED]\nEnter any history of problems"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_history_problems",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bipolar_subtype_active": {
+                "description": "",
+                "question": {
+                    "en": "[DEPRECATED]\nDisease Subtype"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Active"
+                        },
+                        "value": "active"
+                    },
+                    {
+                        "name": {
+                            "en": "Recurrent"
+                        },
+                        "value": "recurrent"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_subtype_active",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bipolar_psychotic": {
+                "description": "",
+                "question": {
+                    "en": "[DEPRECATED]\nPsychotic Symptoms"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "With"
+                        },
+                        "value": "with"
+                    },
+                    {
+                        "name": {
+                            "en": "Without"
+                        },
+                        "value": "without"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_psychotic",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bipolar_etiology": {
+                "description": "",
+                "question": {
+                    "en": "[DEPRECATED]\nDescribe life events that may relate to the diagnosis"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_etiology",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bipolar_severity": {
+                "description": "",
+                "question": {
+                    "en": "[DEPRECATED]\nDisease Severity"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Mild"
+                        },
+                        "value": "mild"
+                    },
+                    {
+                        "name": {
+                            "en": "Moderate"
+                        },
+                        "value": "moderate"
+                    },
+                    {
+                        "name": {
+                            "en": "Severe"
+                        },
+                        "value": "severe"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_severity",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mbd_prescribed_medication": {
+                "description": "",
+                "question": {
+                    "en": "[DEPRECATED]\nHave you ever been prescribed medication for mental or emotional problems (e.g., antidepressants, anxiolytics, antipsychotics, mood stabilizers, etc.)?\n\nMOVED IT TO \"Q - Mood - Participant History\""
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_mood_bipolar_disorder/items/mbd_prescribed_medication",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mbd_current_medication": {
+                "description": "",
+                "question": {
+                    "en": "[DEPRECATED]\nPlease list any current psychiatric medications (to the best of your recollection), including medication names, dosage, and how many times per day.\n\nMOVED IT TO \"Q - Mood - Participant History\""
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_mood_bipolar_disorder/items/mbd_current_medication",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mbd_previous_medication": {
+                "description": "",
+                "question": {
+                    "en": "[DEPRECATED]\nPlease list any previous psychiatric medications (to the best of your recollection), including medication names,\napproximate dates you were taking them, and why they were discontinued.\n\nMOVED IT TO \"Q - Mood - Participant History\""
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_mood_bipolar_disorder/items/mbd_previous_medication",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mbd_see_mental_health_professional": {
+                "description": "",
+                "question": {
+                    "en": "[DEPRECATED]\nHave you ever seen a mental health professional for talk therapy (could include social workers, psychiatrists, etc.)?\n\nMOVED IT TO \"Q - Mood - Participant History\""
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_mood_bipolar_disorder/items/mbd_see_mental_health_professional",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mbd_describe_psychotherapy": {
+                "description": "",
+                "question": {
+                    "en": "[DEPRECATED]\nPlease briefly describe your psychotherapy history (e.g.,\ndates, reasons for seeking therapy, etc.).\n\nMOVED IT TO \"Q - Mood - Participant History\""
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_mood_bipolar_disorder/items/mbd_describe_psychotherapy",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bipolar_current_med_therapies": {
+                "description": "",
+                "question": {
+                    "en": "[DEPRECATED]\nList any current medications/therapies"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_current_med_therapies",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bipolar_former_med_therapies": {
+                "description": "",
+                "question": {
+                    "en": "[DEPRECATED]\nList any former medications/therapies"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_mood_bipolar_disorder/items/diagnosis_bipolar_former_med_therapies",
+                "valueType": [
+                    "xsd:string"
+                ]
+            }
+        }
+    }
+}

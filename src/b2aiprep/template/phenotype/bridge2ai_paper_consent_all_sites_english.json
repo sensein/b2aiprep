@@ -1,0 +1,107 @@
+{
+    "bridge2ai_paper_consent_all_sites_english_schema": {
+        "description": "",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/bridge2ai_paper_consent_all_sites_english/bridge2ai_paper_consent_all_sites_english_schema",
+        "data_elements": {
+            "paper_consent_notes": {
+                "description": "",
+                "question": {
+                    "en": "Fill out Instructions\n1. Upload the .pdf of the paper consent.\n2. Select the Enrollment Institution.\n3. Paper Consent Uploaded By is automatically calculated\n4. Once all the fields are entered mark this form as \"Complete\"\n\nIf uploading a paper consent form instead of eConsent, navigate to Form \"Subject/Participant - Basic Information\" and update Consent Status to \"Consented\""
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/bridge2ai_paper_consent_all_sites_english/items/paper_consent_notes",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "paper_consent_pdf_all_sites": {
+                "description": "",
+                "question": {
+                    "en": "Paper Consent PDF - All Sites"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/bridge2ai_paper_consent_all_sites_english/items/paper_consent_pdf_all_sites",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "paper_consent_enrollment_institution": {
+                "description": "",
+                "question": {
+                    "en": "Enrollment Institution"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "BCH"
+                        },
+                        "value": "bch"
+                    },
+                    {
+                        "name": {
+                            "en": "MIT"
+                        },
+                        "value": "mit"
+                    },
+                    {
+                        "name": {
+                            "en": "Mt. Sinai"
+                        },
+                        "value": "mt_sinai"
+                    },
+                    {
+                        "name": {
+                            "en": "SickKids"
+                        },
+                        "value": "sickkids"
+                    },
+                    {
+                        "name": {
+                            "en": "USF"
+                        },
+                        "value": "usf"
+                    },
+                    {
+                        "name": {
+                            "en": "VUMC"
+                        },
+                        "value": "vumc"
+                    },
+                    {
+                        "name": {
+                            "en": "WCM"
+                        },
+                        "value": "wcm"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/bridge2ai_paper_consent_all_sites_english/items/paper_consent_enrollment_institution",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "paper_consent_uploaded_by": {
+                "description": "",
+                "question": {
+                    "en": "Paper Consent Uploaded By"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/bridge2ai_paper_consent_all_sites_english/items/paper_consent_uploaded_by",
+                "valueType": [
+                    "xsd:string"
+                ]
+            }
+        }
+    }
+}

@@ -1,0 +1,2133 @@
+{
+    "q_neuro_wordcolor_stroop_schema": {
+        "description": "",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/q_neuro_wordcolor_stroop_schema",
+        "data_elements": {
+            "stroop_session_id": {
+                "description": "",
+                "question": {
+                    "en": "Session ID"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_session_id",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_recording_acoustic_task_id": {
+                "description": "",
+                "question": {
+                    "en": "Acoustic Task ID"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_recording_acoustic_task_id",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_started_at": {
+                "description": "",
+                "question": {
+                    "en": "Questionnaire Started At"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_started_at",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_completed_at": {
+                "description": "",
+                "question": {
+                    "en": "Questionnaire Completed At"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_completed_at",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_duration": {
+                "description": "",
+                "question": {
+                    "en": "Questionnaire Duration (seconds)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_duration",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_stimulus_1": {
+                "description": "",
+                "question": {
+                    "en": "Item 1\nStimulus"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "oooo"
+                        },
+                        "value": "oooo"
+                    },
+                    {
+                        "name": {
+                            "en": "red"
+                        },
+                        "value": "red"
+                    },
+                    {
+                        "name": {
+                            "en": "green"
+                        },
+                        "value": "green"
+                    },
+                    {
+                        "name": {
+                            "en": "blue"
+                        },
+                        "value": "blue"
+                    },
+                    {
+                        "name": {
+                            "en": "purple"
+                        },
+                        "value": "purple"
+                    },
+                    {
+                        "name": {
+                            "en": "brown"
+                        },
+                        "value": "brown"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_stimulus_1",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_color_1": {
+                "description": "",
+                "question": {
+                    "en": "Item 1\nColor"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "red"
+                        },
+                        "value": "red"
+                    },
+                    {
+                        "name": {
+                            "en": "green"
+                        },
+                        "value": "green"
+                    },
+                    {
+                        "name": {
+                            "en": "blue"
+                        },
+                        "value": "blue"
+                    },
+                    {
+                        "name": {
+                            "en": "purple"
+                        },
+                        "value": "purple"
+                    },
+                    {
+                        "name": {
+                            "en": "brown"
+                        },
+                        "value": "brown"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_color_1",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_time_1": {
+                "description": "",
+                "question": {
+                    "en": "Item 1\nTime Start"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_time_1",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_correct_1": {
+                "description": "",
+                "question": {
+                    "en": "Item 1\nCorrect?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_correct_1",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_stimulus_2": {
+                "description": "",
+                "question": {
+                    "en": "Item 2\nStimulus"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "oooo"
+                        },
+                        "value": "oooo"
+                    },
+                    {
+                        "name": {
+                            "en": "red"
+                        },
+                        "value": "red"
+                    },
+                    {
+                        "name": {
+                            "en": "green"
+                        },
+                        "value": "green"
+                    },
+                    {
+                        "name": {
+                            "en": "blue"
+                        },
+                        "value": "blue"
+                    },
+                    {
+                        "name": {
+                            "en": "purple"
+                        },
+                        "value": "purple"
+                    },
+                    {
+                        "name": {
+                            "en": "brown"
+                        },
+                        "value": "brown"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_stimulus_2",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_color_2": {
+                "description": "",
+                "question": {
+                    "en": "Item 2\nColor"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "red"
+                        },
+                        "value": "red"
+                    },
+                    {
+                        "name": {
+                            "en": "green"
+                        },
+                        "value": "green"
+                    },
+                    {
+                        "name": {
+                            "en": "blue"
+                        },
+                        "value": "blue"
+                    },
+                    {
+                        "name": {
+                            "en": "purple"
+                        },
+                        "value": "purple"
+                    },
+                    {
+                        "name": {
+                            "en": "brown"
+                        },
+                        "value": "brown"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_color_2",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_time_2": {
+                "description": "",
+                "question": {
+                    "en": "Item 2\nTime Start"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_time_2",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_correct_2": {
+                "description": "",
+                "question": {
+                    "en": "Item 2\nCorrect?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_correct_2",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_stimulus_3": {
+                "description": "",
+                "question": {
+                    "en": "Item 3\nStimulus"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "oooo"
+                        },
+                        "value": "oooo"
+                    },
+                    {
+                        "name": {
+                            "en": "red"
+                        },
+                        "value": "red"
+                    },
+                    {
+                        "name": {
+                            "en": "green"
+                        },
+                        "value": "green"
+                    },
+                    {
+                        "name": {
+                            "en": "blue"
+                        },
+                        "value": "blue"
+                    },
+                    {
+                        "name": {
+                            "en": "purple"
+                        },
+                        "value": "purple"
+                    },
+                    {
+                        "name": {
+                            "en": "brown"
+                        },
+                        "value": "brown"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_stimulus_3",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_color_3": {
+                "description": "",
+                "question": {
+                    "en": "Item 3\nColor"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "red"
+                        },
+                        "value": "red"
+                    },
+                    {
+                        "name": {
+                            "en": "green"
+                        },
+                        "value": "green"
+                    },
+                    {
+                        "name": {
+                            "en": "blue"
+                        },
+                        "value": "blue"
+                    },
+                    {
+                        "name": {
+                            "en": "purple"
+                        },
+                        "value": "purple"
+                    },
+                    {
+                        "name": {
+                            "en": "brown"
+                        },
+                        "value": "brown"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_color_3",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_time_3": {
+                "description": "",
+                "question": {
+                    "en": "Item 3\nTime Start"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_time_3",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_correct_3": {
+                "description": "",
+                "question": {
+                    "en": "Item 3\nCorrect?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_correct_3",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_stimulus_4": {
+                "description": "",
+                "question": {
+                    "en": "Item 4\nStimulus"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "oooo"
+                        },
+                        "value": "oooo"
+                    },
+                    {
+                        "name": {
+                            "en": "red"
+                        },
+                        "value": "red"
+                    },
+                    {
+                        "name": {
+                            "en": "green"
+                        },
+                        "value": "green"
+                    },
+                    {
+                        "name": {
+                            "en": "blue"
+                        },
+                        "value": "blue"
+                    },
+                    {
+                        "name": {
+                            "en": "purple"
+                        },
+                        "value": "purple"
+                    },
+                    {
+                        "name": {
+                            "en": "brown"
+                        },
+                        "value": "brown"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_stimulus_4",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_color_4": {
+                "description": "",
+                "question": {
+                    "en": "Item 4\nColor"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "red"
+                        },
+                        "value": "red"
+                    },
+                    {
+                        "name": {
+                            "en": "green"
+                        },
+                        "value": "green"
+                    },
+                    {
+                        "name": {
+                            "en": "blue"
+                        },
+                        "value": "blue"
+                    },
+                    {
+                        "name": {
+                            "en": "purple"
+                        },
+                        "value": "purple"
+                    },
+                    {
+                        "name": {
+                            "en": "brown"
+                        },
+                        "value": "brown"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_color_4",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_time_4": {
+                "description": "",
+                "question": {
+                    "en": "Item 4\nTime Start"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_time_4",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_correct_4": {
+                "description": "",
+                "question": {
+                    "en": "Item 4\nCorrect?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_correct_4",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_stimulus_5": {
+                "description": "",
+                "question": {
+                    "en": "Item 5\nStimulus"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "oooo"
+                        },
+                        "value": "oooo"
+                    },
+                    {
+                        "name": {
+                            "en": "red"
+                        },
+                        "value": "red"
+                    },
+                    {
+                        "name": {
+                            "en": "green"
+                        },
+                        "value": "green"
+                    },
+                    {
+                        "name": {
+                            "en": "blue"
+                        },
+                        "value": "blue"
+                    },
+                    {
+                        "name": {
+                            "en": "purple"
+                        },
+                        "value": "purple"
+                    },
+                    {
+                        "name": {
+                            "en": "brown"
+                        },
+                        "value": "brown"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_stimulus_5",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_color_5": {
+                "description": "",
+                "question": {
+                    "en": "Item 5\nColor"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "red"
+                        },
+                        "value": "red"
+                    },
+                    {
+                        "name": {
+                            "en": "green"
+                        },
+                        "value": "green"
+                    },
+                    {
+                        "name": {
+                            "en": "blue"
+                        },
+                        "value": "blue"
+                    },
+                    {
+                        "name": {
+                            "en": "purple"
+                        },
+                        "value": "purple"
+                    },
+                    {
+                        "name": {
+                            "en": "brown"
+                        },
+                        "value": "brown"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_color_5",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_time_5": {
+                "description": "",
+                "question": {
+                    "en": "Item 5\nTime Start"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_time_5",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_correct_5": {
+                "description": "",
+                "question": {
+                    "en": "Item 5\nCorrect?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_correct_5",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_stimulus_6": {
+                "description": "",
+                "question": {
+                    "en": "Item 6\nStimulus"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "oooo"
+                        },
+                        "value": "oooo"
+                    },
+                    {
+                        "name": {
+                            "en": "red"
+                        },
+                        "value": "red"
+                    },
+                    {
+                        "name": {
+                            "en": "green"
+                        },
+                        "value": "green"
+                    },
+                    {
+                        "name": {
+                            "en": "blue"
+                        },
+                        "value": "blue"
+                    },
+                    {
+                        "name": {
+                            "en": "purple"
+                        },
+                        "value": "purple"
+                    },
+                    {
+                        "name": {
+                            "en": "brown"
+                        },
+                        "value": "brown"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_stimulus_6",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_color_6": {
+                "description": "",
+                "question": {
+                    "en": "Item 6\nColor"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "red"
+                        },
+                        "value": "red"
+                    },
+                    {
+                        "name": {
+                            "en": "green"
+                        },
+                        "value": "green"
+                    },
+                    {
+                        "name": {
+                            "en": "blue"
+                        },
+                        "value": "blue"
+                    },
+                    {
+                        "name": {
+                            "en": "purple"
+                        },
+                        "value": "purple"
+                    },
+                    {
+                        "name": {
+                            "en": "brown"
+                        },
+                        "value": "brown"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_color_6",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_time_6": {
+                "description": "",
+                "question": {
+                    "en": "Item 6\nTime Start"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_time_6",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_correct_6": {
+                "description": "",
+                "question": {
+                    "en": "Item 6\nCorrect?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_correct_6",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_stimulus_7": {
+                "description": "",
+                "question": {
+                    "en": "Item 7\nStimulus"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "oooo"
+                        },
+                        "value": "oooo"
+                    },
+                    {
+                        "name": {
+                            "en": "red"
+                        },
+                        "value": "red"
+                    },
+                    {
+                        "name": {
+                            "en": "green"
+                        },
+                        "value": "green"
+                    },
+                    {
+                        "name": {
+                            "en": "blue"
+                        },
+                        "value": "blue"
+                    },
+                    {
+                        "name": {
+                            "en": "purple"
+                        },
+                        "value": "purple"
+                    },
+                    {
+                        "name": {
+                            "en": "brown"
+                        },
+                        "value": "brown"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_stimulus_7",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_color_7": {
+                "description": "",
+                "question": {
+                    "en": "Item 7\nColor"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "red"
+                        },
+                        "value": "red"
+                    },
+                    {
+                        "name": {
+                            "en": "green"
+                        },
+                        "value": "green"
+                    },
+                    {
+                        "name": {
+                            "en": "blue"
+                        },
+                        "value": "blue"
+                    },
+                    {
+                        "name": {
+                            "en": "purple"
+                        },
+                        "value": "purple"
+                    },
+                    {
+                        "name": {
+                            "en": "brown"
+                        },
+                        "value": "brown"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_color_7",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_time_7": {
+                "description": "",
+                "question": {
+                    "en": "Item 7\nTime Start"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_time_7",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_correct_7": {
+                "description": "",
+                "question": {
+                    "en": "Item 7\nCorrect?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_correct_7",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_stimulus_8": {
+                "description": "",
+                "question": {
+                    "en": "Item 8\nStimulus"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "oooo"
+                        },
+                        "value": "oooo"
+                    },
+                    {
+                        "name": {
+                            "en": "red"
+                        },
+                        "value": "red"
+                    },
+                    {
+                        "name": {
+                            "en": "green"
+                        },
+                        "value": "green"
+                    },
+                    {
+                        "name": {
+                            "en": "blue"
+                        },
+                        "value": "blue"
+                    },
+                    {
+                        "name": {
+                            "en": "purple"
+                        },
+                        "value": "purple"
+                    },
+                    {
+                        "name": {
+                            "en": "brown"
+                        },
+                        "value": "brown"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_stimulus_8",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_color_8": {
+                "description": "",
+                "question": {
+                    "en": "Item 8\nColor"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "red"
+                        },
+                        "value": "red"
+                    },
+                    {
+                        "name": {
+                            "en": "green"
+                        },
+                        "value": "green"
+                    },
+                    {
+                        "name": {
+                            "en": "blue"
+                        },
+                        "value": "blue"
+                    },
+                    {
+                        "name": {
+                            "en": "purple"
+                        },
+                        "value": "purple"
+                    },
+                    {
+                        "name": {
+                            "en": "brown"
+                        },
+                        "value": "brown"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_color_8",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_time_8": {
+                "description": "",
+                "question": {
+                    "en": "Item 8\nTime Start"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_time_8",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_correct_8": {
+                "description": "",
+                "question": {
+                    "en": "Item 8\nCorrect?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_correct_8",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_stimulus_9": {
+                "description": "",
+                "question": {
+                    "en": "Item 9\nStimulus"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "oooo"
+                        },
+                        "value": "oooo"
+                    },
+                    {
+                        "name": {
+                            "en": "red"
+                        },
+                        "value": "red"
+                    },
+                    {
+                        "name": {
+                            "en": "green"
+                        },
+                        "value": "green"
+                    },
+                    {
+                        "name": {
+                            "en": "blue"
+                        },
+                        "value": "blue"
+                    },
+                    {
+                        "name": {
+                            "en": "purple"
+                        },
+                        "value": "purple"
+                    },
+                    {
+                        "name": {
+                            "en": "brown"
+                        },
+                        "value": "brown"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_stimulus_9",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_color_9": {
+                "description": "",
+                "question": {
+                    "en": "Item 9\nColor"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "red"
+                        },
+                        "value": "red"
+                    },
+                    {
+                        "name": {
+                            "en": "green"
+                        },
+                        "value": "green"
+                    },
+                    {
+                        "name": {
+                            "en": "blue"
+                        },
+                        "value": "blue"
+                    },
+                    {
+                        "name": {
+                            "en": "purple"
+                        },
+                        "value": "purple"
+                    },
+                    {
+                        "name": {
+                            "en": "brown"
+                        },
+                        "value": "brown"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_color_9",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_time_9": {
+                "description": "",
+                "question": {
+                    "en": "Item 9\nTime Start"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_time_9",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_correct_9": {
+                "description": "",
+                "question": {
+                    "en": "Item 9\nCorrect?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_correct_9",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_stimulus_10": {
+                "description": "",
+                "question": {
+                    "en": "Item 10\nStimulus"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "oooo"
+                        },
+                        "value": "oooo"
+                    },
+                    {
+                        "name": {
+                            "en": "red"
+                        },
+                        "value": "red"
+                    },
+                    {
+                        "name": {
+                            "en": "green"
+                        },
+                        "value": "green"
+                    },
+                    {
+                        "name": {
+                            "en": "blue"
+                        },
+                        "value": "blue"
+                    },
+                    {
+                        "name": {
+                            "en": "purple"
+                        },
+                        "value": "purple"
+                    },
+                    {
+                        "name": {
+                            "en": "brown"
+                        },
+                        "value": "brown"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_stimulus_10",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_color_10": {
+                "description": "",
+                "question": {
+                    "en": "Item 10\nColor"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "red"
+                        },
+                        "value": "red"
+                    },
+                    {
+                        "name": {
+                            "en": "green"
+                        },
+                        "value": "green"
+                    },
+                    {
+                        "name": {
+                            "en": "blue"
+                        },
+                        "value": "blue"
+                    },
+                    {
+                        "name": {
+                            "en": "purple"
+                        },
+                        "value": "purple"
+                    },
+                    {
+                        "name": {
+                            "en": "brown"
+                        },
+                        "value": "brown"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_color_10",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_time_10": {
+                "description": "",
+                "question": {
+                    "en": "Item 10\nTime Start"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_time_10",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_correct_10": {
+                "description": "",
+                "question": {
+                    "en": "Item 10\nCorrect?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_correct_10",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_stimulus_11": {
+                "description": "",
+                "question": {
+                    "en": "Item 11\nStimulus"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "oooo"
+                        },
+                        "value": "oooo"
+                    },
+                    {
+                        "name": {
+                            "en": "red"
+                        },
+                        "value": "red"
+                    },
+                    {
+                        "name": {
+                            "en": "green"
+                        },
+                        "value": "green"
+                    },
+                    {
+                        "name": {
+                            "en": "blue"
+                        },
+                        "value": "blue"
+                    },
+                    {
+                        "name": {
+                            "en": "purple"
+                        },
+                        "value": "purple"
+                    },
+                    {
+                        "name": {
+                            "en": "brown"
+                        },
+                        "value": "brown"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_stimulus_11",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_color_11": {
+                "description": "",
+                "question": {
+                    "en": "Item 11\nColor"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "red"
+                        },
+                        "value": "red"
+                    },
+                    {
+                        "name": {
+                            "en": "green"
+                        },
+                        "value": "green"
+                    },
+                    {
+                        "name": {
+                            "en": "blue"
+                        },
+                        "value": "blue"
+                    },
+                    {
+                        "name": {
+                            "en": "purple"
+                        },
+                        "value": "purple"
+                    },
+                    {
+                        "name": {
+                            "en": "brown"
+                        },
+                        "value": "brown"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_color_11",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_time_11": {
+                "description": "",
+                "question": {
+                    "en": "Item 11\nTime Start"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_time_11",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_correct_11": {
+                "description": "",
+                "question": {
+                    "en": "Item 11\nCorrect?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_correct_11",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_stimulus_12": {
+                "description": "",
+                "question": {
+                    "en": "Item 12\nStimulus"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "oooo"
+                        },
+                        "value": "oooo"
+                    },
+                    {
+                        "name": {
+                            "en": "red"
+                        },
+                        "value": "red"
+                    },
+                    {
+                        "name": {
+                            "en": "green"
+                        },
+                        "value": "green"
+                    },
+                    {
+                        "name": {
+                            "en": "blue"
+                        },
+                        "value": "blue"
+                    },
+                    {
+                        "name": {
+                            "en": "purple"
+                        },
+                        "value": "purple"
+                    },
+                    {
+                        "name": {
+                            "en": "brown"
+                        },
+                        "value": "brown"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_stimulus_12",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_color_12": {
+                "description": "",
+                "question": {
+                    "en": "Item 12\nColor"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "red"
+                        },
+                        "value": "red"
+                    },
+                    {
+                        "name": {
+                            "en": "green"
+                        },
+                        "value": "green"
+                    },
+                    {
+                        "name": {
+                            "en": "blue"
+                        },
+                        "value": "blue"
+                    },
+                    {
+                        "name": {
+                            "en": "purple"
+                        },
+                        "value": "purple"
+                    },
+                    {
+                        "name": {
+                            "en": "brown"
+                        },
+                        "value": "brown"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_color_12",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_time_12": {
+                "description": "",
+                "question": {
+                    "en": "Item 12\nTime Start"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_time_12",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_correct_12": {
+                "description": "",
+                "question": {
+                    "en": "Item 12\nCorrect?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_correct_12",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_stimulus_13": {
+                "description": "",
+                "question": {
+                    "en": "Item 13\nStimulus"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "oooo"
+                        },
+                        "value": "oooo"
+                    },
+                    {
+                        "name": {
+                            "en": "red"
+                        },
+                        "value": "red"
+                    },
+                    {
+                        "name": {
+                            "en": "green"
+                        },
+                        "value": "green"
+                    },
+                    {
+                        "name": {
+                            "en": "blue"
+                        },
+                        "value": "blue"
+                    },
+                    {
+                        "name": {
+                            "en": "purple"
+                        },
+                        "value": "purple"
+                    },
+                    {
+                        "name": {
+                            "en": "brown"
+                        },
+                        "value": "brown"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_stimulus_13",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_color_13": {
+                "description": "",
+                "question": {
+                    "en": "Item 13\nColor"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "red"
+                        },
+                        "value": "red"
+                    },
+                    {
+                        "name": {
+                            "en": "green"
+                        },
+                        "value": "green"
+                    },
+                    {
+                        "name": {
+                            "en": "blue"
+                        },
+                        "value": "blue"
+                    },
+                    {
+                        "name": {
+                            "en": "purple"
+                        },
+                        "value": "purple"
+                    },
+                    {
+                        "name": {
+                            "en": "brown"
+                        },
+                        "value": "brown"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_color_13",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_time_13": {
+                "description": "",
+                "question": {
+                    "en": "Item 13\nTime Start"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_time_13",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_correct_13": {
+                "description": "",
+                "question": {
+                    "en": "Item 13\nCorrect?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_correct_13",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_stimulus_14": {
+                "description": "",
+                "question": {
+                    "en": "Item 14\nStimulus"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "oooo"
+                        },
+                        "value": "oooo"
+                    },
+                    {
+                        "name": {
+                            "en": "red"
+                        },
+                        "value": "red"
+                    },
+                    {
+                        "name": {
+                            "en": "green"
+                        },
+                        "value": "green"
+                    },
+                    {
+                        "name": {
+                            "en": "blue"
+                        },
+                        "value": "blue"
+                    },
+                    {
+                        "name": {
+                            "en": "purple"
+                        },
+                        "value": "purple"
+                    },
+                    {
+                        "name": {
+                            "en": "brown"
+                        },
+                        "value": "brown"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_stimulus_14",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_color_14": {
+                "description": "",
+                "question": {
+                    "en": "Item 14\nColor"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "red"
+                        },
+                        "value": "red"
+                    },
+                    {
+                        "name": {
+                            "en": "green"
+                        },
+                        "value": "green"
+                    },
+                    {
+                        "name": {
+                            "en": "blue"
+                        },
+                        "value": "blue"
+                    },
+                    {
+                        "name": {
+                            "en": "purple"
+                        },
+                        "value": "purple"
+                    },
+                    {
+                        "name": {
+                            "en": "brown"
+                        },
+                        "value": "brown"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_color_14",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_time_14": {
+                "description": "",
+                "question": {
+                    "en": "Item 14\nTime Start"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_time_14",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_correct_14": {
+                "description": "",
+                "question": {
+                    "en": "Item 14\nCorrect?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_correct_14",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_stimulus_15": {
+                "description": "",
+                "question": {
+                    "en": "Item 15\nStimulus"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "oooo"
+                        },
+                        "value": "oooo"
+                    },
+                    {
+                        "name": {
+                            "en": "red"
+                        },
+                        "value": "red"
+                    },
+                    {
+                        "name": {
+                            "en": "green"
+                        },
+                        "value": "green"
+                    },
+                    {
+                        "name": {
+                            "en": "blue"
+                        },
+                        "value": "blue"
+                    },
+                    {
+                        "name": {
+                            "en": "purple"
+                        },
+                        "value": "purple"
+                    },
+                    {
+                        "name": {
+                            "en": "brown"
+                        },
+                        "value": "brown"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_stimulus_15",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_color_15": {
+                "description": "",
+                "question": {
+                    "en": "Item 15\nColor"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "red"
+                        },
+                        "value": "red"
+                    },
+                    {
+                        "name": {
+                            "en": "green"
+                        },
+                        "value": "green"
+                    },
+                    {
+                        "name": {
+                            "en": "blue"
+                        },
+                        "value": "blue"
+                    },
+                    {
+                        "name": {
+                            "en": "purple"
+                        },
+                        "value": "purple"
+                    },
+                    {
+                        "name": {
+                            "en": "brown"
+                        },
+                        "value": "brown"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_color_15",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_time_15": {
+                "description": "",
+                "question": {
+                    "en": "Item 15\nTime Start"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_time_15",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "stroop_item_correct_15": {
+                "description": "",
+                "question": {
+                    "en": "Item 15\nCorrect?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_neuro_wordcolor_stroop/items/stroop_item_correct_15",
+                "valueType": [
+                    "xsd:string"
+                ]
+            }
+        }
+    }
+}

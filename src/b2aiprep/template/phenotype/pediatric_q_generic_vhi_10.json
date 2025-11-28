@@ -1,0 +1,1163 @@
+{
+    "pediatric_q_generic_vhi_10_schema": {
+        "description": "",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_vhi_10/pediatric_q_generic_vhi_10_schema",
+        "data_elements": {
+            "peds_vhi_session_id": {
+                "description": "",
+                "question": {
+                    "en": "Session ID"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_vhi_10/items/peds_vhi_session_id",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_vhi_started_at": {
+                "description": "",
+                "question": {
+                    "en": "Questionnaire Started At"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_vhi_10/items/peds_vhi_started_at",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_vhi_completed_at": {
+                "description": "",
+                "question": {
+                    "en": "Questionnaire Completed At"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_vhi_10/items/peds_vhi_completed_at",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_vhi_duration": {
+                "description": "",
+                "question": {
+                    "en": "Questionnaire Duration (seconds)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_vhi_10/items/peds_vhi_duration",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_vhi_talkativeness": {
+                "description": "",
+                "question": {
+                    "en": "I would rate my child's talkativeness as the following:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Quiet Talker"
+                        },
+                        "value": "Quiet Talker"
+                    },
+                    {
+                        "name": {
+                            "en": "Average Talker"
+                        },
+                        "value": "Average Talker"
+                    },
+                    {
+                        "name": {
+                            "en": "Extremely Talkative"
+                        },
+                        "value": "Extremely Talkative"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_vhi_10/items/peds_vhi_talkativeness",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "maxValue": 7,
+                "minValue": 1
+            },
+            "peds_voice_difficult_hear": {
+                "description": "",
+                "question": {
+                    "en": "My child's voice makes it difficult for people to hear him/her."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": "almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": "almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": "always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_vhi_10/items/peds_voice_difficult_hear",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_difficulty_understanding": {
+                "description": "",
+                "question": {
+                    "en": "People have difficulty understanding my child in a noisy room."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": "almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": "almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": "always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_vhi_10/items/peds_difficulty_understanding",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_difficulty_hearing": {
+                "description": "",
+                "question": {
+                    "en": "At home, we have difficulty hearing my child when he/she calls through the house."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": "almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": "almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": "always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_vhi_10/items/peds_difficulty_hearing",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_avoid_communicating": {
+                "description": "",
+                "question": {
+                    "en": "My child tends to avoid communicating because of his/her voice."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": "almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": "almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": "always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_vhi_10/items/peds_avoid_communicating",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_speaks_less": {
+                "description": "",
+                "question": {
+                    "en": "My child speaks with friends, neighbours, or relatives less often because of his/her voice."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": "almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": "almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": "always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_vhi_10/items/peds_speaks_less",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_repeat_speaking": {
+                "description": "",
+                "question": {
+                    "en": "People ask my child to repeat him/herself when speaking face-to-face."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": "almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": "almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": "always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_vhi_10/items/peds_repeat_speaking",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_voice_diffculities": {
+                "description": "",
+                "question": {
+                    "en": "My child's voice difficulties restrict personal, educational and social activities."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": "almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": "almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": "always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_vhi_10/items/peds_voice_diffculities",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_out_of_air_talking": {
+                "description": "",
+                "question": {
+                    "en": "My child runs out of air when talking."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": "almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": "almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": "always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_vhi_10/items/peds_out_of_air_talking",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_voice_changes": {
+                "description": "",
+                "question": {
+                    "en": "The sound of my child's voice changes throughout the day."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": "almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": "almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": "always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_vhi_10/items/peds_voice_changes",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_wrong_with_voice": {
+                "description": "",
+                "question": {
+                    "en": "People ask, \"What's wrong with my child's voice?\""
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": "almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": "almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": "always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_vhi_10/items/peds_wrong_with_voice",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_dry_raspy_hoarse": {
+                "description": "",
+                "question": {
+                    "en": "My child's voice sounds dry, raspy, and/or hoarse."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": "almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": "almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": "always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_vhi_10/items/peds_dry_raspy_hoarse",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_unpredictable": {
+                "description": "",
+                "question": {
+                    "en": "The quality of my child's voice is unpredictable."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": "almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": "almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": "always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_vhi_10/items/peds_unpredictable",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_straining": {
+                "description": "",
+                "question": {
+                    "en": "My child uses a great deal of effort to speak (e.g., straining)."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": "almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": "almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": "always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_vhi_10/items/peds_straining",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_worse_in_evening": {
+                "description": "",
+                "question": {
+                    "en": "My child's voice is worse in the evening."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": "almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": "almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": "always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_vhi_10/items/peds_worse_in_evening",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_gives_out": {
+                "description": "",
+                "question": {
+                    "en": "My child's voice \"gives out\" when speaking."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": "almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": "almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": "always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_vhi_10/items/peds_gives_out",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_yell_to_hear": {
+                "description": "",
+                "question": {
+                    "en": "My child has to yell in order for others to hear him/her."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": "almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": "almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": "always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_vhi_10/items/peds_yell_to_hear",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_tense_talking": {
+                "description": "",
+                "question": {
+                    "en": "My child appears tense when talking with others because of his/her voice."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": "almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": "almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": "always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_vhi_10/items/peds_tense_talking",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_seem_irritated": {
+                "description": "",
+                "question": {
+                    "en": "People seem irritated with my child's voice."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": "almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": "almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": "always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_vhi_10/items/peds_seem_irritated",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_other_not_understand": {
+                "description": "",
+                "question": {
+                    "en": "I find other people don't understand my child's voice problem."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": "almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": "almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": "always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_vhi_10/items/peds_other_not_understand",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_frustrated_voice": {
+                "description": "",
+                "question": {
+                    "en": "My child is frustrated with his/her voice problem."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": "almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": "almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": "always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_vhi_10/items/peds_frustrated_voice",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_less_out_going": {
+                "description": "",
+                "question": {
+                    "en": "My child is less out-going because of his/her voice problem."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": "almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": "almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": "always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_vhi_10/items/peds_less_out_going",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_annoyed_repeat": {
+                "description": "",
+                "question": {
+                    "en": "My child is annoyed when people ask him/her to repeat."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": "almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": "almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": "always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_vhi_10/items/peds_annoyed_repeat",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_embarrassed_repeat": {
+                "description": "",
+                "question": {
+                    "en": "My child is embarrassed when people ask him/her to repeat."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Never"
+                        },
+                        "value": "almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost Always"
+                        },
+                        "value": "almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": "always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_vhi_10/items/peds_embarrassed_repeat",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_severity_voice_problem": {
+                "description": "",
+                "question": {
+                    "en": "Please indicate the severity of your child's voice problem"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Normal"
+                        },
+                        "value": "Normal"
+                    },
+                    {
+                        "name": {
+                            "en": "Severe"
+                        },
+                        "value": "Severe"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_vhi_10/items/peds_severity_voice_problem",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "maxValue": 10,
+                "minValue": 0
+            }
+        }
+    }
+}

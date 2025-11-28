@@ -1,0 +1,807 @@
+{
+    "d_voice_benign_lesions_schema": {
+        "description": "",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_voice_benign_lesions/d_voice_benign_lesions_schema",
+        "data_elements": {
+            "diagnois_bl_gsd": {
+                "description": "",
+                "question": {
+                    "en": "Does the participant have a benign lesion confirmed by laryngoscopy/stroboscopy?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    },
+                    {
+                        "name": {
+                            "en": "Not certain"
+                        },
+                        "value": "notCertain"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_voice_benign_lesions/items/diagnois_bl_gsd",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bl_ds": {
+                "description": "",
+                "question": {
+                    "en": "What is the benign lesion diagnosis?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Anterior glottic web"
+                        },
+                        "value": "anteriorGlotticWeb"
+                    },
+                    {
+                        "name": {
+                            "en": "Fibrous masse (s)"
+                        },
+                        "value": "fibrousMasses"
+                    },
+                    {
+                        "name": {
+                            "en": "Recurrent respiratory papilloma"
+                        },
+                        "value": "recurrentRespiratoryPapilloma"
+                    },
+                    {
+                        "name": {
+                            "en": "Reinke's edema"
+                        },
+                        "value": "reinkesEdema"
+                    },
+                    {
+                        "name": {
+                            "en": "Rheumatoid nodules"
+                        },
+                        "value": "rheumatoidNodules"
+                    },
+                    {
+                        "name": {
+                            "en": "Vocal fold cyst"
+                        },
+                        "value": "vocalFoldCyst"
+                    },
+                    {
+                        "name": {
+                            "en": "Vocal fold nodules"
+                        },
+                        "value": "vocalFoldNodules"
+                    },
+                    {
+                        "name": {
+                            "en": "Vocal fold polyp"
+                        },
+                        "value": "vocalFoldPolyp"
+                    },
+                    {
+                        "name": {
+                            "en": "Vocal fold scarring"
+                        },
+                        "value": "vocalFoldScarring"
+                    },
+                    {
+                        "name": {
+                            "en": "Vocal fold ulcers"
+                        },
+                        "value": "vocalFoldUlcers"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_voice_benign_lesions/items/diagnosis_bl_ds",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bl_ds_other": {
+                "description": "",
+                "question": {
+                    "en": "Please specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_voice_benign_lesions/items/diagnosis_bl_ds_other",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bl_etiology": {
+                "description": "",
+                "question": {
+                    "en": "What is the etiology?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Phonotrauma"
+                        },
+                        "value": "phonotrauma"
+                    },
+                    {
+                        "name": {
+                            "en": "HPV virus (RRP)"
+                        },
+                        "value": "rrp"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_voice_benign_lesions/items/diagnosis_bl_etiology",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bl_etiology_other": {
+                "description": "",
+                "question": {
+                    "en": "Please specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_voice_benign_lesions/items/diagnosis_bl_etiology_other",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bl_ds_ll": {
+                "description": "",
+                "question": {
+                    "en": "Location of lesion(s)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Right vocal fold"
+                        },
+                        "value": "rightVocalFold"
+                    },
+                    {
+                        "name": {
+                            "en": "Left vocal fold"
+                        },
+                        "value": "leftVocalFold"
+                    },
+                    {
+                        "name": {
+                            "en": "Both vocal folds"
+                        },
+                        "value": "bothVocalFolds"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_voice_benign_lesions/items/diagnosis_bl_ds_ll",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bl_degree_text": {
+                "description": "",
+                "question": {
+                    "en": "Degree of dysphonia\n\nCAPE-V scale"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_text",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bl_degree_legend": {
+                "description": "",
+                "question": {
+                    "en": "Legend:\u00a0C- Sonsistent I = IntermittentMI = Mildly DeviantMO = Moderately DeviantSE = Severely Deviant"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_legend",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bl_degree_os_1": {
+                "description": "",
+                "question": {
+                    "en": "Overall Severity"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "MI"
+                        },
+                        "value": "MI"
+                    },
+                    {
+                        "name": {
+                            "en": "MO"
+                        },
+                        "value": "MO"
+                    },
+                    {
+                        "name": {
+                            "en": "SE"
+                        },
+                        "value": "SE"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_os_1",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "maxValue": 100,
+                "minValue": 0
+            },
+            "diagnosis_bl_degree_os_2": {
+                "description": "",
+                "question": {
+                    "en": "Overall Severity"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Consistent"
+                        },
+                        "value": "consistent"
+                    },
+                    {
+                        "name": {
+                            "en": "Intermittent"
+                        },
+                        "value": "intermittent"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_os_2",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bl_degree_r_1": {
+                "description": "",
+                "question": {
+                    "en": "Roughness"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "MI"
+                        },
+                        "value": "MI"
+                    },
+                    {
+                        "name": {
+                            "en": "MO"
+                        },
+                        "value": "MO"
+                    },
+                    {
+                        "name": {
+                            "en": "SE"
+                        },
+                        "value": "SE"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_r_1",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "maxValue": 100,
+                "minValue": 0
+            },
+            "diagnosis_bl_degree_r_2": {
+                "description": "",
+                "question": {
+                    "en": "Roughness"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Consistent"
+                        },
+                        "value": "consistent"
+                    },
+                    {
+                        "name": {
+                            "en": "Intermittent"
+                        },
+                        "value": "intermittent"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_r_2",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bl_degree_b_1": {
+                "description": "",
+                "question": {
+                    "en": "Breathiness"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "MI"
+                        },
+                        "value": "MI"
+                    },
+                    {
+                        "name": {
+                            "en": "MO"
+                        },
+                        "value": "MO"
+                    },
+                    {
+                        "name": {
+                            "en": "SE"
+                        },
+                        "value": "SE"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_b_1",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "maxValue": 100,
+                "minValue": 0
+            },
+            "diagnosis_bl_degree_b_2": {
+                "description": "",
+                "question": {
+                    "en": "Breathiness"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Consistent"
+                        },
+                        "value": "consistent"
+                    },
+                    {
+                        "name": {
+                            "en": "Intermittent"
+                        },
+                        "value": "intermittent"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_b_2",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bl_degree_s_1": {
+                "description": "",
+                "question": {
+                    "en": "Strain"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "MI"
+                        },
+                        "value": "MI"
+                    },
+                    {
+                        "name": {
+                            "en": "MO"
+                        },
+                        "value": "MO"
+                    },
+                    {
+                        "name": {
+                            "en": "SE"
+                        },
+                        "value": "SE"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_s_1",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "maxValue": 100,
+                "minValue": 0
+            },
+            "diagnosis_bl_degree_s_2": {
+                "description": "",
+                "question": {
+                    "en": "Strain"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Consistent"
+                        },
+                        "value": "consistent"
+                    },
+                    {
+                        "name": {
+                            "en": "Intermittent"
+                        },
+                        "value": "intermittent"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_s_2",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bl_degree_p_1": {
+                "description": "",
+                "question": {
+                    "en": "Pitch"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "MI"
+                        },
+                        "value": "MI"
+                    },
+                    {
+                        "name": {
+                            "en": "MO"
+                        },
+                        "value": "MO"
+                    },
+                    {
+                        "name": {
+                            "en": "SE"
+                        },
+                        "value": "SE"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_p_1",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "maxValue": 100,
+                "minValue": 0
+            },
+            "diagnosis_bl_degree_p_nature": {
+                "description": "",
+                "question": {
+                    "en": "Pitch\n(Indicate the nature of the abnormality):"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_p_nature",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bl_degree_p_2": {
+                "description": "",
+                "question": {
+                    "en": "Pitch"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Consistent"
+                        },
+                        "value": "consistent"
+                    },
+                    {
+                        "name": {
+                            "en": "Intermittent"
+                        },
+                        "value": "intermittent"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_p_2",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bl_degree_l_1": {
+                "description": "",
+                "question": {
+                    "en": "Loudness"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "MI"
+                        },
+                        "value": "MI"
+                    },
+                    {
+                        "name": {
+                            "en": "MO"
+                        },
+                        "value": "MO"
+                    },
+                    {
+                        "name": {
+                            "en": "SE"
+                        },
+                        "value": "SE"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_l_1",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "maxValue": 100,
+                "minValue": 0
+            },
+            "diagnosis_bl_degree_l_nature": {
+                "description": "",
+                "question": {
+                    "en": "Loudness\n(Indicate the nature of the abnormality):"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_l_nature",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bl_degree_l_2": {
+                "description": "",
+                "question": {
+                    "en": "Loudness"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Consistent"
+                        },
+                        "value": "consistent"
+                    },
+                    {
+                        "name": {
+                            "en": "Intermittent"
+                        },
+                        "value": "intermittent"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_l_2",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bl_degree_comments": {
+                "description": "",
+                "question": {
+                    "en": "Comments about resonance"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Normal"
+                        },
+                        "value": "normal"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_comments",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bl_degree_comments_other": {
+                "description": "",
+                "question": {
+                    "en": "Please specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_comments_other",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bl_degree_comments_other_2": {
+                "description": "",
+                "question": {
+                    "en": "Additional Features\n(for example, diplophonia, fry, falsetto, asthenia, aphonia, pitch instability, tremor, wet/gurgly, or other relevant terms):"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_voice_benign_lesions/items/diagnosis_bl_degree_comments_other_2",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bl_treatment": {
+                "description": "",
+                "question": {
+                    "en": "Has the participant undergone any treatment for this condition?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_voice_benign_lesions/items/diagnosis_bl_treatment",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bl_treatment_select": {
+                "description": "",
+                "question": {
+                    "en": "Select all that apply:"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Voice/speech therapy"
+                        },
+                        "value": "voice_or_speech_therapy"
+                    },
+                    {
+                        "name": {
+                            "en": "Laryngeal microsurgery"
+                        },
+                        "value": "laryngeal_microsurgery"
+                    },
+                    {
+                        "name": {
+                            "en": "Voice rest"
+                        },
+                        "value": "voice_rest"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_voice_benign_lesions/items/diagnosis_bl_treatment_select",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "multipleChoice": true
+            },
+            "diagnosis_bl_treatment_other": {
+                "description": "",
+                "question": {
+                    "en": "Other, please specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_voice_benign_lesions/items/diagnosis_bl_treatment_other",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "diagnosis_bl_treatment_lm": {
+                "description": "",
+                "question": {
+                    "en": "Laryngeal microsurgery"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "With laser"
+                        },
+                        "value": "withLaser"
+                    },
+                    {
+                        "name": {
+                            "en": "Without laser"
+                        },
+                        "value": "withoutLaser"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/d_voice_benign_lesions/items/diagnosis_bl_treatment_lm",
+                "valueType": [
+                    "xsd:string"
+                ]
+            }
+        }
+    }
+}

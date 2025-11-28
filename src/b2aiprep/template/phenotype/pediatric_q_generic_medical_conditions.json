@@ -1,0 +1,1962 @@
+{
+    "pediatric_q_generic_medical_conditions_schema": {
+        "description": "",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/pediatric_q_generic_medical_conditions_schema",
+        "data_elements": {
+            "peds_mc_session_id": {
+                "description": "",
+                "question": {
+                    "en": "Session ID"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_session_id",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_started_at": {
+                "description": "",
+                "question": {
+                    "en": "Questionnaire Started At"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_started_at",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_completed_at": {
+                "description": "",
+                "question": {
+                    "en": "Questionnaire Completed At"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_completed_at",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_duration": {
+                "description": "",
+                "question": {
+                    "en": "Questionnaire Duration (seconds)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_duration",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_voice_disorders": {
+                "description": "",
+                "question": {
+                    "en": "Does your child have a history of a voice disorder? (Select all that apply)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Vocal nodules or polyps"
+                        },
+                        "value": "vocal_nodules_or_polyps"
+                    },
+                    {
+                        "name": {
+                            "en": "Unilateral vocal cord paralysis"
+                        },
+                        "value": "unilateral_vocal_cord_paralysis"
+                    },
+                    {
+                        "name": {
+                            "en": "Bilateral vocal cord paralysis"
+                        },
+                        "value": "bilateral_vocal_cord_paralysis"
+                    },
+                    {
+                        "name": {
+                            "en": "Acid reflux disease (GERD)"
+                        },
+                        "value": "acid_reflux_disease"
+                    },
+                    {
+                        "name": {
+                            "en": "Scarring of the larynx or vocal cords from disease or previous surgery"
+                        },
+                        "value": "scarring"
+                    },
+                    {
+                        "name": {
+                            "en": "Airway stenosis (bilateral vocal fold paralysis laryngeal stenosis)"
+                        },
+                        "value": "airway_stenosis"
+                    },
+                    {
+                        "name": {
+                            "en": "Vocal cord webs"
+                        },
+                        "value": "vocal_cord_webs"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_voice_disorders",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "multipleChoice": true
+            },
+            "peds_mc_psych_disorders": {
+                "description": "",
+                "question": {
+                    "en": "Does your child have a history of a psychological disorders or mood problems? (Select all that apply)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Anxiety disorder"
+                        },
+                        "value": "anxiety_disorder"
+                    },
+                    {
+                        "name": {
+                            "en": "ADHD"
+                        },
+                        "value": "adhd"
+                    },
+                    {
+                        "name": {
+                            "en": "Autism Spectrum Disorder (ASD)"
+                        },
+                        "value": "asd"
+                    },
+                    {
+                        "name": {
+                            "en": "Depression or Major Depressive Disorder"
+                        },
+                        "value": "depression"
+                    },
+                    {
+                        "name": {
+                            "en": "Eating Disorder (ED)"
+                        },
+                        "value": "eating_disorder"
+                    },
+                    {
+                        "name": {
+                            "en": "Insomnia/sleep Disorder"
+                        },
+                        "value": "insomnia_or_sleep_disorder"
+                    },
+                    {
+                        "name": {
+                            "en": "Obsessive-Compulsive Disorder (OCD)"
+                        },
+                        "value": "ocd"
+                    },
+                    {
+                        "name": {
+                            "en": "Panic Disorder"
+                        },
+                        "value": "panic"
+                    },
+                    {
+                        "name": {
+                            "en": "Social Anxiety Disorder"
+                        },
+                        "value": "social_anxiety_disorder"
+                    },
+                    {
+                        "name": {
+                            "en": "Other psychiatric disorders"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_psych_disorders",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "multipleChoice": true
+            },
+            "peds_mc_psych_disorders_other": {
+                "description": "",
+                "question": {
+                    "en": "Please Specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_psych_disorders_other",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_breathing_conditions": {
+                "description": "",
+                "question": {
+                    "en": "Does your child have a history of a breathing or airway conditions? (Select all that apply)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Asthma"
+                        },
+                        "value": "asthma"
+                    },
+                    {
+                        "name": {
+                            "en": "Recurrent Croup (>3 episodes per year)"
+                        },
+                        "value": "recurrent_croup"
+                    },
+                    {
+                        "name": {
+                            "en": "Bronchiolitis"
+                        },
+                        "value": "bronchiolitis"
+                    },
+                    {
+                        "name": {
+                            "en": "RSV"
+                        },
+                        "value": "rsv"
+                    },
+                    {
+                        "name": {
+                            "en": "Chronic Cough"
+                        },
+                        "value": "chronic_cough"
+                    },
+                    {
+                        "name": {
+                            "en": "Subglottic Stenosis"
+                        },
+                        "value": "subglottic_stenosis"
+                    },
+                    {
+                        "name": {
+                            "en": "Vocal Cord Webs"
+                        },
+                        "value": "vocal_cord_webs"
+                    },
+                    {
+                        "name": {
+                            "en": "Airway Surgery"
+                        },
+                        "value": "airway_surgery"
+                    },
+                    {
+                        "name": {
+                            "en": "Has your child ever been intubated?"
+                        },
+                        "value": "intubated"
+                    },
+                    {
+                        "name": {
+                            "en": "Does your child have a tracheostomy?"
+                        },
+                        "value": "tracheostomy"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_breathing_conditions",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "multipleChoice": true
+            },
+            "peds_mc_snoring_apnea": {
+                "description": "",
+                "question": {
+                    "en": "Does your child have a history of a snoring or obstructive sleep apnea? (Select all that apply)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Snoring"
+                        },
+                        "value": "snoring"
+                    },
+                    {
+                        "name": {
+                            "en": "Gasping for air at night"
+                        },
+                        "value": "gasping"
+                    },
+                    {
+                        "name": {
+                            "en": "Obstructive Sleep apnea (diagnosed on a sleep study)"
+                        },
+                        "value": "obstructive_sleep_apnea"
+                    },
+                    {
+                        "name": {
+                            "en": "Has your child had a sleep study?"
+                        },
+                        "value": "had_sleep_study"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_snoring_apnea",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "multipleChoice": true
+            },
+            "peds_mc_snoring_apnea_had_sleep_study_oahi": {
+                "description": "",
+                "question": {
+                    "en": "What was the oAHI on the sleep study\n(to be competed by research assistant)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_snoring_apnea_had_sleep_study_oahi",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_tonsillectomy": {
+                "description": "",
+                "question": {
+                    "en": "Have they had a tonsillectomy?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_tonsillectomy",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_tonsillectomy_date": {
+                "description": "",
+                "question": {
+                    "en": "What was the date of the surgery?"
+                },
+                "datatype": [
+                    "xsd:date"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_tonsillectomy_date",
+                "valueType": [
+                    "xsd:date"
+                ]
+            },
+            "peds_mc_adenoidectomy": {
+                "description": "",
+                "question": {
+                    "en": "Have they had an adenoidectomy?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_adenoidectomy",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_adenoidectomy_date": {
+                "description": "",
+                "question": {
+                    "en": "What was the date of the surgery?"
+                },
+                "datatype": [
+                    "xsd:date"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_adenoidectomy_date",
+                "valueType": [
+                    "xsd:date"
+                ]
+            },
+            "peds_mc_lingual_tonsillectomy": {
+                "description": "",
+                "question": {
+                    "en": "Have they had a lingual tonsillectomy?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_lingual_tonsillectomy",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_lingual_tonsillectomy_date": {
+                "description": "",
+                "question": {
+                    "en": "What was the date of the surgery?"
+                },
+                "datatype": [
+                    "xsd:date"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_lingual_tonsillectomy_date",
+                "valueType": [
+                    "xsd:date"
+                ]
+            },
+            "peds_mc_hearing_loss": {
+                "description": "",
+                "question": {
+                    "en": "Does your child have a history of hearing loss or associated conditions? (Select all that apply)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Cholesteatoma"
+                        },
+                        "value": "cholesteatoma"
+                    },
+                    {
+                        "name": {
+                            "en": "Hearing loss"
+                        },
+                        "value": "hearing_loss"
+                    },
+                    {
+                        "name": {
+                            "en": "Mild Hearing loss"
+                        },
+                        "value": "mild_hearing_loss"
+                    },
+                    {
+                        "name": {
+                            "en": "Deafness"
+                        },
+                        "value": "deafness"
+                    },
+                    {
+                        "name": {
+                            "en": "Ear tubes"
+                        },
+                        "value": "ear_tubes"
+                    },
+                    {
+                        "name": {
+                            "en": "Cochlear implantation (Bilateral)"
+                        },
+                        "value": "cochlear_implantation_bilateral"
+                    },
+                    {
+                        "name": {
+                            "en": "Vocal cord webs"
+                        },
+                        "value": "vocal_cord_webs"
+                    },
+                    {
+                        "name": {
+                            "en": "Cochlear implantation (Unilateral)"
+                        },
+                        "value": "cochlear_implantation_unilateral"
+                    },
+                    {
+                        "name": {
+                            "en": "Tympanic Membrane Perforation"
+                        },
+                        "value": "tympanic_membrane_perforation"
+                    },
+                    {
+                        "name": {
+                            "en": "CMV (cytomegalovirus)"
+                        },
+                        "value": "cmv"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_hearing_loss",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "multipleChoice": true
+            },
+            "peds_mc_neck_mass": {
+                "description": "",
+                "question": {
+                    "en": "Does your child have a history of a neck mass? (Select all that apply)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Thyroglossal duct cyst"
+                        },
+                        "value": "thyroglossal_duct_cyst"
+                    },
+                    {
+                        "name": {
+                            "en": "Branchial Cleft Cyst"
+                        },
+                        "value": "branchial_cleft_cyst"
+                    },
+                    {
+                        "name": {
+                            "en": "Dermoid cyst"
+                        },
+                        "value": "dermoid_cyst"
+                    },
+                    {
+                        "name": {
+                            "en": "Thyroid nodule or cancer"
+                        },
+                        "value": "thyroid_nodule_or_cancer"
+                    },
+                    {
+                        "name": {
+                            "en": "Enlarged lymph node"
+                        },
+                        "value": "enlarged_lymph_node"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_neck_mass",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "multipleChoice": true
+            },
+            "peds_mc_neck_mass_thyroglossal_duct_cyst_surgery": {
+                "description": "",
+                "question": {
+                    "en": "Have they had a surgery for this?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_neck_mass_thyroglossal_duct_cyst_surgery",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_neck_mass_thyroglossal_duct_cyst_surgery_date": {
+                "description": "",
+                "question": {
+                    "en": "What was the date of the surgery?"
+                },
+                "datatype": [
+                    "xsd:date"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_neck_mass_thyroglossal_duct_cyst_surgery_date",
+                "valueType": [
+                    "xsd:date"
+                ]
+            },
+            "peds_mc_neck_mass_branchial_cleft_cyst_surgery": {
+                "description": "",
+                "question": {
+                    "en": "Have they had a surgery for this?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_neck_mass_branchial_cleft_cyst_surgery",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_neck_mass_branchial_cleft_cyst_surgery_date": {
+                "description": "",
+                "question": {
+                    "en": "What was the date of the surgery?"
+                },
+                "datatype": [
+                    "xsd:date"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_neck_mass_branchial_cleft_cyst_surgery_date",
+                "valueType": [
+                    "xsd:date"
+                ]
+            },
+            "peds_mc_neck_mass_dermoid_cyst_surgery": {
+                "description": "",
+                "question": {
+                    "en": "Have they had a surgery for this?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_neck_mass_dermoid_cyst_surgery",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_neck_mass_dermoid_cyst_surgery_date": {
+                "description": "",
+                "question": {
+                    "en": "What was the date of the surgery?"
+                },
+                "datatype": [
+                    "xsd:date"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_neck_mass_dermoid_cyst_surgery_date",
+                "valueType": [
+                    "xsd:date"
+                ]
+            },
+            "peds_mc_neck_mass_hyroid_nodule_or_cancer_surgery": {
+                "description": "",
+                "question": {
+                    "en": "Have they had a surgery for this?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_neck_mass_hyroid_nodule_or_cancer_surgery",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_neck_mass_hyroid_nodule_or_cancer_surgery_date": {
+                "description": "",
+                "question": {
+                    "en": "What was the date of the surgery?"
+                },
+                "datatype": [
+                    "xsd:date"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_neck_mass_hyroid_nodule_or_cancer_surgery_date",
+                "valueType": [
+                    "xsd:date"
+                ]
+            },
+            "peds_mc_neck_mass_enlarged_lymph_node_surgery": {
+                "description": "",
+                "question": {
+                    "en": "Have they had a surgery for this?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_neck_mass_enlarged_lymph_node_surgery",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_neck_mass_enlarged_lymph_node_surgery_date": {
+                "description": "",
+                "question": {
+                    "en": "What was the date of the surgery?"
+                },
+                "datatype": [
+                    "xsd:date"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_neck_mass_enlarged_lymph_node_surgery_date",
+                "valueType": [
+                    "xsd:date"
+                ]
+            },
+            "peds_mc_neck_mass_other": {
+                "description": "",
+                "question": {
+                    "en": "Please specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_neck_mass_other",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_epistaxis": {
+                "description": "",
+                "question": {
+                    "en": "Does your child have a history of epistaxis?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_epistaxis",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_nasal_fractures": {
+                "description": "",
+                "question": {
+                    "en": "Does your child have a history of nasal fractures?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_nasal_fractures",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_chronic_medical_condition": {
+                "description": "",
+                "question": {
+                    "en": "Has your child ever been diagnosed with a chronic medical condition?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_chronic_medical_condition",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_chronic_medical_condition_specified": {
+                "description": "",
+                "question": {
+                    "en": "Please specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_chronic_medical_condition_specified",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_genetic_syndromes": {
+                "description": "",
+                "question": {
+                    "en": "Has your child been diagnosed with any genetic syndromes?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_genetic_syndromes",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_genetic_syndromes_specified": {
+                "description": "",
+                "question": {
+                    "en": "Please specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_genetic_syndromes_specified",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_hospitalized": {
+                "description": "",
+                "question": {
+                    "en": "Has your child ever been hospitalized for a medical condition?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_hospitalized",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_hospitalized_specified": {
+                "description": "",
+                "question": {
+                    "en": "Please specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_hospitalized_specified",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_neurological_disorders": {
+                "description": "",
+                "question": {
+                    "en": "Does your child have any history of neurological disorders (e.g., cerebral palsy, muscular dystrophy)?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_neurological_disorders",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_neurological_disorders_specified": {
+                "description": "",
+                "question": {
+                    "en": "Please specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_neurological_disorders_specified",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_allergies": {
+                "description": "",
+                "question": {
+                    "en": "Does your child have any known allergies (food, environmental, or medication)?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_allergies",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_allergies_specified": {
+                "description": "",
+                "question": {
+                    "en": "Please specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_allergies_specified",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_dif_swallowing": {
+                "description": "",
+                "question": {
+                    "en": "Has your child ever had difficulty swallowing liquids or solids?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_dif_swallowing",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_dif_swallowing_specified": {
+                "description": "",
+                "question": {
+                    "en": "Please specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_dif_swallowing_specified",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_ear_inf_ant_py": {
+                "description": "",
+                "question": {
+                    "en": "Has your child had any ear infections requiring antibiotics in the past year?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_ear_inf_ant_py",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_ear_inf_ant_py_specified": {
+                "description": "",
+                "question": {
+                    "en": "Please specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_ear_inf_ant_py_specified",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_etp": {
+                "description": "",
+                "question": {
+                    "en": "Has your child ever undergone ear tube placement (tympanostomy tubes)?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_etp",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_etp_procedure": {
+                "description": "",
+                "question": {
+                    "en": "Please specify which procedure"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_etp_procedure",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_etp_procedure_date": {
+                "description": "",
+                "question": {
+                    "en": "What was the date of the surgery?"
+                },
+                "datatype": [
+                    "xsd:date"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_etp_procedure_date",
+                "valueType": [
+                    "xsd:date"
+                ]
+            },
+            "peds_mc_eval_voice_swal_c": {
+                "description": "",
+                "question": {
+                    "en": "Has your child ever been evaluated by an ENT (ear, nose, and throat) specialist or speech-language pathologist for voice or swallowing concerns?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_eval_voice_swal_c",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_eval_voice_swal_c_specified": {
+                "description": "",
+                "question": {
+                    "en": "Please specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_eval_voice_swal_c_specified",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_ft": {
+                "description": "",
+                "question": {
+                    "en": "Has your child ever required a feeding tube (NG tube, G-tube)?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_ft",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_ft_specified": {
+                "description": "",
+                "question": {
+                    "en": "Please specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_ft_specified",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_reflux": {
+                "description": "",
+                "question": {
+                    "en": "Has your child ever been diagnosed with reflux (GERD) or required medication for acid reflux?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_reflux",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_reflux_specified": {
+                "description": "",
+                "question": {
+                    "en": "Please specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_reflux_specified",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_hl": {
+                "description": "",
+                "question": {
+                    "en": "Has your child ever been diagnosed with hearing loss or required hearing aids?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_hl",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_hl_specified": {
+                "description": "",
+                "question": {
+                    "en": "Please specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_hl_specified",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_hw_voice_2_w": {
+                "description": "",
+                "question": {
+                    "en": "Has your child ever had a hoarse or weak voice for more than two weeks?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_hw_voice_2_w",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_hw_voice_2_w_specified": {
+                "description": "",
+                "question": {
+                    "en": "Please specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_hw_voice_2_w_specified",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_no_surgeries": {
+                "description": "",
+                "question": {
+                    "en": "Has your child ever had any neurological or orthopedic surgeries that could affect breathing or speech?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_no_surgeries",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_no_surgeries_procedure": {
+                "description": "",
+                "question": {
+                    "en": "Please specify which procedure"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_no_surgeries_procedure",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_no_surgeries_procedure_date": {
+                "description": "",
+                "question": {
+                    "en": "What was the date of the surgery?"
+                },
+                "datatype": [
+                    "xsd:date"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_no_surgeries_procedure_date",
+                "valueType": [
+                    "xsd:date"
+                ]
+            },
+            "peds_mc_stridor": {
+                "description": "",
+                "question": {
+                    "en": "Has your child ever had a history of noisy breathing (stridor) or difficulty breathing?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_stridor",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_stridor_specified": {
+                "description": "",
+                "question": {
+                    "en": "Please specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_stridor_specified",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_ox_sup": {
+                "description": "",
+                "question": {
+                    "en": "Has your child ever required oxygen support, intubation, a ventilator, or a tracheostomy?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_ox_sup",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_ox_sup_specified": {
+                "description": "",
+                "question": {
+                    "en": "Please specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_ox_sup_specified",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_meds": {
+                "description": "",
+                "question": {
+                    "en": "Is your child currently taking any medications that could affect voice, breathing, or swallowing?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_meds",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_meds_specified": {
+                "description": "",
+                "question": {
+                    "en": "Please specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_meds_specified",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_v_dis": {
+                "description": "",
+                "question": {
+                    "en": "Has your child ever been diagnosed with a voice disorder or speech delay?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_v_dis",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_v_dis_specified": {
+                "description": "",
+                "question": {
+                    "en": "Please specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_v_dis_specified",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_a_therapy": {
+                "description": "",
+                "question": {
+                    "en": "Has your child ever had speech therapy for articulation or voice-related issues?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_a_therapy",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_a_therapy_specified": {
+                "description": "",
+                "question": {
+                    "en": "Please specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_a_therapy_specified",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_surgery_t_vc_a": {
+                "description": "",
+                "question": {
+                    "en": "Has your child ever had surgery involving the throat, vocal cords, or airway?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_surgery_t_vc_a",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_surgery_t_vc_a_specified": {
+                "description": "",
+                "question": {
+                    "en": "Please specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_surgery_t_vc_a_specified",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_fr_inf_tons": {
+                "description": "",
+                "question": {
+                    "en": "Has your child had frequent throat infections or tonsillitis?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_fr_inf_tons",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_fr_inf_tons_specified": {
+                "description": "",
+                "question": {
+                    "en": "Please specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_fr_inf_tons_specified",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_fr_v_f": {
+                "description": "",
+                "question": {
+                    "en": "Does your child experience frequent vocal strain or voice fatigue?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_fr_v_f",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_fr_v_f_specified": {
+                "description": "",
+                "question": {
+                    "en": "Please specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_fr_v_f_specified",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_conditions": {
+                "description": "",
+                "question": {
+                    "en": "Does your child have any of the following conditions? (Select all that apply)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Osteogenesis imperfecta"
+                        },
+                        "value": "osteogenesis_imperfecta"
+                    },
+                    {
+                        "name": {
+                            "en": "Trisomy 21 (Down's Syndrome)"
+                        },
+                        "value": "trisomy21"
+                    },
+                    {
+                        "name": {
+                            "en": "Prematurity"
+                        },
+                        "value": "prematurity"
+                    },
+                    {
+                        "name": {
+                            "en": "Congenital heart disease"
+                        },
+                        "value": "congenital_heart_disease"
+                    },
+                    {
+                        "name": {
+                            "en": "Tracheoesophageal fistula"
+                        },
+                        "value": "tracheoesophageal_fistula"
+                    },
+                    {
+                        "name": {
+                            "en": "Esophageal atresia"
+                        },
+                        "value": "esophageal_atresia"
+                    },
+                    {
+                        "name": {
+                            "en": "Cystic fibrosis"
+                        },
+                        "value": "cystic_fibrosis"
+                    },
+                    {
+                        "name": {
+                            "en": "Rheumatoid arthritis"
+                        },
+                        "value": "rheumatoid_arthritis"
+                    },
+                    {
+                        "name": {
+                            "en": "Granulomatosis with polyangitis"
+                        },
+                        "value": "granulomatosis_with_polyangitis"
+                    },
+                    {
+                        "name": {
+                            "en": "Mucopolysaccharidosis"
+                        },
+                        "value": "mucopolysaccharidosis"
+                    },
+                    {
+                        "name": {
+                            "en": "Other"
+                        },
+                        "value": "other"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_conditions",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "multipleChoice": true
+            },
+            "peds_mc_conditions_other_specified": {
+                "description": "",
+                "question": {
+                    "en": "Please specify"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_conditions_other_specified",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_mc_l2w": {
+                "description": "",
+                "question": {
+                    "en": "Has your child had any of the following in the 2 weeks? (Select all that apply)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Wheezing or trouble breathing"
+                        },
+                        "value": "wheezing_or_trouble_breathing"
+                    },
+                    {
+                        "name": {
+                            "en": "Dry cough"
+                        },
+                        "value": "dry_cough"
+                    },
+                    {
+                        "name": {
+                            "en": "Wet, productive cough"
+                        },
+                        "value": "wet_productive_cough"
+                    },
+                    {
+                        "name": {
+                            "en": "Nasal congestion"
+                        },
+                        "value": "nasal_congestion"
+                    },
+                    {
+                        "name": {
+                            "en": "Sneezing"
+                        },
+                        "value": "sneezing"
+                    },
+                    {
+                        "name": {
+                            "en": "Ear infection"
+                        },
+                        "value": "ear_infection"
+                    },
+                    {
+                        "name": {
+                            "en": "Stridor"
+                        },
+                        "value": "stridor"
+                    },
+                    {
+                        "name": {
+                            "en": "Croup"
+                        },
+                        "value": "croup"
+                    },
+                    {
+                        "name": {
+                            "en": "Sorethroat/tonsillitis"
+                        },
+                        "value": "sorethroat_or_tonsillitis"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_medical_conditions/items/peds_mc_l2w",
+                "valueType": [
+                    "xsd:string"
+                ],
+                "multipleChoice": true
+            }
+        }
+    }
+}

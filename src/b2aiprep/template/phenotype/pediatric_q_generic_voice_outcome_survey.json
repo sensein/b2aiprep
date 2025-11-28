@@ -1,0 +1,232 @@
+{
+    "pediatric_q_generic_voice_outcome_survey_schema": {
+        "description": "",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_voice_outcome_survey/pediatric_q_generic_voice_outcome_survey_schema",
+        "data_elements": {
+            "peds_os_session_id": {
+                "description": "",
+                "question": {
+                    "en": "Session ID"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_voice_outcome_survey/items/peds_os_session_id",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_os_started_at": {
+                "description": "",
+                "question": {
+                    "en": "Questionnaire Started At"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_voice_outcome_survey/items/peds_os_started_at",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_os_completed_at": {
+                "description": "",
+                "question": {
+                    "en": "Questionnaire Completed At"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_voice_outcome_survey/items/peds_os_completed_at",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_os_duration": {
+                "description": "",
+                "question": {
+                    "en": "Questionnaire Duration (seconds)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_voice_outcome_survey/items/peds_os_duration",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_os_limit_understood": {
+                "description": "",
+                "question": {
+                    "en": "To what extent does you child's voice limit his or her ability to be understood in a noisy area?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Limited a lot"
+                        },
+                        "value": "limitedALot"
+                    },
+                    {
+                        "name": {
+                            "en": "Limited a little"
+                        },
+                        "value": "limitedALittle"
+                    },
+                    {
+                        "name": {
+                            "en": "Not limited at all"
+                        },
+                        "value": "notLimitedAtAll"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_voice_outcome_survey/items/peds_os_limit_understood",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_os_interfered_activities": {
+                "description": "",
+                "question": {
+                    "en": "During the past 2 weeks, to what extent has your child's voice interfered with his or her normal social activities or with his or her school?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Not at all"
+                        },
+                        "value": "notAtAll"
+                    },
+                    {
+                        "name": {
+                            "en": "Slightly"
+                        },
+                        "value": "slightly"
+                    },
+                    {
+                        "name": {
+                            "en": "Moderately"
+                        },
+                        "value": "moderately"
+                    },
+                    {
+                        "name": {
+                            "en": "Quite a bit"
+                        },
+                        "value": "quiteABit"
+                    },
+                    {
+                        "name": {
+                            "en": "Extremely"
+                        },
+                        "value": "extremely"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_voice_outcome_survey/items/peds_os_interfered_activities",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_os_trouble_food_iquids": {
+                "description": "",
+                "question": {
+                    "en": "How often does your child have trouble with food or liquids \"going down the wrong pipe\" when he or she eats food or drinks liquid and begins to cough after eating or drinking?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "All the time"
+                        },
+                        "value": "allTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Most of the time"
+                        },
+                        "value": "mostOfTheTime"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Rarely"
+                        },
+                        "value": "rarely"
+                    },
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_voice_outcome_survey/items/peds_os_trouble_food_iquids",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "peds_os_straining": {
+                "description": "",
+                "question": {
+                    "en": "Do you find your child \"straining\" when he or she speaks because of his or her voice problem?"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Not at all"
+                        },
+                        "value": "notAtAll"
+                    },
+                    {
+                        "name": {
+                            "en": "A little bit"
+                        },
+                        "value": "aLittleBit"
+                    },
+                    {
+                        "name": {
+                            "en": "Moderately"
+                        },
+                        "value": "moderately"
+                    },
+                    {
+                        "name": {
+                            "en": "Quite a bit"
+                        },
+                        "value": "quiteABit"
+                    },
+                    {
+                        "name": {
+                            "en": "Extremely"
+                        },
+                        "value": "extremely"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/pediatric_q_generic_voice_outcome_survey/items/peds_os_straining",
+                "valueType": [
+                    "xsd:string"
+                ]
+            }
+        }
+    }
+}

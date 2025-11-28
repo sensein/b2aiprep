@@ -1,0 +1,514 @@
+{
+    "q_resp_dyspnea_index_di_schema": {
+        "description": "",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_resp_dyspnea_index_di/q_resp_dyspnea_index_di_schema",
+        "data_elements": {
+            "dyspnea_index_session_id": {
+                "description": "",
+                "question": {
+                    "en": "Session ID"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_resp_dyspnea_index_di/items/dyspnea_index_session_id",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "dyspnea_index_started_at": {
+                "description": "",
+                "question": {
+                    "en": "Questionnaire Started At"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_resp_dyspnea_index_di/items/dyspnea_index_started_at",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "dyspnea_index_completed_at": {
+                "description": "",
+                "question": {
+                    "en": "Questionnaire Completed At"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_resp_dyspnea_index_di/items/dyspnea_index_completed_at",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "dyspnea_index_duration": {
+                "description": "",
+                "question": {
+                    "en": "Questionnaire Duration (seconds)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_resp_dyspnea_index_di/items/dyspnea_index_duration",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "di_air_in": {
+                "description": "",
+                "question": {
+                    "en": "I have trouble getting air in."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost never"
+                        },
+                        "value": "almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost always"
+                        },
+                        "value": "almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": "always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_resp_dyspnea_index_di/items/di_air_in",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "di_tightness_throat": {
+                "description": "",
+                "question": {
+                    "en": "I feel tightness in my throat when I am having my breathing problem."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost never"
+                        },
+                        "value": "almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost always"
+                        },
+                        "value": "almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": "always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_resp_dyspnea_index_di/items/di_tightness_throat",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "di_effort_breathe": {
+                "description": "",
+                "question": {
+                    "en": "It takes more effort to breathe than it used to."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost never"
+                        },
+                        "value": "almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost always"
+                        },
+                        "value": "almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": "always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_resp_dyspnea_index_di/items/di_effort_breathe",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "di_weather_changes": {
+                "description": "",
+                "question": {
+                    "en": "Changes in the weather affect my breathing problem."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost never"
+                        },
+                        "value": "almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost always"
+                        },
+                        "value": "almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": "always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_resp_dyspnea_index_di/items/di_weather_changes",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "di_breathing_worse_stress": {
+                "description": "",
+                "question": {
+                    "en": "My breathing gets worse with stress."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost never"
+                        },
+                        "value": "almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost always"
+                        },
+                        "value": "almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": "always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_resp_dyspnea_index_di/items/di_breathing_worse_stress",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "di_sound_breathing_in": {
+                "description": "",
+                "question": {
+                    "en": "I make sound/noise breathing in."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost never"
+                        },
+                        "value": "almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost always"
+                        },
+                        "value": "almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": "always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_resp_dyspnea_index_di/items/di_sound_breathing_in",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "di_strain": {
+                "description": "",
+                "question": {
+                    "en": "I have to strain to breathe."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost never"
+                        },
+                        "value": "almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost always"
+                        },
+                        "value": "almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": "always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_resp_dyspnea_index_di/items/di_strain",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "di_exercise": {
+                "description": "",
+                "question": {
+                    "en": "My shortness of breath gets worse with exercise or physical activity."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost never"
+                        },
+                        "value": "almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost always"
+                        },
+                        "value": "almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": "always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_resp_dyspnea_index_di/items/di_exercise",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "di_breathing_stresses_me": {
+                "description": "",
+                "question": {
+                    "en": "My breathing problem makes me feel stressed."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost never"
+                        },
+                        "value": "almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost always"
+                        },
+                        "value": "almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": "always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_resp_dyspnea_index_di/items/di_breathing_stresses_me",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "di_restrict_personal_social_life": {
+                "description": "",
+                "question": {
+                    "en": "My breathing problem causes me to restrict my personal and social life."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Never"
+                        },
+                        "value": "never"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost never"
+                        },
+                        "value": "almostNever"
+                    },
+                    {
+                        "name": {
+                            "en": "Sometimes"
+                        },
+                        "value": "sometimes"
+                    },
+                    {
+                        "name": {
+                            "en": "Almost always"
+                        },
+                        "value": "almostAlways"
+                    },
+                    {
+                        "name": {
+                            "en": "Always"
+                        },
+                        "value": "always"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_resp_dyspnea_index_di/items/di_restrict_personal_social_life",
+                "valueType": [
+                    "xsd:string"
+                ]
+            }
+        }
+    }
+}

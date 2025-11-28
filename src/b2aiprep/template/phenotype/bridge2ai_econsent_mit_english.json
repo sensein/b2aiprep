@@ -1,0 +1,185 @@
+{
+    "bridge2ai_econsent_mit_english_schema": {
+        "description": "",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/bridge2ai_econsent_mit_english/bridge2ai_econsent_mit_english_schema",
+        "data_elements": {
+            "mit_icf_p1_en": {
+                "description": "",
+                "question": null,
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/bridge2ai_econsent_mit_english/items/mit_icf_p1_en",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mit_icf_p2_en": {
+                "description": "",
+                "question": null,
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/bridge2ai_econsent_mit_english/items/mit_icf_p2_en",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mit_icf_p3_en": {
+                "description": "",
+                "question": null,
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/bridge2ai_econsent_mit_english/items/mit_icf_p3_en",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mit_icf_p4_en": {
+                "description": "",
+                "question": null,
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/bridge2ai_econsent_mit_english/items/mit_icf_p4_en",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mit_icf_p5_en": {
+                "description": "",
+                "question": null,
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/bridge2ai_econsent_mit_english/items/mit_icf_p5_en",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mit_icf_p6_en": {
+                "description": "",
+                "question": null,
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/bridge2ai_econsent_mit_english/items/mit_icf_p6_en",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mit_icf_p7_en": {
+                "description": "",
+                "question": null,
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/bridge2ai_econsent_mit_english/items/mit_icf_p7_en",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mit_icf_p8_en": {
+                "description": "",
+                "question": null,
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/bridge2ai_econsent_mit_english/items/mit_icf_p8_en",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mit_icf_question_en": {
+                "description": "",
+                "question": {
+                    "en": "Consent to Take Part in ResearchI freely give my consent to take part in this study. I understand that by signing this form I am agreeingto take part in research. I have received a copy of this form to take with me. I understand that by signingbelow, I am consenting for my contact information to be kept in a repository for this study, and that thisinformation may be used to contact me in the future for further data collection if long-term follow-up isrequired as part of an eventual extension of this grant after the expected 4-year duration, or to be invitedto participate in future research studies. My information will not be shared with third parties.I consent to having all data I submit shared with the researchers of this study and to having my audiorecordings, written responses, and other coded research data shared with other qualified researchers asdescribed in this consent form. I further consent to the public sharing of my de-identified and aggregatedstudy data.I would like to be informed of incidental findings, should the study report this type of information."
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": [
+                    {
+                        "name": {
+                            "en": "Yes"
+                        },
+                        "value": "yes"
+                    },
+                    {
+                        "name": {
+                            "en": "No"
+                        },
+                        "value": "no"
+                    }
+                ],
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/bridge2ai_econsent_mit_english/items/mit_icf_question_en",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mit_icf_signature_en": {
+                "description": "",
+                "question": {
+                    "en": "Signature of Person Taking Part in Study\n[Authorization]"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/bridge2ai_econsent_mit_english/items/mit_icf_signature_en",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "mit_icf_date_en": {
+                "description": "",
+                "question": {
+                    "en": "Date"
+                },
+                "datatype": [
+                    "xsd:date"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/bridge2ai_econsent_mit_english/items/mit_icf_date_en",
+                "valueType": [
+                    "xsd:date"
+                ]
+            },
+            "mit_icf_name_en": {
+                "description": "",
+                "question": {
+                    "en": "Printed Name of Person Taking Part in Study"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/bridge2ai_econsent_mit_english/items/mit_icf_name_en",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "consent_mit_p1": {
+                "description": "",
+                "question": null,
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/bridge2ai_econsent_mit_english/items/consent_mit_p1",
+                "valueType": [
+                    "xsd:string"
+                ]
+            }
+        }
+    }
+}

@@ -1,0 +1,93 @@
+{
+    "q_generic_harvard_sentences_schema": {
+        "description": "",
+        "url": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_generic_harvard_sentences/q_generic_harvard_sentences_schema",
+        "data_elements": {
+            "harvard_sentences_session_id": {
+                "description": "",
+                "question": {
+                    "en": "Session ID"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_generic_harvard_sentences/items/harvard_sentences_session_id",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "harvard_sentences_recording_acoustic_task_id": {
+                "description": "",
+                "question": {
+                    "en": "Acoustic Task ID"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_generic_harvard_sentences/items/harvard_sentences_recording_acoustic_task_id",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "harvard_sentences_started_at": {
+                "description": "",
+                "question": {
+                    "en": "Questionnaire Started At"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_generic_harvard_sentences/items/harvard_sentences_started_at",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "harvard_sentences_completed_at": {
+                "description": "",
+                "question": {
+                    "en": "Questionnaire Completed At"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_generic_harvard_sentences/items/harvard_sentences_completed_at",
+                "valueType": [
+                    "xsd:string"
+                ]
+            },
+            "harvard_sentences_duration": {
+                "description": "",
+                "question": {
+                    "en": "Questionnaire Duration (seconds)"
+                },
+                "datatype": [
+                    "xsd:decimal"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_generic_harvard_sentences/items/harvard_sentences_duration",
+                "valueType": [
+                    "xsd:decimal"
+                ],
+                "minValue": 0
+            },
+            "harvard_sentences_list_order": {
+                "description": "",
+                "question": {
+                    "en": "Harvard Sentence List Order Array (comma separated)"
+                },
+                "datatype": [
+                    "xsd:string"
+                ],
+                "choices": null,
+                "termURL": "https://raw.githubusercontent.com/sensein/b2ai-redcap2rs/e5f4bcda2c45450b70c87dd0637645427c5e841b/activities/q_generic_harvard_sentences/items/harvard_sentences_list_order",
+                "valueType": [
+                    "xsd:string"
+                ]
+            }
+        }
+    }
+}
