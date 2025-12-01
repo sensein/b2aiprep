@@ -606,43 +606,6 @@ class BIDSDataset:
         logging.info(f"TSV file created and saved to: {tsv_path}")
 
     @staticmethod
-    def _subselect_dataframe_using_json(
-        df: pd.DataFrame, json_data: dict
-    ) -> pd.DataFrame:
-        """Extracts a subset of columns from a DataFrame using the given JSON file,
-        removes duplicates, and returns a new DataFrame.
-
-        Combines entries so that there is one row per record_id.
-
-        Args:
-            df: DataFrame containing the data.
-            json_data: Dictionary containing the column labels.
-
-        Raises:
-            ValueError: If no valid columns found in DataFrame that match JSON file.
-        """
-
-        # The phenotype JSON files are nested below a key that corresponds to the schema name
-        first_key = next(iter(json_data))
-        column_labels = list(json_data[first_key]["data_elements"])
-
-        # Filter column labels to only include those that exist in the DataFrame
-        valid_columns = [col for col in column_labels if col in df.columns]
-        if not valid_columns:
-            _LOGGER.warning(f"No valid columns in dataframe for {first_key}")
-            return df.iloc[:, 0:0].copy() # return empty dataframe with same index
-
-        if "record_id" not in valid_columns:
-            valid_columns = ["record_id"] + valid_columns
-
-        # Select the relevant columns from the DataFrame
-        selected_df = df[valid_columns]
-
-        # Combine entries so there is one row per record_id
-        combined_df = selected_df.groupby("record_id").first().reset_index()
-        return combined_df
-
-    @staticmethod
     def _process_phenotype_tsv_and_json(
         df: pd.DataFrame, input_dir: str, output_dir: str, filename: str,
         clean_phenotype_data: bool = True
@@ -664,7 +627,36 @@ class BIDSDataset:
         # Load in the JSON which defines the columns to output to this subset
         with open(os.path.join(input_dir, filename), "r") as f:
             json_data = json.load(f)
-        df_subselected = BIDSDataset._subselect_dataframe_using_json(df=df, json_data=json_data)
+
+        # The phenotype JSON files are nested below a key that corresponds to the schema name
+        first_key = next(iter(json_data))
+        column_labels = list(json_data[first_key]["data_elements"])
+
+        # Our output columns are defined by the ReproSchema protocol file,
+        # but we need to subselect to available data columns, as many columns
+        # have been removed already before export from RedCap.
+        data_elements = {}
+        valid_columns = []
+        for column in column_labels:
+            if column not in df.columns:
+                continue
+            valid_columns.append(column)
+            data_elements[column] = json_data[first_key]["data_elements"][column]
+
+        if not valid_columns:
+            _LOGGER.warning(f"No valid columns in dataframe for {first_key}")
+            return df.iloc[:, 0:0].copy() # return empty dataframe with same index
+
+        if "record_id" not in valid_columns:
+            valid_columns = ["record_id"] + valid_columns
+
+        # Select the relevant columns from the DataFrame and JSON
+        selected_df = df[valid_columns]
+        json_data[first_key]["data_elements"] = data_elements
+
+        # Combine entries so there is one row per record_id
+        df_subselected = selected_df.groupby("record_id").first().reset_index()
+
         if clean_phenotype_data:
             df_subselected, json_data = BIDSDataset._clean_phenotype_data(df_subselected, json_data)
         
