@@ -304,11 +304,6 @@ def create_derived_dataset(bids_path, outdir):
     ├── static_features.json
     """
     bids_path = Path(bids_path)
-
-    participant_filepath = bids_path.joinpath("participants.tsv")
-    if not participant_filepath.exists():
-        raise FileNotFoundError(f"Participant file {participant_filepath} does not exist.")
-
     audio_paths = get_paths(bids_path, file_extension=".pt")
     audio_paths = [x["path"] for x in audio_paths]
 
@@ -331,15 +326,6 @@ def create_derived_dataset(bids_path, outdir):
         # sort first by subject, then by task
         key=lambda x: (x.stem.split("_")[0], x.stem.split("_")[2]),
     )
-
-    _LOGGER.info("Creating merged phenotype data.")
-    df, phenotype = BIDSDataset.load_phenotype_data(bids_path, phenotype_name="participants")
-
-    # write out phenotype data and data dictionary
-    df.to_csv(outdir.joinpath("phenotype.tsv"), sep="\t", index=False)
-    with open(outdir.joinpath("phenotype.json"), "w") as f:
-        json.dump(phenotype, f, indent=2)
-    _LOGGER.info("Finished creating merged phenotype data.")
 
     _LOGGER.info("Loading audio static features.")
     static_features = []
