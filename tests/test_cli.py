@@ -144,7 +144,18 @@ def setup_bids_structure():
             "torchaudio": {
                 "spectrogram": torch.randn(10, 100),  # dummy spectrogram
                 "mfcc": torch.randn(13, 100),  # dummy MFCC features
+                "mel_filter_bank": torch.randn(13,100),
+                "mel_spectrogram": torch.randn(13,100),
+                "pitch": torch.randn(100)
+            },
+            "ppgs": torch.randn(1,40,100),
+            "sparc": {
+                "ema": torch.randn(100,12),
+                "loudness": torch.randn(100,1),
+                "periodicity": torch.randn(100,1),
+                "pitch_stats": torch.randn(2)
             }
+
         }
         torch.save(dummy_features, feature_file)
 
