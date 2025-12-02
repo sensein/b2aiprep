@@ -1494,7 +1494,6 @@ class BIDSDataset:
                 sensitive_audio_tasks, 
                 participant_ids_to_remap, 
                 participant_session_id_to_remap,
-                skip_audio_features
             )
             logging.info("Finished processing audio files.")
 
@@ -1616,7 +1615,6 @@ class BIDSDataset:
         sensitive_audio_task_list: t.List[str] = [],
         participant_ids_to_remap: t.Dict[str, str] = {},
         participant_session_id_to_remap: t.Dict[str, str] = {},
-        skip_audio_features: bool = True
     ):
         """
         Copy and deidentify audio files to the output directory.
@@ -1636,7 +1634,6 @@ class BIDSDataset:
             sensitive_audio_task_list: list of sensitive audio tasks
             participant_ids_to_remap: map between old and new participant IDs
             participant_session_id_to_remap: map between old and new session IDs
-            skip_audio_features: boolean value of whether to skip deidentifying audio features
         """
         # Get all audio paths
         audio_paths = BIDSDataset._collect_paths(data_path, file_extension=".wav")
@@ -1699,22 +1696,6 @@ class BIDSDataset:
                 json.dump(metadata, fp, indent=2)
             shutil.copy(audio_path, output_path)
 
-            # if it is not sensitive and we want to keep features, move all features over
-            if not skip_audio_features:
-                new_features_path = output_path.parent / f"{output_path.stem}_features.pt"
-                task_name = audio_path.stem.split("_")[2][5:]
-                if task_name.lower() not in sensitive_audio_task_list:
-                    shutil.copy(features_path, new_features_path)
-                else:
-                    features = torch.load(features_path, weights_only=False, map_location=torch.device('cpu'))
-                    # Sensitive features to remove
-                    features['ppgs'] = torch.tensor(torch.nan)
-                    features['transcription'] = None
-                    features['mel_filter_bank'] = torch.tensor(torch.nan)
-                    features['mfcc'] = torch.tensor(torch.nan)
-                    features['mel_spectrogram'] = torch.tensor(torch.nan)
-                    features['spectrogram'] = torch.tensor(torch.nan)
-                    torch.save(features, new_features_path)
 
     @staticmethod
     def _deidentify_feature_files(
@@ -1795,7 +1776,9 @@ class BIDSDataset:
             else:
                 features = torch.load(features_path, weights_only=False, map_location=torch.device('cpu'))
                 # Sensitive features to remove
-                for field in ['ppgs', 'transcription', 'mel_filter_bank', 'mfcc', 'mel_spectrogram', 'spectrogram']:
+                for torchaudio_field in ['mel_filter_bank', 'mfcc', 'mel_spectrogram', 'spectrogram']:
+                    features['torchaudio'].pop(torchaudio_field, None)
+                for field in ['ppgs', 'transcription']:
                     features.pop(field, None)
                 torch.save(features, output_path)
 
