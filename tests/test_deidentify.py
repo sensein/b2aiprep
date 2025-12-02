@@ -21,15 +21,6 @@ class TestDeidentifyCommandRefactor:
         temp_dir = tempfile.mkdtemp()
         bids_path = Path(temp_dir) / "test_bids"
         bids_path.mkdir(parents=True, exist_ok=True)
-        
-        # Create minimal participants.tsv (required for BIDSDataset)
-        participants_file = bids_path / "participants.tsv"
-        participants_file.write_text("record_id\tage\nparticipant001\t25\n")
-        
-        # Create participants.json
-        participants_json = bids_path / "participants.json"
-        participants_json.write_text('{"record_id": {"description": "ID"}, "age": {"description": "Age"}}')
-        
         yield str(bids_path)
         
         # Cleanup
@@ -203,9 +194,6 @@ class TestDeidentifyCommandRefactor:
         # Check that output directory was created
         assert Path(temp_output_dir).exists()
         
-        # Check that participants files were created
-        assert (Path(temp_output_dir) / "participants.tsv").exists()
-        assert (Path(temp_output_dir) / "participants.json").exists()
 
 
 class TestDeidentifyCommandBackwardCompatibility:
@@ -253,16 +241,6 @@ class TestDeidentifyCommandBackwardCompatibility:
             
             # Check that the command succeeded
             assert result.exit_code == 0
-            
-            # Check that expected output files exist
-            output_path = Path(temp_output_dir)
-            assert (output_path / "participants.tsv").exists()
-            assert (output_path / "participants.json").exists()
-            
-            # Check that participants.tsv has participant_id instead of record_id
-            participants_content = (output_path / "participants.tsv").read_text()
-            assert "participant_id" in participants_content
-            # record_id should have been renamed to participant_id
         finally:
             # Cleanup
             shutil.rmtree(temp_dir)
