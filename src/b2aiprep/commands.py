@@ -481,7 +481,7 @@ def validate_derived_dataset(dataset_path):
 @click.argument("deidentify_config_dir", type=click.Path(exists=True))
 @click.option("--skip_audio/--no-skip_audio", type=bool, default=False, show_default=True, help="Skip processing audio files")
 @click.option("--skip_audio_features/--no-skip_audio_features", type=bool, default=True, show_default=True, help="Skip processing audio feature files")
-def deidentify_bids_dataset(bids_path, outdir, deidentify_config_dir, skip_audio):
+def deidentify_bids_dataset(bids_path, outdir, deidentify_config_dir, skip_audio, skip_audio_features):
     """Creates a deidentified version of a given BIDS dataset.
 
     The deidentified version of the dataset: 

@@ -1419,7 +1419,7 @@ class BIDSDataset:
         return data
 
     @staticmethod
-    def load_senseitive_audio_tasks(deidentify_config_dir: Path) -> t.List[str]:
+    def load_sensitive_audio_tasks(deidentify_config_dir: Path) -> t.List[str]:
         """Load list of audio tasks that are sensitive from JSON file."""
         sensitive_audio_tasks_path = deidentify_config_dir / "sensitive_audio_tasks.json"
         if not sensitive_audio_tasks_path.exists():
@@ -1430,11 +1430,11 @@ class BIDSDataset:
             data = json.load(f)
 
         if not isinstance(data, list):
-            raise ValueError(f"Audio filestems to remove file {sensitive_audio_tasks_path} should contain a list of audio file stems.")
+            raise ValueError(f"Sensitive audio tasks file {sensitive_audio_tasks_path} should contain a list of audio task names.")
         
         return data
 
-    def deidentify(self, outdir: t.Union[str, Path], deidentify_config_dir: Path, skip_audio: bool = False, skip_auio_features: bool = True) -> 'BIDSDataset':
+    def deidentify(self, outdir: t.Union[str, Path], deidentify_config_dir: Path, skip_audio: bool = False, skip_audio_features: bool = True) -> 'BIDSDataset':
         """
         Create a deidentified version of the BIDS dataset.
         
@@ -1584,7 +1584,7 @@ class BIDSDataset:
             x for x in audio_paths if 'audio-check' not in x.stem.split("_")[2].lower()
         ]
         if len(audio_paths) < n_audio:
-            _logger.info(
+            _LOGGER.info(
                 f"Removed {n_audio - len(audio_paths)} audio check recordings."
             )
         
@@ -1609,7 +1609,7 @@ class BIDSDataset:
                 continue
 
             if not skip_audio_features and not features_path.exists():
-                _LOGGER.warning(f"Metadata file {features_path} not found. Skipping {audio_path}.")
+                _LOGGER.warning(f"Features file {features_path} not found. Skipping {audio_path}.")
                 continue
             
             metadata = json.loads(json_path.read_text())
@@ -1634,11 +1634,11 @@ class BIDSDataset:
             # if it is not sensitive and we want to keep features, move all features over
             if not skip_audio_features:
                 new_features_path = output_path.parent / f"{output_path.stem}_features.pt"
-                if not audio_path.split('_task')[1].lower() in sensitive_audio_task_list:
+                task_name = audio_path.stem.split("_")[2][5:]
+                if task_name.lower() not in sensitive_audio_task_list:
                     shutil.copy(features_path, new_features_path)
                 else:
-                    features = torch.load(features_path, weights_only=False,map_location=torch.device('cpu'))
-
+                    features = torch.load(features_path, weights_only=False, map_location=torch.device('cpu'))
                     # Sensitive features to remove
                     features['ppgs'] = torch.tensor(torch.nan)
                     features['transcription'] = None
@@ -1646,6 +1646,7 @@ class BIDSDataset:
                     features['mfcc'] = torch.tensor(torch.nan)
                     features['mel_spectrogram'] = torch.tensor(torch.nan)
                     features['spectrogram'] = torch.tensor(torch.nan)
+                    torch.save(features, new_features_path)
 
 
 
