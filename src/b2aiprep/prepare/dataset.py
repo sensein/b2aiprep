@@ -710,7 +710,7 @@ class BIDSDataset:
 
         Args:
             df: DataFrame containing the data.
-            input_dir: Directory containing JSON files with column labels.
+            df: DataFrame containing the data.
             output_dir: Directory where the TSV files will be saved.
         """
         # Ensure output directory exists
