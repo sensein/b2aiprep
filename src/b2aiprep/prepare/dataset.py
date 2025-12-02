@@ -1434,21 +1434,6 @@ class BIDSDataset:
         participant_ids_to_remap = BIDSDataset.load_remap_id_list(publish_config_dir)
         participant_ids_to_remove = BIDSDataset.load_participant_ids_to_remove(publish_config_dir)
         participant_session_id_to_remap = BIDSDataset.map_sequential_session_ids(self.data_path)
-
-        # Check if source directory has required files
-        participant_filepath = self.data_path.joinpath("participants.tsv")
-        if not participant_filepath.exists():
-            raise FileNotFoundError(f"Participant file {participant_filepath} does not exist.")
-        
-        logging.info("Processing participants.tsv for deidentification.")
-        df, phenotype = BIDSDataset.load_phenotype_data(self.data_path, "participants")
-        df, phenotype = BIDSDataset._deidentify_phenotype(df, phenotype, participant_ids_to_remove, participant_ids_to_remap, participant_session_id_to_remap)
-        
-        # Write out deidentified phenotype data and data dictionary
-        df.to_csv(outdir.joinpath("participants.tsv"), sep="\t", index=False)
-        with open(outdir.joinpath("participants.json"), "w") as f:
-            json.dump(phenotype, f, indent=2)
-        logging.info("Finished processing participants data.")
         
         # Process phenotype directory if it exists
         phenotype_base_path = self.data_path.joinpath("phenotype")
@@ -1654,7 +1639,6 @@ class VBAIDataset(BIDSDataset):
             A "wide" format dataframe with questionnaire data. Returns empty DataFrame 
             if columns are not found in participants.tsv.
         """
-        # Load participants.tsv file
         participants_file = self.data_path / "participants.tsv"
         if not participants_file.exists():
             logging.warning(f"participants.tsv file not found at {participants_file}")
