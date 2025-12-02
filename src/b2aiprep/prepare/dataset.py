@@ -1459,7 +1459,7 @@ class BIDSDataset:
         participant_ids_to_remap = BIDSDataset.load_remap_id_list(deidentify_config_dir)
         participant_ids_to_remove = BIDSDataset.load_participant_ids_to_remove(deidentify_config_dir)
         audio_filestems_to_remove = BIDSDataset.load_audio_filestems_to_remove(deidentify_config_dir)
-        sensitive_audio_tasks = BIDSDataset.load_senseitive_audio_tasks(deidentify_config_dir)
+        sensitive_audio_tasks = BIDSDataset.load_sensitive_audio_tasks(deidentify_config_dir)
         participant_session_id_to_remap = BIDSDataset.map_sequential_session_ids(self.data_path)
         
         # Process phenotype directory if it exists
