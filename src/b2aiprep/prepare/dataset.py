@@ -1418,7 +1418,23 @@ class BIDSDataset:
         
         return data
 
-    def deidentify(self, outdir: t.Union[str, Path], publish_config_dir: Path, skip_audio: bool = False) -> 'BIDSDataset':
+    @staticmethod
+    def load_senseitive_audio_tasks(deidentify_config_dir: Path) -> t.List[str]:
+        """Load list of audio tasks that are sensitive from JSON file."""
+        sensitive_audio_tasks_path = deidentify_config_dir / "sensitive_audio_tasks.json"
+        if not sensitive_audio_tasks_path.exists():
+            # If file doesn't exist, return empty list
+            return []
+
+        with open(sensitive_audio_tasks_path, 'r') as f:
+            data = json.load(f)
+
+        if not isinstance(data, list):
+            raise ValueError(f"Audio filestems to remove file {sensitive_audio_tasks_path} should contain a list of audio file stems.")
+        
+        return data
+
+    def deidentify(self, outdir: t.Union[str, Path], deidentify_config_dir: Path, skip_audio: bool = False, skip_auio_features: bool = True) -> 'BIDSDataset':
         """
         Create a deidentified version of the BIDS dataset.
         
@@ -1431,6 +1447,7 @@ class BIDSDataset:
         
         Args:
             outdir: Output directory for the deidentified dataset
+            deidentify_config_dir: Config directory for doing deidentification
             skip_audio: If True, skip copying/processing audio files
             
         Returns:
@@ -1439,8 +1456,10 @@ class BIDSDataset:
         outdir = Path(outdir)
         outdir.mkdir(parents=True, exist_ok=False)  # Don't overwrite existing directories
         
-        participant_ids_to_remap = BIDSDataset.load_remap_id_list(publish_config_dir)
-        participant_ids_to_remove = BIDSDataset.load_participant_ids_to_remove(publish_config_dir)
+        participant_ids_to_remap = BIDSDataset.load_remap_id_list(deidentify_config_dir)
+        participant_ids_to_remove = BIDSDataset.load_participant_ids_to_remove(deidentify_config_dir)
+        audio_filestems_to_remove = BIDSDataset.load_audio_filestems_to_remove(deidentify_config_dir)
+        sensitive_audio_tasks = BIDSDataset.load_senseitive_audio_tasks(deidentify_config_dir)
         participant_session_id_to_remap = BIDSDataset.map_sequential_session_ids(self.data_path)
         
         # Process phenotype directory if it exists
@@ -1467,9 +1486,18 @@ class BIDSDataset:
         if not skip_audio:
             # Process audio files
             logging.info("Processing audio files for deidentification.")
-            audio_filestems_to_remove = BIDSDataset.load_audio_filestems_to_remove(publish_config_dir)
-            BIDSDataset._deidentify_audio_files(self.data_path, outdir, participant_ids_to_remove, audio_filestems_to_remove, participant_ids_to_remap, participant_session_id_to_remap)
+            BIDSDataset._deidentify_audio_files(
+                self.data_path, 
+                outdir, 
+                participant_ids_to_remove, 
+                audio_filestems_to_remove,
+                sensitive_audio_tasks, 
+                participant_ids_to_remap, 
+                participant_session_id_to_remap,
+                skip_audio_features
+            )
             logging.info("Finished processing audio files.")
+
         
         # Copy over the standard BIDS template files if they exist
         for template_file in ["README.md", "CHANGES.md", "dataset_description.json"]:
@@ -1480,14 +1508,17 @@ class BIDSDataset:
         logging.info("Deidentification completed.")
         return BIDSDataset(outdir)
 
+
     @staticmethod
     def _deidentify_audio_files(
         data_path: Path,
         outdir: Path,
         exclude_participant_ids: t.List[str] = [],
         exclude_audio_filestems: t.List[str] = [],
+        sensitive_audio_task_list: t.List[str] = [],
         participant_ids_to_remap: t.Dict[str, str] = {},
-        participant_session_id_to_remap: t.Dict[str, str] = {}
+        participant_session_id_to_remap: t.Dict[str, str] = {},
+        skip_audio_features: bool = True
     ):
         """
         Copy and deidentify audio files to the output directory.
@@ -1500,7 +1531,14 @@ class BIDSDataset:
         5. Copies audio files and metadata to new location
         
         Args:
+            data_path: Directory of the input BIDS dataset
             outdir: Output directory for deidentified audio files
+            exclude_participant_ids: list of participant IDs to exclude
+            exclude_audio_filestems: list of audio filenames to exclude
+            sensitive_audio_task_list: list of sensitive audio tasks
+            participant_ids_to_remap: map between old and new participant IDs
+            participant_session_id_to_remap: map between old and new session IDs
+            skip_audio_features: boolean value of whether to skip deidentifying audio features
         """
         _LOGGER = logging.getLogger(__name__)
         
@@ -1540,8 +1578,18 @@ class BIDSDataset:
                 f"Removed {n - len(audio_paths)} records due to audio_filestem removal."
             )
         
+
+        n_audio = len(audio_paths)
+        audio_paths = [
+            x for x in audio_paths if 'audio-check' not in x.stem.split("_")[2].lower()
+        ]
+        if len(audio_paths) < n_audio:
+            _logger.info(
+                f"Removed {n_audio - len(audio_paths)} audio check recordings."
+            )
+        
         # Remove audio check and sensitive audio files
-        audio_paths = filter_audio_paths(audio_paths)
+        # audio_paths = filter_audio_paths(audio_paths)
 
         # TODO: Add audio processing for further deidentification here
         # This could include:
@@ -1559,6 +1607,10 @@ class BIDSDataset:
             if not json_path.exists():
                 _LOGGER.warning(f"Metadata file {json_path} not found. Skipping {audio_path}.")
                 continue
+
+            if not skip_audio_features and not features_path.exists():
+                _LOGGER.warning(f"Metadata file {features_path} not found. Skipping {audio_path}.")
+                continue
             
             metadata = json.loads(json_path.read_text())
             
@@ -1573,15 +1625,28 @@ class BIDSDataset:
                 f"sub-{participant_id}/ses-{session_id}/audio/sub-{participant_id}_ses-{session_id}_{audio_path_stem_ending}.wav"
             )
             output_path.parent.mkdir(parents=True, exist_ok=True)
-            
+        
             # Copy over the associated .json file and audio data
             with open(output_path.with_suffix(".json"), "w") as fp:
                 json.dump(metadata, fp, indent=2)
-
-            if features_path.exists():
-                new_features_path = output_path.parent / f"{output_path.stem}_features.pt"
-                shutil.copy(features_path, new_features_path)
             shutil.copy(audio_path, output_path)
+
+            # if it is not sensitive and we want to keep features, move all features over
+            if not skip_audio_features:
+                new_features_path = output_path.parent / f"{output_path.stem}_features.pt"
+                if not audio_path.split('_task')[1].lower() in sensitive_audio_task_list:
+                    shutil.copy(features_path, new_features_path)
+                else:
+                    features = torch.load(features_path, weights_only=False,map_location=torch.device('cpu'))
+
+                    # Sensitive features to remove
+                    features['ppgs'] = torch.tensor(torch.nan)
+                    features['transcription'] = None
+                    features['mel_filter_bank'] = torch.tensor(torch.nan)
+                    features['mfcc'] = torch.tensor(torch.nan)
+                    features['mel_spectrogram'] = torch.tensor(torch.nan)
+                    features['spectrogram'] = torch.tensor(torch.nan)
+
 
 
 class VBAIDataset(BIDSDataset):

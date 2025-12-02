@@ -69,6 +69,7 @@ sensitive information, referred to as deidentification. Deidentification require
 - `audio_filestems_to_remove.json` (File containing a list of sensitive audio files to remove)
 - `id_remapping.json` (File containing participant ids to change)
 - `participants_to_remove.json` (File containing list of participants to remove)
+- `sensitive_audio_tasks.json` (File containing list of sensitive audio tasks)
 
 Create these files and place them in a folder, e.g. `deidentification_config` (the "config" folder).
 After creating these files, you can run the deidentify dataset command: 
