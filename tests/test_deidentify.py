@@ -69,7 +69,7 @@ class TestDeidentifyCommandRefactor:
             assert result.exit_code == 0
             
             # Check that deidentify was called with correct parameters
-            mock_deidentify.assert_called_once_with(outdir=temp_output_dir, publish_config_dir=Path(temp_deidentify_config_dir), skip_audio=False, skip_audio_features=False)
+            mock_deidentify.assert_called_once_with(outdir=temp_output_dir, deidentify_config_dir=Path(temp_deidentify_config_dir), skip_audio=False, skip_audio_features=False)
 
     def test_deidentify_command_with_skip_audio(self, temp_bids_dir, temp_output_dir, temp_deidentify_config_dir):
         """Test the deidentify command with --skip_audio flag."""
@@ -89,7 +89,7 @@ class TestDeidentifyCommandRefactor:
             assert result.exit_code == 0
             
             # Check that deidentify was called with skip_audio=True
-            mock_deidentify.assert_called_once_with(outdir=temp_output_dir, publish_config_dir=Path(temp_deidentify_config_dir), skip_audio=True, skip_audio_features=False)
+            mock_deidentify.assert_called_once_with(outdir=temp_output_dir, deidentify_config_dir=Path(temp_deidentify_config_dir), skip_audio=True, skip_audio_features=False)
 
     def test_deidentify_command_with_no_skip_audio(self, temp_bids_dir, temp_output_dir, temp_deidentify_config_dir):
         """Test the deidentify command with --no-skip_audio flag."""
@@ -109,7 +109,7 @@ class TestDeidentifyCommandRefactor:
             assert result.exit_code == 0
             
             # Check that deidentify was called with skip_audio=False
-            mock_deidentify.assert_called_once_with(outdir=temp_output_dir, publish_config_dir=Path(temp_deidentify_config_dir), skip_audio=False, skip_audio_features=False)
+            mock_deidentify.assert_called_once_with(outdir=temp_output_dir, deidentify_config_dir=Path(temp_deidentify_config_dir), skip_audio=False, skip_audio_features=False)
 
     def test_deidentify_command_creates_bidsdataset_instance(self, temp_bids_dir, temp_output_dir, temp_deidentify_config_dir):
         """Test that the deidentify command creates a BIDSDataset instance with correct path."""

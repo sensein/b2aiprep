@@ -1434,7 +1434,7 @@ class BIDSDataset:
         
         return data
 
-    def deidentify(self, outdir: t.Union[str, Path], deidentify_config_dir: Path, skip_audio: bool = False, skip_audio_features: bool = True) -> 'BIDSDataset':
+    def deidentify(self, outdir: t.Union[str, Path], deidentify_config_dir: Path, skip_audio: bool = False, skip_audio_features: bool = False) -> 'BIDSDataset':
         """
         Create a deidentified version of the BIDS dataset.
         

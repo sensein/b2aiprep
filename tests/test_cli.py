@@ -153,7 +153,8 @@ def setup_bids_structure():
                 "ema": torch.randn(100,12),
                 "loudness": torch.randn(100,1),
                 "periodicity": torch.randn(100,1),
-                "pitch_stats": torch.randn(2)
+                "pitch_stats": torch.randn(2),
+                "pitch": torch.randn(100,1)
             }
 
         }
@@ -469,6 +470,12 @@ def test_deidentify_bids_dataset_cli_remove_audio(setup_bids_structure):
 
         with open(participants_to_remove_path , "w") as f:
             json.dump(participants_to_remove_data, f, indent=2)
+
+        sensitive_audio_tasks_path = config_dir  / "sensitive_audio_tasks.json"
+        sensitive_audio_tasks_data = []
+
+        with open(sensitive_audio_tasks_path , "w") as f:
+            json.dump(sensitive_audio_tasks_data, f, indent=2)
 
         command = ["b2aiprep-cli", "deidentify-bids-dataset", str(bids_dir), outdir, str(config_dir)]
 
