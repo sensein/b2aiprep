@@ -1498,6 +1498,19 @@ class BIDSDataset:
             )
             logging.info("Finished processing audio files.")
 
+        if not skip_audio_features:
+            # Process audio files
+            logging.info("Processing audio features for deidentification.")
+            BIDSDataset._deidentify_feature_files(
+                self.data_path, 
+                outdir, 
+                participant_ids_to_remove, 
+                audio_filestems_to_remove,
+                sensitive_audio_tasks, 
+                participant_ids_to_remap, 
+                participant_session_id_to_remap,
+            )
+            logging.info("Finished processing features.")
         
         # Copy over the standard BIDS template files if they exist
         for template_file in ["README.md", "CHANGES.md", "dataset_description.json"]:
@@ -1508,6 +1521,91 @@ class BIDSDataset:
         logging.info("Deidentification completed.")
         return BIDSDataset(outdir)
 
+    @staticmethod
+    def _collect_paths(
+        data_path: Path,
+        file_extension: str
+    ) -> t.List[Path]:
+        """Collect all file paths with the given extension from the dataset."""
+        paths = get_paths(data_path, file_extension=file_extension)
+        paths = [x["path"] for x in paths]
+        
+        # Sort audio paths for consistent processing
+        paths = sorted(
+            paths,
+            # sort first by subject, then by task
+            key=lambda x: (x.stem.split("_")[0], x.stem.split("_")[2]),
+        )
+        return paths
+
+    @staticmethod
+    def _apply_exclusion_list_to_filepaths(
+        paths: t.List[Path],
+        exclusion_list: t.List[str],
+        exclusion_type: str = 'participant'
+    ) -> t.List[Path]:
+        """Remove filepaths based on overlap with a specified exclusion list."""
+        n = len(paths)
+        exclusion = set(exclusion_list)
+        if len(exclusion) == 0:
+            return paths
+
+        if exclusion_type == 'participant':
+            paths = [
+                x for x in paths
+                if all(f"sub-{pid}" not in str(x) for pid in exclusion)
+            ]
+        elif exclusion_type == 'filename':
+            paths = [
+                a for a in paths
+                if a.stem not in exclusion
+            ]
+        elif exclusion_type == 'filestem_contains':
+            paths = [
+                a for a in paths
+                if all(excl not in a.stem for excl in exclusion)
+            ]
+            # for better logging, add the list of exclusions to the exclusion type
+            exclusion_type += f" ({', '.join(exclusion)})"
+        else:
+            raise ValueError(f"Unknown exclusion_type: {exclusion_type}")
+        if len(paths) < n:
+            _LOGGER.info(
+                f"Removed {n - len(paths)} records due to exclusion: {exclusion_type}."
+            )
+        return paths
+
+    @staticmethod
+    def _extract_participant_id_from_path(path: Path) -> str:
+        """Extract participant ID from the path, preferring directory parts.
+        Falls back to regex on filestem if needed."""
+        # Prefer directory parts
+        for part in path.parts:
+            if part.startswith("sub-"):
+                return part[4:]
+
+        # Fallback to filestem regex
+        m = re.search(r"sub-([A-Za-z0-9\-]+)", path.stem)
+        if m:
+            return m.group(1)
+
+        raise ValueError(f"Could not extract participant ID from path: {path}")
+
+    @staticmethod
+    def _extract_session_id_from_path(path: Path) -> str:
+        """Extract session ID from the path, preferring directory parts.
+        Falls back to regex on filestem using ses-(.+?)_ if needed."""
+        # Prefer directory parts
+        for part in path.parts:
+            if part.startswith("ses-"):
+                return part[4:]
+
+        # Fallback to filestem regex: ses-(.+?)_
+        m = re.search(r"ses-(.+?)_", path.stem)
+        if m:
+            return m.group(1)
+
+        raise ValueError(f"Could not extract session ID from path: {path}")
 
     @staticmethod
     def _deidentify_audio_files(
@@ -1540,56 +1638,26 @@ class BIDSDataset:
             participant_session_id_to_remap: map between old and new session IDs
             skip_audio_features: boolean value of whether to skip deidentifying audio features
         """
-        _LOGGER = logging.getLogger(__name__)
-        
         # Get all audio paths
-        audio_paths = get_paths(data_path, file_extension=".wav")
-        audio_paths = [x["path"] for x in audio_paths]
-        
+        audio_paths = BIDSDataset._collect_paths(data_path, file_extension=".wav")
         if len(audio_paths) == 0:
             _LOGGER.warning(f"No audio files (.wav) found in {data_path}.")
             return
         
-        # Sort audio paths for consistent processing
-        audio_paths = sorted(
-            audio_paths,
-            # sort first by subject, then by task
-            key=lambda x: (x.stem.split("_")[0], x.stem.split("_")[2]),
-        )
-        
         # Remove known individuals (hard-coded participant removal)
-        n = len(audio_paths)
-        for participant_id in exclude_participant_ids:
-            audio_paths = [x for x in audio_paths if f"sub-{participant_id}" not in str(x)]
-        
-        if len(audio_paths) < n:
-            _LOGGER.info(
-                f"Removed {n - len(audio_paths)} records due to participant_id removal."
-            )
-        
-        n = len(audio_paths)
-        if len(exclude_audio_filestems) > 0:
-            audio_paths = [
-                a for a in audio_paths
-                if a.stem not in exclude_audio_filestems
-            ]
-        if len(audio_paths) < n:
-            _LOGGER.info(
-                f"Removed {n - len(audio_paths)} records due to audio_filestem removal."
-            )
-        
+        audio_paths = BIDSDataset._apply_exclusion_list_to_filepaths(
+            audio_paths, exclusion_list=exclude_participant_ids, exclusion_type='participant'
+        )
 
-        n_audio = len(audio_paths)
-        audio_paths = [
-            x for x in audio_paths if 'audio-check' not in x.stem.split("_")[2].lower()
-        ]
-        if len(audio_paths) < n_audio:
-            _LOGGER.info(
-                f"Removed {n_audio - len(audio_paths)} audio check recordings."
-            )
-        
-        # Remove audio check and sensitive audio files
-        # audio_paths = filter_audio_paths(audio_paths)
+        # Remove known files (hard-coded file-based removal)
+        audio_paths = BIDSDataset._apply_exclusion_list_to_filepaths(
+            audio_paths, exclusion_list=exclude_audio_filestems, exclusion_type='filename'
+        )
+
+        # Remove specific tasks
+        audio_paths = BIDSDataset._apply_exclusion_list_to_filepaths(
+            audio_paths, exclusion_list=['audio-check'], exclusion_type='filestem_contains'
+        )
 
         # TODO: Add audio processing for further deidentification here
         # This could include:
@@ -1648,6 +1716,88 @@ class BIDSDataset:
                     features['spectrogram'] = torch.tensor(torch.nan)
                     torch.save(features, new_features_path)
 
+    @staticmethod
+    def _deidentify_feature_files(
+        data_path: Path,
+        outdir: Path,
+        exclude_participant_ids: t.List[str] = [],
+        exclude_audio_filestems: t.List[str] = [],
+        sensitive_audio_task_list: t.List[str] = [],
+        participant_ids_to_remap: t.Dict[str, str] = {},
+        participant_session_id_to_remap: t.Dict[str, str] = {},
+    ):
+        """
+        Copy and deidentify audio feature files to the output directory.
+        
+        This method:
+        1. Gets all audio feature paths from the dataset
+        2. Removes participants from hard-coded exclusion list
+        3. Filters out sensitive files
+        4. Removes subfields from sensitive files
+        5. Copies feature files to the new location
+        
+        Args:
+            data_path: Directory of the input BIDS dataset
+            outdir: Output directory for deidentified audio files
+            exclude_participant_ids: list of participant IDs to exclude
+            exclude_audio_filestems: list of audio filenames to exclude
+            sensitive_audio_task_list: list of sensitive audio tasks
+            participant_ids_to_remap: map between old and new participant IDs
+            participant_session_id_to_remap: map between old and new session IDs
+        """
+        # Get all audio paths
+        paths = BIDSDataset._collect_paths(data_path, file_extension=".pt")
+        if len(paths) == 0:
+            _LOGGER.warning(f"No feature files (.pt) found in {data_path}.")
+            return
+        
+        # Remove known individuals (hard-coded participant removal)
+        paths = BIDSDataset._apply_exclusion_list_to_filepaths(
+            paths, exclusion_list=exclude_participant_ids, exclusion_type='participant'
+        )
+
+        # Remove known files (hard-coded file-based removal)
+        paths = BIDSDataset._apply_exclusion_list_to_filepaths(
+            paths, exclusion_list=exclude_audio_filestems, exclusion_type='filename'
+        )
+
+        # Remove specific tasks
+        paths = BIDSDataset._apply_exclusion_list_to_filepaths(
+            paths, exclusion_list=['audio-check'], exclusion_type='filestem_contains'
+        )
+
+        # TODO: Add audio processing for further deidentification here
+        # This could include:
+        # - Voice conversion/anonymization
+        # - Pitch shifting
+        # - Other audio deidentification techniques
+        
+        _LOGGER.info(f"Copying {len(paths)} feature files.")
+        for features_path in tqdm(
+            paths, desc="Copying audio and metadata files", total=len(paths)
+        ):
+            participant_id = BIDSDataset._extract_participant_id_from_path(features_path)
+            session_id = BIDSDataset._extract_session_id_from_path(features_path)
+
+            # TODO: update participant_id and session_id
+            
+            # Create output path with deidentified structure
+            path_stem_ending = "_".join(features_path.stem.split("_", 3)[2:])
+            output_path = outdir.joinpath(
+                f"sub-{participant_id}/ses-{session_id}/audio/sub-{participant_id}_ses-{session_id}_{path_stem_ending}{features_path.suffix}"
+            )
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+
+            # if it is not sensitive and we want to keep features, move all features over
+            task_name = features_path.stem.split("_")[2][5:]
+            if task_name.lower() not in sensitive_audio_task_list:
+                shutil.copy(features_path, output_path)
+            else:
+                features = torch.load(features_path, weights_only=False, map_location=torch.device('cpu'))
+                # Sensitive features to remove
+                for field in ['ppgs', 'transcription', 'mel_filter_bank', 'mfcc', 'mel_spectrogram', 'spectrogram']:
+                    features.pop(field, None)
+                torch.save(features, output_path)
 
 
 class VBAIDataset(BIDSDataset):

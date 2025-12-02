@@ -109,7 +109,7 @@ def feature_extraction_generator(
         key=lambda x: (x.stem.split("_")[0], x.stem.split("_")[2]),
     )
     if feature_name not in ("spectrogram", "mfcc"):
-        raise ValueError(f"Feature name {feature_name} not supported.")
+        _LOGGER.warning(f"Feature name {feature_name} has not been tested. Proceeding anyway.")
 
     for wav_path in tqdm(audio_paths, total=len(audio_paths), desc="Extracting features"):
         output = {}
@@ -131,7 +131,8 @@ def feature_extraction_generator(
         else:
             data = data.numpy()
 
-        data = data[:, ::2]
+        if feature_name in ("spectrogram", "mfcc"):
+            data = data[:, ::2]
         output[feature_name] = data
 
         yield output

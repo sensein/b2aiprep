@@ -507,6 +507,82 @@ class TestBIDSDataset:
             assert transcript2.resolve() in resolved_transcripts
             assert other_file.resolve() not in resolved_transcripts
 
+    def test_collect_paths_sorts_and_returns_paths(self):
+        """Test that _collect_paths uses get_paths and sorts results consistently."""
+        with TemporaryDirectory() as temp_dir:
+            base = Path(temp_dir)
+            path_reading = base / "sub-001_ses-002_task-reading_rec-a.wav"
+            path_counting = base / "sub-001_ses-001_task-counting_rec-b.wav"
+            path_other = base / "sub-002_ses-001_task-alphabet_rec-c.wav"
+
+            with patch("b2aiprep.prepare.dataset.get_paths") as mock_get_paths:
+                mock_get_paths.return_value = [
+                    {"path": path_reading},
+                    {"path": path_other},
+                    {"path": path_counting},
+                ]
+
+                result = BIDSDataset._collect_paths(base, file_extension=".wav")
+
+        assert result == [path_counting, path_reading, path_other]
+        mock_get_paths.assert_called_once_with(base, file_extension=".wav")
+
+    def test_apply_exclusion_list_to_filepaths(self):
+        """Test filtering paths via participant, filename, and substring exclusions."""
+        with TemporaryDirectory() as temp_dir:
+            base = Path(temp_dir)
+            participant_paths = [
+                base / "sub-001" / "ses-001" / "audio" / "sub-001_ses-001_task-reading.wav",
+                base / "sub-002" / "ses-001" / "audio" / "sub-002_ses-001_task-reading.wav",
+            ]
+
+            filtered = BIDSDataset._apply_exclusion_list_to_filepaths(
+                participant_paths, ["001"], exclusion_type="participant"
+            )
+            assert filtered == [participant_paths[1]]
+
+            filename_paths = [base / "keep" / "keep-file.pt", base / "drop" / "drop-file.pt"]
+            filtered = BIDSDataset._apply_exclusion_list_to_filepaths(
+                filename_paths, ["drop-file"], exclusion_type="filename"
+            )
+            assert filtered == [filename_paths[0]]
+
+            filestem_paths = [
+                base / "audio" / "sub-001_ses-001_task-reading.wav",
+                base / "audio" / "sub-001_ses-001_audio-check.wav",
+            ]
+            filtered = BIDSDataset._apply_exclusion_list_to_filepaths(
+                filestem_paths, ["audio-check"], exclusion_type="filestem_contains"
+            )
+            assert filtered == [filestem_paths[0]]
+
+            with pytest.raises(ValueError):
+                BIDSDataset._apply_exclusion_list_to_filepaths(
+                    participant_paths, ["001"], exclusion_type="unknown"
+                )
+
+    def test_extract_participant_id_from_path(self):
+        """Test extracting participant IDs via directory and fallback regex."""
+        path_with_dir = Path("/tmp/sub-ABC/ses-001/audio/file.wav")
+        assert BIDSDataset._extract_participant_id_from_path(path_with_dir) == "ABC"
+
+        path_with_stem = Path("/tmp/submissions/foo_sub-XYZ123_session.wav")
+        assert BIDSDataset._extract_participant_id_from_path(path_with_stem) == "XYZ123"
+
+        with pytest.raises(ValueError):
+            BIDSDataset._extract_participant_id_from_path(Path("/tmp/no_participant_here.wav"))
+
+    def test_extract_session_id_from_path(self):
+        """Test extracting session IDs via directory and fallback regex."""
+        path_with_dir = Path("/tmp/sub-001/ses-002/audio/file.wav")
+        assert BIDSDataset._extract_session_id_from_path(path_with_dir) == "002"
+
+        path_with_stem = Path("/tmp/audio/sub-001_session_ses-baseline_recording.json")
+        assert BIDSDataset._extract_session_id_from_path(path_with_stem) == "baseline"
+
+        with pytest.raises(ValueError):
+            BIDSDataset._extract_session_id_from_path(Path("/tmp/no_session_here.wav"))
+
 
 class TestVBAIDataset:
     """Test cases for the VBAIDataset class."""
