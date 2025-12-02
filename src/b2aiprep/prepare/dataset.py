@@ -16,6 +16,7 @@ sub-p1/
     ...
 """
 
+from copy import copy
 import logging
 import os
 import re
@@ -36,7 +37,8 @@ from soundfile import LibsndfileError
 from tqdm import tqdm
 
 from b2aiprep.prepare.constants import RepeatInstrument, Instrument
-from b2aiprep.prepare.utils import copy_package_resource
+from b2aiprep.prepare.update import build_activity_payload
+from b2aiprep.prepare.utils import copy_package_resource, get_commit_sha
 from b2aiprep.prepare.fhir_utils import convert_response_to_fhir
 from b2aiprep.prepare.prepare import (
     filter_audio_paths, 
@@ -125,9 +127,8 @@ class BIDSDataset:
 
         logging.info("Converting RedCap dataset to BIDS-like format.")
         # Subselect the RedCap dataframe and output components to individual files in the phenotype directory
-        BIDSDataset._construct_all_tsvs_from_jsons(
+        BIDSDataset._construct_phenotype_from_reproschema(
             df=redcap_dataset.df,
-            input_dir=os.path.join(outdir, "phenotype"),
             output_dir=os.path.join(outdir, "phenotype"),
         )
 
@@ -666,36 +667,131 @@ class BIDSDataset:
             json.dump(json_data, f, indent=2)
 
     @staticmethod
-    def _construct_all_tsvs_from_jsons(
-        df: pd.DataFrame,
-        input_dir: str,
-        output_dir: str,
-        excluded_files: t.Optional[t.List[str]] = None,
-    ) -> None:
-        """Construct TSV files from all JSON files in a specified directory.
+    def _load_reproschema(
+        reproschema_file: Path,
+    ) -> t.Dict[str, t.Dict[str, t.Any]]:
+        with reproschema_file.open("r", encoding="utf-8") as fp:
+            schema_json = json.load(fp)
+        
+        protocol_order = schema_json.get("ui", {}).get("order")
 
-        Excludes specific files if provided.
+        reproschema_folder: Path = reproschema_file.parents[1]
+        commit_sha = get_commit_sha(reproschema_folder)
+
+        activities = {}
+        for rel_path in protocol_order:
+            # activities are relative to the reproschema schema file itself
+            activity_path = reproschema_file.parent.joinpath(rel_path).resolve()
+            if not activity_path.exists():
+                _LOGGER.warning("Skipping missing activity %s", rel_path)
+                continue
+
+            activity_json = json.loads(activity_path.read_text())
+            activity_id = activity_json.get("id")
+
+            payload = build_activity_payload(
+                activity_json=activity_json,
+                activity_path=activity_path,
+                reproschema_folder=reproschema_folder,
+                commit_sha=commit_sha,
+            )
+
+            activities[activity_id] = payload
+
+        return activities
+
+    @staticmethod
+    def _construct_phenotype_from_reproschema(
+        df: pd.DataFrame,
+        output_dir: str,
+        clean_phenotype_data: bool = True
+    ) -> None:
+        """Construct TSV/JSON files from a source ReproSchema folder.
 
         Args:
             df: DataFrame containing the data.
             input_dir: Directory containing JSON files with column labels.
             output_dir: Directory where the TSV files will be saved.
-            excluded_files: List of JSON filenames to exclude from processing.
-                Defaults to None.
         """
-        # Ensure the excluded_files list is initialized if None is provided
-        if excluded_files is None:
-            excluded_files = []
-
         # Ensure output directory exists
         os.makedirs(output_dir, exist_ok=True)
 
-        for filename in os.listdir(input_dir):
-            if filename.endswith(".json") and filename not in excluded_files:
-                BIDSDataset._process_phenotype_tsv_and_json(
-                    df=df, input_dir=input_dir, output_dir=output_dir, filename=filename,
-                    clean_phenotype_data=True,
-                )
+        # TODO: replace below with a cache folder downloaded from github
+        # and versioned appropriately
+        repo_root = Path(__file__).resolve().parents[3]
+        resolved_schema_file = repo_root.joinpath(
+            "b2ai-redcap2rs", "b2ai-redcap2rs", "b2ai-redcap2rs_schema",
+        )
+        # FIXME: loading 0 schemas.
+        schemas = BIDSDataset._load_reproschema(resolved_schema_file)
+
+        # create an index for data_element -> schema
+        element_to_schema = {}
+        for schema_name, data in schemas.items():
+            for element_name in data['data_elements'].keys():
+                element_to_schema[element_name] = schema_name
+
+        # with all the reproschema activities defined, we now look for a manual reorganization
+        reorganization_file = files("b2aiprep.prepare.resources").joinpath("bids_field_organization.csv")
+        df_reorg = pd.read_csv(reorganization_file, sep=',', header=0)
+
+        element_used = {} # keep track of whether we have used an element, for logging later.
+        for activity_id, group in df_reorg.groupby('schema_name'):
+            column_mapping = group.set_index('column_name').to_dict(orient='index')
+
+            payload = {
+                "description": "",
+                "data_elements": {}
+            }
+            # this variable will track the name of the original columns in RedCap
+            columns_for_indexing = []
+            # this variable will track the name of the *new* columns in the output df
+            columns_for_output = []
+            for column, updated_data in column_mapping.items():
+                schema_to_use = element_to_schema[column]
+                data_element = copy(schemas[schema_to_use]["data_elements"][column])
+
+                if "description" in updated_data and (updated_data["description"] != ""):
+                    description = updated_data["description"]
+                elif "description" in data_element and (data_element["description"] != ""):
+                    description = data_element["description"]
+                else:
+                    description = data_element.get("question", "").get("en", "")
+                data_element["description"] = description
+                new_element_name = updated_data["renamed_column"]
+
+                if column not in df.columns:
+                    _LOGGER.warning(f'Requested output for "{column}", but this column was not found in the source df.')
+                    continue
+                columns_for_indexing.append(column)
+                columns_for_output.append(new_element_name)
+
+                # update the payload so we have a reproschema json for this df
+                payload["data_elements"][new_element_name] = data_element
+                element_used[column] = True
+
+            updated_schema = {activity_id: payload}
+
+            if "record_id" not in columns_for_indexing:
+                columns_for_indexing = ["record_id"] + columns_for_indexing
+                columns_for_output = ["record_id"] + columns_for_output
+            # we now extract the sub-dataframe from our source redcap data and output it to tsv
+            selected_df = df[columns_for_indexing]
+            # Combine entries so there is one row per record_id
+            selected_df = selected_df.groupby("record_id").first().reset_index()
+
+
+            if clean_phenotype_data:
+                selected_df, updated_schema = BIDSDataset._clean_phenotype_data(selected_df, updated_schema)
+            
+            # Output to a TSV/JSON file.
+            filename = f'{activity_id}.json'
+            BIDSDataset._dataframe_to_tsv(
+                selected_df,
+                os.path.join(output_dir, filename.replace(".json", ".tsv"))
+            )
+            with open(os.path.join(output_dir, filename), "w") as f:
+                json.dump(updated_schema, f, indent=2)
 
     @staticmethod
     def _get_instrument_for_name(name: str) -> Instrument:

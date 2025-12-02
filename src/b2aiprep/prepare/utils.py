@@ -3,7 +3,9 @@ from importlib.resources import files, as_file
 import json
 import logging
 import os
+from pathlib import Path
 import shutil
+import subprocess
 import time
 import wave
 from typing import Dict, List
@@ -11,6 +13,16 @@ from typing import Dict, List
 import pandas as pd
 
 _LOGGER = logging.getLogger(__name__)
+
+
+def get_commit_sha(submodule_root: Path) -> str:
+    result = subprocess.run(
+        ["git", "-C", str(submodule_root), "rev-parse", "HEAD"],
+        capture_output=True,
+        check=True,
+        text=True,
+    )
+    return result.stdout.strip()
 
 
 def reformat_resources(input_dir: str, output_dir: str) -> None:

@@ -67,7 +67,7 @@ from b2aiprep.prepare.prepare import (
 from b2aiprep.prepare.quality_control import quality_control_wrapper
 
 from b2aiprep.prepare.data_validation import validate_derivatives
-from b2aiprep.bids.update import TemplateUpdateError, update_bids_template_files
+from b2aiprep.prepare.update import TemplateUpdateError, reorganize_bids_activities, update_bids_template_files
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -579,28 +579,37 @@ def validate_data(derivatives_csv_path):
     help="Optional path to the protocol schema file to parse.",
 )
 @click.option(
+    "--reorganize",
+    is_flag=True,
+    help="Reorganize phenotype JSONs into manually curated file organization."
+)
+@click.option(
     "--dry-run",
     is_flag=True,
     help="Report which files would be generated without writing them.",
 )
-def update_bids_template_command(submodule_path, output_dir, schema_file, dry_run):
+def update_bids_template_command(submodule_path, output_dir, schema_file, reorganize, dry_run):
     """Regenerate phenotype template JSONs from the reproschema repository."""
-
-    try:
-        generated_files = update_bids_template_files(
-            submodule_path=submodule_path,
-            output_dir=output_dir,
-            schema_file=schema_file,
-            dry_run=dry_run,
-        )
-    except TemplateUpdateError as exc:
-        raise click.ClickException(str(exc)) from exc
 
     target_dir = (
         Path(output_dir)
         if output_dir
         else Path(__file__).resolve().parents[2] / "src/b2aiprep/template/phenotype"
     ).resolve()
+
+    try:
+        generated_files = update_bids_template_files(
+            submodule_path=submodule_path,
+            output_dir=target_dir,
+            schema_file=schema_file,
+            dry_run=dry_run,
+        )
+    except TemplateUpdateError as exc:
+        raise click.ClickException(str(exc)) from exc
+
+    if reorganize:
+        generated_files = reorganize_bids_activities(target_dir, dry_run)
+
     verb = "Planned" if dry_run else "Wrote"
     click.echo(f"{verb} {len(generated_files)} template file(s) in {target_dir}")
 
