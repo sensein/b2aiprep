@@ -1673,10 +1673,6 @@ class BIDSDataset:
                 _LOGGER.warning(f"Metadata file {json_path} not found. Skipping {audio_path}.")
                 continue
 
-            if not skip_audio_features and not features_path.exists():
-                _LOGGER.warning(f"Features file {features_path} not found. Skipping {audio_path}.")
-                continue
-            
             metadata = json.loads(json_path.read_text())
             
             # Update metadata with deidentified IDs
@@ -1760,7 +1756,11 @@ class BIDSDataset:
             participant_id = BIDSDataset._extract_participant_id_from_path(features_path)
             session_id = BIDSDataset._extract_session_id_from_path(features_path)
 
-            # TODO: update participant_id and session_id
+            # Check that the audio exists
+            audio_path = features_path.parent / (features_path.stem[:-9] + '.wav')
+            if not audio_path.exists():
+                _LOGGER.warning(f"Audio file {audio_path} not found. Skipping {features_path}.")
+                continue
             
             # Create output path with deidentified structure
             path_stem_ending = "_".join(features_path.stem.split("_", 3)[2:])
