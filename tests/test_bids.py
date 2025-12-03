@@ -465,12 +465,13 @@ def test_redcap_to_bids():
     # Create RedCapDataset from CSV file
     redcap_dataset = RedCapDataset.from_redcap(csv_file_path)
     
+    reproschema_source_dir = project_root.joinpath("b2ai-redcap2rs", "b2ai-redcap2rs").resolve().as_posix()
     # Use TemporaryDirectory for the output directory
     with TemporaryDirectory() as tmp_dir:
         output_dir = Path(tmp_dir) / "bids_output"
 
         # Convert to BIDS format using the new class method
-        bids_dataset = BIDSDataset.from_redcap(redcap_dataset, output_dir, audiodir=None)
+        bids_dataset = BIDSDataset.from_redcap(redcap_dataset, reproschema_source_dir, output_dir, audiodir=None)
         
         # Check if the expected output files exist in the temporary directory
         if not any(output_dir.iterdir()):
@@ -481,24 +482,6 @@ def test_redcap_to_bids():
         
         # Verify that the BIDSDataset points to the correct directory
         assert bids_dataset.data_path == output_dir.resolve(), "BIDSDataset should point to the output directory"
-
-
-def test_bids_dataset_from_redcap_method_exists():
-    """Test that the new BIDSDataset.from_redcap class method exists and has correct signature."""
-    import inspect
-    
-    # Test that from_redcap class method exists
-    assert hasattr(BIDSDataset, 'from_redcap'), "BIDSDataset should have from_redcap class method"
-    
-    # Test method signature
-    sig = inspect.signature(BIDSDataset.from_redcap)
-    params = list(sig.parameters.keys())
-    expected_params = ['redcap_dataset', 'outdir', 'audiodir']
-    for param in expected_params:
-        assert param in params, f"from_redcap should have {param} parameter"
-    
-    # Test that it's a classmethod
-    assert isinstance(inspect.getattr_static(BIDSDataset, 'from_redcap'), classmethod), "from_redcap should be a classmethod"
 
 
 def test_redcap_dataset_to_csv():

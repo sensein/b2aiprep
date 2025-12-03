@@ -104,6 +104,7 @@ class BIDSDataset:
     def from_redcap(
         cls,
         redcap_dataset: RedCapDataset,
+        reproschema_source_dir: str,
         outdir: t.Union[str, Path],
         audiodir: t.Optional[t.Union[str, Path]] = None,
         max_audio_workers: int = 16
@@ -129,6 +130,7 @@ class BIDSDataset:
         # Subselect the RedCap dataframe and output components to individual files in the phenotype directory
         BIDSDataset._construct_phenotype_from_reproschema(
             df=redcap_dataset.df,
+            source_dir=reproschema_source_dir,
             output_dir=os.path.join(outdir, "phenotype"),
         )
 
@@ -704,25 +706,31 @@ class BIDSDataset:
     def _construct_phenotype_from_reproschema(
         df: pd.DataFrame,
         output_dir: str,
+        source_dir: str,
         clean_phenotype_data: bool = True
     ) -> None:
         """Construct TSV/JSON files from a source ReproSchema folder.
 
         Args:
             df: DataFrame containing the data.
-            df: DataFrame containing the data.
             output_dir: Directory where the TSV files will be saved.
+            source_dir: Directory containing the ReproSchema JSON files.
+            clean_phenotype_data: Whether to clean the phenotype data (default: True).
         """
         # Ensure output directory exists
         os.makedirs(output_dir, exist_ok=True)
 
-        # TODO: replace below with a cache folder downloaded from github
-        # and versioned appropriately
-        repo_root = Path(__file__).resolve().parents[3]
-        resolved_schema_file = repo_root.joinpath(
-            "b2ai-redcap2rs", "b2ai-redcap2rs", "b2ai-redcap2rs_schema",
-        )
-        # FIXME: loading 0 schemas.
+        # Load reproschema file
+        source_path = Path(source_dir).resolve()
+        if source_path.joinpath('b2ai-redcap2rs_schema').exists():
+            resolved_schema_file = source_path.joinpath('b2ai-redcap2rs_schema')
+        elif source_path.joinpath('b2ai-redcap2rs', 'b2ai-redcap2rs_schema').exists():
+            resolved_schema_file = source_path.joinpath('b2ai-redcap2rs', 'b2ai-redcap2rs_schema')
+        else:
+            raise FileNotFoundError(
+                f"Could not find 'b2ai-redcap2rs_schema' in source directory: {source_dir}"
+            )
+
         schemas = BIDSDataset._load_reproschema(resolved_schema_file)
 
         # create an index for data_element -> schema
