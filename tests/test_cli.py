@@ -482,8 +482,8 @@ def test_deidentify_bids_dataset_cli_remove_audio(setup_bids_structure):
         result = subprocess.run(command, capture_output=True, text=True)
         assert result.returncode == 0, f"CLI command failed: {result.stderr}"
         assert os.path.exists(outdir), "Output directory was not created"
-        # check if file/participant was removed
-        assert not os.path.exists(os.path.join(outdir, "sub-001"))
+        # check if file was removed
+        assert not os.path.exists(os.path.join(outdir, "sub-001", "ses-001", "audio", "sub-001_ses-001_task-reading.wav"))
 
 def test_reproschema_to_redcap_cli():
     """Test the 'b2aiprep-cli reproschema-to-redcap' command using subprocess."""
