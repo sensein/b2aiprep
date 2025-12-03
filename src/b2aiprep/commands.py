@@ -329,6 +329,16 @@ def create_derived_dataset(bids_path, outdir):
         key=lambda x: (x.stem.split("_")[0], x.stem.split("_")[2]),
     )
 
+    _LOGGER.info("Creating phenotype data")
+    phenotype_path = outdir / "phenotype"
+    bids_phenotype_path = bids_path / "phenotype"
+
+    if not bids_phenotype_path.exists():
+        _LOGGER.warning("Could not locate Phenotype Folder, skipping... ")
+    else:
+        shutil.copytree(bids_phenotype_path, phenotype_path, dirs_exist_ok=True)
+        _LOGGER.info("Finished creating phenotype data")
+
     _LOGGER.info("Loading audio static features.")
     static_features = []
     for filepath in tqdm(audio_paths, desc="Loading static features", total=len(audio_paths)):
