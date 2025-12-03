@@ -351,7 +351,7 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
         if not filepath.exists(): #pt will exist based on how audio paths were generated, but audio file might not exist
             continue
 
-        device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        device = 'cpu' # not checking for cuda because optimization would be minimal if any
         features = torch.load(pt_file, weights_only=False, map_location=torch.device(device))
         subj_info = {
             "participant_id": str(pt_file).split("sub-")[1].split("/ses-")[0],

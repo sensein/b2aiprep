@@ -124,10 +124,10 @@ Once the command is complete, you should have the following output:
 ### 5. Publish
 
 For simplicity, the BIDS dataset is parsed into a small set of files for publication and wide dissemination. 
-Run the following to create the derived dataset: 
+Run the following to create the bundled dataset: 
 ```
 b2aiprep-cli create-bundled-dataset <path/to/input/bids_folder>  \ 
-    <path/to/output/derive_folder> 
+    <path/to/output/bundled_folder> 
 ```
 
 Once this command is done, you will have a dataset ready to release! Congratulations!

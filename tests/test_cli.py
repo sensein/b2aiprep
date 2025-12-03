@@ -185,6 +185,182 @@ def setup_bids_structure():
         yield bids_dir
 
 
+@pytest.fixture
+def setup_bids_structure_with_nan_feature():
+    """Fixture to create a basic BIDS structure for testing."""
+    with tempfile.TemporaryDirectory() as temp_dir:
+        bids_dir = Path(temp_dir) / "bids"
+        bids_dir.mkdir()
+
+        # Create basic BIDS structure
+        subject_dir = bids_dir / "sub-001" / "ses-001" / "audio"
+        subject_dir.mkdir(parents=True)
+              
+        session_data = {
+            "record_id": ["001"],
+            "session_id": ["001"],
+        }
+        session_df = pd.DataFrame(session_data)
+
+        session_tsv = bids_dir / "sub-001"/ f"sessions.tsv"
+        session_df.to_csv(session_tsv, sep="\t", index=False)
+
+        # Create proper dummy audio file
+        audio_file = subject_dir / "sub-001_ses-001_task-reading.wav"
+        create_dummy_wav_file(str(audio_file))
+
+        # Create corresponding JSON metadata file for the audio
+        audio_json = subject_dir / "sub-001_ses-001_task-reading.json"
+        audio_json.write_text(
+            """{
+            "item": [
+                {
+                    "linkId": "record_id",
+                    "answer": [{"valueString": "001"}]
+                },
+                {
+                    "linkId": "session_id",
+                    "answer": [{"valueString": "001"}]
+                }
+            ]
+        }"""
+        )
+
+        # Create proper dummy feature file (PyTorch tensor)
+        feature_file = subject_dir / "sub-001_ses-001_task-reading_features.pt"
+        dummy_features = {
+            "torchaudio": {
+                "spectrogram": torch.nan,  # dummy spectrogram
+                "mfcc": torch.randn(13, 100),  # dummy MFCC features
+                "mel_filter_bank": torch.randn(13,100),
+                "mel_spectrogram": torch.randn(13,100),
+                "pitch": torch.randn(100)
+            },
+            "ppgs": torch.randn(1,40,100),
+            "sparc": {
+                "ema": torch.randn(100,12),
+                "loudness": torch.randn(100,1),
+                "periodicity": torch.randn(100,1),
+                "pitch_stats": torch.randn(2),
+                "pitch": torch.randn(100,1)
+            }
+
+        }
+        torch.save(dummy_features, feature_file)
+
+        # Create participants.tsv
+        participants_file = bids_dir / "participants.tsv"
+        participants_file.write_text("participant_id\trecord_id\tsex\tage\n001\t001\tF\t25")
+
+        # Create participants.json (required for some commands)
+        participants_json = bids_dir / "participants.json"
+        participants_json.write_text(
+            '{"participant_id": {"Description": "Unique participant identifier"}, '
+            '"record_id": {"Description": "Unique record identifier"}, '
+            '"sex": {"Description": "Sex of participant"}, '
+            '"age": {"Description": "Age of participant"}}'
+        )
+
+        # Create dataset_description.json
+        dataset_desc = bids_dir / "dataset_description.json"
+        dataset_desc.write_text('{"Name": "Test Dataset", "BIDSVersion": "1.8.0"}')
+
+        # Create README.md and CHANGES.md
+        (bids_dir / "README.md").write_text("Test dataset")
+        (bids_dir / "CHANGES.md").write_text("Version 1.0")
+        (bids_dir / "CHANGELOG.md").write_text("Version 1.0")
+
+        yield bids_dir
+
+
+@pytest.fixture
+def setup_bids_structure_after_deidentify():
+    """Fixture to create a basic BIDS structure for testing."""
+    with tempfile.TemporaryDirectory() as temp_dir:
+        bids_dir = Path(temp_dir) / "bids"
+        bids_dir.mkdir()
+
+        # Create basic BIDS structure
+        subject_dir = bids_dir / "sub-001" / "ses-001" / "audio"
+        subject_dir.mkdir(parents=True)
+              
+        session_data = {
+            "record_id": ["001"],
+            "session_id": ["001"],
+        }
+        session_df = pd.DataFrame(session_data)
+
+        session_tsv = bids_dir / "sub-001"/ f"sessions.tsv"
+        session_df.to_csv(session_tsv, sep="\t", index=False)
+
+        # Create proper dummy audio file
+        audio_file = subject_dir / "sub-001_ses-001_task-reading.wav"
+        create_dummy_wav_file(str(audio_file))
+
+        # Create corresponding JSON metadata file for the audio
+        audio_json = subject_dir / "sub-001_ses-001_task-reading.json"
+        audio_json.write_text(
+            """{
+            "item": [
+                {
+                    "linkId": "record_id",
+                    "answer": [{"valueString": "001"}]
+                },
+                {
+                    "linkId": "session_id",
+                    "answer": [{"valueString": "001"}]
+                }
+            ]
+        }"""
+        )
+
+        # Create proper dummy feature file (PyTorch tensor)
+        feature_file = subject_dir / "sub-001_ses-001_task-reading_features.pt"
+        dummy_features = {
+            "torchaudio": {
+                "spectrogram": None
+                "mfcc": None,  # dummy MFCC features
+                "mel_filter_bank": torch.randn(13,100),
+                "mel_spectrogram": None,
+                "pitch": torch.randn(100)
+            },
+            "ppgs": None,
+            "sparc": {
+                "ema": torch.randn(100,12),
+                "loudness": torch.randn(100,1),
+                "periodicity": torch.randn(100,1),
+                "pitch_stats": torch.randn(2),
+                "pitch": torch.randn(100,1)
+            }
+
+        }
+        torch.save(dummy_features, feature_file)
+
+        # Create participants.tsv
+        participants_file = bids_dir / "participants.tsv"
+        participants_file.write_text("participant_id\trecord_id\tsex\tage\n001\t001\tF\t25")
+
+        # Create participants.json (required for some commands)
+        participants_json = bids_dir / "participants.json"
+        participants_json.write_text(
+            '{"participant_id": {"Description": "Unique participant identifier"}, '
+            '"record_id": {"Description": "Unique record identifier"}, '
+            '"sex": {"Description": "Sex of participant"}, '
+            '"age": {"Description": "Age of participant"}}'
+        )
+
+        # Create dataset_description.json
+        dataset_desc = bids_dir / "dataset_description.json"
+        dataset_desc.write_text('{"Name": "Test Dataset", "BIDSVersion": "1.8.0"}')
+
+        # Create README.md and CHANGES.md
+        (bids_dir / "README.md").write_text("Test dataset")
+        (bids_dir / "CHANGES.md").write_text("Version 1.0")
+        (bids_dir / "CHANGELOG.md").write_text("Version 1.0")
+
+        yield bids_dir
+
+
 def test_bids2shadow_cli(setup_temp_files):
     """Test the 'b2aiprep-cli bids2shadow' command using subprocess."""
     redcap_csv_path, audio_dir, bids_dir_path, tar_file_path = setup_temp_files
@@ -361,6 +537,30 @@ def test_createbatchcsv_cli():
 def test_create_bundled_dataset_cli(setup_bids_structure):
     """Test the 'b2aiprep-cli create-bundled-dataset' command using subprocess."""
     bids_dir = setup_bids_structure
+
+    with tempfile.TemporaryDirectory() as outdir:
+        command = ["b2aiprep-cli", "create-bundled-dataset", str(bids_dir), outdir]
+
+        result = subprocess.run(command, capture_output=True, text=True)
+        assert result.returncode == 0, f"CLI command failed: {result.stderr}"
+        assert os.path.exists(outdir), "Output directory was not created"
+
+
+def test_create_bundled_dataset_cli_with_nans(setup_bids_structure_with_nan_feature):
+    """Test the 'b2aiprep-cli create-bundled-dataset' command using subprocess with nans."""
+    bids_dir = setup_bids_structure_with_nan_feature
+
+    with tempfile.TemporaryDirectory() as outdir:
+        command = ["b2aiprep-cli", "create-bundled-dataset", str(bids_dir), outdir]
+
+        result = subprocess.run(command, capture_output=True, text=True)
+        assert result.returncode == 0, f"CLI command failed: {result.stderr}"
+        assert os.path.exists(outdir), "Output directory was not created"
+
+
+def test_create_bundled_dataset_cli_with_sensitive(setup_bids_structure_after_deidentify):
+    """Test the 'b2aiprep-cli create-bundled-dataset' command using subprocess with deidentified."""
+    bids_dir = setup_bids_structure_after_deidentify
 
     with tempfile.TemporaryDirectory() as outdir:
         command = ["b2aiprep-cli", "create-bundled-dataset", str(bids_dir), outdir]

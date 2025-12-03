@@ -26,20 +26,31 @@ def spectrogram_generator(
     for wav_path in tqdm(audio_paths, total=len(audio_paths), desc="Extracting features"):
         output = {}
         pt_file = wav_path.parent / f"{wav_path.stem}_features.pt"
-        device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        device = 'cpu' # not checking for cuda because optimization would be minimal if any
         features = torch.load(pt_file, weights_only=False, map_location=torch.device(device))
 
         output["participant_id"] = wav_path.stem.split("_")[0][4:]  # skip "sub-" prefix
         output["session_id"] = wav_path.stem.split("_")[1][4:]  # skip "ses-" prefix
         output["task_name"] = wav_path.stem.split("_")[2][5:]  # skip "task-" prefix
 
-        spectrogram = features["torchaudio"]["spectrogram"]
-        spectrogram = 10.0 * torch.log10(torch.maximum(spectrogram, torch.tensor(1e-10)))
-        spectrogram = torch.maximum(spectrogram, spectrogram.max() - 80)
-        spectrogram = spectrogram.numpy().astype(np.float32)
-        # skip every other column
-        spectrogram = spectrogram[:, ::2]
-        output["spectrogram"] = spectrogram
+        spectrogram = features["torchaudio"].get("spectrogram", None)
+        
+        if spectrogram is not None:
+            spectrogram = torch.tensor(spectrogram)
+            if not torch.isnan(spectrogram).all().item():
+                spectrogram = 10.0 * torch.log10(torch.maximum(spectrogram, torch.tensor(1e-10)))
+                spectrogram = torch.maximum(spectrogram, spectrogram.max() - 80)
+                spectrogram = spectrogram.numpy().astype(np.float32)
+                # skip every other column
+                spectrogram = spectrogram[:, ::2]
+                output["spectrogram"] = spectrogram
+            else:
+                _LOGGER.warning(f"Spectrogram for {wav_path} found to be all NaNs. Skipping.")
+                continue
+        else:
+            _LOGGER.warning(f"Spectrogram for {wav_path} not found. Likely sensitive file. Skipping.")
+            continue
+            
 
         yield output
 
@@ -75,7 +86,7 @@ def load_audio_features(
         # output["transcription"] = transcription
 
         pt_file = features_dir / f"{wav_path.stem}_features.pt"
-        device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        device = 'cpu' # not checking for cuda because optimization would be minimal if any
         features = torch.load(pt_file, weights_only=False, map_location=torch.device(device))
         output["spectrogram"] = features["torchaudio"]["spectrogram"].numpy().astype(np.float32)
         # for feature_name in ["speaker_embedding", "specgram", "melfilterbank", "mfcc", "opensmile"]:
@@ -116,7 +127,7 @@ def feature_extraction_generator(
     for wav_path in tqdm(audio_paths, total=len(audio_paths), desc="Extracting features"):
         output = {}
         pt_file = wav_path.parent / f"{wav_path.stem}_features.pt"
-        device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        device = 'cpu' # not checking for cuda because optimization would be minimal if any
         features = torch.load(pt_file, weights_only=False, map_location=torch.device(device))
 
         output["participant_id"] = wav_path.stem.split("_")[0][4:]  # skip "sub-" prefix
@@ -129,18 +140,23 @@ def feature_extraction_generator(
             data = features.get(feature_name, None)
         
         if data is not None:
-            if feature_name == "spectrogram":
-                data = 10.0 * torch.log10(torch.maximum(data, torch.tensor(1e-10)))
-                data = torch.maximum(data, data.max() - 80)
-                data = data.numpy().astype(np.float32)
-            else:
-                data = data.numpy()
+            data = torch.tensor(data)
+            if not torch.isnan(data).all().item():
+                if feature_name == "spectrogram":
+                    data = 10.0 * torch.log10(torch.maximum(data, torch.tensor(1e-10)))
+                    data = torch.maximum(data, data.max() - 80)
+                    data = data.numpy().astype(np.float32)
+                else:
+                    data = data.numpy()
 
-            if feature_name in ("spectrogram", "mfcc"):
-                data = data[:, ::2]
-            output[feature_name] = data
+                if feature_name in ("spectrogram", "mfcc"):
+                    data = data[:, ::2]
+                output[feature_name] = data
+            else:
+                _LOGGER.warning(f"Feature {feature_name} for {wav_path} is all NaNs in feature file. Skipping.")
+                continue
         else:
-            _LOGGER.warning(f"Feature {feature_name} for {wav_path} not found in features file so skipping.")
+            _LOGGER.warning(f"Feature {feature_name} for {wav_path} not found in feature file likely due to sensitive. Skipping.")
             continue
 
         yield output
