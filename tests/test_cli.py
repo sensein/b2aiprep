@@ -318,7 +318,7 @@ def setup_bids_structure_after_deidentify():
         feature_file = subject_dir / "sub-001_ses-001_task-reading_features.pt"
         dummy_features = {
             "torchaudio": {
-                "spectrogram": None
+                "spectrogram": None,
                 "mfcc": None,  # dummy MFCC features
                 "mel_filter_bank": torch.randn(13,100),
                 "mel_spectrogram": None,
