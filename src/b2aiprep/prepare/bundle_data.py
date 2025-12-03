@@ -26,7 +26,8 @@ def spectrogram_generator(
     for wav_path in tqdm(audio_paths, total=len(audio_paths), desc="Extracting features"):
         output = {}
         pt_file = wav_path.parent / f"{wav_path.stem}_features.pt"
-        features = torch.load(pt_file, weights_only=False)
+        device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        features = torch.load(pt_file, weights_only=False, map_location=torch.device(device))
 
         output["participant_id"] = wav_path.stem.split("_")[0][4:]  # skip "sub-" prefix
         output["session_id"] = wav_path.stem.split("_")[1][4:]  # skip "ses-" prefix
@@ -74,7 +75,8 @@ def load_audio_features(
         # output["transcription"] = transcription
 
         pt_file = features_dir / f"{wav_path.stem}_features.pt"
-        features = torch.load(pt_file, weights_only=False)
+        device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        features = torch.load(pt_file, weights_only=False, map_location=torch.device(device))
         output["spectrogram"] = features["torchaudio"]["spectrogram"].numpy().astype(np.float32)
         # for feature_name in ["speaker_embedding", "specgram", "melfilterbank", "mfcc", "opensmile"]:
         #     feature_path = features_dir / f"{wav_path.stem}_{feature_name}.{file_extension}"
@@ -114,25 +116,31 @@ def feature_extraction_generator(
     for wav_path in tqdm(audio_paths, total=len(audio_paths), desc="Extracting features"):
         output = {}
         pt_file = wav_path.parent / f"{wav_path.stem}_features.pt"
-        features = torch.load(pt_file, weights_only=False)
+        device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        features = torch.load(pt_file, weights_only=False, map_location=torch.device(device))
 
         output["participant_id"] = wav_path.stem.split("_")[0][4:]  # skip "sub-" prefix
         output["session_id"] = wav_path.stem.split("_")[1][4:]  # skip "ses-" prefix
         output["task_name"] = wav_path.stem.split("_")[2][5:]  # skip "task-" prefix
 
         if feature_class:
-            data = features[feature_class][feature_name]
+            data = features[feature_class].get(feature_name, None)
         else:
-            data = features[feature_name]
-        if feature_name == "spectrogram":
-            data = 10.0 * torch.log10(torch.maximum(data, torch.tensor(1e-10)))
-            data = torch.maximum(data, data.max() - 80)
-            data = data.numpy().astype(np.float32)
-        else:
-            data = data.numpy()
+            data = features.get(feature_name, None)
+        
+        if data is not None:
+            if feature_name == "spectrogram":
+                data = 10.0 * torch.log10(torch.maximum(data, torch.tensor(1e-10)))
+                data = torch.maximum(data, data.max() - 80)
+                data = data.numpy().astype(np.float32)
+            else:
+                data = data.numpy()
 
-        if feature_name in ("spectrogram", "mfcc"):
-            data = data[:, ::2]
-        output[feature_name] = data
+            if feature_name in ("spectrogram", "mfcc"):
+                data = data[:, ::2]
+            output[feature_name] = data
+        else:
+            _LOGGER.warning(f"Feature {feature_name} for {wav_path} not found in features file so skipping.")
+            continue
 
         yield output

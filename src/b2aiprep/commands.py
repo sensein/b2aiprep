@@ -46,7 +46,7 @@ from tqdm import tqdm
 from b2aiprep.prepare.bids import get_paths, validate_bids_folder_audios
 from b2aiprep.prepare.redcap import RedCapDataset
 from b2aiprep.prepare.dataset import BIDSDataset
-from b2aiprep.prepare.derived_data import (
+from b2aiprep.prepare.bundle_data import (
     feature_extraction_generator,
     spectrogram_generator,
 )
@@ -283,10 +283,12 @@ def run_quality_control_on_audios(
 @click.command()
 @click.argument("bids_path", type=click.Path(exists=True))
 @click.argument("outdir", type=click.Path())
-def create_derived_dataset(bids_path, outdir):
-    """Creates derived dataset from BIDS data.
+@click.option("--skip_audio/--no-skip_audio", type=bool, default=True, show_default=True, help="Skip processing audio files")
+@click.option("--skip_audio_features/--no-skip_audio_features", type=bool, default=False, show_default=True, help="Skip processing feature files")
+def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
+    """Bundles dataset from BIDS data.
 
-    The derived dataset output loads data from generated .pt files, which have
+    The bundled output loads data from generated .pt files, which have
     the following keys:
      - pitch
      - mfcc
@@ -305,6 +307,9 @@ def create_derived_dataset(bids_path, outdir):
     ├── static_features.tsv
     ├── static_features.json
     """
+    if not skip_audio:
+        _LOGGER.warning("Audio data is currently not supported for bundling. No audio files will be included in the bundle.")
+
     bids_path = Path(bids_path)
     audio_paths = get_paths(bids_path, file_extension=".pt")
     audio_paths = [x["path"] for x in audio_paths]
@@ -343,10 +348,11 @@ def create_derived_dataset(bids_path, outdir):
     static_features = []
     for filepath in tqdm(audio_paths, desc="Loading static features", total=len(audio_paths)):
         pt_file = filepath.parent.joinpath(f"{filepath.stem}_features.pt")
-        if not pt_file.exists():
+        if not filepath.exists(): #pt will exist based on how audio paths were generated, but audio file might not exist
             continue
 
-        features = torch.load(pt_file, weights_only=False)
+        device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        features = torch.load(pt_file, weights_only=False, map_location=torch.device(device))
         subj_info = {
             "participant_id": str(pt_file).split("sub-")[1].split("/ses-")[0],
             "session_id": str(pt_file).split("ses-")[1].split("/audio")[0],
@@ -356,9 +362,6 @@ def create_derived_dataset(bids_path, outdir):
         transcription = features.get("transcription", None)
         if transcription is not None:
             transcription = transcription.text
-            if is_audio_sensitive(filepath):
-                # we omit tasks where free speech occurs
-                transcription = None
         subj_info["transcription"] = transcription
 
         for key in ["opensmile", "praat_parselmouth", "torchaudio_squim"]:
@@ -378,7 +381,7 @@ def create_derived_dataset(bids_path, outdir):
         json.dump(static_features_json, f, indent=2)
     _LOGGER.info("Finished creating static features.")
 
-    _LOGGER.info("Loading spectrograms into a single HF dataset.")
+    _LOGGER.info("Loading other features into HF datasets.")
 
     features_to_extract = [
         {'feature_class': None, 'feature_name': 'ppgs'},

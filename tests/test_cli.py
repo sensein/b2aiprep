@@ -358,12 +358,12 @@ def test_createbatchcsv_cli():
             assert header == ["filename"], "CSV header is incorrect"
 
 
-def test_create_derived_dataset_cli(setup_bids_structure):
-    """Test the 'b2aiprep-cli create-derived-dataset' command using subprocess."""
+def test_create_bundled_dataset_cli(setup_bids_structure):
+    """Test the 'b2aiprep-cli create-bundled-dataset' command using subprocess."""
     bids_dir = setup_bids_structure
 
     with tempfile.TemporaryDirectory() as outdir:
-        command = ["b2aiprep-cli", "create-derived-dataset", str(bids_dir), outdir]
+        command = ["b2aiprep-cli", "create-bundled-dataset", str(bids_dir), outdir]
 
         result = subprocess.run(command, capture_output=True, text=True)
         assert result.returncode == 0, f"CLI command failed: {result.stderr}"
