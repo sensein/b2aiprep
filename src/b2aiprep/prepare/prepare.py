@@ -35,6 +35,7 @@ Functions:
 
 """
 
+from collections import Counter
 import json
 import logging
 import os
@@ -565,7 +566,7 @@ def extract_features_workflow(
     
 
 def validate_bids_audio_features(bids_dir_path: Path, report_path: Path = None):
-    """Validate the audio features of the BIDS-like folder structure.
+    """Validate the audio features of a BIDS dataset.
 
     This function checks that all audio files have corresponding feature
     files and transcriptions.
@@ -580,6 +581,8 @@ def validate_bids_audio_features(bids_dir_path: Path, report_path: Path = None):
     missing_transcriptions = []
     missing_speaker_embeddings = []
     missing_diarizations = []
+    unrecognized_features = Counter()
+    multiple_feature_files = []
     for audio_path in audio_paths:
         audio_path = Path(audio_path)
         audio_dir = audio_path.parent
@@ -618,13 +621,11 @@ def validate_bids_audio_features(bids_dir_path: Path, report_path: Path = None):
                     if np.isnan(feature):
                         feature_list.append(audio_path)
                 else:
-                    raise ValueError(f"{type(feature)} not supported in features")
+                    unrecognized_features[feature_name] += 1
         else:
-            raise ValueError(f"{audio_path} has more than one associated feature file")
-
-
-
-
+            multiple_feature_files.append(audio_path)
+    
+    # report out the findings
     if len(missing_features_files) > 0:
         _logger.info(
             f"Missing all features for {len(missing_features_files)} / {len(audio_paths)} audio files"
@@ -647,6 +648,18 @@ def validate_bids_audio_features(bids_dir_path: Path, report_path: Path = None):
             _logger.info(
                 f"Missing {feature} for {len(missing_features[feature])} / {len(audio_paths)} audio files"
             )
+    
+    # unrecognized features
+    for feature_name, count in unrecognized_features.items():
+        _logger.info(
+            f"Unrecognized feature type for {feature_name} in {count} audio files"
+        )
+    
+    # multiple feature files
+    if len(multiple_feature_files) > 0:
+        _logger.info(
+            f"Multiple feature files found for {len(multiple_feature_files)} / {len(audio_paths)} audio files"
+        )
 
     if report_path:
         report_file = report_path #/ "missing_features.json"
@@ -658,68 +671,10 @@ def validate_bids_audio_features(bids_dir_path: Path, report_path: Path = None):
                     "missing_diarizations": missing_diarizations,
                     "missing_transcriptions": missing_transcriptions,
                     "missing_speaker_embeddings": missing_speaker_embeddings,
-                    "missing_feature_files": missing_features_files
+                    "missing_feature_files": missing_features_files,
+                    "multiple_feature_files": multiple_feature_files,
                 }, f, indent=4
             )
-
-
-def validate_bids_data(
-    bids_dir_path: Path,
-    fix: bool = True,
-    transcription_model_size: str = "tiny",
-    with_sensitive: bool = True,
-    n_cores: int = 8,
-    plugin: str = "cf",
-    address: str = None,
-    cache_dir: str | os.PathLike = None,
-) -> None:
-    """Scans BIDS audio data and verifies that all expected features are present."""
-    _logger.info("Scanning for features in BIDS directory.")
-    # TODO: add a check to see if the audio feature extraction is complete
-    # before proceeding to the next step
-    # can verify features are generated for each audio_dir by looking for .pt files
-    # in audio_dir.parent / "audio"
-    audio_paths = get_audio_paths(bids_dir_path)
-    df = pd.DataFrame(audio_paths)
-    audio_to_reprocess = []
-    for audio_path in df.path.values.tolist():
-        audio_path = Path(audio_path)
-        audio_dir = audio_path.parent
-        features_dir = audio_dir.parent / "audio"
-        if features_dir.joinpath(f"{audio_path.stem}_features.pt").exists() is False:
-            audio_to_reprocess.append(audio_path)
-
-    if len(audio_to_reprocess) > 0:
-        _logger.info(
-            f"Missing features for {len(audio_to_reprocess)} / {len(audio_paths)} audio files"
-        )
-    else:
-        _logger.info("All audio files have been processed and all feature files are present.")
-        return
-
-    if not fix:
-        return
-
-    if n_cores > 1:
-        plugin_args: dict = {"n_procs": n_cores} if plugin == "cf" else {}
-    else:
-        plugin = "serial"
-        plugin_args = {}
-    extract_task = wav_to_features(
-        transcription_model_size=transcription_model_size,
-        with_sensitive=with_sensitive,
-    )
-    if n_cores > 1:
-        extract_task.split("wav_paths", wav_paths=[[x] for x in audio_to_reprocess])
-    else:
-        extract_task.inputs.wav_paths = audio_to_reprocess
-    if plugin == "dask":
-        plugin_args = {"address": address}
-    with pydra.Submitter(plugin=plugin, **plugin_args) as run:
-        run(extract_task)
-    with pydra.Submitter(plugin="cf") as run:
-        run(extract_task)
-    _logger.info("Process completed.")
 
 def load_audio_to_remove(publish_config_dir: Path) -> List[str]:
     """Load list of audio file stems to remove from JSON file."""

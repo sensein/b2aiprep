@@ -16,14 +16,6 @@ from b2aiprep.prepare.phenotype import (
     is_url_resolvable,
     populate_data_element,
     search_string_in_json_files,
-    update_phenotype_jsons,
-)
-from b2aiprep.prepare.resources.phenotype_json_descriptions import (
-    PHENOTYPE_JSON_FILE_DESCRIPTIONS,
-)
-
-B2AI_REDCAP2RS_ACTIVITIES_DIR = (
-    "/Users/isaacbevers/sensein/reproschema-wrapper/b2ai-redcap2rs/activities"
 )
 
 CHECKSUM = "24cbb461c2ff6556f047dd4bc1275b4b08d52eb8"
@@ -136,66 +128,6 @@ def test_get_reproschema_raw_url_failure():
     responses.add(responses.GET, expected_url, status=404)
 
     assert get_reproschema_raw_url(path, checksum=CHECKSUM) is False
-
-
-def test_update_phenotype_jsons():
-    """Test update_phenotype_jsons to ensure JSON files are generated correctly."""
-    # Set up a temporary phenotype directory with test data
-    real_phenotype_dir = os.path.abspath(
-        "src/b2aiprep/prepare/resources/b2ai-data-bids-like-template/phenotype"
-    )
-    with tempfile.TemporaryDirectory() as temp_dir:
-        phenotype_dir = os.path.join(temp_dir, "phenotype")
-        # Ensure destination directory exists
-        os.makedirs(phenotype_dir)
-
-        activities_dir = B2AI_REDCAP2RS_ACTIVITIES_DIR
-        file_descriptions = PHENOTYPE_JSON_FILE_DESCRIPTIONS
-
-        # Copy structure and create empty files
-        for item in Path(real_phenotype_dir).iterdir():
-            if ".json" in str(item) and "<measurement_tool_name>.json" not in str(item):
-                item = Path(item)  # Ensure item is a Path object
-                if item.is_dir():
-                    # Create the directory structure in the destination
-                    Path(phenotype_dir).joinpath(item.name).mkdir(parents=True, exist_ok=True)
-                else:
-                    # Create a valid JSON file with the same name in the destination
-                    json_file_path = Path(phenotype_dir).joinpath(item.name)
-                    with json_file_path.open("w") as json_file:
-                        json.dump({}, json_file)  # Write an empty JSON object
-
-        update_phenotype_jsons(activities_dir, file_descriptions, phenotype_dir=phenotype_dir)
-
-        generated_phenotype_json_paths = [
-            os.path.join(phenotype_dir, item) for item in os.listdir(phenotype_dir)
-        ]
-
-        generated_phenotype_json_dicts = []
-        for json_file_path in generated_phenotype_json_paths:
-            with Path(json_file_path).open("r") as json_file:
-                generated_phenotype_json_dicts.append(json.load(json_file))
-
-        for i, generated_phenotype_json_dict in enumerate(generated_phenotype_json_dicts):
-            assert "" in generated_phenotype_json_dict, generated_phenotype_json_paths[i]
-            generated_phenotype_json_dict = generated_phenotype_json_dict[""]
-            assert "data_elements" in generated_phenotype_json_dict
-            assert "description" in generated_phenotype_json_dict
-            assert generated_phenotype_json_dict["description"] != ""
-            assert "url" in generated_phenotype_json_dict
-
-        # Check all real JSON file names exist in the phenotype directory
-        # generated_files = os.listdir(phenotype_dir)
-        # for file_name in real_json_files:
-        #     assert file_name in generated_files, f"Missing file: {file_name}"
-
-        #     # Validate contents of each JSON file
-        #     generated_path = os.path.join(phenotype_dir, file_name)
-        #     with open(generated_path, "r", encoding="utf-8") as generated_file:
-        #         generated_content = json.load(generated_file)
-        #         assert "description" in generated_content
-        #         assert generated_content["description"] == file_descriptions[file_name]
-        #         assert "key" in generated_content["data_elements"]
 
 
 class TestPopulateDataElement(unittest.TestCase):

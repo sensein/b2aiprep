@@ -200,11 +200,15 @@ def test_redcap2bids_cli(setup_temp_files):
     """Test the 'b2aiprep-cli redcap2bids' command using subprocess."""
     redcap_csv_path, audio_dir, _, _ = setup_temp_files
 
+    project_root = Path(__file__).parent.parent
+    reproschema_path = project_root.joinpath("b2ai-redcap2rs", "b2ai-redcap2rs").resolve().as_posix()
+
     with tempfile.TemporaryDirectory() as outdir:
         command = [
             "b2aiprep-cli",
             "redcap2bids",
             redcap_csv_path,
+            reproschema_path,
             "--outdir",
             outdir,
             "--audiodir",
@@ -214,17 +218,6 @@ def test_redcap2bids_cli(setup_temp_files):
         result = subprocess.run(command, capture_output=True, text=True)
         assert result.returncode == 0, f"CLI command failed: {result.stderr}"
         assert os.path.exists(outdir), "Output directory was not created"
-
-
-def test_validate_cli(setup_bids_structure):
-    """Test the 'b2aiprep-cli validate' command using subprocess."""
-    bids_dir = setup_bids_structure
-
-    command = ["b2aiprep-cli", "validate", str(bids_dir), "False"]  # fix parameter
-
-    result = subprocess.run(command, capture_output=True, text=True)
-    assert result.returncode == 0, f"CLI command failed: {result.stderr}"
-
 
 def test_convert_cli(setup_audio_files):
     """Test the 'b2aiprep-cli convert' command using subprocess."""

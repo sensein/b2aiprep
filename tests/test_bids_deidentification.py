@@ -29,29 +29,29 @@ class TestBIDSDatasetDeidentification:
         bids_path = Path(temp_dir) / "test_bids"
         bids_path.mkdir(parents=True, exist_ok=True)
 
-        # Create participants.tsv
-        participants_data = {
-            "record_id": ["participant001", "participant002", "participant003"],
-            "age": [25, 30, 35],
-            "gender_identity": ["Male", "Female", "Male"],
-            "specify_gender_identity": ["Male", "Female", "Male"],
-            "alcohol_amt": ["4-Mar", "2", "6-May"],  # Test date fix
-            "session_id": ["session001", "session002", "session003"],
-        }
-        participants_df = pd.DataFrame(participants_data)
-        participants_df.to_csv(bids_path / "participants.tsv", sep="\t", index=False)
+        # # Create participants.tsv
+        # participants_data = {
+        #     "record_id": ["participant001", "participant002", "participant003"],
+        #     "age": [25, 30, 35],
+        #     "gender_identity": ["Male", "Female", "Male"],
+        #     "specify_gender_identity": ["Male", "Female", "Male"],
+        #     "alcohol_amt": ["4-Mar", "2", "6-May"],  # Test date fix
+        #     "session_id": ["session001", "session002", "session003"],
+        # }
+        # participants_df = pd.DataFrame(participants_data)
+        # participants_df.to_csv(bids_path / "participants.tsv", sep="\t", index=False)
 
         # Create participants.json
-        participants_json = {
-            "record_id": {"description": "Unique identifier for each participant."},
-            "age": {"description": "Age of participant"},
-            "gender_identity": {"description": "Gender identity"},
-            "specify_gender_identity": {"description": "Specify gender identity"},
-            "alcohol_amt": {"description": "Amount of alcohol consumed"},
-            "session_id": {"description": "Session identifier"},
-        }
-        with open(bids_path / "participants.json", "w") as f:
-            json.dump(participants_json, f, indent=2)
+        # participants_json = {
+        #     "record_id": {"description": "Unique identifier for each participant."},
+        #     "age": {"description": "Age of participant"},
+        #     "gender_identity": {"description": "Gender identity"},
+        #     "specify_gender_identity": {"description": "Specify gender identity"},
+        #     "alcohol_amt": {"description": "Amount of alcohol consumed"},
+        #     "session_id": {"description": "Session identifier"},
+        # }
+        # with open(bids_path / "participants.json", "w") as f:
+        #     json.dump(participants_json, f, indent=2)
 
         # Create phenotype directory
         phenotype_dir = bids_path / "phenotype"
@@ -149,13 +149,6 @@ class TestBIDSDatasetDeidentification:
         assert isinstance(deidentified_dataset, BIDSDataset)
         assert deidentified_dataset.data_path.resolve() == output_dir.resolve()
 
-        # Check that participants.tsv was created
-        participants_file = output_dir / "participants.tsv"
-        assert participants_file.exists()
-
-        # Check that participants.json was created
-        participants_json_file = output_dir / "participants.json"
-        assert participants_json_file.exists()
 
     def test_deidentify_skip_audio(self, temp_bids_dir, output_dir):
         """Test deidentification with skip_audio=True."""
@@ -265,19 +258,6 @@ class TestBIDSDatasetDeidentification:
         assert (output_dir / "CHANGES.md").exists()
         assert (output_dir / "dataset_description.json").exists()
 
-    def test_deidentify_missing_participants_file(self, temp_bids_dir, output_dir):
-        """Test error handling when participants.tsv is missing."""
-        # Remove participants.tsv
-        (temp_bids_dir / "participants.tsv").unlink()
-
-        dataset = BIDSDataset(temp_bids_dir)
-
-        # Should raise FileNotFoundError
-        with pytest.raises(FileNotFoundError, match="Participant file .* does not exist"):
-            publish_config_dir = temp_bids_dir / "publish_config"
-            self.setup_publish_config(publish_config_dir)
-            dataset.deidentify(outdir=output_dir, publish_config_dir=publish_config_dir)
-
     def test_deidentify_output_dir_exists(self, temp_bids_dir, output_dir):
         """Test error handling when output directory already exists."""
         # Create output directory
@@ -362,10 +342,7 @@ class TestBIDSDatasetDeidentification:
 
         # Check for expected log messages
         log_messages = [record.message for record in caplog.records]
-        assert any(
-            "Processing participants.tsv for deidentification" in msg for msg in log_messages
-        )
-        assert any("Finished processing participants data" in msg for msg in log_messages)
+        assert any("Finished processing phenotype data." in msg for msg in log_messages)
         assert any("Deidentification completed" in msg for msg in log_messages)
 
 

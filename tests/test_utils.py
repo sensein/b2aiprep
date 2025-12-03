@@ -65,24 +65,6 @@ def test_make_tsv_files():
         df = pd.read_csv(tsv_path, sep="\t")
         assert list(df.columns) == ["col1", "col2", "col3"]
 
-
-def test_copy_package_resource():
-    with tempfile.TemporaryDirectory() as temp_dir:
-        package_name = "b2aiprep.prepare.resources.b2ai-data-bids-like-template"
-        resource_name = "phenotype"
-        destination_dir = temp_dir
-        destination_name = "copied_resource"
-
-        # Directly copy the resource without using resource_path
-        copy_package_resource(package_name, resource_name, destination_dir, destination_name)
-
-        # Create the destination path
-        destination_path = os.path.join(destination_dir, destination_name)
-
-        # Check if the resource was copied correctly
-        assert os.path.exists(destination_path)
-
-
 def test_remove_files_by_pattern():
     with tempfile.TemporaryDirectory() as temp_dir:
         # Create some test files

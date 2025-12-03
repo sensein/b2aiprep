@@ -10,6 +10,7 @@ from functools import partial
 from glob import glob
 from importlib import resources
 from pathlib import Path
+import typing as t
 
 import click
 import pandas as pd
@@ -49,24 +50,17 @@ from b2aiprep.prepare.derived_data import (
     feature_extraction_generator,
     spectrogram_generator,
 )
-from b2aiprep.prepare.constants import _load_participant_exclusions
+
 from b2aiprep.prepare.prepare import (
-    filter_audio_paths,
     generate_features_wrapper,
-    get_value_from_metadata,
     is_audio_sensitive,
-    load_audio_to_remove,
-    load_remap_id_list,
-    reduce_id_length,
-    reduce_length_of_id,
-    update_metadata_record_and_session_id,
-    validate_bids_data,
     validate_bids_audio_features,
 
 )
 from b2aiprep.prepare.quality_control import quality_control_wrapper
 
-from b2aiprep.prepare.data_validation import validate_derivatives
+from b2aiprep.prepare.data_validation import validate_phenotype
+from b2aiprep.prepare.update import TemplateUpdateError, reorganize_bids_activities, update_bids_template_files
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -102,6 +96,7 @@ def dashboard(bids_dir: str):
 
 @click.command()
 @click.argument("filename", type=click.Path(exists=True))
+@click.argument("reproschema", type=click.Path(exists=True))
 @click.option(
     "--outdir",
     type=click.Path(),
@@ -112,6 +107,7 @@ def dashboard(bids_dir: str):
 @click.option("--max-audio-workers", type=int, default=16, show_default=True, help="Number of parallel threads for audio file copying")
 def redcap2bids(
     filename,
+    reproschema,
     outdir,
     audiodir,
     max_audio_workers,
@@ -123,6 +119,7 @@ def redcap2bids(
 
     Args:
         filename (str): Path to the REDCap data file.
+        reproschema (str): Path to the ReproSchema JSON files directory. Should contain b2ai-redcap2bids_schema file.
         outdir (str, optional): Directory where the converted BIDS-like data
                                 will be saved. Defaults to "output" in the current working directory.
         audiodir (str, optional): Directory containing associated audio files.
@@ -143,7 +140,13 @@ def redcap2bids(
         audiodir = Path(audiodir)
     redcap_dataset = RedCapDataset.from_redcap(filename)
     
-    BIDSDataset.from_redcap(redcap_dataset, outdir=Path(outdir), audiodir=audiodir, max_audio_workers=max_audio_workers)
+    BIDSDataset.from_redcap(
+        redcap_dataset,
+        outdir=Path(outdir),
+        reproschema_source_dir=reproschema,
+        audiodir=audiodir,
+        max_audio_workers=max_audio_workers
+    )
 
 @click.command()
 @click.argument("source_bids_dir_path", type=click.Path())
@@ -303,11 +306,6 @@ def create_derived_dataset(bids_path, outdir):
     ├── static_features.json
     """
     bids_path = Path(bids_path)
-
-    participant_filepath = bids_path.joinpath("participants.tsv")
-    if not participant_filepath.exists():
-        raise FileNotFoundError(f"Participant file {participant_filepath} does not exist.")
-
     audio_paths = get_paths(bids_path, file_extension=".pt")
     audio_paths = [x["path"] for x in audio_paths]
 
@@ -330,15 +328,6 @@ def create_derived_dataset(bids_path, outdir):
         # sort first by subject, then by task
         key=lambda x: (x.stem.split("_")[0], x.stem.split("_")[2]),
     )
-
-    _LOGGER.info("Creating merged phenotype data.")
-    df, phenotype = BIDSDataset.load_phenotype_data(bids_path, phenotype_name="participants")
-
-    # write out phenotype data and data dictionary
-    df.to_csv(outdir.joinpath("phenotype.tsv"), sep="\t", index=False)
-    with open(outdir.joinpath("phenotype.json"), "w") as f:
-        json.dump(phenotype, f, indent=2)
-    _LOGGER.info("Finished creating merged phenotype data.")
 
     _LOGGER.info("Loading audio static features.")
     static_features = []
@@ -499,32 +488,6 @@ def deidentify_bids_dataset(bids_path, outdir, publish_config_dir, skip_audio):
 
 @click.command()
 @click.argument("bids_dir_path", type=click.Path())
-@click.argument("fix", type=bool)
-def validate(
-    bids_dir_path,
-    fix,
-):
-    """Validates data in BIDS structure.
-
-    This function checks the integrity and structure of a BIDS directory and
-    optionally fixes detected issues.
-
-    Args:
-        bids_dir_path (str): Path to the BIDS directory to validate.
-        fix (bool): If True, attempts to fix detected issues in the BIDS structure.
-
-    Returns:
-        None: Performs validation and optionally fixes errors in-place.
-    """
-
-    validate_bids_data(
-        bids_dir_path=Path(bids_dir_path),
-        fix=fix,
-    )
-
-
-@click.command()
-@click.argument("bids_dir_path", type=click.Path())
 @click.option("--report_path", type=click.Path(), default=None, show_default=True)
 def validate_feature_extraction(
     bids_dir_path,
@@ -539,23 +502,91 @@ def validate_feature_extraction(
     )
 
 
-@click.command()
-@click.argument("derivatives_csv_path", type=click.Path())
-def validate_data(derivatives_csv_path):
+@click.command('validate-phenotype')
+@click.argument("phenotype_path", type=click.Path())
+def validate_phenotype_command(phenotype_path):
     """
     This function takes the phenotype data and validates each record.
 
     Args:
-        derivatives_csv_path (str): Path to the csv to validate.
+        phenotype_path (str): Path to the phenotype folder with CSV files.
        
     Returns:
         None: Performs validation
 
     Args:
-        derivative_csv_path: Path to the derivatives csv
+        phenotype_path: Path to the derivatives tsv
     """
     _LOGGER.info("Validating Phenotype Data...")
-    validate_derivatives(derivatives_csv_path=Path(derivatives_csv_path))
+    phenotype_path = Path(phenotype_path)
+    phenotype_files: t.List[Path] = []
+    for file in sorted(phenotype_path.glob('*.tsv')):
+        if file.with_suffix('.json').exists():
+            phenotype_files.append(file)
+        else:
+            _LOGGER.warning(f"Skipping {file} as no associated JSON file found.")
+    
+    # fine associated json files
+    for phenotype_file in tqdm(phenotype_files, desc="Validating phenotype files"):
+        df = pd.read_csv(phenotype_file, sep='\t', header=0)
+        phenotype_dictionary = json.loads(phenotype_file.with_suffix('.json').read_text())
+        validate_phenotype(df, phenotype_dictionary)
+
+    _LOGGER.info("Phenotype Data Validation Complete.")
+
+@click.command(name="update-bids-template")
+@click.option(
+    "--submodule-path",
+    type=click.Path(path_type=Path, exists=True, resolve_path=True),
+    default=None,
+    help="Override path to the b2ai-redcap2rs submodule.",
+)
+@click.option(
+    "--output-dir",
+    type=click.Path(path_type=Path, resolve_path=True),
+    default=None,
+    help="Directory to write regenerated phenotype template JSON files.",
+)
+@click.option(
+    "--schema-file",
+    type=click.Path(path_type=Path, exists=True, resolve_path=True),
+    default=None,
+    help="Optional path to the protocol schema file to parse.",
+)
+@click.option(
+    "--reorganize",
+    is_flag=True,
+    help="Reorganize phenotype JSONs into manually curated file organization."
+)
+@click.option(
+    "--dry-run",
+    is_flag=True,
+    help="Report which files would be generated without writing them.",
+)
+def update_bids_template_command(submodule_path, output_dir, schema_file, reorganize, dry_run):
+    """Regenerate phenotype template JSONs from the reproschema repository."""
+
+    target_dir = (
+        Path(output_dir)
+        if output_dir
+        else Path(__file__).resolve().parents[2] / "src/b2aiprep/template/phenotype"
+    ).resolve()
+
+    try:
+        generated_files = update_bids_template_files(
+            submodule_path=submodule_path,
+            output_dir=target_dir,
+            schema_file=schema_file,
+            dry_run=dry_run,
+        )
+    except TemplateUpdateError as exc:
+        raise click.ClickException(str(exc)) from exc
+
+    if reorganize:
+        generated_files = reorganize_bids_activities(target_dir, dry_run)
+
+    verb = "Planned" if dry_run else "Wrote"
+    click.echo(f"{verb} {len(generated_files)} template file(s) in {target_dir}")
 
 
 

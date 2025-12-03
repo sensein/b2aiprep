@@ -14,7 +14,6 @@ from b2aiprep.prepare.prepare import (
     extract_single,
     wav_to_features,
     extract_features_sequentially,
-    validate_bids_data,
     reduce_id_length,
     reduce_length_of_id,
     get_value_from_metadata,
@@ -184,11 +183,6 @@ def test_extract_features_workflow(setup_bids_structure):
     extract_features_workflow(bids_dir_path=bids_dir)
     pt_files = list(bids_dir.rglob("*.pt"))
     assert pt_files, ".pt files were not generated"
-
-
-def test_validate_bids_data(setup_bids_structure):
-    bids_dir = setup_bids_structure
-    assert validate_bids_data(bids_dir_path=bids_dir) is None
 
 def test_is_audio_sensitive():
     file_path = Path("file_one_audio-check.wav")

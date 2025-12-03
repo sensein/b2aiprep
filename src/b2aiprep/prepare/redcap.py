@@ -30,8 +30,6 @@ from tqdm import tqdm
 from b2aiprep.prepare.constants import AUDIO_TASKS, Instrument, RepeatInstrument
 from b2aiprep.prepare.utils import get_wav_duration
 
-# ReproSchema parsing functions (moved from reproschema_to_redcap.py)
-
 def get_choice_name(url, value):
     """Get the choice name from a ReproSchema URL and value.
 

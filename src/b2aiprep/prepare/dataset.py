@@ -16,6 +16,7 @@ sub-p1/
     ...
 """
 
+from copy import copy
 import logging
 import os
 import re
@@ -36,7 +37,8 @@ from soundfile import LibsndfileError
 from tqdm import tqdm
 
 from b2aiprep.prepare.constants import RepeatInstrument, Instrument
-from b2aiprep.prepare.utils import copy_package_resource, remove_files_by_pattern
+from b2aiprep.prepare.update import build_activity_payload
+from b2aiprep.prepare.utils import copy_package_resource, get_commit_sha
 from b2aiprep.prepare.fhir_utils import convert_response_to_fhir
 from b2aiprep.prepare.prepare import (
     filter_audio_paths, 
@@ -48,6 +50,7 @@ from b2aiprep.prepare.bids import get_paths
 from pydantic import BaseModel
 from b2aiprep.prepare.redcap import RedCapDataset
 
+_LOGGER = logging.getLogger(__name__)
 
 def _copy_audio_files_parallel(copy_tasks: t.List[t.Tuple[Path, Path]], max_workers: int = 16):
     """Copy audio files in parallel using ThreadPoolExecutor.
@@ -101,6 +104,7 @@ class BIDSDataset:
     def from_redcap(
         cls,
         redcap_dataset: RedCapDataset,
+        reproschema_source_dir: str,
         outdir: t.Union[str, Path],
         audiodir: t.Optional[t.Union[str, Path]] = None,
         max_audio_workers: int = 16
@@ -122,21 +126,11 @@ class BIDSDataset:
         outdir = Path(outdir).as_posix()
         BIDSDataset._initialize_data_directory(outdir)
 
-        # for participants.tsv we skip cleaning the phenotype data
-        # also note that participants files are in the root outdir folder,
-        # not the phenotype subfolder
-        BIDSDataset._process_phenotype_tsv_and_json(
-            df=redcap_dataset.df,
-            input_dir=outdir,
-            output_dir=outdir,
-            filename="participants.json",
-            clean_phenotype_data=False,
-        )
-
+        logging.info("Converting RedCap dataset to BIDS-like format.")
         # Subselect the RedCap dataframe and output components to individual files in the phenotype directory
-        BIDSDataset._construct_all_tsvs_from_jsons(
+        BIDSDataset._construct_phenotype_from_reproschema(
             df=redcap_dataset.df,
-            input_dir=os.path.join(outdir, "phenotype"),
+            source_dir=reproschema_source_dir,
             output_dir=os.path.join(outdir, "phenotype"),
         )
 
@@ -196,7 +190,7 @@ class BIDSDataset:
         # Output participant data to FHIR format
         audio_files: t.List[Path] = []
         if audiodir is not None and Path(audiodir).exists():
-            audio_files = list(Path(audiodir).rglob(f"*.wav"))
+            audio_files = list(Path(audiodir).rglob("*.wav"))
 
         # create an index of recording_id: audio_file for later use
         # ASSUMES that audio files are named with the recording_id in the filename
@@ -241,15 +235,11 @@ class BIDSDataset:
             os.makedirs(bids_dir_path)
             logging.info(f"Created directory: {bids_dir_path}")
 
-        template_package = "b2aiprep.prepare.resources.b2ai-data-bids-like-template"
+        template_package = "b2aiprep.template"
         copy_package_resource(template_package, "CHANGELOG.md", bids_dir_path)
         copy_package_resource(template_package, "README.md", bids_dir_path)
         copy_package_resource(template_package, "dataset_description.json", bids_dir_path)
-        copy_package_resource(template_package, "participants.json", bids_dir_path)
-        copy_package_resource(template_package, "participants.tsv", bids_dir_path)
         copy_package_resource(template_package, "phenotype", bids_dir_path)
-        phenotype_path = Path(bids_dir_path).joinpath("phenotype")
-        remove_files_by_pattern(phenotype_path, "<measurement_tool_name>*")
 
     def find_questionnaires(self, questionnaire_name: str) -> t.List[Path]:
         """
@@ -619,92 +609,197 @@ class BIDSDataset:
         logging.info(f"TSV file created and saved to: {tsv_path}")
 
     @staticmethod
-    def _subselect_dataframe_using_json(
-        df: pd.DataFrame, json_data: dict
-    ) -> pd.DataFrame:
-        """Extracts a subset of columns from a DataFrame using the given JSON file,
-        removes duplicates, and returns a new DataFrame.
-
-        Combines entries so that there is one row per record_id.
-
-        Args:
-            df: DataFrame containing the data.
-            json_data: Dictionary containing the column labels.
-
-        Raises:
-            ValueError: If no valid columns found in DataFrame that match JSON file.
-        """
-
-        # The phenotype JSON files are nested below a key that corresponds to the schema name
-        first_key = next(iter(json_data))
-
-        column_labels = []
-        if "data_elements" in json_data[first_key]:
-            column_labels = list(json_data[first_key]["data_elements"])
-        else:
-            column_labels = list(json_data.keys())
-
-        # Filter column labels to only include those that exist in the DataFrame
-        valid_columns = [col for col in column_labels if col in df.columns]
-        if not valid_columns:
-            raise ValueError("No valid columns found in DataFrame that match JSON file")
-
-        if "record_id" not in valid_columns:
-            valid_columns = ["record_id"] + valid_columns
-
-        # Select the relevant columns from the DataFrame
-        selected_df = df[valid_columns]
-
-        # Combine entries so there is one row per record_id
-        combined_df = selected_df.groupby("record_id").first().reset_index()
-        return combined_df
-
-    @staticmethod
     def _process_phenotype_tsv_and_json(
         df: pd.DataFrame, input_dir: str, output_dir: str, filename: str,
         clean_phenotype_data: bool = True
     ) -> None:
-        """Process phenotype data."""
+        """
+        Create a stable, shareable phenotype artifact (TSV + JSON) driven by a schema.
+
+        Args:
+            df: DataFrame containing the data.
+            input_dir: Directory containing JSON file with column labels.
+            output_dir: Directory where the TSV and JSON files will be saved.
+            filename: The JSON filename to process.
+            clean_phenotype_data: Whether to clean the phenotype data (default: True).
+
+        Outputs:
+        - <output_dir>/<filename>.tsv: phenotype table constrained by the schema.
+        - <output_dir>/<filename>.json: schema (data dictionary) aligned to the TSV.
+        """
+        # Load in the JSON which defines the columns to output to this subset
         with open(os.path.join(input_dir, filename), "r") as f:
             json_data = json.load(f)
-        df_subselected = BIDSDataset._subselect_dataframe_using_json(df=df, json_data=json_data)
+
+        # The phenotype JSON files are nested below a key that corresponds to the schema name
+        first_key = next(iter(json_data))
+        column_labels = list(json_data[first_key]["data_elements"])
+
+        # Our output columns are defined by the ReproSchema protocol file,
+        # but we need to subselect to available data columns, as many columns
+        # have been removed already before export from RedCap.
+        data_elements = {}
+        valid_columns = []
+        for column in column_labels:
+            if column not in df.columns:
+                continue
+            valid_columns.append(column)
+            data_elements[column] = json_data[first_key]["data_elements"][column]
+
+        if not valid_columns:
+            _LOGGER.warning(f"No valid columns in dataframe for {first_key}")
+            return df.iloc[:, 0:0].copy() # return empty dataframe with same index
+
+        if "record_id" not in valid_columns:
+            valid_columns = ["record_id"] + valid_columns
+
+        # Select the relevant columns from the DataFrame and JSON
+        selected_df = df[valid_columns]
+        json_data[first_key]["data_elements"] = data_elements
+
+        # Combine entries so there is one row per record_id
+        df_subselected = selected_df.groupby("record_id").first().reset_index()
+
         if clean_phenotype_data:
             df_subselected, json_data = BIDSDataset._clean_phenotype_data(df_subselected, json_data)
+        
+        # Output to a TSV/JSON file.
         BIDSDataset._dataframe_to_tsv(df_subselected, os.path.join(output_dir, filename.replace(".json", ".tsv")))
         with open(os.path.join(output_dir, filename), "w") as f:
             json.dump(json_data, f, indent=2)
 
     @staticmethod
-    def _construct_all_tsvs_from_jsons(
-        df: pd.DataFrame,
-        input_dir: str,
-        output_dir: str,
-        excluded_files: t.Optional[t.List[str]] = None,
-    ) -> None:
-        """Construct TSV files from all JSON files in a specified directory.
+    def _load_reproschema(
+        reproschema_file: Path,
+    ) -> t.Dict[str, t.Dict[str, t.Any]]:
+        with reproschema_file.open("r", encoding="utf-8") as fp:
+            schema_json = json.load(fp)
+        
+        protocol_order = schema_json.get("ui", {}).get("order")
 
-        Excludes specific files if provided.
+        reproschema_folder: Path = reproschema_file.parents[1]
+        commit_sha = get_commit_sha(reproschema_folder)
+
+        activities = {}
+        for rel_path in protocol_order:
+            # activities are relative to the reproschema schema file itself
+            activity_path = reproschema_file.parent.joinpath(rel_path).resolve()
+            if not activity_path.exists():
+                _LOGGER.warning("Skipping missing activity %s", rel_path)
+                continue
+
+            activity_json = json.loads(activity_path.read_text())
+            activity_id = activity_json.get("id")
+
+            payload = build_activity_payload(
+                activity_json=activity_json,
+                activity_path=activity_path,
+                reproschema_folder=reproschema_folder,
+                commit_sha=commit_sha,
+            )
+
+            activities[activity_id] = payload
+
+        return activities
+
+    @staticmethod
+    def _construct_phenotype_from_reproschema(
+        df: pd.DataFrame,
+        output_dir: str,
+        source_dir: str,
+        clean_phenotype_data: bool = True
+    ) -> None:
+        """Construct TSV/JSON files from a source ReproSchema folder.
 
         Args:
             df: DataFrame containing the data.
-            input_dir: Directory containing JSON files with column labels.
             output_dir: Directory where the TSV files will be saved.
-            excluded_files: List of JSON filenames to exclude from processing.
-                Defaults to None.
+            source_dir: Directory containing the ReproSchema JSON files.
+            clean_phenotype_data: Whether to clean the phenotype data (default: True).
         """
-        # Ensure the excluded_files list is initialized if None is provided
-        if excluded_files is None:
-            excluded_files = []
-
         # Ensure output directory exists
         os.makedirs(output_dir, exist_ok=True)
 
-        for filename in os.listdir(input_dir):
-            if filename.endswith(".json") and filename not in excluded_files:
-                BIDSDataset._process_phenotype_tsv_and_json(
-                    df=df, input_dir=input_dir, output_dir=output_dir, filename=filename,
-                    clean_phenotype_data=True,
-                )
+        # Load reproschema file
+        source_path = Path(source_dir).resolve()
+        if source_path.joinpath('b2ai-redcap2rs_schema').exists():
+            resolved_schema_file = source_path.joinpath('b2ai-redcap2rs_schema')
+        elif source_path.joinpath('b2ai-redcap2rs', 'b2ai-redcap2rs_schema').exists():
+            resolved_schema_file = source_path.joinpath('b2ai-redcap2rs', 'b2ai-redcap2rs_schema')
+        else:
+            raise FileNotFoundError(
+                f"Could not find 'b2ai-redcap2rs_schema' in source directory: {source_dir}"
+            )
+
+        schemas = BIDSDataset._load_reproschema(resolved_schema_file)
+
+        # create an index for data_element -> schema
+        element_to_schema = {}
+        for schema_name, data in schemas.items():
+            for element_name in data['data_elements'].keys():
+                element_to_schema[element_name] = schema_name
+
+        # with all the reproschema activities defined, we now look for a manual reorganization
+        reorganization_file = files("b2aiprep.prepare.resources").joinpath("bids_field_organization.csv")
+        df_reorg = pd.read_csv(reorganization_file, sep=',', header=0)
+
+        element_used = {} # keep track of whether we have used an element, for logging later.
+        for activity_id, group in df_reorg.groupby('schema_name'):
+            column_mapping = group.set_index('column_name').to_dict(orient='index')
+
+            payload = {
+                "description": "",
+                "data_elements": {}
+            }
+            # this variable will track the name of the original columns in RedCap
+            columns_for_indexing = []
+            # this variable will track the name of the *new* columns in the output df
+            columns_for_output = []
+            for column, updated_data in column_mapping.items():
+                schema_to_use = element_to_schema[column]
+                data_element = copy(schemas[schema_to_use]["data_elements"][column])
+
+                if "description" in updated_data and (updated_data["description"] != ""):
+                    description = updated_data["description"]
+                elif "description" in data_element and (data_element["description"] != ""):
+                    description = data_element["description"]
+                else:
+                    description = data_element.get("question", "").get("en", "")
+                data_element["description"] = description
+                new_element_name = updated_data["renamed_column"]
+
+                if column not in df.columns:
+                    _LOGGER.warning(f'Requested output for "{column}", but this column was not found in the source df.')
+                    continue
+                columns_for_indexing.append(column)
+                columns_for_output.append(new_element_name)
+
+                # update the payload so we have a reproschema json for this df
+                payload["data_elements"][new_element_name] = data_element
+                element_used[column] = True
+
+            updated_schema = {activity_id: payload}
+
+            if "record_id" not in columns_for_indexing:
+                columns_for_indexing = ["record_id"] + columns_for_indexing
+                columns_for_output = ["record_id"] + columns_for_output
+            # we now extract the sub-dataframe from our source redcap data and output it to tsv
+            selected_df = df[columns_for_indexing]
+            # Combine entries so there is one row per record_id
+            selected_df = selected_df.groupby("record_id").first().reset_index()
+
+
+            if clean_phenotype_data:
+                selected_df, updated_schema = BIDSDataset._clean_phenotype_data(selected_df, updated_schema)
+            
+            # Output to a TSV/JSON file.
+            filename = f'{activity_id}.json'
+            BIDSDataset._dataframe_to_tsv(
+                selected_df,
+                os.path.join(output_dir, filename.replace(".json", ".tsv"))
+            )
+            with open(os.path.join(output_dir, filename), "w") as f:
+                json.dump(updated_schema, f, indent=2)
 
     @staticmethod
     def _get_instrument_for_name(name: str) -> Instrument:
@@ -1347,21 +1442,6 @@ class BIDSDataset:
         participant_ids_to_remap = BIDSDataset.load_remap_id_list(publish_config_dir)
         participant_ids_to_remove = BIDSDataset.load_participant_ids_to_remove(publish_config_dir)
         participant_session_id_to_remap = BIDSDataset.map_sequential_session_ids(self.data_path)
-
-        # Check if source directory has required files
-        participant_filepath = self.data_path.joinpath("participants.tsv")
-        if not participant_filepath.exists():
-            raise FileNotFoundError(f"Participant file {participant_filepath} does not exist.")
-        
-        logging.info("Processing participants.tsv for deidentification.")
-        df, phenotype = BIDSDataset.load_phenotype_data(self.data_path, "participants")
-        df, phenotype = BIDSDataset._deidentify_phenotype(df, phenotype, participant_ids_to_remove, participant_ids_to_remap, participant_session_id_to_remap)
-        
-        # Write out deidentified phenotype data and data dictionary
-        df.to_csv(outdir.joinpath("participants.tsv"), sep="\t", index=False)
-        with open(outdir.joinpath("participants.json"), "w") as f:
-            json.dump(phenotype, f, indent=2)
-        logging.info("Finished processing participants data.")
         
         # Process phenotype directory if it exists
         phenotype_base_path = self.data_path.joinpath("phenotype")
@@ -1567,7 +1647,6 @@ class VBAIDataset(BIDSDataset):
             A "wide" format dataframe with questionnaire data. Returns empty DataFrame 
             if columns are not found in participants.tsv.
         """
-        # Load participants.tsv file
         participants_file = self.data_path / "participants.tsv"
         if not participants_file.exists():
             logging.warning(f"participants.tsv file not found at {participants_file}")

@@ -12,10 +12,24 @@ HEIGHT_CM_TO_INCHES_CONVERSION_FACTOR = 0.393701
 
 class Validator:
 
-    def __init__(self, data_dictionary: dict, participant_id: str, field_requirements: dict) -> None:
+    def __init__(self, data_dictionary: dict) -> None:
         self.data_dictionary = data_dictionary
-        self.participant_id = participant_id
-        self.field_requirements = field_requirements
+        self.data_thresholds = self._load_thresholds()
+    
+    def _load_thresholds(self) -> dict:
+        """Loads the thresholds used for validating the data."""
+        thresholds = json.load(
+            (
+                resources.files("b2aiprep")
+                .joinpath(
+                    "prepare",
+                    "resources",
+                    "data_validation_ranges.json"
+                )
+                .open()
+            )
+        )
+        return thresholds
 
     def clean(self, value: str) -> str | int | float:
         """
@@ -59,7 +73,7 @@ class Validator:
             options = options.union(slide_options)
 
         if len(options) != 0 and str(value) not in options:
-            _LOGGER.error(f"Invalid '{value}' for '{field}' (participant {self.participant_id})")
+            _LOGGER.error(f"Invalid '{value}' for '{field}'")
             return False
         return True
 
@@ -74,13 +88,13 @@ class Validator:
             bool: True if the value is within the allowed range for the given field, False otherwise.
         
         """
-        if field in self.field_requirements:
-            max_value = int(self.field_requirements[field]["maxValue"])
-            min_value = int(self.field_requirements[field]["minValue"])
+        if field in self.data_thresholds:
+            max_value = int(self.data_thresholds[field]["maxValue"])
+            min_value = int(self.data_thresholds[field]["minValue"])
 
             if value not in range(min_value, max_value + 1):
                 _LOGGER.error(
-                    f"Field {field} is out of range for (participant {self.participant_id})"
+                    f"Field {field} is out of range"
                 )
                 return False
         return True
@@ -106,32 +120,24 @@ class Validator:
         return solution_set
 
 
-def validate_fields(field: str, participant: dict, data_dictionary: dict) -> None:
+def validate_field(field: str, data: dict, data_dictionary: dict) -> None:
     """
-    Validates the fields in the provided participant data based on field requirements.
+    Validates the field in the provided participant data based on field requirements.
     
     Args:
         field: The field name to validate in the participant's data.
-        participant: A dictionary containing the participant's data, including the field to validate.
-        data_dictionary: A dictionary that represents the ansswer set of all questions.
+        data: A dictionary containing the participant's data, including the field to validate.
+        data_dictionary: A dictionary that represents the answer set of all questions.
     
     Returns:
         None: The function does not return any value.
 
     """
-    field_requirements = json.load(
-        (Path(__file__).parent.parent.parent.parent / "data" / "field_requirements.json").open()
-    )
-    participant_id = participant.get("participant_id") or participant.get("record_id")
-    cleaner = Validator(
-        data_dictionary=data_dictionary,
-        participant_id=participant_id,
-        field_requirements=field_requirements,
-    )
+    cleaner = Validator(data_dictionary=data_dictionary)
     if field is not None:
         # sanitize answers due to dataframes automatically adding trailing decimals and 
         # assertions failing due to answers containing apostrophes
-        value = cleaner.clean(participant[field])
+        value = cleaner.clean(data[field])
         if pd.isna(value):
             return
         if field not in data_dictionary:
@@ -139,40 +145,26 @@ def validate_fields(field: str, participant: dict, data_dictionary: dict) -> Non
         cleaner.validate_choices(field, value)
 
         # For height and weight edge case where value can be metric or imperial
-        if field == "height" and participant["unit"] != "Metric":
+        if field == "height" and data["unit"] != "Metric":
             value = round(value * HEIGHT_CM_TO_INCHES_CONVERSION_FACTOR)
 
-        elif field == "weight" and participant["unit"] != "Metric":
+        elif field == "weight" and data["unit"] != "Metric":
             value = round(value * WEIGHT_KG_TO_POUNDS_CONVERSION_FACTOR)
 
         cleaner.validate_range(field, value)
 
+def validate_phenotype(phenotype_data: pd.DataFrame, data_dictionary: dict) -> None:
+    """
+    Function to validate the phenotype data for all participants.
+    """
+    for _, row in phenotype_data.iterrows():
+        participant_data = row.to_dict()
+        validate_participant_data(data=participant_data, data_dictionary=data_dictionary)
 
-def validate_participant_data(participant: dict) -> None:
+def validate_participant_data(data: dict, data_dictionary: dict) -> None:
     """
     Function validates each field with data dictionary and asserts whether value
     matches the expected answers.
     """
-    data_dictionary = json.load(
-        (
-            resources.files("b2aiprep")
-            .joinpath("prepare", "resources", "b2ai-data-bids-like-template", "participants.json")
-            .open()
-        )
-    )
-    for field in participant:
-        validate_fields(field=field, participant=participant, data_dictionary=data_dictionary)
-
-
-def validate_derivatives(derivatives_csv_path: str) -> None:
-    """
-    Function parses the data frame and validates each record.
-    """
-    file_path = Path(derivatives_csv_path)
-    sep = "\t" if file_path.suffix.lower() == ".tsv" else ","
-
-    df = pd.read_csv(derivatives_csv_path, sep=sep)
-    participants = df.to_dict(orient="records")
-
-    for participant in participants:
-        validate_participant_data(participant)
+    for field in data:
+        validate_field(field=field, data=data, data_dictionary=data_dictionary)

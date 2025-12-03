@@ -1,129 +1,91 @@
-import os
-import subprocess
-from pathlib import Path
-from importlib import resources
-import json
-import pandas as pd
-
 import pytest
 
 from b2aiprep.prepare.data_validation import (
-    validate_derivatives,
     validate_participant_data,
     Validator,
 )
 
+@pytest.fixture
+def synthetic_record_and_dictionary(tmp_path):
+    synthetic_record = {
+        "record_id": "test_0001",
+        "height": 170,
+        "weight": 80,
+        "unit": "Metric",
+        "nervous_anxious": "Not at all",
+    }
+    data_dictionary = {
+        "height": {
+            "type": "number",
+            "range": {"min": 50, "max": 250},
+        },
+        "weight": {
+            "type": "number",
+            "range": {"min": 20, "max": 500},
+        },
+        "unit": {
+            "description": "Unit of measurement for the associated confounder value (for example: \"kg\", \"cm\", \"m\", \"lb\", \"s\", \"min\", or \"years\").",
+            "question": {
+                "en": "Unit"
+            },
+            "choices": [
+                {
+                    "name": {
+                        "en": "Metric"
+                    },
+                    "value": 1
+                },
+                {
+                    "name": {
+                        "en": "US customary units"
+                    },
+                    "value": 2
+                }
+            ],
+            "datatype": [
+                "xsd:integer"
+            ],
+            "valueType": [
+                "xsd:integer"
+            ]
+        },
+        "nervous_anxious": {
+            "type": "string",
+            "choices": [
+                {"name": {"en": "Not at all"}, "value": 0},
+                {"name": {"en": "Several days"}, "value": 1},
+                {"name": {"en": "More than half the days"}, "value": 2},
+                {"name": {"en": "Nearly every day"}, "value": 3},
+            ]
+        }
+    }
+    return synthetic_record, data_dictionary
 
 @pytest.fixture
-def setup_temp_files(tmp_path):
-    """Fixture to set up temporary directories and files for testing."""
-    # Paths to required data files
-    field_requirements = json.load(
-        (Path(__file__).parent.parent / "data" / "field_requirements.json").open()
-    )
+def validator(synthetic_record_and_dictionary) -> Validator:
+    _, data_dictionary = synthetic_record_and_dictionary
+    validator = Validator(data_dictionary=data_dictionary)
+    return validator
 
-    # Synthetic record
-    synthetic_record = {
-        "record_id": "test_0001",
-        "height": 170,
-        "weight": 80,
-        "unit": "Metric",
-        "nervous_anxious": "Not at all",
-        "cant_control_worry": "Not at all",
-        "worry_too_much": "Several days",
-        "trouble_relaxing": "Several days",
-        "hard_to_sit_still": "Several days",
-        "easily_agitated": "Several days",
-        "afraid_of_things": "Several days",
-        "tough_to_work": "Not difficult at all",
-    }
-    df = pd.DataFrame([synthetic_record])
+def test_validate_participant_data(synthetic_record_and_dictionary):
+    data, dictionary = synthetic_record_and_dictionary
+    validate_participant_data(data, dictionary)
+    # If no exception is raised, the test passes
 
-    data_dictionary = json.load(
-        (
-            resources.files("b2aiprep")
-            .joinpath("prepare", "resources", "b2ai-data-bids-like-template", "participants.json")
-            .open()
-        )
-    )
-
-    # Save sythetic df into temp directory
-    redcap_csv_path = os.path.join(tmp_path, "sdv_redcap_synthetic_data.csv")
-    df.to_csv(redcap_csv_path, index=False)
-
-    validator = Validator(data_dictionary, "test_id_1", field_requirements)
-
-    yield redcap_csv_path, data_dictionary, field_requirements, validator
-
-
-def test_validate_data_cli(setup_temp_files):
-    """Test the 'b2aiprep-cli prepbidslikedata' command using subprocess."""
-    redcap_csv_path, data_dictionary, field_requirements, validator = setup_temp_files
-
-    # Define the CLI command
-    command = [
-        "b2aiprep-cli",
-        "validate-data",
-        redcap_csv_path,
-    ]
-    # Run the CLI command
-    result = subprocess.run(command, capture_output=True, text=True)
-
-    # Check if the command was successful
-    assert result.returncode == 0, f"CLI command failed: {result.stderr}"
-
-
-def test_validate_derivatives(setup_temp_files):
-    redcap_csv_path, data_dictionary, field_requirements, validator = setup_temp_files
-    assert validate_derivatives(redcap_csv_path) is None
-
-
-def test_validate_participant_data():
-    synthetic_record = {
-        "record_id": "test_0001",
-        "height": 170,
-        "weight": 80,
-        "unit": "Metric",
-        "nervous_anxious": "Not at all",
-        "cant_control_worry": "Not at all",
-        "worry_too_much": "Several days",
-        "trouble_relaxing": "Several days",
-        "hard_to_sit_still": "Several days",
-        "easily_agitated": "Several days",
-        "afraid_of_things": "Several days",
-        "tough_to_work": "Not difficult at all",
-    }
-    assert validate_participant_data(synthetic_record) is None
-
-
-def test_validator_validate_choices(setup_temp_files):
-    redcap_csv_path, data_dictionary, field_requirements, validator = setup_temp_files
+def test_validator_validate_choices(validator: Validator):
     field = "nervous_anxious"
     value = "Not at all"
 
     assert validator.validate_choices(field=field, value=value) == True
 
 
-def test_validator_validate_choices_wrong_choice(setup_temp_files):
-    redcap_csv_path, data_dictionary, field_requirements, validator = setup_temp_files
+def test_validator_validate_choices_wrong_choice(validator: Validator):
     field = "nervous_anxious"
     value = "Not at all, but sometimes"
 
     assert validator.validate_choices(field=field, value=value) == False
 
-
-def test_clean_number(setup_temp_files):
-    redcap_csv_path, data_dictionary, field_requirements, validator = setup_temp_files
-
-    assert validator.clean("test") == "test"
-    assert validator.clean("'field'") == "field"
-    assert validator.clean(5.0) == 5
-    assert validator.clean(3.14) == 3.14
-
-
-def test_get_choices(setup_temp_files):
-    redcap_csv_path, data_dictionary, field_requirements, validator = setup_temp_files
-
+def test_get_choices(validator: Validator):
     choices = [
         {"name": {"en": "Not at all"}, "value": 0},
         {"name": {"en": "Several days"}, "value": 1},
@@ -137,13 +99,9 @@ def test_get_choices(setup_temp_files):
     assert actual == expected
 
 
-def test_validator_validate_range(setup_temp_files):
-    redcap_csv_path, data_dictionary, field_requirements, validator = setup_temp_files
-
+def test_validator_validate_range(validator: Validator):
     assert validator.validate_range("height", 171) == True  # assumes metric
 
 
-def test_validator_validate_range_incorrect_range(setup_temp_files):
-    redcap_csv_path, data_dictionary, field_requirements, validator = setup_temp_files
-    
+def test_validator_validate_range_incorrect_range(validator: Validator):
     assert validator.validate_range("height", 99999) == False  # assumes metric

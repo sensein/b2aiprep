@@ -465,12 +465,13 @@ def test_redcap_to_bids():
     # Create RedCapDataset from CSV file
     redcap_dataset = RedCapDataset.from_redcap(csv_file_path)
     
+    reproschema_source_dir = project_root.joinpath("b2ai-redcap2rs", "b2ai-redcap2rs").resolve().as_posix()
     # Use TemporaryDirectory for the output directory
     with TemporaryDirectory() as tmp_dir:
         output_dir = Path(tmp_dir) / "bids_output"
 
         # Convert to BIDS format using the new class method
-        bids_dataset = BIDSDataset.from_redcap(redcap_dataset, output_dir, audiodir=None)
+        bids_dataset = BIDSDataset.from_redcap(redcap_dataset, reproschema_source_dir, output_dir, audiodir=None)
         
         # Check if the expected output files exist in the temporary directory
         if not any(output_dir.iterdir()):
@@ -481,24 +482,6 @@ def test_redcap_to_bids():
         
         # Verify that the BIDSDataset points to the correct directory
         assert bids_dataset.data_path == output_dir.resolve(), "BIDSDataset should point to the output directory"
-
-
-def test_bids_dataset_from_redcap_method_exists():
-    """Test that the new BIDSDataset.from_redcap class method exists and has correct signature."""
-    import inspect
-    
-    # Test that from_redcap class method exists
-    assert hasattr(BIDSDataset, 'from_redcap'), "BIDSDataset should have from_redcap class method"
-    
-    # Test method signature
-    sig = inspect.signature(BIDSDataset.from_redcap)
-    params = list(sig.parameters.keys())
-    expected_params = ['redcap_dataset', 'outdir', 'audiodir']
-    for param in expected_params:
-        assert param in params, f"from_redcap should have {param} parameter"
-    
-    # Test that it's a classmethod
-    assert isinstance(inspect.getattr_static(BIDSDataset, 'from_redcap'), classmethod), "from_redcap should be a classmethod"
 
 
 def test_redcap_dataset_to_csv():
@@ -585,94 +568,6 @@ def test_process_phenotype_tsv_and_json():
         result_df = pd.read_csv(tsv_path, sep="\t")
         assert list(result_df.columns) == ["record_id", "element_1", "element_2"]
         assert result_df.shape == (4, 3)  # Check number of rows and columns
-
-def test_construct_all_tsvs_from_jsons():
-    with tempfile.TemporaryDirectory() as temp_dir, tempfile.TemporaryDirectory() as output_dir:
-        # Create a sample DataFrame
-        data = {
-            "record_id": [1, 2, 3, 4],
-            "element_1": ["A", "B", "C", "D"],
-            "element_2": [10, 20, 30, 40],
-            "element_3": ["X", "Y", "Z", "W"],
-        }
-        df = pd.DataFrame(data)
-
-        # Create multiple sample JSON files with the updated structure
-        json_data_1 = {
-            "schema_name": {
-                "description": "Schema 1 description.",
-                "data_elements": {
-                    "record_id": {},
-                    "element_1": {
-                        "description": "Description for element_1.",
-                        "question": {"en": "Question text for element_1."},
-                        "datatype": ["xsd:string"],
-                    },
-                },
-            }
-        }
-        json_path_1 = os.path.join(temp_dir, "sample1.json")
-        with open(json_path_1, "w") as f:
-            json.dump(json_data_1, f)
-
-        json_data_2 = {
-            "schema_name": {
-                "description": "Schema 2 description.",
-                "data_elements": {
-                    "record_id": {},
-                    "element_2": {
-                        "description": "Description for element_2.",
-                        "question": {"en": "Question text for element_2."},
-                        "datatype": ["xsd:decimal"],
-                    },
-                },
-            }
-        }
-        json_path_2 = os.path.join(temp_dir, "sample2.json")
-        with open(json_path_2, "w") as f:
-            json.dump(json_data_2, f)
-
-        # Create an excluded file
-        json_data_excluded = {
-            "schema_name": {
-                "description": "Excluded schema description.",
-                "data_elements": {
-                    "record_id": {},
-                    "element_3": {
-                        "description": "Description for element_3.",
-                        "question": {"en": "Question text for element_3."},
-                        "datatype": ["xsd:string"],
-                    },
-                },
-            }
-        }
-        excluded_json_path = os.path.join(temp_dir, "excluded.json")
-        with open(excluded_json_path, "w") as f:
-            json.dump(json_data_excluded, f)
-
-        # Run the function using BIDSDataset static method
-        BIDSDataset._construct_all_tsvs_from_jsons(
-            df, input_dir=temp_dir, output_dir=output_dir, excluded_files=["excluded.json"]
-        )
-
-        # Check if the TSV files are created
-        tsv_path_1 = os.path.join(output_dir, "sample1.tsv")
-        tsv_path_2 = os.path.join(output_dir, "sample2.tsv")
-        excluded_tsv_path = os.path.join(output_dir, "excluded.tsv")
-
-        assert os.path.exists(tsv_path_1)
-        assert os.path.exists(tsv_path_2)
-        assert not os.path.exists(excluded_tsv_path)  # Ensure the excluded file was not processed
-
-        # Load TSV files and check content
-        result_df_1 = pd.read_csv(tsv_path_1, sep="\t")
-        assert list(result_df_1.columns) == ["record_id", "element_1"]
-        assert result_df_1.shape == (4, 2)  # Check number of rows and columns
-
-        result_df_2 = pd.read_csv(tsv_path_2, sep="\t")
-        assert list(result_df_2.columns) == ["record_id", "element_2"]
-        assert result_df_2.shape == (4, 2)  # Check number of rows and columns
-
 
 def test_get_paths_subject_extraction_edge_cases():
     """Test edge cases in subject ID extraction from filenames."""
