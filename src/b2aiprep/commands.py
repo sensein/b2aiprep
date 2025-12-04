@@ -79,8 +79,14 @@ def _prime_generator(
         return False, None
 
     def seeded_generator():
+        # yield the first item
         yield first_item
-        yield from gen
+
+        # then yield the rest by recreating the generator, skipping the first one
+        gen2 = generator_callable()
+        next(gen2)  # skip first
+        for item in gen2:
+            yield item
 
     return True, seeded_generator
 
@@ -422,6 +428,7 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
     features_to_extract = [
         {'feature_class': None, 'feature_name': 'ppgs'},
         {'feature_class': 'torchaudio', 'feature_name': 'pitch'},
+        {'feature_class': 'torchaudio', 'feature_name': 'mel_filter_bank'},
         {'feature_class': 'torchaudio', 'feature_name': 'mel_spectrogram'},
         {'feature_class': 'torchaudio', 'feature_name': 'spectrogram'},
         {'feature_class': 'torchaudio', 'feature_name': 'mfcc'},
@@ -452,18 +459,18 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
                 spectrogram_generator,
                 audio_paths=audio_paths,
             )
+        has_data, feature_generator = _prime_generator(maybe_empty_generator)
+        if not has_data or feature_generator is None:
+            _LOGGER.warning(
+                "No non-NaN entries found for %s feature. Skipping parquet export.",
+                feature_output,
+            )
+            continue
 
-        # has_data, feature_generator = _prime_generator(maybe_empty_generator)
-        # if not has_data or feature_generator is None:
-        #     _LOGGER.warning(
-        #         "No non-NaN entries found for %s feature. Skipping parquet export.",
-        #         feature_output,
-        #     )
-        #     continue
-
-        # sort the dataset by identifier and task_name
-        ds = Dataset.from_generator(maybe_empty_generator, num_proc=1)
-        if len(ds) == 0:
+        # # sort the dataset by identifier and task_name
+        # ds = Dataset.from_generator(maybe_empty_generator, num_proc=1)
+        ds = Dataset.from_generator(feature_generator, num_proc=1)
+        if len(ds) == 0:  
             _LOGGER.warning(
                 "No non-NaN entries found for %s feature. Skipping parquet export.",
                 feature_output,

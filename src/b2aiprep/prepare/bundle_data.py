@@ -135,7 +135,7 @@ def feature_extraction_generator(
         output["task_name"] = wav_path.stem.split("_")[2][5:]  # skip "task-" prefix
 
         if feature_class:
-            data = features[feature_class].get(feature_name, None)
+            data = features.get(feature_class, {}).get(feature_name, None)
         else:
             data = features.get(feature_name, None)
         
