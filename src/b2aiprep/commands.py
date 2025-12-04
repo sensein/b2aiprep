@@ -300,6 +300,22 @@ def run_quality_control_on_audios(
     )
 
 
+def _build_dataset_from_generator(generator_factory, feature_label: str):
+    """Materialize a datasets.Dataset from a generator without double-loading files."""
+    generator = generator_factory()
+    try:
+        first_record = next(generator)
+    except StopIteration:
+        _LOGGER.info("No values found for %s; skipping parquet export.", feature_label)
+        return None
+
+    def _stream():
+        yield first_record
+        for record in generator:
+            yield record
+
+    return Dataset.from_generator(_stream, num_proc=1)
+
 @click.command()
 @click.argument("bids_path", type=click.Path(exists=True))
 @click.argument("outdir", type=click.Path())
