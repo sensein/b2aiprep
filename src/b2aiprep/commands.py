@@ -329,6 +329,16 @@ def create_derived_dataset(bids_path, outdir):
         key=lambda x: (x.stem.split("_")[0], x.stem.split("_")[2]),
     )
 
+    _LOGGER.info("Creating phenotype data")
+    phenotype_path = outdir / "phenotype"
+    bids_phenotype_path = bids_path / "phenotype"
+
+    if not bids_phenotype_path.exists():
+        _LOGGER.warning("Could not locate Phenotype Folder, skipping... ")
+    else:
+        shutil.copytree(bids_phenotype_path, phenotype_path, dirs_exist_ok=True)
+        _LOGGER.info("Finished creating phenotype data")
+
     _LOGGER.info("Loading audio static features.")
     static_features = []
     for filepath in tqdm(audio_paths, desc="Loading static features", total=len(audio_paths)):
@@ -370,13 +380,33 @@ def create_derived_dataset(bids_path, outdir):
 
     _LOGGER.info("Loading spectrograms into a single HF dataset.")
 
-    for feature_name in ["spectrogram", "mfcc"]:
+    features_to_extract = [
+        {'feature_class': None, 'feature_name': 'ppgs'},
+        {'feature_class': 'torchaudio', 'feature_name': 'pitch'},
+        {'feature_class': 'torchaudio', 'feature_name': 'mel_filter_bank'},
+        {'feature_class': 'torchaudio', 'feature_name': 'mel_spectrogram'},
+        {'feature_class': 'torchaudio', 'feature_name': 'spectrogram'},
+        {'feature_class': 'torchaudio', 'feature_name': 'mfcc'},
+        {'feature_class': 'sparc', 'feature_name': 'ema'},
+        {'feature_class': 'sparc', 'feature_name': 'loudness'},
+        {'feature_class': 'sparc', 'feature_name': 'pitch'},
+        {'feature_class': 'sparc', 'feature_name': 'periodicity'},
+        {'feature_class': 'sparc', 'feature_name': 'pitch_stats'},
+
+    ]
+    for feature in features_to_extract:
+        feature_class = feature['feature_class']
+        feature_name = feature['feature_name']
+
+        feature_output = f"{feature_class}_{feature_name}" if feature_class else feature_name
+
         if feature_name != "spectrogram":
             use_byte_stream_split = True
             audio_feature_generator = partial(
                 feature_extraction_generator,
                 audio_paths=audio_paths,
                 feature_name=feature_name,
+                feature_class=feature_class
             )
         else:
             use_byte_stream_split = False
@@ -388,7 +418,7 @@ def create_derived_dataset(bids_path, outdir):
         # sort the dataset by identifier and task_name
         ds = Dataset.from_generator(audio_feature_generator, num_proc=1)
         ds.to_parquet(
-            str(outdir.joinpath(f"{feature_name}.parquet")),
+            str(outdir.joinpath(f"{feature_output}.parquet")),
             version="2.6",
             compression="zstd",  # Better compression ratio than snappy, still good speed
             compression_level=3,
@@ -458,9 +488,10 @@ def validate_derived_dataset(dataset_path):
 @click.command()
 @click.argument("bids_path", type=click.Path(exists=True))
 @click.argument("outdir", type=click.Path())
-@click.argument("publish_config_dir", type=click.Path(exists=True))
+@click.argument("deidentify_config_dir", type=click.Path(exists=True))
 @click.option("--skip_audio/--no-skip_audio", type=bool, default=False, show_default=True, help="Skip processing audio files")
-def deidentify_bids_dataset(bids_path, outdir, publish_config_dir, skip_audio):
+@click.option("--skip_audio_features/--no-skip_audio_features", type=bool, default=False, show_default=True, help="Skip processing audio feature files")
+def deidentify_bids_dataset(bids_path, outdir, deidentify_config_dir, skip_audio, skip_audio_features):
     """Creates a deidentified version of a given BIDS dataset.
 
     The deidentified version of the dataset: 
@@ -470,21 +501,22 @@ def deidentify_bids_dataset(bids_path, outdir, publish_config_dir, skip_audio):
     - removes sensitive audio records
     - applies deidentification procedures
 
-    Requires publish_config_dir to contain
+    Requires deidentify_config_dir to contain
     - participants_to_remove.json
     - audio_to_remove.json
     - id_remapping.json
+    - sensitive_audio_tasks.json
     """
     bids_path = Path(bids_path)
-    publish_config_dir = Path(publish_config_dir)
+    deidentify_config_dir = Path(deidentify_config_dir)
     
     # Create BIDSDataset instance and use the deidentify method
     bids_dataset = BIDSDataset(bids_path)
     bids_dataset.deidentify(
-        outdir=outdir, publish_config_dir=publish_config_dir, skip_audio=skip_audio
+        outdir=outdir, deidentify_config_dir=deidentify_config_dir, skip_audio=skip_audio, skip_audio_features=skip_audio_features
     )
     
-    _LOGGER.info("Publication ready dataset created successfully.")
+    _LOGGER.info("Deidentified dataset created successfully.")
 
 @click.command()
 @click.argument("bids_dir_path", type=click.Path())

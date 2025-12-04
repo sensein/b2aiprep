@@ -15,12 +15,13 @@ from b2aiprep.prepare.dataset import BIDSDataset
 class TestBIDSDatasetDeidentification:
     """Test cases for BIDSDataset deidentification methods."""
 
-    def setup_publish_config(self, publish_config_dir):
+    def setup_deidentify_config(self, deidentify_config_dir):
         """Helper method to create config files for testing."""
-        publish_config_dir.mkdir(exist_ok=True)
-        (publish_config_dir / "id_remapping.json").write_text("{}")
-        (publish_config_dir / "participant_ids_to_remove.json").write_text("[]")
-        (publish_config_dir / "audio_filestems_to_remove.json").write_text("[]")
+        deidentify_config_dir.mkdir(exist_ok=True)
+        (deidentify_config_dir / "id_remapping.json").write_text("{}")
+        (deidentify_config_dir / "participant_ids_to_remove.json").write_text("[]")
+        (deidentify_config_dir / "audio_filestems_to_remove.json").write_text("[]")
+        (deidentify_config_dir / "sensitive_audio_tasks.json").write_text("[]")
 
     @pytest.fixture
     def temp_bids_dir(self):
@@ -137,11 +138,11 @@ class TestBIDSDatasetDeidentification:
         dataset = BIDSDataset(temp_bids_dir)
 
         # Test deidentification
-        publish_config_dir = temp_bids_dir / "publish_config"
-        self.setup_publish_config(publish_config_dir)
+        deidentify_config_dir = temp_bids_dir / "deidentify_config"
+        self.setup_deidentify_config(deidentify_config_dir)
 
         deidentified_dataset = dataset.deidentify(
-            outdir=output_dir, publish_config_dir=publish_config_dir
+            outdir=output_dir, deidentify_config_dir=deidentify_config_dir
         )
 
         # Check that output directory was created
@@ -155,10 +156,10 @@ class TestBIDSDatasetDeidentification:
         dataset = BIDSDataset(temp_bids_dir)
 
         # Test deidentification with skip_audio=True
-        publish_config_dir = temp_bids_dir / "publish_config"
-        self.setup_publish_config(publish_config_dir)
+        deidentify_config_dir = temp_bids_dir / "deidentify_config"
+        self.setup_deidentify_config(deidentify_config_dir)
         deidentified_dataset = dataset.deidentify(
-            outdir=output_dir, publish_config_dir=publish_config_dir, skip_audio=True
+            outdir=output_dir, deidentify_config_dir=deidentify_config_dir, skip_audio=True
         )
 
         # Check that no audio files were copied
@@ -179,10 +180,10 @@ class TestBIDSDatasetDeidentification:
             mock_filter.return_value = audio_paths
 
             # Test deidentification with audio
-            publish_config_dir = temp_bids_dir / "publish_config"
-            self.setup_publish_config(publish_config_dir)
+            deidentify_config_dir = temp_bids_dir / "deidentify_config"
+            self.setup_deidentify_config(deidentify_config_dir)
             deidentified_dataset = dataset.deidentify(
-                outdir=output_dir, publish_config_dir=publish_config_dir, skip_audio=False
+                outdir=output_dir, deidentify_config_dir=deidentify_config_dir, skip_audio=False
             )
 
         # Check that audio files were copied (should be processed by filter)
@@ -230,9 +231,9 @@ class TestBIDSDatasetDeidentification:
         dataset = BIDSDataset(temp_bids_dir)
 
         # Test deidentification
-        publish_config_dir = temp_bids_dir / "publish_config"
-        self.setup_publish_config(publish_config_dir)
-        dataset.deidentify(outdir=output_dir, publish_config_dir=publish_config_dir)
+        deidentify_config_dir = temp_bids_dir / "deidentify_config"
+        self.setup_deidentify_config(deidentify_config_dir)
+        dataset.deidentify(outdir=output_dir, deidentify_config_dir=deidentify_config_dir)
 
         # Check that phenotype directory was created
         phenotype_dir = output_dir / "phenotype"
@@ -249,9 +250,9 @@ class TestBIDSDatasetDeidentification:
         dataset = BIDSDataset(temp_bids_dir)
 
         # Test deidentification
-        publish_config_dir = temp_bids_dir / "publish_config"
-        self.setup_publish_config(publish_config_dir)
-        dataset.deidentify(outdir=output_dir, publish_config_dir=publish_config_dir)
+        deidentify_config_dir = temp_bids_dir / "deidentify_config"
+        self.setup_deidentify_config(deidentify_config_dir)
+        dataset.deidentify(outdir=output_dir, deidentify_config_dir=deidentify_config_dir)
 
         # Check that template files were copied
         assert (output_dir / "README.md").exists()
@@ -267,9 +268,9 @@ class TestBIDSDatasetDeidentification:
 
         # Should raise FileExistsError
         with pytest.raises(FileExistsError):
-            publish_config_dir = temp_bids_dir / "publish_config"
-            self.setup_publish_config(publish_config_dir)
-            dataset.deidentify(outdir=output_dir, publish_config_dir=publish_config_dir)
+            deidentify_config_dir = temp_bids_dir / "deidentify_config"
+            self.setup_deidentify_config(deidentify_config_dir)
+            dataset.deidentify(outdir=output_dir, deidentify_config_dir=deidentify_config_dir)
 
     @patch(
         "b2aiprep.prepare.constants._load_participant_exclusions", return_value=["participant001"]
@@ -288,10 +289,10 @@ class TestBIDSDatasetDeidentification:
             mock_filter.return_value = audio_paths
 
             # Test deidentification
-            publish_config_dir = temp_bids_dir / "publish_config"
-            self.setup_publish_config(publish_config_dir)
+            deidentify_config_dir = temp_bids_dir / "deidentify_config"
+            self.setup_deidentify_config(deidentify_config_dir)
             dataset.deidentify(
-                outdir=output_dir, publish_config_dir=publish_config_dir, skip_audio=False
+                outdir=output_dir, deidentify_config_dir=deidentify_config_dir, skip_audio=False
             )
 
         # Check that participant001 files are not in output
@@ -319,10 +320,10 @@ class TestBIDSDatasetDeidentification:
             mock_get_value.side_effect = lambda metadata, linkid, endswith: "test_id"
 
             # Test deidentification
-            publish_config_dir = temp_bids_dir / "publish_config"
-            self.setup_publish_config(publish_config_dir)
+            deidentify_config_dir = temp_bids_dir / "deidentify_config"
+            self.setup_deidentify_config(deidentify_config_dir)
             dataset.deidentify(
-                outdir=output_dir, publish_config_dir=publish_config_dir, skip_audio=False
+                outdir=output_dir, deidentify_config_dir=deidentify_config_dir, skip_audio=False
             )
 
             # Check that metadata functions were called
@@ -334,10 +335,10 @@ class TestBIDSDatasetDeidentification:
         dataset = BIDSDataset(temp_bids_dir)
 
         with caplog.at_level(logging.INFO):
-            publish_config_dir = temp_bids_dir / "publish_config"
-            self.setup_publish_config(publish_config_dir)
+            deidentify_config_dir = temp_bids_dir / "deidentify_config"
+            self.setup_deidentify_config(deidentify_config_dir)
             dataset.deidentify(
-                outdir=output_dir, publish_config_dir=publish_config_dir, skip_audio=True
+                outdir=output_dir, deidentify_config_dir=deidentify_config_dir, skip_audio=True
             )
 
         # Check for expected log messages
@@ -523,7 +524,7 @@ class TestBIDSDatasetClean:
                 json.dump(participants_json, f, indent=2)
 
             dataset = BIDSDataset(bids_path)
-            df, phenotype = dataset.load_phenotype_data(bids_path, "participants")
+            df, phenotype = dataset.load_phenotype_data(bids_path.joinpath("participants.tsv"))
 
             # Check that data was loaded
             assert isinstance(df, pd.DataFrame)

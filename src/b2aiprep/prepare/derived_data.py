@@ -100,6 +100,7 @@ def load_audio_features(
 def feature_extraction_generator(
     audio_paths,
     feature_name: str,
+    feature_class: t.Optional[str] = None,
 ) -> t.Generator[t.Dict[str, t.Any], None, None]:
     """Load audio features from individual files and yield dictionaries amenable to HuggingFace's Dataset from_generator."""
     audio_paths = sorted(
@@ -108,7 +109,7 @@ def feature_extraction_generator(
         key=lambda x: (x.stem.split("_")[0], x.stem.split("_")[2]),
     )
     if feature_name not in ("spectrogram", "mfcc"):
-        raise ValueError(f"Feature name {feature_name} not supported.")
+        _LOGGER.warning(f"Feature name {feature_name} has not been tested. Proceeding anyway.")
 
     for wav_path in tqdm(audio_paths, total=len(audio_paths), desc="Extracting features"):
         output = {}
@@ -119,7 +120,10 @@ def feature_extraction_generator(
         output["session_id"] = wav_path.stem.split("_")[1][4:]  # skip "ses-" prefix
         output["task_name"] = wav_path.stem.split("_")[2][5:]  # skip "task-" prefix
 
-        data = features["torchaudio"][feature_name]
+        if feature_class:
+            data = features[feature_class][feature_name]
+        else:
+            data = features[feature_name]
         if feature_name == "spectrogram":
             data = 10.0 * torch.log10(torch.maximum(data, torch.tensor(1e-10)))
             data = torch.maximum(data, data.max() - 80)
@@ -127,7 +131,8 @@ def feature_extraction_generator(
         else:
             data = data.numpy()
 
-        data = data[:, ::2]
+        if feature_name in ("spectrogram", "mfcc"):
+            data = data[:, ::2]
         output[feature_name] = data
 
         yield output

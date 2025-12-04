@@ -144,7 +144,19 @@ def setup_bids_structure():
             "torchaudio": {
                 "spectrogram": torch.randn(10, 100),  # dummy spectrogram
                 "mfcc": torch.randn(13, 100),  # dummy MFCC features
+                "mel_filter_bank": torch.randn(13,100),
+                "mel_spectrogram": torch.randn(13,100),
+                "pitch": torch.randn(100)
+            },
+            "ppgs": torch.randn(1,40,100),
+            "sparc": {
+                "ema": torch.randn(100,12),
+                "loudness": torch.randn(100,1),
+                "periodicity": torch.randn(100,1),
+                "pitch_stats": torch.randn(2),
+                "pitch": torch.randn(100,1)
             }
+
         }
         torch.save(dummy_features, feature_file)
 
@@ -459,13 +471,20 @@ def test_deidentify_bids_dataset_cli_remove_audio(setup_bids_structure):
         with open(participants_to_remove_path , "w") as f:
             json.dump(participants_to_remove_data, f, indent=2)
 
+        sensitive_audio_tasks_path = config_dir  / "sensitive_audio_tasks.json"
+        sensitive_audio_tasks_data = []
+
+        with open(sensitive_audio_tasks_path , "w") as f:
+            json.dump(sensitive_audio_tasks_data, f, indent=2)
+
         command = ["b2aiprep-cli", "deidentify-bids-dataset", str(bids_dir), outdir, str(config_dir)]
 
         result = subprocess.run(command, capture_output=True, text=True)
         assert result.returncode == 0, f"CLI command failed: {result.stderr}"
         assert os.path.exists(outdir), "Output directory was not created"
-        # check if file/participant was removed
-        assert not os.path.exists(os.path.join(outdir, "sub-001"))
+        # check if file was removed
+        assert not os.path.exists(os.path.join(outdir, "sub-001", "ses-1", "audio", "sub-001_ses-1_task-reading.json"))
+        assert not os.path.exists(os.path.join(outdir, "sub-001", "ses-1", "audio", "sub-001_ses-1_task-reading.wav"))
 
 def test_reproschema_to_redcap_cli():
     """Test the 'b2aiprep-cli reproschema-to-redcap' command using subprocess."""

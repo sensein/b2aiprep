@@ -16,7 +16,7 @@ sub-p1/
     ...
 """
 
-from copy import copy
+from copy import copy, deepcopy
 import logging
 import os
 import re
@@ -739,26 +739,40 @@ class BIDSDataset:
             for element_name in data['data_elements'].keys():
                 element_to_schema[element_name] = schema_name
 
-        # with all the reproschema activities defined, we now look for a manual reorganization
+        # with all the reproschema activities defined, we now parse our manual reorganization
+        # this is a CSV with:
+        #   schema_name_source, column_name_source
+        # ... used to identify the source reproschema element, and:
+        #   schema_name, column_name, group, description
+        # ... used to arrange & describe the output in the phenotype/ folder.
         reorganization_file = files("b2aiprep.prepare.resources").joinpath("bids_field_organization.csv")
         df_reorg = pd.read_csv(reorganization_file, sep=',', header=0)
 
         element_used = {} # keep track of whether we have used an element, for logging later.
-        for activity_id, group in df_reorg.groupby('schema_name'):
-            column_mapping = group.set_index('column_name').to_dict(orient='index')
-
-            payload = {
-                "description": "",
-                "data_elements": {}
-            }
+        payload = {
+            "description": "",
+            "data_elements": {},
             # this variable will track the name of the original columns in RedCap
-            columns_for_indexing = []
+            "columns_for_indexing": [],
             # this variable will track the name of the *new* columns in the output df
-            columns_for_output = []
+            "columns_for_output": [],
+            # group is popped before saving
+            "group": "",
+        }
+        updated_schemas = defaultdict(lambda: deepcopy(payload))
+        for activity_id, group in df_reorg.groupby('schema_name_source'):
+            # get the *new* schema name, as this will be the base key of our updated dict
+            column_mapping = group.set_index('column_name_source').to_dict(orient='index')
             for column, updated_data in column_mapping.items():
+                if column not in df.columns:
+                    _LOGGER.warning(f'Requested output for "{column}", but this column was not found in the source df.')
+                    continue
+                # the source schema is defined based on the element itself;
+                # we do not need the schema_name_source column, but it is kept for ease of reading the CSV.
                 schema_to_use = element_to_schema[column]
-                data_element = copy(schemas[schema_to_use]["data_elements"][column])
 
+                # populate the detailed metadata for this column
+                data_element = copy(schemas[schema_to_use]["data_elements"][column])
                 if "description" in updated_data and (updated_data["description"] != ""):
                     description = updated_data["description"]
                 elif "description" in data_element and (data_element["description"] != ""):
@@ -766,39 +780,62 @@ class BIDSDataset:
                 else:
                     description = data_element.get("question", "").get("en", "")
                 data_element["description"] = description
-                new_element_name = updated_data["renamed_column"]
+                new_element_name = updated_data["column_name"]
 
-                if column not in df.columns:
-                    _LOGGER.warning(f'Requested output for "{column}", but this column was not found in the source df.')
-                    continue
-                columns_for_indexing.append(column)
-                columns_for_output.append(new_element_name)
+                updated_schema_name = updated_data["schema_name"]
+                updated_schemas[updated_schema_name]['columns_for_indexing'].append(column)
+                updated_schemas[updated_schema_name]['columns_for_output'].append(new_element_name)
 
                 # update the payload so we have a reproschema json for this df
-                payload["data_elements"][new_element_name] = data_element
+                updated_schemas[updated_schema_name]["data_elements"][new_element_name] = data_element
+                updated_schemas[updated_schema_name]["group"] = updated_data["group"]
                 element_used[column] = True
 
-            updated_schema = {activity_id: payload}
-
+        # with our full updated_schemas dict prepared, we can iterate through the *new* schema names
+        # and output a single folder for each
+        for schema_name, payload in updated_schemas.items():
+            columns_for_indexing = payload.pop("columns_for_indexing")
+            columns_for_output = payload.pop("columns_for_output")
+            group = payload.pop("group")
             if "record_id" not in columns_for_indexing:
                 columns_for_indexing = ["record_id"] + columns_for_indexing
-                columns_for_output = ["record_id"] + columns_for_output
+                columns_for_output = ["participant_id"] + columns_for_output
             # we now extract the sub-dataframe from our source redcap data and output it to tsv
             selected_df = df[columns_for_indexing]
             # Combine entries so there is one row per record_id
             selected_df = selected_df.groupby("record_id").first().reset_index()
 
-
+            # TODO: verify we added the record_id description to the payload before writing
+            updated_schema = {schema_name: payload}
             if clean_phenotype_data:
                 selected_df, updated_schema = BIDSDataset._clean_phenotype_data(selected_df, updated_schema)
             
+            # TODO: why is record_id sometimes here w/o this rename?
+            selected_df = selected_df.rename(
+                columns={old: new for old, new in zip(columns_for_indexing, columns_for_output)}
+            )
+
+            # check if *everything* is missing except for participant_id, if so we omit
+            if "participant_id" in selected_df:
+                null_cols = selected_df.drop(columns=["participant_id"]).isnull().all()
+            else:
+                null_cols = selected_df.isnull().all()
+            if null_cols.all():
+                _LOGGER.warning(f"All data missing for schema {schema_name}, skipping output.")
+                continue
+
             # Output to a TSV/JSON file.
-            filename = f'{activity_id}.json'
+            filename = f'{schema_name}.json'
+            if group != "":
+                output_dir_grouped = os.path.join(output_dir, group)
+                os.makedirs(output_dir_grouped, exist_ok=True)
+            else:
+                output_dir_grouped = output_dir
             BIDSDataset._dataframe_to_tsv(
                 selected_df,
-                os.path.join(output_dir, filename.replace(".json", ".tsv"))
+                os.path.join(output_dir_grouped, filename.replace(".json", ".tsv"))
             )
-            with open(os.path.join(output_dir, filename), "w") as f:
+            with open(os.path.join(output_dir_grouped, filename), "w") as f:
                 json.dump(updated_schema, f, indent=2)
 
     @staticmethod
@@ -981,31 +1018,25 @@ class BIDSDataset:
         sessions_df.to_csv(sessions_tsv_path, sep="\t", index=False)
 
     @staticmethod
-    def load_phenotype_data(data_path: Path, phenotype_name: str) -> t.Tuple[pd.DataFrame, t.Dict[str, t.Any]]:
+    def load_phenotype_data(phenotype_filepath: Path) -> t.Tuple[pd.DataFrame, t.Dict[str, t.Any]]:
         """
         Load phenotype data from TSV and JSON files.
         
         Args:
-            phenotype_name: Name of the phenotype file (without extension)
+            phenotype_filepath: Path to the phenotype file (without extension)
             
         Returns:
             Tuple of (DataFrame, phenotype_metadata_dict)
         """
-        # Clean up phenotype name
-        if phenotype_name.endswith('.tsv'):
-            phenotype_name = phenotype_name[:-4]
-        elif phenotype_name.endswith('.json'):
-            phenotype_name = phenotype_name[:-5]
-
+        phenotype_name = phenotype_filepath.stem
         # Load TSV and JSON files
-        df = pd.read_csv(data_path.joinpath(f"{phenotype_name}.tsv"), sep="\t")
-        with open(data_path.joinpath(f"{phenotype_name}.json"), "r") as f:
+        df = pd.read_csv(phenotype_filepath.with_suffix('.tsv'), sep="\t")
+        with open(phenotype_filepath.with_suffix('.json'), "r") as f:
             phenotype = json.load(f)
-            if phenotype_name != "participants":
-                data_elements = {}
-                for schema in phenotype:
-                    data_elements.update(phenotype[schema].get("data_elements", {}))
-                phenotype = data_elements
+            data_elements = {}
+            for schema in phenotype:
+                data_elements.update(phenotype[schema].get("data_elements", {}))
+            phenotype = data_elements
 
         # Add record_id to phenotype if missing
         if df.shape[1] > 0 and df.columns[0] == 'record_id' and 'record_id' not in list(phenotype.keys()):
@@ -1057,14 +1088,9 @@ class BIDSDataset:
             n_different = (ids_before != df["participant_id"]).sum()
             logging.info(f"Remapped {n_different} / {len(ids_before)} IDs for 'participant_id'")
 
-        # Reduce ID length (remap IDs)
-        # if "session_id" in df.columns:
-        #     df = BIDSDataset._reduce_id_length(df, "session_id")
-        
         if participant_session_id_to_remap:
             for col in df.columns:
                 if "session_id" in col:
-                    #df[col] = df[col].astype(str).str.rstrip("-")  # Remove trailing '-'
                     ids_before = df[col].copy()
                     df[col] = df[col].map(participant_session_id_to_remap).fillna(df[col])
                     n_different = (ids_before != df[col]).sum()
@@ -1418,7 +1444,23 @@ class BIDSDataset:
         
         return data
 
-    def deidentify(self, outdir: t.Union[str, Path], publish_config_dir: Path, skip_audio: bool = False) -> 'BIDSDataset':
+    @staticmethod
+    def load_sensitive_audio_tasks(deidentify_config_dir: Path) -> t.List[str]:
+        """Load list of audio tasks that are sensitive from JSON file."""
+        sensitive_audio_tasks_path = deidentify_config_dir / "sensitive_audio_tasks.json"
+        if not sensitive_audio_tasks_path.exists():
+            # If file doesn't exist, return empty list
+            return []
+
+        with open(sensitive_audio_tasks_path, 'r') as f:
+            data = json.load(f)
+
+        if not isinstance(data, list):
+            raise ValueError(f"Sensitive audio tasks file {sensitive_audio_tasks_path} should contain a list of audio task names.")
+        
+        return data
+
+    def deidentify(self, outdir: t.Union[str, Path], deidentify_config_dir: Path, skip_audio: bool = False, skip_audio_features: bool = False) -> 'BIDSDataset':
         """
         Create a deidentified version of the BIDS dataset.
         
@@ -1431,6 +1473,7 @@ class BIDSDataset:
         
         Args:
             outdir: Output directory for the deidentified dataset
+            deidentify_config_dir: Config directory for doing deidentification
             skip_audio: If True, skip copying/processing audio files
             
         Returns:
@@ -1439,8 +1482,10 @@ class BIDSDataset:
         outdir = Path(outdir)
         outdir.mkdir(parents=True, exist_ok=False)  # Don't overwrite existing directories
         
-        participant_ids_to_remap = BIDSDataset.load_remap_id_list(publish_config_dir)
-        participant_ids_to_remove = BIDSDataset.load_participant_ids_to_remove(publish_config_dir)
+        participant_ids_to_remap = BIDSDataset.load_remap_id_list(deidentify_config_dir)
+        participant_ids_to_remove = BIDSDataset.load_participant_ids_to_remove(deidentify_config_dir)
+        audio_filestems_to_remove = BIDSDataset.load_audio_filestems_to_remove(deidentify_config_dir)
+        sensitive_audio_tasks = BIDSDataset.load_sensitive_audio_tasks(deidentify_config_dir)
         participant_session_id_to_remap = BIDSDataset.map_sequential_session_ids(self.data_path)
         
         # Process phenotype directory if it exists
@@ -1450,26 +1495,49 @@ class BIDSDataset:
             phenotype_output_path = outdir.joinpath("phenotype")
             phenotype_output_path.mkdir(parents=True, exist_ok=True)
             
-            for phenotype_filepath in phenotype_base_path.glob("*.tsv"):
+            for phenotype_filepath in phenotype_base_path.rglob("*.tsv"):
                 logging.info(f"Processing {phenotype_filepath.stem}.")
-                df_pheno, phenotype_dict = BIDSDataset.load_phenotype_data(phenotype_base_path, phenotype_filepath.stem)
+                df_pheno, phenotype_dict = BIDSDataset.load_phenotype_data(phenotype_filepath)
                 df_pheno, phenotype_dict = BIDSDataset._deidentify_phenotype(df_pheno, phenotype_dict, participant_ids_to_remove, participant_ids_to_remap, participant_session_id_to_remap)
                 
                 # Write out phenotype data and data dictionary
+                phenotype_subdir = phenotype_output_path.joinpath(phenotype_filepath.parent.relative_to(phenotype_base_path))
+                phenotype_subdir.mkdir(parents=True, exist_ok=True)
                 df_pheno.to_csv(
-                    phenotype_output_path.joinpath(f"{phenotype_filepath.stem}.tsv"), 
+                    phenotype_subdir.joinpath(f"{phenotype_filepath.stem}.tsv"), 
                     sep="\t", index=False
                 )
-                with open(phenotype_output_path.joinpath(f"{phenotype_filepath.stem}.json"), "w") as f:
+                with open(phenotype_subdir.joinpath(f"{phenotype_filepath.stem}.json"), "w") as f:
                     json.dump(phenotype_dict, f, indent=2)
             logging.info("Finished processing phenotype data.")
         
         if not skip_audio:
             # Process audio files
             logging.info("Processing audio files for deidentification.")
-            audio_filestems_to_remove = BIDSDataset.load_audio_filestems_to_remove(publish_config_dir)
-            BIDSDataset._deidentify_audio_files(self.data_path, outdir, participant_ids_to_remove, audio_filestems_to_remove, participant_ids_to_remap, participant_session_id_to_remap)
+            BIDSDataset._deidentify_audio_files(
+                self.data_path, 
+                outdir, 
+                participant_ids_to_remove, 
+                audio_filestems_to_remove,
+                sensitive_audio_tasks, 
+                participant_ids_to_remap, 
+                participant_session_id_to_remap,
+            )
             logging.info("Finished processing audio files.")
+
+        if not skip_audio_features:
+            # Process audio files
+            logging.info("Processing audio features for deidentification.")
+            BIDSDataset._deidentify_feature_files(
+                self.data_path, 
+                outdir, 
+                participant_ids_to_remove, 
+                audio_filestems_to_remove,
+                sensitive_audio_tasks, 
+                participant_ids_to_remap, 
+                participant_session_id_to_remap,
+            )
+            logging.info("Finished processing features.")
         
         # Copy over the standard BIDS template files if they exist
         for template_file in ["README.md", "CHANGES.md", "dataset_description.json"]:
@@ -1481,13 +1549,100 @@ class BIDSDataset:
         return BIDSDataset(outdir)
 
     @staticmethod
+    def _collect_paths(
+        data_path: Path,
+        file_extension: str
+    ) -> t.List[Path]:
+        """Collect all file paths with the given extension from the dataset."""
+        paths = get_paths(data_path, file_extension=file_extension)
+        paths = [x["path"] for x in paths]
+        
+        # Sort audio paths for consistent processing
+        paths = sorted(
+            paths,
+            # sort first by subject, then by task
+            key=lambda x: (x.stem.split("_")[0], x.stem.split("_")[2]),
+        )
+        return paths
+
+    @staticmethod
+    def _apply_exclusion_list_to_filepaths(
+        paths: t.List[Path],
+        exclusion_list: t.List[str],
+        exclusion_type: str = 'participant'
+    ) -> t.List[Path]:
+        """Remove filepaths based on overlap with a specified exclusion list."""
+        n = len(paths)
+        exclusion = set(exclusion_list)
+        if len(exclusion) == 0:
+            return paths
+
+        if exclusion_type == 'participant':
+            paths = [
+                x for x in paths
+                if all(f"sub-{pid}" not in str(x) for pid in exclusion)
+            ]
+        elif exclusion_type == 'filename':
+            paths = [
+                a for a in paths
+                if a.stem not in exclusion
+            ]
+        elif exclusion_type == 'filestem_contains':
+            paths = [
+                a for a in paths
+                if all(excl not in a.stem for excl in exclusion)
+            ]
+            # for better logging, add the list of exclusions to the exclusion type
+            exclusion_type += f" ({', '.join(exclusion)})"
+        else:
+            raise ValueError(f"Unknown exclusion_type: {exclusion_type}")
+        if len(paths) < n:
+            _LOGGER.info(
+                f"Removed {n - len(paths)} records due to exclusion: {exclusion_type}."
+            )
+        return paths
+
+    @staticmethod
+    def _extract_participant_id_from_path(path: Path) -> str:
+        """Extract participant ID from the path, preferring directory parts.
+        Falls back to regex on filestem if needed."""
+        # Prefer directory parts
+        for part in path.parts:
+            if part.startswith("sub-"):
+                return part[4:]
+
+        # Fallback to filestem regex
+        m = re.search(r"sub-([A-Za-z0-9\-]+)", path.stem)
+        if m:
+            return m.group(1)
+
+        raise ValueError(f"Could not extract participant ID from path: {path}")
+
+    @staticmethod
+    def _extract_session_id_from_path(path: Path) -> str:
+        """Extract session ID from the path, preferring directory parts.
+        Falls back to regex on filestem using ses-(.+?)_ if needed."""
+        # Prefer directory parts
+        for part in path.parts:
+            if part.startswith("ses-"):
+                return part[4:]
+
+        # Fallback to filestem regex: ses-(.+?)_
+        m = re.search(r"ses-(.+?)_", path.stem)
+        if m:
+            return m.group(1)
+
+        raise ValueError(f"Could not extract session ID from path: {path}")
+
+    @staticmethod
     def _deidentify_audio_files(
         data_path: Path,
         outdir: Path,
         exclude_participant_ids: t.List[str] = [],
         exclude_audio_filestems: t.List[str] = [],
+        sensitive_audio_task_list: t.List[str] = [],
         participant_ids_to_remap: t.Dict[str, str] = {},
-        participant_session_id_to_remap: t.Dict[str, str] = {}
+        participant_session_id_to_remap: t.Dict[str, str] = {},
     ):
         """
         Copy and deidentify audio files to the output directory.
@@ -1500,48 +1655,34 @@ class BIDSDataset:
         5. Copies audio files and metadata to new location
         
         Args:
+            data_path: Directory of the input BIDS dataset
             outdir: Output directory for deidentified audio files
+            exclude_participant_ids: list of participant IDs to exclude
+            exclude_audio_filestems: list of audio filenames to exclude
+            sensitive_audio_task_list: list of sensitive audio tasks
+            participant_ids_to_remap: map between old and new participant IDs
+            participant_session_id_to_remap: map between old and new session IDs
         """
-        _LOGGER = logging.getLogger(__name__)
-        
         # Get all audio paths
-        audio_paths = get_paths(data_path, file_extension=".wav")
-        audio_paths = [x["path"] for x in audio_paths]
-        
+        audio_paths = BIDSDataset._collect_paths(data_path, file_extension=".wav")
         if len(audio_paths) == 0:
             _LOGGER.warning(f"No audio files (.wav) found in {data_path}.")
             return
         
-        # Sort audio paths for consistent processing
-        audio_paths = sorted(
-            audio_paths,
-            # sort first by subject, then by task
-            key=lambda x: (x.stem.split("_")[0], x.stem.split("_")[2]),
-        )
-        
         # Remove known individuals (hard-coded participant removal)
-        n = len(audio_paths)
-        for participant_id in exclude_participant_ids:
-            audio_paths = [x for x in audio_paths if f"sub-{participant_id}" not in str(x)]
-        
-        if len(audio_paths) < n:
-            _LOGGER.info(
-                f"Removed {n - len(audio_paths)} records due to participant_id removal."
-            )
-        
-        n = len(audio_paths)
-        if len(exclude_audio_filestems) > 0:
-            audio_paths = [
-                a for a in audio_paths
-                if a.stem not in exclude_audio_filestems
-            ]
-        if len(audio_paths) < n:
-            _LOGGER.info(
-                f"Removed {n - len(audio_paths)} records due to audio_filestem removal."
-            )
-        
-        # Remove audio check and sensitive audio files
-        audio_paths = filter_audio_paths(audio_paths)
+        audio_paths = BIDSDataset._apply_exclusion_list_to_filepaths(
+            audio_paths, exclusion_list=exclude_participant_ids, exclusion_type='participant'
+        )
+
+        # Remove known files (hard-coded file-based removal)
+        audio_paths = BIDSDataset._apply_exclusion_list_to_filepaths(
+            audio_paths, exclusion_list=exclude_audio_filestems, exclusion_type='filename'
+        )
+
+        # Remove specific tasks
+        audio_paths = BIDSDataset._apply_exclusion_list_to_filepaths(
+            audio_paths, exclusion_list=['audio-check'], exclusion_type='filestem_contains'
+        )
 
         # TODO: Add audio processing for further deidentification here
         # This could include:
@@ -1559,7 +1700,7 @@ class BIDSDataset:
             if not json_path.exists():
                 _LOGGER.warning(f"Metadata file {json_path} not found. Skipping {audio_path}.")
                 continue
-            
+
             metadata = json.loads(json_path.read_text())
             
             # Update metadata with deidentified IDs
@@ -1573,15 +1714,101 @@ class BIDSDataset:
                 f"sub-{participant_id}/ses-{session_id}/audio/sub-{participant_id}_ses-{session_id}_{audio_path_stem_ending}.wav"
             )
             output_path.parent.mkdir(parents=True, exist_ok=True)
-            
+        
             # Copy over the associated .json file and audio data
             with open(output_path.with_suffix(".json"), "w") as fp:
                 json.dump(metadata, fp, indent=2)
-
-            if features_path.exists():
-                new_features_path = output_path.parent / f"{output_path.stem}_features.pt"
-                shutil.copy(features_path, new_features_path)
             shutil.copy(audio_path, output_path)
+
+
+    @staticmethod
+    def _deidentify_feature_files(
+        data_path: Path,
+        outdir: Path,
+        exclude_participant_ids: t.List[str] = [],
+        exclude_audio_filestems: t.List[str] = [],
+        sensitive_audio_task_list: t.List[str] = [],
+        participant_ids_to_remap: t.Dict[str, str] = {},
+        participant_session_id_to_remap: t.Dict[str, str] = {},
+    ):
+        """
+        Copy and deidentify audio feature files to the output directory.
+        
+        This method:
+        1. Gets all audio feature paths from the dataset
+        2. Removes participants from hard-coded exclusion list
+        3. Filters out sensitive files
+        4. Removes subfields from sensitive files
+        5. Copies feature files to the new location
+        
+        Args:
+            data_path: Directory of the input BIDS dataset
+            outdir: Output directory for deidentified audio files
+            exclude_participant_ids: list of participant IDs to exclude
+            exclude_audio_filestems: list of audio filenames to exclude
+            sensitive_audio_task_list: list of sensitive audio tasks
+            participant_ids_to_remap: map between old and new participant IDs
+            participant_session_id_to_remap: map between old and new session IDs
+        """
+        # Get all audio paths
+        paths = BIDSDataset._collect_paths(data_path, file_extension=".pt")
+        if len(paths) == 0:
+            _LOGGER.warning(f"No feature files (.pt) found in {data_path}.")
+            return
+        
+        # Remove known individuals (hard-coded participant removal)
+        paths = BIDSDataset._apply_exclusion_list_to_filepaths(
+            paths, exclusion_list=exclude_participant_ids, exclusion_type='participant'
+        )
+
+        # Remove known files (hard-coded file-based removal)
+        paths = BIDSDataset._apply_exclusion_list_to_filepaths(
+            paths, exclusion_list=exclude_audio_filestems, exclusion_type='filename'
+        )
+
+        # Remove specific tasks
+        paths = BIDSDataset._apply_exclusion_list_to_filepaths(
+            paths, exclusion_list=['audio-check'], exclusion_type='filestem_contains'
+        )
+
+        # TODO: Add audio processing for further deidentification here
+        # This could include:
+        # - Voice conversion/anonymization
+        # - Pitch shifting
+        # - Other audio deidentification techniques
+        
+        _LOGGER.info(f"Copying {len(paths)} feature files.")
+        for features_path in tqdm(
+            paths, desc="Copying audio and metadata files", total=len(paths)
+        ):
+            participant_id = BIDSDataset._extract_participant_id_from_path(features_path)
+            session_id = BIDSDataset._extract_session_id_from_path(features_path)
+
+            # Check that the audio exists
+            audio_path = features_path.parent / (features_path.stem[:-9] + '.wav')
+            if not audio_path.exists():
+                _LOGGER.warning(f"Audio file {audio_path} not found. Skipping {features_path}.")
+                continue
+            
+            # Create output path with deidentified structure
+            path_stem_ending = "_".join(features_path.stem.split("_", 3)[2:])
+            output_path = outdir.joinpath(
+                f"sub-{participant_id}/ses-{session_id}/audio/sub-{participant_id}_ses-{session_id}_{path_stem_ending}{features_path.suffix}"
+            )
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+
+            # if it is not sensitive and we want to keep features, move all features over
+            task_name = features_path.stem.split("_")[2][5:]
+            if task_name.lower() not in sensitive_audio_task_list:
+                shutil.copy(features_path, output_path)
+            else:
+                features = torch.load(features_path, weights_only=False, map_location=torch.device('cpu'))
+                # Sensitive features to remove
+                for torchaudio_field in ['mel_filter_bank', 'mfcc', 'mel_spectrogram', 'spectrogram']:
+                    features['torchaudio'].pop(torchaudio_field, None)
+                for field in ['ppgs', 'transcription']:
+                    features.pop(field, None)
+                torch.save(features, output_path)
 
 
 class VBAIDataset(BIDSDataset):
