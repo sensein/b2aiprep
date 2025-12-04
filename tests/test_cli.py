@@ -148,7 +148,7 @@ def setup_bids_structure():
                 "mel_spectrogram": torch.randn(13,100),
                 "pitch": torch.randn(100)
             },
-            "ppgs": torch.randn(1,40,100),
+            "ppgs": torch.randn(40,100),
             "sparc": {
                 "ema": torch.randn(100,12),
                 "loudness": torch.randn(100,1),
@@ -236,7 +236,7 @@ def setup_bids_structure_with_nan_feature():
                 "mel_spectrogram": torch.randn(13,100),
                 "pitch": torch.randn(100)
             },
-            "ppgs": torch.randn(1,40,100),
+            "ppgs": torch.randn(40,100),
             "sparc": {
                 "ema": torch.randn(100,12),
                 "loudness": torch.randn(100,1),
