@@ -16,7 +16,7 @@ sub-p1/
     ...
 """
 
-from copy import copy
+from copy import copy, deepcopy
 import logging
 import os
 import re
@@ -739,26 +739,40 @@ class BIDSDataset:
             for element_name in data['data_elements'].keys():
                 element_to_schema[element_name] = schema_name
 
-        # with all the reproschema activities defined, we now look for a manual reorganization
+        # with all the reproschema activities defined, we now parse our manual reorganization
+        # this is a CSV with:
+        #   schema_name_source, column_name_source
+        # ... used to identify the source reproschema element, and:
+        #   schema_name, column_name, group, description
+        # ... used to arrange & describe the output in the phenotype/ folder.
         reorganization_file = files("b2aiprep.prepare.resources").joinpath("bids_field_organization.csv")
         df_reorg = pd.read_csv(reorganization_file, sep=',', header=0)
 
         element_used = {} # keep track of whether we have used an element, for logging later.
-        for activity_id, group in df_reorg.groupby('schema_name'):
-            column_mapping = group.set_index('column_name').to_dict(orient='index')
-
-            payload = {
-                "description": "",
-                "data_elements": {}
-            }
+        payload = {
+            "description": "",
+            "data_elements": {},
             # this variable will track the name of the original columns in RedCap
-            columns_for_indexing = []
+            "columns_for_indexing": [],
             # this variable will track the name of the *new* columns in the output df
-            columns_for_output = []
+            "columns_for_output": [],
+            # group is popped before saving
+            "group": "",
+        }
+        updated_schemas = defaultdict(lambda: deepcopy(payload))
+        for activity_id, group in df_reorg.groupby('schema_name_source'):
+            # get the *new* schema name, as this will be the base key of our updated dict
+            column_mapping = group.set_index('column_name_source').to_dict(orient='index')
             for column, updated_data in column_mapping.items():
+                if column not in df.columns:
+                    _LOGGER.warning(f'Requested output for "{column}", but this column was not found in the source df.')
+                    continue
+                # the source schema is defined based on the element itself;
+                # we do not need the schema_name_source column, but it is kept for ease of reading the CSV.
                 schema_to_use = element_to_schema[column]
-                data_element = copy(schemas[schema_to_use]["data_elements"][column])
 
+                # populate the detailed metadata for this column
+                data_element = copy(schemas[schema_to_use]["data_elements"][column])
                 if "description" in updated_data and (updated_data["description"] != ""):
                     description = updated_data["description"]
                 elif "description" in data_element and (data_element["description"] != ""):
@@ -766,39 +780,62 @@ class BIDSDataset:
                 else:
                     description = data_element.get("question", "").get("en", "")
                 data_element["description"] = description
-                new_element_name = updated_data["renamed_column"]
+                new_element_name = updated_data["column_name"]
 
-                if column not in df.columns:
-                    _LOGGER.warning(f'Requested output for "{column}", but this column was not found in the source df.')
-                    continue
-                columns_for_indexing.append(column)
-                columns_for_output.append(new_element_name)
+                updated_schema_name = updated_data["schema_name"]
+                updated_schemas[updated_schema_name]['columns_for_indexing'].append(column)
+                updated_schemas[updated_schema_name]['columns_for_output'].append(new_element_name)
 
                 # update the payload so we have a reproschema json for this df
-                payload["data_elements"][new_element_name] = data_element
+                updated_schemas[updated_schema_name]["data_elements"][new_element_name] = data_element
+                updated_schemas[updated_schema_name]["group"] = updated_data["group"]
                 element_used[column] = True
 
-            updated_schema = {activity_id: payload}
-
+        # with our full updated_schemas dict prepared, we can iterate through the *new* schema names
+        # and output a single folder for each
+        for schema_name, payload in updated_schemas.items():
+            columns_for_indexing = payload.pop("columns_for_indexing")
+            columns_for_output = payload.pop("columns_for_output")
+            group = payload.pop("group")
             if "record_id" not in columns_for_indexing:
                 columns_for_indexing = ["record_id"] + columns_for_indexing
-                columns_for_output = ["record_id"] + columns_for_output
+                columns_for_output = ["participant_id"] + columns_for_output
             # we now extract the sub-dataframe from our source redcap data and output it to tsv
             selected_df = df[columns_for_indexing]
             # Combine entries so there is one row per record_id
             selected_df = selected_df.groupby("record_id").first().reset_index()
 
-
+            # TODO: verify we added the record_id description to the payload before writing
+            updated_schema = {schema_name: payload}
             if clean_phenotype_data:
                 selected_df, updated_schema = BIDSDataset._clean_phenotype_data(selected_df, updated_schema)
             
+            # TODO: why is record_id sometimes here w/o this rename?
+            selected_df = selected_df.rename(
+                columns={old: new for old, new in zip(columns_for_indexing, columns_for_output)}
+            )
+
+            # check if *everything* is missing except for participant_id, if so we omit
+            if "participant_id" in selected_df:
+                null_cols = selected_df.drop(columns=["participant_id"]).isnull().all()
+            else:
+                null_cols = selected_df.isnull().all()
+            if null_cols.all():
+                _LOGGER.warning(f"All data missing for schema {schema_name}, skipping output.")
+                continue
+
             # Output to a TSV/JSON file.
-            filename = f'{activity_id}.json'
+            filename = f'{schema_name}.json'
+            if group != "":
+                output_dir_grouped = os.path.join(output_dir, group)
+                os.makedirs(output_dir_grouped, exist_ok=True)
+            else:
+                output_dir_grouped = output_dir
             BIDSDataset._dataframe_to_tsv(
                 selected_df,
-                os.path.join(output_dir, filename.replace(".json", ".tsv"))
+                os.path.join(output_dir_grouped, filename.replace(".json", ".tsv"))
             )
-            with open(os.path.join(output_dir, filename), "w") as f:
+            with open(os.path.join(output_dir_grouped, filename), "w") as f:
                 json.dump(updated_schema, f, indent=2)
 
     @staticmethod
