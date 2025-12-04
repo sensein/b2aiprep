@@ -158,7 +158,7 @@ def feature_extraction_generator(
         if feature_name in ("spectrogram", "mfcc"):
             data = data[:, ::2]
         output[feature_name] = data
-        if feature_name == 'ppgs':
-            _LOGGER.debug(f"ppgs found to be: {data.shape}")
-            _LOGGER.debug(f"output looks like: {output}")
+        
+        _LOGGER.info(f"{feature_name} found to be: {data.shape}")
+        _LOGGER.info(f"output looks like: {output}")
         yield output
