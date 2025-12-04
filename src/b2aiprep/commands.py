@@ -64,6 +64,26 @@ from b2aiprep.prepare.update import TemplateUpdateError, reorganize_bids_activit
 
 _LOGGER = logging.getLogger(__name__)
 
+
+def _prime_generator(
+    generator_callable: t.Callable[[], t.Iterator[t.Dict[str, t.Any]]],
+) -> t.Tuple[bool, t.Optional[t.Callable[[], t.Iterator[t.Dict[str, t.Any]]]]]:
+    """Peek at the first item while returning a generator that still yields it."""
+    gen = generator_callable()
+    try:
+        first_item = next(gen)
+    except StopIteration:
+        close_fn = getattr(gen, "close", None)
+        if callable(close_fn):
+            close_fn()
+        return False, None
+
+    def seeded_generator():
+        yield first_item
+        yield from gen
+
+    return True, seeded_generator
+
 import numpy as np
 
 @click.command()
@@ -311,10 +331,10 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
         _LOGGER.warning("Audio data is currently not supported for bundling. No audio files will be included in the bundle.")
 
     bids_path = Path(bids_path)
-    audio_paths = get_paths(bids_path, file_extension=".pt")
-    audio_paths = [x["path"] for x in audio_paths]
+    feature_paths = get_paths(bids_path, file_extension=".pt")
+    feature_paths = [x["path"] for x in feature_paths]
 
-    if len(audio_paths) == 0:
+    if len(feature_paths) == 0:
         raise FileNotFoundError(
             f"No feature files (.pt) found in {bids_path}. Please check the directory structure."
         )
@@ -325,7 +345,7 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
     # remove _features at the end of the file stem
     audio_paths = [
         x.parent.joinpath(x.stem[:-9]).with_suffix(".wav") if "_features" in x.name else x
-        for x in audio_paths
+        for x in feature_paths
     ]
 
     audio_paths = sorted(
@@ -405,7 +425,7 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
 
         if feature_name != "spectrogram":
             use_byte_stream_split = True
-            audio_feature_generator = partial(
+            maybe_empty_generator = partial(
                 feature_extraction_generator,
                 audio_paths=audio_paths,
                 feature_name=feature_name,
@@ -413,13 +433,21 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
             )
         else:
             use_byte_stream_split = False
-            audio_feature_generator = partial(
+            maybe_empty_generator = partial(
                 spectrogram_generator,
                 audio_paths=audio_paths,
             )
 
+        has_data, feature_generator = _prime_generator(maybe_empty_generator)
+        if not has_data or feature_generator is None:
+            _LOGGER.warning(
+                "No non-NaN entries found for %s feature. Skipping parquet export.",
+                feature_output,
+            )
+            continue
+
         # sort the dataset by identifier and task_name
-        ds = Dataset.from_generator(audio_feature_generator, num_proc=1)
+        ds = Dataset.from_generator(feature_generator, num_proc=1)
         ds.to_parquet(
             str(outdir.joinpath(f"{feature_output}.parquet")),
             version="2.6",

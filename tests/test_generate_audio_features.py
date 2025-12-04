@@ -40,7 +40,7 @@ def setup_temp_files():
 
 
 def test_generate_audio_features_cli_update(setup_temp_files):
-    """Test the 'b2aiprep-cli prepbidslikedata' command using subprocess."""
+    """Test the 'b2aiprep-cli generate-audio-features' command using subprocess."""
     redcap_csv_path, audio_dir, bids_dir_path, tar_file_path = setup_temp_files
     update = "True"
     shadow_path = f"{Path(bids_dir_path)}_update"

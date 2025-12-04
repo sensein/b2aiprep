@@ -111,7 +111,7 @@ def load_audio_features(
 
 
 def feature_extraction_generator(
-    audio_paths,
+    audio_paths: t.List[Path],
     feature_name: str,
     feature_class: t.Optional[str] = None,
 ) -> t.Generator[t.Dict[str, t.Any], None, None]:
@@ -139,24 +139,24 @@ def feature_extraction_generator(
         else:
             data = features.get(feature_name, None)
         
-        if data is not None:
-            data = torch.tensor(data)
-            if not torch.isnan(data).all().item():
-                if feature_name == "spectrogram":
-                    data = 10.0 * torch.log10(torch.maximum(data, torch.tensor(1e-10)))
-                    data = torch.maximum(data, data.max() - 80)
-                    data = data.numpy().astype(np.float32)
-                else:
-                    data = data.numpy()
-
-                if feature_name in ("spectrogram", "mfcc"):
-                    data = data[:, ::2]
-                output[feature_name] = data
-            else:
-                _LOGGER.warning(f"Feature {feature_name} for {wav_path} is all NaNs in feature file. Skipping.")
-                continue
-        else:
+        if data is None:
             _LOGGER.warning(f"Feature {feature_name} for {wav_path} not found in feature file likely due to sensitive. Skipping.")
             continue
+
+        data = torch.tensor(data)
+        if torch.isnan(data).all().item():
+            _LOGGER.warning(f"Feature {feature_name} for {wav_path} is all NaNs in feature file. Skipping.")
+            continue
+    
+        if feature_name == "spectrogram":
+            data = 10.0 * torch.log10(torch.maximum(data, torch.tensor(1e-10)))
+            data = torch.maximum(data, data.max() - 80)
+            data = data.numpy().astype(np.float32)
+        else:
+            data = data.numpy()
+
+        if feature_name in ("spectrogram", "mfcc"):
+            data = data[:, ::2]
+        output[feature_name] = data
 
         yield output
