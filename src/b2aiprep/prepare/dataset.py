@@ -1018,31 +1018,25 @@ class BIDSDataset:
         sessions_df.to_csv(sessions_tsv_path, sep="\t", index=False)
 
     @staticmethod
-    def load_phenotype_data(data_path: Path, phenotype_name: str) -> t.Tuple[pd.DataFrame, t.Dict[str, t.Any]]:
+    def load_phenotype_data(phenotype_filepath: Path) -> t.Tuple[pd.DataFrame, t.Dict[str, t.Any]]:
         """
         Load phenotype data from TSV and JSON files.
         
         Args:
-            phenotype_name: Name of the phenotype file (without extension)
+            phenotype_filepath: Path to the phenotype file (without extension)
             
         Returns:
             Tuple of (DataFrame, phenotype_metadata_dict)
         """
-        # Clean up phenotype name
-        if phenotype_name.endswith('.tsv'):
-            phenotype_name = phenotype_name[:-4]
-        elif phenotype_name.endswith('.json'):
-            phenotype_name = phenotype_name[:-5]
-
+        phenotype_name = phenotype_filepath.stem
         # Load TSV and JSON files
-        df = pd.read_csv(data_path.joinpath(f"{phenotype_name}.tsv"), sep="\t")
-        with open(data_path.joinpath(f"{phenotype_name}.json"), "r") as f:
+        df = pd.read_csv(phenotype_filepath.with_suffix('.tsv'), sep="\t")
+        with open(phenotype_filepath.with_suffix('.json'), "r") as f:
             phenotype = json.load(f)
-            if phenotype_name != "participants":
-                data_elements = {}
-                for schema in phenotype:
-                    data_elements.update(phenotype[schema].get("data_elements", {}))
-                phenotype = data_elements
+            data_elements = {}
+            for schema in phenotype:
+                data_elements.update(phenotype[schema].get("data_elements", {}))
+            phenotype = data_elements
 
         # Add record_id to phenotype if missing
         if df.shape[1] > 0 and df.columns[0] == 'record_id' and 'record_id' not in list(phenotype.keys()):
@@ -1094,14 +1088,9 @@ class BIDSDataset:
             n_different = (ids_before != df["participant_id"]).sum()
             logging.info(f"Remapped {n_different} / {len(ids_before)} IDs for 'participant_id'")
 
-        # Reduce ID length (remap IDs)
-        # if "session_id" in df.columns:
-        #     df = BIDSDataset._reduce_id_length(df, "session_id")
-        
         if participant_session_id_to_remap:
             for col in df.columns:
                 if "session_id" in col:
-                    #df[col] = df[col].astype(str).str.rstrip("-")  # Remove trailing '-'
                     ids_before = df[col].copy()
                     df[col] = df[col].map(participant_session_id_to_remap).fillna(df[col])
                     n_different = (ids_before != df[col]).sum()
@@ -1506,17 +1495,19 @@ class BIDSDataset:
             phenotype_output_path = outdir.joinpath("phenotype")
             phenotype_output_path.mkdir(parents=True, exist_ok=True)
             
-            for phenotype_filepath in phenotype_base_path.glob("*.tsv"):
+            for phenotype_filepath in phenotype_base_path.rglob("*.tsv"):
                 logging.info(f"Processing {phenotype_filepath.stem}.")
-                df_pheno, phenotype_dict = BIDSDataset.load_phenotype_data(phenotype_base_path, phenotype_filepath.stem)
+                df_pheno, phenotype_dict = BIDSDataset.load_phenotype_data(phenotype_filepath)
                 df_pheno, phenotype_dict = BIDSDataset._deidentify_phenotype(df_pheno, phenotype_dict, participant_ids_to_remove, participant_ids_to_remap, participant_session_id_to_remap)
                 
                 # Write out phenotype data and data dictionary
+                phenotype_subdir = phenotype_output_path.joinpath(phenotype_filepath.parent.relative_to(phenotype_base_path))
+                phenotype_subdir.mkdir(parents=True, exist_ok=True)
                 df_pheno.to_csv(
-                    phenotype_output_path.joinpath(f"{phenotype_filepath.stem}.tsv"), 
+                    phenotype_subdir.joinpath(f"{phenotype_filepath.stem}.tsv"), 
                     sep="\t", index=False
                 )
-                with open(phenotype_output_path.joinpath(f"{phenotype_filepath.stem}.json"), "w") as f:
+                with open(phenotype_subdir.joinpath(f"{phenotype_filepath.stem}.json"), "w") as f:
                     json.dump(phenotype_dict, f, indent=2)
             logging.info("Finished processing phenotype data.")
         
