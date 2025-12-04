@@ -524,7 +524,7 @@ class TestBIDSDatasetClean:
                 json.dump(participants_json, f, indent=2)
 
             dataset = BIDSDataset(bids_path)
-            df, phenotype = dataset.load_phenotype_data(bids_path, "participants")
+            df, phenotype = dataset.load_phenotype_data(bids_path.joinpath("participants.tsv"))
 
             # Check that data was loaded
             assert isinstance(df, pd.DataFrame)
