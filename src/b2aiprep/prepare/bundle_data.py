@@ -155,10 +155,7 @@ def feature_extraction_generator(
         else:
             data = data.numpy()
 
-        if feature_name in ("spectrogram", "mfcc"):
+        if feature_name in ("spectrogram", "mfcc", "mel_spectrogram"):
             data = data[:, ::2]
         output[feature_name] = data
-        
-        _LOGGER.info(f"{feature_name} found to be: {data.shape}")
-        _LOGGER.info(f"output looks like: {output}")
         yield output
