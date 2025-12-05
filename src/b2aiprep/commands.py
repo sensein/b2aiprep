@@ -1080,7 +1080,7 @@ def reproschema_to_redcap(audio_dir, survey_file, redcap_csv, disable_manual_fix
     
     # Ensure the output directory exists
     redcap_csv_path.parent.mkdir(parents=True, exist_ok=True)
-
+    dataset.df = RedCapDataset.collapse_checked_columns(dataset.df)
     dataset.df.to_csv(redcap_csv_path, index=False)    
     _LOGGER.info(f"Successfully converted ReproSchema data to RedCap CSV: {redcap_csv_path}")
 
