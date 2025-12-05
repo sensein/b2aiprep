@@ -124,7 +124,7 @@ Once the command is complete, you should have the following output:
 │   │       ├── sub-02_session_task-audio.wav
 │   │       └── sub-02_session_task-audio.pt
 │  ...
-└── CHANGELOG.nd
+└── CHANGELOG.md
 ```
 
 ### 5. Publish
