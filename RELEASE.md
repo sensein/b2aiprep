@@ -15,7 +15,7 @@ Note that there are implicit assumptions made regarding the structured data and 
 ```sh
 WORKING_DIR=${HOME}/data/bridge2ai/pediatric
 
-b2aiprep-cli reproschema-to-redcap $WORKING_DIR/Audio_300_Release $WORKING_DIR/Survey_300_Release $WORKING_DIR/redcap.csv
+b2aiprep-cli reproschema-to-redcap $WORKING_DIR/Audio_300_Release $WORKING_DIR/b2aiprep/b2ai-redcap2rs $WORKING_DIR/Survey_300_Release $WORKING_DIR/redcap.csv
 b2aiprep-cli redcap2bids $WORKING_DIR/redcap.csv --outdir $WORKING_DIR/bids --audiodir $WORKING_DIR/Audio_300_Release
 b2aiprep-cli deidentify-bids-dataset $WORKING_DIR/bids $WORKING_DIR/de-identified-bids $WORKING_DIR/release_config
 ```
@@ -55,6 +55,7 @@ The following command will parse the RedCap CSV into multiple phenotype CSVs and
 
 ```
 b2aiprep-cli redcap2bids <path/to/redcap_csv> \
+    <path/to/redcap_to_reproschema> \
     <path/to/output/bids_folder> \
     --audiodir <path/to/audio/files>
 ```
@@ -102,9 +103,14 @@ Note: Due to the potential size and quantity of the audio files, this may take a
 Once the command is complete, you should have the following output:
 ```
 /bids_dataset
-├── README
+├── README.md
 ├── dataset_description.json
-├── participants.tsv
+├── phenotype/
+│   ├── pediatric/
+│   │       ├── pediatric_questionnaire.json
+│   │       ├── pediatric_questionnaire.tsv
+│   │       │ 
+|   |      ...
 ├── sub-01/
 │   ├── session-01/
 │   │   └── audio/
@@ -118,7 +124,7 @@ Once the command is complete, you should have the following output:
 │   │       ├── sub-02_session_task-audio.wav
 │   │       └── sub-02_session_task-audio.pt
 │  ...
-└── participants.json
+└── CHANGELOG.nd
 ```
 
 ### 5. Publish
