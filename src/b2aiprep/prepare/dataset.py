@@ -176,7 +176,6 @@ class BIDSDataset:
             for session in participant["sessions"]:
                 session_id = session["session_id"]
                 session["acoustic_tasks"] = tasks_by_session.get(session_id, [])
-    /orcd/data/satra/002/datasets/b2aivoice/wasabi-exports/eipm-bridge2ai-internal-data-dissemination/v3.0.0-2025-11-04T20.54.18.152Z/registered-access/final_v3.0.0_curated_registered_access_bridge2ai_voice_redcap_data_v2.2.0_2025-11-04T20.54.18.152Z.csv \
                 
                 for task in session["acoustic_tasks"]:
                     task["recordings"] = recordings_by_task.get(task["acoustic_task_id"], [])
@@ -1801,7 +1800,7 @@ class BIDSDataset:
             output_path.parent.mkdir(parents=True, exist_ok=True)
 
             # if it is not sensitive and we want to keep features, move all features over
-            task_name = features_path.stem.split("_task")[1]
+            task_name = features_path.stem.split("_task-")[1]
             if task_name.lower() not in sensitive_audio_task_list:
                 shutil.copy(features_path, output_path)
             else:
