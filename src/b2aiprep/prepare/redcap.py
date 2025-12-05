@@ -417,7 +417,6 @@ class RedCapDataset:
         df = cls._convert_reproschema_to_redcap(
             audio_dir, survey_dir, participant_group, resolve_choice_names=resolve_choice_names, disable_manual_fixes=disable_manual_fixes
         )
-
         #remap reproschema columns to their redcap equivalents
         current_file = Path(__file__)
         resource_path = current_file.parent / "resources" / "field_remap.json"
@@ -426,7 +425,6 @@ class RedCapDataset:
             column_mapping = json.load(f)
 
         df.rename(columns=column_mapping, inplace=True)
-
         dataset = cls(
             df=df, 
             source_type='reproschema', 
@@ -438,7 +436,6 @@ class RedCapDataset:
         )
         # Apply standard processing
         dataset._insert_missing_columns()
-        
         _LOGGER.info(f"Successfully loaded ReproSchema data with {len(df)} rows and {len(df.columns)} columns")
         return dataset
     
@@ -631,7 +628,33 @@ class RedCapDataset:
             return combined_df
         else:
             return pd.DataFrame()
-    
+
+    @staticmethod
+    def collapse_checked_columns(data: DataFrame) -> DataFrame:
+        """
+        Fixed the redcap csv to account for inconsistent issues with radio questions
+        """
+        data = data.copy()
+        split_cols = [col for col in data.columns if '___' in col and col.split('___')[1].lower() != 'other']
+        prefix_map = {}
+        # splits the columns into the base question column and the associated answer
+        for col in split_cols:
+            prefix, suffix = col.split('___', 1)
+            if prefix not in prefix_map:
+                prefix_map[prefix] = []
+            prefix_map[prefix].append((col, suffix))
+        # assigns the answwer into the base column
+        for prefix, col_suffix_list in prefix_map.items():
+            def combine_row(row):
+                values = [suffix for col, suffix in col_suffix_list if str(row[col]).strip().lower() == 'checked']
+                values = [value.replace("_", " ") for value in values]
+                return ", ".join(values) if values else ""
+            data[prefix] = data.apply(combine_row, axis=1)
+
+        data.drop(columns=split_cols, inplace=True)
+
+        return data
+
     def _validate_redcap_columns(self) -> None:
         """
         Validate RedCap DataFrame column names.

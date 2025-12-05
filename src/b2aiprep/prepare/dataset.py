@@ -1779,10 +1779,12 @@ class BIDSDataset:
         
         _LOGGER.info(f"Copying {len(paths)} feature files.")
         for features_path in tqdm(
-            paths, desc="Copying audio and metadata files", total=len(paths)
+            paths, desc="Copying and de-identifying feature files", total=len(paths)
         ):
             participant_id = BIDSDataset._extract_participant_id_from_path(features_path)
+            participant_id = participant_ids_to_remap.get(participant_id,participant_id)
             session_id = BIDSDataset._extract_session_id_from_path(features_path)
+            session_id = participant_session_id_to_remap.get(session_id, session_id)
 
             # Check that the audio exists
             audio_path = features_path.parent / (features_path.stem[:-9] + '.wav')
@@ -1798,11 +1800,12 @@ class BIDSDataset:
             output_path.parent.mkdir(parents=True, exist_ok=True)
 
             # if it is not sensitive and we want to keep features, move all features over
-            task_name = features_path.stem.split("_")[2][5:]
+            task_name = features_path.stem.split("_task-")[1]
             if task_name.lower() not in sensitive_audio_task_list:
                 shutil.copy(features_path, output_path)
             else:
-                features = torch.load(features_path, weights_only=False, map_location=torch.device('cpu'))
+                device = 'cpu' # not checking for cuda because optimization would be minimal if any
+                features = torch.load(features_path, weights_only=False, map_location=torch.device(device))
                 # Sensitive features to remove
                 for torchaudio_field in ['mel_filter_bank', 'mfcc', 'mel_spectrogram', 'spectrogram']:
                     features['torchaudio'].pop(torchaudio_field, None)
@@ -2084,7 +2087,8 @@ class VBAIDataset(BIDSDataset):
                 f"sub-{subject_id}_ses-{session_id}_{task}_rec-{name}.pt",
             )
             try:
-                features = torch.load(str(audio_file), weights_only=False)
+                device = 'cpu' # not checking for cuda because optimization would be minimal if any
+                features = torch.load(str(audio_file), weights_only=False, map_location=torch.device(device))
                 audio_data.append(features["specgram"])
             except FileNotFoundError:
                 # assuming lbsnd file error is a file not found, usually it is
