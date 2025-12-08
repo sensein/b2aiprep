@@ -88,7 +88,7 @@ def parse_survey(
     choices_cache: dict | None = None,
     http_session: requests.Session | None = None,
     timeout: float = 10.0,
-    is_import,
+    is_import: bool= False,
 ):
     """
     Function that generates a list of DataFrames to build a REDCap CSV.
