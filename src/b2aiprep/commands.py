@@ -1049,8 +1049,9 @@ def createbatchcsv(input_dir, out_file):
 @click.argument("audio_dir", type=str)
 @click.argument("survey_file", type=str)
 @click.argument("redcap_csv", type=str)
+@click.option("--is_import", type=bool, default=False, show_default=True)
 @click.option("--disable-manual-fixes", is_flag=True, default=False, show_default=True, help="Disable manual fixes for known issues in ReproSchema data.")
-def reproschema_to_redcap(audio_dir, survey_file, redcap_csv, disable_manual_fixes):
+def reproschema_to_redcap(audio_dir, survey_file, redcap_csv, is_import, disable_manual_fixes):
     """Converts reproschema ui data to redcap CSV.
 
     This function processes survey data and audio metadata from ReproSchema UI exports
@@ -1060,6 +1061,7 @@ def reproschema_to_redcap(audio_dir, survey_file, redcap_csv, disable_manual_fix
         audio_dir (str): Path to the directory containing the audio files.
         survey_file (str): Path to the directory containing survey data exported from ReproSchema UI.
         redcap_csv (str): Path to save the generated REDCap-compatible CSV file.
+        is_import (bool): If True, modifies how we convert to redcap csv due to difference in import csv and exports
         disable_manual_fixes (bool): If True, disables manual fixes for known issues in ReproSchema data.
 
     Raises:
@@ -1075,12 +1077,14 @@ def reproschema_to_redcap(audio_dir, survey_file, redcap_csv, disable_manual_fix
     dataset = RedCapDataset.from_reproschema(
         audio_dir=audio_dir,
         survey_dir=survey_file,
+        is_import=is_import,
         disable_manual_fixes=disable_manual_fixes,
     )
     
     # Ensure the output directory exists
     redcap_csv_path.parent.mkdir(parents=True, exist_ok=True)
-    dataset.df = RedCapDataset.collapse_checked_columns(dataset.df)
+    if not is_import:
+        dataset.df = RedCapDataset.collapse_checked_columns(dataset.df)
     dataset.df.to_csv(redcap_csv_path, index=False)    
     _LOGGER.info(f"Successfully converted ReproSchema data to RedCap CSV: {redcap_csv_path}")
 
