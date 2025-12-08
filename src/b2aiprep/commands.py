@@ -439,6 +439,10 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
         {'feature_class': 'sparc', 'feature_name': 'pitch_stats'},
 
     ]
+    
+    features_dir = outdir / "features"
+    features_dir.mkdir(parents=True, exist_ok=True)
+    
     for feature in features_to_extract:
         feature_class = feature['feature_class']
         feature_name = feature['feature_name']
@@ -477,7 +481,7 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
             )
             continue
         ds.to_parquet(
-            str(outdir.joinpath(f"{feature_output}.parquet")),
+            str((f"{features_dir}/{feature_output}.parquet")),
             version="2.6",
             compression="zstd",  # Better compression ratio than snappy, still good speed
             compression_level=3,
