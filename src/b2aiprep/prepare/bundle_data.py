@@ -159,9 +159,9 @@ def feature_extraction_generator(
             data = data[:, ::2]
 
         #remove meaningless extra dimensions
-        if feature_class == "sparc": #time comes first for sparc
+        if feature_class == "sparc" and data.shape[1] == 1: #time comes first for sparc
             data = np.squeeze(data,axis=1)
-        elif feature_name == "ppgs": #3-dimensional, first is batch
+        elif feature_name == "ppgs" and data.shape[0] == 1: #3-dimensional, first is batch
             data = np.squeeze(data,axis=0)
         output[feature_name] = data
         time_dimension = -1 if feature_class != 'sparc' else 0
