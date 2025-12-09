@@ -1636,18 +1636,14 @@ class BIDSDataset:
 
     @staticmethod
     def _extract_task_name_from_path(path: Path) -> str:
-        """Extract the task name from the path, preferring directory parts.
-        Falls back to regex on filestem using task-(.+?)_ if needed."""
-        # Prefer directory parts
-        for part in path.parts:
-            if part.startswith("task-"):
-                return part[5:]
-        # Fallback to filestem regex: task-(.+?)_
-        m = re.search(r"task-(.+?)_", path.stem)
+        """Extract the task name from the stem of the path.
+        
+        Tasks are optional components of filenames. They must follow the `task-<label>` pattern."""
+        m = re.search(r"task-(.+?)(_|$)", path.stem)
         if m:
             return m.group(1)
 
-        raise ValueError(f"Could not extract session ID from path: {path}")
+        raise ValueError(f"Could not extract task name from path: {path}")
 
     @staticmethod
     def _deidentify_audio_files(
