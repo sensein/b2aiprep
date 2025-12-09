@@ -53,9 +53,7 @@ from b2aiprep.prepare.bundle_data import (
 
 from b2aiprep.prepare.prepare import (
     generate_features_wrapper,
-    is_audio_sensitive,
     validate_bids_audio_features,
-
 )
 from b2aiprep.prepare.quality_control import quality_control_wrapper
 

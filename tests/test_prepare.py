@@ -18,8 +18,6 @@ from b2aiprep.prepare.prepare import (
     reduce_length_of_id,
     get_value_from_metadata,
     update_metadata_record_and_session_id,
-    filter_audio_paths,
-    is_audio_sensitive
 )
 
 logging.basicConfig(level=logging.INFO)
@@ -183,24 +181,6 @@ def test_extract_features_workflow(setup_bids_structure):
     extract_features_workflow(bids_dir_path=bids_dir)
     pt_files = list(bids_dir.rglob("*.pt"))
     assert pt_files, ".pt files were not generated"
-
-def test_is_audio_sensitive():
-    file_path = Path("file_one_audio-check.wav")
-    assert is_audio_sensitive(filepath=file_path) == False
-    
-
-def test_filter_audio_paths():
-    audio_paths = [
-        Path("file_one_audio-check.wav"),
-        Path("file_two_sample_data.wav"),
-        Path("file_three_audio-check.wav"),
-        Path("file_four_normal_case.wav"),
-    ]
-    actual = filter_audio_paths(audio_paths=audio_paths)
-    expected = [
-        Path("file_two_sample_data.wav"),
-        Path("file_four_normal_case.wav")]
-    assert actual == expected
 
 def test_reduce_id_length():
     example_id = "5f0c5b34-b634-4564-b97c-b44435a3e0ff"

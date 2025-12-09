@@ -42,7 +42,6 @@ from b2aiprep.prepare.update import build_activity_payload
 from b2aiprep.prepare.utils import copy_package_resource, get_commit_sha
 from b2aiprep.prepare.fhir_utils import convert_response_to_fhir
 from b2aiprep.prepare.prepare import (
-    filter_audio_paths, 
     get_value_from_metadata, 
     update_metadata_record_and_session_id,
     reduce_id_length

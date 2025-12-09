@@ -66,7 +66,6 @@ from senselab.utils.data_structures import (
 from tqdm import tqdm
 
 from b2aiprep.prepare.constants import (
-    _load_audio_filestem_exclusions,
     FEATURE_EXTRACTION_SPEECH_RATE,
     FEATURE_EXTRACTION_DURATION,
     FEATURE_EXTRACTION_PITCH_AND_INTENSITY,
@@ -690,33 +689,9 @@ def load_audio_to_remove(publish_config_dir: Path) -> List[str]:
     
     return data
 
-def is_audio_sensitive(filepath: Path) -> bool:
-    audio_to_remove = _load_audio_filestem_exclusions()
+def is_audio_sensitive(filepath: Path, publish_config_dir: Path) -> bool:
+    audio_to_remove = load_audio_to_remove(publish_config_dir)
     return filepath.stem in audio_to_remove
-
-def filter_audio_paths(audio_paths: List[Path]) -> List[Path]:
-    """Filter audio paths to remove audio check and sensitive audio files."""
-
-    # remove audio-check
-    n_audio = len(audio_paths)
-    audio_paths = [
-        x for x in audio_paths if 'audio-check' not in x.stem.split("_")[2].lower()
-    ]
-    if len(audio_paths) < n_audio:
-        _logger.info(
-            f"Removed {n_audio - len(audio_paths)} audio check recordings."
-        )
-
-    n_audio = len(audio_paths)
-    audio_paths = [
-        x for x in audio_paths if not is_audio_sensitive(x)
-    ]
-    if len(audio_paths) < n_audio:
-        _logger.info(
-            f"Removed {n_audio - len(audio_paths)} records due to sensitive audio."
-        )
-    
-    return audio_paths
 
 def reduce_id_length(x):
     """Reduce length of ID."""
