@@ -408,15 +408,18 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
 
         static_features.append(subj_info)
 
+    features_dir = outdir / "features"
+    features_dir.mkdir(parents=True, exist_ok=True)
+
     df_static = pd.DataFrame(static_features)
-    df_static.to_csv(outdir / "static_features.tsv", sep="\t", index=False)
+    df_static.to_csv(features_dir / "static_features.tsv", sep="\t", index=False)
     # load in the JSON with descriptions of each feature and copy it over
     # write it out again so formatting is consistent between JSONs
     static_features_json_file = resources.files("b2aiprep").joinpath(
         "prepare", "resources", "static_features.json"
     )
     static_features_json = json.load(static_features_json_file.open())
-    with open(outdir / "static_features.json", "w") as f:
+    with open(features_dir / "static_features.json", "w") as f:
         json.dump(static_features_json, f, indent=2)
     _LOGGER.info("Finished creating static features.")
 
@@ -435,14 +438,12 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
         {'feature_class': 'sparc', 'feature_name': 'periodicity'},
     ]
     
-    features_dir = outdir / "features"
-    features_dir.mkdir(parents=True, exist_ok=True)
-    
     for feature in features_to_extract:
         feature_class = feature['feature_class']
         feature_name = feature['feature_name']
 
-        feature_output = f"{feature_class}_{feature_name}" if feature_class else feature_name
+        feature_output_dir = features_dir / feature_class if feature_class else features_dir / feature_name
+        feature_output_dir.mkdir(parents=True, exist_ok=True)
 
         if feature_name != "spectrogram":
             use_byte_stream_split = True
@@ -476,7 +477,7 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
             )
             continue
         ds.to_parquet(
-            str((f"{features_dir}/{feature_output}.parquet")),
+            str((f"{feature_output_dir}/{feature_name}.parquet")),
             version="2.6",
             compression="zstd",  # Better compression ratio than snappy, still good speed
             compression_level=3,
