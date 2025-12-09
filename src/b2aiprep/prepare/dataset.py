@@ -1096,12 +1096,12 @@ class BIDSDataset:
 
         # Remap IDs
         if participant_ids_to_remap and "participant_id" in df.columns:
-            df["participant_id"] = BIDSDataset._map_series(df["participant_id"], participant_ids_to_remap)
+            df.loc[:, "participant_id"] = BIDSDataset._map_series(df["participant_id"], participant_ids_to_remap)
 
         if participant_session_id_to_remap:
             for col in df.columns:
                 if "session_id" in col:
-                    df[col] = BIDSDataset._map_series(df[col], participant_session_id_to_remap)
+                    df.loc[:, col] = BIDSDataset._map_series(df[col], participant_session_id_to_remap)
 
         # Remove sensitive columns
         df, phenotype = BIDSDataset._remove_sensitive_columns(df, phenotype)
