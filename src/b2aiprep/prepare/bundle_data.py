@@ -44,6 +44,7 @@ def spectrogram_generator(
                 # skip every other column
                 spectrogram = spectrogram[:, ::2]
                 output["spectrogram"] = spectrogram
+                output["n_frames"] = spectrogram.shape[-1]
             else:
                 _LOGGER.warning(f"Spectrogram for {wav_path} found to be all NaNs. Skipping.")
                 continue
@@ -158,4 +159,5 @@ def feature_extraction_generator(
         if feature_name in ("spectrogram", "mfcc", "mel_spectrogram"):
             data = data[:, ::2]
         output[feature_name] = data
+        output["n_frames"] = data.shape[-1]
         yield output
