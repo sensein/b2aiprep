@@ -139,13 +139,13 @@ class BIDSDataset:
         logging.info("Processing audio files into BIDS format.")
         # We have two remaining tasks: (1) copy the audio files, and (2) create sidecar .json files.
         # First we prepare the metadata necessary for the .json files.
-        participants_df = redcap_dataset.get_df_of_repeat_instrument(RepeatInstrument.PARTICIPANT)
+        participants_df = redcap_dataset.get_df_of_repeat_instrument(RepeatInstrument.PARTICIPANT.value)
         logging.info(f"Number of {RepeatInstrument.PARTICIPANT.name} entries: {len(participants_df)}")
-        sessions_df = redcap_dataset.get_df_of_repeat_instrument(RepeatInstrument.SESSION)
+        sessions_df = redcap_dataset.get_df_of_repeat_instrument(RepeatInstrument.SESSION.value)
         logging.info(f"Number of {RepeatInstrument.SESSION.name} entries: {len(sessions_df)}")
-        acoustic_tasks_df = redcap_dataset.get_df_of_repeat_instrument(RepeatInstrument.ACOUSTIC_TASK)
+        acoustic_tasks_df = redcap_dataset.get_df_of_repeat_instrument(RepeatInstrument.ACOUSTIC_TASK.value)
         logging.info(f"Number of {RepeatInstrument.ACOUSTIC_TASK.name} entries: {len(acoustic_tasks_df)}")
-        recordings_df = redcap_dataset.get_df_of_repeat_instrument(RepeatInstrument.RECORDING)
+        recordings_df = redcap_dataset.get_df_of_repeat_instrument(RepeatInstrument.RECORDING.value)
         logging.info(f"Number of {RepeatInstrument.RECORDING.name} entries: {len(recordings_df)}")
 
         logging.info("Creating dictionary lookups for BIDS hierarchy.")
