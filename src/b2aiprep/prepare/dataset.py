@@ -1636,12 +1636,9 @@ class BIDSDataset:
 
     @staticmethod
     def _extract_task_name_from_path(path: Path) -> str:
-        """Extract the task name from the path, preferring directory parts.
-        Falls back to regex on filestem using task-(.+?)_ if needed."""
-        # Prefer directory parts
-        if path.stem.find("task-") != -1:
-            return path.stem.split("task-")[1].split("_")[0]
-        # Fallback to filestem regex: task-(.+?)_
+        """Extract the task name from the stem of the path.
+        
+        Tasks are optional components of filenames. They must follow the `task-<label>` pattern."""
         m = re.search(r"task-(.+?)_", path.stem)
         if m:
             return m.group(1)
