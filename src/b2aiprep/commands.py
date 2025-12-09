@@ -463,7 +463,7 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
         if not has_data or feature_generator is None:
             _LOGGER.warning(
                 "No non-NaN entries found for %s feature. Skipping parquet export.",
-                feature_output,
+                f"{feature_class}_{feature_name}" if feature_class else feature_name
             )
             continue
 
@@ -473,7 +473,7 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
         if len(ds) == 0:  
             _LOGGER.warning(
                 "No non-NaN entries found for %s feature. Skipping parquet export.",
-                feature_output,
+                f"{feature_class}_{feature_name}" if feature_class else feature_name
             )
             continue
         ds.to_parquet(
