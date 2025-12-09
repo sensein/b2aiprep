@@ -1393,10 +1393,10 @@ class BIDSDataset:
     @staticmethod
     def load_participant_ids_to_remove(publish_config_dir: Path) -> t.List[str]:
         """Load list of participant IDs to remove from JSON file."""
-        participant_to_remove_path = publish_config_dir / "participant_ids_to_remove.json"
+        participant_to_remove_path = publish_config_dir / "participants_to_remove.json"
         if not participant_to_remove_path.exists():
-            # If file doesn't exist, return empty list
-            return []
+            # If file doesn't exist, raise an error
+            raise FileNotFoundError(f"Participant IDs to remove file {participant_to_remove_path} does not exist.")
 
         with open(participant_to_remove_path, 'r') as f:
             data = json.load(f)
@@ -1412,8 +1412,8 @@ class BIDSDataset:
         """Load list of audio file stems to remove from JSON file."""
         audio_to_remove_path = publish_config_dir / "audio_filestems_to_remove.json"
         if not audio_to_remove_path.exists():
-            # If file doesn't exist, return empty list
-            return []
+            # If file doesn't exist, raise an error
+            raise FileNotFoundError(f"Audio filestems to remove file {audio_to_remove_path} does not exist.")
 
         with open(audio_to_remove_path, 'r') as f:
             data = json.load(f)
@@ -1428,8 +1428,8 @@ class BIDSDataset:
         """Load list of audio tasks that are sensitive from JSON file."""
         sensitive_audio_tasks_path = deidentify_config_dir / "sensitive_audio_tasks.json"
         if not sensitive_audio_tasks_path.exists():
-            # If file doesn't exist, return empty list
-            return []
+            # If file doesn't exist, raise an error
+            raise FileNotFoundError(f"Sensitive audio tasks file {sensitive_audio_tasks_path} does not exist.")
 
         with open(sensitive_audio_tasks_path, 'r') as f:
             data = json.load(f)
