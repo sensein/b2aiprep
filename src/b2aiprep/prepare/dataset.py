@@ -1061,9 +1061,6 @@ class BIDSDataset:
         Returns:
             Tuple of (deidentified_df, deidentified_phenotype_dict)
         """
-        # Remove sensitive columns
-        df, phenotype = BIDSDataset._remove_sensitive_columns(df, phenotype)
-
         # Rename record_id to participant_id
         if "record_id" in df.columns:
             df, phenotype = BIDSDataset._rename_record_id_to_participant_id(df, phenotype)
@@ -1089,6 +1086,9 @@ class BIDSDataset:
                     n_different = (ids_before != df[col]).sum()
                     logging.info(f"Remapped {n_different} / {len(ids_before)} IDs for '{col}'")
 
+        # Remove sensitive columns
+        df, phenotype = BIDSDataset._remove_sensitive_columns(df, phenotype)
+
         return df, phenotype
 
     @staticmethod
@@ -1113,9 +1113,6 @@ class BIDSDataset:
         if ("gender_identity" in df.columns) and ("specify_gender_identity" in df.columns):
             df, phenotype = BIDSDataset._add_sex_at_birth_column(df, phenotype)
 
-        # Rename columns for usability
-        df, phenotype = BIDSDataset._rename_columns(df, phenotype)
-
         return df, phenotype
 
     @staticmethod
@@ -1135,14 +1132,11 @@ class BIDSDataset:
     @staticmethod
     def _remove_empty_columns(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
         """Remove columns that are empty."""
-        columns_to_drop = [
-            "consent_status",
-            "enrollment_institution",
-            "subjectparticipant_eligible_studies_complete",
-            "ef_primary_language_other",
-            "ef_fluent_language_other",
-            "session_site",
-        ]
+        columns_to_drop = []
+        for column in df.columns:
+            if df[column].isnull().all():
+                columns_to_drop.append(column)
+        
         return BIDSDataset._drop_columns_from_df_and_data_dict(
             df, phenotype, columns_to_drop, "Removing empty columns"
         )
@@ -1211,18 +1205,18 @@ class BIDSDataset:
             "peds_mc_neck_mass_hyroid_nodule_or_cancer_surgery_date",
             "peds_mc_v_dis_specified"
         ]
-        return BIDSDataset._drop_columns_from_df_and_data_dict(
+        df, phenotype = BIDSDataset._drop_columns_from_df_and_data_dict(
             df, phenotype, columns_to_drop, "Removing low utility / PHI containing columns"
         )
-    
-    @staticmethod
-    def _rename_columns(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
-        """Rename columns for improved usability."""
-        column_rename_map = {
-            "diagnois_gi_gsd": "diagnois_gi_gold_standard_diagnosis",
-        }
-        df = df.rename(columns=column_rename_map)
-        phenotype = {column_rename_map.get(k, k): v for k, v in phenotype.items()}
+
+        if 'gender_identity' in df.columns:
+            _LOGGER.info(f"sex_at_birth value_counts: {df['sex_at_birth'].value_counts(dropna=False).to_dict()}")
+            _LOGGER.info(f"gender_identity value_counts: {df['gender_identity'].value_counts(dropna=False).to_dict()}")
+            _LOGGER.info(f"specify_gender_identity value_counts: {df['specify_gender_identity'].value_counts(dropna=False).to_dict()}")
+            df, phenotype = BIDSDataset._drop_columns_from_df_and_data_dict(
+                df, phenotype, ["gender_identity", "specify_gender_identity"], "Remove sensitive demographic columns"
+            )
+        
         return df, phenotype
 
     @staticmethod
