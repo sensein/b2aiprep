@@ -428,7 +428,6 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
     features_to_extract = [
         {'feature_class': None, 'feature_name': 'ppgs'},
         {'feature_class': 'torchaudio', 'feature_name': 'pitch'},
-        {'feature_class': 'torchaudio', 'feature_name': 'mel_filter_bank'},
         {'feature_class': 'torchaudio', 'feature_name': 'mel_spectrogram'},
         {'feature_class': 'torchaudio', 'feature_name': 'spectrogram'},
         {'feature_class': 'torchaudio', 'feature_name': 'mfcc'},
