@@ -1404,6 +1404,7 @@ class BIDSDataset:
         if not isinstance(data, list):
             raise ValueError(f"Participant IDs to remove file {participant_to_remove_path} should contain a list of participant IDs.")
         
+        logging.info(f"Loaded {len(data)} participant IDs to remove: {data}.")
         return data
     
     @staticmethod
