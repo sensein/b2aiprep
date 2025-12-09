@@ -1108,7 +1108,6 @@ class BIDSDataset:
         
         # Remove unwanted columns
         df, phenotype = BIDSDataset._remove_empty_columns(df, phenotype)
-        df, phenotype = BIDSDataset._remove_system_columns(df, phenotype)
         
         # Add derived columns
         if ("gender_identity" in df.columns) and ("specify_gender_identity" in df.columns):
@@ -1146,31 +1145,6 @@ class BIDSDataset:
         ]
         return BIDSDataset._drop_columns_from_df_and_data_dict(
             df, phenotype, columns_to_drop, "Removing empty columns"
-        )
-
-    @staticmethod
-    def _remove_system_columns(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
-        """Remove system/technical columns that shouldn't be in the final dataset."""
-        columns_to_drop = [
-            "acoustic_task_id",
-            "acoustic_task_session_id",
-            "acoustic_task_name",
-            "acoustic_task_cohort",
-            "acoustic_task_status",
-            "acoustic_task_duration",
-            "recording_id",
-            "recording_session_id",
-            "recording_acoustic_task_id",
-            "recording_name",
-            "recording_duration",
-            "recording_size",
-            "recording_profile_name",
-            "recording_profile_version",
-            "recording_input_gain",
-            "recording_microphone",
-        ]
-        return BIDSDataset._drop_columns_from_df_and_data_dict(
-            df, phenotype, columns_to_drop, "Removing system columns"
         )
 
     @staticmethod
