@@ -121,12 +121,10 @@ class BIDSDataset:
         Returns:
             BIDSDataset instance pointing to the created BIDS directory
         """
-        # Use instance methods instead of importing from bids module
-        
         outdir = Path(outdir).as_posix()
         BIDSDataset._initialize_data_directory(outdir)
 
-        logging.info("Converting RedCap dataset to BIDS-like format.")
+        logging.info("Converting RedCap dataset to BIDS phenotype files.")
         # Subselect the RedCap dataframe and output components to individual files in the phenotype directory
         BIDSDataset._construct_phenotype_from_reproschema(
             df=redcap_dataset.df,
@@ -134,26 +132,21 @@ class BIDSDataset:
             output_dir=os.path.join(outdir, "phenotype"),
         )
 
-        # Process repeat instruments
-        repeat_instruments: t.List[RepeatInstrument] = list(RepeatInstrument.__members__.values())
-        dataframe_dicts: t.Dict[RepeatInstrument, pd.DataFrame] = {}
-        
-        for repeat_instrument in repeat_instruments:
-            instrument = repeat_instrument.value
-            questionnaire_df = redcap_dataset.get_df_of_repeat_instrument(instrument)
-            logging.info(f"Number of {instrument.name} entries: {len(questionnaire_df)}")
-            dataframe_dicts[repeat_instrument] = questionnaire_df
+        if audiodir is None:
+            # Return a new BIDSDataset instance pointing to the created directory
+            return cls(outdir)
 
-        # Extract main dataframes
-        participants_df = dataframe_dicts.pop(RepeatInstrument.PARTICIPANT)
-        sessions_df = dataframe_dicts.pop(RepeatInstrument.SESSION)
-        acoustic_tasks_df = dataframe_dicts.pop(RepeatInstrument.ACOUSTIC_TASK)
-        recordings_df = dataframe_dicts.pop(RepeatInstrument.RECORDING)
-
-        # Convert remaining dataframes to dictionaries indexed by session_id
-        for repeat_instrument, questionnaire_df in dataframe_dicts.items():
-            session_id_col = repeat_instrument.value.session_id
-            dataframe_dicts[repeat_instrument] = cls._df_to_dict(questionnaire_df, session_id_col)
+        logging.info("Processing audio files into BIDS format.")
+        # We have two remaining tasks: (1) copy the audio files, and (2) create sidecar .json files.
+        # First we prepare the metadata necessary for the .json files.
+        participants_df = redcap_dataset.get_df_of_repeat_instrument(RepeatInstrument.PARTICIPANT)
+        logging.info(f"Number of {RepeatInstrument.PARTICIPANT.name} entries: {len(participants_df)}")
+        sessions_df = redcap_dataset.get_df_of_repeat_instrument(RepeatInstrument.SESSION)
+        logging.info(f"Number of {RepeatInstrument.SESSION.name} entries: {len(sessions_df)}")
+        acoustic_tasks_df = redcap_dataset.get_df_of_repeat_instrument(RepeatInstrument.ACOUSTIC_TASK)
+        logging.info(f"Number of {RepeatInstrument.ACOUSTIC_TASK.name} entries: {len(acoustic_tasks_df)}")
+        recordings_df = redcap_dataset.get_df_of_repeat_instrument(RepeatInstrument.RECORDING)
+        logging.info(f"Number of {RepeatInstrument.RECORDING.name} entries: {len(recordings_df)}")
 
         logging.info("Creating dictionary lookups for BIDS hierarchy.")
         sessions_by_participant = defaultdict(list)
@@ -179,13 +172,6 @@ class BIDSDataset:
                 
                 for task in session["acoustic_tasks"]:
                     task["recordings"] = recordings_by_task.get(task["acoustic_task_id"], [])
-
-                # Add questionnaire data per session
-                for key, df_by_session_id in dataframe_dicts.items():
-                    if session_id not in df_by_session_id:
-                        session[key] = None
-                    else:
-                        session[key] = df_by_session_id[session_id]
 
         # Output participant data to FHIR format
         audio_files: t.List[Path] = []
@@ -703,6 +689,16 @@ class BIDSDataset:
         return activities
 
     @staticmethod
+    def _load_reorganization_file() -> pd.DataFrame:
+        """Load the reproschema reorganization CSV file.
+
+        Returns:
+            DataFrame containing the reorganization data.
+        """
+        reorganization_file = files("b2aiprep.prepare.resources").joinpath("bids_field_organization.csv")
+        return pd.read_csv(reorganization_file, sep=',', header=0)
+
+    @staticmethod
     def _construct_phenotype_from_reproschema(
         df: pd.DataFrame,
         output_dir: str,
@@ -745,8 +741,7 @@ class BIDSDataset:
         # ... used to identify the source reproschema element, and:
         #   schema_name, column_name, group, description
         # ... used to arrange & describe the output in the phenotype/ folder.
-        reorganization_file = files("b2aiprep.prepare.resources").joinpath("bids_field_organization.csv")
-        df_reorg = pd.read_csv(reorganization_file, sep=',', header=0)
+        df_reorg = BIDSDataset._load_reorganization_file()
 
         element_used = {} # keep track of whether we have used an element, for logging later.
         payload = {
@@ -922,8 +917,6 @@ class BIDSDataset:
         session_instrument = BIDSDataset._get_instrument_for_name("sessions")
         task_instrument = BIDSDataset._get_instrument_for_name("acoustic_tasks")
         recording_instrument = BIDSDataset._get_instrument_for_name("recordings")
-
-        sessions_df = pd.DataFrame(columns=session_instrument.columns)
 
         # Collect all audio copy tasks for parallel execution
         audio_copy_tasks = []

@@ -395,7 +395,6 @@ class RedCapDataset:
         
         # Validate and process the data
         dataset._validate_redcap_columns()
-        dataset._insert_missing_columns()
         
         _LOGGER.info(f"Successfully loaded RedCap data with {len(df)} rows and {len(df.columns)} columns")
         return dataset
@@ -722,25 +721,7 @@ class RedCapDataset:
             _LOGGER.warning(
                 f"DataFrame has only {len(overlap_with_coded)} / {self.df.shape[1]} coded headers."
             )
-    
-    def _insert_missing_columns(self) -> None:
-        """
-        Add any missing columns to the dataframe.
-        
-        This ensures all expected columns are present for downstream processing.
-        """
-        from importlib.resources import files
-        
-        all_columns_path = files("b2aiprep").joinpath("prepare", "resources", "all_columns.json")
-        all_columns = json.load(all_columns_path.open())
-        columns_to_add = [col for col in all_columns if col not in self.df.columns]
-        
-        if columns_to_add:
-            nan_cols = pd.DataFrame(np.nan, index=self.df.index, columns=columns_to_add)
-            self.df = pd.concat([self.df, nan_cols], axis=1)
-        
-        _LOGGER.info(f"Added {len(columns_to_add)} missing columns to DataFrame")
-    
+
     def get_df_of_repeat_instrument(self, instrument: Instrument) -> DataFrame:
         """
         Filter rows and columns of the DataFrame to correspond to a specific repeat instrument.
