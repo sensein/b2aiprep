@@ -1639,7 +1639,7 @@ class BIDSDataset:
         """Extract the task name from the stem of the path.
         
         Tasks are optional components of filenames. They must follow the `task-<label>` pattern."""
-        m = re.search(r"task-(.+?)_", path.stem)
+        m = re.search(r"task-(.+?)(_|$)", path.stem)
         if m:
             return m.group(1)
 
