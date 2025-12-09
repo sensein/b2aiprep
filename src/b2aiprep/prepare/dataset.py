@@ -30,6 +30,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import numpy as np
 import pandas as pd
+from pyparsing import col
 import torch
 from fhir.resources.questionnaireresponse import QuestionnaireResponse
 from senselab.audio.data_structures.audio import Audio
@@ -1053,6 +1054,26 @@ class BIDSDataset:
         return df, phenotype
 
     @staticmethod
+    def _map_series(series: pd.Series, mapping: dict) -> pd.Series:
+        """
+        Map values in a pandas Series using a provided mapping dictionary. Log any issues arising.
+        
+        Args:
+            series: The pandas Series to map.
+            mapping: The mapping dictionary.
+        Returns:
+            The mapped pandas Series.
+        """
+        ids_before = series.copy()
+        series = series.map(mapping).fillna(series)
+        idxUnchanged = ids_before == series
+        n_unchanged = idxUnchanged.sum()
+        logging.info(f"Remapped {len(ids_before) - n_unchanged} / {len(ids_before)} IDs for '{series.name}'")
+        if n_unchanged > 0:
+            logging.warning(f"A subset of IDs are missing remapping for '{series.name}': {set(ids_before[idxUnchanged])}")
+        return series
+
+    @staticmethod
     def _deidentify_phenotype(df: pd.DataFrame, phenotype: dict, participant_ids_to_remove: t.List[str] = [], participant_ids_to_remap: dict = {}, participant_session_id_to_remap: dict = {}) -> t.Tuple[pd.DataFrame, dict]:
         """
         Apply deidentification operations to phenotype data.
@@ -1076,21 +1097,12 @@ class BIDSDataset:
 
         # Remap IDs
         if participant_ids_to_remap and "participant_id" in df.columns:
-            ids_before = df["participant_id"]
-            df["participant_id"] = df["participant_id"].map(participant_ids_to_remap).fillna(df["participant_id"])
-            n_different = (ids_before != df["participant_id"]).sum()
-            logging.info(f"Remapped {n_different} / {len(ids_before)} IDs for 'participant_id'")
+            df["participant_id"] = BIDSDataset._map_series(df["participant_id"], participant_ids_to_remap)
 
         if participant_session_id_to_remap:
             for col in df.columns:
                 if "session_id" in col:
-                    ids_before = df[col].copy()
-                    df[col] = df[col].map(participant_session_id_to_remap).fillna(df[col])
-                    idxUnchanged = ids_before == df[col]
-                    n_unchanged = idxUnchanged.sum()
-                    logging.info(f"Remapped {len(ids_before) - n_unchanged} / {len(ids_before)} IDs for '{col}'")
-                    if n_unchanged > 0:
-                        logging.warning(f"A subset of IDs are missing remapping for '{col}': {set(ids_before[idxUnchanged])}")
+                    df[col] = BIDSDataset._map_series(df[col], participant_session_id_to_remap)
 
         # Remove sensitive columns
         df, phenotype = BIDSDataset._remove_sensitive_columns(df, phenotype)
