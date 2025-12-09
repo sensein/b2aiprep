@@ -433,8 +433,6 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
         {'feature_class': 'sparc', 'feature_name': 'loudness'},
         {'feature_class': 'sparc', 'feature_name': 'pitch'},
         {'feature_class': 'sparc', 'feature_name': 'periodicity'},
-        {'feature_class': 'sparc', 'feature_name': 'pitch_stats'},
-
     ]
     
     features_dir = outdir / "features"
