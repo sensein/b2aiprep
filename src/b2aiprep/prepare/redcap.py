@@ -181,16 +181,11 @@ def parse_survey(
             # we account for this specific case and hard code the mappings here.
             # We also only do this when processing as import still uses the orignal mappings of peds___{n}
             if question == "race" and not is_import:
-                mapping = {
-                    1: 'American Indian or Alaska Native',
-                    2: 'Asian',
-                    3: 'Black or African American',
-                    4: 'Native Hawaiian or other Pacific Islander',
-                    5: 'White',
-                    6: 'Canadian Indigenous or Aboriginal',
-                    7: 'Other',
-                    8: 'Prefer not to answer'
-                }
+                mapping_path = files("b2aiprep.prepare.resources").joinpath("redcap_race_mapping.json")
+                with open(mapping_path, "r") as f:
+                    mapping = json.load(f)
+                mapping = {int(k): v for k, v in mapping.items()}
+
                 raw_value_set = set(raw_value) if isinstance(raw_value, list) else {raw_value}
                 for val, label in mapping.items():
                     questions_answers[f"peds_{question}___{label}"] = ["Checked" if val in raw_value_set else "Unchecked"]

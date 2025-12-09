@@ -138,10 +138,7 @@ def redcap2bids(
     audiodir,
     max_audio_workers,
 ):
-    """Organizes into BIDS-like without features.
-
-    This function processes a REDCap data file and optionally links audio files
-    to structure them in a format similar to the Brain Imaging Data Structure (BIDS).
+    """Parses a RedCap CSV and a folder of audio files into the Brain Imaging Data Structure (BIDS) format.
 
     Args:
         filename (str): Path to the REDCap data file.
@@ -396,9 +393,9 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
         device = 'cpu' # not checking for cuda because optimization would be minimal if any
         features = torch.load(pt_file, weights_only=False, map_location=torch.device(device))
         subj_info = {
-            "participant_id": str(pt_file).split("sub-")[1].split("/ses-")[0],
-            "session_id": str(pt_file).split("ses-")[1].split("/audio")[0],
-            "task_name": str(pt_file).split("task-")[1].split("_features")[0],
+            "participant_id": BIDSDataset._extract_participant_id_from_path(pt_file),
+            "session_id": BIDSDataset._extract_session_id_from_path(pt_file),
+            "task_name": BIDSDataset._extract_task_name_from_path(pt_file),
         }
 
         transcription = features.get("transcription", None)
@@ -1051,11 +1048,11 @@ def createbatchcsv(input_dir, out_file):
 
 @click.command()
 @click.argument("audio_dir", type=str)
-@click.argument("survey_file", type=str)
+@click.argument("survey_dir", type=str)
 @click.argument("redcap_csv", type=str)
 @click.option("--is_import", type=bool, default=False, show_default=True)
 @click.option("--disable-manual-fixes", is_flag=True, default=False, show_default=True, help="Disable manual fixes for known issues in ReproSchema data.")
-def reproschema_to_redcap(audio_dir, survey_file, redcap_csv, is_import, disable_manual_fixes):
+def reproschema_to_redcap(audio_dir, survey_dir, redcap_csv, is_import, disable_manual_fixes):
     """Converts reproschema ui data to redcap CSV.
 
     This function processes survey data and audio metadata from ReproSchema UI exports
@@ -1063,7 +1060,7 @@ def reproschema_to_redcap(audio_dir, survey_file, redcap_csv, is_import, disable
 
     Args:
         audio_dir (str): Path to the directory containing the audio files.
-        survey_file (str): Path to the directory containing survey data exported from ReproSchema UI.
+        survey_dir (str): Path to the directory containing survey data exported from ReproSchema UI.
         redcap_csv (str): Path to save the generated REDCap-compatible CSV file.
         is_import (bool): If True, modifies how we convert to redcap csv due to difference in import csv and exports
         disable_manual_fixes (bool): If True, disables manual fixes for known issues in ReproSchema data.
@@ -1080,7 +1077,7 @@ def reproschema_to_redcap(audio_dir, survey_file, redcap_csv, is_import, disable
 
     dataset = RedCapDataset.from_reproschema(
         audio_dir=audio_dir,
-        survey_dir=survey_file,
+        survey_dir=survey_dir,
         is_import=is_import,
         disable_manual_fixes=disable_manual_fixes,
     )

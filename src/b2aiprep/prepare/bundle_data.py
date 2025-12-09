@@ -4,11 +4,10 @@ import typing as t
 from pathlib import Path
 
 import numpy as np
-import pandas as pd
 import torch
 from tqdm import tqdm
 
-from b2aiprep.prepare.prepare import reduce_id_length, reduce_length_of_id
+from b2aiprep.prepare.dataset import BIDSDataset
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -29,9 +28,9 @@ def spectrogram_generator(
         device = 'cpu' # not checking for cuda because optimization would be minimal if any
         features = torch.load(pt_file, weights_only=False, map_location=torch.device(device))
 
-        output["participant_id"] = wav_path.stem.split("_")[0][4:]  # skip "sub-" prefix
-        output["session_id"] = wav_path.stem.split("_")[1][4:]  # skip "ses-" prefix
-        output["task_name"] = wav_path.stem.split("_")[2][5:]  # skip "task-" prefix
+        output["participant_id"] = BIDSDataset._extract_participant_id_from_path(wav_path)  # skip "sub-" prefix
+        output["session_id"] = BIDSDataset._extract_session_id_from_path(wav_path)  # skip "ses-" prefix
+        output["task_name"] = BIDSDataset._extract_task_name_from_path(wav_path)  # skip "task-" prefix
 
         spectrogram = features["torchaudio"].get("spectrogram", None)
         
@@ -130,9 +129,9 @@ def feature_extraction_generator(
         device = 'cpu' # not checking for cuda because optimization would be minimal if any
         features = torch.load(pt_file, weights_only=False, map_location=torch.device(device))
 
-        output["participant_id"] = wav_path.stem.split("_")[0][4:]  # skip "sub-" prefix
-        output["session_id"] = wav_path.stem.split("_")[1][4:]  # skip "ses-" prefix
-        output["task_name"] = wav_path.stem.split("_")[2][5:]  # skip "task-" prefix
+        output["participant_id"] = BIDSDataset._extract_participant_id_from_path(wav_path)  # skip "sub-" prefix
+        output["session_id"] = BIDSDataset._extract_session_id_from_path(wav_path)  # skip "ses-" prefix
+        output["task_name"] = BIDSDataset._extract_task_name_from_path(wav_path)  # skip "task-" prefix
 
         if feature_class:
             data = features.get(feature_class, {}).get(feature_name, None)
