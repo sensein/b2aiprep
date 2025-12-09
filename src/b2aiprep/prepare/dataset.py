@@ -1635,6 +1635,21 @@ class BIDSDataset:
         raise ValueError(f"Could not extract session ID from path: {path}")
 
     @staticmethod
+    def _extract_task_name_from_path(path: Path) -> str:
+        """Extract the task name from the path, preferring directory parts.
+        Falls back to regex on filestem using task-(.+?)_ if needed."""
+        # Prefer directory parts
+        for part in path.parts:
+            if part.startswith("task-"):
+                return part[5:]
+        # Fallback to filestem regex: task-(.+?)_
+        m = re.search(r"task-(.+?)_", path.stem)
+        if m:
+            return m.group(1)
+
+        raise ValueError(f"Could not extract session ID from path: {path}")
+
+    @staticmethod
     def _deidentify_audio_files(
         data_path: Path,
         outdir: Path,
@@ -1684,18 +1699,16 @@ class BIDSDataset:
             audio_paths, exclusion_list=['audio-check'], exclusion_type='filestem_contains'
         )
 
-        # TODO: Add audio processing for further deidentification here
-        # This could include:
-        # - Voice conversion/anonymization
-        # - Pitch shifting
-        # - Other audio deidentification techniques
-        
+        sensitive_audio_task_list = [f'task-{task}' for task in sensitive_audio_task_list]
+        audio_paths = BIDSDataset._apply_exclusion_list_to_filepaths(
+            audio_paths, exclusion_list=sensitive_audio_task_list, exclusion_type='filestem_contains'
+        )
+
         _LOGGER.info(f"Copying {len(audio_paths)} recordings.")
         for audio_path in tqdm(
             audio_paths, desc="Copying audio and metadata files", total=len(audio_paths)
         ):
             json_path = audio_path.parent.joinpath(f'{audio_path.stem}_recording-metadata.json')
-            features_path = audio_path.parent.joinpath(f'{audio_path.stem}_features.pt')
             
             if not json_path.exists():
                 _LOGGER.warning(f"Metadata file {json_path} not found. Skipping {audio_path}.")
@@ -1770,26 +1783,16 @@ class BIDSDataset:
         paths = BIDSDataset._apply_exclusion_list_to_filepaths(
             paths, exclusion_list=['audio-check'], exclusion_type='filestem_contains'
         )
-
-        # TODO: Add audio processing for further deidentification here
-        # This could include:
-        # - Voice conversion/anonymization
-        # - Pitch shifting
-        # - Other audio deidentification techniques
         
         _LOGGER.info(f"Copying {len(paths)} feature files.")
         for features_path in tqdm(
-            paths, desc="Copying audio and metadata files", total=len(paths)
+            paths, desc="Copying and de-identifying feature files", total=len(paths)
         ):
             participant_id = BIDSDataset._extract_participant_id_from_path(features_path)
+            participant_id = participant_ids_to_remap.get(participant_id, participant_id)
             session_id = BIDSDataset._extract_session_id_from_path(features_path)
+            session_id = participant_session_id_to_remap.get(session_id, session_id)
 
-            # Check that the audio exists
-            audio_path = features_path.parent / (features_path.stem[:-9] + '.wav')
-            if not audio_path.exists():
-                _LOGGER.warning(f"Audio file {audio_path} not found. Skipping {features_path}.")
-                continue
-            
             # Create output path with deidentified structure
             path_stem_ending = "_".join(features_path.stem.split("_", 3)[2:])
             output_path = outdir.joinpath(
@@ -1798,7 +1801,7 @@ class BIDSDataset:
             output_path.parent.mkdir(parents=True, exist_ok=True)
 
             # if it is not sensitive and we want to keep features, move all features over
-            task_name = features_path.stem.split("_")[2][5:]
+            task_name = features_path.stem.split("_task-")[1]
             if task_name.lower() not in sensitive_audio_task_list:
                 shutil.copy(features_path, output_path)
             else:
@@ -2084,7 +2087,8 @@ class VBAIDataset(BIDSDataset):
                 f"sub-{subject_id}_ses-{session_id}_{task}_rec-{name}.pt",
             )
             try:
-                features = torch.load(str(audio_file), weights_only=False)
+                device = 'cpu' # not checking for cuda because optimization would be minimal if any
+                features = torch.load(str(audio_file), weights_only=False, map_location=torch.device(device))
                 audio_data.append(features["specgram"])
             except FileNotFoundError:
                 # assuming lbsnd file error is a file not found, usually it is

@@ -46,7 +46,7 @@ from tqdm import tqdm
 from b2aiprep.prepare.bids import get_paths, validate_bids_folder_audios
 from b2aiprep.prepare.redcap import RedCapDataset
 from b2aiprep.prepare.dataset import BIDSDataset
-from b2aiprep.prepare.derived_data import (
+from b2aiprep.prepare.bundle_data import (
     feature_extraction_generator,
     spectrogram_generator,
 )
@@ -63,6 +63,32 @@ from b2aiprep.prepare.data_validation import validate_phenotype
 from b2aiprep.prepare.update import TemplateUpdateError, reorganize_bids_activities, update_bids_template_files
 
 _LOGGER = logging.getLogger(__name__)
+
+
+def _prime_generator(
+    generator_callable: t.Callable[[], t.Iterator[t.Dict[str, t.Any]]],
+) -> t.Tuple[bool, t.Optional[t.Callable[[], t.Iterator[t.Dict[str, t.Any]]]]]:
+    """Peek at the first item while returning a generator that still yields it."""
+    gen = generator_callable()
+    try:
+        first_item = next(gen)
+    except StopIteration:
+        close_fn = getattr(gen, "close", None)
+        if callable(close_fn):
+            close_fn()
+        return False, None
+
+    def seeded_generator():
+        # yield the first item
+        yield first_item
+
+        # then yield the rest by recreating the generator, skipping the first one
+        gen2 = generator_callable()
+        next(gen2)  # skip first
+        for item in gen2:
+            yield item
+
+    return True, seeded_generator
 
 import numpy as np
 
@@ -112,10 +138,7 @@ def redcap2bids(
     audiodir,
     max_audio_workers,
 ):
-    """Organizes into BIDS-like without features.
-
-    This function processes a REDCap data file and optionally links audio files
-    to structure them in a format similar to the Brain Imaging Data Structure (BIDS).
+    """Parses a RedCap CSV and a folder of audio files into the Brain Imaging Data Structure (BIDS) format.
 
     Args:
         filename (str): Path to the REDCap data file.
@@ -280,13 +303,31 @@ def run_quality_control_on_audios(
     )
 
 
+def _build_dataset_from_generator(generator_factory, feature_label: str):
+    """Materialize a datasets.Dataset from a generator without double-loading files."""
+    generator = generator_factory()
+    try:
+        first_record = next(generator)
+    except StopIteration:
+        _LOGGER.info("No values found for %s; skipping parquet export.", feature_label)
+        return None
+
+    def _stream():
+        yield first_record
+        for record in generator:
+            yield record
+
+    return Dataset.from_generator(_stream, num_proc=1)
+
 @click.command()
 @click.argument("bids_path", type=click.Path(exists=True))
 @click.argument("outdir", type=click.Path())
-def create_derived_dataset(bids_path, outdir):
-    """Creates derived dataset from BIDS data.
+@click.option("--skip_audio/--no-skip_audio", type=bool, default=True, show_default=True, help="Skip processing audio files")
+@click.option("--skip_audio_features/--no-skip_audio_features", type=bool, default=False, show_default=True, help="Skip processing feature files")
+def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
+    """Bundles dataset from BIDS data.
 
-    The derived dataset output loads data from generated .pt files, which have
+    The bundled output loads data from generated .pt files, which have
     the following keys:
      - pitch
      - mfcc
@@ -305,11 +346,14 @@ def create_derived_dataset(bids_path, outdir):
     ├── static_features.tsv
     ├── static_features.json
     """
-    bids_path = Path(bids_path)
-    audio_paths = get_paths(bids_path, file_extension=".pt")
-    audio_paths = [x["path"] for x in audio_paths]
+    if not skip_audio:
+        _LOGGER.warning("Audio data is currently not supported for bundling. No audio files will be included in the bundle.")
 
-    if len(audio_paths) == 0:
+    bids_path = Path(bids_path)
+    feature_paths = get_paths(bids_path, file_extension=".pt")
+    feature_paths = [x["path"] for x in feature_paths]
+
+    if len(feature_paths) == 0:
         raise FileNotFoundError(
             f"No feature files (.pt) found in {bids_path}. Please check the directory structure."
         )
@@ -320,7 +364,7 @@ def create_derived_dataset(bids_path, outdir):
     # remove _features at the end of the file stem
     audio_paths = [
         x.parent.joinpath(x.stem[:-9]).with_suffix(".wav") if "_features" in x.name else x
-        for x in audio_paths
+        for x in feature_paths
     ]
 
     audio_paths = sorted(
@@ -343,22 +387,20 @@ def create_derived_dataset(bids_path, outdir):
     static_features = []
     for filepath in tqdm(audio_paths, desc="Loading static features", total=len(audio_paths)):
         pt_file = filepath.parent.joinpath(f"{filepath.stem}_features.pt")
-        if not pt_file.exists():
+        if not filepath.exists(): #pt will exist based on how audio paths were generated, but audio file might not exist
             continue
 
-        features = torch.load(pt_file, weights_only=False)
+        device = 'cpu' # not checking for cuda because optimization would be minimal if any
+        features = torch.load(pt_file, weights_only=False, map_location=torch.device(device))
         subj_info = {
-            "participant_id": str(pt_file).split("sub-")[1].split("/ses-")[0],
-            "session_id": str(pt_file).split("ses-")[1].split("/audio")[0],
-            "task_name": str(pt_file).split("task-")[1].split("_features")[0],
+            "participant_id": BIDSDataset._extract_participant_id_from_path(pt_file),
+            "session_id": BIDSDataset._extract_session_id_from_path(pt_file),
+            "task_name": BIDSDataset._extract_task_name_from_path(pt_file),
         }
 
         transcription = features.get("transcription", None)
         if transcription is not None:
             transcription = transcription.text
-            if is_audio_sensitive(filepath):
-                # we omit tasks where free speech occurs
-                transcription = None
         subj_info["transcription"] = transcription
 
         for key in ["opensmile", "praat_parselmouth", "torchaudio_squim"]:
@@ -378,7 +420,7 @@ def create_derived_dataset(bids_path, outdir):
         json.dump(static_features_json, f, indent=2)
     _LOGGER.info("Finished creating static features.")
 
-    _LOGGER.info("Loading spectrograms into a single HF dataset.")
+    _LOGGER.info("Loading other features into HF datasets.")
 
     features_to_extract = [
         {'feature_class': None, 'feature_name': 'ppgs'},
@@ -394,6 +436,10 @@ def create_derived_dataset(bids_path, outdir):
         {'feature_class': 'sparc', 'feature_name': 'pitch_stats'},
 
     ]
+    
+    features_dir = outdir / "features"
+    features_dir.mkdir(parents=True, exist_ok=True)
+    
     for feature in features_to_extract:
         feature_class = feature['feature_class']
         feature_name = feature['feature_name']
@@ -402,7 +448,7 @@ def create_derived_dataset(bids_path, outdir):
 
         if feature_name != "spectrogram":
             use_byte_stream_split = True
-            audio_feature_generator = partial(
+            maybe_empty_generator = partial(
                 feature_extraction_generator,
                 audio_paths=audio_paths,
                 feature_name=feature_name,
@@ -410,15 +456,29 @@ def create_derived_dataset(bids_path, outdir):
             )
         else:
             use_byte_stream_split = False
-            audio_feature_generator = partial(
+            maybe_empty_generator = partial(
                 spectrogram_generator,
                 audio_paths=audio_paths,
             )
+        has_data, feature_generator = _prime_generator(maybe_empty_generator)
+        if not has_data or feature_generator is None:
+            _LOGGER.warning(
+                "No non-NaN entries found for %s feature. Skipping parquet export.",
+                feature_output,
+            )
+            continue
 
-        # sort the dataset by identifier and task_name
-        ds = Dataset.from_generator(audio_feature_generator, num_proc=1)
+        # # sort the dataset by identifier and task_name
+        # ds = Dataset.from_generator(maybe_empty_generator, num_proc=1)
+        ds = Dataset.from_generator(feature_generator, num_proc=1)
+        if len(ds) == 0:  
+            _LOGGER.warning(
+                "No non-NaN entries found for %s feature. Skipping parquet export.",
+                feature_output,
+            )
+            continue
         ds.to_parquet(
-            str(outdir.joinpath(f"{feature_output}.parquet")),
+            str((f"{features_dir}/{feature_output}.parquet")),
             version="2.6",
             compression="zstd",  # Better compression ratio than snappy, still good speed
             compression_level=3,
@@ -988,10 +1048,11 @@ def createbatchcsv(input_dir, out_file):
 
 @click.command()
 @click.argument("audio_dir", type=str)
-@click.argument("survey_file", type=str)
+@click.argument("survey_dir", type=str)
 @click.argument("redcap_csv", type=str)
+@click.option("--is_import", type=bool, default=False, show_default=True)
 @click.option("--disable-manual-fixes", is_flag=True, default=False, show_default=True, help="Disable manual fixes for known issues in ReproSchema data.")
-def reproschema_to_redcap(audio_dir, survey_file, redcap_csv, disable_manual_fixes):
+def reproschema_to_redcap(audio_dir, survey_dir, redcap_csv, is_import, disable_manual_fixes):
     """Converts reproschema ui data to redcap CSV.
 
     This function processes survey data and audio metadata from ReproSchema UI exports
@@ -999,8 +1060,9 @@ def reproschema_to_redcap(audio_dir, survey_file, redcap_csv, disable_manual_fix
 
     Args:
         audio_dir (str): Path to the directory containing the audio files.
-        survey_file (str): Path to the directory containing survey data exported from ReproSchema UI.
+        survey_dir (str): Path to the directory containing survey data exported from ReproSchema UI.
         redcap_csv (str): Path to save the generated REDCap-compatible CSV file.
+        is_import (bool): If True, modifies how we convert to redcap csv due to difference in import csv and exports
         disable_manual_fixes (bool): If True, disables manual fixes for known issues in ReproSchema data.
 
     Raises:
@@ -1015,13 +1077,15 @@ def reproschema_to_redcap(audio_dir, survey_file, redcap_csv, disable_manual_fix
 
     dataset = RedCapDataset.from_reproschema(
         audio_dir=audio_dir,
-        survey_dir=survey_file,
+        survey_dir=survey_dir,
+        is_import=is_import,
         disable_manual_fixes=disable_manual_fixes,
     )
     
     # Ensure the output directory exists
     redcap_csv_path.parent.mkdir(parents=True, exist_ok=True)
-
+    if not is_import:
+        dataset.df = RedCapDataset.collapse_checked_columns(dataset.df)
     dataset.df.to_csv(redcap_csv_path, index=False)    
     _LOGGER.info(f"Successfully converted ReproSchema data to RedCap CSV: {redcap_csv_path}")
 

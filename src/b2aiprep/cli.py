@@ -6,7 +6,7 @@ from b2aiprep.commands import (  # gensynthtabdata,
     batchconvert,
     bids2shadow,
     convert,
-    create_derived_dataset,
+    create_bundled_dataset,
     createbatchcsv,
     dashboard,
     generate_audio_features,
@@ -48,7 +48,7 @@ cli.add_command(batchconvert)
 cli.add_command(verify)
 cli.add_command(transcribe)
 cli.add_command(createbatchcsv)
-cli.add_command(create_derived_dataset)
+cli.add_command(create_bundled_dataset)
 cli.add_command(validate_phenotype_command)
 cli.add_command(validate_derived_dataset)
 cli.add_command(deidentify_bids_dataset)

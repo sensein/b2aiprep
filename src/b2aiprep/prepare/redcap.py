@@ -88,6 +88,7 @@ def parse_survey(
     choices_cache: dict | None = None,
     http_session: requests.Session | None = None,
     timeout: float = 10.0,
+    is_import: bool= False,
 ):
     """
     Function that generates a list of DataFrames to build a REDCap CSV.
@@ -97,6 +98,7 @@ def parse_survey(
         record_id: Participant identifier
         session_path: Path containing the session id (relative)
         session_dict: Mapping from record_id to audio session ids
+        is_import: If True, changes how we create the redcsv, whether its for import or not
         resolve_choice_names: If True, perform web calls to resolve labels and
             expand multi-select as REDCap checkbox columns. If False, do not
             make web calls and fall back to coded values (multi-select stored
@@ -174,6 +176,21 @@ def parse_survey(
             question = survey_data[i]["isAbout"].split("/")[-1]
             raw_value = survey_data[i]["value"]
             resolved = _resolve_value(survey_data[i]["isAbout"], raw_value)
+            # edge case as race parsed differently than other questions
+            # orignally it was peds__1...peds___n but then they changed it to peds___white etc...,
+            # we account for this specific case and hard code the mappings here.
+            # We also only do this when processing as import still uses the orignal mappings of peds___{n}
+            if question == "race" and not is_import:
+                mapping_path = files("b2aiprep.prepare.resources").joinpath("redcap_race_mapping.json")
+                with open(mapping_path, "r") as f:
+                    mapping = json.load(f)
+                mapping = {int(k): v for k, v in mapping.items()}
+
+                raw_value_set = set(raw_value) if isinstance(raw_value, list) else {raw_value}
+                for val, label in mapping.items():
+                    questions_answers[f"peds_{question}___{label}"] = ["Checked" if val in raw_value_set else "Unchecked"]
+                questions_answers[question] = [";".join([mapping.get(v, str(v)) for v in raw_value])]
+                continue
             if not isinstance(raw_value, list):
                 # Scalar answers: prefer resolved label if available
                 questions_answers[question] = [str(resolved).capitalize()]
@@ -388,6 +405,7 @@ class RedCapDataset:
         cls, 
         audio_dir: t.Union[str, Path], 
         survey_dir: t.Union[str, Path],
+        is_import: bool = False,
         disable_manual_fixes: bool = False,
         *,
         resolve_choice_names: bool = True,
@@ -398,6 +416,7 @@ class RedCapDataset:
         Args:
             audio_dir: Path to directory containing audio files
             survey_dir: Path to directory containing survey data
+            is_import: If True, changes how we convert to a redcap csv
             resolve_choice_names: If True, makes web calls to resolve ReproSchema
                 choice labels for scalar answers and to expand multi-select into
                 checkbox columns. If False or if requests fail, falls back to coded
@@ -415,9 +434,8 @@ class RedCapDataset:
         # Convert ReproSchema to RedCap format
         participant_group = "subjectparticipant_basic_information_schema"
         df = cls._convert_reproschema_to_redcap(
-            audio_dir, survey_dir, participant_group, resolve_choice_names=resolve_choice_names, disable_manual_fixes=disable_manual_fixes
+            audio_dir, survey_dir, participant_group, resolve_choice_names=resolve_choice_names, is_import=is_import, disable_manual_fixes=disable_manual_fixes
         )
-
         #remap reproschema columns to their redcap equivalents
         current_file = Path(__file__)
         resource_path = current_file.parent / "resources" / "field_remap.json"
@@ -426,7 +444,6 @@ class RedCapDataset:
             column_mapping = json.load(f)
 
         df.rename(columns=column_mapping, inplace=True)
-
         dataset = cls(
             df=df, 
             source_type='reproschema', 
@@ -438,7 +455,6 @@ class RedCapDataset:
         )
         # Apply standard processing
         dataset._insert_missing_columns()
-        
         _LOGGER.info(f"Successfully loaded ReproSchema data with {len(df)} rows and {len(df.columns)} columns")
         return dataset
     
@@ -519,6 +535,7 @@ class RedCapDataset:
         audio_dir: t.Union[str, Path],
         survey_dir: t.Union[str, Path],
         participant_group: str = "subjectparticipant_basic_information_schema",
+        is_import: bool = False,
         disable_manual_fixes: bool = False,
         *,
         resolve_choice_names: bool = True,
@@ -530,6 +547,7 @@ class RedCapDataset:
             audio_dir: Path to audio files directory
             survey_dir: Path to survey data directory  
             participant_group: Optional participant group identifier
+            is_import: If True, changes how we convert to a redcap csv
             disable_manual_fixes: If True, disables manual fixes for known data issues
             resolve_choice_names: If True, makes web calls to resolve ReproSchema
                 choice labels for scalar answers and to expand multi-select into
@@ -583,6 +601,7 @@ class RedCapDataset:
                             resolve_choice_names=resolve_choice_names,
                             choices_cache=choices_cache,
                             http_session=http_session,
+                            is_import=is_import,
                         )
 
                         for df in questionnaire_df_list:
@@ -631,7 +650,33 @@ class RedCapDataset:
             return combined_df
         else:
             return pd.DataFrame()
-    
+
+    @staticmethod
+    def collapse_checked_columns(data: DataFrame) -> DataFrame:
+        """
+        Fixed the redcap csv to account for inconsistent issues with radio questions
+        """
+        data = data.copy()
+        split_cols = [col for col in data.columns if '___' in col and col.split('___')[1].lower() != 'other']
+        prefix_map = {}
+        # splits the columns into the base question column and the associated answer
+        for col in split_cols:
+            prefix, suffix = col.split('___', 1)
+            if prefix not in prefix_map:
+                prefix_map[prefix] = []
+            prefix_map[prefix].append((col, suffix))
+        # assigns the answwer into the base column
+        for prefix, col_suffix_list in prefix_map.items():
+            def combine_row(row):
+                values = [suffix for col, suffix in col_suffix_list if str(row[col]).strip().lower() == 'checked']
+                values = [value.replace("_", " ") for value in values]
+                return ", ".join(values) if values else ""
+            data[prefix] = data.apply(combine_row, axis=1)
+
+        data.drop(columns=split_cols, inplace=True)
+
+        return data
+
     def _validate_redcap_columns(self) -> None:
         """
         Validate RedCap DataFrame column names.
