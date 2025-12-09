@@ -1031,21 +1031,24 @@ class BIDSDataset:
                 data_elements.update(phenotype[schema].get("data_elements", {}))
             phenotype = data_elements
 
+        # Handle nested phenotype structure which occurs in ReproSchema activities
+        if len(phenotype) == 1:
+            only_key = next(iter(phenotype))
+            if 'data_elements' in phenotype[only_key]:
+                phenotype = phenotype[only_key]['data_elements']
+
         # Add record_id to phenotype if missing
-        if df.shape[1] > 0 and df.columns[0] == 'record_id' and 'record_id' not in list(phenotype.keys()):
-            phenotype = BIDSDataset._add_record_id_to_phenotype(phenotype)
+        if df.shape[1] > 0:
+            phenotype_has_id = 'record_id' in list(phenotype.keys()) or 'participant_id' in list(phenotype.keys())
+            df_has_id = 'record_id' in df.columns or 'participant_id' in df.columns
+            if not phenotype_has_id and not df_has_id:
+                phenotype = BIDSDataset._add_record_id_to_phenotype(phenotype)
 
         # Validate column count
         if len(phenotype) != df.shape[1]:
             logging.warning(
                 f"Phenotype {phenotype_name} has {len(phenotype)} columns, but the data has {df.shape[1]} columns."
             )
-
-        # Handle nested phenotype structure
-        if len(phenotype) == 1:
-            only_key = next(iter(phenotype))
-            if 'data_elements' in phenotype[only_key]:
-                phenotype = phenotype[only_key]['data_elements']
 
         return df, phenotype
 
@@ -1083,8 +1086,11 @@ class BIDSDataset:
                 if "session_id" in col:
                     ids_before = df[col].copy()
                     df[col] = df[col].map(participant_session_id_to_remap).fillna(df[col])
-                    n_different = (ids_before != df[col]).sum()
-                    logging.info(f"Remapped {n_different} / {len(ids_before)} IDs for '{col}'")
+                    idxUnchanged = ids_before == df[col]
+                    n_unchanged = idxUnchanged.sum()
+                    logging.info(f"Remapped {len(ids_before) - n_unchanged} / {len(ids_before)} IDs for '{col}'")
+                    if n_unchanged > 0:
+                        logging.warning(f"A subset of IDs are missing remapping for '{col}': {set(ids_before[idxUnchanged])}")
 
         # Remove sensitive columns
         df, phenotype = BIDSDataset._remove_sensitive_columns(df, phenotype)
@@ -1106,8 +1112,8 @@ class BIDSDataset:
         # Fix alcohol column date values
         df = BIDSDataset._fix_alcohol_column(df)
         
-        # Remove unwanted columns
-        df, phenotype = BIDSDataset._remove_empty_columns(df, phenotype)
+        # Warn about empty columns - but keep them as some are expected
+        BIDSDataset._warn_about_empty_columns(df, phenotype)
         
         # Add derived columns
         if ("gender_identity" in df.columns) and ("specify_gender_identity" in df.columns):
@@ -1130,16 +1136,15 @@ class BIDSDataset:
         return df
 
     @staticmethod
-    def _remove_empty_columns(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
-        """Remove columns that are empty."""
-        columns_to_drop = []
+    def _warn_about_empty_columns(df: pd.DataFrame, phenotype: dict) -> None:
+        """Warn about columns that are empty."""
+        empty_columns = []
         for column in df.columns:
             if df[column].isnull().all():
-                columns_to_drop.append(column)
+                empty_columns.append(column)
         
-        return BIDSDataset._drop_columns_from_df_and_data_dict(
-            df, phenotype, columns_to_drop, "Removing empty columns"
-        )
+        if empty_columns:
+            logging.warning(f"Found {len(empty_columns)} empty columns: {empty_columns}")
 
     @staticmethod
     def _remove_sensitive_columns(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
@@ -1212,9 +1217,8 @@ class BIDSDataset:
         if 'gender_identity' in df.columns:
             _LOGGER.info(f"sex_at_birth value_counts: {df['sex_at_birth'].value_counts(dropna=False).to_dict()}")
             _LOGGER.info(f"gender_identity value_counts: {df['gender_identity'].value_counts(dropna=False).to_dict()}")
-            _LOGGER.info(f"specify_gender_identity value_counts: {df['specify_gender_identity'].value_counts(dropna=False).to_dict()}")
             df, phenotype = BIDSDataset._drop_columns_from_df_and_data_dict(
-                df, phenotype, ["gender_identity", "specify_gender_identity"], "Remove sensitive demographic columns"
+                df, phenotype, ["gender_identity"], "Remove sensitive demographic columns"
             )
         
         return df, phenotype
@@ -1284,6 +1288,7 @@ class BIDSDataset:
         columns = []
         for c in df.columns:
             if c == "specify_gender_identity":
+                # this continue implicitly removes this column from the output
                 continue
             elif c == "gender_identity":
                 first_key = next(iter(phenotype))
