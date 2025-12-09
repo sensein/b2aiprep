@@ -1,0 +1,73 @@
+{
+  "fields": [
+    {
+      "name": "participant_id",
+      "type": "string",
+      "description": "Unique identifier for each participant."
+    },
+    {
+      "name": "session_id",
+      "type": "string",
+      "description": "Unique identifier for each session."
+    },
+    {
+      "name": "task_name",
+      "type": "string",
+      "description": "The audio task conducted for the recording."
+    },
+    {
+      "name": "n_frames",
+      "type": "integer",
+      "description": "Number of time frames in the spectrogram (variable per recording)."
+    },
+    {
+      "name": "spectrograms",
+      "type": "array",
+      "description": "2D tensor representing the log-magnitude spectrogram.",
+      "extras": {
+        "tensor": {
+          "dtype": "float32",
+          "ndim": 2,
+          "dims": ["frequency", "time"],
+          "shape": [201, null],
+          "units": "dB",
+
+          "config": {
+            "n_fft": 400,
+            "win_length": 400,
+            "hop_length": 160
+          },
+
+          "provenance": {
+            "software": "torchaudio",
+            "version": "2.8.0",
+            "command": "torchaudio.transforms.Spectrogram",
+            "extraction_date": null
+          },
+
+          "serialization": {
+            "storage": "parquet_nested_list",
+            "parquet_type": "list<list<float>>",
+            "compression": "zstd"
+          },
+
+          "postprocessing": {
+            "subsample_time_axis": {
+              "description": "Every second time frame was retained to reduce temporal resolution for privacy preservation.",
+              "operation": "data = data[:, ::2]",
+              "effect": {
+                "original_hop_length_samples": 160,
+                "new_hop_length_samples": 320,
+                "original_hop_duration_seconds": 0.01,
+                "new_hop_duration_seconds": 0.02,
+                "frame_rate_halved": true
+              },
+              "reason": "Reduces temporal detail to make speaker identification more difficult."
+            }
+          }
+        }
+      }
+    }
+  ],
+  "primaryKey": ["participant_id", "session_id", "task_name"]
+}
