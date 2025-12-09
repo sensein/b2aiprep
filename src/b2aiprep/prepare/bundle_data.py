@@ -164,5 +164,6 @@ def feature_extraction_generator(
         elif feature_name == "ppgs": #3-dimensional, first is batch
             data = np.squeeze(data,axis=0)
         output[feature_name] = data
-        output["n_frames"] = data.shape[-1]
+        time_dimension = -1 if feature_class != 'sparc' else 0
+        output["n_frames"] = data.shape[time_dimension]
         yield output
