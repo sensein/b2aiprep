@@ -1718,7 +1718,7 @@ class BIDSDataset:
             session_id = get_value_from_metadata(metadata, linkid="session_id", endswith=True)
             
             # Create output path with deidentified structure
-            audio_path_stem_ending = '-'.join(audio_path_stem.split("_")[2:])
+            audio_path_stem_ending = '-'.join(audio_path.split("_")[2:])
             output_path = outdir.joinpath(
                 f"sub-{participant_id}/ses-{session_id}/audio/sub-{participant_id}_ses-{session_id}_{audio_path_stem_ending}.wav"
             )
