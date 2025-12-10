@@ -440,6 +440,7 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
     for feature in features_to_extract:
         feature_class = feature['feature_class']
         feature_name = feature['feature_name']
+        feature_alias = f"{feature_class}_{feature_name}" if feature_class else feature_name
 
         if feature_name != "spectrogram":
             use_byte_stream_split = True
@@ -459,7 +460,7 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
         if not has_data or feature_generator is None:
             _LOGGER.warning(
                 "No non-NaN entries found for %s feature. Skipping parquet export.",
-                f"{feature_class}_{feature_name}" if feature_class else feature_name
+                feature_alias
             )
             continue
 
@@ -469,11 +470,11 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
         if len(ds) == 0:  
             _LOGGER.warning(
                 "No non-NaN entries found for %s feature. Skipping parquet export.",
-                f"{feature_class}_{feature_name}" if feature_class else feature_name
+                feature_alias
             )
             continue
         ds.to_parquet(
-            features_dir.joinpath(f"{feature_name}.parquet").resolve().as_posix(),
+            features_dir.joinpath(f"{feature_alias}.parquet").resolve().as_posix(),
             version="2.6",
             compression="zstd",  # Better compression ratio than snappy, still good speed
             compression_level=3,
@@ -491,8 +492,9 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
                 SortingColumn(column_index=2, descending=False),
             ),
         )
+        _LOGGER.info(f"Finished creating {feature_alias}.parquet file.")
 
-    _LOGGER.info("Parquet dataset created.")
+    _LOGGER.info("Bundled dataset created.")
 
 
 @click.command()
