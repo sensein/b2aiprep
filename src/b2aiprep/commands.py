@@ -548,7 +548,10 @@ def validate_derived_dataset(dataset_path):
 @click.argument("deidentify_config_dir", type=click.Path(exists=True))
 @click.option("--skip_audio/--no-skip_audio", type=bool, default=False, show_default=True, help="Skip processing audio files")
 @click.option("--skip_audio_features/--no-skip_audio_features", type=bool, default=False, show_default=True, help="Skip processing audio feature files")
-def deidentify_bids_dataset(bids_path, outdir, deidentify_config_dir, skip_audio, skip_audio_features):
+@click.option("--max_workers", type=int, default=16, show_default=True, help="Maximum number of worker threads to use")
+def deidentify_bids_dataset(
+    bids_path, outdir, deidentify_config_dir, skip_audio, skip_audio_features, max_workers: int = 16
+):
     """Creates a deidentified version of a given BIDS dataset.
 
     The deidentified version of the dataset: 
@@ -570,7 +573,11 @@ def deidentify_bids_dataset(bids_path, outdir, deidentify_config_dir, skip_audio
     # Create BIDSDataset instance and use the deidentify method
     bids_dataset = BIDSDataset(bids_path)
     bids_dataset.deidentify(
-        outdir=outdir, deidentify_config_dir=deidentify_config_dir, skip_audio=skip_audio, skip_audio_features=skip_audio_features
+        outdir=outdir,
+        deidentify_config_dir=deidentify_config_dir,
+        skip_audio=skip_audio,
+        skip_audio_features=skip_audio_features,
+        max_workers=max_workers,
     )
     
     _LOGGER.info("Deidentified dataset created successfully.")
