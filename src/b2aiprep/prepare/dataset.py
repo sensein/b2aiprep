@@ -1797,8 +1797,8 @@ class BIDSDataset:
             output_path.parent.mkdir(parents=True, exist_ok=True)
 
             # if it is not sensitive and we want to keep features, move all features over
-            task_name = features_path.stem.split("_task-")[1]
-            if task_name.lower() not in sensitive_audio_task_list:
+            task_name = BIDSDataset._extract_task_name_from_path(features_path)
+            if task_name not in sensitive_audio_task_list:
                 shutil.copy(features_path, output_path)
             else:
                 features = torch.load(features_path, weights_only=False, map_location=torch.device('cpu'))
