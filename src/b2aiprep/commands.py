@@ -441,9 +441,6 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
         feature_class = feature['feature_class']
         feature_name = feature['feature_name']
 
-        feature_output_dir = features_dir / feature_class if feature_class else features_dir / feature_name
-        feature_output_dir.mkdir(parents=True, exist_ok=True)
-
         if feature_name != "spectrogram":
             use_byte_stream_split = True
             maybe_empty_generator = partial(
@@ -476,7 +473,7 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
             )
             continue
         ds.to_parquet(
-            str((f"{feature_output_dir}/{feature_name}.parquet")),
+            features_dir.joinpath(f"{feature_name}.parquet").resolve().as_posix(),
             version="2.6",
             compression="zstd",  # Better compression ratio than snappy, still good speed
             compression_level=3,
