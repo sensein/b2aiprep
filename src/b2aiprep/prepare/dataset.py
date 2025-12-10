@@ -1438,7 +1438,7 @@ class BIDSDataset:
         
         return data
 
-    def deidentify(self, outdir: t.Union[str, Path], deidentify_config_dir: Path, skip_audio: bool = False, skip_audio_features: bool = False) -> 'BIDSDataset':
+    def deidentify(self, outdir: t.Union[str, Path], deidentify_config_dir: Path, skip_audio: bool = False, skip_audio_features: bool = False, max_workers: int = 16) -> 'BIDSDataset':
         """
         Create a deidentified version of the BIDS dataset.
         
@@ -1500,6 +1500,7 @@ class BIDSDataset:
                 sensitive_audio_tasks, 
                 participant_ids_to_remap, 
                 participant_session_id_to_remap,
+                max_workers=max_workers,
             )
             logging.info("Finished processing audio files.")
 
@@ -1514,6 +1515,7 @@ class BIDSDataset:
                 sensitive_audio_tasks, 
                 participant_ids_to_remap, 
                 participant_session_id_to_remap,
+                max_workers=max_workers,
             )
             logging.info("Finished processing features.")
         
@@ -1632,6 +1634,7 @@ class BIDSDataset:
         sensitive_audio_task_list: t.List[str] = [],
         participant_ids_to_remap: t.Dict[str, str] = {},
         participant_session_id_to_remap: t.Dict[str, str] = {},
+        max_workers: int = 16,
     ):
         """
         Copy and deidentify audio files to the output directory.
@@ -1679,14 +1682,13 @@ class BIDSDataset:
         )
 
         _LOGGER.info(f"Copying {len(audio_paths)} recordings.")
-        for audio_path in tqdm(
-            audio_paths, desc="Copying audio and metadata files", total=len(audio_paths)
-        ):
+
+        def process_audio_file(audio_path):
             json_path = audio_path.parent.joinpath(f'{audio_path.stem}_recording-metadata.json')
             
             if not json_path.exists():
                 _LOGGER.warning(f"Metadata file {json_path} not found. Skipping {audio_path}.")
-                continue
+                return
 
             metadata = json.loads(json_path.read_text())
             
@@ -1707,6 +1709,9 @@ class BIDSDataset:
                 json.dump(metadata, fp, indent=2)
             shutil.copy(audio_path, output_path)
 
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            list(tqdm(executor.map(process_audio_file, audio_paths), total=len(audio_paths), desc="Copying audio and metadata files"))
+
 
     @staticmethod
     def _deidentify_feature_files(
@@ -1717,6 +1722,7 @@ class BIDSDataset:
         sensitive_audio_task_list: t.List[str] = [],
         participant_ids_to_remap: t.Dict[str, str] = {},
         participant_session_id_to_remap: t.Dict[str, str] = {},
+        max_workers: int = 16,
     ):
         """
         Copy and deidentify audio feature files to the output directory.
@@ -1759,9 +1765,8 @@ class BIDSDataset:
         )
         
         _LOGGER.info(f"Copying {len(paths)} feature files.")
-        for features_path in tqdm(
-            paths, desc="Copying and de-identifying feature files", total=len(paths)
-        ):
+
+        def process_feature_file(features_path):
             participant_id = BIDSDataset._extract_participant_id_from_path(features_path)
             participant_id = participant_ids_to_remap.get(participant_id, participant_id)
             session_id = BIDSDataset._extract_session_id_from_path(features_path)
@@ -1788,6 +1793,9 @@ class BIDSDataset:
                 for field in ['ppgs', 'transcription']:
                     features.pop(field, None)
                 torch.save(features, output_path)
+
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            list(tqdm(executor.map(process_feature_file, paths), total=len(paths), desc="Copying and de-identifying feature files"))
 
 
 class VBAIDataset(BIDSDataset):
