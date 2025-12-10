@@ -452,8 +452,6 @@ class RedCapDataset:
                 'participant_group': participant_group
             }
         )
-        # Apply standard processing
-        dataset._insert_missing_columns()
         _LOGGER.info(f"Successfully loaded ReproSchema data with {len(df)} rows and {len(df.columns)} columns")
         return dataset
     
@@ -607,15 +605,41 @@ class RedCapDataset:
                             merged_questionnaire_data.append(df)
 
         audio_folders = Path(audio_dir)
-        audio_sub_folders = sorted([str(f) for f in audio_folders.iterdir() if f.is_dir()])
+        # rglob once to get all the wav files
+        audio_files_across_subjects = list(audio_folders.rglob("*.wav"))
+        # reorganize into a subject based structure
+        audio_files_dict = {}
+        for audio_file in audio_files_across_subjects:
+            subject_id = audio_file.parent.parent.name
+            if subject_id not in audio_files_dict:
+                audio_files_dict[subject_id] = []
+            audio_files_dict[subject_id].append(str(audio_file))
+        
+        # also get a session_id for each subject from the audio portion
+        # take the first session_id for each subject
+        # this avoids a scandir overhead later
+        audio_session_ids = {}
+        for audio_file in audio_files_across_subjects:
+            subject_id = audio_file.parent.parent.name
+            session_id = audio_file.parent.name
+            if subject_id not in audio_session_ids:
+                audio_session_ids[subject_id] = session_id
+
+        # get all unique subjects as all unique parent parent in the audio files
+        audio_sub_folders = set()
+        for audio_file in audio_files_across_subjects:
+            subject_folder = str(audio_file.parent.parent)
+            audio_sub_folders.add(subject_folder)
+        audio_sub_folders = sorted(list(audio_sub_folders))
+
         merged_csv = []
         for subject in tqdm(audio_sub_folders, desc="Processing ReproSchema Audio"):
-            audio_session_id = [f.name for f in os.scandir(subject) if f.is_dir()]
+            subject_id = (subject.split("/")[-1]).split()[0]
             audio_session_dict = {
-                "record_id": (subject.split("/")[-1]).split()[0],
+                "record_id": subject_id,
                 "redcap_repeat_instrument": "Session",
                 "redcap_repeat_instance": 1,
-                "session_id": audio_session_id[0],
+                "session_id": audio_session_ids.get(subject_id, None),
                 "session_status": "Completed",
                 "session_is_control_participant": "No",
                 "session_duration": 0.0,
@@ -623,10 +647,7 @@ class RedCapDataset:
             }
             merged_csv.append(audio_session_dict)
             # Process audio data
-            audio_files = []
-            for audio_file in Path(subject).rglob("*.wav"):
-                audio_files.append(str(audio_file))
-
+            audio_files = audio_files_dict.get(subject_id, [])
             merged_csv += parse_audio(audio_files)
         audio_df = pd.DataFrame(merged_csv)
         # Convert audio data to DataFrames
