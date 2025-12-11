@@ -30,7 +30,6 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import numpy as np
 import pandas as pd
-from pyparsing import col
 import torch
 from fhir.resources.questionnaireresponse import QuestionnaireResponse
 from senselab.audio.data_structures.audio import Audio
@@ -1043,7 +1042,6 @@ class BIDSDataset:
             Tuple of (deidentified_df, deidentified_phenotype_dict)
         """
         # Rename record_id to participant_id
-        # TODO: should not be needed as this is done in redcap2bids
         if "record_id" in df.columns:
             df, phenotype = BIDSDataset._rename_record_id_to_participant_id(df, phenotype)
 
@@ -1127,7 +1125,7 @@ class BIDSDataset:
         # remove useful non-PHI columns, so care should be taken.
         columns_to_drop = [
             "state_province",
-            "zipcode"
+            "zipcode",
             "other_edu_level",
             "others_household_specify",
             "diagnosis_alz_dementia_mci_ca_rudas_score",

@@ -157,7 +157,7 @@ class TestBIDSDatasetDeidentification:
         dataset = BIDSDataset(temp_bids_dir)
 
         # Test deidentification with audio
-        deidentified_dataset = dataset.deidentify(
+        _ = dataset.deidentify(
             outdir=output_dir, deidentify_config_dir=setup_publish_config, skip_audio=False
         )
 
