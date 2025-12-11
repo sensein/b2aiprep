@@ -361,9 +361,11 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
     outdir = Path(outdir)
     outdir.mkdir(parents=True, exist_ok=True)
 
+    features_ending = "_features"
+
     # remove _features at the end of the file stem
     audio_paths = [
-        x.parent.joinpath(x.stem[:-9]).with_suffix(".wav") if "_features" in x.name else x
+        x.parent.joinpath(x.stem.replace(features_ending,'')).with_suffix(".wav")
         for x in feature_paths
     ]
 

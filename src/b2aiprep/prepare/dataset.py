@@ -1718,7 +1718,7 @@ class BIDSDataset:
             session_id = get_value_from_metadata(metadata, linkid="session_id", endswith=True)
             
             # Create output path with deidentified structure
-            audio_path_stem_ending = "_".join(audio_path.stem.split("_")[2:])
+            audio_path_stem_ending = '-'.join(audio_path.stem.split("_")[2:])
             output_path = outdir.joinpath(
                 f"sub-{participant_id}/ses-{session_id}/audio/sub-{participant_id}_ses-{session_id}_{audio_path_stem_ending}.wav"
             )
@@ -1790,15 +1790,17 @@ class BIDSDataset:
             session_id = participant_session_id_to_remap.get(session_id, session_id)
 
             # Create output path with deidentified structure
-            path_stem_ending = "_".join(features_path.stem.split("_", 3)[2:])
+            features_ending = '_features'
+            audio_path_stem = features_path.stem.replace(features_ending,'')
+            path_stem_ending = '-'.join(audio_path_stem.split("_")[2:]) + features_ending
             output_path = outdir.joinpath(
                 f"sub-{participant_id}/ses-{session_id}/audio/sub-{participant_id}_ses-{session_id}_{path_stem_ending}{features_path.suffix}"
             )
             output_path.parent.mkdir(parents=True, exist_ok=True)
 
             # if it is not sensitive and we want to keep features, move all features over
-            task_name = features_path.stem.split("_task-")[1]
-            if task_name.lower() not in sensitive_audio_task_list:
+            task_name = BIDSDataset._extract_task_name_from_path(features_path)
+            if task_name not in sensitive_audio_task_list:
                 shutil.copy(features_path, output_path)
             else:
                 features = torch.load(features_path, weights_only=False, map_location=torch.device('cpu'))
