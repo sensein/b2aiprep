@@ -14,7 +14,7 @@ from b2aiprep.commands import (  # gensynthtabdata,
     reproschema_to_redcap,
     transcribe,
     validate_phenotype_command,
-    validate_derived_dataset,
+    validate_bundled_dataset,
     validate_feature_extraction,
     verify,
     deidentify_bids_dataset,
@@ -52,7 +52,7 @@ cli.add_command(transcribe)
 cli.add_command(createbatchcsv)
 cli.add_command(create_bundled_dataset)
 cli.add_command(validate_phenotype_command)
-cli.add_command(validate_derived_dataset)
+cli.add_command(validate_bundled_dataset)
 cli.add_command(deidentify_bids_dataset)
 cli.add_command(reproschema_to_redcap)
 cli.add_command(generate_audio_features)

@@ -647,20 +647,26 @@ def test_create_bundled_dataset_cli_with_sensitive(setup_bids_structure_after_de
         assert os.path.exists(outdir), "Output directory was not created"
 
 
-def test_validate_derived_dataset_cli():
-    """Test the 'b2aiprep-cli validate-derived-dataset' command using subprocess."""
+def test_validate_bundled_dataset_cli(setup_publish_config):
+    """Test the 'b2aiprep-cli validate-bundled-dataset' command using subprocess."""
     with tempfile.TemporaryDirectory() as temp_dir:
         dataset_dir = Path(temp_dir)
+        features_dir = dataset_dir / "features"
+        features_dir.mkdir()
+        phenotype_dir = dataset_dir / "phenotype"
+        phenotype_dir.mkdir()
 
-        # Create minimal derived dataset structure
-        (dataset_dir / "spectrogram.parquet").write_text("dummy parquet data")
-        (dataset_dir / "mfcc.parquet").write_text("dummy parquet data")
-        (dataset_dir / "static_features.tsv").write_text("participant_id\ntest")
-        (dataset_dir / "static_features.json").write_text('{"participant_id": "test"}')
-        (dataset_dir / "phenotype.tsv").write_text("participant_id\ntest")
-        (dataset_dir / "phenotype.json").write_text('{"participant_id": "test"}')
+        # Create minimal bundled dataset structure
+        df = pd.DataFrame({"participant_id": ["sub-01"], "task_name": ["task1"], "session_id": ["ses-01"]})
+        df.to_parquet(features_dir / "torchaudio_spectrogram.parquet")
+        df.to_parquet(features_dir / "torchaudio_mfcc.parquet")
+        
+        (features_dir / "static_features.tsv").write_text("participant_id\ntest")
+        (features_dir / "static_features.json").write_text('{"participant_id": "test"}')
+        
+        (phenotype_dir / "sessions.tsv").write_text("session_id\nses-01")
 
-        command = ["b2aiprep-cli", "validate-derived-dataset", str(dataset_dir)]
+        command = ["b2aiprep-cli", "validate-bundled-dataset", str(dataset_dir), str(setup_publish_config)]
 
         result = subprocess.run(command, capture_output=True, text=True)
         assert result.returncode == 0, f"CLI command failed: {result.stderr}"

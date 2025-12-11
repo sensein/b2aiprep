@@ -1394,6 +1394,7 @@ class BIDSDataset:
         # enforce lower case as it is convention in BIDS
         combined['mapped_id'] = combined['mapped_id'].astype(str).str.lower()
         session_id_dict = combined.set_index('session_id')['mapped_id'].to_dict()
+        _LOGGER.info(f"Created a session_id mapping of {len(session_id_dict):,} IDs.")
         return session_id_dict
 
     @staticmethod

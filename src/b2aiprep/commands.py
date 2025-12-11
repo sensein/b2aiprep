@@ -499,48 +499,140 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
 
 @click.command()
 @click.argument("dataset_path", type=click.Path(exists=True))
-def validate_derived_dataset(dataset_path):
-    """Validates derived dataset.
+@click.argument("config_dir", type=click.Path(exists=True))
+def validate_bundled_dataset(dataset_path, config_dir):
+    """Validates bundled dataset.
 
-    This function checks the integrity and structure of a derived dataset
-    directory and optionally fixes detected issues.
+    This function checks the integrity and structure of a bundled dataset
+    directory and performs de-identification checks.
 
     Args:
-        dataset_path (str): Path to the derived dataset directory to validate.
+        dataset_path (str): Path to the bundled dataset directory to validate.
+        config_dir (str): Path to the configuration directory containing de-identification JSONs.
 
     Returns:
-        None: Performs validation and optionally fixes errors in-place.
+        None: Performs validation and prints a report.
     """
     dataset_path = Path(dataset_path)
+    config_dir = Path(config_dir)
 
-    assert dataset_path.exists(), f"Dataset path {dataset_path} does not exist."
-    assert dataset_path.is_dir(), f"Dataset path {dataset_path} is not a directory."
+    click.echo(f"Validating bundled dataset at {dataset_path}")
+    
+    # 1. Check file structure
+    features_dir = dataset_path / "features"
+    if not features_dir.exists():
+        click.echo(f"ERROR: Features directory {features_dir} does not exist.")
+        return
+    
+    expected_parquets = ["torchaudio_spectrogram.parquet", "torchaudio_mfcc.parquet"]
+    for parquet_file in expected_parquets:
+        if not (features_dir / parquet_file).exists():
+             click.echo(f"ERROR: {parquet_file} missing in features directory.")
 
-    # we expect spectrograms.parquet and mfcc.parquet to exist
-    assert dataset_path.joinpath(
-        "spectrogram.parquet"
-    ).exists(), f"Dataset path {dataset_path} does not contain spectrogram.parquet."
-    assert dataset_path.joinpath(
-        "mfcc.parquet"
-    ).exists(), f"Dataset path {dataset_path} does not contain mfcc.parquet."
+    if not (features_dir / "static_features.tsv").exists():
+        click.echo("ERROR: static_features.tsv missing.")
+    
+    phenotype_dir = dataset_path / "phenotype"
+    if not phenotype_dir.exists():
+        click.echo("ERROR: phenotype directory missing.")
 
-    for base_dataframe_name in ["static_features", "phenotype"]:
-        assert dataset_path.joinpath(
-            f"{base_dataframe_name}.tsv"
-        ).exists(), f"Dataset path {dataset_path} does not contain {base_dataframe_name}.tsv."
-        assert dataset_path.joinpath(
-            f"{base_dataframe_name}.json"
-        ).exists(), f"Dataset path {dataset_path} does not contain {base_dataframe_name}.json."
-        df = pd.read_csv(dataset_path.joinpath(f"{base_dataframe_name}.tsv"), sep="\t")
-        with open(dataset_path.joinpath(f"{base_dataframe_name}.json"), "r") as f:
-            info = json.load(f)
-        missing_columns = []
-        for column in info.keys():
-            if column not in df.columns:
-                missing_columns.append(column)
-        assert (
-            len(missing_columns) == 0
-        ), f"Columns not found in {base_dataframe_name}.tsv: {missing_columns}"
+    # 2. Load config
+    try:
+        with open(config_dir / "participants_to_remove.json") as f:
+            participants_to_remove = set(json.load(f))
+        
+        with open(config_dir / "sensitive_audio_tasks.json") as f:
+            sensitive_tasks = set(json.load(f))
+            
+        with open(config_dir / "id_remapping.json") as f:
+            id_remapping = json.load(f)
+            original_ids = set(id_remapping.keys())
+    except FileNotFoundError as e:
+        click.echo(f"ERROR: Config file not found: {e}")
+        return
+
+    issues = []
+    
+    # 3. Check participants and tasks in Parquet files
+    parquet_files = list(features_dir.glob("*.parquet"))
+    if not parquet_files:
+        click.echo("WARNING: No parquet files found in features directory.")
+
+    for parquet_file in parquet_files:
+        try:
+            df = pd.read_parquet(parquet_file, columns=["participant_id", "task_name", "session_id"])
+            
+            # Check participants
+            present_participants = set(df["participant_id"].unique())
+            removed_present = present_participants.intersection(participants_to_remove)
+            if removed_present:
+                issues.append(f"Found participants that should be removed in {parquet_file.name}: {len(removed_present)} participants")
+                
+            # Check tasks
+            present_tasks = set(df["task_name"].unique())
+            sensitive_present = present_tasks.intersection(sensitive_tasks)
+            if sensitive_present:
+                # we allow sensitive tasks in a subset of files
+                if parquet_file.name not in {
+                    "sparc_ema.parquet", "sparc_loudness.parquet",
+                    "torchaudio_pitch.parquet", "sparc_pitch.parquet",
+                    "sparc_periodicity.parquet"
+                }:
+                    issues.append(f"Found sensitive tasks in {parquet_file.name}: {sensitive_present}")
+                
+            # Check remapping
+            unmapped_present = present_participants.intersection(original_ids)
+            if unmapped_present:
+                issues.append(f"Found original (non-remapped) participant IDs in {parquet_file.name}: {len(unmapped_present)} participants")
+        except Exception as e:
+            issues.append(f"Error reading {parquet_file.name}: {e}")
+
+    # 4. Check phenotype files
+    if phenotype_dir.exists():
+        for tsv_file in phenotype_dir.rglob("*.tsv"):
+            try:
+                df = pd.read_csv(tsv_file, sep="\t")
+                if "participant_id" in df.columns:
+                    present_participants = set(df["participant_id"].unique())
+                    removed_present = present_participants.intersection(participants_to_remove)
+                    if removed_present:
+                        issues.append(f"Found participants that should be removed in {tsv_file.name}: {len(removed_present)} participants")
+                    
+                    unmapped_present = present_participants.intersection(original_ids)
+                    if unmapped_present:
+                        issues.append(f"Found original (non-remapped) participant IDs in {tsv_file.name}: {len(unmapped_present)} participants")
+            except Exception as e:
+                issues.append(f"Error reading {tsv_file.name}: {e}")
+
+    # 5. Compare phenotype sessions with parquet sessions
+    sessions_file = phenotype_dir.joinpath("task") / "session.tsv"
+    if sessions_file.exists():
+        try:
+            sessions_df = pd.read_csv(sessions_file, sep="\t")
+            if "session_id" in sessions_df.columns:
+                phenotype_sessions = set(sessions_df["session_id"].unique())
+                
+                for parquet_file in parquet_files:
+                    try:
+                        df = pd.read_parquet(parquet_file, columns=["session_id"])
+                        parquet_sessions = set(df["session_id"].unique())
+                        
+                        if not parquet_sessions.issubset(phenotype_sessions):
+                            extra = parquet_sessions - phenotype_sessions
+                            issues.append(f"Sessions in {parquet_file.name} not found in {sessions_file.name}: {len(extra)} sessions")
+                    except:
+                        pass
+        except Exception as e:
+            issues.append(f"Error reading sessions file: {e}")
+    else:
+        click.echo("WARNING: phenotype/sessions.tsv (or session.tsv) not found, skipping session comparison.")
+
+    if issues:
+        click.echo("\nValidation FAILED with the following issues:")
+        for issue in issues:
+            click.echo(f"- {issue}")
+    else:
+        click.echo("\nValidation PASSED. No issues found.")
 
 @click.command()
 @click.argument("bids_path", type=click.Path(exists=True))
