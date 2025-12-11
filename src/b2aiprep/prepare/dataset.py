@@ -630,14 +630,17 @@ class BIDSDataset:
         return activities
 
     @staticmethod
-    def _load_reorganization_file() -> pd.DataFrame:
+    def _load_reorganization_file(drop_deleted_columns: bool = True) -> pd.DataFrame:
         """Load the reproschema reorganization CSV file.
 
         Returns:
             DataFrame containing the reorganization data.
         """
         reorganization_file = files("b2aiprep.prepare.resources").joinpath("bids_field_organization.csv")
-        return pd.read_csv(reorganization_file, sep=',', header=0)
+        df = pd.read_csv(reorganization_file, sep=',', header=0)
+        if drop_deleted_columns:
+            df = df.loc[df['delete'].str.upper() != 'YES']
+        return df
 
     @staticmethod
     def _construct_phenotype_from_reproschema(
@@ -686,7 +689,23 @@ class BIDSDataset:
         #   (the schema_name becomes the filename)
         # and to map from column_name_source -> column_name
         #   (the column_name becomes the column in the TSV file)
-        df_reorg = BIDSDataset._load_reorganization_file()
+        df_reorg = BIDSDataset._load_reorganization_file(drop_deleted_columns=False)
+
+        # Track inclusion/exclusion for a final report.
+        # Note: columns are tracked using their *source* names (i.e., RedCap/df column names).
+        df_deleted = df_reorg.loc[df_reorg['delete'].str.upper() == 'YES']
+        df_reorg_active = df_reorg.loc[df_reorg['delete'].str.upper() != 'YES']
+
+        _norm = lambda c: str(c)
+        df_cols = {_norm(c) for c in df.columns}
+        reorg_all_cols = {_norm(c) for c in df_reorg['column_name_source'].dropna().tolist()}
+        deleted_cols = {_norm(c) for c in df_deleted['column_name_source'].dropna().tolist()}
+        requested_cols = {_norm(c) for c in df_reorg_active['column_name_source'].dropna().tolist()}
+
+        included_cols: t.Set[str] = set()
+        missing_in_df_cols: t.Set[str] = set()
+
+        df_reorg = df_reorg_active
 
         element_used = {} # keep track of whether we have used an element, for logging later.
         payload = {
@@ -704,9 +723,12 @@ class BIDSDataset:
             # get the *new* schema name, as this will be the base key of our updated dict
             column_mapping = group.set_index('column_name_source').to_dict(orient='index')
             for column, updated_data in column_mapping.items():
-                if column not in df.columns:
+                col_norm = _norm(column)
+                if col_norm not in df_cols:
                     _LOGGER.warning(f'Requested output for "{column}", but this column was not found in the source df.')
+                    missing_in_df_cols.add(col_norm)
                     continue
+                included_cols.add(col_norm)
                 # the source schema is defined based on the element itself;
                 # we do not need the schema_name_source column, but it is kept for ease of reading the CSV.
                 schema_to_use = element_to_schema[column]
@@ -740,6 +762,10 @@ class BIDSDataset:
             if "record_id" not in columns_for_indexing:
                 columns_for_indexing = ["record_id"] + columns_for_indexing
                 columns_for_output = ["participant_id"] + columns_for_output
+
+                # record_id is implicitly included in outputs when missing from the reorg mapping.
+                if "record_id" in df_cols:
+                    included_cols.add("record_id")
 
                 # add record_id to the data elements if missing, add it at the beginning
                 payload["data_elements"] = {
@@ -815,6 +841,23 @@ class BIDSDataset:
             )
             with open(os.path.join(output_dir_grouped, filename), "w") as f:
                 json.dump(updated_schema, f, indent=2)
+
+        # Final report: included/excluded columns (by source column name).
+        excluded_deleted = deleted_cols
+        excluded_missing_in_df = missing_in_df_cols
+        excluded_in_df_not_in_reorg = df_cols - reorg_all_cols
+
+        _LOGGER.info(
+            "Phenotype column report: included=%d, excluded_deleted=%d, excluded_missing_in_df=%d, excluded_in_df_not_in_reorg=%d",
+            len(included_cols),
+            len(excluded_deleted),
+            len(excluded_missing_in_df),
+            len(excluded_in_df_not_in_reorg),
+        )
+        _LOGGER.debug(f"Included columns: {sorted(included_cols)}")
+        _LOGGER.debug(f"Excluded (deleted) columns: {sorted(excluded_deleted)}")
+        _LOGGER.debug(f"Excluded (missing in df) columns: {sorted(excluded_missing_in_df)}")
+        _LOGGER.debug(f"Excluded (in df but not in reorg) columns: {sorted(excluded_in_df_not_in_reorg)}")
 
     @staticmethod
     def _get_instrument_for_name(name: str) -> Instrument:
