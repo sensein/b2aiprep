@@ -251,12 +251,12 @@ def test_update_metadata_record_and_session_id():
             {"linkId": "session_id", "answer": [
                 {"valueString": "1"}]},
             {"linkId": "participant_id", "answer": [
-                {"valueString": "c7f3a128"}]},
+                {"valueString": "c7f3a128-e10a-4d0d-9c7e-f1a4b5767d6b"}]},
         ]
     }
-    ids_to_remap = {"1a3f7e22-8d4b-4e3a-b36d-12a5c2e5b9d8": "f7ab1291-f90c-4a46-94cc-f2b6c1b3e5f7"}
+    ids_to_remap = {"1a3f7e22-8d4b-4e3a-b36d-12a5c2e5b9d8": "f7ab1291"}
     participant_session_id_to_remap = {"5d9e34a7-2c90-44bf-8b53-1bde7a67e3f2": "1"}
-    update_metadata_record_and_session_id(metadata=metadata, ids_to_remap=ids_to_remap, participant_session_id_to_remap=participant_session_id_to_remap)
+    update_metadata_record_and_session_id(metadata=metadata, ids_to_remap=ids_to_remap, session_id_to_remap=participant_session_id_to_remap)
     assert metadata == expected_metadata
 
 

@@ -1126,11 +1126,11 @@ class BIDSDataset:
 
         # Remap IDs
         if participant_ids_to_remap and "participant_id" in df.columns:
-            remap_partial = partial(remap_id, id_map=participant_ids_to_remap)
+            remap_partial = partial(remap_id, id_mapping=participant_ids_to_remap)
             df.loc[:, "participant_id"] = BIDSDataset._map_series(df["participant_id"], remap_partial)
 
         if participant_session_id_to_remap:
-            remap_partial = partial(remap_id, id_map=participant_session_id_to_remap, id_type="session")
+            remap_partial = partial(remap_id, id_mapping=participant_session_id_to_remap, id_type="session")
             for col in df.columns:
                 if "session_id" in col:
                     df.loc[:, col] = BIDSDataset._map_series(df[col], remap_partial)

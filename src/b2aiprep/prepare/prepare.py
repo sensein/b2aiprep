@@ -42,6 +42,7 @@ import os
 import traceback
 from pathlib import Path
 from typing import List, Tuple, Optional, Dict
+import typing as t
 import time
 
 import numpy as np
@@ -746,21 +747,19 @@ def get_value_from_metadata(metadata: dict, linkid: str, endswith: bool = False)
             return item['answer'][0]['valueString']
     return None
 
-def update_metadata_record_and_session_id(metadata: dict, ids_to_remap: dict, participant_session_id_to_remap: dict):
+def update_metadata_record_and_session_id(metadata: dict, ids_to_remap: dict, session_id_to_remap: dict):
     for item in metadata['item']:
         if 'linkId' not in item:
             continue
 
-        if item['linkId'] == 'record_id':
-            val = item['answer'][0]['valueString']
+        if item['linkId'] in {'record_id', 'participant_id'}:
             item['answer'][0]['valueString'] = remap_id(
-                val, ids_to_remap, id_type="participant"
+                item['answer'][0]['valueString'], ids_to_remap, id_type="participant"
             )
 
             # rename to participant_id
             item['linkId'] = 'participant_id'
         elif (item['linkId'] == 'session_id') or (item['linkId'].endswith('_session_id')):
-            val = item['answer'][0]['valueString']
             item['answer'][0]['valueString'] = remap_id(
-                val, participant_session_id_to_remap, id_type="session"
+                item['answer'][0]['valueString'], session_id_to_remap, id_type="session"
             )
