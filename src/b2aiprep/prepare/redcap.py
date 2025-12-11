@@ -533,6 +533,11 @@ class RedCapDataset:
             if col.endswith("acoustic_task_id"):
                 # session was the suffix, so remove it here too
                 df[col] = df[col].astype(str).str.replace(r'-$', '', regex=True)
+        
+        # tasks: remove "_task" from all task_id and task_name columns
+        for col in df.columns:
+            if col.endswith("task_id") or col.endswith("task_name") or col.endswith("recording_name"):
+                df[col] = df[col].astype(str).str.replace('_task', '', regex=False)
         return df
 
     @staticmethod
