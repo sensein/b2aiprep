@@ -14,6 +14,7 @@ _LOGGER = logging.getLogger(__name__)
 
 def spectrogram_generator(
     audio_paths,
+    fp16: bool = True,
 ) -> t.Generator[t.Dict[str, t.Any], None, None]:
     """Load audio features from individual files and yield dictionaries amenable to HuggingFace's Dataset from_generator."""
     audio_paths = sorted(
@@ -39,7 +40,7 @@ def spectrogram_generator(
             if not torch.isnan(spectrogram).all().item():
                 spectrogram = 10.0 * torch.log10(torch.maximum(spectrogram, torch.tensor(1e-10)))
                 spectrogram = torch.maximum(spectrogram, spectrogram.max() - 80)
-                spectrogram = spectrogram.numpy().astype(np.float32)
+                spectrogram = spectrogram.numpy().astype(np.float16 if fp16 else np.float32)
                 # skip every other column
                 spectrogram = spectrogram[:, ::2]
                 output["spectrogram"] = spectrogram
@@ -114,6 +115,7 @@ def feature_extraction_generator(
     audio_paths: t.List[Path],
     feature_name: str,
     feature_class: t.Optional[str] = None,
+    fp16: bool = True,
 ) -> t.Generator[t.Dict[str, t.Any], None, None]:
     """Load audio features from individual files and yield dictionaries amenable to HuggingFace's Dataset from_generator."""
     audio_paths = sorted(
@@ -151,18 +153,18 @@ def feature_extraction_generator(
         if feature_name == "spectrogram":
             data = 10.0 * torch.log10(torch.maximum(data, torch.tensor(1e-10)))
             data = torch.maximum(data, data.max() - 80)
-            data = data.numpy().astype(np.float32)
+            data = data.numpy().astype(np.float16 if fp16 else np.float32)
         else:
-            data = data.numpy()
+            data = data.numpy().astype(np.float16 if fp16 else np.float32)
 
         if feature_name in ("spectrogram", "mfcc", "mel_spectrogram"):
             data = data[:, ::2]
 
         #remove meaningless extra dimensions
         if feature_class == "sparc" and data.shape[1] == 1: #time comes first for sparc
-            data = np.squeeze(data,axis=1)
+            data = np.squeeze(data, axis=1)
         elif feature_name == "ppgs" and data.shape[0] == 1: #3-dimensional, first is batch
-            data = np.squeeze(data,axis=0)
+            data = np.squeeze(data, axis=0)
         output[feature_name] = data
         time_dimension = -1 if feature_class != 'sparc' else 0
         output["n_frames"] = data.shape[time_dimension]
