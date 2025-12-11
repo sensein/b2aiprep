@@ -88,6 +88,20 @@ SPECTROGRAM_SHAPE = 201
 
 _logger = logging.getLogger(__name__)
 
+def remap_id(
+    original_id: str,
+    id_mapping: t.Dict[str, str],
+    id_type: str = "participant",
+) -> str:
+    """Remap an original ID using the provided mapping dictionary.
+    
+    This function is primarily used during deidentification to map
+    participant_id and session_id to new values."""
+    if original_id in id_mapping:
+        return id_mapping[original_id]
+    else:
+        _logger.warning(f"{id_type.capitalize()} ID '{original_id}' not found in remapping dictionary.")
+        return original_id
 
 #@python.define
 def extract_single(
@@ -738,19 +752,15 @@ def update_metadata_record_and_session_id(metadata: dict, ids_to_remap: dict, pa
             continue
 
         if item['linkId'] == 'record_id':
-            for old_id, new_id in ids_to_remap.items():
-                if old_id == item['answer'][0]['valueString']:
-                    item['answer'][0]['valueString'] = new_id
-                    break
-            record_id = item['answer'][0]['valueString']
-            item['answer'][0]['valueString'] = reduce_id_length(record_id)
+            val = item['answer'][0]['valueString']
+            item['answer'][0]['valueString'] = remap_id(
+                val, ids_to_remap, id_type="participant"
+            )
+
             # rename to participant_id
             item['linkId'] = 'participant_id'
         elif (item['linkId'] == 'session_id') or (item['linkId'].endswith('_session_id')):
-            for old_id, new_id in participant_session_id_to_remap.items():
-                if old_id == item['answer'][0]['valueString']:
-                    item['answer'][0]['valueString'] = new_id
-                    break
-            item['answer'][0]['valueString'] = reduce_id_length(
-                item['answer'][0]['valueString']
+            val = item['answer'][0]['valueString']
+            item['answer'][0]['valueString'] = remap_id(
+                val, participant_session_id_to_remap, id_type="session"
             )

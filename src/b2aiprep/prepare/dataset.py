@@ -17,6 +17,7 @@ sub-p1/
 """
 
 from copy import copy, deepcopy
+from functools import partial
 import logging
 import os
 import re
@@ -41,7 +42,8 @@ from b2aiprep.prepare.update import build_activity_payload
 from b2aiprep.prepare.utils import copy_package_resource, get_commit_sha
 from b2aiprep.prepare.fhir_utils import convert_response_to_fhir
 from b2aiprep.prepare.prepare import (
-    get_value_from_metadata, 
+    get_value_from_metadata,
+    remap_id, 
     update_metadata_record_and_session_id,
     reduce_id_length
 )
@@ -1053,12 +1055,14 @@ class BIDSDataset:
 
         # Remap IDs
         if participant_ids_to_remap and "participant_id" in df.columns:
-            df.loc[:, "participant_id"] = BIDSDataset._map_series(df["participant_id"], participant_ids_to_remap)
+            remap_partial = partial(remap_id, id_map=participant_ids_to_remap)
+            df.loc[:, "participant_id"] = BIDSDataset._map_series(df["participant_id"], remap_partial)
 
         if participant_session_id_to_remap:
+            remap_partial = partial(remap_id, id_map=participant_session_id_to_remap, id_type="session")
             for col in df.columns:
                 if "session_id" in col:
-                    df.loc[:, col] = BIDSDataset._map_series(df[col], participant_session_id_to_remap)
+                    df.loc[:, col] = BIDSDataset._map_series(df[col], remap_partial)
 
         # Remove sensitive columns
         df, phenotype = BIDSDataset._remove_sensitive_columns(df, phenotype)
@@ -1776,9 +1780,13 @@ class BIDSDataset:
 
         def process_feature_file(features_path):
             participant_id = BIDSDataset._extract_participant_id_from_path(features_path)
-            participant_id = participant_ids_to_remap.get(participant_id, participant_id)
+            participant_id = remap_id(
+                participant_id, participant_ids_to_remap
+            )
             session_id = BIDSDataset._extract_session_id_from_path(features_path)
-            session_id = participant_session_id_to_remap.get(session_id, session_id)
+            session_id = remap_id(
+                session_id, participant_session_id_to_remap, id_type="session"
+            )
 
             # Create output path with deidentified structure
             features_ending = '_features'
