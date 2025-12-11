@@ -682,6 +682,10 @@ class BIDSDataset:
         # ... used to identify the source reproschema element, and:
         #   schema_name, column_name, group, description
         # ... used to arrange & describe the output in the phenotype/ folder.
+        # the overall goal is to remap from schema_name_source -> schema_name
+        #   (the schema_name becomes the filename)
+        # and to map from column_name_source -> column_name
+        #   (the column_name becomes the column in the TSV file)
         df_reorg = BIDSDataset._load_reorganization_file()
 
         element_used = {} # keep track of whether we have used an element, for logging later.
@@ -750,9 +754,33 @@ class BIDSDataset:
             # we now extract the sub-dataframe from our source redcap data and output it to tsv
             selected_df = df[columns_for_indexing]
 
-            # rename the original "record_id" -> "participant_id"
-            if "record_id" in selected_df.columns:
-                selected_df = selected_df.rename(columns={"record_id": "participant_id"})
+            # Rename columns based on the reorganization mapping.
+            if len(columns_for_indexing) != len(columns_for_output):
+                raise ValueError(
+                    f"Schema {schema_name}: columns_for_indexing ({len(columns_for_indexing)}) and "
+                    f"columns_for_output ({len(columns_for_output)}) length mismatch."
+                )
+
+            rename_map = dict(zip(columns_for_indexing, columns_for_output))
+            if rename_map.get("record_id") not in (None, "participant_id"):
+                _LOGGER.warning(
+                    f"Schema {schema_name}: overriding record_id rename target "
+                    f"{rename_map.get('record_id')!r} -> 'participant_id'."
+                )
+                rename_map["record_id"] = "participant_id"
+
+            # Protect against accidentally collapsing columns.
+            output_cols = list(rename_map.values())
+            dupes = sorted({c for c in output_cols if output_cols.count(c) > 1})
+            if dupes:
+                raise ValueError(
+                    f"Schema {schema_name}: duplicate output column names after mapping: {dupes}. "
+                    "Check bids_field_organization.csv for collisions."
+                )
+
+            selected_df = selected_df.rename(columns=rename_map)
+            # Keep output column order stable and aligned to metadata.
+            selected_df = selected_df[output_cols]
             id_col = "participant_id"
 
             updated_schema = {schema_name: payload}
