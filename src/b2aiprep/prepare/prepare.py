@@ -87,7 +87,7 @@ SPECTROGRAM_SHAPE = 201
 # Parcelmouth feature groupings
 
 _logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
+
 
 #@python.define
 def extract_single(
@@ -693,12 +693,13 @@ def is_audio_sensitive(filepath: Path, publish_config_dir: Path) -> bool:
     audio_to_remove = load_audio_to_remove(publish_config_dir)
     return filepath.stem in audio_to_remove
 
-def reduce_id_length(x):
-    """Reduce length of ID."""
+def reduce_id_length(x, length=8):
+    """Reduce length of ID, removes hashes."""
     if pd.isnull(x):
         return x
-    x = str(x)
-    return x.split('-')[0]
+    x = str(x).replace("-", "")
+    return x[:length]
+    
 
 def reduce_length_of_id(df: pd.DataFrame, id_name: str) -> pd.DataFrame:
     """Reduce length of ID in the dataframe."""

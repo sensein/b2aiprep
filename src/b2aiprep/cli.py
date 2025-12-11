@@ -36,7 +36,9 @@ def cli(ctx, log_level):
     ctx.obj["LOG_LEVEL"] = log_level
 
     logging.basicConfig(
-        level=log_level, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        level=log_level,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        force=True,
     )
 
 
