@@ -643,6 +643,46 @@ class BIDSDataset:
         return df
 
     @staticmethod
+    def _merge_redcap_columns(
+        df: pd.DataFrame,
+    ) -> pd.DataFrame:
+        """Merge RedCap columns with suffixes into single columns.
+
+        Args:
+            df: DataFrame containing the data.
+
+        Returns:
+            DataFrame with merged columns.
+        """
+        df = df.copy()
+
+        columns_to_merge = defaultdict(list)
+        pattern = re.compile(r'^(?P<base>.+?)___(?P<suffix>.+)$')
+        for col in df.columns:
+            match = pattern.match(col)
+            if match:
+                base_col = match.group('base')
+                columns_to_merge[base_col].append(col)
+        
+        for base_col, cols in columns_to_merge.items():
+            if not cols:
+                continue
+            # Warn if there is more than one non-null value in the columns to be merged
+            non_null_counts = df[cols].notnull().sum(axis=1)
+            multiple_non_null = non_null_counts[non_null_counts > 1]
+            if not multiple_non_null.empty:
+                _LOGGER.warning(
+                    f"Multiple non-null values found when merging columns {cols} into {base_col} "
+                    f"for {len(multiple_non_null)} rows. Taking the first non-null value."
+                )
+
+            # Merge the columns by taking the first non-null value
+            df[base_col] = df[cols].bfill(axis=1).iloc[:, 0]
+            # Drop the original columns
+            df.drop(columns=cols, inplace=True)
+        return df
+
+    @staticmethod
     def _construct_phenotype_from_reproschema(
         df: pd.DataFrame,
         output_dir: str,
@@ -657,6 +697,11 @@ class BIDSDataset:
             source_dir: Directory containing the ReproSchema JSON files.
             clean_phenotype_data: Whether to clean the phenotype data (default: True).
         """
+
+        # First, we need to merge together columns in redcap with the suffix "___[text]"
+        # into a single column without the suffix.
+        df = BIDSDataset._merge_redcap_columns(df)
+        
         # Ensure output directory exists
         os.makedirs(output_dir, exist_ok=True)
 
