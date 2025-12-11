@@ -329,7 +329,7 @@ def parse_audio(audio_list, dummy_audio_files=False):
             "recording_size": file_size,
             "recording_profile_name": "Speech",
             "recording_profile_version": "v1.0.0",
-            "recording_input_gain": 0.0,
+            "recording_input_gain": np.nan,
             "recording_microphone": "USB-C to 3.5mm Headphone Jack Adapter",
         }
 
@@ -525,6 +525,14 @@ class RedCapDataset:
         if duplicated_idx.any():
             final_duplicates = df.loc[idx, "record_id"].loc[duplicated_idx].unique()
             _LOGGER.warning(f"Duplicate record_ids remain after correction: {final_duplicates.tolist()}")
+
+        # session_id: remove the trailing "-"
+        for col in df.columns:
+            if col.endswith("session_id"):
+                df[col] = df[col].astype(str).str.replace(r'-$', '', regex=True)
+            if col.endswith("acoustic_task_id"):
+                # session was the suffix, so remove it here too
+                df[col] = df[col].astype(str).str.replace(r'-$', '', regex=True)
         return df
 
     @staticmethod
@@ -578,6 +586,9 @@ class RedCapDataset:
             
             # Parse sessions within each subject
             sessions = Path(subject).iterdir()
+            session_duration = 0 # added later to the session info
+            session_start = None
+            session_end = None
             for session in sessions:
                 if session.is_dir():
                     session_files = list(session.glob("*.jsonld"))
@@ -601,9 +612,26 @@ class RedCapDataset:
                             is_import=is_import,
                         )
 
+                        for data_element in session_data:
+                            start_time = data_element.get("startedAtTime", None)
+                            end_time = data_element.get("endedAtTime", None)
+                            if start_time:
+                                start_dt = datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S.%fZ")
+                                if session_start is None or start_dt < session_start:
+                                    session_start = start_dt
+                            if end_time:
+                                end_dt = datetime.strptime(end_time, "%Y-%m-%dT%H:%M:%S.%fZ")
+                                if session_end is None or end_dt > session_end:
+                                    session_end = end_dt
+
                         for df in questionnaire_df_list:
                             merged_questionnaire_data.append(df)
 
+        if session_start and session_end:
+            total_duration = session_end - session_start
+            session_duration = total_duration.total_seconds()
+        else:
+            session_duration = np.nan
         audio_folders = Path(audio_dir)
         # rglob once to get all the wav files
         audio_files_across_subjects = list(audio_folders.rglob("*.wav"))
@@ -642,7 +670,7 @@ class RedCapDataset:
                 "session_id": audio_session_ids.get(subject_id, None),
                 "session_status": "Completed",
                 "session_is_control_participant": "No",
-                "session_duration": 0.0,
+                "session_duration": session_duration,
                 "session_site": "SickKids",
             }
             merged_csv.append(audio_session_dict)
