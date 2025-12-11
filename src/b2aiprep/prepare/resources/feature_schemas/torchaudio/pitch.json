@@ -1,0 +1,59 @@
+{
+  "fields": [
+    {
+      "name": "participant_id",
+      "type": "string",
+      "description": "Unique identifier for each participant."
+    },
+    {
+      "name": "session_id",
+      "type": "string",
+      "description": "Unique identifier for each session."
+    },
+    {
+      "name": "task_name",
+      "type": "string",
+      "description": "The audio task conducted for the recording."
+    },
+    {
+      "name": "n_frames",
+      "type": "integer",
+      "description": "Number of time frames in the pitch sequence (varies with utterance length)."
+    },
+    {
+      "name": "pitch",
+      "type": "array",
+      "description": "Detected pitch (fundamental frequency) over time.",
+      "extras": {
+        "tensor": {
+          "dtype": "float32",
+          "ndim": 1,
+          "dims": ["time"],
+          "shape": [null],
+
+          "units": "Hz",
+
+          "config": {
+            "sample_rate": 16000,
+            "freq_low": 80,
+            "freq_high": 500
+          },
+
+          "provenance": {
+            "software": "torchaudio",
+            "version": "2.8.0",
+            "command": "torchaudio.functional.detect_pitch_frequency",
+            "extraction_date": null
+          },
+
+          "serialization": {
+            "storage": "parquet_list",
+            "parquet_type": "list<float>",
+            "compression": "zstd"
+          }
+        }
+      }
+    }
+  ],
+  "primaryKey": ["participant_id", "session_id", "task_name"]
+}
