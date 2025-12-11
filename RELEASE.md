@@ -16,7 +16,7 @@ Note that there are implicit assumptions made regarding the structured data and 
 WORKING_DIR=${HOME}/data/bridge2ai/pediatric
 
 b2aiprep-cli reproschema-to-redcap $WORKING_DIR/Audio_300_Release $WORKING_DIR/Survey_300_Release $WORKING_DIR/redcap.csv
-b2aiprep-cli redcap2bids $WORKING_DIR/redcap.csv --outdir $WORKING_DIR/bids --audiodir $WORKING_DIR/Audio_300_Release
+b2aiprep-cli redcap2bids $WORKING_DIR/redcap.csv ./b2ai-redcap2rs --outdir $WORKING_DIR/bids --audiodir $WORKING_DIR/Audio_300_Release
 b2aiprep-cli generate-audio-features $WORKING_DIR/bids $WORKING_DIR/bids --update
 b2aiprep-cli deidentify-bids-dataset $WORKING_DIR/bids $WORKING_DIR/de-identified-bids $WORKING_DIR/release_config
 b2aiprep-cli create-bundled-dataset $WORKING_DIR/de-identified-bids $WORKING_DIR/bundled --skip_audio
