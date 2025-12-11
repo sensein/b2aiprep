@@ -15,14 +15,6 @@ from b2aiprep.prepare.dataset import BIDSDataset
 class TestBIDSDatasetDeidentification:
     """Test cases for BIDSDataset deidentification methods."""
 
-    def setup_deidentify_config(self, deidentify_config_dir):
-        """Helper method to create config files for testing."""
-        deidentify_config_dir.mkdir(exist_ok=True)
-        (deidentify_config_dir / "id_remapping.json").write_text("{}")
-        (deidentify_config_dir / "participant_ids_to_remove.json").write_text("[]")
-        (deidentify_config_dir / "audio_filestems_to_remove.json").write_text("[]")
-        (deidentify_config_dir / "sensitive_audio_tasks.json").write_text("[]")
-
     @pytest.fixture
     def temp_bids_dir(self):
         """Create a temporary BIDS directory structure for testing."""
@@ -133,16 +125,12 @@ class TestBIDSDatasetDeidentification:
         # Cleanup
         shutil.rmtree(temp_dir)
 
-    def test_deidentify_basic_functionality(self, temp_bids_dir, output_dir):
+    def test_deidentify_basic_functionality(self, temp_bids_dir, output_dir, setup_publish_config):
         """Test basic deidentification functionality."""
         dataset = BIDSDataset(temp_bids_dir)
 
-        # Test deidentification
-        deidentify_config_dir = temp_bids_dir / "deidentify_config"
-        self.setup_deidentify_config(deidentify_config_dir)
-
         deidentified_dataset = dataset.deidentify(
-            outdir=output_dir, deidentify_config_dir=deidentify_config_dir
+            outdir=output_dir, deidentify_config_dir=setup_publish_config
         )
 
         # Check that output directory was created
@@ -151,40 +139,27 @@ class TestBIDSDatasetDeidentification:
         assert deidentified_dataset.data_path.resolve() == output_dir.resolve()
 
 
-    def test_deidentify_skip_audio(self, temp_bids_dir, output_dir):
+    def test_deidentify_skip_audio(self, temp_bids_dir, output_dir, setup_publish_config):
         """Test deidentification with skip_audio=True."""
         dataset = BIDSDataset(temp_bids_dir)
 
         # Test deidentification with skip_audio=True
-        deidentify_config_dir = temp_bids_dir / "deidentify_config"
-        self.setup_deidentify_config(deidentify_config_dir)
         deidentified_dataset = dataset.deidentify(
-            outdir=output_dir, deidentify_config_dir=deidentify_config_dir, skip_audio=True
+            outdir=output_dir, deidentify_config_dir=setup_publish_config, skip_audio=True
         )
 
         # Check that no audio files were copied
         audio_files = list(output_dir.rglob("*.wav"))
         assert len(audio_files) == 0
 
-    def test_deidentify_with_audio(self, temp_bids_dir, output_dir):
+    def test_deidentify_with_audio(self, temp_bids_dir, output_dir, setup_publish_config):
         """Test deidentification with audio processing."""
         dataset = BIDSDataset(temp_bids_dir)
 
-        # Mock the filter_audio_paths to return all paths for testing
-        with patch("b2aiprep.prepare.dataset.filter_audio_paths") as mock_filter:
-            # Get original audio paths
-            from b2aiprep.prepare.bids import get_paths
-
-            audio_paths = get_paths(temp_bids_dir, file_extension=".wav")
-            audio_paths = [x["path"] for x in audio_paths]
-            mock_filter.return_value = audio_paths
-
-            # Test deidentification with audio
-            deidentify_config_dir = temp_bids_dir / "deidentify_config"
-            self.setup_deidentify_config(deidentify_config_dir)
-            deidentified_dataset = dataset.deidentify(
-                outdir=output_dir, deidentify_config_dir=deidentify_config_dir, skip_audio=False
-            )
+        # Test deidentification with audio
+        deidentified_dataset = dataset.deidentify(
+            outdir=output_dir, deidentify_config_dir=setup_publish_config, skip_audio=False
+        )
 
         # Check that audio files were copied (should be processed by filter)
         audio_files = list(output_dir.rglob("*.wav"))
@@ -226,14 +201,12 @@ class TestBIDSDatasetDeidentification:
         assert "4-Mar" not in cleaned_df["alcohol_amt"].values
         assert "6-May" not in cleaned_df["alcohol_amt"].values
 
-    def test_deidentify_phenotype_processing(self, temp_bids_dir, output_dir):
+    def test_deidentify_phenotype_processing(self, temp_bids_dir, output_dir, setup_publish_config):
         """Test that phenotype files are properly processed."""
         dataset = BIDSDataset(temp_bids_dir)
 
         # Test deidentification
-        deidentify_config_dir = temp_bids_dir / "deidentify_config"
-        self.setup_deidentify_config(deidentify_config_dir)
-        dataset.deidentify(outdir=output_dir, deidentify_config_dir=deidentify_config_dir)
+        dataset.deidentify(outdir=output_dir, deidentify_config_dir=setup_publish_config)
 
         # Check that phenotype directory was created
         phenotype_dir = output_dir / "phenotype"
@@ -245,21 +218,19 @@ class TestBIDSDatasetDeidentification:
         assert test_pheno_tsv.exists()
         assert test_pheno_json.exists()
 
-    def test_deidentify_template_files_copied(self, temp_bids_dir, output_dir):
+    def test_deidentify_template_files_copied(self, temp_bids_dir, output_dir, setup_publish_config):
         """Test that BIDS template files are copied."""
         dataset = BIDSDataset(temp_bids_dir)
 
         # Test deidentification
-        deidentify_config_dir = temp_bids_dir / "deidentify_config"
-        self.setup_deidentify_config(deidentify_config_dir)
-        dataset.deidentify(outdir=output_dir, deidentify_config_dir=deidentify_config_dir)
+        dataset.deidentify(outdir=output_dir, deidentify_config_dir=setup_publish_config)
 
         # Check that template files were copied
         assert (output_dir / "README.md").exists()
         assert (output_dir / "CHANGES.md").exists()
         assert (output_dir / "dataset_description.json").exists()
 
-    def test_deidentify_output_dir_exists(self, temp_bids_dir, output_dir):
+    def test_deidentify_output_dir_exists(self, temp_bids_dir, output_dir, setup_publish_config):
         """Test error handling when output directory already exists."""
         # Create output directory
         output_dir.mkdir(parents=True, exist_ok=True)
@@ -268,77 +239,53 @@ class TestBIDSDatasetDeidentification:
 
         # Should raise FileExistsError
         with pytest.raises(FileExistsError):
-            deidentify_config_dir = temp_bids_dir / "deidentify_config"
-            self.setup_deidentify_config(deidentify_config_dir)
-            dataset.deidentify(outdir=output_dir, deidentify_config_dir=deidentify_config_dir)
+            dataset.deidentify(outdir=output_dir, deidentify_config_dir=setup_publish_config)
 
-    @patch(
-        "b2aiprep.prepare.constants._load_participant_exclusions", return_value=["participant001"]
-    )
-    def test_participant_removal(self, mock_exclusions, temp_bids_dir, output_dir):
+    def test_participant_removal(self, temp_bids_dir, output_dir, setup_publish_config):
         """Test that hard-coded participants are removed."""
         dataset = BIDSDataset(temp_bids_dir)
 
-        # Mock filter_audio_paths to test participant removal
-        with patch("b2aiprep.prepare.dataset.filter_audio_paths") as mock_filter:
-            # Get original audio paths
-            from b2aiprep.prepare.bids import get_paths
-
-            audio_paths = get_paths(temp_bids_dir, file_extension=".wav")
-            audio_paths = [x["path"] for x in audio_paths]
-            mock_filter.return_value = audio_paths
+        # Mock filter to exclude the hard-coded participant
+        with patch("b2aiprep.prepare.dataset.BIDSDataset.load_participant_ids_to_remove") as mock_filter:
+            mock_filter.return_value = ["participant001"]
 
             # Test deidentification
-            deidentify_config_dir = temp_bids_dir / "deidentify_config"
-            self.setup_deidentify_config(deidentify_config_dir)
             dataset.deidentify(
-                outdir=output_dir, deidentify_config_dir=deidentify_config_dir, skip_audio=False
+                outdir=output_dir, deidentify_config_dir=setup_publish_config, skip_audio=False
             )
 
         # Check that participant001 files are not in output
         participant001_files = list(output_dir.rglob("*participant001*"))
-        # Note: The actual behavior depends on the load_phenotype_data function
-        # which should filter out the hard-coded participants
+        assert len(participant001_files) == 0
 
-    def test_audio_metadata_processing(self, temp_bids_dir, output_dir):
+    def test_audio_metadata_processing(self, temp_bids_dir, output_dir, setup_publish_config):
         """Test that audio metadata is properly processed."""
         dataset = BIDSDataset(temp_bids_dir)
 
         # Mock the necessary functions for testing
         with (
-            patch("b2aiprep.prepare.dataset.filter_audio_paths") as mock_filter,
             patch("b2aiprep.prepare.dataset.update_metadata_record_and_session_id") as mock_update,
             patch("b2aiprep.prepare.dataset.get_value_from_metadata") as mock_get_value,
         ):
-
             # Setup mocks
-            from b2aiprep.prepare.bids import get_paths
-
-            audio_paths = get_paths(temp_bids_dir, file_extension=".wav")
-            audio_paths = [x["path"] for x in audio_paths]
-            mock_filter.return_value = audio_paths
             mock_get_value.side_effect = lambda metadata, linkid, endswith: "test_id"
 
             # Test deidentification
-            deidentify_config_dir = temp_bids_dir / "deidentify_config"
-            self.setup_deidentify_config(deidentify_config_dir)
             dataset.deidentify(
-                outdir=output_dir, deidentify_config_dir=deidentify_config_dir, skip_audio=False
+                outdir=output_dir, deidentify_config_dir=setup_publish_config, skip_audio=False
             )
 
             # Check that metadata functions were called
             assert mock_update.called
             assert mock_get_value.called
 
-    def test_logging_messages(self, temp_bids_dir, output_dir, caplog):
+    def test_logging_messages(self, temp_bids_dir, output_dir, caplog, setup_publish_config):
         """Test that appropriate logging messages are generated."""
         dataset = BIDSDataset(temp_bids_dir)
 
         with caplog.at_level(logging.INFO):
-            deidentify_config_dir = temp_bids_dir / "deidentify_config"
-            self.setup_deidentify_config(deidentify_config_dir)
             dataset.deidentify(
-                outdir=output_dir, deidentify_config_dir=deidentify_config_dir, skip_audio=True
+                outdir=output_dir, deidentify_config_dir=setup_publish_config, skip_audio=True
             )
 
         # Check for expected log messages
@@ -410,14 +357,9 @@ class TestBIDSDatasetClean:
             "age": {"description": "Age"},
         }
 
-        # Mock _load_participant_exclusions to include participant001
-        with patch(
-            "b2aiprep.prepare.constants._load_participant_exclusions",
-            return_value=["participant001"],
-        ):
-            deidentified_df, deidentified_phenotype = dataset._deidentify_phenotype(
-                df, phenotype, ["participant001"], {}
-            )
+        deidentified_df, deidentified_phenotype = dataset._deidentify_phenotype(
+            df, phenotype, ["participant001"], {}
+        )
 
         # Check that participant001 was removed
         assert len(deidentified_df) == 2
@@ -429,7 +371,7 @@ class TestBIDSDatasetClean:
         assert "participant_id" in deidentified_phenotype
         assert "record_id" not in deidentified_phenotype
 
-    def test_remove_columns_methods(self):
+    def test_remove_columns_methods(self, caplog):
         """Test the various column removal methods."""
         dataset = BIDSDataset(Path("/dummy"))
 
@@ -452,14 +394,11 @@ class TestBIDSDatasetClean:
         }
 
         # Test removing empty columns
-        df_empty, phenotype_empty = dataset._remove_empty_columns(df, phenotype)
-        assert "consent_status" not in df_empty.columns
-        assert "consent_status" not in phenotype_empty
+        with caplog.at_level(logging.WARNING):
+            dataset._warn_about_empty_columns(df, phenotype)
 
-        # Test removing system columns
-        df_system, phenotype_system = dataset._remove_system_columns(df, phenotype)
-        assert "acoustic_task_id" not in df_system.columns
-        assert "acoustic_task_id" not in phenotype_system
+        # Check that warning was logged
+        assert any("empty" in record.message.lower() for record in caplog.records)
 
         # Test removing sensitive columns
         df_sensitive, phenotype_sensitive = dataset._remove_sensitive_columns(df, phenotype)
@@ -517,8 +456,12 @@ class TestBIDSDatasetClean:
             participants_df.to_csv(bids_path / "participants.tsv", sep="\t", index=False)
 
             participants_json = {
-                "record_id": {"description": "Unique identifier"},
-                "age": {"description": "Age of participant"},
+                "participants": {
+                    "data_elements": {
+                        "record_id": {"description": "Unique identifier"},
+                        "age": {"description": "Age of participant"},
+                    }
+                }
             }
             with open(bids_path / "participants.json", "w") as f:
                 json.dump(participants_json, f, indent=2)

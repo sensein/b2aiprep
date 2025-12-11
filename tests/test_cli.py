@@ -1,3 +1,4 @@
+"""Tests for the CLI of b2aiprep."""
 import csv
 import os
 import shutil
@@ -7,9 +8,86 @@ import tempfile
 import wave
 from pathlib import Path
 import json
+
 import pytest
 import torch
 import pandas as pd
+import shutil
+from unittest.mock import patch, MagicMock
+from click.testing import CliRunner
+
+from b2aiprep.commands import deidentify_bids_dataset
+from b2aiprep.prepare.dataset import BIDSDataset
+
+class TestDeidentifyCommand:
+    """Test cases for the deidentify_bids_dataset command."""
+
+    @pytest.fixture
+    def temp_bids_dir(self):
+        """Create a minimal BIDS directory for testing."""
+        temp_dir = tempfile.mkdtemp()
+        bids_path = Path(temp_dir) / "test_bids"
+        bids_path.mkdir(parents=True, exist_ok=True)
+        yield str(bids_path)
+        
+        # Cleanup
+        shutil.rmtree(temp_dir)
+
+    @pytest.fixture
+    def temp_output_dir(self):
+        """Create a temporary output directory."""
+        temp_dir = tempfile.mkdtemp()
+        output_path = Path(temp_dir) / "output"
+        yield str(output_path)
+        # Cleanup
+        shutil.rmtree(temp_dir)
+
+    def test_deidentify_command_calls_deidentify(self, temp_bids_dir, temp_output_dir, setup_publish_config):
+        """Test that the deidentify command calls the BIDSDataset.deidentify method."""
+        runner = CliRunner()
+        setup_publish_config = setup_publish_config.as_posix()
+        
+        with patch.object(BIDSDataset, 'deidentify') as mock_deidentify:
+            # Mock the deidentify method to return a BIDSDataset instance
+            mock_deidentified = MagicMock(spec=BIDSDataset)
+            mock_deidentify.return_value = mock_deidentified
+            
+            # Run the command
+            result = runner.invoke(deidentify_bids_dataset, [temp_bids_dir, temp_output_dir, setup_publish_config])
+            
+            # Check that the command succeeded
+            assert result.exit_code == 0
+            
+            # Check that deidentify was called with correct parameters
+            mock_deidentify.assert_called_once_with(outdir=temp_output_dir, deidentify_config_dir=Path(setup_publish_config), skip_audio=False, skip_audio_features=False, max_workers=16)
+
+    def test_deidentify_command_help_text(self):
+        """Test that the help text is updated correctly."""
+        runner = CliRunner()
+        
+        # Run the command with --help
+        result = runner.invoke(deidentify_bids_dataset, ['--help'])
+        
+        # Check that the command succeeded
+        assert result.exit_code == 0
+        
+        # Check that help text mentions deidentification
+        assert "deidentification" in result.output.lower()
+        assert "skip_audio" in result.output.lower()
+
+    def test_deidentify_command_integration(self, temp_bids_dir, temp_output_dir, setup_publish_config):
+        """Integration test for the deidentify command without mocking."""
+        runner = CliRunner()
+        setup_publish_config = setup_publish_config.as_posix()
+        
+        # Run the command without mocking (will use actual implementation)
+        result = runner.invoke(deidentify_bids_dataset, [temp_bids_dir, temp_output_dir, setup_publish_config])
+        
+        # Check that the command succeeded
+        assert result.exit_code == 0
+        
+        # Check that output directory was created
+        assert Path(temp_output_dir).exists()
 
 
 def create_dummy_wav_file(filepath, duration_seconds=1.0, sample_rate=16000):
@@ -360,7 +438,6 @@ def setup_bids_structure_after_deidentify():
 
         yield bids_dir
 
-
 def test_bids2shadow_cli(setup_temp_files):
     """Test the 'b2aiprep-cli bids2shadow' command using subprocess."""
     redcap_csv_path, audio_dir, bids_dir_path, tar_file_path = setup_temp_files
@@ -589,102 +666,86 @@ def test_validate_derived_dataset_cli():
         assert result.returncode == 0, f"CLI command failed: {result.stderr}"
 
 
-def test_deidentify_bids_dataset_cli_id_rename(setup_bids_structure):
+def test_deidentify_bids_dataset_cli_id_rename(
+    setup_bids_structure, setup_publish_config, tmp_path
+):
     """Test the 'b2aiprep-cli deidentify-bids-dataset' command using subprocess."""
     bids_dir = setup_bids_structure
+    config_dir = setup_publish_config
+    outdir = tmp_path / "output_dataset"
 
     # Create phenotype directory structure
     phenotype_dir = bids_dir / "phenotype"
     phenotype_dir.mkdir()
-    (phenotype_dir / "questionnaire1.tsv").write_text("participant_id\trecord_id\ntest\trec-test")
+    (phenotype_dir / "questionnaire1.tsv").write_text(
+        "participant_id\trecord_id\ntest\trec-test"
+    )
     (phenotype_dir / "questionnaire1.json").write_text(
         '{"participant_id": {"Description": "Participant identifier"}, '
         '"record_id": {"Description": "Record identifier"}}'
     )
 
-    with tempfile.TemporaryDirectory() as temp_base:
-        # Create a unique output directory name to avoid conflicts
-        outdir = os.path.join(temp_base, "output_dataset")
-        config_dir = Path(temp_base)/"publish_config"
-        config_dir.mkdir()
+    # Modify id_remapping.json
+    id_remapping_path = config_dir / "id_remapping.json"
+    with open(id_remapping_path, "w") as f:
+        json.dump({"001": "P001"}, f, indent=2)
+
+    command = [
+        "b2aiprep-cli",
+        "deidentify-bids-dataset",
+        str(bids_dir),
+        str(outdir),
+        str(config_dir),
+    ]
+
+    result = subprocess.run(command, capture_output=True, text=True)
+    assert result.returncode == 0, f"CLI command failed: {result.stderr}"
+    assert outdir.exists(), "Output directory was not created"
+    # checked if participant_id was changed
+    assert (outdir / "sub-P001").exists()
         
-        audio_to_remove_path = config_dir  / "audio_filestems_to_remove.json"
-        audio_to_remove_data = []
-
-        with open(audio_to_remove_path, "w") as f:
-            json.dump(audio_to_remove_data, f, indent=2)
-            
-        id_remapping_path = config_dir  / "id_remapping.json"
-        id_remapping_data = {"001": "P001"}
-
-        with open(id_remapping_path , "w") as f:
-            json.dump(id_remapping_data, f, indent=2)
-            
-        participants_to_remove_path = config_dir  / "participant_ids_to_remove.json"
-        participants_to_remove_data = []
-
-        with open(participants_to_remove_path , "w") as f:
-            json.dump(participants_to_remove_data, f, indent=2)
-
-        command = ["b2aiprep-cli", "deidentify-bids-dataset", str(bids_dir), outdir, str(config_dir)]
-
-        result = subprocess.run(command, capture_output=True, text=True)
-        assert result.returncode == 0, f"CLI command failed: {result.stderr}"
-        assert os.path.exists(outdir), "Output directory was not created"
-        # checked if participant_id was changed
-        assert os.path.exists(os.path.join(outdir, "sub-P001"))
-        
-def test_deidentify_bids_dataset_cli_remove_audio(setup_bids_structure):
+def test_deidentify_bids_dataset_cli_remove_audio(
+    setup_bids_structure, setup_publish_config, tmp_path
+):
     """Test the 'b2aiprep-cli deidentify-bids-dataset' command using subprocess."""
     bids_dir = setup_bids_structure
+    config_dir = setup_publish_config
+    outdir = tmp_path / "output_dataset"
 
     # Create phenotype directory structure
     phenotype_dir = bids_dir / "phenotype"
     phenotype_dir.mkdir()
-    (phenotype_dir / "questionnaire1.tsv").write_text("participant_id\trecord_id\ntest\trec-test")
+    (phenotype_dir / "questionnaire1.tsv").write_text(
+        "participant_id\trecord_id\ntest\trec-test"
+    )
     (phenotype_dir / "questionnaire1.json").write_text(
         '{"participant_id": {"Description": "Participant identifier"}, '
         '"record_id": {"Description": "Record identifier"}}'
     )
 
-    with tempfile.TemporaryDirectory() as temp_base:
-        # Create a unique output directory name to avoid conflicts
-        outdir = os.path.join(temp_base, "output_dataset")
-        config_dir = Path(temp_base)/"publish_config"
-        config_dir.mkdir()
-        
-        audio_to_remove_path = config_dir  / "audio_filestems_to_remove.json"
-        audio_to_remove_data = ["sub-001_ses-001_task-reading"]
+    # Modify audio_filestems_to_remove.json
+    audio_to_remove_path = config_dir / "audio_filestems_to_remove.json"
+    with open(audio_to_remove_path, "w") as f:
+        json.dump(["sub-001_ses-001_task-reading"], f, indent=2)
 
-        with open(audio_to_remove_path, "w") as f:
-            json.dump(audio_to_remove_data, f, indent=2)
-            
-        id_remapping_path = config_dir  / "id_remapping.json"
-        id_remapping_data = {}
+    command = [
+        "b2aiprep-cli",
+        "deidentify-bids-dataset",
+        str(bids_dir),
+        str(outdir),
+        str(config_dir),
+    ]
 
-        with open(id_remapping_path , "w") as f:
-            json.dump(id_remapping_data, f, indent=2)
-
-        participants_to_remove_path = config_dir  / "participant_ids_to_remove.json"
-        participants_to_remove_data = []
-
-        with open(participants_to_remove_path , "w") as f:
-            json.dump(participants_to_remove_data, f, indent=2)
-
-        sensitive_audio_tasks_path = config_dir  / "sensitive_audio_tasks.json"
-        sensitive_audio_tasks_data = []
-
-        with open(sensitive_audio_tasks_path , "w") as f:
-            json.dump(sensitive_audio_tasks_data, f, indent=2)
-
-        command = ["b2aiprep-cli", "deidentify-bids-dataset", str(bids_dir), outdir, str(config_dir)]
-
-        result = subprocess.run(command, capture_output=True, text=True)
-        assert result.returncode == 0, f"CLI command failed: {result.stderr}"
-        assert os.path.exists(outdir), "Output directory was not created"
-        # check if file was removed
-        assert not os.path.exists(os.path.join(outdir, "sub-001", "ses-1", "audio", "sub-001_ses-1_task-reading.json"))
-        assert not os.path.exists(os.path.join(outdir, "sub-001", "ses-1", "audio", "sub-001_ses-1_task-reading.wav"))
+    result = subprocess.run(command, capture_output=True, text=True)
+    assert result.returncode == 0, f"CLI command failed: {result.stderr}"
+    assert outdir.exists(), "Output directory was not created"
+    # check if file was removed
+    assert not (
+        outdir / "sub-001" / "ses-1" / "audio" / "sub-001_ses-1_task-reading.json"
+    ).exists()
+    assert not (
+        outdir / "sub-001" / "ses-1" / "audio" / "sub-001_ses-1_task-reading.wav"
+    ).exists()
 
 def test_reproschema_to_redcap_cli():
     """Test the 'b2aiprep-cli reproschema-to-redcap' command using subprocess."""

@@ -87,14 +87,13 @@ class TestRedCapDataset:
             'redcap_repeat_instrument': ['Participant', 'Session']
         })
         mock_read_csv.return_value = mock_data
-        
-        with patch.object(RedCapDataset, '_insert_missing_columns'):
-            with patch.object(RedCapDataset, '_validate_redcap_columns'):
-                dataset = RedCapDataset.from_redcap("dummy_path.csv")
-                
-                assert dataset.source_type == 'redcap'
-                assert len(dataset.df) == 2
-                assert 'record_id' in dataset.df.columns
+    
+        with patch.object(RedCapDataset, '_validate_redcap_columns'):
+            dataset = RedCapDataset.from_redcap("dummy_path.csv")
+            
+            assert dataset.source_type == 'redcap'
+            assert len(dataset.df) == 2
+            assert 'record_id' in dataset.df.columns
 
     @patch("pathlib.Path.iterdir")
     @patch("pathlib.Path.is_dir")
@@ -111,12 +110,11 @@ class TestRedCapDataset:
                 'record_id': [1],
                 'redcap_repeat_instrument': ['Participant']
             })
+
+            dataset = RedCapDataset.from_reproschema("audio_dir", "survey_dir")
             
-            with patch.object(RedCapDataset, '_insert_missing_columns'):
-                dataset = RedCapDataset.from_reproschema("audio_dir", "survey_dir")
-                
-                assert dataset.source_type == 'reproschema'
-                assert len(dataset.df) == 1
+            assert dataset.source_type == 'reproschema'
+            assert len(dataset.df) == 1
 
     def test_redcap_dataset_get_df_of_repeat_instrument(self):
         """Test RedCapDataset get_df_of_repeat_instrument method."""
@@ -154,42 +152,6 @@ class TestRedCapDataset:
         assert 'test' in str_repr
         assert 'rows=3' in str_repr
         assert 'columns=2' in str_repr
-
-    @patch("b2aiprep.prepare.redcap.files")
-    @patch("json.load")
-    def test_insert_missing_columns(self, mock_json_load, mock_files):
-        """Test RedCapDataset._insert_missing_columns method."""
-        # Mock the expected columns from JSON file
-        expected_columns = ["record_id", "column_a", "column_b", "column_c"]
-        mock_json_load.return_value = expected_columns
-
-        # Mock the file path chain
-        mock_path = MagicMock()
-        mock_path.open.return_value = MagicMock()
-        mock_files.return_value.joinpath.return_value.joinpath.return_value.joinpath.return_value = (
-            mock_path
-        )
-
-        # Create test DataFrame with only some of the expected columns
-        test_df = pd.DataFrame({
-            'record_id': [1, 2, 3],
-            'column_a': ['A', 'B', 'C']
-        })
-
-        # Create dataset and call method
-        dataset = RedCapDataset(df=test_df, source_type='test')
-        dataset._insert_missing_columns()
-
-        # Check that all expected columns are now present
-        assert set(dataset.df.columns) == set(expected_columns)
-
-        # Check that original data is preserved
-        assert list(dataset.df["record_id"]) == [1, 2, 3]
-        assert list(dataset.df["column_a"]) == ["A", "B", "C"]
-
-        # Check that new columns are filled with NaN
-        assert pd.isna(dataset.df["column_b"]).all()
-        assert pd.isna(dataset.df["column_c"]).all()
 
     @patch("pandas.read_csv")
     def test_load_redcap_csv_static_method(self, mock_read_csv):
