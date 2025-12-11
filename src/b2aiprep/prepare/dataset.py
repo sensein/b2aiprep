@@ -644,13 +644,13 @@ class BIDSDataset:
         json_data[first_key]["data_elements"] = data_elements
 
         # Combine entries so there is one row per record_id
-        df_subselected = selected_df.groupby("record_id").first().reset_index()
+        # df_subselected = selected_df.groupby("record_id").first().reset_index()
 
         if clean_phenotype_data:
-            df_subselected, json_data = BIDSDataset._clean_phenotype_data(df_subselected, json_data)
+            selected_df, json_data = BIDSDataset._clean_phenotype_data(selected_df, json_data)
         
         # Output to a TSV/JSON file.
-        BIDSDataset._dataframe_to_tsv(df_subselected, os.path.join(output_dir, filename.replace(".json", ".tsv")))
+        BIDSDataset._dataframe_to_tsv(selected_df, os.path.join(output_dir, filename.replace(".json", ".tsv")))
         with open(os.path.join(output_dir, filename), "w") as f:
             json.dump(json_data, f, indent=2)
 
