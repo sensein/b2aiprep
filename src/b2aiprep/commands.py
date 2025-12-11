@@ -387,7 +387,7 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
     static_features = []
     for filepath in tqdm(audio_paths, desc="Loading static features", total=len(audio_paths)):
         pt_file = filepath.parent.joinpath(f"{filepath.stem}_features.pt")
-        if not filepath.exists(): #pt will exist based on how audio paths were generated, but audio file might not exist
+        if not pt_file.exists(): #pt will exist based on how audio paths were generated, but audio file might not exist
             continue
 
         device = 'cpu' # not checking for cuda because optimization would be minimal if any
