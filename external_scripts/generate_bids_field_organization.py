@@ -13,6 +13,7 @@ import textwrap
 from collections import Counter
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional
+import json
 
 from tenacity import AsyncRetrying, wait_exponential, stop_after_attempt, retry_if_exception_type
 from openai import APITimeoutError, APIConnectionError, RateLimitError, APIStatusError
@@ -139,6 +140,15 @@ def parse_args() -> argparse.Namespace:
         default=8,
         help="Maximum number of concurrent OpenAI requests.",
     )
+    parser.add_argument(
+        "--non-ui",
+        action="store_true",
+        help=(
+            "Only output fields that are referenced outside an activity's ui.order "
+            "(e.g., ui.addProperties/isAbout or compute/variableName) and therefore "
+            "would be omitted by ui.order-based extraction."
+        ),
+    )
     return parser.parse_args()
 
 
@@ -211,6 +221,7 @@ def build_prompt(
     metadata_text: str,
     question_text: str,
     preamble: str,
+    fieldAnnotation: Optional[str] = None,
 ) -> str:
     redcap_text = metadata_text or "No REDCap metadata was found for this field."
     question = question_text or "Question text is not available."
@@ -230,6 +241,8 @@ def build_prompt(
         Provide a single concise sentence that can serve as the description for this field in a BIDS data dictionary.
         """
     ).strip()
+    if fieldAnnotation:
+        prompt += f"\n\nNote that the fieldAnnotation for this field is: {fieldAnnotation}"
     return prompt
 
 async def _call_openai_async(
@@ -300,10 +313,123 @@ def maybe_load_preamble(path: Optional[Path]) -> str:
     return DEFAULT_PREAMBLE
 
 
-def load_reproschema(schema_file: Path) -> Dict[str, Dict[str, object]]:
-    from b2aiprep.prepare.dataset import BIDSDataset  # type: ignore
+def _item_id_from_ref(ref: str) -> str:
+    """Extract an item identifier from a reference like 'items/age' or a full URL."""
+    ref = (ref or "").strip()
+    if not ref:
+        return ""
+    # Common forms:
+    # - items/age
+    # - .../activities/<activity>/items/age
+    if "/items/" in ref:
+        return ref.rsplit("/items/", 1)[-1].strip("/")
+    if ref.startswith("items/"):
+        return ref.split("/", 1)[-1].strip("/")
+    # Fallback: last path component.
+    return ref.rsplit("/", 1)[-1].strip("/")
 
-    return BIDSDataset._load_reproschema(schema_file)
+
+def _load_item_json(activity_path: Path, item_id: str) -> Optional[Dict[str, object]]:
+    item_path = (activity_path.parent / "items" / item_id).resolve()
+    if not item_path.exists():
+        # Some repos may store json/jsonld extensions; try a couple of fallbacks.
+        for suffix in (".json", ".jsonld"):
+            candidate = item_path.with_suffix(suffix)
+            if candidate.exists():
+                item_path = candidate
+                break
+        else:
+            return None
+    return json.loads(item_path.read_text(encoding="utf-8"))
+
+
+def _build_data_elements_from_ids(activity_path: Path, item_ids: Iterable[str]) -> Dict[str, Dict[str, object]]:
+    data_elements: Dict[str, Dict[str, object]] = {}
+    for item_id in item_ids:
+        item_json = _load_item_json(activity_path, item_id)
+        if not item_json:
+            LOGGER.warning("Skipping missing item '%s' for activity %s", item_id, activity_path)
+            continue
+
+        response_options = (item_json.get("responseOptions") or {})
+        value_type = response_options.get("valueType")
+        datatype = response_options.get("datatype") or value_type
+
+        data_elements[item_id] = {
+            "question": item_json.get("question"),
+            "description": item_json.get("description"),
+            "datatype": datatype,
+            "choices": response_options.get("choices"),
+            "valueType": value_type,
+            "fieldAnnotation": item_json.get("fieldAnnotation", [{}])[0].get("value"),
+            **{k: v for k, v in response_options.items() if k not in {"choices", "valueType", "datatype"}},
+        }
+    return data_elements
+
+
+def load_reproschema(schema_file: Path, *, non_ui_only: bool = False) -> Dict[str, Dict[str, object]]:
+    """Load ReproSchema activities.
+
+    Default behavior matches the historical ui.order-based extraction.
+    When non_ui_only=True, only include fields referenced outside ui.order
+    (ui.addProperties/isAbout and compute/variableName) that are omitted from ui.order.
+    """
+    schema_json = json.loads(schema_file.read_text(encoding="utf-8"))
+    protocol_order = schema_json.get("ui", {}).get("order") or []
+    if not protocol_order:
+        raise RuntimeError(f"No ui.order found in schema file: {schema_file}")
+
+    activities: Dict[str, Dict[str, object]] = {}
+    for rel_path in protocol_order:
+        activity_path = (schema_file.parent / rel_path).resolve()
+        if not activity_path.exists():
+            LOGGER.warning("Skipping missing activity %s", rel_path)
+            continue
+        activity_json = json.loads(activity_path.read_text(encoding="utf-8"))
+        activity_id = activity_json.get("id")
+        if not activity_id:
+            LOGGER.warning("Skipping activity with missing id: %s", activity_path)
+            continue
+
+        ui_order = activity_json.get("ui", {}).get("order") or []
+        ui_order_ids = [_item_id_from_ref(ref) for ref in ui_order]
+        ui_order_ids_set = {i for i in ui_order_ids if i}
+
+        if non_ui_only:
+            # collect items referenced outside ui.order
+            add_props = activity_json.get("ui", {}).get("addProperties") or []
+            addprop_ids = set()
+            for entry in add_props:
+                if not isinstance(entry, dict):
+                    continue
+                is_about = entry.get("isAbout")
+                if isinstance(is_about, str):
+                    item_id = _item_id_from_ref(is_about)
+                    if item_id:
+                        addprop_ids.add(item_id)
+
+            compute_ids = set()
+            for entry in activity_json.get("compute") or []:
+                if not isinstance(entry, dict):
+                    continue
+                var_name = entry.get("variableName")
+                if isinstance(var_name, str) and var_name.strip():
+                    compute_ids.add(var_name.strip())
+
+            candidate_ids = addprop_ids | compute_ids
+            missing_ids = sorted(candidate_ids - ui_order_ids_set)
+            if not missing_ids:
+                continue
+            data_elements = _build_data_elements_from_ids(activity_path, missing_ids)
+        else:
+            # historical behavior: only ui.order items
+            data_elements = _build_data_elements_from_ids(activity_path, ui_order_ids)
+
+        activities[activity_id] = {
+            "data_elements": data_elements,
+        }
+
+    return activities
 
 
 async def run_async(args: argparse.Namespace) -> None:
@@ -316,7 +442,7 @@ async def run_async(args: argparse.Namespace) -> None:
     preamble = maybe_load_preamble(args.preamble_file)
 
     LOGGER.info("Loading ReproSchema activities from %s", args.schema_file)
-    activities = load_reproschema(args.schema_file)
+    activities = load_reproschema(args.schema_file, non_ui_only=args.non_ui)
     schema_name_map = build_schema_name_map(activities.keys())
 
     redcap_lookup = load_redcap_dictionary(args.data_dictionary)
@@ -374,6 +500,7 @@ async def run_async(args: argparse.Namespace) -> None:
                     metadata_text=metadata_text,
                     question_text=question_text,
                     preamble=preamble,
+                    fieldAnnotation=element.get("fieldAnnotation"),
                 )
             pending_by_column.setdefault(column_name, []).append(entry)
 
