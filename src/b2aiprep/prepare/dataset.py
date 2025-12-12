@@ -1233,7 +1233,11 @@ class BIDSDataset:
         for c in df.columns:
             if BIDSDataset._is_redcap_group(c):
                 # convert from whatever the text is to 1
-                # assert df[c].dropna().nunique() <= 1, f"RedCap group column {c} has multiple non-null values."
+                if df[c].dropna().nunique() > 1:
+                    _LOGGER.warning(
+                        f"RedCap checkbox column {c} has unexpected non-binary values: "
+                        f"{df[c].dropna().unique().tolist()}. Converting to binary."
+                    )
                 df[c] = df[c].apply(lambda x: 1 if pd.notna(x) and str(x).strip() != "" else np.nan).astype(pd.Int8Dtype())
                 # TODO: phenotype changes for checkbox columns?
         # Warn about empty columns - but keep them as some are expected
