@@ -645,7 +645,7 @@ class BIDSDataset:
     @staticmethod
     def _find_redcap_checkbox_columns(
         df: pd.DataFrame,
-    ) -> t.Dict[t.List[str]]:
+    ) -> t.Dict[str, t.List[str]]:
         """Find RedCap checkbox columns in the DataFrame.
 
         Args:
