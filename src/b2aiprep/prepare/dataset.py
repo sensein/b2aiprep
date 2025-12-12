@@ -706,7 +706,12 @@ class BIDSDataset:
         for schema_name, data in schemas.items():
             for element_name in data['data_elements'].keys():
                 element_to_schema[element_name] = schema_name
-                # TODO: if a redcap checkbox column, add in the ___ options too.
+
+                # add in the checkbox columns which are not natively listed as individual
+                # questions in the reproschema activities
+                if element_name in checkbox_columns:
+                    for checkbox_column in checkbox_columns[element_name]:
+                        element_to_schema[checkbox_column] = schema_name
 
         # with all the reproschema activities defined, we now parse our manual reorganization
         # this is a CSV with:
@@ -768,12 +773,28 @@ class BIDSDataset:
                     missing_in_df_cols.add(col_norm)
                     continue
                 included_cols.add(col_norm)
+                
                 # the source schema is defined based on the element itself;
                 # we do not need the schema_name_source column, but it is kept for ease of reading the CSV.
                 schema_to_use = element_to_schema[column]
-
-                # populate the detailed metadata for this column
-                data_element = copy(schemas[schema_to_use]["data_elements"][column])
+                
+                if '___' in column:
+                    column_base, column_choice = column.rsplit('___', maxsplit=1)
+                else:
+                    column_base = column
+                if column_base in checkbox_columns:
+                    data_element = copy(schemas[schema_to_use]["data_elements"][column_base])
+                    # reduce the choices to just the choice for this checkbox
+                    data_element['choices'] = [
+                        choice for choice in data_element.get('choices', [])
+                        if str(choice.get('value')) == str(column_choice)
+                    ]
+                    if clean_phenotype_data:
+                        # for checkbox columns, we convert to integer 0/1
+                        data_element['valueType'] = ['xsd:integer']
+                else:
+                    # populate the detailed metadata for this column
+                    data_element = copy(schemas[schema_to_use]["data_elements"][column])
                 if "description" in updated_data and (updated_data["description"] != ""):
                     description = updated_data["description"]
                 elif "description" in data_element and (data_element["description"] != ""):
@@ -886,13 +907,19 @@ class BIDSDataset:
         excluded_in_df_not_in_reorg = df_cols - reorg_all_cols
 
         _LOGGER.info(
-            "RedCap Dataframe column report: total=%d, included=%d, missing=%d, redcap_group=%d, excluded_deleted=%d, only_in_df=%d",
+            "RedCap Dataframe column report: total=%d, included=%d, deleted_intentionally=%d, only_in_df=%d",
             len(df_cols),
+            len(included_cols.intersection(df_cols)),
+            len(cols_for_deletion.intersection(df_cols)),
+            len(excluded_in_df_not_in_reorg),
+        )
+        _LOGGER.info(
+            "RedCap ReproSchema expected column report: total=%d, included=%d, redcap_group_general_q=%d, deleted_intentionally=%d, missing_in_df=%d",
+            df_reorg_active.shape[0] + df_deleted.shape[0],
             len(included_cols),
-            len(missing_in_df_cols),
             len(redcap_group_cols),
             len(cols_for_deletion),
-            len(excluded_in_df_not_in_reorg),
+            len(missing_in_df_cols),
         )
         _LOGGER.debug(f"Included columns: {sorted(included_cols)}")
         _LOGGER.debug(f"Excluded (missing in df) columns: {sorted(missing_in_df_cols)}")
@@ -1182,6 +1209,13 @@ class BIDSDataset:
         return df, phenotype
 
     @staticmethod
+    def _is_redcap_group(column: str) -> bool:
+        """Check if a column is a RedCap group column."""
+        pattern = re.compile(r'^(?P<base>.+?)___(?P<suffix>.+)$')
+        match = pattern.match(column)
+        return match is not None
+
+    @staticmethod
     def _clean_phenotype_data(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
         """
         Apply data cleaning operations to phenotype data.
@@ -1195,7 +1229,13 @@ class BIDSDataset:
         """
         # Fix alcohol column date values
         df = BIDSDataset._fix_alcohol_column(df)
-        
+
+        for c in df.columns:
+            if BIDSDataset._is_redcap_group(c):
+                # convert from whatever the text is to 1
+                assert df[c].dropna().nunique() <= 1, f"RedCap group column {c} has multiple non-null values."
+                df[c] = df[c].apply(lambda x: 1 if pd.notna(x) and str(x).strip() != "" else np.nan).astype(pd.Int8Dtype())
+                # TODO: phenotype changes for checkbox columns?
         # Warn about empty columns - but keep them as some are expected
         BIDSDataset._warn_about_empty_columns(df, phenotype)
         
@@ -1224,7 +1264,7 @@ class BIDSDataset:
         """Warn about columns that are empty."""
         empty_columns = []
         for column in df.columns:
-            if df[column].isnull().all():
+            if df[column].isnull().all() and BIDSDataset._is_redcap_group(column) is False:
                 empty_columns.append(column)
         
         if empty_columns:
