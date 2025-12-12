@@ -1,0 +1,92 @@
+{
+  "fields": [
+    {
+      "name": "participant_id",
+      "type": "string",
+      "description": "Unique identifier for each participant."
+    },
+    {
+      "name": "session_id",
+      "type": "string",
+      "description": "Unique identifier for each session."
+    },
+    {
+      "name": "task_name",
+      "type": "string",
+      "description": "The audio task conducted for the recording."
+    },
+    {
+      "name": "n_frames",
+      "type": "integer",
+      "description": "Number of time frames in the pitch tensor (variable per recording)."
+    },
+    {
+      "name": "pitch",
+      "type": "array",
+      "description": "Estimated fundamental frequency (F0) of the audio signal.",
+      "extras": {
+        "tensor": {
+          "dtype": "float32",
+          "ndim": 1,
+          "dims": ["time"],
+          "shape": [null],
+
+          "axis": {
+            "time": {
+              "sampling_rate_hz": 50,
+              "description": "Temporal resolution of the pitch track, aligned with all SPARC-derived features."
+            }
+          },
+
+          "units": "Hz",
+          "value_range": [50, 550],
+          "notes": "Pitch values outside the detectable range are commonly set to 0 or NaN, depending on implementation.",
+
+          "config": {
+            "model_name": "multi"
+          },
+
+          "provenance": {
+            "software": "speech-articulatory-coding",
+            "version": "0.1.0",
+            "command": "coder = load_model(model_name='multi'); coder.encode(waveform)",
+
+            "software_reference": {
+              "title": "Coding Speech through Vocal Tract Kinematics",
+              "authors": "Cho et al.",
+              "year": 2024,
+              "doi": "10.48550/arXiv.2406.12998",
+              "url": "https://arxiv.org/abs/2406.12998"
+            },
+
+            "component": "CREPE pitch estimation",
+            "component_reference": {
+              "title": "CREPE: A Convolutional Representation for Pitch Estimation",
+              "authors": "Kim et al.",
+              "year": 2018,
+              "url": "https://arxiv.org/abs/1802.06182"
+            },
+
+            "component_config": {
+              "note": "Internal CREPE parameters used by the speech-articulatory-coding package; these are implementation details and not user-configurable via the public API.",
+              "fmin": 50,
+              "fmax": 550,
+              "pitch_q": 2,
+              "pitch_hop_length": 160,
+              "crepe_model": "full"
+            },
+
+            "note": "CREPE parameters are internal to the model and not user-configurable."
+          },
+
+          "serialization": {
+            "storage": "parquet_list",
+            "parquet_type": "list<float>",
+            "compression": "zstd"
+          }
+        }
+      }
+    }
+  ],
+  "primaryKey": ["participant_id", "session_id", "task_name"]
+}

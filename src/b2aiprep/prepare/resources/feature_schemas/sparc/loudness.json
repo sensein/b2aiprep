@@ -1,0 +1,72 @@
+{
+  "fields": [
+    {
+      "name": "participant_id",
+      "type": "string",
+      "description": "Unique identifier for each participant."
+    },
+    {
+      "name": "session_id",
+      "type": "string",
+      "description": "Unique identifier for each session."
+    },
+    {
+      "name": "task_name",
+      "type": "string",
+      "description": "The audio task conducted for the recording."
+    },
+    {
+      "name": "n_frames",
+      "type": "integer",
+      "description": "Number of time frames in the loudness tensor (variable per recording)."
+    },
+    {
+      "name": "loudness",
+      "type": "array",
+      "description": "Estimated loudness based on the average absolute amplitude of the audio waveform.",
+      "extras": {
+        "tensor": {
+          "dtype": "float32",
+          "ndim": 1,
+          "dims": ["time"],
+          "shape": [null],
+
+          "axis": {
+            "time": {
+              "sampling_rate_hz": 50,
+              "description": "Temporal resolution of the loudness signal, derived from 20 ms windows at 16 kHz."
+            }
+          },
+
+          "units": "amplitude of z-scored waveform",
+          "notes": "Values represent average absolute signal magnitude within each 20 ms window after utterance-wise z-scoring.",
+
+          "config": {
+            "model_name": "multi"
+          },
+
+          "provenance": {
+            "software": "speech-articulatory-coding",
+            "version": "0.1.0",
+            "command": "coder = load_model(model_name='multi'); coder.encode(waveform)",
+
+            "software_reference": {
+              "title": "Coding Speech through Vocal Tract Kinematics",
+              "authors": "Cho et al.",
+              "year": 2024,
+              "doi": "10.48550/arXiv.2406.12998",
+              "url": "https://arxiv.org/abs/2406.12998"
+            }
+          },
+
+          "serialization": {
+            "storage": "parquet_list",
+            "parquet_type": "list<float>",
+            "compression": "zstd"
+          }
+        }
+      }
+    }
+  ],
+  "primaryKey": ["participant_id", "session_id", "task_name"]
+}
