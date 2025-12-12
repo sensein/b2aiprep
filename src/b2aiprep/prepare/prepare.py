@@ -98,6 +98,8 @@ def remap_id(
     
     This function is primarily used during deidentification to map
     participant_id and session_id to new values."""
+    if pd.isnull(original_id):
+        return original_id
     if original_id in id_mapping:
         return id_mapping[original_id]
     else:

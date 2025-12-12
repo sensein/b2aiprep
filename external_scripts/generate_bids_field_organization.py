@@ -141,13 +141,21 @@ def parse_args() -> argparse.Namespace:
         help="Maximum number of concurrent OpenAI requests.",
     )
     parser.add_argument(
+        "--activity-type",
+        choices=["default", "non-ui", "checkbox"],
+        default="default",
+        help=(
+            "Select which fields to output: "
+            "'default' uses ui.order, "
+            "'non-ui' outputs fields referenced outside ui.order, "
+            "'checkbox' outputs expanded per-choice columns for checkbox fields (multipleChoice=true)."
+        ),
+    )
+    # Backward compatible alias (deprecated): --non-ui == --activity-type non-ui
+    parser.add_argument(
         "--non-ui",
         action="store_true",
-        help=(
-            "Only output fields that are referenced outside an activity's ui.order "
-            "(e.g., ui.addProperties/isAbout or compute/variableName) and therefore "
-            "would be omitted by ui.order-based extraction."
-        ),
+        help=argparse.SUPPRESS,
     )
     return parser.parse_args()
 
@@ -360,6 +368,7 @@ def _build_data_elements_from_ids(activity_path: Path, item_ids: Iterable[str]) 
             "description": item_json.get("description"),
             "datatype": datatype,
             "choices": response_options.get("choices"),
+            "multipleChoice": response_options.get("multipleChoice"),
             "valueType": value_type,
             "fieldAnnotation": item_json.get("fieldAnnotation", [{}])[0].get("value"),
             **{k: v for k, v in response_options.items() if k not in {"choices", "valueType", "datatype"}},
@@ -367,13 +376,61 @@ def _build_data_elements_from_ids(activity_path: Path, item_ids: Iterable[str]) 
     return data_elements
 
 
-def load_reproschema(schema_file: Path, *, non_ui_only: bool = False) -> Dict[str, Dict[str, object]]:
+def _extract_choice_options(choices_obj: object) -> List[Dict[str, str]]:
+    """Extract stable choice (value, label) pairs for checkbox expansion.
+
+    ReproSchema choices are typically a list of dicts with:
+    - value: a stable code (often numeric)
+    - name.en: a human label
+
+    We use the value (stringified) for the REDCap-style suffix: ___<value>.
+    """
+    if not isinstance(choices_obj, list):
+        return []
+
+    options: List[Dict[str, str]] = []
+    for entry in choices_obj:
+        if not isinstance(entry, dict) or "value" not in entry:
+            continue
+        v = entry.get("value")
+        if v is None:
+            continue
+        value = str(v)
+
+        label = ""
+        name_obj = entry.get("name")
+        if isinstance(name_obj, dict):
+            label = str(name_obj.get("en") or "").strip()
+        elif isinstance(name_obj, str):
+            label = name_obj.strip()
+
+        options.append({"value": value, "label": label})
+
+    # keep order but unique by value
+    seen = set()
+    out: List[Dict[str, str]] = []
+    for opt in options:
+        value = opt.get("value", "")
+        if not value or value in seen:
+            continue
+        seen.add(value)
+        out.append(opt)
+    return out
+
+
+def load_reproschema(schema_file: Path, *, mode: str = "default") -> Dict[str, Dict[str, object]]:
     """Load ReproSchema activities.
 
-    Default behavior matches the historical ui.order-based extraction.
-    When non_ui_only=True, only include fields referenced outside ui.order
-    (ui.addProperties/isAbout and compute/variableName) that are omitted from ui.order.
+    Modes:
+    - default: ui.order-based extraction
+    - non-ui: only include fields referenced outside ui.order (ui.addProperties/isAbout and compute/variableName)
+              that are omitted from ui.order.
+    - checkbox: include only checkbox-style fields (responseOptions.multipleChoice==true), expanded into
+                per-choice columns named <field>___<value>, omitting the original <field>.
     """
+    if mode not in {"default", "non-ui", "checkbox"}:
+        raise ValueError(f"Unsupported mode: {mode}")
+
     schema_json = json.loads(schema_file.read_text(encoding="utf-8"))
     protocol_order = schema_json.get("ui", {}).get("order") or []
     if not protocol_order:
@@ -395,7 +452,7 @@ def load_reproschema(schema_file: Path, *, non_ui_only: bool = False) -> Dict[st
         ui_order_ids = [_item_id_from_ref(ref) for ref in ui_order]
         ui_order_ids_set = {i for i in ui_order_ids if i}
 
-        if non_ui_only:
+        if mode == "non-ui":
             # collect items referenced outside ui.order
             add_props = activity_json.get("ui", {}).get("addProperties") or []
             addprop_ids = set()
@@ -425,6 +482,31 @@ def load_reproschema(schema_file: Path, *, non_ui_only: bool = False) -> Dict[st
             # historical behavior: only ui.order items
             data_elements = _build_data_elements_from_ids(activity_path, ui_order_ids)
 
+        if mode == "checkbox":
+            # Keep only multipleChoice items and expand into per-choice columns.
+            expanded: Dict[str, Dict[str, object]] = {}
+            for base_name, element in data_elements.items():
+                if not element.get("multipleChoice"):
+                    continue
+                choice_options = _extract_choice_options(element.get("choices"))
+                if not choice_options:
+                    continue
+                for opt in choice_options:
+                    value = opt.get("value")
+                    label = opt.get("label")
+                    if not value:
+                        continue
+                    new_name = f"{base_name}___{value}"
+                    expanded[new_name] = {
+                        **element,
+                        "_checkbox_parent": base_name,
+                        "_checkbox_value": value,
+                        "_checkbox_label": label,
+                    }
+            if not expanded:
+                continue
+            data_elements = expanded
+
         activities[activity_id] = {
             "data_elements": data_elements,
         }
@@ -442,7 +524,11 @@ async def run_async(args: argparse.Namespace) -> None:
     preamble = maybe_load_preamble(args.preamble_file)
 
     LOGGER.info("Loading ReproSchema activities from %s", args.schema_file)
-    activities = load_reproschema(args.schema_file, non_ui_only=args.non_ui)
+    activity_type = args.activity_type
+    if getattr(args, "non_ui", False):
+        # deprecated alias
+        activity_type = "non-ui"
+    activities = load_reproschema(args.schema_file, mode=activity_type)
     schema_name_map = build_schema_name_map(activities.keys())
 
     redcap_lookup = load_redcap_dictionary(args.data_dictionary)
@@ -475,6 +561,24 @@ async def run_async(args: argparse.Namespace) -> None:
             renamed_column = rename_column(column_name)
             fallback_description = question_text or (metadata_row or {}).get("Field Label", "")
 
+            checkbox_parent = element.get("_checkbox_parent")
+            checkbox_value = element.get("_checkbox_value")
+            checkbox_label = element.get("_checkbox_label")
+            if checkbox_parent and checkbox_value:
+                # Use the parent's REDCap dictionary entry if available.
+                parent_metadata_row = redcap_lookup.get(str(checkbox_parent))
+                if parent_metadata_row is not None:
+                    metadata_row = parent_metadata_row
+                    metadata_text = format_redcap_metadata(metadata_row)
+
+                # Tailor the prompt/description context for checkbox sub-options.
+                # Keep the child's column_name as the expanded name (<parent>___<value>).
+                if isinstance(question, dict):
+                    question_text = question.get("en", "").strip()
+                elif isinstance(question, str):
+                    question_text = question.strip()
+                fallback_description = fallback_description or question_text or (metadata_row or {}).get("Field Label", "")
+
             entry = {
                 "schema_name": schema_name,
                 "column_name": column_name,
@@ -494,12 +598,24 @@ async def run_async(args: argparse.Namespace) -> None:
                 continue
 
             if column_name not in column_prompts:
+                # For checkbox sub-options, add explicit instruction to describe this specific option.
+                prompt_preamble = preamble
+                if checkbox_parent and checkbox_value:
+                    label_suffix = ""
+                    if checkbox_label:
+                        label_suffix = f" (label: '{checkbox_label}')"
+                    prompt_preamble = (
+                        preamble
+                        + "\n\nThis field is one checkbox option for a multi-select question. "
+                        + f"It represents whether the participant selected option value '{checkbox_value}'{label_suffix} for the parent field '{checkbox_parent}'. "
+                        + "Write the description specifically for this option, not for the overall parent question."
+                    )
                 column_prompts[column_name] = build_prompt(
                     schema_name=schema_name,
                     column_name=column_name,
                     metadata_text=metadata_text,
                     question_text=question_text,
-                    preamble=preamble,
+                    preamble=prompt_preamble,
                     fieldAnnotation=element.get("fieldAnnotation"),
                 )
             pending_by_column.setdefault(column_name, []).append(entry)

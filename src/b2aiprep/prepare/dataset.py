@@ -643,44 +643,25 @@ class BIDSDataset:
         return df
 
     @staticmethod
-    def _merge_redcap_columns(
+    def _find_redcap_checkbox_columns(
         df: pd.DataFrame,
-    ) -> pd.DataFrame:
-        """Merge RedCap columns with suffixes into single columns.
+    ) -> t.Dict[t.List[str]]:
+        """Find RedCap checkbox columns in the DataFrame.
 
         Args:
             df: DataFrame containing the data.
 
         Returns:
-            DataFrame with merged columns.
+            List of base column names for checkbox fields.
         """
-        df = df.copy()
-
-        columns_to_merge = defaultdict(list)
+        checkbox_columns = defaultdict(list)
         pattern = re.compile(r'^(?P<base>.+?)___(?P<suffix>.+)$')
         for col in df.columns:
             match = pattern.match(col)
             if match:
                 base_col = match.group('base')
-                columns_to_merge[base_col].append(col)
-        
-        for base_col, cols in columns_to_merge.items():
-            if not cols:
-                continue
-            # Warn if there is more than one non-null value in the columns to be merged
-            non_null_counts = df[cols].notnull().sum(axis=1)
-            multiple_non_null = non_null_counts[non_null_counts > 1]
-            if not multiple_non_null.empty:
-                _LOGGER.warning(
-                    f"Multiple non-null values found when merging columns {cols} into {base_col} "
-                    f"for {len(multiple_non_null)} rows. Taking the first non-null value."
-                )
-
-            # Merge the columns by taking the first non-null value
-            df[base_col] = df[cols].bfill(axis=1).iloc[:, 0]
-            # Drop the original columns
-            df.drop(columns=cols, inplace=True)
-        return df
+                checkbox_columns[base_col].append(col)
+        return checkbox_columns
 
     @staticmethod
     def _construct_phenotype_from_reproschema(
@@ -698,9 +679,11 @@ class BIDSDataset:
             clean_phenotype_data: Whether to clean the phenotype data (default: True).
         """
 
-        # First, we need to merge together columns in redcap with the suffix "___[text]"
-        # into a single column without the suffix.
-        df = BIDSDataset._merge_redcap_columns(df)
+        # We will ignore data dictionary columns when there are corresponding columns
+        # in the dataframe with the suffix "___[text]". These are multi-checkbox columns.
+        # Only the option responses are kept, the main column does not exist in the data,
+        # only in the data dictionary.
+        checkbox_columns = BIDSDataset._find_redcap_checkbox_columns(df)
         
         # Ensure output directory exists
         os.makedirs(output_dir, exist_ok=True)
@@ -723,6 +706,7 @@ class BIDSDataset:
         for schema_name, data in schemas.items():
             for element_name in data['data_elements'].keys():
                 element_to_schema[element_name] = schema_name
+                # TODO: if a redcap checkbox column, add in the ___ options too.
 
         # with all the reproschema activities defined, we now parse our manual reorganization
         # this is a CSV with:
@@ -743,12 +727,15 @@ class BIDSDataset:
 
         _norm = lambda c: str(c)
         df_cols = {_norm(c) for c in df.columns}
-        reorg_all_cols = {_norm(c) for c in df_reorg['column_name_source'].dropna().tolist()}
-        deleted_cols = {_norm(c) for c in df_deleted['column_name_source'].dropna().tolist()}
-        requested_cols = {_norm(c) for c in df_reorg_active['column_name_source'].dropna().tolist()}
 
+        reorg_all_cols = {_norm(c) for c in df_reorg['column_name_source'].dropna().tolist()}
+        cols_for_deletion = {_norm(c) for c in df_deleted['column_name_source'].dropna().tolist()}
+        cols_for_adding = {_norm(c) for c in df_reorg_active['column_name_source'].dropna().tolist()}
+
+        # the rest we will track as we go
         included_cols: t.Set[str] = set()
         missing_in_df_cols: t.Set[str] = set()
+        redcap_group_cols: t.Set[str] = set()
 
         df_reorg = df_reorg_active
 
@@ -770,6 +757,13 @@ class BIDSDataset:
             for column, updated_data in column_mapping.items():
                 col_norm = _norm(column)
                 if col_norm not in df_cols:
+                    if col_norm in checkbox_columns:
+                        # skip the main checkbox column if we have the ___ option columns
+                        _LOGGER.debug(
+                            f'Skipping RedCap checkbox main column "{column}" as option columns found.'
+                        )
+                        redcap_group_cols.add(col_norm)
+                        continue
                     _LOGGER.warning(f'Requested output for "{column}", but this column was not found in the source df.')
                     missing_in_df_cols.add(col_norm)
                     continue
@@ -888,20 +882,22 @@ class BIDSDataset:
                 json.dump(updated_schema, f, indent=2)
 
         # Final report: included/excluded columns (by source column name).
-        excluded_deleted = deleted_cols
-        excluded_missing_in_df = missing_in_df_cols
+        # our later loops only go through reorg columns, so calculate what we're missing now
         excluded_in_df_not_in_reorg = df_cols - reorg_all_cols
 
         _LOGGER.info(
-            "Phenotype column report: included=%d, excluded_deleted=%d, excluded_missing_in_df=%d, excluded_in_df_not_in_reorg=%d",
+            "RedCap Dataframe column report: total=%d, included=%d, missing=%d, redcap_group=%d, excluded_deleted=%d, only_in_df=%d",
+            len(df_cols),
             len(included_cols),
-            len(excluded_deleted),
-            len(excluded_missing_in_df),
+            len(missing_in_df_cols),
+            len(redcap_group_cols),
+            len(cols_for_deletion),
             len(excluded_in_df_not_in_reorg),
         )
         _LOGGER.debug(f"Included columns: {sorted(included_cols)}")
-        _LOGGER.debug(f"Excluded (deleted) columns: {sorted(excluded_deleted)}")
-        _LOGGER.debug(f"Excluded (missing in df) columns: {sorted(excluded_missing_in_df)}")
+        _LOGGER.debug(f"Excluded (missing in df) columns: {sorted(missing_in_df_cols)}")
+        _LOGGER.debug(f"Excluded (redcap group) columns: {sorted(redcap_group_cols)}")
+        _LOGGER.debug(f"Excluded (deleted) columns: {sorted(cols_for_deletion)}")
         _LOGGER.debug(f"Excluded (in df but not in reorg) columns: {sorted(excluded_in_df_not_in_reorg)}")
 
     @staticmethod
