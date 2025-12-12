@@ -1415,27 +1415,29 @@ class BIDSDataset:
             df.loc[idx, "sex_at_birth"] = sex_at_birth
 
         # Re-order columns to place sex_at_birth after gender_identity
-        phenotype_reordered = {}
+        phenotype_reordered = deepcopy(phenotype)
+        first_key = next(iter(phenotype))
+        # reset data elements for reordering
+        phenotype_reordered[first_key]["data_elements"] = {}
+        data_elements_updated = phenotype[first_key]["data_elements"]
         columns = []
         for c in df.columns:
             if c == "specify_gender_identity":
                 # this continue implicitly removes this column from the output
                 continue
             elif c == "gender_identity":
-                first_key = next(iter(phenotype))
                 columns.append(c)
                 columns.append("sex_at_birth")
-                phenotype_reordered[c] = phenotype[first_key]["data_elements"][c]
-                phenotype_reordered["sex_at_birth"] = {
+                data_elements_updated[c] = phenotype[first_key]["data_elements"][c]
+                data_elements_updated["sex_at_birth"] = {
                     "description": "The sex at birth for the individual."
                 }
             elif c == "sex_at_birth":
                 continue
             else:
-                first_key = next(iter(phenotype))
                 columns.append(c)
                 if c in phenotype[first_key]["data_elements"]:
-                    phenotype_reordered[c] = phenotype[first_key]["data_elements"][c]
+                    data_elements_updated[c] = phenotype[first_key]["data_elements"][c]
 
         df = df[columns]
         return df, phenotype_reordered
@@ -1964,6 +1966,8 @@ class BIDSDataset:
                     features['torchaudio'].pop(torchaudio_field, None)
                 for field in ['ppgs', 'transcription']:
                     features.pop(field, None)
+                for field in ['ema']:
+                    features['sparc'].pop(field, None)
                 torch.save(features, output_path)
 
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
