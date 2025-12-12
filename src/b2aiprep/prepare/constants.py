@@ -122,32 +122,6 @@ SPEECH_TASKS = (
     "Word-color Stroop",
 )
 
-def _load_participant_exclusions() -> t.List[str]:
-    """Load the participant IDs to exclude from the dataset.
-
-    Returns
-    -------
-    list
-        The participant IDs to exclude.
-    """
-    b2ai_resources = files("b2aiprep").joinpath("prepare").joinpath("resources")
-    if b2ai_resources.joinpath("participant_id_to_exclude_v2.json").exists():
-        return json.loads(b2ai_resources.joinpath("participant_id_to_exclude_v2.json").read_text())
-    return json.loads(b2ai_resources.joinpath("participant_id_to_exclude.json").read_text())
-
-def _load_audio_filestem_exclusions() -> t.List[str]:
-    """Load the audio filestems to exclude from the dataset.
-
-    Returns
-    -------
-    list
-        The audio filestems to exclude.
-    """
-    b2ai_resources = files("b2aiprep").joinpath("prepare").joinpath("resources")
-    if b2ai_resources.joinpath("audio_filestem_to_exclude.json").exists():
-        return json.loads(b2ai_resources.joinpath("audio_filestem_to_exclude.json").read_text())
-    return []
-
 class Instrument(BaseModel):
     """Instruments are associated with fixed sets of columns and a string
     value to subselect RedCap CSV rows."""

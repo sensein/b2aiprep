@@ -56,6 +56,13 @@ def _build_data_elements(
     order = activity_json.get("ui", {}).get("order", [])
     data_elements: Dict[str, Dict] = {}
 
+    # add in additional items that may only be in addProperties,
+    # e.g. calculated fields
+    for additional_item in activity_json.get("ui", {}).get("addProperties", []):
+        item_name = additional_item.get("isAbout", None)
+        if item_name and item_name.startswith("items/") and item_name not in order:
+            order.append(item_name)
+
     for item_rel_path in order:
         item_path = (activity_path.parent / item_rel_path).resolve()
         if not item_path.exists():

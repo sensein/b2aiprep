@@ -1,3 +1,4 @@
+import numpy as np
 from b2aiprep.prepare.redcap import parse_survey, parse_audio
 import pandas as pd
 
@@ -64,7 +65,8 @@ def test_audio_csv():
                         "acoustic_task_session_id": "14829893-3879-4723-932b-d98d6bc356a8-",
                         "acoustic_task_name": "long_sounds_task",
                         "acoustic_task_cohort": "Pediatrics",
-                        "acoustic_task_status": "Completed", "acoustic_task_duration": 0},
+                        "acoustic_task_status": "Completed",
+                        "acoustic_task_duration": 0},
 
                        {"record_id": "99999",
                         "redcap_repeat_instrument": "Recording",
@@ -78,7 +80,7 @@ def test_audio_csv():
                         "recording_size": 0,
                         "recording_profile_name": "Speech",
                         "recording_profile_version": "v1.0.0",
-                        "recording_input_gain": 0.0,
+                        "recording_input_gain": np.nan,
                         "recording_microphone": "USB-C to 3.5mm Headphone Jack Adapter"},
 
                        {"record_id": "99999",
@@ -92,7 +94,7 @@ def test_audio_csv():
                         "recording_size": 0,
                         "recording_profile_name": "Speech",
                         "recording_profile_version": "v1.0.0",
-                        "recording_input_gain": 0.0,
+                        "recording_input_gain": np.nan,
                         "recording_microphone": "USB-C to 3.5mm Headphone Jack Adapter"}]
 
     actual = parse_audio(audio_files, True)

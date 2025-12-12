@@ -53,9 +53,7 @@ from b2aiprep.prepare.bundle_data import (
 
 from b2aiprep.prepare.prepare import (
     generate_features_wrapper,
-    is_audio_sensitive,
     validate_bids_audio_features,
-
 )
 from b2aiprep.prepare.quality_control import quality_control_wrapper
 
@@ -389,7 +387,7 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
     static_features = []
     for filepath in tqdm(audio_paths, desc="Loading static features", total=len(audio_paths)):
         pt_file = filepath.parent.joinpath(f"{filepath.stem}_features.pt")
-        if not filepath.exists(): #pt will exist based on how audio paths were generated, but audio file might not exist
+        if not pt_file.exists(): #pt will exist based on how audio paths were generated, but audio file might not exist
             continue
 
         device = 'cpu' # not checking for cuda because optimization would be minimal if any
@@ -442,9 +440,7 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
     for feature in features_to_extract:
         feature_class = feature['feature_class']
         feature_name = feature['feature_name']
-
-        feature_output_dir = features_dir / feature_class if feature_class else features_dir / feature_name
-        feature_output_dir.mkdir(parents=True, exist_ok=True)
+        feature_alias = f"{feature_class}_{feature_name}" if feature_class else feature_name
 
         if feature_name != "spectrogram":
             use_byte_stream_split = True
@@ -464,7 +460,7 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
         if not has_data or feature_generator is None:
             _LOGGER.warning(
                 "No non-NaN entries found for %s feature. Skipping parquet export.",
-                f"{feature_class}_{feature_name}" if feature_class else feature_name
+                feature_alias
             )
             continue
 
@@ -474,11 +470,11 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
         if len(ds) == 0:  
             _LOGGER.warning(
                 "No non-NaN entries found for %s feature. Skipping parquet export.",
-                f"{feature_class}_{feature_name}" if feature_class else feature_name
+                feature_alias
             )
             continue
         ds.to_parquet(
-            str((f"{feature_output_dir}/{feature_name}.parquet")),
+            features_dir.joinpath(f"{feature_alias}.parquet").resolve().as_posix(),
             version="2.6",
             compression="zstd",  # Better compression ratio than snappy, still good speed
             compression_level=3,
@@ -496,54 +492,147 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
                 SortingColumn(column_index=2, descending=False),
             ),
         )
+        _LOGGER.info(f"Finished creating {feature_alias}.parquet file.")
 
-    _LOGGER.info("Parquet dataset created.")
+    _LOGGER.info("Bundled dataset created.")
 
 
 @click.command()
 @click.argument("dataset_path", type=click.Path(exists=True))
-def validate_derived_dataset(dataset_path):
-    """Validates derived dataset.
+@click.argument("config_dir", type=click.Path(exists=True))
+def validate_bundled_dataset(dataset_path, config_dir):
+    """Validates bundled dataset.
 
-    This function checks the integrity and structure of a derived dataset
-    directory and optionally fixes detected issues.
+    This function checks the integrity and structure of a bundled dataset
+    directory and performs de-identification checks.
 
     Args:
-        dataset_path (str): Path to the derived dataset directory to validate.
+        dataset_path (str): Path to the bundled dataset directory to validate.
+        config_dir (str): Path to the configuration directory containing de-identification JSONs.
 
     Returns:
-        None: Performs validation and optionally fixes errors in-place.
+        None: Performs validation and prints a report.
     """
     dataset_path = Path(dataset_path)
+    config_dir = Path(config_dir)
 
-    assert dataset_path.exists(), f"Dataset path {dataset_path} does not exist."
-    assert dataset_path.is_dir(), f"Dataset path {dataset_path} is not a directory."
+    click.echo(f"Validating bundled dataset at {dataset_path}")
+    
+    # 1. Check file structure
+    features_dir = dataset_path / "features"
+    if not features_dir.exists():
+        click.echo(f"ERROR: Features directory {features_dir} does not exist.")
+        return
+    
+    expected_parquets = ["torchaudio_spectrogram.parquet", "torchaudio_mfcc.parquet"]
+    for parquet_file in expected_parquets:
+        if not (features_dir / parquet_file).exists():
+             click.echo(f"ERROR: {parquet_file} missing in features directory.")
 
-    # we expect spectrograms.parquet and mfcc.parquet to exist
-    assert dataset_path.joinpath(
-        "spectrogram.parquet"
-    ).exists(), f"Dataset path {dataset_path} does not contain spectrogram.parquet."
-    assert dataset_path.joinpath(
-        "mfcc.parquet"
-    ).exists(), f"Dataset path {dataset_path} does not contain mfcc.parquet."
+    if not (features_dir / "static_features.tsv").exists():
+        click.echo("ERROR: static_features.tsv missing.")
+    
+    phenotype_dir = dataset_path / "phenotype"
+    if not phenotype_dir.exists():
+        click.echo("ERROR: phenotype directory missing.")
 
-    for base_dataframe_name in ["static_features", "phenotype"]:
-        assert dataset_path.joinpath(
-            f"{base_dataframe_name}.tsv"
-        ).exists(), f"Dataset path {dataset_path} does not contain {base_dataframe_name}.tsv."
-        assert dataset_path.joinpath(
-            f"{base_dataframe_name}.json"
-        ).exists(), f"Dataset path {dataset_path} does not contain {base_dataframe_name}.json."
-        df = pd.read_csv(dataset_path.joinpath(f"{base_dataframe_name}.tsv"), sep="\t")
-        with open(dataset_path.joinpath(f"{base_dataframe_name}.json"), "r") as f:
-            info = json.load(f)
-        missing_columns = []
-        for column in info.keys():
-            if column not in df.columns:
-                missing_columns.append(column)
-        assert (
-            len(missing_columns) == 0
-        ), f"Columns not found in {base_dataframe_name}.tsv: {missing_columns}"
+    # 2. Load config
+    try:
+        with open(config_dir / "participants_to_remove.json") as f:
+            participants_to_remove = set(json.load(f))
+        
+        with open(config_dir / "sensitive_audio_tasks.json") as f:
+            sensitive_tasks = set(json.load(f))
+            
+        with open(config_dir / "id_remapping.json") as f:
+            id_remapping = json.load(f)
+            original_ids = set(id_remapping.keys())
+    except FileNotFoundError as e:
+        click.echo(f"ERROR: Config file not found: {e}")
+        return
+
+    issues = []
+    
+    # 3. Check participants and tasks in Parquet files
+    parquet_files = list(features_dir.glob("*.parquet"))
+    if not parquet_files:
+        click.echo("WARNING: No parquet files found in features directory.")
+
+    for parquet_file in parquet_files:
+        try:
+            df = pd.read_parquet(parquet_file, columns=["participant_id", "task_name", "session_id"])
+            
+            # Check participants
+            present_participants = set(df["participant_id"].unique())
+            removed_present = present_participants.intersection(participants_to_remove)
+            if removed_present:
+                issues.append(f"Found participants that should be removed in {parquet_file.name}: {len(removed_present)} participants")
+                
+            # Check tasks
+            present_tasks = set(df["task_name"].unique())
+            sensitive_present = present_tasks.intersection(sensitive_tasks)
+            if sensitive_present:
+                # we allow sensitive tasks in a subset of files
+                if parquet_file.name not in {
+                    "sparc_ema.parquet", "sparc_loudness.parquet",
+                    "torchaudio_pitch.parquet", "sparc_pitch.parquet",
+                    "sparc_periodicity.parquet"
+                }:
+                    issues.append(f"Found sensitive tasks in {parquet_file.name}: {sensitive_present}")
+                
+            # Check remapping
+            unmapped_present = present_participants.intersection(original_ids)
+            if unmapped_present:
+                issues.append(f"Found original (non-remapped) participant IDs in {parquet_file.name}: {len(unmapped_present)} participants")
+        except Exception as e:
+            issues.append(f"Error reading {parquet_file.name}: {e}")
+
+    # 4. Check phenotype files
+    if phenotype_dir.exists():
+        for tsv_file in phenotype_dir.rglob("*.tsv"):
+            try:
+                df = pd.read_csv(tsv_file, sep="\t")
+                if "participant_id" in df.columns:
+                    present_participants = set(df["participant_id"].unique())
+                    removed_present = present_participants.intersection(participants_to_remove)
+                    if removed_present:
+                        issues.append(f"Found participants that should be removed in {tsv_file.name}: {len(removed_present)} participants")
+                    
+                    unmapped_present = present_participants.intersection(original_ids)
+                    if unmapped_present:
+                        issues.append(f"Found original (non-remapped) participant IDs in {tsv_file.name}: {len(unmapped_present)} participants")
+            except Exception as e:
+                issues.append(f"Error reading {tsv_file.name}: {e}")
+
+    # 5. Compare phenotype sessions with parquet sessions
+    sessions_file = phenotype_dir.joinpath("task") / "session.tsv"
+    if sessions_file.exists():
+        try:
+            sessions_df = pd.read_csv(sessions_file, sep="\t")
+            if "session_id" in sessions_df.columns:
+                phenotype_sessions = set(sessions_df["session_id"].unique())
+                
+                for parquet_file in parquet_files:
+                    try:
+                        df = pd.read_parquet(parquet_file, columns=["session_id"])
+                        parquet_sessions = set(df["session_id"].unique())
+                        
+                        if not parquet_sessions.issubset(phenotype_sessions):
+                            extra = parquet_sessions - phenotype_sessions
+                            issues.append(f"Sessions in {parquet_file.name} not found in {sessions_file.name}: {len(extra)} sessions")
+                    except:
+                        pass
+        except Exception as e:
+            issues.append(f"Error reading sessions file: {e}")
+    else:
+        click.echo("WARNING: phenotype/sessions.tsv (or session.tsv) not found, skipping session comparison.")
+
+    if issues:
+        click.echo("\nValidation FAILED with the following issues:")
+        for issue in issues:
+            click.echo(f"- {issue}")
+    else:
+        click.echo("\nValidation PASSED. No issues found.")
 
 @click.command()
 @click.argument("bids_path", type=click.Path(exists=True))
@@ -551,7 +640,10 @@ def validate_derived_dataset(dataset_path):
 @click.argument("deidentify_config_dir", type=click.Path(exists=True))
 @click.option("--skip_audio/--no-skip_audio", type=bool, default=False, show_default=True, help="Skip processing audio files")
 @click.option("--skip_audio_features/--no-skip_audio_features", type=bool, default=False, show_default=True, help="Skip processing audio feature files")
-def deidentify_bids_dataset(bids_path, outdir, deidentify_config_dir, skip_audio, skip_audio_features):
+@click.option("--max_workers", type=int, default=16, show_default=True, help="Maximum number of worker threads to use")
+def deidentify_bids_dataset(
+    bids_path, outdir, deidentify_config_dir, skip_audio, skip_audio_features, max_workers: int = 16
+):
     """Creates a deidentified version of a given BIDS dataset.
 
     The deidentified version of the dataset: 
@@ -573,7 +665,11 @@ def deidentify_bids_dataset(bids_path, outdir, deidentify_config_dir, skip_audio
     # Create BIDSDataset instance and use the deidentify method
     bids_dataset = BIDSDataset(bids_path)
     bids_dataset.deidentify(
-        outdir=outdir, deidentify_config_dir=deidentify_config_dir, skip_audio=skip_audio, skip_audio_features=skip_audio_features
+        outdir=outdir,
+        deidentify_config_dir=deidentify_config_dir,
+        skip_audio=skip_audio,
+        skip_audio_features=skip_audio_features,
+        max_workers=max_workers,
     )
     
     _LOGGER.info("Deidentified dataset created successfully.")

@@ -6,19 +6,7 @@ from unittest.mock import MagicMock, patch
 import pandas as pd
 import pytest
 
-# Create mock modules before any imports
-mock_modules = {
-    "torch": MagicMock(),
-    "senselab": MagicMock(),
-    "senselab.audio": MagicMock(),
-    "senselab.audio.data_structures": MagicMock(),
-    "senselab.audio.data_structures.audio": MagicMock(),
-    "soundfile": MagicMock(),
-}
-
-# Patch sys.modules before importing the module
-with patch.dict("sys.modules", mock_modules):
-    from b2aiprep.prepare.dataset import BIDSDataset, VBAIDataset
+from b2aiprep.prepare.dataset import BIDSDataset, VBAIDataset
 
 
 # Create mock classes for testing
@@ -713,3 +701,34 @@ class TestVBAIDataset:
             except (TypeError, AttributeError):
                 # Expected to fail due to implementation bugs
                 pass
+
+def test_drop_columns_basic():
+    """Test basic column dropping functionality."""
+    df = pd.DataFrame(
+        {
+            "keep_col1": [1, 2, 3],
+            "drop_col1": [4, 5, 6],
+            "keep_col2": [7, 8, 9],
+            "drop_col2": [10, 11, 12],
+        }
+    )
+
+    phenotype = {
+        "keep_col1": {"description": "Keep this"},
+        "drop_col1": {"description": "Drop this"},
+        "keep_col2": {"description": "Keep this too"},
+        "drop_col2": {"description": "Drop this too"},
+    }
+
+    columns_to_drop = ["drop_col1", "drop_col2"]
+
+    # Create a temporary BIDSDataset instance to test the method
+    result_df, result_phenotype = BIDSDataset._drop_columns_from_df_and_data_dict(
+        df, phenotype, columns_to_drop, "Test message"
+    )
+
+    # Check DataFrame
+    assert list(result_df.columns) == ["keep_col1", "keep_col2"]
+
+    # Check phenotype
+    assert list(result_phenotype.keys()) == ["keep_col1", "keep_col2"]
