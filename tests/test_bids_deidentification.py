@@ -433,7 +433,7 @@ class TestBIDSDatasetClean:
 
         # Check that sex_at_birth column was added
         assert "sex_at_birth" in df_sex.columns
-        assert "sex_at_birth" in phenotype_sex
+        assert "sex_at_birth" in phenotype_sex["place_holder_schema"]["data_elements"]
         assert df_sex["sex_at_birth"].iloc[0] == "Male"
         assert df_sex["sex_at_birth"].iloc[1] == "Female"
 

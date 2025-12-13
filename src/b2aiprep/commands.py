@@ -57,7 +57,7 @@ from b2aiprep.prepare.prepare import (
 )
 from b2aiprep.prepare.quality_control import quality_control_wrapper
 
-from b2aiprep.prepare.data_validation import validate_phenotype
+from b2aiprep.prepare.data_validation import validate_phenotype, validate_sensitive_feature_removal_in_bundle
 from b2aiprep.prepare.update import TemplateUpdateError, reorganize_bids_activities, update_bids_template_files
 
 _LOGGER = logging.getLogger(__name__)
@@ -626,6 +626,14 @@ def validate_bundled_dataset(dataset_path, config_dir):
             issues.append(f"Error reading sessions file: {e}")
     else:
         click.echo("WARNING: phenotype/sessions.tsv (or session.tsv) not found, skipping session comparison.")
+
+    # 6. Verify forbidden features are removed for sensitive tasks
+    issues.extend(
+        validate_sensitive_feature_removal_in_bundle(
+            features_dir=features_dir,
+            sensitive_tasks=sensitive_tasks,
+        )
+    )
 
     if issues:
         click.echo("\nValidation FAILED with the following issues:")

@@ -3,6 +3,10 @@ import json
 import pandas as pd
 from pathlib import Path
 import logging
+import typing as t
+
+from b2aiprep.prepare.dataset import _SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE
+from b2aiprep.prepare.utils import normalize_task_label
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -168,3 +172,64 @@ def validate_participant_data(data: dict, data_dictionary: dict) -> None:
     """
     for field in data:
         validate_field(field=field, data=data, data_dictionary=data_dictionary)
+
+
+def validate_sensitive_feature_removal_in_bundle(
+    *,
+    features_dir: Path,
+    sensitive_tasks: t.Set[str],
+    forbidden_features: t.Union[
+        t.AbstractSet[str],
+        t.Mapping[str, t.AbstractSet[str]],
+    ] = _SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE,
+) -> t.List[str]:
+    """Validate that bundled parquet feature files do not contain forbidden features for sensitive tasks.
+
+    In the current bundling implementation, sensitive audio feature arrays are removed from the per-record
+    feature `.pt` files, and the bundle generators skip those rows entirely for certain features.
+    This check makes that expectation explicit.
+
+    Returns a list of human-readable issue strings.
+    """
+
+    if not sensitive_tasks:
+        return []
+
+    if isinstance(forbidden_features, t.AbstractSet):
+        forbidden_features = {"": forbidden_features}
+
+    issues: t.List[str] = []
+    sensitive_normalized = {normalize_task_label(t) for t in sensitive_tasks}
+    for group, keys_to_remove in forbidden_features.items():
+        for feature_name in sorted(keys_to_remove):
+            if group == "":
+                parquet_name = feature_name
+            else:
+                parquet_name = f"{group}_{feature_name}"
+            
+            parquet_path = features_dir / f"{parquet_name}.parquet"
+            if not parquet_path.exists():
+                continue
+
+            try:
+                df = pd.read_parquet(parquet_path, columns=["participant_id", "task_name", "session_id"])
+            except Exception as e:
+                issues.append(f"Error reading {parquet_path.name} for sensitive-feature validation: {e}")
+                continue
+
+            if "task_name" not in df.columns:
+                issues.append(f"{parquet_path.name} missing required column task_name")
+                continue
+
+            present_sensitive = {
+                task
+                for task in set(df["task_name"].dropna().unique())
+                if normalize_task_label(task) in sensitive_normalized
+            }
+            if present_sensitive:
+                issues.append(
+                    "Sensitive tasks unexpectedly present in "
+                    f"{parquet_path.name} (forbidden feature: {feature_name}): {sorted(present_sensitive)}"
+                )
+
+    return issues

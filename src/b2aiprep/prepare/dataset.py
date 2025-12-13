@@ -39,7 +39,12 @@ from tqdm import tqdm
 
 from b2aiprep.prepare.constants import RepeatInstrument, Instrument
 from b2aiprep.prepare.update import build_activity_payload
-from b2aiprep.prepare.utils import copy_package_resource, get_commit_sha
+from b2aiprep.prepare.utils import (
+    copy_package_resource,
+    get_commit_sha,
+    normalize_task_label,
+    sanitize_task_entity_in_bids_stem,
+)
 from b2aiprep.prepare.fhir_utils import convert_response_to_fhir
 from b2aiprep.prepare.prepare import (
     get_value_from_metadata,
@@ -52,6 +57,38 @@ from pydantic import BaseModel
 from b2aiprep.prepare.redcap import RedCapDataset
 
 _LOGGER = logging.getLogger(__name__)
+
+
+ 
+
+# Sensitive audio feature content that must not be present for sensitive tasks.
+#
+# This is a grouped spec because the per-record feature `.pt` files are nested dicts
+# (e.g., `features["torchaudio"]["mfcc"]`), while some sensitive artifacts live at
+# the top-level (e.g., `features["transcription"]`).
+_SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE: t.Mapping[str, t.FrozenSet[str]] = {
+    "torchaudio": frozenset({"mel_filter_bank", "mfcc", "mel_spectrogram", "spectrogram"}),
+    "": frozenset({"ppgs", "transcription"}),
+    "sparc": frozenset({"ema"}),
+}
+
+
+def _remove_sensitive_features_from_feature_payload(
+    features: t.MutableMapping[str, t.Any],
+    spec: t.Mapping[str, t.AbstractSet[str]] = _SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE,
+) -> None:
+    """Remove sensitive feature content from an in-memory feature payload in-place."""
+
+    for group, keys_to_remove in spec.items():
+        if group == "":
+            for key in keys_to_remove:
+                features.pop(key, None)
+            continue
+
+        grouped_payload = features.get(group)
+        if isinstance(grouped_payload, dict):
+            for key in keys_to_remove:
+                grouped_payload.pop(key, None)
 
 def _copy_audio_files_parallel(copy_tasks: t.List[t.Tuple[Path, Path]], max_workers: int = 16):
     """Copy audio files in parallel using ThreadPoolExecutor.
@@ -1206,6 +1243,12 @@ class BIDSDataset:
         # Remove sensitive columns
         df, phenotype = BIDSDataset._remove_sensitive_columns(df, phenotype)
 
+        # Sanitize task labels in task phenotype tables (e.g., phenotype/task/acoustic_task.tsv)
+        if "acoustic_task_name" in df.columns:
+            df.loc[:, "acoustic_task_name"] = df["acoustic_task_name"].apply(
+                lambda v: normalize_task_label(v) if pd.notna(v) else v
+            )
+
         return df, phenotype
 
     @staticmethod
@@ -1419,7 +1462,7 @@ class BIDSDataset:
         first_key = next(iter(phenotype))
         # reset data elements for reordering
         phenotype_reordered[first_key]["data_elements"] = {}
-        data_elements_updated = phenotype[first_key]["data_elements"]
+        data_elements_updated = phenotype_reordered[first_key]["data_elements"]
         columns = []
         for c in df.columns:
             if c == "specify_gender_identity":
@@ -1740,7 +1783,10 @@ class BIDSDataset:
         elif exclusion_type == 'filestem_contains':
             paths = [
                 a for a in paths
-                if all(excl not in a.stem for excl in exclusion)
+                if all(
+                    normalize_task_label(excl) not in normalize_task_label(a.stem)
+                    for excl in exclusion
+                )
             ]
             # for better logging, add the list of exclusions to the exclusion type
             exclusion_type += f" ({', '.join(exclusion)})"
@@ -1846,7 +1892,7 @@ class BIDSDataset:
             audio_paths, exclusion_list=['audio-check'], exclusion_type='filestem_contains'
         )
 
-        sensitive_audio_task_list = [f'task-{task}' for task in sensitive_audio_task_list]
+        sensitive_audio_task_list = [f"task-{normalize_task_label(task)}" for task in sensitive_audio_task_list]
         audio_paths = BIDSDataset._apply_exclusion_list_to_filepaths(
             audio_paths, exclusion_list=sensitive_audio_task_list, exclusion_type='filestem_contains'
         )
@@ -1868,7 +1914,8 @@ class BIDSDataset:
             session_id = get_value_from_metadata(metadata, linkid="session_id", endswith=True)
             
             # Create output path with deidentified structure
-            audio_path_stem_ending = '-'.join(audio_path.stem.split("_")[2:])
+            sanitized_stem = sanitize_task_entity_in_bids_stem(audio_path.stem)
+            audio_path_stem_ending = '-'.join(sanitized_stem.split("_")[2:])
             output_path = outdir.joinpath(
                 f"sub-{participant_id}/ses-{session_id}/audio/sub-{participant_id}_ses-{session_id}_{audio_path_stem_ending}.wav"
             )
@@ -1933,6 +1980,8 @@ class BIDSDataset:
         paths = BIDSDataset._apply_exclusion_list_to_filepaths(
             paths, exclusion_list=['audio-check'], exclusion_type='filestem_contains'
         )
+
+        sensitive_task_labels = {normalize_task_label(t) for t in sensitive_audio_task_list}
         
         _LOGGER.info(f"Copying {len(paths)} feature files.")
 
@@ -1948,7 +1997,9 @@ class BIDSDataset:
 
             # Create output path with deidentified structure
             features_ending = '_features'
-            audio_path_stem = features_path.stem.replace(features_ending,'')
+            audio_path_stem = sanitize_task_entity_in_bids_stem(
+                features_path.stem.replace(features_ending, '')
+            )
             path_stem_ending = '-'.join(audio_path_stem.split("_")[2:]) + features_ending
             output_path = outdir.joinpath(
                 f"sub-{participant_id}/ses-{session_id}/audio/sub-{participant_id}_ses-{session_id}_{path_stem_ending}{features_path.suffix}"
@@ -1957,17 +2008,11 @@ class BIDSDataset:
 
             # if it is not sensitive and we want to keep features, move all features over
             task_name = BIDSDataset._extract_task_name_from_path(features_path)
-            if task_name not in sensitive_audio_task_list:
+            if normalize_task_label(task_name) not in sensitive_task_labels:
                 shutil.copy(features_path, output_path)
             else:
                 features = torch.load(features_path, weights_only=False, map_location=torch.device('cpu'))
-                # Sensitive features to remove
-                for torchaudio_field in ['mel_filter_bank', 'mfcc', 'mel_spectrogram', 'spectrogram']:
-                    features['torchaudio'].pop(torchaudio_field, None)
-                for field in ['ppgs', 'transcription']:
-                    features.pop(field, None)
-                for field in ['ema']:
-                    features['sparc'].pop(field, None)
+                _remove_sensitive_features_from_feature_payload(features)
                 torch.save(features, output_path)
 
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
