@@ -1679,6 +1679,15 @@ class BIDSDataset:
         audio_filestems_to_remove = BIDSDataset.load_audio_filestems_to_remove(deidentify_config_dir)
         sensitive_audio_tasks = BIDSDataset.load_sensitive_audio_tasks(deidentify_config_dir)
         participant_session_id_to_remap = BIDSDataset.map_sequential_session_ids(self.data_path)
+
+        # Allow users to specify filestems either in the original ID space (pre-deidentify)
+        # or in the deidentified ID space (post-remap). We expand the configured list so
+        # matching works regardless of which convention is used.
+        audio_filestems_to_remove = BIDSDataset._expand_filestems_for_deidentification(
+            audio_filestems_to_remove,
+            participant_ids_to_remap=participant_ids_to_remap,
+            participant_session_id_to_remap=participant_session_id_to_remap,
+        )
         
         # Process phenotype directory if it exists
         phenotype_base_path = self.data_path.joinpath("phenotype")
@@ -1771,15 +1780,37 @@ class BIDSDataset:
         if len(exclusion) == 0:
             return paths
 
+        def _canonical_recording_stem(stem: str) -> str:
+            """Canonicalize a BIDS-like recording stem for matching.
+
+            Many artifacts share a common "recording" identity, but append additional
+            entities (e.g. "_features", "_run-1", "_rec-foo"). For exclusion matching,
+            we treat the canonical identifier as everything up through the `task-...`
+            entity, inclusive.
+            """
+
+            parts = stem.split("_")
+            try:
+                task_idx = next(i for i, part in enumerate(parts) if part.startswith("task-"))
+            except StopIteration:
+                return stem
+
+            # Join up to and including the task entity (e.g. sub-..._ses-..._task-...)
+            return "_".join(parts[: task_idx + 1])
+
         if exclusion_type == 'participant':
             paths = [
                 x for x in paths
                 if all(f"sub-{pid}" not in str(x) for pid in exclusion)
             ]
         elif exclusion_type == 'filename':
+            # Normalize exclusions to recording filestems (strip extensions and known suffixes).
+            canonical_exclusion = {
+                _canonical_recording_stem(Path(excl).stem) for excl in exclusion
+            }
             paths = [
                 a for a in paths
-                if a.stem not in exclusion
+                if _canonical_recording_stem(a.stem) not in canonical_exclusion
             ]
         elif exclusion_type == 'filestem_contains':
             paths = [
@@ -1798,6 +1829,59 @@ class BIDSDataset:
                 f"Removed {n - len(paths)} records due to exclusion: {exclusion_type}."
             )
         return paths
+
+    @staticmethod
+    def _expand_filestems_for_deidentification(
+        filestems: t.Iterable[str],
+        *,
+        participant_ids_to_remap: t.Mapping[str, str],
+        participant_session_id_to_remap: t.Mapping[str, str],
+    ) -> t.List[str]:
+        """Expand configured recording filestems to match both original and remapped IDs.
+
+        Users may provide filestems referencing either:
+        - the source dataset naming (e.g. sub-001js_ses-<uuid>_task-foo)
+        - the deidentified naming (e.g. sub-512342_ses-<mapped>_task-foo)
+
+        This returns a de-duplicated list containing both forms.
+        """
+
+        # Build reverse maps so we can support both directions when possible.
+        reverse_participant_map = {v: k for k, v in participant_ids_to_remap.items()}
+        reverse_session_map = {v: k for k, v in participant_session_id_to_remap.items()}
+
+        expanded: t.Set[str] = set()
+        pattern = re.compile(r"^sub-(?P<sub>[^_]+)(?:_ses-(?P<ses>[^_]+))?(?P<rest>.*)$")
+
+        for raw in filestems:
+            stem = Path(raw).stem  # tolerate accidental extensions
+            expanded.add(stem)
+
+            m = pattern.match(stem)
+            if not m:
+                continue
+
+            sub = m.group("sub")
+            ses = m.group("ses")
+            rest = m.group("rest")
+
+            # Forward-map into deidentified space
+            sub_fwd = participant_ids_to_remap.get(sub, sub)
+            ses_fwd = participant_session_id_to_remap.get(ses, ses) if ses is not None else None
+            if ses_fwd is None:
+                expanded.add(f"sub-{sub_fwd}{rest}")
+            else:
+                expanded.add(f"sub-{sub_fwd}_ses-{ses_fwd}{rest}")
+
+            # Reverse-map back into original space (best-effort)
+            sub_rev = reverse_participant_map.get(sub, sub)
+            ses_rev = reverse_session_map.get(ses, ses) if ses is not None else None
+            if ses_rev is None:
+                expanded.add(f"sub-{sub_rev}{rest}")
+            else:
+                expanded.add(f"sub-{sub_rev}_ses-{ses_rev}{rest}")
+
+        return sorted(expanded)
 
     @staticmethod
     def _extract_participant_id_from_path(path: Path) -> str:

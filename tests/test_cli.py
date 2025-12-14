@@ -752,6 +752,13 @@ def test_deidentify_bids_dataset_cli_remove_audio(
     assert not (
         outdir / "sub-001" / "ses-1" / "audio" / "sub-001_ses-1_task-reading.wav"
     ).exists()
+    assert not (
+        outdir
+        / "sub-001"
+        / "ses-1"
+        / "audio"
+        / "sub-001_ses-1_task-reading_features.pt"
+    ).exists()
 
 def test_reproschema_to_redcap_cli():
     """Test the 'b2aiprep-cli reproschema-to-redcap' command using subprocess."""
