@@ -347,6 +347,13 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
     if not skip_audio:
         _LOGGER.warning("Audio data is currently not supported for bundling. No audio files will be included in the bundle.")
 
+    # Tabulate bundle stats during packaging (no extra passes over parquet outputs).
+    # We track counts per bundled output plus overall unique participants/tasks/examples.
+    bundle_output_stats: "OrderedDict[str, dict]" = OrderedDict()
+    overall_participants: set[str] = set()
+    overall_tasks: set[str] = set()
+    overall_example_keys: set[tuple[str, str, str]] = set()
+
     bids_path = Path(bids_path)
     feature_paths = get_paths(bids_path, file_extension=".pt")
     feature_paths = [x["path"] for x in feature_paths]
@@ -385,6 +392,9 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
 
     _LOGGER.info("Loading audio static features.")
     static_features = []
+    static_examples = 0
+    static_participants: set[str] = set()
+    static_tasks: set[str] = set()
     for filepath in tqdm(audio_paths, desc="Loading static features", total=len(audio_paths)):
         pt_file = filepath.parent.joinpath(f"{filepath.stem}_features.pt")
         if not pt_file.exists(): #pt will exist based on how audio paths were generated, but audio file might not exist
@@ -397,6 +407,19 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
             "session_id": BIDSDataset._extract_session_id_from_path(pt_file),
             "task_name": BIDSDataset._extract_task_name_from_path(pt_file),
         }
+
+        static_examples += 1
+        participant_id = subj_info.get("participant_id")
+        task_name = subj_info.get("task_name")
+        session_id = subj_info.get("session_id")
+        if participant_id:
+            static_participants.add(participant_id)
+            overall_participants.add(participant_id)
+        if task_name:
+            static_tasks.add(task_name)
+            overall_tasks.add(task_name)
+        if participant_id and session_id and task_name:
+            overall_example_keys.add((participant_id, session_id, task_name))
 
         transcription = features.get("transcription", None)
         if transcription is not None:
@@ -423,6 +446,14 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
         json.dump(static_features_json, f, indent=2)
     _LOGGER.info("Finished creating static features.")
 
+    bundle_output_stats[(features_dir / "static_features.tsv").name] = {
+        "path": (features_dir / "static_features.tsv").resolve().as_posix(),
+        "examples": static_examples,
+        "participants": static_participants,
+        "tasks": static_tasks,
+        "status": "created",
+    }
+
     _LOGGER.info("Loading other features into HF datasets.")
 
     features_to_extract = [
@@ -441,6 +472,8 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
         feature_class = feature['feature_class']
         feature_name = feature['feature_name']
         feature_alias = f"{feature_class}_{feature_name}" if feature_class else feature_name
+
+        output_parquet = features_dir.joinpath(f"{feature_alias}.parquet").resolve()
 
         if feature_name != "spectrogram":
             use_byte_stream_split = True
@@ -462,19 +495,53 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
                 "No non-NaN entries found for %s feature. Skipping parquet export.",
                 feature_alias
             )
+            bundle_output_stats[output_parquet.name] = {
+                "path": output_parquet.as_posix(),
+                "examples": 0,
+                "participants": set(),
+                "tasks": set(),
+                "status": "skipped(no-data)",
+            }
             continue
 
-        # # sort the dataset by identifier and task_name
-        # ds = Dataset.from_generator(maybe_empty_generator, num_proc=1)
-        ds = Dataset.from_generator(feature_generator, num_proc=1)
-        if len(ds) == 0:  
+        # Stream records once while updating stats.
+        feature_examples = 0
+        feature_participants: set[str] = set()
+        feature_tasks: set[str] = set()
+
+        def _feature_generator_with_stats():
+            nonlocal feature_examples
+            for record in feature_generator():
+                feature_examples += 1
+                participant_id = record.get("participant_id")
+                task_name = record.get("task_name")
+                session_id = record.get("session_id")
+                if participant_id:
+                    feature_participants.add(participant_id)
+                    overall_participants.add(participant_id)
+                if task_name:
+                    feature_tasks.add(task_name)
+                    overall_tasks.add(task_name)
+                if participant_id and session_id and task_name:
+                    overall_example_keys.add((participant_id, session_id, task_name))
+                yield record
+
+        ds = Dataset.from_generator(_feature_generator_with_stats, num_proc=1)
+        if len(ds) == 0:
             _LOGGER.warning(
                 "No non-NaN entries found for %s feature. Skipping parquet export.",
                 feature_alias
             )
+            bundle_output_stats[output_parquet.name] = {
+                "path": output_parquet.as_posix(),
+                "examples": 0,
+                "participants": set(),
+                "tasks": set(),
+                "status": "skipped(no-data)",
+            }
             continue
         ds.to_parquet(
-            features_dir.joinpath(f"{feature_alias}.parquet").resolve().as_posix(),
+            output_parquet.as_posix(),
             version="2.6",
             compression="zstd",  # Better compression ratio than snappy, still good speed
             compression_level=3,
@@ -492,9 +559,30 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
                 SortingColumn(column_index=2, descending=False),
             ),
         )
-        _LOGGER.info(f"Finished creating {feature_alias}.parquet file.")
 
-    _LOGGER.info("Bundled dataset created.")
+        bundle_output_stats[output_parquet.name] = {
+            "path": output_parquet.as_posix(),
+            "examples": feature_examples,
+            "participants": feature_participants,
+            "tasks": feature_tasks,
+            "status": "created",
+        }
+
+    # Single consolidated log at end with per-file and overall counts.
+    header = "file\texamples\tunique_participants\tunique_tasks\tstatus"
+    rows = [header]
+    for name, stat in bundle_output_stats.items():
+        rows.append(
+            f"{name}\t{stat['examples']}\t{len(stat['participants'])}\t{len(stat['tasks'])}\t{stat['status']}"
+        )
+    rows.append(
+        f"OVERALL(unique)\t{len(overall_example_keys)}\t{len(overall_participants)}\t{len(overall_tasks)}\t-"
+    )
+    _LOGGER.info(
+        "Bundled dataset created. Output directory: %s\n%s",
+        outdir.resolve().as_posix(),
+        "\n".join(rows),
+    )
 
 
 @click.command()
