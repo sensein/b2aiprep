@@ -819,6 +819,7 @@ class BIDSDataset:
                     column_base, column_choice = column.rsplit('___', maxsplit=1)
                 else:
                     column_base = column
+                    column_choice = None
                 if column_base in checkbox_columns:
                     data_element = copy(schemas[schema_to_use]["data_elements"][column_base])
                     # reduce the choices to just the choice for this checkbox
