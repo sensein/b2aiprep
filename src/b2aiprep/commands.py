@@ -58,6 +58,7 @@ from b2aiprep.prepare.prepare import (
 from b2aiprep.prepare.quality_control import quality_control_wrapper
 
 from b2aiprep.prepare.data_validation import validate_phenotype, validate_sensitive_feature_removal_in_bundle
+from b2aiprep.prepare.utils import normalize_task_label
 from b2aiprep.prepare.update import TemplateUpdateError, reorganize_bids_activities, update_bids_template_files
 
 _LOGGER = logging.getLogger(__name__)
@@ -605,24 +606,31 @@ def validate_bundled_dataset(dataset_path, config_dir):
     config_dir = Path(config_dir)
 
     click.echo(f"Validating bundled dataset at {dataset_path}")
+
+    issues: t.List[str] = []
     
     # 1. Check file structure
     features_dir = dataset_path / "features"
     if not features_dir.exists():
-        click.echo(f"ERROR: Features directory {features_dir} does not exist.")
-        return
+        issues.append(f"Features directory missing: {features_dir}")
+        click.echo("\nValidation FAILED with the following issues:")
+        for issue in issues:
+            click.echo(f"- {issue}")
+        raise SystemExit(1)
     
-    expected_parquets = ["torchaudio_spectrogram.parquet", "torchaudio_mfcc.parquet"]
-    for parquet_file in expected_parquets:
-        if not (features_dir / parquet_file).exists():
-             click.echo(f"ERROR: {parquet_file} missing in features directory.")
-
-    if not (features_dir / "static_features.tsv").exists():
-        click.echo("ERROR: static_features.tsv missing.")
+    required_feature_files = [
+        "torchaudio_spectrogram.parquet",
+        "torchaudio_mfcc.parquet",
+        "static_features.tsv",
+        "static_features.json",
+    ]
+    for filename in required_feature_files:
+        if not (features_dir / filename).exists():
+            issues.append(f"Missing required file in features/: {filename}")
     
     phenotype_dir = dataset_path / "phenotype"
     if not phenotype_dir.exists():
-        click.echo("ERROR: phenotype directory missing.")
+        issues.append("Phenotype directory missing")
 
     # 2. Load config
     try:
@@ -631,6 +639,11 @@ def validate_bundled_dataset(dataset_path, config_dir):
         
         with open(config_dir / "sensitive_audio_tasks.json") as f:
             sensitive_tasks = set(json.load(f))
+            sensitive_tasks_normalized = {
+                normalize_task_label(task)
+                for task in sensitive_tasks
+                if isinstance(task, str) and task.strip()
+            }
             
         with open(config_dir / "id_remapping.json") as f:
             id_remapping = json.load(f)
@@ -639,12 +652,21 @@ def validate_bundled_dataset(dataset_path, config_dir):
         click.echo(f"ERROR: Config file not found: {e}")
         return
 
-    issues = []
-    
     # 3. Check participants and tasks in Parquet files
     parquet_files = list(features_dir.glob("*.parquet"))
     if not parquet_files:
-        click.echo("WARNING: No parquet files found in features directory.")
+        issues.append("No parquet files found in features directory")
+
+    # Capture parquet session IDs for cross-checks (best-effort).
+    parquet_sessions_all: set[str] = set()
+    for parquet_file in parquet_files:
+        try:
+            df_sessions = pd.read_parquet(parquet_file, columns=["session_id"])
+            parquet_sessions_all.update(
+                [str(v) for v in df_sessions.get("session_id", pd.Series(dtype=str)).dropna().unique()]
+            )
+        except Exception:
+            continue
 
     for parquet_file in parquet_files:
         try:
@@ -657,8 +679,12 @@ def validate_bundled_dataset(dataset_path, config_dir):
                 issues.append(f"Found participants that should be removed in {parquet_file.name}: {len(removed_present)} participants")
                 
             # Check tasks
-            present_tasks = set(df["task_name"].unique())
-            sensitive_present = present_tasks.intersection(sensitive_tasks)
+            present_tasks = set(df["task_name"].dropna().unique())
+            sensitive_present = {
+                task
+                for task in present_tasks
+                if normalize_task_label(task) in sensitive_tasks_normalized
+            }
             if sensitive_present:
                 # we allow sensitive tasks in a subset of files
                 if parquet_file.name not in {
@@ -693,27 +719,55 @@ def validate_bundled_dataset(dataset_path, config_dir):
                 issues.append(f"Error reading {tsv_file.name}: {e}")
 
     # 5. Compare phenotype sessions with parquet sessions
-    sessions_file = phenotype_dir.joinpath("task") / "session.tsv"
-    if sessions_file.exists():
+    phenotype_sessions: t.Optional[set[str]] = None
+    sessions_candidates = [
+        phenotype_dir / "task" / "session.tsv",
+        phenotype_dir / "sessions.tsv",
+        phenotype_dir / "session.tsv",
+    ]
+    sessions_file = next((p for p in sessions_candidates if p.exists()), None)
+    if sessions_file is not None:
         try:
             sessions_df = pd.read_csv(sessions_file, sep="\t")
-            if "session_id" in sessions_df.columns:
-                phenotype_sessions = set(sessions_df["session_id"].unique())
-                
+            if "session_id" not in sessions_df.columns:
+                issues.append(f"Sessions file missing required column session_id: {sessions_file.as_posix()}")
+            else:
+                phenotype_sessions = set(sessions_df["session_id"].dropna().astype(str).unique())
+
                 for parquet_file in parquet_files:
                     try:
                         df = pd.read_parquet(parquet_file, columns=["session_id"])
-                        parquet_sessions = set(df["session_id"].unique())
-                        
+                        parquet_sessions = set(df["session_id"].dropna().astype(str).unique())
+
                         if not parquet_sessions.issubset(phenotype_sessions):
                             extra = parquet_sessions - phenotype_sessions
-                            issues.append(f"Sessions in {parquet_file.name} not found in {sessions_file.name}: {len(extra)} sessions")
-                    except:
-                        pass
+                            issues.append(
+                                f"Sessions in {parquet_file.name} not found in {sessions_file.name}: {len(extra)} sessions"
+                            )
+                    except Exception:
+                        continue
         except Exception as e:
-            issues.append(f"Error reading sessions file: {e}")
-    else:
-        click.echo("WARNING: phenotype/sessions.tsv (or session.tsv) not found, skipping session comparison.")
+            issues.append(f"Error reading sessions file {sessions_file.name}: {e}")
+    elif phenotype_dir.exists():
+        issues.append("No phenotype sessions TSV found (looked for phenotype/task/session.tsv, phenotype/sessions.tsv, phenotype/session.tsv)")
+
+    # 5b. Verify session_id in static_features.tsv matches known sessions.
+    static_features_path = features_dir / "static_features.tsv"
+    if static_features_path.exists():
+        try:
+            static_df = pd.read_csv(static_features_path, sep="\t")
+            if "session_id" not in static_df.columns:
+                issues.append("static_features.tsv missing required column session_id")
+            else:
+                static_sessions = set(static_df["session_id"].dropna().astype(str).unique())
+                reference_sessions = phenotype_sessions if phenotype_sessions is not None else parquet_sessions_all
+                if reference_sessions and not static_sessions.issubset(reference_sessions):
+                    extra = static_sessions - reference_sessions
+                    issues.append(
+                        f"Sessions in static_features.tsv not found in reference sessions: {len(extra)} sessions"
+                    )
+        except Exception as e:
+            issues.append(f"Error reading static_features.tsv: {e}")
 
     # 6. Verify forbidden features are removed for sensitive tasks
     issues.extend(
@@ -727,6 +781,7 @@ def validate_bundled_dataset(dataset_path, config_dir):
         click.echo("\nValidation FAILED with the following issues:")
         for issue in issues:
             click.echo(f"- {issue}")
+        raise SystemExit(1)
     else:
         click.echo("\nValidation PASSED. No issues found.")
 

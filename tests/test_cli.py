@@ -656,20 +656,57 @@ def test_validate_bundled_dataset_cli(setup_publish_config):
         phenotype_dir = dataset_dir / "phenotype"
         phenotype_dir.mkdir()
 
+        task_dir = phenotype_dir / "task"
+        task_dir.mkdir(parents=True, exist_ok=True)
+
         # Create minimal bundled dataset structure
         df = pd.DataFrame({"participant_id": ["sub-01"], "task_name": ["task1"], "session_id": ["ses-01"]})
         df.to_parquet(features_dir / "torchaudio_spectrogram.parquet")
         df.to_parquet(features_dir / "torchaudio_mfcc.parquet")
         
-        (features_dir / "static_features.tsv").write_text("participant_id\ntest")
+        (features_dir / "static_features.tsv").write_text("participant_id\tsession_id\ntest\tses-01")
         (features_dir / "static_features.json").write_text('{"participant_id": "test"}')
         
-        (phenotype_dir / "sessions.tsv").write_text("session_id\nses-01")
+        (task_dir / "session.tsv").write_text("session_id\nses-01")
 
         command = ["b2aiprep-cli", "validate-bundled-dataset", str(dataset_dir), str(setup_publish_config)]
 
         result = subprocess.run(command, capture_output=True, text=True)
         assert result.returncode == 0, f"CLI command failed: {result.stderr}"
+
+
+def test_validate_bundled_dataset_cli_missing_static_features_fails(setup_publish_config):
+    """Missing static_features.tsv should fail validate-bundled-dataset."""
+    with tempfile.TemporaryDirectory() as temp_dir:
+        dataset_dir = Path(temp_dir)
+        features_dir = dataset_dir / "features"
+        features_dir.mkdir()
+        phenotype_dir = dataset_dir / "phenotype"
+        phenotype_dir.mkdir()
+
+        task_dir = phenotype_dir / "task"
+        task_dir.mkdir(parents=True, exist_ok=True)
+
+        df = pd.DataFrame({"participant_id": ["sub-01"], "task_name": ["task1"], "session_id": ["ses-01"]})
+        df.to_parquet(features_dir / "torchaudio_spectrogram.parquet")
+        df.to_parquet(features_dir / "torchaudio_mfcc.parquet")
+
+        # Intentionally omit static_features.tsv
+        (features_dir / "static_features.json").write_text('{"participant_id": "test"}')
+        (task_dir / "session.tsv").write_text("session_id\nses-01")
+
+        command = [
+            "b2aiprep-cli",
+            "validate-bundled-dataset",
+            str(dataset_dir),
+            str(setup_publish_config),
+        ]
+
+        result = subprocess.run(command, capture_output=True, text=True)
+        combined = (result.stdout or "") + (result.stderr or "")
+        assert result.returncode != 0
+        assert "Validation FAILED" in combined
+        assert "static_features.tsv" in combined
 
 
 def test_deidentify_bids_dataset_cli_id_rename(

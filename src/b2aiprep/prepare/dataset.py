@@ -186,7 +186,6 @@ class BIDSDataset:
         recordings_df = redcap_dataset.get_df_of_repeat_instrument(RepeatInstrument.RECORDING.value)
         _LOGGER.info(f"Number of {RepeatInstrument.RECORDING.name} entries: {len(recordings_df)}")
 
-        _LOGGER.info("Creating dictionary lookups for BIDS hierarchy.")
         sessions_by_participant = defaultdict(list)
         for session in sessions_df.to_dict("records"):
             sessions_by_participant[session["record_id"]].append(session)
