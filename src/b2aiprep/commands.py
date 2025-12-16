@@ -53,13 +53,12 @@ from b2aiprep.prepare.bundle_data import (
 
 from b2aiprep.prepare.prepare import (
     generate_features_wrapper,
-    is_audio_sensitive,
     validate_bids_audio_features,
-
 )
 from b2aiprep.prepare.quality_control import quality_control_wrapper
 
-from b2aiprep.prepare.data_validation import validate_phenotype
+from b2aiprep.prepare.data_validation import validate_phenotype, validate_sensitive_feature_removal_in_bundle
+from b2aiprep.prepare.utils import normalize_task_label
 from b2aiprep.prepare.update import TemplateUpdateError, reorganize_bids_activities, update_bids_template_files
 
 _LOGGER = logging.getLogger(__name__)
@@ -349,6 +348,13 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
     if not skip_audio:
         _LOGGER.warning("Audio data is currently not supported for bundling. No audio files will be included in the bundle.")
 
+    # Tabulate bundle stats during packaging (no extra passes over parquet outputs).
+    # We track counts per bundled output plus overall unique participants/tasks/examples.
+    bundle_output_stats: "OrderedDict[str, dict]" = OrderedDict()
+    overall_participants: set[str] = set()
+    overall_tasks: set[str] = set()
+    overall_example_keys: set[tuple[str, str, str]] = set()
+
     bids_path = Path(bids_path)
     feature_paths = get_paths(bids_path, file_extension=".pt")
     feature_paths = [x["path"] for x in feature_paths]
@@ -387,9 +393,12 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
 
     _LOGGER.info("Loading audio static features.")
     static_features = []
+    static_examples = 0
+    static_participants: set[str] = set()
+    static_tasks: set[str] = set()
     for filepath in tqdm(audio_paths, desc="Loading static features", total=len(audio_paths)):
         pt_file = filepath.parent.joinpath(f"{filepath.stem}_features.pt")
-        if not filepath.exists(): #pt will exist based on how audio paths were generated, but audio file might not exist
+        if not pt_file.exists(): #pt will exist based on how audio paths were generated, but audio file might not exist
             continue
 
         device = 'cpu' # not checking for cuda because optimization would be minimal if any
@@ -399,6 +408,19 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
             "session_id": BIDSDataset._extract_session_id_from_path(pt_file),
             "task_name": BIDSDataset._extract_task_name_from_path(pt_file),
         }
+
+        static_examples += 1
+        participant_id = subj_info.get("participant_id")
+        task_name = subj_info.get("task_name")
+        session_id = subj_info.get("session_id")
+        if participant_id:
+            static_participants.add(participant_id)
+            overall_participants.add(participant_id)
+        if task_name:
+            static_tasks.add(task_name)
+            overall_tasks.add(task_name)
+        if participant_id and session_id and task_name:
+            overall_example_keys.add((participant_id, session_id, task_name))
 
         transcription = features.get("transcription", None)
         if transcription is not None:
@@ -425,6 +447,14 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
         json.dump(static_features_json, f, indent=2)
     _LOGGER.info("Finished creating static features.")
 
+    bundle_output_stats[(features_dir / "static_features.tsv").name] = {
+        "path": (features_dir / "static_features.tsv").resolve().as_posix(),
+        "examples": static_examples,
+        "participants": static_participants,
+        "tasks": static_tasks,
+        "status": "created",
+    }
+
     _LOGGER.info("Loading other features into HF datasets.")
 
     features_to_extract = [
@@ -442,9 +472,9 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
     for feature in features_to_extract:
         feature_class = feature['feature_class']
         feature_name = feature['feature_name']
+        feature_alias = f"{feature_class}_{feature_name}" if feature_class else feature_name
 
-        feature_output_dir = features_dir / feature_class if feature_class else features_dir / feature_name
-        feature_output_dir.mkdir(parents=True, exist_ok=True)
+        output_parquet = features_dir.joinpath(f"{feature_alias}.parquet").resolve()
 
         if feature_name != "spectrogram":
             use_byte_stream_split = True
@@ -464,21 +494,55 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
         if not has_data or feature_generator is None:
             _LOGGER.warning(
                 "No non-NaN entries found for %s feature. Skipping parquet export.",
-                f"{feature_class}_{feature_name}" if feature_class else feature_name
+                feature_alias
             )
+            bundle_output_stats[output_parquet.name] = {
+                "path": output_parquet.as_posix(),
+                "examples": 0,
+                "participants": set(),
+                "tasks": set(),
+                "status": "skipped(no-data)",
+            }
             continue
 
-        # # sort the dataset by identifier and task_name
-        # ds = Dataset.from_generator(maybe_empty_generator, num_proc=1)
-        ds = Dataset.from_generator(feature_generator, num_proc=1)
-        if len(ds) == 0:  
+        # Stream records once while updating stats.
+        feature_examples = 0
+        feature_participants: set[str] = set()
+        feature_tasks: set[str] = set()
+
+        def _feature_generator_with_stats():
+            nonlocal feature_examples
+            for record in feature_generator():
+                feature_examples += 1
+                participant_id = record.get("participant_id")
+                task_name = record.get("task_name")
+                session_id = record.get("session_id")
+                if participant_id:
+                    feature_participants.add(participant_id)
+                    overall_participants.add(participant_id)
+                if task_name:
+                    feature_tasks.add(task_name)
+                    overall_tasks.add(task_name)
+                if participant_id and session_id and task_name:
+                    overall_example_keys.add((participant_id, session_id, task_name))
+                yield record
+
+        ds = Dataset.from_generator(_feature_generator_with_stats, num_proc=1)
+        if len(ds) == 0:
             _LOGGER.warning(
                 "No non-NaN entries found for %s feature. Skipping parquet export.",
-                f"{feature_class}_{feature_name}" if feature_class else feature_name
+                feature_alias
             )
+            bundle_output_stats[output_parquet.name] = {
+                "path": output_parquet.as_posix(),
+                "examples": 0,
+                "participants": set(),
+                "tasks": set(),
+                "status": "skipped(no-data)",
+            }
             continue
         ds.to_parquet(
-            str((f"{feature_output_dir}/{feature_name}.parquet")),
+            output_parquet.as_posix(),
             version="2.6",
             compression="zstd",  # Better compression ratio than snappy, still good speed
             compression_level=3,
@@ -497,53 +561,229 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
             ),
         )
 
-    _LOGGER.info("Parquet dataset created.")
+        bundle_output_stats[output_parquet.name] = {
+            "path": output_parquet.as_posix(),
+            "examples": feature_examples,
+            "participants": feature_participants,
+            "tasks": feature_tasks,
+            "status": "created",
+        }
+
+    # Single consolidated log at end with per-file and overall counts.
+    header = "file\texamples\tunique_participants\tunique_tasks\tstatus"
+    rows = [header]
+    for name, stat in bundle_output_stats.items():
+        rows.append(
+            f"{name}\t{stat['examples']}\t{len(stat['participants'])}\t{len(stat['tasks'])}\t{stat['status']}"
+        )
+    rows.append(
+        f"OVERALL(unique)\t{len(overall_example_keys)}\t{len(overall_participants)}\t{len(overall_tasks)}\t-"
+    )
+    _LOGGER.info(
+        "Bundled dataset created. Output directory: %s\n%s",
+        outdir.resolve().as_posix(),
+        "\n".join(rows),
+    )
 
 
 @click.command()
 @click.argument("dataset_path", type=click.Path(exists=True))
-def validate_derived_dataset(dataset_path):
-    """Validates derived dataset.
+@click.argument("config_dir", type=click.Path(exists=True))
+def validate_bundled_dataset(dataset_path, config_dir):
+    """Validates bundled dataset.
 
-    This function checks the integrity and structure of a derived dataset
-    directory and optionally fixes detected issues.
+    This function checks the integrity and structure of a bundled dataset
+    directory and performs de-identification checks.
 
     Args:
-        dataset_path (str): Path to the derived dataset directory to validate.
+        dataset_path (str): Path to the bundled dataset directory to validate.
+        config_dir (str): Path to the configuration directory containing de-identification JSONs.
 
     Returns:
-        None: Performs validation and optionally fixes errors in-place.
+        None: Performs validation and prints a report.
     """
     dataset_path = Path(dataset_path)
+    config_dir = Path(config_dir)
 
-    assert dataset_path.exists(), f"Dataset path {dataset_path} does not exist."
-    assert dataset_path.is_dir(), f"Dataset path {dataset_path} is not a directory."
+    click.echo(f"Validating bundled dataset at {dataset_path}")
 
-    # we expect spectrograms.parquet and mfcc.parquet to exist
-    assert dataset_path.joinpath(
-        "spectrogram.parquet"
-    ).exists(), f"Dataset path {dataset_path} does not contain spectrogram.parquet."
-    assert dataset_path.joinpath(
-        "mfcc.parquet"
-    ).exists(), f"Dataset path {dataset_path} does not contain mfcc.parquet."
+    issues: t.List[str] = []
+    
+    # 1. Check file structure
+    features_dir = dataset_path / "features"
+    if not features_dir.exists():
+        issues.append(f"Features directory missing: {features_dir}")
+        click.echo("\nValidation FAILED with the following issues:")
+        for issue in issues:
+            click.echo(f"- {issue}")
+        raise SystemExit(1)
+    
+    required_feature_files = [
+        "torchaudio_spectrogram.parquet",
+        "torchaudio_mfcc.parquet",
+        "static_features.tsv",
+        "static_features.json",
+    ]
+    for filename in required_feature_files:
+        if not (features_dir / filename).exists():
+            issues.append(f"Missing required file in features/: {filename}")
+    
+    phenotype_dir = dataset_path / "phenotype"
+    if not phenotype_dir.exists():
+        issues.append("Phenotype directory missing")
 
-    for base_dataframe_name in ["static_features", "phenotype"]:
-        assert dataset_path.joinpath(
-            f"{base_dataframe_name}.tsv"
-        ).exists(), f"Dataset path {dataset_path} does not contain {base_dataframe_name}.tsv."
-        assert dataset_path.joinpath(
-            f"{base_dataframe_name}.json"
-        ).exists(), f"Dataset path {dataset_path} does not contain {base_dataframe_name}.json."
-        df = pd.read_csv(dataset_path.joinpath(f"{base_dataframe_name}.tsv"), sep="\t")
-        with open(dataset_path.joinpath(f"{base_dataframe_name}.json"), "r") as f:
-            info = json.load(f)
-        missing_columns = []
-        for column in info.keys():
-            if column not in df.columns:
-                missing_columns.append(column)
-        assert (
-            len(missing_columns) == 0
-        ), f"Columns not found in {base_dataframe_name}.tsv: {missing_columns}"
+    # 2. Load config
+    try:
+        with open(config_dir / "participants_to_remove.json") as f:
+            participants_to_remove = set(json.load(f))
+        
+        with open(config_dir / "sensitive_audio_tasks.json") as f:
+            sensitive_tasks = set(json.load(f))
+            sensitive_tasks_normalized = {
+                normalize_task_label(task)
+                for task in sensitive_tasks
+                if isinstance(task, str) and task.strip()
+            }
+            
+        with open(config_dir / "id_remapping.json") as f:
+            id_remapping = json.load(f)
+            original_ids = set(id_remapping.keys())
+    except FileNotFoundError as e:
+        click.echo(f"ERROR: Config file not found: {e}")
+        return
+
+    # 3. Check participants and tasks in Parquet files
+    parquet_files = list(features_dir.glob("*.parquet"))
+    if not parquet_files:
+        issues.append("No parquet files found in features directory")
+
+    # Capture parquet session IDs for cross-checks (best-effort).
+    parquet_sessions_all: set[str] = set()
+    for parquet_file in parquet_files:
+        try:
+            df_sessions = pd.read_parquet(parquet_file, columns=["session_id"])
+            parquet_sessions_all.update(
+                [str(v) for v in df_sessions.get("session_id", pd.Series(dtype=str)).dropna().unique()]
+            )
+        except Exception:
+            continue
+
+    for parquet_file in parquet_files:
+        try:
+            df = pd.read_parquet(parquet_file, columns=["participant_id", "task_name", "session_id"])
+            
+            # Check participants
+            present_participants = set(df["participant_id"].unique())
+            removed_present = present_participants.intersection(participants_to_remove)
+            if removed_present:
+                issues.append(f"Found participants that should be removed in {parquet_file.name}: {len(removed_present)} participants")
+                
+            # Check tasks
+            present_tasks = set(df["task_name"].dropna().unique())
+            sensitive_present = {
+                task
+                for task in present_tasks
+                if normalize_task_label(task) in sensitive_tasks_normalized
+            }
+            if sensitive_present:
+                # we allow sensitive tasks in a subset of files
+                if parquet_file.name not in {
+                    "sparc_ema.parquet", "sparc_loudness.parquet",
+                    "torchaudio_pitch.parquet", "sparc_pitch.parquet",
+                    "sparc_periodicity.parquet"
+                }:
+                    issues.append(f"Found sensitive tasks in {parquet_file.name}: {sensitive_present}")
+                
+            # Check remapping
+            unmapped_present = present_participants.intersection(original_ids)
+            if unmapped_present:
+                issues.append(f"Found original (non-remapped) participant IDs in {parquet_file.name}: {len(unmapped_present)} participants")
+        except Exception as e:
+            issues.append(f"Error reading {parquet_file.name}: {e}")
+
+    # 4. Check phenotype files
+    if phenotype_dir.exists():
+        for tsv_file in phenotype_dir.rglob("*.tsv"):
+            try:
+                df = pd.read_csv(tsv_file, sep="\t")
+                if "participant_id" in df.columns:
+                    present_participants = set(df["participant_id"].unique())
+                    removed_present = present_participants.intersection(participants_to_remove)
+                    if removed_present:
+                        issues.append(f"Found participants that should be removed in {tsv_file.name}: {len(removed_present)} participants")
+                    
+                    unmapped_present = present_participants.intersection(original_ids)
+                    if unmapped_present:
+                        issues.append(f"Found original (non-remapped) participant IDs in {tsv_file.name}: {len(unmapped_present)} participants")
+            except Exception as e:
+                issues.append(f"Error reading {tsv_file.name}: {e}")
+
+    # 5. Compare phenotype sessions with parquet sessions
+    phenotype_sessions: t.Optional[set[str]] = None
+    sessions_candidates = [
+        phenotype_dir / "task" / "session.tsv",
+        phenotype_dir / "sessions.tsv",
+        phenotype_dir / "session.tsv",
+    ]
+    sessions_file = next((p for p in sessions_candidates if p.exists()), None)
+    if sessions_file is not None:
+        try:
+            sessions_df = pd.read_csv(sessions_file, sep="\t")
+            if "session_id" not in sessions_df.columns:
+                issues.append(f"Sessions file missing required column session_id: {sessions_file.as_posix()}")
+            else:
+                phenotype_sessions = set(sessions_df["session_id"].dropna().astype(str).unique())
+
+                for parquet_file in parquet_files:
+                    try:
+                        df = pd.read_parquet(parquet_file, columns=["session_id"])
+                        parquet_sessions = set(df["session_id"].dropna().astype(str).unique())
+
+                        if not parquet_sessions.issubset(phenotype_sessions):
+                            extra = parquet_sessions - phenotype_sessions
+                            issues.append(
+                                f"Sessions in {parquet_file.name} not found in {sessions_file.name}: {len(extra)} sessions"
+                            )
+                    except Exception:
+                        continue
+        except Exception as e:
+            issues.append(f"Error reading sessions file {sessions_file.name}: {e}")
+    elif phenotype_dir.exists():
+        issues.append("No phenotype sessions TSV found (looked for phenotype/task/session.tsv, phenotype/sessions.tsv, phenotype/session.tsv)")
+
+    # 5b. Verify session_id in static_features.tsv matches known sessions.
+    static_features_path = features_dir / "static_features.tsv"
+    if static_features_path.exists():
+        try:
+            static_df = pd.read_csv(static_features_path, sep="\t")
+            if "session_id" not in static_df.columns:
+                issues.append("static_features.tsv missing required column session_id")
+            else:
+                static_sessions = set(static_df["session_id"].dropna().astype(str).unique())
+                reference_sessions = phenotype_sessions if phenotype_sessions is not None else parquet_sessions_all
+                if reference_sessions and not static_sessions.issubset(reference_sessions):
+                    extra = static_sessions - reference_sessions
+                    issues.append(
+                        f"Sessions in static_features.tsv not found in reference sessions: {len(extra)} sessions"
+                    )
+        except Exception as e:
+            issues.append(f"Error reading static_features.tsv: {e}")
+
+    # 6. Verify forbidden features are removed for sensitive tasks
+    issues.extend(
+        validate_sensitive_feature_removal_in_bundle(
+            features_dir=features_dir,
+            sensitive_tasks=sensitive_tasks,
+        )
+    )
+
+    if issues:
+        click.echo("\nValidation FAILED with the following issues:")
+        for issue in issues:
+            click.echo(f"- {issue}")
+        raise SystemExit(1)
+    else:
+        click.echo("\nValidation PASSED. No issues found.")
 
 @click.command()
 @click.argument("bids_path", type=click.Path(exists=True))
@@ -551,7 +791,10 @@ def validate_derived_dataset(dataset_path):
 @click.argument("deidentify_config_dir", type=click.Path(exists=True))
 @click.option("--skip_audio/--no-skip_audio", type=bool, default=False, show_default=True, help="Skip processing audio files")
 @click.option("--skip_audio_features/--no-skip_audio_features", type=bool, default=False, show_default=True, help="Skip processing audio feature files")
-def deidentify_bids_dataset(bids_path, outdir, deidentify_config_dir, skip_audio, skip_audio_features):
+@click.option("--max_workers", type=int, default=16, show_default=True, help="Maximum number of worker threads to use")
+def deidentify_bids_dataset(
+    bids_path, outdir, deidentify_config_dir, skip_audio, skip_audio_features, max_workers: int = 16
+):
     """Creates a deidentified version of a given BIDS dataset.
 
     The deidentified version of the dataset: 
@@ -573,7 +816,11 @@ def deidentify_bids_dataset(bids_path, outdir, deidentify_config_dir, skip_audio
     # Create BIDSDataset instance and use the deidentify method
     bids_dataset = BIDSDataset(bids_path)
     bids_dataset.deidentify(
-        outdir=outdir, deidentify_config_dir=deidentify_config_dir, skip_audio=skip_audio, skip_audio_features=skip_audio_features
+        outdir=outdir,
+        deidentify_config_dir=deidentify_config_dir,
+        skip_audio=skip_audio,
+        skip_audio_features=skip_audio_features,
+        max_workers=max_workers,
     )
     
     _LOGGER.info("Deidentified dataset created successfully.")

@@ -329,7 +329,7 @@ def parse_audio(audio_list, dummy_audio_files=False):
             "recording_size": file_size,
             "recording_profile_name": "Speech",
             "recording_profile_version": "v1.0.0",
-            "recording_input_gain": 0.0,
+            "recording_input_gain": np.nan,
             "recording_microphone": "USB-C to 3.5mm Headphone Jack Adapter",
         }
 
@@ -395,7 +395,6 @@ class RedCapDataset:
         
         # Validate and process the data
         dataset._validate_redcap_columns()
-        dataset._insert_missing_columns()
         
         _LOGGER.info(f"Successfully loaded RedCap data with {len(df)} rows and {len(df.columns)} columns")
         return dataset
@@ -453,8 +452,6 @@ class RedCapDataset:
                 'participant_group': participant_group
             }
         )
-        # Apply standard processing
-        dataset._insert_missing_columns()
         _LOGGER.info(f"Successfully loaded ReproSchema data with {len(df)} rows and {len(df.columns)} columns")
         return dataset
     
@@ -528,6 +525,19 @@ class RedCapDataset:
         if duplicated_idx.any():
             final_duplicates = df.loc[idx, "record_id"].loc[duplicated_idx].unique()
             _LOGGER.warning(f"Duplicate record_ids remain after correction: {final_duplicates.tolist()}")
+
+        # session_id: remove the trailing "-"
+        for col in df.columns:
+            if col.endswith("session_id"):
+                df[col] = df[col].astype(str).str.replace(r'-$', '', regex=True)
+            if col.endswith("acoustic_task_id"):
+                # session was the suffix, so remove it here too
+                df[col] = df[col].astype(str).str.replace(r'-$', '', regex=True)
+        
+        # tasks: remove "_task" from all task_id and task_name columns
+        for col in df.columns:
+            if col.endswith("task_id") or col.endswith("task_name") or col.endswith("recording_name"):
+                df[col] = df[col].astype(str).str.replace('_task', '', regex=False)
         return df
 
     @staticmethod
@@ -581,6 +591,9 @@ class RedCapDataset:
             
             # Parse sessions within each subject
             sessions = Path(subject).iterdir()
+            session_duration = 0 # added later to the session info
+            session_start = None
+            session_end = None
             for session in sessions:
                 if session.is_dir():
                     session_files = list(session.glob("*.jsonld"))
@@ -604,30 +617,70 @@ class RedCapDataset:
                             is_import=is_import,
                         )
 
+                        for data_element in session_data:
+                            start_time = data_element.get("startedAtTime", None)
+                            end_time = data_element.get("endedAtTime", None)
+                            if start_time:
+                                start_dt = datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S.%fZ")
+                                if session_start is None or start_dt < session_start:
+                                    session_start = start_dt
+                            if end_time:
+                                end_dt = datetime.strptime(end_time, "%Y-%m-%dT%H:%M:%S.%fZ")
+                                if session_end is None or end_dt > session_end:
+                                    session_end = end_dt
+
                         for df in questionnaire_df_list:
                             merged_questionnaire_data.append(df)
 
+        if session_start and session_end:
+            total_duration = session_end - session_start
+            session_duration = total_duration.total_seconds()
+        else:
+            session_duration = np.nan
         audio_folders = Path(audio_dir)
-        audio_sub_folders = sorted([str(f) for f in audio_folders.iterdir() if f.is_dir()])
+        # rglob once to get all the wav files
+        audio_files_across_subjects = list(audio_folders.rglob("*.wav"))
+        # reorganize into a subject based structure
+        audio_files_dict = {}
+        for audio_file in audio_files_across_subjects:
+            subject_id = audio_file.parent.parent.name
+            if subject_id not in audio_files_dict:
+                audio_files_dict[subject_id] = []
+            audio_files_dict[subject_id].append(str(audio_file))
+        
+        # also get a session_id for each subject from the audio portion
+        # take the first session_id for each subject
+        # this avoids a scandir overhead later
+        audio_session_ids = {}
+        for audio_file in audio_files_across_subjects:
+            subject_id = audio_file.parent.parent.name
+            session_id = audio_file.parent.name
+            if subject_id not in audio_session_ids:
+                audio_session_ids[subject_id] = session_id
+
+        # get all unique subjects as all unique parent parent in the audio files
+        audio_sub_folders = set()
+        for audio_file in audio_files_across_subjects:
+            subject_folder = str(audio_file.parent.parent)
+            audio_sub_folders.add(subject_folder)
+        audio_sub_folders = sorted(list(audio_sub_folders))
+
         merged_csv = []
         for subject in tqdm(audio_sub_folders, desc="Processing ReproSchema Audio"):
-            audio_session_id = [f.name for f in os.scandir(subject) if f.is_dir()]
+            subject_id = (subject.split("/")[-1]).split()[0]
             audio_session_dict = {
-                "record_id": (subject.split("/")[-1]).split()[0],
+                "record_id": subject_id,
                 "redcap_repeat_instrument": "Session",
                 "redcap_repeat_instance": 1,
-                "session_id": audio_session_id[0],
+                "session_id": audio_session_ids.get(subject_id, None),
                 "session_status": "Completed",
                 "session_is_control_participant": "No",
-                "session_duration": 0.0,
+                "session_duration": session_duration,
                 "session_site": "SickKids",
             }
             merged_csv.append(audio_session_dict)
             # Process audio data
-            audio_files = []
-            for audio_file in Path(subject).rglob("*.wav"):
-                audio_files.append(str(audio_file))
-
+            audio_files = audio_files_dict.get(subject_id, [])
             merged_csv += parse_audio(audio_files)
         audio_df = pd.DataFrame(merged_csv)
         # Convert audio data to DataFrames
@@ -722,25 +775,7 @@ class RedCapDataset:
             _LOGGER.warning(
                 f"DataFrame has only {len(overlap_with_coded)} / {self.df.shape[1]} coded headers."
             )
-    
-    def _insert_missing_columns(self) -> None:
-        """
-        Add any missing columns to the dataframe.
-        
-        This ensures all expected columns are present for downstream processing.
-        """
-        from importlib.resources import files
-        
-        all_columns_path = files("b2aiprep").joinpath("prepare", "resources", "all_columns.json")
-        all_columns = json.load(all_columns_path.open())
-        columns_to_add = [col for col in all_columns if col not in self.df.columns]
-        
-        if columns_to_add:
-            nan_cols = pd.DataFrame(np.nan, index=self.df.index, columns=columns_to_add)
-            self.df = pd.concat([self.df, nan_cols], axis=1)
-        
-        _LOGGER.info(f"Added {len(columns_to_add)} missing columns to DataFrame")
-    
+
     def get_df_of_repeat_instrument(self, instrument: Instrument) -> DataFrame:
         """
         Filter rows and columns of the DataFrame to correspond to a specific repeat instrument.

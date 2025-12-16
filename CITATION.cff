@@ -1,15 +1,17 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 authors:
-- family-names: "Bevers"
-  given-names: "Isaac"
-  orcid: "https://orcid.org/0009-0002-0074-0087"
-- family-names: "Ghosh"
-  given-names: "Satrajit"
-  orcid: "https://orcid.org/0000-0002-5312-6729"
 - family-names: "Johnson"
   given-names: "Alistair"
   orcid: "https://orcid.org/0000-0002-8735-3014"
+- family-names: "Bevers"
+  given-names: "Isaac"
+  orcid: "https://orcid.org/0009-0002-0074-0087"
+- family-names: "Ng"
+  given-names: "Evan"
+  orcid: "https://orcid.org/0009-0006-8554-5414"
+- family-names: "Wilke"
+  given-names: "Jordan"
 - family-names: "Brito"
   given-names: "Rahul"
   orcid: "https://orcid.org/0000-0003-0343-0455"
@@ -19,10 +21,10 @@ authors:
 - family-names: "Catania"
   given-names: "Fabio"
   orcid: "https://orcid.org/0000-0002-5403-9002"
-- family-names: "Ng"
-  given-names: "Evan"
-  orcid: "https://orcid.org/0009-0006-8554-5414"
+- family-names: "Ghosh"
+  given-names: "Satrajit"
+  orcid: "https://orcid.org/0000-0002-5312-6729"
 title: "Bridge2AI Data Processing Library"
-version: 0.21.0
-date-released: 2024-11-27
+version: 3.0.0
+date-released: 2025-12-15
 url: "https://github.com/sensein/b2aiprep"

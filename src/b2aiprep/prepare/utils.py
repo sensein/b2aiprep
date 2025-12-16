@@ -8,11 +8,43 @@ import shutil
 import subprocess
 import time
 import wave
-from typing import Dict, List
+from typing import Any, Dict, List
+import re
 
 import pandas as pd
 
 _LOGGER = logging.getLogger(__name__)
+
+
+_TASK_LABEL_NORMALIZATION_RE = re.compile(r"[^a-z0-9]+")
+
+
+def normalize_task_label(task_label: Any) -> str:
+    """Normalize task labels for robust comparisons.
+
+    Task labels may differ by capitalization, punctuation, or separators.
+    This normalizer lower-cases and replaces non-alphanumerics with `-`.
+    """
+    value = str(task_label).strip().lower()
+    value = _TASK_LABEL_NORMALIZATION_RE.sub("-", value)
+    return value.strip("-")
+
+
+_TASK_ENTITY_RE = re.compile(r"(task-)([^_]+)")
+
+
+def sanitize_task_entity_in_bids_stem(stem: str) -> str:
+    """Sanitize the value of the `task-<label>` entity inside a BIDS-like filename stem.
+
+    This only touches the task entity value (up to the next underscore). It preserves
+    all other entities.
+    """
+
+    def _repl(match: re.Match) -> str:
+        prefix, raw_label = match.group(1), match.group(2)
+        return f"{prefix}{normalize_task_label(raw_label)}"
+
+    return _TASK_ENTITY_RE.sub(_repl, stem)
 
 
 def get_commit_sha(submodule_root: Path) -> str:

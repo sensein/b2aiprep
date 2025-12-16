@@ -42,6 +42,7 @@ import os
 import traceback
 from pathlib import Path
 from typing import List, Tuple, Optional, Dict
+import typing as t
 import time
 
 import numpy as np
@@ -66,7 +67,6 @@ from senselab.utils.data_structures import (
 from tqdm import tqdm
 
 from b2aiprep.prepare.constants import (
-    _load_audio_filestem_exclusions,
     FEATURE_EXTRACTION_SPEECH_RATE,
     FEATURE_EXTRACTION_DURATION,
     FEATURE_EXTRACTION_PITCH_AND_INTENSITY,
@@ -88,7 +88,23 @@ SPECTROGRAM_SHAPE = 201
 # Parcelmouth feature groupings
 
 _logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
+
+def remap_id(
+    original_id: str,
+    id_mapping: t.Dict[str, str],
+    id_type: str = "participant",
+) -> str:
+    """Remap an original ID using the provided mapping dictionary.
+    
+    This function is primarily used during deidentification to map
+    participant_id and session_id to new values."""
+    if pd.isnull(original_id):
+        return original_id
+    if original_id in id_mapping:
+        return id_mapping[original_id]
+    else:
+        _logger.warning(f"{id_type.capitalize()} ID '{original_id}' not found in remapping dictionary.")
+        return original_id
 
 #@python.define
 def extract_single(
@@ -690,40 +706,17 @@ def load_audio_to_remove(publish_config_dir: Path) -> List[str]:
     
     return data
 
-def is_audio_sensitive(filepath: Path) -> bool:
-    audio_to_remove = _load_audio_filestem_exclusions()
+def is_audio_sensitive(filepath: Path, publish_config_dir: Path) -> bool:
+    audio_to_remove = load_audio_to_remove(publish_config_dir)
     return filepath.stem in audio_to_remove
 
-def filter_audio_paths(audio_paths: List[Path]) -> List[Path]:
-    """Filter audio paths to remove audio check and sensitive audio files."""
-
-    # remove audio-check
-    n_audio = len(audio_paths)
-    audio_paths = [
-        x for x in audio_paths if 'audio-check' not in x.stem.split("_")[2].lower()
-    ]
-    if len(audio_paths) < n_audio:
-        _logger.info(
-            f"Removed {n_audio - len(audio_paths)} audio check recordings."
-        )
-
-    n_audio = len(audio_paths)
-    audio_paths = [
-        x for x in audio_paths if not is_audio_sensitive(x)
-    ]
-    if len(audio_paths) < n_audio:
-        _logger.info(
-            f"Removed {n_audio - len(audio_paths)} records due to sensitive audio."
-        )
-    
-    return audio_paths
-
-def reduce_id_length(x):
-    """Reduce length of ID."""
+def reduce_id_length(x, length=8):
+    """Reduce length of ID, removes hashes."""
     if pd.isnull(x):
         return x
-    x = str(x)
-    return x.split('-')[0]
+    x = str(x).replace("-", "")
+    return x[:length]
+    
 
 def reduce_length_of_id(df: pd.DataFrame, id_name: str) -> pd.DataFrame:
     """Reduce length of ID in the dataframe."""
@@ -756,25 +749,19 @@ def get_value_from_metadata(metadata: dict, linkid: str, endswith: bool = False)
             return item['answer'][0]['valueString']
     return None
 
-def update_metadata_record_and_session_id(metadata: dict, ids_to_remap: dict, participant_session_id_to_remap: dict):
+def update_metadata_record_and_session_id(metadata: dict, ids_to_remap: dict, session_id_to_remap: dict):
     for item in metadata['item']:
         if 'linkId' not in item:
             continue
 
-        if item['linkId'] == 'record_id':
-            for old_id, new_id in ids_to_remap.items():
-                if old_id == item['answer'][0]['valueString']:
-                    item['answer'][0]['valueString'] = new_id
-                    break
-            record_id = item['answer'][0]['valueString']
-            item['answer'][0]['valueString'] = reduce_id_length(record_id)
+        if item['linkId'] in {'record_id', 'participant_id'}:
+            item['answer'][0]['valueString'] = remap_id(
+                item['answer'][0]['valueString'], ids_to_remap, id_type="participant"
+            )
+
             # rename to participant_id
             item['linkId'] = 'participant_id'
         elif (item['linkId'] == 'session_id') or (item['linkId'].endswith('_session_id')):
-            for old_id, new_id in participant_session_id_to_remap.items():
-                if old_id == item['answer'][0]['valueString']:
-                    item['answer'][0]['valueString'] = new_id
-                    break
-            item['answer'][0]['valueString'] = reduce_id_length(
-                item['answer'][0]['valueString']
+            item['answer'][0]['valueString'] = remap_id(
+                item['answer'][0]['valueString'], session_id_to_remap, id_type="session"
             )

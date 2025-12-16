@@ -17,6 +17,7 @@ sub-p1/
 """
 
 from copy import copy, deepcopy
+from functools import partial
 import logging
 import os
 import re
@@ -38,11 +39,16 @@ from tqdm import tqdm
 
 from b2aiprep.prepare.constants import RepeatInstrument, Instrument
 from b2aiprep.prepare.update import build_activity_payload
-from b2aiprep.prepare.utils import copy_package_resource, get_commit_sha
+from b2aiprep.prepare.utils import (
+    copy_package_resource,
+    get_commit_sha,
+    normalize_task_label,
+    sanitize_task_entity_in_bids_stem,
+)
 from b2aiprep.prepare.fhir_utils import convert_response_to_fhir
 from b2aiprep.prepare.prepare import (
-    filter_audio_paths, 
-    get_value_from_metadata, 
+    get_value_from_metadata,
+    remap_id, 
     update_metadata_record_and_session_id,
     reduce_id_length
 )
@@ -51,6 +57,38 @@ from pydantic import BaseModel
 from b2aiprep.prepare.redcap import RedCapDataset
 
 _LOGGER = logging.getLogger(__name__)
+
+
+ 
+
+# Sensitive audio feature content that must not be present for sensitive tasks.
+#
+# This is a grouped spec because the per-record feature `.pt` files are nested dicts
+# (e.g., `features["torchaudio"]["mfcc"]`), while some sensitive artifacts live at
+# the top-level (e.g., `features["transcription"]`).
+_SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE: t.Mapping[str, t.FrozenSet[str]] = {
+    "torchaudio": frozenset({"mel_filter_bank", "mfcc", "mel_spectrogram", "spectrogram"}),
+    "": frozenset({"ppgs", "transcription"}),
+    "sparc": frozenset({"ema"}),
+}
+
+
+def _remove_sensitive_features_from_feature_payload(
+    features: t.MutableMapping[str, t.Any],
+    spec: t.Mapping[str, t.AbstractSet[str]] = _SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE,
+) -> None:
+    """Remove sensitive feature content from an in-memory feature payload in-place."""
+
+    for group, keys_to_remove in spec.items():
+        if group == "":
+            for key in keys_to_remove:
+                features.pop(key, None)
+            continue
+
+        grouped_payload = features.get(group)
+        if isinstance(grouped_payload, dict):
+            for key in keys_to_remove:
+                grouped_payload.pop(key, None)
 
 def _copy_audio_files_parallel(copy_tasks: t.List[t.Tuple[Path, Path]], max_workers: int = 16):
     """Copy audio files in parallel using ThreadPoolExecutor.
@@ -78,7 +116,7 @@ def _copy_audio_files_parallel(copy_tasks: t.List[t.Tuple[Path, Path]], max_work
             error = future.result()
             if error:
                 errors.append(error)
-                logging.error(error)
+                _LOGGER.error(error)
     
     if errors:        
         failed_files = [err.split("->")[0].replace("Failed to copy", "").strip() for err in errors]  
@@ -93,7 +131,7 @@ def _copy_audio_files_parallel(copy_tasks: t.List[t.Tuple[Path, Path]], max_work
             f"Failed files (up to 5 shown): {failed_files[:5]}\n"  
             f"Unique error types (up to 3 shown): {list(unique_error_types)[:3]}"  
         )  
-        logging.warning(summary)  
+        _LOGGER.warning(summary)  
 
 
 class BIDSDataset:
@@ -121,12 +159,10 @@ class BIDSDataset:
         Returns:
             BIDSDataset instance pointing to the created BIDS directory
         """
-        # Use instance methods instead of importing from bids module
-        
         outdir = Path(outdir).as_posix()
         BIDSDataset._initialize_data_directory(outdir)
 
-        logging.info("Converting RedCap dataset to BIDS-like format.")
+        _LOGGER.info("Converting RedCap dataset to BIDS phenotype files.")
         # Subselect the RedCap dataframe and output components to individual files in the phenotype directory
         BIDSDataset._construct_phenotype_from_reproschema(
             df=redcap_dataset.df,
@@ -134,28 +170,22 @@ class BIDSDataset:
             output_dir=os.path.join(outdir, "phenotype"),
         )
 
-        # Process repeat instruments
-        repeat_instruments: t.List[RepeatInstrument] = list(RepeatInstrument.__members__.values())
-        dataframe_dicts: t.Dict[RepeatInstrument, pd.DataFrame] = {}
-        
-        for repeat_instrument in repeat_instruments:
-            instrument = repeat_instrument.value
-            questionnaire_df = redcap_dataset.get_df_of_repeat_instrument(instrument)
-            logging.info(f"Number of {instrument.name} entries: {len(questionnaire_df)}")
-            dataframe_dicts[repeat_instrument] = questionnaire_df
+        if audiodir is None:
+            # Return a new BIDSDataset instance pointing to the created directory
+            return cls(outdir)
 
-        # Extract main dataframes
-        participants_df = dataframe_dicts.pop(RepeatInstrument.PARTICIPANT)
-        sessions_df = dataframe_dicts.pop(RepeatInstrument.SESSION)
-        acoustic_tasks_df = dataframe_dicts.pop(RepeatInstrument.ACOUSTIC_TASK)
-        recordings_df = dataframe_dicts.pop(RepeatInstrument.RECORDING)
+        _LOGGER.info("Processing audio files into BIDS format.")
+        # We have two remaining tasks: (1) copy the audio files, and (2) create sidecar .json files.
+        # First we prepare the metadata necessary for the .json files.
+        participants_df = redcap_dataset.get_df_of_repeat_instrument(RepeatInstrument.PARTICIPANT.value)
+        _LOGGER.info(f"Number of {RepeatInstrument.PARTICIPANT.name} entries: {len(participants_df)}")
+        sessions_df = redcap_dataset.get_df_of_repeat_instrument(RepeatInstrument.SESSION.value)
+        _LOGGER.info(f"Number of {RepeatInstrument.SESSION.name} entries: {len(sessions_df)}")
+        acoustic_tasks_df = redcap_dataset.get_df_of_repeat_instrument(RepeatInstrument.ACOUSTIC_TASK.value)
+        _LOGGER.info(f"Number of {RepeatInstrument.ACOUSTIC_TASK.name} entries: {len(acoustic_tasks_df)}")
+        recordings_df = redcap_dataset.get_df_of_repeat_instrument(RepeatInstrument.RECORDING.value)
+        _LOGGER.info(f"Number of {RepeatInstrument.RECORDING.name} entries: {len(recordings_df)}")
 
-        # Convert remaining dataframes to dictionaries indexed by session_id
-        for repeat_instrument, questionnaire_df in dataframe_dicts.items():
-            session_id_col = repeat_instrument.value.session_id
-            dataframe_dicts[repeat_instrument] = cls._df_to_dict(questionnaire_df, session_id_col)
-
-        logging.info("Creating dictionary lookups for BIDS hierarchy.")
         sessions_by_participant = defaultdict(list)
         for session in sessions_df.to_dict("records"):
             sessions_by_participant[session["record_id"]].append(session)
@@ -180,13 +210,6 @@ class BIDSDataset:
                 for task in session["acoustic_tasks"]:
                     task["recordings"] = recordings_by_task.get(task["acoustic_task_id"], [])
 
-                # Add questionnaire data per session
-                for key, df_by_session_id in dataframe_dicts.items():
-                    if session_id not in df_by_session_id:
-                        session[key] = None
-                    else:
-                        session[key] = df_by_session_id[session_id]
-
         # Output participant data to FHIR format
         audio_files: t.List[Path] = []
         if audiodir is not None and Path(audiodir).exists():
@@ -203,7 +226,7 @@ class BIDSDataset:
                 continue
             uuid = match.group(0)
             if uuid in audio_files_by_recording:
-                logging.warning(
+                _LOGGER.warning(
                     f"Multiple audio files found for recording UUID {uuid}: "
                     f"{audio_files_by_recording[uuid]} and {audio_file}. "
                     "Only the last one will be retained."
@@ -233,7 +256,7 @@ class BIDSDataset:
         """
         if not os.path.exists(bids_dir_path):
             os.makedirs(bids_dir_path)
-            logging.info(f"Created directory: {bids_dir_path}")
+            _LOGGER.info(f"Created directory: {bids_dir_path}")
 
         template_package = "b2aiprep.template"
         copy_package_resource(template_package, "CHANGELOG.md", bids_dir_path)
@@ -580,7 +603,7 @@ class BIDSDataset:
         if index_col not in df.columns:
             raise ValueError(f"Index column {index_col} not found in DataFrame.")
         if df[index_col].isnull().any():
-            logging.warning(
+            _LOGGER.warning(
                 f"Found {df[index_col].isnull().sum()} null value(s) for {index_col}. Removing."
             )
             df = df.dropna(subset=[index_col])
@@ -606,67 +629,7 @@ class BIDSDataset:
         """
         # Save the combined DataFrame to a TSV file
         df.to_csv(tsv_path, sep="\t", index=False)
-        logging.info(f"TSV file created and saved to: {tsv_path}")
-
-    @staticmethod
-    def _process_phenotype_tsv_and_json(
-        df: pd.DataFrame, input_dir: str, output_dir: str, filename: str,
-        clean_phenotype_data: bool = True
-    ) -> None:
-        """
-        Create a stable, shareable phenotype artifact (TSV + JSON) driven by a schema.
-
-        Args:
-            df: DataFrame containing the data.
-            input_dir: Directory containing JSON file with column labels.
-            output_dir: Directory where the TSV and JSON files will be saved.
-            filename: The JSON filename to process.
-            clean_phenotype_data: Whether to clean the phenotype data (default: True).
-
-        Outputs:
-        - <output_dir>/<filename>.tsv: phenotype table constrained by the schema.
-        - <output_dir>/<filename>.json: schema (data dictionary) aligned to the TSV.
-        """
-        # Load in the JSON which defines the columns to output to this subset
-        with open(os.path.join(input_dir, filename), "r") as f:
-            json_data = json.load(f)
-
-        # The phenotype JSON files are nested below a key that corresponds to the schema name
-        first_key = next(iter(json_data))
-        column_labels = list(json_data[first_key]["data_elements"])
-
-        # Our output columns are defined by the ReproSchema protocol file,
-        # but we need to subselect to available data columns, as many columns
-        # have been removed already before export from RedCap.
-        data_elements = {}
-        valid_columns = []
-        for column in column_labels:
-            if column not in df.columns:
-                continue
-            valid_columns.append(column)
-            data_elements[column] = json_data[first_key]["data_elements"][column]
-
-        if not valid_columns:
-            _LOGGER.warning(f"No valid columns in dataframe for {first_key}")
-            return df.iloc[:, 0:0].copy() # return empty dataframe with same index
-
-        if "record_id" not in valid_columns:
-            valid_columns = ["record_id"] + valid_columns
-
-        # Select the relevant columns from the DataFrame and JSON
-        selected_df = df[valid_columns]
-        json_data[first_key]["data_elements"] = data_elements
-
-        # Combine entries so there is one row per record_id
-        df_subselected = selected_df.groupby("record_id").first().reset_index()
-
-        if clean_phenotype_data:
-            df_subselected, json_data = BIDSDataset._clean_phenotype_data(df_subselected, json_data)
-        
-        # Output to a TSV/JSON file.
-        BIDSDataset._dataframe_to_tsv(df_subselected, os.path.join(output_dir, filename.replace(".json", ".tsv")))
-        with open(os.path.join(output_dir, filename), "w") as f:
-            json.dump(json_data, f, indent=2)
+        _LOGGER.info(f"TSV file with {df.shape[0]} rows created and saved to: {tsv_path}")
 
     @staticmethod
     def _load_reproschema(
@@ -703,6 +666,40 @@ class BIDSDataset:
         return activities
 
     @staticmethod
+    def _load_reorganization_file(drop_deleted_columns: bool = True) -> pd.DataFrame:
+        """Load the reproschema reorganization CSV file.
+
+        Returns:
+            DataFrame containing the reorganization data.
+        """
+        reorganization_file = files("b2aiprep.prepare.resources").joinpath("bids_field_organization.csv")
+        df = pd.read_csv(reorganization_file, sep=',', header=0)
+        if drop_deleted_columns:
+            df = df.loc[df['delete'].str.upper() != 'YES']
+        return df
+
+    @staticmethod
+    def _find_redcap_checkbox_columns(
+        df: pd.DataFrame,
+    ) -> t.Dict[str, t.List[str]]:
+        """Find RedCap checkbox columns in the DataFrame.
+
+        Args:
+            df: DataFrame containing the data.
+
+        Returns:
+            List of base column names for checkbox fields.
+        """
+        checkbox_columns = defaultdict(list)
+        pattern = re.compile(r'^(?P<base>.+?)___(?P<suffix>.+)$')
+        for col in df.columns:
+            match = pattern.match(col)
+            if match:
+                base_col = match.group('base')
+                checkbox_columns[base_col].append(col)
+        return checkbox_columns
+
+    @staticmethod
     def _construct_phenotype_from_reproschema(
         df: pd.DataFrame,
         output_dir: str,
@@ -717,6 +714,13 @@ class BIDSDataset:
             source_dir: Directory containing the ReproSchema JSON files.
             clean_phenotype_data: Whether to clean the phenotype data (default: True).
         """
+
+        # We will ignore data dictionary columns when there are corresponding columns
+        # in the dataframe with the suffix "___[text]". These are multi-checkbox columns.
+        # Only the option responses are kept, the main column does not exist in the data,
+        # only in the data dictionary.
+        checkbox_columns = BIDSDataset._find_redcap_checkbox_columns(df)
+        
         # Ensure output directory exists
         os.makedirs(output_dir, exist_ok=True)
 
@@ -739,14 +743,42 @@ class BIDSDataset:
             for element_name in data['data_elements'].keys():
                 element_to_schema[element_name] = schema_name
 
+                # add in the checkbox columns which are not natively listed as individual
+                # questions in the reproschema activities
+                if element_name in checkbox_columns:
+                    for checkbox_column in checkbox_columns[element_name]:
+                        element_to_schema[checkbox_column] = schema_name
+
         # with all the reproschema activities defined, we now parse our manual reorganization
         # this is a CSV with:
         #   schema_name_source, column_name_source
         # ... used to identify the source reproschema element, and:
         #   schema_name, column_name, group, description
         # ... used to arrange & describe the output in the phenotype/ folder.
-        reorganization_file = files("b2aiprep.prepare.resources").joinpath("bids_field_organization.csv")
-        df_reorg = pd.read_csv(reorganization_file, sep=',', header=0)
+        # the overall goal is to remap from schema_name_source -> schema_name
+        #   (the schema_name becomes the filename)
+        # and to map from column_name_source -> column_name
+        #   (the column_name becomes the column in the TSV file)
+        df_reorg = BIDSDataset._load_reorganization_file(drop_deleted_columns=False)
+
+        # Track inclusion/exclusion for a final report.
+        # Note: columns are tracked using their *source* names (i.e., RedCap/df column names).
+        df_deleted = df_reorg.loc[df_reorg['delete'].str.upper() == 'YES']
+        df_reorg_active = df_reorg.loc[df_reorg['delete'].str.upper() != 'YES']
+
+        _norm = lambda c: str(c)
+        df_cols = {_norm(c) for c in df.columns}
+
+        reorg_all_cols = {_norm(c) for c in df_reorg['column_name_source'].dropna().tolist()}
+        cols_for_deletion = {_norm(c) for c in df_deleted['column_name_source'].dropna().tolist()}
+        cols_for_adding = {_norm(c) for c in df_reorg_active['column_name_source'].dropna().tolist()}
+
+        # the rest we will track as we go
+        included_cols: t.Set[str] = set()
+        missing_in_df_cols: t.Set[str] = set()
+        redcap_group_cols: t.Set[str] = set()
+
+        df_reorg = df_reorg_active
 
         element_used = {} # keep track of whether we have used an element, for logging later.
         payload = {
@@ -764,15 +796,42 @@ class BIDSDataset:
             # get the *new* schema name, as this will be the base key of our updated dict
             column_mapping = group.set_index('column_name_source').to_dict(orient='index')
             for column, updated_data in column_mapping.items():
-                if column not in df.columns:
+                col_norm = _norm(column)
+                if col_norm not in df_cols:
+                    if col_norm in checkbox_columns:
+                        # skip the main checkbox column if we have the ___ option columns
+                        _LOGGER.debug(
+                            f'Skipping RedCap checkbox main column "{column}" as option columns found.'
+                        )
+                        redcap_group_cols.add(col_norm)
+                        continue
                     _LOGGER.warning(f'Requested output for "{column}", but this column was not found in the source df.')
+                    missing_in_df_cols.add(col_norm)
                     continue
+                included_cols.add(col_norm)
+                
                 # the source schema is defined based on the element itself;
                 # we do not need the schema_name_source column, but it is kept for ease of reading the CSV.
                 schema_to_use = element_to_schema[column]
-
-                # populate the detailed metadata for this column
-                data_element = copy(schemas[schema_to_use]["data_elements"][column])
+                
+                if '___' in column:
+                    column_base, column_choice = column.rsplit('___', maxsplit=1)
+                else:
+                    column_base = column
+                    column_choice = None
+                if column_base in checkbox_columns:
+                    data_element = copy(schemas[schema_to_use]["data_elements"][column_base])
+                    # reduce the choices to just the choice for this checkbox
+                    data_element['choices'] = [
+                        choice for choice in data_element.get('choices', [])
+                        if str(choice.get('value')) == str(column_choice)
+                    ]
+                    if clean_phenotype_data:
+                        # for checkbox columns, we convert to integer 0/1
+                        data_element['valueType'] = ['xsd:integer']
+                else:
+                    # populate the detailed metadata for this column
+                    data_element = copy(schemas[schema_to_use]["data_elements"][column])
                 if "description" in updated_data and (updated_data["description"] != ""):
                     description = updated_data["description"]
                 elif "description" in data_element and (data_element["description"] != ""):
@@ -800,28 +859,70 @@ class BIDSDataset:
             if "record_id" not in columns_for_indexing:
                 columns_for_indexing = ["record_id"] + columns_for_indexing
                 columns_for_output = ["participant_id"] + columns_for_output
+
+                # record_id is implicitly included in outputs when missing from the reorg mapping.
+                if "record_id" in df_cols:
+                    included_cols.add("record_id")
+
+                # add record_id to the data elements if missing, add it at the beginning
+                payload["data_elements"] = {
+                    "participant_id": {
+                        "description": "A unique identifier for the participant.",
+                        "valueType": [
+                            "xsd:string"
+                        ]
+                    },
+                    **payload["data_elements"],
+                }
             # we now extract the sub-dataframe from our source redcap data and output it to tsv
             selected_df = df[columns_for_indexing]
-            # Combine entries so there is one row per record_id
-            selected_df = selected_df.groupby("record_id").first().reset_index()
 
-            # TODO: verify we added the record_id description to the payload before writing
+            # Rename columns based on the reorganization mapping.
+            if len(columns_for_indexing) != len(columns_for_output):
+                raise ValueError(
+                    f"Schema {schema_name}: columns_for_indexing ({len(columns_for_indexing)}) and "
+                    f"columns_for_output ({len(columns_for_output)}) length mismatch."
+                )
+
+            rename_map = dict(zip(columns_for_indexing, columns_for_output))
+            if rename_map.get("record_id") not in (None, "participant_id"):
+                _LOGGER.warning(
+                    f"Schema {schema_name}: overriding record_id rename target "
+                    f"{rename_map.get('record_id')!r} -> 'participant_id'."
+                )
+                rename_map["record_id"] = "participant_id"
+
+            # Protect against accidentally collapsing columns.
+            output_cols = list(rename_map.values())
+            dupes = sorted({c for c in output_cols if output_cols.count(c) > 1})
+            if dupes:
+                raise ValueError(
+                    f"Schema {schema_name}: duplicate output column names after mapping: {dupes}. "
+                    "Check bids_field_organization.csv for collisions."
+                )
+
+            selected_df = selected_df.rename(columns=rename_map)
+            # Keep output column order stable and aligned to metadata.
+            selected_df = selected_df[output_cols]
+            id_col = "participant_id"
+
             updated_schema = {schema_name: payload}
             if clean_phenotype_data:
                 selected_df, updated_schema = BIDSDataset._clean_phenotype_data(selected_df, updated_schema)
-            
-            # TODO: why is record_id sometimes here w/o this rename?
-            selected_df = selected_df.rename(
-                columns={old: new for old, new in zip(columns_for_indexing, columns_for_output)}
-            )
 
             # check if *everything* is missing except for participant_id, if so we omit
-            if "participant_id" in selected_df:
-                null_cols = selected_df.drop(columns=["participant_id"]).isnull().all()
+            if id_col in selected_df:
+                null_cols = selected_df.drop(columns=[id_col]).isnull().all()
             else:
                 null_cols = selected_df.isnull().all()
             if null_cols.all():
                 _LOGGER.warning(f"All data missing for schema {schema_name}, skipping output.")
+                continue
+
+            # Remove rows where the only non-null value is record_id/participant_id
+            selected_df = selected_df.dropna(how="all", subset=[col for col in selected_df.columns if col != id_col])
+            if selected_df.empty:
+                _LOGGER.warning(f"No data remaining after dropping empty rows for {schema_name}")
                 continue
 
             # Output to a TSV/JSON file.
@@ -837,6 +938,31 @@ class BIDSDataset:
             )
             with open(os.path.join(output_dir_grouped, filename), "w") as f:
                 json.dump(updated_schema, f, indent=2)
+
+        # Final report: included/excluded columns (by source column name).
+        # our later loops only go through reorg columns, so calculate what we're missing now
+        excluded_in_df_not_in_reorg = df_cols - reorg_all_cols
+
+        _LOGGER.info(
+            "RedCap Dataframe column report: total=%d, included=%d, deleted_intentionally=%d, only_in_df=%d",
+            len(df_cols),
+            len(included_cols.intersection(df_cols)),
+            len(cols_for_deletion.intersection(df_cols)),
+            len(excluded_in_df_not_in_reorg),
+        )
+        _LOGGER.info(
+            "RedCap ReproSchema expected column report: total=%d, included=%d, redcap_group_general_q=%d, deleted_intentionally=%d, missing_in_df=%d",
+            df_reorg_active.shape[0] + df_deleted.shape[0],
+            len(included_cols),
+            len(redcap_group_cols),
+            len(cols_for_deletion),
+            len(missing_in_df_cols),
+        )
+        _LOGGER.debug(f"Included columns: {sorted(included_cols)}")
+        _LOGGER.debug(f"Excluded (missing in df) columns: {sorted(missing_in_df_cols)}")
+        _LOGGER.debug(f"Excluded (redcap group) columns: {sorted(redcap_group_cols)}")
+        _LOGGER.debug(f"Excluded (deleted) columns: {sorted(cols_for_deletion)}")
+        _LOGGER.debug(f"Excluded (in df but not in reorg) columns: {sorted(excluded_in_df_not_in_reorg)}")
 
     @staticmethod
     def _get_instrument_for_name(name: str) -> Instrument:
@@ -923,8 +1049,6 @@ class BIDSDataset:
         task_instrument = BIDSDataset._get_instrument_for_name("acoustic_tasks")
         recording_instrument = BIDSDataset._get_instrument_for_name("recordings")
 
-        sessions_df = pd.DataFrame(columns=session_instrument.columns)
-
         # Collect all audio copy tasks for parallel execution
         audio_copy_tasks = []
 
@@ -950,7 +1074,7 @@ class BIDSDataset:
                 # Handle NaN/None values in acoustic_task_name
                 acoustic_task_name = task.get("acoustic_task_name")
                 if pd.isna(acoustic_task_name):
-                    logging.warning(f"Skipping task with missing acoustic_task_name for participant {participant_id}, session {session_id}")
+                    _LOGGER.warning(f"Skipping task with missing acoustic_task_name for participant {participant_id}, session {session_id}")
                     continue
                 
                 acoustic_task_name = acoustic_task_name.replace(" ", "-").replace("_", "-")
@@ -1038,23 +1162,50 @@ class BIDSDataset:
                 data_elements.update(phenotype[schema].get("data_elements", {}))
             phenotype = data_elements
 
-        # Add record_id to phenotype if missing
-        if df.shape[1] > 0 and df.columns[0] == 'record_id' and 'record_id' not in list(phenotype.keys()):
-            phenotype = BIDSDataset._add_record_id_to_phenotype(phenotype)
-
-        # Validate column count
-        if len(phenotype) != df.shape[1]:
-            logging.warning(
-                f"Phenotype {phenotype_name} has {len(phenotype)} columns, but the data has {df.shape[1]} columns."
-            )
-
-        # Handle nested phenotype structure
+        # Handle nested phenotype structure which occurs in ReproSchema activities
         if len(phenotype) == 1:
             only_key = next(iter(phenotype))
             if 'data_elements' in phenotype[only_key]:
                 phenotype = phenotype[only_key]['data_elements']
 
+        # Add record_id to phenotype if missing
+        if df.shape[1] > 0:
+            phenotype_has_id = 'record_id' in list(phenotype.keys()) or 'participant_id' in list(phenotype.keys())
+            df_has_id = 'record_id' in df.columns or 'participant_id' in df.columns
+            if not phenotype_has_id and not df_has_id:
+                phenotype = BIDSDataset._add_record_id_to_phenotype(phenotype)
+
+        # Validate column count
+        if len(phenotype) != df.shape[1]:
+            _LOGGER.warning(
+                f"Phenotype {phenotype_name} has {len(phenotype)} columns, but the data has {df.shape[1]} columns."
+            )
+
         return df, phenotype
+
+    @staticmethod
+    def _map_series(series: pd.Series, mapping: dict) -> pd.Series:
+        """
+        Map values in a pandas Series using a provided mapping dictionary. Log any issues arising.
+        
+        Args:
+            series: The pandas Series to map.
+            mapping: The mapping dictionary.
+        Returns:
+            The mapped pandas Series.
+        """
+        ids_before = series.copy()
+        series = series.map(mapping).fillna(series)
+        idxUnchanged = ids_before == series
+        n_unchanged = idxUnchanged.sum()
+        proportion = ((len(ids_before) - n_unchanged) / len(ids_before)) if len(ids_before) > 0 else 0
+        _LOGGER.debug(f"Remapped {proportion:3.1%} ({len(ids_before) - n_unchanged}/{len(ids_before)}) of IDs for '{series.name}'")
+        if n_unchanged > 0:
+            _LOGGER.warning((
+                f"A subset of IDs ({1-proportion:3.1%}, {n_unchanged}) are missing "
+                f"remapping for '{series.name}': {set(ids_before[idxUnchanged])}"
+            ))
+        return series
 
     @staticmethod
     def _deidentify_phenotype(df: pd.DataFrame, phenotype: dict, participant_ids_to_remove: t.List[str] = [], participant_ids_to_remap: dict = {}, participant_session_id_to_remap: dict = {}) -> t.Tuple[pd.DataFrame, dict]:
@@ -1068,9 +1219,6 @@ class BIDSDataset:
         Returns:
             Tuple of (deidentified_df, deidentified_phenotype_dict)
         """
-        # Remove sensitive columns
-        df, phenotype = BIDSDataset._remove_sensitive_columns(df, phenotype)
-
         # Rename record_id to participant_id
         if "record_id" in df.columns:
             df, phenotype = BIDSDataset._rename_record_id_to_participant_id(df, phenotype)
@@ -1078,25 +1226,37 @@ class BIDSDataset:
         # Remove participants
         idx = df["participant_id"].isin(participant_ids_to_remove)
         if idx.any():
-            logging.info(f"Removing {idx.sum()} participants from phenotype data.")
+            _LOGGER.info(f"Removing {idx.sum()} participants from phenotype data.")
             df = df.loc[~idx]
 
         # Remap IDs
         if participant_ids_to_remap and "participant_id" in df.columns:
-            ids_before = df["participant_id"]
-            df["participant_id"] = df["participant_id"].map(participant_ids_to_remap).fillna(df["participant_id"])
-            n_different = (ids_before != df["participant_id"]).sum()
-            logging.info(f"Remapped {n_different} / {len(ids_before)} IDs for 'participant_id'")
+            remap_partial = partial(remap_id, id_mapping=participant_ids_to_remap)
+            df.loc[:, "participant_id"] = BIDSDataset._map_series(df["participant_id"], remap_partial)
 
         if participant_session_id_to_remap:
+            remap_partial = partial(remap_id, id_mapping=participant_session_id_to_remap, id_type="session")
             for col in df.columns:
                 if "session_id" in col:
-                    ids_before = df[col].copy()
-                    df[col] = df[col].map(participant_session_id_to_remap).fillna(df[col])
-                    n_different = (ids_before != df[col]).sum()
-                    logging.info(f"Remapped {n_different} / {len(ids_before)} IDs for '{col}'")
+                    df.loc[:, col] = BIDSDataset._map_series(df[col], remap_partial)
+
+        # Remove sensitive columns
+        df, phenotype = BIDSDataset._remove_sensitive_columns(df, phenotype)
+
+        # Sanitize task labels in task phenotype tables (e.g., phenotype/task/acoustic_task.tsv)
+        if "acoustic_task_name" in df.columns:
+            df.loc[:, "acoustic_task_name"] = df["acoustic_task_name"].apply(
+                lambda v: normalize_task_label(v) if pd.notna(v) else v
+            )
 
         return df, phenotype
+
+    @staticmethod
+    def _is_redcap_group(column: str) -> bool:
+        """Check if a column is a RedCap group column."""
+        pattern = re.compile(r'^(?P<base>.+?)___(?P<suffix>.+)$')
+        match = pattern.match(column)
+        return match is not None
 
     @staticmethod
     def _clean_phenotype_data(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
@@ -1112,17 +1272,23 @@ class BIDSDataset:
         """
         # Fix alcohol column date values
         df = BIDSDataset._fix_alcohol_column(df)
-        
-        # Remove unwanted columns
-        df, phenotype = BIDSDataset._remove_empty_columns(df, phenotype)
-        df, phenotype = BIDSDataset._remove_system_columns(df, phenotype)
+
+        for c in df.columns:
+            if BIDSDataset._is_redcap_group(c):
+                # convert from whatever the text is to 1
+                if df[c].dropna().nunique() > 1:
+                    _LOGGER.warning(
+                        f"RedCap checkbox column {c} has unexpected non-binary values: "
+                        f"{df[c].dropna().unique().tolist()}. Converting to binary."
+                    )
+                df[c] = df[c].apply(lambda x: 1 if pd.notna(x) and str(x).strip() != "" else np.nan).astype(pd.Int8Dtype())
+                # TODO: phenotype changes for checkbox columns?
+        # Warn about empty columns - but keep them as some are expected
+        BIDSDataset._warn_about_empty_columns(df, phenotype)
         
         # Add derived columns
         if ("gender_identity" in df.columns) and ("specify_gender_identity" in df.columns):
             df, phenotype = BIDSDataset._add_sex_at_birth_column(df, phenotype)
-
-        # Rename columns for usability
-        df, phenotype = BIDSDataset._rename_columns(df, phenotype)
 
         return df, phenotype
 
@@ -1141,68 +1307,42 @@ class BIDSDataset:
         return df
 
     @staticmethod
-    def _remove_empty_columns(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
-        """Remove columns that are empty."""
-        columns_to_drop = [
-            "consent_status",
-            "enrollment_institution",
-            "subjectparticipant_eligible_studies_complete",
-            "ef_primary_language_other",
-            "ef_fluent_language_other",
-            "session_site",
-        ]
-        return BIDSDataset._drop_columns_from_df_and_data_dict(
-            df, phenotype, columns_to_drop, "Removing empty columns"
-        )
-
-    @staticmethod
-    def _remove_system_columns(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
-        """Remove system/technical columns that shouldn't be in the final dataset."""
-        columns_to_drop = [
-            "acoustic_task_id",
-            "acoustic_task_session_id",
-            "acoustic_task_name",
-            "acoustic_task_cohort",
-            "acoustic_task_status",
-            "acoustic_task_duration",
-            "recording_id",
-            "recording_session_id",
-            "recording_acoustic_task_id",
-            "recording_name",
-            "recording_duration",
-            "recording_size",
-            "recording_profile_name",
-            "recording_profile_version",
-            "recording_input_gain",
-            "recording_microphone",
-        ]
-        return BIDSDataset._drop_columns_from_df_and_data_dict(
-            df, phenotype, columns_to_drop, "Removing system columns"
-        )
+    def _warn_about_empty_columns(df: pd.DataFrame, phenotype: dict) -> None:
+        """Warn about columns that are empty."""
+        empty_columns = []
+        for column in df.columns:
+            if df[column].isnull().all() and BIDSDataset._is_redcap_group(column) is False:
+                empty_columns.append(column)
+        
+        if empty_columns:
+            _LOGGER.warning(f"Found {len(empty_columns)} empty columns: {empty_columns}")
 
     @staticmethod
     def _remove_sensitive_columns(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
         """Remove columns with sensitive data (free-text, geo-location, etc)."""
+
+        # TODO: Revisit this list. The deidentification is now implicitly applied by the
+        # use of bids_field_reorganization.csv to select only desired columns.
+        # This is kept here for now as an extra layer of safety, particularly for pediatrics
+        # which has not had the RedCap dataset imported/tested yet. In the future, this code may
+        # remove useful non-PHI columns, so care should be taken.
         columns_to_drop = [
             "state_province",
-            "zipcode"
+            "zipcode",
             "other_edu_level",
             "others_household_specify",
-            "diagnosis_alz_dementia_mci_ds_cdr",
             "diagnosis_alz_dementia_mci_ca_rudas_score",
             "diagnosis_alz_dementia_mci_ca_mmse_score",
             "diagnosis_alz_dementia_mci_ca_moca_score",
             "diagnosis_alz_dementia_mci_ca_adas_cog_score",
             "diagnosis_alz_dementia_mci_ca_other",
             "diagnosis_alz_dementia_mci_ca_other_score",
-            "diagnosis_parkinsons_ma_uprds",
             "diagnosis_parkinsons_ma_updrs_part_i_score",
             "diagnosis_parkinsons_ma_updrs_part_ii_score",
             "diagnosis_parkinsons_ma_updrs_part_iii_score",
             "diagnosis_parkinsons_ma_updrs_part_iv_score",
             "diagnosis_parkinsons_non_motor_symptoms_yes",
             "traumatic_event",
-            "is_regular_smoker",  # all null values
             # pediatric columns
             "city",
             "state_province",
@@ -1244,18 +1384,17 @@ class BIDSDataset:
             "peds_mc_neck_mass_hyroid_nodule_or_cancer_surgery_date",
             "peds_mc_v_dis_specified"
         ]
-        return BIDSDataset._drop_columns_from_df_and_data_dict(
-            df, phenotype, columns_to_drop, "Removing low utility / PHI containing columns"
+        df, phenotype = BIDSDataset._drop_columns_from_df_and_data_dict(
+            df, phenotype, columns_to_drop, "Removing PHI containing columns"
         )
-    
-    @staticmethod
-    def _rename_columns(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
-        """Rename columns for improved usability."""
-        column_rename_map = {
-            "diagnois_gi_gsd": "diagnois_gi_gold_standard_diagnosis",
-        }
-        df = df.rename(columns=column_rename_map)
-        phenotype = {column_rename_map.get(k, k): v for k, v in phenotype.items()}
+
+        if 'gender_identity' in df.columns:
+            _LOGGER.info(f"sex_at_birth value_counts: {df['sex_at_birth'].value_counts(dropna=False).to_dict()}")
+            _LOGGER.info(f"gender_identity value_counts: {df['gender_identity'].value_counts(dropna=False).to_dict()}")
+            df, phenotype = BIDSDataset._drop_columns_from_df_and_data_dict(
+                df, phenotype, ["gender_identity"], "Remove sensitive demographic columns"
+            )
+        
         return df, phenotype
 
     @staticmethod
@@ -1266,7 +1405,7 @@ class BIDSDataset:
         columns_to_drop_in_df = [col for col in columns_to_drop if col in df.columns]
         
         if columns_to_drop_in_df:
-            logging.info(f"{message}: {columns_to_drop_in_df}")
+            _LOGGER.info(f"{message}: {columns_to_drop_in_df}")
             df = df.drop(columns=columns_to_drop_in_df)
             phenotype = {k: v for k, v in phenotype.items() if k not in columns_to_drop_in_df}
         
@@ -1319,26 +1458,29 @@ class BIDSDataset:
             df.loc[idx, "sex_at_birth"] = sex_at_birth
 
         # Re-order columns to place sex_at_birth after gender_identity
-        phenotype_reordered = {}
+        phenotype_reordered = deepcopy(phenotype)
+        first_key = next(iter(phenotype))
+        # reset data elements for reordering
+        phenotype_reordered[first_key]["data_elements"] = {}
+        data_elements_updated = phenotype_reordered[first_key]["data_elements"]
         columns = []
         for c in df.columns:
             if c == "specify_gender_identity":
+                # this continue implicitly removes this column from the output
                 continue
             elif c == "gender_identity":
-                first_key = next(iter(phenotype))
                 columns.append(c)
                 columns.append("sex_at_birth")
-                phenotype_reordered[c] = phenotype[first_key]["data_elements"][c]
-                phenotype_reordered["sex_at_birth"] = {
+                data_elements_updated[c] = phenotype[first_key]["data_elements"][c]
+                data_elements_updated["sex_at_birth"] = {
                     "description": "The sex at birth for the individual."
                 }
             elif c == "sex_at_birth":
                 continue
             else:
-                first_key = next(iter(phenotype))
                 columns.append(c)
                 if c in phenotype[first_key]["data_elements"]:
-                    phenotype_reordered[c] = phenotype[first_key]["data_elements"][c]
+                    data_elements_updated[c] = phenotype[first_key]["data_elements"][c]
 
         df = df[columns]
         return df, phenotype_reordered
@@ -1378,47 +1520,95 @@ class BIDSDataset:
             raise ValueError(f"ID remapping file {session_id_to_remap_path} should contain a dict of session_id:new_id.")
 
         return data
-    
+
     @staticmethod
-    def map_sequential_session_ids(folder_path: Path) ->  t.Dict[str, str]:
+    def map_sequential_session_ids(folder_path: Path, sequential: bool = False) ->  t.Dict[str, str]:
         """
             Function retrieves all session ids for all participants from the sessions.tsv files and maps them to an integer.
             If there are mutliple session exists for a participant, the seqiential will increase sequentially.
         """
-        _LOGGER = logging.getLogger(__name__)
         folder = Path(folder_path)
         session_files = list(folder.rglob("sessions.tsv"))
+        
+        # add in the session.tsv file from the phenotype folder
+        # this *should* have all possible session ids, so the scan of sessions.tsv
+        # is redundant / for safety only
+
+        phenotype_session_files = list(folder.joinpath("phenotype").rglob("session.tsv"))
+        session_files = session_files + phenotype_session_files
 
         if not session_files:
-            _LOGGER.warning((f"No 'sessions.tsv' files found under {folder_path}"))
+            _LOGGER.warning((
+                f"No 'sessions.tsv' files found under {folder_path}"
+                f" - cannot map session IDs."
+            ))
             return {}
 
-        dfs = []
-        for f in session_files:
+        df_list = []
+        for session_file in session_files:
             try:
-                df = pd.read_csv(f, sep='\t', dtype={'session_id': str})
-                dfs.append(df)
+                df_session = pd.read_csv(session_file, sep="\t", dtype=str)
+                if 'record_id' in df_session.columns and 'session_id' in df_session.columns:
+                    df_list.append(df_session[['record_id', 'session_id']])
+                elif 'participant_id' in df_session.columns and 'session_id' in df_session.columns:
+                    df_session = df_session.rename(columns={"participant_id": "record_id"})
+                    df_list.append(df_session[['record_id', 'session_id']])
+                else:
+                    _LOGGER.warning(f"'sessions.tsv' file {session_file} is missing required columns.")
             except Exception as e:
-                _LOGGER.error(f" Could not read {f}: {e}")
-
-        combined = pd.concat(dfs, ignore_index=True)
-
-        # Sort so all rows of a record_id appear together
-        if 'record_id' in combined.columns and 'session_id' in combined.columns:
-            combined.sort_values(by=['record_id', 'session_id'], inplace=True)
+                _LOGGER.error(f"Error reading 'sessions.tsv' file {session_file}: {e}")
         
-        combined['session_number'] = combined.groupby('record_id').cumcount() + 1
-        session_id_dict = combined.set_index('session_id')['session_number'].astype(str).to_dict()
+        if not df_list:
+            _LOGGER.warning((
+                f"No valid 'sessions.tsv' files with required columns found under {folder_path}"
+                f" - cannot map session IDs."
+            ))
+            return {}
+        combined = pd.concat(df_list).drop_duplicates().reset_index(drop=True)
+        # Sort so all rows of a record_id appear together
+        combined.sort_values(by=['record_id', 'session_id'], inplace=True)
+        
+        if sequential:
+            # we create a sequential integer using the original session_id to sort
+            combined['mapped_id'] = combined.groupby('record_id').cumcount() + 1
+        else:
+            # we assume the original session_id is a uuid, and we trim it to 8 characters
+            # we do this in a way that ensures uniqueness within each participant
+            combined['mapped_id'] = combined['session_id'].map(reduce_id_length)
+            
+            # check for duplicates *across* participants - this is not an issue, but may confuse
+            # users, so we log a warning and restore the original session IDs up to 16 char
+            # probability of collision for 8 char, 10,000 IDs is ~0.0116
+            # probability of collision for 16 char, 1,000,000 IDs is ~2.7105e-8
+            duplicates = combined.duplicated(subset=['mapped_id'], keep=False)
+            if duplicates.any():
+                # use 16 character session IDs for participants with duplicates
+                duplicate_mapped_id = combined.loc[duplicates, 'mapped_id'].unique()
+                for mapped_id in duplicate_mapped_id:
+                    idx = combined['mapped_id'] == mapped_id
+                    combined.loc[idx, 'mapped_id'] = combined.loc[idx, 'session_id'].map(
+                        lambda x: reduce_id_length(x, length=16)
+                    )
                 
+                n_dupe = duplicate_mapped_id.shape[0]
+                _LOGGER.warning((
+                    f"Session ID remapping resulted in duplicate session_id for {n_dupe} sessions. "
+                    f"Using original session IDs for these cases."
+                ))
+        
+        # enforce lower case as it is convention in BIDS
+        combined['mapped_id'] = combined['mapped_id'].astype(str).str.lower()
+        session_id_dict = combined.set_index('session_id')['mapped_id'].to_dict()
+        _LOGGER.info(f"Created a session_id mapping of {len(session_id_dict):,} IDs.")
         return session_id_dict
 
     @staticmethod
     def load_participant_ids_to_remove(publish_config_dir: Path) -> t.List[str]:
         """Load list of participant IDs to remove from JSON file."""
-        participant_to_remove_path = publish_config_dir / "participant_ids_to_remove.json"
+        participant_to_remove_path = publish_config_dir / "participants_to_remove.json"
         if not participant_to_remove_path.exists():
-            # If file doesn't exist, return empty list
-            return []
+            # If file doesn't exist, raise an error
+            raise FileNotFoundError(f"Participant IDs to remove file {participant_to_remove_path} does not exist.")
 
         with open(participant_to_remove_path, 'r') as f:
             data = json.load(f)
@@ -1426,6 +1616,7 @@ class BIDSDataset:
         if not isinstance(data, list):
             raise ValueError(f"Participant IDs to remove file {participant_to_remove_path} should contain a list of participant IDs.")
         
+        _LOGGER.info(f"Loaded {len(data)} participant IDs to remove: {data}.")
         return data
     
     @staticmethod
@@ -1433,8 +1624,8 @@ class BIDSDataset:
         """Load list of audio file stems to remove from JSON file."""
         audio_to_remove_path = publish_config_dir / "audio_filestems_to_remove.json"
         if not audio_to_remove_path.exists():
-            # If file doesn't exist, return empty list
-            return []
+            # If file doesn't exist, raise an error
+            raise FileNotFoundError(f"Audio filestems to remove file {audio_to_remove_path} does not exist.")
 
         with open(audio_to_remove_path, 'r') as f:
             data = json.load(f)
@@ -1449,8 +1640,8 @@ class BIDSDataset:
         """Load list of audio tasks that are sensitive from JSON file."""
         sensitive_audio_tasks_path = deidentify_config_dir / "sensitive_audio_tasks.json"
         if not sensitive_audio_tasks_path.exists():
-            # If file doesn't exist, return empty list
-            return []
+            # If file doesn't exist, raise an error
+            raise FileNotFoundError(f"Sensitive audio tasks file {sensitive_audio_tasks_path} does not exist.")
 
         with open(sensitive_audio_tasks_path, 'r') as f:
             data = json.load(f)
@@ -1460,7 +1651,7 @@ class BIDSDataset:
         
         return data
 
-    def deidentify(self, outdir: t.Union[str, Path], deidentify_config_dir: Path, skip_audio: bool = False, skip_audio_features: bool = False) -> 'BIDSDataset':
+    def deidentify(self, outdir: t.Union[str, Path], deidentify_config_dir: Path, skip_audio: bool = False, skip_audio_features: bool = False, max_workers: int = 16) -> 'BIDSDataset':
         """
         Create a deidentified version of the BIDS dataset.
         
@@ -1487,16 +1678,25 @@ class BIDSDataset:
         audio_filestems_to_remove = BIDSDataset.load_audio_filestems_to_remove(deidentify_config_dir)
         sensitive_audio_tasks = BIDSDataset.load_sensitive_audio_tasks(deidentify_config_dir)
         participant_session_id_to_remap = BIDSDataset.map_sequential_session_ids(self.data_path)
+
+        # Allow users to specify filestems either in the original ID space (pre-deidentify)
+        # or in the deidentified ID space (post-remap). We expand the configured list so
+        # matching works regardless of which convention is used.
+        audio_filestems_to_remove = BIDSDataset._expand_filestems_for_deidentification(
+            audio_filestems_to_remove,
+            participant_ids_to_remap=participant_ids_to_remap,
+            participant_session_id_to_remap=participant_session_id_to_remap,
+        )
         
         # Process phenotype directory if it exists
         phenotype_base_path = self.data_path.joinpath("phenotype")
         if phenotype_base_path.exists():
-            logging.info("Processing phenotype data for deidentification.")
+            _LOGGER.info("Processing phenotype data for deidentification.")
             phenotype_output_path = outdir.joinpath("phenotype")
             phenotype_output_path.mkdir(parents=True, exist_ok=True)
             
             for phenotype_filepath in phenotype_base_path.rglob("*.tsv"):
-                logging.info(f"Processing {phenotype_filepath.stem}.")
+                _LOGGER.info(f"Processing {phenotype_filepath.stem}.")
                 df_pheno, phenotype_dict = BIDSDataset.load_phenotype_data(phenotype_filepath)
                 df_pheno, phenotype_dict = BIDSDataset._deidentify_phenotype(df_pheno, phenotype_dict, participant_ids_to_remove, participant_ids_to_remap, participant_session_id_to_remap)
                 
@@ -1509,11 +1709,11 @@ class BIDSDataset:
                 )
                 with open(phenotype_subdir.joinpath(f"{phenotype_filepath.stem}.json"), "w") as f:
                     json.dump(phenotype_dict, f, indent=2)
-            logging.info("Finished processing phenotype data.")
+            _LOGGER.info("Finished processing phenotype data.")
         
         if not skip_audio:
             # Process audio files
-            logging.info("Processing audio files for deidentification.")
+            _LOGGER.info("Processing audio files for deidentification.")
             BIDSDataset._deidentify_audio_files(
                 self.data_path, 
                 outdir, 
@@ -1522,12 +1722,13 @@ class BIDSDataset:
                 sensitive_audio_tasks, 
                 participant_ids_to_remap, 
                 participant_session_id_to_remap,
+                max_workers=max_workers,
             )
-            logging.info("Finished processing audio files.")
+            _LOGGER.info("Finished processing audio files.")
 
         if not skip_audio_features:
             # Process audio files
-            logging.info("Processing audio features for deidentification.")
+            _LOGGER.info("Processing audio features for deidentification.")
             BIDSDataset._deidentify_feature_files(
                 self.data_path, 
                 outdir, 
@@ -1536,8 +1737,9 @@ class BIDSDataset:
                 sensitive_audio_tasks, 
                 participant_ids_to_remap, 
                 participant_session_id_to_remap,
+                max_workers=max_workers,
             )
-            logging.info("Finished processing features.")
+            _LOGGER.info("Finished processing features.")
         
         # Copy over the standard BIDS template files if they exist
         for template_file in ["README.md", "CHANGES.md", "dataset_description.json"]:
@@ -1545,7 +1747,7 @@ class BIDSDataset:
             if template_path.exists():
                 shutil.copy(template_path, outdir)
         
-        logging.info("Deidentification completed.")
+        _LOGGER.info("Deidentification completed.")
         return BIDSDataset(outdir)
 
     @staticmethod
@@ -1577,20 +1779,45 @@ class BIDSDataset:
         if len(exclusion) == 0:
             return paths
 
+        def _canonical_recording_stem(stem: str) -> str:
+            """Canonicalize a BIDS-like recording stem for matching.
+
+            Many artifacts share a common "recording" identity, but append additional
+            entities (e.g. "_features", "_run-1", "_rec-foo"). For exclusion matching,
+            we treat the canonical identifier as everything up through the `task-...`
+            entity, inclusive.
+            """
+
+            parts = stem.split("_")
+            try:
+                task_idx = next(i for i, part in enumerate(parts) if part.startswith("task-"))
+            except StopIteration:
+                return stem
+
+            # Join up to and including the task entity (e.g. sub-..._ses-..._task-...)
+            return "_".join(parts[: task_idx + 1])
+
         if exclusion_type == 'participant':
             paths = [
                 x for x in paths
                 if all(f"sub-{pid}" not in str(x) for pid in exclusion)
             ]
         elif exclusion_type == 'filename':
+            # Normalize exclusions to recording filestems (strip extensions and known suffixes).
+            canonical_exclusion = {
+                _canonical_recording_stem(Path(excl).stem) for excl in exclusion
+            }
             paths = [
                 a for a in paths
-                if a.stem not in exclusion
+                if _canonical_recording_stem(a.stem) not in canonical_exclusion
             ]
         elif exclusion_type == 'filestem_contains':
             paths = [
                 a for a in paths
-                if all(excl not in a.stem for excl in exclusion)
+                if all(
+                    normalize_task_label(excl) not in normalize_task_label(a.stem)
+                    for excl in exclusion
+                )
             ]
             # for better logging, add the list of exclusions to the exclusion type
             exclusion_type += f" ({', '.join(exclusion)})"
@@ -1601,6 +1828,59 @@ class BIDSDataset:
                 f"Removed {n - len(paths)} records due to exclusion: {exclusion_type}."
             )
         return paths
+
+    @staticmethod
+    def _expand_filestems_for_deidentification(
+        filestems: t.Iterable[str],
+        *,
+        participant_ids_to_remap: t.Mapping[str, str],
+        participant_session_id_to_remap: t.Mapping[str, str],
+    ) -> t.List[str]:
+        """Expand configured recording filestems to match both original and remapped IDs.
+
+        Users may provide filestems referencing either:
+        - the source dataset naming (e.g. sub-001js_ses-<uuid>_task-foo)
+        - the deidentified naming (e.g. sub-512342_ses-<mapped>_task-foo)
+
+        This returns a de-duplicated list containing both forms.
+        """
+
+        # Build reverse maps so we can support both directions when possible.
+        reverse_participant_map = {v: k for k, v in participant_ids_to_remap.items()}
+        reverse_session_map = {v: k for k, v in participant_session_id_to_remap.items()}
+
+        expanded: t.Set[str] = set()
+        pattern = re.compile(r"^sub-(?P<sub>[^_]+)(?:_ses-(?P<ses>[^_]+))?(?P<rest>.*)$")
+
+        for raw in filestems:
+            stem = Path(raw).stem  # tolerate accidental extensions
+            expanded.add(stem)
+
+            m = pattern.match(stem)
+            if not m:
+                continue
+
+            sub = m.group("sub")
+            ses = m.group("ses")
+            rest = m.group("rest")
+
+            # Forward-map into deidentified space
+            sub_fwd = participant_ids_to_remap.get(sub, sub)
+            ses_fwd = participant_session_id_to_remap.get(ses, ses) if ses is not None else None
+            if ses_fwd is None:
+                expanded.add(f"sub-{sub_fwd}{rest}")
+            else:
+                expanded.add(f"sub-{sub_fwd}_ses-{ses_fwd}{rest}")
+
+            # Reverse-map back into original space (best-effort)
+            sub_rev = reverse_participant_map.get(sub, sub)
+            ses_rev = reverse_session_map.get(ses, ses) if ses is not None else None
+            if ses_rev is None:
+                expanded.add(f"sub-{sub_rev}{rest}")
+            else:
+                expanded.add(f"sub-{sub_rev}_ses-{ses_rev}{rest}")
+
+        return sorted(expanded)
 
     @staticmethod
     def _extract_participant_id_from_path(path: Path) -> str:
@@ -1654,6 +1934,7 @@ class BIDSDataset:
         sensitive_audio_task_list: t.List[str] = [],
         participant_ids_to_remap: t.Dict[str, str] = {},
         participant_session_id_to_remap: t.Dict[str, str] = {},
+        max_workers: int = 16,
     ):
         """
         Copy and deidentify audio files to the output directory.
@@ -1695,20 +1976,19 @@ class BIDSDataset:
             audio_paths, exclusion_list=['audio-check'], exclusion_type='filestem_contains'
         )
 
-        sensitive_audio_task_list = [f'task-{task}' for task in sensitive_audio_task_list]
+        sensitive_audio_task_list = [f"task-{normalize_task_label(task)}" for task in sensitive_audio_task_list]
         audio_paths = BIDSDataset._apply_exclusion_list_to_filepaths(
             audio_paths, exclusion_list=sensitive_audio_task_list, exclusion_type='filestem_contains'
         )
 
         _LOGGER.info(f"Copying {len(audio_paths)} recordings.")
-        for audio_path in tqdm(
-            audio_paths, desc="Copying audio and metadata files", total=len(audio_paths)
-        ):
+
+        def process_audio_file(audio_path):
             json_path = audio_path.parent.joinpath(f'{audio_path.stem}_recording-metadata.json')
             
             if not json_path.exists():
                 _LOGGER.warning(f"Metadata file {json_path} not found. Skipping {audio_path}.")
-                continue
+                return
 
             metadata = json.loads(json_path.read_text())
             
@@ -1718,7 +1998,8 @@ class BIDSDataset:
             session_id = get_value_from_metadata(metadata, linkid="session_id", endswith=True)
             
             # Create output path with deidentified structure
-            audio_path_stem_ending = '-'.join(audio_path.stem.split("_")[2:])
+            sanitized_stem = sanitize_task_entity_in_bids_stem(audio_path.stem)
+            audio_path_stem_ending = '-'.join(sanitized_stem.split("_")[2:])
             output_path = outdir.joinpath(
                 f"sub-{participant_id}/ses-{session_id}/audio/sub-{participant_id}_ses-{session_id}_{audio_path_stem_ending}.wav"
             )
@@ -1728,6 +2009,9 @@ class BIDSDataset:
             with open(output_path.with_suffix(".json"), "w") as fp:
                 json.dump(metadata, fp, indent=2)
             shutil.copy(audio_path, output_path)
+
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            list(tqdm(executor.map(process_audio_file, audio_paths), total=len(audio_paths), desc="Copying audio and metadata files"))
 
 
     @staticmethod
@@ -1739,6 +2023,7 @@ class BIDSDataset:
         sensitive_audio_task_list: t.List[str] = [],
         participant_ids_to_remap: t.Dict[str, str] = {},
         participant_session_id_to_remap: t.Dict[str, str] = {},
+        max_workers: int = 16,
     ):
         """
         Copy and deidentify audio feature files to the output directory.
@@ -1779,19 +2064,26 @@ class BIDSDataset:
         paths = BIDSDataset._apply_exclusion_list_to_filepaths(
             paths, exclusion_list=['audio-check'], exclusion_type='filestem_contains'
         )
+
+        sensitive_task_labels = {normalize_task_label(t) for t in sensitive_audio_task_list}
         
         _LOGGER.info(f"Copying {len(paths)} feature files.")
-        for features_path in tqdm(
-            paths, desc="Copying and de-identifying feature files", total=len(paths)
-        ):
+
+        def process_feature_file(features_path):
             participant_id = BIDSDataset._extract_participant_id_from_path(features_path)
-            participant_id = participant_ids_to_remap.get(participant_id, participant_id)
+            participant_id = remap_id(
+                participant_id, participant_ids_to_remap
+            )
             session_id = BIDSDataset._extract_session_id_from_path(features_path)
-            session_id = participant_session_id_to_remap.get(session_id, session_id)
+            session_id = remap_id(
+                session_id, participant_session_id_to_remap, id_type="session"
+            )
 
             # Create output path with deidentified structure
             features_ending = '_features'
-            audio_path_stem = features_path.stem.replace(features_ending,'')
+            audio_path_stem = sanitize_task_entity_in_bids_stem(
+                features_path.stem.replace(features_ending, '')
+            )
             path_stem_ending = '-'.join(audio_path_stem.split("_")[2:]) + features_ending
             output_path = outdir.joinpath(
                 f"sub-{participant_id}/ses-{session_id}/audio/sub-{participant_id}_ses-{session_id}_{path_stem_ending}{features_path.suffix}"
@@ -1800,16 +2092,15 @@ class BIDSDataset:
 
             # if it is not sensitive and we want to keep features, move all features over
             task_name = BIDSDataset._extract_task_name_from_path(features_path)
-            if task_name not in sensitive_audio_task_list:
+            if normalize_task_label(task_name) not in sensitive_task_labels:
                 shutil.copy(features_path, output_path)
             else:
                 features = torch.load(features_path, weights_only=False, map_location=torch.device('cpu'))
-                # Sensitive features to remove
-                for torchaudio_field in ['mel_filter_bank', 'mfcc', 'mel_spectrogram', 'spectrogram']:
-                    features['torchaudio'].pop(torchaudio_field, None)
-                for field in ['ppgs', 'transcription']:
-                    features.pop(field, None)
+                _remove_sensitive_features_from_feature_payload(features)
                 torch.save(features, output_path)
+
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            list(tqdm(executor.map(process_feature_file, paths), total=len(paths), desc="Copying and de-identifying feature files"))
 
 
 class VBAIDataset(BIDSDataset):
@@ -1877,7 +2168,7 @@ class VBAIDataset(BIDSDataset):
         """
         participants_file = self.data_path / "participants.tsv"
         if not participants_file.exists():
-            logging.warning(f"participants.tsv file not found at {participants_file}")
+            _LOGGER.warning(f"participants.tsv file not found at {participants_file}")
             return pd.DataFrame()
 
         participants_df = pd.read_csv(participants_file, sep="\t")
@@ -1886,7 +2177,7 @@ class VBAIDataset(BIDSDataset):
         questionnaire_file = instrument_columns_path.joinpath(f"{questionnaire_name}.json")
         
         if not questionnaire_file.exists():
-            logging.warning(f"Questionnaire JSON file not found: {questionnaire_name}.json")
+            _LOGGER.warning(f"Questionnaire JSON file not found: {questionnaire_name}.json")
             return pd.DataFrame()
             
         questionnaire_columns = json.loads(questionnaire_file.read_text())
@@ -1895,7 +2186,7 @@ class VBAIDataset(BIDSDataset):
         available_columns = [col for col in questionnaire_columns if col in participants_df.columns]
         
         if not available_columns:
-            logging.warning(f"No columns from '{questionnaire_name}' questionnaire found in participants.tsv")
+            _LOGGER.warning(f"No columns from '{questionnaire_name}' questionnaire found in participants.tsv")
             return pd.DataFrame()
 
         # Select the available columns
@@ -1914,7 +2205,7 @@ class VBAIDataset(BIDSDataset):
         """
         participants_file = self.data_path / "participants.tsv"
         if not participants_file.exists():
-            logging.warning("participants.tsv file not found")
+            _LOGGER.warning("participants.tsv file not found")
             return pd.DataFrame()
 
         try:
@@ -1924,7 +2215,7 @@ class VBAIDataset(BIDSDataset):
                 df.rename(columns={'record_id': 'participant_id'}, inplace=True)
             return df
         except Exception as e:
-            logging.error(f"Error loading participants data: {e}")
+            _LOGGER.error(f"Error loading participants data: {e}")
             return pd.DataFrame()
 
     def _load_session_schema_from_participants_tsv(self) -> pd.DataFrame:
@@ -1938,7 +2229,7 @@ class VBAIDataset(BIDSDataset):
         """
         participants_file = self.data_path / "participants.tsv"
         if not participants_file.exists():
-            logging.warning("participants.tsv file not found")
+            _LOGGER.warning("participants.tsv file not found")
             return pd.DataFrame()
         
         try:
@@ -1955,7 +2246,7 @@ class VBAIDataset(BIDSDataset):
             available_columns = [col for col in session_columns if col in df.columns]
             
             if not available_columns:
-                logging.warning("No session-related columns found in participants.tsv")
+                _LOGGER.warning("No session-related columns found in participants.tsv")
                 return pd.DataFrame()
             
             # Filter to rows that have session data (session_id is not null)
@@ -1966,7 +2257,7 @@ class VBAIDataset(BIDSDataset):
             return session_df
             
         except Exception as e:
-            logging.error(f"Error loading session data from participants.tsv: {e}")
+            _LOGGER.error(f"Error loading session data from participants.tsv: {e}")
             return pd.DataFrame()
 
     def _load_recording_and_acoustic_task_df(self) -> pd.DataFrame:
@@ -2059,7 +2350,7 @@ class VBAIDataset(BIDSDataset):
                 continue
 
         if len(missed_files) > 0:
-            logging.warning(
+            _LOGGER.warning(
                 f"Could not find {len(missed_files)} / {recording_df.shape[0]} audio files."
             )
 
@@ -2094,7 +2385,7 @@ class VBAIDataset(BIDSDataset):
                 continue
 
         if len(missed_files) > 0:
-            logging.warning(
+            _LOGGER.warning(
                 f"Could not find {len(missed_files)} / {recording_df.shape[0]} feature files."
             )
 
@@ -2138,5 +2429,5 @@ class VBAIDataset(BIDSDataset):
                     if not audio_filename.exists():
                         missing_audio_files.append(audio_filename)
 
-        logging.debug(f"Missing audio files: {missing_audio_files}")
+        _LOGGER.debug(f"Missing audio files: {missing_audio_files}")
         return len(missing_audio_files) == 0
