@@ -1,3 +1,16 @@
+# 3.0.1 (Tue Dec 16 2025)
+
+#### 🐛 Bug Fix
+
+- use stable version of senselab [#220](https://github.com/sensein/b2aiprep/pull/220) (jordanwilke@dhcp-10-29-223-156.dyn.mit.edu [@wilke0818](https://github.com/wilke0818))
+
+#### Authors: 2
+
+- [@wilke0818](https://github.com/wilke0818)
+- Jordan Wilke (jordanwilke@dhcp-10-29-223-156.dyn.mit.edu)
+
+---
+
 # 3.0.0 (Tue Dec 16 2025)
 
 #### 💥 Breaking Change
