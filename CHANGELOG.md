@@ -1,3 +1,46 @@
+# 3.0.0 (Tue Dec 16 2025)
+
+#### 💥 Breaking Change
+
+- tidy readme and release documentation [#219](https://github.com/sensein/b2aiprep/pull/219) ([@alistairewj](https://github.com/alistairewj))
+- Updates for release v3.0 [#215](https://github.com/sensein/b2aiprep/pull/215) ([@alistairewj](https://github.com/alistairewj))
+- refactor into redcapdataset, bidsdataset, and deidentify method [#193](https://github.com/sensein/b2aiprep/pull/193) ([@alistairewj](https://github.com/alistairewj) [@Evan8456](https://github.com/Evan8456))
+
+#### 🚀 Enhancement
+
+- Derived data transition to bundle [#208](https://github.com/sensein/b2aiprep/pull/208) ([@wilke0818](https://github.com/wilke0818) [@alistairewj](https://github.com/alistairewj) [@Evan8456](https://github.com/Evan8456))
+- move clean to creation of bids [#196](https://github.com/sensein/b2aiprep/pull/196) ([@alistairewj](https://github.com/alistairewj) [@Evan8456](https://github.com/Evan8456))
+- Updated publish-bids-dataset  and added id remapping for pediatric data [#192](https://github.com/sensein/b2aiprep/pull/192) ([@alistairewj](https://github.com/alistairewj) [@Evan8456](https://github.com/Evan8456))
+
+#### 🐛 Bug Fix
+
+- Adding feature descriptors for sparc and ppgs and missing torchaudio … [#216](https://github.com/sensein/b2aiprep/pull/216) ([@wilke0818](https://github.com/wilke0818))
+- Task extraction changes (and possibly sanitization) [#214](https://github.com/sensein/b2aiprep/pull/214) ([@wilke0818](https://github.com/wilke0818))
+- Update parquet [#213](https://github.com/sensein/b2aiprep/pull/213) ([@wilke0818](https://github.com/wilke0818))
+- fix task extraction [#212](https://github.com/sensein/b2aiprep/pull/212) ([@alistairewj](https://github.com/alistairewj))
+- add race mapping [#210](https://github.com/sensein/b2aiprep/pull/210) ([@alistairewj](https://github.com/alistairewj))
+- Attempting improved deid [#206](https://github.com/sensein/b2aiprep/pull/206) ([@wilke0818](https://github.com/wilke0818) [@alistairewj](https://github.com/alistairewj) [@Evan8456](https://github.com/Evan8456))
+- Reorganize phenotype files [#207](https://github.com/sensein/b2aiprep/pull/207) ([@alistairewj](https://github.com/alistairewj) [@Evan8456](https://github.com/Evan8456))
+- Changes for V3 release [#204](https://github.com/sensein/b2aiprep/pull/204) ([@wilke0818](https://github.com/wilke0818) [@Evan8456](https://github.com/Evan8456) [@alistairewj](https://github.com/alistairewj))
+- Fixed bug [#205](https://github.com/sensein/b2aiprep/pull/205) ([@Evan8456](https://github.com/Evan8456))
+- Speed up BIDS build [#203](https://github.com/sensein/b2aiprep/pull/203) ([@alistairewj](https://github.com/alistairewj) [@Evan8456](https://github.com/Evan8456))
+- reproduce pediatric release [#202](https://github.com/sensein/b2aiprep/pull/202) ([@alistairewj](https://github.com/alistairewj))
+- Made fixes to redcap import script & publish command [#201](https://github.com/sensein/b2aiprep/pull/201) ([@Evan8456](https://github.com/Evan8456))
+- Session fix [#200](https://github.com/sensein/b2aiprep/pull/200) ([@Evan8456](https://github.com/Evan8456))
+- Updated sensitive columns [#197](https://github.com/sensein/b2aiprep/pull/197) ([@Evan8456](https://github.com/Evan8456))
+- adding session id remapping [#198](https://github.com/sensein/b2aiprep/pull/198) ([@Evan8456](https://github.com/Evan8456) [@wilke0818](https://github.com/wilke0818))
+- Initial commit of peds id remapping [#195](https://github.com/sensein/b2aiprep/pull/195) ([@Evan8456](https://github.com/Evan8456))
+- Fix torchaudio versioning [#199](https://github.com/sensein/b2aiprep/pull/199) ([@wilke0818](https://github.com/wilke0818))
+- Updated peds related fields and added redcap compatibility script [#194](https://github.com/sensein/b2aiprep/pull/194) ([@Evan8456](https://github.com/Evan8456))
+
+#### Authors: 3
+
+- [@wilke0818](https://github.com/wilke0818)
+- Alistair Johnson ([@alistairewj](https://github.com/alistairewj))
+- Evan Ng ([@Evan8456](https://github.com/Evan8456))
+
+---
+
 # 2.7.0 (Fri Sep 05 2025)
 
 #### 🚀 Enhancement
