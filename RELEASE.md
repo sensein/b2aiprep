@@ -51,7 +51,7 @@ The following command will parse the RedCap CSV into multiple phenotype CSVs and
 ```
 b2aiprep-cli redcap2bids <path/to/redcap_csv> \
     <path/to/redcap_to_reproschema> \
-    <path/to/output/bids_folder> \
+    --outdir <path/to/bids/folder> \
     --audiodir <path/to/audio/files>
 ```
 
@@ -125,10 +125,10 @@ Once the command is complete, you should have the following output:
 ### 5. Publish
 
 For simplicity, the BIDS dataset is parsed into a small set of files for publication and wide dissemination. 
-Run the following to create the bundled dataset: 
+Run the following to create the bundled dataset:
+
 ```
-b2aiprep-cli create-bundled-dataset <path/to/input/bids_folder>  \ 
-    <path/to/output/bundled_folder> 
+b2aiprep-cli create-bundled-dataset <path/to/input/bids_folder> <path/to/output/bundled_folder> 
 ```
 
 Once this command is done, you will have a dataset ready to release! Congratulations!
