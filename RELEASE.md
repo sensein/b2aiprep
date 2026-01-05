@@ -46,11 +46,16 @@ Sanity check: The `record_id` column of the RedCap CSV should match the folder n
 
 The next step in the pipeline reorganizes the dataset to follow the [BIDS format](https://bids.neuroimaging.io/index.html). Briefly, BIDS is a folder structure with sessions nested under unique folders for each subject and certain metadata files required.
 
+Before running the command, we first must get the latest version of the [Reproschema protocols](https://github.com/sensein/b2ai-redcap2rs) by running the following command:
+```
+git clone https://github.com/sensein/b2ai-redcap2rs <path/to/reproschema_protocols>
+```
+
 The following command will parse the RedCap CSV into multiple phenotype CSVs and reorganize the audio data to follow the BIDS folder structure:
 
 ```
 b2aiprep-cli redcap2bids <path/to/redcap_csv> \
-    <path/to/redcap_to_reproschema> \
+    <path/to/reproschema_protocols> \
     --outdir <path/to/bids/folder> \
     --audiodir <path/to/audio/files>
 ```
