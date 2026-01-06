@@ -1,0 +1,67 @@
+name: Trigger Target Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+        branch_name:
+          description: 'Branch name to create'
+          required: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Upgrade pip
+        run: |
+          python -m pip install --upgrade pip
+      
+      - name: install gitpython
+        run: |
+          pip install gitpython
+
+      - name: Set up Git configuration
+        run: |
+          git rev-parse --abbrev-ref HEAD
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git config --global credential.helper cache
+          
+
+      - name: Create the new branch
+        run: |
+          BRANCH_NAME="${{ github.event.inputs.branch_name }}"
+          echo "Creating new branch: $BRANCH_NAME"
+          git checkout -b $BRANCH_NAME
+
+      - name: Get redcap2rs files
+        run: |
+          git clone --depth 1 https://${{ secrets.AUTH }}@github.com/Evan8456/b2ai-redcap2rs
+          mkdir -p ./b2aiprep/src/b2aiprep/redcap2rs
+          cp -r b2ai-redcap2rs/* ./b2aiprep/src/b2aiprep/redcap2rs/
+
+      - name: Commit reproschema
+        run: |
+          git add ./b2aiprep/src/b2aiprep/redcap2rs
+          git commit -m "$(date): update reproschema with redcap $VERSION_TAG"
+          git push --set-upstream origin $BRANCH_NAME
+          
+      - name: Create Pull Request
+        run: |
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.AUTH }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/Evan8456/b2aiprep/pulls \
+            -d '{
+                  "title": "Update redcap2rs files",
+                  "head": "'"$BRANCH_NAME"'",
+                  "base": "main",
+                  "body": "Automatically added RedCap2RS files to b2aiprep."
+                }'
+      
