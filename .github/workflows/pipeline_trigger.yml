@@ -46,10 +46,10 @@ jobs:
           mkdir -p ./b2aiprep/src/b2aiprep/redcap2rs
           cp -r b2ai-redcap2rs/* ./b2aiprep/src/b2aiprep/redcap2rs/
 
-      - name: Commit reproschema
+      - name: Commit redcap2rs files
         run: |
           git add ./b2aiprep/src/b2aiprep/redcap2rs
-          git commit -m "$(date): update reproschema with redcap $VERSION_TAG"
+          git commit -m "$(date): update redcap2rs files"
           git push --set-upstream origin $BRANCH_NAME
           
       - name: Create Pull Request
