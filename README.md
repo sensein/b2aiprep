@@ -6,11 +6,23 @@ A simple Python package to prepare acoustic data for the Bridge2AI voice project
 
 ## Installation
 
-Requires a Python == 3.11 environment.
+Requires a Python >= 3.10; < 3.14 environment.
 
 ```
 pip install b2aiprep
 ```
+
+## Common Issues
+
+If you get the following error which has been observed on only some OSes:
+
+```python
+terminate called after throwing an instance of 'std::bad_alloc'
+  what():  std::bad_alloc
+Aborted (core dumped)
+```
+
+A likely fix is to run `pip uninstall torbi`.
 
 ## Usage
 

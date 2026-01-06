@@ -37,7 +37,7 @@ dependencies = [
 where = ["src"] # <-- this changed
 
 [tool.setuptools.package-data]
-"*" = ["*.*"] # <-- this changed
+"*" = ["*.*", ".gitkeep"] # <-- this changed
 
 [project.optional-dependencies]
 doc = [
