@@ -43,8 +43,8 @@ jobs:
       - name: Get redcap2rs files
         run: |
           git clone --depth 1 https://${{ secrets.AUTH }}@github.com/Evan8456/b2ai-redcap2rs
-          mkdir -p ./b2aiprep/src/b2aiprep/redcap2rs
-          cp -r b2ai-redcap2rs/* ./b2aiprep/src/b2aiprep/redcap2rs/
+          mkdir -p src/b2aiprep/redcap2rs
+          cp -r b2ai-redcap2rs/* src/b2aiprep/redcap2rs
 
       - name: Commit redcap2rs files
         run: |
