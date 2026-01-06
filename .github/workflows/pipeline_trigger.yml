@@ -48,7 +48,7 @@ jobs:
 
       - name: Commit redcap2rs files
         run: |
-          git add ./b2aiprep/src/b2aiprep/redcap2rs
+          git add src/b2aiprep/redcap2rs
           git commit -m "$(date): update redcap2rs files"
           git push --set-upstream https://x-access-token:${{ secrets.AUTH }}@github.com/${{ github.repository }} $BRANCH_NAME
           
