@@ -1,3 +1,16 @@
+# 3.0.2 (Tue Jan 06 2026)
+
+#### 🐛 Bug Fix
+
+- Updated RELEASE docs to grab submodule folder [#221](https://github.com/sensein/b2aiprep/pull/221) ([@Evan8456](https://github.com/Evan8456) [@wilke0818](https://github.com/wilke0818))
+
+#### Authors: 2
+
+- [@wilke0818](https://github.com/wilke0818)
+- Evan Ng ([@Evan8456](https://github.com/Evan8456))
+
+---
+
 # 3.0.1 (Tue Dec 16 2025)
 
 #### 🐛 Bug Fix
