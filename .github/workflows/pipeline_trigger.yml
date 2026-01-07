@@ -22,10 +22,6 @@ jobs:
         run: |
           python -m pip install --upgrade pip
       
-      - name: install gitpython
-        run: |
-          pip install gitpython
-
       - name: Set up Git configuration
         run: |
           git rev-parse --abbrev-ref HEAD
