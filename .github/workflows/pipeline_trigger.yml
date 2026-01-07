@@ -43,7 +43,7 @@ jobs:
 
       - name: Get redcap2rs files
         run: |
-          git clone --depth 1 https://${{ secrets.AUTH }}@github.com/Evan8456/b2ai-redcap2rs
+          git clone --depth 1 https://${{ secrets.AUTH }}@github.com/sensein/b2ai-redcap2rs
           mkdir -p src/b2aiprep/redcap2rs
           cp -r b2ai-redcap2rs/* src/b2aiprep/redcap2rs
 
@@ -58,7 +58,7 @@ jobs:
           curl -X POST \
             -H "Authorization: token ${{ secrets.AUTH }}" \
             -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/Evan8456/b2aiprep/pulls \
+            https://api.github.com/repos/sensein/b2aiprep/pulls \
             -d '{
                   "title": "Update redcap2rs files",
                   "head": "'"$BRANCH_NAME"'",
