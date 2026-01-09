@@ -144,11 +144,12 @@ def parse_survey(
                         if not isinstance(c, dict):
                             continue
                         name = c.get("name")
+                        label = None
                         if isinstance(name, dict):
                             label = name.get("en") or next(iter(name.values()), None)
                         elif isinstance(name, str):
                             label = name
-                        else:
+                        if label is None:
                             label = c.get("value")
                         mapping[c.get("value")] = label
                     choices_cache[url] = mapping
