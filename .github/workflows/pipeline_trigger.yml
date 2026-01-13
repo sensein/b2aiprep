@@ -17,6 +17,8 @@ jobs:
         with:
           app-id: ${{ vars.BRIDGE_APP_ID }}
           private-key: ${{ secrets.BRIDGE_APP_PRIVATE_KEY }}
+          owner: Evan8456 
+          repositories: b2aiprep
 
       - uses: actions/checkout@v4
         with:
@@ -61,7 +63,7 @@ jobs:
       - name: Create Pull Request
         run: |
           curl -X POST \
-            -H "Authorization: token ${{ steps.app-token.outputs.token }}" \
+            -H "Authorization: Bearer ${{ steps.app-token.outputs.token }}" \
             -H "Accept: application/vnd.github.v3+json" \
             https://api.github.com/repos/Evan8456/b2aiprep/pulls \
             -d '{
