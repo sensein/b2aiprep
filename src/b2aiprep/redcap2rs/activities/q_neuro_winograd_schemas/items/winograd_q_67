@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_67",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_67"
+    },
+    "question": {
+        "en": "67. They broadcast an announcement, but a subway came into the station and I couldn't hear it. What couldn't I hear?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "The announcement"
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "The subway"
+                },
+                "value": "incorrect"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

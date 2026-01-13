@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_169",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_169"
+    },
+    "question": {
+        "en": "169. Fred watched TV while George went out to buy groceries. After an hour he got up. Who got up?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Fred"
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "George"
+                },
+                "value": "incorrect"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

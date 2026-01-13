@@ -1,0 +1,94 @@
+{
+    "id": "q_mood_participant_history_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "q_mood_participant_history"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/mph_session_id",
+            "items/mph_started_at",
+            "items/mph_completed_at",
+            "items/mph_duration",
+            "items/mph_active_psy_medical_problems",
+            "items/mph_hist_psy_medical_problems",
+            "items/mph_prescribed_medication",
+            "items/mph_current_medication",
+            "items/mph_previous_medication",
+            "items/mph_see_mental_health_professional",
+            "items/mph_describe_psychotherapy"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/mph_session_id",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "mph_session_id"
+            },
+            {
+                "isAbout": "items/mph_started_at",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "mph_started_at"
+            },
+            {
+                "isAbout": "items/mph_completed_at",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "mph_completed_at"
+            },
+            {
+                "isAbout": "items/mph_duration",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "mph_duration"
+            },
+            {
+                "isAbout": "items/mph_active_psy_medical_problems",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "mph_active_psy_medical_problems"
+            },
+            {
+                "isAbout": "items/mph_hist_psy_medical_problems",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "mph_hist_psy_medical_problems"
+            },
+            {
+                "isAbout": "items/mph_prescribed_medication",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "mph_prescribed_medication"
+            },
+            {
+                "isAbout": "items/mph_current_medication",
+                "isVis": "mph_prescribed_medication=='yes'",
+                "valueRequired": false,
+                "variableName": "mph_current_medication"
+            },
+            {
+                "isAbout": "items/mph_previous_medication",
+                "isVis": "mph_prescribed_medication=='yes'",
+                "valueRequired": false,
+                "variableName": "mph_previous_medication"
+            },
+            {
+                "isAbout": "items/mph_see_mental_health_professional",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "mph_see_mental_health_professional"
+            },
+            {
+                "isAbout": "items/mph_describe_psychotherapy",
+                "isVis": "mph_see_mental_health_professional=='yes'",
+                "valueRequired": false,
+                "variableName": "mph_describe_psychotherapy"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "3.24.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,36 @@
+{
+    "id": "mph_prescribed_medication",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Treatment Obtained"
+    },
+    "prefLabel": {
+        "en": "mph_prescribed_medication"
+    },
+    "question": {
+        "en": "Have you ever been prescribed medication for mental or emotional problems (e.g., antidepressants, anxiolytics, antipsychotics, mood stabilizers, etc.)?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

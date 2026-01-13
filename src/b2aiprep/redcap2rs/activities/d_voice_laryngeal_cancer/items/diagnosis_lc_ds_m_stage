@@ -1,0 +1,36 @@
+{
+    "id": "diagnosis_lc_ds_m_stage",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Disease Severity"
+    },
+    "prefLabel": {
+        "en": "diagnosis_lc_ds_m_stage"
+    },
+    "question": {
+        "en": "What is the M stage of the cancer based on the AJCC Classification?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "M0: no distant metastasis"
+                },
+                "value": "m0"
+            },
+            {
+                "name": {
+                    "en": "M1: Any distant metastasis"
+                },
+                "value": "m1"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

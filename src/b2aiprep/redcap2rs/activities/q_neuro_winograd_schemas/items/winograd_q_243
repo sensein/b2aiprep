@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_243",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_243"
+    },
+    "question": {
+        "en": "243. The man lifted the boy onto his bunk bed. Whose bunk bed?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "The boy's"
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "The man's"
+                },
+                "value": "incorrect"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

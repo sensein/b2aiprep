@@ -1,0 +1,50 @@
+{
+    "id": "hd_confirmed_by_genetic_testing",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "hd_confirmed_by_genetic_testing"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nDoes the participant have Huntington's disease (HD) confirmed by genetic testing?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Not certain"
+                },
+                "value": "notCertain"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

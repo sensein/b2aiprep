@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_45",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_45"
+    },
+    "question": {
+        "en": "45. The older students were bullying the younger ones, so we rescued them. Whom did we rescued?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "The younger students"
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "The older students"
+                },
+                "value": "incorrect"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

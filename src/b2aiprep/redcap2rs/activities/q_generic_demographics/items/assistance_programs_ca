@@ -1,0 +1,63 @@
+{
+    "id": "assistance_programs_ca",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "assistance_programs_ca"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nDo you take advantage of any of the following programs? Choose all that apply"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Supplemental Security Income (SSI)"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Supplemental Nutrition Assistance Program (SNAP)"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Special Supplemental Nutrition Program for Women, Infants, and Children (WIC)"
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "Temporary Assistance for Needy Families (TANF), including Pass through Child Support"
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "General Assistance (GA)"
+                },
+                "value": 5
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

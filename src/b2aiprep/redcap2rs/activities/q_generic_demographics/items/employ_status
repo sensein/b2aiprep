@@ -1,0 +1,103 @@
+{
+    "id": "employ_status",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Employment Status"
+    },
+    "prefLabel": {
+        "en": "employ_status"
+    },
+    "question": {
+        "en": "What is your employment status? Choose all that apply"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Employed, freelance"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Employed, full time"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Employed, part time"
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "Employed, multiple part time jobs"
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "Student"
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "Self-employed"
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "Retired"
+                },
+                "value": 7
+            },
+            {
+                "name": {
+                    "en": "Unemployed"
+                },
+                "value": 8
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": 9
+            },
+            {
+                "name": {
+                    "en": "Stay-at-home parent or guardian"
+                },
+                "value": 10
+            },
+            {
+                "name": {
+                    "en": "Caregiver"
+                },
+                "value": 11
+            },
+            {
+                "name": {
+                    "en": "Disabled"
+                },
+                "value": 12
+            },
+            {
+                "name": {
+                    "en": "Between jobs"
+                },
+                "value": 13
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,55 @@
+{
+    "id": "peds_phqa_no_interest",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Matrix Group Name",
+            "source": "redcap",
+            "value": "phqa"
+        }
+    ],
+    "preamble": {
+        "en": "How often have you been bothered by each of the following symptoms during the past two weeks? For each symptom select the answer that best describes how you have been feeling."
+    },
+    "prefLabel": {
+        "en": "peds_phqa_no_interest"
+    },
+    "question": {
+        "en": "Little interest or pleasure in doing things?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Not at all"
+                },
+                "value": "notAtAll"
+            },
+            {
+                "name": {
+                    "en": "Several days"
+                },
+                "value": "severalDays"
+            },
+            {
+                "name": {
+                    "en": "More than half the days"
+                },
+                "value": "moreThanHalfTheDays"
+            },
+            {
+                "name": {
+                    "en": "Nearly every day"
+                },
+                "value": "nearlyEveryDay"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,55 @@
+{
+    "id": "diagnosis_lc_etiology",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "3. Etiology"
+    },
+    "prefLabel": {
+        "en": "diagnosis_lc_etiology"
+    },
+    "question": {
+        "en": "Check any risk factors of this participant in relation to their laryngeal cancer.\n(Select all that apply)."
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Smoking"
+                },
+                "value": "smoking"
+            },
+            {
+                "name": {
+                    "en": "Alcohol"
+                },
+                "value": "alcohol"
+            },
+            {
+                "name": {
+                    "en": "Family history"
+                },
+                "value": "family_history"
+            },
+            {
+                "name": {
+                    "en": "Human Papilloma Virus (HPV)"
+                },
+                "value": "hpv"
+            },
+            {
+                "name": {
+                    "en": "Exposure to other harmful substances"
+                },
+                "value": "exposure_other_harmful_substances"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

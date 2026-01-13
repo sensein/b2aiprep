@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_78",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_78"
+    },
+    "question": {
+        "en": "78. I couldn't put the pot on the shelf because it was too tall. What was too tall?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "The shelf"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "The pot"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,141 @@
+{
+    "id": "medications",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "medications"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nDo you currently take or use any of these medications or substances? Please check all that apply"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Antibiotics"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Anti-histamines (allergy medications)"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Anti-Hypertensive Medications (Blood Pressure Medication)"
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "Diuretics (ex: Lasix)"
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "Decongestants"
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "Muscle relaxants (ex: Baclofen)"
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "Hormone use"
+                },
+                "value": 7
+            },
+            {
+                "name": {
+                    "en": "Inhaled corticosteroids"
+                },
+                "value": 8
+            },
+            {
+                "name": {
+                    "en": "Oral steroids"
+                },
+                "value": 9
+            },
+            {
+                "name": {
+                    "en": "Anti-anxiety medications: (ex: Benzodiazepine)"
+                },
+                "value": 10
+            },
+            {
+                "name": {
+                    "en": "Chronic Pain medication"
+                },
+                "value": 11
+            },
+            {
+                "name": {
+                    "en": "Psychotropic/antipsychotic medications (ex: Clozapine)"
+                },
+                "value": 12
+            },
+            {
+                "name": {
+                    "en": "Antidepressants (ex: amitryptiline)"
+                },
+                "value": 13
+            },
+            {
+                "name": {
+                    "en": "Immune suppressors (ex: Methotrexate)"
+                },
+                "value": 14
+            },
+            {
+                "name": {
+                    "en": "Reflux medications (ex: Pantoprazole, Nexium)"
+                },
+                "value": 15
+            },
+            {
+                "name": {
+                    "en": "Anticholinergics (ex: Ventolin)"
+                },
+                "value": 16
+            },
+            {
+                "name": {
+                    "en": "Anticoagulants (blood thinners)"
+                },
+                "value": 17
+            },
+            {
+                "name": {
+                    "en": "Antiepileptic (ex: Phenytoin)"
+                },
+                "value": 18
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,42 @@
+{
+    "id": "diagnosis_as_etiology_auto_immune",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "3. Etiology"
+    },
+    "prefLabel": {
+        "en": "diagnosis_as_etiology_auto_immune"
+    },
+    "question": {
+        "en": "Auto-immune or granulomatous disease Subcategory"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Granulomatosis with polyangiitis (GPA) (Formerly known as Wegner's disease)"
+                },
+                "value": "gpa"
+            },
+            {
+                "name": {
+                    "en": "Relapsing Polychondritis"
+                },
+                "value": "relapsingPolychondritis"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

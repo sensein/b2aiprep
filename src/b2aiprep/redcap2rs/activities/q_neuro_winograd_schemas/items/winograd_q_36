@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_36",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_36"
+    },
+    "question": {
+        "en": "36. Jim comforted Kevin because he was so upset. Who was upset?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Jim"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "Kevin"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

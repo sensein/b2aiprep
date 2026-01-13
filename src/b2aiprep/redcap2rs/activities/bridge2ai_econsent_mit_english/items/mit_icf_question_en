@@ -1,0 +1,45 @@
+{
+    "id": "mit_icf_question_en",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Identifier?",
+            "source": "redcap",
+            "value": "y"
+        },
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "prefLabel": {
+        "en": "mit_icf_question_en"
+    },
+    "question": {
+        "en": "Consent to Take Part in ResearchI freely give my consent to take part in this study. I understand that by signing this form I am agreeingto take part in research. I have received a copy of this form to take with me. I understand that by signingbelow, I am consenting for my contact information to be kept in a repository for this study, and that thisinformation may be used to contact me in the future for further data collection if long-term follow-up isrequired as part of an eventual extension of this grant after the expected 4-year duration, or to be invitedto participate in future research studies. My information will not be shared with third parties.I consent to having all data I submit shared with the researchers of this study and to having my audiorecordings, written responses, and other coded research data shared with other qualified researchers asdescribed in this consent form. I further consent to the public sharing of my de-identified and aggregatedstudy data.I would like to be informed of incidental findings, should the study report this type of information."
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

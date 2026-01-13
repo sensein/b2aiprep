@@ -1,0 +1,22 @@
+{
+    "id": "occupation",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Employment Status"
+    },
+    "prefLabel": {
+        "en": "occupation"
+    },
+    "question": {
+        "en": "What do you consider to be or have been your primary occupation?"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

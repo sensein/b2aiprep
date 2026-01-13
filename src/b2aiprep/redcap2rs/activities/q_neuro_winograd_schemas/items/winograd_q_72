@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_72",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_72"
+    },
+    "question": {
+        "en": "72. I used an old rag to clean the knife, and then I put it in the trash. What did I put in the trash?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "The knife"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "The rag"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

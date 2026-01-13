@@ -1,0 +1,29 @@
+{
+    "id": "ef_other_reason_decline",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Identifier?",
+            "source": "redcap",
+            "value": "y"
+        }
+    ],
+    "preamble": {
+        "en": "Review and Enroll"
+    },
+    "prefLabel": {
+        "en": "ef_other_reason_decline"
+    },
+    "question": {
+        "en": "If \"Other\" reason for declining enrollment, please specify:"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

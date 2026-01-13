@@ -1,0 +1,61 @@
+{
+    "id": "flashbacks",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Matrix Group Name",
+            "source": "redcap",
+            "value": "ptsd_adult"
+        }
+    ],
+    "preamble": {
+        "en": "People sometimes have problems after extremely stressful events or experiences. How much have you been bothered during the PAST SEVEN (7) DAYS by each of the following problems that occurred or became worse after an extremely stressful event/experience?\n\n0=Not at all, 1=A little bit, 2=Moderately, 3=Quite a bit, 4=Extremely\""
+    },
+    "prefLabel": {
+        "en": "flashbacks"
+    },
+    "question": {
+        "en": "Having \"flashbacks\", that is, you suddenly acted or felt as if a stressful experience from the past was happening all over again (for example, you reexperienced parts of a stressful experience by seeing, hearing, smelling, or physically feeling parts of the experience)?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "0=Not at all"
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "1=A little bit"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "2=Moderately"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "3=Quite a bit"
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "4=Extremely"
+                },
+                "value": 4
+            }
+        ],
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

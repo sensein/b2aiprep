@@ -1,0 +1,69 @@
+{
+    "id": "circulatory_conditions",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "circulatory_conditions"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nHave you been diagnosed with any of these circulatory or heart conditions by a clinician? (check all that apply)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Atrial fibrillation"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Cardiac condition"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Chronic pericarditis"
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "Congestive heart failure"
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "Coronary heart disease"
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "Hypertension"
+                },
+                "value": 6
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

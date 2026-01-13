@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_94",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_94"
+    },
+    "question": {
+        "en": "94. The cat was lying by the mouse hole waiting for the mouse, but it was too impatient. What was too impatient?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "The mouse"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "The cat"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

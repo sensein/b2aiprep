@@ -1,0 +1,49 @@
+{
+    "id": "hd_medications_selection",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Treatment obtained"
+    },
+    "prefLabel": {
+        "en": "hd_medications_selection"
+    },
+    "question": {
+        "en": "Please select all that apply and provide further details if available"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Neuroleptic"
+                },
+                "value": "neuroleptic"
+            },
+            {
+                "name": {
+                    "en": "VMAT2 inhibitor"
+                },
+                "value": "vmat2_inhibitor"
+            },
+            {
+                "name": {
+                    "en": "Antidepressant"
+                },
+                "value": "antidepressant"
+            },
+            {
+                "name": {
+                    "en": "Benzodiazepine"
+                },
+                "value": "benzodiazepine"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

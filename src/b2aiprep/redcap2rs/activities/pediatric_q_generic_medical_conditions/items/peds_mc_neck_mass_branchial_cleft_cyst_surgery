@@ -1,0 +1,36 @@
+{
+    "id": "peds_mc_neck_mass_branchial_cleft_cyst_surgery",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Pediatric Medical Conditions Questionnaire"
+    },
+    "prefLabel": {
+        "en": "peds_mc_neck_mass_branchial_cleft_cyst_surgery"
+    },
+    "question": {
+        "en": "Have they had a surgery for this?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

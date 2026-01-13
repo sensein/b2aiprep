@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_106",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_106"
+    },
+    "question": {
+        "en": "106. The dog chased the cat, which ran up a tree. It waited at the bottom. Which waited at the bottom?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "The cat"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "The dog"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

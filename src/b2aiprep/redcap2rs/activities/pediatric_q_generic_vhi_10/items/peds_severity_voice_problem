@@ -1,0 +1,52 @@
+{
+    "id": "peds_severity_voice_problem",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Text Validation Type OR Show Slider Number",
+            "source": "redcap",
+            "value": "number"
+        },
+        {
+            "column": "Text Validation Max",
+            "source": "redcap",
+            "value": "10.0"
+        },
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "RH"
+        }
+    ],
+    "prefLabel": {
+        "en": "peds_severity_voice_problem"
+    },
+    "question": {
+        "en": "Please indicate the severity of your child's voice problem"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Normal"
+                },
+                "value": "Normal"
+            },
+            {
+                "name": {
+                    "en": "Severe"
+                },
+                "value": "Severe"
+            }
+        ],
+        "maxValue": 10,
+        "minValue": 0,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "slider"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

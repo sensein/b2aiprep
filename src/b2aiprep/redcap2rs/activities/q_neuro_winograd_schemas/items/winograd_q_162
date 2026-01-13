@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_162",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_162"
+    },
+    "question": {
+        "en": "162. The foxes are getting in at night and attacking the chickens. I shall have to kill them. What do I have to kill?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "The chickens"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "The foxes"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

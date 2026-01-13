@@ -1,0 +1,141 @@
+{
+    "id": "subjectparticipant_basic_information_schema",
+    "category": "reproschema:Activity",
+    "compute": [
+        {
+            "jsExpression": "rounddown((datediff(dob,'today','y','ymd')),0)",
+            "variableName": "age"
+        }
+    ],
+    "prefLabel": {
+        "en": "subjectparticipant_basic_information"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/record_id",
+            "items/selected_language",
+            "items/selected_language_2",
+            "items/consent_status",
+            "items/contact_participant",
+            "items/consent_date",
+            "items/consent_method",
+            "items/withdrawn_consent_reason",
+            "items/withdrawn_consent_date",
+            "items/is_feasibility_participant",
+            "items/is_remote_data_collection_enabled",
+            "items/enrolled",
+            "items/enrollment_reason",
+            "items/enrollment_institution",
+            "items/researcher_email",
+            "items/api_updates_on_behalf_of"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/record_id",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "record_id"
+            },
+            {
+                "isAbout": "items/age",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "age"
+            },
+            {
+                "isAbout": "items/selected_language",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "selected_language"
+            },
+            {
+                "isAbout": "items/selected_language_2",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "selected_language_2"
+            },
+            {
+                "isAbout": "items/consent_status",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "consent_status"
+            },
+            {
+                "isAbout": "items/contact_participant",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "contact_participant"
+            },
+            {
+                "isAbout": "items/consent_date",
+                "isVis": "consent_status == 2",
+                "valueRequired": true,
+                "variableName": "consent_date"
+            },
+            {
+                "isAbout": "items/consent_method",
+                "isVis": "consent_status == '2'",
+                "valueRequired": true,
+                "variableName": "consent_method"
+            },
+            {
+                "isAbout": "items/withdrawn_consent_reason",
+                "isVis": "consent_status == 3",
+                "valueRequired": false,
+                "variableName": "withdrawn_consent_reason"
+            },
+            {
+                "isAbout": "items/withdrawn_consent_date",
+                "isVis": "consent_status == 3",
+                "valueRequired": true,
+                "variableName": "withdrawn_consent_date"
+            },
+            {
+                "isAbout": "items/is_feasibility_participant",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "is_feasibility_participant"
+            },
+            {
+                "isAbout": "items/is_remote_data_collection_enabled",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "is_remote_data_collection_enabled"
+            },
+            {
+                "isAbout": "items/enrolled",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "enrolled"
+            },
+            {
+                "isAbout": "items/enrollment_reason",
+                "isVis": "enrolled == 1",
+                "valueRequired": false,
+                "variableName": "enrollment_reason"
+            },
+            {
+                "isAbout": "items/enrollment_institution",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "enrollment_institution"
+            },
+            {
+                "isAbout": "items/researcher_email",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "researcher_email"
+            },
+            {
+                "isAbout": "items/api_updates_on_behalf_of",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "api_updates_on_behalf_of"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "4.3.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

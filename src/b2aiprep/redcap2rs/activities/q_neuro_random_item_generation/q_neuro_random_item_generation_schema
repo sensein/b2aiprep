@@ -1,0 +1,59 @@
+{
+    "id": "q_neuro_random_item_generation_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "q_neuro_random_item_generation"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/random_session_id",
+            "items/random_recording_acoustic_task_id",
+            "items/random_started_at",
+            "items/random_completed_at",
+            "items/random_duration",
+            "items/random_item_generation_category"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/random_session_id",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "random_session_id"
+            },
+            {
+                "isAbout": "items/random_recording_acoustic_task_id",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "random_recording_acoustic_task_id"
+            },
+            {
+                "isAbout": "items/random_started_at",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "random_started_at"
+            },
+            {
+                "isAbout": "items/random_completed_at",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "random_completed_at"
+            },
+            {
+                "isAbout": "items/random_duration",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "random_duration"
+            },
+            {
+                "isAbout": "items/random_item_generation_category",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "random_item_generation_category"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "3.24.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

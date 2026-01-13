@@ -1,0 +1,42 @@
+{
+    "id": "diagnosis_pl_ds_k_wd_g",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "2. Disease Subtype"
+    },
+    "prefLabel": {
+        "en": "diagnosis_pl_ds_k_wd_g"
+    },
+    "question": {
+        "en": "Keratosis with dysplasia"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Low grade"
+                },
+                "value": "lowGrade"
+            },
+            {
+                "name": {
+                    "en": "Moderate grade"
+                },
+                "value": "moderateGrade"
+            },
+            {
+                "name": {
+                    "en": "High grade"
+                },
+                "value": "highGrade"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

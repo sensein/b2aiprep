@@ -1,0 +1,43 @@
+{
+    "id": "oral_steroids",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Matrix Group Name",
+            "source": "redcap",
+            "value": "medication"
+        }
+    ],
+    "preamble": {
+        "en": "Do you currently take or use any of these medications or substances to treat ANY condition (e.g. using antidepressant to treat ADHD)?\n\nTo save you time, the responses are pre-set to \"No\". Please only change the responses that apply to you. If you are not currently taking the medication, you can leave the response as it is.\n\nMedication"
+    },
+    "prefLabel": {
+        "en": "oral_steroids"
+    },
+    "question": {
+        "en": "Oral steroids"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

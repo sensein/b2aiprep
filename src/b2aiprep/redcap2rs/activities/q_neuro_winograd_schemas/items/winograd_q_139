@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_139",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_139"
+    },
+    "question": {
+        "en": "139. Sam took French classes from Adam, because he was eager to speak it fluently. Who was eager to speak French fluently?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Sam"
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "Adam"
+                },
+                "value": "incorrect"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

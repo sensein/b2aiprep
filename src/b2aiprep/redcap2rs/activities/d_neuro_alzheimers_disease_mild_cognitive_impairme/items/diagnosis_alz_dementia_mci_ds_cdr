@@ -1,0 +1,48 @@
+{
+    "id": "diagnosis_alz_dementia_mci_ds_cdr",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Disease Severity"
+    },
+    "prefLabel": {
+        "en": "diagnosis_alz_dementia_mci_ds_cdr"
+    },
+    "question": {
+        "en": "Clinical dementia rating (CDR) staging subcategory:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "CDR 0.5 (Very mild impairment)"
+                },
+                "value": "cdr0_5"
+            },
+            {
+                "name": {
+                    "en": "CDR 1 (Mild impairment)"
+                },
+                "value": "cdr1"
+            },
+            {
+                "name": {
+                    "en": "CDR 2 (Moderate impairment)"
+                },
+                "value": "cdr2"
+            },
+            {
+                "name": {
+                    "en": "CDR 3 (Severe impairment)"
+                },
+                "value": "cdr3"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,39 @@
+{
+    "id": "any_dental_condition",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "any_dental_condition"
+    },
+    "question": {
+        "en": "Do you currently have any dental condition(s) (e.g. tooth loss, dentures, retainer, braces, etc.)?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Prefer Not to Answer"
+                },
+                "value": "noAnswer"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

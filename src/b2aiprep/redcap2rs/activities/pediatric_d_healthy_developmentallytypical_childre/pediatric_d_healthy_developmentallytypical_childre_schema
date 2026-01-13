@@ -1,0 +1,27 @@
+{
+    "id": "pediatric_d_healthy_developmentallytypical_childre_schema",
+    "category": "reproschema:Activity",
+    "preamble": {
+        "en": "1. Clinical Information"
+    },
+    "prefLabel": {
+        "en": "pediatric_d_healthy_developmentallytypical_childre"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/diagnosis_healthy_developmentally_typical_children_ci"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/diagnosis_healthy_developmentally_typical_children_ci",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_healthy_developmentally_typical_children_ci"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "3.20.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

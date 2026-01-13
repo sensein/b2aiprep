@@ -1,0 +1,48 @@
+{
+    "id": "current_use_nicotine_products",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Nicotine use"
+    },
+    "prefLabel": {
+        "en": "current_use_nicotine_products"
+    },
+    "question": {
+        "en": "Do you currently use any nicotine products every day, some days, or not at all?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Every day"
+                },
+                "value": "everyDay"
+            },
+            {
+                "name": {
+                    "en": "Some days"
+                },
+                "value": "someDays"
+            },
+            {
+                "name": {
+                    "en": "Not at all"
+                },
+                "value": "notAtAll"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": "noAnswer"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,220 @@
+{
+    "id": "pediatric_q_generic_vhi_10_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "pediatric_q_generic_vhi_10"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/peds_vhi_session_id",
+            "items/peds_vhi_started_at",
+            "items/peds_vhi_completed_at",
+            "items/peds_vhi_duration",
+            "items/peds_vhi_talkativeness",
+            "items/peds_voice_difficult_hear",
+            "items/peds_difficulty_understanding",
+            "items/peds_difficulty_hearing",
+            "items/peds_avoid_communicating",
+            "items/peds_speaks_less",
+            "items/peds_repeat_speaking",
+            "items/peds_voice_diffculities",
+            "items/peds_out_of_air_talking",
+            "items/peds_voice_changes",
+            "items/peds_wrong_with_voice",
+            "items/peds_dry_raspy_hoarse",
+            "items/peds_unpredictable",
+            "items/peds_straining",
+            "items/peds_worse_in_evening",
+            "items/peds_gives_out",
+            "items/peds_yell_to_hear",
+            "items/peds_tense_talking",
+            "items/peds_seem_irritated",
+            "items/peds_other_not_understand",
+            "items/peds_frustrated_voice",
+            "items/peds_less_out_going",
+            "items/peds_annoyed_repeat",
+            "items/peds_embarrassed_repeat",
+            "items/peds_severity_voice_problem"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/peds_vhi_session_id",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "peds_vhi_session_id"
+            },
+            {
+                "isAbout": "items/peds_vhi_started_at",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "peds_vhi_started_at"
+            },
+            {
+                "isAbout": "items/peds_vhi_completed_at",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "peds_vhi_completed_at"
+            },
+            {
+                "isAbout": "items/peds_vhi_duration",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "peds_vhi_duration"
+            },
+            {
+                "isAbout": "items/peds_vhi_talkativeness",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_vhi_talkativeness"
+            },
+            {
+                "isAbout": "items/peds_voice_difficult_hear",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_voice_difficult_hear"
+            },
+            {
+                "isAbout": "items/peds_difficulty_understanding",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_difficulty_understanding"
+            },
+            {
+                "isAbout": "items/peds_difficulty_hearing",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_difficulty_hearing"
+            },
+            {
+                "isAbout": "items/peds_avoid_communicating",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_avoid_communicating"
+            },
+            {
+                "isAbout": "items/peds_speaks_less",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_speaks_less"
+            },
+            {
+                "isAbout": "items/peds_repeat_speaking",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_repeat_speaking"
+            },
+            {
+                "isAbout": "items/peds_voice_diffculities",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_voice_diffculities"
+            },
+            {
+                "isAbout": "items/peds_out_of_air_talking",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_out_of_air_talking"
+            },
+            {
+                "isAbout": "items/peds_voice_changes",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_voice_changes"
+            },
+            {
+                "isAbout": "items/peds_wrong_with_voice",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_wrong_with_voice"
+            },
+            {
+                "isAbout": "items/peds_dry_raspy_hoarse",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_dry_raspy_hoarse"
+            },
+            {
+                "isAbout": "items/peds_unpredictable",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_unpredictable"
+            },
+            {
+                "isAbout": "items/peds_straining",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_straining"
+            },
+            {
+                "isAbout": "items/peds_worse_in_evening",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_worse_in_evening"
+            },
+            {
+                "isAbout": "items/peds_gives_out",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_gives_out"
+            },
+            {
+                "isAbout": "items/peds_yell_to_hear",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_yell_to_hear"
+            },
+            {
+                "isAbout": "items/peds_tense_talking",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_tense_talking"
+            },
+            {
+                "isAbout": "items/peds_seem_irritated",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_seem_irritated"
+            },
+            {
+                "isAbout": "items/peds_other_not_understand",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_other_not_understand"
+            },
+            {
+                "isAbout": "items/peds_frustrated_voice",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_frustrated_voice"
+            },
+            {
+                "isAbout": "items/peds_less_out_going",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_less_out_going"
+            },
+            {
+                "isAbout": "items/peds_annoyed_repeat",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_annoyed_repeat"
+            },
+            {
+                "isAbout": "items/peds_embarrassed_repeat",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_embarrassed_repeat"
+            },
+            {
+                "isAbout": "items/peds_severity_voice_problem",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_severity_voice_problem"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "3.24.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

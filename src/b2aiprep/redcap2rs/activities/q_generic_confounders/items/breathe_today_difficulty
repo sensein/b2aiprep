@@ -1,0 +1,50 @@
+{
+    "id": "breathe_today_difficulty",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "breathe_today_difficulty"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nPlease specify the level of difficulty"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Slight Difficulty"
+                },
+                "value": "slightDifficulty"
+            },
+            {
+                "name": {
+                    "en": "Moderate Difficulty"
+                },
+                "value": "moderateDifficulty"
+            },
+            {
+                "name": {
+                    "en": "Significant Difficulty"
+                },
+                "value": "significantDifficulty"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

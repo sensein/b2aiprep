@@ -1,0 +1,22 @@
+{
+    "id": "mph_previous_medication",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Treatment Obtained"
+    },
+    "prefLabel": {
+        "en": "mph_previous_medication"
+    },
+    "question": {
+        "en": "Please list any previous psychiatric medications (to the best of your recollection), including medication names,\napproximate dates you were taking them, and why they were discontinued."
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,49 @@
+{
+    "id": "pacific_islander_race",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Patient Demographics"
+    },
+    "prefLabel": {
+        "en": "pacific_islander_race"
+    },
+    "question": {
+        "en": "Native Hawaiian or other Pacific Islander"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Polynesian"
+                },
+                "value": 20784
+            },
+            {
+                "name": {
+                    "en": "Micronesian"
+                },
+                "value": 20859
+            },
+            {
+                "name": {
+                    "en": "Melanesian"
+                },
+                "value": 21006
+            },
+            {
+                "name": {
+                    "en": "Other Pacific Islander"
+                },
+                "value": 25007
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,49 @@
+{
+    "id": "diagnosis_ca_pulmonary_symptoms",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "3. Current symptoms and participant history"
+    },
+    "prefLabel": {
+        "en": "diagnosis_ca_pulmonary_symptoms"
+    },
+    "question": {
+        "en": "Does the participant have any of the following pulmonary symptoms? (Check all that apply)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Dyspnea"
+                },
+                "value": "dyspnea"
+            },
+            {
+                "name": {
+                    "en": "Chronic Cough"
+                },
+                "value": "chronic_cough"
+            },
+            {
+                "name": {
+                    "en": "Sputum production"
+                },
+                "value": "sputum_production"
+            },
+            {
+                "name": {
+                    "en": "Wheezing"
+                },
+                "value": "wheezing"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

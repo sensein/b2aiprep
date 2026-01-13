@@ -1,0 +1,220 @@
+{
+    "id": "d_neuro_alzheimers_disease_mild_cognitive_impairme_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "d_neuro_alzheimers_disease_mild_cognitive_impairme"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/diagnosis_alz_dementia_mci_gsd",
+            "items/diagnosis_alz_dementia_mci_gsd_confirmation_method",
+            "items/diagnosis_alz_dementia_mci_gsd_confirmation_method_other",
+            "items/diagnosis_alz_dementia_mci_gsd_clinical_history",
+            "items/diagnosis_alz_dementia_mci_gsd_functional_inventory",
+            "items/diagnosis_alz_dementia_mci_gsd_cognitive_testing",
+            "items/diagnosis_alz_dementia_mci_gsd_other_investigations",
+            "items/diagnosis_alz_dementia_mci_causes",
+            "items/diagnosis_alz_dementia_mci_dt",
+            "items/diagnosis_alz_dementia_mci_dt_other",
+            "items/diagnosis_alz_dementia_mci_etiology",
+            "items/diagnosis_alz_dementia_mci_etiology_gf",
+            "items/diagnosis_alz_dementia_mci_etiology_gf_other",
+            "items/diagnosis_alz_dementia_mci_etiology_other_medical_conditions",
+            "items/diagnosis_alz_dementia_mci_etiology_other",
+            "items/diagnosis_alz_dementia_mci_ds",
+            "items/diagnosis_alz_dementia_mci_ds_cdr",
+            "items/diagnosis_alz_dementia_mci_ca_rudas_score",
+            "items/diagnosis_alz_dementia_mci_ca_mmse_score",
+            "items/diagnosis_alz_dementia_mci_ca_moca_score",
+            "items/diagnosis_alz_dementia_mci_ca_adas_cog_score",
+            "items/diagnosis_alz_dementia_mci_ca_other",
+            "items/diagnosis_alz_dementia_mci_ca_other_score",
+            "items/diagnosis_alz_dementia_mci_treatment_obtained",
+            "items/diagnosis_alz_dementia_mci_treatment_obtained_yes",
+            "items/diagnosis_alz_dementia_mci_treatment_obtained_yes_medications",
+            "items/diagnosis_alz_dementia_mci_treatment_obtained_yes_medications_other",
+            "items/diagnosis_alz_dementia_mci_treatment_obtained_yes_npi",
+            "items/diagnosis_alz_dementia_mci_treatment_obtained_yes_npi_other"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/diagnosis_alz_dementia_mci_gsd",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_alz_dementia_mci_gsd"
+            },
+            {
+                "isAbout": "items/diagnosis_alz_dementia_mci_gsd_confirmation_method",
+                "isVis": "diagnosis_alz_dementia_mci_gsd=='yes'",
+                "valueRequired": true,
+                "variableName": "diagnosis_alz_dementia_mci_gsd_confirmation_method"
+            },
+            {
+                "isAbout": "items/diagnosis_alz_dementia_mci_gsd_confirmation_method_other",
+                "isVis": "diagnosis_alz_dementia_mci_gsd_confirmation_method(other)=='1'",
+                "valueRequired": true,
+                "variableName": "diagnosis_alz_dementia_mci_gsd_confirmation_method_other"
+            },
+            {
+                "isAbout": "items/diagnosis_alz_dementia_mci_gsd_clinical_history",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_alz_dementia_mci_gsd_clinical_history"
+            },
+            {
+                "isAbout": "items/diagnosis_alz_dementia_mci_gsd_functional_inventory",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_alz_dementia_mci_gsd_functional_inventory"
+            },
+            {
+                "isAbout": "items/diagnosis_alz_dementia_mci_gsd_cognitive_testing",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_alz_dementia_mci_gsd_cognitive_testing"
+            },
+            {
+                "isAbout": "items/diagnosis_alz_dementia_mci_gsd_other_investigations",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_alz_dementia_mci_gsd_other_investigations"
+            },
+            {
+                "isAbout": "items/diagnosis_alz_dementia_mci_causes",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_alz_dementia_mci_causes"
+            },
+            {
+                "isAbout": "items/diagnosis_alz_dementia_mci_dt",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_alz_dementia_mci_dt"
+            },
+            {
+                "isAbout": "items/diagnosis_alz_dementia_mci_dt_other",
+                "isVis": "diagnosis_alz_dementia_mci_dt == 'other'",
+                "valueRequired": true,
+                "variableName": "diagnosis_alz_dementia_mci_dt_other"
+            },
+            {
+                "isAbout": "items/diagnosis_alz_dementia_mci_etiology",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_alz_dementia_mci_etiology"
+            },
+            {
+                "isAbout": "items/diagnosis_alz_dementia_mci_etiology_gf",
+                "isVis": "diagnosis_alz_dementia_mci_etiology(genetic_factors) == 1",
+                "valueRequired": true,
+                "variableName": "diagnosis_alz_dementia_mci_etiology_gf"
+            },
+            {
+                "isAbout": "items/diagnosis_alz_dementia_mci_etiology_gf_other",
+                "isVis": "diagnosis_alz_dementia_mci_etiology_gf(other_genetic_factors) == 1",
+                "valueRequired": true,
+                "variableName": "diagnosis_alz_dementia_mci_etiology_gf_other"
+            },
+            {
+                "isAbout": "items/diagnosis_alz_dementia_mci_etiology_other_medical_conditions",
+                "isVis": "diagnosis_alz_dementia_mci_etiology(other_medical_conditions) == 1",
+                "valueRequired": true,
+                "variableName": "diagnosis_alz_dementia_mci_etiology_other_medical_conditions"
+            },
+            {
+                "isAbout": "items/diagnosis_alz_dementia_mci_etiology_other",
+                "isVis": "diagnosis_alz_dementia_mci_etiology(other) == 1",
+                "valueRequired": true,
+                "variableName": "diagnosis_alz_dementia_mci_etiology_other"
+            },
+            {
+                "isAbout": "items/diagnosis_alz_dementia_mci_ds",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_alz_dementia_mci_ds"
+            },
+            {
+                "isAbout": "items/diagnosis_alz_dementia_mci_ds_cdr",
+                "isVis": "diagnosis_alz_dementia_mci_ds(cdr) == 1",
+                "valueRequired": true,
+                "variableName": "diagnosis_alz_dementia_mci_ds_cdr"
+            },
+            {
+                "isAbout": "items/diagnosis_alz_dementia_mci_ca_rudas_score",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_alz_dementia_mci_ca_rudas_score"
+            },
+            {
+                "isAbout": "items/diagnosis_alz_dementia_mci_ca_mmse_score",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_alz_dementia_mci_ca_mmse_score"
+            },
+            {
+                "isAbout": "items/diagnosis_alz_dementia_mci_ca_moca_score",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_alz_dementia_mci_ca_moca_score"
+            },
+            {
+                "isAbout": "items/diagnosis_alz_dementia_mci_ca_adas_cog_score",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_alz_dementia_mci_ca_adas_cog_score"
+            },
+            {
+                "isAbout": "items/diagnosis_alz_dementia_mci_ca_other",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_alz_dementia_mci_ca_other"
+            },
+            {
+                "isAbout": "items/diagnosis_alz_dementia_mci_ca_other_score",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_alz_dementia_mci_ca_other_score"
+            },
+            {
+                "isAbout": "items/diagnosis_alz_dementia_mci_treatment_obtained",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_alz_dementia_mci_treatment_obtained"
+            },
+            {
+                "isAbout": "items/diagnosis_alz_dementia_mci_treatment_obtained_yes",
+                "isVis": "diagnosis_alz_dementia_mci_treatment_obtained == 'yes'",
+                "valueRequired": true,
+                "variableName": "diagnosis_alz_dementia_mci_treatment_obtained_yes"
+            },
+            {
+                "isAbout": "items/diagnosis_alz_dementia_mci_treatment_obtained_yes_medications",
+                "isVis": "diagnosis_alz_dementia_mci_treatment_obtained == 'yes' && diagnosis_alz_dementia_mci_treatment_obtained_yes(medications) == 1",
+                "valueRequired": true,
+                "variableName": "diagnosis_alz_dementia_mci_treatment_obtained_yes_medications"
+            },
+            {
+                "isAbout": "items/diagnosis_alz_dementia_mci_treatment_obtained_yes_medications_other",
+                "isVis": "diagnosis_alz_dementia_mci_treatment_obtained == 'yes' && diagnosis_alz_dementia_mci_treatment_obtained_yes(medications) == 1 && diagnosis_alz_dementia_mci_treatment_obtained_yes_medications(other) == 1",
+                "valueRequired": true,
+                "variableName": "diagnosis_alz_dementia_mci_treatment_obtained_yes_medications_other"
+            },
+            {
+                "isAbout": "items/diagnosis_alz_dementia_mci_treatment_obtained_yes_npi",
+                "isVis": "diagnosis_alz_dementia_mci_treatment_obtained == 'yes' && diagnosis_alz_dementia_mci_treatment_obtained_yes(npi) == 1",
+                "valueRequired": true,
+                "variableName": "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi"
+            },
+            {
+                "isAbout": "items/diagnosis_alz_dementia_mci_treatment_obtained_yes_npi_other",
+                "isVis": "diagnosis_alz_dementia_mci_treatment_obtained == 'yes' && diagnosis_alz_dementia_mci_treatment_obtained_yes(npi) == 1 && diagnosis_alz_dementia_mci_treatment_obtained_yes_npi(other) == 1",
+                "valueRequired": true,
+                "variableName": "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi_other"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "4.1.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

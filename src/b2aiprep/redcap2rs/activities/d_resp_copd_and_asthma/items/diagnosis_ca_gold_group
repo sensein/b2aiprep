@@ -1,0 +1,42 @@
+{
+    "id": "diagnosis_ca_gold_group",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "2. Disease Subtype"
+    },
+    "prefLabel": {
+        "en": "diagnosis_ca_gold_group"
+    },
+    "question": {
+        "en": "What is the GOLD Group? (A/B/E)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "A"
+                },
+                "value": "a"
+            },
+            {
+                "name": {
+                    "en": "B"
+                },
+                "value": "b"
+            },
+            {
+                "name": {
+                    "en": "E"
+                },
+                "value": "e"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

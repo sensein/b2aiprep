@@ -1,0 +1,66 @@
+{
+    "id": "diagnosis_vfp_iatrogenic",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "3. Etiology"
+    },
+    "prefLabel": {
+        "en": "diagnosis_vfp_iatrogenic"
+    },
+    "question": {
+        "en": "Iatrogenic (surgery/intubation) subcategory"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Thyroidectomy"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "ACDF"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Lung surgery"
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "Heart Surgery"
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "Intubation"
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "Brain Surgery"
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": 7
+            }
+        ],
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

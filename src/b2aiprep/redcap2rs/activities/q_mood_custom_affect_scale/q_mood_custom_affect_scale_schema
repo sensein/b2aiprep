@@ -1,0 +1,136 @@
+{
+    "id": "q_mood_custom_affect_scale_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "q_mood_custom_affect_scale"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/custom_affect_scale_session_id",
+            "items/custom_affect_scale_started_at",
+            "items/custom_affect_scale_completed_at",
+            "items/custom_affect_scale_duration",
+            "items/sad_or_down",
+            "items/joyful",
+            "items/motivated",
+            "items/lack_of_pleasure",
+            "items/tired",
+            "items/energetic",
+            "items/agitated",
+            "items/irritated",
+            "items/lonely",
+            "items/concentrated",
+            "items/relaxed",
+            "items/worried",
+            "items/desire_to_escape"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/custom_affect_scale_session_id",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "custom_affect_scale_session_id"
+            },
+            {
+                "isAbout": "items/custom_affect_scale_started_at",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "custom_affect_scale_started_at"
+            },
+            {
+                "isAbout": "items/custom_affect_scale_completed_at",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "custom_affect_scale_completed_at"
+            },
+            {
+                "isAbout": "items/custom_affect_scale_duration",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "custom_affect_scale_duration"
+            },
+            {
+                "isAbout": "items/sad_or_down",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "sad_or_down"
+            },
+            {
+                "isAbout": "items/joyful",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "joyful"
+            },
+            {
+                "isAbout": "items/motivated",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "motivated"
+            },
+            {
+                "isAbout": "items/lack_of_pleasure",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "lack_of_pleasure"
+            },
+            {
+                "isAbout": "items/tired",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "tired"
+            },
+            {
+                "isAbout": "items/energetic",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "energetic"
+            },
+            {
+                "isAbout": "items/agitated",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "agitated"
+            },
+            {
+                "isAbout": "items/irritated",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "irritated"
+            },
+            {
+                "isAbout": "items/lonely",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "lonely"
+            },
+            {
+                "isAbout": "items/concentrated",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "concentrated"
+            },
+            {
+                "isAbout": "items/relaxed",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "relaxed"
+            },
+            {
+                "isAbout": "items/worried",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "worried"
+            },
+            {
+                "isAbout": "items/desire_to_escape",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "desire_to_escape"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "3.24.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

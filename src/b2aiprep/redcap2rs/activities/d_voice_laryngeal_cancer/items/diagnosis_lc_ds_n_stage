@@ -1,0 +1,66 @@
+{
+    "id": "diagnosis_lc_ds_n_stage",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Disease Severity"
+    },
+    "prefLabel": {
+        "en": "diagnosis_lc_ds_n_stage"
+    },
+    "question": {
+        "en": "What is the N stage of the cancer based on the AJCC Classification?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "N0"
+                },
+                "value": "n0"
+            },
+            {
+                "name": {
+                    "en": "N1"
+                },
+                "value": "n1"
+            },
+            {
+                "name": {
+                    "en": "N2a"
+                },
+                "value": "n2a"
+            },
+            {
+                "name": {
+                    "en": "N2b"
+                },
+                "value": "n2b"
+            },
+            {
+                "name": {
+                    "en": "N2c"
+                },
+                "value": "n2c"
+            },
+            {
+                "name": {
+                    "en": "N3"
+                },
+                "value": "n3"
+            },
+            {
+                "name": {
+                    "en": "Unknown yet"
+                },
+                "value": "unknownYet"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

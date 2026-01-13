@@ -1,0 +1,29 @@
+{
+    "id": "mph_completed_at",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Identifier?",
+            "source": "redcap",
+            "value": "y"
+        }
+    ],
+    "preamble": {
+        "en": "Questionnaire - Metadata"
+    },
+    "prefLabel": {
+        "en": "mph_completed_at"
+    },
+    "question": {
+        "en": "Questionnaire Completed At"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

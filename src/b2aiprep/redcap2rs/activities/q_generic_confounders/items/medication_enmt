@@ -1,0 +1,56 @@
+{
+    "id": "medication_enmt",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Matrix Group Name",
+            "source": "redcap",
+            "value": "ear_nose_mouth_throat_condition"
+        }
+    ],
+    "preamble": {
+        "en": "Have you ever had any of the following non-surgical interventions for your EAR, NOSE, MOUTH, THROAT, or SPEECH condition(s)? Please check all that apply.\n\nTo save you time, the responses are pre-set to \"NEVER\". Please only change the responses that apply to you. If you have never had the intervention, you can leave the response as it is.\n\nNon-surgical Intervention"
+    },
+    "prefLabel": {
+        "en": "medication_enmt"
+    },
+    "question": {
+        "en": "Medication"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Past"
+                },
+                "value": "past"
+            },
+            {
+                "name": {
+                    "en": "Current"
+                },
+                "value": "current"
+            },
+            {
+                "name": {
+                    "en": "Never"
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Prefer Not To Answer"
+                },
+                "value": "no_answer"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

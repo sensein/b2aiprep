@@ -1,0 +1,66 @@
+{
+    "id": "diagnosis_alz_dementia_mci_dt",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "2. Disease Type"
+    },
+    "prefLabel": {
+        "en": "diagnosis_alz_dementia_mci_dt"
+    },
+    "question": {
+        "en": "Specify the disease type in the participant:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Mild Cognitive Impairment (MCI)"
+                },
+                "value": "mci"
+            },
+            {
+                "name": {
+                    "en": "Typical Alzheimer's Disease (AD)"
+                },
+                "value": "ad"
+            },
+            {
+                "name": {
+                    "en": "Frontotemporal Dementia (FTD)"
+                },
+                "value": "ftd"
+            },
+            {
+                "name": {
+                    "en": "Lewy Body Dementia (LBD)"
+                },
+                "value": "lbd"
+            },
+            {
+                "name": {
+                    "en": "Vascular Dementia (VaD)"
+                },
+                "value": "vad"
+            },
+            {
+                "name": {
+                    "en": "Mixed Dementia (e.g., AD and VaD)"
+                },
+                "value": "mixed"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

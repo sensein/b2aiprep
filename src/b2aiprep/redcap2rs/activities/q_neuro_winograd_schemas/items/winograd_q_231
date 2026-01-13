@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_231",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_231"
+    },
+    "question": {
+        "en": "231. Dan took the rear seat while Bill claimed the front because his 'Dibs!' was quicker. Whose 'Dibs' was quicker?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Bill"
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "Dan"
+                },
+                "value": "incorrect"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

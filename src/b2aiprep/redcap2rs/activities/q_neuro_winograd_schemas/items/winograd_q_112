@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_112",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_112"
+    },
+    "question": {
+        "en": "112. John was doing research in the library when he heard a man humming and whistling. He was very annoying. Who was annoying?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "John"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "The hummer"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

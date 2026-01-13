@@ -1,0 +1,42 @@
+{
+    "id": "diagnosis_ca_10_pack_year_tobacco_cigarette",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "3. Current symptoms and participant history"
+    },
+    "prefLabel": {
+        "en": "diagnosis_ca_10_pack_year_tobacco_cigarette"
+    },
+    "question": {
+        "en": "Does the participant have at least a 10 pack year tobacco cigarette history?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Not Certain"
+                },
+                "value": "notCertain"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

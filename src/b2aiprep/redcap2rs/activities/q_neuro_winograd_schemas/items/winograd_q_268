@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_268",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_268"
+    },
+    "question": {
+        "en": "268. I tried to paint a picture of an orchard, with lemons in the lemon trees, but they came out looking more like telephone poles. What looked like telephone poles?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "The lemons"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "The trees"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

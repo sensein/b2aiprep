@@ -1,0 +1,42 @@
+{
+    "id": "ever_alcohol_rehab",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Alcohol consumption"
+    },
+    "prefLabel": {
+        "en": "ever_alcohol_rehab"
+    },
+    "question": {
+        "en": "Have you ever been in rehab  or counseling for heavy alcohol use?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": "noAnswer"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

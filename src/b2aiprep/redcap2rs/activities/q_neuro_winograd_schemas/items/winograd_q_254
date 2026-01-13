@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_254",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_254"
+    },
+    "question": {
+        "en": "254. As Ollie carried Tommy up the long winding steps, his legs ached. Whose legs ached?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Tommy"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "Ollie"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

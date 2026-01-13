@@ -1,0 +1,23 @@
+{
+    "id": "diagnosis_pl_degree_text",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Disease Severity"
+    },
+    "prefLabel": {
+        "en": "diagnosis_pl_degree_text"
+    },
+    "question": {
+        "en": "Degree of dysphonia\n\nClinician places slider between 0 and 100; indicates C or I. \"Indicate the nature..\" and Additional features responses are free text. Comments about resonance: Indicate normal or Other, if other then free text"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "static",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

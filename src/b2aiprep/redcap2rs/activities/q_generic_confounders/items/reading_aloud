@@ -1,0 +1,54 @@
+{
+    "id": "reading_aloud",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Reading Ability"
+    },
+    "prefLabel": {
+        "en": "reading_aloud"
+    },
+    "question": {
+        "en": "How good do you think you are at reading out loud in [English/Spanish], - that is, reading out loud at a normal rate without making mistakes and understanding what you read?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Excellent"
+                },
+                "value": "excellent"
+            },
+            {
+                "name": {
+                    "en": "Very good"
+                },
+                "value": "veryGood"
+            },
+            {
+                "name": {
+                    "en": "Good"
+                },
+                "value": "good"
+            },
+            {
+                "name": {
+                    "en": "Fair"
+                },
+                "value": "fair"
+            },
+            {
+                "name": {
+                    "en": "Poor"
+                },
+                "value": "poor"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

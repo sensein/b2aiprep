@@ -1,0 +1,48 @@
+{
+    "id": "mbd_many_depressive_episodes",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "2. Bipolar History"
+    },
+    "prefLabel": {
+        "en": "mbd_many_depressive_episodes"
+    },
+    "question": {
+        "en": "Approximately how many depressive episodes have you had in your life (feeling down and depressed more days than not over two weeks)?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "None"
+                },
+                "value": "none"
+            },
+            {
+                "name": {
+                    "en": "More than two"
+                },
+                "value": "moreThanTwo"
+            },
+            {
+                "name": {
+                    "en": "More than five"
+                },
+                "value": "moreThanFive"
+            },
+            {
+                "name": {
+                    "en": "Not sure"
+                },
+                "value": "notSure"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

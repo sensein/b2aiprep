@@ -1,0 +1,57 @@
+{
+    "id": "throat_surgical",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "throat_surgical"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nThroat"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Airway surgery"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Throat surgery"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Thyroid surgery"
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "Tonsillectomy/Adenoidectomy"
+                },
+                "value": 4
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

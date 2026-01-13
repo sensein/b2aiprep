@@ -1,0 +1,22 @@
+{
+    "id": "ef_learn_about_this_study_event",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "How did you learn about this study?"
+    },
+    "prefLabel": {
+        "en": "ef_learn_about_this_study_event"
+    },
+    "question": {
+        "en": "If \"At an event\", please specify:"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

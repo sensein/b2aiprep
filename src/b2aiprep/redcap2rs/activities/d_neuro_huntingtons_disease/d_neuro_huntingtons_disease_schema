@@ -1,0 +1,204 @@
+{
+    "id": "d_neuro_huntingtons_disease_schema",
+    "category": "reproschema:Activity",
+    "compute": [
+        {
+            "jsExpression": "sum(if(hd_occupation=='unable',0,if(hd_occupation=='marginalWorkOnly',1,if(hd_occupation=='reducedCapacityForUsualJob',2,if(hd_occupation=='normal',3,0)))),if(hd_finances== 'unable',0,if(hd_finances== 'majorAssistance',1,if(hd_finances== 'slightAssistance',2,if(hd_finances== 'normal',3,0)))),if(hd_domestic_chores=='unable',0,if(hd_domestic_chores=='impaired',1,if(hd_domestic_chores=='normal',2,0))),if(hd_activities_of_daily_living=='totalCare',0,if(hd_activities_of_daily_living=='grossTasksOnly',1,if(hd_activities_of_daily_living=='minimalImpairment',2,if(hd_activities_of_daily_living=='normal',3,0)))),if(hd_care_level=='fullTimeSkilledNursing',0,if(hd_care_level=='homeOrChronicCare',1,if(hd_care_level=='home',2,0))))",
+            "variableName": "hd_total"
+        }
+    ],
+    "prefLabel": {
+        "en": "d_neuro_huntingtons_disease"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/diagnosis_hd_gsd",
+            "items/diagnosis_hd_gsd_confirmation_method",
+            "items/hd_cag_repeat_length_known",
+            "items/hd_cag_repeat_length",
+            "items/hd_disease_subtype",
+            "items/hd_motor_exam",
+            "items/hd_uhdrs_total_motor_score",
+            "items/hd_uhdrs_speech_training",
+            "items/hd_uhdrs_total_chorea_score",
+            "items/hd_dcl",
+            "items/hd_total_func_cap_rating_scale",
+            "items/hd_occupation",
+            "items/hd_finances",
+            "items/hd_domestic_chores",
+            "items/hd_activities_of_daily_living",
+            "items/hd_care_level",
+            "items/hd_any_treatment",
+            "items/hd_type_of_treatment",
+            "items/hd_medications_selection",
+            "items/hd_neuroleptic_specify",
+            "items/hd_vmat2_inhibitor_specify",
+            "items/hd_antidepressant_specify",
+            "items/hd_slp_therapy_selection",
+            "items/hd_confirmed_by_genetic_testing",
+            "items/hd_confirmed_by_consistent_clinical_presentation"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/diagnosis_hd_gsd",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_hd_gsd"
+            },
+            {
+                "isAbout": "items/diagnosis_hd_gsd_confirmation_method",
+                "isVis": "diagnosis_hd_gsd=='yes'",
+                "valueRequired": true,
+                "variableName": "diagnosis_hd_gsd_confirmation_method"
+            },
+            {
+                "isAbout": "items/hd_cag_repeat_length_known",
+                "isVis": "diagnosis_hd_gsd_confirmation_method(genetic_testing)=='1'",
+                "valueRequired": true,
+                "variableName": "hd_cag_repeat_length_known"
+            },
+            {
+                "isAbout": "items/hd_cag_repeat_length",
+                "isVis": "hd_cag_repeat_length_known=='yes'",
+                "valueRequired": false,
+                "variableName": "hd_cag_repeat_length"
+            },
+            {
+                "isAbout": "items/hd_disease_subtype",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "hd_disease_subtype"
+            },
+            {
+                "isAbout": "items/hd_motor_exam",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "hd_motor_exam"
+            },
+            {
+                "isAbout": "items/hd_uhdrs_total_motor_score",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "hd_uhdrs_total_motor_score"
+            },
+            {
+                "isAbout": "items/hd_uhdrs_speech_training",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "hd_uhdrs_speech_training"
+            },
+            {
+                "isAbout": "items/hd_uhdrs_total_chorea_score",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "hd_uhdrs_total_chorea_score"
+            },
+            {
+                "isAbout": "items/hd_dcl",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "hd_dcl"
+            },
+            {
+                "isAbout": "items/hd_total_func_cap_rating_scale",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "hd_total_func_cap_rating_scale"
+            },
+            {
+                "isAbout": "items/hd_occupation",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "hd_occupation"
+            },
+            {
+                "isAbout": "items/hd_finances",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "hd_finances"
+            },
+            {
+                "isAbout": "items/hd_domestic_chores",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "hd_domestic_chores"
+            },
+            {
+                "isAbout": "items/hd_activities_of_daily_living",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "hd_activities_of_daily_living"
+            },
+            {
+                "isAbout": "items/hd_care_level",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "hd_care_level"
+            },
+            {
+                "isAbout": "items/hd_total",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "hd_total"
+            },
+            {
+                "isAbout": "items/hd_any_treatment",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "hd_any_treatment"
+            },
+            {
+                "isAbout": "items/hd_type_of_treatment",
+                "isVis": "hd_any_treatment=='yes'",
+                "valueRequired": false,
+                "variableName": "hd_type_of_treatment"
+            },
+            {
+                "isAbout": "items/hd_medications_selection",
+                "isVis": "hd_type_of_treatment(medications)=='1'",
+                "valueRequired": false,
+                "variableName": "hd_medications_selection"
+            },
+            {
+                "isAbout": "items/hd_neuroleptic_specify",
+                "isVis": "hd_medications_selection(neuroleptic)=='1'",
+                "valueRequired": true,
+                "variableName": "hd_neuroleptic_specify"
+            },
+            {
+                "isAbout": "items/hd_vmat2_inhibitor_specify",
+                "isVis": "hd_medications_selection(vmat2_inhibitor)=='1'",
+                "valueRequired": true,
+                "variableName": "hd_vmat2_inhibitor_specify"
+            },
+            {
+                "isAbout": "items/hd_antidepressant_specify",
+                "isVis": "hd_medications_selection(antidepressant)=='1'",
+                "valueRequired": true,
+                "variableName": "hd_antidepressant_specify"
+            },
+            {
+                "isAbout": "items/hd_slp_therapy_selection",
+                "isVis": "hd_type_of_treatment(slp_therapy)=='1'",
+                "valueRequired": false,
+                "variableName": "hd_slp_therapy_selection"
+            },
+            {
+                "isAbout": "items/hd_confirmed_by_genetic_testing",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "hd_confirmed_by_genetic_testing"
+            },
+            {
+                "isAbout": "items/hd_confirmed_by_consistent_clinical_presentation",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "hd_confirmed_by_consistent_clinical_presentation"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "4.2.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

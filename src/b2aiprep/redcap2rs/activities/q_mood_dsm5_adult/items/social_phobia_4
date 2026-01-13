@@ -1,0 +1,61 @@
+{
+    "id": "social_phobia_4",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Matrix Group Name",
+            "source": "redcap",
+            "value": "dsm_5_adult_social_phobia1"
+        }
+    ],
+    "preamble": {
+        "en": "DSM-5 Adult (Social Phobia)\n\nThe following questions ask about thoughts, feelings, and behaviors that you may have had about social situations. Usual social situations include: public speaking, speaking in meetings, attending social events or parties, introducing yourself to others, having conversations, giving and receiving compliments, making requests of others, and eating and writing in public.\n\nDuring the PAST 7 DAYS, I have..."
+    },
+    "prefLabel": {
+        "en": "social_phobia_4"
+    },
+    "question": {
+        "en": "felt a racing heart, sweaty, trouble breathing, faint, or shaky in social situations"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Never"
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "Occasionally"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Half of the time"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Most of the time"
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "All of the time"
+                },
+                "value": 4
+            }
+        ],
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,43 @@
+{
+    "id": "canadian_race",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Patient Demographics"
+    },
+    "prefLabel": {
+        "en": "canadian_race"
+    },
+    "question": {
+        "en": "Canadian Indigenous or Aboriginal"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "First Nation"
+                },
+                "value": "ca_first_nation"
+            },
+            {
+                "name": {
+                    "en": "Inuk/inuit"
+                },
+                "value": "ca_inuit"
+            },
+            {
+                "name": {
+                    "en": "Metis"
+                },
+                "value": "ca_metis"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

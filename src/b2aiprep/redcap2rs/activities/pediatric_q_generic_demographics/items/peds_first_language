@@ -1,0 +1,84 @@
+{
+    "id": "peds_first_language",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "First Language"
+    },
+    "prefLabel": {
+        "en": "peds_first_language"
+    },
+    "question": {
+        "en": "What was your first language?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "English"
+                },
+                "value": "english"
+            },
+            {
+                "name": {
+                    "en": "French"
+                },
+                "value": "french"
+            },
+            {
+                "name": {
+                    "en": "Mandarin Chinese"
+                },
+                "value": "mandarinChinese"
+            },
+            {
+                "name": {
+                    "en": "Punjabi"
+                },
+                "value": "punjabi"
+            },
+            {
+                "name": {
+                    "en": "Spanish"
+                },
+                "value": "spanish"
+            },
+            {
+                "name": {
+                    "en": "Arabic"
+                },
+                "value": "arabic"
+            },
+            {
+                "name": {
+                    "en": "Tagalog"
+                },
+                "value": "tagalog"
+            },
+            {
+                "name": {
+                    "en": "Italian"
+                },
+                "value": "italian"
+            },
+            {
+                "name": {
+                    "en": "German"
+                },
+                "value": "german"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

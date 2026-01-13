@@ -1,0 +1,51 @@
+{
+    "id": "diagnosis_ca_copd_asthma",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "diagnosis_ca_copd_asthma"
+    },
+    "question": {
+        "en": "Does the participant have COPD, asthma, or both?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "COPD only"
+                },
+                "value": "copd"
+            },
+            {
+                "name": {
+                    "en": "Asthma only"
+                },
+                "value": "asthma"
+            },
+            {
+                "name": {
+                    "en": "Both COPD and asthma"
+                },
+                "value": "bothCopdAsthma"
+            },
+            {
+                "name": {
+                    "en": "Neither COPD nor asthma"
+                },
+                "value": "neitherCopdAsthma"
+            },
+            {
+                "name": {
+                    "en": "Not Certain"
+                },
+                "value": "notCertain"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

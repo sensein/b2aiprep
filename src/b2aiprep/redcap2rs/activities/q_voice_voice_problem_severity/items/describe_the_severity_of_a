@@ -1,0 +1,50 @@
+{
+    "id": "describe_the_severity_of_a",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Text Validation Type OR Show Slider Number",
+            "source": "redcap",
+            "value": "number"
+        },
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "RH"
+        }
+    ],
+    "preamble": {
+        "en": "Voice problem severity"
+    },
+    "prefLabel": {
+        "en": "describe_the_severity_of_a"
+    },
+    "question": {
+        "en": "Describe the severity of auditory-perceptual attributes of a voice problem\n*Overall severity scale (0-100)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "0"
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "100"
+                },
+                "value": 100
+            }
+        ],
+        "maxValue": 100,
+        "minValue": 0,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "slider"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

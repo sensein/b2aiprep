@@ -1,0 +1,55 @@
+{
+    "id": "diagnosis_pl_ds_ll",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Disease Severity"
+    },
+    "prefLabel": {
+        "en": "diagnosis_pl_ds_ll"
+    },
+    "question": {
+        "en": "Location of lesion(s)\n(Select all that apply)."
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Right vocal fold"
+                },
+                "value": "right_vocal_fold"
+            },
+            {
+                "name": {
+                    "en": "Left vocal fold"
+                },
+                "value": "left_vocal_fold"
+            },
+            {
+                "name": {
+                    "en": "Both vocal folds"
+                },
+                "value": "both_vocal_folds"
+            },
+            {
+                "name": {
+                    "en": "Ventricular folds (right or left)"
+                },
+                "value": "ventricular_folds"
+            },
+            {
+                "name": {
+                    "en": "Subglottal areas"
+                },
+                "value": "subglottal_areas"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

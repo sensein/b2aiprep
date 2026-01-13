@@ -1,0 +1,48 @@
+{
+    "id": "used_drugs",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Other Substance use"
+    },
+    "prefLabel": {
+        "en": "used_drugs"
+    },
+    "question": {
+        "en": "Have you ever used marijuana, cocaine or crack, and/or other drugs?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Not this year, but I have in the past"
+                },
+                "value": "inThePast"
+            },
+            {
+                "name": {
+                    "en": "One or more times this year"
+                },
+                "value": "oneOrMore"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to respond"
+                },
+                "value": "noAnswer"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

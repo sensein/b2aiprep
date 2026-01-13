@@ -1,0 +1,81 @@
+{
+    "id": "diagnosis_ad_hist_psy_med_problems",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "diagnosis_ad_hist_psy_med_problems"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nPlease select any historical psychiatric problems and medical problems (select all that apply).\n\nMOVED IT TO \"Q - Mood - Participant History\""
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "ADHD"
+                },
+                "value": "adhd"
+            },
+            {
+                "name": {
+                    "en": "Anxiety"
+                },
+                "value": "anxiety"
+            },
+            {
+                "name": {
+                    "en": "OCD"
+                },
+                "value": "ocd"
+            },
+            {
+                "name": {
+                    "en": "Stroke"
+                },
+                "value": "stroke"
+            },
+            {
+                "name": {
+                    "en": "Epilepsy"
+                },
+                "value": "epilepsy"
+            },
+            {
+                "name": {
+                    "en": "Laryngeal cancer"
+                },
+                "value": "laryngeal_cancer"
+            },
+            {
+                "name": {
+                    "en": "Seasonal allergies"
+                },
+                "value": "seasonal_allergies"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

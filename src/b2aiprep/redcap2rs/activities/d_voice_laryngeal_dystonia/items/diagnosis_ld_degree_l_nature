@@ -1,0 +1,26 @@
+{
+    "id": "diagnosis_ld_degree_l_nature",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "RH"
+        }
+    ],
+    "prefLabel": {
+        "en": "diagnosis_ld_degree_l_nature"
+    },
+    "question": {
+        "en": "Loudness\n(Indicate the nature of the abnormality):"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

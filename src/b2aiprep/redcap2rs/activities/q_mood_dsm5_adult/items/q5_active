@@ -1,0 +1,54 @@
+{
+    "id": "q5_active",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "DSM-5 Adult (ASRM)\n\nChoose the one statement in each group that best describes the way you (the individual receiving care) have been feeling for the past week.\n\nPlease note:\nThe word \"occasionally\" when used here means once or twice; \"often\" means several times or more and \"frequently\" means most of the time."
+    },
+    "prefLabel": {
+        "en": "q5_active"
+    },
+    "question": {
+        "en": "Question 5"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "I have not been more active (either socially, sexually, at work, home, or school) than usual."
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "I have occasionally been more active than usual."
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "I have often been more active than usual."
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "I have frequently been more active than usual."
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "I am constantly more active or on the go all the time."
+                },
+                "value": 5
+            }
+        ],
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,51 @@
+{
+    "id": "part_asthmaeosinop_hil",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Note",
+            "source": "redcap",
+            "value": "cells per microliter (\u00b5L)"
+        },
+        {
+            "column": "Text Validation Type OR Show Slider Number",
+            "source": "redcap",
+            "value": "number"
+        },
+        {
+            "column": "Text Validation Min",
+            "source": "redcap",
+            "value": "0.0"
+        },
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "RH"
+        },
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "2. Disease Subtype"
+    },
+    "prefLabel": {
+        "en": "part_asthmaeosinop_hil"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nAbsolute eosinophil count in last 12 months (highest value - cells per microliter (\u00b5L)?"
+    },
+    "responseOptions": {
+        "minValue": 0,
+        "valueType": [
+            "xsd:decimal"
+        ]
+    },
+    "ui": {
+        "inputType": "float",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

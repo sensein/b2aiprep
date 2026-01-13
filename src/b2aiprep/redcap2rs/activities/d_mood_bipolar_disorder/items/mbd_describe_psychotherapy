@@ -1,0 +1,30 @@
+{
+    "id": "mbd_describe_psychotherapy",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "mbd_describe_psychotherapy"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nPlease briefly describe your psychotherapy history (e.g.,\ndates, reasons for seeking therapy, etc.).\n\nMOVED IT TO \"Q - Mood - Participant History\""
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,22 @@
+{
+    "id": "mph_describe_psychotherapy",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Treatment Obtained"
+    },
+    "prefLabel": {
+        "en": "mph_describe_psychotherapy"
+    },
+    "question": {
+        "en": "Please briefly describe your psychotherapy history (e.g., dates, reasons for seeking therapy, etc.)."
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

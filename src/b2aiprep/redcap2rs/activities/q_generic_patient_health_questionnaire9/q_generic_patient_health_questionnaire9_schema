@@ -1,0 +1,115 @@
+{
+    "id": "q_generic_patient_health_questionnaire9_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "q_generic_patient_health_questionnaire9"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/phq_9_session_id",
+            "items/phq_9_started_at",
+            "items/phq_9_completed_at",
+            "items/phq_9_duration",
+            "items/no_interest",
+            "items/feeling_depressed",
+            "items/trouble_sleeping",
+            "items/no_energy",
+            "items/no_appetite",
+            "items/feeling_bad_self",
+            "items/trouble_concentrate",
+            "items/move_speak_slow",
+            "items/thoughts_death",
+            "items/hard_to_work"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/phq_9_session_id",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "phq_9_session_id"
+            },
+            {
+                "isAbout": "items/phq_9_started_at",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "phq_9_started_at"
+            },
+            {
+                "isAbout": "items/phq_9_completed_at",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "phq_9_completed_at"
+            },
+            {
+                "isAbout": "items/phq_9_duration",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "phq_9_duration"
+            },
+            {
+                "isAbout": "items/no_interest",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "no_interest"
+            },
+            {
+                "isAbout": "items/feeling_depressed",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "feeling_depressed"
+            },
+            {
+                "isAbout": "items/trouble_sleeping",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "trouble_sleeping"
+            },
+            {
+                "isAbout": "items/no_energy",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "no_energy"
+            },
+            {
+                "isAbout": "items/no_appetite",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "no_appetite"
+            },
+            {
+                "isAbout": "items/feeling_bad_self",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "feeling_bad_self"
+            },
+            {
+                "isAbout": "items/trouble_concentrate",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "trouble_concentrate"
+            },
+            {
+                "isAbout": "items/move_speak_slow",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "move_speak_slow"
+            },
+            {
+                "isAbout": "items/thoughts_death",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "thoughts_death"
+            },
+            {
+                "isAbout": "items/hard_to_work",
+                "isVis": "no_interest > 0 || feeling_depressed > 0 || trouble_sleeping > 0 || no_energy > 0 || no_appetite > 0 || feeling_bad_self > 0 || trouble_concentrate > 0 || move_speak_slow > 0 || thoughts_death > 0",
+                "valueRequired": false,
+                "variableName": "hard_to_work"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "3.24.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

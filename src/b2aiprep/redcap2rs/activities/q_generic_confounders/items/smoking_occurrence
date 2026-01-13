@@ -1,0 +1,62 @@
+{
+    "id": "smoking_occurrence",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "smoking_occurrence"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nDo you now smoke cigarettes every day, some days, or not at all?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Every day"
+                },
+                "value": "everyDay"
+            },
+            {
+                "name": {
+                    "en": "Some days"
+                },
+                "value": "someDays"
+            },
+            {
+                "name": {
+                    "en": "Not at all"
+                },
+                "value": "notAtAll"
+            },
+            {
+                "name": {
+                    "en": "Don't know"
+                },
+                "value": "doNotKnow"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": "noAnswer"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

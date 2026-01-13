@@ -1,0 +1,36 @@
+{
+    "id": "diagnosis_ca_ats_ers_criteria_fev1",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "1. Spirometry and diagnosis"
+    },
+    "prefLabel": {
+        "en": "diagnosis_ca_ats_ers_criteria_fev1"
+    },
+    "question": {
+        "en": "FEV1/FVC < 5th percentile OR z score \u2264 -1.65 ?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

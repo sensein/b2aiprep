@@ -1,0 +1,34 @@
+{
+    "id": "average_number_of_uses_each_day",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Note",
+            "source": "redcap",
+            "value": "Number"
+        },
+        {
+            "column": "Text Validation Type OR Show Slider Number",
+            "source": "redcap",
+            "value": "number"
+        }
+    ],
+    "preamble": {
+        "en": "Nicotine use"
+    },
+    "prefLabel": {
+        "en": "average_number_of_uses_each_day"
+    },
+    "question": {
+        "en": "Number of uses per day: Enter number"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:decimal"
+        ]
+    },
+    "ui": {
+        "inputType": "float"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

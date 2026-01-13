@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_58",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_58"
+    },
+    "question": {
+        "en": "58. The painting in Mark's living room shows an oak tree. It is to the right of a house. What is to the right of a house?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "The painting"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "The tree"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

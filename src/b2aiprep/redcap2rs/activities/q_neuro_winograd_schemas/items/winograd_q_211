@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_211",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_211"
+    },
+    "question": {
+        "en": "211. Grace was happy to trade me her sweater for my jacket. She thinks it looks great on her. What looks great on Grace?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "The jacket"
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "The sweater"
+                },
+                "value": "incorrect"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

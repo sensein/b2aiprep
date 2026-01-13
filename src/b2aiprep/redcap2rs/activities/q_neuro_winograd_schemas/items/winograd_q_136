@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_136",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_136"
+    },
+    "question": {
+        "en": "136. Jane knocked on Susan's door, but there was no answer. She was disappointed. Who was disappointed?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Susan"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "Jane"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

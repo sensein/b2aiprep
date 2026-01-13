@@ -1,0 +1,22 @@
+{
+    "id": "diagnosis_als_treatment_and_management_yes_medications_other",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "8. Treatment and Management"
+    },
+    "prefLabel": {
+        "en": "diagnosis_als_treatment_and_management_yes_medications_other"
+    },
+    "question": {
+        "en": "If you selected \"Other\", please specify:"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

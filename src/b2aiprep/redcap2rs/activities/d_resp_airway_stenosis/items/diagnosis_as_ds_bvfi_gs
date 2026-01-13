@@ -1,0 +1,54 @@
+{
+    "id": "diagnosis_as_ds_bvfi_gs",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "2. Disease Subtype"
+    },
+    "prefLabel": {
+        "en": "diagnosis_as_ds_bvfi_gs"
+    },
+    "question": {
+        "en": "Bilateral Vocal fold immobility or Glottic Stenosis Subtype"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Posterior Glottic Stenosis"
+                },
+                "value": "posteriorGlotticStenosis"
+            },
+            {
+                "name": {
+                    "en": "Bilateral Vocal Fold Paralysis"
+                },
+                "value": "bilateralVocalFoldParalysis"
+            },
+            {
+                "name": {
+                    "en": "Anterior glottic Web"
+                },
+                "value": "anteriorGlotticWeb"
+            },
+            {
+                "name": {
+                    "en": "Not certain or TBD"
+                },
+                "value": "tbd"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

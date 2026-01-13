@@ -1,0 +1,36 @@
+{
+    "id": "diagnosis_als_treatment_and_management",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "8. Treatment and Management"
+    },
+    "prefLabel": {
+        "en": "diagnosis_als_treatment_and_management"
+    },
+    "question": {
+        "en": "Has the participant undergone any treatment or interventions for ALS?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

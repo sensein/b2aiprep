@@ -1,0 +1,78 @@
+{
+    "id": "diagnosis_as_etiology",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "3. Etiology"
+    },
+    "prefLabel": {
+        "en": "diagnosis_as_etiology"
+    },
+    "question": {
+        "en": "What is the etiology?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Not certain or TBD"
+                },
+                "value": "tbd"
+            },
+            {
+                "name": {
+                    "en": "Iatrogenic (surgery or intubation)"
+                },
+                "value": "iatrogenic"
+            },
+            {
+                "name": {
+                    "en": "Idiopathic"
+                },
+                "value": "idiopathic"
+            },
+            {
+                "name": {
+                    "en": "Auto-immune or granulomatous disease"
+                },
+                "value": "autoImmune"
+            },
+            {
+                "name": {
+                    "en": "Radiation"
+                },
+                "value": "radiation"
+            },
+            {
+                "name": {
+                    "en": "GERD"
+                },
+                "value": "gerd"
+            },
+            {
+                "name": {
+                    "en": "Caustic Injury or Inhalation Injury"
+                },
+                "value": "causticInjuryInhalationInjury"
+            },
+            {
+                "name": {
+                    "en": "Infectious (Diphtheria, TB, Bacterial Tracheitis, other)"
+                },
+                "value": "infectious"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,48 @@
+{
+    "id": "years_used_nicotine",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Nicotine use"
+    },
+    "prefLabel": {
+        "en": "years_used_nicotine"
+    },
+    "question": {
+        "en": "For how many years have you used nicotine?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Less than 1 year"
+                },
+                "value": "lessThanOneYear"
+            },
+            {
+                "name": {
+                    "en": "Number of years : Enter number"
+                },
+                "value": "numberOfYears"
+            },
+            {
+                "name": {
+                    "en": "Not certain"
+                },
+                "value": "notCertain"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": "noAnswer"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

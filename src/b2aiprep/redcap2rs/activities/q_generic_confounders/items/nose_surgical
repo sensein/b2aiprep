@@ -1,0 +1,45 @@
+{
+    "id": "nose_surgical",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "nose_surgical"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nNose"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Septoplasty/Rhinoplasty"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Sinus surgery"
+                },
+                "value": 2
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

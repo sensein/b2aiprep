@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_114",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_114"
+    },
+    "question": {
+        "en": "114. John was jogging through the park when he saw a man juggling watermelons. He was very impressive. Who was impressive?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "John"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "The juggler"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

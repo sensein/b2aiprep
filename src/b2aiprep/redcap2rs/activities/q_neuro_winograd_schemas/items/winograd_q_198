@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_198",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_198"
+    },
+    "question": {
+        "en": "198. When the sponsors of the bill got to the town hall, they were surprised to find that the room was full of opponents. They were very much in the minority. Who were in the minority?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "The opponents"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "The sponsors"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

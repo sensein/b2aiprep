@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_194",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_194"
+    },
+    "question": {
+        "en": "194. I put the cake away in the refrigerator. It has a lot of leftovers in it. What has a lot of leftovers?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "The cake"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "The refrigerator"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

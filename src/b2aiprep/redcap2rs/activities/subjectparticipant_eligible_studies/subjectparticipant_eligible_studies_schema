@@ -1,0 +1,276 @@
+{
+    "id": "subjectparticipant_eligible_studies_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "subjectparticipant_eligible_studies"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/eligible_studies",
+            "items/is_control_participant",
+            "items/cond_sel_prompt",
+            "items/glottic_insufficiency",
+            "items/laryng_cancer",
+            "items/laryngitis",
+            "items/benign_cord_lesion",
+            "items/mtd",
+            "items/rrp",
+            "items/spas_dys",
+            "items/voc_fold_paralysis",
+            "items/alz_dementia_mci",
+            "items/als",
+            "items/huntingtons",
+            "items/parkinsons",
+            "items/alcohol_subst_abuse",
+            "items/gad",
+            "items/add_adhd",
+            "items/asd",
+            "items/bipolar",
+            "items/bpd",
+            "items/depression",
+            "items/ed",
+            "items/insomnia",
+            "items/ocd",
+            "items/panic",
+            "items/ptsd",
+            "items/schizophrenia",
+            "items/soc_anx_dis",
+            "items/other_psych",
+            "items/asthma",
+            "items/airway_stenosis",
+            "items/chronic_cough",
+            "items/copd",
+            "items/osa",
+            "items/autism",
+            "items/speech_delay"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/eligible_studies",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "eligible_studies"
+            },
+            {
+                "isAbout": "items/is_control_participant",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "is_control_participant"
+            },
+            {
+                "isAbout": "items/cond_sel_prompt",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "cond_sel_prompt"
+            },
+            {
+                "isAbout": "items/glottic_insufficiency",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "glottic_insufficiency"
+            },
+            {
+                "isAbout": "items/laryng_cancer",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "laryng_cancer"
+            },
+            {
+                "isAbout": "items/laryngitis",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "laryngitis"
+            },
+            {
+                "isAbout": "items/benign_cord_lesion",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "benign_cord_lesion"
+            },
+            {
+                "isAbout": "items/mtd",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "mtd"
+            },
+            {
+                "isAbout": "items/rrp",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "rrp"
+            },
+            {
+                "isAbout": "items/spas_dys",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "spas_dys"
+            },
+            {
+                "isAbout": "items/voc_fold_paralysis",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "voc_fold_paralysis"
+            },
+            {
+                "isAbout": "items/alz_dementia_mci",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "alz_dementia_mci"
+            },
+            {
+                "isAbout": "items/als",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "als"
+            },
+            {
+                "isAbout": "items/huntingtons",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "huntingtons"
+            },
+            {
+                "isAbout": "items/parkinsons",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "parkinsons"
+            },
+            {
+                "isAbout": "items/alcohol_subst_abuse",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "alcohol_subst_abuse"
+            },
+            {
+                "isAbout": "items/gad",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "gad"
+            },
+            {
+                "isAbout": "items/add_adhd",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "add_adhd"
+            },
+            {
+                "isAbout": "items/asd",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "asd"
+            },
+            {
+                "isAbout": "items/bipolar",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "bipolar"
+            },
+            {
+                "isAbout": "items/bpd",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "bpd"
+            },
+            {
+                "isAbout": "items/depression",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "depression"
+            },
+            {
+                "isAbout": "items/ed",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ed"
+            },
+            {
+                "isAbout": "items/insomnia",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "insomnia"
+            },
+            {
+                "isAbout": "items/ocd",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ocd"
+            },
+            {
+                "isAbout": "items/panic",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "panic"
+            },
+            {
+                "isAbout": "items/ptsd",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ptsd"
+            },
+            {
+                "isAbout": "items/schizophrenia",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "schizophrenia"
+            },
+            {
+                "isAbout": "items/soc_anx_dis",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "soc_anx_dis"
+            },
+            {
+                "isAbout": "items/other_psych",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "other_psych"
+            },
+            {
+                "isAbout": "items/asthma",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "asthma"
+            },
+            {
+                "isAbout": "items/airway_stenosis",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "airway_stenosis"
+            },
+            {
+                "isAbout": "items/chronic_cough",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "chronic_cough"
+            },
+            {
+                "isAbout": "items/copd",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "copd"
+            },
+            {
+                "isAbout": "items/osa",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "osa"
+            },
+            {
+                "isAbout": "items/autism",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "autism"
+            },
+            {
+                "isAbout": "items/speech_delay",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "speech_delay"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "3.24.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

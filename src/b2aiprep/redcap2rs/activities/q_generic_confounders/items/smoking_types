@@ -1,0 +1,81 @@
+{
+    "id": "smoking_types",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "smoking_types"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nChecklist of different types (choose all that apply):"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Tobacco cigarettes"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Cannabis joints, bong, pipe"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Vapes"
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "e-cigarettes"
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "Hookah"
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "Pipes"
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": 7
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": 8
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

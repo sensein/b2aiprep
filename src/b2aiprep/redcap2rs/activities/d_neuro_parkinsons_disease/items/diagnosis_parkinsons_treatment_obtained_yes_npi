@@ -1,0 +1,63 @@
+{
+    "id": "diagnosis_parkinsons_treatment_obtained_yes_npi",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "diagnosis_parkinsons_treatment_obtained_yes_npi"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nNon-pharmacological interventions:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Physical therapy"
+                },
+                "value": "physical_therapy"
+            },
+            {
+                "name": {
+                    "en": "Occupational therapy"
+                },
+                "value": "occupational_therapy"
+            },
+            {
+                "name": {
+                    "en": "Speech therapy"
+                },
+                "value": "speech_therapy"
+            },
+            {
+                "name": {
+                    "en": "Deep Brain Stimulation (DBS) therapy"
+                },
+                "value": "dbs"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

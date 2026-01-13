@@ -1,0 +1,43 @@
+{
+    "id": "ef_ptsd",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Matrix Group Name",
+            "source": "redcap",
+            "value": "ef_mood_psych_dis"
+        }
+    ],
+    "preamble": {
+        "en": "Mood and Psychiatric Disorders"
+    },
+    "prefLabel": {
+        "en": "ef_ptsd"
+    },
+    "question": {
+        "en": "Post-Traumatic Stress Disorder (PTSD)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Unchecked"
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "Checked"
+                },
+                "value": 1
+            }
+        ],
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

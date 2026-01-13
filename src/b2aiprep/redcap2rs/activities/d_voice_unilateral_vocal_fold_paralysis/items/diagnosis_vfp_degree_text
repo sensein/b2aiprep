@@ -1,0 +1,23 @@
+{
+    "id": "diagnosis_vfp_degree_text",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Disease Severity"
+    },
+    "prefLabel": {
+        "en": "diagnosis_vfp_degree_text"
+    },
+    "question": {
+        "en": "Degree of dysphonia\n\nCAPE-V scale"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "static",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,47 @@
+{
+    "id": "smoking_age_regular_cigarette_smoking_age",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Text Validation Type OR Show Slider Number",
+            "source": "redcap",
+            "value": "integer"
+        },
+        {
+            "column": "Text Validation Min",
+            "source": "redcap",
+            "value": "0.0"
+        },
+        {
+            "column": "Text Validation Max",
+            "source": "redcap",
+            "value": "125.0"
+        },
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "smoking_age_regular_cigarette_smoking_age"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nAge:"
+    },
+    "responseOptions": {
+        "maxValue": 125,
+        "minValue": 0,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "number",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

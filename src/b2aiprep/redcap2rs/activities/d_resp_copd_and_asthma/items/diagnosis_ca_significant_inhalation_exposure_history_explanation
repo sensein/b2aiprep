@@ -1,0 +1,43 @@
+{
+    "id": "diagnosis_ca_significant_inhalation_exposure_history_explanation",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "3. Current symptoms and participant history"
+    },
+    "prefLabel": {
+        "en": "diagnosis_ca_significant_inhalation_exposure_history_explanation"
+    },
+    "question": {
+        "en": "Please select all that apply (optional):"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Secondhand smoke"
+                },
+                "value": "secondhand_smoke"
+            },
+            {
+                "name": {
+                    "en": "Biomass fuels"
+                },
+                "value": "biomass_fuels"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

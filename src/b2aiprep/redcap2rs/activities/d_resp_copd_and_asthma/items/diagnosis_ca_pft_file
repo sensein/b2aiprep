@@ -1,0 +1,34 @@
+{
+    "id": "diagnosis_ca_pft_file",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Identifier?",
+            "source": "redcap",
+            "value": "y"
+        },
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "RH"
+        }
+    ],
+    "preamble": {
+        "en": "2. Disease Subtype"
+    },
+    "prefLabel": {
+        "en": "diagnosis_ca_pft_file"
+    },
+    "question": {
+        "en": "Please upload results"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "documentUpload"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

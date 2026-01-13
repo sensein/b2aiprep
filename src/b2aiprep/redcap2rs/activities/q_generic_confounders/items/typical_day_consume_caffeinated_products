@@ -1,0 +1,61 @@
+{
+    "id": "typical_day_consume_caffeinated_products",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Caffeine intake"
+    },
+    "prefLabel": {
+        "en": "typical_day_consume_caffeinated_products"
+    },
+    "question": {
+        "en": "What type(s) of caffeinated products do you typically consume?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Caffeinated teas"
+                },
+                "value": "caffeinated_teas"
+            },
+            {
+                "name": {
+                    "en": "Carbonated beverages (e.g. soda, pop. Coke, etc.)"
+                },
+                "value": "carbonated_beverages"
+            },
+            {
+                "name": {
+                    "en": "Coffee"
+                },
+                "value": "coffee"
+            },
+            {
+                "name": {
+                    "en": "Energy drinks"
+                },
+                "value": "energy_drinks"
+            },
+            {
+                "name": {
+                    "en": "Espresso"
+                },
+                "value": "espresso"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

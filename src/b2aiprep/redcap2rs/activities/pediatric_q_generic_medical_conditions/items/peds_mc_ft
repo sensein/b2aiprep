@@ -1,0 +1,36 @@
+{
+    "id": "peds_mc_ft",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Pediatric Medical Conditions Questionnaire"
+    },
+    "prefLabel": {
+        "en": "peds_mc_ft"
+    },
+    "question": {
+        "en": "Has your child ever required a feeding tube (NG tube, G-tube)?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

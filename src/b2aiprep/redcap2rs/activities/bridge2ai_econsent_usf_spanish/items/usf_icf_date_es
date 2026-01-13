@@ -1,0 +1,37 @@
+{
+    "id": "usf_icf_date_es",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Text Validation Type OR Show Slider Number",
+            "source": "redcap",
+            "value": "date_ymd"
+        },
+        {
+            "column": "Identifier?",
+            "source": "redcap",
+            "value": "y"
+        },
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@READONLY-FORM"
+        }
+    ],
+    "prefLabel": {
+        "en": "usf_icf_date_es"
+    },
+    "question": {
+        "en": "Fecha"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:date"
+        ]
+    },
+    "ui": {
+        "inputType": "date",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

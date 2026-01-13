@@ -1,0 +1,36 @@
+{
+    "id": "peds_mc_genetic_syndromes",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Pediatric Medical Conditions Questionnaire"
+    },
+    "prefLabel": {
+        "en": "peds_mc_genetic_syndromes"
+    },
+    "question": {
+        "en": "Has your child been diagnosed with any genetic syndromes?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

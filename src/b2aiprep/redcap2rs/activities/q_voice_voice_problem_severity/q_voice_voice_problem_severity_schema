@@ -1,0 +1,52 @@
+{
+    "id": "q_voice_voice_problem_severity_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "q_voice_voice_problem_severity"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/voice_severity_session_id",
+            "items/voice_severity_started_at",
+            "items/voice_severity_completed_at",
+            "items/voice_severity_duration",
+            "items/describe_the_severity_of_a"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/voice_severity_session_id",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "voice_severity_session_id"
+            },
+            {
+                "isAbout": "items/voice_severity_started_at",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "voice_severity_started_at"
+            },
+            {
+                "isAbout": "items/voice_severity_completed_at",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "voice_severity_completed_at"
+            },
+            {
+                "isAbout": "items/voice_severity_duration",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "voice_severity_duration"
+            },
+            {
+                "isAbout": "items/describe_the_severity_of_a",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "describe_the_severity_of_a"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "3.24.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

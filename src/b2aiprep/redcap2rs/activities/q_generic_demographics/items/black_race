@@ -1,0 +1,97 @@
+{
+    "id": "black_race",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Patient Demographics"
+    },
+    "prefLabel": {
+        "en": "black_race"
+    },
+    "question": {
+        "en": "Black or African American"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Black"
+                },
+                "value": 20560
+            },
+            {
+                "name": {
+                    "en": "African American"
+                },
+                "value": 20586
+            },
+            {
+                "name": {
+                    "en": "African"
+                },
+                "value": 20602
+            },
+            {
+                "name": {
+                    "en": "Bahamian"
+                },
+                "value": 20677
+            },
+            {
+                "name": {
+                    "en": "Barbadian"
+                },
+                "value": 20685
+            },
+            {
+                "name": {
+                    "en": "Dominican"
+                },
+                "value": 20693
+            },
+            {
+                "name": {
+                    "en": "Dominica Islander"
+                },
+                "value": 20701
+            },
+            {
+                "name": {
+                    "en": "Haitian"
+                },
+                "value": 20719
+            },
+            {
+                "name": {
+                    "en": "Jamaican"
+                },
+                "value": 20727
+            },
+            {
+                "name": {
+                    "en": "Tobagoan"
+                },
+                "value": 20735
+            },
+            {
+                "name": {
+                    "en": "Trinidadian"
+                },
+                "value": 20743
+            },
+            {
+                "name": {
+                    "en": "West Indian"
+                },
+                "value": 20750
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

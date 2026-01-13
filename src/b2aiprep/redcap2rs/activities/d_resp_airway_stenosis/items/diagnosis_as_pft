@@ -1,0 +1,42 @@
+{
+    "id": "diagnosis_as_pft",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "1. Gold Standard Diagnosis"
+    },
+    "prefLabel": {
+        "en": "diagnosis_as_pft"
+    },
+    "question": {
+        "en": "Has the participant had pulmonary function testing within the past 3 months?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Not certain"
+                },
+                "value": "notCertain"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

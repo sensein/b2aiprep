@@ -1,0 +1,54 @@
+{
+    "id": "sexual_orientation",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Patient Demographics"
+    },
+    "prefLabel": {
+        "en": "sexual_orientation"
+    },
+    "question": {
+        "en": "What is your sexual orientation?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Bisexual"
+                },
+                "value": "bisexual"
+            },
+            {
+                "name": {
+                    "en": "Heterosexual (straight)"
+                },
+                "value": "heterosexual"
+            },
+            {
+                "name": {
+                    "en": "Homosexual (e.g. gay, lesbian)"
+                },
+                "value": "homosexual"
+            },
+            {
+                "name": {
+                    "en": "Other (Please specify)"
+                },
+                "value": "other"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": "noAnswer"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

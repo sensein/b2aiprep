@@ -1,0 +1,41 @@
+{
+    "id": "diagnosis_ca_mmrc_grade_score",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Text Validation Type OR Show Slider Number",
+            "source": "redcap",
+            "value": "integer"
+        },
+        {
+            "column": "Text Validation Min",
+            "source": "redcap",
+            "value": "0.0"
+        },
+        {
+            "column": "Text Validation Max",
+            "source": "redcap",
+            "value": "4.0"
+        }
+    ],
+    "preamble": {
+        "en": "2. Disease Subtype"
+    },
+    "prefLabel": {
+        "en": "diagnosis_ca_mmrc_grade_score"
+    },
+    "question": {
+        "en": "What is the mMRC grade score?"
+    },
+    "responseOptions": {
+        "maxValue": 4,
+        "minValue": 0,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "number"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

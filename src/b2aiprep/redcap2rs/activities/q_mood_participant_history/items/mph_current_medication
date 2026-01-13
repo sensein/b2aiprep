@@ -1,0 +1,22 @@
+{
+    "id": "mph_current_medication",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Treatment Obtained"
+    },
+    "prefLabel": {
+        "en": "mph_current_medication"
+    },
+    "question": {
+        "en": "Please list any current psychiatric medications (to the best of your recollection), including medication names, dosage, and how many times per day."
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,22 @@
+{
+    "id": "diagnosis_alz_dementia_mci_gsd_clinical_history",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Does the participant have Major Neurocognitive Disorder - Alzheimer's Type, Mild Cognitive Impairment or other types of dementia confirmed by going through\n(must fill at least one):"
+    },
+    "prefLabel": {
+        "en": "diagnosis_alz_dementia_mci_gsd_clinical_history"
+    },
+    "question": {
+        "en": "Clinical history:"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

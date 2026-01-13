@@ -1,0 +1,61 @@
+{
+    "id": "voice_clarity",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Matrix Group Name",
+            "source": "redcap",
+            "value": "vhi_10"
+        }
+    ],
+    "preamble": {
+        "en": "Voice Handicap Index (VHI-10)"
+    },
+    "prefLabel": {
+        "en": "voice_clarity"
+    },
+    "question": {
+        "en": "The clarity of my voice is unpredictable."
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Never"
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Almost Never"
+                },
+                "value": "almostNever"
+            },
+            {
+                "name": {
+                    "en": "Sometimes"
+                },
+                "value": "sometimes"
+            },
+            {
+                "name": {
+                    "en": "Almost Always"
+                },
+                "value": "almostAlways"
+            },
+            {
+                "name": {
+                    "en": "Always"
+                },
+                "value": "always"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

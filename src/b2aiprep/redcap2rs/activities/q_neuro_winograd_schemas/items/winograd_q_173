@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_173",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_173"
+    },
+    "question": {
+        "en": "173. Fred is the only man still alive who remembers my great-grandfather. He is a remarkable man. Who is a remarkable man?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Fred"
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "My great-grandfather"
+                },
+                "value": "incorrect"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,61 @@
+{
+    "id": "self_harm",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Matrix Group Name",
+            "source": "redcap",
+            "value": "dsm_5_adult"
+        }
+    ],
+    "preamble": {
+        "en": "During the past TWO (2) WEEKS, how much (or how often) have you been bothered by the following problems?\n\n0=None (Not at all), 1=Slight (Rare, less than a day or two), 2=Mild (Several days), 3=Moderate (More than half the days), 4=Severe (Nearly every day)"
+    },
+    "prefLabel": {
+        "en": "self_harm"
+    },
+    "question": {
+        "en": "Thoughts of actually hurting yourself?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "0=None (Not at all)"
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "1=Slight (Rare, less than a day or two)"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "2=Mild (Several days)"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "3=Moderate (More than half the days)"
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "4=Severe (Nearly every day)"
+                },
+                "value": 4
+            }
+        ],
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

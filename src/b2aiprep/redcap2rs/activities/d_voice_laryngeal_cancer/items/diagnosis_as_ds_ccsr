@@ -1,0 +1,48 @@
+{
+    "id": "diagnosis_as_ds_ccsr",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Disease Severity"
+    },
+    "prefLabel": {
+        "en": "diagnosis_as_ds_ccsr"
+    },
+    "question": {
+        "en": "Is the cancer causing stridor at rest?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "No, the patient does not have stridor"
+                },
+                "value": "noStridor"
+            },
+            {
+                "name": {
+                    "en": "Yes, mild stridor"
+                },
+                "value": "mildStridor"
+            },
+            {
+                "name": {
+                    "en": "Yes, moderate stridor"
+                },
+                "value": "moderateStridor"
+            },
+            {
+                "name": {
+                    "en": "Yes, severe stridor"
+                },
+                "value": "severeStridor"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

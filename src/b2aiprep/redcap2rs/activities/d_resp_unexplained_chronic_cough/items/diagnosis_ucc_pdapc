@@ -1,0 +1,42 @@
+{
+    "id": "diagnosis_ucc_pdapc",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "1. Initial screening criteria"
+    },
+    "prefLabel": {
+        "en": "diagnosis_ucc_pdapc"
+    },
+    "question": {
+        "en": "Has postnasal drainage been addressed as a potential cause of the cough (through nasal sprays and antihistamines)?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Not certain"
+                },
+                "value": "notCertain"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

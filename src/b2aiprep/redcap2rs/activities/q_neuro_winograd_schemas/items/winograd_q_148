@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_148",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_148"
+    },
+    "question": {
+        "en": "148. Sam tried to paint a picture of shepherds with sheep, but they ended up looking more like golfers. What looked like golfers?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "The sheep"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "The shepherds"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

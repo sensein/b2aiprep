@@ -1,0 +1,49 @@
+{
+    "id": "diagnosis_l_etiology",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "3. Etiology"
+    },
+    "prefLabel": {
+        "en": "diagnosis_l_etiology"
+    },
+    "question": {
+        "en": "What is the etiology?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Infection"
+                },
+                "value": "infection"
+            },
+            {
+                "name": {
+                    "en": "Environmental irritants"
+                },
+                "value": "environmental_irritants"
+            },
+            {
+                "name": {
+                    "en": "Vocal misuse and abuse"
+                },
+                "value": "vocal_misuse_and_abuse"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

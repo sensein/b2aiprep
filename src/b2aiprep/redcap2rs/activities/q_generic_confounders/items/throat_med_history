@@ -1,0 +1,105 @@
+{
+    "id": "throat_med_history",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "throat_med_history"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nThroat"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Pre-cancerous throat lesion (e.g. laryngeal leukoplakia or keratosis"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Reflux (heartburn)"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Reinke's edema, polypoid corditis, or smoker's larynx"
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "Sj\u00f6gren's syndrome"
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "Swallowing disorders (dysphagia)"
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "Throat cancer"
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "Thyroid disease"
+                },
+                "value": 7
+            },
+            {
+                "name": {
+                    "en": "Velopharyngeal insufficiency"
+                },
+                "value": 8
+            },
+            {
+                "name": {
+                    "en": "Vocal fold dysfunction, paradoxical vocal fold motion, or inducible laryngeal obstruction"
+                },
+                "value": 9
+            },
+            {
+                "name": {
+                    "en": "Vocal fold polyp, nodule, or cyst"
+                },
+                "value": 10
+            },
+            {
+                "name": {
+                    "en": "Vocal hemorrhage or bleed"
+                },
+                "value": 11
+            },
+            {
+                "name": {
+                    "en": "Voice/throat disorder"
+                },
+                "value": 12
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,54 @@
+{
+    "id": "alcohol_freq_v2",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Alcohol consumption"
+    },
+    "prefLabel": {
+        "en": "alcohol_freq_v2"
+    },
+    "question": {
+        "en": "How often do you have at least one drink containing alcohol?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Monthly or less"
+                },
+                "value": "monthlyOrLess"
+            },
+            {
+                "name": {
+                    "en": "2 - 4 times a month"
+                },
+                "value": "twoToFourMothly"
+            },
+            {
+                "name": {
+                    "en": "2 - 3 times a week"
+                },
+                "value": "twoToThreeWeekly"
+            },
+            {
+                "name": {
+                    "en": "4 or more times a week"
+                },
+                "value": "fourOrMoreWeekly"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": "noAnswer"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

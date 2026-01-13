@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_166",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_166"
+    },
+    "question": {
+        "en": "166. Fred covered his eyes with his hands, because the wind was blowing sand around. He lowered them when the wind stopped. What did Fred lowered?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "His eyes"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "His hands"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

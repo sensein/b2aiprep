@@ -1,0 +1,36 @@
+{
+    "id": "diagnosis_ca_spirometry_verification",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "1. Spirometry and diagnosis"
+    },
+    "prefLabel": {
+        "en": "diagnosis_ca_spirometry_verification"
+    },
+    "question": {
+        "en": "Please select one of the two options below for verification of the spirometry test. \n\nIf both are available, please select ATS/ERS"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "ATS/ERS criteria reported: FEV1/FVC < 5th percentile OR z score \u2264 -1.65"
+                },
+                "value": "atsErs"
+            },
+            {
+                "name": {
+                    "en": "GOLD criteria reported: FEV1/FVC < 0.7 (postbronchodilator, or prebronchodilator if postbronchodilator not available)"
+                },
+                "value": "goldCriteria"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

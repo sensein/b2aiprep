@@ -1,0 +1,48 @@
+{
+    "id": "diagnosis_ca_act_score",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "2. Disease Subtype"
+    },
+    "prefLabel": {
+        "en": "diagnosis_ca_act_score"
+    },
+    "question": {
+        "en": "What is the ACT score on the most recent visit?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Controlled (>20)"
+                },
+                "value": "controlled"
+            },
+            {
+                "name": {
+                    "en": "Not controlled (15-19)"
+                },
+                "value": "notControlled"
+            },
+            {
+                "name": {
+                    "en": "Poorly controlled (< 15)"
+                },
+                "value": "poorlyControlled"
+            },
+            {
+                "name": {
+                    "en": "Not Certain"
+                },
+                "value": "notCertain"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

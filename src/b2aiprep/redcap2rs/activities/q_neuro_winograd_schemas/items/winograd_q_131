@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_131",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_131"
+    },
+    "question": {
+        "en": "131. Sara borrowed the book from the library because she needs it for an article she is working on. She reads it when she gets home from work. What does Sara reads when she gets home from work?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "The book"
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "The article"
+                },
+                "value": "incorrect"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

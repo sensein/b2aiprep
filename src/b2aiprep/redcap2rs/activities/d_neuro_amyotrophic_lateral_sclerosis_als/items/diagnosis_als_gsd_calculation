@@ -1,0 +1,30 @@
+{
+    "id": "diagnosis_als_gsd_calculation",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@CALCTEXT(if([diagnosis_als_gsd_category_1] = 'yes' && [diagnosis_als_gsd_category_2] = 'yes' && [diagnosis_als_gsd_category_3] = 'yes' , 'Yes', 'No'))"
+        }
+    ],
+    "description": {
+        "en": "Does the participant meet the diagnostic criteria for Amyotrophic Lateral Sclerosis (ALS) based on the criteria above?"
+    },
+    "preamble": {
+        "en": "Does the participant meet the diagnostic criteria for Amyotrophic Lateral Sclerosis (ALS) based on:"
+    },
+    "prefLabel": {
+        "en": "diagnosis_als_gsd_calculation"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

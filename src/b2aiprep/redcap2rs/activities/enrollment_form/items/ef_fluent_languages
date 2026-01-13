@@ -1,0 +1,55 @@
+{
+    "id": "ef_fluent_languages",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Tell us about yourself"
+    },
+    "prefLabel": {
+        "en": "ef_fluent_languages"
+    },
+    "question": {
+        "en": "Do you speak any additional language(s) fluently (similar to a native speaker)?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "None"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "English"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "French"
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "Spanish"
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "Other (please specify below)"
+                },
+                "value": 5
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

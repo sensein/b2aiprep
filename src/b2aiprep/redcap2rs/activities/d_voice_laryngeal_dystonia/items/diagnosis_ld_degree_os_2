@@ -1,0 +1,40 @@
+{
+    "id": "diagnosis_ld_degree_os_2",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "RH"
+        }
+    ],
+    "prefLabel": {
+        "en": "diagnosis_ld_degree_os_2"
+    },
+    "question": {
+        "en": "Overall Severity"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Consistent"
+                },
+                "value": "consistent"
+            },
+            {
+                "name": {
+                    "en": "Intermittent"
+                },
+                "value": "intermittent"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

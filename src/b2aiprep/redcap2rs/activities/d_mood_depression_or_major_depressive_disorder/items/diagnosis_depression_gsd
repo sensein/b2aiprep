@@ -1,0 +1,62 @@
+{
+    "id": "diagnosis_depression_gsd",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "diagnosis_depression_gsd"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nDiagnosis"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Clinical depression (major depressive disorder)"
+                },
+                "value": "clinical_depression"
+            },
+            {
+                "name": {
+                    "en": "Persistent depressive disorder (PDD)"
+                },
+                "value": "pdd"
+            },
+            {
+                "name": {
+                    "en": "Disruptive mood dysregulation disorder (DMDD)"
+                },
+                "value": "dmdd"
+            },
+            {
+                "name": {
+                    "en": "Premenstrual dysphoric disorder (PMDD)"
+                },
+                "value": "pmdd"
+            },
+            {
+                "name": {
+                    "en": "Depressive disorder due to another medical condition"
+                },
+                "value": "other"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

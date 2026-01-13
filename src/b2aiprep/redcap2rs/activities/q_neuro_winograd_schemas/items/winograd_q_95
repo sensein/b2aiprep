@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_95",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_95"
+    },
+    "question": {
+        "en": "95. Anne gave birth to a daughter last month. She is a very charming woman. Who is a very charming woman?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Anne"
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "Anne's daughter"
+                },
+                "value": "incorrect"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

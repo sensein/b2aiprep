@@ -1,0 +1,42 @@
+{
+    "id": "peds_hearing",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Disability Questions"
+    },
+    "prefLabel": {
+        "en": "peds_hearing"
+    },
+    "question": {
+        "en": "Are you deaf or do you have serious difficulty hearing?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": "noAnswer"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,45 @@
+{
+    "id": "head_med_history",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "head_med_history"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nHead"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Radiation around head and neck"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Seasonal allergies"
+                },
+                "value": 2
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

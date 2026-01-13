@@ -1,0 +1,108 @@
+{
+    "id": "pediatric_q_generic_phqa_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "pediatric_q_generic_phqa"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/peds_phqa_session_id",
+            "items/peds_phqa_started_at",
+            "items/peds_phqa_completed_at",
+            "items/peds_phqa_duration",
+            "items/peds_phqa_feeling_depressed",
+            "items/peds_phqa_no_interest",
+            "items/peds_phqa_trouble_sleeping",
+            "items/peds_phqa_no_appetite",
+            "items/peds_phqa_no_energy",
+            "items/peds_phqa_feeling_bad_self",
+            "items/peds_phqa_trouble_concentrate",
+            "items/peds_phqa_move_speak_slow",
+            "items/peds_phqa_thoughts_death"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/peds_phqa_session_id",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "peds_phqa_session_id"
+            },
+            {
+                "isAbout": "items/peds_phqa_started_at",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "peds_phqa_started_at"
+            },
+            {
+                "isAbout": "items/peds_phqa_completed_at",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "peds_phqa_completed_at"
+            },
+            {
+                "isAbout": "items/peds_phqa_duration",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "peds_phqa_duration"
+            },
+            {
+                "isAbout": "items/peds_phqa_feeling_depressed",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_phqa_feeling_depressed"
+            },
+            {
+                "isAbout": "items/peds_phqa_no_interest",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_phqa_no_interest"
+            },
+            {
+                "isAbout": "items/peds_phqa_trouble_sleeping",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_phqa_trouble_sleeping"
+            },
+            {
+                "isAbout": "items/peds_phqa_no_appetite",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_phqa_no_appetite"
+            },
+            {
+                "isAbout": "items/peds_phqa_no_energy",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_phqa_no_energy"
+            },
+            {
+                "isAbout": "items/peds_phqa_feeling_bad_self",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_phqa_feeling_bad_self"
+            },
+            {
+                "isAbout": "items/peds_phqa_trouble_concentrate",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_phqa_trouble_concentrate"
+            },
+            {
+                "isAbout": "items/peds_phqa_move_speak_slow",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_phqa_move_speak_slow"
+            },
+            {
+                "isAbout": "items/peds_phqa_thoughts_death",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_phqa_thoughts_death"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "3.24.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

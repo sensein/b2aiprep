@@ -1,0 +1,67 @@
+{
+    "id": "peds_mc_voice_disorders",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Pediatric Medical Conditions Questionnaire"
+    },
+    "prefLabel": {
+        "en": "peds_mc_voice_disorders"
+    },
+    "question": {
+        "en": "Does your child have a history of a voice disorder? (Select all that apply)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Vocal nodules or polyps"
+                },
+                "value": "vocal_nodules_or_polyps"
+            },
+            {
+                "name": {
+                    "en": "Unilateral vocal cord paralysis"
+                },
+                "value": "unilateral_vocal_cord_paralysis"
+            },
+            {
+                "name": {
+                    "en": "Bilateral vocal cord paralysis"
+                },
+                "value": "bilateral_vocal_cord_paralysis"
+            },
+            {
+                "name": {
+                    "en": "Acid reflux disease (GERD)"
+                },
+                "value": "acid_reflux_disease"
+            },
+            {
+                "name": {
+                    "en": "Scarring of the larynx or vocal cords from disease or previous surgery"
+                },
+                "value": "scarring"
+            },
+            {
+                "name": {
+                    "en": "Airway stenosis (bilateral vocal fold paralysis laryngeal stenosis)"
+                },
+                "value": "airway_stenosis"
+            },
+            {
+                "name": {
+                    "en": "Vocal cord webs"
+                },
+                "value": "vocal_cord_webs"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,133 @@
+{
+    "id": "voice_activity_v2",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "DAY TO DAY ACTIVITIES\n\nThings you do on a daily basis (including your job, work environment, hydration, etc.) can affect the sound of your voice OR affect the way you complete the tasks in this study. This section asks questions about some of these factors. \n\n\nVoice  Use"
+    },
+    "prefLabel": {
+        "en": "voice_activity_v2"
+    },
+    "question": {
+        "en": "Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Administrative assistant"
+                },
+                "value": "administrative_assistant"
+            },
+            {
+                "name": {
+                    "en": "Attorney"
+                },
+                "value": "attorney"
+            },
+            {
+                "name": {
+                    "en": "Bartender"
+                },
+                "value": "bartender"
+            },
+            {
+                "name": {
+                    "en": "Barista"
+                },
+                "value": "barista"
+            },
+            {
+                "name": {
+                    "en": "Call center worker"
+                },
+                "value": "call_center_worker"
+            },
+            {
+                "name": {
+                    "en": "Cheerleader"
+                },
+                "value": "cheerleader"
+            },
+            {
+                "name": {
+                    "en": "Child-care provider"
+                },
+                "value": "child_care_provider"
+            },
+            {
+                "name": {
+                    "en": "Exercise instructor"
+                },
+                "value": "exercise_instructor"
+            },
+            {
+                "name": {
+                    "en": "Minister/Preacher"
+                },
+                "value": "minister_preacher"
+            },
+            {
+                "name": {
+                    "en": "Parent, guardian, or caregiver"
+                },
+                "value": "parent_guardian_caregiver"
+            },
+            {
+                "name": {
+                    "en": "Public Speaker"
+                },
+                "value": "public_speaker"
+            },
+            {
+                "name": {
+                    "en": "Receptionist"
+                },
+                "value": "receptionist"
+            },
+            {
+                "name": {
+                    "en": "Salesperson"
+                },
+                "value": "salesperson"
+            },
+            {
+                "name": {
+                    "en": "Singer"
+                },
+                "value": "singer"
+            },
+            {
+                "name": {
+                    "en": "Teacher"
+                },
+                "value": "teacher"
+            },
+            {
+                "name": {
+                    "en": "Waiter"
+                },
+                "value": "waiter"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            },
+            {
+                "name": {
+                    "en": "NONE OF THE ABOVE"
+                },
+                "value": "none"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

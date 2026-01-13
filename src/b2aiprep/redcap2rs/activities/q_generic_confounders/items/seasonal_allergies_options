@@ -1,0 +1,57 @@
+{
+    "id": "seasonal_allergies_options",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "seasonal_allergies_options"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nCheck all that apply:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Nasal congestion or obstruction"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Cough"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Scratchy or sore throat"
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "Shortness of breath"
+                },
+                "value": 4
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

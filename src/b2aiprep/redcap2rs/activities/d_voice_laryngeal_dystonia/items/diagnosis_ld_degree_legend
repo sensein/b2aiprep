@@ -1,0 +1,20 @@
+{
+    "id": "diagnosis_ld_degree_legend",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "diagnosis_ld_degree_legend"
+    },
+    "question": {
+        "en": "Legend:C- Sonsistent I = IntermittentMI = Mildly DeviantMO = Moderately DeviantSE = Severely Deviant"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "static",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

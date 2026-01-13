@@ -1,0 +1,67 @@
+{
+    "id": "diagnosis_als_treatment_and_management_yes_supportive_care",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "8. Treatment and Management"
+    },
+    "prefLabel": {
+        "en": "diagnosis_als_treatment_and_management_yes_supportive_care"
+    },
+    "question": {
+        "en": "Supportive Care:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Physical therapy"
+                },
+                "value": "physical_therapy"
+            },
+            {
+                "name": {
+                    "en": "Occupational therapy"
+                },
+                "value": "occupational_therapy"
+            },
+            {
+                "name": {
+                    "en": "Speech therapy"
+                },
+                "value": "speech_therapy"
+            },
+            {
+                "name": {
+                    "en": "Respiratory support (e.g., non-invasive ventilation)"
+                },
+                "value": "respiratory_support"
+            },
+            {
+                "name": {
+                    "en": "Nutrition and swallowing support"
+                },
+                "value": "nutrition_support"
+            },
+            {
+                "name": {
+                    "en": "Psychotherapy"
+                },
+                "value": "psychotherapy"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

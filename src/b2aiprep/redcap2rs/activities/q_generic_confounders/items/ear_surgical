@@ -1,0 +1,45 @@
+{
+    "id": "ear_surgical",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "ear_surgical"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nEar"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Chronic ear surgery (e.g. mastoid)"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Ear tubes"
+                },
+                "value": 2
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

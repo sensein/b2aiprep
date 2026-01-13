@@ -1,0 +1,108 @@
+{
+    "id": "pediatric_q_generic_voice_related_qol_survey_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "pediatric_q_generic_voice_related_qol_survey"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/peds_qol_session_id",
+            "items/peds_qol_started_at",
+            "items/peds_qol_completed_at",
+            "items/peds_qol_duration",
+            "items/peds_qol_trouble_speaking_heard",
+            "items/peds_qol_out_of_air",
+            "items/peds_qol_come_out_speaking",
+            "items/peds_qol_anxious_frustrated",
+            "items/peds_qol_depressed",
+            "items/peds_qol_trouble_phone_speaking",
+            "items/peds_qol_trouble_doing_schoolwork",
+            "items/peds_qol_repeat_understood",
+            "items/peds_qol_less_outgoing"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/peds_qol_session_id",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "peds_qol_session_id"
+            },
+            {
+                "isAbout": "items/peds_qol_started_at",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "peds_qol_started_at"
+            },
+            {
+                "isAbout": "items/peds_qol_completed_at",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "peds_qol_completed_at"
+            },
+            {
+                "isAbout": "items/peds_qol_duration",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "peds_qol_duration"
+            },
+            {
+                "isAbout": "items/peds_qol_trouble_speaking_heard",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_qol_trouble_speaking_heard"
+            },
+            {
+                "isAbout": "items/peds_qol_out_of_air",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_qol_out_of_air"
+            },
+            {
+                "isAbout": "items/peds_qol_come_out_speaking",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_qol_come_out_speaking"
+            },
+            {
+                "isAbout": "items/peds_qol_anxious_frustrated",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_qol_anxious_frustrated"
+            },
+            {
+                "isAbout": "items/peds_qol_depressed",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_qol_depressed"
+            },
+            {
+                "isAbout": "items/peds_qol_trouble_phone_speaking",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_qol_trouble_phone_speaking"
+            },
+            {
+                "isAbout": "items/peds_qol_trouble_doing_schoolwork",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_qol_trouble_doing_schoolwork"
+            },
+            {
+                "isAbout": "items/peds_qol_repeat_understood",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_qol_repeat_understood"
+            },
+            {
+                "isAbout": "items/peds_qol_less_outgoing",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_qol_less_outgoing"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "3.24.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

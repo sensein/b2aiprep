@@ -1,0 +1,75 @@
+{
+    "id": "voice_activity",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "voice_activity"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nDo you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Bartender"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Waiter, receptionist"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Speaking (secretary, call center, attorney, salesperson)"
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "Teacher"
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "Singer"
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "Cheerleading"
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": 7
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

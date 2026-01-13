@@ -1,0 +1,49 @@
+{
+    "id": "diagnosis_ca_copd_subtype",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "2. Disease Subtype"
+    },
+    "prefLabel": {
+        "en": "diagnosis_ca_copd_subtype"
+    },
+    "question": {
+        "en": "Please select all that apply:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Chronic bronchitis"
+                },
+                "value": "chronic_bronchitis"
+            },
+            {
+                "name": {
+                    "en": "Emphysema"
+                },
+                "value": "emphysema"
+            },
+            {
+                "name": {
+                    "en": "Eosinophilic (Type2high COPD)"
+                },
+                "value": "eosinophilic"
+            },
+            {
+                "name": {
+                    "en": "Alpha-1 AntitrypsinDeficiency (AATD)"
+                },
+                "value": "aatd"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

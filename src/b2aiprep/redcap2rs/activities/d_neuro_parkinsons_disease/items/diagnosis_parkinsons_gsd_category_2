@@ -1,0 +1,79 @@
+{
+    "id": "diagnosis_parkinsons_gsd_category_2",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Has the participant met the diagnostic criteria for Parkinson's Disease (Parkinsonism) based on presence of:"
+    },
+    "prefLabel": {
+        "en": "diagnosis_parkinsons_gsd_category_2"
+    },
+    "question": {
+        "en": "Category 2 - Exclusion criteria"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Cerebellar abnormalities"
+                },
+                "value": "cerebellar_abnormalities"
+            },
+            {
+                "name": {
+                    "en": "Supranuclear gaze palsy"
+                },
+                "value": "supranuclear_gaze_palsy"
+            },
+            {
+                "name": {
+                    "en": "Diagnosis of behavioral variant of frontotemporal dementia or primary progressive aphasia within 5 years of disease onset"
+                },
+                "value": "bvf_ftd_ppa"
+            },
+            {
+                "name": {
+                    "en": "Parkinsonian features restricted to the lower limbs for more than 3 years"
+                },
+                "value": "lower_limbs"
+            },
+            {
+                "name": {
+                    "en": "Treatment with a dopamine receptor blocker or dopamine depleting agent consistent with drug-induced parkinsonism"
+                },
+                "value": "dopamine_treatment"
+            },
+            {
+                "name": {
+                    "en": "Absence of a response to high-dose levodopa despite at least moderate disease severity"
+                },
+                "value": "absence_of_response"
+            },
+            {
+                "name": {
+                    "en": "Cortical sensory loss, clear limb ideomotor apraxia, or progressive aphasia"
+                },
+                "value": "cortical_sensory_loss"
+            },
+            {
+                "name": {
+                    "en": "Normal functional imaging of the dopaminergic system (\"DAT scan\")"
+                },
+                "value": "dat_scan"
+            },
+            {
+                "name": {
+                    "en": "Diagnosis of alternative condition causing parkinsonism which could be causing the symptoms"
+                },
+                "value": "alternative_condition"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

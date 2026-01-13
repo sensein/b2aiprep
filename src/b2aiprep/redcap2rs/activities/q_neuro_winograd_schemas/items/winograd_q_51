@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_51",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_51"
+    },
+    "question": {
+        "en": "51. Susan knew that Ann's son had been in a car accident, so she told her about it. Who told the other about the accident?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Susan"
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "Ann"
+                },
+                "value": "incorrect"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

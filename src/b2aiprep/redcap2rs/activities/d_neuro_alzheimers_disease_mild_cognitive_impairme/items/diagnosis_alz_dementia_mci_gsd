@@ -1,0 +1,42 @@
+{
+    "id": "diagnosis_alz_dementia_mci_gsd",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "1. Gold Standard Diagnosis"
+    },
+    "prefLabel": {
+        "en": "diagnosis_alz_dementia_mci_gsd"
+    },
+    "question": {
+        "en": "Does the participant have Major Neurocognitive Disorder - Alzheimer's Type, Mild Cognitive Impairment or other types of dementia?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Not certain"
+                },
+                "value": "notCertain"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

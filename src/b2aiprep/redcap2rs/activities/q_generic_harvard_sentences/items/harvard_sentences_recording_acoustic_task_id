@@ -1,0 +1,30 @@
+{
+    "id": "harvard_sentences_recording_acoustic_task_id",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@READONLY"
+        }
+    ],
+    "preamble": {
+        "en": "Questionnaire - Metadata"
+    },
+    "prefLabel": {
+        "en": "harvard_sentences_recording_acoustic_task_id"
+    },
+    "question": {
+        "en": "Acoustic Task ID"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

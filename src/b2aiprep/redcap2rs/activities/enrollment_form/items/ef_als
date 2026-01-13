@@ -1,0 +1,43 @@
+{
+    "id": "ef_als",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Matrix Group Name",
+            "source": "redcap",
+            "value": "ef_neuro_neurodeg_dis"
+        }
+    ],
+    "preamble": {
+        "en": "Neurological and Neurodegenerative Disorders"
+    },
+    "prefLabel": {
+        "en": "ef_als"
+    },
+    "question": {
+        "en": "Amyotrophic Lateral Sclerosis (ALS)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Unchecked"
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "Checked"
+                },
+                "value": 1
+            }
+        ],
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

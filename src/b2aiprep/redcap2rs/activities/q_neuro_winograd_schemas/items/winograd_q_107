@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_107",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_107"
+    },
+    "question": {
+        "en": "107. In the storm, the tree fell down and crashed through the roof of my house. Now, I have to get it removed. What has to be removed?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "The tree"
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "The roof"
+                },
+                "value": "incorrect"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

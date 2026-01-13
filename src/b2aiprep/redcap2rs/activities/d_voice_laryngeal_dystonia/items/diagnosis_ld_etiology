@@ -1,0 +1,54 @@
+{
+    "id": "diagnosis_ld_etiology",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "3. Etiology"
+    },
+    "prefLabel": {
+        "en": "diagnosis_ld_etiology"
+    },
+    "question": {
+        "en": "What is the etiology?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Idiopathic"
+                },
+                "value": "idiopathic"
+            },
+            {
+                "name": {
+                    "en": "Familial"
+                },
+                "value": "familial"
+            },
+            {
+                "name": {
+                    "en": "Trauma"
+                },
+                "value": "trauma"
+            },
+            {
+                "name": {
+                    "en": "Unknown"
+                },
+                "value": "unknown"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

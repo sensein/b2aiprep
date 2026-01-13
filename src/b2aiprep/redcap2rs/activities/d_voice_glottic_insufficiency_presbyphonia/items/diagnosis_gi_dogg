@@ -1,0 +1,42 @@
+{
+    "id": "diagnosis_gi_dogg",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "3. Disease Severity"
+    },
+    "prefLabel": {
+        "en": "diagnosis_gi_dogg"
+    },
+    "question": {
+        "en": "Please assess degree of glottic gap:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Small"
+                },
+                "value": "small"
+            },
+            {
+                "name": {
+                    "en": "Moderate"
+                },
+                "value": "moderate"
+            },
+            {
+                "name": {
+                    "en": "Large"
+                },
+                "value": "large"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

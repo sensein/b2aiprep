@@ -1,0 +1,54 @@
+{
+    "id": "currently_pregnant",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Gynecological"
+    },
+    "prefLabel": {
+        "en": "currently_pregnant"
+    },
+    "question": {
+        "en": "Which trimester of pregnancy are you in?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "First trimester (less than 14 weeks)"
+                },
+                "value": "firstTrimester"
+            },
+            {
+                "name": {
+                    "en": "Second trimester (14-28 weeks)"
+                },
+                "value": "secondTrimester"
+            },
+            {
+                "name": {
+                    "en": "Third trimester (more than 28 weeks)"
+                },
+                "value": "thirdTrimester"
+            },
+            {
+                "name": {
+                    "en": "Not certain"
+                },
+                "value": "notCertain"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": "noAnswer"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

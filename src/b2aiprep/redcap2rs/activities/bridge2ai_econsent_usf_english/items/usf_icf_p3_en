@@ -1,0 +1,18 @@
+{
+    "id": "usf_icf_p3_en",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "usf_icf_p3_en"
+    },
+    "question": null,
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "static",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

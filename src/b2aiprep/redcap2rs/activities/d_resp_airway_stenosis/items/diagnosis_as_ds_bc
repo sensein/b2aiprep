@@ -1,0 +1,48 @@
+{
+    "id": "diagnosis_as_ds_bc",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Disease Severity"
+    },
+    "prefLabel": {
+        "en": "diagnosis_as_ds_bc"
+    },
+    "question": {
+        "en": "Degree of Stenosis (Bogdasarian Classification)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "(a) Class 1"
+                },
+                "value": "class1"
+            },
+            {
+                "name": {
+                    "en": "(b) Class 2"
+                },
+                "value": "class2"
+            },
+            {
+                "name": {
+                    "en": "(c) Class 3"
+                },
+                "value": "class3"
+            },
+            {
+                "name": {
+                    "en": "(d) Class 4"
+                },
+                "value": "class4"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

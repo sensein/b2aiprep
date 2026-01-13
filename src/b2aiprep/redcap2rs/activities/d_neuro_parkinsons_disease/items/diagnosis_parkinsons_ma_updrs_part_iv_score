@@ -1,0 +1,22 @@
+{
+    "id": "diagnosis_parkinsons_ma_updrs_part_iv_score",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "5. Motor Assessment"
+    },
+    "prefLabel": {
+        "en": "diagnosis_parkinsons_ma_updrs_part_iv_score"
+    },
+    "question": {
+        "en": "Part IV (Motor complications) score:"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_93",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_93"
+    },
+    "question": {
+        "en": "93. The cat was lying by the mouse hole waiting for the mouse, but it was too cautious. What was too cautious?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "The mouse"
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "The cat"
+                },
+                "value": "incorrect"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

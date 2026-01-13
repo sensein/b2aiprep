@@ -1,0 +1,39 @@
+{
+    "id": "other_lung_conditions",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "other_lung_conditions"
+    },
+    "question": {
+        "en": "Do you currently have any other lung condition?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Prefer Not To Answer"
+                },
+                "value": "noAnswer"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,67 @@
+{
+    "id": "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "6. Treatment Obtained"
+    },
+    "prefLabel": {
+        "en": "diagnosis_alz_dementia_mci_treatment_obtained_yes_npi"
+    },
+    "question": {
+        "en": "Non-pharmacological interventions:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Day program"
+                },
+                "value": "day_program"
+            },
+            {
+                "name": {
+                    "en": "Cognitive stimulation therapy"
+                },
+                "value": "cognitive_simulation_therapy"
+            },
+            {
+                "name": {
+                    "en": "Reality orientation therapy"
+                },
+                "value": "reality_orientation_therapy"
+            },
+            {
+                "name": {
+                    "en": "Reminiscence therapy"
+                },
+                "value": "reminiscence_therapy"
+            },
+            {
+                "name": {
+                    "en": "Physical exercise program"
+                },
+                "value": "physical_exercise_program"
+            },
+            {
+                "name": {
+                    "en": "Dietary modifications"
+                },
+                "value": "dietary_modifications"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

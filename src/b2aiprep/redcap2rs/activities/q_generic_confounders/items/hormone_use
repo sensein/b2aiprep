@@ -1,0 +1,57 @@
+{
+    "id": "hormone_use",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "hormone_use"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nHormone use"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Oral contraceptive"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Hormonal replacement therapy (HRT)"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Androgenic steroids"
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": 4
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

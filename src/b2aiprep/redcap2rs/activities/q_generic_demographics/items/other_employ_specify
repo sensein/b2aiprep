@@ -1,0 +1,22 @@
+{
+    "id": "other_employ_specify",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Employment Status"
+    },
+    "prefLabel": {
+        "en": "other_employ_specify"
+    },
+    "question": {
+        "en": "If you selected \"other\" employment status, please specify."
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

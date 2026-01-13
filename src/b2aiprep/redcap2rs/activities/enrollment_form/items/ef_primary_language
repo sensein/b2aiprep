@@ -1,0 +1,48 @@
+{
+    "id": "ef_primary_language",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Tell us about yourself"
+    },
+    "prefLabel": {
+        "en": "ef_primary_language"
+    },
+    "question": {
+        "en": "What is your primary language?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "English"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "French"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Spanish"
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "Other (Please specify below)"
+                },
+                "value": 4
+            }
+        ],
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

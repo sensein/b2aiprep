@@ -1,0 +1,36 @@
+{
+    "id": "stroop_item_correct_7",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Item 7"
+    },
+    "prefLabel": {
+        "en": "stroop_item_correct_7"
+    },
+    "question": {
+        "en": "Item 7\nCorrect?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

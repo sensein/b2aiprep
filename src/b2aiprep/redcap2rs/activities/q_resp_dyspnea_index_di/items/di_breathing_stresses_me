@@ -1,0 +1,61 @@
+{
+    "id": "di_breathing_stresses_me",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Matrix Group Name",
+            "source": "redcap",
+            "value": "di"
+        }
+    ],
+    "preamble": {
+        "en": "Please answer the following questions using a 0-4 rating scale.\n\n0 = Never; 1 = Almost never; 2 = Sometimes; 3 = Almost always; 4 = Always"
+    },
+    "prefLabel": {
+        "en": "di_breathing_stresses_me"
+    },
+    "question": {
+        "en": "My breathing problem makes me feel stressed."
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Never"
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Almost never"
+                },
+                "value": "almostNever"
+            },
+            {
+                "name": {
+                    "en": "Sometimes"
+                },
+                "value": "sometimes"
+            },
+            {
+                "name": {
+                    "en": "Almost always"
+                },
+                "value": "almostAlways"
+            },
+            {
+                "name": {
+                    "en": "Always"
+                },
+                "value": "always"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

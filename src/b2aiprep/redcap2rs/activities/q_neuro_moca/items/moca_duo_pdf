@@ -1,0 +1,26 @@
+{
+    "id": "moca_duo_pdf",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Identifier?",
+            "source": "redcap",
+            "value": "y"
+        }
+    ],
+    "prefLabel": {
+        "en": "moca_duo_pdf"
+    },
+    "question": {
+        "en": "MoCA DUO PDF"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "documentUpload"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

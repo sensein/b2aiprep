@@ -1,0 +1,49 @@
+{
+    "id": "diagnosis_als_cp",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Clinical Presentation"
+    },
+    "prefLabel": {
+        "en": "diagnosis_als_cp"
+    },
+    "question": {
+        "en": "Describe the clinical features and symptoms of ALS in the participant:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Upper Motor Neuron Signs (e.g., spasticity, hyperreflexia)"
+                },
+                "value": "upper_motor_neuron"
+            },
+            {
+                "name": {
+                    "en": "Lower Motor Neuron Signs (e.g., muscle weakness, atrophy, fasciculations)"
+                },
+                "value": "lower_motor_neuron"
+            },
+            {
+                "name": {
+                    "en": "Bulbar Symptoms (e.g., dysarthria, dysphagia)"
+                },
+                "value": "bulbar_symptoms"
+            },
+            {
+                "name": {
+                    "en": "Respiratory Involvement"
+                },
+                "value": "respiratory_involvement"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_129",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_129"
+    },
+    "question": {
+        "en": "129. Since it was raining, I carried the newspaper over my backpack to keep it dry. What was I trying to keep dry?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "The backpack"
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "The newspaper"
+                },
+                "value": "incorrect"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

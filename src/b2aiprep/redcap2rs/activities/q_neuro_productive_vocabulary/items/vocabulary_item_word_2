@@ -1,0 +1,22 @@
+{
+    "id": "vocabulary_item_word_2",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Item 2"
+    },
+    "prefLabel": {
+        "en": "vocabulary_item_word_2"
+    },
+    "question": {
+        "en": "Item 2\nWord"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

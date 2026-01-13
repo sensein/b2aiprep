@@ -1,0 +1,34 @@
+{
+    "id": "session_completed_by",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "session_completed_by"
+    },
+    "question": {
+        "en": "Who helped you answer the questions today? For example, did someone help you remember your medication list or how tired you are? This isn't the person who helps you understand the question, but the one who helps you provide the answers"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Just me"
+                },
+                "value": "just_me"
+            },
+            {
+                "name": {
+                    "en": "Someone else helped me answer the questions"
+                },
+                "value": "someone_else"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_90",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_90"
+    },
+    "question": {
+        "en": "90. If the con artist has succeeded in fooling Sam, he would have lost a lot of money. Who would have lost the money?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "The con artist"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "Sam"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

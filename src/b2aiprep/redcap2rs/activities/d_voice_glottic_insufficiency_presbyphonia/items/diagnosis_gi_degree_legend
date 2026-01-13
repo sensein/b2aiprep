@@ -1,0 +1,23 @@
+{
+    "id": "diagnosis_gi_degree_legend",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "3. Disease Severity"
+    },
+    "prefLabel": {
+        "en": "diagnosis_gi_degree_legend"
+    },
+    "question": {
+        "en": "Legend:\u00a0C- Sonsistent I = IntermittentMI = Mildly DeviantMO = Moderately DeviantSE = Severely Deviant"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "static",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,61 @@
+{
+    "id": "ever_used_nicotine_products",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Nicotine use"
+    },
+    "prefLabel": {
+        "en": "ever_used_nicotine_products"
+    },
+    "question": {
+        "en": "Have you ever used any of the following nicotine (tobacco) products? Please check all that apply."
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "I have never used a nicotine product"
+                },
+                "value": "never_used_nicotine_product"
+            },
+            {
+                "name": {
+                    "en": "Cigarette or cigar"
+                },
+                "value": "cigarette_cigar"
+            },
+            {
+                "name": {
+                    "en": "Electronic nicotine product (e.g. e-cigarettes, vape pens, hookah pens, personal vaporizers, e-cigars, e-pipes, e-hookahs, etc.)"
+                },
+                "value": "electronic_nicotine_product"
+            },
+            {
+                "name": {
+                    "en": "Nicotine patch"
+                },
+                "value": "nicotine_patch"
+            },
+            {
+                "name": {
+                    "en": "Nicotine gum or chew"
+                },
+                "value": "nicotine_gum_chew"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

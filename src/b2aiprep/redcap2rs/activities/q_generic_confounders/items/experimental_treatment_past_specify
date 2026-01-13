@@ -1,0 +1,19 @@
+{
+    "id": "experimental_treatment_past_specify",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "experimental_treatment_past_specify"
+    },
+    "question": {
+        "en": "Please specify what experimental treatment (e.g. clinical trial) you received in the past."
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

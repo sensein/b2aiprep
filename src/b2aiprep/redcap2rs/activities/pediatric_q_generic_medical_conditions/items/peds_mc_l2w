@@ -1,0 +1,79 @@
+{
+    "id": "peds_mc_l2w",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Pediatric Medical Conditions Questionnaire"
+    },
+    "prefLabel": {
+        "en": "peds_mc_l2w"
+    },
+    "question": {
+        "en": "Has your child had any of the following in the 2 weeks? (Select all that apply)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Wheezing or trouble breathing"
+                },
+                "value": "wheezing_or_trouble_breathing"
+            },
+            {
+                "name": {
+                    "en": "Dry cough"
+                },
+                "value": "dry_cough"
+            },
+            {
+                "name": {
+                    "en": "Wet, productive cough"
+                },
+                "value": "wet_productive_cough"
+            },
+            {
+                "name": {
+                    "en": "Nasal congestion"
+                },
+                "value": "nasal_congestion"
+            },
+            {
+                "name": {
+                    "en": "Sneezing"
+                },
+                "value": "sneezing"
+            },
+            {
+                "name": {
+                    "en": "Ear infection"
+                },
+                "value": "ear_infection"
+            },
+            {
+                "name": {
+                    "en": "Stridor"
+                },
+                "value": "stridor"
+            },
+            {
+                "name": {
+                    "en": "Croup"
+                },
+                "value": "croup"
+            },
+            {
+                "name": {
+                    "en": "Sorethroat/tonsillitis"
+                },
+                "value": "sorethroat_or_tonsillitis"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

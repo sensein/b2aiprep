@@ -1,0 +1,50 @@
+{
+    "id": "smoking_age_stopped",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "smoking_age_stopped"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nIf you have completely stopped smoking cigarettes, about how old were you when you stopped?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Specify"
+                },
+                "value": "specify"
+            },
+            {
+                "name": {
+                    "en": "Don't know"
+                },
+                "value": "doNotKnow"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": "noAnswer"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

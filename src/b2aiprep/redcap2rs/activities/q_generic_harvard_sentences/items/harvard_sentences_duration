@@ -1,0 +1,41 @@
+{
+    "id": "harvard_sentences_duration",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Text Validation Type OR Show Slider Number",
+            "source": "redcap",
+            "value": "number"
+        },
+        {
+            "column": "Text Validation Min",
+            "source": "redcap",
+            "value": "0.0"
+        },
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@READONLY"
+        }
+    ],
+    "preamble": {
+        "en": "Questionnaire - Metadata"
+    },
+    "prefLabel": {
+        "en": "harvard_sentences_duration"
+    },
+    "question": {
+        "en": "Questionnaire Duration (seconds)"
+    },
+    "responseOptions": {
+        "minValue": 0,
+        "valueType": [
+            "xsd:decimal"
+        ]
+    },
+    "ui": {
+        "inputType": "float",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

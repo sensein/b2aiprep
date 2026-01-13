@@ -1,0 +1,103 @@
+{
+    "id": "edu_level",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Identifier?",
+            "source": "redcap",
+            "value": "y"
+        }
+    ],
+    "preamble": {
+        "en": "Education"
+    },
+    "prefLabel": {
+        "en": "edu_level"
+    },
+    "question": {
+        "en": "What is your highest level of education?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "No formal education"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Some elementary school"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Some secondary or high school education"
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "High School or secondary school degree complete"
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "Some college education"
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "Associate's or technical degree complete"
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "College or baccalaureate degree complete"
+                },
+                "value": 7
+            },
+            {
+                "name": {
+                    "en": "Some post-baccalaureate education"
+                },
+                "value": 8
+            },
+            {
+                "name": {
+                    "en": "Graduate or professional degree complete"
+                },
+                "value": 9
+            },
+            {
+                "name": {
+                    "en": "Doctoral or post graduate education"
+                },
+                "value": 10
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": 11
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": 12
+            }
+        ],
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

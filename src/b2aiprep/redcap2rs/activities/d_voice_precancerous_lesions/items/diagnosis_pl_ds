@@ -1,0 +1,49 @@
+{
+    "id": "diagnosis_pl_ds",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "2. Disease Subtype"
+    },
+    "prefLabel": {
+        "en": "diagnosis_pl_ds"
+    },
+    "question": {
+        "en": "What is the diagnosis?\n(Select all that apply)."
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Keratosis"
+                },
+                "value": "keratosis"
+            },
+            {
+                "name": {
+                    "en": "Leukoplakia"
+                },
+                "value": "leukoplakia"
+            },
+            {
+                "name": {
+                    "en": "Erythroplakia"
+                },
+                "value": "erythroplakia"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

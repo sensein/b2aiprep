@@ -1,0 +1,1998 @@
+{
+    "id": "q_neuro_winograd_schemas_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "q_neuro_winograd_schemas"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/winograd_session_id",
+            "items/winograd_started_at",
+            "items/winograd_completed_at",
+            "items/winograd_duration",
+            "items/winograd_score",
+            "items/winograd_number_questions",
+            "items/winograd_questions_asked",
+            "items/winograd_q_1",
+            "items/winograd_q_2",
+            "items/winograd_q_3",
+            "items/winograd_q_4",
+            "items/winograd_q_5",
+            "items/winograd_q_6",
+            "items/winograd_q_7",
+            "items/winograd_q_8",
+            "items/winograd_q_9",
+            "items/winograd_q_10",
+            "items/winograd_q_11",
+            "items/winograd_q_12",
+            "items/winograd_q_13",
+            "items/winograd_q_14",
+            "items/winograd_q_15",
+            "items/winograd_q_16",
+            "items/winograd_q_17",
+            "items/winograd_q_18",
+            "items/winograd_q_19",
+            "items/winograd_q_20",
+            "items/winograd_q_21",
+            "items/winograd_q_22",
+            "items/winograd_q_23",
+            "items/winograd_q_24",
+            "items/winograd_q_25",
+            "items/winograd_q_26",
+            "items/winograd_q_27",
+            "items/winograd_q_28",
+            "items/winograd_q_29",
+            "items/winograd_q_30",
+            "items/winograd_q_31",
+            "items/winograd_q_32",
+            "items/winograd_q_33",
+            "items/winograd_q_34",
+            "items/winograd_q_35",
+            "items/winograd_q_36",
+            "items/winograd_q_37",
+            "items/winograd_q_38",
+            "items/winograd_q_39",
+            "items/winograd_q_40",
+            "items/winograd_q_41",
+            "items/winograd_q_42",
+            "items/winograd_q_43",
+            "items/winograd_q_44",
+            "items/winograd_q_45",
+            "items/winograd_q_46",
+            "items/winograd_q_47",
+            "items/winograd_q_48",
+            "items/winograd_q_49",
+            "items/winograd_q_50",
+            "items/winograd_q_51",
+            "items/winograd_q_52",
+            "items/winograd_q_53",
+            "items/winograd_q_54",
+            "items/winograd_q_55",
+            "items/winograd_q_56",
+            "items/winograd_q_57",
+            "items/winograd_q_58",
+            "items/winograd_q_59",
+            "items/winograd_q_60",
+            "items/winograd_q_61",
+            "items/winograd_q_62",
+            "items/winograd_q_63",
+            "items/winograd_q_64",
+            "items/winograd_q_65",
+            "items/winograd_q_66",
+            "items/winograd_q_67",
+            "items/winograd_q_68",
+            "items/winograd_q_69",
+            "items/winograd_q_70",
+            "items/winograd_q_71",
+            "items/winograd_q_72",
+            "items/winograd_q_73",
+            "items/winograd_q_74",
+            "items/winograd_q_75",
+            "items/winograd_q_76",
+            "items/winograd_q_77",
+            "items/winograd_q_78",
+            "items/winograd_q_79",
+            "items/winograd_q_80",
+            "items/winograd_q_81",
+            "items/winograd_q_82",
+            "items/winograd_q_83",
+            "items/winograd_q_84",
+            "items/winograd_q_85",
+            "items/winograd_q_86",
+            "items/winograd_q_87",
+            "items/winograd_q_88",
+            "items/winograd_q_89",
+            "items/winograd_q_90",
+            "items/winograd_q_91",
+            "items/winograd_q_92",
+            "items/winograd_q_93",
+            "items/winograd_q_94",
+            "items/winograd_q_95",
+            "items/winograd_q_96",
+            "items/winograd_q_97",
+            "items/winograd_q_98",
+            "items/winograd_q_99",
+            "items/winograd_q_100",
+            "items/winograd_q_101",
+            "items/winograd_q_102",
+            "items/winograd_q_103",
+            "items/winograd_q_104",
+            "items/winograd_q_105",
+            "items/winograd_q_106",
+            "items/winograd_q_107",
+            "items/winograd_q_108",
+            "items/winograd_q_109",
+            "items/winograd_q_110",
+            "items/winograd_q_111",
+            "items/winograd_q_112",
+            "items/winograd_q_113",
+            "items/winograd_q_114",
+            "items/winograd_q_115",
+            "items/winograd_q_116",
+            "items/winograd_q_117",
+            "items/winograd_q_118",
+            "items/winograd_q_119",
+            "items/winograd_q_120",
+            "items/winograd_q_121",
+            "items/winograd_q_122",
+            "items/winograd_q_123",
+            "items/winograd_q_124",
+            "items/winograd_q_125",
+            "items/winograd_q_126",
+            "items/winograd_q_127",
+            "items/winograd_q_128",
+            "items/winograd_q_129",
+            "items/winograd_q_130",
+            "items/winograd_q_131",
+            "items/winograd_q_132",
+            "items/winograd_q_133",
+            "items/winograd_q_134",
+            "items/winograd_q_135",
+            "items/winograd_q_136",
+            "items/winograd_q_137",
+            "items/winograd_q_138",
+            "items/winograd_q_139",
+            "items/winograd_q_140",
+            "items/winograd_q_141",
+            "items/winograd_q_142",
+            "items/winograd_q_143",
+            "items/winograd_q_144",
+            "items/winograd_q_145",
+            "items/winograd_q_146",
+            "items/winograd_q_147",
+            "items/winograd_q_148",
+            "items/winograd_q_149",
+            "items/winograd_q_150",
+            "items/winograd_q_151",
+            "items/winograd_q_152",
+            "items/winograd_q_153",
+            "items/winograd_q_154",
+            "items/winograd_q_155",
+            "items/winograd_q_156",
+            "items/winograd_q_157",
+            "items/winograd_q_158",
+            "items/winograd_q_159",
+            "items/winograd_q_160",
+            "items/winograd_q_161",
+            "items/winograd_q_162",
+            "items/winograd_q_163",
+            "items/winograd_q_164",
+            "items/winograd_q_165",
+            "items/winograd_q_166",
+            "items/winograd_q_167",
+            "items/winograd_q_168",
+            "items/winograd_q_169",
+            "items/winograd_q_170",
+            "items/winograd_q_171",
+            "items/winograd_q_172",
+            "items/winograd_q_173",
+            "items/winograd_q_174",
+            "items/winograd_q_175",
+            "items/winograd_q_176",
+            "items/winograd_q_177",
+            "items/winograd_q_178",
+            "items/winograd_q_179",
+            "items/winograd_q_180",
+            "items/winograd_q_181",
+            "items/winograd_q_182",
+            "items/winograd_q_183",
+            "items/winograd_q_184",
+            "items/winograd_q_185",
+            "items/winograd_q_186",
+            "items/winograd_q_187",
+            "items/winograd_q_188",
+            "items/winograd_q_189",
+            "items/winograd_q_190",
+            "items/winograd_q_191",
+            "items/winograd_q_192",
+            "items/winograd_q_193",
+            "items/winograd_q_194",
+            "items/winograd_q_195",
+            "items/winograd_q_196",
+            "items/winograd_q_197",
+            "items/winograd_q_198",
+            "items/winograd_q_199",
+            "items/winograd_q_200",
+            "items/winograd_q_201",
+            "items/winograd_q_202",
+            "items/winograd_q_203",
+            "items/winograd_q_204",
+            "items/winograd_q_205",
+            "items/winograd_q_206",
+            "items/winograd_q_207",
+            "items/winograd_q_208",
+            "items/winograd_q_209",
+            "items/winograd_q_210",
+            "items/winograd_q_211",
+            "items/winograd_q_212",
+            "items/winograd_q_213",
+            "items/winograd_q_214",
+            "items/winograd_q_215",
+            "items/winograd_q_216",
+            "items/winograd_q_217",
+            "items/winograd_q_218",
+            "items/winograd_q_219",
+            "items/winograd_q_220",
+            "items/winograd_q_221",
+            "items/winograd_q_222",
+            "items/winograd_q_223",
+            "items/winograd_q_224",
+            "items/winograd_q_225",
+            "items/winograd_q_226",
+            "items/winograd_q_227",
+            "items/winograd_q_228",
+            "items/winograd_q_229",
+            "items/winograd_q_230",
+            "items/winograd_q_231",
+            "items/winograd_q_232",
+            "items/winograd_q_233",
+            "items/winograd_q_234",
+            "items/winograd_q_235",
+            "items/winograd_q_236",
+            "items/winograd_q_237",
+            "items/winograd_q_238",
+            "items/winograd_q_239",
+            "items/winograd_q_240",
+            "items/winograd_q_241",
+            "items/winograd_q_242",
+            "items/winograd_q_243",
+            "items/winograd_q_244",
+            "items/winograd_q_245",
+            "items/winograd_q_246",
+            "items/winograd_q_247",
+            "items/winograd_q_248",
+            "items/winograd_q_249",
+            "items/winograd_q_250",
+            "items/winograd_q_251",
+            "items/winograd_q_252",
+            "items/winograd_q_253",
+            "items/winograd_q_254",
+            "items/winograd_q_255",
+            "items/winograd_q_256",
+            "items/winograd_q_257",
+            "items/winograd_q_258",
+            "items/winograd_q_259",
+            "items/winograd_q_260",
+            "items/winograd_q_261",
+            "items/winograd_q_262",
+            "items/winograd_q_263",
+            "items/winograd_q_264",
+            "items/winograd_q_265",
+            "items/winograd_q_266",
+            "items/winograd_q_267",
+            "items/winograd_q_268",
+            "items/winograd_q_269",
+            "items/winograd_q_270",
+            "items/winograd_q_271",
+            "items/winograd_q_272",
+            "items/winograd_q_273",
+            "items/winograd_q_274",
+            "items/winograd_q_275",
+            "items/winograd_q_276"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/winograd_session_id",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "winograd_session_id"
+            },
+            {
+                "isAbout": "items/winograd_started_at",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "winograd_started_at"
+            },
+            {
+                "isAbout": "items/winograd_completed_at",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "winograd_completed_at"
+            },
+            {
+                "isAbout": "items/winograd_duration",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "winograd_duration"
+            },
+            {
+                "isAbout": "items/winograd_score",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "winograd_score"
+            },
+            {
+                "isAbout": "items/winograd_number_questions",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "winograd_number_questions"
+            },
+            {
+                "isAbout": "items/winograd_questions_asked",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "winograd_questions_asked"
+            },
+            {
+                "isAbout": "items/winograd_q_1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_1"
+            },
+            {
+                "isAbout": "items/winograd_q_2",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_2"
+            },
+            {
+                "isAbout": "items/winograd_q_3",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_3"
+            },
+            {
+                "isAbout": "items/winograd_q_4",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_4"
+            },
+            {
+                "isAbout": "items/winograd_q_5",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_5"
+            },
+            {
+                "isAbout": "items/winograd_q_6",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_6"
+            },
+            {
+                "isAbout": "items/winograd_q_7",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_7"
+            },
+            {
+                "isAbout": "items/winograd_q_8",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_8"
+            },
+            {
+                "isAbout": "items/winograd_q_9",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_9"
+            },
+            {
+                "isAbout": "items/winograd_q_10",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_10"
+            },
+            {
+                "isAbout": "items/winograd_q_11",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_11"
+            },
+            {
+                "isAbout": "items/winograd_q_12",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_12"
+            },
+            {
+                "isAbout": "items/winograd_q_13",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_13"
+            },
+            {
+                "isAbout": "items/winograd_q_14",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_14"
+            },
+            {
+                "isAbout": "items/winograd_q_15",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_15"
+            },
+            {
+                "isAbout": "items/winograd_q_16",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_16"
+            },
+            {
+                "isAbout": "items/winograd_q_17",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_17"
+            },
+            {
+                "isAbout": "items/winograd_q_18",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_18"
+            },
+            {
+                "isAbout": "items/winograd_q_19",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_19"
+            },
+            {
+                "isAbout": "items/winograd_q_20",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_20"
+            },
+            {
+                "isAbout": "items/winograd_q_21",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_21"
+            },
+            {
+                "isAbout": "items/winograd_q_22",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_22"
+            },
+            {
+                "isAbout": "items/winograd_q_23",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_23"
+            },
+            {
+                "isAbout": "items/winograd_q_24",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_24"
+            },
+            {
+                "isAbout": "items/winograd_q_25",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_25"
+            },
+            {
+                "isAbout": "items/winograd_q_26",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_26"
+            },
+            {
+                "isAbout": "items/winograd_q_27",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_27"
+            },
+            {
+                "isAbout": "items/winograd_q_28",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_28"
+            },
+            {
+                "isAbout": "items/winograd_q_29",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_29"
+            },
+            {
+                "isAbout": "items/winograd_q_30",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_30"
+            },
+            {
+                "isAbout": "items/winograd_q_31",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_31"
+            },
+            {
+                "isAbout": "items/winograd_q_32",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_32"
+            },
+            {
+                "isAbout": "items/winograd_q_33",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_33"
+            },
+            {
+                "isAbout": "items/winograd_q_34",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_34"
+            },
+            {
+                "isAbout": "items/winograd_q_35",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_35"
+            },
+            {
+                "isAbout": "items/winograd_q_36",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_36"
+            },
+            {
+                "isAbout": "items/winograd_q_37",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_37"
+            },
+            {
+                "isAbout": "items/winograd_q_38",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_38"
+            },
+            {
+                "isAbout": "items/winograd_q_39",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_39"
+            },
+            {
+                "isAbout": "items/winograd_q_40",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_40"
+            },
+            {
+                "isAbout": "items/winograd_q_41",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_41"
+            },
+            {
+                "isAbout": "items/winograd_q_42",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_42"
+            },
+            {
+                "isAbout": "items/winograd_q_43",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_43"
+            },
+            {
+                "isAbout": "items/winograd_q_44",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_44"
+            },
+            {
+                "isAbout": "items/winograd_q_45",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_45"
+            },
+            {
+                "isAbout": "items/winograd_q_46",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_46"
+            },
+            {
+                "isAbout": "items/winograd_q_47",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_47"
+            },
+            {
+                "isAbout": "items/winograd_q_48",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_48"
+            },
+            {
+                "isAbout": "items/winograd_q_49",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_49"
+            },
+            {
+                "isAbout": "items/winograd_q_50",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_50"
+            },
+            {
+                "isAbout": "items/winograd_q_51",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_51"
+            },
+            {
+                "isAbout": "items/winograd_q_52",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_52"
+            },
+            {
+                "isAbout": "items/winograd_q_53",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_53"
+            },
+            {
+                "isAbout": "items/winograd_q_54",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_54"
+            },
+            {
+                "isAbout": "items/winograd_q_55",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_55"
+            },
+            {
+                "isAbout": "items/winograd_q_56",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_56"
+            },
+            {
+                "isAbout": "items/winograd_q_57",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_57"
+            },
+            {
+                "isAbout": "items/winograd_q_58",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_58"
+            },
+            {
+                "isAbout": "items/winograd_q_59",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_59"
+            },
+            {
+                "isAbout": "items/winograd_q_60",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_60"
+            },
+            {
+                "isAbout": "items/winograd_q_61",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_61"
+            },
+            {
+                "isAbout": "items/winograd_q_62",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_62"
+            },
+            {
+                "isAbout": "items/winograd_q_63",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_63"
+            },
+            {
+                "isAbout": "items/winograd_q_64",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_64"
+            },
+            {
+                "isAbout": "items/winograd_q_65",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_65"
+            },
+            {
+                "isAbout": "items/winograd_q_66",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_66"
+            },
+            {
+                "isAbout": "items/winograd_q_67",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_67"
+            },
+            {
+                "isAbout": "items/winograd_q_68",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_68"
+            },
+            {
+                "isAbout": "items/winograd_q_69",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_69"
+            },
+            {
+                "isAbout": "items/winograd_q_70",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_70"
+            },
+            {
+                "isAbout": "items/winograd_q_71",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_71"
+            },
+            {
+                "isAbout": "items/winograd_q_72",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_72"
+            },
+            {
+                "isAbout": "items/winograd_q_73",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_73"
+            },
+            {
+                "isAbout": "items/winograd_q_74",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_74"
+            },
+            {
+                "isAbout": "items/winograd_q_75",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_75"
+            },
+            {
+                "isAbout": "items/winograd_q_76",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_76"
+            },
+            {
+                "isAbout": "items/winograd_q_77",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_77"
+            },
+            {
+                "isAbout": "items/winograd_q_78",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_78"
+            },
+            {
+                "isAbout": "items/winograd_q_79",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_79"
+            },
+            {
+                "isAbout": "items/winograd_q_80",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_80"
+            },
+            {
+                "isAbout": "items/winograd_q_81",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_81"
+            },
+            {
+                "isAbout": "items/winograd_q_82",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_82"
+            },
+            {
+                "isAbout": "items/winograd_q_83",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_83"
+            },
+            {
+                "isAbout": "items/winograd_q_84",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_84"
+            },
+            {
+                "isAbout": "items/winograd_q_85",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_85"
+            },
+            {
+                "isAbout": "items/winograd_q_86",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_86"
+            },
+            {
+                "isAbout": "items/winograd_q_87",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_87"
+            },
+            {
+                "isAbout": "items/winograd_q_88",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_88"
+            },
+            {
+                "isAbout": "items/winograd_q_89",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_89"
+            },
+            {
+                "isAbout": "items/winograd_q_90",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_90"
+            },
+            {
+                "isAbout": "items/winograd_q_91",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_91"
+            },
+            {
+                "isAbout": "items/winograd_q_92",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_92"
+            },
+            {
+                "isAbout": "items/winograd_q_93",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_93"
+            },
+            {
+                "isAbout": "items/winograd_q_94",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_94"
+            },
+            {
+                "isAbout": "items/winograd_q_95",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_95"
+            },
+            {
+                "isAbout": "items/winograd_q_96",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_96"
+            },
+            {
+                "isAbout": "items/winograd_q_97",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_97"
+            },
+            {
+                "isAbout": "items/winograd_q_98",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_98"
+            },
+            {
+                "isAbout": "items/winograd_q_99",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_99"
+            },
+            {
+                "isAbout": "items/winograd_q_100",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_100"
+            },
+            {
+                "isAbout": "items/winograd_q_101",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_101"
+            },
+            {
+                "isAbout": "items/winograd_q_102",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_102"
+            },
+            {
+                "isAbout": "items/winograd_q_103",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_103"
+            },
+            {
+                "isAbout": "items/winograd_q_104",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_104"
+            },
+            {
+                "isAbout": "items/winograd_q_105",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_105"
+            },
+            {
+                "isAbout": "items/winograd_q_106",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_106"
+            },
+            {
+                "isAbout": "items/winograd_q_107",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_107"
+            },
+            {
+                "isAbout": "items/winograd_q_108",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_108"
+            },
+            {
+                "isAbout": "items/winograd_q_109",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_109"
+            },
+            {
+                "isAbout": "items/winograd_q_110",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_110"
+            },
+            {
+                "isAbout": "items/winograd_q_111",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_111"
+            },
+            {
+                "isAbout": "items/winograd_q_112",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_112"
+            },
+            {
+                "isAbout": "items/winograd_q_113",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_113"
+            },
+            {
+                "isAbout": "items/winograd_q_114",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_114"
+            },
+            {
+                "isAbout": "items/winograd_q_115",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_115"
+            },
+            {
+                "isAbout": "items/winograd_q_116",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_116"
+            },
+            {
+                "isAbout": "items/winograd_q_117",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_117"
+            },
+            {
+                "isAbout": "items/winograd_q_118",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_118"
+            },
+            {
+                "isAbout": "items/winograd_q_119",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_119"
+            },
+            {
+                "isAbout": "items/winograd_q_120",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_120"
+            },
+            {
+                "isAbout": "items/winograd_q_121",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_121"
+            },
+            {
+                "isAbout": "items/winograd_q_122",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_122"
+            },
+            {
+                "isAbout": "items/winograd_q_123",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_123"
+            },
+            {
+                "isAbout": "items/winograd_q_124",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_124"
+            },
+            {
+                "isAbout": "items/winograd_q_125",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_125"
+            },
+            {
+                "isAbout": "items/winograd_q_126",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_126"
+            },
+            {
+                "isAbout": "items/winograd_q_127",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_127"
+            },
+            {
+                "isAbout": "items/winograd_q_128",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_128"
+            },
+            {
+                "isAbout": "items/winograd_q_129",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_129"
+            },
+            {
+                "isAbout": "items/winograd_q_130",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_130"
+            },
+            {
+                "isAbout": "items/winograd_q_131",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_131"
+            },
+            {
+                "isAbout": "items/winograd_q_132",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_132"
+            },
+            {
+                "isAbout": "items/winograd_q_133",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_133"
+            },
+            {
+                "isAbout": "items/winograd_q_134",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_134"
+            },
+            {
+                "isAbout": "items/winograd_q_135",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_135"
+            },
+            {
+                "isAbout": "items/winograd_q_136",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_136"
+            },
+            {
+                "isAbout": "items/winograd_q_137",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_137"
+            },
+            {
+                "isAbout": "items/winograd_q_138",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_138"
+            },
+            {
+                "isAbout": "items/winograd_q_139",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_139"
+            },
+            {
+                "isAbout": "items/winograd_q_140",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_140"
+            },
+            {
+                "isAbout": "items/winograd_q_141",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_141"
+            },
+            {
+                "isAbout": "items/winograd_q_142",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_142"
+            },
+            {
+                "isAbout": "items/winograd_q_143",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_143"
+            },
+            {
+                "isAbout": "items/winograd_q_144",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_144"
+            },
+            {
+                "isAbout": "items/winograd_q_145",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_145"
+            },
+            {
+                "isAbout": "items/winograd_q_146",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_146"
+            },
+            {
+                "isAbout": "items/winograd_q_147",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_147"
+            },
+            {
+                "isAbout": "items/winograd_q_148",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_148"
+            },
+            {
+                "isAbout": "items/winograd_q_149",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_149"
+            },
+            {
+                "isAbout": "items/winograd_q_150",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_150"
+            },
+            {
+                "isAbout": "items/winograd_q_151",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_151"
+            },
+            {
+                "isAbout": "items/winograd_q_152",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_152"
+            },
+            {
+                "isAbout": "items/winograd_q_153",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_153"
+            },
+            {
+                "isAbout": "items/winograd_q_154",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_154"
+            },
+            {
+                "isAbout": "items/winograd_q_155",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_155"
+            },
+            {
+                "isAbout": "items/winograd_q_156",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_156"
+            },
+            {
+                "isAbout": "items/winograd_q_157",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_157"
+            },
+            {
+                "isAbout": "items/winograd_q_158",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_158"
+            },
+            {
+                "isAbout": "items/winograd_q_159",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_159"
+            },
+            {
+                "isAbout": "items/winograd_q_160",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_160"
+            },
+            {
+                "isAbout": "items/winograd_q_161",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_161"
+            },
+            {
+                "isAbout": "items/winograd_q_162",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_162"
+            },
+            {
+                "isAbout": "items/winograd_q_163",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_163"
+            },
+            {
+                "isAbout": "items/winograd_q_164",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_164"
+            },
+            {
+                "isAbout": "items/winograd_q_165",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_165"
+            },
+            {
+                "isAbout": "items/winograd_q_166",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_166"
+            },
+            {
+                "isAbout": "items/winograd_q_167",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_167"
+            },
+            {
+                "isAbout": "items/winograd_q_168",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_168"
+            },
+            {
+                "isAbout": "items/winograd_q_169",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_169"
+            },
+            {
+                "isAbout": "items/winograd_q_170",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_170"
+            },
+            {
+                "isAbout": "items/winograd_q_171",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_171"
+            },
+            {
+                "isAbout": "items/winograd_q_172",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_172"
+            },
+            {
+                "isAbout": "items/winograd_q_173",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_173"
+            },
+            {
+                "isAbout": "items/winograd_q_174",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_174"
+            },
+            {
+                "isAbout": "items/winograd_q_175",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_175"
+            },
+            {
+                "isAbout": "items/winograd_q_176",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_176"
+            },
+            {
+                "isAbout": "items/winograd_q_177",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_177"
+            },
+            {
+                "isAbout": "items/winograd_q_178",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_178"
+            },
+            {
+                "isAbout": "items/winograd_q_179",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_179"
+            },
+            {
+                "isAbout": "items/winograd_q_180",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_180"
+            },
+            {
+                "isAbout": "items/winograd_q_181",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_181"
+            },
+            {
+                "isAbout": "items/winograd_q_182",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_182"
+            },
+            {
+                "isAbout": "items/winograd_q_183",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_183"
+            },
+            {
+                "isAbout": "items/winograd_q_184",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_184"
+            },
+            {
+                "isAbout": "items/winograd_q_185",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_185"
+            },
+            {
+                "isAbout": "items/winograd_q_186",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_186"
+            },
+            {
+                "isAbout": "items/winograd_q_187",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_187"
+            },
+            {
+                "isAbout": "items/winograd_q_188",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_188"
+            },
+            {
+                "isAbout": "items/winograd_q_189",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_189"
+            },
+            {
+                "isAbout": "items/winograd_q_190",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_190"
+            },
+            {
+                "isAbout": "items/winograd_q_191",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_191"
+            },
+            {
+                "isAbout": "items/winograd_q_192",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_192"
+            },
+            {
+                "isAbout": "items/winograd_q_193",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_193"
+            },
+            {
+                "isAbout": "items/winograd_q_194",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_194"
+            },
+            {
+                "isAbout": "items/winograd_q_195",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_195"
+            },
+            {
+                "isAbout": "items/winograd_q_196",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_196"
+            },
+            {
+                "isAbout": "items/winograd_q_197",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_197"
+            },
+            {
+                "isAbout": "items/winograd_q_198",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_198"
+            },
+            {
+                "isAbout": "items/winograd_q_199",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_199"
+            },
+            {
+                "isAbout": "items/winograd_q_200",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_200"
+            },
+            {
+                "isAbout": "items/winograd_q_201",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_201"
+            },
+            {
+                "isAbout": "items/winograd_q_202",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_202"
+            },
+            {
+                "isAbout": "items/winograd_q_203",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_203"
+            },
+            {
+                "isAbout": "items/winograd_q_204",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_204"
+            },
+            {
+                "isAbout": "items/winograd_q_205",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_205"
+            },
+            {
+                "isAbout": "items/winograd_q_206",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_206"
+            },
+            {
+                "isAbout": "items/winograd_q_207",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_207"
+            },
+            {
+                "isAbout": "items/winograd_q_208",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_208"
+            },
+            {
+                "isAbout": "items/winograd_q_209",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_209"
+            },
+            {
+                "isAbout": "items/winograd_q_210",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_210"
+            },
+            {
+                "isAbout": "items/winograd_q_211",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_211"
+            },
+            {
+                "isAbout": "items/winograd_q_212",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_212"
+            },
+            {
+                "isAbout": "items/winograd_q_213",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_213"
+            },
+            {
+                "isAbout": "items/winograd_q_214",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_214"
+            },
+            {
+                "isAbout": "items/winograd_q_215",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_215"
+            },
+            {
+                "isAbout": "items/winograd_q_216",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_216"
+            },
+            {
+                "isAbout": "items/winograd_q_217",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_217"
+            },
+            {
+                "isAbout": "items/winograd_q_218",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_218"
+            },
+            {
+                "isAbout": "items/winograd_q_219",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_219"
+            },
+            {
+                "isAbout": "items/winograd_q_220",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_220"
+            },
+            {
+                "isAbout": "items/winograd_q_221",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_221"
+            },
+            {
+                "isAbout": "items/winograd_q_222",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_222"
+            },
+            {
+                "isAbout": "items/winograd_q_223",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_223"
+            },
+            {
+                "isAbout": "items/winograd_q_224",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_224"
+            },
+            {
+                "isAbout": "items/winograd_q_225",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_225"
+            },
+            {
+                "isAbout": "items/winograd_q_226",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_226"
+            },
+            {
+                "isAbout": "items/winograd_q_227",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_227"
+            },
+            {
+                "isAbout": "items/winograd_q_228",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_228"
+            },
+            {
+                "isAbout": "items/winograd_q_229",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_229"
+            },
+            {
+                "isAbout": "items/winograd_q_230",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_230"
+            },
+            {
+                "isAbout": "items/winograd_q_231",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_231"
+            },
+            {
+                "isAbout": "items/winograd_q_232",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_232"
+            },
+            {
+                "isAbout": "items/winograd_q_233",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_233"
+            },
+            {
+                "isAbout": "items/winograd_q_234",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_234"
+            },
+            {
+                "isAbout": "items/winograd_q_235",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_235"
+            },
+            {
+                "isAbout": "items/winograd_q_236",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_236"
+            },
+            {
+                "isAbout": "items/winograd_q_237",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_237"
+            },
+            {
+                "isAbout": "items/winograd_q_238",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_238"
+            },
+            {
+                "isAbout": "items/winograd_q_239",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_239"
+            },
+            {
+                "isAbout": "items/winograd_q_240",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_240"
+            },
+            {
+                "isAbout": "items/winograd_q_241",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_241"
+            },
+            {
+                "isAbout": "items/winograd_q_242",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_242"
+            },
+            {
+                "isAbout": "items/winograd_q_243",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_243"
+            },
+            {
+                "isAbout": "items/winograd_q_244",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_244"
+            },
+            {
+                "isAbout": "items/winograd_q_245",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_245"
+            },
+            {
+                "isAbout": "items/winograd_q_246",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_246"
+            },
+            {
+                "isAbout": "items/winograd_q_247",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_247"
+            },
+            {
+                "isAbout": "items/winograd_q_248",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_248"
+            },
+            {
+                "isAbout": "items/winograd_q_249",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_249"
+            },
+            {
+                "isAbout": "items/winograd_q_250",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_250"
+            },
+            {
+                "isAbout": "items/winograd_q_251",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_251"
+            },
+            {
+                "isAbout": "items/winograd_q_252",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_252"
+            },
+            {
+                "isAbout": "items/winograd_q_253",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_253"
+            },
+            {
+                "isAbout": "items/winograd_q_254",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_254"
+            },
+            {
+                "isAbout": "items/winograd_q_255",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_255"
+            },
+            {
+                "isAbout": "items/winograd_q_256",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_256"
+            },
+            {
+                "isAbout": "items/winograd_q_257",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_257"
+            },
+            {
+                "isAbout": "items/winograd_q_258",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_258"
+            },
+            {
+                "isAbout": "items/winograd_q_259",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_259"
+            },
+            {
+                "isAbout": "items/winograd_q_260",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_260"
+            },
+            {
+                "isAbout": "items/winograd_q_261",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_261"
+            },
+            {
+                "isAbout": "items/winograd_q_262",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_262"
+            },
+            {
+                "isAbout": "items/winograd_q_263",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_263"
+            },
+            {
+                "isAbout": "items/winograd_q_264",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_264"
+            },
+            {
+                "isAbout": "items/winograd_q_265",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_265"
+            },
+            {
+                "isAbout": "items/winograd_q_266",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_266"
+            },
+            {
+                "isAbout": "items/winograd_q_267",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_267"
+            },
+            {
+                "isAbout": "items/winograd_q_268",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_268"
+            },
+            {
+                "isAbout": "items/winograd_q_269",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_269"
+            },
+            {
+                "isAbout": "items/winograd_q_270",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_270"
+            },
+            {
+                "isAbout": "items/winograd_q_271",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_271"
+            },
+            {
+                "isAbout": "items/winograd_q_272",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_272"
+            },
+            {
+                "isAbout": "items/winograd_q_273",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_273"
+            },
+            {
+                "isAbout": "items/winograd_q_274",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_274"
+            },
+            {
+                "isAbout": "items/winograd_q_275",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_275"
+            },
+            {
+                "isAbout": "items/winograd_q_276",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "winograd_q_276"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "3.24.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}
