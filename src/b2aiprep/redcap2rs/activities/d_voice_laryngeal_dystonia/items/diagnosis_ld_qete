@@ -1,0 +1,51 @@
+{
+    "id": "diagnosis_ld_qete",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "diagnosis_ld_qete"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nDoes the participant have laryngeal dystonia as determined by qualitative expert team evaluation?\n(Select all that apply)."
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Laryngologist"
+                },
+                "value": "laryngologist"
+            },
+            {
+                "name": {
+                    "en": "Speech-Language Pathology"
+                },
+                "value": "speech_language_pathology"
+            },
+            {
+                "name": {
+                    "en": "Neurologist specializing in movement disorders"
+                },
+                "value": "neurologist_specializing_disorders"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

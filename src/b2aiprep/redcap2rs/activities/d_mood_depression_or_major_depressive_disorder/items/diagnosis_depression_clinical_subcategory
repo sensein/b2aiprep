@@ -1,0 +1,50 @@
+{
+    "id": "diagnosis_depression_clinical_subcategory",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "diagnosis_depression_clinical_subcategory"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nClinical depression (major depressive disorder) Subcategory"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Seasonal affective disorder (seasonal depression)"
+                },
+                "value": "seasonal_depression"
+            },
+            {
+                "name": {
+                    "en": "Prenatal depression and postpartum depression"
+                },
+                "value": "prenatal_postpartum_depression"
+            },
+            {
+                "name": {
+                    "en": "Atypical depression"
+                },
+                "value": "atypical_depression"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

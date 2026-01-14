@@ -1,0 +1,37 @@
+{
+    "id": "diagnosis_as_gsd_yes",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "1. Gold Standard Diagnosis"
+    },
+    "prefLabel": {
+        "en": "diagnosis_as_gsd_yes"
+    },
+    "question": {
+        "en": "Confirmed by"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Confirmed by bronchoscopy or laryngoscopy"
+                },
+                "value": "bronchoscopy"
+            },
+            {
+                "name": {
+                    "en": "Confirmed by CT imaging"
+                },
+                "value": "ct"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

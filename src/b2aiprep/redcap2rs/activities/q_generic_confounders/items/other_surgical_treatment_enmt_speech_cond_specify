@@ -1,0 +1,19 @@
+{
+    "id": "other_surgical_treatment_enmt_speech_cond_specify",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "other_surgical_treatment_enmt_speech_cond_specify"
+    },
+    "question": {
+        "en": "Please specify what other surgical treatment(s) you have received for your ear, nose, mouth, throat, or speech condition(s)."
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

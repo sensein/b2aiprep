@@ -1,0 +1,19 @@
+{
+    "id": "other_cancer_treatment_past_specify",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "other_cancer_treatment_past_specify"
+    },
+    "question": {
+        "en": "Please specify what other cancer treatment(s) you have received in the past."
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

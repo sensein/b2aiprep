@@ -1,0 +1,169 @@
+{
+    "id": "asian_race",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Patient Demographics"
+    },
+    "prefLabel": {
+        "en": "asian_race"
+    },
+    "question": {
+        "en": "Asian"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Asian Indian"
+                },
+                "value": 20297
+            },
+            {
+                "name": {
+                    "en": "Bangladeshi"
+                },
+                "value": 20305
+            },
+            {
+                "name": {
+                    "en": "Bhutanese"
+                },
+                "value": 20313
+            },
+            {
+                "name": {
+                    "en": "Burmese"
+                },
+                "value": 20321
+            },
+            {
+                "name": {
+                    "en": "Cambodian"
+                },
+                "value": 20339
+            },
+            {
+                "name": {
+                    "en": "Chinese"
+                },
+                "value": 20347
+            },
+            {
+                "name": {
+                    "en": "Taiwanese"
+                },
+                "value": 20354
+            },
+            {
+                "name": {
+                    "en": "Filipino"
+                },
+                "value": 20362
+            },
+            {
+                "name": {
+                    "en": "Hmong"
+                },
+                "value": 20370
+            },
+            {
+                "name": {
+                    "en": "Indonesian"
+                },
+                "value": 20388
+            },
+            {
+                "name": {
+                    "en": "Japanese"
+                },
+                "value": 20396
+            },
+            {
+                "name": {
+                    "en": "Korean"
+                },
+                "value": 20404
+            },
+            {
+                "name": {
+                    "en": "Laotian"
+                },
+                "value": 20412
+            },
+            {
+                "name": {
+                    "en": "Malaysian"
+                },
+                "value": 20420
+            },
+            {
+                "name": {
+                    "en": "Okinawan"
+                },
+                "value": 20438
+            },
+            {
+                "name": {
+                    "en": "Pakistani"
+                },
+                "value": 20446
+            },
+            {
+                "name": {
+                    "en": "Sri Lankan"
+                },
+                "value": 20453
+            },
+            {
+                "name": {
+                    "en": "Thai"
+                },
+                "value": 20461
+            },
+            {
+                "name": {
+                    "en": "Vietnamese"
+                },
+                "value": 20479
+            },
+            {
+                "name": {
+                    "en": "Iwo Jiman"
+                },
+                "value": 20487
+            },
+            {
+                "name": {
+                    "en": "Maldivian"
+                },
+                "value": 20495
+            },
+            {
+                "name": {
+                    "en": "Nepalese"
+                },
+                "value": 20503
+            },
+            {
+                "name": {
+                    "en": "Singaporean"
+                },
+                "value": 20511
+            },
+            {
+                "name": {
+                    "en": "Madagascar"
+                },
+                "value": 20529
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

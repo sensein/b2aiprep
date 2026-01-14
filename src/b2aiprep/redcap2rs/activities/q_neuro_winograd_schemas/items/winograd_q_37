@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_37",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_37"
+    },
+    "question": {
+        "en": "37. The sack of potatoes had been placed above the bag of flour, so it had to be moved first. What had to be moved first?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "The sack of potatoes"
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "The bag of flour"
+                },
+                "value": "incorrect"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

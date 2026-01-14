@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_221",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_221"
+    },
+    "question": {
+        "en": "221. Emma's mother had died long ago, and her place had been taken by an excellent woman as governess. Whose place had been taken?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Emma's mother"
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "Emma"
+                },
+                "value": "incorrect"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

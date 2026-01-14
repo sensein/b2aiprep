@@ -1,0 +1,42 @@
+{
+    "id": "tone_deaf",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Employment Status"
+    },
+    "prefLabel": {
+        "en": "tone_deaf"
+    },
+    "question": {
+        "en": "Are you tone deaf?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Not certain"
+                },
+                "value": "notCertain"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

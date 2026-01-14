@@ -1,0 +1,37 @@
+{
+    "id": "diagnosis_alz_dementia_mci_ds",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Disease Severity"
+    },
+    "prefLabel": {
+        "en": "diagnosis_alz_dementia_mci_ds"
+    },
+    "question": {
+        "en": "What is the current stage/severity of cognitive impairment or dementia in the participant?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Mild cognitive impairment (MCI)"
+                },
+                "value": "mci"
+            },
+            {
+                "name": {
+                    "en": "Clinical dementia rating (CDR) staging"
+                },
+                "value": "cdr"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

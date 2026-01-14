@@ -1,0 +1,69 @@
+{
+    "id": "neurological_history",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "neurological_history"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nNeurological Medical History"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Brain tumor"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Dysarthria"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Epilepsy"
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "Multiple sclerosis"
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "Traumatic brain injury"
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": 6
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

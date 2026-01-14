@@ -1,0 +1,42 @@
+{
+    "id": "ethnicity",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Patient Demographics"
+    },
+    "prefLabel": {
+        "en": "ethnicity"
+    },
+    "question": {
+        "en": "What is your ethnic or cultural origin?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Hispanic or Latino"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "Not Hispanic or Latino"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": "noAnswer"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,220 @@
+{
+    "id": "d_voice_muscle_tension_dysphonia_mtd_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "d_voice_muscle_tension_dysphonia_mtd"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/diagnosis_mtd_gsd",
+            "items/diagnosis_mtd_gsd_evaluations_2",
+            "items/diagnosis_mtd_gsd_assessments",
+            "items/diagnosis_mtd_ds",
+            "items/diagnosis_mtd_etiology",
+            "items/diagnosis_mtd_etiology_other",
+            "items/diagnosis_mtd_degree_text",
+            "items/diagnosis_mtd_degree_legend",
+            "items/diagnosis_mtd_degree_os_1",
+            "items/diagnosis_mtd_degree_os_2",
+            "items/diagnosis_mtd_degree_r_1",
+            "items/diagnosis_mtd_degree_r_2",
+            "items/diagnosis_mtd_degree_b_1",
+            "items/diagnosis_mtd_degree_b_2",
+            "items/diagnosis_mtd_degree_s_1",
+            "items/diagnosis_mtd_degree_s_2",
+            "items/diagnosis_mtd_degree_p_1",
+            "items/diagnosis_mtd_degree_p_nature",
+            "items/diagnosis_mtd_degree_p_2",
+            "items/diagnosis_mtd_degree_l_1",
+            "items/diagnosis_mtd_degree_l_nature",
+            "items/diagnosis_mtd_degree_l_2",
+            "items/diagnosis_mtd_degree_comments",
+            "items/diagnosis_mtd_degree_comments_other",
+            "items/diagnosis_mtd_degree_comments_other_2",
+            "items/diagnosis_mtd_treatment",
+            "items/diagnosis_mtd_treatment_select",
+            "items/diagnosis_mtd_treatment_other",
+            "items/diagnosis_mtd_gsd_evaluations"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/diagnosis_mtd_gsd",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_mtd_gsd"
+            },
+            {
+                "isAbout": "items/diagnosis_mtd_gsd_evaluations_2",
+                "isVis": "diagnosis_mtd_gsd=='yes'",
+                "valueRequired": true,
+                "variableName": "diagnosis_mtd_gsd_evaluations_2"
+            },
+            {
+                "isAbout": "items/diagnosis_mtd_gsd_assessments",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_mtd_gsd_assessments"
+            },
+            {
+                "isAbout": "items/diagnosis_mtd_ds",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_mtd_ds"
+            },
+            {
+                "isAbout": "items/diagnosis_mtd_etiology",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_mtd_etiology"
+            },
+            {
+                "isAbout": "items/diagnosis_mtd_etiology_other",
+                "isVis": "diagnosis_mtd_etiology(other)=='1'",
+                "valueRequired": false,
+                "variableName": "diagnosis_mtd_etiology_other"
+            },
+            {
+                "isAbout": "items/diagnosis_mtd_degree_text",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_mtd_degree_text"
+            },
+            {
+                "isAbout": "items/diagnosis_mtd_degree_legend",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_mtd_degree_legend"
+            },
+            {
+                "isAbout": "items/diagnosis_mtd_degree_os_1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_mtd_degree_os_1"
+            },
+            {
+                "isAbout": "items/diagnosis_mtd_degree_os_2",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_mtd_degree_os_2"
+            },
+            {
+                "isAbout": "items/diagnosis_mtd_degree_r_1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_mtd_degree_r_1"
+            },
+            {
+                "isAbout": "items/diagnosis_mtd_degree_r_2",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_mtd_degree_r_2"
+            },
+            {
+                "isAbout": "items/diagnosis_mtd_degree_b_1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_mtd_degree_b_1"
+            },
+            {
+                "isAbout": "items/diagnosis_mtd_degree_b_2",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_mtd_degree_b_2"
+            },
+            {
+                "isAbout": "items/diagnosis_mtd_degree_s_1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_mtd_degree_s_1"
+            },
+            {
+                "isAbout": "items/diagnosis_mtd_degree_s_2",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_mtd_degree_s_2"
+            },
+            {
+                "isAbout": "items/diagnosis_mtd_degree_p_1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_mtd_degree_p_1"
+            },
+            {
+                "isAbout": "items/diagnosis_mtd_degree_p_nature",
+                "isVis": "diagnosis_mtd_degree_p_1 > 0",
+                "valueRequired": false,
+                "variableName": "diagnosis_mtd_degree_p_nature"
+            },
+            {
+                "isAbout": "items/diagnosis_mtd_degree_p_2",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_mtd_degree_p_2"
+            },
+            {
+                "isAbout": "items/diagnosis_mtd_degree_l_1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_mtd_degree_l_1"
+            },
+            {
+                "isAbout": "items/diagnosis_mtd_degree_l_nature",
+                "isVis": "diagnosis_mtd_degree_l_1 > 0",
+                "valueRequired": false,
+                "variableName": "diagnosis_mtd_degree_l_nature"
+            },
+            {
+                "isAbout": "items/diagnosis_mtd_degree_l_2",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_mtd_degree_l_2"
+            },
+            {
+                "isAbout": "items/diagnosis_mtd_degree_comments",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_mtd_degree_comments"
+            },
+            {
+                "isAbout": "items/diagnosis_mtd_degree_comments_other",
+                "isVis": "diagnosis_mtd_degree_comments == 'other'",
+                "valueRequired": false,
+                "variableName": "diagnosis_mtd_degree_comments_other"
+            },
+            {
+                "isAbout": "items/diagnosis_mtd_degree_comments_other_2",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_mtd_degree_comments_other_2"
+            },
+            {
+                "isAbout": "items/diagnosis_mtd_treatment",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_mtd_treatment"
+            },
+            {
+                "isAbout": "items/diagnosis_mtd_treatment_select",
+                "isVis": "diagnosis_mtd_treatment=='yes'",
+                "valueRequired": false,
+                "variableName": "diagnosis_mtd_treatment_select"
+            },
+            {
+                "isAbout": "items/diagnosis_mtd_treatment_other",
+                "isVis": "diagnosis_mtd_treatment_select(other)=='1'",
+                "valueRequired": false,
+                "variableName": "diagnosis_mtd_treatment_other"
+            },
+            {
+                "isAbout": "items/diagnosis_mtd_gsd_evaluations",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "diagnosis_mtd_gsd_evaluations"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "4.2.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

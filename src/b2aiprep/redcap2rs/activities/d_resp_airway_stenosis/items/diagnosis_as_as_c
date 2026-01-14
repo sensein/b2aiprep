@@ -1,0 +1,42 @@
+{
+    "id": "diagnosis_as_as_c",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Disease Severity"
+    },
+    "prefLabel": {
+        "en": "diagnosis_as_as_c"
+    },
+    "question": {
+        "en": "Is the stridor:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Inspiratory"
+                },
+                "value": "inspiratory"
+            },
+            {
+                "name": {
+                    "en": "Expiratory"
+                },
+                "value": "expiratory"
+            },
+            {
+                "name": {
+                    "en": "Biphasic"
+                },
+                "value": "biphasic"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

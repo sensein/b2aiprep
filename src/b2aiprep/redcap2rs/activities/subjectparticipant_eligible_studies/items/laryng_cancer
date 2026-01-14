@@ -1,0 +1,43 @@
+{
+    "id": "laryng_cancer",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Matrix Group Name",
+            "source": "redcap",
+            "value": "voice_disorders"
+        }
+    ],
+    "preamble": {
+        "en": "Voice Disorders"
+    },
+    "prefLabel": {
+        "en": "laryng_cancer"
+    },
+    "question": {
+        "en": "Laryngeal Cancer"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Unchecked"
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "Checked"
+                },
+                "value": 1
+            }
+        ],
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

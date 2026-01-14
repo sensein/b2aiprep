@@ -1,0 +1,51 @@
+{
+    "id": "pain_medication",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "pain_medication"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nChronic Pain medication"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "NSAIDs (ex: Ibuprofen/Advil/Cerebrex)"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Morphine/Oxycodone"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Neuro-modulators (ex: Gabapentin, Lyrica)"
+                },
+                "value": 3
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

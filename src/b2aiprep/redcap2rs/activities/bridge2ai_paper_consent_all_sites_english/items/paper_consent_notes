@@ -1,0 +1,23 @@
+{
+    "id": "paper_consent_notes",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Paper Consent Form for all Sites"
+    },
+    "prefLabel": {
+        "en": "paper_consent_notes"
+    },
+    "question": {
+        "en": "Fill out Instructions\n1. Upload the .pdf of the paper consent.\n2. Select the Enrollment Institution.\n3. Paper Consent Uploaded By is automatically calculated\n4. Once all the fields are entered mark this form as \"Complete\"\n\nIf uploading a paper consent form instead of eConsent, navigate to Form \"Subject/Participant - Basic Information\" and update Consent Status to \"Consented\""
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "static",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

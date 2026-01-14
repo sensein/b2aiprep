@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_119",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_119"
+    },
+    "question": {
+        "en": "119. Mark told Pete many lies about himself, which Pete included in his book. He should have been more truthful. Who should have been more truthful?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Mark"
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "Pete"
+                },
+                "value": "incorrect"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

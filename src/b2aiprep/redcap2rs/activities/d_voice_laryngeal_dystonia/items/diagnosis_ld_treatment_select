@@ -1,0 +1,61 @@
+{
+    "id": "diagnosis_ld_treatment_select",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "5. Treatment obtained"
+    },
+    "prefLabel": {
+        "en": "diagnosis_ld_treatment_select"
+    },
+    "question": {
+        "en": "What treatments did the participant undergo? (Select all that apply):"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Botox injections"
+                },
+                "value": "botox_injections"
+            },
+            {
+                "name": {
+                    "en": "Voice/speech therapy"
+                },
+                "value": "voice_or_speech_therapy"
+            },
+            {
+                "name": {
+                    "en": "Vibrotactile stimulation"
+                },
+                "value": "vibrotactile_stimulation"
+            },
+            {
+                "name": {
+                    "en": "Deep brain stimulation"
+                },
+                "value": "deep_brain_stimulation"
+            },
+            {
+                "name": {
+                    "en": "Magnetic resonance imaging-guided focused ultrasound (MRgFUS)"
+                },
+                "value": "mrgfus"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

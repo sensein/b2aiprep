@@ -1,0 +1,54 @@
+{
+    "id": "stroop_item_color_15",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Item 5"
+    },
+    "prefLabel": {
+        "en": "stroop_item_color_15"
+    },
+    "question": {
+        "en": "Item 15\nColor"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "red"
+                },
+                "value": "red"
+            },
+            {
+                "name": {
+                    "en": "green"
+                },
+                "value": "green"
+            },
+            {
+                "name": {
+                    "en": "blue"
+                },
+                "value": "blue"
+            },
+            {
+                "name": {
+                    "en": "purple"
+                },
+                "value": "purple"
+            },
+            {
+                "name": {
+                    "en": "brown"
+                },
+                "value": "brown"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

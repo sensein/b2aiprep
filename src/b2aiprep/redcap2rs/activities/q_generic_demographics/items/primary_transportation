@@ -1,0 +1,69 @@
+{
+    "id": "primary_transportation",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "primary_transportation"
+    },
+    "question": {
+        "en": "What is your primary mode of transportation?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Personal vehicle"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Shared vehicle"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Public transportation"
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "Ride with someone else"
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "Ride service"
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "Bicycle/Motorbike"
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "Walking"
+                },
+                "value": 7
+            },
+            {
+                "name": {
+                    "en": "Other (Please specify)"
+                },
+                "value": 8
+            }
+        ],
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

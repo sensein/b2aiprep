@@ -1,0 +1,42 @@
+{
+    "id": "diagnosis_vfp_tumor",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "3. Etiology"
+    },
+    "prefLabel": {
+        "en": "diagnosis_vfp_tumor"
+    },
+    "question": {
+        "en": "Tumor invading RLN - Subcategory"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Brain"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Chest"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Neck"
+                },
+                "value": 3
+            }
+        ],
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

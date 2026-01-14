@@ -1,0 +1,22 @@
+{
+    "id": "diagnosis_als_na_alsfrs_r_score",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "6. Neurological Assessment\nPlease provide results from relevant neurological assessments:"
+    },
+    "prefLabel": {
+        "en": "diagnosis_als_na_alsfrs_r_score"
+    },
+    "question": {
+        "en": "Revised ALS Functional Rating Scale (ALSFRS-R) score:"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,34 @@
+{
+    "id": "peds_zipcode",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Note",
+            "source": "redcap",
+            "value": "5 Digit for USA and 3 Digit for Canada"
+        },
+        {
+            "column": "Identifier?",
+            "source": "redcap",
+            "value": "y"
+        }
+    ],
+    "preamble": {
+        "en": "Address Information"
+    },
+    "prefLabel": {
+        "en": "peds_zipcode"
+    },
+    "question": {
+        "en": "Zipcode"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

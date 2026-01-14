@@ -1,0 +1,43 @@
+{
+    "id": "ef_cognitive_a11y_options",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Let's customize your experience"
+    },
+    "prefLabel": {
+        "en": "ef_cognitive_a11y_options"
+    },
+    "question": {
+        "en": "Yes, I would like to use some of the accessibility features of the app"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "I would like the questions to be read to me using text-to-speech"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "I would like a person to read the text to me"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "I would like to speak my answers instead of typing them"
+                },
+                "value": 3
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

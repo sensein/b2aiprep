@@ -1,0 +1,29 @@
+{
+    "id": "hd_cag_repeat_length",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Text Validation Type OR Show Slider Number",
+            "source": "redcap",
+            "value": "number"
+        }
+    ],
+    "preamble": {
+        "en": "1. Gold Standard Diagnosis:"
+    },
+    "prefLabel": {
+        "en": "hd_cag_repeat_length"
+    },
+    "question": {
+        "en": "What is the CAG repeat length?"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:decimal"
+        ]
+    },
+    "ui": {
+        "inputType": "float"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

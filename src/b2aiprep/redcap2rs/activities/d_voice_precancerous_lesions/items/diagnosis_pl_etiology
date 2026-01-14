@@ -1,0 +1,43 @@
+{
+    "id": "diagnosis_pl_etiology",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "3. Etiology"
+    },
+    "prefLabel": {
+        "en": "diagnosis_pl_etiology"
+    },
+    "question": {
+        "en": "Does the participant have the following risk factors?\n(Select all that apply)."
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Past or present smoking"
+                },
+                "value": "past_or_present_smoking"
+            },
+            {
+                "name": {
+                    "en": "Laryngopharyngeal reflux"
+                },
+                "value": "laryngopharyngeal_reflux"
+            },
+            {
+                "name": {
+                    "en": "Other irritants"
+                },
+                "value": "other_irritants"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,52 @@
+{
+    "id": "q_generic_voice_perception_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "q_generic_voice_perception"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/voice_perception_session_id",
+            "items/voice_perception_started_at",
+            "items/voice_perception_completed_at",
+            "items/voice_perception_duration",
+            "items/voice_quality_perception"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/voice_perception_session_id",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "voice_perception_session_id"
+            },
+            {
+                "isAbout": "items/voice_perception_started_at",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "voice_perception_started_at"
+            },
+            {
+                "isAbout": "items/voice_perception_completed_at",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "voice_perception_completed_at"
+            },
+            {
+                "isAbout": "items/voice_perception_duration",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "voice_perception_duration"
+            },
+            {
+                "isAbout": "items/voice_quality_perception",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "voice_quality_perception"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "3.24.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

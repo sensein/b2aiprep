@@ -1,0 +1,55 @@
+{
+    "id": "peds_phqa_trouble_sleeping",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Matrix Group Name",
+            "source": "redcap",
+            "value": "phqa"
+        }
+    ],
+    "preamble": {
+        "en": "How often have you been bothered by each of the following symptoms during the past two weeks? For each symptom select the answer that best describes how you have been feeling."
+    },
+    "prefLabel": {
+        "en": "peds_phqa_trouble_sleeping"
+    },
+    "question": {
+        "en": "Trouble falling asleep, staying asleep, or sleeping too much?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Not at all"
+                },
+                "value": "notAtAll"
+            },
+            {
+                "name": {
+                    "en": "Several days"
+                },
+                "value": "severalDays"
+            },
+            {
+                "name": {
+                    "en": "More than half the days"
+                },
+                "value": "moreThanHalfTheDays"
+            },
+            {
+                "name": {
+                    "en": "Nearly every day"
+                },
+                "value": "nearlyEveryDay"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

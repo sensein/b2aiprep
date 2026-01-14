@@ -1,0 +1,220 @@
+{
+    "id": "d_resp_airway_stenosis_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "d_resp_airway_stenosis"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/diagnosis_as_gsd",
+            "items/diagnosis_as_gsd_yes",
+            "items/diagnosis_as_pft",
+            "items/diagnosis_as_pft_document",
+            "items/diagnosis_as_ds",
+            "items/diagnosis_as_ds_bvfi_gs",
+            "items/diagnosis_as_ds_bvfi_gs_other",
+            "items/diagnosis_as_etiology",
+            "items/diagnosis_as_etiology_other",
+            "items/diagnosis_as_etiology_auto_immune",
+            "items/diagnosis_as_ds_mcg",
+            "items/diagnosis_as_ds_mcg_ref",
+            "items/diagnosis_as_ds_bc",
+            "items/diagnosis_as_ds_bc_ref",
+            "items/diagnosis_as_ds_agw",
+            "items/diagnosis_as_ds_cc_ref",
+            "items/diagnosis_as_ds_ac",
+            "items/diagnosis_as_ds_ac_grade_4",
+            "items/diagnosis_as_ds_ac_ref",
+            "items/diagnosis_as_ds_eps",
+            "items/diagnosis_as_ds_ods",
+            "items/diagnosis_as_as",
+            "items/diagnosis_as_as_s",
+            "items/diagnosis_as_as_c",
+            "items/diagnosis_as_ds_mluas",
+            "items/diagnosis_as_treatment",
+            "items/diagnosis_as_treatment_surgery",
+            "items/diagnosis_as_treatment_surgery_other",
+            "items/diagnosis_as_treatment_in_office"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/diagnosis_as_gsd",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_as_gsd"
+            },
+            {
+                "isAbout": "items/diagnosis_as_gsd_yes",
+                "isVis": "diagnosis_as_gsd == 'yes'",
+                "valueRequired": true,
+                "variableName": "diagnosis_as_gsd_yes"
+            },
+            {
+                "isAbout": "items/diagnosis_as_pft",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_as_pft"
+            },
+            {
+                "isAbout": "items/diagnosis_as_pft_document",
+                "isVis": "diagnosis_as_pft == 'yes'",
+                "valueRequired": false,
+                "variableName": "diagnosis_as_pft_document"
+            },
+            {
+                "isAbout": "items/diagnosis_as_ds",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_as_ds"
+            },
+            {
+                "isAbout": "items/diagnosis_as_ds_bvfi_gs",
+                "isVis": "diagnosis_as_ds == 'bilateralVocalFoldImmobilityGlotticStenosis'",
+                "valueRequired": true,
+                "variableName": "diagnosis_as_ds_bvfi_gs"
+            },
+            {
+                "isAbout": "items/diagnosis_as_ds_bvfi_gs_other",
+                "isVis": "diagnosis_as_ds_bvfi_gs == 'other'",
+                "valueRequired": false,
+                "variableName": "diagnosis_as_ds_bvfi_gs_other"
+            },
+            {
+                "isAbout": "items/diagnosis_as_etiology",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_as_etiology"
+            },
+            {
+                "isAbout": "items/diagnosis_as_etiology_other",
+                "isVis": "diagnosis_as_etiology == 'other'",
+                "valueRequired": true,
+                "variableName": "diagnosis_as_etiology_other"
+            },
+            {
+                "isAbout": "items/diagnosis_as_etiology_auto_immune",
+                "isVis": "diagnosis_as_etiology == 'autoImmune'",
+                "valueRequired": true,
+                "variableName": "diagnosis_as_etiology_auto_immune"
+            },
+            {
+                "isAbout": "items/diagnosis_as_ds_mcg",
+                "isVis": "diagnosis_as_ds == 'subglotticStenosis' || diagnosis_as_ds == 'trachealStenosis'",
+                "valueRequired": true,
+                "variableName": "diagnosis_as_ds_mcg"
+            },
+            {
+                "isAbout": "items/diagnosis_as_ds_mcg_ref",
+                "isVis": "diagnosis_as_ds == 'subglotticStenosis' || diagnosis_as_ds == 'trachealStenosis'",
+                "valueRequired": false,
+                "variableName": "diagnosis_as_ds_mcg_ref"
+            },
+            {
+                "isAbout": "items/diagnosis_as_ds_bc",
+                "isVis": "diagnosis_as_ds_bvfi_gs == 'posteriorGlotticStenosis'",
+                "valueRequired": true,
+                "variableName": "diagnosis_as_ds_bc"
+            },
+            {
+                "isAbout": "items/diagnosis_as_ds_bc_ref",
+                "isVis": "diagnosis_as_ds_bvfi_gs == 'posteriorGlotticStenosis'",
+                "valueRequired": false,
+                "variableName": "diagnosis_as_ds_bc_ref"
+            },
+            {
+                "isAbout": "items/diagnosis_as_ds_agw",
+                "isVis": "diagnosis_as_ds_bvfi_gs=='anteriorGlotticWeb'",
+                "valueRequired": false,
+                "variableName": "diagnosis_as_ds_agw"
+            },
+            {
+                "isAbout": "items/diagnosis_as_ds_cc_ref",
+                "isVis": "diagnosis_as_ds_bvfi_gs=='anteriorGlotticWeb'",
+                "valueRequired": false,
+                "variableName": "diagnosis_as_ds_cc_ref"
+            },
+            {
+                "isAbout": "items/diagnosis_as_ds_ac",
+                "isVis": "diagnosis_as_ds == 'supraglotticStenosis'",
+                "valueRequired": true,
+                "variableName": "diagnosis_as_ds_ac"
+            },
+            {
+                "isAbout": "items/diagnosis_as_ds_ac_grade_4",
+                "isVis": "diagnosis_as_ds_ac == 'grade4'",
+                "valueRequired": true,
+                "variableName": "diagnosis_as_ds_ac_grade_4"
+            },
+            {
+                "isAbout": "items/diagnosis_as_ds_ac_ref",
+                "isVis": "diagnosis_as_ds == 'supraglotticStenosis'",
+                "valueRequired": false,
+                "variableName": "diagnosis_as_ds_ac_ref"
+            },
+            {
+                "isAbout": "items/diagnosis_as_ds_eps",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_as_ds_eps"
+            },
+            {
+                "isAbout": "items/diagnosis_as_ds_ods",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_as_ds_ods"
+            },
+            {
+                "isAbout": "items/diagnosis_as_as",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_as_as"
+            },
+            {
+                "isAbout": "items/diagnosis_as_as_s",
+                "isVis": "diagnosis_as_as == 'yes'",
+                "valueRequired": true,
+                "variableName": "diagnosis_as_as_s"
+            },
+            {
+                "isAbout": "items/diagnosis_as_as_c",
+                "isVis": "diagnosis_as_as == 'yes'",
+                "valueRequired": true,
+                "variableName": "diagnosis_as_as_c"
+            },
+            {
+                "isAbout": "items/diagnosis_as_ds_mluas",
+                "isVis": "diagnosis_as_ds=='multilevelUpperAirwayStenosis'",
+                "valueRequired": false,
+                "variableName": "diagnosis_as_ds_mluas"
+            },
+            {
+                "isAbout": "items/diagnosis_as_treatment",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_as_treatment"
+            },
+            {
+                "isAbout": "items/diagnosis_as_treatment_surgery",
+                "isVis": "diagnosis_as_treatment(surgery) == '1'",
+                "valueRequired": true,
+                "variableName": "diagnosis_as_treatment_surgery"
+            },
+            {
+                "isAbout": "items/diagnosis_as_treatment_surgery_other",
+                "isVis": "diagnosis_as_treatment_surgery(other)=='1'",
+                "valueRequired": false,
+                "variableName": "diagnosis_as_treatment_surgery_other"
+            },
+            {
+                "isAbout": "items/diagnosis_as_treatment_in_office",
+                "isVis": "diagnosis_as_treatment(in_office_treatment) == '1'",
+                "valueRequired": true,
+                "variableName": "diagnosis_as_treatment_in_office"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "4.1.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

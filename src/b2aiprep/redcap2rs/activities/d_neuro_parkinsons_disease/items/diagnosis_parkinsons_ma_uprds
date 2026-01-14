@@ -1,0 +1,48 @@
+{
+    "id": "diagnosis_parkinsons_ma_uprds",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "5. Motor Assessment"
+    },
+    "prefLabel": {
+        "en": "diagnosis_parkinsons_ma_uprds"
+    },
+    "question": {
+        "en": "Unified Parkinson's Disease Rating Scale (UPDRS)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Part I (Intellectual function, mood, behavior) score"
+                },
+                "value": "partI"
+            },
+            {
+                "name": {
+                    "en": "Part II (Activities of daily living) score"
+                },
+                "value": "partII"
+            },
+            {
+                "name": {
+                    "en": "Part III (Motor Examination) score"
+                },
+                "value": "partIII"
+            },
+            {
+                "name": {
+                    "en": "Part IV (Motor complications) score"
+                },
+                "value": "partIV"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

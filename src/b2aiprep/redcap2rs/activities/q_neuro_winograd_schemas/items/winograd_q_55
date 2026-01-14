@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_55",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_55"
+    },
+    "question": {
+        "en": "55. The police left the house and went into the garage, where they found the murder weapon. Where did they find the murder weapon?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "In the garage"
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "In the house"
+                },
+                "value": "incorrect"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

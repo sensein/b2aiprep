@@ -1,0 +1,48 @@
+{
+    "id": "average_used_nicotine_over_entire_time",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Nicotine use"
+    },
+    "prefLabel": {
+        "en": "average_used_nicotine_over_entire_time"
+    },
+    "question": {
+        "en": "On average, over the entire time that you used nicotine, how many times each day did you use nicotine?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Less than once per day"
+                },
+                "value": "lessThanOncePerDay"
+            },
+            {
+                "name": {
+                    "en": "Number of uses per day: Enter number"
+                },
+                "value": "numberUses"
+            },
+            {
+                "name": {
+                    "en": "Not certain"
+                },
+                "value": "notCertain"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": "noAnswer"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

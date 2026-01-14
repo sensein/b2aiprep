@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_153",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_153"
+    },
+    "question": {
+        "en": "153. Thomson visited Cooper's grave in 17 At that date he had been dead for five years. Who had been dead for five years?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Cooper"
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "Thomson"
+                },
+                "value": "incorrect"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

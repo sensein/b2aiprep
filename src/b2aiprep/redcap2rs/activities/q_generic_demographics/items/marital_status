@@ -1,0 +1,67 @@
+{
+    "id": "marital_status",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Demographics - Optional"
+    },
+    "prefLabel": {
+        "en": "marital_status"
+    },
+    "question": {
+        "en": "What is your marital status? Choose all that apply"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Single"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Married"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "In a relationship"
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "Not married"
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "Separated"
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "Divorced"
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "Widowed"
+                },
+                "value": 7
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

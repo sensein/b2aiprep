@@ -1,0 +1,79 @@
+{
+    "id": "hispanic_latino_selection",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Patient Demographics"
+    },
+    "prefLabel": {
+        "en": "hispanic_latino_selection"
+    },
+    "question": {
+        "en": "Check all that apply\n\nNOTE: Once the options completed map to new options, the following options [Deprecated in Protocol v4]\n2, Mexican\n5, Latin American\n6, Puerto Rican\n7, Cuban\n8, Dominican"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Spaniard"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Mexican"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Central American"
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "South American"
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "Latin American"
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "Puerto Rican"
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "Cuban"
+                },
+                "value": 7
+            },
+            {
+                "name": {
+                    "en": "Dominican"
+                },
+                "value": 8
+            },
+            {
+                "name": {
+                    "en": "Caribbean"
+                },
+                "value": 9
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

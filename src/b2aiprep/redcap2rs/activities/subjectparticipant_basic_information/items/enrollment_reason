@@ -1,0 +1,29 @@
+{
+    "id": "enrollment_reason",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Identifier?",
+            "source": "redcap",
+            "value": "y"
+        }
+    ],
+    "preamble": {
+        "en": "Enrollment Details"
+    },
+    "prefLabel": {
+        "en": "enrollment_reason"
+    },
+    "question": {
+        "en": "Enrollment Reason\n\nTo be completed when enrolling a person that declined initially."
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

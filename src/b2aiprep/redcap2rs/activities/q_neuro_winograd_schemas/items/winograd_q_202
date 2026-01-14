@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_202",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_202"
+    },
+    "question": {
+        "en": "202. We had hoped to place copies of our newsletter on all the chairs in the auditorium, but there were simply too many of them. There are too many of what?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Chairs"
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "Copies of the newsletter"
+                },
+                "value": "incorrect"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

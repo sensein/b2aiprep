@@ -1,0 +1,36 @@
+{
+    "id": "winograd_q_180",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_180"
+    },
+    "question": {
+        "en": "180. Elizabeth moved her company from Sparta to Troy to save money on taxes; the taxes are much lower there. Where are the taxes lower?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "In Sparta"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "In Troy"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

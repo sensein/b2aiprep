@@ -1,0 +1,19 @@
+{
+    "id": "diagnosis_c_ac_specified",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "diagnosis_c_ac_specified"
+    },
+    "question": {
+        "en": "Please specify:"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

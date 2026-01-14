@@ -1,0 +1,39 @@
+{
+    "id": "hd_domestic_chores",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "hd_domestic_chores"
+    },
+    "question": {
+        "en": "Domestic chores:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "0 = unable"
+                },
+                "value": "unable"
+            },
+            {
+                "name": {
+                    "en": "1 = impaired"
+                },
+                "value": "impaired"
+            },
+            {
+                "name": {
+                    "en": "2 = normal"
+                },
+                "value": "normal"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

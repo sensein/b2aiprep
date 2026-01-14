@@ -1,0 +1,577 @@
+{
+    "id": "pediatric_q_generic_medical_conditions_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "pediatric_q_generic_medical_conditions"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/peds_mc_session_id",
+            "items/peds_mc_started_at",
+            "items/peds_mc_completed_at",
+            "items/peds_mc_duration",
+            "items/peds_mc_voice_disorders",
+            "items/peds_mc_psych_disorders",
+            "items/peds_mc_psych_disorders_other",
+            "items/peds_mc_breathing_conditions",
+            "items/peds_mc_snoring_apnea",
+            "items/peds_mc_snoring_apnea_had_sleep_study_oahi",
+            "items/peds_mc_tonsillectomy",
+            "items/peds_mc_tonsillectomy_date",
+            "items/peds_mc_adenoidectomy",
+            "items/peds_mc_adenoidectomy_date",
+            "items/peds_mc_lingual_tonsillectomy",
+            "items/peds_mc_lingual_tonsillectomy_date",
+            "items/peds_mc_hearing_loss",
+            "items/peds_mc_neck_mass",
+            "items/peds_mc_neck_mass_thyroglossal_duct_cyst_surgery",
+            "items/peds_mc_neck_mass_thyroglossal_duct_cyst_surgery_date",
+            "items/peds_mc_neck_mass_branchial_cleft_cyst_surgery",
+            "items/peds_mc_neck_mass_branchial_cleft_cyst_surgery_date",
+            "items/peds_mc_neck_mass_dermoid_cyst_surgery",
+            "items/peds_mc_neck_mass_dermoid_cyst_surgery_date",
+            "items/peds_mc_neck_mass_hyroid_nodule_or_cancer_surgery",
+            "items/peds_mc_neck_mass_hyroid_nodule_or_cancer_surgery_date",
+            "items/peds_mc_neck_mass_enlarged_lymph_node_surgery",
+            "items/peds_mc_neck_mass_enlarged_lymph_node_surgery_date",
+            "items/peds_mc_neck_mass_other",
+            "items/peds_mc_epistaxis",
+            "items/peds_mc_nasal_fractures",
+            "items/peds_mc_chronic_medical_condition",
+            "items/peds_mc_chronic_medical_condition_specified",
+            "items/peds_mc_genetic_syndromes",
+            "items/peds_mc_genetic_syndromes_specified",
+            "items/peds_mc_hospitalized",
+            "items/peds_mc_hospitalized_specified",
+            "items/peds_mc_neurological_disorders",
+            "items/peds_mc_neurological_disorders_specified",
+            "items/peds_mc_allergies",
+            "items/peds_mc_allergies_specified",
+            "items/peds_mc_dif_swallowing",
+            "items/peds_mc_dif_swallowing_specified",
+            "items/peds_mc_ear_inf_ant_py",
+            "items/peds_mc_ear_inf_ant_py_specified",
+            "items/peds_mc_etp",
+            "items/peds_mc_etp_procedure",
+            "items/peds_mc_etp_procedure_date",
+            "items/peds_mc_eval_voice_swal_c",
+            "items/peds_mc_eval_voice_swal_c_specified",
+            "items/peds_mc_ft",
+            "items/peds_mc_ft_specified",
+            "items/peds_mc_reflux",
+            "items/peds_mc_reflux_specified",
+            "items/peds_mc_hl",
+            "items/peds_mc_hl_specified",
+            "items/peds_mc_hw_voice_2_w",
+            "items/peds_mc_hw_voice_2_w_specified",
+            "items/peds_mc_no_surgeries",
+            "items/peds_mc_no_surgeries_procedure",
+            "items/peds_mc_no_surgeries_procedure_date",
+            "items/peds_mc_stridor",
+            "items/peds_mc_stridor_specified",
+            "items/peds_mc_ox_sup",
+            "items/peds_mc_ox_sup_specified",
+            "items/peds_mc_meds",
+            "items/peds_mc_meds_specified",
+            "items/peds_mc_v_dis",
+            "items/peds_mc_v_dis_specified",
+            "items/peds_mc_a_therapy",
+            "items/peds_mc_a_therapy_specified",
+            "items/peds_mc_surgery_t_vc_a",
+            "items/peds_mc_surgery_t_vc_a_specified",
+            "items/peds_mc_fr_inf_tons",
+            "items/peds_mc_fr_inf_tons_specified",
+            "items/peds_mc_fr_v_f",
+            "items/peds_mc_fr_v_f_specified",
+            "items/peds_mc_conditions",
+            "items/peds_mc_conditions_other_specified",
+            "items/peds_mc_l2w"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/peds_mc_session_id",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "peds_mc_session_id"
+            },
+            {
+                "isAbout": "items/peds_mc_started_at",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "peds_mc_started_at"
+            },
+            {
+                "isAbout": "items/peds_mc_completed_at",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "peds_mc_completed_at"
+            },
+            {
+                "isAbout": "items/peds_mc_duration",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "peds_mc_duration"
+            },
+            {
+                "isAbout": "items/peds_mc_voice_disorders",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_mc_voice_disorders"
+            },
+            {
+                "isAbout": "items/peds_mc_psych_disorders",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_mc_psych_disorders"
+            },
+            {
+                "isAbout": "items/peds_mc_psych_disorders_other",
+                "isVis": "peds_mc_psych_disorders(other) == '1'",
+                "valueRequired": true,
+                "variableName": "peds_mc_psych_disorders_other"
+            },
+            {
+                "isAbout": "items/peds_mc_breathing_conditions",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_mc_breathing_conditions"
+            },
+            {
+                "isAbout": "items/peds_mc_snoring_apnea",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_mc_snoring_apnea"
+            },
+            {
+                "isAbout": "items/peds_mc_snoring_apnea_had_sleep_study_oahi",
+                "isVis": "peds_mc_snoring_apnea(had_sleep_study) == '1'",
+                "valueRequired": false,
+                "variableName": "peds_mc_snoring_apnea_had_sleep_study_oahi"
+            },
+            {
+                "isAbout": "items/peds_mc_tonsillectomy",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_mc_tonsillectomy"
+            },
+            {
+                "isAbout": "items/peds_mc_tonsillectomy_date",
+                "isVis": "peds_mc_tonsillectomy == 'yes'",
+                "valueRequired": true,
+                "variableName": "peds_mc_tonsillectomy_date"
+            },
+            {
+                "isAbout": "items/peds_mc_adenoidectomy",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_mc_adenoidectomy"
+            },
+            {
+                "isAbout": "items/peds_mc_adenoidectomy_date",
+                "isVis": "peds_mc_adenoidectomy == 'yes'",
+                "valueRequired": true,
+                "variableName": "peds_mc_adenoidectomy_date"
+            },
+            {
+                "isAbout": "items/peds_mc_lingual_tonsillectomy",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_mc_lingual_tonsillectomy"
+            },
+            {
+                "isAbout": "items/peds_mc_lingual_tonsillectomy_date",
+                "isVis": "peds_mc_lingual_tonsillectomy == 'yes'",
+                "valueRequired": true,
+                "variableName": "peds_mc_lingual_tonsillectomy_date"
+            },
+            {
+                "isAbout": "items/peds_mc_hearing_loss",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_mc_hearing_loss"
+            },
+            {
+                "isAbout": "items/peds_mc_neck_mass",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_mc_neck_mass"
+            },
+            {
+                "isAbout": "items/peds_mc_neck_mass_thyroglossal_duct_cyst_surgery",
+                "isVis": "peds_mc_neck_mass(thyroglossal_duct_cyst) == '1'",
+                "valueRequired": true,
+                "variableName": "peds_mc_neck_mass_thyroglossal_duct_cyst_surgery"
+            },
+            {
+                "isAbout": "items/peds_mc_neck_mass_thyroglossal_duct_cyst_surgery_date",
+                "isVis": "peds_mc_neck_mass_thyroglossal_duct_cyst_surgery == 'yes'",
+                "valueRequired": true,
+                "variableName": "peds_mc_neck_mass_thyroglossal_duct_cyst_surgery_date"
+            },
+            {
+                "isAbout": "items/peds_mc_neck_mass_branchial_cleft_cyst_surgery",
+                "isVis": "peds_mc_neck_mass(branchial_cleft_cyst) == '1'",
+                "valueRequired": true,
+                "variableName": "peds_mc_neck_mass_branchial_cleft_cyst_surgery"
+            },
+            {
+                "isAbout": "items/peds_mc_neck_mass_branchial_cleft_cyst_surgery_date",
+                "isVis": "peds_mc_neck_mass_branchial_cleft_cyst_surgery == 'yes'",
+                "valueRequired": true,
+                "variableName": "peds_mc_neck_mass_branchial_cleft_cyst_surgery_date"
+            },
+            {
+                "isAbout": "items/peds_mc_neck_mass_dermoid_cyst_surgery",
+                "isVis": "peds_mc_neck_mass(dermoid_cyst) == '1'",
+                "valueRequired": true,
+                "variableName": "peds_mc_neck_mass_dermoid_cyst_surgery"
+            },
+            {
+                "isAbout": "items/peds_mc_neck_mass_dermoid_cyst_surgery_date",
+                "isVis": "peds_mc_neck_mass_dermoid_cyst_surgery == 'yes'",
+                "valueRequired": true,
+                "variableName": "peds_mc_neck_mass_dermoid_cyst_surgery_date"
+            },
+            {
+                "isAbout": "items/peds_mc_neck_mass_hyroid_nodule_or_cancer_surgery",
+                "isVis": "peds_mc_neck_mass(thyroid_nodule_or_cancer) == '1'",
+                "valueRequired": true,
+                "variableName": "peds_mc_neck_mass_hyroid_nodule_or_cancer_surgery"
+            },
+            {
+                "isAbout": "items/peds_mc_neck_mass_hyroid_nodule_or_cancer_surgery_date",
+                "isVis": "peds_mc_neck_mass_hyroid_nodule_or_cancer_surgery == 'yes'",
+                "valueRequired": true,
+                "variableName": "peds_mc_neck_mass_hyroid_nodule_or_cancer_surgery_date"
+            },
+            {
+                "isAbout": "items/peds_mc_neck_mass_enlarged_lymph_node_surgery",
+                "isVis": "peds_mc_neck_mass(enlarged_lymph_node) == '1'",
+                "valueRequired": true,
+                "variableName": "peds_mc_neck_mass_enlarged_lymph_node_surgery"
+            },
+            {
+                "isAbout": "items/peds_mc_neck_mass_enlarged_lymph_node_surgery_date",
+                "isVis": "peds_mc_neck_mass_enlarged_lymph_node_surgery == 'yes'",
+                "valueRequired": true,
+                "variableName": "peds_mc_neck_mass_enlarged_lymph_node_surgery_date"
+            },
+            {
+                "isAbout": "items/peds_mc_neck_mass_other",
+                "isVis": "peds_mc_neck_mass(other) == '1'",
+                "valueRequired": false,
+                "variableName": "peds_mc_neck_mass_other"
+            },
+            {
+                "isAbout": "items/peds_mc_epistaxis",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_mc_epistaxis"
+            },
+            {
+                "isAbout": "items/peds_mc_nasal_fractures",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_mc_nasal_fractures"
+            },
+            {
+                "isAbout": "items/peds_mc_chronic_medical_condition",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_mc_chronic_medical_condition"
+            },
+            {
+                "isAbout": "items/peds_mc_chronic_medical_condition_specified",
+                "isVis": "peds_mc_chronic_medical_condition == 'yes'",
+                "valueRequired": true,
+                "variableName": "peds_mc_chronic_medical_condition_specified"
+            },
+            {
+                "isAbout": "items/peds_mc_genetic_syndromes",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_mc_genetic_syndromes"
+            },
+            {
+                "isAbout": "items/peds_mc_genetic_syndromes_specified",
+                "isVis": "peds_mc_genetic_syndromes == 'yes'",
+                "valueRequired": true,
+                "variableName": "peds_mc_genetic_syndromes_specified"
+            },
+            {
+                "isAbout": "items/peds_mc_hospitalized",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_mc_hospitalized"
+            },
+            {
+                "isAbout": "items/peds_mc_hospitalized_specified",
+                "isVis": "peds_mc_hospitalized == 'yes'",
+                "valueRequired": true,
+                "variableName": "peds_mc_hospitalized_specified"
+            },
+            {
+                "isAbout": "items/peds_mc_neurological_disorders",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_mc_neurological_disorders"
+            },
+            {
+                "isAbout": "items/peds_mc_neurological_disorders_specified",
+                "isVis": "peds_mc_neurological_disorders == 'yes'",
+                "valueRequired": true,
+                "variableName": "peds_mc_neurological_disorders_specified"
+            },
+            {
+                "isAbout": "items/peds_mc_allergies",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_mc_allergies"
+            },
+            {
+                "isAbout": "items/peds_mc_allergies_specified",
+                "isVis": "peds_mc_allergies == 'yes'",
+                "valueRequired": true,
+                "variableName": "peds_mc_allergies_specified"
+            },
+            {
+                "isAbout": "items/peds_mc_dif_swallowing",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_mc_dif_swallowing"
+            },
+            {
+                "isAbout": "items/peds_mc_dif_swallowing_specified",
+                "isVis": "peds_mc_dif_swallowing == 'yes'",
+                "valueRequired": true,
+                "variableName": "peds_mc_dif_swallowing_specified"
+            },
+            {
+                "isAbout": "items/peds_mc_ear_inf_ant_py",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_mc_ear_inf_ant_py"
+            },
+            {
+                "isAbout": "items/peds_mc_ear_inf_ant_py_specified",
+                "isVis": "peds_mc_ear_inf_ant_py == 'yes'",
+                "valueRequired": true,
+                "variableName": "peds_mc_ear_inf_ant_py_specified"
+            },
+            {
+                "isAbout": "items/peds_mc_etp",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_mc_etp"
+            },
+            {
+                "isAbout": "items/peds_mc_etp_procedure",
+                "isVis": "peds_mc_etp == 'yes'",
+                "valueRequired": true,
+                "variableName": "peds_mc_etp_procedure"
+            },
+            {
+                "isAbout": "items/peds_mc_etp_procedure_date",
+                "isVis": "peds_mc_etp == 'yes'",
+                "valueRequired": true,
+                "variableName": "peds_mc_etp_procedure_date"
+            },
+            {
+                "isAbout": "items/peds_mc_eval_voice_swal_c",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_mc_eval_voice_swal_c"
+            },
+            {
+                "isAbout": "items/peds_mc_eval_voice_swal_c_specified",
+                "isVis": "peds_mc_eval_voice_swal_c == 'yes'",
+                "valueRequired": true,
+                "variableName": "peds_mc_eval_voice_swal_c_specified"
+            },
+            {
+                "isAbout": "items/peds_mc_ft",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_mc_ft"
+            },
+            {
+                "isAbout": "items/peds_mc_ft_specified",
+                "isVis": "peds_mc_ft == 'yes'",
+                "valueRequired": true,
+                "variableName": "peds_mc_ft_specified"
+            },
+            {
+                "isAbout": "items/peds_mc_reflux",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_mc_reflux"
+            },
+            {
+                "isAbout": "items/peds_mc_reflux_specified",
+                "isVis": "peds_mc_reflux == 'yes'",
+                "valueRequired": true,
+                "variableName": "peds_mc_reflux_specified"
+            },
+            {
+                "isAbout": "items/peds_mc_hl",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_mc_hl"
+            },
+            {
+                "isAbout": "items/peds_mc_hl_specified",
+                "isVis": "peds_mc_hl == 'yes'",
+                "valueRequired": true,
+                "variableName": "peds_mc_hl_specified"
+            },
+            {
+                "isAbout": "items/peds_mc_hw_voice_2_w",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_mc_hw_voice_2_w"
+            },
+            {
+                "isAbout": "items/peds_mc_hw_voice_2_w_specified",
+                "isVis": "peds_mc_hw_voice_2_w == 'yes'",
+                "valueRequired": true,
+                "variableName": "peds_mc_hw_voice_2_w_specified"
+            },
+            {
+                "isAbout": "items/peds_mc_no_surgeries",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_mc_no_surgeries"
+            },
+            {
+                "isAbout": "items/peds_mc_no_surgeries_procedure",
+                "isVis": "peds_mc_no_surgeries == 'yes'",
+                "valueRequired": true,
+                "variableName": "peds_mc_no_surgeries_procedure"
+            },
+            {
+                "isAbout": "items/peds_mc_no_surgeries_procedure_date",
+                "isVis": "peds_mc_no_surgeries == 'yes'",
+                "valueRequired": true,
+                "variableName": "peds_mc_no_surgeries_procedure_date"
+            },
+            {
+                "isAbout": "items/peds_mc_stridor",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_mc_stridor"
+            },
+            {
+                "isAbout": "items/peds_mc_stridor_specified",
+                "isVis": "peds_mc_stridor == 'yes'",
+                "valueRequired": true,
+                "variableName": "peds_mc_stridor_specified"
+            },
+            {
+                "isAbout": "items/peds_mc_ox_sup",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_mc_ox_sup"
+            },
+            {
+                "isAbout": "items/peds_mc_ox_sup_specified",
+                "isVis": "peds_mc_ox_sup == 'yes'",
+                "valueRequired": true,
+                "variableName": "peds_mc_ox_sup_specified"
+            },
+            {
+                "isAbout": "items/peds_mc_meds",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_mc_meds"
+            },
+            {
+                "isAbout": "items/peds_mc_meds_specified",
+                "isVis": "peds_mc_meds == 'yes'",
+                "valueRequired": true,
+                "variableName": "peds_mc_meds_specified"
+            },
+            {
+                "isAbout": "items/peds_mc_v_dis",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_mc_v_dis"
+            },
+            {
+                "isAbout": "items/peds_mc_v_dis_specified",
+                "isVis": "peds_mc_v_dis == 'yes'",
+                "valueRequired": true,
+                "variableName": "peds_mc_v_dis_specified"
+            },
+            {
+                "isAbout": "items/peds_mc_a_therapy",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_mc_a_therapy"
+            },
+            {
+                "isAbout": "items/peds_mc_a_therapy_specified",
+                "isVis": "peds_mc_a_therapy == 'yes'",
+                "valueRequired": true,
+                "variableName": "peds_mc_a_therapy_specified"
+            },
+            {
+                "isAbout": "items/peds_mc_surgery_t_vc_a",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_mc_surgery_t_vc_a"
+            },
+            {
+                "isAbout": "items/peds_mc_surgery_t_vc_a_specified",
+                "isVis": "peds_mc_surgery_t_vc_a == 'yes'",
+                "valueRequired": true,
+                "variableName": "peds_mc_surgery_t_vc_a_specified"
+            },
+            {
+                "isAbout": "items/peds_mc_fr_inf_tons",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_mc_fr_inf_tons"
+            },
+            {
+                "isAbout": "items/peds_mc_fr_inf_tons_specified",
+                "isVis": "peds_mc_fr_inf_tons == 'yes'",
+                "valueRequired": true,
+                "variableName": "peds_mc_fr_inf_tons_specified"
+            },
+            {
+                "isAbout": "items/peds_mc_fr_v_f",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_mc_fr_v_f"
+            },
+            {
+                "isAbout": "items/peds_mc_fr_v_f_specified",
+                "isVis": "peds_mc_fr_v_f == 'yes'",
+                "valueRequired": true,
+                "variableName": "peds_mc_fr_v_f_specified"
+            },
+            {
+                "isAbout": "items/peds_mc_conditions",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_mc_conditions"
+            },
+            {
+                "isAbout": "items/peds_mc_conditions_other_specified",
+                "isVis": "peds_mc_conditions(other) == '1'",
+                "valueRequired": true,
+                "variableName": "peds_mc_conditions_other_specified"
+            },
+            {
+                "isAbout": "items/peds_mc_l2w",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_mc_l2w"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "4.0.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,97 @@
+{
+    "id": "part_copd",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "3. Current symptoms and participant history"
+    },
+    "prefLabel": {
+        "en": "part_copd"
+    },
+    "question": {
+        "en": "Check all that are present:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Chest CT - with emphysema changes, air trapping, or bronchiectasis"
+                },
+                "value": "chest_ct"
+            },
+            {
+                "name": {
+                    "en": "CXR: with hyperlucency or hyperinflation or flattened diaphragms"
+                },
+                "value": "cxr"
+            },
+            {
+                "name": {
+                    "en": "Chronic hypercapnic respiratory failure"
+                },
+                "value": "chrf"
+            },
+            {
+                "name": {
+                    "en": "Pulse oximetry with hypoxia/oxygen dependent"
+                },
+                "value": "hypoxia"
+            },
+            {
+                "name": {
+                    "en": "Interstitial Lung Disease"
+                },
+                "value": "ild"
+            },
+            {
+                "name": {
+                    "en": "Pulmonary Hypertension"
+                },
+                "value": "pulmonary_hypertension"
+            },
+            {
+                "name": {
+                    "en": "Respiratory failure requiring intubation within the last 12 months"
+                },
+                "value": "resp_failure_intubation"
+            },
+            {
+                "name": {
+                    "en": "Respiratory failure requiring NIPPV within the last 12 months"
+                },
+                "value": "resp_failure_nippv"
+            },
+            {
+                "name": {
+                    "en": "Pneumonia within the last 12 months"
+                },
+                "value": "pneumonia"
+            },
+            {
+                "name": {
+                    "en": "Pneumothorax within the last 12 months"
+                },
+                "value": "pneumothorax"
+            },
+            {
+                "name": {
+                    "en": "Pleural effusion within the last 12 months"
+                },
+                "value": "pleural_effusion"
+            },
+            {
+                "name": {
+                    "en": "Prior history of thoracic or pleural space surgery (example: lobectomy, pleurodesis, etc)"
+                },
+                "value": "prior_history"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

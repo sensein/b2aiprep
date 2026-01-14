@@ -1,0 +1,72 @@
+{
+    "id": "diagnosis_lc_ds_t_stage",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Disease Severity"
+    },
+    "prefLabel": {
+        "en": "diagnosis_lc_ds_t_stage"
+    },
+    "question": {
+        "en": "What is the T stage of the cancer based on the AJCC Classification?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Tis (carcinoma in situ)"
+                },
+                "value": "tis"
+            },
+            {
+                "name": {
+                    "en": "T1a"
+                },
+                "value": "t1a"
+            },
+            {
+                "name": {
+                    "en": "T1b"
+                },
+                "value": "t1b"
+            },
+            {
+                "name": {
+                    "en": "T2"
+                },
+                "value": "t2"
+            },
+            {
+                "name": {
+                    "en": "T3"
+                },
+                "value": "t3"
+            },
+            {
+                "name": {
+                    "en": "T4a"
+                },
+                "value": "t4a"
+            },
+            {
+                "name": {
+                    "en": "T4b"
+                },
+                "value": "t4b"
+            },
+            {
+                "name": {
+                    "en": "Unknown yet"
+                },
+                "value": "unknownYet"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

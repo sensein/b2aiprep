@@ -1,0 +1,22 @@
+{
+    "id": "diagnosis_als_disease_subtype_familial",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "2. Type of ALS"
+    },
+    "prefLabel": {
+        "en": "diagnosis_als_disease_subtype_familial"
+    },
+    "question": {
+        "en": "If you selected \"Familial ALS\", please specify the genetic mutation if known:"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

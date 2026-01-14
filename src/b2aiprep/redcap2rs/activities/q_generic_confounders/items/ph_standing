@@ -1,0 +1,61 @@
+{
+    "id": "ph_standing",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Matrix Group Name",
+            "source": "redcap",
+            "value": "physcial_health_group"
+        }
+    ],
+    "preamble": {
+        "en": "Overall Health\n\nThis questionnaire asks about difficulties due to health conditions. Health conditions include diseases or illnesses, other health problems that may be short or long lasting, injuries, mental or emotional problems, and problems with alcohol or drugs. \n\nThink back over the past 30 days and answer these questions, thinking about how much difficulty you had doing the following activities. For each question, please choose only one response. \n\nIn the past 30 days, how much difficulty did you have in:"
+    },
+    "prefLabel": {
+        "en": "ph_standing"
+    },
+    "question": {
+        "en": "Standing for long periods such as 30 minutes?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "None"
+                },
+                "value": "none"
+            },
+            {
+                "name": {
+                    "en": "Mild"
+                },
+                "value": "mild"
+            },
+            {
+                "name": {
+                    "en": "Moderate"
+                },
+                "value": "moderate"
+            },
+            {
+                "name": {
+                    "en": "Severe"
+                },
+                "value": "severe"
+            },
+            {
+                "name": {
+                    "en": "Extreme or cannot do"
+                },
+                "value": "extreme"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

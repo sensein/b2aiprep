@@ -1,0 +1,43 @@
+{
+    "id": "diagnosis_alz_dementia_mci_treatment_obtained_yes_medications",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "6. Treatment Obtained"
+    },
+    "prefLabel": {
+        "en": "diagnosis_alz_dementia_mci_treatment_obtained_yes_medications"
+    },
+    "question": {
+        "en": "Medications:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Cholinesterase inhibitors (e.g., Donepezil, Rivastigmine, Galantamine)"
+                },
+                "value": "cholinesterase_inhibitors"
+            },
+            {
+                "name": {
+                    "en": "NMDA receptor antagonist (e.g., Memantine)"
+                },
+                "value": "nmda_receptor_antagonist"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

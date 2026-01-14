@@ -1,0 +1,54 @@
+{
+    "id": "peds_os_straining",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Pediatric Voice Outcome Survey"
+    },
+    "prefLabel": {
+        "en": "peds_os_straining"
+    },
+    "question": {
+        "en": "Do you find your child \"straining\" when he or she speaks because of his or her voice problem?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Not at all"
+                },
+                "value": "notAtAll"
+            },
+            {
+                "name": {
+                    "en": "A little bit"
+                },
+                "value": "aLittleBit"
+            },
+            {
+                "name": {
+                    "en": "Moderately"
+                },
+                "value": "moderately"
+            },
+            {
+                "name": {
+                    "en": "Quite a bit"
+                },
+                "value": "quiteABit"
+            },
+            {
+                "name": {
+                    "en": "Extremely"
+                },
+                "value": "extremely"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

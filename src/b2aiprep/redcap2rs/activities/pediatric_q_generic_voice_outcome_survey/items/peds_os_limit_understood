@@ -1,0 +1,42 @@
+{
+    "id": "peds_os_limit_understood",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Pediatric Voice Outcome Survey"
+    },
+    "prefLabel": {
+        "en": "peds_os_limit_understood"
+    },
+    "question": {
+        "en": "To what extent does you child's voice limit his or her ability to be understood in a noisy area?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Limited a lot"
+                },
+                "value": "limitedALot"
+            },
+            {
+                "name": {
+                    "en": "Limited a little"
+                },
+                "value": "limitedALittle"
+            },
+            {
+                "name": {
+                    "en": "Not limited at all"
+                },
+                "value": "notLimitedAtAll"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

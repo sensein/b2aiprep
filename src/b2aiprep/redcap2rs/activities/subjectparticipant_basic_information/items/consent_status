@@ -1,0 +1,45 @@
+{
+    "id": "consent_status",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "consent_status"
+    },
+    "question": {
+        "en": "Consent Status"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Pending"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Consented"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Withdrawn Consent"
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "Removed From Eligibility"
+                },
+                "value": 4
+            }
+        ],
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

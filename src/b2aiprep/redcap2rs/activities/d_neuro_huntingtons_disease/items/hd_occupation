@@ -1,0 +1,45 @@
+{
+    "id": "hd_occupation",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "hd_occupation"
+    },
+    "question": {
+        "en": "Occupation"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "0 = unable"
+                },
+                "value": "unable"
+            },
+            {
+                "name": {
+                    "en": "1 = marginal work only"
+                },
+                "value": "marginalWorkOnly"
+            },
+            {
+                "name": {
+                    "en": "2 = reduced capacity for usual job"
+                },
+                "value": "reducedCapacityForUsualJob"
+            },
+            {
+                "name": {
+                    "en": "3 = normal"
+                },
+                "value": "normal"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,22 @@
+{
+    "id": "ef_learn_about_this_study_other",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "How did you learn about this study?"
+    },
+    "prefLabel": {
+        "en": "ef_learn_about_this_study_other"
+    },
+    "question": {
+        "en": "If \"Other\", please specify:"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

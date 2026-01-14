@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_222",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_222"
+    },
+    "question": {
+        "en": "222. Emma's mother had died long ago, and her education had been taken care by an excellent woman as governess. Whose education had been taken care of?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Emma's mother"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "Emma"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

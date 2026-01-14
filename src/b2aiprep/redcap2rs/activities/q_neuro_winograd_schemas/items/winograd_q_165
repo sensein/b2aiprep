@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_165",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_165"
+    },
+    "question": {
+        "en": "165. Fred covered his eyes with his hands, because the wind was blowing sand around. He opened them when the wind stopped. What did Fred opened?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "His eyes"
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "His hands"
+                },
+                "value": "incorrect"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

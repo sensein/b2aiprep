@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_183",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_183"
+    },
+    "question": {
+        "en": "183. There are too many deer in the park, so the park service brought in a small pack of wolves. The population should increase over the next few years. Which population will increase?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "The wolves"
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "The deer"
+                },
+                "value": "incorrect"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

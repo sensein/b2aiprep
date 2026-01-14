@@ -1,0 +1,36 @@
+{
+    "id": "today_drink_caffeinated_products",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Caffeine intake"
+    },
+    "prefLabel": {
+        "en": "today_drink_caffeinated_products"
+    },
+    "question": {
+        "en": "Today, have you had coffee or any other caffeinated products?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

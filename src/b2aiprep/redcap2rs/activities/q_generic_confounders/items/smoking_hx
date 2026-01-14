@@ -1,0 +1,56 @@
+{
+    "id": "smoking_hx",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "smoking_hx"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nHave you ever smoked regularly (more than a few times a month for at least two months)?\nThis includes tobacco, cannabis, vapes, e-cigarettes, hookah, or pipes."
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "I've never smoked regularly"
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "I used to smoke"
+                },
+                "value": "past"
+            },
+            {
+                "name": {
+                    "en": "I currently smoke"
+                },
+                "value": "currently"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": "noAnswer"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

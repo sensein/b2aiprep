@@ -1,0 +1,37 @@
+{
+    "id": "diagnosis_parkinsons_ma",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "5. Motor Assessment"
+    },
+    "prefLabel": {
+        "en": "diagnosis_parkinsons_ma"
+    },
+    "question": {
+        "en": "Please provide scores or results from validated cognitive assessment tools:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Unified Parkinson's Disease Rating Scale (UPDRS)"
+                },
+                "value": "updrs"
+            },
+            {
+                "name": {
+                    "en": "Other motor assessment tool"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

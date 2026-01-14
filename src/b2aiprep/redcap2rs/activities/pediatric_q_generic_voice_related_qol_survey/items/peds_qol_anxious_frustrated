@@ -1,0 +1,67 @@
+{
+    "id": "peds_qol_anxious_frustrated",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Matrix Group Name",
+            "source": "redcap",
+            "value": "peds_qol"
+        }
+    ],
+    "preamble": {
+        "en": "Please answer these questions based on what your child's voice (your own voice if you are a teenage respondent) has been like over the last 2 weeks. Consider how severe the problem is, when you get it and how frequently it happens. Please rate each item below on how bad it is (the amount of each problem). Because of my child's voice, how much of a problem is this?"
+    },
+    "prefLabel": {
+        "en": "peds_qol_anxious_frustrated"
+    },
+    "question": {
+        "en": "My child/ I is sometimes anxious or frustrated (because of their voice)."
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "None, not a problem"
+                },
+                "value": "none"
+            },
+            {
+                "name": {
+                    "en": "A small amount"
+                },
+                "value": "aSmallAmount"
+            },
+            {
+                "name": {
+                    "en": "A moderate amount"
+                },
+                "value": "aModerateAmount"
+            },
+            {
+                "name": {
+                    "en": "A lot"
+                },
+                "value": "aLot"
+            },
+            {
+                "name": {
+                    "en": "Problem is \"as bad as it can be\""
+                },
+                "value": "asBadAsItCanBe"
+            },
+            {
+                "name": {
+                    "en": "Not applicable"
+                },
+                "value": "notApplicable"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

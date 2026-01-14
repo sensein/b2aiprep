@@ -1,0 +1,39 @@
+{
+    "id": "other_ear_nose_mouth_condition",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "other_ear_nose_mouth_condition"
+    },
+    "question": {
+        "en": "Do you currently have any other condition(s) of your ear, nose, or mouth?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Prefer Not to Answer"
+                },
+                "value": "noAnswer"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

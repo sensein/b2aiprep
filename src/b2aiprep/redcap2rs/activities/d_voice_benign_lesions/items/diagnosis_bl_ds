@@ -1,0 +1,90 @@
+{
+    "id": "diagnosis_bl_ds",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "2. Disease Subtype"
+    },
+    "prefLabel": {
+        "en": "diagnosis_bl_ds"
+    },
+    "question": {
+        "en": "What is the benign lesion diagnosis?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Anterior glottic web"
+                },
+                "value": "anteriorGlotticWeb"
+            },
+            {
+                "name": {
+                    "en": "Fibrous masse (s)"
+                },
+                "value": "fibrousMasses"
+            },
+            {
+                "name": {
+                    "en": "Recurrent respiratory papilloma"
+                },
+                "value": "recurrentRespiratoryPapilloma"
+            },
+            {
+                "name": {
+                    "en": "Reinke's edema"
+                },
+                "value": "reinkesEdema"
+            },
+            {
+                "name": {
+                    "en": "Rheumatoid nodules"
+                },
+                "value": "rheumatoidNodules"
+            },
+            {
+                "name": {
+                    "en": "Vocal fold cyst"
+                },
+                "value": "vocalFoldCyst"
+            },
+            {
+                "name": {
+                    "en": "Vocal fold nodules"
+                },
+                "value": "vocalFoldNodules"
+            },
+            {
+                "name": {
+                    "en": "Vocal fold polyp"
+                },
+                "value": "vocalFoldPolyp"
+            },
+            {
+                "name": {
+                    "en": "Vocal fold scarring"
+                },
+                "value": "vocalFoldScarring"
+            },
+            {
+                "name": {
+                    "en": "Vocal fold ulcers"
+                },
+                "value": "vocalFoldUlcers"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

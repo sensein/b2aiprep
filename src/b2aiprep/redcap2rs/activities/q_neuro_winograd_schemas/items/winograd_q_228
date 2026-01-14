@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_228",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_228"
+    },
+    "question": {
+        "en": "228. Beth didn't get angry with Sally, who had cut her off, because she stopped and apologized. Who apologized?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Beth"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "Sally"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

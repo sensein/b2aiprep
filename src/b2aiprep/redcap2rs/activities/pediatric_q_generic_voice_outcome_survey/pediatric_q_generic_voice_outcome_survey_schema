@@ -1,0 +1,73 @@
+{
+    "id": "pediatric_q_generic_voice_outcome_survey_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "pediatric_q_generic_voice_outcome_survey"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/peds_os_session_id",
+            "items/peds_os_started_at",
+            "items/peds_os_completed_at",
+            "items/peds_os_duration",
+            "items/peds_os_limit_understood",
+            "items/peds_os_interfered_activities",
+            "items/peds_os_trouble_food_iquids",
+            "items/peds_os_straining"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/peds_os_session_id",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "peds_os_session_id"
+            },
+            {
+                "isAbout": "items/peds_os_started_at",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "peds_os_started_at"
+            },
+            {
+                "isAbout": "items/peds_os_completed_at",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "peds_os_completed_at"
+            },
+            {
+                "isAbout": "items/peds_os_duration",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "peds_os_duration"
+            },
+            {
+                "isAbout": "items/peds_os_limit_understood",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_os_limit_understood"
+            },
+            {
+                "isAbout": "items/peds_os_interfered_activities",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_os_interfered_activities"
+            },
+            {
+                "isAbout": "items/peds_os_trouble_food_iquids",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_os_trouble_food_iquids"
+            },
+            {
+                "isAbout": "items/peds_os_straining",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_os_straining"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "3.24.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

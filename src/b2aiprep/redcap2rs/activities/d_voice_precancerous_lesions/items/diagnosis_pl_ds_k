@@ -1,0 +1,36 @@
+{
+    "id": "diagnosis_pl_ds_k",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "2. Disease Subtype"
+    },
+    "prefLabel": {
+        "en": "diagnosis_pl_ds_k"
+    },
+    "question": {
+        "en": "Keratosis"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "With dysplasia"
+                },
+                "value": "withDysplasia"
+            },
+            {
+                "name": {
+                    "en": "Without dysplasia"
+                },
+                "value": "withoutDysplasia"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

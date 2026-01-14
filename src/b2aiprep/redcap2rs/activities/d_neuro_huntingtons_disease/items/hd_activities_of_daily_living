@@ -1,0 +1,45 @@
+{
+    "id": "hd_activities_of_daily_living",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "hd_activities_of_daily_living"
+    },
+    "question": {
+        "en": "Activities of daily living:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "0 = total care"
+                },
+                "value": "totalCare"
+            },
+            {
+                "name": {
+                    "en": "1 = gross tasks only"
+                },
+                "value": "grossTasksOnly"
+            },
+            {
+                "name": {
+                    "en": "2 = minimal impairment"
+                },
+                "value": "minimalImpairment"
+            },
+            {
+                "name": {
+                    "en": "3 = normal"
+                },
+                "value": "normal"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

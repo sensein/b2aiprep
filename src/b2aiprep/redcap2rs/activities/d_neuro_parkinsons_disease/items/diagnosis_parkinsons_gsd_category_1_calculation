@@ -1,0 +1,30 @@
+{
+    "id": "diagnosis_parkinsons_gsd_category_1_calculation",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@CALCTEXT(if(([diagnosis_parkinsons_gsd_category_1(bradykinesia)] && ([diagnosis_parkinsons_gsd_category_1(tremor)] || [diagnosis_parkinsons_gsd_category_1(rigidity)])), 'Yes', 'No'))"
+        }
+    ],
+    "description": {
+        "en": "Category 1 Criteria Met"
+    },
+    "preamble": {
+        "en": "Has the participant met the diagnostic criteria for Parkinson's Disease (Parkinsonism) based on presence of:"
+    },
+    "prefLabel": {
+        "en": "diagnosis_parkinsons_gsd_category_1_calculation"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,63 @@
+{
+    "id": "circulatory_med_history",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "circulatory_med_history"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nSome other conditions can affect the sound of your voice. Have you been diagnosed with any of these conditions by a clinician? (check all that apply)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Chronic kidney disease"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Diabetes"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Infectious disease"
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "Obesity"
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "Scoliosis"
+                },
+                "value": 5
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,43 @@
+{
+    "id": "diagnosis_uvfp_treatment_select",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "5. Treatment obtained"
+    },
+    "prefLabel": {
+        "en": "diagnosis_uvfp_treatment_select"
+    },
+    "question": {
+        "en": "What treatments did the participant undergo? (Select all that apply):"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Surgery / Procedure"
+                },
+                "value": "surgery"
+            },
+            {
+                "name": {
+                    "en": "Speech therapy"
+                },
+                "value": "speech_therapy"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

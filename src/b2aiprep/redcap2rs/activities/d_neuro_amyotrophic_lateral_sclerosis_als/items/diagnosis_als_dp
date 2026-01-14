@@ -1,0 +1,42 @@
+{
+    "id": "diagnosis_als_dp",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "5. Disease Progression"
+    },
+    "prefLabel": {
+        "en": "diagnosis_als_dp"
+    },
+    "question": {
+        "en": "Please provide information on the current stage and progression of ALS:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Early Stage"
+                },
+                "value": "earlyStage"
+            },
+            {
+                "name": {
+                    "en": "Intermediate Stage"
+                },
+                "value": "intermediateStage"
+            },
+            {
+                "name": {
+                    "en": "Advanced Stage"
+                },
+                "value": "advancedStage"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

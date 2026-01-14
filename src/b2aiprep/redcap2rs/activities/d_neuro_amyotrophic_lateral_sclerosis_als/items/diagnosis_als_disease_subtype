@@ -1,0 +1,48 @@
+{
+    "id": "diagnosis_als_disease_subtype",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "2. Type of ALS"
+    },
+    "prefLabel": {
+        "en": "diagnosis_als_disease_subtype"
+    },
+    "question": {
+        "en": "Specify the type of ALS in the participant:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Sporadic ALS"
+                },
+                "value": "sporadicAls"
+            },
+            {
+                "name": {
+                    "en": "Familial ALS"
+                },
+                "value": "familialAls"
+            },
+            {
+                "name": {
+                    "en": "Spinal/limb-onset ALS"
+                },
+                "value": "spinalAls"
+            },
+            {
+                "name": {
+                    "en": "Bulbar-onset ALS"
+                },
+                "value": "bulbarAls"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

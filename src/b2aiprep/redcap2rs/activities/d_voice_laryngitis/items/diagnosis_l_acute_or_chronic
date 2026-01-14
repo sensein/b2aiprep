@@ -1,0 +1,36 @@
+{
+    "id": "diagnosis_l_acute_or_chronic",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "2. Disease Subtype"
+    },
+    "prefLabel": {
+        "en": "diagnosis_l_acute_or_chronic"
+    },
+    "question": {
+        "en": "Is it acute or chronic laryngitis?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Acute Laryngitis (symptoms for less than 3 weeks)"
+                },
+                "value": "acute"
+            },
+            {
+                "name": {
+                    "en": "Chronic Laryngitis (symptoms for more than 3 weeks)"
+                },
+                "value": "chronic"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

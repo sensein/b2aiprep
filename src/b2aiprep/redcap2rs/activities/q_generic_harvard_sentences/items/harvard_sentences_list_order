@@ -1,0 +1,34 @@
+{
+    "id": "harvard_sentences_list_order",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Note",
+            "source": "redcap",
+            "value": "e.g \"List 3,List 25\""
+        },
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LH"
+        }
+    ],
+    "preamble": {
+        "en": "Harvard Sentences"
+    },
+    "prefLabel": {
+        "en": "harvard_sentences_list_order"
+    },
+    "question": {
+        "en": "Harvard Sentence List Order Array (comma separated)"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,73 @@
+{
+    "id": "race",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Patient Demographics"
+    },
+    "prefLabel": {
+        "en": "race"
+    },
+    "question": {
+        "en": "Which race category best describes you? Choose all that apply"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "American Indian or Alaska Native"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Asian"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Black or African American"
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "Native Hawaiian or other Pacific Islander"
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "White"
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "Canadian Indigenous or Aboriginal"
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": 7
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": 8
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

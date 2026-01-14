@@ -1,0 +1,42 @@
+{
+    "id": "diagnosis_as_ds_ac_grade_4",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Disease Severity"
+    },
+    "prefLabel": {
+        "en": "diagnosis_as_ds_ac_grade_4"
+    },
+    "question": {
+        "en": "Grade of Stenosis (Aziz Classification of Supraglottic Stenosis)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Grade 4T"
+                },
+                "value": "grade4t"
+            },
+            {
+                "name": {
+                    "en": "Grade 4G"
+                },
+                "value": "grade4g"
+            },
+            {
+                "name": {
+                    "en": "Grade 4TG"
+                },
+                "value": "grade4tg"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,40 @@
+{
+    "id": "caffeine_intake_today",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Note",
+            "source": "redcap",
+            "value": "Number"
+        },
+        {
+            "column": "Text Validation Type OR Show Slider Number",
+            "source": "redcap",
+            "value": "number"
+        },
+        {
+            "column": "Text Validation Min",
+            "source": "redcap",
+            "value": "0.0"
+        }
+    ],
+    "preamble": {
+        "en": "Caffeine intake"
+    },
+    "prefLabel": {
+        "en": "caffeine_intake_today"
+    },
+    "question": {
+        "en": "How many servings of these caffeinated products have you had today?"
+    },
+    "responseOptions": {
+        "minValue": 0,
+        "valueType": [
+            "xsd:decimal"
+        ]
+    },
+    "ui": {
+        "inputType": "float"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,55 @@
+{
+    "id": "diagnosis_ld_etiology_cc",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "3. Etiology"
+    },
+    "prefLabel": {
+        "en": "diagnosis_ld_etiology_cc"
+    },
+    "question": {
+        "en": "Does the participant have any of the following concomitant conditions?\n(Select all that apply)."
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Essential Tremor of the hands"
+                },
+                "value": "essential_tremor_of_the_hands"
+            },
+            {
+                "name": {
+                    "en": "Essential tremor of the head"
+                },
+                "value": "essential_tremor_of_the_head"
+            },
+            {
+                "name": {
+                    "en": "Jaw tremor"
+                },
+                "value": "jaw_tremor"
+            },
+            {
+                "name": {
+                    "en": "Dystonia of the head and neck"
+                },
+                "value": "dystonia_of_the_head_and_neck"
+            },
+            {
+                "name": {
+                    "en": "Other type of dystonia"
+                },
+                "value": "other_type_of_dystonia"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

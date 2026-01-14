@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_236",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_236"
+    },
+    "question": {
+        "en": "236. As Andrea in the crop duster passed over Susan, she could see the landing gear. Who could see the landing gear?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Andrea"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "Susan"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

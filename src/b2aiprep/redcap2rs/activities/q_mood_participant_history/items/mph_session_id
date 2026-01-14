@@ -1,0 +1,22 @@
+{
+    "id": "mph_session_id",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Questionnaire - Metadata"
+    },
+    "prefLabel": {
+        "en": "mph_session_id"
+    },
+    "question": {
+        "en": "Session ID"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

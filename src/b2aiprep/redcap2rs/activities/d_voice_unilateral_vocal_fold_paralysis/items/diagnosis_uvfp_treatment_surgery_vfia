@@ -1,0 +1,49 @@
+{
+    "id": "diagnosis_uvfp_treatment_surgery_vfia",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "5. Treatment obtained"
+    },
+    "prefLabel": {
+        "en": "diagnosis_uvfp_treatment_surgery_vfia"
+    },
+    "question": {
+        "en": "Vocal fold injection augmentation - Subcategory"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "CaHA"
+                },
+                "value": "caha"
+            },
+            {
+                "name": {
+                    "en": "Gel"
+                },
+                "value": "gel"
+            },
+            {
+                "name": {
+                    "en": "Hyaluronic acid augmentation"
+                },
+                "value": "hyaluronic_acid_augmentation"
+            },
+            {
+                "name": {
+                    "en": "Fat injection"
+                },
+                "value": "fat_injection"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

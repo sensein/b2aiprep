@@ -1,0 +1,48 @@
+{
+    "id": "menstruate",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Gynecological"
+    },
+    "prefLabel": {
+        "en": "menstruate"
+    },
+    "question": {
+        "en": "Do you currently have periods (with regular or irregular cycles)?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Does not apply (i.e. I am a male who has never had a period)"
+                },
+                "value": "doesNotApply"
+            },
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No, but I used to"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": "noAnswer"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

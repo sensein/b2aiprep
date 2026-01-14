@@ -1,0 +1,19 @@
+{
+    "id": "any_dental_condition_specify",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "any_dental_condition_specify"
+    },
+    "question": {
+        "en": "Please specify what dental condition(s) you have."
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

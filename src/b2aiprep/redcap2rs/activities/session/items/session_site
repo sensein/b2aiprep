@@ -1,0 +1,57 @@
+{
+    "id": "session_site",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "session_site"
+    },
+    "question": {
+        "en": "Session Site?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "MIT"
+                },
+                "value": "mit"
+            },
+            {
+                "name": {
+                    "en": "Mt. Sinai"
+                },
+                "value": "mt_sinai"
+            },
+            {
+                "name": {
+                    "en": "SickKids"
+                },
+                "value": "sickkids"
+            },
+            {
+                "name": {
+                    "en": "USF"
+                },
+                "value": "usf"
+            },
+            {
+                "name": {
+                    "en": "VUMC"
+                },
+                "value": "vumc"
+            },
+            {
+                "name": {
+                    "en": "WCM"
+                },
+                "value": "wcm"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

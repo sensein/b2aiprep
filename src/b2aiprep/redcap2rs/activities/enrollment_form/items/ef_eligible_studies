@@ -1,0 +1,55 @@
+{
+    "id": "ef_eligible_studies",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Eligible Studies"
+    },
+    "prefLabel": {
+        "en": "ef_eligible_studies"
+    },
+    "question": {
+        "en": "Eligible Studies"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Voice Disorders"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Neurological and Neurodegenerative Disorders"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Mood and Psychiatric Disorders"
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "Respiratory Disorders"
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "Pediatric Disorders"
+                },
+                "value": 5
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

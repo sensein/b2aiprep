@@ -1,0 +1,49 @@
+{
+    "id": "diagnosis_gi_slogg",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "3. Disease Severity"
+    },
+    "prefLabel": {
+        "en": "diagnosis_gi_slogg"
+    },
+    "question": {
+        "en": "Please assess shape/location of glottic gap. Choose all that apply."
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Spindle shaped"
+                },
+                "value": "spindle_shaped"
+            },
+            {
+                "name": {
+                    "en": "Anterior Glottic gap"
+                },
+                "value": "anterior_glottic_gap"
+            },
+            {
+                "name": {
+                    "en": "Posterior glottic gap"
+                },
+                "value": "posterior_glottic_gap"
+            },
+            {
+                "name": {
+                    "en": "Asymmetric"
+                },
+                "value": "asymmetric"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

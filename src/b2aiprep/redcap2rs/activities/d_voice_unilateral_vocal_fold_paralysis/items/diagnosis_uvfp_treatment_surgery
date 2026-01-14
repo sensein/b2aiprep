@@ -1,0 +1,49 @@
+{
+    "id": "diagnosis_uvfp_treatment_surgery",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "5. Treatment obtained"
+    },
+    "prefLabel": {
+        "en": "diagnosis_uvfp_treatment_surgery"
+    },
+    "question": {
+        "en": "Surgery / Procedure"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Thyroplasty"
+                },
+                "value": "thyroplasty"
+            },
+            {
+                "name": {
+                    "en": "Vocal fold injection augmentation"
+                },
+                "value": "vocal_fold_injection_augmentation"
+            },
+            {
+                "name": {
+                    "en": "Arytenoid adduction"
+                },
+                "value": "arytenoid_adduction"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_164",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_164"
+    },
+    "question": {
+        "en": "164. The foxes are getting in at night and attacking the chickens. They have gotten very nervous. What has gotten nervous?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "The foxes"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "The chickens"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

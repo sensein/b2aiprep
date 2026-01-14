@@ -1,0 +1,43 @@
+{
+    "id": "diagnosis_als_etiology_genetic_factors",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "3. Etiology"
+    },
+    "prefLabel": {
+        "en": "diagnosis_als_etiology_genetic_factors"
+    },
+    "question": {
+        "en": "Genetic Factors"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "C9orf72 mutation"
+                },
+                "value": "c9orf72"
+            },
+            {
+                "name": {
+                    "en": "SOD1 mutation"
+                },
+                "value": "sod1"
+            },
+            {
+                "name": {
+                    "en": "Other genetic factors"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,19 @@
+{
+    "id": "psychological_condition_other_specify",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "psychological_condition_other_specify"
+    },
+    "question": {
+        "en": "Please specify what other psychological condition(s) you have."
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

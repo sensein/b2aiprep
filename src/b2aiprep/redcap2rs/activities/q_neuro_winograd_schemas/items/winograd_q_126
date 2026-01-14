@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_126",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_126"
+    },
+    "question": {
+        "en": "126. Mary took out her flute and played one of her favorite pieces. She has had it since she was a child. What has Mary had since she was a child?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "The piece"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "The flute"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,45 @@
+{
+    "id": "head_surgical",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "head_surgical"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nHead"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Head/Neck cancer (e.g. oropharyngeal cancer)"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Sleep surgery"
+                },
+                "value": 2
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

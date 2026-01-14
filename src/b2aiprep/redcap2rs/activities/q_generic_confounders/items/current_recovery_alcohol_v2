@@ -1,0 +1,42 @@
+{
+    "id": "current_recovery_alcohol_v2",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Alcohol consumption"
+    },
+    "prefLabel": {
+        "en": "current_recovery_alcohol_v2"
+    },
+    "question": {
+        "en": "Are you currently in recovery for alcohol use?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": "noAnswer"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,54 @@
+{
+    "id": "ef_reason_decline_enroll",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Review and Enroll"
+    },
+    "prefLabel": {
+        "en": "ef_reason_decline_enroll"
+    },
+    "question": {
+        "en": "Please select a reason for declining"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "I am not interested in having my voice recorded"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "I do not have enough time today and want to be contacted later"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "I do not have enough time and do not want to be contacted later"
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "I prefer not to share any health information for research"
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "Other (Please specify)"
+                },
+                "value": 5
+            }
+        ],
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

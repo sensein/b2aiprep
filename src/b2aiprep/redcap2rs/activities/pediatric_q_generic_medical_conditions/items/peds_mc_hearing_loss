@@ -1,0 +1,85 @@
+{
+    "id": "peds_mc_hearing_loss",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Pediatric Medical Conditions Questionnaire"
+    },
+    "prefLabel": {
+        "en": "peds_mc_hearing_loss"
+    },
+    "question": {
+        "en": "Does your child have a history of hearing loss or associated conditions? (Select all that apply)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Cholesteatoma"
+                },
+                "value": "cholesteatoma"
+            },
+            {
+                "name": {
+                    "en": "Hearing loss"
+                },
+                "value": "hearing_loss"
+            },
+            {
+                "name": {
+                    "en": "Mild Hearing loss"
+                },
+                "value": "mild_hearing_loss"
+            },
+            {
+                "name": {
+                    "en": "Deafness"
+                },
+                "value": "deafness"
+            },
+            {
+                "name": {
+                    "en": "Ear tubes"
+                },
+                "value": "ear_tubes"
+            },
+            {
+                "name": {
+                    "en": "Cochlear implantation (Bilateral)"
+                },
+                "value": "cochlear_implantation_bilateral"
+            },
+            {
+                "name": {
+                    "en": "Vocal cord webs"
+                },
+                "value": "vocal_cord_webs"
+            },
+            {
+                "name": {
+                    "en": "Cochlear implantation (Unilateral)"
+                },
+                "value": "cochlear_implantation_unilateral"
+            },
+            {
+                "name": {
+                    "en": "Tympanic Membrane Perforation"
+                },
+                "value": "tympanic_membrane_perforation"
+            },
+            {
+                "name": {
+                    "en": "CMV (cytomegalovirus)"
+                },
+                "value": "cmv"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

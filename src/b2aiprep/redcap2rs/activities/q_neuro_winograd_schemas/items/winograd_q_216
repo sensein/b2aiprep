@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_216",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_216"
+    },
+    "question": {
+        "en": "216. John hired himself out to Bill to take care of him. Who is taking care of whom?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Bill is taking care of John"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "John is taking care of Bill"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,22 @@
+{
+    "id": "hd_neuroleptic_specify",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Treatment obtained"
+    },
+    "prefLabel": {
+        "en": "hd_neuroleptic_specify"
+    },
+    "question": {
+        "en": "Neuroleptic selected. Please specify"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,33 @@
+{
+    "id": "diagnosis_ca_spirometry_test",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "diagnosis_ca_spirometry_test"
+    },
+    "question": {
+        "en": "Has the participant had a spirometry test?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

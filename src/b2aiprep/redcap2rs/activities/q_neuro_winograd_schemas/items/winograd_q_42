@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_42",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_42"
+    },
+    "question": {
+        "en": "42. I was trying to balance the bottle upside down on the table, but I couldn't do it because it was so uneven. What was uneven?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "The bottle"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "The table"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,57 @@
+{
+    "id": "resp_medical_history",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "resp_medical_history"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nRespiratory medical history"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Craniofacial or chest wall trauma"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Previous lobectomy"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Prior chest/airway surgery"
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "Prolonged intubation (more than a week)"
+                },
+                "value": 4
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

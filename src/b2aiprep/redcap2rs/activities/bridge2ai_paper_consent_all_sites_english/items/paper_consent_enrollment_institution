@@ -1,0 +1,63 @@
+{
+    "id": "paper_consent_enrollment_institution",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "paper_consent_enrollment_institution"
+    },
+    "question": {
+        "en": "Enrollment Institution"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "BCH"
+                },
+                "value": "bch"
+            },
+            {
+                "name": {
+                    "en": "MIT"
+                },
+                "value": "mit"
+            },
+            {
+                "name": {
+                    "en": "Mt. Sinai"
+                },
+                "value": "mt_sinai"
+            },
+            {
+                "name": {
+                    "en": "SickKids"
+                },
+                "value": "sickkids"
+            },
+            {
+                "name": {
+                    "en": "USF"
+                },
+                "value": "usf"
+            },
+            {
+                "name": {
+                    "en": "VUMC"
+                },
+                "value": "vumc"
+            },
+            {
+                "name": {
+                    "en": "WCM"
+                },
+                "value": "wcm"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "select"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

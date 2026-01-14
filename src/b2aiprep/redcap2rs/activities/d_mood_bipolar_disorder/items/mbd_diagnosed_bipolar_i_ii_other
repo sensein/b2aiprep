@@ -1,0 +1,42 @@
+{
+    "id": "mbd_diagnosed_bipolar_i_ii_other",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "1. Gold Standard Diagnosis"
+    },
+    "prefLabel": {
+        "en": "mbd_diagnosed_bipolar_i_ii_other"
+    },
+    "question": {
+        "en": "Were you diagnosed with Bipolar I, Bipolar II, or Other/unspecified?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Bipolar I"
+                },
+                "value": "bipolar_1"
+            },
+            {
+                "name": {
+                    "en": "Bipolar II"
+                },
+                "value": "bipolar_2"
+            },
+            {
+                "name": {
+                    "en": "Other/unspecified"
+                },
+                "value": "other"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

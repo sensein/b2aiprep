@@ -1,0 +1,54 @@
+{
+    "id": "menstrual_cycle_status",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Gynecological"
+    },
+    "prefLabel": {
+        "en": "menstrual_cycle_status"
+    },
+    "question": {
+        "en": "Where in your cycle are you? We ask because this may affect your voice."
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Menstruating"
+                },
+                "value": "menstruating"
+            },
+            {
+                "name": {
+                    "en": "Premenstrual"
+                },
+                "value": "premenstrual"
+            },
+            {
+                "name": {
+                    "en": "Postmenstrual"
+                },
+                "value": "postmenstrual"
+            },
+            {
+                "name": {
+                    "en": "Not certain"
+                },
+                "value": "notCertain"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": "noAnswer"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,61 @@
+{
+    "id": "stimulants",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Matrix Group Name",
+            "source": "redcap",
+            "value": "substance_use_options"
+        }
+    ],
+    "preamble": {
+        "en": "During the past TWO (2) WEEKS, about how often did you use any of the following medicines ON YOUR OWN, that is, without a doctor's prescription, in greater amounts or longer than prescribed?"
+    },
+    "prefLabel": {
+        "en": "stimulants"
+    },
+    "question": {
+        "en": "Stimulants (like Ritalin, Adderall)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Not at all"
+                },
+                "value": "none"
+            },
+            {
+                "name": {
+                    "en": "One or two days"
+                },
+                "value": "oneOrTwoDays"
+            },
+            {
+                "name": {
+                    "en": "Several days"
+                },
+                "value": "severalDays"
+            },
+            {
+                "name": {
+                    "en": "More than half the days"
+                },
+                "value": "moreThanHalfTheDays"
+            },
+            {
+                "name": {
+                    "en": "Nearly every day"
+                },
+                "value": "nearlyEveryDay"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

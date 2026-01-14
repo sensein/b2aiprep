@@ -1,0 +1,43 @@
+{
+    "id": "diagnosis_as_treatment",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "5. Treatment obtained"
+    },
+    "prefLabel": {
+        "en": "diagnosis_as_treatment"
+    },
+    "question": {
+        "en": "What treatment has the participant undergone for their stenosis?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "No treatment"
+                },
+                "value": "no_treatment"
+            },
+            {
+                "name": {
+                    "en": "Surgery"
+                },
+                "value": "surgery"
+            },
+            {
+                "name": {
+                    "en": "In-office treatment"
+                },
+                "value": "in_office_treatment"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,55 @@
+{
+    "id": "diagnosis_lc_gsd_uots",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "1. Gold Standard Diagnosis"
+    },
+    "prefLabel": {
+        "en": "diagnosis_lc_gsd_uots"
+    },
+    "question": {
+        "en": "Did the participant undergo other types of scans?\n(Select all that apply)."
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "CT of the neck"
+                },
+                "value": "ct_neck"
+            },
+            {
+                "name": {
+                    "en": "CT of the chest"
+                },
+                "value": "ct_chest"
+            },
+            {
+                "name": {
+                    "en": "MRI of the neck"
+                },
+                "value": "mri_neck"
+            },
+            {
+                "name": {
+                    "en": "PET-CT"
+                },
+                "value": "pet_ct"
+            },
+            {
+                "name": {
+                    "en": "Ultrasound of the neck"
+                },
+                "value": "ultrasound_neck"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,43 @@
+{
+    "id": "ef_physical_a11y_options",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Let's customize your experience"
+    },
+    "prefLabel": {
+        "en": "ef_physical_a11y_options"
+    },
+    "question": {
+        "en": "Yes, I would like to use some of the accessibility features of the app"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "I would like to increase the size of the buttons"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "I have an alternative keyboard I'd like to connect instead"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "I would like to navigate the survey using voice commands instead of the touch screen"
+                },
+                "value": 3
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

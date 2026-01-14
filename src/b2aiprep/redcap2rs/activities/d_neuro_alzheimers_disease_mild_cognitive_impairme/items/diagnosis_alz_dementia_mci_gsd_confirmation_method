@@ -1,0 +1,55 @@
+{
+    "id": "diagnosis_alz_dementia_mci_gsd_confirmation_method",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "1. Gold Standard Diagnosis"
+    },
+    "prefLabel": {
+        "en": "diagnosis_alz_dementia_mci_gsd_confirmation_method"
+    },
+    "question": {
+        "en": "How was this diagnosis confirmed? (Check all that apply)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Clinical History"
+                },
+                "value": "clinical_history"
+            },
+            {
+                "name": {
+                    "en": "Functional Inventory"
+                },
+                "value": "functional_inventory"
+            },
+            {
+                "name": {
+                    "en": "Cognitive Testing"
+                },
+                "value": "cognitive_testing"
+            },
+            {
+                "name": {
+                    "en": "Blood Biomarkers"
+                },
+                "value": "blood_biomarkers"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

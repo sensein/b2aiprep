@@ -1,0 +1,54 @@
+{
+    "id": "diagnosis_parkinsons_ds",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Disease Severity"
+    },
+    "prefLabel": {
+        "en": "diagnosis_parkinsons_ds"
+    },
+    "question": {
+        "en": "What is the current stage/severity of Parkinson's disease in the participant?\n\u2022\tHoehn and Yahr Scale:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Stage 1 (Unilateral involvement only)"
+                },
+                "value": "stage1"
+            },
+            {
+                "name": {
+                    "en": "Stage 2 (Bilateral involvement without impairment of balance)"
+                },
+                "value": "stage2"
+            },
+            {
+                "name": {
+                    "en": "Stage 3 (Bilateral involvement with mild to moderate impairment of balance)"
+                },
+                "value": "stage3"
+            },
+            {
+                "name": {
+                    "en": "Stage 4 (Severe disability but still able to walk or stand unassisted)"
+                },
+                "value": "stage4"
+            },
+            {
+                "name": {
+                    "en": "Stage 5 (Wheelchair-bound or bedridden unless aided)"
+                },
+                "value": "stage5"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

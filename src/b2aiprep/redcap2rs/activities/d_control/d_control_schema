@@ -1,0 +1,31 @@
+{
+    "id": "d_control_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "d_control"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/diagnosis_c_ac",
+            "items/diagnosis_c_ac_specified"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/diagnosis_c_ac",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_c_ac"
+            },
+            {
+                "isAbout": "items/diagnosis_c_ac_specified",
+                "isVis": "diagnosis_c_ac == 'yes'",
+                "valueRequired": false,
+                "variableName": "diagnosis_c_ac_specified"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "3.24.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

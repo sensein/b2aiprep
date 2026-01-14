@@ -1,0 +1,19 @@
+{
+    "id": "other_ear_nose_mouth_condition_specify",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "other_ear_nose_mouth_condition_specify"
+    },
+    "question": {
+        "en": "Please specify what other condition(s) of your ear, nose, or mouth you have."
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,35 @@
+{
+    "id": "recording_profile_version",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@READONLY"
+        }
+    ],
+    "prefLabel": {
+        "en": "recording_profile_version"
+    },
+    "question": {
+        "en": "Recording Profile Version"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "v1.0.0"
+                },
+                "value": 1
+            }
+        ],
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

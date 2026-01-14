@@ -1,0 +1,81 @@
+{
+    "id": "respiratory_conditions",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "respiratory_conditions"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nRespiratory Conditions"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Bronchiectasis"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Cancer (lung or metastatic)"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Emphysema"
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "Interstitial lung disease (sarcoidosis, pulmonary fibrosis)"
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "Pneumothorax or atelectasis (collapsed lung)"
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "Pulmonary hypertension"
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "Radiation to the chest"
+                },
+                "value": 7
+            },
+            {
+                "name": {
+                    "en": "Tuberculosis"
+                },
+                "value": 8
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,178 @@
+{
+    "id": "q_neuro_productive_vocabulary_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "q_neuro_productive_vocabulary"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/vocabulary_session_id",
+            "items/vocabulary_recording_acoustic_task_id",
+            "items/vocabulary_started_at",
+            "items/vocabulary_completed_at",
+            "items/vocabulary_duration",
+            "items/vocabulary_item_word_1",
+            "items/vocabulary_item_difficulty_1",
+            "items/vocabulary_item_correct_1",
+            "items/vocabulary_item_word_2",
+            "items/vocabulary_item_difficulty_2",
+            "items/vocabulary_item_correct_2",
+            "items/vocabulary_item_word_3",
+            "items/vocabulary_item_difficulty_3",
+            "items/vocabulary_item_correct_3",
+            "items/vocabulary_item_word_4",
+            "items/vocabulary_item_difficulty_4",
+            "items/vocabulary_item_correct_4",
+            "items/vocabulary_item_word_5",
+            "items/vocabulary_item_difficulty_5",
+            "items/vocabulary_item_correct_5",
+            "items/vocabulary_item_word_6",
+            "items/vocabulary_item_difficulty_6",
+            "items/vocabulary_item_correct_6"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/vocabulary_session_id",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "vocabulary_session_id"
+            },
+            {
+                "isAbout": "items/vocabulary_recording_acoustic_task_id",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "vocabulary_recording_acoustic_task_id"
+            },
+            {
+                "isAbout": "items/vocabulary_started_at",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "vocabulary_started_at"
+            },
+            {
+                "isAbout": "items/vocabulary_completed_at",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "vocabulary_completed_at"
+            },
+            {
+                "isAbout": "items/vocabulary_duration",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "vocabulary_duration"
+            },
+            {
+                "isAbout": "items/vocabulary_item_word_1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vocabulary_item_word_1"
+            },
+            {
+                "isAbout": "items/vocabulary_item_difficulty_1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vocabulary_item_difficulty_1"
+            },
+            {
+                "isAbout": "items/vocabulary_item_correct_1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vocabulary_item_correct_1"
+            },
+            {
+                "isAbout": "items/vocabulary_item_word_2",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vocabulary_item_word_2"
+            },
+            {
+                "isAbout": "items/vocabulary_item_difficulty_2",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vocabulary_item_difficulty_2"
+            },
+            {
+                "isAbout": "items/vocabulary_item_correct_2",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vocabulary_item_correct_2"
+            },
+            {
+                "isAbout": "items/vocabulary_item_word_3",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vocabulary_item_word_3"
+            },
+            {
+                "isAbout": "items/vocabulary_item_difficulty_3",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vocabulary_item_difficulty_3"
+            },
+            {
+                "isAbout": "items/vocabulary_item_correct_3",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vocabulary_item_correct_3"
+            },
+            {
+                "isAbout": "items/vocabulary_item_word_4",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vocabulary_item_word_4"
+            },
+            {
+                "isAbout": "items/vocabulary_item_difficulty_4",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vocabulary_item_difficulty_4"
+            },
+            {
+                "isAbout": "items/vocabulary_item_correct_4",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vocabulary_item_correct_4"
+            },
+            {
+                "isAbout": "items/vocabulary_item_word_5",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vocabulary_item_word_5"
+            },
+            {
+                "isAbout": "items/vocabulary_item_difficulty_5",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vocabulary_item_difficulty_5"
+            },
+            {
+                "isAbout": "items/vocabulary_item_correct_5",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vocabulary_item_correct_5"
+            },
+            {
+                "isAbout": "items/vocabulary_item_word_6",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vocabulary_item_word_6"
+            },
+            {
+                "isAbout": "items/vocabulary_item_difficulty_6",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vocabulary_item_difficulty_6"
+            },
+            {
+                "isAbout": "items/vocabulary_item_correct_6",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vocabulary_item_correct_6"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "3.24.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

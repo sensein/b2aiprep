@@ -1,0 +1,23 @@
+{
+    "id": "ef_cond_prompt",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Do you have any of these conditions, diagnosed by a clinician?"
+    },
+    "prefLabel": {
+        "en": "ef_cond_prompt"
+    },
+    "question": {
+        "en": "(Check all that apply if you currently have the condition)"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "static",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

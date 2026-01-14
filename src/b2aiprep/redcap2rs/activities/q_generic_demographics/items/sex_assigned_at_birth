@@ -1,0 +1,54 @@
+{
+    "id": "sex_assigned_at_birth",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Patient Demographics"
+    },
+    "prefLabel": {
+        "en": "sex_assigned_at_birth"
+    },
+    "question": {
+        "en": "What was your sex assigned at birth?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Female"
+                },
+                "value": "female"
+            },
+            {
+                "name": {
+                    "en": "Male"
+                },
+                "value": "male"
+            },
+            {
+                "name": {
+                    "en": "Intersex"
+                },
+                "value": "intersex"
+            },
+            {
+                "name": {
+                    "en": "Unknown"
+                },
+                "value": "unknown"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": "noAnswer"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

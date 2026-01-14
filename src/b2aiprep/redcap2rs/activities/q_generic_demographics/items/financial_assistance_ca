@@ -1,0 +1,42 @@
+{
+    "id": "financial_assistance_ca",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Demographics - Optional"
+    },
+    "prefLabel": {
+        "en": "financial_assistance_ca"
+    },
+    "question": {
+        "en": "Do you receive a significant portion (>20%) of your income through the following federally-funded income assistance program(s): Veteran Disability Pension, Employment Insurance Sickness Benefits, or Canada Pension Plan Disability Benefits"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": "noAnswer"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

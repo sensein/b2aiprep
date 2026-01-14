@@ -1,0 +1,48 @@
+{
+    "id": "alcohol_yn",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Alcohol consumption"
+    },
+    "prefLabel": {
+        "en": "alcohol_yn"
+    },
+    "question": {
+        "en": "Do you drink alcohol?\n(Drinks can be beer, wine, shots of liquor, cocktails containing a shot of liquor)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Not currently, but I have in the past"
+                },
+                "value": "notCurrently"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": "noAnswer"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

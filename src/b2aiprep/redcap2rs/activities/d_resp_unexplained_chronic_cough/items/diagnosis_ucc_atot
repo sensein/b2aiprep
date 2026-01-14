@@ -1,0 +1,49 @@
+{
+    "id": "diagnosis_ucc_atot",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "1. Initial screening criteria"
+    },
+    "prefLabel": {
+        "en": "diagnosis_ucc_atot"
+    },
+    "question": {
+        "en": "How was it investigated? (Select all that apply)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Trial of proton pump inhibitor"
+                },
+                "value": "trial_of_proton_pump_inhibitor"
+            },
+            {
+                "name": {
+                    "en": "pH-impedance probe or Bravo probe"
+                },
+                "value": "phimpedance_probe_or_bravo_probe"
+            },
+            {
+                "name": {
+                    "en": "EGD/TNE"
+                },
+                "value": "egd_or_tne"
+            },
+            {
+                "name": {
+                    "en": "Other (H2-blocker, lifestyle change, alginates)"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,85 @@
+{
+    "id": "peds_mc_psych_disorders",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Pediatric Medical Conditions Questionnaire"
+    },
+    "prefLabel": {
+        "en": "peds_mc_psych_disorders"
+    },
+    "question": {
+        "en": "Does your child have a history of a psychological disorders or mood problems? (Select all that apply)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Anxiety disorder"
+                },
+                "value": "anxiety_disorder"
+            },
+            {
+                "name": {
+                    "en": "ADHD"
+                },
+                "value": "adhd"
+            },
+            {
+                "name": {
+                    "en": "Autism Spectrum Disorder (ASD)"
+                },
+                "value": "asd"
+            },
+            {
+                "name": {
+                    "en": "Depression or Major Depressive Disorder"
+                },
+                "value": "depression"
+            },
+            {
+                "name": {
+                    "en": "Eating Disorder (ED)"
+                },
+                "value": "eating_disorder"
+            },
+            {
+                "name": {
+                    "en": "Insomnia/sleep Disorder"
+                },
+                "value": "insomnia_or_sleep_disorder"
+            },
+            {
+                "name": {
+                    "en": "Obsessive-Compulsive Disorder (OCD)"
+                },
+                "value": "ocd"
+            },
+            {
+                "name": {
+                    "en": "Panic Disorder"
+                },
+                "value": "panic"
+            },
+            {
+                "name": {
+                    "en": "Social Anxiety Disorder"
+                },
+                "value": "social_anxiety_disorder"
+            },
+            {
+                "name": {
+                    "en": "Other psychiatric disorders"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

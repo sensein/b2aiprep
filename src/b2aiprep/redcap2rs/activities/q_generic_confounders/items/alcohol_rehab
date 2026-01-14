@@ -1,0 +1,68 @@
+{
+    "id": "alcohol_rehab",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "alcohol_rehab"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nHave you ever been in rehab or counseling for heavy alcohol use?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Never in the past year"
+                },
+                "value": "neverInThePastYear"
+            },
+            {
+                "name": {
+                    "en": "Less than monthly"
+                },
+                "value": "lessThanMonthly"
+            },
+            {
+                "name": {
+                    "en": "Monthly"
+                },
+                "value": "monthly"
+            },
+            {
+                "name": {
+                    "en": "Weekly"
+                },
+                "value": "weekly"
+            },
+            {
+                "name": {
+                    "en": "Daily or almost daily"
+                },
+                "value": "daily"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": "noAnswer"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

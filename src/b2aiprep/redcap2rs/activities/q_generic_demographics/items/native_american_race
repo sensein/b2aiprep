@@ -1,0 +1,37 @@
+{
+    "id": "native_american_race",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Patient Demographics"
+    },
+    "prefLabel": {
+        "en": "native_american_race"
+    },
+    "question": {
+        "en": "American Indian or Alaska Native"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "American Indian"
+                },
+                "value": 10041
+            },
+            {
+                "name": {
+                    "en": "Alaska Native"
+                },
+                "value": 17350
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

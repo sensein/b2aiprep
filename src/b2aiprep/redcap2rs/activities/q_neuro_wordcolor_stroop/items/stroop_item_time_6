@@ -1,0 +1,22 @@
+{
+    "id": "stroop_item_time_6",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Item 6"
+    },
+    "prefLabel": {
+        "en": "stroop_item_time_6"
+    },
+    "question": {
+        "en": "Item 6\nTime Start"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

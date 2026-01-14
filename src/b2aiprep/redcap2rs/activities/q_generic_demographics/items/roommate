@@ -1,0 +1,43 @@
+{
+    "id": "roommate",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Matrix Group Name",
+            "source": "redcap",
+            "value": "live_with_household"
+        }
+    ],
+    "preamble": {
+        "en": "Who lives with you? Choose all that apply"
+    },
+    "prefLabel": {
+        "en": "roommate"
+    },
+    "question": {
+        "en": "Roommate(s)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": 0
+            }
+        ],
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

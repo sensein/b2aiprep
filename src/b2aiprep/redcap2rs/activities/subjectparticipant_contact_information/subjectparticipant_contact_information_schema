@@ -1,0 +1,69 @@
+{
+    "id": "subjectparticipant_contact_information_schema",
+    "category": "reproschema:Activity",
+    "preamble": {
+        "en": "Contact Information"
+    },
+    "prefLabel": {
+        "en": "subjectparticipant_contact_information"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/participant_study_id",
+            "items/first_name",
+            "items/last_name",
+            "items/dob",
+            "items/phone_number",
+            "items/email",
+            "items/contact_info_stored"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/participant_study_id",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "participant_study_id"
+            },
+            {
+                "isAbout": "items/first_name",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "first_name"
+            },
+            {
+                "isAbout": "items/last_name",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "last_name"
+            },
+            {
+                "isAbout": "items/dob",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "dob"
+            },
+            {
+                "isAbout": "items/phone_number",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "phone_number"
+            },
+            {
+                "isAbout": "items/email",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "email"
+            },
+            {
+                "isAbout": "items/contact_info_stored",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "contact_info_stored"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "4.0.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

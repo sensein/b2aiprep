@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_121",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_121"
+    },
+    "question": {
+        "en": "121. Joe has sold his house and bought a new one a few miles away. He will be moving out of it on Thursday. Which house will he be moving out of?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "The old house"
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "The new house"
+                },
+                "value": "incorrect"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

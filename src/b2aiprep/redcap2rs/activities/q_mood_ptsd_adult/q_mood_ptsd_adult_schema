@@ -1,0 +1,122 @@
+{
+    "id": "q_mood_ptsd_adult_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "q_mood_ptsd_adult"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/ptsd_session_id",
+            "items/ptsd_started_at",
+            "items/ptsd_completed_at",
+            "items/ptsd_duration",
+            "items/traumatic_event",
+            "items/traumatic_event_date",
+            "items/flashbacks",
+            "items/emotionally_upset",
+            "items/avoiding_reminders",
+            "items/thinking_stressful_event",
+            "items/neg_emotional_state",
+            "items/losing_interest",
+            "items/super_alert",
+            "items/feeling_jumpy",
+            "items/irritable"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/ptsd_session_id",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "ptsd_session_id"
+            },
+            {
+                "isAbout": "items/ptsd_started_at",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "ptsd_started_at"
+            },
+            {
+                "isAbout": "items/ptsd_completed_at",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "ptsd_completed_at"
+            },
+            {
+                "isAbout": "items/ptsd_duration",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "ptsd_duration"
+            },
+            {
+                "isAbout": "items/traumatic_event",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "traumatic_event"
+            },
+            {
+                "isAbout": "items/traumatic_event_date",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "traumatic_event_date"
+            },
+            {
+                "isAbout": "items/flashbacks",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "flashbacks"
+            },
+            {
+                "isAbout": "items/emotionally_upset",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "emotionally_upset"
+            },
+            {
+                "isAbout": "items/avoiding_reminders",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "avoiding_reminders"
+            },
+            {
+                "isAbout": "items/thinking_stressful_event",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "thinking_stressful_event"
+            },
+            {
+                "isAbout": "items/neg_emotional_state",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "neg_emotional_state"
+            },
+            {
+                "isAbout": "items/losing_interest",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "losing_interest"
+            },
+            {
+                "isAbout": "items/super_alert",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "super_alert"
+            },
+            {
+                "isAbout": "items/feeling_jumpy",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "feeling_jumpy"
+            },
+            {
+                "isAbout": "items/irritable",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "irritable"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "3.24.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,56 @@
+{
+    "id": "acid_reflux",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Matrix Group Name",
+            "source": "redcap",
+            "value": "throat_condition"
+        }
+    ],
+    "preamble": {
+        "en": "Have you ever been diagnosed by a doctor with any of the following conditions that affect your THROAT? Please check all that apply.\n\nTo save you time, the responses are pre-set to \"NEVER\". Please only change the responses that apply to you. If you have never had the condition, you can leave the response as it is.\n\nCondition"
+    },
+    "prefLabel": {
+        "en": "acid_reflux"
+    },
+    "question": {
+        "en": "Acid reflux (e.g. heart burn, GERD, etc.)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Past"
+                },
+                "value": "past"
+            },
+            {
+                "name": {
+                    "en": "Current"
+                },
+                "value": "current"
+            },
+            {
+                "name": {
+                    "en": "Never"
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Prefer Not To Answer"
+                },
+                "value": "no_answer"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

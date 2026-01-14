@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_161",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_161"
+    },
+    "question": {
+        "en": "161. The foxes are getting in at night and attacking the chickens. I shall have to guard them. What do I have to guard?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "The chickens"
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "The foxes"
+                },
+                "value": "incorrect"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

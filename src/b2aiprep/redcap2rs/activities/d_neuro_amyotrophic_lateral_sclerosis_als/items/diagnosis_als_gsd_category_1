@@ -1,0 +1,42 @@
+{
+    "id": "diagnosis_als_gsd_category_1",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Does the participant meet the diagnostic criteria for Amyotrophic Lateral Sclerosis (ALS) based on:"
+    },
+    "prefLabel": {
+        "en": "diagnosis_als_gsd_category_1"
+    },
+    "question": {
+        "en": "(1) Progressive motor impairment documented by history or repeated clinical assessment, preceded by normal motor function;"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Not certain"
+                },
+                "value": "notCertain"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

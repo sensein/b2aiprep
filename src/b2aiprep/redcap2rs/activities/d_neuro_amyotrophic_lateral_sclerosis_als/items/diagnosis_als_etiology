@@ -1,0 +1,37 @@
+{
+    "id": "diagnosis_als_etiology",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "3. Etiology"
+    },
+    "prefLabel": {
+        "en": "diagnosis_als_etiology"
+    },
+    "question": {
+        "en": "What is the suspected or known etiology of ALS in the participant?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Genetic factors"
+                },
+                "value": "genetic_factors"
+            },
+            {
+                "name": {
+                    "en": "Environmental factors"
+                },
+                "value": "environmental_factors"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

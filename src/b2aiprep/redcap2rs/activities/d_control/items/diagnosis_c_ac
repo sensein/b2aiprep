@@ -1,0 +1,39 @@
+{
+    "id": "diagnosis_c_ac",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "diagnosis_c_ac"
+    },
+    "question": {
+        "en": "Based on the assessment you made of the participant, and by hearing their voice, do you think this participant has any condition affecting their speech or voice?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Not certain"
+                },
+                "value": "notCertain"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

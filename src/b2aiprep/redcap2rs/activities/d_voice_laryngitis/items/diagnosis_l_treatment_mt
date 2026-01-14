@@ -1,0 +1,62 @@
+{
+    "id": "diagnosis_l_treatment_mt",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Note",
+            "source": "redcap",
+            "value": "weeks ago"
+        }
+    ],
+    "preamble": {
+        "en": "5. Treatment obtained"
+    },
+    "prefLabel": {
+        "en": "diagnosis_l_treatment_mt"
+    },
+    "question": {
+        "en": "Medical treatment\n(Select all that apply)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Antibiotics"
+                },
+                "value": "antibiotics"
+            },
+            {
+                "name": {
+                    "en": "Antifungals"
+                },
+                "value": "antifungals"
+            },
+            {
+                "name": {
+                    "en": "Steroids PO"
+                },
+                "value": "steroids_po"
+            },
+            {
+                "name": {
+                    "en": "Inhaled steroids"
+                },
+                "value": "inhaled_steroids"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

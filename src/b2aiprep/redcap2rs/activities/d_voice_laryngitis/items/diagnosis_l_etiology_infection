@@ -1,0 +1,49 @@
+{
+    "id": "diagnosis_l_etiology_infection",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "3. Etiology"
+    },
+    "prefLabel": {
+        "en": "diagnosis_l_etiology_infection"
+    },
+    "question": {
+        "en": "Infection:\n(Select all that apply)."
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Viral"
+                },
+                "value": "viral"
+            },
+            {
+                "name": {
+                    "en": "Bacterial"
+                },
+                "value": "bacterial"
+            },
+            {
+                "name": {
+                    "en": "Fungal"
+                },
+                "value": "fungal"
+            },
+            {
+                "name": {
+                    "en": "Unknown"
+                },
+                "value": "unknown"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

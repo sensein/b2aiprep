@@ -1,0 +1,311 @@
+{
+    "id": "q_mood_dsm5_adult_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "q_mood_dsm5_adult"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/dsm_5_session_id",
+            "items/dsm_5_started_at",
+            "items/dsm_5_completed_at",
+            "items/dsm_5_duration",
+            "items/little_interest",
+            "items/feeling_down",
+            "items/feeling_more_irritated",
+            "items/sleeping_less",
+            "items/starting_more_projects",
+            "items/feeling_nervous",
+            "items/feeling_panic",
+            "items/avoiding_situations",
+            "items/unexplained_aches",
+            "items/illness_not_taken_serious",
+            "items/self_harm",
+            "items/hearing_things",
+            "items/someone_hear_thoughts",
+            "items/sleep_quality",
+            "items/memory_issues",
+            "items/unpleasant_thoughts",
+            "items/repeat_acts",
+            "items/feeling_detached",
+            "items/no_purpose",
+            "items/isolated",
+            "items/drinking_more",
+            "items/smoking_more",
+            "items/medication_use",
+            "items/q1_happy",
+            "items/q2_self_confident",
+            "items/q3_sleep",
+            "items/q4_talk",
+            "items/q5_active",
+            "items/social_phobia_1",
+            "items/social_phobia_2",
+            "items/social_phobia_3",
+            "items/social_phobia_4",
+            "items/social_phobia_5",
+            "items/social_phobia_6",
+            "items/social_phobia_7",
+            "items/social_phobia_8",
+            "items/social_phobia_9",
+            "items/social_phobia_10"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/dsm_5_session_id",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "dsm_5_session_id"
+            },
+            {
+                "isAbout": "items/dsm_5_started_at",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "dsm_5_started_at"
+            },
+            {
+                "isAbout": "items/dsm_5_completed_at",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "dsm_5_completed_at"
+            },
+            {
+                "isAbout": "items/dsm_5_duration",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "dsm_5_duration"
+            },
+            {
+                "isAbout": "items/little_interest",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "little_interest"
+            },
+            {
+                "isAbout": "items/feeling_down",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "feeling_down"
+            },
+            {
+                "isAbout": "items/feeling_more_irritated",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "feeling_more_irritated"
+            },
+            {
+                "isAbout": "items/sleeping_less",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "sleeping_less"
+            },
+            {
+                "isAbout": "items/starting_more_projects",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "starting_more_projects"
+            },
+            {
+                "isAbout": "items/feeling_nervous",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "feeling_nervous"
+            },
+            {
+                "isAbout": "items/feeling_panic",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "feeling_panic"
+            },
+            {
+                "isAbout": "items/avoiding_situations",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "avoiding_situations"
+            },
+            {
+                "isAbout": "items/unexplained_aches",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "unexplained_aches"
+            },
+            {
+                "isAbout": "items/illness_not_taken_serious",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "illness_not_taken_serious"
+            },
+            {
+                "isAbout": "items/self_harm",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "self_harm"
+            },
+            {
+                "isAbout": "items/hearing_things",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "hearing_things"
+            },
+            {
+                "isAbout": "items/someone_hear_thoughts",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "someone_hear_thoughts"
+            },
+            {
+                "isAbout": "items/sleep_quality",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "sleep_quality"
+            },
+            {
+                "isAbout": "items/memory_issues",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "memory_issues"
+            },
+            {
+                "isAbout": "items/unpleasant_thoughts",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "unpleasant_thoughts"
+            },
+            {
+                "isAbout": "items/repeat_acts",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "repeat_acts"
+            },
+            {
+                "isAbout": "items/feeling_detached",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "feeling_detached"
+            },
+            {
+                "isAbout": "items/no_purpose",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "no_purpose"
+            },
+            {
+                "isAbout": "items/isolated",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "isolated"
+            },
+            {
+                "isAbout": "items/drinking_more",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "drinking_more"
+            },
+            {
+                "isAbout": "items/smoking_more",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "smoking_more"
+            },
+            {
+                "isAbout": "items/medication_use",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "medication_use"
+            },
+            {
+                "isAbout": "items/q1_happy",
+                "isVis": "sleeping_less >= 2 || starting_more_projects >= 2",
+                "valueRequired": false,
+                "variableName": "q1_happy"
+            },
+            {
+                "isAbout": "items/q2_self_confident",
+                "isVis": "sleeping_less >= 2 || starting_more_projects >= 2",
+                "valueRequired": false,
+                "variableName": "q2_self_confident"
+            },
+            {
+                "isAbout": "items/q3_sleep",
+                "isVis": "sleeping_less >= 2 || starting_more_projects >= 2",
+                "valueRequired": false,
+                "variableName": "q3_sleep"
+            },
+            {
+                "isAbout": "items/q4_talk",
+                "isVis": "sleeping_less >= 2 || starting_more_projects >= 2",
+                "valueRequired": false,
+                "variableName": "q4_talk"
+            },
+            {
+                "isAbout": "items/q5_active",
+                "isVis": "sleeping_less >= 2 || starting_more_projects >= 2",
+                "valueRequired": false,
+                "variableName": "q5_active"
+            },
+            {
+                "isAbout": "items/social_phobia_1",
+                "isVis": "feeling_nervous >= 2 || feeling_panic >= 2 || avoiding_situations >= 2",
+                "valueRequired": false,
+                "variableName": "social_phobia_1"
+            },
+            {
+                "isAbout": "items/social_phobia_2",
+                "isVis": "feeling_nervous >= 2 || feeling_panic >= 2 || avoiding_situations >= 2",
+                "valueRequired": false,
+                "variableName": "social_phobia_2"
+            },
+            {
+                "isAbout": "items/social_phobia_3",
+                "isVis": "feeling_nervous >= 2 || feeling_panic >= 2 || avoiding_situations >= 2",
+                "valueRequired": false,
+                "variableName": "social_phobia_3"
+            },
+            {
+                "isAbout": "items/social_phobia_4",
+                "isVis": "feeling_nervous >= 2 || feeling_panic >= 2 || avoiding_situations >= 2",
+                "valueRequired": false,
+                "variableName": "social_phobia_4"
+            },
+            {
+                "isAbout": "items/social_phobia_5",
+                "isVis": "feeling_nervous >= 2 || feeling_panic >= 2 || avoiding_situations >= 2",
+                "valueRequired": false,
+                "variableName": "social_phobia_5"
+            },
+            {
+                "isAbout": "items/social_phobia_6",
+                "isVis": "feeling_nervous >= 2 || feeling_panic >= 2 || avoiding_situations >= 2",
+                "valueRequired": false,
+                "variableName": "social_phobia_6"
+            },
+            {
+                "isAbout": "items/social_phobia_7",
+                "isVis": "feeling_nervous >= 2 || feeling_panic >= 2 || avoiding_situations >= 2",
+                "valueRequired": false,
+                "variableName": "social_phobia_7"
+            },
+            {
+                "isAbout": "items/social_phobia_8",
+                "isVis": "feeling_nervous >= 2 || feeling_panic >= 2 || avoiding_situations >= 2",
+                "valueRequired": false,
+                "variableName": "social_phobia_8"
+            },
+            {
+                "isAbout": "items/social_phobia_9",
+                "isVis": "feeling_nervous >= 2 || feeling_panic >= 2 || avoiding_situations >= 2",
+                "valueRequired": false,
+                "variableName": "social_phobia_9"
+            },
+            {
+                "isAbout": "items/social_phobia_10",
+                "isVis": "feeling_nervous >= 2 || feeling_panic >= 2 || avoiding_situations >= 2",
+                "valueRequired": false,
+                "variableName": "social_phobia_10"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "3.24.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

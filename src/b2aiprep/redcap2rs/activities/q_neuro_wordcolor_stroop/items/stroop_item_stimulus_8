@@ -1,0 +1,60 @@
+{
+    "id": "stroop_item_stimulus_8",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Item 8"
+    },
+    "prefLabel": {
+        "en": "stroop_item_stimulus_8"
+    },
+    "question": {
+        "en": "Item 8\nStimulus"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "oooo"
+                },
+                "value": "oooo"
+            },
+            {
+                "name": {
+                    "en": "red"
+                },
+                "value": "red"
+            },
+            {
+                "name": {
+                    "en": "green"
+                },
+                "value": "green"
+            },
+            {
+                "name": {
+                    "en": "blue"
+                },
+                "value": "blue"
+            },
+            {
+                "name": {
+                    "en": "purple"
+                },
+                "value": "purple"
+            },
+            {
+                "name": {
+                    "en": "brown"
+                },
+                "value": "brown"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

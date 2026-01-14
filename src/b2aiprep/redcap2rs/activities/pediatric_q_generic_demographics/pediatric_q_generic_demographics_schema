@@ -1,0 +1,164 @@
+{
+    "id": "pediatric_q_generic_demographics_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "pediatric_q_generic_demographics"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/peds_demographics_session_id",
+            "items/peds_demographics_started_at",
+            "items/peds_demographics_completed_at",
+            "items/peds_demographics_duration",
+            "items/peds_zipcode",
+            "items/peds_country",
+            "items/peds_gender_identity",
+            "items/peds_other_gender_identity",
+            "items/peds_race",
+            "items/peds_other_race_specify",
+            "items/peds_primary_language",
+            "items/peds_other_primary_language",
+            "items/peds_first_language",
+            "items/peds_other_first_language",
+            "items/peds_edu_level",
+            "items/peds_other_edu_level",
+            "items/peds_hearing",
+            "items/peds_vision",
+            "items/peds_cognition",
+            "items/peds_mobility",
+            "items/peds_self_care"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/peds_demographics_session_id",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "peds_demographics_session_id"
+            },
+            {
+                "isAbout": "items/peds_demographics_started_at",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "peds_demographics_started_at"
+            },
+            {
+                "isAbout": "items/peds_demographics_completed_at",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "peds_demographics_completed_at"
+            },
+            {
+                "isAbout": "items/peds_demographics_duration",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "peds_demographics_duration"
+            },
+            {
+                "isAbout": "items/peds_zipcode",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_zipcode"
+            },
+            {
+                "isAbout": "items/peds_country",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_country"
+            },
+            {
+                "isAbout": "items/peds_gender_identity",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_gender_identity"
+            },
+            {
+                "isAbout": "items/peds_other_gender_identity",
+                "isVis": "peds_gender_identity=='other'",
+                "valueRequired": false,
+                "variableName": "peds_other_gender_identity"
+            },
+            {
+                "isAbout": "items/peds_race",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_race"
+            },
+            {
+                "isAbout": "items/peds_other_race_specify",
+                "isVis": "peds_race___7 == '1'",
+                "valueRequired": false,
+                "variableName": "peds_other_race_specify"
+            },
+            {
+                "isAbout": "items/peds_primary_language",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_primary_language"
+            },
+            {
+                "isAbout": "items/peds_other_primary_language",
+                "isVis": "peds_primary_language=='other'",
+                "valueRequired": true,
+                "variableName": "peds_other_primary_language"
+            },
+            {
+                "isAbout": "items/peds_first_language",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_first_language"
+            },
+            {
+                "isAbout": "items/peds_other_first_language",
+                "isVis": "peds_first_language=='other'",
+                "valueRequired": true,
+                "variableName": "peds_other_first_language"
+            },
+            {
+                "isAbout": "items/peds_edu_level",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "peds_edu_level"
+            },
+            {
+                "isAbout": "items/peds_other_edu_level",
+                "isVis": "peds_edu_level=='11'",
+                "valueRequired": false,
+                "variableName": "peds_other_edu_level"
+            },
+            {
+                "isAbout": "items/peds_hearing",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_hearing"
+            },
+            {
+                "isAbout": "items/peds_vision",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_vision"
+            },
+            {
+                "isAbout": "items/peds_cognition",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_cognition"
+            },
+            {
+                "isAbout": "items/peds_mobility",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_mobility"
+            },
+            {
+                "isAbout": "items/peds_self_care",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_self_care"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "4.0.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_251",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_251"
+    },
+    "question": {
+        "en": "251. When Tommy dropped his ice cream, Timmy giggled, so father gave him a stern look. Who got the look from father?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Timmy"
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "Tommy"
+                },
+                "value": "incorrect"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

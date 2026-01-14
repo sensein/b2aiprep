@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_261",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_261"
+    },
+    "question": {
+        "en": "261. Dr. Adams informed Kate that she had cancer and presented several options for future treatment. Who had cancer?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Kate"
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "Dr. Adams"
+                },
+                "value": "incorrect"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

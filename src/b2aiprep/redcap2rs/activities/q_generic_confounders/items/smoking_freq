@@ -1,0 +1,68 @@
+{
+    "id": "smoking_freq",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "smoking_freq"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nHow often do/did you smoke?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Multiple times a day"
+                },
+                "value": "multipleTimes"
+            },
+            {
+                "name": {
+                    "en": "About once a day"
+                },
+                "value": "onceDay"
+            },
+            {
+                "name": {
+                    "en": "A few times a week"
+                },
+                "value": "fewWeek"
+            },
+            {
+                "name": {
+                    "en": "A few times a month"
+                },
+                "value": "fewMonth"
+            },
+            {
+                "name": {
+                    "en": "A few times a year"
+                },
+                "value": "fewYear"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": "noAnswer"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

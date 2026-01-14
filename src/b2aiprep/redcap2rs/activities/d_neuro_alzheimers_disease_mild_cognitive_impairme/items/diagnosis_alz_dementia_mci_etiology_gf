@@ -1,0 +1,43 @@
+{
+    "id": "diagnosis_alz_dementia_mci_etiology_gf",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "3. Etiology"
+    },
+    "prefLabel": {
+        "en": "diagnosis_alz_dementia_mci_etiology_gf"
+    },
+    "question": {
+        "en": "Genetic Factors Subcategory"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Familial Alzheimer's disease (e.g., mutations in APP, PSEN1, PSEN2 genes)"
+                },
+                "value": "familial_alzheimers_disease"
+            },
+            {
+                "name": {
+                    "en": "Apolipoprotein E (APOE) \u03b54 allele"
+                },
+                "value": "apolipoprotein_e"
+            },
+            {
+                "name": {
+                    "en": "Other genetic factors"
+                },
+                "value": "other_genetic_factors"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_163",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_163"
+    },
+    "question": {
+        "en": "163. The foxes are getting in at night and attacking the chickens. They have gotten very bold. What has gotten bold?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "The foxes"
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "The chickens"
+                },
+                "value": "incorrect"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

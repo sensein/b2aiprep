@@ -1,0 +1,36 @@
+{
+    "id": "diagnosis_ca_asthma_probability",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "2. Disease Subtype"
+    },
+    "prefLabel": {
+        "en": "diagnosis_ca_asthma_probability"
+    },
+    "question": {
+        "en": "Is the clinical probability of asthma high (e.g. allergic or eosinophilic phenotype, variable respiratory symptoms including wheezing, cough, chest tightness, dyspnea, etc)?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,54 @@
+{
+    "id": "q4_talk",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "DSM-5 Adult (ASRM)\n\nChoose the one statement in each group that best describes the way you (the individual receiving care) have been feeling for the past week.\n\nPlease note:\nThe word \"occasionally\" when used here means once or twice; \"often\" means several times or more and \"frequently\" means most of the time."
+    },
+    "prefLabel": {
+        "en": "q4_talk"
+    },
+    "question": {
+        "en": "Question 4"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "I do not talk more than usual."
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "I occasionally talk more than usual."
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "I often talk more than usual."
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "I frequently talk more than usual."
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "I talk constantly and cannot be interrupted."
+                },
+                "value": 5
+            }
+        ],
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

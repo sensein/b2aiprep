@@ -1,0 +1,60 @@
+{
+    "id": "alcohol_drinks",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Alcohol consumption"
+    },
+    "prefLabel": {
+        "en": "alcohol_drinks"
+    },
+    "question": {
+        "en": "How often did you have six or more drinks on one occasion in the past year?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Never in the past year"
+                },
+                "value": "neverInThePastYear"
+            },
+            {
+                "name": {
+                    "en": "Less than monthly"
+                },
+                "value": "lessThanMonthly"
+            },
+            {
+                "name": {
+                    "en": "Monthly"
+                },
+                "value": "monthly"
+            },
+            {
+                "name": {
+                    "en": "Weekly"
+                },
+                "value": "weekly"
+            },
+            {
+                "name": {
+                    "en": "Daily or almost daily"
+                },
+                "value": "daily"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": "noAnswer"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

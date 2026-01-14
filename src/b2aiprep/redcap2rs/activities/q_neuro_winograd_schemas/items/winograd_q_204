@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_204",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_204"
+    },
+    "question": {
+        "en": "204. I stuck a pin through a carrot. When I pulled the pin out, it had a hole. What had a hole?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "The pin"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "The carrot"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}
