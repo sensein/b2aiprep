@@ -222,5 +222,8 @@
     "phqa_q7": "peds_phqa_trouble_concentrate",
     "phqa_q8": "peds_phqa_move_speak_slow",
     "phqa_q9": "peds_phqa_thoughts_death",
-    "q_generic_demographics_schema_session_id": "peds_demographics_session_id"
+    "q_generic_demographics_schema_session_id": "peds_demographics_session_id",
+    "q_generic_demographics_schema_start_time": "peds_demographics_started_at",
+    "q_generic_demographics_schema_end_time": "peds_demographics_completed_at",
+    "q_generic_demographics_schema_duration": "peds_demographics_duration"
 }
