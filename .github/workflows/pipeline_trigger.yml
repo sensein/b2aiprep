@@ -1,0 +1,75 @@
+name: Trigger Target Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+        branch_name:
+          description: 'Branch name to create'
+          required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/create-github-app-token@v2
+        id: app-token
+        with:
+          app-id: ${{ vars.BRIDGE_APP_ID }}
+          private-key: ${{ secrets.BRIDGE_APP_PRIVATE_KEY }}
+          owner: sensein 
+          repositories: b2aiprep
+
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          persist-credentials: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Upgrade pip
+        run: |
+          python -m pip install --upgrade pip
+      
+      - name: Set up Git configuration
+        run: |
+          git rev-parse --abbrev-ref HEAD
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git config --global credential.helper cache
+          echo "BRANCH_NAME=${{github.event.inputs.branch_name }}" >> $GITHUB_ENV
+          
+
+      - name: Create the new branch
+        run: |
+          BRANCH_NAME="${{ github.event.inputs.branch_name }}"
+          echo "Creating new branch: $BRANCH_NAME"
+          git checkout -b $BRANCH_NAME
+
+      - name: Get redcap2rs files
+        run: |
+          git clone --depth 1 https://${{ steps.app-token.outputs.token }}@github.com/sensein/b2ai-redcap2rs
+          mkdir -p src/b2aiprep/redcap2rs
+          cp -r b2ai-redcap2rs/* src/b2aiprep/redcap2rs
+
+      - name: Commit redcap2rs files
+        run: |
+          git add src/b2aiprep/redcap2rs
+          git commit -m "$(date): update redcap2rs files"
+          git push --set-upstream https://x-access-token:${{ steps.app-token.outputs.token }}@github.com/${{ github.repository }} $BRANCH_NAME
+          
+      - name: Create Pull Request
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer ${{ steps.app-token.outputs.token }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/sensein/b2aiprep/pulls \
+            -d '{
+                  "title": "Update files for '"$BRANCH_NAME"'",
+                  "head": "'"$BRANCH_NAME"'",
+                  "base": "main",
+                  "body": "Automatically added RedCap2RS files to b2aiprep."
+                }'
+      
