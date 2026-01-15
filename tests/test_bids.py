@@ -323,13 +323,12 @@ def test_redcap_to_bids():
     # Create RedCapDataset from CSV file
     redcap_dataset = RedCapDataset.from_redcap(csv_file_path)
     
-    reproschema_source_dir = project_root.joinpath("b2ai-redcap2rs", "b2ai-redcap2rs").resolve().as_posix()
     # Use TemporaryDirectory for the output directory
     with TemporaryDirectory() as tmp_dir:
         output_dir = Path(tmp_dir) / "bids_output"
 
         # Convert to BIDS format using the new class method
-        bids_dataset = BIDSDataset.from_redcap(redcap_dataset, reproschema_source_dir, output_dir, audiodir=None)
+        bids_dataset = BIDSDataset.from_redcap(redcap_dataset, output_dir, audiodir=None)
         
         # Check if the expected output files exist in the temporary directory
         if not any(output_dir.iterdir()):
@@ -380,7 +379,7 @@ def test_redcap_dataset_to_csv():
             assert list(result_df.columns) == ['record_id', 'redcap_repeat_instrument', 'test_column'], "CSV should have correct columns"
             assert result_df['record_id'].tolist() == [1, 2, 3], "CSV should have correct data"
 
-def test_construct_phenotype(reproschema_module_path):
+def test_construct_phenotype():
     with tempfile.TemporaryDirectory() as temp_dir:
         # Create a sample DataFrame
         data = {
@@ -392,7 +391,7 @@ def test_construct_phenotype(reproschema_module_path):
 
         # Run the function using BIDSDataset static method
         BIDSDataset._construct_phenotype_from_reproschema(
-            df, output_dir=temp_dir, source_dir=reproschema_module_path,
+            df, output_dir=temp_dir,
         )
 
         # Check if the TSV file is created

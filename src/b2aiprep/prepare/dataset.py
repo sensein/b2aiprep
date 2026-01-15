@@ -721,17 +721,15 @@ class BIDSDataset:
         os.makedirs(output_dir, exist_ok=True)
 
         # Load reproschema file
-        base_dir = Path(__file__).parent.parent
-        reproschema_folder = base_dir / "redcap2rs"
 
-        source_path = Path(reproschema_folder).resolve()
+        source_path = files("b2aiprep.redcap2rs")
         if source_path.joinpath('b2ai-redcap2rs_schema').exists():
             resolved_schema_file = source_path.joinpath('b2ai-redcap2rs_schema')
-        elif source_path.joinpath('b2ai-redcap2rs', 'b2ai-redcap2rs_schema').exists():
-            resolved_schema_file = source_path.joinpath('b2ai-redcap2rs', 'b2ai-redcap2rs_schema')
+        elif (source_path / 'b2ai-redcap2rs' / 'b2ai-redcap2rs_schema').exists():
+            resolved_schema_file = source_path /'b2ai-redcap2rs' /'b2ai-redcap2rs_schema'
         else:
             raise FileNotFoundError(
-                f"Could not find 'b2ai-redcap2rs_schema' in source directory: {reproschema_folder}"
+                f"Could not find 'b2ai-redcap2rs_schema' in source directory: {source_path}"
             )
 
         schemas = BIDSDataset._load_reproschema(resolved_schema_file)
