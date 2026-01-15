@@ -121,7 +121,6 @@ def dashboard(bids_dir: str):
 
 @click.command()
 @click.argument("filename", type=click.Path(exists=True))
-@click.argument("reproschema", type=click.Path(exists=True))
 @click.option(
     "--outdir",
     type=click.Path(),
@@ -132,7 +131,6 @@ def dashboard(bids_dir: str):
 @click.option("--max-audio-workers", type=int, default=16, show_default=True, help="Number of parallel threads for audio file copying")
 def redcap2bids(
     filename,
-    reproschema,
     outdir,
     audiodir,
     max_audio_workers,
@@ -141,7 +139,6 @@ def redcap2bids(
 
     Args:
         filename (str): Path to the REDCap data file.
-        reproschema (str): Path to the ReproSchema JSON files directory. Should contain b2ai-redcap2bids_schema file.
         outdir (str, optional): Directory where the converted BIDS-like data
                                 will be saved. Defaults to "output" in the current working directory.
         audiodir (str, optional): Directory containing associated audio files.
@@ -165,7 +162,6 @@ def redcap2bids(
     BIDSDataset.from_redcap(
         redcap_dataset,
         outdir=Path(outdir),
-        reproschema_source_dir=reproschema,
         audiodir=audiodir,
         max_audio_workers=max_audio_workers
     )
