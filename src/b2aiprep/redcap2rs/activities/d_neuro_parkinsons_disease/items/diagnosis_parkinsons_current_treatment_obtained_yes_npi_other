@@ -1,0 +1,22 @@
+{
+    "id": "diagnosis_parkinsons_current_treatment_obtained_yes_npi_other",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "7. Treatment Obtained"
+    },
+    "prefLabel": {
+        "en": "diagnosis_parkinsons_current_treatment_obtained_yes_npi_other"
+    },
+    "question": {
+        "en": "If you selected \"Other\", please specify:"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

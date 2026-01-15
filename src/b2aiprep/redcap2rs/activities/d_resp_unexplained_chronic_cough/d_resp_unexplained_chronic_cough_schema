@@ -1,0 +1,136 @@
+{
+    "id": "d_resp_unexplained_chronic_cough_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "d_resp_unexplained_chronic_cough"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/diagnosis_ucc_persisted",
+            "items/diagnosis_ucc_hsoe",
+            "items/diagnosis_ucc_hspd",
+            "items/diagnosis_ucc_cuae",
+            "items/diagnosis_ucc_hcxob",
+            "items/diagnosis_ucc_cxcob",
+            "items/diagnosis_ucc_huse",
+            "items/diagnosis_ucc_oai",
+            "items/diagnosis_ucc_pdapc",
+            "items/diagnosis_ucc_gediapc",
+            "items/diagnosis_ucc_atot",
+            "items/diagnosis_ucc_huatot",
+            "items/diagnosis_ucc_hurada",
+            "items/diagnosis_ucc_rada",
+            "items/diagnosis_ucc_at",
+            "items/diagnosis_ucc_at_s",
+            "items/diagnosis_ucc_at_s_other"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/diagnosis_ucc_persisted",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_ucc_persisted"
+            },
+            {
+                "isAbout": "items/diagnosis_ucc_hsoe",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_ucc_hsoe"
+            },
+            {
+                "isAbout": "items/diagnosis_ucc_hspd",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_ucc_hspd"
+            },
+            {
+                "isAbout": "items/diagnosis_ucc_cuae",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_ucc_cuae"
+            },
+            {
+                "isAbout": "items/diagnosis_ucc_hcxob",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_ucc_hcxob"
+            },
+            {
+                "isAbout": "items/diagnosis_ucc_cxcob",
+                "isVis": "diagnosis_ucc_hcxob == 'yes'",
+                "valueRequired": true,
+                "variableName": "diagnosis_ucc_cxcob"
+            },
+            {
+                "isAbout": "items/diagnosis_ucc_huse",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_ucc_huse"
+            },
+            {
+                "isAbout": "items/diagnosis_ucc_oai",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_ucc_oai"
+            },
+            {
+                "isAbout": "items/diagnosis_ucc_pdapc",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_ucc_pdapc"
+            },
+            {
+                "isAbout": "items/diagnosis_ucc_gediapc",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_ucc_gediapc"
+            },
+            {
+                "isAbout": "items/diagnosis_ucc_atot",
+                "isVis": "diagnosis_ucc_gediapc == 'yes'",
+                "valueRequired": true,
+                "variableName": "diagnosis_ucc_atot"
+            },
+            {
+                "isAbout": "items/diagnosis_ucc_huatot",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_ucc_huatot"
+            },
+            {
+                "isAbout": "items/diagnosis_ucc_hurada",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_ucc_hurada"
+            },
+            {
+                "isAbout": "items/diagnosis_ucc_rada",
+                "isVis": "diagnosis_ucc_hurada == 'yes'",
+                "valueRequired": true,
+                "variableName": "diagnosis_ucc_rada"
+            },
+            {
+                "isAbout": "items/diagnosis_ucc_at",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_ucc_at"
+            },
+            {
+                "isAbout": "items/diagnosis_ucc_at_s",
+                "isVis": "diagnosis_ucc_at == 'yes'",
+                "valueRequired": true,
+                "variableName": "diagnosis_ucc_at_s"
+            },
+            {
+                "isAbout": "items/diagnosis_ucc_at_s_other",
+                "isVis": "diagnosis_ucc_at_s(other)=='1'",
+                "valueRequired": false,
+                "variableName": "diagnosis_ucc_at_s_other"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "3.24.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

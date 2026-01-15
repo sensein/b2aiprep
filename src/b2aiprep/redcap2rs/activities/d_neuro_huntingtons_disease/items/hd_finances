@@ -1,0 +1,45 @@
+{
+    "id": "hd_finances",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "hd_finances"
+    },
+    "question": {
+        "en": "Finances:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "0 = unable"
+                },
+                "value": "unable"
+            },
+            {
+                "name": {
+                    "en": "1 = major assistance"
+                },
+                "value": "majorAssistance"
+            },
+            {
+                "name": {
+                    "en": "2 = slight assistance"
+                },
+                "value": "slightAssistance"
+            },
+            {
+                "name": {
+                    "en": "3 = normal"
+                },
+                "value": "normal"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

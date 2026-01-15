@@ -1,0 +1,40 @@
+{
+    "id": "caffeine_intake",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Note",
+            "source": "redcap",
+            "value": "Number"
+        },
+        {
+            "column": "Text Validation Type OR Show Slider Number",
+            "source": "redcap",
+            "value": "number"
+        },
+        {
+            "column": "Text Validation Min",
+            "source": "redcap",
+            "value": "0.0"
+        }
+    ],
+    "preamble": {
+        "en": "Caffeine intake"
+    },
+    "prefLabel": {
+        "en": "caffeine_intake"
+    },
+    "question": {
+        "en": "On a typical day, how many servings of these caffeinated products do you typically consume? \nOne serving is 8 oz or 240 mL of coffee, tea, or energy drinks, 1 oz or 30 mL of espresso, 12 oz or 360 mL of soda"
+    },
+    "responseOptions": {
+        "minValue": 0,
+        "valueType": [
+            "xsd:decimal"
+        ]
+    },
+    "ui": {
+        "inputType": "float"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

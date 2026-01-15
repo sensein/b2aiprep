@@ -1,0 +1,48 @@
+{
+    "id": "diagnosis_gi_d_aoc",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "2. Disease Subtype/etiology"
+    },
+    "prefLabel": {
+        "en": "diagnosis_gi_d_aoc"
+    },
+    "question": {
+        "en": "What is the glottic insufficiency diagnosis?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Severe illness"
+                },
+                "value": "severeIllness"
+            },
+            {
+                "name": {
+                    "en": "Rapid weight loss"
+                },
+                "value": "rapidWeightLoss"
+            },
+            {
+                "name": {
+                    "en": "Hormonal changes"
+                },
+                "value": "hormonalChanges"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

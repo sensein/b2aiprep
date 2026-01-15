@@ -1,0 +1,22 @@
+{
+    "id": "diagnosis_parkinsons_etiology_fpd",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "3. Etiology"
+    },
+    "prefLabel": {
+        "en": "diagnosis_parkinsons_etiology_fpd"
+    },
+    "question": {
+        "en": "If you selected \"Familial Parkinson's Disease\", please specify the genetic mutation if known:"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

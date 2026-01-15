@@ -1,0 +1,51 @@
+{
+    "id": "diabetes_type",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "diabetes_type"
+    },
+    "question": {
+        "en": "Which type of diabetes do you have?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Type 1"
+                },
+                "value": "type1"
+            },
+            {
+                "name": {
+                    "en": "Type 2"
+                },
+                "value": "type2"
+            },
+            {
+                "name": {
+                    "en": "Gestational diabetes"
+                },
+                "value": "gestationalDiabetes"
+            },
+            {
+                "name": {
+                    "en": "LADA/Type 3a"
+                },
+                "value": "ladaType3a"
+            },
+            {
+                "name": {
+                    "en": "Not certain"
+                },
+                "value": "notCertain"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

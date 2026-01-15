@@ -1,0 +1,101 @@
+{
+    "id": "d_mood_anxiety_disorder_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "d_mood_anxiety_disorder"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/diagnosis_diagnosed_ad",
+            "items/diagnosis_diagnosed_ad_selection",
+            "items/diagnosis_ad_last_anxious_episode",
+            "items/diagnosis_ad_active_psy_med_problems",
+            "items/diagnosis_ad_active_psy_med_prob_other",
+            "items/diagnosis_ad_hist_psy_med_problems",
+            "items/diagnosis_ad_hist_psy_med_prob_other",
+            "items/diagnosis_ad_prescribed_medication",
+            "items/diagnosis_ad_current_medication",
+            "items/diagnosis_ad_previous_medication",
+            "items/diagnosis_ad_see_mental_health_professional",
+            "items/diagnosis_ad_describe_psychotherapy"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/diagnosis_diagnosed_ad",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_diagnosed_ad"
+            },
+            {
+                "isAbout": "items/diagnosis_diagnosed_ad_selection",
+                "isVis": "diagnosis_diagnosed_ad=='yes'",
+                "valueRequired": true,
+                "variableName": "diagnosis_diagnosed_ad_selection"
+            },
+            {
+                "isAbout": "items/diagnosis_ad_last_anxious_episode",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_ad_last_anxious_episode"
+            },
+            {
+                "isAbout": "items/diagnosis_ad_active_psy_med_problems",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "diagnosis_ad_active_psy_med_problems"
+            },
+            {
+                "isAbout": "items/diagnosis_ad_active_psy_med_prob_other",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "diagnosis_ad_active_psy_med_prob_other"
+            },
+            {
+                "isAbout": "items/diagnosis_ad_hist_psy_med_problems",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "diagnosis_ad_hist_psy_med_problems"
+            },
+            {
+                "isAbout": "items/diagnosis_ad_hist_psy_med_prob_other",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "diagnosis_ad_hist_psy_med_prob_other"
+            },
+            {
+                "isAbout": "items/diagnosis_ad_prescribed_medication",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "diagnosis_ad_prescribed_medication"
+            },
+            {
+                "isAbout": "items/diagnosis_ad_current_medication",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "diagnosis_ad_current_medication"
+            },
+            {
+                "isAbout": "items/diagnosis_ad_previous_medication",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "diagnosis_ad_previous_medication"
+            },
+            {
+                "isAbout": "items/diagnosis_ad_see_mental_health_professional",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "diagnosis_ad_see_mental_health_professional"
+            },
+            {
+                "isAbout": "items/diagnosis_ad_describe_psychotherapy",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "diagnosis_ad_describe_psychotherapy"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "4.2.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

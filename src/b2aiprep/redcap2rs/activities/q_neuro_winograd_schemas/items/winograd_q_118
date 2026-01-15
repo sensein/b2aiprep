@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_118",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_118"
+    },
+    "question": {
+        "en": "118. Sam and Amy are passionately in love, but Amy's parents are unhappy about it, because they are fifteen. Who are fifteen?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Amy's parents"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "Sam and Amy"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

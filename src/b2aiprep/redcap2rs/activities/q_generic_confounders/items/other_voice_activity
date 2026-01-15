@@ -1,0 +1,29 @@
+{
+    "id": "other_voice_activity",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "RH"
+        }
+    ],
+    "preamble": {
+        "en": "DAY TO DAY ACTIVITIES\n\nThings you do on a daily basis (including your job, work environment, hydration, etc.) can affect the sound of your voice OR affect the way you complete the tasks in this study. This section asks questions about some of these factors. \n\n\nVoice  Use"
+    },
+    "prefLabel": {
+        "en": "other_voice_activity"
+    },
+    "question": {
+        "en": "Please specify what other job or hobby you have that requires you to use your voice loudly for many hours a day."
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

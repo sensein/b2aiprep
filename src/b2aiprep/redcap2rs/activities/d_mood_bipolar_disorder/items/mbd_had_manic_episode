@@ -1,0 +1,36 @@
+{
+    "id": "mbd_had_manic_episode",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "1. Gold Standard Diagnosis"
+    },
+    "prefLabel": {
+        "en": "mbd_had_manic_episode"
+    },
+    "question": {
+        "en": "Have you ever had a manic episode (i.e., While not under the influence of substances, a distinct period of abnormally and persistently elevated, expansive, or irritable mood and abnormally and persistently goal-directed behavior or energy, lasting at least 1 week and present most of the day, nearly every day)?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

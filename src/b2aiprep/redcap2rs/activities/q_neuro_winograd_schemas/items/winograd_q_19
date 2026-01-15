@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_19",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_19"
+    },
+    "question": {
+        "en": "19. John couldn't see the stage with Billy in front of him because he is so short. Who is so short?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "John"
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "Billy"
+                },
+                "value": "incorrect"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

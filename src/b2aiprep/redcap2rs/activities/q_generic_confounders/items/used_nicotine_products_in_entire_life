@@ -1,0 +1,48 @@
+{
+    "id": "used_nicotine_products_in_entire_life",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Nicotine use"
+    },
+    "prefLabel": {
+        "en": "used_nicotine_products_in_entire_life"
+    },
+    "question": {
+        "en": "Have you used any nicotine products at least 100 times in your entire life?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Not certain"
+                },
+                "value": "notCertain"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": "noAnswer"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,43 @@
+{
+    "id": "ef_hearing_a11y_options",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Let's customize your experience"
+    },
+    "prefLabel": {
+        "en": "ef_hearing_a11y_options"
+    },
+    "question": {
+        "en": "Yes, I would like to use some of the accessibility features of the app"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "I would like to turn up the volume"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "I would like to turn on closed captions"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "I would like to use haptic feedback (vibrations) instead of audio cues"
+                },
+                "value": 3
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,37 @@
+{
+    "id": "hd_slp_therapy_selection",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Treatment obtained"
+    },
+    "prefLabel": {
+        "en": "hd_slp_therapy_selection"
+    },
+    "question": {
+        "en": "Prior or current SLP therapy selected. Please select all that apply:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Prior"
+                },
+                "value": "prior"
+            },
+            {
+                "name": {
+                    "en": "Current"
+                },
+                "value": "current"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

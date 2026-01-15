@@ -1,0 +1,45 @@
+{
+    "id": "covid",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "covid"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nHave you had COVID recently, or are you currently experiencing the effects of long COVID? (check all that apply)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "COVID in the past year"
+                },
+                "value": "past_year"
+            },
+            {
+                "name": {
+                    "en": "Long COVID (symptoms persisted at least four weeks after initial infection)"
+                },
+                "value": "long"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

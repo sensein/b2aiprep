@@ -1,0 +1,55 @@
+{
+    "id": "diagnosis_mtd_treatment_select",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "5. Treatment obtained"
+    },
+    "prefLabel": {
+        "en": "diagnosis_mtd_treatment_select"
+    },
+    "question": {
+        "en": "Select all that apply:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Vocal hygiene and patient education"
+                },
+                "value": "vocal_hygiene_and_patient_education"
+            },
+            {
+                "name": {
+                    "en": "Voice/speech therapy"
+                },
+                "value": "voice_or_speech_therapy"
+            },
+            {
+                "name": {
+                    "en": "Circumlaryngeal manual therapy"
+                },
+                "value": "circumlaryngeal_manual_therapy"
+            },
+            {
+                "name": {
+                    "en": "Surgery for secondary organic lesions"
+                },
+                "value": "surgery_for_secondary_organic_lesions"
+            },
+            {
+                "name": {
+                    "en": "Other medical treatment"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

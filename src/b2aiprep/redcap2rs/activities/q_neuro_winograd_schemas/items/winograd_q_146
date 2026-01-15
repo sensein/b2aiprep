@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_146",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_146"
+    },
+    "question": {
+        "en": "146. We went to the lake, because a shark had been seen at the ocean beach, so it was a safer place to swim. Which was a safer place to swim?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "The beach"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "The lake"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

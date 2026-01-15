@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_116",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_116"
+    },
+    "question": {
+        "en": "116. Bob collapsed on the sidewalk. Soon he saw Carl coming to help. He was very concerned. Who was concerned?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Bob"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "Carl"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

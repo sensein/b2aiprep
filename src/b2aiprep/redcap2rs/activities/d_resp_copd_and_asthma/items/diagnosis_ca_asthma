@@ -1,0 +1,42 @@
+{
+    "id": "diagnosis_ca_asthma",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "1. Spirometry and diagnosis"
+    },
+    "prefLabel": {
+        "en": "diagnosis_ca_asthma"
+    },
+    "question": {
+        "en": "Does the participant have a history of confirmed expiratory airflow variability?\n\n(Increase in FEV1 or FVC by \u2265200ml and \u226512 % from baseline with bronchodilators or ICS after 4 weeks therapy; or positive bronchial challenge testing)?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Not Certain"
+                },
+                "value": "notCertain"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

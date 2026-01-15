@@ -1,0 +1,49 @@
+{
+    "id": "diagnosis_ucc_at_s",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "2. Treatment obtained"
+    },
+    "prefLabel": {
+        "en": "diagnosis_ucc_at_s"
+    },
+    "question": {
+        "en": "Select all that apply"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Therapeutic trial of multimodality speech pathology therapy"
+                },
+                "value": "multimodality_speech_pathology_therapy"
+            },
+            {
+                "name": {
+                    "en": "Therapeutic trial of gabapentin/amitriptyline or other neuromodulator"
+                },
+                "value": "neuromodulator"
+            },
+            {
+                "name": {
+                    "en": "Unilateral or bilateral superior laryngeal nerve block"
+                },
+                "value": "superior_laryngeal_nerve_block"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

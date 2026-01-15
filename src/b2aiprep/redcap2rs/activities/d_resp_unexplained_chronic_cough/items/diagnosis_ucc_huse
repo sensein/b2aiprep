@@ -1,0 +1,42 @@
+{
+    "id": "diagnosis_ucc_huse",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "1. Initial screening criteria"
+    },
+    "prefLabel": {
+        "en": "diagnosis_ucc_huse"
+    },
+    "question": {
+        "en": "Has the participant undergone spirometry evaluation (pulmonary function tests)?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Not certain"
+                },
+                "value": "notCertain"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

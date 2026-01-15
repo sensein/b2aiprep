@@ -1,0 +1,36 @@
+{
+    "id": "mbd_ever_seen_heard",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "1. Gold Standard Diagnosis"
+    },
+    "prefLabel": {
+        "en": "mbd_ever_seen_heard"
+    },
+    "question": {
+        "en": "Have you ever seen things other people can't see or heard things other people can't hear?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

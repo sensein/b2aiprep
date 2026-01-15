@@ -1,0 +1,49 @@
+{
+    "id": "diagnosis_as_treatment_in_office",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "5. Treatment obtained"
+    },
+    "prefLabel": {
+        "en": "diagnosis_as_treatment_in_office"
+    },
+    "question": {
+        "en": "In-office/awake treatment options"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Awake Steroid injection(s) as sole treatment"
+                },
+                "value": "steroid_injections_sole"
+            },
+            {
+                "name": {
+                    "en": "Awake Steroid injection(s) as adjunct treatment"
+                },
+                "value": "steroid_injections_adjunct"
+            },
+            {
+                "name": {
+                    "en": "In-office or awake dilation"
+                },
+                "value": "dilation"
+            },
+            {
+                "name": {
+                    "en": "In-office or awake laser"
+                },
+                "value": "laser"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

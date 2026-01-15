@@ -1,0 +1,61 @@
+{
+    "id": "peds_mc_neck_mass",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Pediatric Medical Conditions Questionnaire"
+    },
+    "prefLabel": {
+        "en": "peds_mc_neck_mass"
+    },
+    "question": {
+        "en": "Does your child have a history of a neck mass? (Select all that apply)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Thyroglossal duct cyst"
+                },
+                "value": "thyroglossal_duct_cyst"
+            },
+            {
+                "name": {
+                    "en": "Branchial Cleft Cyst"
+                },
+                "value": "branchial_cleft_cyst"
+            },
+            {
+                "name": {
+                    "en": "Dermoid cyst"
+                },
+                "value": "dermoid_cyst"
+            },
+            {
+                "name": {
+                    "en": "Thyroid nodule or cancer"
+                },
+                "value": "thyroid_nodule_or_cancer"
+            },
+            {
+                "name": {
+                    "en": "Enlarged lymph node"
+                },
+                "value": "enlarged_lymph_node"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,49 @@
+{
+    "id": "ef_vision_a11y_options",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Let's customize your experience"
+    },
+    "prefLabel": {
+        "en": "ef_vision_a11y_options"
+    },
+    "question": {
+        "en": "Yes, I would like to use some of the accessibility features of the app"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "I would like to change the font size"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "I would like to change the font color (high contrast mode)"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "I would like to use a screen reader"
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "I would like a person to read the text to me"
+                },
+                "value": 4
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

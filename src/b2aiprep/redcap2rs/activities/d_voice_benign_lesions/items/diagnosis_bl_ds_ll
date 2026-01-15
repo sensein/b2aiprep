@@ -1,0 +1,42 @@
+{
+    "id": "diagnosis_bl_ds_ll",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Disease Severity"
+    },
+    "prefLabel": {
+        "en": "diagnosis_bl_ds_ll"
+    },
+    "question": {
+        "en": "Location of lesion(s)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Right vocal fold"
+                },
+                "value": "rightVocalFold"
+            },
+            {
+                "name": {
+                    "en": "Left vocal fold"
+                },
+                "value": "leftVocalFold"
+            },
+            {
+                "name": {
+                    "en": "Both vocal folds"
+                },
+                "value": "bothVocalFolds"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,54 @@
+{
+    "id": "peds_os_trouble_food_iquids",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Pediatric Voice Outcome Survey"
+    },
+    "prefLabel": {
+        "en": "peds_os_trouble_food_iquids"
+    },
+    "question": {
+        "en": "How often does your child have trouble with food or liquids \"going down the wrong pipe\" when he or she eats food or drinks liquid and begins to cough after eating or drinking?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "All the time"
+                },
+                "value": "allTheTime"
+            },
+            {
+                "name": {
+                    "en": "Most of the time"
+                },
+                "value": "mostOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Sometimes"
+                },
+                "value": "sometimes"
+            },
+            {
+                "name": {
+                    "en": "Rarely"
+                },
+                "value": "rarely"
+            },
+            {
+                "name": {
+                    "en": "Never"
+                },
+                "value": "never"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_24",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_24"
+    },
+    "question": {
+        "en": "24. Although they ran at about the same speed, Sue beat Sally because she had such a bad start. Who had a bad start?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Sue"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "Sally"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

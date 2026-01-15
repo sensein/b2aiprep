@@ -1,0 +1,20 @@
+{
+    "id": "hd_total_func_cap_rating_scale",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "hd_total_func_cap_rating_scale"
+    },
+    "question": {
+        "en": "HD Total Functional Capacity Rating Scale"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "static",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

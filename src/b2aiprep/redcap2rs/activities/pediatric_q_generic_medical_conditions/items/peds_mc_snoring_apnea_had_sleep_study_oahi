@@ -1,0 +1,22 @@
+{
+    "id": "peds_mc_snoring_apnea_had_sleep_study_oahi",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Pediatric Medical Conditions Questionnaire"
+    },
+    "prefLabel": {
+        "en": "peds_mc_snoring_apnea_had_sleep_study_oahi"
+    },
+    "question": {
+        "en": "What was the oAHI on the sleep study\n(to be competed by research assistant)"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

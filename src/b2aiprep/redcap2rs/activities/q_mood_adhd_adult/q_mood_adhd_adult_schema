@@ -1,0 +1,171 @@
+{
+    "id": "q_mood_adhd_adult_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "q_mood_adhd_adult"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/adhd_session_id",
+            "items/adhd_started_at",
+            "items/adhd_completed_at",
+            "items/adhd_duration",
+            "items/wrapping_up",
+            "items/things_in_order",
+            "items/remembering_appt",
+            "items/avoidance",
+            "items/fidget",
+            "items/overly_active",
+            "items/careless",
+            "items/difficulty_attention",
+            "items/difficulty_concentrating",
+            "items/misplace",
+            "items/distracted",
+            "items/remain_seated",
+            "items/restless",
+            "items/difficulty_unwinding",
+            "items/talking_too_much",
+            "items/finish_other_sent",
+            "items/difficulty_waiting",
+            "items/interrupt_others"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/adhd_session_id",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "adhd_session_id"
+            },
+            {
+                "isAbout": "items/adhd_started_at",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "adhd_started_at"
+            },
+            {
+                "isAbout": "items/adhd_completed_at",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "adhd_completed_at"
+            },
+            {
+                "isAbout": "items/adhd_duration",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "adhd_duration"
+            },
+            {
+                "isAbout": "items/wrapping_up",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "wrapping_up"
+            },
+            {
+                "isAbout": "items/things_in_order",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "things_in_order"
+            },
+            {
+                "isAbout": "items/remembering_appt",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "remembering_appt"
+            },
+            {
+                "isAbout": "items/avoidance",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "avoidance"
+            },
+            {
+                "isAbout": "items/fidget",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "fidget"
+            },
+            {
+                "isAbout": "items/overly_active",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "overly_active"
+            },
+            {
+                "isAbout": "items/careless",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "careless"
+            },
+            {
+                "isAbout": "items/difficulty_attention",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "difficulty_attention"
+            },
+            {
+                "isAbout": "items/difficulty_concentrating",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "difficulty_concentrating"
+            },
+            {
+                "isAbout": "items/misplace",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "misplace"
+            },
+            {
+                "isAbout": "items/distracted",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "distracted"
+            },
+            {
+                "isAbout": "items/remain_seated",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "remain_seated"
+            },
+            {
+                "isAbout": "items/restless",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "restless"
+            },
+            {
+                "isAbout": "items/difficulty_unwinding",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "difficulty_unwinding"
+            },
+            {
+                "isAbout": "items/talking_too_much",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "talking_too_much"
+            },
+            {
+                "isAbout": "items/finish_other_sent",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "finish_other_sent"
+            },
+            {
+                "isAbout": "items/difficulty_waiting",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "difficulty_waiting"
+            },
+            {
+                "isAbout": "items/interrupt_others",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "interrupt_others"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "3.24.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

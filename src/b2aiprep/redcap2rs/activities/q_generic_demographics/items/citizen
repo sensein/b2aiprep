@@ -1,0 +1,80 @@
+{
+    "id": "citizen",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "citizen"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nCitizen"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Citizen"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Permanent resident (Green card holder)"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Non-citizen US/Canadian national"
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "Refugee"
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "Asylum seeker"
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "Non-immigrant student"
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "Non-immigrant worker"
+                },
+                "value": 7
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": 8
+            }
+        ],
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

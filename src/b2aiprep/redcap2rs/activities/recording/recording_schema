@@ -1,0 +1,115 @@
+{
+    "id": "recording_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "recording"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/recording_id",
+            "items/recording_acoustic_task_id",
+            "items/recording_session_id",
+            "items/recording_name",
+            "items/recording_filepath",
+            "items/recording_storage_account",
+            "items/recording_file_share",
+            "items/recording_duration",
+            "items/recording_size",
+            "items/recording_created_at",
+            "items/recording_profile_name",
+            "items/recording_profile_version",
+            "items/recording_input_gain",
+            "items/recording_microphone"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/recording_id",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "recording_id"
+            },
+            {
+                "isAbout": "items/recording_acoustic_task_id",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "recording_acoustic_task_id"
+            },
+            {
+                "isAbout": "items/recording_session_id",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "recording_session_id"
+            },
+            {
+                "isAbout": "items/recording_name",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "recording_name"
+            },
+            {
+                "isAbout": "items/recording_filepath",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "recording_filepath"
+            },
+            {
+                "isAbout": "items/recording_storage_account",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "recording_storage_account"
+            },
+            {
+                "isAbout": "items/recording_file_share",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "recording_file_share"
+            },
+            {
+                "isAbout": "items/recording_duration",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "recording_duration"
+            },
+            {
+                "isAbout": "items/recording_size",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "recording_size"
+            },
+            {
+                "isAbout": "items/recording_created_at",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "recording_created_at"
+            },
+            {
+                "isAbout": "items/recording_profile_name",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "recording_profile_name"
+            },
+            {
+                "isAbout": "items/recording_profile_version",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "recording_profile_version"
+            },
+            {
+                "isAbout": "items/recording_input_gain",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "recording_input_gain"
+            },
+            {
+                "isAbout": "items/recording_microphone",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "recording_microphone"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "3.24.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

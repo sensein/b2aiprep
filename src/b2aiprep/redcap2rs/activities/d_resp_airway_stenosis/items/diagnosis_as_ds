@@ -1,0 +1,54 @@
+{
+    "id": "diagnosis_as_ds",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "2. Disease Subtype"
+    },
+    "prefLabel": {
+        "en": "diagnosis_as_ds"
+    },
+    "question": {
+        "en": "Disease Subtype"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Subglottic Stenosis"
+                },
+                "value": "subglotticStenosis"
+            },
+            {
+                "name": {
+                    "en": "Bilateral Vocal fold immobility or Glottic Stenosis"
+                },
+                "value": "bilateralVocalFoldImmobilityGlotticStenosis"
+            },
+            {
+                "name": {
+                    "en": "Supraglottic Stenosis"
+                },
+                "value": "supraglotticStenosis"
+            },
+            {
+                "name": {
+                    "en": "Tracheal Stenosis"
+                },
+                "value": "trachealStenosis"
+            },
+            {
+                "name": {
+                    "en": "Multi-Level Upper Airway Stenosis"
+                },
+                "value": "multilevelUpperAirwayStenosis"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

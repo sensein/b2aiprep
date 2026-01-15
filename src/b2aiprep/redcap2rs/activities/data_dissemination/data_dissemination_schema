@@ -1,0 +1,52 @@
+{
+    "id": "data_dissemination_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "data_dissemination"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/exclude_participant",
+            "items/exclude_reason",
+            "items/exclude_reason_other",
+            "items/exclusion_date",
+            "items/inclusion_date"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/exclude_participant",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "exclude_participant"
+            },
+            {
+                "isAbout": "items/exclude_reason",
+                "isVis": "exclude_participant == 'yes'",
+                "valueRequired": true,
+                "variableName": "exclude_reason"
+            },
+            {
+                "isAbout": "items/exclude_reason_other",
+                "isVis": "exclude_reason(other) == '1'",
+                "valueRequired": true,
+                "variableName": "exclude_reason_other"
+            },
+            {
+                "isAbout": "items/exclusion_date",
+                "isVis": "exclude_participant == 'yes'",
+                "valueRequired": true,
+                "variableName": "exclusion_date"
+            },
+            {
+                "isAbout": "items/inclusion_date",
+                "isVis": "exclude_participant == 'no'",
+                "valueRequired": true,
+                "variableName": "inclusion_date"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "4.0.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

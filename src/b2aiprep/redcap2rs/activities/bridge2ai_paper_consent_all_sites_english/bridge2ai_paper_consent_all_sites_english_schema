@@ -1,0 +1,45 @@
+{
+    "id": "bridge2ai_paper_consent_all_sites_english_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "bridge2ai_paper_consent_all_sites_english"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/paper_consent_notes",
+            "items/paper_consent_pdf_all_sites",
+            "items/paper_consent_enrollment_institution",
+            "items/paper_consent_uploaded_by"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/paper_consent_notes",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "paper_consent_notes"
+            },
+            {
+                "isAbout": "items/paper_consent_pdf_all_sites",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "paper_consent_pdf_all_sites"
+            },
+            {
+                "isAbout": "items/paper_consent_enrollment_institution",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "paper_consent_enrollment_institution"
+            },
+            {
+                "isAbout": "items/paper_consent_uploaded_by",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "paper_consent_uploaded_by"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "3.24.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

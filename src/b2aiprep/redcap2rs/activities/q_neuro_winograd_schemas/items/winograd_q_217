@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_217",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_217"
+    },
+    "question": {
+        "en": "217. John promised Bill to leave, so an hour later he left. Who left?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "John"
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "Bill"
+                },
+                "value": "incorrect"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

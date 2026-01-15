@@ -1,0 +1,73 @@
+{
+    "id": "diagnosis_ucc_hspd",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "1. Initial screening criteria"
+    },
+    "prefLabel": {
+        "en": "diagnosis_ucc_hspd"
+    },
+    "question": {
+        "en": "Does the participant have a history of pulmonary disease? (Select all that apply)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Lung cancer"
+                },
+                "value": "lung_cancer"
+            },
+            {
+                "name": {
+                    "en": "COPD"
+                },
+                "value": "copd"
+            },
+            {
+                "name": {
+                    "en": "Asthma"
+                },
+                "value": "asthma"
+            },
+            {
+                "name": {
+                    "en": "TB infection"
+                },
+                "value": "tb_infection"
+            },
+            {
+                "name": {
+                    "en": "Bronchiectasis"
+                },
+                "value": "bronchiectasis"
+            },
+            {
+                "name": {
+                    "en": "Pulmonary granuloma"
+                },
+                "value": "pulmonary_granuloma"
+            },
+            {
+                "name": {
+                    "en": "Idiopathic pulmonary fibrosis"
+                },
+                "value": "idiopathic_pulmonary_fibrosis"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

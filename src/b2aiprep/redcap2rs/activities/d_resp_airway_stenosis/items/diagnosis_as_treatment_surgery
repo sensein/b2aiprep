@@ -1,0 +1,61 @@
+{
+    "id": "diagnosis_as_treatment_surgery",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "5. Treatment obtained"
+    },
+    "prefLabel": {
+        "en": "diagnosis_as_treatment_surgery"
+    },
+    "question": {
+        "en": "Surgery options"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Endoscopic intervention with Laser and Balloon dilation and steroid injection"
+                },
+                "value": "endoscopic_intervention"
+            },
+            {
+                "name": {
+                    "en": "Endoscopic laser wedge excision with balloon dilation and steroid injection"
+                },
+                "value": "endoscopic_excision"
+            },
+            {
+                "name": {
+                    "en": "Open Laryngotracheal reconstruction"
+                },
+                "value": "laryngotracheal_reconstruction"
+            },
+            {
+                "name": {
+                    "en": "Laryngotracheoplasty (Maddern procedure)"
+                },
+                "value": "laryngotracheoplasty"
+            },
+            {
+                "name": {
+                    "en": "Tracheostomy"
+                },
+                "value": "tracheostomy"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

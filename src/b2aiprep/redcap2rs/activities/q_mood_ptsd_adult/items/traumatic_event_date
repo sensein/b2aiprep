@@ -1,0 +1,29 @@
+{
+    "id": "traumatic_event_date",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Text Validation Type OR Show Slider Number",
+            "source": "redcap",
+            "value": "date_ymd"
+        }
+    ],
+    "preamble": {
+        "en": "Severity of Posttraumatic Stress Symptoms - Adult"
+    },
+    "prefLabel": {
+        "en": "traumatic_event_date"
+    },
+    "question": {
+        "en": "Date of the traumatic event:"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:date"
+        ]
+    },
+    "ui": {
+        "inputType": "date"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

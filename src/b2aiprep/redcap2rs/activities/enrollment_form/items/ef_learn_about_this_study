@@ -1,0 +1,60 @@
+{
+    "id": "ef_learn_about_this_study",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "How did you learn about this study?"
+    },
+    "prefLabel": {
+        "en": "ef_learn_about_this_study"
+    },
+    "question": {
+        "en": "How did you learn about this study?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Through my physician/provider"
+                },
+                "value": "physician"
+            },
+            {
+                "name": {
+                    "en": "A flyer"
+                },
+                "value": "flyer"
+            },
+            {
+                "name": {
+                    "en": "Social Media"
+                },
+                "value": "social_media"
+            },
+            {
+                "name": {
+                    "en": "Bridge2AI Website"
+                },
+                "value": "bridge2ai_website"
+            },
+            {
+                "name": {
+                    "en": "At an event"
+                },
+                "value": "event"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

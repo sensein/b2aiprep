@@ -1,0 +1,178 @@
+{
+    "id": "q_resp_leicester_cough_questionnaire_lcq_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "q_resp_leicester_cough_questionnaire_lcq"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/leicester_cough_session_id",
+            "items/leicester_cough_started_at",
+            "items/leicester_cough_completed_at",
+            "items/leicester_cough_duration",
+            "items/lcq_chest_stomach_pains",
+            "items/lcq_sputum_phlegm",
+            "items/lcq_tired",
+            "items/lcq_embarrassed",
+            "items/lcq_anxious",
+            "items/lcq_interfere_job",
+            "items/lcq_interfere_life",
+            "items/lcq_exposure_paint",
+            "items/lcq_sleep",
+            "items/lcq_bout",
+            "items/lcq_frustrated",
+            "items/lcq_fed_up",
+            "items/lcq_hoarse_voice",
+            "items/lcq_serious_illness",
+            "items/lcq_other_people",
+            "items/lcq_interrupt_conversation",
+            "items/lcq_partner",
+            "items/lcq_felt_in_control",
+            "items/lcq_energy"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/leicester_cough_session_id",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "leicester_cough_session_id"
+            },
+            {
+                "isAbout": "items/leicester_cough_started_at",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "leicester_cough_started_at"
+            },
+            {
+                "isAbout": "items/leicester_cough_completed_at",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "leicester_cough_completed_at"
+            },
+            {
+                "isAbout": "items/leicester_cough_duration",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "leicester_cough_duration"
+            },
+            {
+                "isAbout": "items/lcq_chest_stomach_pains",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "lcq_chest_stomach_pains"
+            },
+            {
+                "isAbout": "items/lcq_sputum_phlegm",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "lcq_sputum_phlegm"
+            },
+            {
+                "isAbout": "items/lcq_tired",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "lcq_tired"
+            },
+            {
+                "isAbout": "items/lcq_embarrassed",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "lcq_embarrassed"
+            },
+            {
+                "isAbout": "items/lcq_anxious",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "lcq_anxious"
+            },
+            {
+                "isAbout": "items/lcq_interfere_job",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "lcq_interfere_job"
+            },
+            {
+                "isAbout": "items/lcq_interfere_life",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "lcq_interfere_life"
+            },
+            {
+                "isAbout": "items/lcq_exposure_paint",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "lcq_exposure_paint"
+            },
+            {
+                "isAbout": "items/lcq_sleep",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "lcq_sleep"
+            },
+            {
+                "isAbout": "items/lcq_bout",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "lcq_bout"
+            },
+            {
+                "isAbout": "items/lcq_frustrated",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "lcq_frustrated"
+            },
+            {
+                "isAbout": "items/lcq_fed_up",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "lcq_fed_up"
+            },
+            {
+                "isAbout": "items/lcq_hoarse_voice",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "lcq_hoarse_voice"
+            },
+            {
+                "isAbout": "items/lcq_serious_illness",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "lcq_serious_illness"
+            },
+            {
+                "isAbout": "items/lcq_other_people",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "lcq_other_people"
+            },
+            {
+                "isAbout": "items/lcq_interrupt_conversation",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "lcq_interrupt_conversation"
+            },
+            {
+                "isAbout": "items/lcq_partner",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "lcq_partner"
+            },
+            {
+                "isAbout": "items/lcq_felt_in_control",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "lcq_felt_in_control"
+            },
+            {
+                "isAbout": "items/lcq_energy",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "lcq_energy"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "3.20.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

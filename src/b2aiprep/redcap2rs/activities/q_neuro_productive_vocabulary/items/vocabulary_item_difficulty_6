@@ -1,0 +1,42 @@
+{
+    "id": "vocabulary_item_difficulty_6",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Item 6"
+    },
+    "prefLabel": {
+        "en": "vocabulary_item_difficulty_6"
+    },
+    "question": {
+        "en": "Item 6\nWord Difficulty"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "1"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "2"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "3"
+                },
+                "value": 3
+            }
+        ],
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,55 @@
+{
+    "id": "diagnosis_alz_dementia_mci_etiology",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "3. Etiology"
+    },
+    "prefLabel": {
+        "en": "diagnosis_alz_dementia_mci_etiology"
+    },
+    "question": {
+        "en": "What is the suspected or known etiology in the participant?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Genetic factors"
+                },
+                "value": "genetic_factors"
+            },
+            {
+                "name": {
+                    "en": "Age-related changes"
+                },
+                "value": "age_related_changes"
+            },
+            {
+                "name": {
+                    "en": "Other medical conditions (e.g., vascular factors, traumatic brain injury)"
+                },
+                "value": "other_medical_conditions"
+            },
+            {
+                "name": {
+                    "en": "Substance-related (e.g., alcohol-induced cognitive impairment)"
+                },
+                "value": "substance_related"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

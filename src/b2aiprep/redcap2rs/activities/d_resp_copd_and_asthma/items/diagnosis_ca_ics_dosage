@@ -1,0 +1,48 @@
+{
+    "id": "diagnosis_ca_ics_dosage",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Treatment obtained"
+    },
+    "prefLabel": {
+        "en": "diagnosis_ca_ics_dosage"
+    },
+    "question": {
+        "en": "Is the participant on low, medium or high dose ICS?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Low dose"
+                },
+                "value": "low"
+            },
+            {
+                "name": {
+                    "en": "Medium dose"
+                },
+                "value": "medium"
+            },
+            {
+                "name": {
+                    "en": "High dose"
+                },
+                "value": "high"
+            },
+            {
+                "name": {
+                    "en": "Not Certain"
+                },
+                "value": "notCertain"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

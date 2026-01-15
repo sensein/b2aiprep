@@ -1,0 +1,36 @@
+{
+    "id": "unit",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "PHYSICAL HEALTH\n\nSome aspects of your physical health can affect the sound of your voice. This section asks questions about some of these factors.\n\n\nHeight and Weight"
+    },
+    "prefLabel": {
+        "en": "unit"
+    },
+    "question": {
+        "en": "Unit"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Metric"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "US customary units"
+                },
+                "value": 2
+            }
+        ],
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "select"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

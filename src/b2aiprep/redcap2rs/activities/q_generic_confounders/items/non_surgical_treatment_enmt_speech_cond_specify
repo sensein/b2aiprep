@@ -1,0 +1,19 @@
+{
+    "id": "non_surgical_treatment_enmt_speech_cond_specify",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "non_surgical_treatment_enmt_speech_cond_specify"
+    },
+    "question": {
+        "en": "Please specify what other non-surgical treatment(s) you are currently receiving for your ear, nose, mouth, throat, or speech condition(s)."
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

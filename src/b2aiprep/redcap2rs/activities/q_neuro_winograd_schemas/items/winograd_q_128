@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_128",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_128"
+    },
+    "question": {
+        "en": "128. Sam pulled up a chair to the piano, but it was broken, so he had to sing instead. What was broken?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "The chair"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "The piano"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

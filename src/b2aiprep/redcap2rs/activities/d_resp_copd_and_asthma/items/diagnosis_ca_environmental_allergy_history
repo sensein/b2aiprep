@@ -1,0 +1,42 @@
+{
+    "id": "diagnosis_ca_environmental_allergy_history",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "3. Current symptoms and participant history"
+    },
+    "prefLabel": {
+        "en": "diagnosis_ca_environmental_allergy_history"
+    },
+    "question": {
+        "en": "Does the participant have a strong environmental allergy history?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Not Certain"
+                },
+                "value": "notCertain"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,43 @@
+{
+    "id": "diagnosis_l_treatment_select",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "5. Treatment obtained"
+    },
+    "prefLabel": {
+        "en": "diagnosis_l_treatment_select"
+    },
+    "question": {
+        "en": "Select all that apply:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Medical treatment"
+                },
+                "value": "medical_treatment"
+            },
+            {
+                "name": {
+                    "en": "Vocal hygiene and patient education"
+                },
+                "value": "vocal_hygiene_and_patient_education"
+            },
+            {
+                "name": {
+                    "en": "Voice/Speech therapy"
+                },
+                "value": "voice_or_speech_therapy"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

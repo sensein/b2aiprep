@@ -1,0 +1,26 @@
+{
+    "id": "paper_consent_pdf_all_sites",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Identifier?",
+            "source": "redcap",
+            "value": "y"
+        }
+    ],
+    "prefLabel": {
+        "en": "paper_consent_pdf_all_sites"
+    },
+    "question": {
+        "en": "Paper Consent PDF - All Sites"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "documentUpload"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

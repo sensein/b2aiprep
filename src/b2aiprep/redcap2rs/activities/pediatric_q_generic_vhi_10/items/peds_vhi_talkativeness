@@ -1,0 +1,66 @@
+{
+    "id": "peds_vhi_talkativeness",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Text Validation Type OR Show Slider Number",
+            "source": "redcap",
+            "value": "number"
+        },
+        {
+            "column": "Text Validation Min",
+            "source": "redcap",
+            "value": "1.0"
+        },
+        {
+            "column": "Text Validation Max",
+            "source": "redcap",
+            "value": "7.0"
+        },
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "RH"
+        }
+    ],
+    "preamble": {
+        "en": "Pediatric VHI 10 Questionnaire"
+    },
+    "prefLabel": {
+        "en": "peds_vhi_talkativeness"
+    },
+    "question": {
+        "en": "I would rate my child's talkativeness as the following:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Quiet Talker"
+                },
+                "value": "Quiet Talker"
+            },
+            {
+                "name": {
+                    "en": "Average Talker"
+                },
+                "value": "Average Talker"
+            },
+            {
+                "name": {
+                    "en": "Extremely Talkative"
+                },
+                "value": "Extremely Talkative"
+            }
+        ],
+        "maxValue": 7,
+        "minValue": 1,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "slider"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

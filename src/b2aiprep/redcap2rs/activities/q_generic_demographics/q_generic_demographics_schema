@@ -1,0 +1,444 @@
+{
+    "id": "q_generic_demographics_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "q_generic_demographics"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/demographics_session_id",
+            "items/demographics_started_at",
+            "items/demographics_completed_at",
+            "items/demographics_duration",
+            "items/zipcode",
+            "items/country",
+            "items/gender_identity",
+            "items/other_gender_identity",
+            "items/specify_gender_identity",
+            "items/sex_assigned_at_birth",
+            "items/sexual_orientation",
+            "items/other_sex_orientation",
+            "items/race",
+            "items/native_american_race",
+            "items/asian_race",
+            "items/black_race",
+            "items/pacific_islander_race",
+            "items/white_race",
+            "items/canadian_race",
+            "items/other_race_specify",
+            "items/ethnicity",
+            "items/hispanic_latino_selection",
+            "items/edu_level",
+            "items/other_edu_level",
+            "items/employ_status",
+            "items/other_employ_specify",
+            "items/hearing",
+            "items/vision",
+            "items/cognition",
+            "items/mobility",
+            "items/self_care",
+            "items/independent_living",
+            "items/colorblind",
+            "items/tone_deaf",
+            "items/occupation",
+            "items/veteran",
+            "items/household_income_usa",
+            "items/financial_assistance_usa",
+            "items/household_income_ca",
+            "items/financial_assistance_ca",
+            "items/marital_status",
+            "items/housing_status",
+            "items/live_by_yourself",
+            "items/household_count",
+            "items/spouse_partner_sig_other",
+            "items/children",
+            "items/parent",
+            "items/grandparent",
+            "items/roommate",
+            "items/other_live_with",
+            "items/others_household_specify",
+            "items/transportation",
+            "items/primary_transportation",
+            "items/other_transportation",
+            "items/demographics_completed_by",
+            "items/city",
+            "items/state_province",
+            "items/assistance_programs_usa",
+            "items/assistance_programs_ca",
+            "items/citizen",
+            "items/transportation_yn"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/demographics_session_id",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "demographics_session_id"
+            },
+            {
+                "isAbout": "items/demographics_started_at",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "demographics_started_at"
+            },
+            {
+                "isAbout": "items/demographics_completed_at",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "demographics_completed_at"
+            },
+            {
+                "isAbout": "items/demographics_duration",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "demographics_duration"
+            },
+            {
+                "isAbout": "items/zipcode",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "zipcode"
+            },
+            {
+                "isAbout": "items/country",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "country"
+            },
+            {
+                "isAbout": "items/gender_identity",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "gender_identity"
+            },
+            {
+                "isAbout": "items/other_gender_identity",
+                "isVis": "gender_identity=='other'",
+                "valueRequired": false,
+                "variableName": "other_gender_identity"
+            },
+            {
+                "isAbout": "items/specify_gender_identity",
+                "isVis": "gender_identity=='female' || gender_identity=='male'",
+                "valueRequired": false,
+                "variableName": "specify_gender_identity"
+            },
+            {
+                "isAbout": "items/sex_assigned_at_birth",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "sex_assigned_at_birth"
+            },
+            {
+                "isAbout": "items/sexual_orientation",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "sexual_orientation"
+            },
+            {
+                "isAbout": "items/other_sex_orientation",
+                "isVis": "sexual_orientation=='other'",
+                "valueRequired": false,
+                "variableName": "other_sex_orientation"
+            },
+            {
+                "isAbout": "items/race",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "race"
+            },
+            {
+                "isAbout": "items/native_american_race",
+                "isVis": "race___1 == '1'",
+                "valueRequired": false,
+                "variableName": "native_american_race"
+            },
+            {
+                "isAbout": "items/asian_race",
+                "isVis": "race___2=='1'",
+                "valueRequired": false,
+                "variableName": "asian_race"
+            },
+            {
+                "isAbout": "items/black_race",
+                "isVis": "race___3=='1'",
+                "valueRequired": false,
+                "variableName": "black_race"
+            },
+            {
+                "isAbout": "items/pacific_islander_race",
+                "isVis": "race___4=='1'",
+                "valueRequired": false,
+                "variableName": "pacific_islander_race"
+            },
+            {
+                "isAbout": "items/white_race",
+                "isVis": "race___5=='1'",
+                "valueRequired": false,
+                "variableName": "white_race"
+            },
+            {
+                "isAbout": "items/canadian_race",
+                "isVis": "race___6=='1'",
+                "valueRequired": false,
+                "variableName": "canadian_race"
+            },
+            {
+                "isAbout": "items/other_race_specify",
+                "isVis": "race___7 == '1'",
+                "valueRequired": false,
+                "variableName": "other_race_specify"
+            },
+            {
+                "isAbout": "items/ethnicity",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "ethnicity"
+            },
+            {
+                "isAbout": "items/hispanic_latino_selection",
+                "isVis": "ethnicity == 'yes'",
+                "valueRequired": false,
+                "variableName": "hispanic_latino_selection"
+            },
+            {
+                "isAbout": "items/edu_level",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "edu_level"
+            },
+            {
+                "isAbout": "items/other_edu_level",
+                "isVis": "edu_level=='11'",
+                "valueRequired": false,
+                "variableName": "other_edu_level"
+            },
+            {
+                "isAbout": "items/employ_status",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "employ_status"
+            },
+            {
+                "isAbout": "items/other_employ_specify",
+                "isVis": "employ_status___9 == '1'",
+                "valueRequired": false,
+                "variableName": "other_employ_specify"
+            },
+            {
+                "isAbout": "items/hearing",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "hearing"
+            },
+            {
+                "isAbout": "items/vision",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vision"
+            },
+            {
+                "isAbout": "items/cognition",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "cognition"
+            },
+            {
+                "isAbout": "items/mobility",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "mobility"
+            },
+            {
+                "isAbout": "items/self_care",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "self_care"
+            },
+            {
+                "isAbout": "items/independent_living",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "independent_living"
+            },
+            {
+                "isAbout": "items/colorblind",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "colorblind"
+            },
+            {
+                "isAbout": "items/tone_deaf",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "tone_deaf"
+            },
+            {
+                "isAbout": "items/occupation",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "occupation"
+            },
+            {
+                "isAbout": "items/veteran",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "veteran"
+            },
+            {
+                "isAbout": "items/household_income_usa",
+                "isVis": "country =='1'",
+                "valueRequired": false,
+                "variableName": "household_income_usa"
+            },
+            {
+                "isAbout": "items/financial_assistance_usa",
+                "isVis": "country =='1'",
+                "valueRequired": false,
+                "variableName": "financial_assistance_usa"
+            },
+            {
+                "isAbout": "items/household_income_ca",
+                "isVis": "country=='2'",
+                "valueRequired": false,
+                "variableName": "household_income_ca"
+            },
+            {
+                "isAbout": "items/financial_assistance_ca",
+                "isVis": "country=='2'",
+                "valueRequired": false,
+                "variableName": "financial_assistance_ca"
+            },
+            {
+                "isAbout": "items/marital_status",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "marital_status"
+            },
+            {
+                "isAbout": "items/housing_status",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "housing_status"
+            },
+            {
+                "isAbout": "items/live_by_yourself",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "live_by_yourself"
+            },
+            {
+                "isAbout": "items/household_count",
+                "isVis": "live_by_yourself=='no'",
+                "valueRequired": false,
+                "variableName": "household_count"
+            },
+            {
+                "isAbout": "items/spouse_partner_sig_other",
+                "isVis": "household_count>0",
+                "valueRequired": false,
+                "variableName": "spouse_partner_sig_other"
+            },
+            {
+                "isAbout": "items/children",
+                "isVis": "household_count>0",
+                "valueRequired": false,
+                "variableName": "children"
+            },
+            {
+                "isAbout": "items/parent",
+                "isVis": "household_count>0",
+                "valueRequired": false,
+                "variableName": "parent"
+            },
+            {
+                "isAbout": "items/grandparent",
+                "isVis": "household_count>0",
+                "valueRequired": false,
+                "variableName": "grandparent"
+            },
+            {
+                "isAbout": "items/roommate",
+                "isVis": "household_count>0",
+                "valueRequired": false,
+                "variableName": "roommate"
+            },
+            {
+                "isAbout": "items/other_live_with",
+                "isVis": "household_count>0",
+                "valueRequired": false,
+                "variableName": "other_live_with"
+            },
+            {
+                "isAbout": "items/others_household_specify",
+                "isVis": "other_live_with=='1'",
+                "valueRequired": false,
+                "variableName": "others_household_specify"
+            },
+            {
+                "isAbout": "items/transportation",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "transportation"
+            },
+            {
+                "isAbout": "items/primary_transportation",
+                "isVis": "transportation=='yes'",
+                "valueRequired": false,
+                "variableName": "primary_transportation"
+            },
+            {
+                "isAbout": "items/other_transportation",
+                "isVis": "primary_transportation=='8'",
+                "valueRequired": false,
+                "variableName": "other_transportation"
+            },
+            {
+                "isAbout": "items/demographics_completed_by",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "demographics_completed_by"
+            },
+            {
+                "isAbout": "items/city",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "city"
+            },
+            {
+                "isAbout": "items/state_province",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "state_province"
+            },
+            {
+                "isAbout": "items/assistance_programs_usa",
+                "isVis": "country =='1'",
+                "valueRequired": false,
+                "variableName": "assistance_programs_usa"
+            },
+            {
+                "isAbout": "items/assistance_programs_ca",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "assistance_programs_ca"
+            },
+            {
+                "isAbout": "items/citizen",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "citizen"
+            },
+            {
+                "isAbout": "items/transportation_yn",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "transportation_yn"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "4.2.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

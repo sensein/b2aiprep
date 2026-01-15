@@ -1,0 +1,30 @@
+{
+    "id": "diagnosis_parkinsons_gsd_category_2_calculation",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@CALCTEXT(if(([diagnosis_parkinsons_gsd_category_2(cerebellar_abnormalities)] || [diagnosis_parkinsons_gsd_category_2(supranuclear_gaze_palsy)] || [diagnosis_parkinsons_gsd_category_2(bvf_ftd_ppa)] || [diagnosis_parkinsons_gsd_category_2(lower_limbs)] || [diagnosis_parkinsons_gsd_category_2(dopamine_treatment)] || [diagnosis_parkinsons_gsd_category_2(absence_of_response)] || [diagnosis_parkinsons_gsd_category_2(cortical_sensory_loss)] || [diagnosis_parkinsons_gsd_category_2(dat_scan)] || [diagnosis_parkinsons_gsd_category_2(alternative_condition)]), 'No', 'Yes'))"
+        }
+    ],
+    "description": {
+        "en": "Category 2 Criteria Met"
+    },
+    "preamble": {
+        "en": "Has the participant met the diagnostic criteria for Parkinson's Disease (Parkinsonism) based on presence of:"
+    },
+    "prefLabel": {
+        "en": "diagnosis_parkinsons_gsd_category_2_calculation"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

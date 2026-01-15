@@ -1,0 +1,109 @@
+{
+    "id": "diagnosis_ca_pharmacologic_treatment",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Treatment obtained"
+    },
+    "prefLabel": {
+        "en": "diagnosis_ca_pharmacologic_treatment"
+    },
+    "question": {
+        "en": "What pharmacologic treatment is the participant currently receiving? (Select all that apply)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "LABA"
+                },
+                "value": "laba"
+            },
+            {
+                "name": {
+                    "en": "LAMA"
+                },
+                "value": "lama"
+            },
+            {
+                "name": {
+                    "en": "SABA"
+                },
+                "value": "saba"
+            },
+            {
+                "name": {
+                    "en": "SAMA"
+                },
+                "value": "sama"
+            },
+            {
+                "name": {
+                    "en": "ICS"
+                },
+                "value": "ics"
+            },
+            {
+                "name": {
+                    "en": "PDE 4 inhibitor"
+                },
+                "value": "pde4"
+            },
+            {
+                "name": {
+                    "en": "Methylxanthines"
+                },
+                "value": "methylxanthines"
+            },
+            {
+                "name": {
+                    "en": "Biologics"
+                },
+                "value": "biologics"
+            },
+            {
+                "name": {
+                    "en": "Systemic steroids"
+                },
+                "value": "systemic_steroids"
+            },
+            {
+                "name": {
+                    "en": "Antibiotics"
+                },
+                "value": "antibiotics"
+            },
+            {
+                "name": {
+                    "en": "Mucolytics"
+                },
+                "value": "mucolytics"
+            },
+            {
+                "name": {
+                    "en": "PDE 3 and Inhibitor"
+                },
+                "value": "pde3"
+            },
+            {
+                "name": {
+                    "en": "Leukotriene Inhibitors"
+                },
+                "value": "leukotriene_inhibitors"
+            },
+            {
+                "name": {
+                    "en": "Others"
+                },
+                "value": "others"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

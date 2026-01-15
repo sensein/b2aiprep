@@ -1,0 +1,37 @@
+{
+    "id": "diagnosis_mtd_gsd_evaluations_2",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "1. Gold Standard Diagnosis"
+    },
+    "prefLabel": {
+        "en": "diagnosis_mtd_gsd_evaluations_2"
+    },
+    "question": {
+        "en": "How was this confirmed? Select all that apply:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Laryngoscopy/Stroboscopy"
+                },
+                "value": "laryngoscopy_stroboscopy"
+            },
+            {
+                "name": {
+                    "en": "Voice Evaluation"
+                },
+                "value": "voice_evaluation"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,51 @@
+{
+    "id": "ear_med_history",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "ear_med_history"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nEar"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Chronic ear infection"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Cochlear implant"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Hearing loss"
+                },
+                "value": 3
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

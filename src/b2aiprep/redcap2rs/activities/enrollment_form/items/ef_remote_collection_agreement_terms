@@ -1,0 +1,45 @@
+{
+    "id": "ef_remote_collection_agreement_terms",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@READONLY"
+        }
+    ],
+    "preamble": {
+        "en": "Review and Enroll"
+    },
+    "prefLabel": {
+        "en": "ef_remote_collection_agreement_terms"
+    },
+    "question": {
+        "en": "I acknowledge that:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "I have a confirmed clinical diagnosis and proof of a disorder that qualifies me to participate in this study."
+                },
+                "value": "ef_confirmed_clinical_diagnosis"
+            },
+            {
+                "name": {
+                    "en": "I will need to have a video camera turned on during any interactions with the research team."
+                },
+                "value": "ef_agree_video_camera"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

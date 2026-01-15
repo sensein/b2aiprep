@@ -1,0 +1,36 @@
+{
+    "id": "diagnosis_ca_pft_lung",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "1. Spirometry and diagnosis"
+    },
+    "prefLabel": {
+        "en": "diagnosis_ca_pft_lung"
+    },
+    "question": {
+        "en": "Is there a full PFT including lung volumes?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

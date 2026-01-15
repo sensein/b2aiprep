@@ -1,0 +1,42 @@
+{
+    "id": "diagnosis_as_as_s",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Disease Severity"
+    },
+    "prefLabel": {
+        "en": "diagnosis_as_as_s"
+    },
+    "question": {
+        "en": "Can you subjectively classify the severity of the stridor?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Mild"
+                },
+                "value": "mild"
+            },
+            {
+                "name": {
+                    "en": "Moderate"
+                },
+                "value": "moderate"
+            },
+            {
+                "name": {
+                    "en": "Severe"
+                },
+                "value": "severe"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

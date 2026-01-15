@@ -1,0 +1,101 @@
+{
+    "id": "q_generic_gad7_anxiety_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "q_generic_gad7_anxiety"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/gad_7_session_id",
+            "items/gad_7_started_at",
+            "items/gad_7_completed_at",
+            "items/gad_7_duration",
+            "items/nervous_anxious",
+            "items/cant_control_worry",
+            "items/worry_too_much",
+            "items/trouble_relaxing",
+            "items/hard_to_sit_still",
+            "items/easily_agitated",
+            "items/afraid_of_things",
+            "items/tough_to_work"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/gad_7_session_id",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "gad_7_session_id"
+            },
+            {
+                "isAbout": "items/gad_7_started_at",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "gad_7_started_at"
+            },
+            {
+                "isAbout": "items/gad_7_completed_at",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "gad_7_completed_at"
+            },
+            {
+                "isAbout": "items/gad_7_duration",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "gad_7_duration"
+            },
+            {
+                "isAbout": "items/nervous_anxious",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "nervous_anxious"
+            },
+            {
+                "isAbout": "items/cant_control_worry",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "cant_control_worry"
+            },
+            {
+                "isAbout": "items/worry_too_much",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "worry_too_much"
+            },
+            {
+                "isAbout": "items/trouble_relaxing",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "trouble_relaxing"
+            },
+            {
+                "isAbout": "items/hard_to_sit_still",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "hard_to_sit_still"
+            },
+            {
+                "isAbout": "items/easily_agitated",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "easily_agitated"
+            },
+            {
+                "isAbout": "items/afraid_of_things",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "afraid_of_things"
+            },
+            {
+                "isAbout": "items/tough_to_work",
+                "isVis": "nervous_anxious > 0 || cant_control_worry > 0 || worry_too_much > 0 || trouble_relaxing > 0 || hard_to_sit_still > 0 || easily_agitated > 0 || afraid_of_things > 0",
+                "valueRequired": false,
+                "variableName": "tough_to_work"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "3.24.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

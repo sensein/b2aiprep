@@ -1,0 +1,42 @@
+{
+    "id": "diagnosis_parkinsons_etiology",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "3. Etiology"
+    },
+    "prefLabel": {
+        "en": "diagnosis_parkinsons_etiology"
+    },
+    "question": {
+        "en": "What is the suspected or known etiology of Parkinson's disease in the participant?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Idiopathic (unknown cause)"
+                },
+                "value": "idiopathic"
+            },
+            {
+                "name": {
+                    "en": "Familial Parkinson's Disease"
+                },
+                "value": "familialParkinsonsDisease"
+            },
+            {
+                "name": {
+                    "en": "Environmental factors"
+                },
+                "value": "environmentalFactors"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

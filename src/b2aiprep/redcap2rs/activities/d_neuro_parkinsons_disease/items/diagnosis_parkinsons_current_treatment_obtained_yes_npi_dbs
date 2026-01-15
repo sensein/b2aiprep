@@ -1,0 +1,55 @@
+{
+    "id": "diagnosis_parkinsons_current_treatment_obtained_yes_npi_dbs",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "7. Treatment Obtained"
+    },
+    "prefLabel": {
+        "en": "diagnosis_parkinsons_current_treatment_obtained_yes_npi_dbs"
+    },
+    "question": {
+        "en": "What targets?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Left STN (sub-thalamic nucleus)"
+                },
+                "value": "left_stn"
+            },
+            {
+                "name": {
+                    "en": "Right STN (sub-thalamic nucleus)"
+                },
+                "value": "right_stn"
+            },
+            {
+                "name": {
+                    "en": "Left GPI (globus pallidus internus)"
+                },
+                "value": "left_gpi"
+            },
+            {
+                "name": {
+                    "en": "Right GPI (globus pallidus internus)"
+                },
+                "value": "right_gpi"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,66 @@
+{
+    "id": "menstruate_no",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Gynecological"
+    },
+    "prefLabel": {
+        "en": "menstruate_no"
+    },
+    "question": {
+        "en": "Please explain"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "I am currently pregnant"
+                },
+                "value": "pregnant"
+            },
+            {
+                "name": {
+                    "en": "I'm using birth control"
+                },
+                "value": "birthControl"
+            },
+            {
+                "name": {
+                    "en": "I have an IUD [DEPRECATED]"
+                },
+                "value": "iud"
+            },
+            {
+                "name": {
+                    "en": "I have gone through menopause or have had a hysterectomy"
+                },
+                "value": "menopause"
+            },
+            {
+                "name": {
+                    "en": "I no longer have my period due to hormone therapy"
+                },
+                "value": "hormoneTherapy"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": "noAnswer"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

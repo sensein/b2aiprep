@@ -1,0 +1,22 @@
+{
+    "id": "diagnosis_als_etiology_environmental_factors",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "3. Etiology"
+    },
+    "prefLabel": {
+        "en": "diagnosis_als_etiology_environmental_factors"
+    },
+    "question": {
+        "en": "If you selected \"Environmental factors\", please specify:"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

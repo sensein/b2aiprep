@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_123",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_123"
+    },
+    "question": {
+        "en": "123. Many people start to read Paul's books and can't put them down. They are gripped because Paul writes so well. Who or what are gripped?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "The readers"
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "The books"
+                },
+                "value": "incorrect"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

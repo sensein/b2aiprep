@@ -1,0 +1,60 @@
+{
+    "id": "edible_substance_in_past_three_months",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Other Substance use"
+    },
+    "prefLabel": {
+        "en": "edible_substance_in_past_three_months"
+    },
+    "question": {
+        "en": "In the PAST THREE MONTHS, how often have you taken marijuana  as an EDIBLE either recreationally or as prescribed by a doctor?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "None"
+                },
+                "value": "none"
+            },
+            {
+                "name": {
+                    "en": "Once or twice"
+                },
+                "value": "onceOrTwice"
+            },
+            {
+                "name": {
+                    "en": "Monthly"
+                },
+                "value": "monthly"
+            },
+            {
+                "name": {
+                    "en": "Weekly"
+                },
+                "value": "weekly"
+            },
+            {
+                "name": {
+                    "en": "Daily or almost daily"
+                },
+                "value": "daily"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": "noAnswer"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

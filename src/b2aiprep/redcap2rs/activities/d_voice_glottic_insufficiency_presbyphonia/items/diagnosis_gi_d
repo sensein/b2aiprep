@@ -1,0 +1,48 @@
+{
+    "id": "diagnosis_gi_d",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "2. Disease Subtype/etiology"
+    },
+    "prefLabel": {
+        "en": "diagnosis_gi_d"
+    },
+    "question": {
+        "en": "What is the glottic insufficiency diagnosis?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Vocal fold atrophy related to aging (Presbyphonia)"
+                },
+                "value": "vocalFoldAtrophyRelatedToAging"
+            },
+            {
+                "name": {
+                    "en": "Vocal fold atrophy related to other cause"
+                },
+                "value": "vocalFoldAtrophyRelatedToOtherCause"
+            },
+            {
+                "name": {
+                    "en": "Bilateral sulcus"
+                },
+                "value": "bilateralSulcus"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

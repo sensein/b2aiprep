@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_14",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_14"
+    },
+    "question": {
+        "en": "14. Frank felt crushed when his longtime rival Bill revealed that he was the winner of the competition. Who was the winner of the competition?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Frank"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "Bill"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

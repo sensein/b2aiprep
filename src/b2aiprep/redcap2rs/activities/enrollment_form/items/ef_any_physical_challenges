@@ -1,0 +1,36 @@
+{
+    "id": "ef_any_physical_challenges",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Let's customize your experience"
+    },
+    "prefLabel": {
+        "en": "ef_any_physical_challenges"
+    },
+    "question": {
+        "en": "This application requires you to navigate through the questions using a touch screen. Do you have any physical challenges we can accommodate?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": 0
+            }
+        ],
+        "valueType": [
+            "xsd:boolean"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

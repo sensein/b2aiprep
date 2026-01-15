@@ -1,0 +1,45 @@
+{
+    "id": "diagnosis_mtd_gsd_evaluations",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "diagnosis_mtd_gsd_evaluations"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nDetermined by (Select all that apply):"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Laryngologist"
+                },
+                "value": "laryngologist"
+            },
+            {
+                "name": {
+                    "en": "Speech-Language Pathology"
+                },
+                "value": "speech_language_pathology"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

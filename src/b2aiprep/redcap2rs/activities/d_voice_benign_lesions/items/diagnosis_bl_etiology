@@ -1,0 +1,42 @@
+{
+    "id": "diagnosis_bl_etiology",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "3. Etiology"
+    },
+    "prefLabel": {
+        "en": "diagnosis_bl_etiology"
+    },
+    "question": {
+        "en": "What is the etiology?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Phonotrauma"
+                },
+                "value": "phonotrauma"
+            },
+            {
+                "name": {
+                    "en": "HPV virus (RRP)"
+                },
+                "value": "rrp"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

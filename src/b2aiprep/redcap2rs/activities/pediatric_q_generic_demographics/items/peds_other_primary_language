@@ -1,0 +1,22 @@
+{
+    "id": "peds_other_primary_language",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Primary Language"
+    },
+    "prefLabel": {
+        "en": "peds_other_primary_language"
+    },
+    "question": {
+        "en": "If you selected \"other\" for primary language, please specify:"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

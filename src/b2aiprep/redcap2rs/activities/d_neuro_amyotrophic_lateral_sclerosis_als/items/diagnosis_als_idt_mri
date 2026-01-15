@@ -1,0 +1,22 @@
+{
+    "id": "diagnosis_als_idt_mri",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "7. Imaging and Diagnostic Tests"
+    },
+    "prefLabel": {
+        "en": "diagnosis_als_idt_mri"
+    },
+    "question": {
+        "en": "Magnetic Resonance Imaging (MRI) of the brain and spinal cord:"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "documentUpload"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,115 @@
+{
+    "id": "q_resp_dyspnea_index_di_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "q_resp_dyspnea_index_di"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/dyspnea_index_session_id",
+            "items/dyspnea_index_started_at",
+            "items/dyspnea_index_completed_at",
+            "items/dyspnea_index_duration",
+            "items/di_air_in",
+            "items/di_tightness_throat",
+            "items/di_effort_breathe",
+            "items/di_weather_changes",
+            "items/di_breathing_worse_stress",
+            "items/di_sound_breathing_in",
+            "items/di_strain",
+            "items/di_exercise",
+            "items/di_breathing_stresses_me",
+            "items/di_restrict_personal_social_life"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/dyspnea_index_session_id",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "dyspnea_index_session_id"
+            },
+            {
+                "isAbout": "items/dyspnea_index_started_at",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "dyspnea_index_started_at"
+            },
+            {
+                "isAbout": "items/dyspnea_index_completed_at",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "dyspnea_index_completed_at"
+            },
+            {
+                "isAbout": "items/dyspnea_index_duration",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "dyspnea_index_duration"
+            },
+            {
+                "isAbout": "items/di_air_in",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "di_air_in"
+            },
+            {
+                "isAbout": "items/di_tightness_throat",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "di_tightness_throat"
+            },
+            {
+                "isAbout": "items/di_effort_breathe",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "di_effort_breathe"
+            },
+            {
+                "isAbout": "items/di_weather_changes",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "di_weather_changes"
+            },
+            {
+                "isAbout": "items/di_breathing_worse_stress",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "di_breathing_worse_stress"
+            },
+            {
+                "isAbout": "items/di_sound_breathing_in",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "di_sound_breathing_in"
+            },
+            {
+                "isAbout": "items/di_strain",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "di_strain"
+            },
+            {
+                "isAbout": "items/di_exercise",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "di_exercise"
+            },
+            {
+                "isAbout": "items/di_breathing_stresses_me",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "di_breathing_stresses_me"
+            },
+            {
+                "isAbout": "items/di_restrict_personal_social_life",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "di_restrict_personal_social_life"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "3.20.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,26 @@
+{
+    "id": "inclusion_date",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Text Validation Type OR Show Slider Number",
+            "source": "redcap",
+            "value": "date_mdy"
+        }
+    ],
+    "prefLabel": {
+        "en": "inclusion_date"
+    },
+    "question": {
+        "en": "Date Data Inclusion was requested"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:date"
+        ]
+    },
+    "ui": {
+        "inputType": "date"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

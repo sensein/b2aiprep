@@ -1,0 +1,73 @@
+{
+    "id": "lcq_exposure_paint",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Matrix Group Name",
+            "source": "redcap",
+            "value": "leicester_cough"
+        }
+    ],
+    "preamble": {
+        "en": "Please answer the following questions using a 1-7 rating scale.\n\n1 = None of the time; 2 = Hardly any of the time; 3 = A little of the time; 4 = Some of the time; 5 = A good bit of the time; 6 = Most of the time; 7 = All of the time"
+    },
+    "prefLabel": {
+        "en": "lcq_exposure_paint"
+    },
+    "question": {
+        "en": "In the last 2 weeks, exposure to paint or fumes has made me cough."
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "None of the time"
+                },
+                "value": "noneOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Hardly any of the time"
+                },
+                "value": "hardlyAnyOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A little of the time"
+                },
+                "value": "aLittleOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Some of the time"
+                },
+                "value": "someOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "A good bit of the time"
+                },
+                "value": "aGoodBitOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "Most of the time"
+                },
+                "value": "mostOfTheTime"
+            },
+            {
+                "name": {
+                    "en": "All of the time"
+                },
+                "value": "allOfTheTime"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

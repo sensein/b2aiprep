@@ -1,0 +1,49 @@
+{
+    "id": "peds_mc_snoring_apnea",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Pediatric Medical Conditions Questionnaire"
+    },
+    "prefLabel": {
+        "en": "peds_mc_snoring_apnea"
+    },
+    "question": {
+        "en": "Does your child have a history of a snoring or obstructive sleep apnea? (Select all that apply)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Snoring"
+                },
+                "value": "snoring"
+            },
+            {
+                "name": {
+                    "en": "Gasping for air at night"
+                },
+                "value": "gasping"
+            },
+            {
+                "name": {
+                    "en": "Obstructive Sleep apnea (diagnosed on a sleep study)"
+                },
+                "value": "obstructive_sleep_apnea"
+            },
+            {
+                "name": {
+                    "en": "Has your child had a sleep study?"
+                },
+                "value": "had_sleep_study"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,61 @@
+{
+    "id": "diagnosis_als_treatment_and_management_yes_medications",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "8. Treatment and Management"
+    },
+    "prefLabel": {
+        "en": "diagnosis_als_treatment_and_management_yes_medications"
+    },
+    "question": {
+        "en": "Medications (if applicable):"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Riluzole"
+                },
+                "value": "riluzole"
+            },
+            {
+                "name": {
+                    "en": "Edaravone"
+                },
+                "value": "edaravone"
+            },
+            {
+                "name": {
+                    "en": "Sodium phenylbutyrate/taurursodiol"
+                },
+                "value": "sodium"
+            },
+            {
+                "name": {
+                    "en": "Tofersen"
+                },
+                "value": "tofersen"
+            },
+            {
+                "name": {
+                    "en": "Symptomatic treatment (e.g., for spasticity, pain)"
+                },
+                "value": "symptomatic_treatment"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

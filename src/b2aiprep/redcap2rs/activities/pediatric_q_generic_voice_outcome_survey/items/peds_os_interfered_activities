@@ -1,0 +1,54 @@
+{
+    "id": "peds_os_interfered_activities",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Pediatric Voice Outcome Survey"
+    },
+    "prefLabel": {
+        "en": "peds_os_interfered_activities"
+    },
+    "question": {
+        "en": "During the past 2 weeks, to what extent has your child's voice interfered with his or her normal social activities or with his or her school?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Not at all"
+                },
+                "value": "notAtAll"
+            },
+            {
+                "name": {
+                    "en": "Slightly"
+                },
+                "value": "slightly"
+            },
+            {
+                "name": {
+                    "en": "Moderately"
+                },
+                "value": "moderately"
+            },
+            {
+                "name": {
+                    "en": "Quite a bit"
+                },
+                "value": "quiteABit"
+            },
+            {
+                "name": {
+                    "en": "Extremely"
+                },
+                "value": "extremely"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

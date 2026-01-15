@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_117",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_117"
+    },
+    "question": {
+        "en": "117. Sam and Amy are passionately in love, but Amy's parents are unhappy about it, because they are snobs. Who are snobs?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Amy's parents"
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "Sam and Amy"
+                },
+                "value": "incorrect"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

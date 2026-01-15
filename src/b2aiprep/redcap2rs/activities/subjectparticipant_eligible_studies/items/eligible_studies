@@ -1,0 +1,74 @@
+{
+    "id": "eligible_studies",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Eligible Studies"
+    },
+    "prefLabel": {
+        "en": "eligible_studies"
+    },
+    "question": {
+        "en": "Eligible Studies"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Voice Disorders"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Neurological and Neurodegenerative Disorders"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Mood and Psychiatric Disorders"
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "Respiratory Disorders"
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "Pediatric Disorders - Ages [2-4)"
+                },
+                "value": "age_2_4"
+            },
+            {
+                "name": {
+                    "en": "Pediatric Disorders - Ages [4-6)"
+                },
+                "value": "age_4_6"
+            },
+            {
+                "name": {
+                    "en": "Pediatric Disorders - Ages [6-10)"
+                },
+                "value": "age_6_10"
+            },
+            {
+                "name": {
+                    "en": "Pediatric Disorders - Ages 10+"
+                },
+                "value": "age_10_plus"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer",
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

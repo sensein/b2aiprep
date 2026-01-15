@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_124",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_124"
+    },
+    "question": {
+        "en": "124. Many people start to read Paul's books and can't put them down. They are popular because Paul writes so well. Who or what are popular?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "The readers"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "The books"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,61 @@
+{
+    "id": "diagnosis_ld_ds",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "2. Disease Subtype"
+    },
+    "prefLabel": {
+        "en": "diagnosis_ld_ds"
+    },
+    "question": {
+        "en": "Disease Subtypes:\n(Select all that apply)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Adductor laryngeal dystonia (ADLD)"
+                },
+                "value": "adld"
+            },
+            {
+                "name": {
+                    "en": "Abductor laryngeal dystonia (ABLD)"
+                },
+                "value": "abld"
+            },
+            {
+                "name": {
+                    "en": "Vocal Tremor"
+                },
+                "value": "vocal_tremor"
+            },
+            {
+                "name": {
+                    "en": "Mixed laryngeal dystonia"
+                },
+                "value": "mixed_laryngeal_dystonia"
+            },
+            {
+                "name": {
+                    "en": "Singer's laryngeal dystonia (SLD)"
+                },
+                "value": "sld"
+            },
+            {
+                "name": {
+                    "en": "Adductor laryngeal spasms during inspiration (ARLD)"
+                },
+                "value": "arld"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

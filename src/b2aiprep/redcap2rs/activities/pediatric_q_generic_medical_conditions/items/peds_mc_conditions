@@ -1,0 +1,91 @@
+{
+    "id": "peds_mc_conditions",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Pediatric Medical Conditions Questionnaire"
+    },
+    "prefLabel": {
+        "en": "peds_mc_conditions"
+    },
+    "question": {
+        "en": "Does your child have any of the following conditions? (Select all that apply)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Osteogenesis imperfecta"
+                },
+                "value": "osteogenesis_imperfecta"
+            },
+            {
+                "name": {
+                    "en": "Trisomy 21 (Down's Syndrome)"
+                },
+                "value": "trisomy21"
+            },
+            {
+                "name": {
+                    "en": "Prematurity"
+                },
+                "value": "prematurity"
+            },
+            {
+                "name": {
+                    "en": "Congenital heart disease"
+                },
+                "value": "congenital_heart_disease"
+            },
+            {
+                "name": {
+                    "en": "Tracheoesophageal fistula"
+                },
+                "value": "tracheoesophageal_fistula"
+            },
+            {
+                "name": {
+                    "en": "Esophageal atresia"
+                },
+                "value": "esophageal_atresia"
+            },
+            {
+                "name": {
+                    "en": "Cystic fibrosis"
+                },
+                "value": "cystic_fibrosis"
+            },
+            {
+                "name": {
+                    "en": "Rheumatoid arthritis"
+                },
+                "value": "rheumatoid_arthritis"
+            },
+            {
+                "name": {
+                    "en": "Granulomatosis with polyangitis"
+                },
+                "value": "granulomatosis_with_polyangitis"
+            },
+            {
+                "name": {
+                    "en": "Mucopolysaccharidosis"
+                },
+                "value": "mucopolysaccharidosis"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

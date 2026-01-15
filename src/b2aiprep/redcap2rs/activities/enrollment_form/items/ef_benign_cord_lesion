@@ -1,0 +1,43 @@
+{
+    "id": "ef_benign_cord_lesion",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Matrix Group Name",
+            "source": "redcap",
+            "value": "ef_voice_disorders"
+        }
+    ],
+    "preamble": {
+        "en": "Voice Disorders"
+    },
+    "prefLabel": {
+        "en": "ef_benign_cord_lesion"
+    },
+    "question": {
+        "en": "Lesions of the vocal cord (nodule, polyp, cyst)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Unchecked"
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "Checked"
+                },
+                "value": 1
+            }
+        ],
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

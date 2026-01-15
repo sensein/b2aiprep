@@ -1,0 +1,36 @@
+{
+    "id": "diagnosis_parkinsons_current_treatment_obtained",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "7. Treatment Obtained"
+    },
+    "prefLabel": {
+        "en": "diagnosis_parkinsons_current_treatment_obtained"
+    },
+    "question": {
+        "en": "Is the participant currently undergoing any treatment for Parkinson's disease?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,49 @@
+{
+    "id": "diagnosis_gi_treatment_select",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Treatment obtained"
+    },
+    "prefLabel": {
+        "en": "diagnosis_gi_treatment_select"
+    },
+    "question": {
+        "en": "Select all that apply:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Voice/speech therapy"
+                },
+                "value": "voice_or_speech_therapy"
+            },
+            {
+                "name": {
+                    "en": "Injection laryngoplasty"
+                },
+                "value": "injection_laryngoplasty"
+            },
+            {
+                "name": {
+                    "en": "Bilateral medialization thyroplasty"
+                },
+                "value": "bilateral_medialization_thyroplasty"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

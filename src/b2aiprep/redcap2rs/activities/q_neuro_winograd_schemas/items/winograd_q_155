@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_155",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_155"
+    },
+    "question": {
+        "en": "155. Jackson was greatly influenced by Arnold, though he lived two centuries earlier. Who lived earlier?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Arnold"
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "Jackson"
+                },
+                "value": "incorrect"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

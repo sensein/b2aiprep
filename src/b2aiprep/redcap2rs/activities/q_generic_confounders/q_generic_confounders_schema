@@ -1,0 +1,2348 @@
+{
+    "id": "q_generic_confounders_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "q_generic_confounders"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/confounders_session_id",
+            "items/confounders_started_at",
+            "items/confounders_completed_at",
+            "items/confounders_duration",
+            "items/tell_us_about_you_health_header",
+            "items/chronic_ear_infections",
+            "items/cleft_lip",
+            "items/cleft_palate",
+            "items/craniofacial_trauma",
+            "items/hearing_loss",
+            "items/seasonal_allergies_med_hist_enm",
+            "items/sinusitis",
+            "items/sjogrens_syndrome",
+            "items/velopharyngeal_insufficiency",
+            "items/any_dental_condition",
+            "items/any_dental_condition_specify",
+            "items/other_ear_nose_mouth_condition",
+            "items/other_ear_nose_mouth_condition_specify",
+            "items/acid_reflux",
+            "items/airway_stenosis_med_hist_throat",
+            "items/chronic_cough_med_hist_throat",
+            "items/glottic_insufficiency_med_hist_throat",
+            "items/laryngitis_med_hist_throat",
+            "items/laryngospasm_irritable_larynx",
+            "items/muscle_tension_dysphonia",
+            "items/swallowing_disorder",
+            "items/thyroid_disease",
+            "items/vocal_cord_dysfunction",
+            "items/vocal_fold_hemorrhage",
+            "items/lesions_vocal_cord",
+            "items/vfp_bilateral",
+            "items/vfp_unilateral",
+            "items/other_throat_condition",
+            "items/other_throat_condition_specify",
+            "items/daily_env_pollution_affects_your_breathing_voice",
+            "items/apraxia_of_speech",
+            "items/ataxia",
+            "items/dysarthria",
+            "items/stutter_dysfluency",
+            "items/other_speech_condition",
+            "items/other_speech_conditions_specify",
+            "items/airway_surgery_reconstruction",
+            "items/chronic_ear_surgery",
+            "items/cochlear_implant",
+            "items/cordotomy_arytenoidectomy_arytenoid_tie_back",
+            "items/ear_tubes",
+            "items/esophageal_dilation",
+            "items/nose_surgery",
+            "items/sinus_surgery",
+            "items/sleep_surgery",
+            "items/tonsillectomy",
+            "items/tracheostomy",
+            "items/other_surgical_treatment_enmt_speech_condition",
+            "items/other_surgical_treatment_enmt_speech_cond_specify",
+            "items/botox_injections",
+            "items/c_pap",
+            "items/injection_implant_to_vocal_folds",
+            "items/medication_enmt",
+            "items/radiation_to_head_neck",
+            "items/speech_voice_swallowing_therapy",
+            "items/non_surgical_treatment_enmt_speech_cond",
+            "items/non_surgical_treatment_enmt_speech_cond_specify",
+            "items/asthma_med_hist_lung",
+            "items/bronchiectasis",
+            "items/chest_wall_trauma",
+            "items/copd_med_hist_lung",
+            "items/covid_med_hist_lung",
+            "items/emphysema",
+            "items/interstitial_lung_disease",
+            "items/osa_med_hist_lung",
+            "items/pneumothorax_atelectasis",
+            "items/pulmonary_hypertension",
+            "items/recurrent_bronchitis",
+            "items/tuberculosis",
+            "items/covid_tested_positive_last_10_days",
+            "items/other_lung_conditions",
+            "items/other_lung_conditions_specify",
+            "items/chest_surgery",
+            "items/lobectomy",
+            "items/medication_med_hist_lung",
+            "items/prolonged_intubation",
+            "items/radiation_to_the_chest",
+            "items/supplemental_oxygen",
+            "items/other_lung_treatment",
+            "items/other_lung_treatment_specify",
+            "items/brain_tumor",
+            "items/epilepsy",
+            "items/multiple_sclerosis",
+            "items/parkinsons_disease",
+            "items/stroke",
+            "items/traumatic_brain_injury",
+            "items/other_neurological_condition",
+            "items/other_neurological_condition_specify",
+            "items/deep_brain_stimulator",
+            "items/medication_med_history_neuro",
+            "items/vagal_nerve_stimulator",
+            "items/other_neurological_treatment",
+            "items/other_neurological_treatment_specify",
+            "items/alcohol_substance_use_disorder",
+            "items/anxiety_disorder",
+            "items/adhd_med_hist_psychological",
+            "items/asd_med_hist_psychological",
+            "items/bipolar_disorder",
+            "items/bpd_med_hist_psychological",
+            "items/depression_major_depressive_disorder",
+            "items/eating_disorder",
+            "items/obsessive_compulsive_disorder",
+            "items/panic_disorder",
+            "items/ptsd_med_hist_psychological",
+            "items/schizophrenia_med_hist_psychological",
+            "items/psychological_condition_other",
+            "items/psychological_condition_other_specify",
+            "items/talk_therapy_mental_health_prof",
+            "items/medication_med_history_psychological",
+            "items/mindfulness_meditation",
+            "items/other_treatment_psychological_condition",
+            "items/other_treatment_psychological_condition_specify",
+            "items/brain_cancer",
+            "items/ear_cancer",
+            "items/laryngeal_cancer",
+            "items/lung_cancer",
+            "items/oral_cancer",
+            "items/sinus_cancer",
+            "items/esophageal_cancer",
+            "items/thyroid_cancer",
+            "items/other_cancer",
+            "items/other_cancer_past_specify",
+            "items/other_cancer_current_specify",
+            "items/chemotherapy",
+            "items/surgery",
+            "items/immunotherapy",
+            "items/radiation",
+            "items/radioactive_iodine",
+            "items/medication_med_hist_cancer",
+            "items/experimental_treatment",
+            "items/other_cancer_treatment",
+            "items/experimental_treatment_past_specify",
+            "items/experimental_treatment_current_specify",
+            "items/other_cancer_treatment_past_specify",
+            "items/other_treatment_cancer_current_specify",
+            "items/atrial_fibrillation",
+            "items/chronic_pericarditis",
+            "items/congestive_heart_failure",
+            "items/coronary_heart_disease",
+            "items/chronic_kidney_disease",
+            "items/obesity",
+            "items/scoliosis",
+            "items/currently_considered_obese",
+            "items/currently_have_diabetes",
+            "items/diabetes_type",
+            "items/other_heart_disease",
+            "items/other_heart_disease_specify",
+            "items/any_infectious_disease",
+            "items/any_infectious_disease_specify",
+            "items/anti_anxiety_medication",
+            "items/antibiotics",
+            "items/anticholergenics",
+            "items/antidepressants",
+            "items/antiepileptics",
+            "items/allergy_medications",
+            "items/blood_pressure_medications",
+            "items/pain_medications",
+            "items/decongestants",
+            "items/diuretics",
+            "items/hormones",
+            "items/immune_suppressors",
+            "items/inhaled_corticosteroids",
+            "items/muscle_relaxants",
+            "items/oral_steroids",
+            "items/psychotropic_antipsychotic_medications",
+            "items/reflux_medications",
+            "items/stimulants_medications",
+            "items/analgesics",
+            "items/nsaids",
+            "items/opiates",
+            "items/neuro_modulators",
+            "items/androgenic_steroids",
+            "items/hrt",
+            "items/insulin",
+            "items/contraceptive_birth_control",
+            "items/thyroid_replacement",
+            "items/other_hormone_replacement",
+            "items/other_hormone_replacement_specify",
+            "items/anxiety_nervousness",
+            "items/confusion",
+            "items/coughing_clearing_throat",
+            "items/dizziness",
+            "items/headache_migraine",
+            "items/nasal_congestion_obstruction",
+            "items/scratchy_sore_throat",
+            "items/shortness_breath",
+            "items/sleep_disturbance",
+            "items/speech_difficulty",
+            "items/menstruate",
+            "items/menstrual_cycle_status",
+            "items/menstruate_no",
+            "items/other_menstruate_specify",
+            "items/currently_pregnant",
+            "items/unit",
+            "items/height",
+            "items/weight",
+            "items/ph_standing",
+            "items/ph_take_care",
+            "items/ph_learn_task",
+            "items/ph_problem_join",
+            "items/ph_health_problem",
+            "items/ph_concentrating",
+            "items/ph_walking",
+            "items/ph_washing",
+            "items/ph_get_dressed",
+            "items/ph_dealing_people",
+            "items/ph_friendship",
+            "items/ph_day_to_day_work",
+            "items/physical_health_freq",
+            "items/phys_health_impact",
+            "items/phys_health_limited",
+            "items/voice_activity_v2",
+            "items/other_voice_activity",
+            "items/hours_voice_activity",
+            "items/reading_aloud",
+            "items/tired_measure",
+            "items/hydration",
+            "items/hydration_today",
+            "items/typical_day_drink_caffeinated_products",
+            "items/typical_day_consume_caffeinated_products",
+            "items/typical_day_consume_other_specify",
+            "items/caffeine_intake",
+            "items/today_drink_caffeinated_products",
+            "items/today_consume_caffeinated_products",
+            "items/today_consume_other_specify",
+            "items/caffeine_intake_today",
+            "items/ever_used_nicotine_products",
+            "items/ever_used_nicotine_products_specify",
+            "items/used_nicotine_products_in_entire_life",
+            "items/current_use_nicotine_products",
+            "items/started_using_nicotine_products",
+            "items/age_started_using_nicotine_products",
+            "items/stopped_using_nicotine_products",
+            "items/age_stopped_using_nicotine_products",
+            "items/years_used_nicotine",
+            "items/number_years_used_nicotine",
+            "items/times_use_nicotine_per_day",
+            "items/number_of_uses_per_day_now",
+            "items/average_used_nicotine_over_entire_time",
+            "items/average_number_of_uses_each_day",
+            "items/alcohol_yn",
+            "items/alcohol_freq_v2",
+            "items/alcohol_amt_v2",
+            "items/alcohol_drinks",
+            "items/alcohol_today_v2",
+            "items/drinks_today_number",
+            "items/current_recovery_alcohol_v2",
+            "items/ever_alcohol_rehab",
+            "items/used_substance_on_your_own",
+            "items/used_drugs",
+            "items/smoked_substance_in_past_three_months",
+            "items/edible_substance_in_past_three_months",
+            "items/painkillers",
+            "items/stimulants",
+            "items/sedatives",
+            "items/marijuana",
+            "items/cocaine",
+            "items/club_drugs",
+            "items/hallucinogens",
+            "items/heroin",
+            "items/inhalants",
+            "items/methamphetamine",
+            "items/current_substance_use_recovery",
+            "items/rehab_counseling_substance_use",
+            "items/hormone_use",
+            "items/medications",
+            "items/pain_medication",
+            "items/symptoms",
+            "items/voice_activity",
+            "items/smoking_entire_life",
+            "items/smoking_occurrence",
+            "items/smoking_age_regular_cigarette_smoking",
+            "items/smoking_age_regular_cigarette_smoking_age",
+            "items/smoking_age_stopped",
+            "items/smoking_age_stopped_age",
+            "items/smoking_years_cigarettes",
+            "items/smoking_years_cigarettes_years",
+            "items/smoking_cigarettes_day_current_avg",
+            "items/smoking_cigarettes_day_current_avg_number",
+            "items/smoking_cigarettes_day_past_avg",
+            "items/smoking_cigarettes_day_past_avg_number",
+            "items/smoking_marijuana",
+            "items/smoking_electronic",
+            "items/smoking_electronic_current_occurence",
+            "items/is_regular_smoker",
+            "items/smoking_hx",
+            "items/age_start_smoking",
+            "items/age_stop_smoking",
+            "items/smoking_types",
+            "items/smoking_freq",
+            "items/other_smoking_specify",
+            "items/alcohol_freq",
+            "items/alcohol_amt",
+            "items/alcohol_today",
+            "items/current_recovery_alcohol",
+            "items/alcohol_rehab",
+            "items/recreational_drug_use",
+            "items/substance_use_recovery",
+            "items/dental_problems",
+            "items/dental_tx",
+            "items/seasonal_allergies",
+            "items/seasonal_allergies_options",
+            "items/ear_med_history",
+            "items/nose_med_history",
+            "items/throat_med_history",
+            "items/head_med_history",
+            "items/ear_surgical",
+            "items/nose_surgical",
+            "items/throat_surgical",
+            "items/head_surgical",
+            "items/neurological_history",
+            "items/current_neuro_dx",
+            "items/specify_current_neuro",
+            "items/respiratory_conditions",
+            "items/lung_or_metastatic",
+            "items/covid",
+            "items/covid_past",
+            "items/cpap_conditions",
+            "items/resp_medical_history",
+            "items/exposed_environmental_pollution",
+            "items/breathe_today",
+            "items/breathe_today_difficulty",
+            "items/cough_today",
+            "items/cough_today_severity",
+            "items/circulatory_conditions",
+            "items/cardiac_condition",
+            "items/circulatory_med_history",
+            "items/infection_disease"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/confounders_session_id",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "confounders_session_id"
+            },
+            {
+                "isAbout": "items/confounders_started_at",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "confounders_started_at"
+            },
+            {
+                "isAbout": "items/confounders_completed_at",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "confounders_completed_at"
+            },
+            {
+                "isAbout": "items/confounders_duration",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "confounders_duration"
+            },
+            {
+                "isAbout": "items/tell_us_about_you_health_header",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "tell_us_about_you_health_header"
+            },
+            {
+                "isAbout": "items/chronic_ear_infections",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "chronic_ear_infections"
+            },
+            {
+                "isAbout": "items/cleft_lip",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "cleft_lip"
+            },
+            {
+                "isAbout": "items/cleft_palate",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "cleft_palate"
+            },
+            {
+                "isAbout": "items/craniofacial_trauma",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "craniofacial_trauma"
+            },
+            {
+                "isAbout": "items/hearing_loss",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "hearing_loss"
+            },
+            {
+                "isAbout": "items/seasonal_allergies_med_hist_enm",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "seasonal_allergies_med_hist_enm"
+            },
+            {
+                "isAbout": "items/sinusitis",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "sinusitis"
+            },
+            {
+                "isAbout": "items/sjogrens_syndrome",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "sjogrens_syndrome"
+            },
+            {
+                "isAbout": "items/velopharyngeal_insufficiency",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "velopharyngeal_insufficiency"
+            },
+            {
+                "isAbout": "items/any_dental_condition",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "any_dental_condition"
+            },
+            {
+                "isAbout": "items/any_dental_condition_specify",
+                "isVis": "any_dental_condition=='yes'",
+                "valueRequired": false,
+                "variableName": "any_dental_condition_specify"
+            },
+            {
+                "isAbout": "items/other_ear_nose_mouth_condition",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "other_ear_nose_mouth_condition"
+            },
+            {
+                "isAbout": "items/other_ear_nose_mouth_condition_specify",
+                "isVis": "other_ear_nose_mouth_condition=='yes'",
+                "valueRequired": false,
+                "variableName": "other_ear_nose_mouth_condition_specify"
+            },
+            {
+                "isAbout": "items/acid_reflux",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "acid_reflux"
+            },
+            {
+                "isAbout": "items/airway_stenosis_med_hist_throat",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "airway_stenosis_med_hist_throat"
+            },
+            {
+                "isAbout": "items/chronic_cough_med_hist_throat",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "chronic_cough_med_hist_throat"
+            },
+            {
+                "isAbout": "items/glottic_insufficiency_med_hist_throat",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "glottic_insufficiency_med_hist_throat"
+            },
+            {
+                "isAbout": "items/laryngitis_med_hist_throat",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "laryngitis_med_hist_throat"
+            },
+            {
+                "isAbout": "items/laryngospasm_irritable_larynx",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "laryngospasm_irritable_larynx"
+            },
+            {
+                "isAbout": "items/muscle_tension_dysphonia",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "muscle_tension_dysphonia"
+            },
+            {
+                "isAbout": "items/swallowing_disorder",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "swallowing_disorder"
+            },
+            {
+                "isAbout": "items/thyroid_disease",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "thyroid_disease"
+            },
+            {
+                "isAbout": "items/vocal_cord_dysfunction",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vocal_cord_dysfunction"
+            },
+            {
+                "isAbout": "items/vocal_fold_hemorrhage",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vocal_fold_hemorrhage"
+            },
+            {
+                "isAbout": "items/lesions_vocal_cord",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "lesions_vocal_cord"
+            },
+            {
+                "isAbout": "items/vfp_bilateral",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vfp_bilateral"
+            },
+            {
+                "isAbout": "items/vfp_unilateral",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "vfp_unilateral"
+            },
+            {
+                "isAbout": "items/other_throat_condition",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "other_throat_condition"
+            },
+            {
+                "isAbout": "items/other_throat_condition_specify",
+                "isVis": "other_throat_condition(current)=='1'",
+                "valueRequired": false,
+                "variableName": "other_throat_condition_specify"
+            },
+            {
+                "isAbout": "items/daily_env_pollution_affects_your_breathing_voice",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "daily_env_pollution_affects_your_breathing_voice"
+            },
+            {
+                "isAbout": "items/apraxia_of_speech",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "apraxia_of_speech"
+            },
+            {
+                "isAbout": "items/ataxia",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "ataxia"
+            },
+            {
+                "isAbout": "items/dysarthria",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "dysarthria"
+            },
+            {
+                "isAbout": "items/stutter_dysfluency",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stutter_dysfluency"
+            },
+            {
+                "isAbout": "items/other_speech_condition",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "other_speech_condition"
+            },
+            {
+                "isAbout": "items/other_speech_conditions_specify",
+                "isVis": "other_speech_condition=='yes'",
+                "valueRequired": false,
+                "variableName": "other_speech_conditions_specify"
+            },
+            {
+                "isAbout": "items/airway_surgery_reconstruction",
+                "isVis": "# EARS,NOSE,|| MOUTH conditions(yes)chronic_ear_infections=='yes' || cleft_lip=='yes' || cleft_palate=='yes' || craniofacial_trauma=='yes' || hearing_loss=='yes' || seasonal_allergies_med_hist_enm=='yes' || sinusitis=='yes' || sjogrens_syndrome=='yes' || velopharyngeal_insufficiency=='yes' || any_dental_condition=='yes' || other_ear_nose_mouth_condition =='yes' || # THROAT conditions(past,current)acid_reflux(past)=='1' || acid_reflux(current)=='1' || airway_stenosis_med_hist_throat(past)=='1' || airway_stenosis_med_hist_throat(current)=='1' || chronic_cough_med_hist_throat(past)=='1' || chronic_cough_med_hist_throat(current)=='1' || glottic_insufficiency_med_hist_throat(past)=='1' || glottic_insufficiency_med_hist_throat(current)=='1' || laryngitis_med_hist_throat(past)=='1' || laryngitis_med_hist_throat(current)=='1' || laryngospasm_irritable_larynx(past) || laryngospasm_irritable_larynx(current) || muscle_tension_dysphonia(past)=='1' || muscle_tension_dysphonia(current)=='1' || swallowing_disorder(past)=='1' || swallowing_disorder(current)=='1' || thyroid_disease(past)=='1' || thyroid_disease(current)=='1' || vocal_cord_dysfunction(past)=='1' || vocal_cord_dysfunction(current)=='1' || vocal_fold_hemorrhage(past)=='1' || vocal_fold_hemorrhage(current)=='1' || lesions_vocal_cord(past)=='1' || lesions_vocal_cord(current)=='1' || vfp_bilateral(past)=='1' || vfp_bilateral(current)=='1' || vfp_unilateral(past)=='1' || vfp_unilateral(current)=='1' || other_throat_condition(past)=='1' || other_throat_condition(current)=='1' || # SPEECH conditions(yes)apraxia_of_speech=='yes' || ataxia=='yes' || dysarthria=='yes' || stutter_dysfluency=='yes' || other_speech_condition=='yes'",
+                "valueRequired": false,
+                "variableName": "airway_surgery_reconstruction"
+            },
+            {
+                "isAbout": "items/chronic_ear_surgery",
+                "isVis": "# EARS,NOSE,|| MOUTH conditions(yes)chronic_ear_infections=='yes' || cleft_lip=='yes' || cleft_palate=='yes' || craniofacial_trauma=='yes' || hearing_loss=='yes' || seasonal_allergies_med_hist_enm=='yes' || sinusitis=='yes' || sjogrens_syndrome=='yes' || velopharyngeal_insufficiency=='yes' || any_dental_condition=='yes' || other_ear_nose_mouth_condition =='yes' || # THROAT conditions(past,current)acid_reflux(past)=='1' || acid_reflux(current)=='1' || airway_stenosis_med_hist_throat(past)=='1' || airway_stenosis_med_hist_throat(current)=='1' || chronic_cough_med_hist_throat(past)=='1' || chronic_cough_med_hist_throat(current)=='1' || glottic_insufficiency_med_hist_throat(past)=='1' || glottic_insufficiency_med_hist_throat(current)=='1' || laryngitis_med_hist_throat(past)=='1' || laryngitis_med_hist_throat(current)=='1' || laryngospasm_irritable_larynx(past) || laryngospasm_irritable_larynx(current) || muscle_tension_dysphonia(past)=='1' || muscle_tension_dysphonia(current)=='1' || swallowing_disorder(past)=='1' || swallowing_disorder(current)=='1' || thyroid_disease(past)=='1' || thyroid_disease(current)=='1' || vocal_cord_dysfunction(past)=='1' || vocal_cord_dysfunction(current)=='1' || vocal_fold_hemorrhage(past)=='1' || vocal_fold_hemorrhage(current)=='1' || lesions_vocal_cord(past)=='1' || lesions_vocal_cord(current)=='1' || vfp_bilateral(past)=='1' || vfp_bilateral(current)=='1' || vfp_unilateral(past)=='1' || vfp_unilateral(current)=='1' || other_throat_condition(past)=='1' || other_throat_condition(current)=='1' || # SPEECH conditions(yes)apraxia_of_speech=='yes' || ataxia=='yes' || dysarthria=='yes' || stutter_dysfluency=='yes' || other_speech_condition=='yes'",
+                "valueRequired": false,
+                "variableName": "chronic_ear_surgery"
+            },
+            {
+                "isAbout": "items/cochlear_implant",
+                "isVis": "# EARS,NOSE,|| MOUTH conditions(yes)chronic_ear_infections=='yes' || cleft_lip=='yes' || cleft_palate=='yes' || craniofacial_trauma=='yes' || hearing_loss=='yes' || seasonal_allergies_med_hist_enm=='yes' || sinusitis=='yes' || sjogrens_syndrome=='yes' || velopharyngeal_insufficiency=='yes' || any_dental_condition=='yes' || other_ear_nose_mouth_condition =='yes' || # THROAT conditions(past,current)acid_reflux(past)=='1' || acid_reflux(current)=='1' || airway_stenosis_med_hist_throat(past)=='1' || airway_stenosis_med_hist_throat(current)=='1' || chronic_cough_med_hist_throat(past)=='1' || chronic_cough_med_hist_throat(current)=='1' || glottic_insufficiency_med_hist_throat(past)=='1' || glottic_insufficiency_med_hist_throat(current)=='1' || laryngitis_med_hist_throat(past)=='1' || laryngitis_med_hist_throat(current)=='1' || laryngospasm_irritable_larynx(past) || laryngospasm_irritable_larynx(current) || muscle_tension_dysphonia(past)=='1' || muscle_tension_dysphonia(current)=='1' || swallowing_disorder(past)=='1' || swallowing_disorder(current)=='1' || thyroid_disease(past)=='1' || thyroid_disease(current)=='1' || vocal_cord_dysfunction(past)=='1' || vocal_cord_dysfunction(current)=='1' || vocal_fold_hemorrhage(past)=='1' || vocal_fold_hemorrhage(current)=='1' || lesions_vocal_cord(past)=='1' || lesions_vocal_cord(current)=='1' || vfp_bilateral(past)=='1' || vfp_bilateral(current)=='1' || vfp_unilateral(past)=='1' || vfp_unilateral(current)=='1' || other_throat_condition(past)=='1' || other_throat_condition(current)=='1' || # SPEECH conditions(yes)apraxia_of_speech=='yes' || ataxia=='yes' || dysarthria=='yes' || stutter_dysfluency=='yes' || other_speech_condition=='yes'",
+                "valueRequired": false,
+                "variableName": "cochlear_implant"
+            },
+            {
+                "isAbout": "items/cordotomy_arytenoidectomy_arytenoid_tie_back",
+                "isVis": "# EARS,NOSE,|| MOUTH conditions(yes)chronic_ear_infections=='yes' || cleft_lip=='yes' || cleft_palate=='yes' || craniofacial_trauma=='yes' || hearing_loss=='yes' || seasonal_allergies_med_hist_enm=='yes' || sinusitis=='yes' || sjogrens_syndrome=='yes' || velopharyngeal_insufficiency=='yes' || any_dental_condition=='yes' || other_ear_nose_mouth_condition =='yes' || # THROAT conditions(past,current)acid_reflux(past)=='1' || acid_reflux(current)=='1' || airway_stenosis_med_hist_throat(past)=='1' || airway_stenosis_med_hist_throat(current)=='1' || chronic_cough_med_hist_throat(past)=='1' || chronic_cough_med_hist_throat(current)=='1' || glottic_insufficiency_med_hist_throat(past)=='1' || glottic_insufficiency_med_hist_throat(current)=='1' || laryngitis_med_hist_throat(past)=='1' || laryngitis_med_hist_throat(current)=='1' || laryngospasm_irritable_larynx(past) || laryngospasm_irritable_larynx(current) || muscle_tension_dysphonia(past)=='1' || muscle_tension_dysphonia(current)=='1' || swallowing_disorder(past)=='1' || swallowing_disorder(current)=='1' || thyroid_disease(past)=='1' || thyroid_disease(current)=='1' || vocal_cord_dysfunction(past)=='1' || vocal_cord_dysfunction(current)=='1' || vocal_fold_hemorrhage(past)=='1' || vocal_fold_hemorrhage(current)=='1' || lesions_vocal_cord(past)=='1' || lesions_vocal_cord(current)=='1' || vfp_bilateral(past)=='1' || vfp_bilateral(current)=='1' || vfp_unilateral(past)=='1' || vfp_unilateral(current)=='1' || other_throat_condition(past)=='1' || other_throat_condition(current)=='1' || # SPEECH conditions(yes)apraxia_of_speech=='yes' || ataxia=='yes' || dysarthria=='yes' || stutter_dysfluency=='yes' || other_speech_condition=='yes'",
+                "valueRequired": false,
+                "variableName": "cordotomy_arytenoidectomy_arytenoid_tie_back"
+            },
+            {
+                "isAbout": "items/ear_tubes",
+                "isVis": "# EARS,NOSE,|| MOUTH conditions(yes)chronic_ear_infections=='yes' || cleft_lip=='yes' || cleft_palate=='yes' || craniofacial_trauma=='yes' || hearing_loss=='yes' || seasonal_allergies_med_hist_enm=='yes' || sinusitis=='yes' || sjogrens_syndrome=='yes' || velopharyngeal_insufficiency=='yes' || any_dental_condition=='yes' || other_ear_nose_mouth_condition =='yes' || # THROAT conditions(past,current)acid_reflux(past)=='1' || acid_reflux(current)=='1' || airway_stenosis_med_hist_throat(past)=='1' || airway_stenosis_med_hist_throat(current)=='1' || chronic_cough_med_hist_throat(past)=='1' || chronic_cough_med_hist_throat(current)=='1' || glottic_insufficiency_med_hist_throat(past)=='1' || glottic_insufficiency_med_hist_throat(current)=='1' || laryngitis_med_hist_throat(past)=='1' || laryngitis_med_hist_throat(current)=='1' || laryngospasm_irritable_larynx(past) || laryngospasm_irritable_larynx(current) || muscle_tension_dysphonia(past)=='1' || muscle_tension_dysphonia(current)=='1' || swallowing_disorder(past)=='1' || swallowing_disorder(current)=='1' || thyroid_disease(past)=='1' || thyroid_disease(current)=='1' || vocal_cord_dysfunction(past)=='1' || vocal_cord_dysfunction(current)=='1' || vocal_fold_hemorrhage(past)=='1' || vocal_fold_hemorrhage(current)=='1' || lesions_vocal_cord(past)=='1' || lesions_vocal_cord(current)=='1' || vfp_bilateral(past)=='1' || vfp_bilateral(current)=='1' || vfp_unilateral(past)=='1' || vfp_unilateral(current)=='1' || other_throat_condition(past)=='1' || other_throat_condition(current)=='1' || # SPEECH conditions(yes)apraxia_of_speech=='yes' || ataxia=='yes' || dysarthria=='yes' || stutter_dysfluency=='yes' || other_speech_condition=='yes'",
+                "valueRequired": false,
+                "variableName": "ear_tubes"
+            },
+            {
+                "isAbout": "items/esophageal_dilation",
+                "isVis": "# EARS,NOSE,|| MOUTH conditions(yes)chronic_ear_infections=='yes' || cleft_lip=='yes' || cleft_palate=='yes' || craniofacial_trauma=='yes' || hearing_loss=='yes' || seasonal_allergies_med_hist_enm=='yes' || sinusitis=='yes' || sjogrens_syndrome=='yes' || velopharyngeal_insufficiency=='yes' || any_dental_condition=='yes' || other_ear_nose_mouth_condition =='yes' || # THROAT conditions(past,current)acid_reflux(past)=='1' || acid_reflux(current)=='1' || airway_stenosis_med_hist_throat(past)=='1' || airway_stenosis_med_hist_throat(current)=='1' || chronic_cough_med_hist_throat(past)=='1' || chronic_cough_med_hist_throat(current)=='1' || glottic_insufficiency_med_hist_throat(past)=='1' || glottic_insufficiency_med_hist_throat(current)=='1' || laryngitis_med_hist_throat(past)=='1' || laryngitis_med_hist_throat(current)=='1' || laryngospasm_irritable_larynx(past) || laryngospasm_irritable_larynx(current) || muscle_tension_dysphonia(past)=='1' || muscle_tension_dysphonia(current)=='1' || swallowing_disorder(past)=='1' || swallowing_disorder(current)=='1' || thyroid_disease(past)=='1' || thyroid_disease(current)=='1' || vocal_cord_dysfunction(past)=='1' || vocal_cord_dysfunction(current)=='1' || vocal_fold_hemorrhage(past)=='1' || vocal_fold_hemorrhage(current)=='1' || lesions_vocal_cord(past)=='1' || lesions_vocal_cord(current)=='1' || vfp_bilateral(past)=='1' || vfp_bilateral(current)=='1' || vfp_unilateral(past)=='1' || vfp_unilateral(current)=='1' || other_throat_condition(past)=='1' || other_throat_condition(current)=='1' || # SPEECH conditions(yes)apraxia_of_speech=='yes' || ataxia=='yes' || dysarthria=='yes' || stutter_dysfluency=='yes' || other_speech_condition=='yes'",
+                "valueRequired": false,
+                "variableName": "esophageal_dilation"
+            },
+            {
+                "isAbout": "items/nose_surgery",
+                "isVis": "# EARS,NOSE,|| MOUTH conditions(yes)chronic_ear_infections=='yes' || cleft_lip=='yes' || cleft_palate=='yes' || craniofacial_trauma=='yes' || hearing_loss=='yes' || seasonal_allergies_med_hist_enm=='yes' || sinusitis=='yes' || sjogrens_syndrome=='yes' || velopharyngeal_insufficiency=='yes' || any_dental_condition=='yes' || other_ear_nose_mouth_condition =='yes' || # THROAT conditions(past,current)acid_reflux(past)=='1' || acid_reflux(current)=='1' || airway_stenosis_med_hist_throat(past)=='1' || airway_stenosis_med_hist_throat(current)=='1' || chronic_cough_med_hist_throat(past)=='1' || chronic_cough_med_hist_throat(current)=='1' || glottic_insufficiency_med_hist_throat(past)=='1' || glottic_insufficiency_med_hist_throat(current)=='1' || laryngitis_med_hist_throat(past)=='1' || laryngitis_med_hist_throat(current)=='1' || laryngospasm_irritable_larynx(past) || laryngospasm_irritable_larynx(current) || muscle_tension_dysphonia(past)=='1' || muscle_tension_dysphonia(current)=='1' || swallowing_disorder(past)=='1' || swallowing_disorder(current)=='1' || thyroid_disease(past)=='1' || thyroid_disease(current)=='1' || vocal_cord_dysfunction(past)=='1' || vocal_cord_dysfunction(current)=='1' || vocal_fold_hemorrhage(past)=='1' || vocal_fold_hemorrhage(current)=='1' || lesions_vocal_cord(past)=='1' || lesions_vocal_cord(current)=='1' || vfp_bilateral(past)=='1' || vfp_bilateral(current)=='1' || vfp_unilateral(past)=='1' || vfp_unilateral(current)=='1' || other_throat_condition(past)=='1' || other_throat_condition(current)=='1' || # SPEECH conditions(yes)apraxia_of_speech=='yes' || ataxia=='yes' || dysarthria=='yes' || stutter_dysfluency=='yes' || other_speech_condition=='yes'",
+                "valueRequired": false,
+                "variableName": "nose_surgery"
+            },
+            {
+                "isAbout": "items/sinus_surgery",
+                "isVis": "# EARS,NOSE,|| MOUTH conditions(yes)chronic_ear_infections=='yes' || cleft_lip=='yes' || cleft_palate=='yes' || craniofacial_trauma=='yes' || hearing_loss=='yes' || seasonal_allergies_med_hist_enm=='yes' || sinusitis=='yes' || sjogrens_syndrome=='yes' || velopharyngeal_insufficiency=='yes' || any_dental_condition=='yes' || other_ear_nose_mouth_condition =='yes' || # THROAT conditions(past,current)acid_reflux(past)=='1' || acid_reflux(current)=='1' || airway_stenosis_med_hist_throat(past)=='1' || airway_stenosis_med_hist_throat(current)=='1' || chronic_cough_med_hist_throat(past)=='1' || chronic_cough_med_hist_throat(current)=='1' || glottic_insufficiency_med_hist_throat(past)=='1' || glottic_insufficiency_med_hist_throat(current)=='1' || laryngitis_med_hist_throat(past)=='1' || laryngitis_med_hist_throat(current)=='1' || laryngospasm_irritable_larynx(past) || laryngospasm_irritable_larynx(current) || muscle_tension_dysphonia(past)=='1' || muscle_tension_dysphonia(current)=='1' || swallowing_disorder(past)=='1' || swallowing_disorder(current)=='1' || thyroid_disease(past)=='1' || thyroid_disease(current)=='1' || vocal_cord_dysfunction(past)=='1' || vocal_cord_dysfunction(current)=='1' || vocal_fold_hemorrhage(past)=='1' || vocal_fold_hemorrhage(current)=='1' || lesions_vocal_cord(past)=='1' || lesions_vocal_cord(current)=='1' || vfp_bilateral(past)=='1' || vfp_bilateral(current)=='1' || vfp_unilateral(past)=='1' || vfp_unilateral(current)=='1' || other_throat_condition(past)=='1' || other_throat_condition(current)=='1' || # SPEECH conditions(yes)apraxia_of_speech=='yes' || ataxia=='yes' || dysarthria=='yes' || stutter_dysfluency=='yes' || other_speech_condition=='yes'",
+                "valueRequired": false,
+                "variableName": "sinus_surgery"
+            },
+            {
+                "isAbout": "items/sleep_surgery",
+                "isVis": "# EARS,NOSE,|| MOUTH conditions(yes)chronic_ear_infections=='yes' || cleft_lip=='yes' || cleft_palate=='yes' || craniofacial_trauma=='yes' || hearing_loss=='yes' || seasonal_allergies_med_hist_enm=='yes' || sinusitis=='yes' || sjogrens_syndrome=='yes' || velopharyngeal_insufficiency=='yes' || any_dental_condition=='yes' || other_ear_nose_mouth_condition =='yes' || # THROAT conditions(past,current)acid_reflux(past)=='1' || acid_reflux(current)=='1' || airway_stenosis_med_hist_throat(past)=='1' || airway_stenosis_med_hist_throat(current)=='1' || chronic_cough_med_hist_throat(past)=='1' || chronic_cough_med_hist_throat(current)=='1' || glottic_insufficiency_med_hist_throat(past)=='1' || glottic_insufficiency_med_hist_throat(current)=='1' || laryngitis_med_hist_throat(past)=='1' || laryngitis_med_hist_throat(current)=='1' || laryngospasm_irritable_larynx(past) || laryngospasm_irritable_larynx(current) || muscle_tension_dysphonia(past)=='1' || muscle_tension_dysphonia(current)=='1' || swallowing_disorder(past)=='1' || swallowing_disorder(current)=='1' || thyroid_disease(past)=='1' || thyroid_disease(current)=='1' || vocal_cord_dysfunction(past)=='1' || vocal_cord_dysfunction(current)=='1' || vocal_fold_hemorrhage(past)=='1' || vocal_fold_hemorrhage(current)=='1' || lesions_vocal_cord(past)=='1' || lesions_vocal_cord(current)=='1' || vfp_bilateral(past)=='1' || vfp_bilateral(current)=='1' || vfp_unilateral(past)=='1' || vfp_unilateral(current)=='1' || other_throat_condition(past)=='1' || other_throat_condition(current)=='1' || # SPEECH conditions(yes)apraxia_of_speech=='yes' || ataxia=='yes' || dysarthria=='yes' || stutter_dysfluency=='yes' || other_speech_condition=='yes'",
+                "valueRequired": false,
+                "variableName": "sleep_surgery"
+            },
+            {
+                "isAbout": "items/tonsillectomy",
+                "isVis": "# EARS,NOSE,|| MOUTH conditions(yes)chronic_ear_infections=='yes' || cleft_lip=='yes' || cleft_palate=='yes' || craniofacial_trauma=='yes' || hearing_loss=='yes' || seasonal_allergies_med_hist_enm=='yes' || sinusitis=='yes' || sjogrens_syndrome=='yes' || velopharyngeal_insufficiency=='yes' || any_dental_condition=='yes' || other_ear_nose_mouth_condition =='yes' || # THROAT conditions(past,current)acid_reflux(past)=='1' || acid_reflux(current)=='1' || airway_stenosis_med_hist_throat(past)=='1' || airway_stenosis_med_hist_throat(current)=='1' || chronic_cough_med_hist_throat(past)=='1' || chronic_cough_med_hist_throat(current)=='1' || glottic_insufficiency_med_hist_throat(past)=='1' || glottic_insufficiency_med_hist_throat(current)=='1' || laryngitis_med_hist_throat(past)=='1' || laryngitis_med_hist_throat(current)=='1' || laryngospasm_irritable_larynx(past) || laryngospasm_irritable_larynx(current) || muscle_tension_dysphonia(past)=='1' || muscle_tension_dysphonia(current)=='1' || swallowing_disorder(past)=='1' || swallowing_disorder(current)=='1' || thyroid_disease(past)=='1' || thyroid_disease(current)=='1' || vocal_cord_dysfunction(past)=='1' || vocal_cord_dysfunction(current)=='1' || vocal_fold_hemorrhage(past)=='1' || vocal_fold_hemorrhage(current)=='1' || lesions_vocal_cord(past)=='1' || lesions_vocal_cord(current)=='1' || vfp_bilateral(past)=='1' || vfp_bilateral(current)=='1' || vfp_unilateral(past)=='1' || vfp_unilateral(current)=='1' || other_throat_condition(past)=='1' || other_throat_condition(current)=='1' || # SPEECH conditions(yes)apraxia_of_speech=='yes' || ataxia=='yes' || dysarthria=='yes' || stutter_dysfluency=='yes' || other_speech_condition=='yes'",
+                "valueRequired": false,
+                "variableName": "tonsillectomy"
+            },
+            {
+                "isAbout": "items/tracheostomy",
+                "isVis": "# EARS,NOSE,|| MOUTH conditions(yes)chronic_ear_infections=='yes' || cleft_lip=='yes' || cleft_palate=='yes' || craniofacial_trauma=='yes' || hearing_loss=='yes' || seasonal_allergies_med_hist_enm=='yes' || sinusitis=='yes' || sjogrens_syndrome=='yes' || velopharyngeal_insufficiency=='yes' || any_dental_condition=='yes' || other_ear_nose_mouth_condition =='yes' || # THROAT conditions(past,current)acid_reflux(past)=='1' || acid_reflux(current)=='1' || airway_stenosis_med_hist_throat(past)=='1' || airway_stenosis_med_hist_throat(current)=='1' || chronic_cough_med_hist_throat(past)=='1' || chronic_cough_med_hist_throat(current)=='1' || glottic_insufficiency_med_hist_throat(past)=='1' || glottic_insufficiency_med_hist_throat(current)=='1' || laryngitis_med_hist_throat(past)=='1' || laryngitis_med_hist_throat(current)=='1' || laryngospasm_irritable_larynx(past) || laryngospasm_irritable_larynx(current) || muscle_tension_dysphonia(past)=='1' || muscle_tension_dysphonia(current)=='1' || swallowing_disorder(past)=='1' || swallowing_disorder(current)=='1' || thyroid_disease(past)=='1' || thyroid_disease(current)=='1' || vocal_cord_dysfunction(past)=='1' || vocal_cord_dysfunction(current)=='1' || vocal_fold_hemorrhage(past)=='1' || vocal_fold_hemorrhage(current)=='1' || lesions_vocal_cord(past)=='1' || lesions_vocal_cord(current)=='1' || vfp_bilateral(past)=='1' || vfp_bilateral(current)=='1' || vfp_unilateral(past)=='1' || vfp_unilateral(current)=='1' || other_throat_condition(past)=='1' || other_throat_condition(current)=='1' || # SPEECH conditions(yes)apraxia_of_speech=='yes' || ataxia=='yes' || dysarthria=='yes' || stutter_dysfluency=='yes' || other_speech_condition=='yes'",
+                "valueRequired": false,
+                "variableName": "tracheostomy"
+            },
+            {
+                "isAbout": "items/other_surgical_treatment_enmt_speech_condition",
+                "isVis": "# EARS,NOSE,|| MOUTH conditions(yes)chronic_ear_infections=='yes' || cleft_lip=='yes' || cleft_palate=='yes' || craniofacial_trauma=='yes' || hearing_loss=='yes' || seasonal_allergies_med_hist_enm=='yes' || sinusitis=='yes' || sjogrens_syndrome=='yes' || velopharyngeal_insufficiency=='yes' || any_dental_condition=='yes' || other_ear_nose_mouth_condition =='yes' || # THROAT conditions(past,current)acid_reflux(past)=='1' || acid_reflux(current)=='1' || airway_stenosis_med_hist_throat(past)=='1' || airway_stenosis_med_hist_throat(current)=='1' || chronic_cough_med_hist_throat(past)=='1' || chronic_cough_med_hist_throat(current)=='1' || glottic_insufficiency_med_hist_throat(past)=='1' || glottic_insufficiency_med_hist_throat(current)=='1' || laryngitis_med_hist_throat(past)=='1' || laryngitis_med_hist_throat(current)=='1' || laryngospasm_irritable_larynx(past) || laryngospasm_irritable_larynx(current) || muscle_tension_dysphonia(past)=='1' || muscle_tension_dysphonia(current)=='1' || swallowing_disorder(past)=='1' || swallowing_disorder(current)=='1' || thyroid_disease(past)=='1' || thyroid_disease(current)=='1' || vocal_cord_dysfunction(past)=='1' || vocal_cord_dysfunction(current)=='1' || vocal_fold_hemorrhage(past)=='1' || vocal_fold_hemorrhage(current)=='1' || lesions_vocal_cord(past)=='1' || lesions_vocal_cord(current)=='1' || vfp_bilateral(past)=='1' || vfp_bilateral(current)=='1' || vfp_unilateral(past)=='1' || vfp_unilateral(current)=='1' || other_throat_condition(past)=='1' || other_throat_condition(current)=='1' || # SPEECH conditions(yes)apraxia_of_speech=='yes' || ataxia=='yes' || dysarthria=='yes' || stutter_dysfluency=='yes' || other_speech_condition=='yes'",
+                "valueRequired": false,
+                "variableName": "other_surgical_treatment_enmt_speech_condition"
+            },
+            {
+                "isAbout": "items/other_surgical_treatment_enmt_speech_cond_specify",
+                "isVis": "other_surgical_treatment_enmt_speech_condition=='yes'",
+                "valueRequired": false,
+                "variableName": "other_surgical_treatment_enmt_speech_cond_specify"
+            },
+            {
+                "isAbout": "items/botox_injections",
+                "isVis": "# EARS,NOSE,|| MOUTH conditions(yes)chronic_ear_infections=='yes' || cleft_lip=='yes' || cleft_palate=='yes' || craniofacial_trauma=='yes' || hearing_loss=='yes' || seasonal_allergies_med_hist_enm=='yes' || sinusitis=='yes' || sjogrens_syndrome=='yes' || velopharyngeal_insufficiency=='yes' || any_dental_condition=='yes' || other_ear_nose_mouth_condition =='yes' || # THROAT conditions(past,current)acid_reflux(past)=='1' || acid_reflux(current)=='1' || airway_stenosis_med_hist_throat(past)=='1' || airway_stenosis_med_hist_throat(current)=='1' || chronic_cough_med_hist_throat(past)=='1' || chronic_cough_med_hist_throat(current)=='1' || glottic_insufficiency_med_hist_throat(past)=='1' || glottic_insufficiency_med_hist_throat(current)=='1' || laryngitis_med_hist_throat(past)=='1' || laryngitis_med_hist_throat(current)=='1' || laryngospasm_irritable_larynx(past) || laryngospasm_irritable_larynx(current) || muscle_tension_dysphonia(past)=='1' || muscle_tension_dysphonia(current)=='1' || swallowing_disorder(past)=='1' || swallowing_disorder(current)=='1' || thyroid_disease(past)=='1' || thyroid_disease(current)=='1' || vocal_cord_dysfunction(past)=='1' || vocal_cord_dysfunction(current)=='1' || vocal_fold_hemorrhage(past)=='1' || vocal_fold_hemorrhage(current)=='1' || lesions_vocal_cord(past)=='1' || lesions_vocal_cord(current)=='1' || vfp_bilateral(past)=='1' || vfp_bilateral(current)=='1' || vfp_unilateral(past)=='1' || vfp_unilateral(current)=='1' || other_throat_condition(past)=='1' || other_throat_condition(current)=='1' || # SPEECH conditions(yes)apraxia_of_speech=='yes' || ataxia=='yes' || dysarthria=='yes' || stutter_dysfluency=='yes' || other_speech_condition=='yes'",
+                "valueRequired": false,
+                "variableName": "botox_injections"
+            },
+            {
+                "isAbout": "items/c_pap",
+                "isVis": "# EARS,NOSE,|| MOUTH conditions(yes)chronic_ear_infections=='yes' || cleft_lip=='yes' || cleft_palate=='yes' || craniofacial_trauma=='yes' || hearing_loss=='yes' || seasonal_allergies_med_hist_enm=='yes' || sinusitis=='yes' || sjogrens_syndrome=='yes' || velopharyngeal_insufficiency=='yes' || any_dental_condition=='yes' || other_ear_nose_mouth_condition =='yes' || # THROAT conditions(past,current)acid_reflux(past)=='1' || acid_reflux(current)=='1' || airway_stenosis_med_hist_throat(past)=='1' || airway_stenosis_med_hist_throat(current)=='1' || chronic_cough_med_hist_throat(past)=='1' || chronic_cough_med_hist_throat(current)=='1' || glottic_insufficiency_med_hist_throat(past)=='1' || glottic_insufficiency_med_hist_throat(current)=='1' || laryngitis_med_hist_throat(past)=='1' || laryngitis_med_hist_throat(current)=='1' || laryngospasm_irritable_larynx(past) || laryngospasm_irritable_larynx(current) || muscle_tension_dysphonia(past)=='1' || muscle_tension_dysphonia(current)=='1' || swallowing_disorder(past)=='1' || swallowing_disorder(current)=='1' || thyroid_disease(past)=='1' || thyroid_disease(current)=='1' || vocal_cord_dysfunction(past)=='1' || vocal_cord_dysfunction(current)=='1' || vocal_fold_hemorrhage(past)=='1' || vocal_fold_hemorrhage(current)=='1' || lesions_vocal_cord(past)=='1' || lesions_vocal_cord(current)=='1' || vfp_bilateral(past)=='1' || vfp_bilateral(current)=='1' || vfp_unilateral(past)=='1' || vfp_unilateral(current)=='1' || other_throat_condition(past)=='1' || other_throat_condition(current)=='1' || # SPEECH conditions(yes)apraxia_of_speech=='yes' || ataxia=='yes' || dysarthria=='yes' || stutter_dysfluency=='yes' || other_speech_condition=='yes'",
+                "valueRequired": false,
+                "variableName": "c_pap"
+            },
+            {
+                "isAbout": "items/injection_implant_to_vocal_folds",
+                "isVis": "# EARS,NOSE,|| MOUTH conditions(yes)chronic_ear_infections=='yes' || cleft_lip=='yes' || cleft_palate=='yes' || craniofacial_trauma=='yes' || hearing_loss=='yes' || seasonal_allergies_med_hist_enm=='yes' || sinusitis=='yes' || sjogrens_syndrome=='yes' || velopharyngeal_insufficiency=='yes' || any_dental_condition=='yes' || other_ear_nose_mouth_condition =='yes' || # THROAT conditions(past,current)acid_reflux(past)=='1' || acid_reflux(current)=='1' || airway_stenosis_med_hist_throat(past)=='1' || airway_stenosis_med_hist_throat(current)=='1' || chronic_cough_med_hist_throat(past)=='1' || chronic_cough_med_hist_throat(current)=='1' || glottic_insufficiency_med_hist_throat(past)=='1' || glottic_insufficiency_med_hist_throat(current)=='1' || laryngitis_med_hist_throat(past)=='1' || laryngitis_med_hist_throat(current)=='1' || laryngospasm_irritable_larynx(past) || laryngospasm_irritable_larynx(current) || muscle_tension_dysphonia(past)=='1' || muscle_tension_dysphonia(current)=='1' || swallowing_disorder(past)=='1' || swallowing_disorder(current)=='1' || thyroid_disease(past)=='1' || thyroid_disease(current)=='1' || vocal_cord_dysfunction(past)=='1' || vocal_cord_dysfunction(current)=='1' || vocal_fold_hemorrhage(past)=='1' || vocal_fold_hemorrhage(current)=='1' || lesions_vocal_cord(past)=='1' || lesions_vocal_cord(current)=='1' || vfp_bilateral(past)=='1' || vfp_bilateral(current)=='1' || vfp_unilateral(past)=='1' || vfp_unilateral(current)=='1' || other_throat_condition(past)=='1' || other_throat_condition(current)=='1' || # SPEECH conditions(yes)apraxia_of_speech=='yes' || ataxia=='yes' || dysarthria=='yes' || stutter_dysfluency=='yes' || other_speech_condition=='yes'",
+                "valueRequired": false,
+                "variableName": "injection_implant_to_vocal_folds"
+            },
+            {
+                "isAbout": "items/medication_enmt",
+                "isVis": "# EARS,NOSE,|| MOUTH conditions(yes)chronic_ear_infections=='yes' || cleft_lip=='yes' || cleft_palate=='yes' || craniofacial_trauma=='yes' || hearing_loss=='yes' || seasonal_allergies_med_hist_enm=='yes' || sinusitis=='yes' || sjogrens_syndrome=='yes' || velopharyngeal_insufficiency=='yes' || any_dental_condition=='yes' || other_ear_nose_mouth_condition =='yes' || # THROAT conditions(past,current)acid_reflux(past)=='1' || acid_reflux(current)=='1' || airway_stenosis_med_hist_throat(past)=='1' || airway_stenosis_med_hist_throat(current)=='1' || chronic_cough_med_hist_throat(past)=='1' || chronic_cough_med_hist_throat(current)=='1' || glottic_insufficiency_med_hist_throat(past)=='1' || glottic_insufficiency_med_hist_throat(current)=='1' || laryngitis_med_hist_throat(past)=='1' || laryngitis_med_hist_throat(current)=='1' || laryngospasm_irritable_larynx(past) || laryngospasm_irritable_larynx(current) || muscle_tension_dysphonia(past)=='1' || muscle_tension_dysphonia(current)=='1' || swallowing_disorder(past)=='1' || swallowing_disorder(current)=='1' || thyroid_disease(past)=='1' || thyroid_disease(current)=='1' || vocal_cord_dysfunction(past)=='1' || vocal_cord_dysfunction(current)=='1' || vocal_fold_hemorrhage(past)=='1' || vocal_fold_hemorrhage(current)=='1' || lesions_vocal_cord(past)=='1' || lesions_vocal_cord(current)=='1' || vfp_bilateral(past)=='1' || vfp_bilateral(current)=='1' || vfp_unilateral(past)=='1' || vfp_unilateral(current)=='1' || other_throat_condition(past)=='1' || other_throat_condition(current)=='1' || # SPEECH conditions(yes)apraxia_of_speech=='yes' || ataxia=='yes' || dysarthria=='yes' || stutter_dysfluency=='yes' || other_speech_condition=='yes'",
+                "valueRequired": false,
+                "variableName": "medication_enmt"
+            },
+            {
+                "isAbout": "items/radiation_to_head_neck",
+                "isVis": "# EARS,NOSE,|| MOUTH conditions(yes)chronic_ear_infections=='yes' || cleft_lip=='yes' || cleft_palate=='yes' || craniofacial_trauma=='yes' || hearing_loss=='yes' || seasonal_allergies_med_hist_enm=='yes' || sinusitis=='yes' || sjogrens_syndrome=='yes' || velopharyngeal_insufficiency=='yes' || any_dental_condition=='yes' || other_ear_nose_mouth_condition =='yes' || # THROAT conditions(past,current)acid_reflux(past)=='1' || acid_reflux(current)=='1' || airway_stenosis_med_hist_throat(past)=='1' || airway_stenosis_med_hist_throat(current)=='1' || chronic_cough_med_hist_throat(past)=='1' || chronic_cough_med_hist_throat(current)=='1' || glottic_insufficiency_med_hist_throat(past)=='1' || glottic_insufficiency_med_hist_throat(current)=='1' || laryngitis_med_hist_throat(past)=='1' || laryngitis_med_hist_throat(current)=='1' || laryngospasm_irritable_larynx(past) || laryngospasm_irritable_larynx(current) || muscle_tension_dysphonia(past)=='1' || muscle_tension_dysphonia(current)=='1' || swallowing_disorder(past)=='1' || swallowing_disorder(current)=='1' || thyroid_disease(past)=='1' || thyroid_disease(current)=='1' || vocal_cord_dysfunction(past)=='1' || vocal_cord_dysfunction(current)=='1' || vocal_fold_hemorrhage(past)=='1' || vocal_fold_hemorrhage(current)=='1' || lesions_vocal_cord(past)=='1' || lesions_vocal_cord(current)=='1' || vfp_bilateral(past)=='1' || vfp_bilateral(current)=='1' || vfp_unilateral(past)=='1' || vfp_unilateral(current)=='1' || other_throat_condition(past)=='1' || other_throat_condition(current)=='1' || # SPEECH conditions(yes)apraxia_of_speech=='yes' || ataxia=='yes' || dysarthria=='yes' || stutter_dysfluency=='yes' || other_speech_condition=='yes'",
+                "valueRequired": false,
+                "variableName": "radiation_to_head_neck"
+            },
+            {
+                "isAbout": "items/speech_voice_swallowing_therapy",
+                "isVis": "# EARS,NOSE,|| MOUTH conditions(yes)chronic_ear_infections=='yes' || cleft_lip=='yes' || cleft_palate=='yes' || craniofacial_trauma=='yes' || hearing_loss=='yes' || seasonal_allergies_med_hist_enm=='yes' || sinusitis=='yes' || sjogrens_syndrome=='yes' || velopharyngeal_insufficiency=='yes' || any_dental_condition=='yes' || other_ear_nose_mouth_condition =='yes' || # THROAT conditions(past,current)acid_reflux(past)=='1' || acid_reflux(current)=='1' || airway_stenosis_med_hist_throat(past)=='1' || airway_stenosis_med_hist_throat(current)=='1' || chronic_cough_med_hist_throat(past)=='1' || chronic_cough_med_hist_throat(current)=='1' || glottic_insufficiency_med_hist_throat(past)=='1' || glottic_insufficiency_med_hist_throat(current)=='1' || laryngitis_med_hist_throat(past)=='1' || laryngitis_med_hist_throat(current)=='1' || laryngospasm_irritable_larynx(past) || laryngospasm_irritable_larynx(current) || muscle_tension_dysphonia(past)=='1' || muscle_tension_dysphonia(current)=='1' || swallowing_disorder(past)=='1' || swallowing_disorder(current)=='1' || thyroid_disease(past)=='1' || thyroid_disease(current)=='1' || vocal_cord_dysfunction(past)=='1' || vocal_cord_dysfunction(current)=='1' || vocal_fold_hemorrhage(past)=='1' || vocal_fold_hemorrhage(current)=='1' || lesions_vocal_cord(past)=='1' || lesions_vocal_cord(current)=='1' || vfp_bilateral(past)=='1' || vfp_bilateral(current)=='1' || vfp_unilateral(past)=='1' || vfp_unilateral(current)=='1' || other_throat_condition(past)=='1' || other_throat_condition(current)=='1' || # SPEECH conditions(yes)apraxia_of_speech=='yes' || ataxia=='yes' || dysarthria=='yes' || stutter_dysfluency=='yes' || other_speech_condition=='yes'",
+                "valueRequired": false,
+                "variableName": "speech_voice_swallowing_therapy"
+            },
+            {
+                "isAbout": "items/non_surgical_treatment_enmt_speech_cond",
+                "isVis": "# EARS,NOSE,|| MOUTH conditions(yes)chronic_ear_infections=='yes' || cleft_lip=='yes' || cleft_palate=='yes' || craniofacial_trauma=='yes' || hearing_loss=='yes' || seasonal_allergies_med_hist_enm=='yes' || sinusitis=='yes' || sjogrens_syndrome=='yes' || velopharyngeal_insufficiency=='yes' || any_dental_condition=='yes' || other_ear_nose_mouth_condition =='yes' || # THROAT conditions(past,current)acid_reflux(past)=='1' || acid_reflux(current)=='1' || airway_stenosis_med_hist_throat(past)=='1' || airway_stenosis_med_hist_throat(current)=='1' || chronic_cough_med_hist_throat(past)=='1' || chronic_cough_med_hist_throat(current)=='1' || glottic_insufficiency_med_hist_throat(past)=='1' || glottic_insufficiency_med_hist_throat(current)=='1' || laryngitis_med_hist_throat(past)=='1' || laryngitis_med_hist_throat(current)=='1' || laryngospasm_irritable_larynx(past) || laryngospasm_irritable_larynx(current) || muscle_tension_dysphonia(past)=='1' || muscle_tension_dysphonia(current)=='1' || swallowing_disorder(past)=='1' || swallowing_disorder(current)=='1' || thyroid_disease(past)=='1' || thyroid_disease(current)=='1' || vocal_cord_dysfunction(past)=='1' || vocal_cord_dysfunction(current)=='1' || vocal_fold_hemorrhage(past)=='1' || vocal_fold_hemorrhage(current)=='1' || lesions_vocal_cord(past)=='1' || lesions_vocal_cord(current)=='1' || vfp_bilateral(past)=='1' || vfp_bilateral(current)=='1' || vfp_unilateral(past)=='1' || vfp_unilateral(current)=='1' || other_throat_condition(past)=='1' || other_throat_condition(current)=='1' || # SPEECH conditions(yes)apraxia_of_speech=='yes' || ataxia=='yes' || dysarthria=='yes' || stutter_dysfluency=='yes' || other_speech_condition=='yes'",
+                "valueRequired": false,
+                "variableName": "non_surgical_treatment_enmt_speech_cond"
+            },
+            {
+                "isAbout": "items/non_surgical_treatment_enmt_speech_cond_specify",
+                "isVis": "non_surgical_treatment_enmt_speech_cond(current)=='1'",
+                "valueRequired": false,
+                "variableName": "non_surgical_treatment_enmt_speech_cond_specify"
+            },
+            {
+                "isAbout": "items/asthma_med_hist_lung",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "asthma_med_hist_lung"
+            },
+            {
+                "isAbout": "items/bronchiectasis",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "bronchiectasis"
+            },
+            {
+                "isAbout": "items/chest_wall_trauma",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "chest_wall_trauma"
+            },
+            {
+                "isAbout": "items/copd_med_hist_lung",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "copd_med_hist_lung"
+            },
+            {
+                "isAbout": "items/covid_med_hist_lung",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "covid_med_hist_lung"
+            },
+            {
+                "isAbout": "items/emphysema",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "emphysema"
+            },
+            {
+                "isAbout": "items/interstitial_lung_disease",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "interstitial_lung_disease"
+            },
+            {
+                "isAbout": "items/osa_med_hist_lung",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "osa_med_hist_lung"
+            },
+            {
+                "isAbout": "items/pneumothorax_atelectasis",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "pneumothorax_atelectasis"
+            },
+            {
+                "isAbout": "items/pulmonary_hypertension",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "pulmonary_hypertension"
+            },
+            {
+                "isAbout": "items/recurrent_bronchitis",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "recurrent_bronchitis"
+            },
+            {
+                "isAbout": "items/tuberculosis",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "tuberculosis"
+            },
+            {
+                "isAbout": "items/covid_tested_positive_last_10_days",
+                "isVis": "covid_med_hist_lung=='yes'",
+                "valueRequired": false,
+                "variableName": "covid_tested_positive_last_10_days"
+            },
+            {
+                "isAbout": "items/other_lung_conditions",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "other_lung_conditions"
+            },
+            {
+                "isAbout": "items/other_lung_conditions_specify",
+                "isVis": "other_lung_conditions=='yes'",
+                "valueRequired": false,
+                "variableName": "other_lung_conditions_specify"
+            },
+            {
+                "isAbout": "items/chest_surgery",
+                "isVis": "asthma_med_hist_lung=='yes' || bronchiectasis=='yes' || chest_wall_trauma=='yes' || copd_med_hist_lung=='yes' || covid_med_hist_lung=='yes' || emphysema=='yes' || interstitial_lung_disease=='yes' || osa_med_hist_lung=='yes' || pneumothorax_atelectasis=='yes' || pulmonary_hypertension=='yes' || recurrent_bronchitis=='yes' || tuberculosis=='yes' || other_lung_conditions=='yes'",
+                "valueRequired": false,
+                "variableName": "chest_surgery"
+            },
+            {
+                "isAbout": "items/lobectomy",
+                "isVis": "asthma_med_hist_lung=='yes' || bronchiectasis=='yes' || chest_wall_trauma=='yes' || copd_med_hist_lung=='yes' || covid_med_hist_lung=='yes' || emphysema=='yes' || interstitial_lung_disease=='yes' || osa_med_hist_lung=='yes' || pneumothorax_atelectasis=='yes' || pulmonary_hypertension=='yes' || recurrent_bronchitis=='yes' || tuberculosis=='yes' || other_lung_conditions=='yes'",
+                "valueRequired": false,
+                "variableName": "lobectomy"
+            },
+            {
+                "isAbout": "items/medication_med_hist_lung",
+                "isVis": "asthma_med_hist_lung=='yes' || bronchiectasis=='yes' || chest_wall_trauma=='yes' || copd_med_hist_lung=='yes' || covid_med_hist_lung=='yes' || emphysema=='yes' || interstitial_lung_disease=='yes' || osa_med_hist_lung=='yes' || pneumothorax_atelectasis=='yes' || pulmonary_hypertension=='yes' || recurrent_bronchitis=='yes' || tuberculosis=='yes' || other_lung_conditions=='yes'",
+                "valueRequired": false,
+                "variableName": "medication_med_hist_lung"
+            },
+            {
+                "isAbout": "items/prolonged_intubation",
+                "isVis": "asthma_med_hist_lung=='yes' || bronchiectasis=='yes' || chest_wall_trauma=='yes' || copd_med_hist_lung=='yes' || covid_med_hist_lung=='yes' || emphysema=='yes' || interstitial_lung_disease=='yes' || osa_med_hist_lung=='yes' || pneumothorax_atelectasis=='yes' || pulmonary_hypertension=='yes' || recurrent_bronchitis=='yes' || tuberculosis=='yes' || other_lung_conditions=='yes'",
+                "valueRequired": false,
+                "variableName": "prolonged_intubation"
+            },
+            {
+                "isAbout": "items/radiation_to_the_chest",
+                "isVis": "asthma_med_hist_lung=='yes' || bronchiectasis=='yes' || chest_wall_trauma=='yes' || copd_med_hist_lung=='yes' || covid_med_hist_lung=='yes' || emphysema=='yes' || interstitial_lung_disease=='yes' || osa_med_hist_lung=='yes' || pneumothorax_atelectasis=='yes' || pulmonary_hypertension=='yes' || recurrent_bronchitis=='yes' || tuberculosis=='yes' || other_lung_conditions=='yes'",
+                "valueRequired": false,
+                "variableName": "radiation_to_the_chest"
+            },
+            {
+                "isAbout": "items/supplemental_oxygen",
+                "isVis": "asthma_med_hist_lung=='yes' || bronchiectasis=='yes' || chest_wall_trauma=='yes' || copd_med_hist_lung=='yes' || covid_med_hist_lung=='yes' || emphysema=='yes' || interstitial_lung_disease=='yes' || osa_med_hist_lung=='yes' || pneumothorax_atelectasis=='yes' || pulmonary_hypertension=='yes' || recurrent_bronchitis=='yes' || tuberculosis=='yes' || other_lung_conditions=='yes'",
+                "valueRequired": false,
+                "variableName": "supplemental_oxygen"
+            },
+            {
+                "isAbout": "items/other_lung_treatment",
+                "isVis": "asthma_med_hist_lung=='yes' || bronchiectasis=='yes' || chest_wall_trauma=='yes' || copd_med_hist_lung=='yes' || covid_med_hist_lung=='yes' || emphysema=='yes' || interstitial_lung_disease=='yes' || osa_med_hist_lung=='yes' || pneumothorax_atelectasis=='yes' || pulmonary_hypertension=='yes' || recurrent_bronchitis=='yes' || tuberculosis=='yes' || other_lung_conditions=='yes'",
+                "valueRequired": false,
+                "variableName": "other_lung_treatment"
+            },
+            {
+                "isAbout": "items/other_lung_treatment_specify",
+                "isVis": "other_lung_treatment=='yes'",
+                "valueRequired": false,
+                "variableName": "other_lung_treatment_specify"
+            },
+            {
+                "isAbout": "items/brain_tumor",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "brain_tumor"
+            },
+            {
+                "isAbout": "items/epilepsy",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "epilepsy"
+            },
+            {
+                "isAbout": "items/multiple_sclerosis",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "multiple_sclerosis"
+            },
+            {
+                "isAbout": "items/parkinsons_disease",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "parkinsons_disease"
+            },
+            {
+                "isAbout": "items/stroke",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroke"
+            },
+            {
+                "isAbout": "items/traumatic_brain_injury",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "traumatic_brain_injury"
+            },
+            {
+                "isAbout": "items/other_neurological_condition",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "other_neurological_condition"
+            },
+            {
+                "isAbout": "items/other_neurological_condition_specify",
+                "isVis": "other_neurological_condition=='yes'",
+                "valueRequired": false,
+                "variableName": "other_neurological_condition_specify"
+            },
+            {
+                "isAbout": "items/deep_brain_stimulator",
+                "isVis": "brain_tumor=='yes' || epilepsy=='yes' || multiple_sclerosis=='yes' || parkinsons_disease=='yes' || stroke=='yes' || traumatic_brain_injury=='yes' || other_neurological_condition=='yes'",
+                "valueRequired": false,
+                "variableName": "deep_brain_stimulator"
+            },
+            {
+                "isAbout": "items/medication_med_history_neuro",
+                "isVis": "brain_tumor=='yes' || epilepsy=='yes' || multiple_sclerosis=='yes' || parkinsons_disease=='yes' || stroke=='yes' || traumatic_brain_injury=='yes' || other_neurological_condition=='yes'",
+                "valueRequired": false,
+                "variableName": "medication_med_history_neuro"
+            },
+            {
+                "isAbout": "items/vagal_nerve_stimulator",
+                "isVis": "brain_tumor=='yes' || epilepsy=='yes' || multiple_sclerosis=='yes' || parkinsons_disease=='yes' || stroke=='yes' || traumatic_brain_injury=='yes' || other_neurological_condition=='yes'",
+                "valueRequired": false,
+                "variableName": "vagal_nerve_stimulator"
+            },
+            {
+                "isAbout": "items/other_neurological_treatment",
+                "isVis": "brain_tumor=='yes' || epilepsy=='yes' || multiple_sclerosis=='yes' || parkinsons_disease=='yes' || stroke=='yes' || traumatic_brain_injury=='yes' || other_neurological_condition=='yes'",
+                "valueRequired": false,
+                "variableName": "other_neurological_treatment"
+            },
+            {
+                "isAbout": "items/other_neurological_treatment_specify",
+                "isVis": "other_neurological_treatment(current)=='1'",
+                "valueRequired": false,
+                "variableName": "other_neurological_treatment_specify"
+            },
+            {
+                "isAbout": "items/alcohol_substance_use_disorder",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "alcohol_substance_use_disorder"
+            },
+            {
+                "isAbout": "items/anxiety_disorder",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "anxiety_disorder"
+            },
+            {
+                "isAbout": "items/adhd_med_hist_psychological",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "adhd_med_hist_psychological"
+            },
+            {
+                "isAbout": "items/asd_med_hist_psychological",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "asd_med_hist_psychological"
+            },
+            {
+                "isAbout": "items/bipolar_disorder",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "bipolar_disorder"
+            },
+            {
+                "isAbout": "items/bpd_med_hist_psychological",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "bpd_med_hist_psychological"
+            },
+            {
+                "isAbout": "items/depression_major_depressive_disorder",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "depression_major_depressive_disorder"
+            },
+            {
+                "isAbout": "items/eating_disorder",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "eating_disorder"
+            },
+            {
+                "isAbout": "items/obsessive_compulsive_disorder",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "obsessive_compulsive_disorder"
+            },
+            {
+                "isAbout": "items/panic_disorder",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "panic_disorder"
+            },
+            {
+                "isAbout": "items/ptsd_med_hist_psychological",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "ptsd_med_hist_psychological"
+            },
+            {
+                "isAbout": "items/schizophrenia_med_hist_psychological",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "schizophrenia_med_hist_psychological"
+            },
+            {
+                "isAbout": "items/psychological_condition_other",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "psychological_condition_other"
+            },
+            {
+                "isAbout": "items/psychological_condition_other_specify",
+                "isVis": "psychological_condition_other(current)=='1'",
+                "valueRequired": false,
+                "variableName": "psychological_condition_other_specify"
+            },
+            {
+                "isAbout": "items/talk_therapy_mental_health_prof",
+                "isVis": "alcohol_substance_use_disorder(past)=='1' || alcohol_substance_use_disorder(current)=='1' || anxiety_disorder(past)=='1' || anxiety_disorder(current)=='1' || adhd_med_hist_psychological(past)=='1' || adhd_med_hist_psychological(current)=='1' || asd_med_hist_psychological(past)=='1' || asd_med_hist_psychological(current)=='1' || bipolar_disorder(past)=='1' || bipolar_disorder(current)=='1' || bpd_med_hist_psychological(past)=='1' || bpd_med_hist_psychological(current)=='1' || depression_major_depressive_disorder(past)=='1' || depression_major_depressive_disorder(current)=='1' || eating_disorder(past)=='1' || eating_disorder(current)=='1' || obsessive_compulsive_disorder(past)=='1' || obsessive_compulsive_disorder(current)=='1' || panic_disorder(past)=='1' || panic_disorder(current)=='1' || ptsd_med_hist_psychological(past)=='1' || ptsd_med_hist_psychological(current)=='1' || schizophrenia_med_hist_psychological(past)=='1' || schizophrenia_med_hist_psychological(current)=='1' || psychological_condition_other(past)=='1' || psychological_condition_other(current)=='1'",
+                "valueRequired": false,
+                "variableName": "talk_therapy_mental_health_prof"
+            },
+            {
+                "isAbout": "items/medication_med_history_psychological",
+                "isVis": "alcohol_substance_use_disorder(past)=='1' || alcohol_substance_use_disorder(current)=='1' || anxiety_disorder(past)=='1' || anxiety_disorder(current)=='1' || adhd_med_hist_psychological(past)=='1' || adhd_med_hist_psychological(current)=='1' || asd_med_hist_psychological(past)=='1' || asd_med_hist_psychological(current)=='1' || bipolar_disorder(past)=='1' || bipolar_disorder(current)=='1' || bpd_med_hist_psychological(past)=='1' || bpd_med_hist_psychological(current)=='1' || depression_major_depressive_disorder(past)=='1' || depression_major_depressive_disorder(current)=='1' || eating_disorder(past)=='1' || eating_disorder(current)=='1' || obsessive_compulsive_disorder(past)=='1' || obsessive_compulsive_disorder(current)=='1' || panic_disorder(past)=='1' || panic_disorder(current)=='1' || ptsd_med_hist_psychological(past)=='1' || ptsd_med_hist_psychological(current)=='1' || schizophrenia_med_hist_psychological(past)=='1' || schizophrenia_med_hist_psychological(current)=='1' || psychological_condition_other(past)=='1' || psychological_condition_other(current)=='1'",
+                "valueRequired": false,
+                "variableName": "medication_med_history_psychological"
+            },
+            {
+                "isAbout": "items/mindfulness_meditation",
+                "isVis": "alcohol_substance_use_disorder(past)=='1' || alcohol_substance_use_disorder(current)=='1' || anxiety_disorder(past)=='1' || anxiety_disorder(current)=='1' || adhd_med_hist_psychological(past)=='1' || adhd_med_hist_psychological(current)=='1' || asd_med_hist_psychological(past)=='1' || asd_med_hist_psychological(current)=='1' || bipolar_disorder(past)=='1' || bipolar_disorder(current)=='1' || bpd_med_hist_psychological(past)=='1' || bpd_med_hist_psychological(current)=='1' || depression_major_depressive_disorder(past)=='1' || depression_major_depressive_disorder(current)=='1' || eating_disorder(past)=='1' || eating_disorder(current)=='1' || obsessive_compulsive_disorder(past)=='1' || obsessive_compulsive_disorder(current)=='1' || panic_disorder(past)=='1' || panic_disorder(current)=='1' || ptsd_med_hist_psychological(past)=='1' || ptsd_med_hist_psychological(current)=='1' || schizophrenia_med_hist_psychological(past)=='1' || schizophrenia_med_hist_psychological(current)=='1' || psychological_condition_other(past)=='1' || psychological_condition_other(current)=='1'",
+                "valueRequired": false,
+                "variableName": "mindfulness_meditation"
+            },
+            {
+                "isAbout": "items/other_treatment_psychological_condition",
+                "isVis": "alcohol_substance_use_disorder(past)=='1' || alcohol_substance_use_disorder(current)=='1' || anxiety_disorder(past)=='1' || anxiety_disorder(current)=='1' || adhd_med_hist_psychological(past)=='1' || adhd_med_hist_psychological(current)=='1' || asd_med_hist_psychological(past)=='1' || asd_med_hist_psychological(current)=='1' || bipolar_disorder(past)=='1' || bipolar_disorder(current)=='1' || bpd_med_hist_psychological(past)=='1' || bpd_med_hist_psychological(current)=='1' || depression_major_depressive_disorder(past)=='1' || depression_major_depressive_disorder(current)=='1' || eating_disorder(past)=='1' || eating_disorder(current)=='1' || obsessive_compulsive_disorder(past)=='1' || obsessive_compulsive_disorder(current)=='1' || panic_disorder(past)=='1' || panic_disorder(current)=='1' || ptsd_med_hist_psychological(past)=='1' || ptsd_med_hist_psychological(current)=='1' || schizophrenia_med_hist_psychological(past)=='1' || schizophrenia_med_hist_psychological(current)=='1' || psychological_condition_other(past)=='1' || psychological_condition_other(current)=='1'",
+                "valueRequired": false,
+                "variableName": "other_treatment_psychological_condition"
+            },
+            {
+                "isAbout": "items/other_treatment_psychological_condition_specify",
+                "isVis": "other_treatment_psychological_condition(current)=='1'",
+                "valueRequired": false,
+                "variableName": "other_treatment_psychological_condition_specify"
+            },
+            {
+                "isAbout": "items/brain_cancer",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "brain_cancer"
+            },
+            {
+                "isAbout": "items/ear_cancer",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "ear_cancer"
+            },
+            {
+                "isAbout": "items/laryngeal_cancer",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "laryngeal_cancer"
+            },
+            {
+                "isAbout": "items/lung_cancer",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "lung_cancer"
+            },
+            {
+                "isAbout": "items/oral_cancer",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "oral_cancer"
+            },
+            {
+                "isAbout": "items/sinus_cancer",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "sinus_cancer"
+            },
+            {
+                "isAbout": "items/esophageal_cancer",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "esophageal_cancer"
+            },
+            {
+                "isAbout": "items/thyroid_cancer",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "thyroid_cancer"
+            },
+            {
+                "isAbout": "items/other_cancer",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "other_cancer"
+            },
+            {
+                "isAbout": "items/other_cancer_past_specify",
+                "isVis": "other_cancer(past)=='1'",
+                "valueRequired": false,
+                "variableName": "other_cancer_past_specify"
+            },
+            {
+                "isAbout": "items/other_cancer_current_specify",
+                "isVis": "other_cancer(current)=='1'",
+                "valueRequired": false,
+                "variableName": "other_cancer_current_specify"
+            },
+            {
+                "isAbout": "items/chemotherapy",
+                "isVis": "brain_cancer(past)=='1' || brain_cancer(current)=='1' || ear_cancer(past)=='1' || ear_cancer(current)=='1' || laryngeal_cancer(past)=='1' || laryngeal_cancer(current)=='1' || lung_cancer(past)=='1' || lung_cancer(current)=='1' || oral_cancer(past)=='1' || oral_cancer(current)=='1' || sinus_cancer(past)=='1' || sinus_cancer(current)=='1' || esophageal_cancer(past)=='1' || esophageal_cancer(current)=='1' || thyroid_cancer(past)=='1' || thyroid_cancer(current)=='1' || other_cancer(past)=='1' || other_cancer(current)=='1'",
+                "valueRequired": false,
+                "variableName": "chemotherapy"
+            },
+            {
+                "isAbout": "items/surgery",
+                "isVis": "brain_cancer(past)=='1' || brain_cancer(current)=='1' || ear_cancer(past)=='1' || ear_cancer(current)=='1' || laryngeal_cancer(past)=='1' || laryngeal_cancer(current)=='1' || lung_cancer(past)=='1' || lung_cancer(current)=='1' || oral_cancer(past)=='1' || oral_cancer(current)=='1' || sinus_cancer(past)=='1' || sinus_cancer(current)=='1' || esophageal_cancer(past)=='1' || esophageal_cancer(current)=='1' || thyroid_cancer(past)=='1' || thyroid_cancer(current)=='1' || other_cancer(past)=='1' || other_cancer(current)=='1'",
+                "valueRequired": false,
+                "variableName": "surgery"
+            },
+            {
+                "isAbout": "items/immunotherapy",
+                "isVis": "brain_cancer(past)=='1' || brain_cancer(current)=='1' || ear_cancer(past)=='1' || ear_cancer(current)=='1' || laryngeal_cancer(past)=='1' || laryngeal_cancer(current)=='1' || lung_cancer(past)=='1' || lung_cancer(current)=='1' || oral_cancer(past)=='1' || oral_cancer(current)=='1' || sinus_cancer(past)=='1' || sinus_cancer(current)=='1' || esophageal_cancer(past)=='1' || esophageal_cancer(current)=='1' || thyroid_cancer(past)=='1' || thyroid_cancer(current)=='1' || other_cancer(past)=='1' || other_cancer(current)=='1'",
+                "valueRequired": false,
+                "variableName": "immunotherapy"
+            },
+            {
+                "isAbout": "items/radiation",
+                "isVis": "brain_cancer(past)=='1' || brain_cancer(current)=='1' || ear_cancer(past)=='1' || ear_cancer(current)=='1' || laryngeal_cancer(past)=='1' || laryngeal_cancer(current)=='1' || lung_cancer(past)=='1' || lung_cancer(current)=='1' || oral_cancer(past)=='1' || oral_cancer(current)=='1' || sinus_cancer(past)=='1' || sinus_cancer(current)=='1' || esophageal_cancer(past)=='1' || esophageal_cancer(current)=='1' || thyroid_cancer(past)=='1' || thyroid_cancer(current)=='1' || other_cancer(past)=='1' || other_cancer(current)=='1'",
+                "valueRequired": false,
+                "variableName": "radiation"
+            },
+            {
+                "isAbout": "items/radioactive_iodine",
+                "isVis": "brain_cancer(past)=='1' || brain_cancer(current)=='1' || ear_cancer(past)=='1' || ear_cancer(current)=='1' || laryngeal_cancer(past)=='1' || laryngeal_cancer(current)=='1' || lung_cancer(past)=='1' || lung_cancer(current)=='1' || oral_cancer(past)=='1' || oral_cancer(current)=='1' || sinus_cancer(past)=='1' || sinus_cancer(current)=='1' || esophageal_cancer(past)=='1' || esophageal_cancer(current)=='1' || thyroid_cancer(past)=='1' || thyroid_cancer(current)=='1' || other_cancer(past)=='1' || other_cancer(current)=='1'",
+                "valueRequired": false,
+                "variableName": "radioactive_iodine"
+            },
+            {
+                "isAbout": "items/medication_med_hist_cancer",
+                "isVis": "brain_cancer(past)=='1' || brain_cancer(current)=='1' || ear_cancer(past)=='1' || ear_cancer(current)=='1' || laryngeal_cancer(past)=='1' || laryngeal_cancer(current)=='1' || lung_cancer(past)=='1' || lung_cancer(current)=='1' || oral_cancer(past)=='1' || oral_cancer(current)=='1' || sinus_cancer(past)=='1' || sinus_cancer(current)=='1' || esophageal_cancer(past)=='1' || esophageal_cancer(current)=='1' || thyroid_cancer(past)=='1' || thyroid_cancer(current)=='1' || other_cancer(past)=='1' || other_cancer(current)=='1'",
+                "valueRequired": false,
+                "variableName": "medication_med_hist_cancer"
+            },
+            {
+                "isAbout": "items/experimental_treatment",
+                "isVis": "brain_cancer(past)=='1' || brain_cancer(current)=='1' || ear_cancer(past)=='1' || ear_cancer(current)=='1' || laryngeal_cancer(past)=='1' || laryngeal_cancer(current)=='1' || lung_cancer(past)=='1' || lung_cancer(current)=='1' || oral_cancer(past)=='1' || oral_cancer(current)=='1' || sinus_cancer(past)=='1' || sinus_cancer(current)=='1' || esophageal_cancer(past)=='1' || esophageal_cancer(current)=='1' || thyroid_cancer(past)=='1' || thyroid_cancer(current)=='1' || other_cancer(past)=='1' || other_cancer(current)=='1'",
+                "valueRequired": false,
+                "variableName": "experimental_treatment"
+            },
+            {
+                "isAbout": "items/other_cancer_treatment",
+                "isVis": "brain_cancer(past)=='1' || brain_cancer(current)=='1' || ear_cancer(past)=='1' || ear_cancer(current)=='1' || laryngeal_cancer(past)=='1' || laryngeal_cancer(current)=='1' || lung_cancer(past)=='1' || lung_cancer(current)=='1' || oral_cancer(past)=='1' || oral_cancer(current)=='1' || sinus_cancer(past)=='1' || sinus_cancer(current)=='1' || esophageal_cancer(past)=='1' || esophageal_cancer(current)=='1' || thyroid_cancer(past)=='1' || thyroid_cancer(current)=='1' || other_cancer(past)=='1' || other_cancer(current)=='1'",
+                "valueRequired": false,
+                "variableName": "other_cancer_treatment"
+            },
+            {
+                "isAbout": "items/experimental_treatment_past_specify",
+                "isVis": "experimental_treatment(past)=='1'",
+                "valueRequired": false,
+                "variableName": "experimental_treatment_past_specify"
+            },
+            {
+                "isAbout": "items/experimental_treatment_current_specify",
+                "isVis": "experimental_treatment(current)=='1'",
+                "valueRequired": false,
+                "variableName": "experimental_treatment_current_specify"
+            },
+            {
+                "isAbout": "items/other_cancer_treatment_past_specify",
+                "isVis": "other_cancer_treatment(past)=='1'",
+                "valueRequired": false,
+                "variableName": "other_cancer_treatment_past_specify"
+            },
+            {
+                "isAbout": "items/other_treatment_cancer_current_specify",
+                "isVis": "other_cancer_treatment(current)=='1'",
+                "valueRequired": false,
+                "variableName": "other_treatment_cancer_current_specify"
+            },
+            {
+                "isAbout": "items/atrial_fibrillation",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "atrial_fibrillation"
+            },
+            {
+                "isAbout": "items/chronic_pericarditis",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "chronic_pericarditis"
+            },
+            {
+                "isAbout": "items/congestive_heart_failure",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "congestive_heart_failure"
+            },
+            {
+                "isAbout": "items/coronary_heart_disease",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "coronary_heart_disease"
+            },
+            {
+                "isAbout": "items/chronic_kidney_disease",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "chronic_kidney_disease"
+            },
+            {
+                "isAbout": "items/obesity",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "obesity"
+            },
+            {
+                "isAbout": "items/scoliosis",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "scoliosis"
+            },
+            {
+                "isAbout": "items/currently_considered_obese",
+                "isVis": "obesity=='yes'",
+                "valueRequired": false,
+                "variableName": "currently_considered_obese"
+            },
+            {
+                "isAbout": "items/currently_have_diabetes",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "currently_have_diabetes"
+            },
+            {
+                "isAbout": "items/diabetes_type",
+                "isVis": "currently_have_diabetes=='yes'",
+                "valueRequired": false,
+                "variableName": "diabetes_type"
+            },
+            {
+                "isAbout": "items/other_heart_disease",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "other_heart_disease"
+            },
+            {
+                "isAbout": "items/other_heart_disease_specify",
+                "isVis": "other_heart_disease=='yes'",
+                "valueRequired": false,
+                "variableName": "other_heart_disease_specify"
+            },
+            {
+                "isAbout": "items/any_infectious_disease",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "any_infectious_disease"
+            },
+            {
+                "isAbout": "items/any_infectious_disease_specify",
+                "isVis": "any_infectious_disease=='yes'",
+                "valueRequired": false,
+                "variableName": "any_infectious_disease_specify"
+            },
+            {
+                "isAbout": "items/anti_anxiety_medication",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "anti_anxiety_medication"
+            },
+            {
+                "isAbout": "items/antibiotics",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "antibiotics"
+            },
+            {
+                "isAbout": "items/anticholergenics",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "anticholergenics"
+            },
+            {
+                "isAbout": "items/antidepressants",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "antidepressants"
+            },
+            {
+                "isAbout": "items/antiepileptics",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "antiepileptics"
+            },
+            {
+                "isAbout": "items/allergy_medications",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "allergy_medications"
+            },
+            {
+                "isAbout": "items/blood_pressure_medications",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "blood_pressure_medications"
+            },
+            {
+                "isAbout": "items/pain_medications",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "pain_medications"
+            },
+            {
+                "isAbout": "items/decongestants",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "decongestants"
+            },
+            {
+                "isAbout": "items/diuretics",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diuretics"
+            },
+            {
+                "isAbout": "items/hormones",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "hormones"
+            },
+            {
+                "isAbout": "items/immune_suppressors",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "immune_suppressors"
+            },
+            {
+                "isAbout": "items/inhaled_corticosteroids",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "inhaled_corticosteroids"
+            },
+            {
+                "isAbout": "items/muscle_relaxants",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "muscle_relaxants"
+            },
+            {
+                "isAbout": "items/oral_steroids",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "oral_steroids"
+            },
+            {
+                "isAbout": "items/psychotropic_antipsychotic_medications",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "psychotropic_antipsychotic_medications"
+            },
+            {
+                "isAbout": "items/reflux_medications",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "reflux_medications"
+            },
+            {
+                "isAbout": "items/stimulants_medications",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stimulants_medications"
+            },
+            {
+                "isAbout": "items/analgesics",
+                "isVis": "pain_medications=='yes'",
+                "valueRequired": false,
+                "variableName": "analgesics"
+            },
+            {
+                "isAbout": "items/nsaids",
+                "isVis": "pain_medications=='yes'",
+                "valueRequired": false,
+                "variableName": "nsaids"
+            },
+            {
+                "isAbout": "items/opiates",
+                "isVis": "pain_medications=='yes'",
+                "valueRequired": false,
+                "variableName": "opiates"
+            },
+            {
+                "isAbout": "items/neuro_modulators",
+                "isVis": "pain_medications=='yes'",
+                "valueRequired": false,
+                "variableName": "neuro_modulators"
+            },
+            {
+                "isAbout": "items/androgenic_steroids",
+                "isVis": "hormones=='yes'",
+                "valueRequired": false,
+                "variableName": "androgenic_steroids"
+            },
+            {
+                "isAbout": "items/hrt",
+                "isVis": "hormones=='yes'",
+                "valueRequired": false,
+                "variableName": "hrt"
+            },
+            {
+                "isAbout": "items/insulin",
+                "isVis": "hormones=='yes'",
+                "valueRequired": false,
+                "variableName": "insulin"
+            },
+            {
+                "isAbout": "items/contraceptive_birth_control",
+                "isVis": "hormones=='yes'",
+                "valueRequired": false,
+                "variableName": "contraceptive_birth_control"
+            },
+            {
+                "isAbout": "items/thyroid_replacement",
+                "isVis": "hormones=='yes'",
+                "valueRequired": false,
+                "variableName": "thyroid_replacement"
+            },
+            {
+                "isAbout": "items/other_hormone_replacement",
+                "isVis": "hormones=='yes'",
+                "valueRequired": false,
+                "variableName": "other_hormone_replacement"
+            },
+            {
+                "isAbout": "items/other_hormone_replacement_specify",
+                "isVis": "other_hormone_replacement=='yes'",
+                "valueRequired": false,
+                "variableName": "other_hormone_replacement_specify"
+            },
+            {
+                "isAbout": "items/anxiety_nervousness",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "anxiety_nervousness"
+            },
+            {
+                "isAbout": "items/confusion",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "confusion"
+            },
+            {
+                "isAbout": "items/coughing_clearing_throat",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "coughing_clearing_throat"
+            },
+            {
+                "isAbout": "items/dizziness",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "dizziness"
+            },
+            {
+                "isAbout": "items/headache_migraine",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "headache_migraine"
+            },
+            {
+                "isAbout": "items/nasal_congestion_obstruction",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "nasal_congestion_obstruction"
+            },
+            {
+                "isAbout": "items/scratchy_sore_throat",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "scratchy_sore_throat"
+            },
+            {
+                "isAbout": "items/shortness_breath",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "shortness_breath"
+            },
+            {
+                "isAbout": "items/sleep_disturbance",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "sleep_disturbance"
+            },
+            {
+                "isAbout": "items/speech_difficulty",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "speech_difficulty"
+            },
+            {
+                "isAbout": "items/menstruate",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "menstruate"
+            },
+            {
+                "isAbout": "items/menstrual_cycle_status",
+                "isVis": "menstruate=='yes'",
+                "valueRequired": false,
+                "variableName": "menstrual_cycle_status"
+            },
+            {
+                "isAbout": "items/menstruate_no",
+                "isVis": "menstruate=='no'",
+                "valueRequired": false,
+                "variableName": "menstruate_no"
+            },
+            {
+                "isAbout": "items/other_menstruate_specify",
+                "isVis": "menstruate_no == 'other'",
+                "valueRequired": false,
+                "variableName": "other_menstruate_specify"
+            },
+            {
+                "isAbout": "items/currently_pregnant",
+                "isVis": "menstruate_no=='pregnant'",
+                "valueRequired": false,
+                "variableName": "currently_pregnant"
+            },
+            {
+                "isAbout": "items/unit",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "unit"
+            },
+            {
+                "isAbout": "items/height",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "height"
+            },
+            {
+                "isAbout": "items/weight",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "weight"
+            },
+            {
+                "isAbout": "items/ph_standing",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ph_standing"
+            },
+            {
+                "isAbout": "items/ph_take_care",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ph_take_care"
+            },
+            {
+                "isAbout": "items/ph_learn_task",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ph_learn_task"
+            },
+            {
+                "isAbout": "items/ph_problem_join",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ph_problem_join"
+            },
+            {
+                "isAbout": "items/ph_health_problem",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ph_health_problem"
+            },
+            {
+                "isAbout": "items/ph_concentrating",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ph_concentrating"
+            },
+            {
+                "isAbout": "items/ph_walking",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ph_walking"
+            },
+            {
+                "isAbout": "items/ph_washing",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ph_washing"
+            },
+            {
+                "isAbout": "items/ph_get_dressed",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ph_get_dressed"
+            },
+            {
+                "isAbout": "items/ph_dealing_people",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ph_dealing_people"
+            },
+            {
+                "isAbout": "items/ph_friendship",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ph_friendship"
+            },
+            {
+                "isAbout": "items/ph_day_to_day_work",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ph_day_to_day_work"
+            },
+            {
+                "isAbout": "items/physical_health_freq",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "physical_health_freq"
+            },
+            {
+                "isAbout": "items/phys_health_impact",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "phys_health_impact"
+            },
+            {
+                "isAbout": "items/phys_health_limited",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "phys_health_limited"
+            },
+            {
+                "isAbout": "items/voice_activity_v2",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "voice_activity_v2"
+            },
+            {
+                "isAbout": "items/other_voice_activity",
+                "isVis": "voice_activity_v2(other) == '1'",
+                "valueRequired": false,
+                "variableName": "other_voice_activity"
+            },
+            {
+                "isAbout": "items/hours_voice_activity",
+                "isVis": "voice_activity_v2(administrative_assistant) == '1' || voice_activity_v2(attorney) == '1' || voice_activity_v2(bartender) == '1' || voice_activity_v2(barista) == '1' || voice_activity_v2(call_center_worker) == '1' || voice_activity_v2(cheerleader) == '1' || voice_activity_v2(child_care_provider) == '1' || voice_activity_v2(exercise_instructor) == '1' || voice_activity_v2(minister_preacher) == '1' || voice_activity_v2(parent_guardian_caregiver) == '1' || voice_activity_v2(public_speaker) == '1' || voice_activity_v2(receptionist) == '1' || voice_activity_v2(salesperson) == '1' || voice_activity_v2(singer) == '1' || voice_activity_v2(teacher) == '1' || voice_activity_v2(waiter) == '1' || voice_activity_v2(other) == '1'",
+                "valueRequired": false,
+                "variableName": "hours_voice_activity"
+            },
+            {
+                "isAbout": "items/reading_aloud",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "reading_aloud"
+            },
+            {
+                "isAbout": "items/tired_measure",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "tired_measure"
+            },
+            {
+                "isAbout": "items/hydration",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "hydration"
+            },
+            {
+                "isAbout": "items/hydration_today",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "hydration_today"
+            },
+            {
+                "isAbout": "items/typical_day_drink_caffeinated_products",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "typical_day_drink_caffeinated_products"
+            },
+            {
+                "isAbout": "items/typical_day_consume_caffeinated_products",
+                "isVis": "typical_day_drink_caffeinated_products=='yes'",
+                "valueRequired": false,
+                "variableName": "typical_day_consume_caffeinated_products"
+            },
+            {
+                "isAbout": "items/typical_day_consume_other_specify",
+                "isVis": "typical_day_consume_caffeinated_products(other)=='1'",
+                "valueRequired": false,
+                "variableName": "typical_day_consume_other_specify"
+            },
+            {
+                "isAbout": "items/caffeine_intake",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "caffeine_intake"
+            },
+            {
+                "isAbout": "items/today_drink_caffeinated_products",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "today_drink_caffeinated_products"
+            },
+            {
+                "isAbout": "items/today_consume_caffeinated_products",
+                "isVis": "today_drink_caffeinated_products=='yes'",
+                "valueRequired": false,
+                "variableName": "today_consume_caffeinated_products"
+            },
+            {
+                "isAbout": "items/today_consume_other_specify",
+                "isVis": "today_consume_caffeinated_products(other)=='1'",
+                "valueRequired": false,
+                "variableName": "today_consume_other_specify"
+            },
+            {
+                "isAbout": "items/caffeine_intake_today",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "caffeine_intake_today"
+            },
+            {
+                "isAbout": "items/ever_used_nicotine_products",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "ever_used_nicotine_products"
+            },
+            {
+                "isAbout": "items/ever_used_nicotine_products_specify",
+                "isVis": "ever_used_nicotine_products(other)=='1'",
+                "valueRequired": false,
+                "variableName": "ever_used_nicotine_products_specify"
+            },
+            {
+                "isAbout": "items/used_nicotine_products_in_entire_life",
+                "isVis": "ever_used_nicotine_products(never_used_nicotine_product)=='0'",
+                "valueRequired": false,
+                "variableName": "used_nicotine_products_in_entire_life"
+            },
+            {
+                "isAbout": "items/current_use_nicotine_products",
+                "isVis": "used_nicotine_products_in_entire_life=='yes'",
+                "valueRequired": false,
+                "variableName": "current_use_nicotine_products"
+            },
+            {
+                "isAbout": "items/started_using_nicotine_products",
+                "isVis": "used_nicotine_products_in_entire_life=='yes'",
+                "valueRequired": false,
+                "variableName": "started_using_nicotine_products"
+            },
+            {
+                "isAbout": "items/age_started_using_nicotine_products",
+                "isVis": "started_using_nicotine_products=='age'",
+                "valueRequired": false,
+                "variableName": "age_started_using_nicotine_products"
+            },
+            {
+                "isAbout": "items/stopped_using_nicotine_products",
+                "isVis": "current_use_nicotine_products=='notAtAll'",
+                "valueRequired": false,
+                "variableName": "stopped_using_nicotine_products"
+            },
+            {
+                "isAbout": "items/age_stopped_using_nicotine_products",
+                "isVis": "stopped_using_nicotine_products=='age'",
+                "valueRequired": false,
+                "variableName": "age_stopped_using_nicotine_products"
+            },
+            {
+                "isAbout": "items/years_used_nicotine",
+                "isVis": "current_use_nicotine_products=='notAtAll'",
+                "valueRequired": false,
+                "variableName": "years_used_nicotine"
+            },
+            {
+                "isAbout": "items/number_years_used_nicotine",
+                "isVis": "years_used_nicotine=='numberOfYears'",
+                "valueRequired": false,
+                "variableName": "number_years_used_nicotine"
+            },
+            {
+                "isAbout": "items/times_use_nicotine_per_day",
+                "isVis": "current_use_nicotine_products=='everyDay' || current_use_nicotine_products=='someDays'",
+                "valueRequired": false,
+                "variableName": "times_use_nicotine_per_day"
+            },
+            {
+                "isAbout": "items/number_of_uses_per_day_now",
+                "isVis": "times_use_nicotine_per_day=='numberUses'",
+                "valueRequired": false,
+                "variableName": "number_of_uses_per_day_now"
+            },
+            {
+                "isAbout": "items/average_used_nicotine_over_entire_time",
+                "isVis": "used_nicotine_products_in_entire_life=='yes'",
+                "valueRequired": false,
+                "variableName": "average_used_nicotine_over_entire_time"
+            },
+            {
+                "isAbout": "items/average_number_of_uses_each_day",
+                "isVis": "average_used_nicotine_over_entire_time=='numberUses'",
+                "valueRequired": false,
+                "variableName": "average_number_of_uses_each_day"
+            },
+            {
+                "isAbout": "items/alcohol_yn",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "alcohol_yn"
+            },
+            {
+                "isAbout": "items/alcohol_freq_v2",
+                "isVis": "alcohol_yn=='yes'",
+                "valueRequired": false,
+                "variableName": "alcohol_freq_v2"
+            },
+            {
+                "isAbout": "items/alcohol_amt_v2",
+                "isVis": "alcohol_yn=='yes'",
+                "valueRequired": false,
+                "variableName": "alcohol_amt_v2"
+            },
+            {
+                "isAbout": "items/alcohol_drinks",
+                "isVis": "alcohol_yn=='yes'",
+                "valueRequired": false,
+                "variableName": "alcohol_drinks"
+            },
+            {
+                "isAbout": "items/alcohol_today_v2",
+                "isVis": "alcohol_yn=='yes'",
+                "valueRequired": false,
+                "variableName": "alcohol_today_v2"
+            },
+            {
+                "isAbout": "items/drinks_today_number",
+                "isVis": "alcohol_today_v2=='yes'",
+                "valueRequired": false,
+                "variableName": "drinks_today_number"
+            },
+            {
+                "isAbout": "items/current_recovery_alcohol_v2",
+                "isVis": "alcohol_yn=='yes' || alcohol_yn=='notCurrently'",
+                "valueRequired": false,
+                "variableName": "current_recovery_alcohol_v2"
+            },
+            {
+                "isAbout": "items/ever_alcohol_rehab",
+                "isVis": "alcohol_yn=='yes' || alcohol_yn=='notCurrently'",
+                "valueRequired": false,
+                "variableName": "ever_alcohol_rehab"
+            },
+            {
+                "isAbout": "items/used_substance_on_your_own",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "used_substance_on_your_own"
+            },
+            {
+                "isAbout": "items/used_drugs",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "used_drugs"
+            },
+            {
+                "isAbout": "items/smoked_substance_in_past_three_months",
+                "isVis": "used_drugs=='oneOrMore'",
+                "valueRequired": false,
+                "variableName": "smoked_substance_in_past_three_months"
+            },
+            {
+                "isAbout": "items/edible_substance_in_past_three_months",
+                "isVis": "used_drugs=='oneOrMore'",
+                "valueRequired": false,
+                "variableName": "edible_substance_in_past_three_months"
+            },
+            {
+                "isAbout": "items/painkillers",
+                "isVis": "used_substance_on_your_own=='oneOrMore'",
+                "valueRequired": false,
+                "variableName": "painkillers"
+            },
+            {
+                "isAbout": "items/stimulants",
+                "isVis": "used_substance_on_your_own=='oneOrMore'",
+                "valueRequired": false,
+                "variableName": "stimulants"
+            },
+            {
+                "isAbout": "items/sedatives",
+                "isVis": "used_substance_on_your_own=='oneOrMore'",
+                "valueRequired": false,
+                "variableName": "sedatives"
+            },
+            {
+                "isAbout": "items/marijuana",
+                "isVis": "used_substance_on_your_own=='oneOrMore'",
+                "valueRequired": false,
+                "variableName": "marijuana"
+            },
+            {
+                "isAbout": "items/cocaine",
+                "isVis": "used_substance_on_your_own=='oneOrMore'",
+                "valueRequired": false,
+                "variableName": "cocaine"
+            },
+            {
+                "isAbout": "items/club_drugs",
+                "isVis": "used_substance_on_your_own=='oneOrMore'",
+                "valueRequired": false,
+                "variableName": "club_drugs"
+            },
+            {
+                "isAbout": "items/hallucinogens",
+                "isVis": "used_substance_on_your_own=='oneOrMore'",
+                "valueRequired": false,
+                "variableName": "hallucinogens"
+            },
+            {
+                "isAbout": "items/heroin",
+                "isVis": "used_substance_on_your_own=='oneOrMore'",
+                "valueRequired": false,
+                "variableName": "heroin"
+            },
+            {
+                "isAbout": "items/inhalants",
+                "isVis": "used_substance_on_your_own=='oneOrMore'",
+                "valueRequired": false,
+                "variableName": "inhalants"
+            },
+            {
+                "isAbout": "items/methamphetamine",
+                "isVis": "used_substance_on_your_own=='oneOrMore'",
+                "valueRequired": false,
+                "variableName": "methamphetamine"
+            },
+            {
+                "isAbout": "items/current_substance_use_recovery",
+                "isVis": "used_substance_on_your_own=='inThePast' || used_substance_on_your_own=='oneOrMore' || used_drugs=='inThePast' || used_drugs=='oneOrMore'",
+                "valueRequired": false,
+                "variableName": "current_substance_use_recovery"
+            },
+            {
+                "isAbout": "items/rehab_counseling_substance_use",
+                "isVis": "used_substance_on_your_own=='inThePast' || used_substance_on_your_own=='oneOrMore' || used_drugs=='inThePast' || used_drugs=='oneOrMore'",
+                "valueRequired": false,
+                "variableName": "rehab_counseling_substance_use"
+            },
+            {
+                "isAbout": "items/hormone_use",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "hormone_use"
+            },
+            {
+                "isAbout": "items/medications",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "medications"
+            },
+            {
+                "isAbout": "items/pain_medication",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "pain_medication"
+            },
+            {
+                "isAbout": "items/symptoms",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "symptoms"
+            },
+            {
+                "isAbout": "items/voice_activity",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "voice_activity"
+            },
+            {
+                "isAbout": "items/smoking_entire_life",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "smoking_entire_life"
+            },
+            {
+                "isAbout": "items/smoking_occurrence",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "smoking_occurrence"
+            },
+            {
+                "isAbout": "items/smoking_age_regular_cigarette_smoking",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "smoking_age_regular_cigarette_smoking"
+            },
+            {
+                "isAbout": "items/smoking_age_regular_cigarette_smoking_age",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "smoking_age_regular_cigarette_smoking_age"
+            },
+            {
+                "isAbout": "items/smoking_age_stopped",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "smoking_age_stopped"
+            },
+            {
+                "isAbout": "items/smoking_age_stopped_age",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "smoking_age_stopped_age"
+            },
+            {
+                "isAbout": "items/smoking_years_cigarettes",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "smoking_years_cigarettes"
+            },
+            {
+                "isAbout": "items/smoking_years_cigarettes_years",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "smoking_years_cigarettes_years"
+            },
+            {
+                "isAbout": "items/smoking_cigarettes_day_current_avg",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "smoking_cigarettes_day_current_avg"
+            },
+            {
+                "isAbout": "items/smoking_cigarettes_day_current_avg_number",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "smoking_cigarettes_day_current_avg_number"
+            },
+            {
+                "isAbout": "items/smoking_cigarettes_day_past_avg",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "smoking_cigarettes_day_past_avg"
+            },
+            {
+                "isAbout": "items/smoking_cigarettes_day_past_avg_number",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "smoking_cigarettes_day_past_avg_number"
+            },
+            {
+                "isAbout": "items/smoking_marijuana",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "smoking_marijuana"
+            },
+            {
+                "isAbout": "items/smoking_electronic",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "smoking_electronic"
+            },
+            {
+                "isAbout": "items/smoking_electronic_current_occurence",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "smoking_electronic_current_occurence"
+            },
+            {
+                "isAbout": "items/is_regular_smoker",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "is_regular_smoker"
+            },
+            {
+                "isAbout": "items/smoking_hx",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "smoking_hx"
+            },
+            {
+                "isAbout": "items/age_start_smoking",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "age_start_smoking"
+            },
+            {
+                "isAbout": "items/age_stop_smoking",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "age_stop_smoking"
+            },
+            {
+                "isAbout": "items/smoking_types",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "smoking_types"
+            },
+            {
+                "isAbout": "items/smoking_freq",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "smoking_freq"
+            },
+            {
+                "isAbout": "items/other_smoking_specify",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "other_smoking_specify"
+            },
+            {
+                "isAbout": "items/alcohol_freq",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "alcohol_freq"
+            },
+            {
+                "isAbout": "items/alcohol_amt",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "alcohol_amt"
+            },
+            {
+                "isAbout": "items/alcohol_today",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "alcohol_today"
+            },
+            {
+                "isAbout": "items/current_recovery_alcohol",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "current_recovery_alcohol"
+            },
+            {
+                "isAbout": "items/alcohol_rehab",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "alcohol_rehab"
+            },
+            {
+                "isAbout": "items/recreational_drug_use",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "recreational_drug_use"
+            },
+            {
+                "isAbout": "items/substance_use_recovery",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "substance_use_recovery"
+            },
+            {
+                "isAbout": "items/dental_problems",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "dental_problems"
+            },
+            {
+                "isAbout": "items/dental_tx",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "dental_tx"
+            },
+            {
+                "isAbout": "items/seasonal_allergies",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "seasonal_allergies"
+            },
+            {
+                "isAbout": "items/seasonal_allergies_options",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "seasonal_allergies_options"
+            },
+            {
+                "isAbout": "items/ear_med_history",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "ear_med_history"
+            },
+            {
+                "isAbout": "items/nose_med_history",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "nose_med_history"
+            },
+            {
+                "isAbout": "items/throat_med_history",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "throat_med_history"
+            },
+            {
+                "isAbout": "items/head_med_history",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "head_med_history"
+            },
+            {
+                "isAbout": "items/ear_surgical",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "ear_surgical"
+            },
+            {
+                "isAbout": "items/nose_surgical",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "nose_surgical"
+            },
+            {
+                "isAbout": "items/throat_surgical",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "throat_surgical"
+            },
+            {
+                "isAbout": "items/head_surgical",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "head_surgical"
+            },
+            {
+                "isAbout": "items/neurological_history",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "neurological_history"
+            },
+            {
+                "isAbout": "items/current_neuro_dx",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "current_neuro_dx"
+            },
+            {
+                "isAbout": "items/specify_current_neuro",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "specify_current_neuro"
+            },
+            {
+                "isAbout": "items/respiratory_conditions",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "respiratory_conditions"
+            },
+            {
+                "isAbout": "items/lung_or_metastatic",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "lung_or_metastatic"
+            },
+            {
+                "isAbout": "items/covid",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "covid"
+            },
+            {
+                "isAbout": "items/covid_past",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "covid_past"
+            },
+            {
+                "isAbout": "items/cpap_conditions",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "cpap_conditions"
+            },
+            {
+                "isAbout": "items/resp_medical_history",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "resp_medical_history"
+            },
+            {
+                "isAbout": "items/exposed_environmental_pollution",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "exposed_environmental_pollution"
+            },
+            {
+                "isAbout": "items/breathe_today",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "breathe_today"
+            },
+            {
+                "isAbout": "items/breathe_today_difficulty",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "breathe_today_difficulty"
+            },
+            {
+                "isAbout": "items/cough_today",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "cough_today"
+            },
+            {
+                "isAbout": "items/cough_today_severity",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "cough_today_severity"
+            },
+            {
+                "isAbout": "items/circulatory_conditions",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "circulatory_conditions"
+            },
+            {
+                "isAbout": "items/cardiac_condition",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "cardiac_condition"
+            },
+            {
+                "isAbout": "items/circulatory_med_history",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "circulatory_med_history"
+            },
+            {
+                "isAbout": "items/infection_disease",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "infection_disease"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "4.2.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

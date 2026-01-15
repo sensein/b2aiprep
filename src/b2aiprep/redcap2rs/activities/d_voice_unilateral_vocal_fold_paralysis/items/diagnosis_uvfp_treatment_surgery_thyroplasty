@@ -1,0 +1,37 @@
+{
+    "id": "diagnosis_uvfp_treatment_surgery_thyroplasty",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "5. Treatment obtained"
+    },
+    "prefLabel": {
+        "en": "diagnosis_uvfp_treatment_surgery_thyroplasty"
+    },
+    "question": {
+        "en": "Thyroplasty - Subcategory"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Gore-Tex"
+                },
+                "value": "goretex"
+            },
+            {
+                "name": {
+                    "en": "Silastic"
+                },
+                "value": "silastic"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

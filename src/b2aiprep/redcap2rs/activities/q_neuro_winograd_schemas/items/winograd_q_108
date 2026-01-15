@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_108",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_108"
+    },
+    "question": {
+        "en": "108. In the storm, the tree fell down and crashed through the roof of my house. Now, I have to get it repaired. What has to be repaired?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "The tree"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "The roof"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

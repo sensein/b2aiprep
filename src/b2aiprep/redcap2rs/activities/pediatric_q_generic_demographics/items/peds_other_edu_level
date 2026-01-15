@@ -1,0 +1,22 @@
+{
+    "id": "peds_other_edu_level",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Education"
+    },
+    "prefLabel": {
+        "en": "peds_other_edu_level"
+    },
+    "question": {
+        "en": "If you selected \"other\" level of education, please specify:"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

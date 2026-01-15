@@ -1,0 +1,45 @@
+{
+    "id": "hard_to_work",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "hard_to_work"
+    },
+    "question": {
+        "en": "How difficult have they made it for you to do your work, take care of things at home, or get along with other people?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Not difficult at all"
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "Somewhat difficult"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Very difficult"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Extremely difficult"
+                },
+                "value": 3
+            }
+        ],
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,39 @@
+{
+    "id": "hd_care_level",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "hd_care_level"
+    },
+    "question": {
+        "en": "Care level:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "0 = full time skilled nursing"
+                },
+                "value": "fullTimeSkilledNursing"
+            },
+            {
+                "name": {
+                    "en": "1 = home or chronic care"
+                },
+                "value": "homeOrChronicCare"
+            },
+            {
+                "name": {
+                    "en": "2 = home"
+                },
+                "value": "home"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

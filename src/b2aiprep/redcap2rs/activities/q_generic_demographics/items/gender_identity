@@ -1,0 +1,54 @@
+{
+    "id": "gender_identity",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Patient Demographics"
+    },
+    "prefLabel": {
+        "en": "gender_identity"
+    },
+    "question": {
+        "en": "What is your gender identity?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Female gender identity"
+                },
+                "value": "female"
+            },
+            {
+                "name": {
+                    "en": "Male gender identity"
+                },
+                "value": "male"
+            },
+            {
+                "name": {
+                    "en": "Non-binary or genderqueer gender identity"
+                },
+                "value": "nonBinary"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": "noAnswer"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

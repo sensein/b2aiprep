@@ -1,0 +1,54 @@
+{
+    "id": "q1_happy",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "DSM-5 Adult (ASRM)\n\nChoose the one statement in each group that best describes the way you (the individual receiving care) have been feeling for the past week.\n\nPlease note:\nThe word \"occasionally\" when used here means once or twice; \"often\" means several times or more and \"frequently\" means most of the time."
+    },
+    "prefLabel": {
+        "en": "q1_happy"
+    },
+    "question": {
+        "en": "Question 1"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "I do not feel happier or more cheerful than usual."
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "I occasionally feel happier or more cheerful than usual."
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "I often feel happier or more cheerful than usual."
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "I feel happier or more cheerful than usual most of the time."
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "I feel happier or more cheerful than usual all of the time."
+                },
+                "value": 5
+            }
+        ],
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,45 @@
+{
+    "id": "daily_env_pollution_affects_your_breathing_voice",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "daily_env_pollution_affects_your_breathing_voice"
+    },
+    "question": {
+        "en": "Do you feel as though everyday environmental pollution (e.g. smog, smoke, dust, etc) significantly affects your breathing or voice?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Not certain"
+                },
+                "value": "notCertain"
+            },
+            {
+                "name": {
+                    "en": "Prefer Not to Answer"
+                },
+                "value": "noAnswer"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

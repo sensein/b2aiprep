@@ -1,0 +1,61 @@
+{
+    "id": "overly_active",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Matrix Group Name",
+            "source": "redcap",
+            "value": "adhd_adult"
+        }
+    ],
+    "preamble": {
+        "en": "Please answer the questions below, rating yourself on each of the criteria shown using the scale on the right side of the page. As you answer each question, select the box that best describes how you have felt and conducted yourself over the past 6 months."
+    },
+    "prefLabel": {
+        "en": "overly_active"
+    },
+    "question": {
+        "en": "How often do you feel overly active and compelled to do things, like you were driven by a motor?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Never"
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Rarely"
+                },
+                "value": "rarely"
+            },
+            {
+                "name": {
+                    "en": "Sometimes"
+                },
+                "value": "sometimes"
+            },
+            {
+                "name": {
+                    "en": "Often"
+                },
+                "value": "often"
+            },
+            {
+                "name": {
+                    "en": "Very Often"
+                },
+                "value": "veryOften"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

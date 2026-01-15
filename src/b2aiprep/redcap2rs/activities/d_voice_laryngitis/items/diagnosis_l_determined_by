@@ -1,0 +1,43 @@
+{
+    "id": "diagnosis_l_determined_by",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "1. Gold Standard Diagnosis"
+    },
+    "prefLabel": {
+        "en": "diagnosis_l_determined_by"
+    },
+    "question": {
+        "en": "Determined by (Select all that apply):"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Laryngologist"
+                },
+                "value": "laryngologist"
+            },
+            {
+                "name": {
+                    "en": "Otolaryngologist"
+                },
+                "value": "otolaryngologist"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

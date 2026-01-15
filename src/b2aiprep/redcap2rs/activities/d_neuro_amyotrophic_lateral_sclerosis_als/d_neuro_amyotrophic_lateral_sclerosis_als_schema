@@ -1,0 +1,218 @@
+{
+    "id": "d_neuro_amyotrophic_lateral_sclerosis_als_schema",
+    "category": "reproschema:Activity",
+    "compute": [
+        {
+            "jsExpression": "if(diagnosis_als_gsd_category_1 == 'yes' && diagnosis_als_gsd_category_2 == 'yes' && diagnosis_als_gsd_category_3 == 'yes','Yes','No')",
+            "variableName": "diagnosis_als_gsd_calculation"
+        }
+    ],
+    "prefLabel": {
+        "en": "d_neuro_amyotrophic_lateral_sclerosis_als"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/diagnosis_als_gsd",
+            "items/diagnosis_als_gsd_confirmation_method",
+            "items/diagnosis_als_gsd_category_1",
+            "items/diagnosis_als_gsd_category_2",
+            "items/diagnosis_als_gsd_category_3",
+            "items/diagnosis_als_disease_subtype",
+            "items/diagnosis_als_disease_subtype_familial",
+            "items/diagnosis_als_etiology",
+            "items/diagnosis_als_etiology_genetic_factors",
+            "items/diagnosis_als_etiology_genetic_factors_other",
+            "items/diagnosis_als_etiology_environmental_factors",
+            "items/diagnosis_als_cp",
+            "items/diagnosis_als_dp",
+            "items/diagnosis_als_na_alsfrs_r_score",
+            "items/diagnosis_als_na_fvc_percentage",
+            "items/diagnosis_als_na_other",
+            "items/diagnosis_als_idt_emg_ncs",
+            "items/diagnosis_als_idt_mri",
+            "items/diagnosis_als_idt_lumbar_puncture",
+            "items/diagnosis_als_idt_genetic_testing",
+            "items/diagnosis_als_idt_other",
+            "items/diagnosis_als_treatment_and_management",
+            "items/diagnosis_als_treatment_and_management_yes",
+            "items/diagnosis_als_treatment_and_management_yes_medications",
+            "items/diagnosis_als_treatment_and_management_yes_medications_other",
+            "items/diagnosis_als_treatment_and_management_yes_supportive_care",
+            "items/diagnosis_als_treatment_and_management_yes_supportive_care_other"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/diagnosis_als_gsd",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_als_gsd"
+            },
+            {
+                "isAbout": "items/diagnosis_als_gsd_confirmation_method",
+                "isVis": "diagnosis_als_gsd=='yes'",
+                "valueRequired": true,
+                "variableName": "diagnosis_als_gsd_confirmation_method"
+            },
+            {
+                "isAbout": "items/diagnosis_als_gsd_category_1",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_als_gsd_category_1"
+            },
+            {
+                "isAbout": "items/diagnosis_als_gsd_category_2",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_als_gsd_category_2"
+            },
+            {
+                "isAbout": "items/diagnosis_als_gsd_category_3",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_als_gsd_category_3"
+            },
+            {
+                "isAbout": "items/diagnosis_als_gsd_calculation",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "diagnosis_als_gsd_calculation"
+            },
+            {
+                "isAbout": "items/diagnosis_als_disease_subtype",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_als_disease_subtype"
+            },
+            {
+                "isAbout": "items/diagnosis_als_disease_subtype_familial",
+                "isVis": "diagnosis_als_disease_subtype == 'familialAls'",
+                "valueRequired": false,
+                "variableName": "diagnosis_als_disease_subtype_familial"
+            },
+            {
+                "isAbout": "items/diagnosis_als_etiology",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_als_etiology"
+            },
+            {
+                "isAbout": "items/diagnosis_als_etiology_genetic_factors",
+                "isVis": "diagnosis_als_etiology(genetic_factors) == 1",
+                "valueRequired": true,
+                "variableName": "diagnosis_als_etiology_genetic_factors"
+            },
+            {
+                "isAbout": "items/diagnosis_als_etiology_genetic_factors_other",
+                "isVis": "diagnosis_als_etiology_genetic_factors(other) == 1",
+                "valueRequired": true,
+                "variableName": "diagnosis_als_etiology_genetic_factors_other"
+            },
+            {
+                "isAbout": "items/diagnosis_als_etiology_environmental_factors",
+                "isVis": "diagnosis_als_etiology(environmental_factors) == 1",
+                "valueRequired": true,
+                "variableName": "diagnosis_als_etiology_environmental_factors"
+            },
+            {
+                "isAbout": "items/diagnosis_als_cp",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_als_cp"
+            },
+            {
+                "isAbout": "items/diagnosis_als_dp",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_als_dp"
+            },
+            {
+                "isAbout": "items/diagnosis_als_na_alsfrs_r_score",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_als_na_alsfrs_r_score"
+            },
+            {
+                "isAbout": "items/diagnosis_als_na_fvc_percentage",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_als_na_fvc_percentage"
+            },
+            {
+                "isAbout": "items/diagnosis_als_na_other",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_als_na_other"
+            },
+            {
+                "isAbout": "items/diagnosis_als_idt_emg_ncs",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_als_idt_emg_ncs"
+            },
+            {
+                "isAbout": "items/diagnosis_als_idt_mri",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_als_idt_mri"
+            },
+            {
+                "isAbout": "items/diagnosis_als_idt_lumbar_puncture",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_als_idt_lumbar_puncture"
+            },
+            {
+                "isAbout": "items/diagnosis_als_idt_genetic_testing",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_als_idt_genetic_testing"
+            },
+            {
+                "isAbout": "items/diagnosis_als_idt_other",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "diagnosis_als_idt_other"
+            },
+            {
+                "isAbout": "items/diagnosis_als_treatment_and_management",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_als_treatment_and_management"
+            },
+            {
+                "isAbout": "items/diagnosis_als_treatment_and_management_yes",
+                "isVis": "diagnosis_als_treatment_and_management == 'yes'",
+                "valueRequired": true,
+                "variableName": "diagnosis_als_treatment_and_management_yes"
+            },
+            {
+                "isAbout": "items/diagnosis_als_treatment_and_management_yes_medications",
+                "isVis": "diagnosis_als_treatment_and_management == 'yes' && diagnosis_als_treatment_and_management_yes(medications) == 1",
+                "valueRequired": true,
+                "variableName": "diagnosis_als_treatment_and_management_yes_medications"
+            },
+            {
+                "isAbout": "items/diagnosis_als_treatment_and_management_yes_medications_other",
+                "isVis": "diagnosis_als_treatment_and_management == 'yes' && diagnosis_als_treatment_and_management_yes(medications) == 1 && diagnosis_als_treatment_and_management_yes_medications(other) == 1",
+                "valueRequired": true,
+                "variableName": "diagnosis_als_treatment_and_management_yes_medications_other"
+            },
+            {
+                "isAbout": "items/diagnosis_als_treatment_and_management_yes_supportive_care",
+                "isVis": "diagnosis_als_treatment_and_management == 'yes' && diagnosis_als_treatment_and_management_yes(supportive_care) == 1",
+                "valueRequired": true,
+                "variableName": "diagnosis_als_treatment_and_management_yes_supportive_care"
+            },
+            {
+                "isAbout": "items/diagnosis_als_treatment_and_management_yes_supportive_care_other",
+                "isVis": "diagnosis_als_treatment_and_management == 'yes' && diagnosis_als_treatment_and_management_yes(supportive_care) == 1 && diagnosis_als_treatment_and_management_yes_supportive_care(other) == 1",
+                "valueRequired": true,
+                "variableName": "diagnosis_als_treatment_and_management_yes_supportive_care_other"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "4.1.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,36 @@
+{
+    "id": "country",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Address Information"
+    },
+    "prefLabel": {
+        "en": "country"
+    },
+    "question": {
+        "en": "Country"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "USA"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Canada"
+                },
+                "value": 2
+            }
+        ],
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "select"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

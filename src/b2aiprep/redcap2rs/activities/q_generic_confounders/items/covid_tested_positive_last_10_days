@@ -1,0 +1,39 @@
+{
+    "id": "covid_tested_positive_last_10_days",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "covid_tested_positive_last_10_days"
+    },
+    "question": {
+        "en": "Have you tested positive for COVID in the last 10 days?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Prefer Not To Answer"
+                },
+                "value": "noAnswer"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

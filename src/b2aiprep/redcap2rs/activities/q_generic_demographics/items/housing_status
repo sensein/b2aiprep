@@ -1,0 +1,78 @@
+{
+    "id": "housing_status",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Demographics - Optional"
+    },
+    "prefLabel": {
+        "en": "housing_status"
+    },
+    "question": {
+        "en": "What is your current housing status?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Assisted living"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Own home"
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "Rent home"
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "Skilled nursing facility/nursing home"
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "Unhoused-temporarily"
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "Unhoused-permanently"
+                },
+                "value": 7
+            },
+            {
+                "name": {
+                    "en": "Long-term care facility"
+                },
+                "value": 8
+            },
+            {
+                "name": {
+                    "en": "Retirement community"
+                },
+                "value": 9
+            },
+            {
+                "name": {
+                    "en": "Live with family"
+                },
+                "value": 10
+            }
+        ],
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

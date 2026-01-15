@@ -1,0 +1,48 @@
+{
+    "id": "diagnosis_as_ds_mcg",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Disease Severity"
+    },
+    "prefLabel": {
+        "en": "diagnosis_as_ds_mcg"
+    },
+    "question": {
+        "en": "Degree of Stenosis (Myer-Cotton Grade)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Grade I"
+                },
+                "value": "gradeI"
+            },
+            {
+                "name": {
+                    "en": "Grade II"
+                },
+                "value": "gradeII"
+            },
+            {
+                "name": {
+                    "en": "Grade III"
+                },
+                "value": "gradeIII"
+            },
+            {
+                "name": {
+                    "en": "Grade IV"
+                },
+                "value": "gradeIV"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

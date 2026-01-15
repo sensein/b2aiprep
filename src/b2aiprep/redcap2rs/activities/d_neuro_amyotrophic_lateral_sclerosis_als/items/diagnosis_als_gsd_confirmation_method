@@ -1,0 +1,43 @@
+{
+    "id": "diagnosis_als_gsd_confirmation_method",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "1. Gold Standard Diagnosis"
+    },
+    "prefLabel": {
+        "en": "diagnosis_als_gsd_confirmation_method"
+    },
+    "question": {
+        "en": "How was this diagnosis confirmed? (Check all that apply)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Progressive motor impairment documented by history or repeated clinical assessment, preceded by normal motor function"
+                },
+                "value": "progressive_motor_impairment"
+            },
+            {
+                "name": {
+                    "en": "Presence of UMN and LMN signs in at least 1 body region (with UMN and LMN dysfunction noted in the same body region if only one body region is involved) or LMN dysfunction in at least 2 body regions"
+                },
+                "value": "presence_of_umn_lmn_signs"
+            },
+            {
+                "name": {
+                    "en": "Investigations excluding other disease processes"
+                },
+                "value": "investigations_excluding_disease_processes"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

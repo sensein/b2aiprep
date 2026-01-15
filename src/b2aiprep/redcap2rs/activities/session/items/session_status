@@ -1,0 +1,41 @@
+{
+    "id": "session_status",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@READONLY"
+        }
+    ],
+    "prefLabel": {
+        "en": "session_status"
+    },
+    "question": {
+        "en": "Session Status"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "In Progress"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Completed"
+                },
+                "value": 2
+            }
+        ],
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

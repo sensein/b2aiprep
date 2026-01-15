@@ -1,0 +1,75 @@
+{
+    "id": "symptoms",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN"
+        }
+    ],
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
+    "prefLabel": {
+        "en": "symptoms"
+    },
+    "question": {
+        "en": "[DEPRECATED]\nThere are some symptoms that can affect your voice. Are you currently experiencing any of these symptoms? Check all that apply."
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Anxiety or nervousness"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Confusion"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Dizziness"
+                },
+                "value": 3
+            },
+            {
+                "name": {
+                    "en": "Frequent or severe headache or migraine"
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "Sleep disturbance"
+                },
+                "value": 5
+            },
+            {
+                "name": {
+                    "en": "Speech difficulty"
+                },
+                "value": 6
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": 7
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

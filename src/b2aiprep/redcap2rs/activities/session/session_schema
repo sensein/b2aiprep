@@ -1,0 +1,87 @@
+{
+    "id": "session_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "session"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/session_id",
+            "items/session_record_id",
+            "items/session_status",
+            "items/session_started_at",
+            "items/session_is_control_participant",
+            "items/session_completed_at",
+            "items/session_duration",
+            "items/session_site",
+            "items/session_completed_by",
+            "items/session_assigned_tasks"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/session_id",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "session_id"
+            },
+            {
+                "isAbout": "items/session_record_id",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "session_record_id"
+            },
+            {
+                "isAbout": "items/session_status",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "session_status"
+            },
+            {
+                "isAbout": "items/session_started_at",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "session_started_at"
+            },
+            {
+                "isAbout": "items/session_is_control_participant",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "session_is_control_participant"
+            },
+            {
+                "isAbout": "items/session_completed_at",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "session_completed_at"
+            },
+            {
+                "isAbout": "items/session_duration",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "session_duration"
+            },
+            {
+                "isAbout": "items/session_site",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "session_site"
+            },
+            {
+                "isAbout": "items/session_completed_by",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "session_completed_by"
+            },
+            {
+                "isAbout": "items/session_assigned_tasks",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "session_assigned_tasks"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "4.3.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

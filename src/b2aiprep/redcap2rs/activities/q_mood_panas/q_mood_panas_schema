@@ -1,0 +1,115 @@
+{
+    "id": "q_mood_panas_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "q_mood_panas"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/panas_session_id",
+            "items/panas_started_at",
+            "items/panas_completed_at",
+            "items/panas_duration",
+            "items/upset",
+            "items/hostile",
+            "items/alert",
+            "items/ashamed",
+            "items/inspired",
+            "items/nervous",
+            "items/determined",
+            "items/attentive",
+            "items/afraid",
+            "items/active"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/panas_session_id",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "panas_session_id"
+            },
+            {
+                "isAbout": "items/panas_started_at",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "panas_started_at"
+            },
+            {
+                "isAbout": "items/panas_completed_at",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "panas_completed_at"
+            },
+            {
+                "isAbout": "items/panas_duration",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "panas_duration"
+            },
+            {
+                "isAbout": "items/upset",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "upset"
+            },
+            {
+                "isAbout": "items/hostile",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "hostile"
+            },
+            {
+                "isAbout": "items/alert",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "alert"
+            },
+            {
+                "isAbout": "items/ashamed",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ashamed"
+            },
+            {
+                "isAbout": "items/inspired",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "inspired"
+            },
+            {
+                "isAbout": "items/nervous",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "nervous"
+            },
+            {
+                "isAbout": "items/determined",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "determined"
+            },
+            {
+                "isAbout": "items/attentive",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "attentive"
+            },
+            {
+                "isAbout": "items/afraid",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "afraid"
+            },
+            {
+                "isAbout": "items/active",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "active"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "3.24.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

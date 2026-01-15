@@ -1,0 +1,34 @@
+{
+    "id": "height",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Note",
+            "source": "redcap",
+            "value": "inches"
+        },
+        {
+            "column": "Text Validation Type OR Show Slider Number",
+            "source": "redcap",
+            "value": "number"
+        }
+    ],
+    "preamble": {
+        "en": "PHYSICAL HEALTH\n\nSome aspects of your physical health can affect the sound of your voice. This section asks questions about some of these factors.\n\n\nHeight and Weight"
+    },
+    "prefLabel": {
+        "en": "height"
+    },
+    "question": {
+        "en": "Height"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:decimal"
+        ]
+    },
+    "ui": {
+        "inputType": "float"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

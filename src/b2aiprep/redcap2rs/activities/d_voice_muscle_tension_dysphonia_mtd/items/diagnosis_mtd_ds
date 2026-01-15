@@ -1,0 +1,34 @@
+{
+    "id": "diagnosis_mtd_ds",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "2. Disease Subtype"
+    },
+    "prefLabel": {
+        "en": "diagnosis_mtd_ds"
+    },
+    "question": null,
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Primary MTD - neck muscles are tense with no abnormality in the larynx"
+                },
+                "value": "primaryMTD"
+            },
+            {
+                "name": {
+                    "en": "Secondary MTD - abnormality in larynx causes the patient to overuse other muscles involved in voice production"
+                },
+                "value": "secondaryMTD"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

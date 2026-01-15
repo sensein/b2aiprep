@@ -1,0 +1,42 @@
+{
+    "id": "typical_day_drink_caffeinated_products",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Caffeine intake"
+    },
+    "prefLabel": {
+        "en": "typical_day_drink_caffeinated_products"
+    },
+    "question": {
+        "en": "On a typical day, do you drink coffee or use other caffeinated products?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": "noAnswer"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

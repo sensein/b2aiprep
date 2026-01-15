@@ -1,0 +1,48 @@
+{
+    "id": "diagnosis_vfp_dse",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Disease Severity"
+    },
+    "prefLabel": {
+        "en": "diagnosis_vfp_dse"
+    },
+    "question": {
+        "en": "Degree of Glottic Gap"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "No glottic gap"
+                },
+                "value": 4
+            },
+            {
+                "name": {
+                    "en": "Small"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Moderate"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Large"
+                },
+                "value": 3
+            }
+        ],
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

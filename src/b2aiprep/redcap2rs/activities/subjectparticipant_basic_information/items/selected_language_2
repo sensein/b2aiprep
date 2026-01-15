@@ -1,0 +1,39 @@
+{
+    "id": "selected_language_2",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "selected_language_2"
+    },
+    "question": {
+        "en": "Language"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "English"
+                },
+                "value": "en-US"
+            },
+            {
+                "name": {
+                    "en": "French"
+                },
+                "value": "fr-CA"
+            },
+            {
+                "name": {
+                    "en": "Spanish"
+                },
+                "value": "es-419"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

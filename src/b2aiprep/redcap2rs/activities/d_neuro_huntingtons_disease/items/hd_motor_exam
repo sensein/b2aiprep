@@ -1,0 +1,23 @@
+{
+    "id": "hd_motor_exam",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "3. Disease Severity"
+    },
+    "prefLabel": {
+        "en": "hd_motor_exam"
+    },
+    "question": {
+        "en": "Motor Exam"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "static",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

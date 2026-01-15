@@ -1,0 +1,29 @@
+{
+    "id": "dmdd_last_depressive_episode",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Text Validation Type OR Show Slider Number",
+            "source": "redcap",
+            "value": "date_ymd"
+        }
+    ],
+    "preamble": {
+        "en": "2. Depression History"
+    },
+    "prefLabel": {
+        "en": "dmdd_last_depressive_episode"
+    },
+    "question": {
+        "en": "When was your last depressive episode (feeling depressed more days than not over\ntwo weeks)?"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:date"
+        ]
+    },
+    "ui": {
+        "inputType": "date"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

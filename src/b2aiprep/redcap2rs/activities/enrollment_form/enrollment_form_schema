@@ -1,0 +1,514 @@
+{
+    "id": "enrollment_form_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "enrollment_form"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/ef_select_language",
+            "items/ef_any_vision_related_req",
+            "items/ef_vision_a11y_options",
+            "items/ef_any_hearing_related_req",
+            "items/ef_hearing_a11y_options",
+            "items/ef_any_physical_challenges",
+            "items/ef_physical_a11y_options",
+            "items/ef_any_cognitive_challeges",
+            "items/ef_cognitive_a11y_options",
+            "items/ef_completed_by",
+            "items/ef_primary_language",
+            "items/ef_primary_language_other",
+            "items/ef_fluent_languages",
+            "items/ef_fluent_language_other",
+            "items/ef_dob",
+            "items/ef_cond_prompt",
+            "items/ef_glottic_insufficiency",
+            "items/ef_laryng_cancer",
+            "items/ef_laryngitis",
+            "items/ef_benign_cord_lesion",
+            "items/ef_mtd",
+            "items/ef_rrp",
+            "items/ef_spas_dys",
+            "items/ef_voc_fold_paralysis",
+            "items/ef_alz_dementia_mci",
+            "items/ef_als",
+            "items/ef_huntingtons",
+            "items/ef_parkinsons",
+            "items/ef_alcohol_subst_abuse",
+            "items/ef_gad",
+            "items/ef_add_adhd",
+            "items/ef_asd",
+            "items/ef_bipolar",
+            "items/ef_bpd",
+            "items/ef_depression",
+            "items/ef_ed",
+            "items/ef_insomnia",
+            "items/ef_ocd",
+            "items/ef_panic",
+            "items/ef_ptsd",
+            "items/ef_schizophrenia",
+            "items/ef_soc_anx_dis",
+            "items/ef_other_psych",
+            "items/ef_asthma",
+            "items/ef_airway_stenosis",
+            "items/ef_chronic_cough",
+            "items/ef_copd",
+            "items/ef_osa",
+            "items/ef_autism",
+            "items/ef_speech_delay",
+            "items/ef_eligible_studies",
+            "items/ef_learn_about_this_study",
+            "items/ef_learn_about_this_study_event",
+            "items/ef_learn_about_this_study_other",
+            "items/ef_participant_study_id",
+            "items/ef_first_name",
+            "items/ef_last_name",
+            "items/ef_phone_number",
+            "items/ef_email",
+            "items/ef_contact_info_stored",
+            "items/ef_enrollment",
+            "items/ef_remote_collection_agreement_terms",
+            "items/ef_is_control_participant",
+            "items/ef_reason_decline_enroll",
+            "items/ef_other_reason_decline",
+            "items/ef_enrollment_institution",
+            "items/ef_researcher_email",
+            "items/ef_enrollment_origin",
+            "items/ef_started_at",
+            "items/ef_completed_at",
+            "items/ef_duration"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/ef_select_language",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_select_language"
+            },
+            {
+                "isAbout": "items/ef_any_vision_related_req",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_any_vision_related_req"
+            },
+            {
+                "isAbout": "items/ef_vision_a11y_options",
+                "isVis": "ef_any_vision_related_req == '1'",
+                "valueRequired": false,
+                "variableName": "ef_vision_a11y_options"
+            },
+            {
+                "isAbout": "items/ef_any_hearing_related_req",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_any_hearing_related_req"
+            },
+            {
+                "isAbout": "items/ef_hearing_a11y_options",
+                "isVis": "ef_any_hearing_related_req == '1'",
+                "valueRequired": false,
+                "variableName": "ef_hearing_a11y_options"
+            },
+            {
+                "isAbout": "items/ef_any_physical_challenges",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_any_physical_challenges"
+            },
+            {
+                "isAbout": "items/ef_physical_a11y_options",
+                "isVis": "ef_any_physical_challenges == '1'",
+                "valueRequired": false,
+                "variableName": "ef_physical_a11y_options"
+            },
+            {
+                "isAbout": "items/ef_any_cognitive_challeges",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_any_cognitive_challeges"
+            },
+            {
+                "isAbout": "items/ef_cognitive_a11y_options",
+                "isVis": "ef_any_cognitive_challeges == '1'",
+                "valueRequired": false,
+                "variableName": "ef_cognitive_a11y_options"
+            },
+            {
+                "isAbout": "items/ef_completed_by",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "ef_completed_by"
+            },
+            {
+                "isAbout": "items/ef_primary_language",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_primary_language"
+            },
+            {
+                "isAbout": "items/ef_primary_language_other",
+                "isVis": "ef_primary_language == '4'",
+                "valueRequired": false,
+                "variableName": "ef_primary_language_other"
+            },
+            {
+                "isAbout": "items/ef_fluent_languages",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_fluent_languages"
+            },
+            {
+                "isAbout": "items/ef_fluent_language_other",
+                "isVis": "ef_fluent_languages___5 == '1'",
+                "valueRequired": false,
+                "variableName": "ef_fluent_language_other"
+            },
+            {
+                "isAbout": "items/ef_dob",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_dob"
+            },
+            {
+                "isAbout": "items/ef_cond_prompt",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "ef_cond_prompt"
+            },
+            {
+                "isAbout": "items/ef_glottic_insufficiency",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_glottic_insufficiency"
+            },
+            {
+                "isAbout": "items/ef_laryng_cancer",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_laryng_cancer"
+            },
+            {
+                "isAbout": "items/ef_laryngitis",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_laryngitis"
+            },
+            {
+                "isAbout": "items/ef_benign_cord_lesion",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_benign_cord_lesion"
+            },
+            {
+                "isAbout": "items/ef_mtd",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_mtd"
+            },
+            {
+                "isAbout": "items/ef_rrp",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_rrp"
+            },
+            {
+                "isAbout": "items/ef_spas_dys",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_spas_dys"
+            },
+            {
+                "isAbout": "items/ef_voc_fold_paralysis",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_voc_fold_paralysis"
+            },
+            {
+                "isAbout": "items/ef_alz_dementia_mci",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_alz_dementia_mci"
+            },
+            {
+                "isAbout": "items/ef_als",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_als"
+            },
+            {
+                "isAbout": "items/ef_huntingtons",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_huntingtons"
+            },
+            {
+                "isAbout": "items/ef_parkinsons",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_parkinsons"
+            },
+            {
+                "isAbout": "items/ef_alcohol_subst_abuse",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_alcohol_subst_abuse"
+            },
+            {
+                "isAbout": "items/ef_gad",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_gad"
+            },
+            {
+                "isAbout": "items/ef_add_adhd",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_add_adhd"
+            },
+            {
+                "isAbout": "items/ef_asd",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_asd"
+            },
+            {
+                "isAbout": "items/ef_bipolar",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_bipolar"
+            },
+            {
+                "isAbout": "items/ef_bpd",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_bpd"
+            },
+            {
+                "isAbout": "items/ef_depression",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_depression"
+            },
+            {
+                "isAbout": "items/ef_ed",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_ed"
+            },
+            {
+                "isAbout": "items/ef_insomnia",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_insomnia"
+            },
+            {
+                "isAbout": "items/ef_ocd",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_ocd"
+            },
+            {
+                "isAbout": "items/ef_panic",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_panic"
+            },
+            {
+                "isAbout": "items/ef_ptsd",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_ptsd"
+            },
+            {
+                "isAbout": "items/ef_schizophrenia",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_schizophrenia"
+            },
+            {
+                "isAbout": "items/ef_soc_anx_dis",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_soc_anx_dis"
+            },
+            {
+                "isAbout": "items/ef_other_psych",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_other_psych"
+            },
+            {
+                "isAbout": "items/ef_asthma",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_asthma"
+            },
+            {
+                "isAbout": "items/ef_airway_stenosis",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_airway_stenosis"
+            },
+            {
+                "isAbout": "items/ef_chronic_cough",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_chronic_cough"
+            },
+            {
+                "isAbout": "items/ef_copd",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_copd"
+            },
+            {
+                "isAbout": "items/ef_osa",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_osa"
+            },
+            {
+                "isAbout": "items/ef_autism",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_autism"
+            },
+            {
+                "isAbout": "items/ef_speech_delay",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_speech_delay"
+            },
+            {
+                "isAbout": "items/ef_eligible_studies",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_eligible_studies"
+            },
+            {
+                "isAbout": "items/ef_learn_about_this_study",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "ef_learn_about_this_study"
+            },
+            {
+                "isAbout": "items/ef_learn_about_this_study_event",
+                "isVis": "ef_learn_about_this_study == 'event'",
+                "valueRequired": false,
+                "variableName": "ef_learn_about_this_study_event"
+            },
+            {
+                "isAbout": "items/ef_learn_about_this_study_other",
+                "isVis": "ef_learn_about_this_study == 'other'",
+                "valueRequired": false,
+                "variableName": "ef_learn_about_this_study_other"
+            },
+            {
+                "isAbout": "items/ef_participant_study_id",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "ef_participant_study_id"
+            },
+            {
+                "isAbout": "items/ef_first_name",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "ef_first_name"
+            },
+            {
+                "isAbout": "items/ef_last_name",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "ef_last_name"
+            },
+            {
+                "isAbout": "items/ef_phone_number",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "ef_phone_number"
+            },
+            {
+                "isAbout": "items/ef_email",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "ef_email"
+            },
+            {
+                "isAbout": "items/ef_contact_info_stored",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "ef_contact_info_stored"
+            },
+            {
+                "isAbout": "items/ef_enrollment",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_enrollment"
+            },
+            {
+                "isAbout": "items/ef_remote_collection_agreement_terms",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "ef_remote_collection_agreement_terms"
+            },
+            {
+                "isAbout": "items/ef_is_control_participant",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_is_control_participant"
+            },
+            {
+                "isAbout": "items/ef_reason_decline_enroll",
+                "isVis": "ef_enrollment=='Decline'",
+                "valueRequired": true,
+                "variableName": "ef_reason_decline_enroll"
+            },
+            {
+                "isAbout": "items/ef_other_reason_decline",
+                "isVis": "ef_reason_decline_enroll=='5'",
+                "valueRequired": false,
+                "variableName": "ef_other_reason_decline"
+            },
+            {
+                "isAbout": "items/ef_enrollment_institution",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "ef_enrollment_institution"
+            },
+            {
+                "isAbout": "items/ef_researcher_email",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "ef_researcher_email"
+            },
+            {
+                "isAbout": "items/ef_enrollment_origin",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "ef_enrollment_origin"
+            },
+            {
+                "isAbout": "items/ef_started_at",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "ef_started_at"
+            },
+            {
+                "isAbout": "items/ef_completed_at",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "ef_completed_at"
+            },
+            {
+                "isAbout": "items/ef_duration",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "ef_duration"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "4.1.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

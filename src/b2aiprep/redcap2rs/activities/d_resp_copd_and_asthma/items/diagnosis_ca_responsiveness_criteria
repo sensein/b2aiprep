@@ -1,0 +1,42 @@
+{
+    "id": "diagnosis_ca_responsiveness_criteria",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "1. Spirometry and diagnosis"
+    },
+    "prefLabel": {
+        "en": "diagnosis_ca_responsiveness_criteria"
+    },
+    "question": {
+        "en": "Did the participant meet the criteria for responsiveness on bronchodilator testing?\n\n(Increase in FEV1 or FVC by 200ml and 12 % from baseline with bronchodilators)?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Not Certain"
+                },
+                "value": "notCertain"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

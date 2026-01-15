@@ -1,0 +1,43 @@
+{
+    "id": "mtd",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Matrix Group Name",
+            "source": "redcap",
+            "value": "voice_disorders"
+        }
+    ],
+    "preamble": {
+        "en": "Voice Disorders"
+    },
+    "prefLabel": {
+        "en": "mtd"
+    },
+    "question": {
+        "en": "Muscle Tension Dysphonia (MTD)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Unchecked"
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "Checked"
+                },
+                "value": 1
+            }
+        ],
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

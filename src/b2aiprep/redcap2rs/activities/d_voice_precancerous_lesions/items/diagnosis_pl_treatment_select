@@ -1,0 +1,67 @@
+{
+    "id": "diagnosis_pl_treatment_select",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "5. Treatment obtained"
+    },
+    "prefLabel": {
+        "en": "diagnosis_pl_treatment_select"
+    },
+    "question": {
+        "en": "What treatments did the participant undergo? (Select all that apply):"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Surveillance only (previous diagnosis)"
+                },
+                "value": "surveillance_only"
+            },
+            {
+                "name": {
+                    "en": "Laser resection"
+                },
+                "value": "laser_resection"
+            },
+            {
+                "name": {
+                    "en": "Laser ablation"
+                },
+                "value": "laser_ablation"
+            },
+            {
+                "name": {
+                    "en": "Microlaryngeal surgery without laser"
+                },
+                "value": "microlaryngeal_surgery_without_laser"
+            },
+            {
+                "name": {
+                    "en": "Radiotherapy for persistent or recurrent lesions"
+                },
+                "value": "radiotherapy_persistent_or_recurrent_lesions"
+            },
+            {
+                "name": {
+                    "en": "Voice/speech therapy"
+                },
+                "value": "voice_or_speech_therapy"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

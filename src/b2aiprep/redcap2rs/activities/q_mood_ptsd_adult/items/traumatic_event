@@ -1,0 +1,22 @@
+{
+    "id": "traumatic_event",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Severity of Posttraumatic Stress Symptoms - Adult"
+    },
+    "prefLabel": {
+        "en": "traumatic_event"
+    },
+    "question": {
+        "en": "Please list the traumatic event that you experienced"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

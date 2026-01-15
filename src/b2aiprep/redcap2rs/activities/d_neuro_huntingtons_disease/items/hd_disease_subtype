@@ -1,0 +1,54 @@
+{
+    "id": "hd_disease_subtype",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "2. Disease Subtype"
+    },
+    "prefLabel": {
+        "en": "hd_disease_subtype"
+    },
+    "question": {
+        "en": "Disease Subtype"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Pediatric Onset"
+                },
+                "value": "pediatricOnset"
+            },
+            {
+                "name": {
+                    "en": "Juvenile Onset"
+                },
+                "value": "juvenileOnset"
+            },
+            {
+                "name": {
+                    "en": "Adult Onset"
+                },
+                "value": "adultOnset"
+            },
+            {
+                "name": {
+                    "en": "Late Onset"
+                },
+                "value": "lateOnset"
+            },
+            {
+                "name": {
+                    "en": "Unknown"
+                },
+                "value": "unknown"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

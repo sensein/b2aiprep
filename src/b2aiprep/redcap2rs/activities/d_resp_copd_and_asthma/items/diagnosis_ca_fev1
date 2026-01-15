@@ -1,0 +1,55 @@
+{
+    "id": "diagnosis_ca_fev1",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Text Validation Type OR Show Slider Number",
+            "source": "redcap",
+            "value": "number"
+        },
+        {
+            "column": "Text Validation Max",
+            "source": "redcap",
+            "value": "150.0"
+        },
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LH"
+        }
+    ],
+    "preamble": {
+        "en": "1. Spirometry and diagnosis"
+    },
+    "prefLabel": {
+        "en": "diagnosis_ca_fev1"
+    },
+    "question": {
+        "en": "What is the FEV1 (percent predicted) (if known)?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "0"
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "150"
+                },
+                "value": 150
+            }
+        ],
+        "maxValue": 150,
+        "minValue": 0,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "slider"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

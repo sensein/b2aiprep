@@ -1,0 +1,22 @@
+{
+    "id": "ef_fluent_language_other",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Tell us about yourself"
+    },
+    "prefLabel": {
+        "en": "ef_fluent_language_other"
+    },
+    "question": {
+        "en": "If you speak any other languages fluently, please specify:"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

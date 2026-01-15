@@ -1,0 +1,37 @@
+{
+    "id": "diagnosis_lc_treatment_s",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "5. Treatment obtained"
+    },
+    "prefLabel": {
+        "en": "diagnosis_lc_treatment_s"
+    },
+    "question": {
+        "en": "Surgery"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Endoscopic laser"
+                },
+                "value": "endoscopic_laser"
+            },
+            {
+                "name": {
+                    "en": "Partial laryngectomy"
+                },
+                "value": "partial_laryngectomy"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

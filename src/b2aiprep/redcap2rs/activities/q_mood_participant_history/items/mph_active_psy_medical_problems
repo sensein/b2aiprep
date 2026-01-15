@@ -1,0 +1,22 @@
+{
+    "id": "mph_active_psy_medical_problems",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Medical and Psychiatric comorbidities"
+    },
+    "prefLabel": {
+        "en": "mph_active_psy_medical_problems"
+    },
+    "question": {
+        "en": "Please list any active psychiatric problems and medical problems."
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,48 @@
+{
+    "id": "used_substance_on_your_own",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Other Substance use"
+    },
+    "prefLabel": {
+        "en": "used_substance_on_your_own"
+    },
+    "question": {
+        "en": "Have you ever used medicines ON YOUR OWN without a doctor's prescription, or in greater amounts or longer than prescribed?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Not this year, but I have in the past"
+                },
+                "value": "inThePast"
+            },
+            {
+                "name": {
+                    "en": "One or more times this year"
+                },
+                "value": "oneOrMore"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to respond"
+                },
+                "value": "noAnswer"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

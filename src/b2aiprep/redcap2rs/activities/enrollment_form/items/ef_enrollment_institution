@@ -1,0 +1,60 @@
+{
+    "id": "ef_enrollment_institution",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Review and Enroll"
+    },
+    "prefLabel": {
+        "en": "ef_enrollment_institution"
+    },
+    "question": {
+        "en": "Enrollment Institution"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "MIT"
+                },
+                "value": "mit"
+            },
+            {
+                "name": {
+                    "en": "Mt. Sinai"
+                },
+                "value": "mt_sinai"
+            },
+            {
+                "name": {
+                    "en": "SickKids"
+                },
+                "value": "sickkids"
+            },
+            {
+                "name": {
+                    "en": "USF"
+                },
+                "value": "usf"
+            },
+            {
+                "name": {
+                    "en": "VUMC"
+                },
+                "value": "vumc"
+            },
+            {
+                "name": {
+                    "en": "WCM"
+                },
+                "value": "wcm"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

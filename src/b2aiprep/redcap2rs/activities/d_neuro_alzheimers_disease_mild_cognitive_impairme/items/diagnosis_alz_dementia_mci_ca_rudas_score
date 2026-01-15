@@ -1,0 +1,22 @@
+{
+    "id": "diagnosis_alz_dementia_mci_ca_rudas_score",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "5. Cognitive Assessment\n(must fill at least one)"
+    },
+    "prefLabel": {
+        "en": "diagnosis_alz_dementia_mci_ca_rudas_score"
+    },
+    "question": {
+        "en": "Rowland Universal Dementia Assessment Scale (RUDAS) score:"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

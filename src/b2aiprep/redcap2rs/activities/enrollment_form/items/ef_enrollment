@@ -1,0 +1,36 @@
+{
+    "id": "ef_enrollment",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Review and Enroll"
+    },
+    "prefLabel": {
+        "en": "ef_enrollment"
+    },
+    "question": {
+        "en": "Please review your answers reading all the way through the bottom and select an option. If you have any questions, you can still proceed with enrollment and ask or make changes at a later time."
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Enroll"
+                },
+                "value": "Enroll"
+            },
+            {
+                "name": {
+                    "en": "Decline"
+                },
+                "value": "Decline"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

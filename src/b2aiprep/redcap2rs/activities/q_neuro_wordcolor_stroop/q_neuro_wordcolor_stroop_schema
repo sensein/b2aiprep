@@ -1,0 +1,472 @@
+{
+    "id": "q_neuro_wordcolor_stroop_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "q_neuro_wordcolor_stroop"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/stroop_session_id",
+            "items/stroop_recording_acoustic_task_id",
+            "items/stroop_started_at",
+            "items/stroop_completed_at",
+            "items/stroop_duration",
+            "items/stroop_item_stimulus_1",
+            "items/stroop_item_color_1",
+            "items/stroop_item_time_1",
+            "items/stroop_item_correct_1",
+            "items/stroop_item_stimulus_2",
+            "items/stroop_item_color_2",
+            "items/stroop_item_time_2",
+            "items/stroop_item_correct_2",
+            "items/stroop_item_stimulus_3",
+            "items/stroop_item_color_3",
+            "items/stroop_item_time_3",
+            "items/stroop_item_correct_3",
+            "items/stroop_item_stimulus_4",
+            "items/stroop_item_color_4",
+            "items/stroop_item_time_4",
+            "items/stroop_item_correct_4",
+            "items/stroop_item_stimulus_5",
+            "items/stroop_item_color_5",
+            "items/stroop_item_time_5",
+            "items/stroop_item_correct_5",
+            "items/stroop_item_stimulus_6",
+            "items/stroop_item_color_6",
+            "items/stroop_item_time_6",
+            "items/stroop_item_correct_6",
+            "items/stroop_item_stimulus_7",
+            "items/stroop_item_color_7",
+            "items/stroop_item_time_7",
+            "items/stroop_item_correct_7",
+            "items/stroop_item_stimulus_8",
+            "items/stroop_item_color_8",
+            "items/stroop_item_time_8",
+            "items/stroop_item_correct_8",
+            "items/stroop_item_stimulus_9",
+            "items/stroop_item_color_9",
+            "items/stroop_item_time_9",
+            "items/stroop_item_correct_9",
+            "items/stroop_item_stimulus_10",
+            "items/stroop_item_color_10",
+            "items/stroop_item_time_10",
+            "items/stroop_item_correct_10",
+            "items/stroop_item_stimulus_11",
+            "items/stroop_item_color_11",
+            "items/stroop_item_time_11",
+            "items/stroop_item_correct_11",
+            "items/stroop_item_stimulus_12",
+            "items/stroop_item_color_12",
+            "items/stroop_item_time_12",
+            "items/stroop_item_correct_12",
+            "items/stroop_item_stimulus_13",
+            "items/stroop_item_color_13",
+            "items/stroop_item_time_13",
+            "items/stroop_item_correct_13",
+            "items/stroop_item_stimulus_14",
+            "items/stroop_item_color_14",
+            "items/stroop_item_time_14",
+            "items/stroop_item_correct_14",
+            "items/stroop_item_stimulus_15",
+            "items/stroop_item_color_15",
+            "items/stroop_item_time_15",
+            "items/stroop_item_correct_15"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/stroop_session_id",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "stroop_session_id"
+            },
+            {
+                "isAbout": "items/stroop_recording_acoustic_task_id",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "stroop_recording_acoustic_task_id"
+            },
+            {
+                "isAbout": "items/stroop_started_at",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "stroop_started_at"
+            },
+            {
+                "isAbout": "items/stroop_completed_at",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "stroop_completed_at"
+            },
+            {
+                "isAbout": "items/stroop_duration",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "stroop_duration"
+            },
+            {
+                "isAbout": "items/stroop_item_stimulus_1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_stimulus_1"
+            },
+            {
+                "isAbout": "items/stroop_item_color_1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_color_1"
+            },
+            {
+                "isAbout": "items/stroop_item_time_1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_time_1"
+            },
+            {
+                "isAbout": "items/stroop_item_correct_1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_correct_1"
+            },
+            {
+                "isAbout": "items/stroop_item_stimulus_2",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_stimulus_2"
+            },
+            {
+                "isAbout": "items/stroop_item_color_2",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_color_2"
+            },
+            {
+                "isAbout": "items/stroop_item_time_2",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_time_2"
+            },
+            {
+                "isAbout": "items/stroop_item_correct_2",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_correct_2"
+            },
+            {
+                "isAbout": "items/stroop_item_stimulus_3",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_stimulus_3"
+            },
+            {
+                "isAbout": "items/stroop_item_color_3",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_color_3"
+            },
+            {
+                "isAbout": "items/stroop_item_time_3",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_time_3"
+            },
+            {
+                "isAbout": "items/stroop_item_correct_3",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_correct_3"
+            },
+            {
+                "isAbout": "items/stroop_item_stimulus_4",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_stimulus_4"
+            },
+            {
+                "isAbout": "items/stroop_item_color_4",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_color_4"
+            },
+            {
+                "isAbout": "items/stroop_item_time_4",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_time_4"
+            },
+            {
+                "isAbout": "items/stroop_item_correct_4",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_correct_4"
+            },
+            {
+                "isAbout": "items/stroop_item_stimulus_5",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_stimulus_5"
+            },
+            {
+                "isAbout": "items/stroop_item_color_5",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_color_5"
+            },
+            {
+                "isAbout": "items/stroop_item_time_5",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_time_5"
+            },
+            {
+                "isAbout": "items/stroop_item_correct_5",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_correct_5"
+            },
+            {
+                "isAbout": "items/stroop_item_stimulus_6",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_stimulus_6"
+            },
+            {
+                "isAbout": "items/stroop_item_color_6",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_color_6"
+            },
+            {
+                "isAbout": "items/stroop_item_time_6",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_time_6"
+            },
+            {
+                "isAbout": "items/stroop_item_correct_6",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_correct_6"
+            },
+            {
+                "isAbout": "items/stroop_item_stimulus_7",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_stimulus_7"
+            },
+            {
+                "isAbout": "items/stroop_item_color_7",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_color_7"
+            },
+            {
+                "isAbout": "items/stroop_item_time_7",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_time_7"
+            },
+            {
+                "isAbout": "items/stroop_item_correct_7",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_correct_7"
+            },
+            {
+                "isAbout": "items/stroop_item_stimulus_8",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_stimulus_8"
+            },
+            {
+                "isAbout": "items/stroop_item_color_8",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_color_8"
+            },
+            {
+                "isAbout": "items/stroop_item_time_8",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_time_8"
+            },
+            {
+                "isAbout": "items/stroop_item_correct_8",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_correct_8"
+            },
+            {
+                "isAbout": "items/stroop_item_stimulus_9",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_stimulus_9"
+            },
+            {
+                "isAbout": "items/stroop_item_color_9",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_color_9"
+            },
+            {
+                "isAbout": "items/stroop_item_time_9",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_time_9"
+            },
+            {
+                "isAbout": "items/stroop_item_correct_9",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_correct_9"
+            },
+            {
+                "isAbout": "items/stroop_item_stimulus_10",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_stimulus_10"
+            },
+            {
+                "isAbout": "items/stroop_item_color_10",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_color_10"
+            },
+            {
+                "isAbout": "items/stroop_item_time_10",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_time_10"
+            },
+            {
+                "isAbout": "items/stroop_item_correct_10",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_correct_10"
+            },
+            {
+                "isAbout": "items/stroop_item_stimulus_11",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_stimulus_11"
+            },
+            {
+                "isAbout": "items/stroop_item_color_11",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_color_11"
+            },
+            {
+                "isAbout": "items/stroop_item_time_11",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_time_11"
+            },
+            {
+                "isAbout": "items/stroop_item_correct_11",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_correct_11"
+            },
+            {
+                "isAbout": "items/stroop_item_stimulus_12",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_stimulus_12"
+            },
+            {
+                "isAbout": "items/stroop_item_color_12",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_color_12"
+            },
+            {
+                "isAbout": "items/stroop_item_time_12",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_time_12"
+            },
+            {
+                "isAbout": "items/stroop_item_correct_12",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_correct_12"
+            },
+            {
+                "isAbout": "items/stroop_item_stimulus_13",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_stimulus_13"
+            },
+            {
+                "isAbout": "items/stroop_item_color_13",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_color_13"
+            },
+            {
+                "isAbout": "items/stroop_item_time_13",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_time_13"
+            },
+            {
+                "isAbout": "items/stroop_item_correct_13",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_correct_13"
+            },
+            {
+                "isAbout": "items/stroop_item_stimulus_14",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_stimulus_14"
+            },
+            {
+                "isAbout": "items/stroop_item_color_14",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_color_14"
+            },
+            {
+                "isAbout": "items/stroop_item_time_14",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_time_14"
+            },
+            {
+                "isAbout": "items/stroop_item_correct_14",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_correct_14"
+            },
+            {
+                "isAbout": "items/stroop_item_stimulus_15",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_stimulus_15"
+            },
+            {
+                "isAbout": "items/stroop_item_color_15",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_color_15"
+            },
+            {
+                "isAbout": "items/stroop_item_time_15",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_time_15"
+            },
+            {
+                "isAbout": "items/stroop_item_correct_15",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "stroop_item_correct_15"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "3.24.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,43 @@
+{
+    "id": "alcohol_subst_abuse",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Matrix Group Name",
+            "source": "redcap",
+            "value": "mood_psych_dis"
+        }
+    ],
+    "preamble": {
+        "en": "Mood and Psychiatric Disorders"
+    },
+    "prefLabel": {
+        "en": "alcohol_subst_abuse"
+    },
+    "question": {
+        "en": "Alcohol or Substance Use Disorder"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Unchecked"
+                },
+                "value": 0
+            },
+            {
+                "name": {
+                    "en": "Checked"
+                },
+                "value": 1
+            }
+        ],
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

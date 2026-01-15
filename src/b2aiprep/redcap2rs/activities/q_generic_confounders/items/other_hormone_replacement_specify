@@ -1,0 +1,19 @@
+{
+    "id": "other_hormone_replacement_specify",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "other_hormone_replacement_specify"
+    },
+    "question": {
+        "en": "What other hormone replacement(s) do you currently take?"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

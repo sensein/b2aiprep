@@ -1,0 +1,59 @@
+{
+    "id": "q_generic_harvard_sentences_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "q_generic_harvard_sentences"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/harvard_sentences_session_id",
+            "items/harvard_sentences_recording_acoustic_task_id",
+            "items/harvard_sentences_started_at",
+            "items/harvard_sentences_completed_at",
+            "items/harvard_sentences_duration",
+            "items/harvard_sentences_list_order"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/harvard_sentences_session_id",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "harvard_sentences_session_id"
+            },
+            {
+                "isAbout": "items/harvard_sentences_recording_acoustic_task_id",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "harvard_sentences_recording_acoustic_task_id"
+            },
+            {
+                "isAbout": "items/harvard_sentences_started_at",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "harvard_sentences_started_at"
+            },
+            {
+                "isAbout": "items/harvard_sentences_completed_at",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "harvard_sentences_completed_at"
+            },
+            {
+                "isAbout": "items/harvard_sentences_duration",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "harvard_sentences_duration"
+            },
+            {
+                "isAbout": "items/harvard_sentences_list_order",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "harvard_sentences_list_order"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "4.0.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,36 @@
+{
+    "id": "ef_any_vision_related_req",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Let's customize your experience"
+    },
+    "prefLabel": {
+        "en": "ef_any_vision_related_req"
+    },
+    "question": {
+        "en": "This application requires you to read text to answer questions. Do you have any vision-related requirements we can assist with?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": 0
+            }
+        ],
+        "valueType": [
+            "xsd:boolean"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

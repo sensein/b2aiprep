@@ -1,0 +1,85 @@
+{
+    "id": "peds_mc_breathing_conditions",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Pediatric Medical Conditions Questionnaire"
+    },
+    "prefLabel": {
+        "en": "peds_mc_breathing_conditions"
+    },
+    "question": {
+        "en": "Does your child have a history of a breathing or airway conditions? (Select all that apply)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Asthma"
+                },
+                "value": "asthma"
+            },
+            {
+                "name": {
+                    "en": "Recurrent Croup (>3 episodes per year)"
+                },
+                "value": "recurrent_croup"
+            },
+            {
+                "name": {
+                    "en": "Bronchiolitis"
+                },
+                "value": "bronchiolitis"
+            },
+            {
+                "name": {
+                    "en": "RSV"
+                },
+                "value": "rsv"
+            },
+            {
+                "name": {
+                    "en": "Chronic Cough"
+                },
+                "value": "chronic_cough"
+            },
+            {
+                "name": {
+                    "en": "Subglottic Stenosis"
+                },
+                "value": "subglottic_stenosis"
+            },
+            {
+                "name": {
+                    "en": "Vocal Cord Webs"
+                },
+                "value": "vocal_cord_webs"
+            },
+            {
+                "name": {
+                    "en": "Airway Surgery"
+                },
+                "value": "airway_surgery"
+            },
+            {
+                "name": {
+                    "en": "Has your child ever been intubated?"
+                },
+                "value": "intubated"
+            },
+            {
+                "name": {
+                    "en": "Does your child have a tracheostomy?"
+                },
+                "value": "tracheostomy"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,55 @@
+{
+    "id": "diagnosis_parkinsons_current_treatment_obtained_yes_medications",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "7. Treatment Obtained"
+    },
+    "prefLabel": {
+        "en": "diagnosis_parkinsons_current_treatment_obtained_yes_medications"
+    },
+    "question": {
+        "en": "Medications:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Levodopa"
+                },
+                "value": "levodopa"
+            },
+            {
+                "name": {
+                    "en": "Dopamine agonists"
+                },
+                "value": "dopamine_agonists"
+            },
+            {
+                "name": {
+                    "en": "MAO-B inhibitors"
+                },
+                "value": "mao_b"
+            },
+            {
+                "name": {
+                    "en": "Amantadine"
+                },
+                "value": "amantadine"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

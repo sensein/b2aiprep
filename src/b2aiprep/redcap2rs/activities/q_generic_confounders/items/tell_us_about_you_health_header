@@ -1,0 +1,23 @@
+{
+    "id": "tell_us_about_you_health_header",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Questionnaire - Metadata"
+    },
+    "prefLabel": {
+        "en": "tell_us_about_you_health_header"
+    },
+    "question": {
+        "en": "TELL US ABOUT YOUR HEALTHMEDICAL HISTORYThere are some medical conditions that could have long term effects on your voice. In the following questions you will be asked about your CURRENT conditions as well as those you may have had in the PAST. Please read each set of questions carefully.NOTE:[All fields will be pre-populated to NO/NEVER unless the person noted the condition at enrollment. E.g. if the person enrolled with chronic cough, then \"Chronic cough\" will be pre-populated to YES/CURRENT.]"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "static",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

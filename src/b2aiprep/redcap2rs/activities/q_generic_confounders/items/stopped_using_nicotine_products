@@ -1,0 +1,42 @@
+{
+    "id": "stopped_using_nicotine_products",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Nicotine use"
+    },
+    "prefLabel": {
+        "en": "stopped_using_nicotine_products"
+    },
+    "question": {
+        "en": "If you have completely stopped using nicotine, about how old were you when you stopped?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Age when you stopped using: Enter age"
+                },
+                "value": "age"
+            },
+            {
+                "name": {
+                    "en": "Not certain"
+                },
+                "value": "notCertain"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": "noAnswer"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

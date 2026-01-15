@@ -1,0 +1,55 @@
+{
+    "id": "diagnosis_ca_asthma_subtype",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "2. Disease Subtype"
+    },
+    "prefLabel": {
+        "en": "diagnosis_ca_asthma_subtype"
+    },
+    "question": {
+        "en": "Please select all that apply:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Allergic"
+                },
+                "value": "allergic"
+            },
+            {
+                "name": {
+                    "en": "Eosinophilic"
+                },
+                "value": "eosinophilic"
+            },
+            {
+                "name": {
+                    "en": "Type 2 low"
+                },
+                "value": "type_2_low"
+            },
+            {
+                "name": {
+                    "en": "Obese"
+                },
+                "value": "obese"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

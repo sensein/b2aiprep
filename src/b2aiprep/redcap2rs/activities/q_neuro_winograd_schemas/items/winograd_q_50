@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_50",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_50"
+    },
+    "question": {
+        "en": "50. Susan knows all about Ann's personal problems because she is indiscreet. Who is indiscreet?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Susan"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "Ann"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

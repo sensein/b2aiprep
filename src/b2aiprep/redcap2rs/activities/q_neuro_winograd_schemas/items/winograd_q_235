@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_235",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_235"
+    },
+    "question": {
+        "en": "235. As Andrea in the crop duster passed over Susan, she could see the landing strip. Who could see the landing strip?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Andrea"
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "Susan"
+                },
+                "value": "incorrect"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

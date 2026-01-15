@@ -1,0 +1,61 @@
+{
+    "id": "peds_voice_changes",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Matrix Group Name",
+            "source": "redcap",
+            "value": "peds_vhi_10"
+        }
+    ],
+    "preamble": {
+        "en": "Pediatric VHI 10 Questionnaire"
+    },
+    "prefLabel": {
+        "en": "peds_voice_changes"
+    },
+    "question": {
+        "en": "The sound of my child's voice changes throughout the day."
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Never"
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Almost Never"
+                },
+                "value": "almostNever"
+            },
+            {
+                "name": {
+                    "en": "Sometimes"
+                },
+                "value": "sometimes"
+            },
+            {
+                "name": {
+                    "en": "Almost Always"
+                },
+                "value": "almostAlways"
+            },
+            {
+                "name": {
+                    "en": "Always"
+                },
+                "value": "always"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

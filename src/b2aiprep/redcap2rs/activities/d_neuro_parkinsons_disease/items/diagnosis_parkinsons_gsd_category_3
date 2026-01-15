@@ -1,0 +1,49 @@
+{
+    "id": "diagnosis_parkinsons_gsd_category_3",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Has the participant met the diagnostic criteria for Parkinson's Disease (Parkinsonism) based on presence of:"
+    },
+    "prefLabel": {
+        "en": "diagnosis_parkinsons_gsd_category_3"
+    },
+    "question": {
+        "en": "Category 3 - Supportive criteria"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Clear beneficial response to dopaminergic therapy"
+                },
+                "value": "response_dopaminergic_therapy"
+            },
+            {
+                "name": {
+                    "en": "Presence of levodopa-induced dyskinesia"
+                },
+                "value": "levodopa_induced_dyskinesia"
+            },
+            {
+                "name": {
+                    "en": "Rest tremor of a limb"
+                },
+                "value": "rest_tremor"
+            },
+            {
+                "name": {
+                    "en": "The presence of either olfactory loss or cardiac sympathetic denervation on MIBG scintigraphy (although the latter is rarely done in current practice)"
+                },
+                "value": "mibg"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

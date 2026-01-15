@@ -1,0 +1,43 @@
+{
+    "id": "diagnosis_degree_comments",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "RH"
+        }
+    ],
+    "preamble": {
+        "en": "4. Disease Severity"
+    },
+    "prefLabel": {
+        "en": "diagnosis_degree_comments"
+    },
+    "question": {
+        "en": "Comments about resonance"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Normal"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": 2
+            }
+        ],
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

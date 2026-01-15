@@ -1,0 +1,39 @@
+{
+    "id": "rehab_counseling_substance_use",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "rehab_counseling_substance_use"
+    },
+    "question": {
+        "en": "Have you ever been in rehab  or counseling for heavy substance use?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Prefer not to answer"
+                },
+                "value": "noAnswer"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

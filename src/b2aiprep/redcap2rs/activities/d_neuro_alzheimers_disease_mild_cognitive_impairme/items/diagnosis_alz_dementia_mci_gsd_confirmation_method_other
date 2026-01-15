@@ -1,0 +1,22 @@
+{
+    "id": "diagnosis_alz_dementia_mci_gsd_confirmation_method_other",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "1. Gold Standard Diagnosis"
+    },
+    "prefLabel": {
+        "en": "diagnosis_alz_dementia_mci_gsd_confirmation_method_other"
+    },
+    "question": {
+        "en": "Please specify:"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,78 @@
+{
+    "id": "dmdd_diagnosed_dd_selection",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "1. Gold Standard Diagnosis"
+    },
+    "prefLabel": {
+        "en": "dmdd_diagnosed_dd_selection"
+    },
+    "question": {
+        "en": "Major Depressive Disorder"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "6B43 Adjustment disorder"
+                },
+                "value": "6B43"
+            },
+            {
+                "name": {
+                    "en": "6B20 OCD"
+                },
+                "value": "6B20"
+            },
+            {
+                "name": {
+                    "en": "6A70 Single episode depressive disorder"
+                },
+                "value": "6A70"
+            },
+            {
+                "name": {
+                    "en": "6A71 Recurrent depressive disorder"
+                },
+                "value": "6A71"
+            },
+            {
+                "name": {
+                    "en": "6A72 Dysthymic disorder"
+                },
+                "value": "6A72"
+            },
+            {
+                "name": {
+                    "en": "6A73 Mixed depressive and anxiety disorder"
+                },
+                "value": "6A73"
+            },
+            {
+                "name": {
+                    "en": "GA34.41 Premenstrual dysphoric disorder"
+                },
+                "value": "GA34.41"
+            },
+            {
+                "name": {
+                    "en": "6A7Y Other specified depressive disorders"
+                },
+                "value": "6A7Y"
+            },
+            {
+                "name": {
+                    "en": "6A7Z Depressive disorders, unspecified"
+                },
+                "value": "6A7Z"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

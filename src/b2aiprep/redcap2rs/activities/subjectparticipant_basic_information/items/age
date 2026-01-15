@@ -1,0 +1,20 @@
+{
+    "id": "age",
+    "category": "reproschema:Item",
+    "description": {
+        "en": "Age"
+    },
+    "prefLabel": {
+        "en": "age"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "number",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

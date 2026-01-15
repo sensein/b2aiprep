@@ -1,0 +1,43 @@
+{
+    "id": "ef_completed_by",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Who is participating in completing this survey?\n[Deprecated in Protocol v4]"
+    },
+    "prefLabel": {
+        "en": "ef_completed_by"
+    },
+    "question": {
+        "en": "Check all that apply"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Self"
+                },
+                "value": 1
+            },
+            {
+                "name": {
+                    "en": "Assistant"
+                },
+                "value": 2
+            },
+            {
+                "name": {
+                    "en": "Parent/Caregiver"
+                },
+                "value": 3
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

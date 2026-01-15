@@ -1,0 +1,53 @@
+{
+    "id": "diagnosis_mtd_degree_p_1",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Text Validation Type OR Show Slider Number",
+            "source": "redcap",
+            "value": "number"
+        },
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "RH"
+        }
+    ],
+    "prefLabel": {
+        "en": "diagnosis_mtd_degree_p_1"
+    },
+    "question": {
+        "en": "Pitch"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "MI"
+                },
+                "value": "MI"
+            },
+            {
+                "name": {
+                    "en": "MO"
+                },
+                "value": "MO"
+            },
+            {
+                "name": {
+                    "en": "SE"
+                },
+                "value": "SE"
+            }
+        ],
+        "maxValue": 100,
+        "minValue": 0,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "slider"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

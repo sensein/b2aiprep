@@ -1,0 +1,43 @@
+{
+    "id": "diagnosis_ld_assessment",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "1. Gold Standard Diagnosis"
+    },
+    "prefLabel": {
+        "en": "diagnosis_ld_assessment"
+    },
+    "question": {
+        "en": "Did the participant have the following assessment?\n(Select all that apply)."
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Aural-perceptual evaluation"
+                },
+                "value": "aural_perceptual_evaluation"
+            },
+            {
+                "name": {
+                    "en": "Laryngoscopy or stroboscopy"
+                },
+                "value": "laryngoscopy_or_stroboscopy"
+            },
+            {
+                "name": {
+                    "en": "Neurological evaluation"
+                },
+                "value": "neurological_evaluation"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

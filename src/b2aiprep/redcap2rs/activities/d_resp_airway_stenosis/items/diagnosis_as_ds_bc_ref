@@ -1,0 +1,23 @@
+{
+    "id": "diagnosis_as_ds_bc_ref",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Disease Severity"
+    },
+    "prefLabel": {
+        "en": "diagnosis_as_ds_bc_ref"
+    },
+    "question": {
+        "en": "Degree of Stenosis (Bogdasarian Classification)\nPicture for reference"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "static",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

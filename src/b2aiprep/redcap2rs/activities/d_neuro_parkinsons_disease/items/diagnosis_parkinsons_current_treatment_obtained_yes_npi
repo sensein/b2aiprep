@@ -1,0 +1,61 @@
+{
+    "id": "diagnosis_parkinsons_current_treatment_obtained_yes_npi",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "7. Treatment Obtained"
+    },
+    "prefLabel": {
+        "en": "diagnosis_parkinsons_current_treatment_obtained_yes_npi"
+    },
+    "question": {
+        "en": "Non-pharmacological interventions:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Physical therapy"
+                },
+                "value": "physical_therapy"
+            },
+            {
+                "name": {
+                    "en": "Occupational therapy"
+                },
+                "value": "occupational_therapy"
+            },
+            {
+                "name": {
+                    "en": "Speech therapy"
+                },
+                "value": "speech_therapy"
+            },
+            {
+                "name": {
+                    "en": "Deep Brain Stimulation (DBS) therapy"
+                },
+                "value": "dbs"
+            },
+            {
+                "name": {
+                    "en": "Focused ultrasound"
+                },
+                "value": "focused_ultrasound"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

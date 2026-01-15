@@ -1,0 +1,37 @@
+{
+    "id": "diagnosis_parkinsons_current_treatment_obtained_yes",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "7. Treatment Obtained"
+    },
+    "prefLabel": {
+        "en": "diagnosis_parkinsons_current_treatment_obtained_yes"
+    },
+    "question": {
+        "en": "Yes"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Medications"
+                },
+                "value": "medications"
+            },
+            {
+                "name": {
+                    "en": "Non-pharmacological interventions"
+                },
+                "value": "npi"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

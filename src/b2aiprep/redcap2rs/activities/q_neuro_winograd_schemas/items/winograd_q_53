@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_53",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_53"
+    },
+    "question": {
+        "en": "53. Joe's uncle can still beat him at tennis, even though he is 30 years older. Who is older?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Joe's uncle"
+                },
+                "value": "correct"
+            },
+            {
+                "name": {
+                    "en": "Joe"
+                },
+                "value": "incorrect"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

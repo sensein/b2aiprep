@@ -1,0 +1,22 @@
+{
+    "id": "diagnosis_als_idt_emg_ncs",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "7. Imaging and Diagnostic Tests"
+    },
+    "prefLabel": {
+        "en": "diagnosis_als_idt_emg_ncs"
+    },
+    "question": {
+        "en": "Electromyography (EMG) and Nerve Conduction Studies (NCS):"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

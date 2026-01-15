@@ -1,0 +1,43 @@
+{
+    "id": "winograd_q_22",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "preamble": {
+        "en": "Winograd Questionnaire"
+    },
+    "prefLabel": {
+        "en": "winograd_q_22"
+    },
+    "question": {
+        "en": "22. Tom threw his schoolbag down to Ray after he reached the bottom of the stairs. Who reached the bottom of the stairs?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Tom"
+                },
+                "value": "incorrect"
+            },
+            {
+                "name": {
+                    "en": "Ray"
+                },
+                "value": "correct"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,32 @@
+{
+    "id": "usf_icf_name_es",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Identifier?",
+            "source": "redcap",
+            "value": "y"
+        },
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@READONLY-FORM"
+        }
+    ],
+    "prefLabel": {
+        "en": "usf_icf_name_es"
+    },
+    "question": {
+        "en": "Nombre Impreso de la Persona que Participa en el Estudio"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,36 @@
+{
+    "id": "diagnosis_ucc_rada",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "1. Initial screening criteria"
+    },
+    "prefLabel": {
+        "en": "diagnosis_ucc_rada"
+    },
+    "question": {
+        "en": "Result"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Positive for reactive airway disease"
+                },
+                "value": "positive"
+            },
+            {
+                "name": {
+                    "en": "Negative for reactive airway disease"
+                },
+                "value": "negative"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

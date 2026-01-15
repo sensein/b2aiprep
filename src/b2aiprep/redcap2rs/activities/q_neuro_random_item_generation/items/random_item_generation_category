@@ -1,0 +1,84 @@
+{
+    "id": "random_item_generation_category",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Random item generation / semantic fluency"
+    },
+    "prefLabel": {
+        "en": "random_item_generation_category"
+    },
+    "question": {
+        "en": "Random item generation category"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Numbers"
+                },
+                "value": "numbers"
+            },
+            {
+                "name": {
+                    "en": "Letters"
+                },
+                "value": "letters"
+            },
+            {
+                "name": {
+                    "en": "First names"
+                },
+                "value": "firstNames"
+            },
+            {
+                "name": {
+                    "en": "City names"
+                },
+                "value": "cityNames"
+            },
+            {
+                "name": {
+                    "en": "Country names"
+                },
+                "value": "countryNames"
+            },
+            {
+                "name": {
+                    "en": "Jobs"
+                },
+                "value": "jobs"
+            },
+            {
+                "name": {
+                    "en": "Fruits"
+                },
+                "value": "fruits"
+            },
+            {
+                "name": {
+                    "en": "Drinks"
+                },
+                "value": "drinks"
+            },
+            {
+                "name": {
+                    "en": "Animals"
+                },
+                "value": "animals"
+            },
+            {
+                "name": {
+                    "en": "English words starting with \"t\""
+                },
+                "value": "wordStartingWithT"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

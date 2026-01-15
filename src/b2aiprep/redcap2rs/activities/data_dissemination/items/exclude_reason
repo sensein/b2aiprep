@@ -1,0 +1,76 @@
+{
+    "id": "exclude_reason",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "exclude_reason"
+    },
+    "question": {
+        "en": "Check all that apply"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Re-consent required"
+                },
+                "value": "missing_consent"
+            },
+            {
+                "name": {
+                    "en": "Incomplete Data Collection - Acoustic Tasks"
+                },
+                "value": "incomplete_data_collection_acoustic_tasks"
+            },
+            {
+                "name": {
+                    "en": "Incomplete Data Collection - Questionnaire Tasks"
+                },
+                "value": "incomplete_data_collection_questionnaire_tasks"
+            },
+            {
+                "name": {
+                    "en": "Missing Diagnosis"
+                },
+                "value": "missing_diagnosis"
+            },
+            {
+                "name": {
+                    "en": "Participant lost to follow up"
+                },
+                "value": "participant_lost_to_follow_up"
+            },
+            {
+                "name": {
+                    "en": "Participant withdrew from Study"
+                },
+                "value": "participant_withdrew"
+            },
+            {
+                "name": {
+                    "en": "Participant removed from Eligibility"
+                },
+                "value": "participant_removed_from_eligibility"
+            },
+            {
+                "name": {
+                    "en": "Feasibility Participant"
+                },
+                "value": "feasibility_participant"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

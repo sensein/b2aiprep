@@ -1,0 +1,61 @@
+{
+    "id": "voice_lose_income",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Matrix Group Name",
+            "source": "redcap",
+            "value": "vhi_10"
+        }
+    ],
+    "preamble": {
+        "en": "Voice Handicap Index (VHI-10)"
+    },
+    "prefLabel": {
+        "en": "voice_lose_income"
+    },
+    "question": {
+        "en": "My voice problem causes me to lose income."
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Never"
+                },
+                "value": "never"
+            },
+            {
+                "name": {
+                    "en": "Almost Never"
+                },
+                "value": "almostNever"
+            },
+            {
+                "name": {
+                    "en": "Sometimes"
+                },
+                "value": "sometimes"
+            },
+            {
+                "name": {
+                    "en": "Almost Always"
+                },
+                "value": "almostAlways"
+            },
+            {
+                "name": {
+                    "en": "Always"
+                },
+                "value": "always"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}
