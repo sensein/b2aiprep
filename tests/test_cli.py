@@ -465,15 +465,11 @@ def test_redcap2bids_cli(setup_temp_files):
     """Test the 'b2aiprep-cli redcap2bids' command using subprocess."""
     redcap_csv_path, audio_dir, _, _ = setup_temp_files
 
-    project_root = Path(__file__).parent.parent
-    reproschema_path = project_root.joinpath("b2ai-redcap2rs", "b2ai-redcap2rs").resolve().as_posix()
-
     with tempfile.TemporaryDirectory() as outdir:
         command = [
             "b2aiprep-cli",
             "redcap2bids",
             redcap_csv_path,
-            reproschema_path,
             "--outdir",
             outdir,
             "--audiodir",
