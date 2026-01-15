@@ -587,6 +587,128 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
 
 
 @click.command()
+@click.argument("bundle1_path", type=click.Path(exists=True))
+@click.argument("bundle2_path", type=click.Path(exists=True))
+@click.option("--check_values/--no-check_values", type=bool, default=False, show_default=True, help="Check value level equivalence")
+def compare_bundled_datasets(bundle1_path, bundle2_path,check_values):
+    """Compare two bundled datasets in terms of contents."""
+    bundle1_path = Path(bundle1_path)
+    bundle2_path = Path(bundle2_path)
+
+    for bundle_subdir in ["features", "phenotype"]:
+        _LOGGER.info(f"Checking {bundle_subdir} directory of {bundle1_path} vs {bundle2_path}")
+        bundle1_subdir = bundle1_path / bundle_subdir
+        bundle2_subdir = bundle2_path / bundle_subdir
+        run_feature_comparison = True
+        if not bundle1_subdir.exists() and not bundle2_subdir.exists():
+            _LOGGER.warning(f"Neither {bundle_subdir} directory exists.")
+            run_feature_comparison = False
+        elif not bundle1_subdir.exists():
+            _LOGGER.warning(f"{bundle1_subdir} does not exist.")
+        elif not bundle2_subdir.exists():
+            _LOGGER.warning(f"{bundle2_subdir} does not exist.")
+        else:
+            # Check all files names, including directory structure
+            bundle1_subdir_files = set([os.path.relpath(f, bundle1_subdir) for f in bundle1_subdir.rglob('*') if f.is_file()])
+            bundle2_subdir_files = set([os.path.relpath(f, bundle2_subdir) for f in bundle2_subdir.rglob('*') if f.is_file()])
+            if len(bundle1_subdir_files.difference(bundle2_subdir_files)) == 0 and len(bundle2_subdir_files.difference(bundle1_subdir_files)) == 0:
+                _LOGGER.info(f"All file names and file structures in {bundle_subdir} found to be equivalent between two bundles")
+            if len(bundle1_subdir_files.difference(bundle2_subdir_files)) > 0:
+                _LOGGER.info(f"Found the following files in {bundle1_subdir} but not in {bundle2_subdir}: {list(bundle1_subdir_files.difference(bundle2_subdir_files))}")
+            if len(bundle2_subdir_files.difference(bundle1_subdir_files)) > 0:
+                _LOGGER.info(f"Found the following files in {bundle2_subdir} but not in {bundle1_subdir}: {list(bundle2_subdir_files.difference(bundle1_subdir_files))}")
+
+            for f in bundle1_subdir_files.intersection(bundle2_subdir_files): 
+                bundle1_subdir_path = bundle1_subdir / f
+                bundle2_subdir_path = bundle2_subdir / f
+                file_extension = os.path.splitext(f)[1]
+                if file_extension == '.json':
+                    compare_jsons(bundle1_subdir_path,bundle2_subdir_path,deep_comparison=check_values)
+                elif file_extension == '.tsv':
+                    compare_tsvs(bundle1_subdir_path,bundle2_subdir_path,deep_comparison=check_values)
+                elif file_extension == '.parquet':
+                    compare_parquets(bundle1_subdir_path,bundle2_subdir_path,deep_comparison=check_values)
+                else:
+                    _LOGGER.info(f"Cannot compare shared file {f} due to unsupported extension")
+
+
+
+def compare_jsons(json1, json2, deep_comparison=False):
+    """Compares two JSON files either at surface level or with deep comparison of values."""
+    with open(json1,'r') as f1:
+        data1 = json.load(f1)
+    with open(json2,'r') as f2:
+        data2 = json.load(f2)
+
+    _LOGGER.info(f"Comparing {json1} vs. {json2}")
+    if len(data1) != len(data2):
+        _LOGGER.info(f"Lengths: {len(data1)} vs. {len(data2)}")
+
+    if deep_comparison:
+        if data1 == data2:
+            _LOGGER.info("JSONs contain equivalent data")
+        else:
+            _LOGGER.info("JSONs do not contain equivalent data. Deeper JSON comparison not currently implemented")
+            key_set_1 = set(data1.keys())
+            key_set_2 = set(data2.keys())
+            #if len(key_set_1.difference(key_set_2)) == 0 and len(key_set_2.difference(key_set_1)) == 0:
+
+
+def compare_tsvs(tsv1, tsv2, deep_comparison=False):
+    """Compares two TSV files either at surface level or with deep comparison of values."""
+    data1 = pd.read_csv(tsv1, sep='\t')
+    data2 = pd.read_csv(tsv2, sep='\t')
+
+    _LOGGER.info(f"Comparing {tsv1} vs. {tsv2}")
+    if len(data1) != len(data2):
+        _LOGGER.info(f"Lengths: {len(data1)} vs. {len(data2)}")
+
+
+    if deep_comparison:
+        if data1.equals(data2):
+            _LOGGER.info("TSVs contain equivalent data")
+        else:
+            col_set_1 = set(data1.columns)
+            col_set_2 = set(data2.columns)
+            if len(col_set_1.difference(col_set_2)) == 0 and len(col_set_2.difference(col_set_1)) == 0:
+                _LOGGER.info("TSVs contain the same set of columns")
+            if len(col_set_1.difference(col_set_2)) > 0:
+                _LOGGER.info(f"{tsv1} contains the following columns not in {tsv2}: {list(col_set_1.difference(col_set_2))}")
+            if len(col_set_2.difference(col_set_1)) > 0:
+                _LOGGER.info(f"{tsv2} contains the following columns not in {tsv1}: {list(col_set_2.difference(col_set_1))}")
+
+
+def compare_parquets(parquet1, parquet2, deep_comparison=False):
+    """Compares two parquet files either at surface level or with deep comparison of values."""
+    try:
+        data1_non_tensors = pd.read_parquet(parquet1, columns=["participant_id", "task_name", "session_id", "n_frames"])
+    except Exception as e:
+        _LOGGER.error(f"Could not properly read {parquet1}: {e}")
+        data1_non_tensors = None
+
+    try:
+        data2_non_tensors = pd.read_parquet(parquet1, columns=["participant_id", "task_name", "session_id", "n_frames"])
+    except Exception as e:
+        _LOGGER.error(f"Could not properly read {parquet2}: {e}")
+        data2_non_tensors = None
+
+    if data1_non_tensors is None or data2_non_tensors is None:
+        return
+
+    _LOGGER.info(f"Comparing {parquet1} vs. {parquet2}")
+    if len(data1_non_tensors) != len(data2_non_tensors):
+        _LOGGER.info(f"Lengths: {len(data1_non_tensors)} vs. {len(data2_non_tensors)}")
+
+
+    if deep_comparison:
+        if data1_non_tensors.equals(data2_non_tensors):
+            _LOGGER.info("Main parquet columns contain equivalent data")
+        else:
+            _LOGGER.info("Main parquet columns do not contain equivalent data")
+
+
+
+@click.command()
 @click.argument("dataset_path", type=click.Path(exists=True))
 @click.argument("config_dir", type=click.Path(exists=True))
 def validate_bundled_dataset(dataset_path, config_dir):
