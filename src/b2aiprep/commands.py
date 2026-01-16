@@ -129,11 +129,13 @@ def dashboard(bids_dir: str):
 )
 @click.option("--audiodir", type=click.Path(), default=None, show_default=True)
 @click.option("--max-audio-workers", type=int, default=16, show_default=True, help="Number of parallel threads for audio file copying")
+@click.option("--standardize_audios/--no-standardize_audios", type=bool, default=False, show_default=True)
 def redcap2bids(
     filename,
     outdir,
     audiodir,
     max_audio_workers,
+    standardize_audios,
 ):
     """Parses a RedCap CSV and a folder of audio files into the Brain Imaging Data Structure (BIDS) format.
 
@@ -144,6 +146,7 @@ def redcap2bids(
         audiodir (str, optional): Directory containing associated audio files.
                                   If not provided, only the REDCap data is processed.
         max_audio_workers (int, optional): Number of parallel threads for audio copying. Defaults to 16.
+        standardize_audios (bool, optional): Standardize the audio to 16KHz, mono-channel. Default False.
 
     Raises:
         ValueError: If the specified output directory path exists but is not a directory.
@@ -163,7 +166,8 @@ def redcap2bids(
         redcap_dataset,
         outdir=Path(outdir),
         audiodir=audiodir,
-        max_audio_workers=max_audio_workers
+        max_audio_workers=max_audio_workers,
+        standardize_audios=standardize_audios
     )
 
 @click.command()
