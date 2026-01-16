@@ -102,11 +102,13 @@ def _copy_audio_files_parallel(copy_tasks: t.List[t.Tuple[Path, Path]], max_work
     def copy_one_file(src: Path, dst: Path) -> t.Optional[str]:
         """Copy a single file, return error message if failed."""
         try:
-            src_audio = Audio(filepath=src)
-            downmixed_audio = downmix_audios_to_mono([src_audio])[0]
-            audio_16k = resample_audios([downmixed_audio], RESAMPLE_RATE)[0]
-            audio_16k.save_to_file(dst)
-            #shutil.copyfile(src, dst)
+            if standardize_audios:
+                src_audio = Audio(filepath=src)
+                downmixed_audio = downmix_audios_to_mono([src_audio])[0]
+                audio_16k = resample_audios([downmixed_audio], RESAMPLE_RATE)[0]
+                audio_16k.save_to_file(dst)
+            else:
+                shutil.copyfile(src, dst)
             return None
         except Exception as e:
             return f"Failed to copy {src} -> {dst}: {e}"
