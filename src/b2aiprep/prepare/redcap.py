@@ -642,7 +642,7 @@ class RedCapDataset:
                 if record_id not in session_durations:
                     session_durations[record_id] = session_duration
             else:
-                session_duration = np.nan
+                session_durations[record_id] = np.nan
         audio_folders = Path(audio_dir)
         # rglob once to get all the wav files
         audio_files_across_subjects = list(audio_folders.rglob("*.wav"))
