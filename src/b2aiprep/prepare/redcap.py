@@ -583,6 +583,7 @@ class RedCapDataset:
         # so we generate a dictionary mapping the audio session ids with each participant and process the reproschema
         # files using that mapping. The end result is only the audio session id's being used for bids conversion.
         session_ids_dict = map_folders_to_session_ids(audio_dir)
+        session_durations = {}
         # Process survey data
         http_session = requests.Session()
         # Shared cache for choice definitions across all surveys to avoid refetching
@@ -635,11 +636,13 @@ class RedCapDataset:
                         for df in questionnaire_df_list:
                             merged_questionnaire_data.append(df)
 
-        if session_start and session_end:
-            total_duration = session_end - session_start
-            session_duration = total_duration.total_seconds()
-        else:
-            session_duration = np.nan
+            if session_start and session_end:
+                total_duration = session_end - session_start
+                session_duration = total_duration.total_seconds()
+                if record_id not in session_durations:
+                    session_durations[record_id] = session_duration
+            else:
+                session_duration = np.nan
         audio_folders = Path(audio_dir)
         # rglob once to get all the wav files
         audio_files_across_subjects = list(audio_folders.rglob("*.wav"))
@@ -678,7 +681,7 @@ class RedCapDataset:
                 "session_id": audio_session_ids.get(subject_id, None),
                 "session_status": "Completed",
                 "session_is_control_participant": "No",
-                "session_duration": session_duration,
+                "session_duration": session_durations[subject_id],
                 "session_site": "SickKids",
             }
             merged_csv.append(audio_session_dict)
