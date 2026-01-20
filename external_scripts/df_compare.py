@@ -4,52 +4,71 @@ import sys
 from pathlib import Path
 
 
-def compare(restricted, controlled):
+def compare(registered, controlled):
     """
-    Compares two phenotype dataframs and check if one is a subset of the other.
-    (ie. all entries of the controlled dataframe is present in the restricted).
+    Compares two phenotype dataframs and check if one is a subset of the other 
+    and whether the columns match.
+    (ie. all entries of the controlled dataframe is present in the registered).
     
     Args:
-        restricted: Path to the file with restricted access phenotypes.
+        registered: Path to the file with registered access phenotypes.
         controlled: Path to the file with controlled access phenotypes.
     
     Returns:
         True if the controlled dataframe's row counts are a subset of
-        the restricted one, False otherwise.
+        the registered one, False otherwise.
     """
-    restricted_df = pd.read_csv(restricted, delimiter="\t")
+
+    registered_df = pd.read_csv(registered, delimiter="\t")
     controlled_df = pd.read_csv(controlled, delimiter="\t")
     
-    controlled_df = controlled_df[restricted_df.columns]
+    control_col = set(controlled_df.columns)
+    registered_col = set(registered_df.columns)
+    
+    control_missing_col = control_col - registered_col
+    registered_missing_col = registered_col - control_col
+    
+    if control_missing_col != set():
+        print(f"The following columns are missing in registered acesss {control_missing_col} in {registered}")
+        return
+    
+    if registered_missing_col != set():
+        print(f"The following columns are missing in registered acesss {registered_missing_col} in {controlled}")
+        return
+    
+    # reorder columns to match columns order, since we check that clumns match earlier, this shouldn't be an issue
+    controlled_df = controlled_df[registered_df.columns]
 
-    restricted_df = restricted_df.astype(str)
+    registered_df = registered_df.astype(str)
     controlled_df = controlled_df.astype(str)
 
-    restricted_counts = restricted_df.value_counts()
+    registered_counts = registered_df.value_counts()
     controlled_counts = controlled_df.value_counts()
 
-    restricted_aligned = restricted_counts.reindex(controlled_counts.index, fill_value=0)
 
-    is_subset = (controlled_counts <= restricted_aligned).all()
+    registered_aligned = registered_counts.reindex(controlled_counts.index, fill_value=0)
+
+    is_subset = (controlled_counts <= registered_aligned).all()
     return is_subset
-    
+
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("restricted_folder", type=str, help="Path to Dataframe containing the restricted access phenotype")
+    parser.add_argument("registered_folder", type=str, help="Path to Dataframe containing the registered access phenotype")
     parser.add_argument("controlled_folder", type=str, help="Path to Dataframe containing the controlled phenotype file")
+    
     
     args = parser.parse_args()
     
     all_controlled_tsv = [str(p) for p in Path(args.controlled_folder).rglob('*.tsv')]
     #print(all_controlled_tsv)
     for tsv_path in all_controlled_tsv:
-        restricted_tsv_path = tsv_path.replace(args.controlled_folder, args.restricted_folder)
+        registered_tsv_path = tsv_path.replace(args.controlled_folder, args.registered_folder)
         try:
-            is_same = (compare(restricted_tsv_path, tsv_path))
+            is_same = (compare(registered_tsv_path, tsv_path))
             if not is_same:
-                print(f"{tsv_path} does not match with {restricted_tsv_path}")
+                print(f"{tsv_path} does not match with {registered_tsv_path}")
         except (FileNotFoundError, pd.errors.ParserError) as e:
             print(f"Error: {e}", file=sys.stderr)
             sys.exit(1)
