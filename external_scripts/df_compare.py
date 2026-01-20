@@ -1,7 +1,20 @@
 import pandas as pd
 import argparse
+import sys
 
 def compare(restricted, controlled):
+    """
+    Compares two phenotype dataframs and check if one is a subset of the other.
+    (ie. all entries of the controlled dataframe is present in the restricted).
+    
+    Args:
+        restricted: Path to the file with restricted access phenotypes.
+        controlled: Path to the file with controlled access phenotypes.
+    
+    Returns:
+        True if the controlled dataframe's row counts are a subset of
+        the restricted one, False otherwise.
+    """
     restricted_df = pd.read_csv(restricted, delimiter="\t")
     controlled_df = pd.read_csv(controlled, delimiter="\t")
     
@@ -17,8 +30,12 @@ def compare(restricted, controlled):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("df1", type=str, help="Path to Dataframe containing the rescrticted access phenotype")
-    parser.add_argument("df2", type=str, help="Path to Dataframe containing the controlled phenotype file")
+    parser.add_argument("restricted_file", type=str, help="Path to Dataframe containing the restricted access phenotype")
+    parser.add_argument("controlled_file", type=str, help="Path to Dataframe containing the controlled phenotype file")
     
     args = parser.parse_args()
-    print(compare(args.df1, args.df2))
+    try:
+        print(compare(args.restricted_file, args.controlled_file))
+    except (FileNotFoundError, pd.errors.ParserError) as e:
+        print(f"Error: {e}", file=sys.stderr)
+        sys.exit(1)
