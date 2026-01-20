@@ -16,7 +16,7 @@ Note that there are implicit assumptions made regarding the structured data and 
 WORKING_DIR=${HOME}/data/bridge2ai/pediatric
 
 b2aiprep-cli reproschema-to-redcap $WORKING_DIR/Audio_300_Release $WORKING_DIR/Survey_300_Release $WORKING_DIR/redcap.csv
-b2aiprep-cli redcap2bids $WORKING_DIR/redcap.csv --outdir $WORKING_DIR/bids --audiodir $WORKING_DIR/Audio_300_Release
+b2aiprep-cli redcap2bids $WORKING_DIR/redcap.csv --outdir $WORKING_DIR/bids --audiodir $WORKING_DIR/Audio_300_Release --sanitize_audio_format
 b2aiprep-cli generate-audio-features $WORKING_DIR/bids $WORKING_DIR/bids --update
 b2aiprep-cli deidentify-bids-dataset $WORKING_DIR/bids $WORKING_DIR/de-identified-bids $WORKING_DIR/release_config
 b2aiprep-cli create-bundled-dataset $WORKING_DIR/de-identified-bids $WORKING_DIR/bundled --skip_audio
@@ -59,7 +59,7 @@ b2aiprep-cli redcap2bids <path/to/redcap_csv> \
     --audiodir <path/to/audio/files>
 ```
 
-An optional `--max-audio-workers` controls the number of threads used for writing out audio files as writing of audio files is the speed bottleneck of this command.
+An optional `--max-audio-workers` controls the number of threads used for writing out audio files as writing of audio files is the speed bottleneck of this command. An optional `--sanitize_audio_format` can be used to sanitize the audio format into 16KHz mono-channel WAVs.
 
 ### 3. Deidentification
 

@@ -59,7 +59,7 @@ from b2aiprep.prepare.redcap import RedCapDataset
 
 _LOGGER = logging.getLogger(__name__)
 
-
+DEFAULT_RESAMPLE_RATE = 16000
  
 
 # Sensitive audio feature content that must not be present for sensitive tasks.
@@ -91,21 +91,21 @@ def _remove_sensitive_features_from_feature_payload(
             for key in keys_to_remove:
                 grouped_payload.pop(key, None)
 
-def _copy_audio_files_parallel(copy_tasks: t.List[t.Tuple[Path, Path]], max_workers: int = 16, standardize_audios: bool = False):
+def _copy_audio_files_parallel(copy_tasks: t.List[t.Tuple[Path, Path]], max_workers: int = 16, sanitize_audio_format: bool = False):
     """Copy audio files in parallel using ThreadPoolExecutor.
     
     Args:
         copy_tasks: List of (source_path, dest_path) tuples
         max_workers: Number of parallel worker threads
     """
-    RESAMPLE_RATE = 16000
+    
     def copy_one_file(src: Path, dst: Path) -> t.Optional[str]:
         """Copy a single file, return error message if failed."""
         try:
-            if standardize_audios:
+            if sanitize_audio_format:
                 src_audio = Audio(filepath=src)
                 downmixed_audio = downmix_audios_to_mono([src_audio])[0]
-                audio_16k = resample_audios([downmixed_audio], RESAMPLE_RATE)[0]
+                audio_16k = resample_audios([downmixed_audio], DEFAULT_RESAMPLE_RATE)[0]
                 audio_16k.save_to_file(dst)
             else:
                 shutil.copyfile(src, dst)
@@ -153,7 +153,7 @@ class BIDSDataset:
         outdir: t.Union[str, Path],
         audiodir: t.Optional[t.Union[str, Path]] = None,
         max_audio_workers: int = 16,
-        standardize_audios: bool = False,
+        sanitize_audio_format: bool = False,
     ) -> 'BIDSDataset':
         """
         Create a BIDSDataset by converting a RedCapDataset to BIDS format.
@@ -163,7 +163,7 @@ class BIDSDataset:
             outdir: Output directory for BIDS structure
             audiodir: Optional directory containing audio files
             max_audio_workers: Number of parallel threads for audio copying (default: 16)
-            standardize_audios: Whether to standardize the audio to 16KHz and mono-channel
+            sanitize_audio_format: Whether to standardize the audio to 16KHz and mono-channel
             
         Returns:
             BIDSDataset instance pointing to the created BIDS directory
@@ -247,7 +247,7 @@ class BIDSDataset:
                 Path(outdir),
                 audio_files_by_recording=audio_files_by_recording,
                 max_audio_workers=max_audio_workers,
-                standardize_audios=standardize_audios
+                sanitize_audio_format=sanitize_audio_format
             )
         
         # Return a new BIDSDataset instance pointing to the created directory
@@ -1037,7 +1037,7 @@ class BIDSDataset:
     @staticmethod
     def _output_participant_data_to_fhir(
         participant: dict, outdir: Path, audio_files_by_recording: t.Optional[t.Dict[str, Path]] = None,
-        max_audio_workers: int = 16, standardize_audios=False
+        max_audio_workers: int = 16, sanitize_audio_format: bool = False
     ):
         """Output participant data to FHIR format.
 
@@ -1046,7 +1046,7 @@ class BIDSDataset:
             outdir: The output directory path.
             audio_files_by_recording: Dictionary mapping recording IDs to audio file paths (optional).
             max_audio_workers: Number of parallel threads for audio copying (default: 16).
-            standardize_audios: Standardize to 16KHz mono-audio
+            sanitize_audio_format: Standardize to 16KHz mono-audio
         """
         participant_id = participant["record_id"]
         subject_path = outdir / f"sub-{participant_id}"
@@ -1141,7 +1141,7 @@ class BIDSDataset:
 
         # Execute all audio copies in parallel
         if audio_copy_tasks:
-            _copy_audio_files_parallel(audio_copy_tasks, max_workers=max_audio_workers, standardize_audios=standardize_audios)
+            _copy_audio_files_parallel(audio_copy_tasks, max_workers=max_audio_workers, sanitize_audio_format=sanitize_audio_format)
 
         # Save sessions.tsv
         sessions_df = pd.DataFrame(sessions_rows)
