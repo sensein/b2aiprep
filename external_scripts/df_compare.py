@@ -20,6 +20,11 @@ def compare(restricted, controlled):
     restricted_df = pd.read_csv(restricted, delimiter="\t")
     controlled_df = pd.read_csv(controlled, delimiter="\t")
     
+    controlled_df = controlled_df[restricted_df.columns]
+
+    restricted_df = restricted_df.astype(str)
+    controlled_df = controlled_df.astype(str)
+
     restricted_counts = restricted_df.value_counts()
     controlled_counts = controlled_df.value_counts()
 
