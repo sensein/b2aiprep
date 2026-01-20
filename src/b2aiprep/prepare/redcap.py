@@ -501,31 +501,6 @@ class RedCapDataset:
         # re-parse it to always be 3 digits followed by 2 letters
         df["record_id"] = df["record_id"].apply(lambda x: re.sub(r'(\d{1,3})([a-zA-Z]{2})$', lambda m: f"{int(m.group(1)):03}{m.group(2)}", x))
 
-        # 2. Identify the "Clean Reference Set" 
-        # These are IDs that are already exactly 3 digits + 2 letters
-        is_clean = df["record_id"].str.match(r'^\d{3}[a-zA-Z]{2}$')
-        clean_ids = set(df.loc[is_clean, "record_id"])
-
-        # 3. Create a function to extract, format, and validate
-        def repair_id(val):
-            # Look for 1-3 digits followed by 2 letters anywhere in the string
-            # Find ALL occurrences of 1-3 digits + 2 letters
-            matches = re.findall(r'(\d{1,3})([a-zA-Z]{2})', val)
-            
-            for m in matches:
-                # Format the current candidate (e.g., '101' + 'sm')
-                formatted = f"{int(m[0]):03}{m[1]}"
-                
-                # If this candidate is a known valid ID, return it immediately
-                if formatted in clean_ids:
-                    return formatted
-                    
-            # If we check ALL matches and none are in clean_ids, return original
-            return val
-
-        # 4. Apply the repair
-        df["record_id"] = df["record_id"].apply(repair_id)
-
         # remove specific entry as it was a user input error
         idx = df["record_id"].str.len() > 5
         _LOGGER.info(f"Removing {idx.sum()} rows with invalid record_id length: {df.loc[idx, 'record_id'].tolist()}")
