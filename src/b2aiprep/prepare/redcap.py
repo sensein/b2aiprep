@@ -598,6 +598,7 @@ class RedCapDataset:
             session_duration = 0 # added later to the session info
             session_start = None
             session_end = None
+            record_id = (subject.split("/")[-1]).split()[0]
             for session in sessions:
                 if session.is_dir():
                     session_files = list(session.glob("*.jsonld"))
@@ -608,7 +609,7 @@ class RedCapDataset:
                         except json.JSONDecodeError as e:
                             _LOGGER.warning(f"Failed to decode session file {session_file}: {str(e)}")
                             continue
-                        record_id = (subject.split("/")[-1]).split()[0]
+                        #record_id = (subject.split("/")[-1]).split()[0]
                         session_path = str(session.relative_to(subject))
                         questionnaire_df_list = parse_survey(
                             session_data,
