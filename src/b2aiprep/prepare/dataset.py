@@ -709,6 +709,39 @@ class BIDSDataset:
         return checkbox_columns
 
     @staticmethod
+    def _fix_disjoint_demographic_rows(
+        df: pd.DataFrame,
+        id_col: str,
+        demographic_col: str
+    ) -> None:
+        """Fix disjoint demographic rows by propagating known values.
+
+        Args:
+            df: DataFrame containing the data.
+            id_col: Column name for participant ID.
+            demographic_col: Column name for the demographic variable to fix.
+        """
+        # carry-forward age column values within each participant
+        # use groupby-apply-transform to ensure we do not mix values across participants
+        df[demographic_col] = df.groupby(id_col)[demographic_col].transform(
+            lambda x: x.ffill().bfill()
+        )
+
+        # drop rows where the *only* non-null value is id_col + age
+        # this avoids dropping rows where other data is present
+        def is_only_id_and_demo(row: pd.Series) -> bool:
+            non_null_cols = row.dropna().index.tolist()
+            if len(non_null_cols) == 2 and id_col in non_null_cols and demographic_col in non_null_cols:
+                return True
+            return False
+        mask_only_id_and_demo = df.apply(is_only_id_and_demo, axis=1)
+        num_dropped = mask_only_id_and_demo.sum()
+        if num_dropped > 0:
+            _LOGGER.info((f"Fixing demographics by dropping {num_dropped}/{df.shape[0]} rows with only "
+                         f"{id_col} and {demographic_col} present."))
+            df.drop(index=df[mask_only_id_and_demo].index, inplace=True)
+        
+    @staticmethod
     def _construct_phenotype_from_reproschema(
         df: pd.DataFrame,
         output_dir: str,
@@ -800,8 +833,7 @@ class BIDSDataset:
             "group": "",
         }
         updated_schemas = defaultdict(lambda: deepcopy(payload))
-        for activity_id, group in df_reorg.groupby('schema_name_source'):
-            # get the *new* schema name, as this will be the base key of our updated dict
+        for updated_schema_name, group in df_reorg.groupby('schema_name'):
             column_mapping = group.set_index('column_name_source').to_dict(orient='index')
             for column, updated_data in column_mapping.items():
                 col_norm = _norm(column)
@@ -932,6 +964,9 @@ class BIDSDataset:
             if selected_df.empty:
                 _LOGGER.warning(f"No data remaining after dropping empty rows for {schema_name}")
                 continue
+
+            if 'age' in selected_df.columns:
+                BIDSDataset._fix_disjoint_demographic_rows(selected_df, id_col, 'age')
 
             # Output to a TSV/JSON file.
             filename = f'{schema_name}.json'
