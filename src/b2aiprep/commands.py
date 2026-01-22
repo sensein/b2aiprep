@@ -44,6 +44,7 @@ from streamlit.web.bootstrap import run
 from tqdm import tqdm
 
 from b2aiprep.prepare.bids import get_paths, validate_bids_folder_audios
+from b2aiprep.prepare.constants import RepeatInstrument
 from b2aiprep.prepare.redcap import RedCapDataset
 from b2aiprep.prepare.dataset import BIDSDataset
 from b2aiprep.prepare.bundle_data import (
@@ -1372,3 +1373,46 @@ def bids2shadow(bids_src_dir, dest_dir):
                 shutil.copy(Path(root) / file, target_path / file)
 
     _LOGGER.info(f".pt files have been added to {dest_dir}")
+
+
+@click.command()
+@click.argument("filename", type=click.Path(exists=True))
+def redcap_stats(filename):
+    """Summarizes RedCap data content.
+
+    Args:
+        filename (str): Path to the REDCap data file.
+    """
+    dataset = RedCapDataset.from_redcap(filename)
+    
+    sessions_df = dataset.get_df_of_repeat_instrument(RepeatInstrument.SESSION.value)
+    
+    if sessions_df.empty:
+        click.echo("No session data found in the RedCap export.")
+        # Fallback: check overall unique participants if record_id exists
+        if 'record_id' in dataset.df.columns:
+             n_participants = dataset.df['record_id'].nunique()
+             click.echo(f"Total unique participant IDs found in raw dataframe: {n_participants}")
+        else:
+             click.echo("No 'record_id' column found.")
+        return
+
+    n_participants = sessions_df['record_id'].nunique()
+    click.echo(f"Total unique participant IDs: {n_participants}")
+    
+    sessions_per_participant = sessions_df.groupby('record_id')['session_id'].nunique()
+    distribution = sessions_per_participant.value_counts().sort_index()
+    
+    click.echo("\nParticipant breakdown by number of unique sessions:")
+    click.echo("Sessions | Count of Participants")
+    click.echo("---------|----------------------")
+    for n_sessions, count in distribution.items():
+        click.echo(f"{n_sessions:<8} | {count:<20}")
+
+    click.echo("Participants with over 3 sessions:")
+    over_3_sessions = sessions_per_participant[sessions_per_participant > 3]
+    if over_3_sessions.empty:
+        click.echo("None")
+    else:
+        for record_id, n_sessions in over_3_sessions.items():
+            click.echo(f"Record ID: {record_id}, Sessions: {n_sessions}")
