@@ -1377,7 +1377,8 @@ def bids2shadow(bids_src_dir, dest_dir):
 
 @click.command()
 @click.argument("filename", type=click.Path(exists=True))
-def redcap_stats(filename):
+@click.option("-n", "--num_sessions", type=int, default=None, show_default=True)
+def redcap_stats(filename, num_sessions):
     """Summarizes RedCap data content.
 
     Args:
@@ -1409,10 +1410,11 @@ def redcap_stats(filename):
     for n_sessions, count in distribution.items():
         click.echo(f"{n_sessions:<8} | {count:<20}")
 
-    click.echo("Participants with over 3 sessions:")
-    over_3_sessions = sessions_per_participant[sessions_per_participant > 3]
-    if over_3_sessions.empty:
-        click.echo("None")
-    else:
-        for record_id, n_sessions in over_3_sessions.items():
-            click.echo(f"Record ID: {record_id}, Sessions: {n_sessions}")
+    if num_sessions is not None:
+        click.echo(f"Participants with over {num_sessions} sessions:")
+        over_n_sessions = sessions_per_participant[sessions_per_participant > num_sessions]
+        if over_n_sessions.empty:
+            click.echo("None")
+        else:
+            for record_id, n_sessions in over_n_sessions.items():
+                click.echo(f"Record ID: {record_id}, Sessions: {n_sessions}")
