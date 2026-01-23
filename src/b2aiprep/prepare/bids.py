@@ -283,13 +283,13 @@ def output_participant_data_to_fhir(
             fhir_data = convert_response_to_fhir(
                 task,
                 questionnaire_name=task_instrument.name,
-                mapping_name=task_instrument.schema_name,
+                mapping_name=task_instrument.schema_name_clobbered,
                 columns=task_instrument.columns,
             )
             write_pydantic_model_to_bids_file(
                 audio_output_path,
                 fhir_data,
-                schema_name=task_instrument.schema_name,
+                schema_name=task_instrument.schema_name_clobbered,
                 subject_id=participant_id,
                 session_id=session_id,
                 task_name=acoustic_task_name,
@@ -303,13 +303,13 @@ def output_participant_data_to_fhir(
                 fhir_data = convert_response_to_fhir(
                     recording,
                     questionnaire_name=recording_instrument.name,
-                    mapping_name=recording_instrument.schema_name,
+                    mapping_name=recording_instrument.schema_name_clobbered,
                     columns=recording_instrument.columns,
                 )
                 write_pydantic_model_to_bids_file(
                     audio_output_path,
                     fhir_data,
-                    schema_name=recording_instrument.schema_name,
+                    schema_name=recording_instrument.schema_name_clobbered,
                     subject_id=participant_id,
                     session_id=session_id,
                     task_name=acoustic_task_name,
