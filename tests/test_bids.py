@@ -385,6 +385,7 @@ def test_construct_phenotype():
         data = {
             # needs to be a real data element from reproschema for the test to pass
             "record_id": ["r01", "r02", "r03", "r04"],
+            "redcap_repeat_instrument": ["Acoustic Task"] * 4,
             "acoustic_task_name": ["A", "B", "C", "D"],
         }
         df = pd.DataFrame(data)
