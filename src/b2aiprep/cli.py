@@ -11,6 +11,7 @@ from b2aiprep.commands import (  # gensynthtabdata,
     dashboard,
     generate_audio_features,
     redcap2bids,
+    redcap_stats,
     reproschema_to_redcap,
     transcribe,
     validate_phenotype_command,
@@ -44,6 +45,7 @@ def cli(ctx, log_level):
 
 cli.add_command(dashboard)
 cli.add_command(redcap2bids)
+cli.add_command(redcap_stats)
 # cli.add_command(gensynthtabdata)
 cli.add_command(convert)
 cli.add_command(batchconvert)

@@ -709,6 +709,40 @@ class BIDSDataset:
         return checkbox_columns
 
     @staticmethod
+    def _fix_disjoint_demographic_rows(
+        df: pd.DataFrame,
+        id_col: str,
+        demographic_col: str,
+        schema_name: str = 'demographics'
+    ) -> None:
+        """Fix disjoint demographic rows by propagating known values.
+
+        Args:
+            df: DataFrame containing the data.
+            id_col: Column name for participant ID.
+            demographic_col: Column name for the demographic variable to fix.
+        """
+        # carry-forward age column values within each participant
+        # use groupby-apply-transform to ensure we do not mix values across participants
+        df[demographic_col] = df.groupby(id_col)[demographic_col].transform(
+            lambda x: x.ffill().bfill()
+        )
+
+        # drop rows where the *only* non-null value is id_col + age
+        # this avoids dropping rows where other data is present
+        def is_only_id_and_demo(row: pd.Series) -> bool:
+            non_null_cols = row.dropna().index.tolist()
+            if len(non_null_cols) == 2 and id_col in non_null_cols and demographic_col in non_null_cols:
+                return True
+            return False
+        mask_only_id_and_demo = df.apply(is_only_id_and_demo, axis=1)
+        num_dropped = mask_only_id_and_demo.sum()
+        if num_dropped > 0:
+            _LOGGER.info((f"Fixing {schema_name} by dropping {num_dropped}/{df.shape[0]} rows with only "
+                         f"{id_col} and {demographic_col} present."))
+            df.drop(index=df[mask_only_id_and_demo].index, inplace=True)
+        
+    @staticmethod
     def _construct_phenotype_from_reproschema(
         df: pd.DataFrame,
         output_dir: str,
@@ -727,6 +761,13 @@ class BIDSDataset:
         # Only the option responses are kept, the main column does not exist in the data,
         # only in the data dictionary.
         checkbox_columns = BIDSDataset._find_redcap_checkbox_columns(df)
+
+        # Rename repeat instruments to their standard names
+        instrument_name_to_schema_name = {
+            repeat_instrument.value.schema_name_pretty: repeat_instrument.value.schema_name
+            for repeat_instrument in RepeatInstrument.__iter__()
+        }
+        df['schema_name_source'] = df['redcap_repeat_instrument'].map(instrument_name_to_schema_name)
         
         # Ensure output directory exists
         os.makedirs(output_dir, exist_ok=True)
@@ -798,10 +839,11 @@ class BIDSDataset:
             "columns_for_output": [],
             # group is popped before saving
             "group": "",
+            # source schema name is used to filter rows
+            "schema_name_source": [],
         }
         updated_schemas = defaultdict(lambda: deepcopy(payload))
-        for activity_id, group in df_reorg.groupby('schema_name_source'):
-            # get the *new* schema name, as this will be the base key of our updated dict
+        for updated_schema_name, group in df_reorg.groupby('schema_name'):
             column_mapping = group.set_index('column_name_source').to_dict(orient='index')
             for column, updated_data in column_mapping.items():
                 col_norm = _norm(column)
@@ -852,6 +894,7 @@ class BIDSDataset:
                 updated_schema_name = updated_data["schema_name"]
                 updated_schemas[updated_schema_name]['columns_for_indexing'].append(column)
                 updated_schemas[updated_schema_name]['columns_for_output'].append(new_element_name)
+                updated_schemas[updated_schema_name]['schema_name_source'].append(updated_data["schema_name_source"])
 
                 # update the payload so we have a reproschema json for this df
                 updated_schemas[updated_schema_name]["data_elements"][new_element_name] = data_element
@@ -863,6 +906,7 @@ class BIDSDataset:
         for schema_name, payload in updated_schemas.items():
             columns_for_indexing = payload.pop("columns_for_indexing")
             columns_for_output = payload.pop("columns_for_output")
+            schema_name_sources = set(payload.pop("schema_name_source"))
             group = payload.pop("group")
             if "record_id" not in columns_for_indexing:
                 columns_for_indexing = ["record_id"] + columns_for_indexing
@@ -883,7 +927,21 @@ class BIDSDataset:
                     **payload["data_elements"],
                 }
             # we now extract the sub-dataframe from our source redcap data and output it to tsv
-            selected_df = df[columns_for_indexing]
+            # filter df to only rows with the relevant repeat_instruments
+            selected_df = df.loc[:, columns_for_indexing]
+            # next up, we subselect the rows used for this set of columns ("repeat instrument").
+            # but first, verify that we have all of the source schema names in our df
+            # this is defensive in case we are missing an entire repeat_instrument from the source df.
+            # in that case we will use all rows and drop those with all NaN later.
+            if schema_name_sources:
+                have_all_schema_names = all(
+                    source_name in df['schema_name_source'].unique()
+                    for source_name in schema_name_sources
+                )
+                if have_all_schema_names:
+                    selected_df = selected_df.loc[
+                        df['schema_name_source'].isin(schema_name_sources)
+                    ]
 
             # Rename columns based on the reorganization mapping.
             if len(columns_for_indexing) != len(columns_for_output):
@@ -918,20 +976,18 @@ class BIDSDataset:
             if clean_phenotype_data:
                 selected_df, updated_schema = BIDSDataset._clean_phenotype_data(selected_df, updated_schema)
 
-            # check if *everything* is missing except for participant_id, if so we omit
-            if id_col in selected_df:
-                null_cols = selected_df.drop(columns=[id_col]).isnull().all()
-            else:
-                null_cols = selected_df.isnull().all()
-            if null_cols.all():
-                _LOGGER.warning(f"All data missing for schema {schema_name}, skipping output.")
-                continue
-
             # Remove rows where the only non-null value is record_id/participant_id
             selected_df = selected_df.dropna(how="all", subset=[col for col in selected_df.columns if col != id_col])
             if selected_df.empty:
                 _LOGGER.warning(f"No data remaining after dropping empty rows for {schema_name}")
                 continue
+
+            if 'age' in selected_df.columns:
+                BIDSDataset._fix_disjoint_demographic_rows(selected_df, id_col, 'age', schema_name=schema_name)
+                selected_df = selected_df.dropna(how="all", subset=[col for col in selected_df.columns if col != id_col])
+                if selected_df.empty:
+                    _LOGGER.warning(f"No data remaining after dropping empty rows for {schema_name}")
+                    continue
 
             # Output to a TSV/JSON file.
             filename = f'{schema_name}.json'
@@ -1090,13 +1146,13 @@ class BIDSDataset:
                 fhir_data = convert_response_to_fhir(
                     task,
                     questionnaire_name=task_instrument.name,
-                    mapping_name=task_instrument.schema_name,
+                    mapping_name=task_instrument.schema_name_clobbered,
                     columns=task_instrument.columns,
                 )
                 BIDSDataset._write_pydantic_model_to_bids_file(
                     audio_output_path,
                     fhir_data,
-                    schema_name=task_instrument.schema_name,
+                    schema_name=task_instrument.schema_name_clobbered,
                     subject_id=participant_id,
                     session_id=session_id,
                     task_name=acoustic_task_name,
@@ -1110,13 +1166,13 @@ class BIDSDataset:
                     fhir_data = convert_response_to_fhir(
                         recording,
                         questionnaire_name=recording_instrument.name,
-                        mapping_name=recording_instrument.schema_name,
+                        mapping_name=recording_instrument.schema_name_clobbered,
                         columns=recording_instrument.columns,
                     )
                     BIDSDataset._write_pydantic_model_to_bids_file(
                         audio_output_path,
                         fhir_data,
-                        schema_name=recording_instrument.schema_name,
+                        schema_name=recording_instrument.schema_name_clobbered,
                         subject_id=participant_id,
                         session_id=session_id,
                         task_name=acoustic_task_name,
