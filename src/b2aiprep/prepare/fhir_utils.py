@@ -183,10 +183,22 @@ def convert_response_to_fhir(
     if is_invalid_response(participant, columns):
         generic_items = []
 
+    # determine if it's an acoustic task or recording and grab task names
+    linkid_to_find = None
+    if mapping_name == "acoustictaskschema":
+        linkid_to_find = "acoustic_task_name"
+    elif mapping_name == "recordingschema":
+        linkid_to_find = "recording_name"
+
+    task_name = ""
+    for item in generic_items:
+        if linkid_to_find == item["linkId"]:
+            task_name = item["answer"][0]["valueString"]
+
     generic_response = create_fhir_questionnaire_response(
         # create a unique identifier for this FHIR resource by combining
         # the participant ID with the questionnaire name
-        id=f'{participant_id}-{questionnaire_name.replace("_", "-")}',
+        id=f'{participant_id}-{questionnaire_name.replace("_", "-")}-{task_name}',
         name=mapping_name,
         items=generic_items,
     )

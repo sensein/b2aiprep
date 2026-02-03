@@ -750,6 +750,24 @@ def get_value_from_metadata(metadata: dict, linkid: str, endswith: bool = False)
     return None
 
 def update_metadata_record_and_session_id(metadata: dict, ids_to_remap: dict, session_id_to_remap: dict):
+    fhir_id = metadata["id"]
+    if fhir_id is not None:
+        fhir_participant_id = ""
+        fhir_task_name = ""
+        if "recordings" in fhir_id:
+            fhir_participant_id = fhir_id[:fhir_id.find("-recordings")]
+            fhir_task_name  = fhir_id[fhir_id.find("-recordings"):]
+        if "acoustic-tasks" in fhir_id:
+            fhir_participant_id = fhir_id[:fhir_id.find("-acoustic-tasks")]
+            fhir_task_name  = fhir_id[fhir_id.find("-acoustic-tasks"):]
+
+        if fhir_participant_id in ids_to_remap:
+            metadata["id"] = f"{ids_to_remap[fhir_participant_id]}{fhir_task_name}"
+        else:
+            _logger.warning(f"{fhir_participant_id} not found in remapping dictionary.")
+    else:
+        _logger.warning(f"{fhir_id} not found in defined in fhir metadata resource.")
+
     for item in metadata['item']:
         if 'linkId' not in item:
             continue
