@@ -60,7 +60,7 @@ from b2aiprep.prepare.redcap import RedCapDataset
 _LOGGER = logging.getLogger(__name__)
 
 DEFAULT_RESAMPLE_RATE = 16000
- 
+DEFAULT_BIT_DEPTH = 16
 
 # Sensitive audio feature content that must not be present for sensitive tasks.
 #
@@ -106,7 +106,7 @@ def _copy_audio_files_parallel(copy_tasks: t.List[t.Tuple[Path, Path]], max_work
                 src_audio = Audio(filepath=src)
                 downmixed_audio = downmix_audios_to_mono([src_audio])[0]
                 audio_16k = resample_audios([downmixed_audio], DEFAULT_RESAMPLE_RATE)[0]
-                audio_16k.save_to_file(dst)
+                audio_16k.save_to_file(dst,bits_per_sample=DEFAULT_BIT_DEPTH)
             else:
                 shutil.copyfile(src, dst)
             return None
