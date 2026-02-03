@@ -83,8 +83,9 @@ class TestBIDSDatasetDeidentification:
             audio_file = audio_dir / f"sub-{participant}_ses-{session}_task-test.wav"
             audio_file.write_bytes(b"dummy audio data")
 
-            # Create metadata file
+            # Create fhir metadata file
             metadata = {
+                "id": "rec-001",
                 "item": [
                     {"linkId": "record_id", "answer": [{"valueString": participant}]},
                     {"linkId": "session_id", "answer": [{"valueString": session}]},

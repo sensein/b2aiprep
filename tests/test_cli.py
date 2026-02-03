@@ -107,7 +107,7 @@ def create_dummy_wav_file(filepath, duration_seconds=1.0, sample_rate=16000):
 
         wav_file.writeframes(b"".join(samples))
 
-    # wrtie associated metadata file
+    # write associated metadata file
     mock_metedata_recording_json = {
             "item": [
                 {
@@ -117,6 +117,10 @@ def create_dummy_wav_file(filepath, duration_seconds=1.0, sample_rate=16000):
                 {
                     "linkId": "session_id",
                     "answer": [{"valueString": "001"}]
+                },
+                {
+                    "linkId": "recording_id",
+                    "answer": [{"valueString": "rec-001"}]
                 }
             ]
         }
@@ -211,6 +215,10 @@ def setup_bids_structure():
                 {
                     "linkId": "session_id",
                     "answer": [{"valueString": "001"}]
+                },
+                {
+                    "linkId": "recording_id",
+                    "answer": [{"valueString": "rec-001"}]
                 }
             ]
         }"""
@@ -299,6 +307,10 @@ def setup_bids_structure_with_nan_feature():
                 {
                     "linkId": "session_id",
                     "answer": [{"valueString": "001"}]
+                },
+                {
+                    "linkId": "recording_id",
+                    "answer": [{"valueString": "rec-001"}]
                 }
             ]
         }"""
@@ -387,6 +399,10 @@ def setup_bids_structure_after_deidentify():
                 {
                     "linkId": "session_id",
                     "answer": [{"valueString": "001"}]
+                },
+                {
+                    "linkId": "recording_id",
+                    "answer": [{"valueString": "rec-001"}]
                 }
             ]
         }"""
