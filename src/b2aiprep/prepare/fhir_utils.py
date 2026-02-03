@@ -8,7 +8,8 @@ from importlib.resources import files
 
 from fhir.resources import construct_fhir_element
 from fhir.resources.questionnaireresponse import QuestionnaireResponse
-
+import logging
+_logger = logging.getLogger(__name__)
 
 def is_empty_questionnaire_response(response: QuestionnaireResponse) -> bool:
     """Determines whether a questionnaire response is empty.
@@ -183,10 +184,27 @@ def convert_response_to_fhir(
     if is_invalid_response(participant, columns):
         generic_items = []
 
+    # determine if it's an acoustic task or recording and grab task names
+    linkid_to_find = None
+    if mapping_name == "acoustictaskschema":
+        linkid_to_find = "acoustic_task_id"
+    elif mapping_name == "recordingschema":
+        linkid_to_find = "recording_id"
+    
+    if not linkid_to_find:
+        _logger.warning(f"File is missing acoustic_task_id and recording_id, skipping....")
+        return
+    fhir_id = None
+    for item in generic_items:
+        if item.get("linkId") == linkid_to_find and item.get("answer"):
+            fhir_id = item["answer"][0].get("valueString", "")
+            if fhir_id:
+                break
+
     generic_response = create_fhir_questionnaire_response(
         # create a unique identifier for this FHIR resource by combining
         # the participant ID with the questionnaire name
-        id=f'{participant_id}-{questionnaire_name.replace("_", "-")}',
+        id=fhir_id,
         name=mapping_name,
         items=generic_items,
     )
