@@ -158,7 +158,7 @@ def main():
     parser.add_argument('--bids_folder', default='./', type=str, help='Example help information')
     parser.add_argument('--adult', default=False, action='store_true', help='is adult dataset')
     parser.add_argument('--get_md5', default=False, action='store_true')
-    parser.add_argument('--dry_run', default=True, action='store_false')
+    parser.add_argument('--sync', default=False, action='store_true')
 
     args = parser.parse_args()
     
@@ -175,8 +175,8 @@ def main():
     synapse_files, synapse_folders = walk_synapse_folder(syn,my_project,args.bids_folder)
     local_files, local_folders = walk_local_folder(args.bids_folder, args.get_md5)
     
-    run_folder_comparisons(synapse_folders, local_folders, dry_run=args.dry_run)
-    run_file_comparisons(synapse_files, local_files, md5=args.get_md5, dry_run=args.dry_run)
+    run_folder_comparisons(synapse_folders, local_folders, dry_run=~args.sync)
+    run_file_comparisons(synapse_files, local_files, md5=args.get_md5, dry_run=~args.sync)
 
     #run_comparison(dir_mapping, args.bids_folder)
 

@@ -4,10 +4,8 @@ from dotenv import load_dotenv
 
 import synapseclient
 import synapseutils
-from synapseclient.models import Project
+from synapseclient.models import Project, Folder
 
-PEDS_PROJECT = "syn72418607"
-ADULT_PROJECT = "syn72370534"
 OVERALL_PROJECT = "syn72370534"
 PEDS_FOLDER = "syn72493849"
 ADULT_FOLDER = "syn72493850"
@@ -24,14 +22,18 @@ def main():
     print(f"Received args: {args}")
     
     sage_pat = os.getenv("SAGE_PAT")
-    sage_project_id = OVERALL_PROJECT#ADULT_PROJECT if args.adult else PEDS_PROJECT
+    sage_project_id = OVERALL_PROJECT
 
     syn = synapseclient.login(authToken=sage_pat)
     project = Project(id=sage_project_id).get()
-    print(f"I just got my project: {project.name}, id: {project.id}")
+    print(f"Looking at project: {project.name}, id: {project.id}")
     
     parent_id = ADULT_FOLDER if args.adult else PEDS_FOLDER
     print(f"Syncing data with parent folder: {parent_id}")
+    root_data_folder = Folder(id=parent_id).get()
+
+    # Quick assertion that we are in the correct project for this code"
+    assert root_data_folder.parent_id == project.id
 
     synapseutils.generate_sync_manifest(
         syn=syn,
