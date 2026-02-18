@@ -638,7 +638,7 @@ def validate_bundled_dataset(dataset_path, config_dir):
         with open(config_dir / "participants_to_remove.json") as f:
             participants_to_remove = set(json.load(f))
         
-        with open(config_dir / "sensitive_audio_tasks.json") as f:
+        with open(config_dir / "audio_tasks_to_include.json") as f:
             sensitive_tasks = set(json.load(f))
             sensitive_tasks_normalized = {
                 normalize_task_label(task)
