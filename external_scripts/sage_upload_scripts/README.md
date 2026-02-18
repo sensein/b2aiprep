@@ -44,7 +44,7 @@ This script is setup for parallel uploads by providing a start and end of the da
 
 Note: I have found this file will fail with a variety of errors, typically related to doing concurrent uploads. For that reason I typically run it multiple time because reportedly under the hood it will cache the MD5 of the files uploaded and shouldn't reupload if they match.
 
-# 3. Verify uploaded data
+## 3. Verify uploaded data
 
 This command can run both as a check to verify the data uploaded properly as well as a verification between the data on Sage and a local folder, especially to make sure future changes to the code only affected specified files. This verification will check that the folder structures are equivalent and whether any extra are on Sage compared to locally or if any are missing on Sage. It also checks against files, mainly checking that filenames are the same and if they are that the contents (through and md5 hash) are the same.
 
