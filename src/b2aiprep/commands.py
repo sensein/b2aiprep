@@ -809,7 +809,7 @@ def deidentify_bids_dataset(
     - participants_to_remove.json
     - audio_to_remove.json
     - id_remapping.json
-    - sensitive_audio_tasks.json
+    - audio_tasks_to_include.json
     """
     bids_path = Path(bids_path)
     deidentify_config_dir = Path(deidentify_config_dir)
