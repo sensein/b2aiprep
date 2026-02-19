@@ -2068,6 +2068,10 @@ class BIDSDataset:
         audio_paths = BIDSDataset._grab_filepaths_list_to_include(
             audio_paths, inclusion_list=audio_tasks_to_include_list
         )
+        
+        # if audio_paths:
+        #     _LOGGER.warning(f"No audio paths are present in {audio_paths}")
+        #     return
 
         _LOGGER.info(f"Copying {len(audio_paths)} recordings.")
 
