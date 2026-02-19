@@ -1902,7 +1902,7 @@ class BIDSDataset:
         n = len(paths)
         inclusion = set(inclusion_list)
         if len(inclusion) == 0:
-            return paths
+            return []
 
         new_paths = []
         for file in paths:
