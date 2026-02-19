@@ -273,33 +273,49 @@ def generate_audio_features(
 
 @click.command()
 @click.argument("bids_path", type=click.Path())
-@click.argument("output_metrics_path", type=click.Path())
+@click.argument("output_metrics_path", type=click.Path(), required=False)
 @click.option("-b", "--batch_size", type=int, default=8, show_default=True)
 @click.option("-n", "--num_cores", type=int, default=4, show_default=True)
-@click.option("--skip_windowing/--no-skip_windowing", type=bool, default=False, show_default=True)
+@click.option("--skip_windowing/--no-skip_windowing", type=bool, default=True, show_default=True)
+@click.option("--deep_checks/--no-deep_checks", type=bool, default=False, show_default=True)
 def run_quality_control_on_audios(
     bids_path,
     output_metrics_path,
     batch_size,
     num_cores,
     skip_windowing,
+    deep_checks,
 ):
+    """
+    Run audio quality control checks on a BIDS directory.
+
+    Args:
+        bids_path: Path to the BIDS directory with the audios to run quality control checks on
+        output_metrics_path: Optional output path for the metrics. If not provided, will use a temporary directory.
+        batch_size: Batch size to run when parallelizing
+        num_cores: Number of cores to use when parallelizing
+        skip_windowing: If True, only compute scalar metrics without windowing
+        deep_checks: If true, run deeper checks including snorkel recommendations and trimming and diarization checks
+    """
 
     bids_path = Path(bids_path)
 
     audio_paths = get_paths(bids_path, file_extension=".wav")
     audio_paths = [x["path"] for x in audio_paths]
 
-    outdir = Path(output_metrics_path)
-    outdir.mkdir(parents=True, exist_ok=True)
+    if output_metrics_path:
+        output_metrics_path = Path(output_metrics_path)
+        output_metrics_path.mkdir(parents=True, exist_ok=True)
 
 
     quality_control_wrapper(
         audio_paths=audio_paths,
-        outdir=outdir,
+        bids_path=bids_path,
+        outdir=output_metrics_path,
         batch_size=batch_size,
         num_cores=num_cores,
-        skip_windowing=skip_windowing
+        skip_windowing=skip_windowing,
+        deep_checks=deep_checks,
     )
 
 
