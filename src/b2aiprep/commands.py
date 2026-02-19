@@ -58,7 +58,7 @@ from b2aiprep.prepare.prepare import (
 )
 from b2aiprep.prepare.quality_control import quality_control_wrapper
 
-from b2aiprep.prepare.data_validation import validate_phenotype, validate_sensitive_feature_removal_in_bundle
+from b2aiprep.prepare.data_validation import validate_phenotype, validate_no_extra_audio_tasks_present
 from b2aiprep.prepare.utils import normalize_task_label
 from b2aiprep.prepare.update import TemplateUpdateError, reorganize_bids_activities, update_bids_template_files
 
@@ -639,10 +639,10 @@ def validate_bundled_dataset(dataset_path, config_dir):
             participants_to_remove = set(json.load(f))
         
         with open(config_dir / "audio_tasks_to_include.json") as f:
-            sensitive_tasks = set(json.load(f))
-            sensitive_tasks_normalized = {
+            audio_task_to_include = set(json.load(f))
+            audio_task_to_include_normalized = {
                 normalize_task_label(task)
-                for task in sensitive_tasks
+                for task in audio_task_to_include
                 if isinstance(task, str) and task.strip()
             }
             
@@ -681,19 +681,13 @@ def validate_bundled_dataset(dataset_path, config_dir):
                 
             # Check tasks
             present_tasks = set(df["task_name"].dropna().unique())
-            sensitive_present = {
+            unexpected_tasks_present = {
                 task
                 for task in present_tasks
-                if normalize_task_label(task) in sensitive_tasks_normalized
+                if normalize_task_label(task) not in audio_task_to_include_normalized
             }
-            if sensitive_present:
-                # we allow sensitive tasks in a subset of files
-                if parquet_file.name not in {
-                    "sparc_ema.parquet", "sparc_loudness.parquet",
-                    "torchaudio_pitch.parquet", "sparc_pitch.parquet",
-                    "sparc_periodicity.parquet"
-                }:
-                    issues.append(f"Found sensitive tasks in {parquet_file.name}: {sensitive_present}")
+            if unexpected_tasks_present:
+                issues.append(f"Found unexpected audio tasks in {parquet_file.name}: {unexpected_tasks_present}")
                 
             # Check remapping
             unmapped_present = present_participants.intersection(original_ids)
@@ -770,11 +764,11 @@ def validate_bundled_dataset(dataset_path, config_dir):
         except Exception as e:
             issues.append(f"Error reading static_features.tsv: {e}")
 
-    # 6. Verify forbidden features are removed for sensitive tasks
+    # 6. Verify no extra audio feautures make it through
     issues.extend(
-        validate_sensitive_feature_removal_in_bundle(
+        validate_no_extra_audio_tasks_present(
             features_dir=features_dir,
-            sensitive_tasks=sensitive_tasks,
+            audio_tasks_to_include=audio_task_to_include,
         )
     )
 
