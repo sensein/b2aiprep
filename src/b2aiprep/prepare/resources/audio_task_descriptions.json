@@ -1,0 +1,51 @@
+{
+    "Harvard-Sentences": {
+        "instructions": "Please read the following sentences out loud in your typical voice.",
+        "prompts": [
+            "The store was jammed before the sale could start.",
+            "It was a bad error on the part of the new judge.",
+            "One step more and the board will collapse.",
+            "Take the match and strike it against your shoe.",
+            "The pot boiled, but the contents failed to jell.",
+            "The baby puts his right foot in his mouth.",
+            "The bombs left most of the town in ruins.",
+            "Stop and stare at the hard working man.",
+            "The streets are narrow and full of sharp turns.",
+            "The pup jerked the leash as he saw a feline shape.",
+            "Stop whistling and watch the boys march.",
+            "Jerk the cord, and out tumbles the gold.",
+            "Slide the tray across the glass top.",
+            "The cloud moved in a stately way and was gone.",
+            "Light maple makes for a swell room.",
+            "Set the piece here and say nothing.",
+            "Dull stories make her laugh.",
+            "A stiff cord will do to fasten your shoe.",
+            "Get the trust fund to the bank early.",
+            "Choose between the high road and the low."
+        ]
+    },
+    "Cape-V": {
+        "instructions": "Please read the following sentences out loud in your typical voice.",
+        "prompts": [
+            "The blue spot is on the key again.",
+            "He helped her hurry home.",
+            "We were away a year ago.",
+            "I eat eggs every morning.",
+            "My mama makes lemon muffins.",
+            "Papa took a piece of cake."
+        ]
+    },
+    "Random-Item-Generation": {
+        "instructions": "Say as many letters or numbers (0-9) as you can. You are allowed to repeat items. Your goal is to list as many as possible in a random order. Time limit 1 minutes. The selection will appear when you start recording. The recording will automatically stop at the end.",
+        "prompts": ""
+    },
+    "Breath-Sounds": {
+        "instructions": "Breathing: Click on the Record button below and breathe deeply through your mouth. Continue to do this until the recording automatically stops after 5 seconds. Click Play to hear your recording. If you hear background noise, please go to a quieter place and try again by selecting Redo Recording. If it sounds good, continue.",
+        "prompts": []
+    },
+    "Diadochokinesis-(v2)-buttercup": {
+        "instructions": "This task helps us analyze the ease and precision of speech sound productions. Please press the play button to listen to the demonstration on how to complete the task. Then, tap the record button and imitate the speaker by repeating the word 'buttercup' as quickly and consistently as possible until the timer runs out.",
+        "prompts": []
+    }
+
+}

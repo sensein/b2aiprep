@@ -46,7 +46,7 @@ from b2aiprep.prepare.utils import (
     normalize_task_label,
     sanitize_task_entity_in_bids_stem,
 )
-from b2aiprep.prepare.fhir_utils import convert_response_to_fhir
+from b2aiprep.prepare.fhir_utils import convert_response_to_bids_metadata
 from b2aiprep.prepare.prepare import (
     get_value_from_metadata,
     remap_id, 
@@ -1050,7 +1050,7 @@ class BIDSDataset:
     @staticmethod
     def _write_pydantic_model_to_bids_file(
         output_path: Path,
-        data: BaseModel,
+        data: dict,
         schema_name: str,
         subject_id: str,
         session_id: t.Optional[str] = None,
@@ -1088,7 +1088,7 @@ class BIDSDataset:
         if not output_path.exists():
             output_path.mkdir(parents=True, exist_ok=False)
         with open(output_path / filename, "w") as f:
-            f.write(data.json(indent=2))
+            f.write(json.dumps(data))
 
     @staticmethod
     def _output_participant_data_to_fhir(
@@ -1143,7 +1143,7 @@ class BIDSDataset:
                     continue
                 
                 acoustic_task_name = acoustic_task_name.replace(" ", "-").replace("_", "-")
-                fhir_data = convert_response_to_fhir(
+                meta_data = convert_response_to_bids_metadata(
                     task,
                     questionnaire_name=task_instrument.name,
                     mapping_name=task_instrument.schema_name_clobbered,
@@ -1151,7 +1151,7 @@ class BIDSDataset:
                 )
                 BIDSDataset._write_pydantic_model_to_bids_file(
                     audio_output_path,
-                    fhir_data,
+                    meta_data,
                     schema_name=task_instrument.schema_name_clobbered,
                     subject_id=participant_id,
                     session_id=session_id,
@@ -1163,7 +1163,7 @@ class BIDSDataset:
 
                 # there may be more than one recording per acoustic task
                 for recording in task["recordings"]:
-                    fhir_data = convert_response_to_fhir(
+                    meta_data = convert_response_to_bids_metadata(
                         recording,
                         questionnaire_name=recording_instrument.name,
                         mapping_name=recording_instrument.schema_name_clobbered,
@@ -1171,7 +1171,7 @@ class BIDSDataset:
                     )
                     BIDSDataset._write_pydantic_model_to_bids_file(
                         audio_output_path,
-                        fhir_data,
+                        meta_data,
                         schema_name=recording_instrument.schema_name_clobbered,
                         subject_id=participant_id,
                         session_id=session_id,

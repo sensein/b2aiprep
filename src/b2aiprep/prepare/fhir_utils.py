@@ -91,13 +91,13 @@ def extract_items(participant_json: dict, outline: list) -> t.List[dict]:
     for question in outline:
         answer_value = str(participant_json[question])
         if answer_value in ("Checked", "Unchecked"):
-            answer = [{"valueBoolean": answer_value == "Checked"}]
+            answer = answer_value == "Checked"
         elif answer_value == "nan":
             answer = None
         else:
-            answer = [{"valueString": answer_value.replace("_", "-")}]
+            answer = answer_value.replace("_", "-")
         item = {
-            "linkId": question,
+            "metadata": question,
             "answer": answer,
         }
         items.append(item)
@@ -125,16 +125,16 @@ def is_invalid_response(participant: dict, outline) -> bool:
     for item in generic_items:
         if item["answer"] is None:
             continue
-        if "valueString" in item["answer"][0]:
-            if item["answer"][0]["valueString"] is not None:
-                answers.append(item["answer"][0]["valueString"].lower())
-        elif "valueBoolean" in item["answer"][0]:
-            if item["answer"][0]["valueBoolean"]:
+        
+        if item["answer"] is not None:
+            answers.append(item["answer"].lower())
+        elif isinstance(item["answer"], bool):
+            if item["answer"]:
                 answers.append("checked")
             else:
                 answers.append("unchecked")
         else:
-            answers.append(list(item["answer"][0].keys())[0])
+            answers.append(list(answers))
     answers = set(answers)
     return len(answers.difference({"nan", "unchecked"})) == 0
 
@@ -144,6 +144,71 @@ def load_questionnaire_outline(questionnaire_name):
         files("b2aiprep").joinpath("prepare").joinpath("resources").joinpath("instrument_columns")
     )
     return json.loads(b2ai_resources.joinpath(f"{questionnaire_name}.json").read_text())
+
+def convert_response_to_bids_metadata( participant: dict,
+    # repeat_instrument: RepeatInstrument
+    questionnaire_name: str,
+    mapping_name: str,
+    columns: t.List[str],
+) -> dict:
+    """Converts a participant's response to a metadata json file.
+
+    Given a dictionary of individual data, the function:
+    1. identifies the audio task, recording id, duration, and task instructions
+
+    Parameters
+    ----------
+    participant : dict
+        The participant data.
+    questionnaire_name : str
+        The name of the questionnaire.
+
+    Returns
+    -------
+    dict containing the associated metadata
+
+    Raises
+    ------
+    ValueError
+        If the parsed JSON does not adhere to the QuestionnaireResponse data structure.
+        Usually due to missing or invalid attributes.
+    """
+    participant_id = participant["record_id"]
+
+    generic_items = extract_items(participant, columns)
+    if is_invalid_response(participant, columns):
+        generic_items = []
+
+    # determine if it's an acoustic task or recording and grab task names
+    linkid_to_find = None
+    if mapping_name == "acoustictaskschema":
+        linkid_to_find = "acoustic_task_id"
+    elif mapping_name == "recordingschema":
+        linkid_to_find = "recording_id"
+    
+    if not linkid_to_find:
+        _logger.warning(f"File is missing acoustic_task_id and recording_id, skipping....")
+        return
+    
+    metadata_file = {}
+    
+    for item in generic_items:
+        metedata_field = item.get("metadata")
+        metedata_value = item.get("answer")
+        if metadata_file is not None and metedata_field is not None:
+            metadata_file[metedata_field] = metedata_value
+    
+    metadata_file.update({"audio_channel_count": 1, "audio_sameple_rate": "16000"})
+    
+    # fhir_id = None
+    # for item in generic_items:
+    #     if item.get("metadata") == linkid_to_find and item.get("answer"):
+    #         fhir_id = item["answer"][0].get("valueString", "")
+    #         if fhir_id:
+    #             break
+
+
+    return metadata_file
 
 
 def convert_response_to_fhir(
