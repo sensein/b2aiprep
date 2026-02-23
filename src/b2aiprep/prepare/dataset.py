@@ -1088,7 +1088,7 @@ class BIDSDataset:
         if not output_path.exists():
             output_path.mkdir(parents=True, exist_ok=False)
         with open(output_path / filename, "w") as f:
-            f.write(json.dumps(data))
+            f.write(json.dumps(data, indent=2))
 
     @staticmethod
     def _output_participant_data_to_fhir(
@@ -1119,7 +1119,10 @@ class BIDSDataset:
 
         # validated questionnaires are asked per session
         sessions_rows = []
-
+        audio_mappings_path = Path(__file__).resolve().parent / "resources" / "audio_task_descriptions.json"
+        with open(audio_mappings_path, 'r') as file_object:
+            audio_descriptor_dict = json.load(file_object)
+        
         for session in participant["sessions"]:
             sessions_row = {key: session[key] for key in session_instrument.columns}
             sessions_rows.append(sessions_row)
@@ -1130,7 +1133,7 @@ class BIDSDataset:
             audio_output_path = session_path / "audio"
             if not audio_output_path.exists():
                 audio_output_path.mkdir(parents=True, exist_ok=True)
-
+    
             # multiple acoustic tasks are asked per session
             for task in session["acoustic_tasks"]:
                 if task is None:
@@ -1148,6 +1151,7 @@ class BIDSDataset:
                     questionnaire_name=task_instrument.name,
                     mapping_name=task_instrument.schema_name_clobbered,
                     columns=task_instrument.columns,
+                    audio_task_descriptions=audio_descriptor_dict,
                 )
                 BIDSDataset._write_pydantic_model_to_bids_file(
                     audio_output_path,
@@ -1160,7 +1164,6 @@ class BIDSDataset:
 
                 # prefix is used to name audio files, if they are copied over
                 prefix = f"sub-{participant_id}_ses-{session_id}"
-
                 # there may be more than one recording per acoustic task
                 for recording in task["recordings"]:
                     meta_data = convert_response_to_bids_metadata(
@@ -1168,6 +1171,7 @@ class BIDSDataset:
                         questionnaire_name=recording_instrument.name,
                         mapping_name=recording_instrument.schema_name_clobbered,
                         columns=recording_instrument.columns,
+                        audio_task_descriptions=audio_descriptor_dict
                     )
                     BIDSDataset._write_pydantic_model_to_bids_file(
                         audio_output_path,

@@ -37,7 +37,7 @@
     },
     "Random-Item-Generation": {
         "instructions": "Say as many letters or numbers (0-9) as you can. You are allowed to repeat items. Your goal is to list as many as possible in a random order. Time limit 1 minutes. The selection will appear when you start recording. The recording will automatically stop at the end.",
-        "prompts": ""
+        "prompts": []
     },
     "Breath-Sounds": {
         "instructions": "Breathing: Click on the Record button below and breathe deeply through your mouth. Continue to do this until the recording automatically stops after 5 seconds. Click Play to hear your recording. If you hear background noise, please go to a quieter place and try again by selecting Redo Recording. If it sounds good, continue.",
@@ -45,6 +45,101 @@
     },
     "Diadochokinesis-(v2)-buttercup": {
         "instructions": "This task helps us analyze the ease and precision of speech sound productions. Please press the play button to listen to the demonstration on how to complete the task. Then, tap the record button and imitate the speaker by repeating the word 'buttercup' as quickly and consistently as possible until the timer runs out.",
+        "prompts": []
+    },
+    "Diadochokinesis-buttercup": {
+        "instructions": "This task helps us analyze the ease and precision of speech sound productions. Please press the play button to listen to the demonstration on how to complete the task. Then, tap the record button and imitate the speaker by repeating the word 'buttercup' as quickly and consistently as possible until the timer runs out.",
+        "prompts": []
+    },
+    "Diadochokinesis-(v2)-kuh": {
+        "instructions": "This task helps us analyze the ease and precision of speech sound productions. Please press the play button to listen to the demonstration on how to complete the task. Then, tap the record button and imitate the speaker by repeating the syllable 'kuh' as quickly and consistently as possible until the timer runs out - 'kuhkuhkuhkuhkuhkuh'",
+        "prompts": []
+    },
+    "Diadochokinesis-KA": {
+        "instructions": "This task helps us analyze the ease and precision of speech sound productions. Please press the play button to listen to the demonstration on how to complete the task. Then, tap the record button and imitate the speaker by repeating the syllable 'kuh' as quickly and consistently as possible until the timer runs out - 'kuhkuhkuhkuhkuhkuh'",
+        "prompts": []
+    },
+    "Diadochokinesis-(v2)-puh": {
+        "instructions": "This task helps us analyze the ease and precision of speech sound productions. Please press the play button to listen to the demonstration on how to complete the task. Then, tap the record button and imitate the speaker by repeating the syllable 'puh' as quickly and consistently as possible until the timer runs out - 'puhpuhpuhpuhpuhpuh'",
+        "prompts": []
+    },
+    "Diadochokinesis-PA": {
+        "instructions": "This task helps us analyze the ease and precision of speech sound productions. Please press the play button to listen to the demonstration on how to complete the task. Then, tap the record button and imitate the speaker by repeating the syllable 'puh' as quickly and consistently as possible until the timer runs out - 'puhpuhpuhpuhpuhpuh'",
+        "prompts": []
+    },
+    "Diadochokinesis-(v2)-tuh": {
+        "instructions": "This task helps us analyze the ease and precision of speech sound productions. Please press the play button to listen to the demonstration on how to complete the task. Then, tap the record button and imitate the speaker by repeating the syllable 'tuh' as quickly and consistently as possible until the timer runs out - 'tuhtuhtuhtuhtuhtuh'",
+        "prompts": []
+    },
+    "Diadochokinesis-TA": {
+        "instructions": "This task helps us analyze the ease and precision of speech sound productions. Please press the play button to listen to the demonstration on how to complete the task. Then, tap the record button and imitate the speaker by repeating the syllable 'tuh' as quickly and consistently as possible until the timer runs out - 'tuhtuhtuhtuhtuhtuh'",
+        "prompts": []
+    },
+    "Diadochokinesis-(v2)-puhtuhkuh": {
+        "instructions": "This task helps us analyze the ease and precision of speech sound productions. Please press the play button to listen to the demonstration on how to complete the task. Then, tap the record button and imitate the speaker by repeating the syllables 'puhtuhkuh' as quickly and consistently as possible until the timer runs out - 'puhtuhkuhpuhtuhkuh'",
+        "prompts": []
+    },
+    "Diadochokinesis-Pataka": {
+        "instructions": "This task helps us analyze the ease and precision of speech sound productions. Please press the play button to listen to the demonstration on how to complete the task. Then, tap the record button and imitate the speaker by repeating the syllables 'puhtuhkuh' as quickly and consistently as possible until the timer runs out - 'puhtuhkuhpuhtuhkuh'",
+        "prompts": []
+    },
+    "Prolonged-Vowel": {
+        "instructions": "This task helps us analyze features in your voice: Please press the play button to listen to the demonstration on how to complete the task. Then, tap the record button and imitate the speaker by repeating the sentence “1, 2, 3 aah” in your normal voice. Please hold the sound “aah” until the timer runs out.",
+        "prompts": []
+    },
+    "Productive-Vocabulary": {
+        "instructions": "Below you will be provided with a series of words. You may or may not know the word. If you know the word, please provide a definition of the word. After you have defined the word, press 'Next Word'. If you do NOT know the word, press 'I don't know this word, next', and you will be provided a new word. Once 6 words are defined, the 'Done' button appears.",
+        "prompts": []
+    },
+    "Maximum-Phonation-Time": {
+        "instructions": "This task helps us analyze the way your breathing is connected to your voice. Take a very deep breath, tap on the record button, and hold out “ah” for as long as possible until you completely run out of air. Try to hold it until the progress bar reaches the end of the screen.",
+        "prompts": []
+    },
+    "Loudness": {
+        "instructions": "This helps us to determine the loudness of the voice. When you're ready, press the record button and say “hey” in your normal voice. Then, shout “hey” as loud as you can. Try to reach the target line on the screen. Follow the prompts on the screen to continue.",
+        "prompts": []
+    },
+    "Glides-Low-to-High": {
+        "instructions": "Please watch the video to help you understand the next task and imitate what the speaker does. When you're ready, press the record button and use the sound “ee” to gradually move from your lowest note to your highest.",
+        "prompts": []
+    },
+    "Glides-High-to-Low": {
+        "instructions": "Next, please watch this video for the following task and imitate what the speaker does. When you're ready, press the record button again and use the sound “ee” to gradually move from your highest note to your lowest note.",
+        "prompts": []
+    },
+    "High-to-Low": {
+        "instructions": "Next, please watch this video for the following task and imitate what the speaker does. When you're ready, press the record button again and use the sound “ee” to gradually move from your highest note to your lowest note.",
+        "prompts": []
+    },
+    "Respiration-and-Cough": {
+        "instructions": "Breathing sounds can also provide information on your health. Let's record them.",
+        "prompts": [
+            "After pressing on record, breathe comfortably through your mouth for 20 seconds, until the timer runs out.",
+            "After pressing on record, exhale normally, then inhale quickly through your mouth, as if you are trying to catch your breath. Record 3 of these breaths in a single recording. Tap stop when finished.",
+            "After pressing on record, take 3 deep breaths in and out through your nose with your mouth closed. Tap stop when finished.",
+            "After pressing on record, take 3 deep breaths in and out through your mouth. Tap stop when finished.",
+            "Please do not cover your mouth or place your hand between your mouth and the microphone during recording. Breathe normally, then when you are ready, tap the record button below and cough HARD as if something were stuck in your throat. Tap stop when finished."
+        ]
+    },
+    "123s": {
+        "instructions": "Wow that was great! I wonder how high you can count? Let's start at 1, 2... When you are ready, press \"record\".",
+        "prompts": []
+    },
+    "picture_description": {
+        "instructions": "You're almost done! Now let's look at a picture that has a lot of details. Look at the picture and describe what you see – there are no right or wrong answers. Whatever you want to tell me about is perfect! When you are ready, press \"record\".",
+        "prompts": []
+    },
+    "favorite-food": {
+        "instructions": "Do you have a favourite food? Or a food you really don't like? When you're ready to share, press \"record\".",
+        "prompts": []
+    },
+    "favorite-show-movie-game": {
+        "instructions": "Do you have a favourite movie? Video game? Show? I'd love to hear about it! When you're ready to share, press \"record\".",
+        "prompts": []
+    },
+    "long-sounds": {
+        "description": "Try to have the child produce the sound at a habitual pitch – some tend to use a higher “note” or create vibrato if they have any singing background. The sound produced should be as steady/consistent as possible.",
+        "instructions": "First, let's start by saying 'ahhhhh' for around 5 seconds. We're going to repeat this three times during one recording. Try to have the child produce the sound at a habitual pitch – some tend to use a higher \"note\" or create vibrato if they have any singing background The sound produced should be as steady/consistent as possible Re-record if you perceive the child is using a higher pitch when sustaining the vowel (in comparison to speaking) When you are ready, press \"record\". Next, say the 'eeeeee' sound as steady as you can for about 5 seconds. We'll do this three times as well. When you are ready, press \"record\".",
         "prompts": []
     }
 

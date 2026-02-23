@@ -150,6 +150,7 @@ def convert_response_to_bids_metadata( participant: dict,
     questionnaire_name: str,
     mapping_name: str,
     columns: t.List[str],
+    audio_task_descriptions: dict,
 ) -> dict:
     """Converts a participant's response to a metadata json file.
 
@@ -191,12 +192,20 @@ def convert_response_to_bids_metadata( participant: dict,
         return
     
     metadata_file = {}
-    
+    task_name = ""
+    metadata_file["Instructions"] = ""
     for item in generic_items:
-        metedata_field = item.get("metadata")
-        metedata_value = item.get("answer")
-        if metadata_file is not None and metedata_field is not None:
-            metadata_file[metedata_field] = metedata_value
+        metadata_field = item.get("metadata")
+        metadata_value = item.get("answer")
+        if metadata_file is not None and metadata_field is not None:
+            metadata_file[metadata_field] = metadata_value
+        if metadata_field in ("acoustic_task_name", "recording_name"):
+            task_name = metadata_value
+    
+    for task in audio_task_descriptions:
+        if (task.lower() in task_name.lower()):
+            metadata_file["Instructions"] = audio_task_descriptions[task]["instructions"]
+            metadata_file["Prompts"] = audio_task_descriptions[task]["prompts"]
     
     metadata_file.update({"audio_channel_count": 1, "audio_sameple_rate": "16000"})
     
