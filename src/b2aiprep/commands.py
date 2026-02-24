@@ -46,7 +46,7 @@ from tqdm import tqdm
 from b2aiprep.prepare.bids import get_paths, validate_bids_folder_audios
 from b2aiprep.prepare.constants import RepeatInstrument
 from b2aiprep.prepare.redcap import RedCapDataset
-from b2aiprep.prepare.dataset import BIDSDataset
+from b2aiprep.prepare.dataset import BIDSDataset, _SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE
 from b2aiprep.prepare.bundle_data import (
     feature_extraction_generator,
     spectrogram_generator,
@@ -64,6 +64,10 @@ from b2aiprep.prepare.update import TemplateUpdateError, reorganize_bids_activit
 
 _LOGGER = logging.getLogger(__name__)
 
+_SENSITIVE_PARQUET_STEMS: t.FrozenSet[str] = {
+        f"{feature_group}_{feature_name}" if feature_group else feature_name
+        for feature_group in _SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE for feature_name in _SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE[feature_group]
+        }
 
 def _prime_generator(
     generator_callable: t.Callable[[], t.Iterator[t.Dict[str, t.Any]]],
@@ -686,7 +690,8 @@ def validate_bundled_dataset(dataset_path, config_dir):
                 for task in present_tasks
                 if normalize_task_label(task) not in audio_task_to_include_normalized
             }
-            if unexpected_tasks_present:
+
+            if unexpected_tasks_present and parquet_file.stem in _SENSITIVE_PARQUET_STEMS:
                 issues.append(f"Found unexpected audio tasks in {parquet_file.name}: {unexpected_tasks_present}")
                 
             # Check remapping
