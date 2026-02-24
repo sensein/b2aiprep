@@ -1119,7 +1119,7 @@ class BIDSDataset:
 
         # validated questionnaires are asked per session
         sessions_rows = []
-        audio_mappings_path = Path(__file__).resolve().parent / "resources" / "audio_task_descriptions.json"
+        audio_mappings_path = files("b2aiprep.prepare.resources").joinpath("audio_task_descriptions.json")
         with open(audio_mappings_path, 'r') as file_object:
             audio_descriptor_dict = json.load(file_object)
         
