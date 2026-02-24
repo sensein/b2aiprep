@@ -141,6 +141,78 @@
         "description": "Try to have the child produce the sound at a habitual pitch – some tend to use a higher “note” or create vibrato if they have any singing background. The sound produced should be as steady/consistent as possible.",
         "instructions": "First, let's start by saying 'ahhhhh' for around 5 seconds. We're going to repeat this three times during one recording. Try to have the child produce the sound at a habitual pitch – some tend to use a higher \"note\" or create vibrato if they have any singing background The sound produced should be as steady/consistent as possible Re-record if you perceive the child is using a higher pitch when sustaining the vowel (in comparison to speaking) When you are ready, press \"record\". Next, say the 'eeeeee' sound as steady as you can for about 5 seconds. We'll do this three times as well. When you are ready, press \"record\".",
         "prompts": []
+    },
+    "picture": {
+        "description": "",
+        "instructions": "If the child makes a sound effect vs naming the picture that’s ok! We’re not actually using this task as an evaluation of articulation. Pictures presented one at a time on the screen – option to swipe/click to “next” once the child has named the item or if it is an unknown for the child it may be skipped.",
+        "prompts": []
+    },
+    "passage": {
+        "description": "",
+        "instructions": "Fantastic Job! We only have one more thing to do today. Since you did so well reading the sentences earlier, let's try a few more. We're going to read a short story about a roller coaster ride called \"The Caterpillar\". A sentence or two will appear on the screen – read it aloud as if you were reading any regular story book. If you're not sure about a word, just skip it and keep going. When you are ready, press \"record\".",
+        "prompts": []
+    },
+    "repeat-words": {
+        "description": "",
+        "instructions": "Say the following word 3 times",
+        "prompts": []
+    },
+    "ready-for-school": {
+        "description": "",
+        "instructions": "To start, let's learn a little more about you! Tell me about how you get ready for school in the morning.",
+        "prompts": []
+    },
+    "outside-of-school": {
+        "description": "",
+        "instructions": "What do you like to do when you're not at school? Tell me about any activities you do like sports, dance, karate, art, etc. When you're ready to share, press \"record\".",
+        "prompts": []
+    },
+    "pictures-and-doors": {
+        "description": "",
+        "instructions": "There are lots of pictures inside – let's talk about some of the things you see. When you are ready, press \"record\".",
+        "prompts": []
+    },
+    "role-naming": {
+        "description": "Communication partner may prompt to get the child started, but should try to limit verbal commenting whenever possible. Accuracy is not important here –our goal is gathering some spontaneous vocalizations/sounds no matter how clear, in order or complete the list might be",
+        "instructions": "Thank you for sharing all of that information with me! It was super interesting Let's try some different questions - if you're not sure what the answer is, you can just move on to the next question. I bet you know the months of the year too. Let's start with January... When you are ready, press \"record\". That was great Next can you count from 60 to 70? When you are ready, press \"record\".",
+        "prompts": []
+    },
+    "sentence": {
+        "description": "",
+        "instructions": "Next we have some silly sentences to look at. They don’t exactly make sense – but that’s what makes them silly! If you can read them on your own go right ahead! Or you can have someone else say the sentence first and you just repeat it after them (just be sure to only record when you are talking) You are doing a great job! We have only two more tasks to complete before we’re all finished!",
+        "prompts": [
+            "The blue spot is on the key again. When you are ready, press “record.",
+            "How hard did he hug him. When you are ready, press “record.”",
+            "We were away a year ago. When you are ready, press “record.”",
+            "We eat eggs every eve. When you are ready, press “record.”",
+            "My momma makes lemon muffins. When you are ready, press “record.”",
+            "Peter will keep at the park. When you are ready, press “record.”"
+        ]
+    },
+    "noisy-sounds": {
+        "description": "",
+        "instructions": "What a great job! Do you like making silly sounds? Do you know what sound a ghost or a mouse makes? Let's see if we can figure out what sound each of these pictures make.",
+        "prompts": [
+            "Here's a picture of an airplane – it makes an 'ah' sound – we're going to say that three times – 'ah ah ah' When you are ready, press \"record\".",
+            "Here's a picture of an airplane – it makes an 'ah' sound – we're going to say that three times – 'ah ah ah' When you are ready, press \"record\".",
+            "Next is a little mouse – it makes an 'ee ee ee' sound - your turn! When you are ready, press \"record\".",
+            "Here's a little ghost – he says 'oo oo oo' – your turn! When you are ready, press \"record\".",
+            "Looks like this baby is sleeping, so we have to remind everyone to be quiet by saying ‘sh sh sh’ Now you try! When you are ready, press “record.”",
+            "Do you know what sound a snake makes? It says ‘ss ss ss’. Can I hear you make that snake sound? When you are ready, press “record.”",
+            "Oh ice cream is so delicious! I like to eat it really fast – “muh muh muh” – your turn! When you are ready, press “record.”",
+            "Uh oh! Looks like the baby has been colouring on the walls. We should tell him to stop – “nuh nuh nuh”. You tell him too! When you are ready, press “record.”",
+            "Here’s a little bumble bee buzzing around the garden – ‘zz zz zz’. Let’s hear your bee noise When you are ready, press “record.”",
+            "Sometimes I see bunnies hopping in my garden too – ‘hh hh hh’. Can you make a bunny hopping noise too? When you are ready, press “record.”"
+        ]
+    },
+    "silly-sounds": {
+        "description": "",
+        "instructions": "That was great! Let’s try some more sounds",
+        "prompts": [
+            "First, we’re going to say PUH PUH PUH over and over for about 5 seconds. Remember to take a breath if you need one! When you are ready, press “record.”",
+            "Next let’s do the same thing, but this time say TUH TUH TUH. When you are ready, press “record.",
+            "Amazing! We’ve got one more to try. Tell me KUH KUH KUH... When you are ready, press “record.",
+            "Fantastic! You did so well with those sounds, let’s try to put them together and say PUH TUH KUH over and over until the timer stops. If that word seems a little too tricky, you can say PAT-A-CAKE over and over instead When you are ready, press “record.”"
+        ]
     }
-
 }
