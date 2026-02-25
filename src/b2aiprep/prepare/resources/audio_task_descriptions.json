@@ -73,7 +73,7 @@
     },
     "Diadochokinesis-PA": {
         "description": "/pa/",
-        "instructions": "This task helps us analyze the ease and precision of speech sound productions. Please press the play button to listen to the demonstration on how to complete the task. Then, tap the record button and imitate the speaker by repeating the syllable 'puh' as quickly and consistently as possible until the timer runs out - 'puhpuhpuhpuhpuhpuh'",
+        "instructions": "This task helps us analyze the ease and precision of speech sound productions. Please press the play button to listen to the demonstration on how to complete the task. Then, tap the record button and imitate the speaker by repeating the syllable 'pa' as quickly and consistently as possible until the timer runs out - 'papapapapapa'",
         "prompts": []
     },
     "Diadochokinesis-(v2)-tuh": {
@@ -83,7 +83,7 @@
     },
     "Diadochokinesis-TA": {
         "description": "/ta/",
-        "instructions": "This task helps us analyze the ease and precision of speech sound productions. Please press the play button to listen to the demonstration on how to complete the task. Then, tap the record button and imitate the speaker by repeating the syllable 'tuh' as quickly and consistently as possible until the timer runs out - 'tuhtuhtuhtuhtuhtuh'",
+        "instructions": "This task helps us analyze the ease and precision of speech sound productions. Please press the play button to listen to the demonstration on how to complete the task. Then, tap the record button and imitate the speaker by repeating the syllable 'ta' as quickly and consistently as possible until the timer runs out - 'tatatatatata'",
         "prompts": []
     },
     "Diadochokinesis-(v2)-puhtuhkuh": {
@@ -93,7 +93,7 @@
     },
     "Diadochokinesis-Pataka": {
         "description": "/pa/ta/ka/",
-        "instructions": "This task helps us analyze the ease and precision of speech sound productions. Please press the play button to listen to the demonstration on how to complete the task. Then, tap the record button and imitate the speaker by repeating the syllables 'puhtuhkuh' as quickly and consistently as possible until the timer runs out - 'puhtuhkuhpuhtuhkuh'",
+        "instructions": "This task helps us analyze the ease and precision of speech sound productions. Please press the play button to listen to the demonstration on how to complete the task. Then, tap the record button and imitate the speaker by repeating the syllables 'pataka' as quickly and consistently as possible until the timer runs out - 'patakapataka'",
         "prompts": []
     },
     "Prolonged-Vowel": {
