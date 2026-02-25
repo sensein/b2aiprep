@@ -97,7 +97,7 @@ def is_invalid_response(participant: dict, outline) -> bool:
         if item["answer"] is None:
             continue
         
-        if item["answer"] is not None:
+        if isinstance(item["answer"], str):
             answers.append(item["answer"].lower())
         elif isinstance(item["answer"], bool):
             if item["answer"]:
@@ -105,7 +105,8 @@ def is_invalid_response(participant: dict, outline) -> bool:
             else:
                 answers.append("unchecked")
         else:
-            answers.append(list(answers))
+            answers.append(item["answer"])
+            
     answers = set(answers)
     return len(answers.difference({"nan", "unchecked"})) == 0
 
@@ -178,6 +179,6 @@ def convert_response_to_bids_metadata( participant: dict,
             metadata_file["Instructions"] = audio_task_descriptions[task]["instructions"]
             metadata_file["Prompts"] = audio_task_descriptions[task]["prompts"]
     
-    metadata_file.update({"audio_channel_count": 1, "audio_sameple_rate": "16000"})
+    metadata_file.update({"audio_channel_count": 1, "audio_sample_rate": "16000"})
 
     return metadata_file

@@ -222,6 +222,10 @@ class BIDSDataset:
         audio_files: t.List[Path] = []
         if audiodir is not None and Path(audiodir).exists():
             audio_files = list(Path(audiodir).rglob("*.wav"))
+        
+        audio_mappings_path = files("b2aiprep.prepare.resources").joinpath("audio_task_descriptions.json")
+        with open(audio_mappings_path, 'r') as file_object:
+            audio_descriptor_dict = json.load(file_object)
 
         # create an index of recording_id: audio_file for later use
         # ASSUMES that audio files are named with the recording_id in the filename
@@ -247,7 +251,8 @@ class BIDSDataset:
                 Path(outdir),
                 audio_files_by_recording=audio_files_by_recording,
                 max_audio_workers=max_audio_workers,
-                sanitize_audio_format=sanitize_audio_format
+                sanitize_audio_format=sanitize_audio_format,
+                audio_descriptor_dict=audio_descriptor_dict
             )
         
         # Return a new BIDSDataset instance pointing to the created directory
@@ -1093,7 +1098,7 @@ class BIDSDataset:
     @staticmethod
     def _output_participant_data_to_metadata_file(
         participant: dict, outdir: Path, audio_files_by_recording: t.Optional[t.Dict[str, Path]] = None,
-        max_audio_workers: int = 16, sanitize_audio_format: bool = False
+        max_audio_workers: int = 16, sanitize_audio_format: bool = False, audio_descriptor_dict:dict = {}
     ):
         """Output participant data to FHIR format.
 
@@ -1119,9 +1124,6 @@ class BIDSDataset:
 
         # validated questionnaires are asked per session
         sessions_rows = []
-        audio_mappings_path = files("b2aiprep.prepare.resources").joinpath("audio_task_descriptions.json")
-        with open(audio_mappings_path, 'r') as file_object:
-            audio_descriptor_dict = json.load(file_object)
         
         for session in participant["sessions"]:
             sessions_row = {key: session[key] for key in session_instrument.columns}
