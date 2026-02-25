@@ -149,10 +149,9 @@ def test_extract_single(setup_temp_files):
     redcap_csv_path, audio_dir, bids_dir_path, tar_file_path = setup_temp_files
 
     wav_path = os.path.join(audio_dir, "sample.wav")
-    save_to = extract_single(wav_path=wav_path,
-                             transcription_model_size="tiny",
-                             with_sensitive=False,
-                             update=False)
+    save_to = extract_single(
+        wav_path=wav_path, transcription_model_size="tiny", with_sensitive=False, update=False
+    )
 
     assert os.path.exists(save_to), ".pt file was not generated"
 
@@ -161,9 +160,9 @@ def test_wav_to_features(setup_temp_files):
     redcap_csv_path, audio_dir, bids_dir_path, tar_file_path = setup_temp_files
 
     wav_path = [os.path.join(audio_dir, "sample.wav")]
-    save_to = wav_to_features(wav_paths=wav_path,
-                              transcription_model_size="tiny",
-                              with_sensitive=False)
+    save_to = wav_to_features(
+        wav_paths=wav_path, transcription_model_size="tiny", with_sensitive=False
+    )
 
     for paths in save_to:
         assert os.path.exists(paths), ".pt file was not generated"
@@ -182,6 +181,7 @@ def test_extract_features_workflow(setup_bids_structure):
     pt_files = list(bids_dir.rglob("*.pt"))
     assert pt_files, ".pt files were not generated"
 
+
 def test_reduce_id_length():
     example_id = "5f0c5b34-b634-4564-b97c-b44435a3e0ff"
     actual = reduce_id_length(example_id)
@@ -191,25 +191,23 @@ def test_reduce_id_length():
 
 def test_reduce_length_of_id():
     uuid_list = [
-        '8a7d5b46-84c0-4f36-9ae0-e84c21f0c9f7',
-        'd6b1a71e-9313-4141-9a8b-2170169ab74a',
-        'b3cf2bd4-4c83-430e-8238-c22a770f828e',
-        '7f16962f-2556-4be7-b6cf-7db062254646',
-        'f6832f4d-369c-4a7b-bde6-3a84f6e68280',
-        'fc9f9939-9d44-4743-a9c7-c2c8d8f6f14e',
-        'c9f4e3d5-5087-4d96-9e00-7c8584b0ff49',
-        '1ff15a6b-4ef0-40d5-bb4e-b5ec9d40d5f2',
-        'cd9ac2b3-1879-4214-95a0-bf8943bc1993',
-        '8fa44e90-9201-4f94-847b-32bfb285b747'
+        "8a7d5b46-84c0-4f36-9ae0-e84c21f0c9f7",
+        "d6b1a71e-9313-4141-9a8b-2170169ab74a",
+        "b3cf2bd4-4c83-430e-8238-c22a770f828e",
+        "7f16962f-2556-4be7-b6cf-7db062254646",
+        "f6832f4d-369c-4a7b-bde6-3a84f6e68280",
+        "fc9f9939-9d44-4743-a9c7-c2c8d8f6f14e",
+        "c9f4e3d5-5087-4d96-9e00-7c8584b0ff49",
+        "1ff15a6b-4ef0-40d5-bb4e-b5ec9d40d5f2",
+        "cd9ac2b3-1879-4214-95a0-bf8943bc1993",
+        "8fa44e90-9201-4f94-847b-32bfb285b747",
     ]
 
     # Create the DataFrame
-    df = pd.DataFrame({
-        "record_id": uuid_list
-    })
+    df = pd.DataFrame({"record_id": uuid_list})
     list_of_expected_id = []
     for record_id in df["record_id"]:
-        list_of_expected_id.append(record_id[:record_id.find("-")])
+        list_of_expected_id.append(record_id[: record_id.find("-")])
 
     df_modified = reduce_length_of_id(df, "record_id")
     list_of_actual_id = []
@@ -220,44 +218,26 @@ def test_reduce_length_of_id():
 
 
 def test_get_value_from_metadata():
-    metadata = {
-        "item": [
-            {"linkId": "abc123", "answer": [{"valueString": "value1"}]},
-            {"linkId": "def456", "answer": [{"valueString": "value2"}]},
-            {"linkId": "xyz789", "answer": [{"valueString": "value3"}]},
-        ]
-    }
-    link_id = "abc123"
+    metadata = {"record_id": "abc123"}
+    link_id = "record_id"
     actual = get_value_from_metadata(metadata=metadata, linkid=link_id)
-    expected = "value1"
+    expected = "abc123"
     assert actual == expected
 
 
 def test_update_metadata_record_and_session_id():
     metadata = {
-        "item": [
-            {"linkId": "record_id", "answer": [
-                {"valueString": "1a3f7e22-8d4b-4e3a-b36d-12a5c2e5b9d8"}]},
-            {"linkId": "session_id", "answer": [
-                {"valueString": "5d9e34a7-2c90-44bf-8b53-1bde7a67e3f2"}]},
-            {"linkId": "record_id", "answer": [
-                {"valueString": "c7f3a128-e10a-4d0d-9c7e-f1a4b5767d6b"}]},
-        ]
+        "record_id" : "1a3f7e22-8d4b-4e3a-b36d-12a5c2e5b9d8",
+        "session_id": "5d9e34a7-2c90-44bf-8b53-1bde7a67e3f2",
     }
     expected_metadata = {
-        "item": [
-            {"linkId": "participant_id", "answer": [
-                {"valueString": "f7ab1291"}]},
-            {"linkId": "session_id", "answer": [
-                {"valueString": "1"}]},
-            {"linkId": "participant_id", "answer": [
-                {"valueString": "c7f3a128-e10a-4d0d-9c7e-f1a4b5767d6b"}]},
-        ]
+        "participant_id" : "f7ab1291",
+        "session_id": "1",
     }
     ids_to_remap = {"1a3f7e22-8d4b-4e3a-b36d-12a5c2e5b9d8": "f7ab1291"}
     participant_session_id_to_remap = {"5d9e34a7-2c90-44bf-8b53-1bde7a67e3f2": "1"}
     update_metadata_record_and_session_id(metadata=metadata, ids_to_remap=ids_to_remap, session_id_to_remap=participant_session_id_to_remap)
-    assert metadata == expected_metadata
+    assert metadata == expected_metadata 
 
 
 @pytest.mark.skipif(

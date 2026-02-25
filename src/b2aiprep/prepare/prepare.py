@@ -740,28 +740,24 @@ def load_remap_id_list(publish_config_dir: Path) -> Dict:
     return data
 
 def get_value_from_metadata(metadata: dict, linkid: str, endswith: bool = False) -> str:
-    for item in metadata['item']:
-        if 'linkId' not in item:
-            continue
-        if item['linkId'] == linkid:
-            return item['answer'][0]['valueString']
-        if endswith and item['linkId'].endswith(linkid):
-            return item['answer'][0]['valueString']
+    for item in metadata:
+        if item == linkid:
+            return metadata[item]
+        if endswith and item.endswith(linkid):
+            return metadata[item]
     return None
 
 def update_metadata_record_and_session_id(metadata: dict, ids_to_remap: dict, session_id_to_remap: dict):
-    for item in metadata['item']:
-        if 'linkId' not in item:
-            continue
-
-        if item['linkId'] in {'record_id', 'participant_id'}:
-            item['answer'][0]['valueString'] = remap_id(
-                item['answer'][0]['valueString'], ids_to_remap, id_type="participant"
+    for item in metadata:
+        if item == 'record_id':
+            metadata[item] = remap_id(
+                metadata[item], ids_to_remap, id_type="participant"
             )
-
-            # rename to participant_id
-            item['linkId'] = 'participant_id'
-        elif (item['linkId'] == 'session_id') or (item['linkId'].endswith('_session_id')):
-            item['answer'][0]['valueString'] = remap_id(
-                item['answer'][0]['valueString'], session_id_to_remap, id_type="session"
+        elif (item == 'session_id') or (item.endswith('_session_id')):
+            metadata[item] = remap_id(
+                metadata[item], session_id_to_remap, id_type="session"
             )
+    if "record_id" in metadata:
+        record_id = metadata.pop("record_id")
+        metadata['participant_id'] = record_id
+        

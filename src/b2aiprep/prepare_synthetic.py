@@ -33,7 +33,7 @@ from importlib.resources import files
 from pydantic import BaseModel
 
 from b2aiprep.prepare.fhir_utils import (
-    convert_response_to_fhir,
+    convert_response_to_bids_metadata,
     is_empty_questionnaire_response,
 )
 from b2aiprep.prepare.constants import (
@@ -339,7 +339,7 @@ def output_participant_data_to_fhir(participant: dict, outdir: Path, audiodir: t
 
     for questionnaire_name in GENERAL_QUESTIONNAIRES:
         instrument = get_instrument_for_name(questionnaire_name)
-        fhir_data = convert_response_to_fhir(
+        fhir_data = convert_response_to_bids_metadata(
             participant,
             questionnaire_name=questionnaire_name,
             mapping_name=instrument.schema,
@@ -371,7 +371,7 @@ def output_participant_data_to_fhir(participant: dict, outdir: Path, audiodir: t
         audio_output_path = session_path / 'audio'
         if not audio_output_path.exists():
             audio_output_path.mkdir(parents=True, exist_ok=True)
-        fhir_data = convert_response_to_fhir(
+        fhir_data = convert_response_to_bids_metadata(
             session,
             questionnaire_name=session_instrument.name,
             mapping_name=session_instrument.schema,
@@ -425,7 +425,7 @@ def output_participant_data_to_fhir(participant: dict, outdir: Path, audiodir: t
                 continue
 
             acoustic_task_name = _transform_str_for_bids_filename(task["acoustic_task_name"])
-            fhir_data = convert_response_to_fhir(
+            fhir_data = convert_response_to_bids_metadata(
                 task,
                 questionnaire_name=task_instrument.name,
                 mapping_name=task_instrument.schema,
@@ -445,7 +445,7 @@ def output_participant_data_to_fhir(participant: dict, outdir: Path, audiodir: t
 
             # there may be more than one recording per acoustic task
             for recording in task["recordings"]:
-                fhir_data = convert_response_to_fhir(
+                fhir_data = convert_response_to_bids_metadata(
                     recording,
                     questionnaire_name=recording_instrument.name,
                     mapping_name=recording_instrument.schema,
@@ -490,7 +490,7 @@ def output_participant_data_to_fhir(participant: dict, outdir: Path, audiodir: t
                 continue
             instrument = repeat_instrument.value
 
-            fhir_data = convert_response_to_fhir(
+            fhir_data = convert_response_to_bids_metadata(
                 session[repeat_instrument],
                 questionnaire_name=instrument.name,
                 mapping_name=instrument.schema,

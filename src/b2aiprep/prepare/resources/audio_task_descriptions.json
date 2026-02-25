@@ -25,6 +25,7 @@
         ]
     },
     "Cape-V": {
+        "description": "validated sentences",
         "instructions": "Please read the following sentences out loud in your typical voice.",
         "prompts": [
             "The blue spot is on the key again.",
@@ -36,50 +37,62 @@
         ]
     },
     "Random-Item-Generation": {
+        "description": "describing images",
         "instructions": "Say as many letters or numbers (0-9) as you can. You are allowed to repeat items. Your goal is to list as many as possible in a random order. Time limit 1 minutes. The selection will appear when you start recording. The recording will automatically stop at the end.",
         "prompts": []
     },
     "Breath-Sounds": {
+        "description": "Breathing sounds",
         "instructions": "Breathing: Click on the Record button below and breathe deeply through your mouth. Continue to do this until the recording automatically stops after 5 seconds. Click Play to hear your recording. If you hear background noise, please go to a quieter place and try again by selecting Redo Recording. If it sounds good, continue.",
         "prompts": []
     },
     "Diadochokinesis-(v2)-buttercup": {
+        "description": "/buttercup/",
         "instructions": "This task helps us analyze the ease and precision of speech sound productions. Please press the play button to listen to the demonstration on how to complete the task. Then, tap the record button and imitate the speaker by repeating the word 'buttercup' as quickly and consistently as possible until the timer runs out.",
         "prompts": []
     },
     "Diadochokinesis-buttercup": {
+        "description": "/buttercup/",
         "instructions": "This task helps us analyze the ease and precision of speech sound productions. Please press the play button to listen to the demonstration on how to complete the task. Then, tap the record button and imitate the speaker by repeating the word 'buttercup' as quickly and consistently as possible until the timer runs out.",
         "prompts": []
     },
     "Diadochokinesis-(v2)-kuh": {
+        "description": "/kuh/",
         "instructions": "This task helps us analyze the ease and precision of speech sound productions. Please press the play button to listen to the demonstration on how to complete the task. Then, tap the record button and imitate the speaker by repeating the syllable 'kuh' as quickly and consistently as possible until the timer runs out - 'kuhkuhkuhkuhkuhkuh'",
         "prompts": []
     },
     "Diadochokinesis-KA": {
+        "description": "/ka/",
         "instructions": "This task helps us analyze the ease and precision of speech sound productions. Please press the play button to listen to the demonstration on how to complete the task. Then, tap the record button and imitate the speaker by repeating the syllable 'kuh' as quickly and consistently as possible until the timer runs out - 'kuhkuhkuhkuhkuhkuh'",
         "prompts": []
     },
     "Diadochokinesis-(v2)-puh": {
+        "description": "/kuh/",
         "instructions": "This task helps us analyze the ease and precision of speech sound productions. Please press the play button to listen to the demonstration on how to complete the task. Then, tap the record button and imitate the speaker by repeating the syllable 'puh' as quickly and consistently as possible until the timer runs out - 'puhpuhpuhpuhpuhpuh'",
         "prompts": []
     },
     "Diadochokinesis-PA": {
+        "description": "/pa/",
         "instructions": "This task helps us analyze the ease and precision of speech sound productions. Please press the play button to listen to the demonstration on how to complete the task. Then, tap the record button and imitate the speaker by repeating the syllable 'puh' as quickly and consistently as possible until the timer runs out - 'puhpuhpuhpuhpuhpuh'",
         "prompts": []
     },
     "Diadochokinesis-(v2)-tuh": {
+        "description": "/tuh/",
         "instructions": "This task helps us analyze the ease and precision of speech sound productions. Please press the play button to listen to the demonstration on how to complete the task. Then, tap the record button and imitate the speaker by repeating the syllable 'tuh' as quickly and consistently as possible until the timer runs out - 'tuhtuhtuhtuhtuhtuh'",
         "prompts": []
     },
     "Diadochokinesis-TA": {
+        "description": "/ta/",
         "instructions": "This task helps us analyze the ease and precision of speech sound productions. Please press the play button to listen to the demonstration on how to complete the task. Then, tap the record button and imitate the speaker by repeating the syllable 'tuh' as quickly and consistently as possible until the timer runs out - 'tuhtuhtuhtuhtuhtuh'",
         "prompts": []
     },
     "Diadochokinesis-(v2)-puhtuhkuh": {
+        "description": "/pa/ta/ka/",
         "instructions": "This task helps us analyze the ease and precision of speech sound productions. Please press the play button to listen to the demonstration on how to complete the task. Then, tap the record button and imitate the speaker by repeating the syllables 'puhtuhkuh' as quickly and consistently as possible until the timer runs out - 'puhtuhkuhpuhtuhkuh'",
         "prompts": []
     },
     "Diadochokinesis-Pataka": {
+        "description": "/pa/ta/ka/",
         "instructions": "This task helps us analyze the ease and precision of speech sound productions. Please press the play button to listen to the demonstration on how to complete the task. Then, tap the record button and imitate the speaker by repeating the syllables 'puhtuhkuh' as quickly and consistently as possible until the timer runs out - 'puhtuhkuhpuhtuhkuh'",
         "prompts": []
     },

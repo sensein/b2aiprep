@@ -242,7 +242,7 @@ class BIDSDataset:
             audio_files_by_recording[uuid] = audio_file
 
         for participant in tqdm(participants, desc="Writing participant data to file"):
-            cls._output_participant_data_to_fhir(
+            cls._output_participant_data_to_metadata_file(
                 participant,
                 Path(outdir),
                 audio_files_by_recording=audio_files_by_recording,
@@ -1091,7 +1091,7 @@ class BIDSDataset:
             f.write(json.dumps(data, indent=2))
 
     @staticmethod
-    def _output_participant_data_to_fhir(
+    def _output_participant_data_to_metadata_file(
         participant: dict, outdir: Path, audio_files_by_recording: t.Optional[t.Dict[str, Path]] = None,
         max_audio_workers: int = 16, sanitize_audio_format: bool = False
     ):

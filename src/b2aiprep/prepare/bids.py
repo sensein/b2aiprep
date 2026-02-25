@@ -33,7 +33,7 @@ from pydantic import BaseModel
 from tqdm import tqdm
 
 from b2aiprep.prepare.constants import AUDIO_TASKS, Instrument, RepeatInstrument
-from b2aiprep.prepare.fhir_utils import convert_response_to_fhir
+from b2aiprep.prepare.fhir_utils import convert_response_to_bids_metadata
 from b2aiprep.prepare.redcap import RedCapDataset
 
 SUBJECT_PREFIX = "sub"
@@ -280,7 +280,7 @@ def output_participant_data_to_fhir(
                 continue
 
             acoustic_task_name = task["acoustic_task_name"].replace(" ", "-")
-            fhir_data = convert_response_to_fhir(
+            fhir_data = convert_response_to_bids_metadata(
                 task,
                 questionnaire_name=task_instrument.name,
                 mapping_name=task_instrument.schema_name_clobbered,
@@ -300,7 +300,7 @@ def output_participant_data_to_fhir(
 
             # there may be more than one recording per acoustic task
             for recording in task["recordings"]:
-                fhir_data = convert_response_to_fhir(
+                fhir_data = convert_response_to_bids_metadata(
                     recording,
                     questionnaire_name=recording_instrument.name,
                     mapping_name=recording_instrument.schema_name_clobbered,
