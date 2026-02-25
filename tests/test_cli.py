@@ -672,7 +672,7 @@ def test_validate_bundled_dataset_cli(setup_publish_config):
         task_dir.mkdir(parents=True, exist_ok=True)
 
         # Create minimal bundled dataset structure
-        df = pd.DataFrame({"participant_id": ["sub-01"], "task_name": ["task1"], "session_id": ["ses-01"]})
+        df = pd.DataFrame({"participant_id": ["sub-01"], "task_name": ["test"], "session_id": ["ses-01"]})
         df.to_parquet(features_dir / "torchaudio_spectrogram.parquet")
         df.to_parquet(features_dir / "torchaudio_mfcc.parquet")
         
