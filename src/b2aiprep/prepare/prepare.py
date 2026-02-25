@@ -527,7 +527,7 @@ def extract_features_workflow(
         
         df = df[df["subject"] == subject_id]
         if len(df)==0:
-            raise ValueError(f"Subject ID {subject_id} not found")
+            _logger.warning(f"Subject ID {subject_id} not found")
 
     elif subject_file is not None:
         subject_file = Path(subject_file)
