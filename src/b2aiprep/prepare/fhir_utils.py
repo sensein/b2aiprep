@@ -161,7 +161,7 @@ def convert_response_to_bids_metadata( participant: dict,
     
     if not linkid_to_find:
         _logger.warning(f"File is missing acoustic_task_id and recording_id, skipping....")
-        return
+        return {}
     
     metadata_file = {}
     task_name = ""
@@ -178,6 +178,7 @@ def convert_response_to_bids_metadata( participant: dict,
         if (task_name is not None and task.lower() in task_name.lower()):
             metadata_file["Instructions"] = audio_task_descriptions[task]["instructions"]
             metadata_file["Prompts"] = audio_task_descriptions[task]["prompts"]
+            break
     
     metadata_file.update({"audio_channel_count": 1, "audio_sample_rate": "16000"})
 
