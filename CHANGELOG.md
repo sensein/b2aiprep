@@ -1,3 +1,28 @@
+# 3.0.3 (Mon Mar 02 2026)
+
+#### 🐛 Bug Fix
+
+- Added authors to dataset description [#233](https://github.com/sensein/b2aiprep/pull/233) ([@wilke0818](https://github.com/wilke0818) [@Evan8456](https://github.com/Evan8456))
+- Inclusion config [#243](https://github.com/sensein/b2aiprep/pull/243) ([@Evan8456](https://github.com/Evan8456) [@wilke0818](https://github.com/wilke0818))
+- use 16 bits for audios [#238](https://github.com/sensein/b2aiprep/pull/238) ([@wilke0818](https://github.com/wilke0818))
+- Updated fhir ids to be unique and added deidentification of fhir ids [#237](https://github.com/sensein/b2aiprep/pull/237) ([@Evan8456](https://github.com/Evan8456))
+- Fix age on a separate row in phenotype [#234](https://github.com/sensein/b2aiprep/pull/234) ([@alistairewj](https://github.com/alistairewj))
+- Mono 16k audios [#231](https://github.com/sensein/b2aiprep/pull/231) ([@wilke0818](https://github.com/wilke0818))
+- Added script to check dataframes [#232](https://github.com/sensein/b2aiprep/pull/232) ([@Evan8456](https://github.com/Evan8456))
+- updated redcar2bids to not rely on submodule [#226](https://github.com/sensein/b2aiprep/pull/226) ([@Evan8456](https://github.com/Evan8456) [@wilke0818](https://github.com/wilke0818))
+- Initial addiition of redcap2rs files [#225](https://github.com/sensein/b2aiprep/pull/225) ([@github-actions[bot]](https://github.com/github-actions[bot]) [@Evan8456](https://github.com/Evan8456))
+- Added github actions workflow to address submodule issues [#223](https://github.com/sensein/b2aiprep/pull/223) ([@Evan8456](https://github.com/Evan8456))
+- Fixed minor bug with reproschema conversion and import [#224](https://github.com/sensein/b2aiprep/pull/224) ([@Evan8456](https://github.com/Evan8456))
+
+#### Authors: 4
+
+- [@github-actions[bot]](https://github.com/github-actions[bot])
+- [@wilke0818](https://github.com/wilke0818)
+- Alistair Johnson ([@alistairewj](https://github.com/alistairewj))
+- Evan Ng ([@Evan8456](https://github.com/Evan8456))
+
+---
+
 # 3.0.2 (Tue Jan 06 2026)
 
 #### 🐛 Bug Fix
