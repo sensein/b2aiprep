@@ -412,6 +412,30 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
         shutil.copytree(bids_phenotype_path, phenotype_path, dirs_exist_ok=True)
         _LOGGER.info("Finished creating phenotype data")
 
+    qc_tsv_src = bids_path / "audio_quality_metrics.tsv"
+    qc_json_src = bids_path / "audio_quality_metrics.json"
+    if qc_tsv_src.exists():
+        shutil.copy(qc_tsv_src, outdir / "audio_quality_metrics.tsv")
+        _LOGGER.info("Copied audio_quality_metrics.tsv to bundle.")
+        if not qc_json_src.exists():
+            _LOGGER.warning(
+                "audio_quality_metrics.json not found in BIDS dataset; "
+                "copying schema from package resources."
+            )
+            qc_json_resource = resources.files("b2aiprep").joinpath(
+                "prepare", "resources", "audio_quality_metrics.json"
+            )
+            with qc_json_resource.open() as src, open(outdir / "audio_quality_metrics.json", "w") as dst:
+                dst.write(src.read())
+        else:
+            shutil.copy(qc_json_src, outdir / "audio_quality_metrics.json")
+        _LOGGER.info("Copied audio_quality_metrics.json to bundle.")
+    elif qc_json_src.exists():
+        _LOGGER.warning(
+            "audio_quality_metrics.json found but audio_quality_metrics.tsv is missing; "
+            "skipping quality metrics for bundle."
+        )
+
     _LOGGER.info("Loading audio static features.")
     static_features = []
     static_examples = 0
@@ -581,6 +605,19 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
                 SortingColumn(column_index=2, descending=False),
             ),
         )
+
+        schema_resource = resources.files("b2aiprep").joinpath(
+            "prepare", "resources", "feature_schemas", f"{feature_alias}.json"
+        )
+        try:
+            with schema_resource.open() as src, open(features_dir / f"{feature_alias}.json", "w") as dst:
+                dst.write(src.read())
+        except FileNotFoundError:
+            _LOGGER.warning(
+                "No schema JSON found for feature '%s' in feature_schemas/; "
+                "parquet was created without a companion JSON.",
+                feature_alias,
+            )
 
         bundle_output_stats[output_parquet.name] = {
             "path": output_parquet.as_posix(),
