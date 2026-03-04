@@ -3107,5 +3107,15 @@
             "purple",
             "oooo"
         ]
+    },
+    "naming-animals": {
+        "description": "Naming Animals",
+        "instructions": "First, I want you to name as many animals you can think of. When you are ready, press record.",
+        "prompts": []
+    },
+    "naming-food"{
+        "description": "Naming Food",
+        "instructions": "Next I want you to name as many food items you can think of. When you are ready, press “record.”",
+        "prompts": []
     }
 }
