@@ -3113,9 +3113,29 @@
         "instructions": "First, I want you to name as many animals you can think of. When you are ready, press record.",
         "prompts": []
     },
-    "naming-food"{
+    "naming-food": {
         "description": "Naming Food",
         "instructions": "Next I want you to name as many food items you can think of. When you are ready, press “record.”",
+        "prompts": []
+    },
+    "abcs": {
+        "description": "Abcs",
+        "instructions": "Let's sing our ABCs together! A,B... When you are ready, press \"record\".",
+        "prompts": []
+    },
+    "choose-book": {
+        "description": "Choose book",
+        "instructions": "To start, we have a few books for you to choose from – you can choose which book you want to look at.",
+        "prompts": []
+    },
+    "months": {
+        "description": "Months",
+        "instructions": "That was great! How about months of the year? Can you name some for me? Start with January... When you are ready, press \"record\".",
+        "prompts": []
+    },
+    "days": {
+        "description": "Days",
+        "instructions": "Fantastic! I bet you know the days of the week too. Let's start with Monday... When you are ready, press \"record\".",
         "prompts": []
     }
 }
