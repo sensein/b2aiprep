@@ -1984,11 +1984,12 @@ class BIDSDataset:
         return sorted(expanded)
 
     @staticmethod
-    def _extract_participant_id_from_path(path: Path) -> str:
+    def _extract_participant_id_from_path(path: t.Union[str, Path]) -> str:
         """Extract participant ID from the path, preferring directory parts.
         Falls back to regex on filestem if needed."""
         # Prefer directory parts
-        for part in path.parts:
+        path = Path(path)
+        for part in Path(path).parts:
             if part.startswith("sub-"):
                 return part[4:]
 
@@ -2000,10 +2001,11 @@ class BIDSDataset:
         raise ValueError(f"Could not extract participant ID from path: {path}")
 
     @staticmethod
-    def _extract_session_id_from_path(path: Path) -> str:
+    def _extract_session_id_from_path(path: t.Union[str, Path]) -> str:
         """Extract session ID from the path, preferring directory parts.
         Falls back to regex on filestem using ses-(.+?)_ if needed."""
         # Prefer directory parts
+        path = Path(path)
         for part in path.parts:
             if part.startswith("ses-"):
                 return part[4:]
@@ -2016,10 +2018,11 @@ class BIDSDataset:
         raise ValueError(f"Could not extract session ID from path: {path}")
 
     @staticmethod
-    def _extract_task_name_from_path(path: Path) -> str:
+    def _extract_task_name_from_path(path: t.Union[str, Path]) -> str:
         """Extract the task name from the stem of the path.
         
         Tasks are optional components of filenames. They must follow the `task-<label>` pattern."""
+        path = Path(path)
         m = re.search(r"task-(.+?)(_|$)", path.stem)
         if m:
             return m.group(1)
@@ -2256,10 +2259,11 @@ class BIDSDataset:
                 )
             ]
 
-        # Filter to only included audio tasks
-        if audio_tasks_to_include_list and "task_name" in df.columns:
-            normalized_tasks = {normalize_task_label(task) for task in audio_tasks_to_include_list}
-            df = df.loc[df["task_name"].apply(lambda task: normalize_task_label(task) in normalized_tasks)]
+        # Doesn't filter to only included audio tasks as these are similar to non-identifiable features
+        # # Filter to only included audio tasks
+        # if audio_tasks_to_include_list and "task_name" in df.columns:
+        #     normalized_tasks = {normalize_task_label(task) for task in audio_tasks_to_include_list}
+        #     df = df.loc[df["task_name"].apply(lambda task: normalize_task_label(task) in normalized_tasks)]
 
         # Remove rows for excluded audio file stems
         if exclude_audio_filestems and {"participant_id", "session_id", "task_name"}.issubset(df.columns):
