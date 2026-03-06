@@ -4476,7 +4476,7 @@
     "Respiration-and-cough-ThreeQuickBreaths": {
         "instructions": "Breathing sounds can also provide information on your health. Let's record them.",
         "prompts": [
-            "After pressing on record, exhale normally, then inhale quickly through your mouth, as if you are trying to catch your breath. Record 3 of these breaths in a single recording. Tap stop when finished.",
+            "After pressing on record, exhale normally, then inhale quickly through your mouth, as if you are trying to catch your breath. Record 3 of these breaths in a single recording. Tap stop when finished."
         ]
     },
     "Respiration-and-cough-(v2)-ThreeBreathsMouth": {
