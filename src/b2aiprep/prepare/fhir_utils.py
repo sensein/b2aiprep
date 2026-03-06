@@ -5,7 +5,7 @@ to FHIR format.
 import json
 import typing as t
 from importlib.resources import files
-
+from collections import OrderedDict
 from fhir.resources.questionnaireresponse import QuestionnaireResponse
 import logging
 _logger = logging.getLogger(__name__)
@@ -122,7 +122,7 @@ def convert_response_to_bids_metadata( participant: dict,
     questionnaire_name: str,
     mapping_name: str,
     columns: t.List[str],
-    audio_task_descriptions: dict,
+    audio_task_descriptions: OrderedDict,
 ) -> dict:
     """Converts a participant's response to a metadata json file.
 

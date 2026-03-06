@@ -225,8 +225,7 @@ class BIDSDataset:
         
         audio_mappings_path = files("b2aiprep.prepare.resources").joinpath("audio_task_descriptions.json")
         with open(audio_mappings_path, 'r') as file_object:
-            audio_descriptor_dict = json.load(file_object)
-
+            audio_descriptor_dict = json.load(file_object, object_pairs_hook=OrderedDict)
         # create an index of recording_id: audio_file for later use
         # ASSUMES that audio files are named with the recording_id in the filename
         # we use a defensive regex to grab uuid-like IDs from the stem just in case
@@ -1098,7 +1097,7 @@ class BIDSDataset:
     @staticmethod
     def _output_participant_data_to_metadata_file(
         participant: dict, outdir: Path, audio_files_by_recording: t.Optional[t.Dict[str, Path]] = None,
-        max_audio_workers: int = 16, sanitize_audio_format: bool = False, audio_descriptor_dict:dict = {}
+        max_audio_workers: int = 16, sanitize_audio_format: bool = False, audio_descriptor_dict:OrderedDict = {}
     ):
         """Output participant data to FHIR format.
 
