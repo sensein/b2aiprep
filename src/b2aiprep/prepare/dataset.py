@@ -2296,7 +2296,7 @@ class BIDSDataset:
             qc_json_resource = resources.files("b2aiprep").joinpath(
                 "prepare", "resources", "audio_quality_metrics.json"
             )
-            with qc_json_resource.open() as src, open(quality_control_dir / "audio_quality_metrics.json", "w") as dst:
+            with qc_json_resource.open() as src, open(outdir / "audio_quality_metrics.json", "w") as dst:
                 dst.write(src.read())
 
 
