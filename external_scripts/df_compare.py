@@ -30,12 +30,10 @@ def compare(registered, controlled):
     
     if control_missing_col != set():
         print(f"The following columns are missing in registered acesss {control_missing_col} in {registered}")
-        print()
         return
     
     if registered_missing_col != set():
-        print(f"The following columns are missing in controlled acesss {registered_missing_col} in {controlled}")
-        print()
+        print(f"The following columns are missing in registered acesss {registered_missing_col} in {controlled}")
         return
     
     # reorder columns to match columns order, since we check that clumns match earlier, this shouldn't be an issue
@@ -51,14 +49,6 @@ def compare(registered, controlled):
     registered_aligned = registered_counts.reindex(controlled_counts.index, fill_value=0)
 
     is_subset = (controlled_counts <= registered_aligned).all()
-    if not is_subset:
-        filestem = Path(controlled).stem.replace(".tsv", "")
-        offending_rows_values = controlled_counts[controlled_counts > registered_aligned].index
-
-        controlled_offending_df = controlled_df[
-            controlled_df.apply(lambda row: tuple(row) in offending_rows_values, axis=1)
-        ]
-        controlled_offending_df.to_csv(f"error_{filestem}.tsv", sep="\t")
     return is_subset
 
 
@@ -79,8 +69,6 @@ if __name__ == "__main__":
             is_same = (compare(registered_tsv_path, tsv_path))
             if not is_same:
                 print(f"{tsv_path} does not match with {registered_tsv_path}")
-                print()
         except (FileNotFoundError, pd.errors.ParserError) as e:
             print(f"Error: {e}", file=sys.stderr)
-            print()
-            #sys.exit(1)
+            sys.exit(1)
