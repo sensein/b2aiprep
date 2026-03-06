@@ -25,7 +25,7 @@ import os
 import typing as t
 from importlib.resources import files
 from pathlib import Path
-
+from collections import OrderedDict
 import numpy as np
 import pandas as pd
 from pandas import DataFrame
@@ -261,7 +261,9 @@ def output_participant_data_to_fhir(
     recording_instrument = get_instrument_for_name("recordings")
 
     sessions_df = pd.DataFrame(columns=session_instrument.columns)
-
+    audio_mappings_path = files("b2aiprep.prepare.resources").joinpath("audio_task_descriptions.json")
+    with open(audio_mappings_path, 'r') as file_object:
+        audio_descriptor_dict = json.load(file_object, object_pairs_hook=OrderedDict)
     # validated questionnaires are asked per session
     for session in participant["sessions"]:
         sessions_row = {key: session[key] for key in session_instrument.columns}
@@ -285,6 +287,7 @@ def output_participant_data_to_fhir(
                 questionnaire_name=task_instrument.name,
                 mapping_name=task_instrument.schema_name_clobbered,
                 columns=task_instrument.columns,
+                audio_task_descriptions=audio_descriptor_dict
             )
             write_pydantic_model_to_bids_file(
                 audio_output_path,
@@ -305,6 +308,7 @@ def output_participant_data_to_fhir(
                     questionnaire_name=recording_instrument.name,
                     mapping_name=recording_instrument.schema_name_clobbered,
                     columns=recording_instrument.columns,
+                    audio_task_descriptions=audio_descriptor_dict
                 )
                 write_pydantic_model_to_bids_file(
                     audio_output_path,
