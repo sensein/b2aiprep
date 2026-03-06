@@ -843,7 +843,7 @@ def test_run_quality_control(
     ]
 
     result_file = bids_dir / "audio_quality_metrics.tsv"
-    result_data_descriptor = bids_dir / "audio_quality_metrics.tsv"
+    result_data_descriptor = bids_dir / "audio_quality_metrics.json"
 
     result = subprocess.run(command, capture_output=True, text=True)
     assert result.returncode == 0, f"CLI command failed: {result.stderr}"

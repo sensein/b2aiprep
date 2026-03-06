@@ -26,6 +26,7 @@ import typing as t
 from collections import OrderedDict, defaultdict
 from pathlib import Path
 from importlib.resources import files
+from importlib import resources
 import json
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -2287,6 +2288,16 @@ class BIDSDataset:
         quality_json_path = data_path / "audio_quality_metrics.json"
         if quality_json_path.exists():
             shutil.copy(quality_json_path, outdir)
+        else:
+            _LOGGER.warning(
+                "audio_quality_metrics.json not found in BIDS dataset; "
+                "copying schema from package resources."
+            )
+            qc_json_resource = resources.files("b2aiprep").joinpath(
+                "prepare", "resources", "audio_quality_metrics.json"
+            )
+            with qc_json_resource.open() as src, open(quality_control_dir / "audio_quality_metrics.json", "w") as dst:
+                dst.write(src.read())
 
 
 class VBAIDataset(BIDSDataset):
