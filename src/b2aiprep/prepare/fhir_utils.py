@@ -5,8 +5,7 @@ to FHIR format.
 import json
 import typing as t
 from importlib.resources import files
-
-from fhir.resources import construct_fhir_element
+from collections import OrderedDict
 from fhir.resources.questionnaireresponse import QuestionnaireResponse
 import logging
 _logger = logging.getLogger(__name__)
@@ -37,34 +36,6 @@ def is_empty_questionnaire_response(response: QuestionnaireResponse) -> bool:
     return True
 
 
-def create_fhir_questionnaire_response(id: str, name: str, items: list) -> dict:
-    """Creates a FHIR QuestionnaireResponse object with default values for the Bridge2AI
-    voice biomarker questionnaires. The items provided should already adhere to the FHIR
-    format for items in a QuestionnaireResponse.
-
-    Parameters
-    ----------
-    id : str
-        The ID of the response.
-    name : str
-        The name of the questionnaire.
-    items : list
-        The items in the response.
-
-    Returns
-    -------
-    dict
-        The FHIR QuestionnaireResponse object.
-    """
-    fhir_response = {}
-    fhir_response["resourceType"] = "QuestionnaireResponse"
-    fhir_response["id"] = id
-    fhir_response["questionnaire"] = f"https://kind-lab.github.io/vbai-fhir/Questionnaire-{name}"
-    fhir_response["status"] = "completed"
-    fhir_response["item"] = items
-    return fhir_response
-
-
 def extract_items(participant_json: dict, outline: list) -> t.List[dict]:
     """Iterates over questions specified in the outline and extracts them from the data JSON.
 
@@ -91,13 +62,13 @@ def extract_items(participant_json: dict, outline: list) -> t.List[dict]:
     for question in outline:
         answer_value = str(participant_json[question])
         if answer_value in ("Checked", "Unchecked"):
-            answer = [{"valueBoolean": answer_value == "Checked"}]
+            answer = answer_value == "Checked"
         elif answer_value == "nan":
             answer = None
         else:
-            answer = [{"valueString": answer_value.replace("_", "-")}]
+            answer = answer_value.replace("_", "-")
         item = {
-            "linkId": question,
+            "metadata": question,
             "answer": answer,
         }
         items.append(item)
@@ -125,16 +96,17 @@ def is_invalid_response(participant: dict, outline) -> bool:
     for item in generic_items:
         if item["answer"] is None:
             continue
-        if "valueString" in item["answer"][0]:
-            if item["answer"][0]["valueString"] is not None:
-                answers.append(item["answer"][0]["valueString"].lower())
-        elif "valueBoolean" in item["answer"][0]:
-            if item["answer"][0]["valueBoolean"]:
+        
+        if isinstance(item["answer"], str):
+            answers.append(item["answer"].lower())
+        elif isinstance(item["answer"], bool):
+            if item["answer"]:
                 answers.append("checked")
             else:
                 answers.append("unchecked")
         else:
-            answers.append(list(item["answer"][0].keys())[0])
+            answers.append(item["answer"])
+            
     answers = set(answers)
     return len(answers.difference({"nan", "unchecked"})) == 0
 
@@ -145,20 +117,17 @@ def load_questionnaire_outline(questionnaire_name):
     )
     return json.loads(b2ai_resources.joinpath(f"{questionnaire_name}.json").read_text())
 
-
-def convert_response_to_fhir(
-    participant: dict,
+def convert_response_to_bids_metadata( participant: dict,
     # repeat_instrument: RepeatInstrument
     questionnaire_name: str,
     mapping_name: str,
     columns: t.List[str],
-) -> QuestionnaireResponse:
-    """Converts a participant's response to a FHIR QuestionnaireResponse.
+    audio_task_descriptions: OrderedDict,
+) -> dict:
+    """Converts a participant's response to a metadata json file.
 
     Given a dictionary of individual data, the function:
-    (1) identifies specific data elements using the questionnaire name
-    (2) extracts the responses associated with these elements
-    (3) reformats the data into a QuestionnaireResponse object and returns it
+    1. identifies the audio task, recording id, duration, and task instructions
 
     Parameters
     ----------
@@ -169,8 +138,7 @@ def convert_response_to_fhir(
 
     Returns
     -------
-    QuestionnaireResponse
-        The FHIR QuestionnaireResponse object.
+    dict containing the associated metadata
 
     Raises
     ------
@@ -193,26 +161,27 @@ def convert_response_to_fhir(
     
     if not linkid_to_find:
         _logger.warning(f"File is missing acoustic_task_id and recording_id, skipping....")
-        return
-    fhir_id = None
+        return {}
+    
+    metadata_file = {}
+    task_name = ""
+    metadata_file["Instructions"] = ""
     for item in generic_items:
-        if item.get("linkId") == linkid_to_find and item.get("answer"):
-            fhir_id = item["answer"][0].get("valueString", "")
-            if fhir_id:
-                break
+        metadata_field = item.get("metadata")
+        metadata_value = item.get("answer")
+        if "session_id" in metadata_field:
+            metadata_file["session_id"] = metadata_value
+        elif metadata_file is not None and metadata_field is not None:
+            metadata_file[metadata_field] = metadata_value
+        if metadata_field in ("acoustic_task_name", "recording_name") and metadata_field is not None:
+            task_name = metadata_value
+    
+    for task in audio_task_descriptions:
+        if (task_name is not None and task.lower() in task_name.lower()):
+            metadata_file["Instructions"] = audio_task_descriptions[task]["instructions"]
+            metadata_file["Prompts"] = audio_task_descriptions[task]["prompts"]
+            break
+    
+    metadata_file.update({"audio_channel_count": 1, "audio_sample_rate": "16000"})
 
-    generic_response = create_fhir_questionnaire_response(
-        # create a unique identifier for this FHIR resource by combining
-        # the participant ID with the questionnaire name
-        id=fhir_id,
-        name=mapping_name,
-        items=generic_items,
-    )
-
-    # to validate that that the generated response conforms to fhir
-    questionnaire_response_json = construct_fhir_element(
-        "QuestionnaireResponse",
-        json.dumps(generic_response),
-    )
-
-    return questionnaire_response_json
+    return metadata_file
