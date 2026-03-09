@@ -10,8 +10,13 @@ import logging
 import numpy as np
 import torch
 import pandas as pd
+import tempfile
+from pathlib import Path
 
 import parselmouth
+
+from b2aiprep.prepare.dataset import BIDSDataset
+from b2aiprep.prepare.utils import copy_package_resource
 
 RESAMPLE_RATE=16000
 
@@ -19,160 +24,215 @@ _logger = logging.getLogger(__name__)
 
 def quality_control_wrapper(
     audio_paths,
-    outdir,
+    bids_path,
+    outdir=None,
     batch_size=8,
     num_cores=4,
     skip_windowing=False,
+    deep_checks=False,
 ):
+    """
+    Wrapper for running quality control metrics.
 
-    evaluation_df = check_quality(
-        audio_paths=audio_paths,
-        output_dir=outdir,
-        batch_size=batch_size,
-        n_cores=num_cores,
-        window_size_sec=0.025,
-        step_size_sec=0.0125,
-        skip_windowing=skip_windowing,
-    )
+    Args:
+        audio_paths: List of audios to run quality metrics on
+        bids_path: Path to the root of the BIDS directory; audio_quality_metrics.tsv
+            and audio_quality_metrics.json will be written here
+        outdir: Optional directory for storing intermediate senselab output files.
+            If not provided, a temporary directory is used.
+        batch_size: Batch size for parallelizing results
+        num_cores: Number of cores for parallelizing results across
+        skip_windowing: If true, don't compute windowed metrics
+        deep_checks: Whether to run deep quality checks like snorkel recommendations and silence trimming
+    """
 
-    _logger.info(f"Result of check_quality: {evaluation_df}")
+    bids_path = Path(bids_path)
 
-    df_path = outdir / "quality_control_results_non_windowed.csv"#"quality_control_results_all.json"
-
-    evaluation_review_df = review_files(
-        df_path=df_path,
-        correlation_threshold= 0.99,
-        output_dir=outdir,
-    )
-
-    _logger.info(f"Resutl of review files {evaluation_review_df}")
-
-    _logger.info("Running custom checks using features that were precomputed")
-
-
-    # For each audio:
-    #   - Grab the features of the audio that might be useful (diarization)
-    #   - run checks based on those features (number of speakers check)
-    #   - trimming silence check
-
-    trimming = {
-        'path': [],
-        'subject': [],
-        'task': [],
-        'flag': [],
-        'start': [],
-        'end': [],
-        'percentage_trimmed': []
-    }
-
-    diarization_qc = {
-        'path': [],
-        'subject': [],
-        'task': [],
-        'flag': [],
-        'num_speakers': [],
-        'proportion_primary_speaker': [],
-    }
-
-    # Process each record
-    for audio_path in audio_paths:
-
-        aduio_path_split = audio_path.stem.split('_')
-        subject, task = aduio_path_split[0], '-'.join(aduio_path_split[2:])
-
-        audio_feature_path = audio_path.parent / f"{audio_path.stem}_features.pt"
-        if not audio_feature_path.exists():
-            continue
-        features = torch.load(audio_feature_path, weights_only=False, map_location=torch.device('cpu'))
-        audio_obj = Audio(filepath=audio_path)
-
-        audio_orig = downmix_audios_to_mono([audio_obj])[0]
-
-        # Resample both audios to 16kHz
-        audio_16k = resample_audios([audio_orig], RESAMPLE_RATE)[0]
-
-        # Silence trimming
-        y, sr = audio_16k.waveform.squeeze(), audio_16k.sampling_rate#librosa.load(audio_path, sr=None)
-        _logger.info(f"{audio_path} has shape {y.shape} and sr of {sr}")
-        duration_before = y.shape[-1] / sr
-
-        # First trim: pitch-based (Praat), fallback to energy-based
-        start_praat, end_praat = trim_audio_with_praat(y, sr) #y_trimmed = trim_audio_with_praat(y, sr)
-        duration_after_praat = (end_praat-start_praat+1) / sr
-        if duration_after_praat < 0.2 * duration_before:
-            _logger.info(f"Praat trim too short ({duration_after_praat:.2f}s < 20% of {duration_before:.2f}s) for {audio_path} → retrying with energy-based trim")
-            #y_trimmed = trim_until_silent(y, sr, threshold_ratio=0.10)
-            _logger.info(f"Checking again: shape {y.shape} and sr of {sr}")
-            start_energy, end_energy = trim_until_silent(y, sr, threshold_ratio=0.10)
-            duration_after_energy = (end_energy-start_energy+1) / sr
-
-            if duration_after_energy < 0.2 * duration_before:
-                _logger.info(f"Energy trim too short ({duration_after_energy:.2f}s < 20% of {duration_before:.2f}s) for {audio_path} → Flagging audio for possible removal")
-                trimming['path'].append(audio_path)
-                trimming['subject'].append(subject)
-                trimming['task'].append(task)
-                trimming['flag'].append('large_proportion_silence')
-                trimming['start'].append(start_energy)
-                trimming['end'].append(end_energy)
-                trimming['percentage_trimmed'].append((duration_before-duration_after_energy)/duration_before)
-            elif end_energy/sr + 0.5 >= duration_before and start_energy/sr - 0.5 <= 0:
-                _logger.info(f"Trimming {audio_path} with .5s padding will have no effect on audio length")
-            else:
-                trimming['path'].append(audio_path)
-                trimming['subject'].append(subject)
-                trimming['task'].append(task)
-                trimming['flag'].append(None)
-                trimming['start'].append(start_energy)
-                trimming['end'].append(end_energy)
-                trimming['percentage_trimmed'].append((duration_before-duration_after_energy)/duration_before)
-        elif end_praat/sr + 0.5 >= duration_before and start_praat/sr - 0.5 <= 0:
-            _logger.info(f"Trimming {audio_path} with .5s padding will have no effect on audio length")
+    temp_dir_obj = None
+    try:
+        if not outdir:
+            temp_dir_obj = tempfile.TemporaryDirectory()
+            quality_check_dir = temp_dir_obj.name
         else:
+            quality_check_dir = outdir
+
+        evaluation_df = check_quality(
+            audio_paths=audio_paths,
+            output_dir=quality_check_dir,
+            batch_size=batch_size,
+            n_cores=num_cores,
+            window_size_sec=0.025,
+            step_size_sec=0.0125,
+            skip_windowing=skip_windowing,
+        )
+
+        _logger.info(f"Result of check_quality: {evaluation_df}")
+
+        # Remap to standard dataset identifiers and drop senselab-internal columns.
+        evaluation_df["participant_id"] = evaluation_df["path"].apply(
+            BIDSDataset._extract_participant_id_from_path
+        )
+        evaluation_df["session_id"] = evaluation_df["path"].apply(
+            BIDSDataset._extract_session_id_from_path
+        )
+        evaluation_df["task_name"] = evaluation_df["path"].apply(
+            BIDSDataset._extract_task_name_from_path
+        )
+        drop_cols = [c for c in ("id", "path", "activity") if c in evaluation_df.columns]
+        id_cols = ["participant_id", "session_id", "task_name"]
+        metric_cols = [c for c in evaluation_df.columns if c not in drop_cols + id_cols]
+        evaluation_df = evaluation_df[id_cols + metric_cols]
+        evaluation_df.to_csv(bids_path / "audio_quality_metrics.tsv", sep="\t", index=False)
+        copy_package_resource(
+            "b2aiprep.prepare.resources",
+            "audio_quality_metrics.json",
+            str(bids_path),
+        )
+
+        if not deep_checks: return # goes to finally block first
+
+        df_path = quality_check_dir / "quality_control_results_non_windowed.csv"
+        evaluation_review_df = review_files(
+            df_path=df_path,
+            correlation_threshold= 0.99,
+            output_dir=outdir,
+        )
+
+        _logger.info(f"Result of review files {evaluation_review_df}")
+
+        _logger.info("Running custom checks using features that were precomputed")
+
+
+        # For each audio:
+        #   - Grab the features of the audio that might be useful (diarization)
+        #   - run checks based on those features (number of speakers check)
+        #   - trimming silence check
+
+        trimming = {
+            'path': [],
+            'subject': [],
+            'task': [],
+            'flag': [],
+            'start': [],
+            'end': [],
+            'percentage_trimmed': [],
+            'proposed_trimming_method': []
+        }
+
+        diarization_qc = {
+            'path': [],
+            'subject': [],
+            'task': [],
+            'flag': [],
+            'num_speakers': [],
+            'proportion_primary_speaker': [],
+        }
+
+        # Process each record
+        for audio_path in audio_paths:
+
+            aduio_path_split = audio_path.stem.split('_')
+            subject, task = aduio_path_split[0], '-'.join(aduio_path_split[2:])
+
+            audio_feature_path = audio_path.parent / f"{audio_path.stem}_features.pt"
+            if not audio_feature_path.exists():
+                _logger.warning(f"Features file {audio_feature_path} does not exist for existing audio {audio_path}")
+                continue
+            features = torch.load(audio_feature_path, weights_only=False, map_location=torch.device('cpu'))
+
+            audio_obj = Audio(filepath=audio_path)
+            audio_orig = downmix_audios_to_mono([audio_obj])[0]
+
+            if audio_orig.sampling_rate != RESAMPLE_RATE:
+                # Resample both audios to 16kHz
+                audio_16k = resample_audios([audio_orig], RESAMPLE_RATE)[0]
+            else:
+                audio_16k = audio_orig
+
+            # Silence trimming
+            y, sr = audio_16k.waveform.squeeze(), audio_16k.sampling_rate
+            _logger.info(f"{audio_path} has shape {y.shape} and sr of {sr}")
+            duration_before = y.shape[-1] / sr
+
+            # First trim: pitch-based (Praat), fallback to energy-based
+            start_praat, end_praat = trim_audio_with_praat(y, sr) #y_trimmed = trim_audio_with_praat(y, sr)
+            duration_after_praat = (end_praat-start_praat+1) / sr
+
             trimming['path'].append(audio_path)
             trimming['subject'].append(subject)
             trimming['task'].append(task)
-            trimming['flag'].append(None)
-            trimming['start'].append(start_praat)
-            trimming['end'].append(end_praat)
-            trimming['percentage_trimmed'].append((duration_before-duration_after_praat)/duration_before)
-        
-        # Diarization check
-        diarization_result = features['diarization']
-        audio_obj.metadata['diarization'] = diarization_result
-        speakers = []
-        for line in diarization_result:
-            speakers.append(line.speaker)
-        num_speakers = len(set(speakers))
-        speaker_ratio = primary_speaker_ratio_metric(audio_obj)
+            if duration_after_praat < 0.2 * duration_before:
+                _logger.info(f"Praat trim too short ({duration_after_praat:.2f}s < 20% of {duration_before:.2f}s) for {audio_path} → retrying with energy-based trim")
+                #y_trimmed = trim_until_silent(y, sr, threshold_ratio=0.10)
+                _logger.info(f"Checking again: shape {y.shape} and sr of {sr}")
+                start_energy, end_energy = trim_until_silent(y, sr, threshold_ratio=0.10)
+                duration_after_energy = (end_energy-start_energy+1) / sr
 
-        if num_speakers != 1:
+                if duration_after_energy < 0.2 * duration_before:
+                    _logger.info(f"Energy trim too short ({duration_after_energy:.2f}s < 20% of {duration_before:.2f}s) for {audio_path} → Flagging audio for possible removal")
+                    trimming['flag'].append('large_proportion_silence')
+                    trimming['start'].append(start_energy)
+                    trimming['end'].append(end_energy)
+                    trimming['percentage_trimmed'].append((duration_before-duration_after_energy)/duration_before)
+                    trimming['proposed_trimming_method'].append(None)
+                elif end_energy/sr + 0.5 >= duration_before and start_energy/sr - 0.5 <= 0:
+                    _logger.info(f"Trimming {audio_path} with .5s padding will have no effect on audio length")
+                    trimming['flag'].append(None)
+                    trimming['start'].append(0)
+                    trimming['end'].append(duration_before)
+                    trimming['percentage_trimmed'].append(0)
+                    trimming['proposed_trimming_method'].append(None)
+                else:
+                    trimming['flag'].append(None)
+                    trimming['start'].append(start_energy)
+                    trimming['end'].append(end_energy)
+                    trimming['percentage_trimmed'].append((duration_before-duration_after_energy)/duration_before)
+                    trimming['proposed_trimming_method'].append('energy')
+            elif end_praat/sr + 0.5 >= duration_before and start_praat/sr - 0.5 <= 0:
+                _logger.info(f"Trimming {audio_path} with .5s padding will have no effect on audio length")
+                trimming['flag'].append(None)
+                trimming['start'].append(0)
+                trimming['end'].append(duration_before)
+                trimming['percentage_trimmed'].append(0)
+                trimming['proposed_trimming_method'].append(None)
+            else:
+                trimming['flag'].append(None)
+                trimming['start'].append(start_praat)
+                trimming['end'].append(end_praat)
+                trimming['percentage_trimmed'].append((duration_before-duration_after_praat)/duration_before)
+                trimming['proposed_trimming_method'].append('praat')
+            
+            # Diarization check
+            diarization_result = features['diarization']
+            audio_obj.metadata['diarization'] = diarization_result
+            speakers = []
+            for line in diarization_result:
+                speakers.append(line.speaker)
+            num_speakers = len(set(speakers))
+            speaker_ratio = primary_speaker_ratio_metric(audio_obj)
+            
+            diarization_qc['path'].append(audio_path)
+            diarization_qc['subject'].append(subject)
+            diarization_qc['task'].append(task)
+            diarization_qc['num_speakers'].append(num_speakers)
+            diarization_qc['proportion_primary_speaker'].append(speaker_ratio)
             if num_speakers == 0 and features['is_speech_task']:
-                diarization_qc['path'].append(audio_path)
-                diarization_qc['subject'].append(subject)
-                diarization_qc['task'].append(task)       
-                diarization_qc['num_speakers'].append(num_speakers)
-                diarization_qc['proportion_primary_speaker'].append(speaker_ratio)
                 diarization_qc['flag'].append('no_speakers_found')
             elif num_speakers > 1 and speaker_ratio < .8:
-                diarization_qc['path'].append(audio_path)
-                diarization_qc['subject'].append(subject)
-                diarization_qc['task'].append(task)       
-                diarization_qc['num_speakers'].append(num_speakers)
-                diarization_qc['proportion_primary_speaker'].append(speaker_ratio)
                 diarization_qc['flag'].append('no_primary_speaker_found')
             elif num_speakers > 2:
-                diarization_qc['path'].append(audio_path)
-                diarization_qc['subject'].append(subject)
-                diarization_qc['task'].append(task)       
-                diarization_qc['num_speakers'].append(num_speakers)
-                diarization_qc['proportion_primary_speaker'].append(speaker_ratio)
                 diarization_qc['flag'].append('many_speakers_found')
+            else:
+                diarization_qc['flag'].append(None)
 
-    trimming_df = pd.DataFrame(trimming)
-    diarization_df = pd.DataFrame(diarization_qc)
+        trimming_df = pd.DataFrame(trimming)
+        diarization_df = pd.DataFrame(diarization_qc)
 
-    trimming_df.to_csv(outdir / "silence_removal.csv")
-    diarization_df.to_csv(outdir / "diarization_check.csv")
+        trimming_df.to_csv(quality_check_dir / "silence_removal.csv")
+        diarization_df.to_csv(quality_check_dir / "diarization_check.csv")
+    finally:
+        if temp_dir_obj:
+            temp_dir_obj.cleanup()
 
 
 # Function to trim audio using Praat-parselmouth

@@ -277,33 +277,49 @@ def generate_audio_features(
 
 @click.command()
 @click.argument("bids_path", type=click.Path())
-@click.argument("output_metrics_path", type=click.Path())
+@click.argument("output_metrics_path", type=click.Path(), required=False)
 @click.option("-b", "--batch_size", type=int, default=8, show_default=True)
 @click.option("-n", "--num_cores", type=int, default=4, show_default=True)
-@click.option("--skip_windowing/--no-skip_windowing", type=bool, default=False, show_default=True)
+@click.option("--skip_windowing/--no-skip_windowing", type=bool, default=True, show_default=True)
+@click.option("--deep_checks/--no-deep_checks", type=bool, default=False, show_default=True)
 def run_quality_control_on_audios(
     bids_path,
     output_metrics_path,
     batch_size,
     num_cores,
     skip_windowing,
+    deep_checks,
 ):
+    """
+    Run audio quality control checks on a BIDS directory.
+
+    Args:
+        bids_path: Path to the BIDS directory with the audios to run quality control checks on
+        output_metrics_path: Optional output path for the metrics. If not provided, will use a temporary directory.
+        batch_size: Batch size to run when parallelizing
+        num_cores: Number of cores to use when parallelizing
+        skip_windowing: If True, only compute scalar metrics without windowing
+        deep_checks: If true, run deeper checks including snorkel recommendations and trimming and diarization checks
+    """
 
     bids_path = Path(bids_path)
 
     audio_paths = get_paths(bids_path, file_extension=".wav")
     audio_paths = [x["path"] for x in audio_paths]
 
-    outdir = Path(output_metrics_path)
-    outdir.mkdir(parents=True, exist_ok=True)
+    if output_metrics_path:
+        output_metrics_path = Path(output_metrics_path)
+        output_metrics_path.mkdir(parents=True, exist_ok=True)
 
 
     quality_control_wrapper(
         audio_paths=audio_paths,
-        outdir=outdir,
+        bids_path=bids_path,
+        outdir=output_metrics_path,
         batch_size=batch_size,
         num_cores=num_cores,
-        skip_windowing=skip_windowing
+        skip_windowing=skip_windowing,
+        deep_checks=deep_checks,
     )
 
 
@@ -396,6 +412,33 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
         shutil.copytree(bids_phenotype_path, phenotype_path, dirs_exist_ok=True)
         _LOGGER.info("Finished creating phenotype data")
 
+    features_dir = outdir / "features"
+    features_dir.mkdir(parents=True, exist_ok=True)
+
+    qc_tsv_src = bids_path / "audio_quality_metrics.tsv"
+    qc_json_src = bids_path / "audio_quality_metrics.json"
+    if qc_tsv_src.exists():
+        shutil.copy(qc_tsv_src, features_dir / "audio_quality_metrics.tsv")
+        _LOGGER.info("Copied audio_quality_metrics.tsv to bundle.")
+        if not qc_json_src.exists():
+            _LOGGER.warning(
+                "audio_quality_metrics.json not found in BIDS dataset; "
+                "copying schema from package resources."
+            )
+            qc_json_resource = resources.files("b2aiprep").joinpath(
+                "prepare", "resources", "audio_quality_metrics.json"
+            )
+            with qc_json_resource.open() as src, open(features_dir / "audio_quality_metrics.json", "w") as dst:
+                dst.write(src.read())
+        else:
+            shutil.copy(qc_json_src, features_dir / "audio_quality_metrics.json")
+        _LOGGER.info("Copied audio_quality_metrics.json to bundle.")
+    elif qc_json_src.exists():
+        _LOGGER.warning(
+            "audio_quality_metrics.json found but audio_quality_metrics.tsv is missing; "
+            "skipping quality metrics for bundle."
+        )
+
     _LOGGER.info("Loading audio static features.")
     static_features = []
     static_examples = 0
@@ -437,8 +480,8 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
 
         static_features.append(subj_info)
 
-    features_dir = outdir / "features"
-    features_dir.mkdir(parents=True, exist_ok=True)
+    #features_dir = outdir / "features"
+    #features_dir.mkdir(parents=True, exist_ok=True)
 
     df_static = pd.DataFrame(static_features)
     df_static.to_csv(features_dir / "static_features.tsv", sep="\t", index=False)
@@ -574,6 +617,19 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
                 SortingColumn(column_index=2, descending=False),
             ),
         )
+
+        schema_resource = resources.files("b2aiprep").joinpath(
+            "prepare", "resources", "feature_schemas", f"{feature_alias}.json"
+        )
+        try:
+            with schema_resource.open() as src, open(features_dir / f"{feature_alias}.json", "w") as dst:
+                dst.write(src.read())
+        except FileNotFoundError:
+            _LOGGER.warning(
+                "No schema JSON found for feature '%s' in feature_schemas/; "
+                "parquet was created without a companion JSON.",
+                feature_alias,
+            )
 
         bundle_output_stats[output_parquet.name] = {
             "path": output_parquet.as_posix(),

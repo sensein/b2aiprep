@@ -26,6 +26,7 @@ import typing as t
 from collections import OrderedDict, defaultdict
 from pathlib import Path
 from importlib.resources import files
+from importlib import resources
 import json
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -1800,17 +1801,30 @@ class BIDSDataset:
             # Process audio files
             _LOGGER.info("Processing audio features for deidentification.")
             BIDSDataset._deidentify_feature_files(
-                self.data_path, 
-                outdir, 
-                participant_ids_to_remove, 
+                self.data_path,
+                outdir,
+                participant_ids_to_remove,
                 audio_filestems_to_remove,
-                audio_tasks_to_include, 
-                participant_ids_to_remap, 
+                audio_tasks_to_include,
+                participant_ids_to_remap,
                 participant_session_id_to_remap,
                 max_workers=max_workers,
             )
             _LOGGER.info("Finished processing features.")
-        
+
+        # Process quality metrics file if it exists
+        _LOGGER.info("Processing quality metrics for deidentification.")
+        BIDSDataset._deidentify_quality_metrics(
+            self.data_path,
+            outdir,
+            participant_ids_to_remove,
+            audio_filestems_to_remove,
+            audio_tasks_to_include,
+            participant_ids_to_remap,
+            participant_session_id_to_remap,
+        )
+        _LOGGER.info("Finished processing quality metrics.")
+
         # Copy over the standard BIDS template files if they exist
         for template_file in ["README.md", "CHANGES.md", "dataset_description.json"]:
             template_path = self.data_path.joinpath(template_file)
@@ -1976,11 +1990,12 @@ class BIDSDataset:
         return sorted(expanded)
 
     @staticmethod
-    def _extract_participant_id_from_path(path: Path) -> str:
+    def _extract_participant_id_from_path(path: t.Union[str, Path]) -> str:
         """Extract participant ID from the path, preferring directory parts.
         Falls back to regex on filestem if needed."""
         # Prefer directory parts
-        for part in path.parts:
+        path = Path(path)
+        for part in Path(path).parts:
             if part.startswith("sub-"):
                 return part[4:]
 
@@ -1992,10 +2007,11 @@ class BIDSDataset:
         raise ValueError(f"Could not extract participant ID from path: {path}")
 
     @staticmethod
-    def _extract_session_id_from_path(path: Path) -> str:
+    def _extract_session_id_from_path(path: t.Union[str, Path]) -> str:
         """Extract session ID from the path, preferring directory parts.
         Falls back to regex on filestem using ses-(.+?)_ if needed."""
         # Prefer directory parts
+        path = Path(path)
         for part in path.parts:
             if part.startswith("ses-"):
                 return part[4:]
@@ -2008,10 +2024,11 @@ class BIDSDataset:
         raise ValueError(f"Could not extract session ID from path: {path}")
 
     @staticmethod
-    def _extract_task_name_from_path(path: Path) -> str:
+    def _extract_task_name_from_path(path: t.Union[str, Path]) -> str:
         """Extract the task name from the stem of the path.
         
         Tasks are optional components of filenames. They must follow the `task-<label>` pattern."""
+        path = Path(path)
         m = re.search(r"task-(.+?)(_|$)", path.stem)
         if m:
             return m.group(1)
@@ -2198,6 +2215,94 @@ class BIDSDataset:
 
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
             list(tqdm(executor.map(process_feature_file, paths), total=len(paths), desc="Copying and de-identifying feature files"))
+
+    @staticmethod
+    def _deidentify_quality_metrics(
+        data_path: Path,
+        outdir: Path,
+        exclude_participant_ids: t.List[str] = [],
+        exclude_audio_filestems: t.List[str] = [],
+        audio_tasks_to_include_list: t.List[str] = [],
+        participant_ids_to_remap: t.Dict[str, str] = {},
+        participant_session_id_to_remap: t.Dict[str, str] = {},
+    ) -> None:
+        """
+        Deidentify and copy audio quality metrics to the output directory.
+
+        If no quality metrics file exists this method is a no-op, since the file
+        is optional.  When present, the same participant exclusion, task filtering,
+        and ID remapping that is applied to audio files is applied here so the
+        released metrics are consistent with the rest of the deidentified dataset.
+
+        Args:
+            data_path: Path to the source BIDS dataset
+            outdir: Output directory for the deidentified dataset
+            exclude_participant_ids: list of participant IDs to exclude
+            exclude_audio_filestems: list of audio file stems to exclude
+            audio_tasks_to_include_list: list of audio tasks to include
+            participant_ids_to_remap: mapping from old to new participant IDs
+            participant_session_id_to_remap: mapping from old to new session IDs
+        """
+        quality_metrics_path = data_path / "audio_quality_metrics.tsv"
+        if not quality_metrics_path.exists():
+            _LOGGER.info("No audio_quality_metrics.tsv found; skipping quality metrics deidentification.")
+            return
+
+        df = pd.read_csv(quality_metrics_path, sep="\t", dtype=str)
+
+        # Remove excluded participants
+        if exclude_participant_ids and "participant_id" in df.columns:
+            idx = df["participant_id"].isin(exclude_participant_ids)
+            if idx.any():
+                _LOGGER.info(f"Removing {idx.sum()} quality metric rows for excluded participants.")
+                df = df.loc[~idx]
+
+        # Remove audio-check task rows (mirrors the exclusion in _deidentify_audio_files)
+        if "task_name" in df.columns:
+            df = df.loc[
+                df["task_name"].apply(
+                    lambda task: normalize_task_label("audio-check") not in normalize_task_label(task)
+                )
+            ]
+
+        # Doesn't filter to only included audio tasks as these are similar to non-identifiable features
+        # # Filter to only included audio tasks
+        # if audio_tasks_to_include_list and "task_name" in df.columns:
+        #     normalized_tasks = {normalize_task_label(task) for task in audio_tasks_to_include_list}
+        #     df = df.loc[df["task_name"].apply(lambda task: normalize_task_label(task) in normalized_tasks)]
+
+        # Remove rows for excluded audio file stems
+        if exclude_audio_filestems and {"participant_id", "session_id", "task_name"}.issubset(df.columns):
+            def row_is_excluded(row):
+                stem = f"sub-{row['participant_id']}_ses-{row['session_id']}_task-{row['task_name']}"
+                return any(normalize_task_label(excl) in normalize_task_label(stem) for excl in exclude_audio_filestems)
+            df = df.loc[~df.apply(row_is_excluded, axis=1)]
+
+        # Remap participant IDs
+        if participant_ids_to_remap and "participant_id" in df.columns:
+            remap_partial = partial(remap_id, id_mapping=participant_ids_to_remap)
+            df["participant_id"] = BIDSDataset._map_series(df["participant_id"], remap_partial)
+
+        # Remap session IDs
+        if participant_session_id_to_remap and "session_id" in df.columns:
+            remap_partial = partial(remap_id, id_mapping=participant_session_id_to_remap, id_type="session")
+            df["session_id"] = BIDSDataset._map_series(df["session_id"], remap_partial)
+
+        df.to_csv(outdir / "audio_quality_metrics.tsv", sep="\t", index=False)
+
+        quality_json_path = data_path / "audio_quality_metrics.json"
+        if quality_json_path.exists():
+            shutil.copy(quality_json_path, outdir)
+        else:
+            _LOGGER.warning(
+                "audio_quality_metrics.json not found in BIDS dataset; "
+                "copying schema from package resources."
+            )
+            qc_json_resource = resources.files("b2aiprep").joinpath(
+                "prepare", "resources", "audio_quality_metrics.json"
+            )
+            with qc_json_resource.open() as src, open(outdir / "audio_quality_metrics.json", "w") as dst:
+                dst.write(src.read())
 
 
 class VBAIDataset(BIDSDataset):

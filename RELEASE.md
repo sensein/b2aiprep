@@ -18,6 +18,7 @@ WORKING_DIR=${HOME}/data/bridge2ai/pediatric
 b2aiprep-cli reproschema-to-redcap $WORKING_DIR/Audio_300_Release $WORKING_DIR/Survey_300_Release $WORKING_DIR/redcap.csv
 b2aiprep-cli redcap2bids $WORKING_DIR/redcap.csv --outdir $WORKING_DIR/bids --audiodir $WORKING_DIR/Audio_300_Release --sanitize_audio_format
 b2aiprep-cli generate-audio-features $WORKING_DIR/bids $WORKING_DIR/bids --update
+b2aiprep-cli run-quality-control-on-audios $WORKING_DIR/bids
 b2aiprep-cli deidentify-bids-dataset $WORKING_DIR/bids $WORKING_DIR/de-identified-bids $WORKING_DIR/release_config
 b2aiprep-cli create-bundled-dataset $WORKING_DIR/de-identified-bids $WORKING_DIR/bundled --skip_audio
 ```
@@ -61,35 +62,9 @@ b2aiprep-cli redcap2bids <path/to/redcap_csv> \
 
 An optional `--max-audio-workers` controls the number of threads used for writing out audio files as writing of audio files is the speed bottleneck of this command. An optional `--sanitize_audio_format` can be used to sanitize the audio format into 16KHz mono-channel WAVs.
 
-### 3. Deidentification
+### 3. Feature Extraction
 
-Once the data has been been reformatted into BIDS format, we need to make sure to remove any entries that could have
-sensitive information, referred to as deidentification. Deidentification requires creation of the following configuration files:
-
-- `audio_filestems_to_remove.json` (File containing a list of sensitive audio files to remove)
-- `id_remapping.json` (File containing participant ids to change)
-- `participants_to_remove.json` (File containing list of participants to remove)
-- `audio_tasks_to_include.json` (File containing list of audio tasks to include during deidentification)
-
-Create these files and place them in a folder, e.g. `deidentification_config` (the "config" folder).
-After creating these files, you can run the deidentify dataset command: 
-
-```
-b2aiprep-cli deidentify-bids-dataset <path/to/bids/folder> \
-    <path/to/audio/output/folder> \
-    <path/to/config>
-```
-
-The output will be remain in BIDS format. The primary changes are:
-
-- participant IDs are modified
-- sensitive columns are removed
-- sensitive audio clips, particularly those which may contain protected health information, are removed
-- features that can be used to identify individuals or re-create transcripts for sensitive audios (such as free-speech) are removed, but for only those files
-
-### 4. Feature Extraction
-
-Run the following command to extract features: 
+Run the following command to extract features:
 ```
 b2aiprep-cli generate-audio-features \
     <path/to/input/bids_folder> \
@@ -108,7 +83,7 @@ Once the command is complete, you should have the following output:
 │   ├── pediatric/
 │   │       ├── pediatric_questionnaire.json
 │   │       ├── pediatric_questionnaire.tsv
-│   │       │ 
+│   │       │
 |   |      ...
 ├── sub-01/
 │   ├── session-01/
@@ -126,13 +101,49 @@ Once the command is complete, you should have the following output:
 └── CHANGELOG.md
 ```
 
-### 5. Publish
+### 4. Quality Control
 
-For simplicity, the BIDS dataset is parsed into a small set of files for publication and wide dissemination. 
+Run audio quality control checks on the BIDS directory to produce `audio_quality_metrics.tsv` and its companion `audio_quality_metrics.json` at the root of the BIDS directory:
+
+```
+b2aiprep-cli run-quality-control-on-audios <path/to/bids/folder>
+```
+
+These files summarize per-recording quality metrics (clipping, silence, SNR, amplitude modulation) that can be used to identify recordings that should be excluded before deidentification and release.
+
+### 5. Deidentification
+
+Once the data has been been reformatted into BIDS format and features have been extracted, we need to make sure to remove any entries that could have
+sensitive information, referred to as deidentification. Deidentification requires creation of the following configuration files:
+
+- `audio_filestems_to_remove.json` (File containing a list of sensitive audio files to remove)
+- `id_remapping.json` (File containing participant ids to change)
+- `participants_to_remove.json` (File containing list of participants to remove)
+- `audio_tasks_to_include.json` (File containing list of audio tasks to include during deidentification)
+
+Create these files and place them in a folder, e.g. `deidentification_config` (the "config" folder).
+After creating these files, you can run the deidentify dataset command:
+
+```
+b2aiprep-cli deidentify-bids-dataset <path/to/bids/folder> \
+    <path/to/audio/output/folder> \
+    <path/to/config>
+```
+
+The output will be remain in BIDS format. The primary changes are:
+
+- participant IDs are modified
+- sensitive columns are removed
+- sensitive audio clips, particularly those which may contain protected health information, are removed
+- features that can be used to identify individuals or re-create transcripts for sensitive audios (such as free-speech) are removed, but for only those files
+
+### 6. Publish
+
+For simplicity, the BIDS dataset is parsed into a small set of files for publication and wide dissemination.
 Run the following to create the bundled dataset:
 
 ```
-b2aiprep-cli create-bundled-dataset <path/to/input/bids_folder> <path/to/output/bundled_folder> 
+b2aiprep-cli create-bundled-dataset <path/to/input/bids_folder> <path/to/output/bundled_folder>
 ```
 
 Once this command is done, you will have a dataset ready to release! Congratulations!

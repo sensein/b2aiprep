@@ -758,6 +758,8 @@ def test_deidentify_bids_dataset_cli_id_rename(
     assert outdir.exists(), "Output directory was not created"
     # checked if participant_id was changed
     assert (outdir / "sub-P001").exists()
+    assert not (outdir / "audio_quality_metrics.json").exists()
+    assert not (outdir / "audio_quality_metrics.tsv").exists()
         
 def test_deidentify_bids_dataset_cli_remove_audio(
     setup_bids_structure, setup_publish_config, tmp_path
@@ -776,6 +778,19 @@ def test_deidentify_bids_dataset_cli_remove_audio(
     (phenotype_dir / "questionnaire1.json").write_text(
         '{"participant_id": {"Description": "Participant identifier"}, '
         '"record_id": {"Description": "Record identifier"}}'
+    )
+
+    # Create audio quality metrics
+    quality_metrics_file = bids_dir / "audio_quality_metrics.tsv"
+    quality_metrics_file.write_text("participant_id\tsession_id\ttask_name\n001\t001\treading\n001\t001\tnot-reading")
+
+    # Create participants.json (required for some commands)
+    participants_json = bids_dir / "participants.json"
+    participants_json.write_text(
+        '{"participant_id": {"Description": "Unique participant identifier"}, '
+        '"record_id": {"Description": "Unique record identifier"}, '
+        '"sex": {"Description": "Sex of participant"}, '
+        '"age": {"Description": "Age of participant"}}'
     )
 
     # Modify audio_filestems_to_remove.json
@@ -808,6 +823,33 @@ def test_deidentify_bids_dataset_cli_remove_audio(
         / "audio"
         / "sub-001_ses-1_task-reading_features.pt"
     ).exists()
+    assert (outdir / "audio_quality_metrics.json").exists()
+    assert (outdir / "audio_quality_metrics.tsv").exists()
+    
+    quality_deidentified = pd.read_csv((outdir / "audio_quality_metrics.tsv"),sep='\t')
+    assert len(quality_deidentified)==1, f"deidentified audio_quality_metrics.tsv should have 1 entry but found {len(quality_deidentified)}"
+
+
+def test_run_quality_control(
+    setup_bids_structure
+):
+    """Test the 'b2aiprep-cli run-quality-control' command using subprocess."""
+    bids_dir = setup_bids_structure
+
+    command = [
+        "b2aiprep-cli",
+        "run-quality-control-on-audios",
+        str(bids_dir),
+    ]
+
+    result_file = bids_dir / "audio_quality_metrics.tsv"
+    result_data_descriptor = bids_dir / "audio_quality_metrics.json"
+
+    result = subprocess.run(command, capture_output=True, text=True)
+    assert result.returncode == 0, f"CLI command failed: {result.stderr}"
+    assert result_file.exists(), "Quality metrics TSV was not created"
+    assert result_data_descriptor.exists(), "Quality metrics JSON was not created"
+
 
 def test_reproschema_to_redcap_cli():
     """Test the 'b2aiprep-cli reproschema-to-redcap' command using subprocess."""
