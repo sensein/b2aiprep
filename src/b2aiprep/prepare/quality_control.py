@@ -115,7 +115,8 @@ def quality_control_wrapper(
             'flag': [],
             'start': [],
             'end': [],
-            'percentage_trimmed': []
+            'percentage_trimmed': [],
+            'proposed_trimming_method': []
         }
 
         diarization_qc = {
@@ -135,23 +136,31 @@ def quality_control_wrapper(
 
             audio_feature_path = audio_path.parent / f"{audio_path.stem}_features.pt"
             if not audio_feature_path.exists():
+                _logger.warning(f"Features file {audio_feature_path} does not exist for existing audio {audio_path}")
                 continue
             features = torch.load(audio_feature_path, weights_only=False, map_location=torch.device('cpu'))
-            audio_obj = Audio(filepath=audio_path)
 
+            audio_obj = Audio(filepath=audio_path)
             audio_orig = downmix_audios_to_mono([audio_obj])[0]
 
-            # Resample both audios to 16kHz
-            audio_16k = resample_audios([audio_orig], RESAMPLE_RATE)[0]
+            if audio_orig.sampling_rate != RESAMPLE_RATE:
+                # Resample both audios to 16kHz
+                audio_16k = resample_audios([audio_orig], RESAMPLE_RATE)[0]
+            else:
+                audio_16k = audio_orig
 
             # Silence trimming
-            y, sr = audio_16k.waveform.squeeze(), audio_16k.sampling_rate#librosa.load(audio_path, sr=None)
+            y, sr = audio_16k.waveform.squeeze(), audio_16k.sampling_rate
             _logger.info(f"{audio_path} has shape {y.shape} and sr of {sr}")
             duration_before = y.shape[-1] / sr
 
             # First trim: pitch-based (Praat), fallback to energy-based
             start_praat, end_praat = trim_audio_with_praat(y, sr) #y_trimmed = trim_audio_with_praat(y, sr)
             duration_after_praat = (end_praat-start_praat+1) / sr
+
+            trimming['path'].append(audio_path)
+            trimming['subject'].append(subject)
+            trimming['task'].append(task)
             if duration_after_praat < 0.2 * duration_before:
                 _logger.info(f"Praat trim too short ({duration_after_praat:.2f}s < 20% of {duration_before:.2f}s) for {audio_path} → retrying with energy-based trim")
                 #y_trimmed = trim_until_silent(y, sr, threshold_ratio=0.10)
@@ -161,33 +170,37 @@ def quality_control_wrapper(
 
                 if duration_after_energy < 0.2 * duration_before:
                     _logger.info(f"Energy trim too short ({duration_after_energy:.2f}s < 20% of {duration_before:.2f}s) for {audio_path} → Flagging audio for possible removal")
-                    trimming['path'].append(audio_path)
-                    trimming['subject'].append(subject)
-                    trimming['task'].append(task)
                     trimming['flag'].append('large_proportion_silence')
                     trimming['start'].append(start_energy)
                     trimming['end'].append(end_energy)
                     trimming['percentage_trimmed'].append((duration_before-duration_after_energy)/duration_before)
+                    trimming['proposed_trimming_method'].append(None)
                 elif end_energy/sr + 0.5 >= duration_before and start_energy/sr - 0.5 <= 0:
                     _logger.info(f"Trimming {audio_path} with .5s padding will have no effect on audio length")
+                    trimming['flag'].append(None)
+                    trimming['start'].append(0)
+                    trimming['end'].append(duration_before)
+                    trimming['percentage_trimmed'].append(0)
+                    trimming['proposed_trimming_method'].append(None)
                 else:
-                    trimming['path'].append(audio_path)
-                    trimming['subject'].append(subject)
-                    trimming['task'].append(task)
                     trimming['flag'].append(None)
                     trimming['start'].append(start_energy)
                     trimming['end'].append(end_energy)
                     trimming['percentage_trimmed'].append((duration_before-duration_after_energy)/duration_before)
+                    trimming['proposed_trimming_method'].append('energy')
             elif end_praat/sr + 0.5 >= duration_before and start_praat/sr - 0.5 <= 0:
                 _logger.info(f"Trimming {audio_path} with .5s padding will have no effect on audio length")
+                trimming['flag'].append(None)
+                trimming['start'].append(0)
+                trimming['end'].append(duration_before)
+                trimming['percentage_trimmed'].append(0)
+                trimming['proposed_trimming_method'].append(None)
             else:
-                trimming['path'].append(audio_path)
-                trimming['subject'].append(subject)
-                trimming['task'].append(task)
                 trimming['flag'].append(None)
                 trimming['start'].append(start_praat)
                 trimming['end'].append(end_praat)
                 trimming['percentage_trimmed'].append((duration_before-duration_after_praat)/duration_before)
+                trimming['proposed_trimming_method'].append('praat')
             
             # Diarization check
             diarization_result = features['diarization']
@@ -197,29 +210,20 @@ def quality_control_wrapper(
                 speakers.append(line.speaker)
             num_speakers = len(set(speakers))
             speaker_ratio = primary_speaker_ratio_metric(audio_obj)
-
-            if num_speakers != 1:
-                if num_speakers == 0 and features['is_speech_task']:
-                    diarization_qc['path'].append(audio_path)
-                    diarization_qc['subject'].append(subject)
-                    diarization_qc['task'].append(task)       
-                    diarization_qc['num_speakers'].append(num_speakers)
-                    diarization_qc['proportion_primary_speaker'].append(speaker_ratio)
-                    diarization_qc['flag'].append('no_speakers_found')
-                elif num_speakers > 1 and speaker_ratio < .8:
-                    diarization_qc['path'].append(audio_path)
-                    diarization_qc['subject'].append(subject)
-                    diarization_qc['task'].append(task)       
-                    diarization_qc['num_speakers'].append(num_speakers)
-                    diarization_qc['proportion_primary_speaker'].append(speaker_ratio)
-                    diarization_qc['flag'].append('no_primary_speaker_found')
-                elif num_speakers > 2:
-                    diarization_qc['path'].append(audio_path)
-                    diarization_qc['subject'].append(subject)
-                    diarization_qc['task'].append(task)       
-                    diarization_qc['num_speakers'].append(num_speakers)
-                    diarization_qc['proportion_primary_speaker'].append(speaker_ratio)
-                    diarization_qc['flag'].append('many_speakers_found')
+            
+            diarization_qc['path'].append(audio_path)
+            diarization_qc['subject'].append(subject)
+            diarization_qc['task'].append(task)
+            diarization_qc['num_speakers'].append(num_speakers)
+            diarization_qc['proportion_primary_speaker'].append(speaker_ratio)
+            if num_speakers == 0 and features['is_speech_task']:
+                diarization_qc['flag'].append('no_speakers_found')
+            elif num_speakers > 1 and speaker_ratio < .8:
+                diarization_qc['flag'].append('no_primary_speaker_found')
+            elif num_speakers > 2:
+                diarization_qc['flag'].append('many_speakers_found')
+            else:
+                diarization_qc['flag'].append(None)
 
         trimming_df = pd.DataFrame(trimming)
         diarization_df = pd.DataFrame(diarization_qc)
