@@ -1,3 +1,21 @@
+# 3.1.0 (Mon Mar 09 2026)
+
+#### 🚀 Enhancement
+
+- Add quality metrics to pipeline & improve bundle [#248](https://github.com/sensein/b2aiprep/pull/248) ([@wilke0818](https://github.com/wilke0818))
+
+#### 🐛 Bug Fix
+
+- Removed fhir and added audio task descriptors [#244](https://github.com/sensein/b2aiprep/pull/244) ([@Evan8456](https://github.com/Evan8456))
+- moved non-diagnosis csvs to questionnaire group [#247](https://github.com/sensein/b2aiprep/pull/247) ([@Evan8456](https://github.com/Evan8456))
+
+#### Authors: 2
+
+- [@wilke0818](https://github.com/wilke0818)
+- Evan Ng ([@Evan8456](https://github.com/Evan8456))
+
+---
+
 # 3.0.3 (Mon Mar 02 2026)
 
 #### 🐛 Bug Fix
