@@ -502,6 +502,15 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
         "tasks": static_tasks,
         "status": "created",
     }
+    
+    _LOGGER.info("Generating metadata.parquet")
+    metadata_dir = outdir / "metedata"
+    metadata_dir.mkdir(parents=True, exist_ok=True)
+    wav_paths = list(bids_path.rglob("*.wav"))
+    metadata_paths = [p.with_suffix(".json") for p in wav_paths]
+    metadata_dfs = [pd.read_json(f) for f in metadata_paths]
+    df = pd.concat(metadata_dfs, ignore_index=True)
+    df.to_parquet(metadata_dir.joinpath("metadata.parquet"), index=False)
 
     _LOGGER.info("Loading other features into HF datasets.")
 

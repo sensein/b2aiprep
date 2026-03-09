@@ -47,7 +47,7 @@ from b2aiprep.prepare.utils import (
     normalize_task_label,
     sanitize_task_entity_in_bids_stem,
 )
-from b2aiprep.prepare.fhir_utils import convert_response_to_fhir
+from b2aiprep.prepare.fhir_utils import convert_response_to_bids_metadata
 from b2aiprep.prepare.prepare import (
     get_value_from_metadata,
     remap_id, 
@@ -223,7 +223,10 @@ class BIDSDataset:
         audio_files: t.List[Path] = []
         if audiodir is not None and Path(audiodir).exists():
             audio_files = list(Path(audiodir).rglob("*.wav"))
-
+        
+        audio_mappings_path = files("b2aiprep.prepare.resources").joinpath("audio_task_descriptions.json")
+        with open(audio_mappings_path, 'r') as file_object:
+            audio_descriptor_dict = json.load(file_object, object_pairs_hook=OrderedDict)
         # create an index of recording_id: audio_file for later use
         # ASSUMES that audio files are named with the recording_id in the filename
         # we use a defensive regex to grab uuid-like IDs from the stem just in case
@@ -243,12 +246,13 @@ class BIDSDataset:
             audio_files_by_recording[uuid] = audio_file
 
         for participant in tqdm(participants, desc="Writing participant data to file"):
-            cls._output_participant_data_to_fhir(
+            cls._output_participant_data_to_metadata_file(
                 participant,
                 Path(outdir),
                 audio_files_by_recording=audio_files_by_recording,
                 max_audio_workers=max_audio_workers,
-                sanitize_audio_format=sanitize_audio_format
+                sanitize_audio_format=sanitize_audio_format,
+                audio_descriptor_dict=audio_descriptor_dict
             )
         
         # Return a new BIDSDataset instance pointing to the created directory
@@ -1051,7 +1055,7 @@ class BIDSDataset:
     @staticmethod
     def _write_pydantic_model_to_bids_file(
         output_path: Path,
-        data: BaseModel,
+        data: dict,
         schema_name: str,
         subject_id: str,
         session_id: t.Optional[str] = None,
@@ -1089,12 +1093,12 @@ class BIDSDataset:
         if not output_path.exists():
             output_path.mkdir(parents=True, exist_ok=False)
         with open(output_path / filename, "w") as f:
-            f.write(data.json(indent=2))
+            f.write(json.dumps(data, indent=2))
 
     @staticmethod
-    def _output_participant_data_to_fhir(
+    def _output_participant_data_to_metadata_file(
         participant: dict, outdir: Path, audio_files_by_recording: t.Optional[t.Dict[str, Path]] = None,
-        max_audio_workers: int = 16, sanitize_audio_format: bool = False
+        max_audio_workers: int = 16, sanitize_audio_format: bool = False, audio_descriptor_dict:OrderedDict = {}
     ):
         """Output participant data to FHIR format.
 
@@ -1120,7 +1124,7 @@ class BIDSDataset:
 
         # validated questionnaires are asked per session
         sessions_rows = []
-
+        
         for session in participant["sessions"]:
             sessions_row = {key: session[key] for key in session_instrument.columns}
             sessions_rows.append(sessions_row)
@@ -1131,7 +1135,7 @@ class BIDSDataset:
             audio_output_path = session_path / "audio"
             if not audio_output_path.exists():
                 audio_output_path.mkdir(parents=True, exist_ok=True)
-
+    
             # multiple acoustic tasks are asked per session
             for task in session["acoustic_tasks"]:
                 if task is None:
@@ -1144,15 +1148,16 @@ class BIDSDataset:
                     continue
                 
                 acoustic_task_name = acoustic_task_name.replace(" ", "-").replace("_", "-")
-                fhir_data = convert_response_to_fhir(
+                meta_data = convert_response_to_bids_metadata(
                     task,
                     questionnaire_name=task_instrument.name,
                     mapping_name=task_instrument.schema_name_clobbered,
                     columns=task_instrument.columns,
+                    audio_task_descriptions=audio_descriptor_dict,
                 )
                 BIDSDataset._write_pydantic_model_to_bids_file(
                     audio_output_path,
-                    fhir_data,
+                    meta_data,
                     schema_name=task_instrument.schema_name_clobbered,
                     subject_id=participant_id,
                     session_id=session_id,
@@ -1161,18 +1166,18 @@ class BIDSDataset:
 
                 # prefix is used to name audio files, if they are copied over
                 prefix = f"sub-{participant_id}_ses-{session_id}"
-
                 # there may be more than one recording per acoustic task
                 for recording in task["recordings"]:
-                    fhir_data = convert_response_to_fhir(
+                    meta_data = convert_response_to_bids_metadata(
                         recording,
                         questionnaire_name=recording_instrument.name,
                         mapping_name=recording_instrument.schema_name_clobbered,
                         columns=recording_instrument.columns,
+                        audio_task_descriptions=audio_descriptor_dict
                     )
                     BIDSDataset._write_pydantic_model_to_bids_file(
                         audio_output_path,
-                        fhir_data,
+                        meta_data,
                         schema_name=recording_instrument.schema_name_clobbered,
                         subject_id=participant_id,
                         session_id=session_id,
