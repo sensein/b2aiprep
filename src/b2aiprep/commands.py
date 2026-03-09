@@ -412,13 +412,13 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
         shutil.copytree(bids_phenotype_path, phenotype_path, dirs_exist_ok=True)
         _LOGGER.info("Finished creating phenotype data")
 
-    quality_control_dir = outdir / "quality_control"
-    quality_control_dir.mkdir(parents=True, exist_ok=True)
+    features_dir = outdir / "features"
+    features_dir.mkdir(parents=True, exist_ok=True)
 
     qc_tsv_src = bids_path / "audio_quality_metrics.tsv"
     qc_json_src = bids_path / "audio_quality_metrics.json"
     if qc_tsv_src.exists():
-        shutil.copy(qc_tsv_src, quality_control_dir / "audio_quality_metrics.tsv")
+        shutil.copy(qc_tsv_src, features_dir / "audio_quality_metrics.tsv")
         _LOGGER.info("Copied audio_quality_metrics.tsv to bundle.")
         if not qc_json_src.exists():
             _LOGGER.warning(
@@ -428,10 +428,10 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
             qc_json_resource = resources.files("b2aiprep").joinpath(
                 "prepare", "resources", "audio_quality_metrics.json"
             )
-            with qc_json_resource.open() as src, open(quality_control_dir / "audio_quality_metrics.json", "w") as dst:
+            with qc_json_resource.open() as src, open(features_dir / "audio_quality_metrics.json", "w") as dst:
                 dst.write(src.read())
         else:
-            shutil.copy(qc_json_src, quality_control_dir / "audio_quality_metrics.json")
+            shutil.copy(qc_json_src, features_dir / "audio_quality_metrics.json")
         _LOGGER.info("Copied audio_quality_metrics.json to bundle.")
     elif qc_json_src.exists():
         _LOGGER.warning(
@@ -480,8 +480,8 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
 
         static_features.append(subj_info)
 
-    features_dir = outdir / "features"
-    features_dir.mkdir(parents=True, exist_ok=True)
+    #features_dir = outdir / "features"
+    #features_dir.mkdir(parents=True, exist_ok=True)
 
     df_static = pd.DataFrame(static_features)
     df_static.to_csv(features_dir / "static_features.tsv", sep="\t", index=False)
