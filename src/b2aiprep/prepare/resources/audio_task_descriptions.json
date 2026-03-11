@@ -4391,12 +4391,20 @@
             "Papa took a piece of cake."
         ]
     },
+    "Animal-Fluency": {
+        "instructions": "For this task, you say as many animals as you can, while avoiding repeating the same ones. There is a 1 minute timer on this, and we will ask that you continue trying until the time is up. ",
+        "prompts": []
+    },
     "Random-Item-Generation": {
         "instructions": "Say as many letters or numbers (0-9) as you can. You are allowed to repeat items. Your goal is to list as many as possible in a random order. Time limit 1 minutes. The selection will appear when you start recording. The recording will automatically stop at the end.",
         "prompts": []
     },
     "Breath-Sounds": {
         "instructions": "Breathing: Click on the Record button below and breathe deeply through your mouth. Continue to do this until the recording automatically stops after 5 seconds. Click Play to hear your recording. If you hear background noise, please go to a quieter place and try again by selecting Redo Recording. If it sounds good, continue.",
+        "prompts": []
+    },
+    "Cinderella-Story": {
+        "instructions": "For this task, you will given a moment of view sequential pictures of the Cinderella story. When you are ready to record, please narrate the story to the best of your ability. Stop recording when you are finished.",
         "prompts": []
     },
     "Diadochokinesis-(v2)-puhtuhkuh": {
@@ -4515,10 +4523,16 @@
             "After pressing on record, breathe comfortably through your mouth for 20 seconds, until the timer runs out."
         ]
     },
-    "Respiration-and-Cough-FiveBreaths":{
+    "Respiration-and-Cough-FiveBreaths": {
         "instructions": "Breathing sounds can also provide information on your health. Let's record them.",
         "prompts": [
             "After pressing on record, exhale normally, then inhale quickly through your mouth, as if you are trying to catch your breath. Record 5 of these breaths in a single recording. Tap stop when finished."
+        ]
+    },
+    "Rainbow": {
+        "instructions": "For this task, you will tap the record button and read the following passage on the screen using your normal voice. When done, tap the record button again to stop.",
+        "prompts": [
+            "When the sunlight strikes raindrops in the air, they act as a prism and form a rainbow. The rainbow is a division of white light into many beautiful colors. These take the shape of a long round arch, with its path high above, and its two ends apparently beyond the horizon. There is , according to legend, a boiling pot of gold at one end. People look, but no one ever finds it. When a man looks for something beyond his reach, his friends say he is looking for the pot of gold at the end of the rainbow. Throughout the centuries people have explained the rainbow in various ways. Some have accepted it as a miracle without physical explanation. To the Hebrews it was a token that there would be no more universal floods. The Greeks used to imagine that it was a sign from the gods to foretell war or heavy rain. The Norsemen considered the rainbow as a bridge over which the gods passed from earth to their home in the sky. Others have tried to explain the phenomenon physically. Aristotle thought that the rainbow was caused by reflection of the sun's rays by the rain. Since then physicists have found that it is not reflection, but refraction by the raindrops which causes the rainbows. Many complicated ideas about the rainbow have been formed. The difference in the rainbow depends considerably upon the size of the drops, and the width of the colored band increases as the size of the drops increases. The actual primary rainbow observed is said to be the effect of super-imposition of a number of bows. If the red of the second bow falls upon the green of the first, the result is to give a bow with an abnormally wide yellow band, since red and green light when mixed form yellow. This is a very common type of bow, one showing mainly red and yellow, with little or no green or blue."
         ]
     },
     "123s": {
