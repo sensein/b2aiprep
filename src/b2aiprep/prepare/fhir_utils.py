@@ -172,7 +172,8 @@ def convert_response_to_bids_metadata( participant: dict,
         if "session_id" in metadata_field:
             metadata_file["session_id"] = metadata_value
         elif metadata_field in ("acoustic_task_name", "recording_name") and metadata_field is not None:
-            task_name = metadata_value.replace(" ", "-").lower()
+            if isinstance(metadata_value, str):
+                task_name = metadata_value.replace(" ", "-").lower()
             metadata_file[metadata_field] = task_name
         elif metadata_file is not None and metadata_field is not None:
             metadata_file[metadata_field] = metadata_value
