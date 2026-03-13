@@ -165,21 +165,26 @@ def convert_response_to_bids_metadata( participant: dict,
     
     metadata_file = {}
     task_name = ""
-    metadata_file["Instructions"] = ""
+    metadata_file["instructions"] = ""
     for item in generic_items:
         metadata_field = item.get("metadata")
         metadata_value = item.get("answer")
         if "session_id" in metadata_field:
             metadata_file["session_id"] = metadata_value
+        elif metadata_field in ("acoustic_task_name", "recording_name") and metadata_field is not None:
+            if isinstance(metadata_value, str):
+                task_name = metadata_value.replace(" ", "-").lower()
+            metadata_file[metadata_field] = task_name
         elif metadata_file is not None and metadata_field is not None:
             metadata_file[metadata_field] = metadata_value
-        if metadata_field in ("acoustic_task_name", "recording_name") and metadata_field is not None:
-            task_name = metadata_value
     
+    if "recording_name" in metadata_file:
+        metadata_file["task_name"] = metadata_file["recording_name"]
+        metadata_file.pop("recording_name")
     for task in audio_task_descriptions:
         if (task_name is not None and task.lower() in task_name.lower()):
-            metadata_file["Instructions"] = audio_task_descriptions[task]["instructions"]
-            metadata_file["Prompts"] = audio_task_descriptions[task]["prompts"]
+            metadata_file["instructions"] = audio_task_descriptions[task]["instructions"]
+            metadata_file["prompts"] = audio_task_descriptions[task]["prompts"]
             break
     
     metadata_file.update({"audio_channel_count": 1, "audio_sample_rate": "16000"})

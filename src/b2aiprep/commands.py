@@ -504,13 +504,22 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
     }
     
     _LOGGER.info("Generating metadata.parquet")
-    metadata_dir = outdir / "metedata"
+    metadata_dir = outdir / "metadata"
     metadata_dir.mkdir(parents=True, exist_ok=True)
     wav_paths = list(bids_path.rglob("*.wav"))
     metadata_paths = [p.with_suffix(".json") for p in wav_paths]
     metadata_dfs = [pd.read_json(f) for f in metadata_paths]
     df = pd.concat(metadata_dfs, ignore_index=True)
     df.to_parquet(metadata_dir.joinpath("metadata.parquet"), index=False)
+    
+    metadata_json_file = resources.files("b2aiprep").joinpath(
+        "prepare", "resources", "metadata.json"
+    )
+    
+    metadata = json.load(metadata_json_file.open())
+    with open(metadata_dir.joinpath("metadata.json"), "w") as f:
+        json.dump(metadata, f, indent=2)
+    _LOGGER.info("Finished creating metadata files.")
 
     _LOGGER.info("Loading other features into HF datasets.")
 

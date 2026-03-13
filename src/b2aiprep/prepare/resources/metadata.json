@@ -1,0 +1,47 @@
+{
+  "Instructions": {
+    "description": "Instructions given to the participant."
+  },
+  "recording_id": {
+    "description": "Unique identifier for the specific audio recording."
+  },
+  "recording_acoustic_task_id": {
+    "description": "Identifier for specific acoustic task."
+  },
+  "session_id": {
+    "description": "Unique identifier for each session."
+  },
+  "task_name": {
+    "description": "Name of task for specific audio recording."
+  },
+  "recording_duration": {
+    "description": "Length of the audio recording."
+  },
+  "recording_size": {
+    "description": "Size of the audio file."
+  },
+  "recording_profile_name": {
+    "description": "Type of recording profile."
+  },
+  "recording_profile_version": {
+    "description": "Version of the recording profile."
+  },
+  "recording_input_gain": {
+    "description": "Input gain level applied to the recording device, if available."
+  },
+  "recording_microphone": {
+    "description": "Name or description of the microphone used to capture the audio."
+  },
+  "Prompts": {
+    "description": "List of prompts or stimuli presented during the recording task."
+  },
+  "audio_channel_count": {
+    "description": "Number of audio channels in the recording."
+  },
+  "audio_sample_rate": {
+    "description": "Sampling rate of the audio recording in Hz."
+  },
+  "participant_id": {
+    "description": "Unique identifier for each participant."
+  }
+}
