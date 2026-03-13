@@ -11,8 +11,8 @@
   "session_id": {
     "description": "Unique identifier for each session."
   },
-  "recording_name": {
-    "description": "Name for specific audio recording."
+  "task_name": {
+    "description": "Name of task for specific audio recording."
   },
   "recording_duration": {
     "description": "Length of the audio recording."
