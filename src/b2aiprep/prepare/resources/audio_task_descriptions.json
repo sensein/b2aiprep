@@ -4661,7 +4661,7 @@
         "prompts": []
     },
     "picture": {
-        "instructions": "If the child makes a sound effect vs naming the picture that’s ok! We’re not actually using this task as an evaluation of articulation. pictures presented one at a time on the screen – option to swipe/click to “next” once the child has named the item or if it is an unknown for the child it may be skipped.",
+        "instructions": "If the child makes a sound effect vs naming the picture that’s ok! We’re not actually using this task as an evaluation of articulation. Pictures presented one at a time on the screen – option to swipe/click to “next” once the child has named the item or if it is an unknown for the child it may be skipped.",
         "prompts": []
     },
     "passage": {
