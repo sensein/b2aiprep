@@ -1,13 +1,6 @@
 {
     "id": "ef_enrollment_origin",
     "category": "reproschema:Item",
-    "additionalNotesObj": [
-        {
-            "column": "Field Annotation",
-            "source": "redcap",
-            "value": "@READONLY"
-        }
-    ],
     "preamble": {
         "en": "Review and Enroll"
     },
@@ -27,7 +20,7 @@
             },
             {
                 "name": {
-                    "en": "Bridge2AI Enrollment Website"
+                    "en": "Bridge2AI Web App"
                 },
                 "value": "website"
             }
@@ -37,8 +30,7 @@
         ]
     },
     "ui": {
-        "inputType": "radio",
-        "readonlyValue": true
+        "inputType": "radio"
     },
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

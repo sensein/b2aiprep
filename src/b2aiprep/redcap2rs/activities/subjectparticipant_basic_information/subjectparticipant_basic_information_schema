@@ -1,12 +1,6 @@
 {
     "id": "subjectparticipant_basic_information_schema",
     "category": "reproschema:Activity",
-    "compute": [
-        {
-            "jsExpression": "rounddown((datediff(dob,'today','y','ymd')),0)",
-            "variableName": "age"
-        }
-    ],
     "prefLabel": {
         "en": "subjectparticipant_basic_information"
     },
@@ -14,6 +8,7 @@
     "ui": {
         "order": [
             "items/record_id",
+            "items/age",
             "items/selected_language",
             "items/selected_language_2",
             "items/consent_status",
@@ -39,7 +34,7 @@
             },
             {
                 "isAbout": "items/age",
-                "isVis": false,
+                "isVis": true,
                 "valueRequired": false,
                 "variableName": "age"
             },
@@ -136,6 +131,6 @@
         ],
         "shuffle": false
     },
-    "version": "4.3.0",
+    "version": "4.5.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

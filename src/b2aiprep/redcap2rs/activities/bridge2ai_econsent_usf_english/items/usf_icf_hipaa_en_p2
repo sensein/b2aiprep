@@ -1,19 +1,18 @@
 {
-    "id": "session_assigned_tasks",
+    "id": "usf_icf_hipaa_en_p2",
     "category": "reproschema:Item",
     "prefLabel": {
-        "en": "session_assigned_tasks"
+        "en": "usf_icf_hipaa_en_p2"
     },
-    "question": {
-        "en": "Session Assigned Tasks"
-    },
+    "question": null,
     "responseOptions": {
         "valueType": [
             "xsd:string"
         ]
     },
     "ui": {
-        "inputType": "text"
+        "inputType": "static",
+        "readonlyValue": true
     },
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

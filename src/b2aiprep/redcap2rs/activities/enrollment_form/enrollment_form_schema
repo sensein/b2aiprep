@@ -484,7 +484,7 @@
             },
             {
                 "isAbout": "items/ef_enrollment_origin",
-                "isVis": false,
+                "isVis": true,
                 "valueRequired": false,
                 "variableName": "ef_enrollment_origin"
             },
@@ -509,6 +509,6 @@
         ],
         "shuffle": false
     },
-    "version": "4.1.0",
+    "version": "4.5.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

@@ -1,11 +1,14 @@
 {
-    "id": "session_assigned_tasks",
+    "id": "peds_state_province",
     "category": "reproschema:Item",
+    "preamble": {
+        "en": "Deprecated Fields"
+    },
     "prefLabel": {
-        "en": "session_assigned_tasks"
+        "en": "peds_state_province"
     },
     "question": {
-        "en": "Session Assigned Tasks"
+        "en": "[DEPRECATED]\nState/Province"
     },
     "responseOptions": {
         "valueType": [
