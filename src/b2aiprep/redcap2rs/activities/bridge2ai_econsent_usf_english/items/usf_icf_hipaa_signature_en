@@ -1,26 +1,28 @@
 {
-    "id": "zipcode",
+    "id": "usf_icf_hipaa_signature_en",
     "category": "reproschema:Item",
     "additionalNotesObj": [
         {
-            "column": "Field Note",
+            "column": "Text Validation Type OR Show Slider Number",
             "source": "redcap",
-            "value": "5 Digit for USA and 3 Digit for Canada"
+            "value": "signature"
         },
         {
             "column": "Identifier?",
             "source": "redcap",
             "value": "y"
+        },
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@READONLY-FORM"
         }
     ],
-    "preamble": {
-        "en": "Address Information"
-    },
     "prefLabel": {
-        "en": "zipcode"
+        "en": "usf_icf_hipaa_signature_en"
     },
     "question": {
-        "en": "Zipcode"
+        "en": "Signature of Person Taking Part in Study  (or Their Parent)\n[Authorization]"
     },
     "responseOptions": {
         "valueType": [
@@ -28,7 +30,8 @@
         ]
     },
     "ui": {
-        "inputType": "text"
+        "inputType": "documentUpload",
+        "readonlyValue": true
     },
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

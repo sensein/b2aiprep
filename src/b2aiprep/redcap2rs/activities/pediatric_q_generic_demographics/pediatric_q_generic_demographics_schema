@@ -27,7 +27,8 @@
             "items/peds_vision",
             "items/peds_cognition",
             "items/peds_mobility",
-            "items/peds_self_care"
+            "items/peds_self_care",
+            "items/peds_state_province"
         ],
         "addProperties": [
             {
@@ -155,10 +156,16 @@
                 "isVis": true,
                 "valueRequired": false,
                 "variableName": "peds_self_care"
+            },
+            {
+                "isAbout": "items/peds_state_province",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "peds_state_province"
             }
         ],
         "shuffle": false
     },
-    "version": "4.0.0",
+    "version": "4.5.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

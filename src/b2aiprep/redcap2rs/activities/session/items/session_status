@@ -1,13 +1,6 @@
 {
     "id": "session_status",
     "category": "reproschema:Item",
-    "additionalNotesObj": [
-        {
-            "column": "Field Annotation",
-            "source": "redcap",
-            "value": "@READONLY"
-        }
-    ],
     "prefLabel": {
         "en": "session_status"
     },
@@ -34,8 +27,7 @@
         ]
     },
     "ui": {
-        "inputType": "radio",
-        "readonlyValue": true
+        "inputType": "radio"
     },
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

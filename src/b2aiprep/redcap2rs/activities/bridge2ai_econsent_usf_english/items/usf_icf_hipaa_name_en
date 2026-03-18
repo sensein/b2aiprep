@@ -1,26 +1,23 @@
 {
-    "id": "zipcode",
+    "id": "usf_icf_hipaa_name_en",
     "category": "reproschema:Item",
     "additionalNotesObj": [
-        {
-            "column": "Field Note",
-            "source": "redcap",
-            "value": "5 Digit for USA and 3 Digit for Canada"
-        },
         {
             "column": "Identifier?",
             "source": "redcap",
             "value": "y"
+        },
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@READONLY-FORM"
         }
     ],
-    "preamble": {
-        "en": "Address Information"
-    },
     "prefLabel": {
-        "en": "zipcode"
+        "en": "usf_icf_hipaa_name_en"
     },
     "question": {
-        "en": "Zipcode"
+        "en": "Printed Name of Person Taking Part in Study (or Their Parent)"
     },
     "responseOptions": {
         "valueType": [
@@ -28,7 +25,8 @@
         ]
     },
     "ui": {
-        "inputType": "text"
+        "inputType": "text",
+        "readonlyValue": true
     },
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }
