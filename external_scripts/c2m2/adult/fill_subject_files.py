@@ -102,14 +102,11 @@ def main():
         'race': race_map[race]
       })
       
-
-  subject_df = pd.read_csv(c2m2_path / "subject.tsv", sep='\t')
-  subject_df = pd.concat([subject_df, pd.DataFrame(subjects)], ignore_index=True)
+  subject_df = pd.DataFrame(subjects)
   subject_df.to_csv(c2m2_path / "subject.tsv", sep='\t', index=False)
 
 
-  race_df = pd.read_csv(c2m2_path / "subject_race.tsv", sep='\t')
-  race_df = pd.concat([race_df, pd.DataFrame(subject_races)],ignore_index=True)
+  race_df = pd.DataFrame(subject_races)
   race_df.to_csv(c2m2_path / "subject_race.tsv", sep='\t',index=False)
 
 
