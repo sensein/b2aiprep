@@ -468,7 +468,11 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
     metadata_dfs = []
     for path in metadata_paths:
         with open(path, 'r') as f:
-            metadata_dfs.append(pd.DataFrame([json.load(f)]))
+            try:
+                metadata_dfs.append(pd.DataFrame([json.load(f)]))
+            except (json.JSONDecodeError, ValueError) as e:
+                _LOGGER.warning(f"Failed to process metadata file {path}: {e}")
+                continue
     
     df = pd.concat(metadata_dfs, ignore_index=True)
     df.to_parquet(metadata_dir.joinpath("metadata.parquet"), index=False)
