@@ -1,34 +1,37 @@
 {
-    "id": "zipcode",
+    "id": "usf_icf_date_hipaa_es",
     "category": "reproschema:Item",
     "additionalNotesObj": [
         {
-            "column": "Field Note",
+            "column": "Text Validation Type OR Show Slider Number",
             "source": "redcap",
-            "value": "5 Digit for USA and 3 Digit for Canada"
+            "value": "date_ymd"
         },
         {
             "column": "Identifier?",
             "source": "redcap",
             "value": "y"
+        },
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@READONLY-FORM"
         }
     ],
-    "preamble": {
-        "en": "Address Information"
-    },
     "prefLabel": {
-        "en": "zipcode"
+        "en": "usf_icf_date_hipaa_es"
     },
     "question": {
-        "en": "Zipcode"
+        "en": "Fecha"
     },
     "responseOptions": {
         "valueType": [
-            "xsd:string"
+            "xsd:date"
         ]
     },
     "ui": {
-        "inputType": "text"
+        "inputType": "date",
+        "readonlyValue": true
     },
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }
