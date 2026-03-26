@@ -13,8 +13,8 @@ Using the following [guide](https://github.com/MaayanLab/cfde-c2m2), create the 
 
 2. Fill in files that use the bundles for listing files and creating connections between subjects (mostly removed), biosamples, diseases, and files
 
-- ```python bundle_to_c2m2.py /adult/bundle/ /path/to/c2m2_output/ --c2m2_id_map /path/to/id_map.csv```
-- `python bundle_to_c2m2.py /peds/bundle/ /path/to/c2m2_output/ --c2m2_id_map /path/to/id_map.csv --peds`
+- ```python bundle_to_c2m2.py /adult/bundle/ /path/to/c2m2_output/ --c2m2_id_map /path/to/id_map.csv --physionet_version x.x.x```
+- `python bundle_to_c2m2.py /peds/bundle/ /path/to/c2m2_output/ --c2m2_id_map /path/to/id_map.csv --peds --physionet_version x.x.x`
 
 3. Copy static files
 - ```python finalize.py /path/to/c2m2_output/```
