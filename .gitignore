@@ -148,3 +148,9 @@ guide/data/
 
 *.DS_Store
 cache-wf/
+
+*.sh
+
+external_scripts/c2m2/*.csv
+external_scripts/c2m2/claude_notes/*
+external_scripts/c2m2/examples/*
