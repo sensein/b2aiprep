@@ -147,11 +147,10 @@ adult_diagnosis_to_DOID = {
 
 # Pediatric condition column → list of DOID terms
 # Column names are from phenotype/pediatric/pediatric_medical_conditions.tsv.
-# Positive values expected to be 'Yes' / '1' / 'True' (case-insensitive).
-# TODO: populate with correct column names and DOID terms.
-peds_condition_to_DOID = {
-    # Example: 'peds_adhd': ['DOID:????'],
-}
+# Intentionally empty: pediatric disease data has not yet been clinically
+# validated, so no disease associations are generated for peds subjects.
+# Populate with condition column -> [DOID, ...] entries once data is validated.
+peds_condition_to_DOID = {}
 
 file_format_map = {
     '.tsv': 'format:3475',
@@ -169,7 +168,7 @@ data_type_map = {
 
 mime_type_map = {
     '.tsv': 'text/tab-separated-values',
-    '.json':' application/json',
+    '.json': 'application/json',
     '.txt': 'text/plain',
     '.parquet': 'application/octet-stream'
 }

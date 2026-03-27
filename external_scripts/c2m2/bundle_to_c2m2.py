@@ -4,7 +4,6 @@ from constants import *
 from pathlib import Path
 import pandas as pd
 import argparse
-import os
 import re
 import hashlib
 
@@ -32,14 +31,7 @@ def calculate_sha256_file_digest(file_path):
 
 def get_all_files(current_dir):
     """Recursively collects all file paths under current_dir."""
-    all_files = []
-    for current_dir_object in os.listdir(current_dir):
-        current_dir_object_path = current_dir / current_dir_object
-        if os.path.isdir(current_dir_object_path):
-            all_files += get_all_files(current_dir_object_path)
-        else:
-            all_files.append(current_dir_object_path)
-    return all_files
+    return [p for p in current_dir.rglob('*') if p.is_file()]
 
 
 def load_or_init_map(c2m2_id_map: Path) -> pd.DataFrame:
@@ -70,9 +62,19 @@ def get_biosamples_from_features(bundle_path: Path, c2m2_id_map: Path, project_l
 
     id_map = load_or_init_map(c2m2_id_map)
 
-    # Use the first parquet to get participant_id/session_id/task_name
-    df = pd.read_parquet(parquet_features[0], columns=['participant_id', 'session_id', 'task_name'])
-    df = df[['participant_id', 'session_id', 'task_name']].drop_duplicates()
+    # Read all parquets and union their (participant_id, session_id, task_name) triples.
+    # Different feature extractors may succeed on different recordings, so taking the
+    # union ensures all biosamples are captured.
+    dfs = []
+    for pf in parquet_features:
+        try:
+            dfs.append(pd.read_parquet(pf, columns=['participant_id', 'session_id', 'task_name']))
+        except Exception as e:
+            print(f"Warning: could not read {pf.name}: {e}")
+    if not dfs:
+        print("Warning: No readable parquet files found in features directory")
+        return pd.DataFrame(), pd.DataFrame(columns=['participant_id', 'session_id', 'anon_id'])
+    df = pd.concat(dfs, ignore_index=True)[['participant_id', 'session_id', 'task_name']].drop_duplicates()
 
     # Find (participant_id, session_id) pairs not yet assigned an anon_id
     unique_pairs = df[['participant_id', 'session_id']].drop_duplicates()
