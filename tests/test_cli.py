@@ -886,3 +886,30 @@ def test_reproschema_to_redcap_cli():
         result = subprocess.run(command, capture_output=True, text=True)
         assert result.returncode == 0, f"CLI command failed: {result.stderr}"
         assert output_dir.exists(), "Output directory was not created"
+        
+def test_detect_pii_cli():
+    """Test the 'b2aiprep-cli 'pii-detection' command using subprocess."""
+    with tempfile.TemporaryDirectory() as temp_dir:
+        # Create survey structure
+        bids_dir = Path(temp_dir) / "survey"
+        subject_dir = bids_dir / "subject_001"
+        session_dir = subject_dir / "session_001"
+        session_dir.mkdir(parents=True)
+
+        # Create dummy pt file
+        survey_file = subject_dir / "data.pt"
+        torch.save(survey_file, '{"test": "data"}')
+
+        output_dir = Path(temp_dir) / "output"
+
+        command = [
+            "b2aiprep-cli",
+            "pii-detection",
+            str(bids_dir),
+            str(output_dir),
+        ]
+
+        result = subprocess.run(command, capture_output=True, text=True)
+        assert result.returncode == 0, f"CLI command failed: {result.stderr}"
+        assert output_dir.exists(), "Output directory was not created"
+

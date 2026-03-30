@@ -1528,7 +1528,7 @@ def pii_detection(bids_folder, outdir):
 
     for path in tqdm(paths):
         pt_dict = torch.load(path, map_location="cpu", weights_only=False)
-        transcript = str(pt_dict["transcription"])
+        transcript = pt_dict.get("transcription")
 
         if transcript is None:
             _LOGGER.warning(f"No 'transcription' key in {path}, skipping.")
