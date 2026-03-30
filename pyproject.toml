@@ -30,7 +30,9 @@ dependencies = [
     "pydra",
     "torchaudio~=2.8.0",
     "torch~=2.8.0",
-    "torchvision~=0.23.0"
+    "torchvision~=0.23.0",
+    "presidio-analyzer",
+    "presidio-anonymizer",
 ]
 
 [tool.setuptools.packages.find]

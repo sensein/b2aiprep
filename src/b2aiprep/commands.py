@@ -12,6 +12,11 @@ from importlib import resources
 from pathlib import Path
 import typing as t
 
+from presidio_analyzer import AnalyzerEngine
+from presidio_anonymizer import AnonymizerEngine
+from presidio_anonymizer.entities import OperatorConfig
+
+
 import click
 import pandas as pd
 import pydra
@@ -1499,3 +1504,45 @@ def redcap_stats(filename, num_sessions):
         else:
             for record_id, n_sessions in over_n_sessions.items():
                 click.echo(f"Record ID: {record_id}, Sessions: {n_sessions}")
+
+@click.command()
+@click.argument("bids_folder", type=click.Path(exists=True))
+@click.argument("outdir", type=click.Path())
+def pii_detection(bids_folder, outdir):
+    """Runs PII detection on audio transcripts in a BIDS folder.
+
+    Args:
+        bids_folder: Path to the BIDS folder containing audio transcripts.
+        outdir: Path to the output directory.
+    """
+    bids_folder = Path(bids_folder)
+    outdir = Path(outdir)
+    shutil.copytree(bids_folder, outdir, dirs_exist_ok=True)
+    analyzer = AnalyzerEngine()
+    anonymiser = AnonymizerEngine()
+    paths = list(outdir.rglob("*.pt"))
+
+    if not paths:
+        _LOGGER.warning(f"No .pt files were found in {bids_folder}")
+        return
+
+    for path in tqdm(paths):
+        pt_dict = torch.load(path, map_location="cpu", weights_only=False)
+        transcript = str(pt_dict["transcription"])
+
+        if transcript is None:
+            _LOGGER.warning(f"No 'transcription' key in {path}, skipping.")
+            continue
+
+        analyzer_results = analyzer.analyze(text=transcript, language="en")
+        if analyzer_results:
+            results = anonymiser.anonymize(text=transcript, analyzer_results=analyzer_results)
+            pii_json = {
+                "has_pii": True,
+                "analysis": [r.to_dict() for r in analyzer_results],
+                "redacted_text": results.text,
+            }
+        else:
+            pii_json = {"has_pii": False, "analysis": [], "redacted_text": ""}
+        pt_dict.update(pii_json)
+        torch.save(pt_dict, path)
