@@ -1514,13 +1514,34 @@ def pii_detection(bids_folder, outdir):
     Args:
         bids_folder: Path to the BIDS folder containing audio transcripts.
         outdir: Path to the output directory.
+        
+    Example updated .pt contents (PII detected):
+        {
+            "transcript": "Hi, my name is Jane Doe and my SSN is 123-45-6789.",
+            "analysis": [
+                {
+                    "entity_type": "PERSON",
+                    "start": 15,
+                    "end": 23,
+                    "score": 0.85
+                },
+                {
+                    "entity_type": "US_SSN",
+                    "start": 38,
+                    "end": 49,
+                    "score": 0.85
+                }
+            ],
+            "redacted_text": "Hi, my name is <PERSON> and my SSN is <US_SSN>."
+        }    
+    
     """
     bids_folder = Path(bids_folder)
     outdir = Path(outdir)
-    shutil.copytree(bids_folder, outdir, dirs_exist_ok=True)
+    shutil.copytree(bids_folder, outdir)
     analyzer = AnalyzerEngine()
     anonymiser = AnonymizerEngine()
-    paths = list(outdir.rglob("*.pt"))
+    paths = [f for f in outdir.rglob("*.pt")]
 
     if not paths:
         _LOGGER.warning(f"No .pt files were found in {bids_folder}")
@@ -1544,5 +1565,5 @@ def pii_detection(bids_folder, outdir):
             }
         else:
             pii_json = {"has_pii": False, "analysis": [], "redacted_text": ""}
-        pt_dict.update(pii_json)
+        pt_dict["pii_detection"] = pii_json
         torch.save(pt_dict, path)

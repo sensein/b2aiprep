@@ -892,13 +892,13 @@ def test_detect_pii_cli():
     with tempfile.TemporaryDirectory() as temp_dir:
         # Create survey structure
         bids_dir = Path(temp_dir) / "survey"
-        subject_dir = bids_dir / "subject_001"
-        session_dir = subject_dir / "session_001"
+        subject_dir = bids_dir / "sub-001"
+        session_dir = subject_dir / "ses-001"
         session_dir.mkdir(parents=True)
 
         # Create dummy pt file
-        survey_file = subject_dir / "data.pt"
-        torch.save(survey_file, '{"test": "data"}')
+        survey_file = session_dir / "data.pt"
+        torch.save(survey_file, '{"transcription": "My name is John Doe from sweet home Alabama."}')
 
         output_dir = Path(temp_dir) / "output"
 
