@@ -22,6 +22,7 @@ from b2aiprep.commands import (  # gensynthtabdata,
     run_quality_control_on_audios,
     update_bids_template_command,
     pii_detection,
+    pii_detection_phi4,
 )
 
 
@@ -64,6 +65,7 @@ cli.add_command(validate_feature_extraction)
 cli.add_command(run_quality_control_on_audios)
 cli.add_command(update_bids_template_command)
 cli.add_command(pii_detection)
+cli.add_command(pii_detection_phi4)
 
 if __name__ == "__main__":
     # include main to enable python debugging

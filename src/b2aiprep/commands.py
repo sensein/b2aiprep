@@ -12,11 +12,12 @@ from importlib import resources
 from pathlib import Path
 import typing as t
 
+from transformers import AutoTokenizer, AutoModelForCausalLM
 from presidio_analyzer import AnalyzerEngine
 from presidio_anonymizer import AnonymizerEngine
 from presidio_anonymizer.entities import OperatorConfig
 
-
+from importlib.resources import files
 import click
 import pandas as pd
 import pydra
@@ -1567,3 +1568,54 @@ def pii_detection(bids_folder, outdir):
             pii_json = {"has_pii": False, "analysis": [], "redacted_text": ""}
         pt_dict["pii_detection"] = pii_json
         torch.save(pt_dict, path)
+
+@click.command()
+@click.argument("bids_folder", type=click.Path(exists=True))
+@click.argument("outdir", type=click.Path())
+def pii_detection_lamba(bids_folder, outdir):
+    bids_folder = Path(bids_folder)
+    outdir = Path(outdir)
+    shutil.copytree(bids_folder, outdir)
+    paths = [f for f in outdir.rglob("*.pt")]
+    
+    prompt = files("b2aiprep.prepare.resources").joinpath("few_shot_prompt.txt").read_text()
+    model_id = "microsoft/phi-4"
+    if not paths:
+        _LOGGER.warning(f"No .pt files were found in {bids_folder}")
+        return
+
+    tokenizer = AutoTokenizer.from_pretrained(model_id)
+    model = AutoModelForCausalLM.from_pretrained(
+            model_id,
+            torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
+            device_map="auto" if torch.cuda.is_available() else None,
+        )
+
+    for path in tqdm(paths):
+        pt_dict = torch.load(path, map_location="cpu", weights_only=False)
+        transcript = pt_dict.get("transcription")
+
+        if transcript is None:
+            _LOGGER.warning(f"No 'transcription' key in {path}, skipping.")
+            continue
+        complete_prompt = prompt.replace("{text}", transcript )
+
+        inputs = tokenizer.apply_chat_template(
+            [{"role": "user", "content": complete_prompt}],
+            return_tensors="pt",
+            add_generation_prompt=True,
+        ).to(model.device)
+
+        with torch.no_grad():
+            outputs = model.generate(
+                inputs,
+                max_new_tokens=500,
+                temperature=0.7,
+                do_sample=True,
+                pad_token_id=tokenizer.eos_token_id,
+            )
+
+        llm_output = tokenizer.decode(outputs[0][inputs.shape[-1]:], skip_special_tokens=True)
+        pt_dict["pii_detection"] = llm_output
+        torch.save(pt_dict, path)
+        
