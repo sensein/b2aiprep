@@ -1572,7 +1572,7 @@ def pii_detection(bids_folder, outdir):
 @click.command()
 @click.argument("bids_folder", type=click.Path(exists=True))
 @click.argument("outdir", type=click.Path())
-def pii_detection_lamba(bids_folder, outdir):
+def pii_detection_phi4(bids_folder, outdir):
     bids_folder = Path(bids_folder)
     outdir = Path(outdir)
     shutil.copytree(bids_folder, outdir)
