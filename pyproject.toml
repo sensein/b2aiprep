@@ -35,6 +35,7 @@ dependencies = [
     "presidio-anonymizer",
     "transformers>=4.40.0",
     "accelerate>=0.27.0",
+    "gliner>=0.2.0",
     "huggingface-hub>=0.22.0",
 ]
 
