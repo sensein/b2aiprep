@@ -28,6 +28,21 @@ thresholds rather than global thresholds.
 - Soft gate (needs-review): SNR 12–18 dB or clipping 1–5% or silence 30–50%
 - Pass zone: SNR ≥ 18 dB, clipping < 1%, silence < 30%
 
+**Acoustic scene / environment classification**:
+- While many B2AI Voice recordings are made in quiet settings, a non-trivial subset will have
+  audible background noise (crowd, music, TV/radio, traffic, HVAC). Raw SNR captures overall
+  noise level but does not characterise the *type* of noise, which matters for human review
+  (a constant hum vs. background speech have very different consent implications).
+- Decision: run an acoustic scene classifier — YAMNet (Google, 521-class AudioSet ontology) or
+  a recent equivalent (e.g., PANNS, BEATs) — to produce a top-K label list and per-label
+  confidence for each recording. Labels in the "Speech" / "Crowd" / "Music" superclasses are
+  surfaced as warning flags; labels indicating quiet/indoor environments contribute positively
+  to the audio quality score.
+- Integration: call after existing SNR/clipping metrics as an additional Stage 1 sub-check.
+  Outputs stored in `audio_quality` detail block (`environment_class`, `environment_confidence`).
+  Does not trigger a hard gate on its own; feeds into the soft score and is flagged for human
+  review if top-1 label confidence ≥ configurable threshold for a noise class.
+
 **Alternatives considered**:
 - [BIDS audioqc plugin](https://github.com/rordenlab/audioqc): outdated, MATLAB-based, not suitable
 - Rolling our own librosa/scipy metrics: more work, already solved by senselab
@@ -48,6 +63,13 @@ thresholds rather than global thresholds.
 **Gap**: The current diarization check is a hard-flag with no confidence score. It does not:
 (a) integrate Evan's model output, (b) use speaker embeddings to verify diarized segments
 belong to the same identity, or (c) produce a calibrated confidence.
+
+**Speaker count distribution**: The expected case is zero or one additional speaker. However,
+the pipeline must handle N ≥ 2 additional speakers (e.g., family members, clinicians, other
+participants in a group setting) and report all diarized speakers. In rare cases, extra speakers
+may speak a different language from the session language; where a language-ID model is
+available, detected languages for each diarized segment should be recorded to assist human
+reviewers in assessing consent.
 
 **Evan's Model**:
 - Produces a binary output (0/1) indicating potential non-child/multiple-speaker presence
@@ -136,7 +158,10 @@ suitable for Tier C but too coarse for Tiers A and B.
 
 **Diadochokinesis** (10 variants: PA, TA, KA, Pataka, buttercup, v1/v2 variants):
 - Periodicity check: compute frame-energy autocorrelation to detect repetition rate.
-  Expected DDK rate: 5–7 Hz for healthy adults; flag if rate outside 2–9 Hz.
+  Expected DDK rate and acceptable range are configurable in `PipelineConfig.task_compliance_params`
+  (defaults: expected 5–7 Hz, flag if outside 2–9 Hz for healthy adults). These defaults must
+  be tuned per batch when the population includes pediatric participants or individuals with
+  neurodegenerative conditions, where DDK rates can fall well outside the adult normative range.
 - Phoneme check: Use Praat or CMU Pronouncing Dictionary mapping to extract dominant
   consonant from each burst; compare to target phoneme(s).
 - Combined confidence = geometric mean of rate_conf and phoneme_conf.
@@ -176,10 +201,13 @@ Stage 1 — Hard gates (auto-FAIL, no score needed):
 Stage 2 — Forced review gates (auto-NEEDS-REVIEW):
   Evan's model == 1  (pediatric unconsented speaker flag)
   transcript_confidence < threshold (PII result untrustworthy)
+  any check returns error (model failure; check logged, audio routed to human review,
+  pipeline continues to next audio)
 
 Stage 3 — Soft composite score [0.0–1.0]:
-  composite = Σ (weight_i × check_confidence_i) / Σ weight_i
+  composite_score = Σ (weight_i × check_score_i) / Σ weight_i
   where weights are per-task-type from PipelineConfig
+  (uses per-check score, not confidence; confidence is handled separately in Stage 5)
 
   Default weights (adjustable in config):
     technical_audio_quality:  0.30
@@ -193,8 +221,12 @@ Stage 4 — Classification:
   otherwise → NEEDS_REVIEW
 
 Stage 5 — Confidence estimate:
-  confidence = 1 − std_dev(per-check confidences)
-  (high variance across checks → lower confidence in composite)
+  composite_confidence = weighted_mean(per_check_confidences)
+                         × (1 − λ × std_dev(per_check_confidences))
+  where λ = confidence_disagreement_penalty (default 0.5, stored in PipelineConfig)
+  (captures both overall confidence level and inter-check disagreement penalty;
+  replaces earlier 1−std_dev formula which gave misleadingly high confidence
+  when all checks were uniformly low-confidence)
 ```
 
 **Rationale for weighted sum over learned ensemble**: Interpretable for external audit;

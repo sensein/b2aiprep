@@ -17,23 +17,34 @@ b2aiprep-cli qa-run BIDS_DIR OUTPUT_DIR [OPTIONS]
 ```
 
 **Arguments**:
-- `BIDS_DIR` — Path to the root of the BIDS dataset (must contain `audio_quality_metrics.tsv`
-  and per-audio `_features.pt` files from a prior `generate-audio-features` run).
+- `BIDS_DIR` — Path to the root of the BIDS dataset. Must contain per-audio `_features.pt`
+  files from a prior `generate-audio-features` run. Technical quality metrics
+  (`audio_quality_metrics.tsv`) are computed by `qa-run` itself as Stage 1 via the existing
+  `quality_control_wrapper`; they do **not** need to exist in advance.
 - `OUTPUT_DIR` — Directory where QA outputs are written.
 
 **Options**:
 ```
 --config PATH          Path to a PipelineConfig JSON file. If omitted, default config is used
                        and written to OUTPUT_DIR.
+--part INT             1-based index of this shard in a SLURM array job. Must be used with
+                       --num-parts. When provided, only the corresponding subset of audios is
+                       processed (consistent with generate-audio-features sharding pattern).
+--num-parts INT        Total number of shards. Used with --part to divide the audio list across
+                       SLURM array tasks.
 --batch-size INT       Batch size for parallelisable checks. [default: 8]
 --num-cores INT        Number of parallel workers. [default: 4]
 --skip-pii             Skip PII detection checks (e.g., for non-free-speech-only subsets).
 --skip-task-compliance Skip task compliance checks.
 --task-filter TEXT     Comma-separated list of task names to process (default: all).
+--use-existing-qc      Skip Stage 1 technical quality control and use an already-present
+                       audio_quality_metrics.tsv in BIDS_DIR. Fails if the file is absent.
 --log-level TEXT       Logging level: DEBUG, INFO, WARNING, ERROR. [default: INFO]
 ```
 
 **Outputs written to OUTPUT_DIR**:
+- `audio_quality_metrics.tsv` — Technical QC metrics (written by Stage 1 unless
+  `--use-existing-qc` is set, in which case it is read from BIDS_DIR)
 - `qa_check_results.tsv` — CheckResult per audio × check type
 - `qa_composite_scores.tsv` — CompositeScore per audio
 - `needs_review_queue.tsv` — Audios classified as needs_review
@@ -43,7 +54,9 @@ b2aiprep-cli qa-run BIDS_DIR OUTPUT_DIR [OPTIONS]
 - `0` — Pipeline completed (some audios may be flagged for review; this is not an error)
 - `1` — Fatal error (input not found, dependency unavailable)
 
-**Pre-condition**: `generate-audio-features` must have been run so `.pt` files exist.
+**Pre-condition**: `generate-audio-features` must have been run so `_features.pt` files exist.
+`run-quality-control-on-audios` does **not** need to be run separately; `qa-run` invokes
+`quality_control_wrapper` internally as its first stage.
 
 ---
 

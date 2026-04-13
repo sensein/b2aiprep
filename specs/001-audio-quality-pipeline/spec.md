@@ -31,9 +31,10 @@ reproducibly.
    outputs are bit-for-bit identical (determinism requirement).
 3. **Given** an audio with SNR below threshold, **When** evaluated for technical quality,
    **Then** it is classified as fail (or needs-review if confidence is borderline).
-4. **Given** a recording containing a second, unconsented voice, **When** evaluated for
-   speaker presence, **Then** it is classified as fail (or needs-review if confidence is
-   borderline).
+4. **Given** a recording containing one or more unconsented voices (the common case is zero
+   or one additional speaker, but multiple are possible, potentially in different languages),
+   **When** evaluated for speaker presence, **Then** it is classified as fail (or needs-review
+   if confidence is borderline).
 5. **Given** a recording where the participant verbally discloses a PII item, **When**
    evaluated for PII, **Then** it is classified as fail (or needs-review).
 6. **Given** a recording where the participant clearly did not perform the assigned task,
@@ -101,7 +102,9 @@ aggregate statistics and confidence claims.
 - How does the system handle silence-only recordings?
 - What happens when task-metadata for an audio is missing?
 - How are multi-session participants handled if one session is flagged?
-- What if the PII detection model is unavailable or returns an error?
+- If a quality check model (PII detector, diarizer, transcriber) is unavailable or errors for a
+  specific audio: the check is marked `error`, the audio is routed to human review, and the
+  pipeline continues. The failure is logged with full exception detail.
 
 ## Requirements *(mandatory)*
 
@@ -109,12 +112,21 @@ aggregate statistics and confidence claims.
 
 - **FR-001**: The pipeline MUST compute a technical audio quality score for each recording,
   encompassing at minimum: signal-to-noise ratio estimate, clipping detection, silence ratio,
-  and sample rate / channel format compliance.
+  sample rate / channel format compliance, and acoustic scene / environment classification
+  (e.g., via YAMNet or a comparable recent model) to flag recordings made in non-quiet
+  environments (crowd noise, music, traffic, TV/radio).
 - **FR-002**: The pipeline MUST detect the presence of additional speakers beyond the primary
-  participant in each recording and flag recordings with detected non-participant voices.
+  participant in each recording and flag recordings with detected non-participant voices. While
+  zero or one additional speaker is the most common case, the pipeline MUST handle N ≥ 2
+  additional speakers and note where detected speaker language(s) differ from the expected
+  session language.
 - **FR-003**: The pipeline MUST transcribe audio and detect the disclosure of personally
   identifiable information, covering at minimum: names, dates of birth, geographic identifiers,
-  phone numbers, and health-related identifiers.
+  phone numbers, and health-related identifiers. The full transcript and PII spans (label,
+  confidence, character offsets, and span text) MUST be stored in the per-audio JSON sidecar
+  so that human reviewers can verify detection results.
+  Release gating of sidecar files containing transcripts is handled by existing dataset release
+  controls, not by this pipeline.
 - **FR-004**: The pipeline MUST assess whether the participant performed the assigned task
   correctly, using task-type metadata (from `audio_task_descriptions.json`) to apply
   compliance criteria grouped by task category. The 788 distinct task IDs map to the
@@ -166,19 +178,34 @@ aggregate statistics and confidence claims.
   recorded in the output artifacts so results can be reproduced and audited.
 - **FR-011**: The pipeline MUST handle corrupt or unreadable audio files gracefully, logging
   the error and excluding the file from release rather than halting the pipeline.
-- **FR-012**: The pipeline MUST be runnable via the existing `b2aiprep-cli` command interface.
+- **FR-013**: The pipeline MUST record per-stage wall-clock timing for each audio (one entry
+  per quality check plus total) in the per-audio JSON sidecar, to enable bottleneck analysis
+  and future time-budget specification.
+- **FR-014**: If a quality check model fails for a specific audio (error, timeout, or
+  unavailable), the pipeline MUST mark that check's classification as `error` in the sidecar,
+  route the audio to the human review queue, log the failure with full exception detail, and
+  continue processing the remaining audios without halting the pipeline run.
+- **FR-012**: The pipeline MUST be runnable via the existing `b2aiprep-cli` command interface,
+  with optional sharding arguments (e.g., `--part` / `--num-parts` or equivalent) that allow a
+  SLURM array job to distribute processing of non-overlapping audio subsets across nodes,
+  consistent with the pattern used by the existing feature-generation commands.
 
 ### Key Entities
 
 - **AudioRecord**: A single audio file + its task-type metadata + participant ID.
 - **CheckResult**: Output of one quality check for one audio — score (0–1), confidence (0–1),
-  classification (pass / fail / needs-review), and check-specific detail fields.
+  classification (pass / fail / needs-review / error), and check-specific detail fields. An
+  `error` classification indicates the check model failed; the audio is routed to the human
+  review queue. For the PII check, detail fields include the full transcript and PII spans
+  (label, confidence, character offsets, and span text) (to support human reviewer verification). Persisted as a JSON sidecar file co-located with
+  the source audio in the BIDS output directory.
 - **CompositeScore**: Weighted combination of per-check scores for one audio, with overall
-  confidence and final classification.
+  confidence and final classification. Persisted as a JSON sidecar file alongside the audio.
 - **ReviewDecision**: A human reviewer's accept/reject decision for one audio, including
   reviewer ID and timestamp.
 - **QualityReport**: Aggregate summary over a batch: per-check statistics, composite
-  distribution, human override counts, top-level confidence claim.
+  distribution, human override counts, top-level confidence claim. Persisted as a single
+  aggregate JSON file in the batch output directory.
 - **PipelineConfig**: Versioned configuration artifact — check thresholds, composite weights,
   model versions, and task-specific compliance parameters.
 
@@ -195,8 +222,9 @@ aggregate statistics and confidence claims.
   a stated confidence level (e.g., ≥ 95%) that released audios pass all quality checks.
 - **SC-004**: Human review is required for no more than a target fraction of audios (threshold
   configurable), keeping reviewer burden tractable for large batches.
-- **SC-005**: All quality check computations complete within a time budget that does not
-  significantly exceed the time already required for existing pipeline processing steps.
+- **SC-005**: The pipeline records per-stage wall-clock timing metrics (per audio and per check)
+  in the output artifacts to identify bottlenecks. No hard time budget is imposed in v1; timing
+  data collected here will inform future time-budget requirements.
 - **SC-006**: The pipeline correctly identifies known ground-truth examples: clean single-speaker
   on-task audios pass; multi-speaker, PII-containing, or off-task audios are flagged.
 
@@ -213,3 +241,16 @@ aggregate statistics and confidence claims.
 - Composite score weighting is configurable per task type but will ship with sensible defaults.
 - Model weights and versions are pinned at pipeline configuration time; updates to models
   constitute a new pipeline configuration version.
+- Expected batch sizes exceed 10,000 audios. Node-level distribution is handled via SLURM
+  array jobs using optional sharding CLI arguments; within a single node, multiprocessing
+  across available CPU cores is the parallelism model.
+
+## Clarifications
+
+### Session 2026-04-13
+
+- Q: What format should the pipeline use to persist output artifacts (CheckResult, CompositeScore, QualityReport)? → A: JSON sidecar files per audio, plus aggregate JSON report
+- Q: What is the expected batch size for a typical pipeline run? → A: > 10,000 audios; node distribution via SLURM array jobs with optional sharding CLI arguments (consistent with existing feature-generation pattern); intra-node parallelism via multiprocessing
+- Q: Should audio transcripts generated during PII detection be stored in pipeline output? → A: Yes — store full transcript and PII spans (label, confidence, character offsets, and span text) in the per-audio JSON sidecar for human reviewer verification; release gating is handled by existing dataset release controls
+- Q: What is the acceptable per-audio processing time target for SC-005? → A: No hard target in v1; pipeline must record per-stage timing metrics per audio to enable bottleneck analysis and future time-budget requirements
+- Q: If a quality check model fails for a specific audio, how should the pipeline handle it? → A: Mark that check as `error`, route the audio to human review queue, log the full exception, continue processing remaining audios

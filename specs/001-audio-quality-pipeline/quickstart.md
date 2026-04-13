@@ -21,7 +21,9 @@ b2aiprep-cli qa-run /path/to/bids_dataset /path/to/qa_output
 
 This runs all four checks (technical quality, unconsented speakers, PII, task compliance)
 and writes:
-- `qa_composite_scores.tsv` — classification per audio (pass/fail/needs_review)
+- `audio_quality_metrics.tsv` — Stage 1 technical QC metrics per audio
+- `qa_check_results.tsv` — per-check scores and classifications for every audio
+- `qa_composite_scores.tsv` — composite classification per audio (pass/fail/needs_review)
 - `needs_review_queue.tsv` — audios that require human review
 - `qa_pipeline_config_<hash>.json` — exact config snapshot for reproducibility
 
@@ -30,6 +32,21 @@ To use a custom config (e.g., different thresholds or model versions):
 ```bash
 b2aiprep-cli qa-run /path/to/bids_dataset /path/to/qa_output \
   --config my_custom_config.json
+```
+
+**Running on a SLURM cluster** (for batches > 10,000 audios): submit an array job where each
+task processes a non-overlapping shard, then merge outputs:
+
+```bash
+# Example: split into 20 shards across 20 SLURM array tasks
+b2aiprep-cli qa-run /path/to/bids_dataset /path/to/qa_output \
+  --part $SLURM_ARRAY_TASK_ID --num-parts 20
+```
+
+If technical quality metrics are already computed from a prior run, skip Stage 1:
+
+```bash
+b2aiprep-cli qa-run /path/to/bids_dataset /path/to/qa_output --use-existing-qc
 ```
 
 ---
