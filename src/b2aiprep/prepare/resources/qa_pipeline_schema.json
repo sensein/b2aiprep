@@ -1,0 +1,292 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "qa_pipeline_schema.json",
+  "title": "Audio Quality Assurance Pipeline Output Schema",
+  "description": "JSON Schema for all output entities produced by the b2aiprep QA pipeline. See specs/001-audio-quality-pipeline/data-model.md for narrative descriptions.",
+  "version": "1.0.0",
+  "definitions": {
+    "CheckType": {
+      "type": "string",
+      "enum": ["audio_quality", "unconsented_speakers", "pii_disclosure", "task_compliance"],
+      "description": "Which quality check produced this result"
+    },
+    "Classification": {
+      "type": "string",
+      "enum": ["pass", "fail", "needs_review", "error"],
+      "description": "Per-check verdict. 'error' means the check model failed; audio is routed to human review."
+    },
+    "FinalClassification": {
+      "type": "string",
+      "enum": ["pass", "fail", "needs_review"],
+      "description": "Composite classification after all stages (hard gates, forced review, soft score)"
+    },
+    "AudioQualityDetail": {
+      "type": "object",
+      "description": "Detail fields for audio_quality check",
+      "properties": {
+        "proportion_clipped": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+        "proportion_silent": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+        "peak_snr_db": {"type": "number"},
+        "spectral_gating_snr_db": {"type": "number"},
+        "amplitude_modulation_depth": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+        "hard_gate_triggered": {"type": "boolean"},
+        "environment_top_labels": {
+          "type": "array",
+          "description": "Top-K output of acoustic scene classifier (YAMNet)",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {"type": "string"},
+              "confidence": {"type": "number", "minimum": 0.0, "maximum": 1.0}
+            },
+            "required": ["label", "confidence"]
+          }
+        },
+        "environment_noise_flag": {
+          "type": "boolean",
+          "description": "True if top-1 classifier label is in a configured noise class with confidence >= environment_noise_threshold"
+        }
+      },
+      "required": ["proportion_clipped", "proportion_silent", "peak_snr_db", "spectral_gating_snr_db", "amplitude_modulation_depth", "hard_gate_triggered", "environment_top_labels", "environment_noise_flag"]
+    },
+    "UnconsentedSpeakersDetail": {
+      "type": "object",
+      "description": "Detail fields for unconsented_speakers check",
+      "properties": {
+        "num_speakers_diarized": {"type": "integer", "minimum": 0},
+        "primary_speaker_ratio": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+        "extra_speaker_count": {"type": "integer", "minimum": 0, "description": "num_speakers_diarized - 1; zero or one is common, N>=2 is possible"},
+        "evans_model_flag": {"type": "integer", "enum": [0, 1], "description": "Binary flag from Evan's model; 1 forces needs_review in pediatric sessions"},
+        "embedding_cosine_similarity_min": {"type": ["number", "null"], "minimum": -1.0, "maximum": 1.0},
+        "detected_languages": {
+          "type": "array",
+          "description": "Per-diarized-speaker language identification results",
+          "items": {
+            "type": "object",
+            "properties": {
+              "speaker_index": {"type": "integer", "minimum": 0},
+              "language": {"type": "string", "description": "ISO 639-1 language code"},
+              "confidence": {"type": "number", "minimum": 0.0, "maximum": 1.0}
+            },
+            "required": ["speaker_index", "language", "confidence"]
+          }
+        }
+      },
+      "required": ["num_speakers_diarized", "primary_speaker_ratio", "extra_speaker_count", "evans_model_flag", "detected_languages"]
+    },
+    "PiiDisclosureDetail": {
+      "type": "object",
+      "description": "Detail fields for pii_disclosure check. PII text is NOT stored here — only labels and offsets. Full transcript + PII spans with text are in the per-audio JSON sidecar.",
+      "properties": {
+        "entities_detected": {
+          "type": "array",
+          "description": "Detected PII entities — label, confidence score, and character offsets only (no PII text)",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {"type": "string", "description": "PII category (e.g., name, date_of_birth, phone_number)"},
+              "score": {"type": "number", "minimum": 0.0, "maximum": 1.0, "description": "Detection confidence"},
+              "char_start": {"type": "integer", "minimum": 0},
+              "char_end": {"type": "integer", "minimum": 0}
+            },
+            "required": ["label", "score", "char_start", "char_end"]
+          }
+        },
+        "transcript_confidence": {"type": "number", "minimum": 0.0, "maximum": 1.0, "description": "Proxy for transcription reliability; low values force needs_review"},
+        "model_used": {"type": "string", "enum": ["gliner-pii", "presidio"], "description": "Which PII detection model was used"}
+      },
+      "required": ["entities_detected", "transcript_confidence", "model_used"]
+    },
+    "TaskComplianceDetail": {
+      "type": "object",
+      "description": "Detail fields for task_compliance check",
+      "properties": {
+        "compliance_tier": {"type": "string", "enum": ["A", "B", "C"], "description": "Tier A=reading, B=phoneme/signal, C=open/conversational"},
+        "wer": {"type": ["number", "null"], "minimum": 0.0, "description": "Word error rate vs. known prompt (Tier A only)"},
+        "phoneme_match_score": {"type": ["number", "null"], "minimum": 0.0, "maximum": 1.0, "description": "Phoneme accuracy score (Tier B only)"},
+        "active_speech_duration_s": {"type": ["number", "null"], "minimum": 0.0, "description": "Duration of active speech in seconds"},
+        "llm_compliance": {"type": ["boolean", "null"], "description": "LLM compliance verdict (Tier C only)"}
+      },
+      "required": ["compliance_tier"]
+    },
+    "CheckResult": {
+      "type": "object",
+      "description": "Output of one quality check for one audio file",
+      "properties": {
+        "participant_id": {"type": "string", "description": "e.g., sub-001"},
+        "session_id": {"type": "string", "description": "e.g., ses-01"},
+        "task_name": {"type": "string", "description": "e.g., harvard-sentences-list-1-1"},
+        "check_type": {"$ref": "#/definitions/CheckType"},
+        "score": {"type": "number", "minimum": 0.0, "maximum": 1.0, "description": "How well the audio passed this check (1.0 = perfect)"},
+        "confidence": {"type": "number", "minimum": 0.0, "maximum": 1.0, "description": "Model's confidence in the score"},
+        "classification": {"$ref": "#/definitions/Classification"},
+        "detail": {
+          "oneOf": [
+            {"$ref": "#/definitions/AudioQualityDetail"},
+            {"$ref": "#/definitions/UnconsentedSpeakersDetail"},
+            {"$ref": "#/definitions/PiiDisclosureDetail"},
+            {"$ref": "#/definitions/TaskComplianceDetail"}
+          ]
+        },
+        "model_versions": {
+          "type": "object",
+          "description": "Versions/hashes of models used for this check",
+          "additionalProperties": {"type": "string"}
+        }
+      },
+      "required": ["participant_id", "session_id", "task_name", "check_type", "score", "confidence", "classification", "detail", "model_versions"]
+    },
+    "CompositeScore": {
+      "type": "object",
+      "description": "Weighted combination of all four CheckResults for one audio",
+      "properties": {
+        "participant_id": {"type": "string"},
+        "session_id": {"type": "string"},
+        "task_name": {"type": "string"},
+        "composite_score": {"type": "number", "minimum": 0.0, "maximum": 1.0, "description": "Weighted mean of per-check scores"},
+        "composite_confidence": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "weighted_mean(confidences) * (1 - lambda * std_dev(confidences)); penalizes inter-check disagreement"
+        },
+        "confidence_std_dev": {"type": "number", "minimum": 0.0, "description": "Std dev of per-check confidences; stored for auditability"},
+        "final_classification": {"$ref": "#/definitions/FinalClassification"},
+        "check_results": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/CheckResult"},
+          "minItems": 1,
+          "maxItems": 4
+        },
+        "config_hash": {"type": "string", "description": "SHA-256 hex digest of the PipelineConfig used"},
+        "pipeline_version": {"type": "string", "description": "b2aiprep package version"}
+      },
+      "required": ["participant_id", "session_id", "task_name", "composite_score", "composite_confidence", "confidence_std_dev", "final_classification", "check_results", "config_hash", "pipeline_version"]
+    },
+    "ReviewDecision": {
+      "type": "object",
+      "description": "Human override recorded during the qa-review CLI session",
+      "properties": {
+        "participant_id": {"type": "string"},
+        "session_id": {"type": "string"},
+        "task_name": {"type": "string"},
+        "decision": {"type": "string", "enum": ["accept", "reject"]},
+        "reviewer_id": {"type": "string", "description": "Username or initials of reviewer"},
+        "reviewed_at": {"type": "string", "format": "date-time", "description": "ISO-8601 datetime when decision was recorded"},
+        "notes": {"type": ["string", "null"], "description": "Optional free-text note"}
+      },
+      "required": ["participant_id", "session_id", "task_name", "decision", "reviewer_id", "reviewed_at"]
+    },
+    "QualityReport": {
+      "type": "object",
+      "description": "Aggregate summary over a completed batch (automated + human review). Written to qa_release_report.json.",
+      "properties": {
+        "report_version": {"type": "string", "description": "Increments with each regeneration"},
+        "generated_at": {"type": "string", "format": "date-time"},
+        "pipeline_config_hash": {"type": "string", "description": "Config hash used for this batch"},
+        "total_audios": {"type": "integer", "minimum": 0},
+        "auto_pass": {"type": "integer", "minimum": 0, "description": "PASS without human review"},
+        "auto_fail": {"type": "integer", "minimum": 0, "description": "FAIL without human review"},
+        "needs_review_total": {"type": "integer", "minimum": 0, "description": "Routed to human review"},
+        "human_accepted": {"type": "integer", "minimum": 0, "description": "needs_review -> accepted by human"},
+        "human_rejected": {"type": "integer", "minimum": 0, "description": "needs_review -> rejected by human"},
+        "pending_review": {"type": "integer", "minimum": 0, "description": "needs_review, not yet reviewed"},
+        "released_count": {"type": "integer", "minimum": 0, "description": "auto_pass + human_accepted"},
+        "excluded_count": {"type": "integer", "minimum": 0, "description": "auto_fail + human_rejected"},
+        "per_check_pass_rates": {
+          "type": "object",
+          "description": "Pass rate per check type",
+          "properties": {
+            "audio_quality": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+            "unconsented_speakers": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+            "pii_disclosure": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+            "task_compliance": {"type": "number", "minimum": 0.0, "maximum": 1.0}
+          }
+        },
+        "composite_score_percentiles": {
+          "type": "object",
+          "description": "Distribution percentiles of composite_score across all audios",
+          "properties": {
+            "p10": {"type": "number"},
+            "p25": {"type": "number"},
+            "p50": {"type": "number"},
+            "p75": {"type": "number"},
+            "p90": {"type": "number"}
+          },
+          "required": ["p10", "p25", "p50", "p75", "p90"]
+        },
+        "claim_confidence": {"type": "number", "minimum": 0.0, "maximum": 1.0, "description": "mean(composite_confidence) * (1 - human_override_rate * 0.5)"},
+        "claim_statement": {"type": "string", "description": "e.g., 'At 94% confidence, 97.3% of released audios pass all checks.'"}
+      },
+      "required": ["report_version", "generated_at", "pipeline_config_hash", "total_audios", "auto_pass", "auto_fail", "needs_review_total", "human_accepted", "human_rejected", "pending_review", "released_count", "excluded_count", "per_check_pass_rates", "composite_score_percentiles", "claim_confidence", "claim_statement"]
+    },
+    "AudioSidecar": {
+      "type": "object",
+      "description": "Per-audio JSON sidecar written to BIDS subject directory (sub-{id}/ses-{id}/voice/sub-{id}_ses-{id}_task-{name}_qa.json). Contains sensitive content subject to dataset release controls.",
+      "properties": {
+        "participant_id": {"type": "string"},
+        "session_id": {"type": "string"},
+        "task_name": {"type": "string"},
+        "transcript": {"type": ["string", "null"], "description": "Full Whisper transcript of the recording"},
+        "pii_spans": {
+          "type": ["array", "null"],
+          "description": "PII spans with full text for human reviewer verification",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {"type": "string"},
+              "confidence": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+              "char_start": {"type": "integer"},
+              "char_end": {"type": "integer"},
+              "text": {"type": "string", "description": "The actual PII text span"}
+            },
+            "required": ["label", "confidence", "char_start", "char_end", "text"]
+          }
+        },
+        "check_results": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/CheckResult"}
+        },
+        "composite_score": {"$ref": "#/definitions/CompositeScore"},
+        "timing_s": {
+          "type": "object",
+          "description": "Per-stage wall-clock timing in seconds (FR-013)",
+          "additionalProperties": {"type": "number", "minimum": 0.0}
+        }
+      },
+      "required": ["participant_id", "session_id", "task_name", "check_results", "composite_score"]
+    }
+  },
+  "output_files": {
+    "qa_check_results.tsv": {
+      "description": "CheckResult per audio × check type. Written to OUTPUT_DIR. Contains no PII text.",
+      "schema_ref": "#/definitions/CheckResult"
+    },
+    "qa_composite_scores.tsv": {
+      "description": "CompositeScore per audio. Written to OUTPUT_DIR.",
+      "schema_ref": "#/definitions/CompositeScore"
+    },
+    "needs_review_queue.tsv": {
+      "description": "Subset of CompositeScore rows where final_classification=needs_review. Written to OUTPUT_DIR.",
+      "schema_ref": "#/definitions/CompositeScore"
+    },
+    "human_review_decisions.tsv": {
+      "description": "ReviewDecision per reviewed audio. Written to OUTPUT_DIR.",
+      "schema_ref": "#/definitions/ReviewDecision"
+    },
+    "qa_release_report.json": {
+      "description": "QualityReport (machine-readable). Written to OUTPUT_DIR.",
+      "schema_ref": "#/definitions/QualityReport"
+    },
+    "qa_release_report.md": {
+      "description": "QualityReport (Markdown). Written to OUTPUT_DIR."
+    },
+    "qa_pipeline_config_{hash}.json": {
+      "description": "PipelineConfig snapshot. Written to OUTPUT_DIR. Hash = first 8 chars of SHA-256."
+    },
+    "sub-{id}/ses-{id}/voice/sub-{id}_ses-{id}_task-{name}_qa.json": {
+      "description": "Per-audio sidecar. Written to BIDS_DIR (not OUTPUT_DIR). Contains sensitive transcript and PII spans. Subject to dataset release controls.",
+      "schema_ref": "#/definitions/AudioSidecar"
+    }
+  }
+}

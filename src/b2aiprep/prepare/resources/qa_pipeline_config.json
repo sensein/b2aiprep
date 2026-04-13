@@ -1,0 +1,44 @@
+{
+  "_comment": "Default PipelineConfig for the Audio Quality Assurance Pipeline. All thresholds and weights are configurable. Pass this file via --config to qa-run to override defaults.",
+  "config_version": "1.0.0",
+  "created_at": null,
+  "random_seed": 42,
+  "model_versions": {
+    "evans_model": "TODO: HuggingFace model path to be added when model is published"
+  },
+  "hard_gate_thresholds": {
+    "snr_min_db": 12.0,
+    "clipping_max": 0.05,
+    "silence_max": 0.50
+  },
+  "soft_score_thresholds": {
+    "pass_min": 0.75,
+    "fail_max": 0.40,
+    "check_min": 0.50
+  },
+  "check_weights": {
+    "audio_quality": 0.30,
+    "unconsented_speakers": 0.25,
+    "pii_disclosure": 0.25,
+    "task_compliance": 0.20
+  },
+  "task_compliance_params": {
+    "diadochokinesis": {
+      "ddk_rate_expected_hz": [5.0, 7.0],
+      "ddk_rate_flag_outside_hz": [2.0, 9.0],
+      "_comment": "Adjust bounds for pediatric populations (lower rate) or neurodegenerative conditions (wider range) before running those batches."
+    },
+    "phonation": {
+      "min_duration_s": 3.0
+    },
+    "conversational": {
+      "min_active_speech_duration_s": 3.0
+    }
+  },
+  "environment_noise_threshold": 0.60,
+  "environment_noise_classes": ["Speech", "Crowd", "Music", "Vehicle"],
+  "confidence_disagreement_penalty": 0.50,
+  "min_transcript_confidence": 0.70,
+  "human_review_timeout_days": 30,
+  "sc_004_review_fraction_warn": 0.15
+}
