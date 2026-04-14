@@ -173,8 +173,8 @@ def write_audio_sidecar(
 
     The sidecar is written to::
 
-        bids_root/<participant_id>/<session_id>/voice/
-        <participant_id>_<session_id>_task-<task_name>_qa.json
+        bids_root/sub-<participant_id>/ses-<session_id>/audio/
+        sub-<participant_id>_ses-<session_id>_task-<task_name>_qa.json
 
     This file is sensitive — it contains the full transcript and PII spans
     with text.  It is release-gated separately from the distributable TSV
@@ -182,8 +182,10 @@ def write_audio_sidecar(
 
     Args:
         bids_root: Root of the BIDS dataset directory.
-        participant_id: BIDS participant identifier (e.g. ``"sub-001"``).
-        session_id: BIDS session identifier (e.g. ``"ses-01"``).
+        participant_id: Participant identifier without BIDS prefix (e.g. ``"001"``).
+            The ``sub-`` prefix is added when constructing the path.
+        session_id: Session identifier without BIDS prefix (e.g. ``"01"``).
+            The ``ses-`` prefix is added when constructing the path.
         task_name: Task identifier string (e.g. ``"harvard-sentences-list-1-1"``).
         check_results: List of :class:`CheckResult` dataclass instances.
         composite_score: :class:`CompositeScore` dataclass instance.
@@ -197,10 +199,10 @@ def write_audio_sidecar(
     Returns:
         Path to the written sidecar JSON file.
     """
-    out_dir = Path(bids_root) / participant_id / session_id / "voice"
+    out_dir = Path(bids_root) / f"sub-{participant_id}" / f"ses-{session_id}" / "audio"
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    filename = f"{participant_id}_{session_id}_task-{task_name}_qa.json"
+    filename = f"sub-{participant_id}_ses-{session_id}_task-{task_name}_qa.json"
     out_path = out_dir / filename
 
     payload: dict = {

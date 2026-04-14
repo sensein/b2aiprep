@@ -55,12 +55,12 @@ def bids_dir(tmp_path, wav_factory):
 
     subjects = [
         ("sub-001", "ses-01", "harvard-sentences-list-1-1"),
-        ("sub-002", "ses-01", "phonation"),
-        ("sub-003", "ses-01", "conversational-storytelling"),
+        ("sub-002", "ses-01", "maximum-phonation-time"),
+        ("sub-003", "ses-01", "cinderella-story"),
     ]
 
     for pid, sid, task in subjects:
-        voice_dir = bids / pid / sid / "voice"
+        voice_dir = bids / pid / sid / "audio"
         voice_dir.mkdir(parents=True)
 
         wav_factory(
@@ -136,24 +136,24 @@ class TestOutputFiles:
 
 
 # ---------------------------------------------------------------------------
-# FR-011 — Corrupt/unreadable files skipped, not halting, absent from TSVs
+# Corrupt/unreadable files — skipped, not halting, absent from TSVs
 # ---------------------------------------------------------------------------
 
 
-class TestFR011Integration:
+class TestCorruptFileHandling:
     def test_corrupt_file_does_not_halt_pipeline(self, tmp_path, wav_factory):
         """A zero-byte WAV in the batch must not cause the pipeline to fail."""
         bids = tmp_path / "bids"
-        voice = bids / "sub-001" / "ses-01" / "voice"
-        voice.mkdir(parents=True)
+        audio = bids / "sub-001" / "ses-01" / "audio"
+        audio.mkdir(parents=True)
 
         wav_factory(
             wav_type="clean",
             filename="sub-001_ses-01_task-harvard-sentences-list-1-1_audio.wav",
-            target_dir=voice,
+            target_dir=audio,
         )
 
-        corrupt = voice / "sub-001_ses-01_task-phonation_audio.wav"
+        corrupt = audio / "sub-001_ses-01_task-maximum-phonation-time_audio.wav"
         corrupt.write_bytes(b"")
 
         out = tmp_path / "out"
@@ -168,16 +168,16 @@ class TestFR011Integration:
 
     def test_corrupt_file_absent_from_composite_scores_tsv(self, tmp_path, wav_factory):
         bids = tmp_path / "bids"
-        voice = bids / "sub-001" / "ses-01" / "voice"
-        voice.mkdir(parents=True)
+        audio = bids / "sub-001" / "ses-01" / "audio"
+        audio.mkdir(parents=True)
 
         wav_factory(
             wav_type="clean",
             filename="sub-001_ses-01_task-harvard-sentences-list-1-1_audio.wav",
-            target_dir=voice,
+            target_dir=audio,
         )
 
-        corrupt = voice / "sub-001_ses-01_task-corrupt_audio.wav"
+        corrupt = audio / "sub-001_ses-01_task-maximum-phonation-time_audio.wav"
         corrupt.write_bytes(b"")
 
         out = tmp_path / "out"

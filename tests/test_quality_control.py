@@ -157,7 +157,7 @@ class TestEnvironmentNoise:
 
 
 @skip_until_t014
-class TestFR011InvalidInput:
+class TestInvalidInputHandling:
     def test_zero_byte_file_does_not_raise(self, tmp_path, config):
         """A zero-byte file must not halt the pipeline."""
         bad = tmp_path / "empty.wav"

@@ -47,8 +47,8 @@ def default_config() -> PipelineConfig:
 @pytest.fixture
 def minimal_check_result() -> CheckResult:
     return CheckResult(
-        participant_id="sub-001",
-        session_id="ses-01",
+        participant_id="001",
+        session_id="01",
         task_name="harvard-sentences-list-1-1",
         check_type=CheckType.AUDIO_QUALITY,
         score=0.9,
@@ -62,8 +62,8 @@ def minimal_check_result() -> CheckResult:
 @pytest.fixture
 def minimal_composite_score(minimal_check_result) -> CompositeScore:
     return CompositeScore(
-        participant_id="sub-001",
-        session_id="ses-01",
+        participant_id="001",
+        session_id="01",
         task_name="harvard-sentences-list-1-1",
         composite_score=0.9,
         composite_confidence=0.85,
@@ -246,8 +246,8 @@ class TestWriteAudioSidecar:
     ):
         out = write_audio_sidecar(
             bids_root=str(tmp_path),
-            participant_id="sub-001",
-            session_id="ses-01",
+            participant_id="001",
+            session_id="01",
             task_name="harvard-sentences-list-1-1",
             check_results=[minimal_check_result],
             composite_score=minimal_composite_score,
@@ -256,7 +256,7 @@ class TestWriteAudioSidecar:
             tmp_path
             / "sub-001"
             / "ses-01"
-            / "voice"
+            / "audio"
             / "sub-001_ses-01_task-harvard-sentences-list-1-1_qa.json"
         )
         assert out == expected
@@ -267,8 +267,8 @@ class TestWriteAudioSidecar:
     ):
         out = write_audio_sidecar(
             bids_root=str(tmp_path),
-            participant_id="sub-001",
-            session_id="ses-01",
+            participant_id="001",
+            session_id="01",
             task_name="task-x",
             check_results=[minimal_check_result],
             composite_score=minimal_composite_score,
@@ -282,8 +282,8 @@ class TestWriteAudioSidecar:
     ):
         out = write_audio_sidecar(
             bids_root=str(tmp_path),
-            participant_id="sub-001",
-            session_id="ses-01",
+            participant_id="001",
+            session_id="01",
             task_name="task-x",
             check_results=[minimal_check_result],
             composite_score=minimal_composite_score,
@@ -298,8 +298,8 @@ class TestWriteAudioSidecar:
     ):
         out = write_audio_sidecar(
             bids_root=str(tmp_path),
-            participant_id="sub-001",
-            session_id="ses-01",
+            participant_id="001",
+            session_id="01",
             task_name="task-x",
             check_results=[minimal_check_result],
             composite_score=minimal_composite_score,
@@ -315,8 +315,8 @@ class TestWriteAudioSidecar:
     ):
         out = write_audio_sidecar(
             bids_root=str(tmp_path),
-            participant_id="sub-001",
-            session_id="ses-01",
+            participant_id="001",
+            session_id="01",
             task_name="task-x",
             check_results=[minimal_check_result],
             composite_score=minimal_composite_score,
@@ -331,8 +331,8 @@ class TestWriteAudioSidecar:
         spans = [{"label": "name", "confidence": 0.9, "char_start": 0, "char_end": 4, "text": "John"}]
         out = write_audio_sidecar(
             bids_root=str(tmp_path),
-            participant_id="sub-001",
-            session_id="ses-01",
+            participant_id="001",
+            session_id="01",
             task_name="task-x",
             check_results=[minimal_check_result],
             composite_score=minimal_composite_score,
@@ -348,8 +348,8 @@ class TestWriteAudioSidecar:
     ):
         out = write_audio_sidecar(
             bids_root=str(tmp_path),
-            participant_id="sub-001",
-            session_id="ses-01",
+            participant_id="001",
+            session_id="01",
             task_name="task-x",
             check_results=[minimal_check_result],
             composite_score=minimal_composite_score,
@@ -363,8 +363,8 @@ class TestWriteAudioSidecar:
     ):
         out = write_audio_sidecar(
             bids_root=str(tmp_path),
-            participant_id="sub-001",
-            session_id="ses-01",
+            participant_id="001",
+            session_id="01",
             task_name="task-x",
             check_results=[minimal_check_result],
             composite_score=minimal_composite_score,
@@ -379,13 +379,13 @@ class TestWriteAudioSidecar:
     ):
         out = write_audio_sidecar(
             bids_root=str(tmp_path),
-            participant_id="sub-999",
-            session_id="ses-99",
+            participant_id="999",
+            session_id="99",
             task_name="task-x",
             check_results=[minimal_check_result],
             composite_score=minimal_composite_score,
         )
-        assert (tmp_path / "sub-999" / "ses-99" / "voice").is_dir()
+        assert (tmp_path / "sub-999" / "ses-99" / "audio").is_dir()
 
 
 # ---------------------------------------------------------------------------
@@ -399,8 +399,8 @@ class TestMakeErrorCheckResult:
             raise exc
         except Exception as e:
             return make_error_check_result(
-                participant_id="sub-001",
-                session_id="ses-01",
+                participant_id="001",
+                session_id="01",
                 task_name="task-x",
                 check_type=CheckType.PII_DISCLOSURE,
                 exception=e,
@@ -442,8 +442,8 @@ class TestMakeErrorCheckResult:
 
     def test_identity_fields_preserved(self):
         result = self._call(RuntimeError("x"))
-        assert result.participant_id == "sub-001"
-        assert result.session_id == "ses-01"
+        assert result.participant_id == "001"
+        assert result.session_id == "01"
         assert result.task_name == "task-x"
 
 
