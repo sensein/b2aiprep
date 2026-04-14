@@ -76,6 +76,10 @@ versionfile_build = "b2aiprep/_version.py"
 tag_prefix = ""
 parentdir_prefix = "myproject-"
 
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
 [tool.black]
 line-length = 100
 
