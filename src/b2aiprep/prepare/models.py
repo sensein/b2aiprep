@@ -6,7 +6,7 @@ from presidio_anonymizer.entities import OperatorConfig
 
 import torch
 
-class Models:
+class ModelRegistry:
     def __init__(self):
         self.analyzer = AnalyzerEngine()
         self.anonymiser = AnonymizerEngine()
@@ -39,14 +39,14 @@ class Models:
         llm_output = tokenizer.decode(outputs[0][inputs.shape[-1]:], skip_special_tokens=True)
         return llm_output
 
-    def prompt_presidio(self, prompt):
+    def analyze_presidio(self, prompt):
         analyzer_results = self.analyzer.analyze(text=prompt, language="en")
         results = ""
         if analyzer_results:
             results = self.anonymiser.anonymize(text=prompt, analyzer_results=analyzer_results)
         return analyzer_results ,results
 
-    def prompt_gliner(self, prompt, labels):
+    def analyze_gliner(self, prompt, labels):
         model = GLiNER.from_pretrained("nvidia/gliner-pii")
         model_output = model.predict_entities(prompt, labels, threshold=0.5)
         return model_output

@@ -69,7 +69,7 @@ from b2aiprep.prepare.utils import normalize_task_label
 from b2aiprep.prepare.update import TemplateUpdateError, reorganize_bids_activities, update_bids_template_files
 
 #from b2aiprep.prepare.models import prompt_gliner, prompt_phi4, prompt_presidio
-from b2aiprep.prepare.models import Models
+from b2aiprep.prepare.models import ModelRegistry
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -1544,7 +1544,7 @@ def pii_detection(bids_folder, outdir, model_choice):
     bids_folder = Path(bids_folder)
     outdir = Path(outdir)
     shutil.copytree(bids_folder, outdir)
-    model = Models()
+    model = ModelRegistry()
 
     paths = [f for f in outdir.rglob("*.pt")]
 
@@ -1554,14 +1554,14 @@ def pii_detection(bids_folder, outdir, model_choice):
 
     for path in tqdm(paths):
         pt_dict = torch.load(path, map_location="cpu", weights_only=False)
-        transcript = str(pt_dict.get("transcription"))
+        transcript = str(pt_dict.get("transcription", ""))
 
-        if transcript is None:
+        if transcript:
             _LOGGER.warning(f"No 'transcription' key in {path}, skipping.")
             continue
         pii_json = {}
         if model_choice == "presidio":
-            llm_output = model.prompt_presidio(prompt=transcript)
+            llm_output = model.analyze_presidio(prompt=transcript)
             if not llm_output:
                 pii_json = {"has_pii": False, "analysis": [], "redacted_text": "", "model" :"presidio"}
             else:
@@ -1581,7 +1581,7 @@ def pii_detection(bids_folder, outdir, model_choice):
             hippa_labels_path = files("b2aiprep.prepare.resources").joinpath("hipaa_labels.json")
             with open(hippa_labels_path , 'r') as file:
                 hippa_labels = json.load(file)
-            pii_json = model.prompt_gliner(prompt=transcript, labels=hippa_labels)
+            pii_json = model.analyze_gliner(prompt=transcript, labels=hippa_labels)
             pii_json["model"] = "gliner"
 
         pt_dict["pii_detection"] = pii_json
@@ -1622,11 +1622,10 @@ def task_correctness_phi4(bids_folder, outdir):
         task = path.stem.split("task-")[-1].replace("_features", "")
         instructions = audio_task.get(task, {}).get("instructions")
         if instructions:
-            _LOGGER.warning(f"No 'instructions' found for task {task}, skipping.")
-            continue
+            _LOGGER.error(f"No 'instructions' found for file {path},")
     
         pt_dict = torch.load(path, map_location="cpu", weights_only=False)
-        transcript = str(pt_dict.get("transcription"))
+        transcript = str(pt_dict.get("transcription", ""))
 
         if transcript is None:
             _LOGGER.warning(f"No 'transcription' key in {path}, skipping.")
@@ -1634,7 +1633,7 @@ def task_correctness_phi4(bids_folder, outdir):
 
         #change this
         complete_prompt = f"This is the instruction of the audio task: {instructions}. This is the transcript of the task: {transcript}. Was the task performed correctly. Return a boolean" 
-        model = Models()
+        model = ModelRegistry()
         llm_output = model.prompt_phi4(prompt=complete_prompt)
         pt_dict["task_correctness"] = llm_output
         torch.save(pt_dict, path)
