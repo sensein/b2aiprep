@@ -347,7 +347,7 @@ def get_wav_duration(file_path):
     return duration
 
 
-def generate_or_load_seed(seed_size=32):
+def generate_seed(seed_size=32):
     """Generate a cryptographic seed"""
     seed = secrets.token_bytes(seed_size)
     return seed
@@ -365,7 +365,7 @@ def load_lookup_table(lookup_path):
     lookup_path = Path(lookup_path)
 
     if not lookup_path.exists():
-        _LOGGER.error(f"Lookup table not found at: {lookup_path}")
+        raise FileNotFoundError(f"Lookup table not found at: {lookup_path}")
 
     with open(lookup_path, "r") as f:
         lookup_table = json.load(f)
