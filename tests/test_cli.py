@@ -886,3 +886,29 @@ def test_reproschema_to_redcap_cli():
         result = subprocess.run(command, capture_output=True, text=True)
         assert result.returncode == 0, f"CLI command failed: {result.stderr}"
         assert output_dir.exists(), "Output directory was not created"
+
+
+
+def test_id_remap_cli():
+    """Test the 'b2aiprep-cli id-remap command using subprocess."""
+    with tempfile.TemporaryDirectory() as temp_dir:
+        ids = {"participant_id": ["P001", "P002"]}
+        id_df = pd.DataFrame(ids)
+        id_dir = Path(temp_dir) / "ids.tsv"
+        
+        id_df.to_csv(id_dir, sep='\t', index=False)
+
+        output_dir = Path(temp_dir) / "output"
+        output_dir.mkdir(parents=True, exist_ok=True)
+        command = [
+            "b2aiprep-cli",
+            "id-remap",
+            id_dir,
+            output_dir
+        ]
+
+        output_file = output_dir / "id_lookup_table.json"
+        result = subprocess.run(command, capture_output=True, text=True)
+        assert result.returncode == 0, f"CLI command failed: {result.stderr}"
+        assert output_dir.exists(), "Output directory was not created"
+        assert output_file.exists(), "Output file was not created"

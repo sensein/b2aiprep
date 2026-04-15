@@ -59,7 +59,7 @@ from b2aiprep.prepare.prepare import (
 from b2aiprep.prepare.quality_control import quality_control_wrapper
 
 from b2aiprep.prepare.data_validation import validate_phenotype, validate_no_extra_audio_tasks_present
-from b2aiprep.prepare.utils import normalize_task_label
+from b2aiprep.prepare.utils import normalize_task_label, generate_or_load_seed, generate_pseudonym, load_lookup_table, build_lookup_table
 from b2aiprep.prepare.update import TemplateUpdateError, reorganize_bids_activities, update_bids_template_files
 
 _LOGGER = logging.getLogger(__name__)
@@ -1499,3 +1499,37 @@ def redcap_stats(filename, num_sessions):
         else:
             for record_id, n_sessions in over_n_sessions.items():
                 click.echo(f"Record ID: {record_id}, Sessions: {n_sessions}")
+
+@click.command()
+@click.argument("input_dir", type=click.Path(exists=True))
+@click.argument("output_dir", type=click.Path(exists=True))
+@click.option("--load_lookup", type=click.Path(exists=True), default=None, show_default=True)
+def id_remap(input_dir, output_dir, load_lookup):
+    """Generates an id lookup table for dissemination.
+
+    Args:
+        input_dir (path): Path to file with original ids
+        output_dir (path): Path to output folder
+        load_lookup (path): Path to pre-existing id remap file
+    """
+    df = pd.read_csv(input_dir, sep='\t')
+    
+    id_column = ""
+    if "record_id" in df.columns:
+        id_column = "record_id"
+    elif "participant_id" in df.columns:
+        id_column = "participant_id"
+    else:
+        _LOGGER.error("No valid ID column found (expected 'record_id' or 'participant_id')")
+
+    id_list = list(set(df[id_column].tolist()))
+    secret_key = generate_or_load_seed()
+    lookup = build_lookup_table(id_list, secret_key, load_lookup)
+
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    output_file = output_dir / "id_lookup_table.json"
+    with open(output_file, "w") as f:
+        json.dump(lookup, f, indent=2)
+
+    _LOGGER.info(f"Lookup table saved to '{output_file}'")
