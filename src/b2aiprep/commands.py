@@ -1512,7 +1512,7 @@ def redcap_stats(filename, num_sessions):
 @click.command()
 @click.argument("bids_folder", type=click.Path(exists=True))
 @click.argument("outdir", type=click.Path())
-@click.option("model_choice", "--m", type=str, default="presidio")
+@click.option("--model-choice", "-m", type=str, default="presidio")
 def pii_detection(bids_folder, outdir, model_choice):
     """Runs PII detection on audio transcripts in a BIDS folder.
 
@@ -1543,7 +1543,8 @@ def pii_detection(bids_folder, outdir, model_choice):
     """
     bids_folder = Path(bids_folder)
     outdir = Path(outdir)
-    shutil.copytree(bids_folder, outdir)
+    if bids_folder.resolve() != outdir.resolve():
+        shutil.copytree(bids_folder, outdir)
     model = ModelRegistry()
 
     paths = [f for f in outdir.rglob("*.pt")]
@@ -1607,7 +1608,8 @@ def task_correctness_phi4(bids_folder, outdir):
     """
     bids_folder = Path(bids_folder)
     outdir = Path(outdir)
-    shutil.copytree(bids_folder, outdir)
+    if bids_folder.resolve() != outdir.resolve():
+        shutil.copytree(bids_folder, outdir)
     paths = [f for f in outdir.rglob("*.pt")]
     
     audio_task_path = files("b2aiprep.prepare.resources").joinpath("audio_task_descriptions.json")
@@ -1619,7 +1621,7 @@ def task_correctness_phi4(bids_folder, outdir):
         return
 
     for path in tqdm(paths):
-        task = path.stem.split("task-")[-1].replace("_features", "")
+        task = path.stem.split("_task-")[-1].replace("_features", "")
         instructions = audio_task.get(task, {}).get("instructions")
         if instructions:
             _LOGGER.error(f"No 'instructions' found for file {path},")

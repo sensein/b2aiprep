@@ -12,7 +12,6 @@ class ModelRegistry:
         self.anonymiser = AnonymizerEngine()
 
     def prompt_phi4(self, prompt):
-        print(type(prompt))
         model_id = "microsoft/Phi-4-mini-instruct"
         tokenizer = AutoTokenizer.from_pretrained(model_id)
         model = AutoModelForCausalLM.from_pretrained(
