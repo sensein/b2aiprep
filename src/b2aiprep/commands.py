@@ -1523,7 +1523,6 @@ def id_remap(input_file, output_dir, load_lookup):
         raise ValueError(
             "No valid ID column found (expected 'record_id' or 'participant_id')"
         )
-
     id_list = list(set(df[id_column].tolist()))
     secret_key = generate_seed()
     lookup = build_lookup_table(id_list, secret_key, load_lookup)
@@ -1533,5 +1532,6 @@ def id_remap(input_file, output_dir, load_lookup):
     output_file = output_dir / "id_lookup_table.json"
     with open(output_file, "w") as f:
         json.dump(lookup, f, indent=2)
-
+        num_ids = len(lookup)
+        _LOGGER.info(f"Lookup table contains {num_ids} ids")
     _LOGGER.info(f"Lookup table saved to '{output_file}'")
