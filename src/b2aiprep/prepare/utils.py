@@ -369,7 +369,8 @@ def load_lookup_table(lookup_path):
 
     with open(lookup_path, "r") as f:
         lookup_table = json.load(f)
-
+        existing_ids = len(lookup_table)
+        _LOGGER.info(f"Pre-existing table contaings {existing_ids} ids")
     remapped_ids = set(lookup_table.values())
 
     return lookup_table, remapped_ids
