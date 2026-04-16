@@ -886,3 +886,56 @@ def test_reproschema_to_redcap_cli():
         result = subprocess.run(command, capture_output=True, text=True)
         assert result.returncode == 0, f"CLI command failed: {result.stderr}"
         assert output_dir.exists(), "Output directory was not created"
+        
+def test_detect_pii_cli():
+    """Test the 'b2aiprep-cli 'pii-detection' command using subprocess."""
+    with tempfile.TemporaryDirectory() as temp_dir:
+        # Create survey structure
+        bids_dir = Path(temp_dir) / "survey"
+        subject_dir = bids_dir / "sub-001"
+        session_dir = subject_dir / "ses-001"
+        session_dir.mkdir(parents=True)
+
+        # Create dummy pt file
+        survey_file = session_dir / "data.pt"
+        torch.save(survey_file, '{"transcription": "My name is John Doe from sweet home Alabama."}')
+
+        output_dir = Path(temp_dir) / "output"
+
+        command = [
+            "b2aiprep-cli",
+            "pii-detection",
+            str(bids_dir),
+            str(output_dir),
+        ]
+
+        result = subprocess.run(command, capture_output=True, text=True)
+        assert result.returncode == 0, f"CLI command failed: {result.stderr}"
+        assert output_dir.exists(), "Output directory was not created"
+
+def test_task_correctness_cli():
+    """Test the 'b2aiprep-cli 'pii-detection' command using subprocess."""
+    with tempfile.TemporaryDirectory() as temp_dir:
+        # Create survey structure
+        bids_dir = Path(temp_dir) / "survey"
+        subject_dir = bids_dir / "sub-001"
+        session_dir = subject_dir / "ses-001"
+        session_dir.mkdir(parents=True)
+
+        # Create dummy pt file
+        survey_file = session_dir / "favorite-food.pt"
+        torch.save(survey_file, '{"transcription": "My favorite food is pasta."}')
+
+        output_dir = Path(temp_dir) / "output"
+
+        command = [
+            "b2aiprep-cli",
+            "task-correctness-phi4",
+            str(bids_dir),
+            str(output_dir),
+        ]
+
+        result = subprocess.run(command, capture_output=True, text=True)
+        assert result.returncode == 0, f"CLI command failed: {result.stderr}"
+        assert output_dir.exists(), "Output directory was not created"
+

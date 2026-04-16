@@ -1,0 +1,20 @@
+[
+    "name",
+    "address",
+    "date",
+    "phone_number",
+    "fax_number",
+    "email",
+    "social_security_number",
+    "medical_record_number",
+    "health_plan_number",
+    "account_number",
+    "license_number",
+    "vehicle_identifier",
+    "device_identifier",
+    "url",
+    "ip_address",
+    "biometric_identifier",
+    "photographic_image",
+    "unique_identifier"
+]

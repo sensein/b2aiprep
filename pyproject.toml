@@ -30,14 +30,20 @@ dependencies = [
     "pydra",
     "torchaudio~=2.8.0",
     "torch~=2.8.0",
-    "torchvision~=0.23.0"
+    "torchvision~=0.23.0",
+    "presidio-analyzer",
+    "presidio-anonymizer",
+    "transformers>=4.40.0",
+    "accelerate>=0.27.0",
+    "gliner>=0.2.0",
+    "huggingface-hub>=0.22.0",
 ]
 
 [tool.setuptools.packages.find]
-where = ["src"] # <-- this changed
+where = ["src"]
 
 [tool.setuptools.package-data]
-"*" = ["*.*", ".gitkeep"] # <-- this changed
+"*" = ["*.*", ".gitkeep"]
 
 [project.optional-dependencies]
 doc = [
@@ -58,6 +64,13 @@ dashboard = [
     "b2aiprep[doc]",
     "streamlit>=1.42.2",
     "senselab[audio]"
+]
+# Optional: only install when needed (heavy download ~8GB model)
+llm = [
+    "transformers>=4.40.0",
+    "accelerate>=0.27.0",
+    "huggingface-hub>=0.22.0",
+    "bitsandbytes>=0.43.0",  # for 4-bit quantization
 ]
 
 [project.scripts]

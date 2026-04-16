@@ -11,7 +11,13 @@ from glob import glob
 from importlib import resources
 from pathlib import Path
 import typing as t
+from gliner import GLiNER
+from transformers import AutoTokenizer, AutoModelForCausalLM
+from presidio_analyzer import AnalyzerEngine
+from presidio_anonymizer import AnonymizerEngine
+from presidio_anonymizer.entities import OperatorConfig
 
+from importlib.resources import files
 import click
 import pandas as pd
 import pydra
@@ -61,6 +67,9 @@ from b2aiprep.prepare.quality_control import quality_control_wrapper
 from b2aiprep.prepare.data_validation import validate_phenotype, validate_no_extra_audio_tasks_present
 from b2aiprep.prepare.utils import normalize_task_label
 from b2aiprep.prepare.update import TemplateUpdateError, reorganize_bids_activities, update_bids_template_files
+
+#from b2aiprep.prepare.models import prompt_gliner, prompt_phi4, prompt_presidio
+from b2aiprep.prepare.models import ModelRegistry
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -1499,3 +1508,134 @@ def redcap_stats(filename, num_sessions):
         else:
             for record_id, n_sessions in over_n_sessions.items():
                 click.echo(f"Record ID: {record_id}, Sessions: {n_sessions}")
+
+@click.command()
+@click.argument("bids_folder", type=click.Path(exists=True))
+@click.argument("outdir", type=click.Path())
+@click.option("--model-choice", "-m", type=str, default="presidio")
+def pii_detection(bids_folder, outdir, model_choice):
+    """Runs PII detection on audio transcripts in a BIDS folder.
+
+    Args:
+        bids_folder: Path to the BIDS folder containing audio transcripts.
+        outdir: Path to the output directory.
+        
+    Example updated .pt contents (PII detected):
+        {
+            "transcript": "Hi, my name is Jane Doe and my SSN is 123-45-6789.",
+            "analysis": [
+                {
+                    "entity_type": "PERSON",
+                    "start": 15,
+                    "end": 23,
+                    "score": 0.85
+                },
+                {
+                    "entity_type": "US_SSN",
+                    "start": 38,
+                    "end": 49,
+                    "score": 0.85
+                }
+            ],
+            "redacted_text": "Hi, my name is <PERSON> and my SSN is <US_SSN>."
+        }    
+    
+    """
+    bids_folder = Path(bids_folder)
+    outdir = Path(outdir)
+    if bids_folder.resolve() != outdir.resolve():
+        shutil.copytree(bids_folder, outdir)
+    model = ModelRegistry()
+
+    paths = [f for f in outdir.rglob("*.pt")]
+
+    if not paths:
+        _LOGGER.warning(f"No .pt files were found in {bids_folder}")
+        return
+
+    for path in tqdm(paths):
+        pt_dict = torch.load(path, map_location="cpu", weights_only=False)
+        transcript = str(pt_dict.get("transcription", ""))
+
+        if transcript:
+            _LOGGER.warning(f"No 'transcription' key in {path}, skipping.")
+            continue
+        pii_json = {}
+        if model_choice == "presidio":
+            llm_output = model.analyze_presidio(prompt=transcript)
+            if not llm_output:
+                pii_json = {"has_pii": False, "analysis": [], "redacted_text": "", "model" :"presidio"}
+            else:
+                pii_json = {
+                    "has_pii": True,
+                    "analysis": [r.to_dict() for r in llm_output[0]],
+                    "redacted_text": llm_output[1].text,
+                    "model" :"presidio"
+                }
+        elif model_choice == "phi4":
+            prompt = files("b2aiprep.prepare.resources").joinpath("few_shot_prompt.txt").read_text()
+            complete_prompt = prompt.replace("{text}", transcript )
+            pii_json = model.prompt_phi4(prompt=complete_prompt)
+            pii_json["model"] = "phi4"
+            
+        elif model_choice == "gliner":
+            hippa_labels_path = files("b2aiprep.prepare.resources").joinpath("hipaa_labels.json")
+            with open(hippa_labels_path , 'r') as file:
+                hippa_labels = json.load(file)
+            pii_json = model.analyze_gliner(prompt=transcript, labels=hippa_labels)
+            pii_json["model"] = "gliner"
+
+        pt_dict["pii_detection"] = pii_json
+        torch.save(pt_dict, path)
+
+        
+@click.command()
+@click.argument("bids_folder", type=click.Path(exists=True))
+@click.argument("outdir", type=click.Path())
+def task_correctness_phi4(bids_folder, outdir):
+    """Uses the PHI4 LLM on audio transcripts in a BIDS folder to determin if the the audio task was done correctly.
+
+    Args:
+        bids_folder: Path to the BIDS folder containing audio transcripts.
+        outdir: Path to the output directory.
+        
+     Example updated .pt contents:
+        {
+            "transcript": <transcript>,
+            "task_correctness": "True"
+        }    
+    
+    """
+    bids_folder = Path(bids_folder)
+    outdir = Path(outdir)
+    if bids_folder.resolve() != outdir.resolve():
+        shutil.copytree(bids_folder, outdir)
+    paths = [f for f in outdir.rglob("*.pt")]
+    
+    audio_task_path = files("b2aiprep.prepare.resources").joinpath("audio_task_descriptions.json")
+    with open(audio_task_path , 'r') as file:
+        audio_task = json.load(file)
+    
+    if not paths:
+        _LOGGER.warning(f"No .pt files were found in {bids_folder}")
+        return
+
+    for path in tqdm(paths):
+        task = path.stem.split("_task-")[-1].replace("_features", "")
+        instructions = audio_task.get(task, {}).get("instructions")
+        if instructions:
+            _LOGGER.error(f"No 'instructions' found for file {path},")
+    
+        pt_dict = torch.load(path, map_location="cpu", weights_only=False)
+        transcript = str(pt_dict.get("transcription", ""))
+
+        if transcript is None:
+            _LOGGER.warning(f"No 'transcription' key in {path}, skipping.")
+            continue
+
+        #change this
+        complete_prompt = f"This is the instruction of the audio task: {instructions}. This is the transcript of the task: {transcript}. Was the task performed correctly. Return a boolean" 
+        model = ModelRegistry()
+        llm_output = model.prompt_phi4(prompt=complete_prompt)
+        pt_dict["task_correctness"] = llm_output
+        torch.save(pt_dict, path)
