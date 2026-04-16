@@ -10,6 +10,7 @@ from b2aiprep.commands import (  # gensynthtabdata,
     createbatchcsv,
     dashboard,
     generate_audio_features,
+    qa_run,
     redcap2bids,
     redcap_stats,
     reproschema_to_redcap,
@@ -64,6 +65,7 @@ cli.add_command(validate_feature_extraction)
 cli.add_command(run_quality_control_on_audios)
 cli.add_command(update_bids_template_command)
 cli.add_command(id_remap)
+cli.add_command(qa_run)
 
 if __name__ == "__main__":
     # include main to enable python debugging

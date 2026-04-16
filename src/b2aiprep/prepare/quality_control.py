@@ -12,15 +12,299 @@ import torch
 import pandas as pd
 import tempfile
 from pathlib import Path
+from typing import Optional
 
 import parselmouth
 
 from b2aiprep.prepare.dataset import BIDSDataset
+from b2aiprep.prepare.qa_models import CheckResult, CheckType, Classification, PipelineConfig
 from b2aiprep.prepare.utils import copy_package_resource
 
 RESAMPLE_RATE=16000
 
 _logger = logging.getLogger(__name__)
+
+
+# ---------------------------------------------------------------------------
+# T014/T015 — Per-audio technical quality check
+# ---------------------------------------------------------------------------
+
+
+def _estimate_snr_db(y: torch.Tensor, sr: int) -> float:  # noqa: ARG001
+    """Estimate SNR using the spectral flatness (Wiener entropy) method.
+
+    A pure tone or clean speech has very low spectral flatness → high SNR.
+    White noise has spectral flatness ≈ 1.0 → SNR ≈ 0 dB.  This method
+    correctly returns high SNR for both pure tones and clean speech without
+    needing a reference signal.
+
+    Args:
+        y:  Mono 1-D float32 waveform tensor.
+        sr: Sample rate (reserved for future adaptive n_fft selection).
+
+    Returns:
+        Estimated SNR in dB, clamped to ≥ 0.0.
+    """
+    n_fft = 512
+    if y.shape[0] < n_fft:
+        return 0.0
+
+    window = torch.hann_window(n_fft, device=y.device)
+    spec = torch.stft(
+        y,
+        n_fft=n_fft,
+        hop_length=n_fft // 4,
+        window=window,
+        return_complex=True,
+    )  # [freq, time]
+
+    power = spec.abs().pow(2) + 1e-12  # avoid log(0)
+
+    # Mean power spectrum across time frames
+    mean_power = power.mean(dim=1)  # [freq]
+
+    # Spectral flatness = geometric_mean / arithmetic_mean
+    geom_mean = mean_power.log().mean().exp()
+    arith_mean = mean_power.mean()
+
+    sfm = float((geom_mean / (arith_mean + 1e-12)).clamp(1e-10, 1.0))
+    snr_db = -10.0 * float(np.log10(sfm + 1e-10))
+    return max(0.0, snr_db)
+
+
+def _classify_environment_yamnet(
+    y: torch.Tensor,
+    sr: int,
+    config: PipelineConfig,
+    top_k: int = 3,
+) -> tuple:
+    """Run YAMNet (T015) to classify the acoustic environment.
+
+    Uses ``torchaudio.pipelines.YAMNET`` for AudioSet-class predictions.
+    Gracefully returns ``([], False)`` on any import error or inference
+    failure so that a missing model never halts the pipeline.
+
+    Args:
+        y:      Mono 1-D float32 waveform at *sr* Hz.
+        sr:     Sample rate of *y*.
+        config: :class:`PipelineConfig` with noise-class settings.
+        top_k:  Number of top predictions to return (default 3).
+
+    Returns:
+        ``(top_labels, noise_flag)`` where *top_labels* is a list of
+        ``{"label": str, "confidence": float}`` dicts (may be empty on
+        failure) and *noise_flag* is ``True`` when the top-1 label
+        matches a configured noise superclass with confidence ≥ threshold.
+    """
+    try:
+        import torchaudio  # already a project dependency
+
+        bundle = torchaudio.pipelines.YAMNET
+        model = bundle.get_model()
+        model.eval()
+
+        # YAMNet requires 16 kHz mono
+        if sr != 16000:
+            wav = torchaudio.functional.resample(y, sr, 16000)
+        else:
+            wav = y
+
+        with torch.no_grad():
+            scores, _embeddings, _spec = model(wav.unsqueeze(0))
+
+        # Average logit scores over time frames then softmax → probabilities
+        probs = torch.softmax(scores.mean(dim=0), dim=0)  # [n_classes]
+        k = min(top_k, probs.shape[0])
+        top_scores, top_indices = probs.topk(k)
+        labels = bundle.get_labels()
+
+        top_labels = [
+            {
+                "label": labels[int(idx)],
+                "confidence": round(float(s), 4),
+            }
+            for idx, s in zip(top_indices.tolist(), top_scores.tolist())
+        ]
+
+        # Noise flag: top-1 label in a configured noise superclass
+        noise_flag = False
+        if top_labels:
+            top1_label_lower = top_labels[0]["label"].lower()
+            top1_conf = top_labels[0]["confidence"]
+            if top1_conf >= config.environment_noise_threshold:
+                for nc in config.environment_noise_classes:
+                    nc_lower = nc.lower()
+                    if nc_lower in top1_label_lower or top1_label_lower in nc_lower:
+                        noise_flag = True
+                        break
+
+        return top_labels, noise_flag
+
+    except Exception as exc:
+        _logger.warning("YAMNet classification skipped: %s", exc)
+        return [], False
+
+
+def check_audio_quality(
+    audio_path: Path,
+    config: PipelineConfig,
+    participant_id: str = "",
+    session_id: str = "",
+    task_name: str = "",
+) -> CheckResult:
+    """Check technical audio quality for one audio file (T014/T015).
+
+    Computes proportion-clipped, proportion-silent, spectral SNR, and
+    amplitude-modulation depth; evaluates hard-gate and soft-score
+    thresholds from *config*; and runs YAMNet for acoustic scene
+    classification.
+
+    Args:
+        audio_path:     Path to the audio file (WAV or any torchaudio-
+                        readable format).
+        config:         :class:`PipelineConfig` with threshold/weight
+                        settings.
+        participant_id: BIDS participant ID (without ``sub-`` prefix).
+        session_id:     BIDS session ID (without ``ses-`` prefix).
+        task_name:      BIDS task name string.
+
+    Returns:
+        :class:`CheckResult` for the ``audio_quality`` check type.
+
+    Raises:
+        Any ``torchaudio.load`` exception propagates to the caller, which
+        should call
+        :func:`~b2aiprep.prepare.qa_utils.make_error_check_result`
+        (FR-014 model-failure path).
+    """
+    import torchaudio
+
+    # --- Load audio (exceptions propagate → make_error_check_result) ---
+    waveform, sr = torchaudio.load(str(audio_path))
+
+    # Downmix to mono
+    if waveform.shape[0] > 1:
+        waveform = waveform.mean(dim=0, keepdim=True)
+
+    # Resample to 16 kHz
+    if sr != RESAMPLE_RATE:
+        waveform = torchaudio.functional.resample(waveform, sr, RESAMPLE_RATE)
+        sr = RESAMPLE_RATE
+
+    y = waveform.squeeze()  # 1-D float32 tensor
+    n_samples = y.shape[0]
+
+    # --- Raw metric computation ---
+
+    # Clipping: proportion of samples at or near full scale (≥ 0.99)
+    proportion_clipped = float((y.abs() >= 0.99).float().mean())
+
+    # Short-time energy frames: 25 ms window / 12.5 ms hop
+    frame_len = max(1, min(int(0.025 * sr), n_samples))
+    hop_len = max(1, min(int(0.0125 * sr), n_samples))
+    if n_samples >= frame_len:
+        frames = y.unfold(0, frame_len, hop_len)       # [n_frames, frame_len]
+        frame_energy = frames.pow(2).mean(dim=1)        # [n_frames]
+    else:
+        frame_energy = y.pow(2).mean().unsqueeze(0)
+
+    # Silence: proportion of frames below energy threshold (≈ −60 dBFS)
+    _silence_threshold = 1e-6
+    proportion_silent = float((frame_energy < _silence_threshold).float().mean())
+
+    # SNR via spectral flatness (handles pure tones and speech correctly)
+    peak_snr_db = _estimate_snr_db(y, sr)
+
+    # Amplitude-modulation depth: coefficient of variation of short-time RMS
+    ste_rms = frame_energy.sqrt()
+    mean_rms = float(ste_rms.mean())
+    amplitude_modulation_depth = float(
+        ste_rms.std() / (mean_rms + 1e-10) if mean_rms > 1e-10 else 0.0
+    )
+
+    # --- Hard gate evaluation ---
+    gates = config.hard_gate_thresholds
+    snr_min_db = float(gates.get("snr_min_db", 12.0))
+    clipping_max = float(gates.get("clipping_max", 0.05))
+    silence_max = float(gates.get("silence_max", 0.50))
+
+    hard_gate_triggered = bool(
+        proportion_clipped > clipping_max
+        or proportion_silent > silence_max
+        or peak_snr_db < snr_min_db
+    )
+
+    # --- YAMNet environment classification (T015) ---
+    environment_top_labels, environment_noise_flag = _classify_environment_yamnet(
+        y, sr, config
+    )
+
+    # --- Score and classification ---
+    if hard_gate_triggered:
+        score = 0.0
+        confidence = 0.90
+        classification = Classification.FAIL
+    else:
+        # Normalise each sub-metric to [0, 1]
+        # SNR: snr_min_db → 0.0, 40 dB → 1.0
+        snr_ceil = 40.0
+        snr_score = min(
+            1.0,
+            max(0.0, (peak_snr_db - snr_min_db) / max(snr_ceil - snr_min_db, 1e-10)),
+        )
+        # Clipping: 0 → 1.0, clipping_max → 0.0
+        clipping_score = 1.0 - min(1.0, proportion_clipped / max(clipping_max, 1e-10))
+        # Silence: 0 → 1.0, silence_max → 0.0
+        silence_score = 1.0 - min(1.0, proportion_silent / max(silence_max, 1e-10))
+
+        score = float(0.5 * snr_score + 0.3 * clipping_score + 0.2 * silence_score)
+        score = min(1.0, max(0.0, score))
+
+        soft = config.soft_score_thresholds
+        pass_min = float(soft.get("pass_min", 0.75))
+        fail_max_t = float(soft.get("fail_max", 0.40))
+
+        if score >= pass_min:
+            classification = Classification.PASS
+            margin = (score - pass_min) / max(1.0 - pass_min, 1e-10)
+            confidence = 0.75 + 0.20 * min(1.0, margin)
+        elif score <= fail_max_t:
+            classification = Classification.FAIL
+            margin = (fail_max_t - score) / max(fail_max_t, 1e-10)
+            confidence = 0.75 + 0.20 * min(1.0, margin)
+        else:
+            classification = Classification.NEEDS_REVIEW
+            confidence = 0.50
+
+    try:
+        import torchaudio as _ta
+        _torchaudio_version = _ta.__version__
+    except Exception:
+        _torchaudio_version = "unknown"
+
+    detail = {
+        "proportion_clipped": round(proportion_clipped, 6),
+        "proportion_silent": round(proportion_silent, 6),
+        "peak_snr_db": round(peak_snr_db, 2),
+        "amplitude_modulation_depth": round(amplitude_modulation_depth, 6),
+        "hard_gate_triggered": hard_gate_triggered,
+        "environment_top_labels": environment_top_labels,
+        "environment_noise_flag": environment_noise_flag,
+    }
+
+    return CheckResult(
+        participant_id=participant_id,
+        session_id=session_id,
+        task_name=task_name,
+        check_type=CheckType.AUDIO_QUALITY,
+        score=round(score, 6),
+        confidence=round(min(1.0, max(0.0, confidence)), 6),
+        classification=classification,
+        detail=detail,
+        model_versions={
+            "yamnet": f"torchaudio.pipelines.YAMNET (torchaudio {_torchaudio_version})",
+        },
+    )
 
 def quality_control_wrapper(
     audio_paths,

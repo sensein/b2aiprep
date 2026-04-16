@@ -59,6 +59,21 @@ class Decision(str, Enum):
 
 
 @dataclass
+class AudioRecord:
+    """Minimal per-file record passed to each QA check function.
+
+    Constructed by the ``qa-run`` orchestrator from the BIDS path and features
+    file; check functions read ``audio_path`` and ``features_path`` as needed.
+    """
+
+    participant_id: str
+    session_id: str
+    task_name: str
+    audio_path: str
+    features_path: str
+
+
+@dataclass
 class CheckResult:
     """Output of one quality check for one audio file.
 
@@ -172,7 +187,8 @@ class PipelineConfig:
         default_factory=lambda: {
             "evans_model": (
                 "TODO: HuggingFace model path to be added when model is published"
-            )
+            ),
+            "yamnet": "torchaudio.pipelines.YAMNET",
         }
     )
     hard_gate_thresholds: dict[str, float] = field(

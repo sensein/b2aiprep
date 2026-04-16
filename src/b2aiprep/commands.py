@@ -1,5 +1,6 @@
 """Commands available through the CLI."""
 import csv
+import importlib.metadata as _imeta
 import json
 import logging
 import os
@@ -11,6 +12,8 @@ from glob import glob
 from importlib import resources
 from pathlib import Path
 import typing as t
+
+import torchaudio
 
 import click
 import pandas as pd
@@ -56,7 +59,24 @@ from b2aiprep.prepare.prepare import (
     generate_features_wrapper,
     validate_bids_audio_features,
 )
-from b2aiprep.prepare.quality_control import quality_control_wrapper
+from b2aiprep.prepare.quality_control import quality_control_wrapper, check_audio_quality
+from b2aiprep.prepare.unconsented_speakers import check_unconsented_speakers
+from b2aiprep.prepare.pii_detection import check_pii_disclosure
+from b2aiprep.prepare.task_compliance import check_task_compliance
+from b2aiprep.prepare.qa_models import AudioRecord, CheckType
+from b2aiprep.prepare.qa_report import (
+    compute_composite_score,
+    write_check_results_tsv,
+    write_composite_scores_tsv,
+    write_needs_review_queue_tsv,
+)
+from b2aiprep.prepare.qa_utils import (
+    hash_config,
+    load_config as load_pipeline_config,
+    make_error_check_result,
+    save_config_snapshot,
+    shard_audio_list,
+)
 
 from b2aiprep.prepare.data_validation import validate_phenotype, validate_no_extra_audio_tasks_present
 from b2aiprep.prepare.utils import normalize_task_label, generate_seed, generate_pseudonym, load_lookup_table, build_lookup_table
@@ -1513,7 +1533,7 @@ def id_remap(input_file, output_dir, load_lookup):
         load_lookup (path): Path to pre-existing id remap file
     """
     df = pd.read_csv(input_file, sep='\t')
-    
+
     id_column = ""
     if "record_id" in df.columns:
         id_column = "record_id"
@@ -1535,3 +1555,188 @@ def id_remap(input_file, output_dir, load_lookup):
         num_ids = len(lookup)
         _LOGGER.info(f"Lookup table contains {num_ids} ids")
     _LOGGER.info(f"Lookup table saved to '{output_file}'")
+
+
+# ---------------------------------------------------------------------------
+# T022 — qa-run: QA pipeline orchestrator
+# ---------------------------------------------------------------------------
+
+
+def _parse_bids_stem(stem: str) -> tuple:
+    """Return (participant_id, session_id, task_name) from a BIDS audio file stem."""
+    pid = ses = task = ""
+    for part in stem.split("_"):
+        if part.startswith("sub-"):
+            pid = part[4:]
+        elif part.startswith("ses-"):
+            ses = part[4:]
+        elif part.startswith("task-"):
+            task = part[5:]
+    return pid, ses, task
+
+
+@click.command(name="qa-run")
+@click.argument("bids_dir", type=click.Path(exists=True, file_okay=False))
+@click.argument("output_dir", type=click.Path(file_okay=False))
+@click.option("--config", "config_path", default=None, type=click.Path(exists=True),
+              help="Path to pipeline config JSON. Uses built-in default if omitted.")
+@click.option("--part", default=1, show_default=True, type=int,
+              help="1-based shard index for SLURM array jobs.")
+@click.option("--num-parts", default=1, show_default=True, type=int,
+              help="Total number of shards for SLURM array jobs.")
+@click.option("--batch-size", default=0, show_default=True, type=int,
+              help="Unused placeholder; reserved for future batching.")
+@click.option("--num-cores", default=1, show_default=True, type=int,
+              help="Unused placeholder; reserved for future parallelism.")
+@click.option("--skip-pii", is_flag=True, default=False,
+              help="Skip the PII disclosure check (Stage 3).")
+@click.option("--skip-task-compliance", is_flag=True, default=False,
+              help="Skip the task compliance check (Stage 4).")
+@click.option("--task-filter", default=None, type=str,
+              help="Comma-separated task names to include; all tasks if omitted.")
+@click.option("--use-existing-qc", is_flag=True, default=False,
+              help="Skip Stage 1 audio-quality check when pre-computed results exist.")
+@click.option("--log-level", default="INFO",
+              type=click.Choice(["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]),
+              help="Override log level for this command.")
+def qa_run(
+    bids_dir,
+    output_dir,
+    config_path,
+    part,
+    num_parts,
+    batch_size,
+    num_cores,
+    skip_pii,
+    skip_task_compliance,
+    task_filter,
+    use_existing_qc,
+    log_level,
+):
+    """Run the audio QA pipeline over a BIDS dataset.
+
+    Walks BIDS_DIR for ``**/audio/*.wav`` files, applies up to four quality
+    checks per file, computes composite scores, and writes TSV outputs plus a
+    config snapshot to OUTPUT_DIR.
+
+    \b
+    FR-011 — unreadable/corrupt audio:  skip entirely, absent from all output.
+    FR-014 — check model failure:        route to needs_review_queue, no halt.
+    """
+    logging.getLogger().setLevel(log_level)
+
+    config = load_pipeline_config(config_path) if config_path else load_pipeline_config()
+    config_hash = hash_config(config)
+    try:
+        pipeline_version = _imeta.version("b2aiprep")
+    except Exception:  # noqa: BLE001
+        pipeline_version = ""
+
+    out_path = Path(output_dir)
+    out_path.mkdir(parents=True, exist_ok=True)
+
+    all_audio_paths = sorted(Path(bids_dir).glob("**/audio/*.wav"))
+
+    if task_filter:
+        allowed = {t.strip() for t in task_filter.split(",")}
+        all_audio_paths = [
+            p for p in all_audio_paths
+            if any(f"task-{t}" in p.stem for t in allowed)
+        ]
+
+    if num_parts > 1:
+        all_audio_paths = shard_audio_list(all_audio_paths, part, num_parts)
+
+    _LOGGER.info("qa-run: processing %d audio files", len(all_audio_paths))
+
+    all_check_results = []
+    all_composite_scores = []
+
+    for audio_path in all_audio_paths:
+        pid, ses, task = _parse_bids_stem(audio_path.stem)
+        features_stem = audio_path.stem.replace("_audio", "_features") \
+            if "_audio" in audio_path.stem else audio_path.stem + "_features"
+        features_path = audio_path.parent / (features_stem + ".pt")
+
+        record = AudioRecord(
+            participant_id=pid,
+            session_id=ses,
+            task_name=task,
+            audio_path=str(audio_path),
+            features_path=str(features_path),
+        )
+
+        # FR-011: skip unreadable/corrupt audio entirely
+        try:
+            torchaudio.load(str(audio_path))
+        except Exception as exc:
+            _LOGGER.error("FR-011: skipping unreadable audio %s: %s", audio_path, exc)
+            continue
+
+        file_results = []
+
+        # Stage 1 — Audio quality
+        if not use_existing_qc:
+            try:
+                file_results.append(check_audio_quality(
+                    audio_path=str(audio_path),
+                    config=config,
+                    participant_id=pid,
+                    session_id=ses,
+                    task_name=task,
+                ))
+            except Exception as exc:
+                file_results.append(make_error_check_result(
+                    pid, ses, task, CheckType.AUDIO_QUALITY, exc, config.model_versions,
+                ))
+
+        # Stage 2 — Unconsented speakers
+        try:
+            file_results.append(check_unconsented_speakers(record, config))
+        except Exception as exc:
+            file_results.append(make_error_check_result(
+                pid, ses, task, CheckType.UNCONSENTED_SPEAKERS, exc, config.model_versions,
+            ))
+
+        # Stage 3 — PII disclosure (optional)
+        if not skip_pii:
+            try:
+                file_results.append(check_pii_disclosure(record, config))
+            except Exception as exc:
+                file_results.append(make_error_check_result(
+                    pid, ses, task, CheckType.PII_DISCLOSURE, exc, config.model_versions,
+                ))
+
+        # Stage 4 — Task compliance (optional)
+        if not skip_task_compliance:
+            try:
+                file_results.append(check_task_compliance(record, config))
+            except Exception as exc:
+                file_results.append(make_error_check_result(
+                    pid, ses, task, CheckType.TASK_COMPLIANCE, exc, config.model_versions,
+                ))
+
+        composite = compute_composite_score(
+            check_results=file_results,
+            config=config,
+            participant_id=pid,
+            session_id=ses,
+            task_name=task,
+            config_hash=config_hash,
+            pipeline_version=pipeline_version,
+        )
+        all_check_results.extend(file_results)
+        all_composite_scores.append(composite)
+
+    write_check_results_tsv(all_check_results, out_path)
+    write_composite_scores_tsv(all_composite_scores, out_path)
+    write_needs_review_queue_tsv(all_composite_scores, out_path)
+    save_config_snapshot(config, str(out_path))
+
+    n_pass = sum(1 for c in all_composite_scores if c.final_classification.value == "pass")
+    n_fail = sum(1 for c in all_composite_scores if c.final_classification.value == "fail")
+    n_review = sum(1 for c in all_composite_scores if c.final_classification.value == "needs_review")
+    click.echo(
+        f"qa-run complete: {len(all_composite_scores)} files processed "
+        f"({n_pass} pass, {n_fail} fail, {n_review} needs_review)"
+    )
