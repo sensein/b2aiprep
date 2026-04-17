@@ -1,3 +1,27 @@
+# 3.2.0 (Fri Apr 17 2026)
+
+#### 🚀 Enhancement
+
+- Made id remapping into a command [#302](https://github.com/sensein/b2aiprep/pull/302) ([@Evan8456](https://github.com/Evan8456))
+
+#### 🐛 Bug Fix
+
+- Change COPD and asthma field to reference gold standard diagnosis [#258](https://github.com/sensein/b2aiprep/pull/258) ([@wilke0818](https://github.com/wilke0818))
+- Update files for redcap2rs-4.6.0-20260401191141 [#257](https://github.com/sensein/b2aiprep/pull/257) ([@github-actions[bot]](https://github.com/github-actions[bot]) [@b2ai-workflow-conenctor[bot]](https://github.com/b2ai-workflow-conenctor[bot]))
+- Fixed bug with metadata bundle [#254](https://github.com/sensein/b2aiprep/pull/254) ([@Evan8456](https://github.com/Evan8456))
+- Update files for redcap2rs-4.5.0-20260317205911 [#253](https://github.com/sensein/b2aiprep/pull/253) ([@github-actions[bot]](https://github.com/github-actions[bot]) [@b2ai-workflow-conenctor[bot]](https://github.com/b2ai-workflow-conenctor[bot]))
+- Fixed naming descrepancy with redcap and file names [#252](https://github.com/sensein/b2aiprep/pull/252) ([@Evan8456](https://github.com/Evan8456))
+- Adding missing descriptors not in the documentation [#251](https://github.com/sensein/b2aiprep/pull/251) ([@Evan8456](https://github.com/Evan8456))
+
+#### Authors: 4
+
+- [@b2ai-workflow-conenctor[bot]](https://github.com/b2ai-workflow-conenctor[bot])
+- [@github-actions[bot]](https://github.com/github-actions[bot])
+- Evan Ng ([@Evan8456](https://github.com/Evan8456))
+- Jordan Wilke ([@wilke0818](https://github.com/wilke0818))
+
+---
+
 # 3.1.0 (Mon Mar 09 2026)
 
 #### 🚀 Enhancement
