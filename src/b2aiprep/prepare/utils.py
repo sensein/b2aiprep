@@ -10,7 +10,9 @@ import time
 import wave
 from typing import Any, Dict, List
 import re
-
+import hmac
+import hashlib
+import secrets
 import pandas as pd
 
 _LOGGER = logging.getLogger(__name__)
@@ -343,3 +345,58 @@ def get_wav_duration(file_path):
         # Calculate duration in seconds
         duration = frames / float(rate)
     return duration
+
+
+def generate_seed(seed_size=32):
+    """Generate a cryptographic seed"""
+    seed = secrets.token_bytes(seed_size)
+    return seed
+
+
+def generate_pseudonym(id_str, secret_key, length, salt=""):
+    """Generates a fixed-length pseudonym."""
+    message = str(id_str) + salt
+    digest = hmac.new(secret_key, message.encode(), hashlib.sha256).hexdigest()
+    number = int(digest[:12], 16) % 10**length
+    return str(number).zfill(length)
+
+
+def load_lookup_table(lookup_path):
+    lookup_path = Path(lookup_path)
+
+    if not lookup_path.exists():
+        raise FileNotFoundError(f"Lookup table not found at: {lookup_path}")
+
+    with open(lookup_path, "r") as f:
+        lookup_table = json.load(f)
+        existing_ids = len(lookup_table)
+        _LOGGER.info(f"Pre-existing table contains {existing_ids} ids")
+    remapped_ids = set(lookup_table.values())
+
+    return lookup_table, remapped_ids
+
+
+def build_lookup_table(original_ids, secret_key, load_lookup=None):
+    """
+    Generates the look up table using the secret and original ids.
+    """
+    id_length = 6
+    if load_lookup is None:
+        lookup_table = {}
+        used_values = set()
+    else:
+        lookup_table, used_values = load_lookup_table(load_lookup)
+    for oid in original_ids:
+        if oid in lookup_table:
+            continue
+        salt_counter = 0
+        while True:
+            salt = str(salt_counter) if salt_counter > 0 else ""
+            pseudo_id = generate_pseudonym(oid, secret_key, id_length, salt)
+            if pseudo_id not in used_values:
+                lookup_table[oid] = pseudo_id
+                used_values.add(pseudo_id)
+                break
+            salt_counter += 1  # for collisions
+
+    return lookup_table

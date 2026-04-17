@@ -886,3 +886,69 @@ def test_reproschema_to_redcap_cli():
         result = subprocess.run(command, capture_output=True, text=True)
         assert result.returncode == 0, f"CLI command failed: {result.stderr}"
         assert output_dir.exists(), "Output directory was not created"
+
+
+
+def test_id_remap_cli():
+    """Test the 'b2aiprep-cli id-remap command using subprocess."""
+    with tempfile.TemporaryDirectory() as temp_dir:
+        ids = {"participant_id": ["P001", "P002"]}
+        id_df = pd.DataFrame(ids)
+        id_dir = Path(temp_dir) / "ids.tsv"
+        
+        id_df.to_csv(id_dir, sep='\t', index=False)
+
+        output_dir = Path(temp_dir) / "output"
+        output_dir.mkdir(parents=True, exist_ok=True)
+        command = [
+            "b2aiprep-cli",
+            "id-remap",
+            id_dir,
+            output_dir
+        ]
+
+        output_file = output_dir / "id_lookup_table.json"
+        result = subprocess.run(command, capture_output=True, text=True)
+        assert result.returncode == 0, f"CLI command failed: {result.stderr}"
+        assert output_dir.exists(), "Output directory was not created"
+        assert output_file.exists(), "Output file was not created"
+        
+def test_id_remap_existing_remap_cli():
+    """Test the 'b2aiprep-cli id-remap command using subprocess."""
+    with tempfile.TemporaryDirectory() as temp_dir:
+        ids = {"participant_id": ["P001", "P002"]}
+        id_df = pd.DataFrame(ids)
+        id_dir = Path(temp_dir) / "ids.tsv"
+        remap = {"P003": "123456", "P004": "678910"}
+        remap_file_path = Path(temp_dir) / "id_remap.json"
+        with open(remap_file_path, "w") as file:
+            json.dump(remap, file)
+        id_df.to_csv(id_dir, sep='\t', index=False)
+
+        output_dir = Path(temp_dir) / "output"
+        output_dir.mkdir(parents=True, exist_ok=True)
+        command = [
+            "b2aiprep-cli",
+            "id-remap",
+            id_dir,
+            output_dir,
+            "--load_lookup",
+            remap_file_path
+        ]
+
+        output_file = output_dir / "id_lookup_table.json"
+        result = subprocess.run(command, capture_output=True, text=True)
+        assert result.returncode == 0, f"CLI command failed: {result.stderr}"
+        assert output_dir.exists(), "Output directory was not created"
+        assert output_file.exists(), "Output file was not created"
+        
+        with open(output_file, 'r') as file:
+            data = json.load(file)
+
+        assert "P003" in data, "Missing Participant in remap"
+        assert data["P003"] == "123456", "Remap is incorrect"
+        assert "P004" in data, "Missing Participant in remap"
+        assert data["P004"] == "678910", "Remap is incorrect"
+        assert "P001" in data, "P001 is missing in remap file"
+        assert "P002" in data, "P002 is missing in remap file"
+        
