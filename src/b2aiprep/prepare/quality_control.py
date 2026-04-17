@@ -72,17 +72,21 @@ def _estimate_snr_db(y: torch.Tensor, sr: int) -> float:  # noqa: ARG001
     return max(0.0, snr_db)
 
 
-def _classify_environment_yamnet(
+_AST_MODEL_DEFAULT = "MIT/ast-finetuned-audioset-10-10-0.4593"
+
+
+def _classify_environment_ast(
     y: torch.Tensor,
     sr: int,
     config: PipelineConfig,
     top_k: int = 3,
 ) -> tuple:
-    """Run YAMNet (T015) to classify the acoustic environment.
+    """Run Audio Spectrogram Transformer (AST) to classify the acoustic environment.
 
-    Uses ``torchaudio.pipelines.YAMNET`` for AudioSet-class predictions.
-    Gracefully returns ``([], False)`` on any import error or inference
-    failure so that a missing model never halts the pipeline.
+    Uses ``MIT/ast-finetuned-audioset-10-10-0.4593`` via HuggingFace transformers
+    for AudioSet-class predictions.  Gracefully returns ``([], False)`` on any
+    import error or inference failure so that a missing model never halts the
+    pipeline.
 
     Args:
         y:      Mono 1-D float32 waveform at *sr* Hz.
@@ -97,30 +101,35 @@ def _classify_environment_yamnet(
         matches a configured noise superclass with confidence ≥ threshold.
     """
     try:
-        import torchaudio  # already a project dependency
+        from transformers import AutoFeatureExtractor, ASTForAudioClassification  # type: ignore[import]
 
-        bundle = torchaudio.pipelines.YAMNET
-        model = bundle.get_model()
+        ast_model_id = config.model_versions.get("ast_model", _AST_MODEL_DEFAULT)
+        feature_extractor = AutoFeatureExtractor.from_pretrained(ast_model_id)
+        model = ASTForAudioClassification.from_pretrained(ast_model_id)
         model.eval()
 
-        # YAMNet requires 16 kHz mono
+        # AST expects 16 kHz mono
         if sr != 16000:
+            import torchaudio
             wav = torchaudio.functional.resample(y, sr, 16000)
         else:
             wav = y
 
-        with torch.no_grad():
-            scores, _embeddings, _spec = model(wav.unsqueeze(0))
+        inputs = feature_extractor(
+            wav.numpy(), sampling_rate=16000, return_tensors="pt"
+        )
 
-        # Average logit scores over time frames then softmax → probabilities
-        probs = torch.softmax(scores.mean(dim=0), dim=0)  # [n_classes]
+        with torch.no_grad():
+            logits = model(**inputs).logits
+
+        probs = torch.softmax(logits[0], dim=0)
         k = min(top_k, probs.shape[0])
         top_scores, top_indices = probs.topk(k)
-        labels = bundle.get_labels()
+        id2label = model.config.id2label
 
         top_labels = [
             {
-                "label": labels[int(idx)],
+                "label": id2label[int(idx)],
                 "confidence": round(float(s), 4),
             }
             for idx, s in zip(top_indices.tolist(), top_scores.tolist())
@@ -141,7 +150,7 @@ def _classify_environment_yamnet(
         return top_labels, noise_flag
 
     except Exception as exc:
-        _logger.warning("YAMNet classification skipped: %s", exc)
+        _logger.warning("AST environment classification skipped: %s", exc)
         return [], False
 
 
@@ -156,7 +165,7 @@ def check_audio_quality(
 
     Computes proportion-clipped, proportion-silent, spectral SNR, and
     amplitude-modulation depth; evaluates hard-gate and soft-score
-    thresholds from *config*; and runs YAMNet for acoustic scene
+    thresholds from *config*; and runs the AST model for acoustic scene
     classification.
 
     Args:
@@ -235,7 +244,7 @@ def check_audio_quality(
     )
 
     # --- YAMNet environment classification (T015) ---
-    environment_top_labels, environment_noise_flag = _classify_environment_yamnet(
+    environment_top_labels, environment_noise_flag = _classify_environment_ast(
         y, sr, config
     )
 
@@ -276,12 +285,6 @@ def check_audio_quality(
             classification = Classification.NEEDS_REVIEW
             confidence = 0.50
 
-    try:
-        import torchaudio as _ta
-        _torchaudio_version = _ta.__version__
-    except Exception:
-        _torchaudio_version = "unknown"
-
     detail = {
         "proportion_clipped": round(proportion_clipped, 6),
         "proportion_silent": round(proportion_silent, 6),
@@ -302,7 +305,7 @@ def check_audio_quality(
         classification=classification,
         detail=detail,
         model_versions={
-            "yamnet": f"torchaudio.pipelines.YAMNET (torchaudio {_torchaudio_version})",
+            "ast_model": config.model_versions.get("ast_model", _AST_MODEL_DEFAULT),
         },
     )
 

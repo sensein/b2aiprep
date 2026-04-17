@@ -1,11 +1,11 @@
 {
-  "_comment": "Default PipelineConfig for the Audio Quality Assurance Pipeline. All thresholds and weights are configurable. Pass this file via --config to qa-run to override defaults.",
+  "_comment": "Default PipelineConfig for the Audio Quality Assurance Pipeline. All thresholds and weights are configurable. Pass this file via --pipeline-config to qa-run to override defaults.",
   "config_version": "1.0.0",
   "created_at": null,
   "random_seed": 42,
   "model_versions": {
     "evans_model": "TODO: HuggingFace model path to be added when model is published",
-    "yamnet": "torchaudio.pipelines.YAMNET"
+    "ast_model": "MIT/ast-finetuned-audioset-10-10-0.4593"
   },
   "hard_gate_thresholds": {
     "snr_min_db": 12.0,

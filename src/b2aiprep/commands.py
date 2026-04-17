@@ -1578,7 +1578,7 @@ def _parse_bids_stem(stem: str) -> tuple:
 @click.command(name="qa-run")
 @click.argument("bids_dir", type=click.Path(exists=True, file_okay=False))
 @click.argument("output_dir", type=click.Path(file_okay=False))
-@click.option("--config", "config_path", default=None, type=click.Path(exists=True),
+@click.option("--pipeline-config", "config_path", default=None, type=click.Path(exists=True),
               help="Path to pipeline config JSON. Uses built-in default if omitted.")
 @click.option("--part", default=1, show_default=True, type=int,
               help="1-based shard index for SLURM array jobs.")

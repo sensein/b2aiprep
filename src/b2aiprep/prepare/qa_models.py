@@ -188,7 +188,7 @@ class PipelineConfig:
             "evans_model": (
                 "TODO: HuggingFace model path to be added when model is published"
             ),
-            "yamnet": "torchaudio.pipelines.YAMNET",
+            "ast_model": "MIT/ast-finetuned-audioset-10-10-0.4593",
         }
     )
     hard_gate_thresholds: dict[str, float] = field(
