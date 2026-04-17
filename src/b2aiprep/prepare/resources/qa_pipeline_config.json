@@ -37,7 +37,7 @@
     }
   },
   "environment_noise_threshold": 0.60,
-  "environment_noise_classes": ["Speech", "Crowd", "Music", "Vehicle"],
+  "environment_noise_classes": ["Crowd", "Music", "Vehicle", "Television", "Radio"],
   "confidence_disagreement_penalty": 0.50,
   "min_transcript_confidence": 0.70,
   "human_review_timeout_days": 30,

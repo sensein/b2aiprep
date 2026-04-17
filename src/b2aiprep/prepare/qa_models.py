@@ -225,7 +225,7 @@ class PipelineConfig:
     )
     environment_noise_threshold: float = 0.60
     environment_noise_classes: list[str] = field(
-        default_factory=lambda: ["Speech", "Crowd", "Music", "Vehicle"]
+        default_factory=lambda: ["Crowd", "Music", "Vehicle", "Television", "Radio"]
     )
     confidence_disagreement_penalty: float = 0.50
     min_transcript_confidence: float = 0.70

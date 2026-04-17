@@ -1,60 +1,44 @@
 # Implementation Plan: Audio Quality Assurance Pipeline
 
-**Branch**: `185-audio-quality-pipeline` | **Date**: 2026-04-09 | **Spec**: [spec.md](spec.md)
+**Branch**: `185-audio-quality-pipeline` | **Date**: 2026-04-17 | **Spec**: [spec.md](spec.md)
 **Input**: Feature specification from `specs/001-audio-quality-pipeline/spec.md`
+
+**Scope**: This plan covers **User Story 1 only** (Automated Batch Quality Screening).
+User Story 2 (Human Review) and User Story 3 (Release Quality Report) are deferred —
+see `## Deferred Stories` in spec.md and Phases 4–5 in tasks.md.
 
 ## Summary
 
-Build a multi-check, confidence-scored audio quality assurance pipeline on top of the existing
-b2aiprep processing stack. The pipeline combines four check domains — technical audio quality,
-unconsented speaker detection, PII disclosure detection, and task compliance — into a
-configurable composite score with per-task-type weighting. Audios that fall in uncertain
-territory are routed to a CLI-based human review queue. A release report summarises batch
-quality at a stated confidence level.
-
-Most infrastructure already exists or is on an unmerged branch (`pii_detection`). The primary
-new work is: (1) integrating existing checks into a unified scoring/classification layer,
-(2) adding task-compliance verification (WER + phoneme checks), (3) porting PII detection
-from the branch, (4) building the composite score, human review CLI, and release report,
-(5) adding acoustic scene classification (YAMNet or equivalent) to Stage 1 technical quality,
-(6) adding per-speaker language-ID to the unconsented-speaker check, (7) per-stage timing
-metrics for bottleneck analysis, and (8) graceful model-failure handling (error classification
-+ automatic routing to human review without halting the pipeline).
+Implement the automated batch audio quality screening pipeline for the Bridge2AI Voice
+dataset release. The pipeline evaluates each audio recording across four quality checks
+(technical quality, unconsented speakers, PII disclosure, task compliance), combines
+per-check scores into a weighted composite score, classifies each audio as pass / fail /
+needs-review, and writes per-audio JSON sidecars and batch TSV outputs. Runs via the
+existing `b2aiprep-cli` interface with SLURM sharding for HPC deployment.
 
 ## Technical Context
 
-**Language/Version**: Python 3.10–3.13
-**Primary Dependencies**: senselab~=1.3.0 (audio QC, diarization, transcription, embeddings),
-  click (CLI), torch/torchaudio, parselmouth (Praat phoneme/pitch), presidio-analyzer,
-  nvidia/gliner-pii, microsoft/Phi-4-mini-instruct (optional, for LLM compliance checks),
-  torchaudio (YAMNet acoustic scene classifier via torchaudio.pipelines),
-  langdetect or equivalent (per-speaker language identification),
-  sounddevice (optional, for audio playback in qa-review; gracefully degraded on HPC nodes),
-  pytest (testing)
-**Storage**: BIDS-structured TSV/JSON files in BIDS root; `.pt` feature files per audio
-**Testing**: pytest with Click CliRunner; synthetic WAV fixtures via `create_dummy_wav_file()`
-**Target Platform**: Linux server (HPC/cluster typical)
-**Project Type**: library/cli
-**Performance Goals**: Batch-parallelisable; avoid re-reading `.pt` features already computed
-**Constraints**: All outputs MUST be deterministic (seed pinning, model version locking);
-  config recorded in output for audit/reproducibility; existing CLI interface unchanged
-**Scale/Scope**: Full Bridge2AI Voice dataset — > 10,000 recordings across 788 distinct task
-  IDs; node-level distribution via SLURM array jobs with sharding CLI args; intra-node
-  parallelism via multiprocessing
+**Language/Version**: Python 3.10+
+**Primary Dependencies**: click, torch, torchaudio, transformers (HuggingFace),
+  pyannote.audio, openai-whisper, soundfile, numpy, pandas, parselmouth, senselab
+**Storage**: Files — per-audio JSON sidecars (BIDS co-located) + batch TSV outputs
+**Testing**: pytest with Click CliRunner for CLI integration tests
+**Target Platform**: Linux (HPC SLURM cluster, Rocky Linux 8)
+**Project Type**: CLI tool extending existing `b2aiprep-cli` command set
+**Performance Goals**: >10,000 audios per batch via SLURM array job sharding;
+  no per-audio wall-clock target in v1 (timing metrics collected for future budgeting)
+**Constraints**: Fully deterministic outputs — random seed pinned in PipelineConfig,
+  model versions locked; per-stage timing recorded in JSON sidecar (FR-013)
+**Scale/Scope**: Full Bridge2AI Voice dataset batch (estimated >10k audio files)
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+*Constitution file is unpopulated (template placeholder) — no project-specific gates to
+evaluate. Standard quality practices apply: tests written before implementation, public
+functions have test coverage, no hardcoded thresholds (all in PipelineConfig).*
 
-| Principle | Status | Notes |
-|-----------|--------|-------|
-| I. Reproducibility | ✅ PASS | Model versions pinned in `PipelineConfig`; random seeds locked; config hash recorded in all outputs |
-| II. Test Coverage | ✅ PASS | New modules (task_compliance, pii_detection, unconsented_speakers, qa_report) each get dedicated test files with synthetic fixtures |
-| III. Backward Compatibility | ✅ PASS | All new CLI commands are additive; no existing commands removed or changed |
-| IV. Data Integrity & Standards | ✅ PASS | Outputs written to BIDS root in TSV/JSON; schema versioned; config versioned |
-| V. Performance-Aware | ✅ PASS | Batch processing + parallelism inherited from existing `quality_control_wrapper()`; `.pt` feature reuse avoids redundant computation; SLURM array job sharding via `--part`/`--num-parts` CLI args for > 10,000 audio batches |
-
-No violations. Phase 0 cleared.
+**Pre-design gates**: PASS (no violations)
+**Post-design gates**: PASS (no violations)
 
 ## Project Structure
 
@@ -63,12 +47,12 @@ No violations. Phase 0 cleared.
 ```text
 specs/001-audio-quality-pipeline/
 ├── plan.md              ← this file
-├── research.md          ← Phase 0 output
-├── data-model.md        ← Phase 1 output
-├── quickstart.md        ← Phase 1 output
+├── research.md          ← Phase 0 output (complete)
+├── data-model.md        ← Phase 1 output (complete)
+├── quickstart.md        ← Phase 1 output (complete)
 ├── contracts/
-│   └── cli-commands.md  ← Phase 1 output
-└── tasks.md             ← Phase 2 output (/speckit.tasks)
+│   └── cli-commands.md  ← Phase 1 output (complete)
+└── tasks.md             ← task breakdown (complete; Phase 4/5 deferred)
 ```
 
 ### Source Code
@@ -76,33 +60,41 @@ specs/001-audio-quality-pipeline/
 ```text
 src/b2aiprep/
 ├── prepare/
-│   ├── qa_models.py               (new — QA data model dataclasses only: CheckResult,
-│   │                               CompositeScore, ReviewDecision, QualityReport, PipelineConfig)
-│   ├── qa_utils.py                (new — pipeline utilities: config loading/hashing, JSON
-│   │                               sidecar writer, timing context, SLURM sharding, error handler)
-│   ├── quality_control.py         (existing — extend with classification thresholds +
-│   │                               acoustic scene classifier / YAMNet integration)
-│   ├── task_compliance.py         (new — WER, phoneme, LLM compliance checks)
-│   ├── pii_detection.py           (new — port + refactor from pii_detection branch)
-│   ├── unconsented_speakers.py    (new — unified diarization + Evan's model + embeddings
-│   │                               + per-speaker language-ID)
-│   └── qa_report.py               (new — composite score, human review, release report,
-│                                   timing metrics, error/model-failure handling)
-├── commands.py                    (extend — 3 new CLI commands)
-└── prepare/resources/
-    ├── qa_pipeline_config.json    (new — default thresholds, weights, model versions)
-    └── qa_pipeline_schema.json    (new — output schema documentation)
+│   ├── quality_control.py          # extended (T014, T015) [x done]
+│   ├── unconsented_speakers.py     # new (T016) [x done]
+│   ├── pii_detection.py            # new (T017) [x done]
+│   ├── task_compliance.py          # new (T018, T019, T020) [x done]
+│   ├── qa_report.py                # new — composite score only for US1 (T021) [x done]
+│   ├── qa_models.py                # new — dataclasses (T003) [x done]
+│   ├── qa_utils.py                 # new — utilities (T004–T008) [x done]
+│   └── resources/
+│       ├── qa_pipeline_config.json # new (T001) [x done]
+│       └── qa_pipeline_schema.json # new (T002) [x done]
+├── commands.py                     # extended — qa-run command (T022) [x done]
+└── cli.py                          # extended — qa-run registered (T023) [x done]
 
 tests/
-├── test_task_compliance.py        (new)
-├── test_pii_detection.py          (new)
-├── test_unconsented_speakers.py   (new)
-└── test_qa_report.py              (new)
+├── test_qa_utils.py                # new (T008b) [x done]
+├── test_quality_control.py         # extended (T009) [x done]
+├── test_unconsented_speakers.py    # new (T010) [x done]
+├── test_pii_detection.py           # new (T011) [x done]
+├── test_task_compliance.py         # new (T012) [x done]
+└── test_qa_run.py                  # new (T013) [x done]
 ```
 
-**Structure Decision**: Single project layout extending the existing `src/b2aiprep/prepare/`
-module hierarchy. New modules follow the existing pattern (one logical concern per file,
-wrapped by `commands.py` CLI functions).
+## Deferred Modules (US2 / US3)
+
+These will be added in a future iteration once US2 and US3 are fully specified:
+
+```text
+src/b2aiprep/
+├── prepare/
+│   └── qa_report.py               # will be extended with compute_quality_report,
+│                                  # write_quality_report_*, format_review_card,
+│                                  # record_decision, load_decided_keys
+├── commands.py                    # will be extended with qa-review, qa-report
+└── cli.py                         # will register qa-review, qa-report
+```
 
 ## Complexity Tracking
 

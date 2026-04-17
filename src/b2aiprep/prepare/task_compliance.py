@@ -17,8 +17,9 @@ Public API
 """
 
 import logging
+import re
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional
 
 import torch
 
@@ -119,7 +120,12 @@ def _get_prompt_text(task_name: str) -> str:
     """Return the expected spoken content for *task_name*.
 
     Looks up ``audio_task_descriptions.json`` bundled with b2aiprep.
-    Returns an empty string when the task name is not found.
+    Falls back to stripping a trailing ``-N`` numeric suffix and looking up
+    the base task name (e.g. ``"passage-8"`` → ``"passage"``).  For base
+    entries with multiple prompts the N-th item is returned (1-based).  For
+    base entries with a single long prompt the text is sentence-split and the
+    N-th sentence is returned.
+    Returns an empty string when no reference text can be resolved.
     """
     try:
         import json
@@ -130,16 +136,42 @@ def _get_prompt_text(task_name: str) -> str:
         )
         descriptions = json.loads(resource.read_text(encoding="utf-8"))
 
-        # Support both list and dict formats
-        if isinstance(descriptions, list):
-            for entry in descriptions:
-                if entry.get("task_name") == task_name or entry.get("id") == task_name:
-                    prompts = entry.get("prompts", entry.get("task_prompts", []))
-                    return " ".join(str(p) for p in prompts)
-        elif isinstance(descriptions, dict):
-            entry = descriptions.get(task_name, {})
-            prompts = entry.get("prompts", entry.get("task_prompts", []))
+        def _lookup_prompts(name: str):
+            """Return prompts list for *name*, or None if the key is absent."""
+            if isinstance(descriptions, list):
+                for entry in descriptions:
+                    if entry.get("task_name") == name or entry.get("id") == name:
+                        return entry.get("prompts", entry.get("task_prompts", []))
+                return None
+            if isinstance(descriptions, dict):
+                if name in descriptions:
+                    entry = descriptions[name]
+                    return entry.get("prompts", entry.get("task_prompts", []))
+            return None
+
+        # 1. Try exact match.
+        prompts = _lookup_prompts(task_name)
+
+        if prompts is None:
+            # 2. Strip trailing -N and try the base key.
+            m = re.match(r"^(.+)-(\d+)$", task_name)
+            if m:
+                base, idx = m.group(1), int(m.group(2))
+                prompts = _lookup_prompts(base)
+                if prompts is not None and len(prompts) > 1:
+                    # Multiple items (e.g. sentence list): pick by 1-based index.
+                    i = idx - 1
+                    selected = prompts[i] if 0 <= i < len(prompts) else prompts[-1]
+                    return str(selected)
+                if prompts and len(prompts) == 1:
+                    # Single long text (e.g. full passage): split into sentences.
+                    sentences = re.split(r"(?<=[.!?])\s+", str(prompts[0]))
+                    i = idx - 1
+                    return sentences[i] if 0 <= i < len(sentences) else str(prompts[0])
+
+        if prompts:
             return " ".join(str(p) for p in prompts)
+
     except Exception as exc:
         _logger.debug("Could not load prompt text for %s: %s", task_name, exc)
     return ""
@@ -192,7 +224,42 @@ def _get_active_speech_duration(audio_record: Any) -> float:
     return 0.0
 
 
-def _task_correctness_phi4(audio_record: Any, config: PipelineConfig) -> bool:
+def _get_task_instructions(task_name: str) -> str:
+    """Return the human-readable task instructions for *task_name*.
+
+    Strips a trailing ``-N`` numeric suffix before lookup so that task names
+    like ``favorite-food-1`` resolve to the ``favorite-food`` entry.
+    Returns an empty string when not found.
+    """
+    try:
+        import json
+        from importlib.resources import files
+
+        resource = files("b2aiprep.prepare.resources").joinpath(
+            "audio_task_descriptions.json"
+        )
+        descriptions = json.loads(resource.read_text(encoding="utf-8"))
+
+        def _lookup(name: str):
+            if isinstance(descriptions, dict):
+                return descriptions.get(name, {}).get("instructions", "")
+            for entry in descriptions:
+                if entry.get("task_name") == name or entry.get("id") == name:
+                    return entry.get("instructions", "")
+            return ""
+
+        instructions = _lookup(task_name)
+        if not instructions:
+            m = re.match(r"^(.+)-\d+$", task_name)
+            if m:
+                instructions = _lookup(m.group(1))
+        return instructions or ""
+    except Exception as exc:
+        _logger.debug("Could not load task instructions for %s: %s", task_name, exc)
+    return ""
+
+
+def _task_correctness_phi4(audio_record: Any, config: PipelineConfig) -> Optional[bool]:
     """LLM-based task-correctness check using Phi-4 mini.
 
     Uses greedy decoding (temperature=0, do_sample=False) because the
@@ -204,7 +271,9 @@ def _task_correctness_phi4(audio_record: Any, config: PipelineConfig) -> bool:
         config: :class:`PipelineConfig` (random seed, model versions).
 
     Returns:
-        ``True`` if the recording appears on-task, ``False`` otherwise.
+        ``True`` if the recording appears on-task, ``False`` if off-task,
+        ``None`` if the model is unavailable or the call fails (callers
+        should route to ``needs_review`` rather than ``fail``).
     """
     try:
         from transformers import AutoModelForCausalLM, AutoTokenizer  # type: ignore[import]
@@ -224,29 +293,34 @@ def _task_correctness_phi4(audio_record: Any, config: PipelineConfig) -> bool:
         )
         model.eval()
 
+        instructions = _get_task_instructions(task_name)
+        task_description = instructions if instructions else task_name
         prompt = (
-            f"Task: {task_name}\n"
-            f"Transcript: {transcript}\n"
-            "Is this transcript on-task? Reply with only 'yes' or 'no'.\n"
+            f'Task instruction: "{task_description}"\n'
+            f'Participant said: "{transcript}"\n'
+            "Did the participant complete the task? Answer only: yes or no"
         )
-        inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
+        inputs = tokenizer.apply_chat_template(
+            [{"role": "user", "content": prompt}],
+            return_tensors="pt",
+            add_generation_prompt=True,
+        ).to(model.device)
         with torch.no_grad():
             output_ids = model.generate(
-                **inputs,
+                inputs,
                 max_new_tokens=5,
                 do_sample=False,
-                temperature=1.0,  # greedy when do_sample=False
                 pad_token_id=tokenizer.eos_token_id,
             )
         answer = tokenizer.decode(
-            output_ids[0][inputs["input_ids"].shape[1]:],
+            output_ids[0][inputs.shape[-1]:],
             skip_special_tokens=True,
         ).strip().lower()
         return answer.startswith("yes")
 
     except Exception as exc:
-        _logger.warning("Phi-4 task compliance check failed: %s", exc)
-        return False
+        _logger.warning("Phi-4 task compliance check unavailable: %s", exc)
+        return None
 
 
 # ---------------------------------------------------------------------------
@@ -298,9 +372,27 @@ def check_tier_a(audio_record: Any, config: PipelineConfig) -> CheckResult:
     hyp_words = transcript.lower().split()
 
     if not ref_words:
-        wer = 0.0 if not hyp_words else 1.0
-    else:
-        wer = _levenshtein_words(hyp_words, ref_words) / len(ref_words)
+        # No reference text available — cannot compute WER; route to review.
+        return CheckResult(
+            participant_id=participant_id,
+            session_id=session_id,
+            task_name=task_name,
+            check_type=CheckType.TASK_COMPLIANCE,
+            score=0.5,
+            confidence=0.30,
+            classification=Classification.NEEDS_REVIEW,
+            detail={
+                "compliance_tier": "A",
+                "wer": None,
+                "phoneme_match_score": None,
+                "active_speech_duration_s": None,
+                "llm_compliance": None,
+                "note": "no_reference_text",
+            },
+            model_versions={},
+        )
+
+    wer = _levenshtein_words(hyp_words, ref_words) / len(ref_words)
     wer = min(1.0, max(0.0, wer))
 
     # score = 1 − WER (compliance confidence formula from spec)
@@ -448,7 +540,12 @@ def check_tier_c(audio_record: Any, config: PipelineConfig) -> CheckResult:
     active_duration = _get_active_speech_duration(audio_record)
     duration_met = active_duration >= min_active_s
 
-    if not llm_result:
+    if llm_result is None:
+        # Model unavailable — cannot determine compliance; route to review.
+        score = 0.5
+        confidence = 0.30
+        classification = Classification.NEEDS_REVIEW
+    elif not llm_result:
         # Off-task → FAIL
         score = 0.0
         confidence = 0.30

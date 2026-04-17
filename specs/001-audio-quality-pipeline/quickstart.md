@@ -31,7 +31,7 @@ To use a custom config (e.g., different thresholds or model versions):
 
 ```bash
 b2aiprep-cli qa-run /path/to/bids_dataset /path/to/qa_output \
-  --config my_custom_config.json
+  --pipeline-config my_custom_config.json
 ```
 
 **Running on a SLURM cluster** (for batches > 10,000 audios): submit an array job where each
@@ -109,7 +109,7 @@ Every run records the config file used. To reproduce:
 
 ```bash
 b2aiprep-cli qa-run /path/to/bids_dataset /path/to/new_output \
-  --config /path/to/qa_output/qa_pipeline_config_a3f7c891.json
+  --pipeline-config /path/to/qa_output/qa_pipeline_config_a3f7c891.json
 ```
 
 Providing the same config file and the same BIDS input must produce identical

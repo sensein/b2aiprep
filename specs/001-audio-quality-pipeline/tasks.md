@@ -71,56 +71,42 @@
 
 ---
 
-## Phase 4: User Story 2 — Human Review of Flagged Audios (Priority: P2)
+## Phase 4: User Story 2 — Human Review of Flagged Audios *(DEFERRED)*
 
-**Goal**: Reviewer works through `needs_review_queue.tsv` audio by audio, sees per-check confidence breakdown, optionally plays audio, records accept/reject, with session resumability.
+> **Status**: Deferred pending deeper specification of the review workflow.
+> Tasks T024–T028 are preserved here for reference and will be activated in a
+> future iteration once US2 is re-specified and planned.
 
-**Independent Test**: Pre-populate `needs_review_queue.tsv` with 3 known entries; run `qa-review` via CliRunner submitting [a], [r], [s] decisions in sequence; assert `human_review_decisions.tsv` contains exactly the two non-skipped decisions with correct reviewer_id and timestamp; assert skipped item remains in queue on re-run.
-
-### Tests for User Story 2
-
-- [ ] T024 [P] [US2] Write `qa-review` CLI session tests using Click CliRunner with pre-populated `needs_review_queue.tsv`; assert accept/reject decisions written to `human_review_decisions.tsv`; assert skip leaves item in queue; assert `--reopen` exposes already-decided items; assert session exits cleanly on [q] in `tests/test_qa_review.py`
-
-### Implementation for User Story 2
-
-- [ ] T025 [US2] Implement review session display in `src/b2aiprep/prepare/qa_report.py`: `format_review_card(composite_score: CompositeScore) -> str` renders participant_id, task_name, composite score, and per-check score/classification/key-detail-fields in the tabular format shown in `specs/001-audio-quality-pipeline/contracts/cli-commands.md`; attempt `sounddevice.play` for audio playback when `--audio-root` provided; catch `sounddevice` import/playback errors and degrade gracefully (print path only) for HPC nodes without audio output
-- [ ] T026 [US2] Implement ReviewDecision persistence in `src/b2aiprep/prepare/qa_report.py`: `record_decision(output_dir, decision: ReviewDecision)` appends one TSV row to `human_review_decisions.tsv` (creating with header if absent); `load_decided_keys(output_dir) -> set` returns set of (participant_id, session_id, task_name) tuples already decided, used to skip already-reviewed items unless `--reopen` is set
-- [ ] T027 [US2] Implement `qa-review` CLI command in `src/b2aiprep/commands.py`: read `needs_review_queue.tsv`, filter already-decided unless `--reopen`, iterate presenting review cards, handle [a]ccept/[r]eject/[s]kip/[n]ote/[q]uit keystrokes via `click.prompt`, call `record_decision` after each non-skip response; respect `--limit` for session length; print session summary (N accepted, N rejected, N skipped, N remaining) on exit
-- [ ] T028 [US2] Register `qa-review` command in `src/b2aiprep/cli.py`; verify `b2aiprep-cli qa-review --help` shows `--reviewer-id` (required), `--audio-root`, `--limit`, `--reopen`
-
-**Checkpoint**: User Stories 1 and 2 functional — full automated + human review flow works end-to-end.
+- [ ] T024 [P] [US2] *(deferred)* Write `qa-review` CLI session tests using Click CliRunner with pre-populated `needs_review_queue.tsv`; assert accept/reject decisions written to `human_review_decisions.tsv`; assert skip leaves item in queue; assert `--reopen` exposes already-decided items; assert session exits cleanly on [q] in `tests/test_qa_review.py`
+- [ ] T025 [US2] *(deferred)* Implement review session display in `src/b2aiprep/prepare/qa_report.py`: `format_review_card`, audio playback via `sounddevice`, graceful degradation on HPC
+- [ ] T026 [US2] *(deferred)* Implement ReviewDecision persistence: `record_decision`, `load_decided_keys` in `src/b2aiprep/prepare/qa_report.py`
+- [ ] T027 [US2] *(deferred)* Implement `qa-review` CLI command in `src/b2aiprep/commands.py`
+- [ ] T028 [US2] *(deferred)* Register `qa-review` command in `src/b2aiprep/cli.py`
 
 ---
 
-## Phase 5: User Story 3 — Release Quality Report (Priority: P3)
+## Phase 5: User Story 3 — Release Quality Report *(DEFERRED)*
 
-**Goal**: Single command reads all automated and human-review results and produces a Markdown and JSON release report with per-check pass rates, composite score distribution, human override counts, and a defensible top-level confidence claim.
+> **Status**: Deferred — depends on US2 (human review decisions) for a complete report.
+> Tasks T029a–T033 are preserved here for reference and will be activated once
+> US2 and US3 are re-specified and planned together.
 
-**Independent Test**: Pre-populate `qa_composite_scores.tsv` (mix of pass/fail/needs_review) and `human_review_decisions.tsv` (some accept, some reject); run `qa-report`; assert report contains correct per-check pass rates, correct `released_count`, and a `claim_statement` string; assert `--fail-on-below-target` exits with code 2 when achieved confidence < target.
-
-### Tests for User Story 3
-
-- [ ] T029a [P] [US3] Write unit tests for `compute_quality_report` and report serialisation functions in `tests/test_quality_report.py`: use synthetic `qa_composite_scores.tsv` and `human_review_decisions.tsv` data; assert correct `released_count`, `excluded_count`, `per_check_pass_rates`, `claim_confidence`, and `claim_statement` values; assert `write_quality_report_json` and `write_quality_report_markdown` produce correctly formatted output
-- [ ] T029b [P] [US3] Write CLI integration tests for `qa-report` command using Click CliRunner in `tests/test_qa_report_cli.py`: assert Markdown and JSON output files are written to OUTPUT_DIR; assert exit code 2 when `--fail-on-below-target` set and achieved confidence below target; assert exit code 1 when required input files are missing
-
-### Implementation for User Story 3
-
-- [ ] T030 [US3] Implement `compute_quality_report(output_dir, confidence_target) -> QualityReport` in `src/b2aiprep/prepare/qa_report.py`: read `qa_composite_scores.tsv` and `human_review_decisions.tsv`; compute all QualityReport aggregate fields (auto_pass, auto_fail, human_accepted, human_rejected, pending_review, released_count, excluded_count, per_check_pass_rates, composite_score_percentiles [p10/p25/p50/p75/p90]); compute `claim_confidence = mean(composite_confidence) × (1 − human_override_rate × 0.5)` and `claim_statement` string; compute `released_pass_rate = (PASS + human_accepted) / total`; emit a WARNING-level log message if `needs_review_total / total_audios` exceeds the configured `sc_004_review_fraction_warn` threshold (from PipelineConfig, default 0.15) so operators are alerted when reviewer burden is unexpectedly high (SC-004)
-- [ ] T031 [US3] Implement report serialisation in `src/b2aiprep/prepare/qa_report.py`: `write_quality_report_json(report, output_dir)` writes `qa_release_report.json`; `write_quality_report_markdown(report, output_dir)` writes `qa_release_report.md` in the format shown in `specs/001-audio-quality-pipeline/contracts/cli-commands.md` (per-check pass rate table, overall confidence claim, counts breakdown)
-- [ ] T032 [US3] Implement `qa-report` CLI command in `src/b2aiprep/commands.py`: call `compute_quality_report`, dispatch to `write_quality_report_json` and/or `write_quality_report_markdown` per `--output-format` (markdown/json/both); exit code 2 if `--fail-on-below-target` and `claim_confidence < confidence_target`; exit code 1 if required input files missing
-- [ ] T033 [US3] Register `qa-report` command in `src/b2aiprep/cli.py`; verify `b2aiprep-cli qa-report --help` shows `--confidence-target`, `--output-format`, `--fail-on-below-target`
-
-**Checkpoint**: All three user stories functional — full pipeline flow from automated QA through human review to release report.
+- [ ] T029a [P] [US3] *(deferred)* Write unit tests for `compute_quality_report` and report serialisation in `tests/test_quality_report.py`
+- [ ] T029b [P] [US3] *(deferred)* Write CLI integration tests for `qa-report` in `tests/test_qa_report_cli.py`
+- [ ] T030 [US3] *(deferred)* Implement `compute_quality_report` in `src/b2aiprep/prepare/qa_report.py`
+- [ ] T031 [US3] *(deferred)* Implement `write_quality_report_json` and `write_quality_report_markdown` in `src/b2aiprep/prepare/qa_report.py`
+- [ ] T032 [US3] *(deferred)* Implement `qa-report` CLI command in `src/b2aiprep/commands.py`
+- [ ] T033 [US3] *(deferred)* Register `qa-report` command in `src/b2aiprep/cli.py`
 
 ---
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
-- [ ] T034 [P] Validate determinism (SC-002): run `b2aiprep-cli qa-run` twice on the same synthetic batch with the same config; assert `qa_composite_scores.tsv` outputs are byte-for-byte identical; confirm random seed pinning works across Whisper, GLiNER, Phi-4, and pyannote in `tests/test_determinism.py`
-- [ ] T035 [P] Validate SC-006 ground-truth examples: assert clean single-speaker on-task audio → PASS; multi-speaker audio → FAIL or NEEDS_REVIEW; PII-containing audio → FAIL or NEEDS_REVIEW; off-task audio → FAIL or NEEDS_REVIEW using synthetic fixtures in `tests/test_ground_truth.py`
-- [ ] T036 [P] Validate SLURM sharding: assert `shard_audio_list(paths, part=1, num_parts=2)` and `shard_audio_list(paths, part=2, num_parts=2)` produce non-overlapping subsets whose union equals full list; assert running qa-run on both shards separately produces same composite scores as running on the full list in `tests/test_sharding.py`
-- [ ] T037 Run the full three-command quickstart flow from `specs/001-audio-quality-pipeline/quickstart.md` on a synthetic dataset; confirm all expected output files present, correctly formatted, and report passes; fix any command-line option discrepancies found between implementation and `contracts/cli-commands.md`
-- [ ] T038 [P] Update `CLAUDE.md` to reflect the new active modules (`quality_control.py` extended, `unconsented_speakers.py`, `pii_detection.py`, `task_compliance.py`, `qa_report.py`, `qa_models.py`) and new CLI commands (`qa-run`, `qa-review`, `qa-report`)
+- [x] T034 [P] Validate determinism (SC-002): run `b2aiprep-cli qa-run` twice on the same synthetic batch with the same config; assert `qa_composite_scores.tsv` outputs are byte-for-byte identical; confirm random seed pinning works across Whisper, GLiNER, Phi-4, and pyannote in `tests/test_determinism.py`
+- [x] T035 [P] Validate SC-006 ground-truth examples: assert clean single-speaker on-task audio → PASS; multi-speaker audio → FAIL or NEEDS_REVIEW; PII-containing audio → FAIL or NEEDS_REVIEW; off-task audio → FAIL or NEEDS_REVIEW using synthetic fixtures in `tests/test_ground_truth.py`
+- [x] T036 [P] Validate SLURM sharding: assert `shard_audio_list(paths, part=1, num_parts=2)` and `shard_audio_list(paths, part=2, num_parts=2)` produce non-overlapping subsets whose union equals full list; assert running qa-run on both shards separately produces same composite scores as running on the full list in `tests/test_sharding.py`
+- [x] T037 Run the `qa-run` quickstart flow from `specs/001-audio-quality-pipeline/quickstart.md` on a synthetic dataset; confirm all expected US1 output files present (`qa_check_results.tsv`, `qa_composite_scores.tsv`, `needs_review_queue.tsv`, `qa_pipeline_config_*.json`, per-audio JSON sidecars), correctly formatted; fix any command-line option discrepancies found between implementation and `contracts/cli-commands.md`
+- [x] T038 [P] Update `CLAUDE.md` to reflect the new active modules (`quality_control.py` extended, `unconsented_speakers.py`, `pii_detection.py`, `task_compliance.py`, `qa_report.py`, `qa_models.py`, `qa_utils.py`) and new CLI command (`qa-run`)
 
 ---
 

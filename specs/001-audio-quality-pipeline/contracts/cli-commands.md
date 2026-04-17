@@ -25,7 +25,7 @@ b2aiprep-cli qa-run BIDS_DIR OUTPUT_DIR [OPTIONS]
 
 **Options**:
 ```
---config PATH          Path to a PipelineConfig JSON file. If omitted, default config is used
+--pipeline-config PATH Path to a PipelineConfig JSON file. If omitted, default config is used
                        and written to OUTPUT_DIR.
 --part INT             1-based index of this shard in a SLURM array job. Must be used with
                        --num-parts. When provided, only the corresponding subset of audios is

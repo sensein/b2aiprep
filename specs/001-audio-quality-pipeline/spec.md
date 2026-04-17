@@ -43,59 +43,6 @@ reproducibly.
 
 ---
 
-### User Story 2 - Human Review of Flagged Audios (Priority: P2)
-
-A human reviewer receives the list of audios classified as **needs-review** from the automated
-pipeline. They can listen to each audio, see the model's confidence breakdown per check, and
-record a manual accept or reject decision. The accepted/rejected decisions are persisted and
-feed back into the final quality report.
-
-**Why this priority**: The automated pipeline cannot achieve 100% confidence on all audios.
-A human-in-the-loop step is essential for ethical compliance (PII, unconsented speakers) and
-for borderline cases where automated judgment is uncertain.
-
-**Independent Test**: Can be tested by feeding a curated set of known borderline audios into
-the review interface, submitting accept/reject decisions, and verifying that decisions are
-persisted correctly and override automated classifications in the final report.
-
-**Acceptance Scenarios**:
-
-1. **Given** a list of needs-review audios, **When** the reviewer opens the review interface,
-   **Then** each audio is presented with its per-check confidence scores and an audio playback
-   option.
-2. **Given** an audio in review, **When** the reviewer records a decision (accept / reject),
-   **Then** the decision is persisted alongside the automated scores.
-3. **Given** a reviewer's accept decision, **When** the final report is generated, **Then** the
-   audio is counted as passing, with the human override noted.
-
----
-
-### User Story 3 - Release Quality Report (Priority: P3)
-
-After automated screening and human review are complete, the pipeline generates a
-release-quality report. The report summarizes pass rates per check, the composite quality
-score distribution, confidence levels, and makes a top-level claim: "At confidence level X%,
-Y% of released audios pass all quality checks."
-
-**Why this priority**: Enables the team to make defensible, quantifiable claims about dataset
-quality to external researchers and ethics boards.
-
-**Independent Test**: Can be tested by supplying a completed set of per-audio quality results
-(mix of passes, fails, human overrides) and verifying that the report correctly computes
-aggregate statistics and confidence claims.
-
-**Acceptance Scenarios**:
-
-1. **Given** all per-audio results (automated + human), **When** the report is generated,
-   **Then** it includes per-check pass rates, composite score distribution, and a top-level
-   confidence claim.
-2. **Given** a configured confidence threshold (e.g., 95%), **When** the report is generated,
-   **Then** the report explicitly states whether the released batch meets that threshold.
-3. **Given** the same result set on two runs, **When** the report is generated, **Then**
-   outputs are identical (reproducibility).
-
----
-
 ### Edge Cases
 
 - What happens when an audio file is corrupt or unreadable?
@@ -167,11 +114,12 @@ aggregate statistics and confidence claims.
   per-check scores with configurable per-task-type weights.
 - **FR-006**: Audios whose composite score or any individual check confidence falls below
   configurable thresholds MUST be routed to a human review queue rather than auto-classified.
-- **FR-007**: The human review interface MUST present each flagged audio with its per-check
-  confidence breakdown, allow audio playback, and record a binary accept/reject decision.
-- **FR-008**: The pipeline MUST produce a release report summarizing: per-check pass rates,
-  composite score distribution, count of human overrides, and an overall confidence-level
-  claim about the released batch.
+- **FR-007** *(Deferred — US2)*: The human review interface MUST present each flagged audio
+  with its per-check confidence breakdown, allow audio playback, and record a binary
+  accept/reject decision.
+- **FR-008** *(Deferred — US3)*: The pipeline MUST produce a release report summarizing:
+  per-check pass rates, composite score distribution, count of human overrides, and an
+  overall confidence-level claim about the released batch.
 - **FR-009**: All pipeline outputs MUST be deterministic given the same audio inputs, model
   versions, and configuration (random seeds pinned; model versions locked).
 - **FR-010**: Quality check configuration (thresholds, weights, model versions) MUST be
@@ -218,8 +166,9 @@ aggregate statistics and confidence claims.
   ambiguous cases).
 - **SC-002**: Running the pipeline twice on the same inputs produces identical classifications
   and scores on 100% of audios.
-- **SC-003**: The release report makes a defensible confidence claim: the team can assert with
-  a stated confidence level (e.g., ≥ 95%) that released audios pass all quality checks.
+- **SC-003** *(Deferred — US3)*: The release report makes a defensible confidence claim: the
+  team can assert with a stated confidence level (e.g., ≥ 95%) that released audios pass all
+  quality checks.
 - **SC-004**: Human review is required for no more than a target fraction of audios (threshold
   configurable), keeping reviewer burden tractable for large batches.
 - **SC-005**: The pipeline records per-stage wall-clock timing metrics (per audio and per check)
@@ -254,3 +203,51 @@ aggregate statistics and confidence claims.
 - Q: Should audio transcripts generated during PII detection be stored in pipeline output? → A: Yes — store full transcript and PII spans (label, confidence, character offsets, and span text) in the per-audio JSON sidecar for human reviewer verification; release gating is handled by existing dataset release controls
 - Q: What is the acceptable per-audio processing time target for SC-005? → A: No hard target in v1; pipeline must record per-stage timing metrics per audio to enable bottleneck analysis and future time-budget requirements
 - Q: If a quality check model fails for a specific audio, how should the pipeline handle it? → A: Mark that check as `error`, route the audio to human review queue, log the full exception, continue processing remaining audios
+
+## Deferred Stories
+
+The following user stories are out of scope for this implementation iteration and will be
+specified and planned separately.
+
+### User Story 2 - Human Review of Flagged Audios *(Deferred)*
+
+A human reviewer receives the list of audios classified as **needs-review** from the automated
+pipeline. They can listen to each audio, see the model's confidence breakdown per check, and
+record a manual accept or reject decision. The accepted/rejected decisions are persisted and
+feed back into the final quality report.
+
+**Why deferred**: Requires a dedicated review interface (CLI or web) and decision-persistence
+layer. Deferring allows the automated screening pipeline (US1) to be shipped and validated
+independently.
+
+**Acceptance Scenarios**:
+
+1. **Given** a list of needs-review audios, **When** the reviewer opens the review interface,
+   **Then** each audio is presented with its per-check confidence scores and an audio playback
+   option.
+2. **Given** an audio in review, **When** the reviewer records a decision (accept / reject),
+   **Then** the decision is persisted alongside the automated scores.
+3. **Given** a reviewer's accept decision, **When** the final report is generated, **Then** the
+   audio is counted as passing, with the human override noted.
+
+---
+
+### User Story 3 - Release Quality Report *(Deferred)*
+
+After automated screening and human review are complete, the pipeline generates a
+release-quality report summarizing pass rates per check, composite quality score distribution,
+confidence levels, and a top-level claim: "At confidence level X%, Y% of released audios pass
+all quality checks."
+
+**Why deferred**: Depends on US2 (human review decisions) to produce a complete report.
+Will be specified once the review workflow is defined.
+
+**Acceptance Scenarios**:
+
+1. **Given** all per-audio results (automated + human), **When** the report is generated,
+   **Then** it includes per-check pass rates, composite score distribution, and a top-level
+   confidence claim.
+2. **Given** a configured confidence threshold (e.g., 95%), **When** the report is generated,
+   **Then** the report explicitly states whether the released batch meets that threshold.
+3. **Given** the same result set on two runs, **When** the report is generated, **Then**
+   outputs are identical (reproducibility).
