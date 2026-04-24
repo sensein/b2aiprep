@@ -43,3 +43,10 @@ Per-audio JSON sidecars (with transcript + PII spans) are written co-located wit
 - **No class definitions in `commands.py`** — all imports at top level
 - **Config flag is `--pipeline-config`** (not `--config`) — avoids collision with `yapecs`
 - SLURM sharding: `--part` is 1-based, consistent with `generate-audio-features` pattern
+
+## Active Technologies
+- Python 3.10+ + torch, speechbrain, pyannote (already in env); no new model downloads (186-speaker-profile-detection)
+- Files (`speaker_profile.json` per participant, written to `PROFILES_DIR/sub-*/`) (186-speaker-profile-detection)
+
+## Recent Changes
+- 186-speaker-profile-detection: Added Python 3.10+ + torch, speechbrain, pyannote (already in env); no new model downloads
