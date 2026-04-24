@@ -2,7 +2,7 @@
 
 **Feature Branch**: `185-audio-quality-pipeline`
 **Created**: 2026-04-09
-**Status**: Draft
+**Status**: Complete (US1 implemented; US2/US3 deferred)
 **Input**: User description: "Quality check/assurance pipeline for Bridge2AI Voice dataset release"
 
 ## User Scenarios & Testing *(mandatory)*
