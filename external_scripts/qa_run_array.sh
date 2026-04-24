@@ -23,10 +23,10 @@ PIPELINE_CONFIG=""                  # leave empty to use built-in defaults
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=wilke18@mit.edu
 
-set -euo pipefail
-
 source "$HOME/.bashrc"
-conda activate b2ai
+conda activate b2aiprep_test
+
+set -euo pipefail
 
 mkdir -p logs
 mkdir -p "${OUTPUT_DIR}/shard_${SLURM_ARRAY_TASK_ID}"
@@ -43,7 +43,6 @@ b2aiprep-cli qa-run \
     "${OUTPUT_DIR}/shard_${SLURM_ARRAY_TASK_ID}" \
     --part "${SLURM_ARRAY_TASK_ID}" \
     --num-parts "${NUM_PARTS}" \
-    --skip-pii \
     ${CONFIG_FLAG} \
     --log-level INFO
 

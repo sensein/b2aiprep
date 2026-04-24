@@ -19,10 +19,10 @@ OUTPUT_DIR="/orcd/data/satra/002/datasets/b2aivoice/qa_run_results/peds"
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=wilke18@mit.edu
 
-set -euo pipefail
-
 source "$HOME/.bashrc"
-conda activate b2ai
+conda activate b2aiprep_test
+
+set -euo pipefail
 
 echo "[$(date)] Merging shard outputs in ${OUTPUT_DIR}"
 
