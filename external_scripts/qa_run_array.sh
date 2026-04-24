@@ -7,10 +7,10 @@
 #
 # After all array tasks complete, run qa_run_merge.sh to combine shard outputs.
 # NUM_PARTS below must match the --array upper bound above.
-
+#
 #SBATCH -c 4
-#SBATCH -t 24:00:00
-#SBATCH -p mit_normal
+#SBATCH -t 12:00:00
+#SBATCH -p pi_satra,ou_bcs_normal,mit_normal
 #SBATCH --mem=250G
 #SBATCH -o logs/qa_run_%A_%a.out
 #SBATCH -e logs/qa_run_%A_%a.err
