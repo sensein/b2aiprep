@@ -34,8 +34,11 @@ similarity computations per recording are O(d))
 
 ## Constitution Check
 
-- [x] **Principle I — Python Environment Isolation**: Feature reuses existing conda
-  env (`b2aiprep_test`). No new bare `pip` calls.
+- [x] **Principle I — Python Environment Isolation**: Feature reuses the existing
+  Conda environment (`b2aiprep_test`). Conda is permitted under the amended Principle I
+  for HPC contexts with complex scientific Python dependencies (speechbrain, pyannote,
+  senselab, torchaudio, CUDA-linked packages) where uv migration is impractical.
+  No new bare `pip` calls outside the environment.
 - [x] **Principle II — Branch Isolation**: Only this spec targets branch
   `186-speaker-profile-detection`. Created fresh from `main`.
 - [x] **Principle III — Commit Early and Often**: Each logical unit committed
