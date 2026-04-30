@@ -133,7 +133,10 @@ sharply.
   highly separable from child voices in this embedding space, making adult-intruder
   detection feasible. The research report (US3) must quantify the adult-intruder
   detection rate on pediatric recordings specifically.
-- Very short recordings (<3 s total duration) with marginal speech activity.
+- Very short recordings (<1 s active speech): excluded from enrollment (centroid
+  building) but still verified in qa-run with `confidence = 0.10` and
+  `needs_review`. Diarization signals are computed regardless. This covers child
+  single-word task recordings where only one word is spoken.
 - First-time participant with no prior recordings (cold-start — all recordings
   default to needs_review until a profile can be built from sufficient data).
 
@@ -166,9 +169,14 @@ sharply.
   respective threshold (OR logic). A single confidence value (0–1) reflects the
   reliability of the active speech fraction for both embeddings.
 
-- **FR-005**: Recordings with active speech fraction below the low-confidence
-  threshold MUST receive confidence ≤0.30 regardless of the similarity score
-  computed, and MUST be classified as needs_review rather than fail.
+- **FR-005**: During verification (qa-run), ALL recordings MUST be checked —
+  no recording is skipped due to short duration. Recordings with active speech
+  < 1 s MUST receive `confidence = 0.10` and be classified as `needs_review`;
+  diarization-based signals (num_speakers, primary_ratio) MUST still be computed
+  and reported. Recordings with active speech fraction below the low-confidence
+  fraction threshold (default: <15%) MUST receive `confidence ≤ 0.30`. The 1 s
+  absolute duration exclusion applies only to enrollment (centroid construction),
+  not to verification.
 
 - **FR-006**: The per-recording result MUST be expressed as a CheckResult compatible
   with the existing QA pipeline output format, replacing the current placeholder
@@ -295,6 +303,12 @@ sharply.
   The goal is to select a threshold where false negatives are provably low (e.g.,
   ≤5%) while keeping the review queue manageable. Operating characteristics must be
   computed over a labelled evaluation set.
+- Q: Does the `< 1 s active speech` gate apply to verification as well as enrollment?
+  → A: Enrollment-only. For verification (qa-run), ALL recordings are checked
+  regardless of duration. Short recordings (< 1 s active speech) receive
+  `confidence = 0.10` and are routed to `needs_review`, but the diarization-based
+  signals (num_speakers, primary_ratio) are always computed and reported. No
+  recording is silently skipped during verification.
 - Q: Task name exclusion patterns for enrollment — which patterns and how matched?
   → A: Use prefix matching (task_name.lower().startswith(pattern.lower())) NOT
   substring matching, to avoid false matches where one task name is a substring of
