@@ -47,6 +47,8 @@ Per-audio JSON sidecars (with transcript + PII spans) are written co-located wit
 ## Active Technologies
 - Python 3.10+ + torch, speechbrain, pyannote (already in env); no new model downloads (186-speaker-profile-detection)
 - Files (`speaker_profile.json` per participant, written to `PROFILES_DIR/sub-*/`) (186-speaker-profile-detection)
+- Python 3.10+ + torch, speechbrain, pyannote, senselab (already in env); (186-speaker-profile-detection)
+- JSON files per participant (`PROFILES_DIR/sub-*/speaker_profile.json`) (186-speaker-profile-detection)
 
 ## Recent Changes
 - 186-speaker-profile-detection: Added Python 3.10+ + torch, speechbrain, pyannote (already in env); no new model downloads

@@ -1,6 +1,6 @@
 # Quickstart: Speaker Profile-Based Unconsented Speaker Detection
 
-**Date**: 2026-04-24
+**Date**: 2026-04-30 (updated from 2026-04-24)
 **Plan**: [plan.md](plan.md)
 
 ---
@@ -8,8 +8,8 @@
 ## Prerequisites
 
 1. A BIDS dataset with `_features.pt` files from `generate-audio-features`.
-   The feature files must contain `speaker_embedding` (192-dim ECAPA-TDNN) and
-   `diarization` fields.
+   The feature files must contain `speaker_embedding` (192-dim ECAPA-TDNN),
+   `sparc["spk_emb"]` (64-dim), and `diarization` fields.
 2. `b2aiprep` installed with this feature merged.
 
 ---
@@ -22,29 +22,18 @@ b2aiprep-cli build-speaker-profiles \
     /path/to/speaker_profiles
 ```
 
-This reads every participant's `_features.pt` files, selects recordings with
-sufficient active speech, builds a quality-weighted outlier-rejected centroid
-embedding per participant, and writes one `speaker_profile.json` per participant.
+This reads every participant's `_features.pt` files, applies task-based gating
+(case-insensitive prefix exclusion), builds quality-weighted outlier-rejected
+centroids for both ECAPA-TDNN (192-dim) and SPARC (64-dim) embeddings, and
+writes one `speaker_profile.json` per participant.
 
-For a pediatric dataset (participants with age < 14):
-
-```bash
-b2aiprep-cli build-speaker-profiles \
-    /path/to/bids_dataset \
-    /path/to/speaker_profiles \
-    --child-age-threshold 14.0 \
-    --age-col age
-```
-
-On SLURM (participants are sharded across array tasks):
+On SLURM (participants sharded across array tasks):
 
 ```bash
 sbatch --array=1-20 build_profiles_array.sh
 ```
 
-After the array completes, profiles from all shards are already in
-`PROFILES_DIR/sub-*/` — no merge step needed (one profile per participant,
-each written by exactly one shard).
+No merge step needed — one profile per participant, each written by exactly one shard.
 
 ---
 
@@ -57,46 +46,54 @@ b2aiprep-cli qa-run \
     --profiles-dir /path/to/speaker_profiles
 ```
 
-The unconsented-speaker check now uses the pre-built profiles instead of
-diarization-only heuristics. Recordings for participants without a profile
-(status `insufficient_data`) are automatically routed to `needs_review`.
+The unconsented-speaker check now computes two independent cosine similarity scores
+(ECAPA-TDNN and SPARC) and applies OR logic: a recording is flagged `needs_review`
+if either score falls below its configured threshold. Participants without a profile
+(`insufficient_data`) are automatically routed to `needs_review`.
 
 ---
 
 ## Step 3 — Inspect per-participant profile quality
 
-Each `speaker_profile.json` contains:
+Each `speaker_profile.json` contains both centroids and per-embedding quality scores:
 
 ```json
 {
   "participant_id": "007ab",
-  "model_id": "speechbrain/spkrec-ecapa-voxceleb",
+  "ecapa_model_id": "speechbrain/spkrec-ecapa-voxceleb",
+  "sparc_model_id": "senselab/sparc-multi",
   "num_recordings_used": 12,
   "num_recordings_excluded": 4,
   "total_active_speech_s": 183.4,
-  "profile_quality_score": 0.72,
+  "ecapa_profile_quality_score": 0.72,
+  "sparc_profile_quality_score": 0.68,
   "profile_status": "ready",
   "age_group": "adult",
+  "ecapa_embedding_centroid": [0.021, -0.013, ...],
+  "sparc_embedding_centroid": [0.041, 0.002, ...],
   "excluded_recordings": [
-    {"task_name": "ddk-1", "session_id": "ses-01", "reason": "task_type_excluded"},
-    {"task_name": "breathing-1", "session_id": "ses-01", "reason": "task_type_excluded"}
+    {"task_name": "Diadochokinesis-PA", "session_id": "ses-01", "reason": "task_prefix_excluded"},
+    {"task_name": "Respiration-and-cough-Breath-1", "session_id": "ses-01", "reason": "task_prefix_excluded"}
   ]
 }
 ```
 
 ---
 
-## Step 4 — Generate the embedding reliability report (optional)
+## Step 4 — Generate the embedding reliability report (optional, US3)
 
 ```bash
 b2aiprep-cli embedding-reliability-report \
     /path/to/bids_dataset \
     /path/to/speaker_profiles \
-    --output-format both
+    --output-format both \
+    --intruder-ratios 0.10,0.20,0.40
 ```
 
-Writes `embedding_reliability_report.md` and `.json` to the profiles directory.
-The report shows per-speech-fraction-bin accuracy and recommends threshold updates.
+Generates synthetic mixtures (two enrolled participants mixed at controlled ratios),
+computes operating characteristic curves for ECAPA-TDNN, SPARC, and OR-combined
+scoring, and recommends thresholds. Writes
+`embedding_reliability_report.md` and `.json` to the profiles directory.
 
 ---
 

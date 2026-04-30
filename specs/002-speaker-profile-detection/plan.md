@@ -1,44 +1,45 @@
 # Implementation Plan: Speaker Profile-Based Unconsented Speaker Detection
 
-**Branch**: `186-speaker-profile-detection` | **Date**: 2026-04-24 | **Spec**: [spec.md](spec.md)
+**Branch**: `186-speaker-profile-detection` | **Date**: 2026-04-30 | **Spec**: [spec.md](spec.md)
 
 ## Summary
 
-Build per-participant speaker profiles (quality-weighted, outlier-rejected ECAPA-TDNN centroids)
-from pre-computed `_features.pt` embeddings and integrate cosine-similarity verification into the
-existing `check_unconsented_speakers()` QA check. A new `build-speaker-profiles` CLI command
-pre-computes profiles; `qa-run --profiles-dir` consumes them at QA time. Child participants
-(configurable age threshold, default < 14) are routed to a child-adapted embedding model if
-available; adult participants use `speechbrain/spkrec-ecapa-voxceleb`. An optional US3 command
-(`embedding-reliability-report`) analyses per-speech-fraction accuracy for threshold calibration.
+Build per-participant dual speaker profiles (ECAPA-TDNN 192-dim + SPARC 64-dim
+centroids) from pre-computed `_features.pt` embeddings and integrate dual
+cosine-similarity verification with OR logic into `check_unconsented_speakers()`.
+A new `build-speaker-profiles` CLI command pre-computes profiles; `qa-run
+--profiles-dir` consumes them. For pediatric recordings the goal is adult-intruder
+detection: the adult ECAPA-TDNN model is used for all participants regardless of
+age (adult voices are highly separable from child voices in this space). US3 adds
+synthetic mixture evaluation and operating characteristic reporting.
 
 ---
 
 ## Technical Context
 
 **Language/Version**: Python 3.10+
-**Primary Dependencies**: torch, speechbrain, pyannote (already in env); no new model downloads
-required for US1/US2 (reuses existing embeddings)
-**Storage**: Files (`speaker_profile.json` per participant, written to `PROFILES_DIR/sub-*/`)
-**Testing**: pytest (existing test suite)
+**Primary Dependencies**: torch, speechbrain, pyannote, senselab (already in env);
+no new model downloads for US1/US2
+**Storage**: JSON files per participant (`PROFILES_DIR/sub-*/speaker_profile.json`)
+**Testing**: pytest (existing suite)
 **Target Platform**: Linux (SLURM HPC + local)
 **Project Type**: CLI tool / library
-**Performance Goals**: `build-speaker-profiles` < 5 min/1000 participants (reads only `.pt` files,
-no GPU required); `qa-run` latency unchanged (cosine similarity is O(d) per recording)
-**Constraints**: No new model inference in US1/US2; all embeddings come from existing `.pt` files
+**Performance Goals**: `build-speaker-profiles` reads only `.pt` files — no GPU
+needed; < 5 min/1000 participants; `qa-run` latency unchanged (two cosine
+similarity computations per recording are O(d))
+**Constraints**: No new model inference in US1/US2; all embeddings from `.pt` files
 **Scale/Scope**: ~1000–5000 participants per dataset; one profile per participant
 
 ---
 
 ## Constitution Check
 
-- [x] **Principle I — Python Environment Isolation**: Feature reuses the existing `uv venv` /
-  conda environment (`b2aiprep_test`). No new bare `pip` calls. Setup task in tasks.md
-  confirms venv activation.
-- [x] **Principle II — Branch Isolation**: This spec is the only active spec on branch
-  `186-speaker-profile-detection`. Branch created fresh from `main` before planning.
-- [x] **Principle III — Commit Early and Often**: Tasks are committed individually upon
-  completion. Each logical unit (data model, builder, verifier, CLI, tests) is its own commit.
+- [x] **Principle I — Python Environment Isolation**: Feature reuses existing conda
+  env (`b2aiprep_test`). No new bare `pip` calls.
+- [x] **Principle II — Branch Isolation**: Only this spec targets branch
+  `186-speaker-profile-detection`. Created fresh from `main`.
+- [x] **Principle III — Commit Early and Often**: Each logical unit committed
+  individually (data model, builder, verifier, CLI, tests).
 
 ---
 
@@ -63,41 +64,49 @@ specs/002-speaker-profile-detection/
 ```text
 src/b2aiprep/prepare/
 ├── speaker_profiles.py          ← NEW: SpeakerProfile dataclass, builder, loader
-├── unconsented_speakers.py      ← MODIFIED: integrate embedding verification
-├── qa_models.py                 ← MODIFIED: add speaker_profile config sub-dict,
-│                                            participant_age_years to AudioRecord
+├── unconsented_speakers.py      ← MODIFIED: dual-embedding verification, OR logic
+├── qa_models.py                 ← MODIFIED: speaker_profile config sub-dict,
+│                                            participant_age_years in AudioRecord
 └── resources/
-    └── qa_pipeline_config.json  ← MODIFIED: add speaker_profile defaults
+    └── qa_pipeline_config.json  ← MODIFIED: speaker_profile defaults incl. thresholds
+                                              and excluded_task_prefixes
 
 src/b2aiprep/
-└── commands.py                  ← MODIFIED: add build-speaker-profiles CLI command,
-                                             add --profiles-dir to qa-run
+└── commands.py                  ← MODIFIED: build-speaker-profiles CLI command,
+                                             --profiles-dir option for qa-run,
+                                             embedding-reliability-report stub (US3)
 
 tests/
-├── test_speaker_profiles.py     ← NEW: unit tests for profile builder + loader
-├── test_unconsented_speakers_profile.py  ← NEW: tests for profile-based verification
-└── test_embedding_reliability.py         ← NEW: US3 tests (stub until US3 implemented)
+├── test_speaker_profiles.py              ← NEW: profile builder + loader unit tests
+├── test_unconsented_speakers_profile.py  ← NEW: dual-embedding verification tests
+└── test_embedding_reliability.py         ← NEW: US3 synthetic mixture + report tests
 ```
 
 ---
 
 ## Algorithm: Profile Builder (`build-speaker-profiles`)
 
-1. Load `participants.tsv` → build `{participant_id: age_years}` map (nullable)
+1. Load `participants.tsv` → build `{participant_id: age_years}` map (nullable;
+   informational only, does not affect model selection)
 2. For each participant, gather all `_features.pt` file paths matching BIDS layout
-3. For each `.pt` file, load `speaker_embedding`, `diarization`, `task_name`, `is_speech_task`
-4. Gate: skip if `task_name` matches excluded patterns (ddk, breathing, long-sounds, silence)
-5. Gate: compute `active_speech_s` from diarization; skip if < 1 s; down-weight 0.3× if 1–3 s
-6. Compute quality weight: `w_i = min(active_speech_s / 10.0, 1.0)`
-7. Compute weighted centroid of surviving embeddings (L2-normalised before averaging)
-8. Outlier rejection: compute N×N pairwise cosine similarity; drop embeddings with
-   `mean_pairwise_sim < overall_mean − 1.5 × std`; recompute centroid on survivors
-9. Compute `profile_quality_score` = mean pairwise cosine similarity of final set
+3. For each `.pt` file, load `speaker_embedding` (192-dim), `sparc["spk_emb"]`
+   (64-dim), `diarization`, `task_name`, `is_speech_task`
+4. Gate: skip if `task_name.lower().startswith(prefix.lower())` for any excluded
+   prefix (Diadochokinesis, Prolonged-vowel, Maximum-phonation-time,
+   Respiration-and-cough, Glides, Loudness, long-sounds, silly-sounds, repeat-words)
+5. Gate: compute `active_speech_s` from diarization; skip if < 1 s; down-weight
+   0.3× if 1–3 s
+6. Compute quality weight: `w_i = min(active_speech_s / 10.0, 1.0) × snr_weight`
+7. Apply outlier rejection independently for each embedding type: compute N×N
+   pairwise cosine similarity; drop embeddings where mean pairwise sim <
+   (overall_mean − 1.5 × std)
+8. Compute L2-normalised weighted centroid of survivors for each embedding type
+9. Compute per-type `profile_quality_score` = mean pairwise cosine of final set
 10. Set `profile_status`:
-    - `insufficient_data` if `num_survivors < min_profile_recordings` (default 3)
-    - `contaminated` if `profile_quality_score < contamination_quality_threshold` (default 0.30)
+    - `insufficient_data` if `num_survivors < min_profile_recordings`
+    - `contaminated` if either quality score < contamination threshold (0.30)
     - `ready` otherwise
-11. Write `sub-{pid}/speaker_profile.json`
+11. Write `sub-{pid}/speaker_profile.json` with both centroids
 
 ---
 
@@ -105,13 +114,16 @@ tests/
 
 1. If `profiles_dir` is None → fall back to existing diarization-only logic
 2. Load `SpeakerProfile` for `audio_record.participant_id`; if missing → `needs_review`
-3. Load `speaker_embedding` from `_features.pt`; compute `active_speech_s` from diarization
-4. If `active_speech_s < 1.0` → `confidence = 0.10`; skip cosine scoring → `needs_review`
-5. If `active_speech_fraction < 0.15` → `confidence = 0.30`; flag low-confidence
-6. Compute `cosine_similarity = dot(test_emb, centroid)` (both L2-normalised)
-7. Score using diarization-derived `primary_speaker_ratio` as before; blend:
-   - High cosine (> threshold) raises score; low cosine lowers it
-8. Write extended `detail` dict (all fields from `EmbeddingVerificationResult` in data-model.md)
+3. Load `speaker_embedding` (ECAPA) and `sparc["spk_emb"]` from `.pt` file
+4. Compute `active_speech_s` and `active_speech_fraction` from diarization
+5. If `active_speech_s < 1.0` → `confidence = 0.10`; skip cosine scoring → `needs_review`
+6. If `active_speech_fraction < 0.15` → `confidence = 0.30`; flag low-confidence
+7. Compute `ecapa_cosine = dot(L2norm(ecapa_emb), L2norm(ecapa_centroid))`
+8. Compute `sparc_cosine = dot(L2norm(sparc_emb), L2norm(sparc_centroid))`
+9. Set `or_flag = (ecapa_cosine < ecapa_threshold) OR (sparc_cosine < sparc_threshold)`
+10. Blend with diarization-based primary ratio to produce final score and
+    classification; `or_flag` forces `needs_review` when True
+11. Write extended `detail` dict (all EmbeddingVerificationResult fields)
 
 ---
 
@@ -124,10 +136,23 @@ tests/
 | `low_confidence_speech_fraction` | float | 0.15 | Speech fraction below which confidence is capped |
 | `outlier_rejection_std_multiplier` | float | 1.5 | Std multiplier for outlier rejection |
 | `contamination_quality_threshold` | float | 0.30 | Quality score below which profile is `contaminated` |
-| `child_age_threshold_years` | float | 14.0 | Age below which child model is used |
-| `child_embedding_model_id` | str | `""` | HuggingFace model ID for child embeddings (empty → use adult model) |
-| `excluded_task_patterns` | list[str] | `["ddk", "breathing", "long-sounds", "silence"]` | Task name substrings to exclude from enrollment |
-| `cosine_similarity_threshold` | float | 0.25 | Minimum cosine similarity to avoid `needs_review` flag |
+| `ecapa_cosine_threshold` | float | 0.25 | Min ECAPA-TDNN cosine to avoid `or_flag` |
+| `sparc_cosine_threshold` | float | 0.20 | Min SPARC cosine to avoid `or_flag` (lower due to 64-dim space) |
+| `excluded_task_prefixes` | list[str] | (see research.md Decision 8) | Case-insensitive prefix strings for enrollment exclusion |
+
+---
+
+## US3: Synthetic Mixture Evaluation
+
+The `embedding-reliability-report` command generates synthetic mixtures for ground-truth
+operating characteristic evaluation:
+
+1. For each target participant, select N clean single-speaker recordings (ground-truth negative)
+2. For each intruder ratio in `[0.10, 0.20, 0.40]`, replace that fraction of the
+   target recording with audio from a randomly selected different participant
+3. Label: mixture = positive, unmixed = negative
+4. Score all against the target participant's profile; compute FNR and FPR at each
+   threshold; produce operating curve for ECAPA-TDNN, SPARC, and OR-combined
 
 ---
 
@@ -135,14 +160,8 @@ tests/
 
 | Item | Reason | Ticket |
 |------|--------|--------|
-| PLDA backend | Requires ≥ 200-speaker cohort for covariance estimation | Future |
-| G-IFT child adapter | Requires labeled child speech from B2AI dataset | Future |
+| PLDA backend | Requires ≥ 200-speaker cohort | Future |
+| Learned score fusion (logistic regression) | Requires labelled training data | Future |
 | AS-norm / TAS-norm | Requires held-out cohort of 100–500 speakers | Future |
-| WavLM re-extraction | Would require re-running feature extraction on all audio | Future |
-| `embedding-reliability-report` (US3) | Research component; stub CLI in US2 | US3 |
-
----
-
-## Complexity Tracking
-
-No constitution violations requiring justification.
+| WavLM re-extraction | Would require re-running feature extraction | Future |
+| ChildAugment / G-IFT | Wrong objective for B2AI peds use case | Rejected |
