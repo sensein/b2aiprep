@@ -108,7 +108,7 @@ def load_config(path: Optional[str] = None) -> PipelineConfig:
         ),
         min_transcript_confidence=raw.get("min_transcript_confidence", 0.70),
         human_review_timeout_days=raw.get("human_review_timeout_days", 30),
-        sc_004_review_fraction_warn=raw.get("sc_004_review_fraction_warn", 0.15),
+        review_queue_warn_fraction=raw.get("review_queue_warn_fraction", raw.get("sc_004_review_fraction_warn", 0.15)),
     )
 
 

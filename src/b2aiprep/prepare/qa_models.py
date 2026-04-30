@@ -71,6 +71,7 @@ class AudioRecord:
     task_name: str
     audio_path: str
     features_path: str
+    participant_age_years: Optional[float] = None
 
 
 @dataclass
@@ -230,4 +231,26 @@ class PipelineConfig:
     confidence_disagreement_penalty: float = 0.50
     min_transcript_confidence: float = 0.70
     human_review_timeout_days: int = 30
-    sc_004_review_fraction_warn: float = 0.15
+    review_queue_warn_fraction: float = 0.15
+    speaker_profile: dict[str, Any] = field(
+        default_factory=lambda: {
+            "min_profile_recordings": 3,
+            "min_active_speech_s": 3.0,
+            "low_confidence_speech_fraction": 0.15,
+            "outlier_rejection_std_multiplier": 1.5,
+            "contamination_quality_threshold": 0.30,
+            "ecapa_cosine_threshold": 0.25,
+            "sparc_cosine_threshold": 0.20,
+            "excluded_task_prefixes": [
+                "Diadochokinesis",
+                "Prolonged-vowel",
+                "Maximum-phonation-time",
+                "Respiration-and-cough",
+                "Glides",
+                "Loudness",
+                "long-sounds",
+                "silly-sounds",
+                "repeat-words",
+            ],
+        }
+    )
