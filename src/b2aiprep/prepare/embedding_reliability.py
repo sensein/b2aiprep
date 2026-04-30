@@ -24,6 +24,14 @@ _logger = logging.getLogger(__name__)
 
 _REPORT_VERSION = "1.0.0"
 
+# ---------------------------------------------------------------------------
+# Default evaluation parameters — see research.md Decision 9 for rationale.
+# ---------------------------------------------------------------------------
+_DEFAULT_MAX_FNR_TARGET = 0.05
+_DEFAULT_KNEE_DROP_PP = 0.15
+_DEFAULT_LOW_CONFIDENCE_SPEECH_FRACTION = 0.15
+_DEFAULT_MIN_ACTIVE_SPEECH_S = 3.0
+
 
 # ---------------------------------------------------------------------------
 # Low-level helpers
@@ -387,7 +395,7 @@ def _l2_normalize(v: np.ndarray) -> np.ndarray:
     return v / (norm + 1e-10)
 
 
-def _recommended_threshold(curve: list, max_fnr: float = 0.05) -> float:
+def _recommended_threshold(curve: list, max_fnr: float = _DEFAULT_MAX_FNR_TARGET) -> float:
     """Return the lowest threshold where FNR ≤ max_fnr; fall back to minimum-FNR point."""
     for point in curve:
         if point["fnr"] <= max_fnr:
@@ -421,8 +429,12 @@ def _per_bin_stats(score_label_fraction_age: list, bins: list) -> list:
     return stats
 
 
-def _compute_knee_point(score_label_fraction_age: list, bins: list) -> float:
-    """Speech fraction boundary where per-bin same-speaker cosine drops > 15 pp."""
+def _compute_knee_point(
+    score_label_fraction_age: list,
+    bins: list,
+    knee_drop_pp: float = _DEFAULT_KNEE_DROP_PP,
+) -> float:
+    """Speech fraction boundary where per-bin same-speaker cosine drops > knee_drop_pp."""
     bin_means = []
     for lo, hi in bins:
         same = [s for s, l, f, _ in score_label_fraction_age if lo <= f < hi and not l]
@@ -432,7 +444,7 @@ def _compute_knee_point(score_label_fraction_age: list, bins: list) -> float:
     if top_mean is None:
         return 0.0
     for lo, _, m in bin_means:
-        if m is not None and top_mean - m > 0.15:
+        if m is not None and top_mean - m > knee_drop_pp:
             return float(lo)
     return 0.0
 
@@ -501,6 +513,8 @@ def compute_operating_curves(
     profiles_dir: str,
     emb_dict: dict,
     speech_fraction_bins: Optional[list] = None,
+    max_fnr_target: float = _DEFAULT_MAX_FNR_TARGET,
+    knee_drop_pp: float = _DEFAULT_KNEE_DROP_PP,
 ) -> dict:
     """Score mixtures against participant profiles and compute operating curves.
 
@@ -512,6 +526,8 @@ def compute_operating_curves(
         profiles_dir: Directory containing per-participant ``speaker_profile.json`` files.
         emb_dict: Output of :func:`extract_embeddings_for_mixtures`.
         speech_fraction_bins: Bin boundaries as list of (lo, hi) pairs.
+        max_fnr_target: FNR ceiling used to select recommended thresholds.
+        knee_drop_pp: Accuracy drop (percentage points) that defines the knee point.
 
     Returns:
         :class:`EmbeddingReliabilityReport` dict.
@@ -580,11 +596,11 @@ def compute_operating_curves(
         "ecapa_operating_curve": ecapa_curve,
         "sparc_operating_curve": sparc_curve,
         "or_operating_curve": or_curve,
-        "recommended_ecapa_threshold": _recommended_threshold(ecapa_curve),
-        "recommended_sparc_threshold": _recommended_threshold(sparc_curve),
-        "recommended_low_confidence_threshold": 0.15,
-        "recommended_min_enrollment_duration_s": 3.0,
-        "knee_point_fraction": _compute_knee_point(ecapa_rows, speech_fraction_bins),
+        "recommended_ecapa_threshold": _recommended_threshold(ecapa_curve, max_fnr_target),
+        "recommended_sparc_threshold": _recommended_threshold(sparc_curve, max_fnr_target),
+        "recommended_low_confidence_threshold": _DEFAULT_LOW_CONFIDENCE_SPEECH_FRACTION,
+        "recommended_min_enrollment_duration_s": _DEFAULT_MIN_ACTIVE_SPEECH_S,
+        "knee_point_fraction": _compute_knee_point(ecapa_rows, speech_fraction_bins, knee_drop_pp),
         "adult_subgroup_stats": {
             "ecapa_operating_curve": _build_single_emb_curve(adult_ec),
             "sparc_operating_curve": _build_single_emb_curve(adult_sp),

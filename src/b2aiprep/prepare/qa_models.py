@@ -236,7 +236,12 @@ class PipelineConfig:
         default_factory=lambda: {
             "min_profile_recordings": 3,
             "min_active_speech_s": 3.0,
+            "short_recording_skip_s": 1.0,
+            "short_enrollment_weight_multiplier": 0.3,
+            "weight_normalization_s": 10.0,
             "low_confidence_speech_fraction": 0.15,
+            "confidence_very_short_recording": 0.10,
+            "confidence_low_speech_fraction_cap": 0.30,
             "outlier_rejection_std_multiplier": 1.5,
             "contamination_quality_threshold": 0.30,
             "ecapa_cosine_threshold": 0.25,

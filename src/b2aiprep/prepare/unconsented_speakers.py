@@ -18,6 +18,18 @@ from b2aiprep.prepare.qa_models import CheckResult, CheckType, Classification, P
 
 _logger = logging.getLogger(__name__)
 
+# ---------------------------------------------------------------------------
+# Default threshold values — mirror qa_pipeline_config.json speaker_profile.
+# See specs/002-speaker-profile-detection/research.md for rationale and tuning
+# guidance for each value.
+# ---------------------------------------------------------------------------
+_DEFAULT_ECAPA_COSINE_THRESHOLD = 0.25
+_DEFAULT_SPARC_COSINE_THRESHOLD = 0.20
+_DEFAULT_LOW_CONFIDENCE_SPEECH_FRACTION = 0.15
+_DEFAULT_SHORT_RECORDING_SKIP_S = 1.0
+_DEFAULT_CONFIDENCE_VERY_SHORT_RECORDING = 0.10
+_DEFAULT_CONFIDENCE_LOW_SPEECH_FRACTION_CAP = 0.30
+
 
 # ---------------------------------------------------------------------------
 # Internal helpers
@@ -212,9 +224,12 @@ def check_unconsented_speakers(
     from b2aiprep.prepare.speaker_profiles import load_speaker_profile
 
     sp_cfg = config.speaker_profile
-    ecapa_threshold = float(sp_cfg.get("ecapa_cosine_threshold", 0.25))
-    sparc_threshold = float(sp_cfg.get("sparc_cosine_threshold", 0.20))
-    low_conf_fraction = float(sp_cfg.get("low_confidence_speech_fraction", 0.15))
+    ecapa_threshold = float(sp_cfg.get("ecapa_cosine_threshold", _DEFAULT_ECAPA_COSINE_THRESHOLD))
+    sparc_threshold = float(sp_cfg.get("sparc_cosine_threshold", _DEFAULT_SPARC_COSINE_THRESHOLD))
+    low_conf_fraction = float(sp_cfg.get("low_confidence_speech_fraction", _DEFAULT_LOW_CONFIDENCE_SPEECH_FRACTION))
+    skip_s = float(sp_cfg.get("short_recording_skip_s", _DEFAULT_SHORT_RECORDING_SKIP_S))
+    conf_very_short = float(sp_cfg.get("confidence_very_short_recording", _DEFAULT_CONFIDENCE_VERY_SHORT_RECORDING))
+    conf_low_speech_cap = float(sp_cfg.get("confidence_low_speech_fraction_cap", _DEFAULT_CONFIDENCE_LOW_SPEECH_FRACTION_CAP))
 
     profile = load_speaker_profile(profiles_dir, participant_id)
 
@@ -282,22 +297,22 @@ def check_unconsented_speakers(
 
     # --- compute speech-fraction confidence ceiling ---
     active_speech_fraction = active_speech_s / (total_duration + 1e-10)
-    if active_speech_s < 1.0:
-        speech_fraction_confidence = 0.10
+    if active_speech_s < skip_s:
+        speech_fraction_confidence = conf_very_short
     elif active_speech_fraction < low_conf_fraction:
-        speech_fraction_confidence = 0.30
+        speech_fraction_confidence = conf_low_speech_cap
     else:
         speech_fraction_confidence = 1.0
 
     # --- very short recording: skip cosine comparison ---
-    if active_speech_s < 1.0:
+    if active_speech_s < skip_s:
         return CheckResult(
             participant_id=participant_id,
             session_id=session_id,
             task_name=task_name,
             check_type=CheckType.UNCONSENTED_SPEAKERS,
             score=0.5,
-            confidence=0.10,
+            confidence=conf_very_short,
             classification=Classification.NEEDS_REVIEW,
             detail={
                 "profile_status": profile.profile_status,

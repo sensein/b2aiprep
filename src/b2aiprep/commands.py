@@ -1905,6 +1905,15 @@ def build_speaker_profiles_cmd(
     help="Keep the synthetic_mixtures/ directory after the report is written.",
 )
 @click.option(
+    "--max-fnr-target", "max_fnr_target",
+    default=0.05, show_default=True, type=float,
+    help=(
+        "FNR ceiling used when selecting recommended thresholds. "
+        "Lower values prioritise recall at the cost of a larger review queue. "
+        "See research.md Decision 9 for calibration guidance."
+    ),
+)
+@click.option(
     "--pipeline-config", "config_path",
     default=None, type=click.Path(exists=True),
     help="Path to pipeline config JSON. Uses built-in defaults if omitted.",
@@ -1923,6 +1932,7 @@ def embedding_reliability_report_cmd(
     intruder_ratios,
     intruder_snr_db,
     keep_mixtures,
+    max_fnr_target,
     config_path,
     log_level,
 ):

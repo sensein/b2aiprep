@@ -24,6 +24,20 @@ _logger = logging.getLogger(__name__)
 _ECAPA_MODEL_ID = "speechbrain/spkrec-ecapa-voxceleb"
 _SPARC_MODEL_ID = "senselab/sparc-multi"
 
+# ---------------------------------------------------------------------------
+# Default threshold values — mirror qa_pipeline_config.json speaker_profile.
+# See specs/002-speaker-profile-detection/research.md for rationale and tuning
+# guidance for each value.
+# ---------------------------------------------------------------------------
+_DEFAULT_MIN_PROFILE_RECORDINGS = 3
+_DEFAULT_MIN_ACTIVE_SPEECH_S = 3.0
+_DEFAULT_SHORT_RECORDING_SKIP_S = 1.0
+_DEFAULT_SHORT_ENROLLMENT_WEIGHT_MULTIPLIER = 0.3
+_DEFAULT_WEIGHT_NORMALIZATION_S = 10.0
+_DEFAULT_LOW_CONFIDENCE_SPEECH_FRACTION = 0.15
+_DEFAULT_OUTLIER_REJECTION_STD_MULTIPLIER = 1.5
+_DEFAULT_CONTAMINATION_QUALITY_THRESHOLD = 0.30
+
 
 # ---------------------------------------------------------------------------
 # Data model
@@ -256,11 +270,14 @@ def build_speaker_profiles(
         config = PipelineConfig()
 
     sp_cfg = config.speaker_profile
-    min_recordings = int(sp_cfg.get("min_profile_recordings", 3))
-    min_active_s = float(sp_cfg.get("min_active_speech_s", 3.0))
-    low_conf_frac = float(sp_cfg.get("low_confidence_speech_fraction", 0.15))
-    std_mult = float(sp_cfg.get("outlier_rejection_std_multiplier", 1.5))
-    contam_thresh = float(sp_cfg.get("contamination_quality_threshold", 0.30))
+    min_recordings = int(sp_cfg.get("min_profile_recordings", _DEFAULT_MIN_PROFILE_RECORDINGS))
+    min_active_s = float(sp_cfg.get("min_active_speech_s", _DEFAULT_MIN_ACTIVE_SPEECH_S))
+    skip_s = float(sp_cfg.get("short_recording_skip_s", _DEFAULT_SHORT_RECORDING_SKIP_S))
+    down_weight_mult = float(sp_cfg.get("short_enrollment_weight_multiplier", _DEFAULT_SHORT_ENROLLMENT_WEIGHT_MULTIPLIER))
+    weight_norm_s = float(sp_cfg.get("weight_normalization_s", _DEFAULT_WEIGHT_NORMALIZATION_S))
+    low_conf_frac = float(sp_cfg.get("low_confidence_speech_fraction", _DEFAULT_LOW_CONFIDENCE_SPEECH_FRACTION))
+    std_mult = float(sp_cfg.get("outlier_rejection_std_multiplier", _DEFAULT_OUTLIER_REJECTION_STD_MULTIPLIER))
+    contam_thresh = float(sp_cfg.get("contamination_quality_threshold", _DEFAULT_CONTAMINATION_QUALITY_THRESHOLD))
     excluded_prefixes: list[str] = sp_cfg.get(
         "excluded_task_prefixes",
         [
@@ -397,7 +414,7 @@ def build_speaker_profiles(
             # --- Gate 2: absolute duration gate (checked before fraction) ---
             active_s = _compute_active_speech_s(diarization)
 
-            if active_s < 1.0:
+            if active_s < skip_s:
                 excluded.append({
                     "task_name": task_name,
                     "session_id": session_id,
@@ -420,11 +437,11 @@ def build_speaker_profiles(
                 )
                 continue
 
-            # --- Down-weight 1–3 s recordings ---
-            down_weight = 0.3 if active_s < min_active_s else 1.0
+            # --- Down-weight skip_s–min_active_s recordings ---
+            down_weight = down_weight_mult if active_s < min_active_s else 1.0
 
             # --- Quality weight ---
-            w = min(active_s / 10.0, 1.0) * down_weight
+            w = min(active_s / weight_norm_s, 1.0) * down_weight
 
             # --- Accumulate ---
             ecapa_np = speaker_embedding.numpy() if hasattr(speaker_embedding, "numpy") else np.array(speaker_embedding)

@@ -124,13 +124,26 @@ centroid and against the SPARC centroid independently. Flag `needs_review` if
 **Rationale**:
 - For datasets where unconsented speakers must be reliably caught, false negatives
   are more costly than false positives (excess review workload)
-- OR logic maximises sensitivity; threshold calibration (Decision 7) allows tuning
-  the operating point to achieve ≤ 5% FN rate while quantifying reviewer workload
+- OR logic maximises sensitivity; threshold calibration (Decision 7 and Decision 9)
+  allows tuning the operating point to achieve ≤ 5% FN rate while quantifying
+  reviewer workload
 - Each embedding threshold is independently configurable to account for their
   different score distributions (ECAPA-TDNN cosine ≈ 0.8–1.0 for same-speaker;
   SPARC cosine may differ)
 - AS-norm calibration (optional) can improve per-embedding threshold stability;
   deferred until a held-out cohort of 100–500 speakers is available
+
+**Config keys** (all in `PipelineConfig.speaker_profile`):
+
+| Key | Default | Source |
+|-----|---------|--------|
+| `ecapa_cosine_threshold` | 0.25 | provisional — run `embedding-reliability-report` to calibrate |
+| `sparc_cosine_threshold` | 0.20 | provisional — run `embedding-reliability-report` to calibrate |
+
+**Provisional status**: Both thresholds were chosen to lean conservative (lower
+cosine = wider net) pending empirical calibration. Use `embedding-reliability-report`
+on representative B2AI data and update these values in `qa_pipeline_config.json`
+(see Decision 9 for the calibration workflow).
 
 **Alternatives considered**:
 - AND logic: Lower recall; would miss cases where only one embedding detects the
@@ -146,14 +159,28 @@ timestamps; apply confidence ceiling for low-speech recordings to both embedding
 
 **Rationale**:
 - ECAPA-TDNN and SPARC both degrade on low-speech recordings
-- `< 15% active speech fraction` → confidence = 0.30, classify as needs_review
-  regardless of cosine scores (applied to both embeddings)
-- `< 1 s active speech (absolute)` → exclude from enrollment entirely
+- `< 15% active speech fraction` → confidence capped at 0.30, classify as
+  needs_review regardless of cosine scores (applied to both embeddings)
+- `< 1 s active speech (absolute)` → skip cosine comparison during verification;
+  return needs_review with confidence 0.10. Also exclude from enrollment entirely.
 - `1–3 s` → down-weight in enrollment (w × 0.3)
 - `is_speech_task=False` → apply lower confidence ceiling as additional prior
 
-**Threshold validation**: US3 will empirically validate these thresholds using the
-synthetic mixture evaluation set.
+**Config keys** (all in `PipelineConfig.speaker_profile`):
+
+| Key | Default | Source |
+|-----|---------|--------|
+| `low_confidence_speech_fraction` | 0.15 | provisional — see tuning note |
+| `confidence_low_speech_fraction_cap` | 0.30 | provisional — see tuning note |
+| `short_recording_skip_s` | 1.0 | literature-anchored (see Decision 6) |
+| `confidence_very_short_recording` | 0.10 | provisional — see tuning note |
+| `short_enrollment_weight_multiplier` | 0.3 | provisional — see tuning note |
+| `weight_normalization_s` | 10.0 | literature-anchored (see Decision 6) |
+
+**Provisional values**: `low_confidence_speech_fraction`, `confidence_low_speech_fraction_cap`,
+`confidence_very_short_recording`, and `short_enrollment_weight_multiplier` are
+chosen heuristically; they should be calibrated against representative B2AI data
+using `embedding-reliability-report` (see Decision 9).
 
 ---
 
@@ -161,13 +188,20 @@ synthetic mixture evaluation set.
 
 | Active speech duration | Embedding reliability | Recommended treatment |
 |-----------------------|----------------------|----------------------|
-| < 1 s | Very low | Exclude from enrollment; score with confidence 0.10 |
-| 1–3 s | Low | Down-weight in enrollment (w × 0.3); score with confidence 0.30 |
+| < 1 s | Very low | Exclude from enrollment; skip cosine check, confidence 0.10 |
+| 1–3 s | Low | Down-weight in enrollment (w × 0.3); score with confidence cap 0.30 |
 | 3–10 s | Moderate | Include in enrollment at full weight; confidence 0.70 |
 | > 10 s | High | Full enrollment weight; confidence 0.90 |
 
 Source: Interspeech research on short-segment ECAPA-TDNN; quality measure
 frameworks (ScienceDirect doi:10.1016/j.dsp.2018.07.012).
+
+**Literature-anchored values**: The 1 s absolute floor (`short_recording_skip_s`)
+and 10 s normalisation point (`weight_normalization_s`) are consistent with
+published short-utterance reliability findings. The 1–3 s region weight multiplier
+(0.3) and fraction-based confidence cap (0.30 at < 15% speech) are heuristic
+extrapolations; run `embedding-reliability-report` on representative B2AI data to
+validate and update these provisional values.
 
 ---
 
@@ -214,6 +248,50 @@ when one task name is a prefix-substring of another).
   all produce unreliable speaker embeddings
 - Prefix matching prevents e.g., a pattern `passage` from matching `Caterpillar-Passage`
 - Patterns are configurable via `PipelineConfig.speaker_profile.excluded_task_prefixes`
+
+---
+
+## Decision 9: Embedding reliability report — evaluation hyper-parameters
+
+**Decision**: Two hyper-parameters govern how `embedding-reliability-report`
+selects the recommended threshold from operating-characteristic curves:
+
+| Parameter | Config key | Default | Meaning |
+|-----------|-----------|---------|---------|
+| FNR ceiling | `--max-fnr-target` (CLI) | 0.05 | Maximum acceptable false-negative rate; the lowest threshold that stays at or below this FNR is the primary candidate |
+| Knee-point sensitivity | `knee_drop_pp` (internal) | 0.15 | Minimum fractional drop in review-queue fraction (as a proportion of the maximum) required to declare a knee point in the FNR-vs-queue curve |
+
+Both values are exposed as named module-level constants in
+`src/b2aiprep/prepare/embedding_reliability.py`:
+
+```python
+_DEFAULT_MAX_FNR_TARGET  = 0.05   # 5 % FNR ceiling
+_DEFAULT_KNEE_DROP_PP    = 0.15   # 15 % relative queue-fraction drop for knee
+```
+
+**Rationale for 0.05 FNR target**: In data-privacy QA contexts, missing an
+unconsented speaker is substantially worse than unnecessary human review. A 5%
+FNR cap means at most 1 in 20 recordings containing an intruder pass unreviewed.
+This is an initial operational target with no empirical calibration on B2AI data
+yet; it should be revisited once the team establishes acceptable review capacity.
+
+**Rationale for 0.15 knee sensitivity**: A 15% relative queue-fraction drop
+provides a meaningful inflection point without being overly sensitive to noise in
+sparse operating-characteristic curves. Chosen empirically; adjust down if the
+report consistently reports no knee, or up if it finds knee points too aggressively.
+
+**Provisional status**: Both defaults are un-validated on B2AI. To calibrate:
+1. Run `embedding-reliability-report` on a representative cohort (≥ 50 participants
+   with ≥ 3 recordings each)
+2. Inspect the generated Markdown report; the recommended ECAPA-TDNN and SPARC
+   thresholds appear under `recommended_ecapa_threshold` / `recommended_sparc_threshold`
+3. If the FNR at the recommended threshold substantially exceeds the team's
+   target, lower `--max-fnr-target`; if the review queue is too large, raise it
+4. If no knee is detected, lower `knee_drop_pp`; if the knee is found too early,
+   raise it
+5. Update `ecapa_cosine_threshold` and `sparc_cosine_threshold` in
+   `qa_pipeline_config.json` (and in `speaker_profile` section of
+   `PipelineConfig`) with the empirically calibrated values
 
 ---
 
