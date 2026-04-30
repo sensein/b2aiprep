@@ -145,8 +145,10 @@ sharply.
 ### Functional Requirements
 
 - **FR-001**: The system MUST construct a per-participant speaker profile from all
-  recordings that meet a minimum active-speech duration threshold (default: ≥10 s
-  active speech per recording, configurable).
+  recordings that meet a minimum active-speech duration threshold (default: ≥3 s
+  active speech per recording, configurable). Recordings with 1–3 s active speech
+  are down-weighted (×0.3) rather than excluded outright; recordings with < 1 s
+  active speech are excluded from enrollment entirely.
 
 - **FR-002**: Profile construction MUST exclude recordings with active speech
   fraction below a configurable threshold (default: <15%) and log which recordings
