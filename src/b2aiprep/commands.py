@@ -61,6 +61,7 @@ from b2aiprep.prepare.prepare import (
 )
 from b2aiprep.prepare.quality_control import quality_control_wrapper, check_audio_quality
 from b2aiprep.prepare.unconsented_speakers import check_unconsented_speakers
+from b2aiprep.prepare.speaker_profiles import build_speaker_profiles
 from b2aiprep.prepare.pii_detection import check_pii_disclosure
 from b2aiprep.prepare.task_compliance import check_task_compliance
 from b2aiprep.prepare.qa_models import AudioRecord, CheckType
@@ -1739,4 +1740,108 @@ def qa_run(
     click.echo(
         f"qa-run complete: {len(all_composite_scores)} files processed "
         f"({n_pass} pass, {n_fail} fail, {n_review} needs_review)"
+    )
+
+
+# ---------------------------------------------------------------------------
+# build-speaker-profiles: pre-build per-participant dual-centroid profiles
+# ---------------------------------------------------------------------------
+
+
+@click.command(name="build-speaker-profiles")
+@click.argument("bids_dir", type=click.Path(exists=True, file_okay=False))
+@click.argument("profiles_dir", type=click.Path(file_okay=False))
+@click.option(
+    "--pipeline-config", "config_path",
+    default=None, type=click.Path(exists=True),
+    help="Path to pipeline config JSON. Uses built-in defaults if omitted.",
+)
+@click.option(
+    "--task-exclude", "task_exclude",
+    default=None, type=str,
+    help=(
+        "Comma-separated task name prefixes to exclude from enrollment "
+        "(case-insensitive prefix match). Overrides config default."
+    ),
+)
+@click.option(
+    "--min-active-speech", "min_active_speech",
+    default=None, type=float,
+    help="Minimum active speech seconds per recording for enrollment. [default: 3.0]",
+)
+@click.option(
+    "--min-recordings", "min_recordings",
+    default=None, type=int,
+    help="Minimum usable recordings to produce a ready profile. [default: 3]",
+)
+@click.option(
+    "--age-col", "age_col",
+    default="age", show_default=True, type=str,
+    help="Column name in participants.tsv containing age in years.",
+)
+@click.option(
+    "--part", default=1, show_default=True, type=int,
+    help="1-based shard index for SLURM array jobs.",
+)
+@click.option(
+    "--num-parts", default=1, show_default=True, type=int,
+    help="Total number of shards for SLURM array jobs.",
+)
+@click.option(
+    "--log-level", default="INFO",
+    type=click.Choice(["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]),
+    help="Override log level for this command.",
+)
+def build_speaker_profiles_cmd(
+    bids_dir,
+    profiles_dir,
+    config_path,
+    task_exclude,
+    min_active_speech,
+    min_recordings,
+    age_col,
+    part,
+    num_parts,
+    log_level,
+):
+    """Build per-participant speaker profiles from pre-computed feature files.
+
+    Reads every participant's ``_features.pt`` files from BIDS_DIR, applies
+    task-based enrollment gating, builds quality-weighted outlier-rejected
+    centroids for ECAPA-TDNN (192-dim) and SPARC (64-dim) embeddings, and
+    writes one ``sub-{pid}/speaker_profile.json`` per participant to
+    PROFILES_DIR.
+
+    Run this before ``qa-run --profiles-dir`` to enable profile-based
+    unconsented-speaker detection.
+    """
+    logging.getLogger().setLevel(log_level)
+
+    config = load_pipeline_config(config_path) if config_path else load_pipeline_config()
+
+    # Apply CLI overrides to the speaker_profile config sub-dict
+    if task_exclude is not None:
+        config.speaker_profile["excluded_task_prefixes"] = [
+            t.strip() for t in task_exclude.split(",") if t.strip()
+        ]
+    if min_active_speech is not None:
+        config.speaker_profile["min_active_speech_s"] = min_active_speech
+    if min_recordings is not None:
+        config.speaker_profile["min_profile_recordings"] = min_recordings
+
+    profiles = build_speaker_profiles(
+        bids_dir=bids_dir,
+        profiles_dir=profiles_dir,
+        config=config,
+        part=part,
+        num_parts=num_parts,
+        age_col=age_col,
+    )
+
+    n_ready = sum(1 for p in profiles.values() if p.profile_status == "ready")
+    n_insuf = sum(1 for p in profiles.values() if p.profile_status == "insufficient_data")
+    n_cont = sum(1 for p in profiles.values() if p.profile_status == "contaminated")
+    click.echo(
+        f"build-speaker-profiles complete: {len(profiles)} participants "
+        f"({n_ready} ready, {n_insuf} insufficient_data, {n_cont} contaminated)"
     )
