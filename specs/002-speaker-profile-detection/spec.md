@@ -212,6 +212,16 @@ sharply.
   operating characteristic curve (false negative rate vs. review-queue fraction) for
   both ECAPA-TDNN and SPARC embeddings independently and combined.
 
+- **FR-012**: All sub-signals within the unconsented-speaker check — diarization
+  signals (num_speakers, primary_ratio, extra_count), Evans model output,
+  ECAPA-TDNN cosine similarity, and SPARC cosine similarity — MUST be computed and
+  included in the `CheckResult.detail` dict regardless of the resulting
+  classification. A `needs_review` or `fail` classification from the unconsented-
+  speaker check MUST NOT prevent the recording from proceeding through subsequent
+  `qa-run` pipeline stages (audio quality, PII detection, task compliance). All
+  stages run for every recording; results are accumulated and presented together to
+  the human reviewer.
+
 ### Key Entities
 
 - **SpeakerProfile**: participant identifier, two profile centroids (ECAPA-TDNN
@@ -319,6 +329,19 @@ sharply.
   `Respiration-and-cough`, `Glides`, `Loudness`.
   Peds: `long-sounds`, `silly-sounds`, `repeat-words`.
   All patterns are case-insensitive prefix matches.
+- Q: Should `needs_review` from the unconsented-speaker check stop other sub-signals
+  (diarization, Evans model) from running, and should it block downstream pipeline
+  stages (PII detection, task compliance)?
+  → A: No on both counts. All sub-signals within the unconsented-speaker check
+  (diarization signals, Evans model output, ECAPA-TDNN cosine similarity, SPARC
+  cosine similarity) MUST run to completion and be recorded in the CheckResult
+  regardless of any individual sub-signal outcome. A `needs_review` or `fail`
+  classification for the unconsented-speaker check MUST NOT block the recording from
+  proceeding to subsequent pipeline stages — PII detection, task compliance, etc.
+  must still run so that all information is available when a human reviewer evaluates
+  the recording. The reviewer may decide after review that a recording flagged
+  `needs_review` for unconsented speakers had no second speaker, but they still need
+  PII and compliance results for that recording.
 
 ## Assumptions
 
