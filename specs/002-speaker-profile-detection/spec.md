@@ -57,12 +57,14 @@ score rather than a false failure or false pass.
 placeholder unconsented-speaker check and directly improves the ethical compliance
 screening of the dataset.
 
-**Independent Test**: Given a synthetic set of recordings — (a) clean single-speaker
-from the enrolled participant, (b) recording with a second speaker interjecting,
-(c) silence-only recording, (d) DDK (non-speech) recording — run per-recording
-verification against a known profile and confirm: (a) scores high similarity
-(pass), (b) scores low similarity (fail or needs_review), (c) and (d) are flagged
-low-confidence (needs_review) without failing due to embedding mismatch.
+**Independent Test**: Generate a synthetic evaluation set by (a) taking clean
+single-speaker recordings from enrolled participant A as ground-truth negatives,
+and (b) mixing audio from a different enrolled participant B into participant A's
+recordings at controlled duration/ratio as ground-truth positives. Run per-recording
+verification against participant A's profile and confirm: negatives score high
+similarity (pass or needs_review), positives score low similarity (needs_review or
+fail). Additionally confirm that silence-only and non-speech recordings are flagged
+low-confidence (needs_review) without failing due to embedding mismatch alone.
 
 **Acceptance Scenarios**:
 
@@ -125,8 +127,12 @@ sharply.
 - Profile is built from recordings that themselves contained unconsented speakers
   (contaminates the profile — flag profile as potentially contaminated when source
   recordings were previously flagged by the prior QA check).
-- Child voices: speaker embeddings may underperform for child participants relative
-  to adults; the research report must quantify any accuracy gap.
+- Child participants (pediatric recordings): the detection goal is to find **adult
+  intruders**, not to verify the child's own identity. The adult ECAPA-TDNN model
+  is used for all participants; child profiles will be noisier but adult voices are
+  highly separable from child voices in this embedding space, making adult-intruder
+  detection feasible. The research report (US3) must quantify the adult-intruder
+  detection rate on pediatric recordings specifically.
 - Very short recordings (<3 s total duration) with marginal speech activity.
 - First-time participant with no prior recordings (cold-start — all recordings
   default to needs_review until a profile can be built from sufficient data).
@@ -141,16 +147,24 @@ sharply.
 
 - **FR-002**: Profile construction MUST exclude recordings with active speech
   fraction below a configurable threshold (default: <15%) and log which recordings
-  were excluded and the reason.
+  were excluded and the reason. Additionally, recordings whose task name matches
+  any configured exclusion prefix MUST be excluded from enrollment. Exclusion
+  matching is case-insensitive prefix matching (not substring), to prevent false
+  matches when one task name is a prefix-substring of another. Default exclusion
+  prefixes: adults — `Diadochokinesis`, `Prolonged-vowel`, `Maximum-phonation-time`,
+  `Respiration-and-cough`, `Glides`, `Loudness`; peds — `long-sounds`,
+  `silly-sounds`, `repeat-words`.
 
 - **FR-003**: A participant MUST be marked `profile_status=insufficient_data` when
   fewer than a configurable minimum number of usable recordings exist (default: 3).
   All recordings for such participants MUST be routed to needs_review without
   performing an embedding comparison.
 
-- **FR-004**: Each recording MUST be assigned a speaker similarity score (0–1) and
-  a confidence value (0–1) reflecting both the match to the participant profile and
-  the reliability of the embedding for that recording.
+- **FR-004**: Each recording MUST be assigned two independent speaker similarity
+  scores (0–1): one from the ECAPA-TDNN centroid and one from the SPARC `spk_emb`
+  centroid. A recording is flagged `needs_review` if either score falls below its
+  respective threshold (OR logic). A single confidence value (0–1) reflects the
+  reliability of the active speech fraction for both embeddings.
 
 - **FR-005**: Recordings with active speech fraction below the low-confidence
   threshold MUST receive confidence ≤0.30 regardless of the similarity score
@@ -181,13 +195,21 @@ sharply.
   the basic audio quality hard gates (Stage 1 of the existing QA pipeline); hard-
   gate-failed recordings are excluded from profile input automatically.
 
+- **FR-011**: The system MUST support generation of a synthetic evaluation set by
+  mixing audio segments from two different enrolled participants at configurable
+  intruder duration and SNR, producing ground-truth labels (positive = intruder
+  mixed in, negative = solo recording). This evaluation set is used to compute the
+  operating characteristic curve (false negative rate vs. review-queue fraction) for
+  both ECAPA-TDNN and SPARC embeddings independently and combined.
+
 ### Key Entities
 
-- **SpeakerProfile**: participant identifier, profile embedding (centroid
-  representation), number of recordings used in construction, total active speech
-  duration used, profile quality score (0–1), profile status (ready /
-  insufficient_data / contaminated), list of included recording identifiers, list
-  of excluded recording identifiers with exclusion reason.
+- **SpeakerProfile**: participant identifier, two profile centroids (ECAPA-TDNN
+  192-dim centroid and SPARC `spk_emb` 64-dim centroid), number of recordings used
+  in construction, total active speech duration used, profile quality score (0–1,
+  computed per centroid), profile status (ready / insufficient_data / contaminated),
+  list of included recording identifiers, list of excluded recording identifiers
+  with exclusion reason.
 
 - **EmbeddingVerificationResult**: participant identifier, session identifier, task
   name, speaker similarity score (0–1), active speech fraction of the recording,
@@ -206,8 +228,9 @@ sharply.
   in ≥95% of speech-rich recordings (active speech fraction ≥50%) when verified
   against their profile.
 
-- **SC-002**: Recordings confirmed to contain a second speaker score below the
-  needs_review threshold in ≥85% of cases.
+- **SC-002**: At the selected operating threshold, the false negative rate
+  (recordings with a confirmed second speaker that pass through undetected) is ≤5%
+  on the labelled evaluation set, across both ECAPA-TDNN and SPARC embeddings.
 
 - **SC-003**: Recordings with active speech fraction <15% are never auto-classified
   as fail due to embedding mismatch alone; they receive needs_review with
@@ -217,11 +240,16 @@ sharply.
   changes that participant's per-recording similarity scores by <0.05 on average
   (profile stability under leave-one-out perturbation).
 
-- **SC-005**: The research report (US3) identifies a speech-fraction threshold below
+- **SC-005**: The research report (US3) publishes the full operating characteristic
+  curve (false negative rate vs. review-queue fraction) for each embedding
+  independently and for OR-combined scoring, enabling threshold selection that
+  meets SC-002 while minimising unnecessary reviewer workload.
+
+- **SC-006**: The research report (US3) identifies a speech-fraction threshold below
   which embedding accuracy drops by ≥15 percentage points relative to the 50–100%
   speech-fraction bin.
 
-- **SC-006**: End-to-end processing time for profile construction plus per-recording
+- **SC-007**: End-to-end processing time for profile construction plus per-recording
   verification is no more than 2× the wall-clock time of the current placeholder
   unconsented-speaker check for the same dataset.
 
@@ -239,6 +267,43 @@ sharply.
   reusable artifacts; qa-run reads them. Missing profile → needs_review for all
   recordings of that participant.
 
+### Session 2026-04-30
+
+- Q: Pediatric detection goal — which embedding model for child participants?
+  → A: Drop child-model switching entirely. Adult ECAPA-TDNN is used for all
+  participants. For pediatric recordings the goal is adult-intruder detection, not
+  child identity verification; adult and child voices are highly separable in the
+  adult embedding space, making adult-intruder detection feasible even with noisy
+  child profiles.
+- Q: SPARC speaker embedding — how to use it alongside ECAPA-TDNN?
+  → A: Use both embeddings independently. A recording is flagged `needs_review` if
+  either the ECAPA-TDNN cosine score or the SPARC `spk_emb` cosine score falls
+  below its respective threshold (OR logic). This maximises recall without requiring
+  a fusion model. Each embedding's threshold is independently configurable.
+- Q: Ground truth source for operating characteristics (FN/FP rates)?
+  → A: Synthetic mixtures from real enrolled participants. Take known-clean
+  single-speaker recordings from participant A, mix in audio from a different
+  enrolled participant B at controlled duration/ratio; the mixture is ground-truth
+  positive (unconsented speaker present). Unmixed recordings are ground-truth
+  negative. This yields a labelled evaluation set using real B2AI speaker
+  characteristics without requiring manual annotation.
+- Q: What does a "useful" outcome look like for this check?
+  → A: Soft triage (needs_review queue) with quantitative operating characteristics.
+  The system must report: at a given cosine threshold, the estimated false negative
+  rate (unconsented speakers that pass through undetected) and false positive rate
+  (clean recordings incorrectly routed to review, which determines reviewer workload).
+  The goal is to select a threshold where false negatives are provably low (e.g.,
+  ≤5%) while keeping the review queue manageable. Operating characteristics must be
+  computed over a labelled evaluation set.
+- Q: Task name exclusion patterns for enrollment — which patterns and how matched?
+  → A: Use prefix matching (task_name.lower().startswith(pattern.lower())) NOT
+  substring matching, to avoid false matches where one task name is a substring of
+  another. Correct exclusion prefixes from the actual dataset:
+  Adults: `Diadochokinesis`, `Prolonged-vowel`, `Maximum-phonation-time`,
+  `Respiration-and-cough`, `Glides`, `Loudness`.
+  Peds: `long-sounds`, `silly-sounds`, `repeat-words`.
+  All patterns are case-insensitive prefix matches.
+
 ## Assumptions
 
 - Each participant has multiple recordings available at the time the pipeline runs;
@@ -247,9 +312,10 @@ sharply.
   already present in the `.pt` feature files produced by `generate-audio-features`.
 - Speaker embeddings can be extracted from `.pt` feature files or computed directly
   from audio without requiring a new mandatory preprocessing step.
-- Child-voice recordings are present in the pediatric dataset and must be handled;
-  no separate child-specific embedding model is assumed for v1, but US3 must
-  quantify any accuracy gap.
+- A single adult-trained embedding model (`speechbrain/spkrec-ecapa-voxceleb`,
+  192-dim ECAPA-TDNN) is used for all participants regardless of age. No
+  child-specific embedding model is used. The SPARC `spk_emb` (64-dim, also
+  present in `.pt` files) is an additional candidate embedding to be evaluated.
 - The minimum-usable-recordings threshold (default: 3) and the low-confidence
   speech-fraction threshold (default: <15%) are configurable via PipelineConfig.
 - Profile construction uses only recordings that have passed Stage 1 audio quality
