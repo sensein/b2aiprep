@@ -62,6 +62,12 @@ from b2aiprep.prepare.prepare import (
 from b2aiprep.prepare.quality_control import quality_control_wrapper, check_audio_quality
 from b2aiprep.prepare.unconsented_speakers import check_unconsented_speakers
 from b2aiprep.prepare.speaker_profiles import build_speaker_profiles
+from b2aiprep.prepare.embedding_reliability import (
+    generate_synthetic_mixtures,
+    extract_embeddings_for_mixtures,
+    compute_operating_curves,
+    write_reliability_report,
+)
 from b2aiprep.prepare.pii_detection import check_pii_disclosure
 from b2aiprep.prepare.task_compliance import check_task_compliance
 from b2aiprep.prepare.qa_models import AudioRecord, CheckType
@@ -1597,6 +1603,10 @@ def _parse_bids_stem(stem: str) -> tuple:
               help="Comma-separated task names to include; all tasks if omitted.")
 @click.option("--use-existing-qc", is_flag=True, default=False,
               help="Skip Stage 1 audio-quality check when pre-computed results exist.")
+@click.option("--profiles-dir", "profiles_dir", default=None,
+              type=click.Path(exists=True, file_okay=False),
+              help="Root directory of pre-built speaker profiles (enables profile-based "
+                   "unconsented-speaker verification). Built by build-speaker-profiles.")
 @click.option("--log-level", default="INFO",
               type=click.Choice(["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]),
               help="Override log level for this command.")
@@ -1612,6 +1622,7 @@ def qa_run(
     skip_task_compliance,
     task_filter,
     use_existing_qc,
+    profiles_dir,
     log_level,
 ):
     """Run the audio QA pipeline over a BIDS dataset.
@@ -1693,7 +1704,7 @@ def qa_run(
 
         # Stage 2 — Unconsented speakers
         try:
-            file_results.append(check_unconsented_speakers(record, config))
+            file_results.append(check_unconsented_speakers(record, config, profiles_dir=profiles_dir))
         except Exception as exc:
             file_results.append(make_error_check_result(
                 pid, ses, task, CheckType.UNCONSENTED_SPEAKERS, exc, config.model_versions,
@@ -1844,4 +1855,136 @@ def build_speaker_profiles_cmd(
     click.echo(
         f"build-speaker-profiles complete: {len(profiles)} participants "
         f"({n_ready} ready, {n_insuf} insufficient_data, {n_cont} contaminated)"
+    )
+
+
+# ---------------------------------------------------------------------------
+# embedding-reliability-report: synthetic mixture evaluation for threshold calibration
+# ---------------------------------------------------------------------------
+
+
+@click.command(name="embedding-reliability-report")
+@click.argument("bids_dir", type=click.Path(exists=True, file_okay=False))
+@click.argument("profiles_dir", type=click.Path(exists=True, file_okay=False))
+@click.option(
+    "--output-dir", "output_dir",
+    default=None, type=click.Path(file_okay=False),
+    help="Directory for report files. Defaults to PROFILES_DIR.",
+)
+@click.option(
+    "--speech-fraction-bins", "speech_fraction_bins",
+    default="0,0.15,0.30,0.60,1.01",
+    show_default=True, type=str,
+    help=(
+        "Comma-separated bin boundaries for per-speech-fraction accuracy stats "
+        "(e.g. '0,0.15,0.30,0.60,1.01' produces bins [0,0.15), [0.15,0.30), ...)."
+    ),
+)
+@click.option(
+    "--output-format", "output_format",
+    default="both",
+    type=click.Choice(["json", "markdown", "both"]),
+    show_default=True,
+    help="Report output format.",
+)
+@click.option(
+    "--intruder-ratios", "intruder_ratios",
+    default="0.10,0.20,0.40",
+    show_default=True, type=str,
+    help="Comma-separated intruder duration ratios (fraction of base recording).",
+)
+@click.option(
+    "--intruder-snr-db", "intruder_snr_db",
+    default="0,5,10",
+    show_default=True, type=str,
+    help="Comma-separated SNR values in dB for intruder mixing.",
+)
+@click.option(
+    "--keep-mixtures", "keep_mixtures",
+    is_flag=True, default=False,
+    help="Keep the synthetic_mixtures/ directory after the report is written.",
+)
+@click.option(
+    "--pipeline-config", "config_path",
+    default=None, type=click.Path(exists=True),
+    help="Path to pipeline config JSON. Uses built-in defaults if omitted.",
+)
+@click.option(
+    "--log-level", default="INFO",
+    type=click.Choice(["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]),
+    help="Override log level for this command.",
+)
+def embedding_reliability_report_cmd(
+    bids_dir,
+    profiles_dir,
+    output_dir,
+    speech_fraction_bins,
+    output_format,
+    intruder_ratios,
+    intruder_snr_db,
+    keep_mixtures,
+    config_path,
+    log_level,
+):
+    """Generate an embedding reliability report via synthetic mixture evaluation.
+
+    Creates synthetic intruder audio mixtures, extracts ECAPA-TDNN and SPARC
+    embeddings, scores them against pre-built speaker profiles, and computes
+    operating characteristic curves (FNR vs. review-queue fraction) for threshold
+    calibration. Writes ``embedding_reliability_report.json`` and/or ``.md``.
+
+    Requires model inference — plan for extended runtime without GPU.
+    Run ``build-speaker-profiles`` first.
+    """
+    import shutil as _shutil
+
+    logging.getLogger().setLevel(log_level)
+
+    config = load_pipeline_config(config_path) if config_path else load_pipeline_config()
+
+    # Parse comma-separated numeric options
+    ratios = [float(x.strip()) for x in intruder_ratios.split(",") if x.strip()]
+    snr_values = [float(x.strip()) for x in intruder_snr_db.split(",") if x.strip()]
+    bin_bounds = [float(x.strip()) for x in speech_fraction_bins.split(",") if x.strip()]
+    bins = [(bin_bounds[i], bin_bounds[i + 1]) for i in range(len(bin_bounds) - 1)]
+
+    out_dir = output_dir if output_dir else profiles_dir
+    mixtures_dir = str(Path(out_dir) / "synthetic_mixtures")
+
+    click.echo(
+        f"Generating synthetic mixtures (ratios={ratios}, SNRs={snr_values}) …"
+    )
+    mixture_list = generate_synthetic_mixtures(
+        bids_dir=bids_dir,
+        profiles_dir=profiles_dir,
+        intruder_ratios=ratios,
+        intruder_snr_db_values=snr_values,
+        output_dir=mixtures_dir,
+        config=config,
+    )
+    click.echo(f"  {len(mixture_list)} mixtures generated.")
+
+    click.echo("Extracting embeddings from mixtures (this may be slow on CPU) …")
+    emb_dict = extract_embeddings_for_mixtures(mixture_list)
+    click.echo(f"  Embeddings extracted for {len(emb_dict)} recordings.")
+
+    click.echo("Computing operating characteristic curves …")
+    report = compute_operating_curves(
+        mixture_list=mixture_list,
+        profiles_dir=profiles_dir,
+        emb_dict=emb_dict,
+        speech_fraction_bins=bins,
+    )
+    report["dataset_bids_dir"] = str(bids_dir)
+
+    write_reliability_report(report, out_dir, output_format=output_format)
+
+    if not keep_mixtures and Path(mixtures_dir).exists():
+        _shutil.rmtree(mixtures_dir)
+        click.echo("Removed synthetic_mixtures/ directory.")
+
+    click.echo(
+        f"embedding-reliability-report complete. "
+        f"Recommended ECAPA threshold: {report['recommended_ecapa_threshold']}, "
+        f"SPARC: {report['recommended_sparc_threshold']}"
     )

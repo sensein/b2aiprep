@@ -2,7 +2,7 @@
 
 **Feature Branch**: `186-speaker-profile-detection`
 **Created**: 2026-04-24
-**Status**: Draft
+**Status**: Complete (speaker profile construction implemented; dual-embedding verification implemented; synthetic mixture evaluation implemented)
 **Input**: User description: "We want to improve the detection of unconsented speakers by using speaker embeddings to determine how likely it is that someone else was talking during a recording. We have a lot of recordings per speaker, so it might be possible to create some form of a speaker profile that can then be compared against each individual recording. However, not every recording is speech based and so we need to research how well speaker embeddings do when non-speech is present vs. portions of silence."
 
 ## User Scenarios & Testing *(mandatory)*

@@ -1,14 +1,17 @@
-"""Unconsented-speaker detection check (T016).
+"""Unconsented-speaker detection check.
 
-Reads pre-computed diarization from the BIDS ``_features.pt`` file,
-computes speaker ratios, optionally runs Evan's model (when published),
-and runs per-speaker language identification.
+Reads pre-computed diarization and speaker embeddings from the BIDS
+``_features.pt`` file. When a ``profiles_dir`` is provided, compares
+ECAPA-TDNN and SPARC speaker embeddings against a pre-built participant
+profile using OR logic. Falls back to diarization-only scoring when
+``profiles_dir`` is None.
 """
 
 import logging
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional
 
+import numpy as np
 import torch
 
 from b2aiprep.prepare.qa_models import CheckResult, CheckType, Classification, PipelineConfig
@@ -17,72 +20,78 @@ _logger = logging.getLogger(__name__)
 
 
 # ---------------------------------------------------------------------------
-# Internal helpers (patched by tests)
+# Internal helpers
 # ---------------------------------------------------------------------------
 
 
-def _load_diarization(audio_record: Any) -> dict:
-    """Load diarization result from the pre-computed ``_features.pt`` file.
-
-    Args:
-        audio_record: Object with a ``features_path`` attribute.
-
-    Returns:
-        Dict mapping speaker label (str) to a list of
-        ``{"start": float, "end": float}`` segment dicts.
-        Returns an empty dict if the file is missing or has no diarization.
-    """
+def _load_features(audio_record: Any) -> dict:
+    """Load all pre-computed features from ``_features.pt``."""
     features_path = getattr(audio_record, "features_path", None)
     if features_path is None:
         return {}
-
     fp = Path(features_path)
     if not fp.exists():
         _logger.debug("features_path does not exist: %s", fp)
         return {}
+    return torch.load(str(fp), weights_only=False, map_location="cpu")
 
-    features = torch.load(str(fp), weights_only=False, map_location="cpu")
-    diarization_raw = features.get("diarization", [])
 
+def _parse_diarization(raw: list) -> tuple[dict, float]:
+    """Parse raw diarization segment list.
+
+    Returns a (speaker_dict, total_active_speech_s) pair where
+    speaker_dict maps speaker label → list of {"start", "end"} dicts.
+    """
     speakers: dict[str, list] = {}
-    for segment in diarization_raw:
-        # Support both senselab Segment objects and plain dicts
+    total_active = 0.0
+    for segment in raw:
         if hasattr(segment, "speaker"):
-            speaker = segment.speaker
+            speaker = str(segment.speaker)
             start = float(segment.start)
             end = float(segment.end)
         else:
-            speaker = segment.get("speaker", "speaker_0")
+            speaker = str(segment.get("speaker", "speaker_0"))
             start = float(segment.get("start", 0.0))
             end = float(segment.get("end", 0.0))
+        dur = max(0.0, end - start)
+        total_active += dur
         speakers.setdefault(speaker, []).append({"start": start, "end": end})
+    return speakers, total_active
 
-    return speakers
+
+def _diarization_stats(speaker_dict: dict) -> tuple[int, float, int]:
+    """Return (num_speakers, primary_ratio, extra_count) from speaker dict."""
+    num_speakers = len(speaker_dict)
+    if num_speakers == 0:
+        return 0, 1.0, 0
+    speaker_durations = {
+        spk: sum(max(0.0, seg["end"] - seg["start"]) for seg in segs)
+        for spk, segs in speaker_dict.items()
+    }
+    total = sum(speaker_durations.values())
+    primary = max(speaker_durations.values())
+    primary_ratio = primary / (total + 1e-10)
+    return num_speakers, primary_ratio, num_speakers - 1
+
+
+def _l2_normalize(v: np.ndarray) -> np.ndarray:
+    norm = float(np.linalg.norm(v))
+    return v / (norm + 1e-10)
 
 
 def _run_evans_model(audio_record: Any, config: PipelineConfig) -> int:
     """Run Evan's model for unconsented-speaker detection.
 
-    The HuggingFace model path is a TODO placeholder until the model is
-    published.  Returns 0 (no flag) when the placeholder is detected.
-
-    Args:
-        audio_record: Object with audio metadata.
-        config: :class:`PipelineConfig` with ``model_versions["evans_model"]``.
-
-    Returns:
-        ``0`` (not flagged) or ``1`` (flagged for human review).
+    Returns 0 when the model path is a TODO placeholder (not yet published).
     """
     model_path = config.model_versions.get("evans_model", "")
     if not model_path or model_path.startswith("TODO"):
         _logger.debug("Evan's model path is a TODO placeholder; skipping")
         return 0
-
     try:
         from transformers import AutoModel  # type: ignore[import]
 
         _model = AutoModel.from_pretrained(model_path)
-        # TODO: run actual inference once model is published
         _logger.debug("Evan's model loaded but inference not yet implemented")
         return 0
     except Exception as exc:
@@ -91,38 +100,39 @@ def _run_evans_model(audio_record: Any, config: PipelineConfig) -> int:
 
 
 def _identify_languages(diarization: dict, config: PipelineConfig) -> list[dict]:
-    """Identify language per diarized speaker using langdetect.
-
-    In the full implementation this would run on each speaker's transcribed
-    segments.  Here we seed langdetect's randomness and return a minimal
-    structural result (language inference from waveform data requires the
-    audio bytes, which are not passed into this helper).
-
-    Args:
-        diarization: Dict mapping speaker label to segment list.
-        config: :class:`PipelineConfig` for ``random_seed``.
-
-    Returns:
-        List of ``{"speaker_index": int, "language": str, "confidence": float}``
-        dicts, one per speaker.
-    """
+    """Identify language per diarized speaker (structural placeholder)."""
     try:
         from langdetect import DetectorFactory  # type: ignore[import]
 
         DetectorFactory.seed = config.random_seed
     except Exception:
-        pass  # langdetect optional
+        pass
+    return [
+        {"speaker_index": i, "language": "unknown", "confidence": 0.0}
+        for i, _ in enumerate(sorted(diarization.keys()))
+    ]
 
-    results: list[dict] = []
-    for i, _speaker in enumerate(sorted(diarization.keys())):
-        results.append(
-            {
-                "speaker_index": i,
-                "language": "unknown",
-                "confidence": 0.0,
-            }
-        )
-    return results
+
+def _diarization_score(num_speakers: int, primary_ratio: float) -> tuple[float, float]:
+    """Return (score, confidence) based on diarization signals."""
+    if num_speakers <= 1:
+        return 1.0, 0.90
+    if primary_ratio >= 0.95:
+        return 0.85, 0.80
+    if primary_ratio >= 0.80:
+        return 0.60, 0.75
+    return 0.25, 0.80
+
+
+def _classify(score: float, config: PipelineConfig) -> Classification:
+    soft = config.soft_score_thresholds
+    pass_min = float(soft.get("pass_min", 0.75))
+    fail_max = float(soft.get("fail_max", 0.40))
+    if score >= pass_min:
+        return Classification.PASS
+    if score <= fail_max:
+        return Classification.FAIL
+    return Classification.NEEDS_REVIEW
 
 
 # ---------------------------------------------------------------------------
@@ -133,22 +143,22 @@ def _identify_languages(diarization: dict, config: PipelineConfig) -> list[dict]
 def check_unconsented_speakers(
     audio_record: Any,
     config: PipelineConfig,
+    profiles_dir: Optional[str] = None,
 ) -> CheckResult:
-    """Check for unconsented speakers in one audio recording (T016).
+    """Check for unconsented speakers in one audio recording.
 
-    Reads diarization from the pre-computed ``_features.pt`` file,
-    computes ``primary_speaker_ratio`` and ``extra_speaker_count``,
-    runs Evan's model (placeholder until published), and runs
-    per-speaker language identification.
+    When ``profiles_dir`` is provided, compares ECAPA-TDNN and SPARC speaker
+    embeddings against a pre-built profile using OR logic. Falls back to
+    diarization-only scoring when ``profiles_dir`` is None.
 
-    Classification rules:
-    - ``evans_model_flag == 1`` → ``NEEDS_REVIEW`` (forced)
-    - Otherwise: soft-threshold on diarization-based score
+    Diarization signals are always computed regardless of recording duration.
 
     Args:
         audio_record: Object with ``participant_id``, ``session_id``,
                       ``task_name``, ``features_path``.
         config: :class:`PipelineConfig` with threshold / model settings.
+        profiles_dir: Root directory of pre-built speaker profiles, or None
+                      to use diarization-only logic.
 
     Returns:
         :class:`CheckResult` for the ``unconsented_speakers`` check type.
@@ -157,70 +167,199 @@ def check_unconsented_speakers(
     session_id = getattr(audio_record, "session_id", "")
     task_name = getattr(audio_record, "task_name", "")
 
-    # Load diarization
-    diarization = _load_diarization(audio_record)
+    # Load all features once
+    features = _load_features(audio_record)
+    diarization_raw = features.get("diarization", [])
+    total_duration = float(features.get("duration", 0.0))
 
-    # Compute per-speaker total durations
-    speaker_durations: dict[str, float] = {}
-    for speaker, segments in diarization.items():
-        speaker_durations[speaker] = sum(
-            max(0.0, seg["end"] - seg["start"]) for seg in segments
+    # Always compute diarization signals
+    speaker_dict, active_speech_s = _parse_diarization(diarization_raw)
+    num_speakers, primary_ratio, extra_count = _diarization_stats(speaker_dict)
+
+    # ---------- diarization-only fallback ----------
+    if profiles_dir is None:
+        evans_flag = _run_evans_model(audio_record, config)
+        detected_languages = _identify_languages(speaker_dict, config)
+        score, base_conf = _diarization_score(num_speakers, primary_ratio)
+
+        if evans_flag == 1:
+            classification = Classification.NEEDS_REVIEW
+        else:
+            classification = _classify(score, config)
+
+        return CheckResult(
+            participant_id=participant_id,
+            session_id=session_id,
+            task_name=task_name,
+            check_type=CheckType.UNCONSENTED_SPEAKERS,
+            score=round(score, 6),
+            confidence=round(base_conf, 6),
+            classification=classification,
+            detail={
+                "num_speakers_diarized": num_speakers,
+                "primary_speaker_ratio": round(primary_ratio, 6),
+                "extra_speaker_count": extra_count,
+                "evans_model_flag": evans_flag,
+                "embedding_cosine_similarity_min": None,
+                "detected_languages": detected_languages,
+            },
+            model_versions={
+                "evans_model": config.model_versions.get("evans_model", "unknown"),
+            },
         )
 
-    num_speakers = len(speaker_durations)
-    total_duration = sum(speaker_durations.values())
+    # ---------- profile-based path ----------
+    from b2aiprep.prepare.speaker_profiles import load_speaker_profile
 
-    if num_speakers == 0:
-        primary_ratio = 1.0
-        extra_count = 0
+    sp_cfg = config.speaker_profile
+    ecapa_threshold = float(sp_cfg.get("ecapa_cosine_threshold", 0.25))
+    sparc_threshold = float(sp_cfg.get("sparc_cosine_threshold", 0.20))
+    low_conf_fraction = float(sp_cfg.get("low_confidence_speech_fraction", 0.15))
+
+    profile = load_speaker_profile(profiles_dir, participant_id)
+
+    # --- missing profile ---
+    if profile is None:
+        return CheckResult(
+            participant_id=participant_id,
+            session_id=session_id,
+            task_name=task_name,
+            check_type=CheckType.UNCONSENTED_SPEAKERS,
+            score=0.5,
+            confidence=0.0,
+            classification=Classification.NEEDS_REVIEW,
+            detail={
+                "profile_status": "missing",
+                "num_speakers_diarized": num_speakers,
+                "diarization_primary_ratio": round(primary_ratio, 6),
+                "extra_speaker_count": extra_count,
+                "ecapa_cosine_similarity": None,
+                "sparc_cosine_similarity": None,
+                "or_flag": True,
+                "active_speech_fraction": round(
+                    active_speech_s / (total_duration + 1e-10), 6
+                ),
+                "active_speech_s": round(active_speech_s, 6),
+                "speech_fraction_confidence": 0.0,
+                "ecapa_model_id": "unknown",
+                "sparc_model_id": "unknown",
+                "enrollment_n": 0,
+                "age_group": "unknown",
+            },
+            model_versions={},
+        )
+
+    # --- profile exists but not ready ---
+    if profile.profile_status != "ready":
+        return CheckResult(
+            participant_id=participant_id,
+            session_id=session_id,
+            task_name=task_name,
+            check_type=CheckType.UNCONSENTED_SPEAKERS,
+            score=0.5,
+            confidence=0.0,
+            classification=Classification.NEEDS_REVIEW,
+            detail={
+                "profile_status": profile.profile_status,
+                "num_speakers_diarized": num_speakers,
+                "diarization_primary_ratio": round(primary_ratio, 6),
+                "extra_speaker_count": extra_count,
+                "ecapa_cosine_similarity": None,
+                "sparc_cosine_similarity": None,
+                "or_flag": True,
+                "active_speech_fraction": round(
+                    active_speech_s / (total_duration + 1e-10), 6
+                ),
+                "active_speech_s": round(active_speech_s, 6),
+                "speech_fraction_confidence": 0.0,
+                "ecapa_model_id": profile.ecapa_model_id,
+                "sparc_model_id": profile.sparc_model_id,
+                "enrollment_n": profile.num_recordings_used,
+                "age_group": profile.age_group,
+            },
+            model_versions={},
+        )
+
+    # --- compute speech-fraction confidence ceiling ---
+    active_speech_fraction = active_speech_s / (total_duration + 1e-10)
+    if active_speech_s < 1.0:
+        speech_fraction_confidence = 0.10
+    elif active_speech_fraction < low_conf_fraction:
+        speech_fraction_confidence = 0.30
     else:
-        primary_duration = max(speaker_durations.values())
-        primary_ratio = primary_duration / (total_duration + 1e-10)
-        extra_count = num_speakers - 1
+        speech_fraction_confidence = 1.0
 
-    # Evan's model flag
-    evans_flag = _run_evans_model(audio_record, config)
+    # --- very short recording: skip cosine comparison ---
+    if active_speech_s < 1.0:
+        return CheckResult(
+            participant_id=participant_id,
+            session_id=session_id,
+            task_name=task_name,
+            check_type=CheckType.UNCONSENTED_SPEAKERS,
+            score=0.5,
+            confidence=0.10,
+            classification=Classification.NEEDS_REVIEW,
+            detail={
+                "profile_status": profile.profile_status,
+                "num_speakers_diarized": num_speakers,
+                "diarization_primary_ratio": round(primary_ratio, 6),
+                "extra_speaker_count": extra_count,
+                "ecapa_cosine_similarity": None,
+                "sparc_cosine_similarity": None,
+                "or_flag": True,
+                "active_speech_fraction": round(active_speech_fraction, 6),
+                "active_speech_s": round(active_speech_s, 6),
+                "speech_fraction_confidence": speech_fraction_confidence,
+                "ecapa_model_id": profile.ecapa_model_id,
+                "sparc_model_id": profile.sparc_model_id,
+                "enrollment_n": profile.num_recordings_used,
+                "age_group": profile.age_group,
+            },
+            model_versions={},
+        )
 
-    # Language identification
-    detected_languages = _identify_languages(diarization, config)
+    # --- load and L2-normalise embeddings ---
+    ecapa_raw = features.get("speaker_embedding")
+    sparc_feat = features.get("sparc", {})
+    sparc_raw = sparc_feat.get("spk_emb") if isinstance(sparc_feat, dict) else None
 
-    # Score: 1.0 for single speaker, penalised for extra speakers
-    if num_speakers <= 1:
-        score = 1.0
-        confidence = 0.90
-    elif primary_ratio >= 0.95:
-        score = 0.85
-        confidence = 0.80
-    elif primary_ratio >= 0.80:
-        score = 0.60
-        confidence = 0.75
-    else:
-        score = 0.25
-        confidence = 0.80
+    ecapa_emb = (
+        _l2_normalize(np.array(ecapa_raw, dtype=np.float64).ravel())
+        if ecapa_raw is not None
+        else None
+    )
+    sparc_emb = (
+        _l2_normalize(np.array(sparc_raw, dtype=np.float64).ravel())
+        if sparc_raw is not None
+        else None
+    )
+    ecapa_centroid = _l2_normalize(
+        np.array(profile.ecapa_embedding_centroid, dtype=np.float64)
+    )
+    sparc_centroid = _l2_normalize(
+        np.array(profile.sparc_embedding_centroid, dtype=np.float64)
+    )
 
-    # Classification
-    soft = config.soft_score_thresholds
-    pass_min = float(soft.get("pass_min", 0.75))
-    fail_max = float(soft.get("fail_max", 0.40))
+    ecapa_cosine = (
+        float(np.dot(ecapa_emb, ecapa_centroid)) if ecapa_emb is not None else None
+    )
+    sparc_cosine = (
+        float(np.dot(sparc_emb, sparc_centroid)) if sparc_emb is not None else None
+    )
 
-    if evans_flag == 1:
-        # Forced review regardless of diarization score
+    # OR logic: flag if either embedding is below its threshold
+    ecapa_below = (ecapa_cosine is None) or (ecapa_cosine < ecapa_threshold)
+    sparc_below = (sparc_cosine is None) or (sparc_cosine < sparc_threshold)
+    or_flag = ecapa_below or sparc_below
+
+    # Diarization-based score blended with speech-fraction confidence ceiling
+    score, base_conf = _diarization_score(num_speakers, primary_ratio)
+    confidence = min(base_conf, speech_fraction_confidence)
+
+    if or_flag:
         classification = Classification.NEEDS_REVIEW
-    elif score >= pass_min:
-        classification = Classification.PASS
-    elif score <= fail_max:
-        classification = Classification.FAIL
     else:
-        classification = Classification.NEEDS_REVIEW
-
-    detail: dict = {
-        "num_speakers_diarized": num_speakers,
-        "primary_speaker_ratio": round(primary_ratio, 6),
-        "extra_speaker_count": extra_count,
-        "evans_model_flag": evans_flag,
-        "embedding_cosine_similarity_min": None,
-        "detected_languages": detected_languages,
-    }
+        classification = _classify(score, config)
 
     return CheckResult(
         participant_id=participant_id,
@@ -230,8 +369,28 @@ def check_unconsented_speakers(
         score=round(score, 6),
         confidence=round(confidence, 6),
         classification=classification,
-        detail=detail,
+        detail={
+            "profile_status": profile.profile_status,
+            "num_speakers_diarized": num_speakers,
+            "diarization_primary_ratio": round(primary_ratio, 6),
+            "extra_speaker_count": extra_count,
+            "ecapa_cosine_similarity": (
+                round(ecapa_cosine, 6) if ecapa_cosine is not None else None
+            ),
+            "sparc_cosine_similarity": (
+                round(sparc_cosine, 6) if sparc_cosine is not None else None
+            ),
+            "or_flag": or_flag,
+            "active_speech_fraction": round(active_speech_fraction, 6),
+            "active_speech_s": round(active_speech_s, 6),
+            "speech_fraction_confidence": speech_fraction_confidence,
+            "ecapa_model_id": profile.ecapa_model_id,
+            "sparc_model_id": profile.sparc_model_id,
+            "enrollment_n": profile.num_recordings_used,
+            "age_group": profile.age_group,
+        },
         model_versions={
-            "evans_model": config.model_versions.get("evans_model", "unknown"),
+            "ecapa_model": profile.ecapa_model_id,
+            "sparc_model": profile.sparc_model_id,
         },
     )

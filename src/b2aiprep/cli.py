@@ -6,6 +6,7 @@ from b2aiprep.commands import (  # gensynthtabdata,
     batchconvert,
     bids2shadow,
     build_speaker_profiles_cmd,
+    embedding_reliability_report_cmd,
     convert,
     create_bundled_dataset,
     createbatchcsv,
@@ -68,6 +69,7 @@ cli.add_command(update_bids_template_command)
 cli.add_command(id_remap)
 cli.add_command(qa_run)
 cli.add_command(build_speaker_profiles_cmd)
+cli.add_command(embedding_reliability_report_cmd)
 
 if __name__ == "__main__":
     # include main to enable python debugging
