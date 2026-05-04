@@ -12,6 +12,9 @@
             "items/harvard_sentences_started_at",
             "items/harvard_sentences_completed_at",
             "items/harvard_sentences_duration",
+            "items/harvard_sentences_origin",
+            "items/harvard_sentences_via",
+            "items/harvard_sentences_language",
             "items/harvard_sentences_list_order"
         ],
         "addProperties": [
@@ -46,6 +49,24 @@
                 "variableName": "harvard_sentences_duration"
             },
             {
+                "isAbout": "items/harvard_sentences_origin",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "harvard_sentences_origin"
+            },
+            {
+                "isAbout": "items/harvard_sentences_via",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "harvard_sentences_via"
+            },
+            {
+                "isAbout": "items/harvard_sentences_language",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "harvard_sentences_language"
+            },
+            {
                 "isAbout": "items/harvard_sentences_list_order",
                 "isVis": true,
                 "valueRequired": true,
@@ -54,6 +75,6 @@
         ],
         "shuffle": false
     },
-    "version": "4.0.0",
+    "version": "4.7.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

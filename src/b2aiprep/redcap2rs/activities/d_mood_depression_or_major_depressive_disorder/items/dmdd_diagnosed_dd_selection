@@ -14,18 +14,6 @@
         "choices": [
             {
                 "name": {
-                    "en": "6B43 Adjustment disorder"
-                },
-                "value": "6B43"
-            },
-            {
-                "name": {
-                    "en": "6B20 OCD"
-                },
-                "value": "6B20"
-            },
-            {
-                "name": {
                     "en": "6A70 Single episode depressive disorder"
                 },
                 "value": "6A70"

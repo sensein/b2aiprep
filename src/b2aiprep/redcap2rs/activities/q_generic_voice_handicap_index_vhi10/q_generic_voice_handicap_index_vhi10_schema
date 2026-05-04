@@ -17,6 +17,9 @@
             "items/vhi_started_at",
             "items/vhi_completed_at",
             "items/vhi_duration",
+            "items/vhi_origin",
+            "items/vhi_via",
+            "items/vhi_language",
             "items/voice_difficult_hear",
             "items/tough_to_understand",
             "items/voice_restrict_social",
@@ -52,6 +55,24 @@
                 "isVis": false,
                 "valueRequired": false,
                 "variableName": "vhi_duration"
+            },
+            {
+                "isAbout": "items/vhi_origin",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "vhi_origin"
+            },
+            {
+                "isAbout": "items/vhi_via",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "vhi_via"
+            },
+            {
+                "isAbout": "items/vhi_language",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "vhi_language"
             },
             {
                 "isAbout": "items/vhi_10_calc_score",
@@ -122,6 +143,6 @@
         ],
         "shuffle": false
     },
-    "version": "3.24.0",
+    "version": "4.7.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

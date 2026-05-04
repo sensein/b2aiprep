@@ -11,6 +11,9 @@
             "items/adhd_started_at",
             "items/adhd_completed_at",
             "items/adhd_duration",
+            "items/adhd_origin",
+            "items/adhd_via",
+            "items/adhd_language",
             "items/wrapping_up",
             "items/things_in_order",
             "items/remembering_appt",
@@ -54,6 +57,24 @@
                 "isVis": false,
                 "valueRequired": false,
                 "variableName": "adhd_duration"
+            },
+            {
+                "isAbout": "items/adhd_origin",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "adhd_origin"
+            },
+            {
+                "isAbout": "items/adhd_via",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "adhd_via"
+            },
+            {
+                "isAbout": "items/adhd_language",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "adhd_language"
             },
             {
                 "isAbout": "items/wrapping_up",
@@ -166,6 +187,6 @@
         ],
         "shuffle": false
     },
-    "version": "3.24.0",
+    "version": "4.7.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

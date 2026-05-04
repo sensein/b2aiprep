@@ -1,0 +1,45 @@
+{
+    "id": "participant_data_collection_origins",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@READONLY"
+        }
+    ],
+    "preamble": {
+        "en": "Data Collection Details"
+    },
+    "prefLabel": {
+        "en": "participant_data_collection_origins"
+    },
+    "question": {
+        "en": "Data Collection Origin(s)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Bridge2AI App"
+                },
+                "value": "app"
+            },
+            {
+                "name": {
+                    "en": "Bridge2AI Web App"
+                },
+                "value": "website"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

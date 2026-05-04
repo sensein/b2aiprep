@@ -11,6 +11,9 @@
             "items/peds_os_started_at",
             "items/peds_os_completed_at",
             "items/peds_os_duration",
+            "items/peds_os_origin",
+            "items/peds_os_via",
+            "items/peds_os_language",
             "items/peds_os_limit_understood",
             "items/peds_os_interfered_activities",
             "items/peds_os_trouble_food_iquids",
@@ -42,6 +45,24 @@
                 "variableName": "peds_os_duration"
             },
             {
+                "isAbout": "items/peds_os_origin",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "peds_os_origin"
+            },
+            {
+                "isAbout": "items/peds_os_via",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "peds_os_via"
+            },
+            {
+                "isAbout": "items/peds_os_language",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "peds_os_language"
+            },
+            {
                 "isAbout": "items/peds_os_limit_understood",
                 "isVis": true,
                 "valueRequired": false,
@@ -68,6 +89,6 @@
         ],
         "shuffle": false
     },
-    "version": "3.24.0",
+    "version": "4.7.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

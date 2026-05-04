@@ -1,0 +1,44 @@
+{
+    "id": "leicester_cough_via",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@READONLY"
+        }
+    ],
+    "preamble": {
+        "en": "Questionnaire - Metadata"
+    },
+    "prefLabel": {
+        "en": "leicester_cough_via"
+    },
+    "question": {
+        "en": "Leicester Cough Questionnaire (LCQ) via"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Data Collector"
+                },
+                "value": "dataCollector"
+            },
+            {
+                "name": {
+                    "en": "Participant"
+                },
+                "value": "participant"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -12,6 +12,9 @@
             "items/random_started_at",
             "items/random_completed_at",
             "items/random_duration",
+            "items/random_origin",
+            "items/random_via",
+            "items/random_language",
             "items/random_item_generation_category"
         ],
         "addProperties": [
@@ -46,6 +49,24 @@
                 "variableName": "random_duration"
             },
             {
+                "isAbout": "items/random_origin",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "random_origin"
+            },
+            {
+                "isAbout": "items/random_via",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "random_via"
+            },
+            {
+                "isAbout": "items/random_language",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "random_language"
+            },
+            {
                 "isAbout": "items/random_item_generation_category",
                 "isVis": true,
                 "valueRequired": false,
@@ -54,6 +75,6 @@
         ],
         "shuffle": false
     },
-    "version": "3.24.0",
+    "version": "4.7.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

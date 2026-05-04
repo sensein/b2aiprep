@@ -11,6 +11,9 @@
             "items/panas_started_at",
             "items/panas_completed_at",
             "items/panas_duration",
+            "items/panas_origin",
+            "items/panas_via",
+            "items/panas_language",
             "items/upset",
             "items/hostile",
             "items/alert",
@@ -46,6 +49,24 @@
                 "isVis": false,
                 "valueRequired": false,
                 "variableName": "panas_duration"
+            },
+            {
+                "isAbout": "items/panas_origin",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "panas_origin"
+            },
+            {
+                "isAbout": "items/panas_via",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "panas_via"
+            },
+            {
+                "isAbout": "items/panas_language",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "panas_language"
             },
             {
                 "isAbout": "items/upset",
@@ -110,6 +131,6 @@
         ],
         "shuffle": false
     },
-    "version": "3.24.0",
+    "version": "4.7.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

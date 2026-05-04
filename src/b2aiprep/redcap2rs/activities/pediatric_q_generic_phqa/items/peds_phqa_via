@@ -1,0 +1,44 @@
+{
+    "id": "peds_phqa_via",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@READONLY"
+        }
+    ],
+    "preamble": {
+        "en": "Questionnaire - Metadata"
+    },
+    "prefLabel": {
+        "en": "peds_phqa_via"
+    },
+    "question": {
+        "en": "Peds PHQ-A via"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Data Collector"
+                },
+                "value": "dataCollector"
+            },
+            {
+                "name": {
+                    "en": "Participant"
+                },
+                "value": "participant"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}
