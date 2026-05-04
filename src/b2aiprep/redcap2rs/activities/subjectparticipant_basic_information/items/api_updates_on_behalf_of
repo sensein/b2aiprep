@@ -19,7 +19,7 @@
         }
     ],
     "preamble": {
-        "en": "Enrollment Details"
+        "en": "Data Collection Details"
     },
     "prefLabel": {
         "en": "api_updates_on_behalf_of"

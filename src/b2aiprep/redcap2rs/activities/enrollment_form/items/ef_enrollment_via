@@ -1,0 +1,36 @@
+{
+    "id": "ef_enrollment_via",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Review and Enroll"
+    },
+    "prefLabel": {
+        "en": "ef_enrollment_via"
+    },
+    "question": {
+        "en": "Enrollment via"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Data Collector"
+                },
+                "value": "dataCollector"
+            },
+            {
+                "name": {
+                    "en": "Participant"
+                },
+                "value": "participant"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

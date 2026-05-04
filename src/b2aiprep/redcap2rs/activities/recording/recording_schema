@@ -20,7 +20,10 @@
             "items/recording_profile_name",
             "items/recording_profile_version",
             "items/recording_input_gain",
-            "items/recording_microphone"
+            "items/recording_microphone",
+            "items/recording_origin",
+            "items/recording_via",
+            "items/recording_language"
         ],
         "addProperties": [
             {
@@ -106,10 +109,28 @@
                 "isVis": false,
                 "valueRequired": true,
                 "variableName": "recording_microphone"
+            },
+            {
+                "isAbout": "items/recording_origin",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "recording_origin"
+            },
+            {
+                "isAbout": "items/recording_via",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "recording_via"
+            },
+            {
+                "isAbout": "items/recording_language",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "recording_language"
             }
         ],
         "shuffle": false
     },
-    "version": "3.24.0",
+    "version": "4.7.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

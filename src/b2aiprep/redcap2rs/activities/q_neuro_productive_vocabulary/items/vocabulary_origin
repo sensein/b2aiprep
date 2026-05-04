@@ -1,0 +1,44 @@
+{
+    "id": "vocabulary_origin",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@READONLY"
+        }
+    ],
+    "preamble": {
+        "en": "Questionnaire - Metadata"
+    },
+    "prefLabel": {
+        "en": "vocabulary_origin"
+    },
+    "question": {
+        "en": "Productive Vocabulary Origin"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Bridge2AI App"
+                },
+                "value": "app"
+            },
+            {
+                "name": {
+                    "en": "Bridge2AI Web App"
+                },
+                "value": "website"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

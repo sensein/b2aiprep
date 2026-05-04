@@ -11,6 +11,9 @@
             "items/mph_started_at",
             "items/mph_completed_at",
             "items/mph_duration",
+            "items/mph_origin",
+            "items/mph_via",
+            "items/mph_language",
             "items/mph_active_psy_medical_problems",
             "items/mph_hist_psy_medical_problems",
             "items/mph_prescribed_medication",
@@ -43,6 +46,24 @@
                 "isVis": true,
                 "valueRequired": false,
                 "variableName": "mph_duration"
+            },
+            {
+                "isAbout": "items/mph_origin",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "mph_origin"
+            },
+            {
+                "isAbout": "items/mph_via",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "mph_via"
+            },
+            {
+                "isAbout": "items/mph_language",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "mph_language"
             },
             {
                 "isAbout": "items/mph_active_psy_medical_problems",
@@ -89,6 +110,6 @@
         ],
         "shuffle": false
     },
-    "version": "3.24.0",
+    "version": "4.7.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

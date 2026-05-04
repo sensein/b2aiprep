@@ -11,6 +11,9 @@
             "items/leicester_cough_started_at",
             "items/leicester_cough_completed_at",
             "items/leicester_cough_duration",
+            "items/leicester_cough_origin",
+            "items/leicester_cough_via",
+            "items/leicester_cough_language",
             "items/lcq_chest_stomach_pains",
             "items/lcq_sputum_phlegm",
             "items/lcq_tired",
@@ -55,6 +58,24 @@
                 "isVis": false,
                 "valueRequired": true,
                 "variableName": "leicester_cough_duration"
+            },
+            {
+                "isAbout": "items/leicester_cough_origin",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "leicester_cough_origin"
+            },
+            {
+                "isAbout": "items/leicester_cough_via",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "leicester_cough_via"
+            },
+            {
+                "isAbout": "items/leicester_cough_language",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "leicester_cough_language"
             },
             {
                 "isAbout": "items/lcq_chest_stomach_pains",
@@ -173,6 +194,6 @@
         ],
         "shuffle": false
     },
-    "version": "3.20.0",
+    "version": "4.7.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

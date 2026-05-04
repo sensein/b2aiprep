@@ -11,6 +11,9 @@
             "items/winograd_started_at",
             "items/winograd_completed_at",
             "items/winograd_duration",
+            "items/winograd_origin",
+            "items/winograd_via",
+            "items/winograd_language",
             "items/winograd_score",
             "items/winograd_number_questions",
             "items/winograd_questions_asked",
@@ -315,6 +318,24 @@
                 "isVis": false,
                 "valueRequired": false,
                 "variableName": "winograd_duration"
+            },
+            {
+                "isAbout": "items/winograd_origin",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "winograd_origin"
+            },
+            {
+                "isAbout": "items/winograd_via",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "winograd_via"
+            },
+            {
+                "isAbout": "items/winograd_language",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "winograd_language"
             },
             {
                 "isAbout": "items/winograd_score",
@@ -1993,6 +2014,6 @@
         ],
         "shuffle": false
     },
-    "version": "3.24.0",
+    "version": "4.7.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

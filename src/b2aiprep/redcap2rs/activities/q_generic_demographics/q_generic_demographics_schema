@@ -11,6 +11,9 @@
             "items/demographics_started_at",
             "items/demographics_completed_at",
             "items/demographics_duration",
+            "items/demographics_origin",
+            "items/demographics_via",
+            "items/demographics_language",
             "items/zipcode",
             "items/country",
             "items/gender_identity",
@@ -93,6 +96,24 @@
                 "isVis": false,
                 "valueRequired": false,
                 "variableName": "demographics_duration"
+            },
+            {
+                "isAbout": "items/demographics_origin",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "demographics_origin"
+            },
+            {
+                "isAbout": "items/demographics_via",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "demographics_via"
+            },
+            {
+                "isAbout": "items/demographics_language",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "demographics_language"
             },
             {
                 "isAbout": "items/zipcode",
@@ -439,6 +460,6 @@
         ],
         "shuffle": false
     },
-    "version": "4.5.0",
+    "version": "4.7.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

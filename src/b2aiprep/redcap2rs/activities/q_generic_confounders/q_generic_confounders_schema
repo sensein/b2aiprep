@@ -11,6 +11,9 @@
             "items/confounders_started_at",
             "items/confounders_completed_at",
             "items/confounders_duration",
+            "items/confounders_origin",
+            "items/confounders_via",
+            "items/confounders_language",
             "items/tell_us_about_you_health_header",
             "items/chronic_ear_infections",
             "items/cleft_lip",
@@ -365,6 +368,24 @@
                 "isVis": false,
                 "valueRequired": false,
                 "variableName": "confounders_duration"
+            },
+            {
+                "isAbout": "items/confounders_origin",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "confounders_origin"
+            },
+            {
+                "isAbout": "items/confounders_via",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "confounders_via"
+            },
+            {
+                "isAbout": "items/confounders_language",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "confounders_language"
             },
             {
                 "isAbout": "items/tell_us_about_you_health_header",
@@ -2343,6 +2364,6 @@
         ],
         "shuffle": false
     },
-    "version": "4.2.0",
+    "version": "4.7.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

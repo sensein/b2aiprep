@@ -11,6 +11,9 @@
             "items/voice_perception_started_at",
             "items/voice_perception_completed_at",
             "items/voice_perception_duration",
+            "items/voice_perception_origin",
+            "items/voice_perception_via",
+            "items/voice_perception_language",
             "items/voice_quality_perception"
         ],
         "addProperties": [
@@ -39,6 +42,24 @@
                 "variableName": "voice_perception_duration"
             },
             {
+                "isAbout": "items/voice_perception_origin",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "voice_perception_origin"
+            },
+            {
+                "isAbout": "items/voice_perception_via",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "voice_perception_via"
+            },
+            {
+                "isAbout": "items/voice_perception_language",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "voice_perception_language"
+            },
+            {
                 "isAbout": "items/voice_quality_perception",
                 "isVis": true,
                 "valueRequired": true,
@@ -47,6 +68,6 @@
         ],
         "shuffle": false
     },
-    "version": "3.24.0",
+    "version": "4.7.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

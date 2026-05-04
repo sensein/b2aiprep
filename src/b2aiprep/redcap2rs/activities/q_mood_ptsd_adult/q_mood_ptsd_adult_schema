@@ -11,6 +11,9 @@
             "items/ptsd_started_at",
             "items/ptsd_completed_at",
             "items/ptsd_duration",
+            "items/ptsd_origin",
+            "items/ptsd_via",
+            "items/ptsd_language",
             "items/traumatic_event",
             "items/traumatic_event_date",
             "items/flashbacks",
@@ -47,6 +50,24 @@
                 "isVis": false,
                 "valueRequired": false,
                 "variableName": "ptsd_duration"
+            },
+            {
+                "isAbout": "items/ptsd_origin",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "ptsd_origin"
+            },
+            {
+                "isAbout": "items/ptsd_via",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "ptsd_via"
+            },
+            {
+                "isAbout": "items/ptsd_language",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "ptsd_language"
             },
             {
                 "isAbout": "items/traumatic_event",
@@ -117,6 +138,6 @@
         ],
         "shuffle": false
     },
-    "version": "3.24.0",
+    "version": "4.7.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

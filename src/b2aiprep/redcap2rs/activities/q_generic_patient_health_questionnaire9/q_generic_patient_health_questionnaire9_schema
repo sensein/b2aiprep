@@ -11,6 +11,9 @@
             "items/phq_9_started_at",
             "items/phq_9_completed_at",
             "items/phq_9_duration",
+            "items/phq_9_origin",
+            "items/phq_9_via",
+            "items/phq_9_language",
             "items/no_interest",
             "items/feeling_depressed",
             "items/trouble_sleeping",
@@ -46,6 +49,24 @@
                 "isVis": false,
                 "valueRequired": false,
                 "variableName": "phq_9_duration"
+            },
+            {
+                "isAbout": "items/phq_9_origin",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "phq_9_origin"
+            },
+            {
+                "isAbout": "items/phq_9_via",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "phq_9_via"
+            },
+            {
+                "isAbout": "items/phq_9_language",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "phq_9_language"
             },
             {
                 "isAbout": "items/no_interest",
@@ -110,6 +131,6 @@
         ],
         "shuffle": false
     },
-    "version": "3.24.0",
+    "version": "4.7.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

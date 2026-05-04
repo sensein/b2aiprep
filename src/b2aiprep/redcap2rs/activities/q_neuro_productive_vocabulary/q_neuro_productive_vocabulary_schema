@@ -12,6 +12,9 @@
             "items/vocabulary_started_at",
             "items/vocabulary_completed_at",
             "items/vocabulary_duration",
+            "items/vocabulary_origin",
+            "items/vocabulary_via",
+            "items/vocabulary_language",
             "items/vocabulary_item_word_1",
             "items/vocabulary_item_difficulty_1",
             "items/vocabulary_item_correct_1",
@@ -61,6 +64,24 @@
                 "isVis": false,
                 "valueRequired": false,
                 "variableName": "vocabulary_duration"
+            },
+            {
+                "isAbout": "items/vocabulary_origin",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "vocabulary_origin"
+            },
+            {
+                "isAbout": "items/vocabulary_via",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "vocabulary_via"
+            },
+            {
+                "isAbout": "items/vocabulary_language",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "vocabulary_language"
             },
             {
                 "isAbout": "items/vocabulary_item_word_1",
@@ -173,6 +194,6 @@
         ],
         "shuffle": false
     },
-    "version": "3.24.0",
+    "version": "4.7.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }
