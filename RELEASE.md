@@ -26,7 +26,7 @@ b2aiprep-cli create-bundled-dataset $WORKING_DIR/de-identified-bids $WORKING_DIR
 ---
 ### 1. (Optional) ReproSchema to RedCap conversion
 
-This process is required for the pediatric cohort, but can be skipped for the adult cohort.
+This process is required for versions of the pediatric cohort collected prior to switching to app collection, but can be skipped for the adult cohort.
 
 Pediatric data was collected using [reproschema-ui](https://github.com/ReproNim/reproschema-ui), which differs from the other protocols and requires additional preprocessing.
 
@@ -47,17 +47,14 @@ Sanity check: The `record_id` column of the RedCap CSV should match the folder n
 
 The next step in the pipeline reorganizes the dataset to follow the [BIDS format](https://bids.neuroimaging.io/index.html). Briefly, BIDS is a folder structure with sessions nested under unique folders for each subject and certain metadata files required.
 
-Before running the command, we first must get the latest version of the [Reproschema protocols](https://github.com/sensein/b2ai-redcap2rs) by running the following command:
-```
-git clone https://github.com/sensein/b2ai-redcap2rs <path/to/reproschema_protocols>
-```
-
 The following command will parse the RedCap CSV into multiple phenotype CSVs and reorganize the audio data to follow the BIDS folder structure:
 
 ```
 b2aiprep-cli redcap2bids <path/to/redcap_csv> \
     --outdir <path/to/bids/folder> \
-    --audiodir <path/to/audio/files>
+    --audiodir <path/to/audio/files> \
+    --sanitize_audio_format \
+    --max-audio-workers=8
 ```
 
 An optional `--max-audio-workers` controls the number of threads used for writing out audio files as writing of audio files is the speed bottleneck of this command. An optional `--sanitize_audio_format` can be used to sanitize the audio format into 16KHz mono-channel WAVs.
@@ -137,9 +134,9 @@ The output will be remain in BIDS format. The primary changes are:
 - sensitive audio clips, particularly those which may contain protected health information, are removed
 - features that can be used to identify individuals or re-create transcripts for sensitive audios (such as free-speech) are removed, but for only those files
 
-### 6. Publish
+### 6. Bundle
 
-For simplicity, the BIDS dataset is parsed into a small set of files for publication and wide dissemination.
+For simplicity, the BIDS dataset is bundled into a small set of files for publication and wide dissemination.
 Run the following to create the bundled dataset:
 
 ```
