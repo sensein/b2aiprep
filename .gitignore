@@ -148,3 +148,7 @@ guide/data/
 
 *.DS_Store
 cache-wf/
+
+external_scripts/sage_upload_scripts/logs/
+external_scripts/sage_upload_scripts/*.tsv
+external_scripts/sage_upload_scripts/*.sh
