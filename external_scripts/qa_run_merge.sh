@@ -7,9 +7,6 @@
 #   bash qa_run_merge.sh
 #
 # Expects shard subdirectories at OUTPUT_DIR/shard_1/, shard_2/, etc.
-
-OUTPUT_DIR="/orcd/data/satra/002/datasets/b2aivoice/qa_run_results/peds"
-
 #SBATCH -c 4
 #SBATCH -t 01:00:00
 #SBATCH -p mit_normal
@@ -21,6 +18,8 @@ OUTPUT_DIR="/orcd/data/satra/002/datasets/b2aivoice/qa_run_results/peds"
 
 source "$HOME/.bashrc"
 conda activate b2aiprep_test
+
+OUTPUT_DIR="/orcd/data/satra/002/datasets/b2aivoice/qa_run_results/peds"
 
 set -euo pipefail
 

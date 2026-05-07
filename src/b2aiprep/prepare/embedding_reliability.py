@@ -42,12 +42,18 @@ def _overlay_intruder(
     base: torch.Tensor,
     intruder: torch.Tensor,
     snr_db: float,
+    position: str = "end",
 ) -> torch.Tensor:
-    """Overlay intruder clip at the end of base at the specified SNR.
+    """Overlay intruder clip into base at the specified position and SNR.
 
     Both tensors are (channels, samples). The intruder is energy-scaled to
-    achieve ``snr_db`` relative to the base tail segment it overlaps.
+    achieve ``snr_db`` relative to the base segment it overlaps.
     Output has exactly the same shape as ``base``.
+
+    Args:
+        position: Where in the base recording to place the intruder.
+            ``"end"`` (default) — tail; ``"start"`` — beginning;
+            ``"middle"`` — centred.
     """
     base = base.float()
     intruder = intruder.float()
@@ -58,18 +64,28 @@ def _overlay_intruder(
     if n_intruder == 0 or n_base == 0:
         return base.clone()
 
-    start = max(0, n_base - n_intruder)
-    base_segment = base[:, start:]
+    actual_len = min(n_intruder, n_base)
+
+    if position == "start":
+        start_idx = 0
+    elif position == "middle":
+        start_idx = (n_base - actual_len) // 2
+    else:  # "end"
+        start_idx = max(0, n_base - actual_len)
+
+    base_segment = base[:, start_idx:start_idx + actual_len]
     base_rms = float(base_segment.pow(2).mean().sqrt()) + 1e-10
-    intruder_rms = float(intruder.pow(2).mean().sqrt()) + 1e-10
+    intruder_clip = intruder[:, :actual_len]
+    intruder_rms = float(intruder_clip.pow(2).mean().sqrt()) + 1e-10
 
     target_rms = base_rms / (10.0 ** (snr_db / 20.0))
     scale = target_rms / intruder_rms
-    intruder_scaled = intruder * scale
+    intruder_scaled = intruder_clip * scale
 
     mixed = base.clone()
-    actual_len = min(n_intruder, n_base)
-    mixed[:, -actual_len:] = mixed[:, -actual_len:] + intruder_scaled[:, :actual_len]
+    mixed[:, start_idx:start_idx + actual_len] = (
+        mixed[:, start_idx:start_idx + actual_len] + intruder_scaled
+    )
     return mixed
 
 
@@ -184,29 +200,47 @@ def generate_synthetic_mixtures(
     intruder_snr_db_values: list,
     output_dir: str,
     config: Optional[Any] = None,
+    intruder_bids_dir: Optional[str] = None,
+    positions: Optional[list] = None,
     seed: int = 42,
 ) -> list:
     """Generate synthetic intruder mixtures for operating characteristic evaluation.
 
     For each participant with a ``ready`` profile, pairs each clean recording
-    with a random intruder participant and writes one mixture per (ratio, SNR)
-    combination. A matching ``negative`` (unmixed) sample is also written.
+    with a random intruder participant and writes one mixture per
+    (ratio, SNR, position) combination. A matching ``negative`` (unmixed) sample
+    is also written.
 
     Args:
         bids_dir: Root of the BIDS dataset containing ``_features.pt`` files.
+            Target (enrolled) participants are always drawn from here.
         profiles_dir: Directory of pre-built speaker profiles.
-        intruder_ratios: Fractions of base recording duration to overlay, e.g. ``[0.10, 0.20, 0.40]``.
+        intruder_ratios: Fractions of base recording duration to overlay,
+            e.g. ``[0.10, 0.20, 0.40]``.
         intruder_snr_db_values: SNR values in dB, e.g. ``[0, 5, 10]``.
         output_dir: Where to write mixture ``.wav`` files.
         config: Optional :class:`PipelineConfig` (unused; reserved for future gating).
+        intruder_bids_dir: Optional second BIDS directory to draw intruder audio
+            from (e.g. adult recordings). When provided, ALL intruders are drawn
+            from this pool, tagged ``intruder_type="adult"``.  When ``None``,
+            intruders are drawn from other participants in ``bids_dir``, tagged
+            ``intruder_type="peds"``.
+        positions: List of intruder placement positions to generate. Each value
+            must be one of ``"start"``, ``"middle"``, ``"end"``. Defaults to
+            ``["end"]`` for backward compatibility. Passing all three produces
+            three mixtures per (ratio, SNR) pair.
         seed: Random seed for reproducible intruder selection.
 
     Returns:
-        List of :data:`SyntheticMixture` dicts with keys ``target_participant_id``,
-        ``intruder_participant_id``, ``base_recording_path``, ``intruder_segment_path``,
-        ``intruder_duration_ratio``, ``intruder_snr_db``, ``label``, ``mixed_audio_path``.
+        List of mixture dicts with keys ``target_participant_id``,
+        ``intruder_participant_id``, ``intruder_type``, ``base_recording_path``,
+        ``intruder_segment_path``, ``intruder_duration_ratio``, ``intruder_snr_db``,
+        ``intruder_position``, ``label``, ``mixed_audio_path``.
     """
     from b2aiprep.prepare.speaker_profiles import load_speaker_profile
+
+    if positions is None:
+        positions = ["end"]
 
     rng = random.Random(seed)
     bids_path = Path(bids_dir)
@@ -217,8 +251,26 @@ def generate_synthetic_mixtures(
     all_features = _find_features_files(bids_path)
     participants = list(all_features.keys())
 
-    if len(participants) < 2:
+    # Build intruder pool
+    if intruder_bids_dir is not None:
+        intruder_features = _find_features_files(Path(intruder_bids_dir))
+        intruder_pool = list(intruder_features.keys())
+        intruder_type_label = "adult"
+        _logger.info(
+            "Using external intruder pool from %s (%d participants)",
+            intruder_bids_dir, len(intruder_pool),
+        )
+    else:
+        intruder_features = all_features
+        intruder_pool = None  # resolved per-target to exclude self
+        intruder_type_label = "peds"
+
+    if len(participants) < 2 and intruder_pool is None:
         _logger.warning("Need ≥ 2 participants for synthetic mixtures; found %d", len(participants))
+        return []
+
+    if intruder_pool is not None and len(intruder_pool) == 0:
+        _logger.warning("Intruder BIDS dir has no feature files; no mixtures will be generated.")
         return []
 
     mixtures: list = []
@@ -230,8 +282,12 @@ def generate_synthetic_mixtures(
                           target_pid, profile.profile_status if profile else "missing")
             continue
 
-        other_pids = [p for p in participants if p != target_pid]
-        if not other_pids:
+        available_intruders = (
+            intruder_pool
+            if intruder_pool is not None
+            else [p for p in participants if p != target_pid]
+        )
+        if not available_intruders:
             continue
 
         for pt_file in all_features[target_pid]:
@@ -252,7 +308,7 @@ def generate_synthetic_mixtures(
                 _logger.debug("Cannot load audio %s: %s", audio_path, exc)
                 continue
 
-            # Write negative (unmixed solo)
+            # Write negative (unmixed solo) — one per base recording, position-independent
             neg_name = f"{target_pid}_solo_{pt_file.stem}.wav"
             neg_out = out_path / neg_name
             if not neg_out.exists():
@@ -260,17 +316,19 @@ def generate_synthetic_mixtures(
             mixtures.append({
                 "target_participant_id": target_pid,
                 "intruder_participant_id": target_pid,
+                "intruder_type": intruder_type_label,
                 "base_recording_path": str(audio_path),
                 "intruder_segment_path": str(audio_path),
                 "intruder_duration_ratio": 0.0,
                 "intruder_snr_db": 0.0,
+                "intruder_position": "none",
                 "label": "negative",
                 "mixed_audio_path": str(neg_out),
             })
 
             # Select random intruder
-            intruder_pid = rng.choice(other_pids)
-            intruder_pt_files = all_features.get(intruder_pid, [])
+            intruder_pid = rng.choice(available_intruders)
+            intruder_pt_files = intruder_features.get(intruder_pid, [])
             if not intruder_pt_files:
                 continue
             intruder_pt = rng.choice(intruder_pt_files)
@@ -303,25 +361,30 @@ def generate_synthetic_mixtures(
                 intruder_clip = intruder_waveform[:, :n_intruder]
 
                 for snr_db in intruder_snr_db_values:
-                    mixed = _overlay_intruder(base_waveform, intruder_clip, float(snr_db))
-                    ratio_str = f"{ratio}".replace(".", "p")
-                    snr_str = f"{float(snr_db)}".replace(".", "p").replace("-", "n")
-                    out_name = (
-                        f"{target_pid}_{intruder_pid}"
-                        f"_ratio{ratio_str}_snr{snr_str}_{pt_file.stem}.wav"
-                    )
-                    out_file = out_path / out_name
-                    torchaudio.save(str(out_file), mixed, base_sr)
-                    mixtures.append({
-                        "target_participant_id": target_pid,
-                        "intruder_participant_id": intruder_pid,
-                        "base_recording_path": str(audio_path),
-                        "intruder_segment_path": str(intruder_audio_path),
-                        "intruder_duration_ratio": float(ratio),
-                        "intruder_snr_db": float(snr_db),
-                        "label": "positive",
-                        "mixed_audio_path": str(out_file),
-                    })
+                    for pos in positions:
+                        mixed = _overlay_intruder(
+                            base_waveform, intruder_clip, float(snr_db), position=pos
+                        )
+                        ratio_str = f"{ratio}".replace(".", "p")
+                        snr_str = f"{float(snr_db)}".replace(".", "p").replace("-", "n")
+                        out_name = (
+                            f"{target_pid}_{intruder_pid}"
+                            f"_ratio{ratio_str}_snr{snr_str}_pos{pos}_{pt_file.stem}.wav"
+                        )
+                        out_file = out_path / out_name
+                        torchaudio.save(str(out_file), mixed, base_sr)
+                        mixtures.append({
+                            "target_participant_id": target_pid,
+                            "intruder_participant_id": intruder_pid,
+                            "intruder_type": intruder_type_label,
+                            "base_recording_path": str(audio_path),
+                            "intruder_segment_path": str(intruder_audio_path),
+                            "intruder_duration_ratio": float(ratio),
+                            "intruder_snr_db": float(snr_db),
+                            "intruder_position": pos,
+                            "label": "positive",
+                            "mixed_audio_path": str(out_file),
+                        })
 
     return mixtures
 
@@ -334,10 +397,8 @@ def generate_synthetic_mixtures(
 def extract_embeddings_for_mixtures(mixture_list: list) -> dict:
     """Extract ECAPA-TDNN and SPARC embeddings from synthetic mixture audio files.
 
-    Uses senselab for ECAPA-TDNN extraction. SPARC extraction returns ``None``
-    when the senselab SPARC extractor is unavailable for raw audio inputs.
-
-    This function requires model inference and may be slow on CPU.
+    Uses senselab for both extractors. Models are loaded once and reused across
+    all mixtures. This function requires model inference and may be slow on CPU.
 
     Args:
         mixture_list: SyntheticMixture dicts from :func:`generate_synthetic_mixtures`.
@@ -350,24 +411,41 @@ def extract_embeddings_for_mixtures(mixture_list: list) -> dict:
         from senselab.audio.tasks.speaker_embeddings.api import (
             extract_speaker_embeddings_from_audios,
         )
-        _senselab_ok = True
+        _ecapa_ok = True
     except ImportError:
         _logger.warning(
-            "senselab not available; all embeddings will be None. "
-            "Install senselab or run on a node with the full conda environment."
+            "senselab speaker-embeddings not available; ECAPA embeddings will be None."
         )
-        _senselab_ok = False
+        _ecapa_ok = False
+        Audio = None  # type: ignore[assignment]
+
+    try:
+        from senselab.audio.data_structures.audio import Audio  # noqa: F811
+        from senselab.audio.tasks.features_extraction.sparc import SparcFeatureExtractor
+        _sparc_extractor = SparcFeatureExtractor()
+        _sparc_ok = True
+    except Exception as exc:
+        _logger.warning("SPARC extractor unavailable; SPARC embeddings will be None: %s", exc)
+        _sparc_extractor = None
+        _sparc_ok = False
 
     result: dict = {}
 
     for mixture in mixture_list:
         audio_path = mixture["mixed_audio_path"]
         ecapa_emb = None
+        sparc_emb = None
 
-        if _senselab_ok:
+        try:
+            waveform, sr = torchaudio.load(audio_path)
+            audio_obj = Audio(waveform=waveform, sampling_rate=sr)
+        except Exception as exc:
+            _logger.warning("Could not load audio %s: %s", audio_path, exc)
+            result[audio_path] = {"ecapa_emb": None, "sparc_emb": None}
+            continue
+
+        if _ecapa_ok:
             try:
-                waveform, sr = torchaudio.load(audio_path)
-                audio_obj = Audio(waveform=waveform, sampling_rate=sr)
                 embeddings = extract_speaker_embeddings_from_audios([audio_obj])
                 if embeddings and embeddings[0] is not None:
                     raw = embeddings[0]
@@ -380,7 +458,22 @@ def extract_embeddings_for_mixtures(mixture_list: list) -> dict:
             except Exception as exc:
                 _logger.warning("ECAPA extraction failed for %s: %s", audio_path, exc)
 
-        result[audio_path] = {"ecapa_emb": ecapa_emb, "sparc_emb": None}
+        if _sparc_ok:
+            try:
+                sparc_result = _sparc_extractor.extract_sparc_features([audio_obj])
+                if sparc_result and sparc_result[0] is not None:
+                    raw_spk = sparc_result[0].get("spk_emb")
+                    if raw_spk is not None:
+                        if hasattr(raw_spk, "numpy"):
+                            sparc_emb = raw_spk.numpy().ravel()
+                        elif isinstance(raw_spk, np.ndarray):
+                            sparc_emb = raw_spk.ravel()
+                        else:
+                            sparc_emb = np.array(raw_spk, dtype=np.float64).ravel()
+            except Exception as exc:
+                _logger.warning("SPARC extraction failed for %s: %s", audio_path, exc)
+
+        result[audio_path] = {"ecapa_emb": ecapa_emb, "sparc_emb": sparc_emb}
 
     return result
 
@@ -540,12 +633,15 @@ def compute_operating_curves(
     profiles_path = Path(profiles_dir)
     ecapa_rows: list = []
     sparc_rows: list = []
+    # Per-intruder-type rows: type_label -> {"ecapa": [...], "sparc": [...]}
+    by_intruder_type: dict = {}
 
     for mixture in mixture_list:
         audio_path = mixture["mixed_audio_path"]
         target_pid = mixture["target_participant_id"]
         is_positive = mixture["label"] == "positive"
         speech_fraction = max(0.0, 1.0 - mixture["intruder_duration_ratio"])
+        intruder_type = mixture.get("intruder_type", "peds")
 
         embs = emb_dict.get(audio_path, {})
         ecapa_emb = embs.get("ecapa_emb")
@@ -556,20 +652,25 @@ def compute_operating_curves(
             continue
 
         age_group = profile.age_group
+        itype_rows = by_intruder_type.setdefault(intruder_type, {"ecapa": [], "sparc": []})
 
         if ecapa_emb is not None:
             ec = _l2_normalize(np.array(ecapa_emb, dtype=np.float64).ravel())
             centroid = _l2_normalize(
                 np.array(profile.ecapa_embedding_centroid, dtype=np.float64)
             )
-            ecapa_rows.append((float(np.dot(ec, centroid)), is_positive, speech_fraction, age_group))
+            row = (float(np.dot(ec, centroid)), is_positive, speech_fraction, age_group)
+            ecapa_rows.append(row)
+            itype_rows["ecapa"].append(row)
 
         if sparc_emb is not None:
             sp = _l2_normalize(np.array(sparc_emb, dtype=np.float64).ravel())
             centroid = _l2_normalize(
                 np.array(profile.sparc_embedding_centroid, dtype=np.float64)
             )
-            sparc_rows.append((float(np.dot(sp, centroid)), is_positive, speech_fraction, age_group))
+            row = (float(np.dot(sp, centroid)), is_positive, speech_fraction, age_group)
+            sparc_rows.append(row)
+            itype_rows["sparc"].append(row)
 
     ecapa_curve = _build_single_emb_curve(ecapa_rows)
     sparc_curve = _build_single_emb_curve(sparc_rows)
@@ -579,6 +680,24 @@ def compute_operating_curves(
     child_ec = [(s, l, f, a) for s, l, f, a in ecapa_rows if a == "child"]
     adult_sp = [(s, l, f, a) for s, l, f, a in sparc_rows if a == "adult"]
     child_sp = [(s, l, f, a) for s, l, f, a in sparc_rows if a == "child"]
+
+    # Build per-intruder-type breakdown (always populated when multiple types or adult pool used)
+    intruder_type_breakdown: dict = {}
+    if len(by_intruder_type) >= 1:
+        for itype, irows in by_intruder_type.items():
+            ec = irows["ecapa"]
+            sp = irows["sparc"]
+            ec_curve = _build_single_emb_curve(ec)
+            sp_curve = _build_single_emb_curve(sp)
+            intruder_type_breakdown[itype] = {
+                "num_positive": sum(1 for _, l, _, _ in ec if l),
+                "num_negative": sum(1 for _, l, _, _ in ec if not l),
+                "ecapa_operating_curve": ec_curve,
+                "sparc_operating_curve": sp_curve,
+                "or_operating_curve": _build_or_curve(ec, sp),
+                "recommended_ecapa_threshold": _recommended_threshold(ec_curve, max_fnr_target),
+                "recommended_sparc_threshold": _recommended_threshold(sp_curve, max_fnr_target),
+            }
 
     bins_as_lists = [list(b) for b in speech_fraction_bins]
 
@@ -609,6 +728,7 @@ def compute_operating_curves(
             "ecapa_operating_curve": _build_single_emb_curve(child_ec),
             "sparc_operating_curve": _build_single_emb_curve(child_sp),
         },
+        "intruder_type_breakdown": intruder_type_breakdown,
     }
 
 
@@ -723,5 +843,30 @@ def _render_markdown_report(report: dict) -> str:
         f"| Child | {_fnr_at(child_ec_curve, ecapa_thresh)} |",
         "",
     ]
+
+    intruder_breakdown = report.get("intruder_type_breakdown", {})
+    if intruder_breakdown:
+        lines += [
+            "---",
+            "",
+            "## Intruder-Type Breakdown",
+            "",
+            "Performance by the type of intruder used in synthetic mixtures.",
+            "",
+            "| Intruder type | N positive | Rec. ECAPA threshold | ECAPA FNR | Rec. SPARC threshold | SPARC FNR |",
+            "|---------------|-----------|---------------------|-----------|---------------------|-----------|",
+        ]
+        for itype, stats in sorted(intruder_breakdown.items()):
+            ec_c = stats.get("ecapa_operating_curve", [])
+            sp_c = stats.get("sparc_operating_curve", [])
+            rec_ec = stats.get("recommended_ecapa_threshold")
+            rec_sp = stats.get("recommended_sparc_threshold")
+            n_pos = stats.get("num_positive", 0)
+            lines.append(
+                f"| {itype} | {n_pos} "
+                f"| `{rec_ec}` | {_fnr_at(ec_c, rec_ec)} "
+                f"| `{rec_sp}` | {_fnr_at(sp_c, rec_sp)} |"
+            )
+        lines.append("")
 
     return "\n".join(lines)

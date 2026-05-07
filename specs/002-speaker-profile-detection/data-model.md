@@ -70,8 +70,9 @@ New fields added to `CheckResult.detail` for this check:
 ### EmbeddingReliabilityReport
 
 Written by the `embedding-reliability-report` CLI command (US3).
-Covers ECAPA-TDNN, SPARC, and OR-combined performance including operating
-characteristic curves derived from synthetic mixture evaluation.
+Contains two top-level sections: (a) synthetic evaluation — the primary
+calibration tool; (b) optional real-data validation for peds (when
+`--exclusion-list` is supplied). Adult calibration is synthetic-only.
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -88,13 +89,15 @@ characteristic curves derived from synthetic mixture evaluation.
 | `ecapa_operating_curve` | list[dict] | `{threshold, fnr, fpr, review_fraction}` for ECAPA-TDNN |
 | `sparc_operating_curve` | list[dict] | Same for SPARC |
 | `or_operating_curve` | list[dict] | Same for OR combination |
-| `recommended_ecapa_threshold` | float | ECAPA-TDNN threshold achieving ≤5% FNR |
+| `recommended_ecapa_threshold` | float | ECAPA-TDNN threshold achieving ≤5% FNR (from adult→peds scenario when available) |
 | `recommended_sparc_threshold` | float | SPARC threshold achieving ≤5% FNR |
 | `recommended_low_confidence_threshold` | float | Speech fraction below which confidence is capped |
 | `recommended_min_enrollment_duration_s` | float | Active speech duration floor for enrollment |
 | `knee_point_fraction` | float | Speech fraction where accuracy drops > 15 pp vs. top bin |
 | `adult_subgroup_stats` | dict | Operating curves for adult participants |
 | `child_subgroup_stats` | dict | Operating curves for child participants (adult-intruder detection rate) |
+| `intruder_type_breakdown` | dict | Per-intruder-type operating curves and recommended thresholds; keys are intruder type labels (e.g., `"adult"`, `"peds"`) |
+| `real_data_validation` | dict \| null | Optional section; `null` when `--exclusion-list` not supplied. When present: `{num_uncertain_positives, num_with_diarization_multispeaker, diarization_fraction, per_signal_recall: {ecapa, sparc, or_combined, diarization, evans}, caveat}` |
 
 ---
 

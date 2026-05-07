@@ -52,7 +52,7 @@ def _transcribe_audio(audio_record: Any) -> tuple:
             features = torch.load(str(fp), weights_only=False, map_location="cpu")
             transcript = features.get("transcription", "")
             # Whisper log-prob confidence if stored
-            confidence = float(features.get("transcription_confidence", 0.8))
+            confidence = float(features.get("transcription_confidence", 0.0))
             if transcript:
                 return str(transcript), confidence
 
@@ -64,69 +64,109 @@ def _transcribe_audio(audio_record: Any) -> tuple:
     return "", 0.0
 
 
-def _detect_pii_entities(transcript: str) -> list:
+_GLINER_AVAILABLE: Optional[bool] = None
+_PRESIDIO_AVAILABLE: Optional[bool] = None
+
+
+def _check_backends() -> tuple:
+    """Return ``(gliner_ok, presidio_ok)`` booleans, cached after first call."""
+    global _GLINER_AVAILABLE, _PRESIDIO_AVAILABLE
+    if _GLINER_AVAILABLE is None:
+        try:
+            import gliner  # noqa: F401  # type: ignore[import]
+            _GLINER_AVAILABLE = True
+        except ImportError:
+            _GLINER_AVAILABLE = False
+            _logger.warning(
+                "gliner package not installed; GLiNER PII detection unavailable. "
+                "Install with: pip install gliner"
+            )
+    if _PRESIDIO_AVAILABLE is None:
+        try:
+            import presidio_analyzer  # noqa: F401  # type: ignore[import]
+            _PRESIDIO_AVAILABLE = True
+        except ImportError:
+            _PRESIDIO_AVAILABLE = False
+            _logger.warning(
+                "presidio_analyzer package not installed; Presidio PII detection unavailable. "
+                "Install with: pip install presidio-analyzer"
+            )
+    return _GLINER_AVAILABLE, _PRESIDIO_AVAILABLE
+
+
+def _detect_pii_entities(transcript: str) -> tuple:
     """Run PII detection on *transcript* using GLiNER or Presidio fallback.
 
     Args:
         transcript: Plain-text transcript string.
 
     Returns:
-        List of ``{"label": str, "score": float, "char_start": int,
-        "char_end": int, "text": str}`` dicts.  The ``text`` field is
-        present here for sidecar storage; the caller strips it before
-        writing to ``CheckResult.detail`` (TSV-safe).
+        ``(entities, model_used)`` where *entities* is a list of
+        ``{"label": str, "score": float, "char_start": int,
+        "char_end": int, "text": str}`` dicts and *model_used* is the
+        name of the backend that ran, or ``"none_available"`` if both
+        backends are absent.  The ``text`` field is present here for
+        sidecar storage; the caller strips it before writing to
+        ``CheckResult.detail`` (TSV-safe).
     """
     if not transcript.strip():
-        return []
+        return [], "none_needed"
+
+    gliner_ok, presidio_ok = _check_backends()
+
+    if not gliner_ok and not presidio_ok:
+        return [], "none_available"
 
     # --- Attempt 1: GLiNER PII model ---
-    try:
-        from gliner import GLiNER  # type: ignore[import]
+    if gliner_ok:
+        try:
+            from gliner import GLiNER  # type: ignore[import]
 
-        model = GLiNER.from_pretrained("nvidia/gliner-pii")
-        labels = [
-            "name",
-            "email",
-            "phone_number",
-            "address",
-            "ssn",
-            "credit_card",
-            "date_of_birth",
-        ]
-        raw = model.predict_entities(transcript, labels, threshold=0.5)
-        return [
-            {
-                "label": e["label"],
-                "score": round(float(e["score"]), 4),
-                "char_start": int(e["start"]),
-                "char_end": int(e["end"]),
-                "text": transcript[int(e["start"]): int(e["end"])],
-            }
-            for e in raw
-        ]
-    except Exception as exc:
-        _logger.debug("GLiNER PII detection failed, trying Presidio: %s", exc)
+            model = GLiNER.from_pretrained("nvidia/gliner-pii")
+            labels = [
+                "name",
+                "email",
+                "phone_number",
+                "address",
+                "ssn",
+                "credit_card",
+                "date_of_birth",
+            ]
+            raw = model.predict_entities(transcript, labels, threshold=0.5)
+            return [
+                {
+                    "label": e["label"],
+                    "score": round(float(e["score"]), 4),
+                    "char_start": int(e["start"]),
+                    "char_end": int(e["end"]),
+                    "text": transcript[int(e["start"]): int(e["end"])],
+                }
+                for e in raw
+            ], "gliner-pii"
+        except Exception as exc:
+            _logger.warning("GLiNER PII detection failed, trying Presidio: %s", exc)
 
     # --- Attempt 2: Presidio fallback ---
-    try:
-        from presidio_analyzer import AnalyzerEngine  # type: ignore[import]
+    if presidio_ok:
+        try:
+            from presidio_analyzer import AnalyzerEngine  # type: ignore[import]
 
-        engine = AnalyzerEngine()
-        results = engine.analyze(text=transcript, language="en")
-        return [
-            {
-                "label": r.entity_type.lower(),
-                "score": round(float(r.score), 4),
-                "char_start": r.start,
-                "char_end": r.end,
-                "text": transcript[r.start: r.end],
-            }
-            for r in results
-        ]
-    except Exception as exc:
-        _logger.debug("Presidio PII detection failed: %s", exc)
+            engine = AnalyzerEngine()
+            results = engine.analyze(text=transcript, language="en")
+            return [
+                {
+                    "label": r.entity_type.lower(),
+                    "score": round(float(r.score), 4),
+                    "char_start": r.start,
+                    "char_end": r.end,
+                    "text": transcript[r.start: r.end],
+                }
+                for r in results
+            ], "presidio"
+        except Exception as exc:
+            _logger.warning("Presidio PII detection failed: %s", exc)
 
-    return []
+    return [], "none_available"
 
 
 def transcript_confidence_proxy(audio_record: Any) -> float:
@@ -187,7 +227,7 @@ def check_pii_disclosure(
     transcript, transcript_confidence = _transcribe_audio(audio_record)
 
     # Step 2: Detect PII entities (includes "text" field for sidecar)
-    entities_with_text = _detect_pii_entities(transcript)
+    entities_with_text, model_used = _detect_pii_entities(transcript)
 
     # Step 3: TSV-safe entity list — labels + offsets only, NO text
     entities_tsv_safe = [
@@ -200,28 +240,17 @@ def check_pii_disclosure(
         for e in entities_with_text
     ]
 
-    # Determine which model was used
-    model_used: str
-    if entities_with_text:
-        # If GLiNER succeeded the list came from it; if not, Presidio
-        try:
-            import gliner  # noqa: F401  # type: ignore[import]
-            model_used = "gliner-pii"
-        except ImportError:
-            model_used = "presidio"
-    else:
-        try:
-            import gliner  # noqa: F401  # type: ignore[import]
-            model_used = "gliner-pii"
-        except ImportError:
-            model_used = "presidio"
-
     # Step 4: Score and classification
     n_entities = len(entities_with_text)
     min_conf = float(config.min_transcript_confidence)
 
+    # No backend available — cannot make a determination → NEEDS_REVIEW
+    if model_used == "none_available":
+        classification = Classification.NEEDS_REVIEW
+        score = 0.5
+        confidence = 0.0
     # Low transcript confidence → forced NEEDS_REVIEW regardless of entity count
-    if transcript_confidence < min_conf:
+    elif transcript_confidence < min_conf:
         classification = Classification.NEEDS_REVIEW
         score = 0.5  # uncertain
         confidence = transcript_confidence

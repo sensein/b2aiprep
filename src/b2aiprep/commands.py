@@ -1914,6 +1914,25 @@ def build_speaker_profiles_cmd(
     ),
 )
 @click.option(
+    "--intruder-bids-dir", "intruder_bids_dir",
+    default=None, type=click.Path(exists=True, file_okay=False),
+    help=(
+        "Optional second BIDS directory to draw intruder audio from (e.g. adult "
+        "recordings). When set, all intruders come from this pool and are tagged "
+        "'adult'. When omitted, intruders are drawn from other participants in "
+        "BIDS_DIR and tagged 'peds'."
+    ),
+)
+@click.option(
+    "--intruder-positions", "intruder_positions",
+    default="end", show_default=True, type=str,
+    help=(
+        "Comma-separated list of intruder placement positions to evaluate. "
+        "Allowed values: start, middle, end. "
+        "Example: --intruder-positions start,middle,end"
+    ),
+)
+@click.option(
     "--pipeline-config", "config_path",
     default=None, type=click.Path(exists=True),
     help="Path to pipeline config JSON. Uses built-in defaults if omitted.",
@@ -1933,6 +1952,8 @@ def embedding_reliability_report_cmd(
     intruder_snr_db,
     keep_mixtures,
     max_fnr_target,
+    intruder_bids_dir,
+    intruder_positions,
     config_path,
     log_level,
 ):
@@ -1942,6 +1963,10 @@ def embedding_reliability_report_cmd(
     embeddings, scores them against pre-built speaker profiles, and computes
     operating characteristic curves (FNR vs. review-queue fraction) for threshold
     calibration. Writes ``embedding_reliability_report.json`` and/or ``.md``.
+
+    Use ``--intruder-bids-dir`` to draw intruder audio from a separate BIDS
+    directory (e.g. adult recordings) to evaluate the peds+adult mixture scenario.
+    Use ``--intruder-positions`` to test multiple intruder placements per mixture.
 
     Requires model inference — plan for extended runtime without GPU.
     Run ``build-speaker-profiles`` first.
@@ -1957,12 +1982,14 @@ def embedding_reliability_report_cmd(
     snr_values = [float(x.strip()) for x in intruder_snr_db.split(",") if x.strip()]
     bin_bounds = [float(x.strip()) for x in speech_fraction_bins.split(",") if x.strip()]
     bins = [(bin_bounds[i], bin_bounds[i + 1]) for i in range(len(bin_bounds) - 1)]
+    positions = [p.strip() for p in intruder_positions.split(",") if p.strip()]
 
     out_dir = output_dir if output_dir else profiles_dir
     mixtures_dir = str(Path(out_dir) / "synthetic_mixtures")
 
     click.echo(
-        f"Generating synthetic mixtures (ratios={ratios}, SNRs={snr_values}) …"
+        f"Generating synthetic mixtures "
+        f"(ratios={ratios}, SNRs={snr_values}, positions={positions}) …"
     )
     mixture_list = generate_synthetic_mixtures(
         bids_dir=bids_dir,
@@ -1971,6 +1998,8 @@ def embedding_reliability_report_cmd(
         intruder_snr_db_values=snr_values,
         output_dir=mixtures_dir,
         config=config,
+        intruder_bids_dir=intruder_bids_dir,
+        positions=positions,
     )
     click.echo(f"  {len(mixture_list)} mixtures generated.")
 

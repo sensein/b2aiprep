@@ -199,18 +199,45 @@ sharply.
 - **FR-009**: The research analysis (US3) MUST produce a structured report
   quantifying embedding similarity accuracy as a function of active speech fraction,
   at configurable bin boundaries, with separate breakdowns for child and adult
-  participants.
+  participants. The report MUST contain two clearly labelled evaluation sections:
+  (a) **Synthetic evaluation** — operating curves derived from FR-011 synthetic
+  mixtures, used for threshold calibration; and (b) **Real-data validation (peds
+  only)** — recall on uncertain positives from the peds release exclusion list,
+  using the full list as a single uncertain-positive pool (no filtering by removal
+  reason). The section MUST annotate what fraction of those files had diarization
+  signals suggesting >1 speaker, providing context to judge which uncertain positives
+  are more credible without restricting the evaluation to a filtered subset. Recall
+  MUST be reported separately for each signal — ECAPA-TDNN cosine, SPARC cosine,
+  OR-combined embedding, diarization multi-speaker flag, and Evans model prediction
+  — so readers can assess each signal's individual contribution. A documented caveat
+  MUST state that exclusion-list membership does not confirm unconsented-speaker
+  presence. No real-data validation section is produced for
+  adults; the report MUST explicitly note that adult threshold calibration is
+  synthetic-only. The peds real-data section is conditional on an optional
+  `--exclusion-list` parameter being supplied to the CLI command; the report is
+  valid and complete without it (synthetic evaluation only).
 
 - **FR-010**: Profile construction MUST only use recordings that have already passed
   the basic audio quality hard gates (Stage 1 of the existing QA pipeline); hard-
   gate-failed recordings are excluded from profile input automatically.
 
-- **FR-011**: The system MUST support generation of a synthetic evaluation set by
-  mixing audio segments from two different enrolled participants at configurable
-  intruder duration and SNR, producing ground-truth labels (positive = intruder
-  mixed in, negative = solo recording). This evaluation set is used to compute the
-  operating characteristic curve (false negative rate vs. review-queue fraction) for
-  both ECAPA-TDNN and SPARC embeddings independently and combined.
+- **FR-011**: The system MUST support generation of synthetic evaluation sets by
+  mixing audio segments from two participants at configurable intruder duration, SNR,
+  and placement position, producing ground-truth labels (positive = intruder mixed
+  in, negative = solo recording). Three intruder scenarios MUST be supported, each
+  producing its own operating characteristic curve (FNR vs. review-queue fraction)
+  for ECAPA-TDNN, SPARC, and OR-combined:
+  - **adult→peds** *(primary clinical scenario)*: adult intruder in a child
+    recording; target profiles are peds, intruder pool is adult. This is the
+    primary scenario driving threshold selection.
+  - **peds→peds**: child intruder in a child recording; both target and intruder
+    drawn from the peds cohort.
+  - **adult→adult**: adult intruder in an adult recording; both drawn from the
+    adult cohort. Serves as a sanity-check baseline.
+  The adult→peds scenario requires a separate adult BIDS directory supplied via
+  an optional `--intruder-bids-dir` parameter; peds→peds and adult→adult use
+  same-cohort participants. SC-002 is evaluated on the adult→peds scenario as
+  the primary threshold-calibration criterion.
 
 - **FR-012**: All sub-signals within the unconsented-speaker check — diarization
   signals (num_speakers, primary_ratio, extra_count), Evans model output,
@@ -238,7 +265,13 @@ sharply.
 
 - **EmbeddingReliabilityReport**: speech fraction bin boundaries, per-bin mean
   similarity accuracy, per-bin false positive rate, recommended low-confidence
-  threshold, child vs. adult accuracy breakdown.
+  threshold, child vs. adult accuracy breakdown. Contains: (a) synthetic evaluation
+  section with operating curves for all three intruder scenarios (adult→peds
+  primary, peds→peds, adult→adult), recommended thresholds derived from adult→peds;
+  (b) optional peds real-data validation section (when `--exclusion-list` supplied)
+  with per-signal recall on uncertain positives and asymmetric-ground-truth caveat.
+  Adult cohort has no real-data validation section; synthetic-only with explicit
+  note.
 
 ## Success Criteria *(mandatory)*
 
@@ -250,7 +283,16 @@ sharply.
 
 - **SC-002**: At the selected operating threshold, the false negative rate
   (recordings with a confirmed second speaker that pass through undetected) is ≤5%
-  on the labelled evaluation set, across both ECAPA-TDNN and SPARC embeddings.
+  on the **synthetic** evaluation set (FR-011), across both ECAPA-TDNN and SPARC
+  embeddings. This is the primary calibration criterion. The research report (US3)
+  MUST also include a secondary real-data section comparing model predictions
+  against the peds release exclusion list, with explicit documentation that
+  "removed from release" is an uncertain positive (removal reason may or may not
+  be an unconsented speaker); this section can report recall on uncertain positives
+  but MUST NOT claim precision or FPR metrics, as true negatives cannot be
+  confirmed from the exclusion list alone. No real-data validation section is
+  produced for adult recordings, as no ground truth exists in either direction for
+  that cohort.
 
 - **SC-003**: Recordings with active speech fraction <15% are never auto-classified
   as fail due to embedding mismatch alone; they receive needs_review with
@@ -342,6 +384,47 @@ sharply.
   the recording. The reviewer may decide after review that a recording flagged
   `needs_review` for unconsented speakers had no second speaker, but they still need
   PII and compliance results for that recording.
+
+### Session 2026-05-07
+
+- Q: Should FR-011 explicitly enumerate the three intruder scenarios (peds→peds,
+  adult→peds, adult→adult)?
+  → A: Yes, enumerate all three (Option B). adult→peds is the primary clinical
+  scenario and drives threshold selection in SC-002. peds→peds and adult→adult
+  are supporting analyses. Each produces its own operating curve. adult→peds
+  requires `--intruder-bids-dir`; the other two use same-cohort participants.
+
+- Q: Should the peds exclusion list be an optional CLI parameter to
+  `embedding-reliability-report`, or kept in a separate script?
+  → A: Optional parameter (Option C). Add `--exclusion-list` to the command; when
+  supplied the real-data section is generated automatically. The report is still
+  valid and complete without it (synthetic-only). This keeps the two analyses
+  reproducible from one command while not requiring the exclusion list to be
+  available.
+
+- Q: In the real-data section, what counts as a "detection" for recall on uncertain
+  positives?
+  → A: Per-signal breakdown (Option C). Report recall separately for each signal:
+  ECAPA-TDNN cosine, SPARC cosine, OR-combined embedding, diarization multi-speaker
+  flag, and Evans model prediction. This is a diagnostic section; showing individual
+  contributions is more informative than collapsing to a single detection decision.
+
+- Q: For the peds real-data section, should the exclusion list be filtered to
+  plausible speaker-related removals, or treated as a single uncertain-positive pool?
+  → A: Unfiltered pool (Option B). Use the entire exclusion list as uncertain
+  positives. Annotate what fraction had diarization signals suggesting >1 speaker
+  as a contextual note so readers can assess credibility, but do not filter — the
+  full pool gives the broadest recall estimate. Only recall on uncertain positives
+  may be reported; precision and FPR claims are not valid.
+
+- Q: Should SC-002 be scoped to synthetic evaluation only, with a secondary real-data
+  section using the peds exclusion list as uncertain positives?
+  → A: Yes (Option B). SC-002 is measured exclusively on synthetic mixtures (the only
+  rigorous ground truth). The report includes a secondary real-data section for peds
+  using the exclusion list as uncertain positives, with explicit caveats that
+  "removed ≠ confirmed unconsented speaker" — only recall on uncertain positives may
+  be reported, never precision or FPR. No real-data validation is produced for
+  adults; adult calibration is synthetic-only with that fact documented in the report.
 
 ## Assumptions
 

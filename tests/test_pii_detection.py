@@ -69,7 +69,7 @@ class TestPiiEntityDetection:
         with patch.object(
             pii_detection, "_transcribe_audio", return_value=(_TRANSCRIPT_WITH_PII, 0.90)
         ), patch.object(
-            pii_detection, "_detect_pii_entities", return_value=_PII_ENTITIES
+            pii_detection, "_detect_pii_entities", return_value=(_PII_ENTITIES, "gliner-pii")
         ):
             result = check_pii_disclosure(record, config)
 
@@ -82,7 +82,7 @@ class TestPiiEntityDetection:
         with patch.object(
             pii_detection, "_transcribe_audio", return_value=(_TRANSCRIPT_WITH_PII, 0.90)
         ), patch.object(
-            pii_detection, "_detect_pii_entities", return_value=_PII_ENTITIES
+            pii_detection, "_detect_pii_entities", return_value=(_PII_ENTITIES, "gliner-pii")
         ):
             result = check_pii_disclosure(record, config)
 
@@ -96,7 +96,7 @@ class TestPiiEntityDetection:
         with patch.object(
             pii_detection, "_transcribe_audio", return_value=(_TRANSCRIPT_WITH_PII, 0.90)
         ), patch.object(
-            pii_detection, "_detect_pii_entities", return_value=_PII_ENTITIES
+            pii_detection, "_detect_pii_entities", return_value=(_PII_ENTITIES, "gliner-pii")
         ):
             result = check_pii_disclosure(record, config)
 
@@ -112,7 +112,7 @@ class TestPiiEntityDetection:
         with patch.object(
             pii_detection, "_transcribe_audio", return_value=(_TRANSCRIPT_WITH_PII, 0.90)
         ), patch.object(
-            pii_detection, "_detect_pii_entities", return_value=_PII_ENTITIES
+            pii_detection, "_detect_pii_entities", return_value=(_PII_ENTITIES, "gliner-pii")
         ):
             result = check_pii_disclosure(record, config)
 
@@ -128,7 +128,7 @@ class TestPiiEntityDetection:
         with patch.object(
             pii_detection, "_transcribe_audio", return_value=(_TRANSCRIPT_CLEAN, 0.95)
         ), patch.object(
-            pii_detection, "_detect_pii_entities", return_value=[]
+            pii_detection, "_detect_pii_entities", return_value=([], "gliner-pii")
         ):
             result = check_pii_disclosure(record, config)
 
@@ -150,7 +150,7 @@ class TestTranscriptConfidence:
         with patch.object(
             pii_detection, "_transcribe_audio", return_value=(_TRANSCRIPT_CLEAN, 0.50)
         ), patch.object(
-            pii_detection, "_detect_pii_entities", return_value=[]
+            pii_detection, "_detect_pii_entities", return_value=([], "gliner-pii")
         ):
             result = check_pii_disclosure(record, config)
 
@@ -163,7 +163,7 @@ class TestTranscriptConfidence:
         with patch.object(
             pii_detection, "_transcribe_audio", return_value=(_TRANSCRIPT_CLEAN, 0.95)
         ), patch.object(
-            pii_detection, "_detect_pii_entities", return_value=[]
+            pii_detection, "_detect_pii_entities", return_value=([], "gliner-pii")
         ):
             result = check_pii_disclosure(record, config)
 
@@ -179,7 +179,7 @@ class TestTranscriptConfidence:
         with patch.object(
             pii_detection, "_transcribe_audio", return_value=(_TRANSCRIPT_CLEAN, 0.88)
         ), patch.object(
-            pii_detection, "_detect_pii_entities", return_value=[]
+            pii_detection, "_detect_pii_entities", return_value=([], "gliner-pii")
         ):
             result = check_pii_disclosure(record, config)
 
@@ -200,7 +200,7 @@ class TestSidecarVsTsvBoundary:
         with patch.object(
             pii_detection, "_transcribe_audio", return_value=(_TRANSCRIPT_CLEAN, 0.90)
         ), patch.object(
-            pii_detection, "_detect_pii_entities", return_value=[]
+            pii_detection, "_detect_pii_entities", return_value=([], "gliner-pii")
         ):
             result = check_pii_disclosure(record, config)
 
@@ -215,7 +215,7 @@ class TestSidecarVsTsvBoundary:
         with patch.object(
             pii_detection, "_transcribe_audio", return_value=(_TRANSCRIPT_WITH_PII, 0.90)
         ), patch.object(
-            pii_detection, "_detect_pii_entities", return_value=_PII_ENTITIES
+            pii_detection, "_detect_pii_entities", return_value=(_PII_ENTITIES, "gliner-pii")
         ):
             result = check_pii_disclosure(record, config)
 
@@ -232,9 +232,11 @@ class TestSidecarVsTsvBoundary:
         with patch.object(
             pii_detection, "_transcribe_audio", return_value=(_TRANSCRIPT_CLEAN, 0.90)
         ), patch.object(
-            pii_detection, "_detect_pii_entities", return_value=[]
+            pii_detection, "_detect_pii_entities", return_value=([], "gliner-pii")
         ):
             result = check_pii_disclosure(record, config)
 
         assert "model_used" in result.detail
-        assert result.detail["model_used"] in ("gliner-pii", "presidio")
+        assert result.detail["model_used"] in (
+            "gliner-pii", "presidio", "none_needed", "none_available"
+        )

@@ -205,27 +205,66 @@ validate and update these provisional values.
 
 ---
 
-## Decision 7: Ground truth evaluation via synthetic mixtures
+## Decision 7: Ground truth evaluation — synthetic primary, real-data secondary
 
-**Decision**: Compute operating characteristics (FN rate vs. review-queue fraction)
-using synthetic mixtures of real enrolled participants from the B2AI dataset.
+### 7a. Synthetic mixtures (primary — threshold calibration)
+
+**Decision**: The primary operating-characteristic evaluation uses synthetic
+mixtures of real enrolled participants. SC-002 (≤5% FNR) is measured exclusively
+on this synthetic set.
 
 **Rationale**:
-- The B2AI dataset has no manual annotations confirming presence/absence of
-  unconsented speakers
-- Diarization output is unsuitable as ground truth (it is one of the signals the
-  check itself uses)
-- Synthetic mixtures: take known-clean solo recordings from participant A, mix in
-  audio from a different enrolled participant B at controlled duration ratio
-  (e.g., intruder speaks 10%, 20%, 40% of the recording) and SNR
-- Mixture label = positive (unconsented speaker present); unmixed = negative
-- Allows full ROC / operating characteristic curves per embedding and for OR
-  combination
-- Uses real B2AI acoustic characteristics; no external speaker data required
+- Synthetic mixtures provide clean, controlled ground truth: mixture label = positive
+  (intruder present); unmixed solo = negative (no ambiguity).
+- Allows full FNR/FPR/operating-curve computation per embedding and for OR combination.
+- Uses real B2AI acoustic characteristics; no external speaker data required.
 
-**Implementation**: Mixing is an offline preprocessing step run before evaluation,
-not part of the real-time QA pipeline. `qa-run --eval-mode` or the
-`embedding-reliability-report` command handles it.
+**Three intruder scenarios** (each run separately, each produces its own curves):
+
+| Scenario | Target cohort | Intruder pool | CLI | Clinical priority |
+|---|---|---|---|---|
+| adult→peds | peds profiles + peds BIDS | adult BIDS (`--intruder-bids-dir`) | Required | **Primary** — adult intruder in child recording is the target threat model |
+| peds→peds | peds profiles + peds BIDS | peds BIDS (same dir) | Default | Secondary — tests whether two different children are separable |
+| adult→adult | adult profiles + adult BIDS | adult BIDS (same dir) | Default | Baseline — sanity check against well-studied adult verification |
+
+SC-002 threshold selection uses the **adult→peds** curve. The other two scenarios
+are reported for context; their recommended thresholds are informational.
+
+**Implementation**: Handled by `embedding-reliability-report` command. Run three
+times with different `--bids-dir`, `--profiles-dir`, and optionally
+`--intruder-bids-dir` to produce the three scenario reports.
+
+### 7b. Real-data validation (secondary — peds only, asymmetric ground truth)
+
+**Decision**: When the peds release exclusion list is supplied via `--exclusion-list`,
+the report includes a secondary diagnostic section comparing model predictions against
+the exclusion list. This section is optional; the report is valid without it.
+
+**Ground truth asymmetry**:
+
+| Cohort | Not in exclusion list | In exclusion list |
+|---|---|---|
+| Peds | **Certain negative** — file was not removed from release | **Uncertain positive** — file was removed, but reason may not be unconsented speakers |
+| Adult | No ground truth in either direction | N/A — no exclusion list available |
+
+**What can be reported**:
+- ✅ Recall on uncertain positives (per signal: ECAPA, SPARC, OR-combined, diarization, Evans)
+- ✅ Fraction of uncertain positives that also have diarization signals suggesting >1 speaker (contextual credibility annotation)
+- ❌ Precision — cannot be computed (true negatives are not confirmed; adult data has no ground truth)
+- ❌ FPR — same reason
+
+**Caveat MUST appear in the report**: "Inclusion in the release exclusion list does
+not confirm unconsented-speaker presence; removal reason may be unrelated to speaker
+identity. Recall values reflect detection rate on uncertain positives only."
+
+**Adult cohort**: No real-data validation section is produced. Adult threshold
+calibration is synthetic-only. The report MUST note this explicitly.
+
+**Implementation**: `--exclusion-list` is an optional parameter to
+`embedding-reliability-report`. Logic is modelled on `compare_speaker_detection.py`
+(which already performs per-signal comparison against the exclusion list); that
+script's analysis is the reference implementation. Long-term, `compare_speaker_detection.py`
+may be retired once the report's real-data section reaches feature parity.
 
 ---
 
