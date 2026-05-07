@@ -733,6 +733,247 @@ def compute_operating_curves(
 
 
 # ---------------------------------------------------------------------------
+# Phase 5 Addendum: Real-data validation (peds exclusion list)
+# ---------------------------------------------------------------------------
+
+_REAL_DATA_CAVEAT = (
+    "Exclusion-list membership does not confirm unconsented-speaker presence. "
+    "Files were removed from the release for various reasons; not all removals "
+    "are attributable to a second speaker. Recall on this set is an upper-bound "
+    "estimate of signal sensitivity on uncertain positives only. "
+    "No precision or false-positive-rate metrics are reported."
+)
+
+
+def _load_evans_predictions(
+    predictions_csv: str,
+    train_annotations_csv: Optional[str] = None,
+) -> dict:
+    """Load per-file Evans model predictions keyed by file stem.
+
+    Returns a dict mapping stem → {evans_y_pred, evans_confidence,
+    evans_uncertainty, evans_split}.  ``evans_split`` is ``"test"`` for
+    stems absent from *train_annotations_csv*, ``"train"`` otherwise.
+    """
+    import csv as _csv
+
+    train_stems: set = set()
+    if train_annotations_csv:
+        with open(train_annotations_csv) as fh:
+            for row in _csv.DictReader(fh):
+                train_stems.add(Path(row["file_path"]).stem)
+
+    records: dict = {}
+    with open(predictions_csv) as fh:
+        for row in _csv.DictReader(fh):
+            stem = Path(row["file_path"]).stem
+            split = "train" if stem in train_stems else "test"
+            records[stem] = {
+                "evans_y_pred": int(row["y_pred"]),
+                "evans_confidence": float(row["confidence"]),
+                "evans_uncertainty": float(row["uncertainty"]),
+                "evans_split": split,
+            }
+    return records
+
+
+def _parse_stem(stem: str) -> tuple:
+    """Return ``(participant_id, session_id, task_name)`` from a BIDS file stem."""
+    pid = ses = task = ""
+    for part in stem.split("_"):
+        if part.startswith("sub-"):
+            pid = part[4:]
+        elif part.startswith("ses-"):
+            ses = part[4:]
+        elif part.startswith("task-"):
+            task = part[5:]
+    return pid, ses, task
+
+
+def compute_real_data_validation(
+    exclusion_list_path: str,
+    bids_dir: str,
+    profiles_dir: str,
+    ecapa_threshold: float,
+    sparc_threshold: float,
+    evans_predictions_csv: Optional[str] = None,
+    evans_train_annotations_csv: Optional[str] = None,
+) -> dict:
+    """Score uncertain positives from the peds release exclusion list.
+
+    For each `_features.pt` file whose stem appears in the exclusion list,
+    loads the participant's speaker profile, computes ECAPA-TDNN and SPARC
+    cosine similarities, applies thresholds, and reports per-signal recall.
+
+    Ground-truth interpretation: the exclusion list is treated as a pool of
+    *uncertain positives* — files removed from the release for any reason.
+    Recall on this set is an upper-bound sensitivity estimate only; precision
+    and FPR cannot be computed because true negatives are not confirmed.
+
+    Args:
+        exclusion_list_path: Path to a JSON file containing a list of file
+            stems (without extension) to treat as uncertain positives.
+        bids_dir: Root BIDS directory to scan for ``*_features.pt`` files.
+        profiles_dir: Directory of pre-built speaker profiles.
+        ecapa_threshold: ECAPA-TDNN cosine threshold below which a recording
+            is flagged (from the operating-curves recommended threshold).
+        sparc_threshold: SPARC cosine threshold below which a recording is
+            flagged.
+        evans_predictions_csv: Optional path to Evans model predictions CSV
+            (columns: file_path, y_pred, confidence, uncertainty).
+        evans_train_annotations_csv: Optional train-split annotation CSV
+            used to exclude train-contaminated Evans predictions.
+
+    Returns:
+        Dict with keys: ``num_uncertain_positives``,
+        ``num_with_diarization_multispeaker``, ``diarization_fraction``,
+        ``per_signal_recall`` (sub-keys: ecapa, sparc, or_combined,
+        diarization, evans — ``null`` when no Evans CSV supplied), ``caveat``.
+    """
+    from b2aiprep.prepare.speaker_profiles import load_speaker_profile
+
+    with open(exclusion_list_path) as fh:
+        exclusion_stems: set = set(json.load(fh))
+
+    profiles_path = Path(profiles_dir)
+    bids_path = Path(bids_dir)
+
+    evans_records: dict = {}
+    if evans_predictions_csv:
+        try:
+            evans_records = _load_evans_predictions(
+                evans_predictions_csv, evans_train_annotations_csv
+            )
+        except Exception as exc:
+            _logger.warning("Could not load Evans predictions: %s", exc)
+
+    feature_files = sorted(bids_path.rglob("*_features.pt"))
+
+    flags: dict = {
+        "ecapa": [], "sparc": [], "or_combined": [], "diarization": [], "evans": []
+    }
+    num_diarization_multi = 0
+    processed = 0
+
+    for pt_path in feature_files:
+        stem = pt_path.name.replace("_features.pt", "")
+        if stem not in exclusion_stems:
+            continue
+
+        pid, _ses, _task = _parse_stem(stem)
+        profile = load_speaker_profile(profiles_path, pid)
+        if profile is None or profile.profile_status != "ready":
+            continue
+
+        try:
+            feat = torch.load(str(pt_path), weights_only=False, map_location="cpu")
+        except Exception as exc:
+            _logger.debug("Cannot load %s: %s", pt_path.name, exc)
+            continue
+
+        processed += 1
+
+        # --- ECAPA cosine ---
+        ecapa_raw = feat.get("speaker_embedding")
+        ecapa_flag = False
+        if ecapa_raw is not None:
+            try:
+                ec = _l2_normalize(np.array(ecapa_raw, dtype=np.float64).ravel())
+                centroid = _l2_normalize(
+                    np.array(profile.ecapa_embedding_centroid, dtype=np.float64)
+                )
+                ecapa_cos = float(np.dot(ec, centroid))
+                ecapa_flag = ecapa_cos < ecapa_threshold
+            except Exception as exc:
+                _logger.debug("ECAPA scoring failed for %s: %s", stem, exc)
+        flags["ecapa"].append(int(ecapa_flag))
+
+        # --- SPARC cosine ---
+        sparc_raw = feat.get("sparc", {})
+        if hasattr(sparc_raw, "get"):
+            sparc_raw = sparc_raw.get("spk_emb")
+        else:
+            sparc_raw = None
+        sparc_flag = False
+        if sparc_raw is not None:
+            try:
+                sp = _l2_normalize(np.array(sparc_raw, dtype=np.float64).ravel())
+                centroid = _l2_normalize(
+                    np.array(profile.sparc_embedding_centroid, dtype=np.float64)
+                )
+                sparc_cos = float(np.dot(sp, centroid))
+                sparc_flag = sparc_cos < sparc_threshold
+            except Exception as exc:
+                _logger.debug("SPARC scoring failed for %s: %s", stem, exc)
+        flags["sparc"].append(int(sparc_flag))
+
+        flags["or_combined"].append(int(ecapa_flag or sparc_flag))
+
+        # --- Diarization ---
+        diarization_raw = feat.get("diarization", [])
+        speaker_durations: dict = {}
+        for seg in diarization_raw:
+            if hasattr(seg, "speaker"):
+                spk = str(seg.speaker)
+                start, end = float(seg.start), float(seg.end)
+            else:
+                spk = str(seg.get("speaker", "speaker_0"))
+                start, end = float(seg.get("start", 0.0)), float(seg.get("end", 0.0))
+            speaker_durations[spk] = speaker_durations.get(spk, 0.0) + max(0.0, end - start)
+        num_spk = len(speaker_durations)
+        diar_flag = num_spk > 1
+        if diar_flag:
+            num_diarization_multi += 1
+        flags["diarization"].append(int(diar_flag))
+
+        # --- Evans ---
+        ev = evans_records.get(stem)
+        if ev is not None:
+            flags["evans"].append(int(ev["evans_y_pred"]))
+        else:
+            flags["evans"].append(None)
+
+    n = processed
+    if n == 0:
+        _logger.warning(
+            "compute_real_data_validation: no exclusion-list stems matched feature files"
+            " with ready profiles in %s", bids_dir
+        )
+        return {
+            "num_uncertain_positives": 0,
+            "num_with_diarization_multispeaker": 0,
+            "diarization_fraction": None,
+            "per_signal_recall": {
+                "ecapa": None, "sparc": None, "or_combined": None,
+                "diarization": None, "evans": None,
+            },
+            "caveat": _REAL_DATA_CAVEAT,
+        }
+
+    def _recall(flag_list: list) -> Optional[float]:
+        non_null = [v for v in flag_list if v is not None]
+        if not non_null:
+            return None
+        return round(sum(non_null) / len(non_null), 6)
+
+    evans_recall = _recall(flags["evans"]) if any(v is not None for v in flags["evans"]) else None
+
+    return {
+        "num_uncertain_positives": n,
+        "num_with_diarization_multispeaker": num_diarization_multi,
+        "diarization_fraction": round(num_diarization_multi / n, 6),
+        "per_signal_recall": {
+            "ecapa": _recall(flags["ecapa"]),
+            "sparc": _recall(flags["sparc"]),
+            "or_combined": _recall(flags["or_combined"]),
+            "diarization": _recall(flags["diarization"]),
+            "evans": evans_recall,
+        },
+        "caveat": _REAL_DATA_CAVEAT,
+    }
+
+
+# ---------------------------------------------------------------------------
 # T017: Report writer
 # ---------------------------------------------------------------------------
 
@@ -804,6 +1045,9 @@ def _render_markdown_report(report: dict) -> str:
         f"**Recordings**: {report.get('num_recordings', 0)} "
         f"({report.get('num_synthetic_mixtures', 0)} synthetic mixtures)",
         "",
+        "> **Adult cohort**: No real-data validation section. "
+        "Threshold calibration for adults is synthetic-only.",
+        "",
         "---",
         "",
         "## Recommended Thresholds (≤ 5% FNR)",
@@ -862,11 +1106,44 @@ def _render_markdown_report(report: dict) -> str:
             rec_ec = stats.get("recommended_ecapa_threshold")
             rec_sp = stats.get("recommended_sparc_threshold")
             n_pos = stats.get("num_positive", 0)
+            label = "adult→peds *(primary)*" if itype == "adult" else itype
             lines.append(
-                f"| {itype} | {n_pos} "
+                f"| {label} | {n_pos} "
                 f"| `{rec_ec}` | {_fnr_at(ec_c, rec_ec)} "
                 f"| `{rec_sp}` | {_fnr_at(sp_c, rec_sp)} |"
             )
         lines.append("")
+
+    rdv = report.get("real_data_validation")
+    if rdv is not None:
+        n_up = rdv.get("num_uncertain_positives", 0)
+        n_dm = rdv.get("num_with_diarization_multispeaker", 0)
+        diar_frac = rdv.get("diarization_fraction")
+        psr = rdv.get("per_signal_recall", {})
+        caveat = rdv.get("caveat", "")
+
+        def _pct(v):
+            return f"{v:.1%}" if v is not None else "—"
+
+        lines += [
+            "---",
+            "",
+            "## Real-Data Validation (Peds Only)",
+            "",
+            f"**Uncertain positives evaluated**: {n_up}  ",
+            f"**With diarization multi-speaker signal**: {n_dm} "
+            f"({_pct(diar_frac)} of uncertain positives)  ",
+            "",
+            "| Signal | Recall on uncertain positives |",
+            "|--------|------------------------------|",
+            f"| ECAPA-TDNN cosine | {_pct(psr.get('ecapa'))} |",
+            f"| SPARC cosine | {_pct(psr.get('sparc'))} |",
+            f"| OR-combined | {_pct(psr.get('or_combined'))} |",
+            f"| Diarization (>1 speaker) | {_pct(psr.get('diarization'))} |",
+            f"| Evans model | {_pct(psr.get('evans'))} |",
+            "",
+            f"> **Caveat**: {caveat}",
+            "",
+        ]
 
     return "\n".join(lines)

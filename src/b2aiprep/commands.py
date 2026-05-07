@@ -66,6 +66,7 @@ from b2aiprep.prepare.embedding_reliability import (
     generate_synthetic_mixtures,
     extract_embeddings_for_mixtures,
     compute_operating_curves,
+    compute_real_data_validation,
     write_reliability_report,
 )
 from b2aiprep.prepare.pii_detection import check_pii_disclosure
@@ -1933,6 +1934,33 @@ def build_speaker_profiles_cmd(
     ),
 )
 @click.option(
+    "--exclusion-list", "exclusion_list",
+    default=None, type=click.Path(exists=True),
+    help=(
+        "Path to a JSON file containing a list of file stems to treat as uncertain "
+        "positives (e.g. peds release exclusion list). When supplied, a real-data "
+        "validation section is appended to the report with per-signal recall on those "
+        "stems. The report is valid and complete without this option."
+    ),
+)
+@click.option(
+    "--evans-predictions", "evans_predictions",
+    default=None, type=click.Path(exists=True),
+    help=(
+        "Path to Evans model predictions CSV "
+        "(columns: file_path, y_pred, confidence, uncertainty). "
+        "Only used when --exclusion-list is also provided."
+    ),
+)
+@click.option(
+    "--evans-train-annotations", "evans_train_annotations",
+    default=None, type=click.Path(exists=True),
+    help=(
+        "Train-split annotation CSV used to flag train-contaminated Evans predictions. "
+        "Only used when --evans-predictions is also provided."
+    ),
+)
+@click.option(
     "--pipeline-config", "config_path",
     default=None, type=click.Path(exists=True),
     help="Path to pipeline config JSON. Uses built-in defaults if omitted.",
@@ -1954,6 +1982,9 @@ def embedding_reliability_report_cmd(
     max_fnr_target,
     intruder_bids_dir,
     intruder_positions,
+    exclusion_list,
+    evans_predictions,
+    evans_train_annotations,
     config_path,
     log_level,
 ):
@@ -2015,6 +2046,22 @@ def embedding_reliability_report_cmd(
         speech_fraction_bins=bins,
     )
     report["dataset_bids_dir"] = str(bids_dir)
+
+    if exclusion_list:
+        click.echo("Computing real-data validation (peds exclusion list) …")
+        report["real_data_validation"] = compute_real_data_validation(
+            exclusion_list_path=exclusion_list,
+            bids_dir=bids_dir,
+            profiles_dir=profiles_dir,
+            ecapa_threshold=report["recommended_ecapa_threshold"],
+            sparc_threshold=report["recommended_sparc_threshold"],
+            evans_predictions_csv=evans_predictions,
+            evans_train_annotations_csv=evans_train_annotations,
+        )
+        n = report["real_data_validation"]["num_uncertain_positives"]
+        click.echo(f"  Real-data validation: {n} uncertain positives scored.")
+    else:
+        report["real_data_validation"] = None
 
     write_reliability_report(report, out_dir, output_format=output_format)
 

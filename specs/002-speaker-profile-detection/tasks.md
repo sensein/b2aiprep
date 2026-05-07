@@ -103,11 +103,31 @@
 
 ---
 
+## Phase 5 Addendum: User Story 3 — Real-Data Validation & Rendering (Clarification 2026-05-07)
+
+**Goal**: Implement the optional peds real-data validation section described in FR-009/SC-002 (added via spec clarification). When `--exclusion-list` is supplied, score uncertain positives from the peds release exclusion list against their speaker profiles and report per-signal recall (ECAPA, SPARC, OR-combined, diarization, Evans). Also label the adult→peds scenario as primary in the intruder-type breakdown rendering.
+
+**Independent Test**: Run `embedding-reliability-report BIDS_DIR PROFILES_DIR --exclusion-list EXCL.json` and verify `embedding_reliability_report.json` contains a non-null `real_data_validation` key with fields `num_uncertain_positives`, `num_with_diarization_multispeaker`, `diarization_fraction`, `per_signal_recall` (sub-keys: `ecapa`, `sparc`, `or_combined`, `diarization`, `evans`), and `caveat`. Run without `--exclusion-list` and verify `real_data_validation` is `null` and the report is otherwise complete.
+
+### Implementation for Phase 5 Addendum
+
+- [x] T023 [US3] Implement `compute_real_data_validation(exclusion_list_path, bids_dir, profiles_dir, ecapa_threshold, sparc_threshold, evans_predictions_csv=None, evans_train_annotations_csv=None) -> dict` in `src/b2aiprep/prepare/embedding_reliability.py`: (1) load exclusion list JSON → set of file stems (uncertain positives); (2) scan `bids_dir` for all `_features.pt` files; (3) for each `.pt` whose stem is in the exclusion set, load `speaker_embedding`, `sparc["spk_emb"]`, `diarization`; (4) load participant's `SpeakerProfile` via `load_speaker_profile()`; skip if profile missing or not ready; (5) L2-normalise and compute `ecapa_cosine` vs. profile centroid, `sparc_cosine` vs. profile centroid; apply thresholds → `ecapa_flag`, `sparc_flag`, `or_flag`; (6) parse diarization → `diarization_flag = (num_speakers > 1)`; (7) optionally join Evans predictions by stem using `_load_evans_predictions()` ported from `external_scripts/compare_speaker_detection.py`; (8) compute `per_signal_recall = {signal: n_flagged / max(num_uncertain_positives, 1)}`; (9) return `{num_uncertain_positives, num_with_diarization_multispeaker, diarization_fraction, per_signal_recall: {ecapa, sparc, or_combined, diarization, evans}, caveat}` where `per_signal_recall["evans"]` is `null` (not omitted) when `--evans-predictions` is not supplied, and `caveat` is a fixed string noting that exclusion-list membership does not confirm unconsented-speaker presence — depends on T004, T016
+
+- [x] T024 [US3] Add `--exclusion-list`, `--evans-predictions`, `--evans-train-annotations` optional CLI parameters to `embedding-reliability-report` command in `src/b2aiprep/commands.py`: when `--exclusion-list` is provided, call `compute_real_data_validation()` with the resolved thresholds from the operating-curves report, then merge the result into the report dict as `real_data_validation` before passing to `write_reliability_report()`; when not provided, set `report["real_data_validation"] = None`; all three params default to `None` — depends on T023
+
+- [x] T025 [P] [US3] Update `_render_markdown_report()` in `src/b2aiprep/prepare/embedding_reliability.py`: (a) in the Intruder-Type Breakdown table, label the `adult` row as `"adult→peds (primary)"` when an `adult` key exists in `intruder_type_breakdown`; (b) after the Intruder-Type Breakdown section, add a "Real-Data Validation (Peds Only)" Markdown section when `report["real_data_validation"]` is not null — render: num_uncertain_positives, num_with_diarization_multispeaker, diarization_fraction, a per-signal recall table (`ecapa`, `sparc`, `or_combined`, `diarization`, `evans`), and the caveat text; (c) always render in the report header a one-line note: "Adult cohort: no real-data validation section; threshold calibration is synthetic-only." — this note appears regardless of whether `real_data_validation` is present, since the peds section is always peds-only
+
+- [x] T026 [P] Update `external_scripts/embedding_reliability_report.sh`: add `EXCLUSION_LIST`, `EVANS_PREDICTIONS`, `EVANS_TRAIN_ANNOTATIONS` variables (empty by default) with inline comments documenting the three-scenario approach (adult→peds primary via `--intruder-bids-dir`, peds→peds same-cohort default, adult→adult separate run against adult BIDS); pass `--exclusion-list`, `--evans-predictions`, `--evans-train-annotations` flags conditionally when their variables are non-empty
+
+**Checkpoint**: `embedding-reliability-report --exclusion-list` produces `real_data_validation` section in JSON and Markdown; running without the flag still produces a valid complete report; adult→peds row labelled as primary in Intruder-Type Breakdown
+
+---
+
 ## Phase 6: Polish & Cross-Cutting Concerns
 
 - [x] T020 [P] Run full test suite: `pytest tests/test_speaker_profiles.py tests/test_unconsented_speakers_profile.py tests/test_embedding_reliability.py -v` and fix any remaining failures
 
-- [ ] T021 [P] End-to-end integration validation: follow `specs/002-speaker-profile-detection/quickstart.md` steps 1–3 on the peds BIDS dataset; verify profile JSONs contain both centroids; verify `qa_check_results.tsv` contains `ecapa_cosine_similarity` and `sparc_cosine_similarity` columns; spot-check 5 participant profiles for expected task exclusions
+- [ ] T021 [P] End-to-end integration validation: follow `specs/002-speaker-profile-detection/quickstart.md` steps 1–3 on the peds BIDS dataset; verify profile JSONs contain both centroids; verify `qa_check_results.tsv` contains `ecapa_cosine_similarity` and `sparc_cosine_similarity` columns; spot-check 5 participant profiles for expected task exclusions; verify `embedding-reliability-report` with and without `--exclusion-list` produces valid JSON with correct top-level keys
 
 - [x] T022 Update `specs/002-speaker-profile-detection/spec.md` status from `Draft` to `Complete (US1 implemented; US2 implemented; US3 implemented)` after all phases pass
 
@@ -122,6 +142,7 @@
 - **US1 (Phase 3)**: Depends on Phase 2
 - **US2 (Phase 4)**: Depends on Phase 2 + T004 (SpeakerProfile dataclass)
 - **US3 (Phase 5)**: Depends on US1 (profiles must exist); T004 and T010 provide shared helpers
+- **US3 Addendum (Phase 5 Addendum)**: Depends on Phase 5 (T016 operating curves) + T004 (profile loader)
 - **Polish (Phase 6)**: Depends on all desired stories complete
 
 ### Within Each Story
@@ -137,6 +158,11 @@
 
 - T013 (test stubs) [US3] can start any time
 - T014 → T015 → T016 → T017 → T018 are sequential within US3
+
+- T023 (real-data validation function) depends on T004 (profile loader) and T016 (to access threshold values)
+- T024 (CLI wiring) depends on T023
+- T025 (markdown rendering) is parallel to T024 — different code paths in the same function
+- T026 (shell script update) is parallel to T023/T024/T025 — different file
 
 ---
 

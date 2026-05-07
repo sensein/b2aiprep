@@ -301,6 +301,8 @@ sharply.
 - **SC-004**: Adding or removing any single recording from a participant's profile
   changes that participant's per-recording similarity scores by <0.05 on average
   (profile stability under leave-one-out perturbation).
+  *(Deferred — requires full-dataset run to validate; no implementation task in
+  current scope. Revisit when SLURM jobs for adult/peds profile builds are complete.)*
 
 - **SC-005**: The research report (US3) publishes the full operating characteristic
   curve (false negative rate vs. review-queue fraction) for each embedding

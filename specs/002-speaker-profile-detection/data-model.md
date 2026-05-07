@@ -97,7 +97,7 @@ calibration tool; (b) optional real-data validation for peds (when
 | `adult_subgroup_stats` | dict | Operating curves for adult participants |
 | `child_subgroup_stats` | dict | Operating curves for child participants (adult-intruder detection rate) |
 | `intruder_type_breakdown` | dict | Per-intruder-type operating curves and recommended thresholds; keys are intruder type labels (e.g., `"adult"`, `"peds"`) |
-| `real_data_validation` | dict \| null | Optional section; `null` when `--exclusion-list` not supplied. When present: `{num_uncertain_positives, num_with_diarization_multispeaker, diarization_fraction, per_signal_recall: {ecapa, sparc, or_combined, diarization, evans}, caveat}` |
+| `real_data_validation` | dict \| null | Optional section; `null` when `--exclusion-list` not supplied. When present: `{num_uncertain_positives, num_with_diarization_multispeaker, diarization_fraction, per_signal_recall: {ecapa, sparc, or_combined, diarization, evans (null when --evans-predictions not supplied)}, caveat}` |
 
 ---
 
