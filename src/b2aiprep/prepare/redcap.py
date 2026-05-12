@@ -243,10 +243,11 @@ def parse_audio(audio_list, dummy_audio_files=False):
         dummy_audio_files is an optional variable for testing
     """
     protocol_order = {
-        "ready_for_school": [],
-        "favorite_show_movie": [],
-        "favorite_food": [],
-        "outside_of_school": [],
+        # "ready_for_school": [],
+        # "favorite_show_movie": [],
+        # "favorite_food": [],
+        # "outside_of_school": [],
+        "conversation": [],
         "abcs": [],
         "123s": [],
         "naming_animals": [],
@@ -261,6 +262,15 @@ def parse_audio(audio_list, dummy_audio_files=False):
         "passage": [],
         "other": [],
     }
+    # redcap groups these tasks into the conversation moniker
+    conversation_tasks = {
+    "favorite_food",
+    "favorite_show_movie_game",
+    "outside_of_school",
+    "ready_for_school",
+    "choose_book",
+    "picture_and_doors"
+}
 
     for name in audio_list:
         found = False
@@ -269,6 +279,12 @@ def parse_audio(audio_list, dummy_audio_files=False):
                 protocol_order[order].append(name)
                 found = True
                 break
+        for convosation_task in conversation_tasks:
+            if convosation_task in name:
+                protocol_order["conversation"].append(name)
+                found = True
+                break
+ 
         if not found:
             protocol_order["other"].append(name)
 
@@ -292,10 +308,12 @@ def parse_audio(audio_list, dummy_audio_files=False):
             file_size = 0
         else:
             duration = get_wav_duration(file_path)
-            file_size = Path(file_path).stat().st_size
+            file_size = (Path(file_path).stat().st_size) / 1024
         file_name = file_path.split("/")[-1]
         recording_id = re.search(r"([a-f0-9\-]{36})\.", file_name).group(1)
         acoustic_task = re.search(r"^(.*?)(_\d+)", file_name).group(1)
+        if acoustic_task in conversation_tasks:
+            acoustic_task = "conversation"
         if acoustic_task not in acoustic_tasks:
 
             acoustic_tasks.add(acoustic_task)
