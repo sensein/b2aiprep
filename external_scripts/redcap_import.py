@@ -2,7 +2,7 @@ import pandas as pd
 import argparse
 import json
 import re
-
+import uuid
 
 def to_camel_case(text):
     if not isinstance(text, str):
@@ -204,15 +204,27 @@ def clean_up(df):
     csv_string = csv_string.replace("problemIs“asBadAsItCanBe”", "asBadAsItCanBe")
     return csv_string
 
+def updated_record_ids(df, load_uuid_map = None):
+    record_id_2_uuid_tracker = load_uuid_map or {}
+    def gen_uuid(id):
+        if id not in record_id_2_uuid_tracker:
+            record_id_2_uuid_tracker[id] = str(uuid.uuid4())
+        return record_id_2_uuid_tracker[id]
+
+    df["participant_study_id"] = df["record_id"]
+    df['record_id'] = df['record_id'].apply(gen_uuid)
+    return df, record_id_2_uuid_tracker
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="List .wav files and save to CSV.")
     parser.add_argument("csv_path", help="Path to the directory to csv files")
+    parser.add_argument("uuid_json_path", help="Path to the directory to where to store json for record_id to uuid remap")
     parser.add_argument("remove_fields_path", help="Path to json to remove un-needed fields")
     parser.add_argument("column_remap_path", help="Path to json remap column fields")
     parser.add_argument("instrument_mapping_path", help="insrument mapping path")
     parser.add_argument("transformer_path", help="instrument mapping path")
     parser.add_argument("exclude_columns", help="instrument mapping path")
+    parser.add_argument("--load_uuid_map", help="Path to existing record_id to uuid mapping JSON", default=None)
 
     args = parser.parse_args()
     modify_neckmass(args.csv_path)
@@ -229,6 +241,16 @@ if __name__ == "__main__":
         if col not in exclude_columns:
             df[col] = df[col].apply(lambda x: transform_cell(x, args.transformer_path))
 
+    record_id_2_uuid_tracker = None
+    if args.load_uuid_map:
+        with open(args.load_uuid_map, "r") as f:
+            record_id_2_uuid_tracker = json.load(f)
+
+
+    df, record_id_remap = updated_record_ids(df, record_id_2_uuid_tracker)
     csv_output = clean_up(df)
     with open(args.csv_path, "w", newline="") as f:
         f.write(csv_output)
+    
+    with open(args.uuid_json_path, "w") as f:
+        json.dump(record_id_remap, f, indent=4)

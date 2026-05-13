@@ -1,0 +1,2 @@
+#!/bin/bash
+python recording.py /home/evan/Documents/publish_deid/b2aiprep/external_scripts/may12-import/redcap-recording.csv /home/evan/Documents/publish_deid/b2aiprep/external_scripts/recordings_redcap
