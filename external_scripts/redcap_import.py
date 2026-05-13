@@ -218,12 +218,12 @@ def updated_record_ids(df, load_uuid_map = None):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="List .wav files and save to CSV.")
     parser.add_argument("csv_path", help="Path to the directory to csv files")
-    parser.add_argument("uuid_json_path", help="Path to the directory to where to store json for record_id to uuid remap")
+    parser.add_argument("uuid_json_path", help="Path to the JSON file where the record_id to uuid mapping will be stored")
     parser.add_argument("remove_fields_path", help="Path to json to remove un-needed fields")
     parser.add_argument("column_remap_path", help="Path to json remap column fields")
     parser.add_argument("instrument_mapping_path", help="insrument mapping path")
     parser.add_argument("transformer_path", help="instrument mapping path")
-    parser.add_argument("exclude_columns", help="instrument mapping path")
+    parser.add_argument("exclude_columns", help="Path to the JSON file containing the list of columns to exclude")
     parser.add_argument("--load_uuid_map", help="Path to existing record_id to uuid mapping JSON", default=None)
 
     args = parser.parse_args()

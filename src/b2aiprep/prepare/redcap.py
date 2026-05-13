@@ -279,8 +279,8 @@ def parse_audio(audio_list, dummy_audio_files=False):
                 protocol_order[order].append(name)
                 found = True
                 break
-        for convosation_task in conversation_tasks:
-            if convosation_task in name:
+        for conversation_task in conversation_tasks:
+            if conversation_task in name:
                 protocol_order["conversation"].append(name)
                 found = True
                 break
