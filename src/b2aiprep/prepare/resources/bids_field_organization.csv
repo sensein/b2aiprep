@@ -1,8 +1,4 @@
 schema_name_source,schema_name,column_name_source,column_name,group,description,delete,column_type
-,,,,,,YES,VARIABLE
-,,,,,,YES,VARIABLE
-,,,,,,YES,VARIABLE
-,,,,,,YES,VARIABLE
 acoustic_task_schema,acoustic_task,acoustic_task_cohort,acoustic_task_cohort,task,"Participant's cohort assignment for the acoustic task, recorded as a categorical label (e.g., ""Cohort A"", ""Cohort B"", ""pilot"").",NO,VARIABLE
 acoustic_task_schema,acoustic_task,acoustic_task_completed_at,acoustic_task_completed_at,task,"Date and time (ISO 8601, including timezone) recording when the participant completed the acoustic task.",YES,VARIABLE
 acoustic_task_schema,acoustic_task,acoustic_task_duration,acoustic_task_duration,task,"Total length of the acoustic task recording, measured in seconds.",NO,VARIABLE
