@@ -1,2 +1,0 @@
-#!/bin/bash
-python feas.py /home/evan/Documents/publish_deid/b2aiprep/external_scripts/may12-import/redcap-questionnaire.csv /home/evan/Documents/publish_deid/b2aiprep/external_scripts/questionnaires/consent_dates2.csv /home/evan/Documents/publish_deid/b2aiprep/external_scripts/questionnaires
