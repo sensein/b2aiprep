@@ -2,10 +2,7 @@ import uuid
 import pandas as pd
 import argparse
 def create_recording_redcap(recording_csv, output_csv):
-    # recording_csv = (
-    #     #"/home/evan/Documents/publish_deid/b2aiprep/external_scripts/recordings_redcap/recordings.csv"
-    #     "/home/evan/Documents/publish_deid/b2aiprep/external_scripts/may12-import/redcap-recording.csv"
-    # )
+
     df = pd.read_csv(recording_csv, dtype="str")
 
     l = []
@@ -28,7 +25,7 @@ def create_recording_redcap(recording_csv, output_csv):
         lambda x: str(uuid.UUID(x)) if pd.notna(x) else x
     )
 
-    df.to_csv(f"{output_csv}/recording-may13.csv", index=False)
+    df.to_csv(f"{output_csv}/recording.csv", index=False)
 
 
 if __name__ == "__main__":

@@ -85,7 +85,7 @@ def create_questionnaire_redcap(redcap_csv, consent_csv, output_path, uuid_map_p
 
     df.drop(columns=[c for c in columns_list if c in df.columns], axis=1, inplace=True)
 
-    df.to_csv(f"{output_path}/questionnaire-may13.csv", index=False)
+    df.to_csv(f"{output_path}/questionnaire.csv", index=False)
 
 
 if __name__ == "__main__":
