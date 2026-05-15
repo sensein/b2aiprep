@@ -11,6 +11,9 @@
             "items/peds_demographics_started_at",
             "items/peds_demographics_completed_at",
             "items/peds_demographics_duration",
+            "items/peds_demographics_origin",
+            "items/peds_demographics_via",
+            "items/peds_demographics_language",
             "items/peds_zipcode",
             "items/peds_country",
             "items/peds_gender_identity",
@@ -54,6 +57,24 @@
                 "isVis": false,
                 "valueRequired": false,
                 "variableName": "peds_demographics_duration"
+            },
+            {
+                "isAbout": "items/peds_demographics_origin",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "peds_demographics_origin"
+            },
+            {
+                "isAbout": "items/peds_demographics_via",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "peds_demographics_via"
+            },
+            {
+                "isAbout": "items/peds_demographics_language",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "peds_demographics_language"
             },
             {
                 "isAbout": "items/peds_zipcode",
@@ -166,6 +187,6 @@
         ],
         "shuffle": false
     },
-    "version": "4.5.0",
+    "version": "4.7.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }
