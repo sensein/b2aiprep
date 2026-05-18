@@ -23,6 +23,8 @@
             "items/enrollment_reason",
             "items/enrollment_institution",
             "items/researcher_email",
+            "items/participant_data_collection_origins",
+            "items/participant_data_collection_via",
             "items/api_updates_on_behalf_of"
         ],
         "addProperties": [
@@ -119,8 +121,20 @@
             {
                 "isAbout": "items/researcher_email",
                 "isVis": true,
-                "valueRequired": true,
+                "valueRequired": false,
                 "variableName": "researcher_email"
+            },
+            {
+                "isAbout": "items/participant_data_collection_origins",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "participant_data_collection_origins"
+            },
+            {
+                "isAbout": "items/participant_data_collection_via",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "participant_data_collection_via"
             },
             {
                 "isAbout": "items/api_updates_on_behalf_of",
@@ -131,6 +145,6 @@
         ],
         "shuffle": false
     },
-    "version": "4.5.0",
+    "version": "4.7.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }
