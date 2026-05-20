@@ -1507,15 +1507,17 @@ def redcap_stats(filename, num_sessions):
 @click.option("--id_column", type=str, default="record_id", show_default=True)
 @click.option("--num_participants_per_file", type=int, default=10, show_default=True)
 def create_subject_splits(input_file, output_dir, id_column, num_participants_per_file):
-    """Split unique participant IDs from a TSV into multiple subject-id list files.
+    """Split unique participant IDs into multiple subject-id list files.
 
-    Reads ``input_file`` (a TSV with one row per record), extracts unique values from
-    ``id_column``, and writes them in sorted order across ``subject_ids_<i>.txt`` files
-    under ``output_dir``, one ID per line, with at most ``num_participants_per_file`` IDs
-    per file.
+    Reads ``input_file`` (one row per record), extracts unique values from ``id_column``,
+    and writes them in sorted order across ``subject_ids_<i>.txt`` files under
+    ``output_dir``, one ID per line, with at most ``num_participants_per_file`` IDs per
+    file.
 
     Args:
-        input_file (path): Path to TSV file containing participant IDs.
+        input_file (path): Path to a file containing participant IDs. May be a
+            comma-separated ``.csv`` (e.g. a RedCap export) or a tab-separated file such
+            as ``participants.tsv``; the delimiter is selected from the file extension.
         output_dir (path): Path to output folder (created if it does not exist).
         id_column (str): Column in the input file representing IDs to split.
         num_participants_per_file (int): Maximum number of unique participant IDs per output file.
@@ -1526,7 +1528,8 @@ def create_subject_splits(input_file, output_dir, id_column, num_participants_pe
     if num_participants_per_file < 1:
         raise click.UsageError("--num_participants_per_file must be >= 1.")
 
-    df = pd.read_csv(input_file, sep="\t")
+    sep = "," if str(input_file).lower().endswith(".csv") else "\t"
+    df = pd.read_csv(input_file, sep=sep)
     if id_column not in df.columns:
         raise click.UsageError(
             f"Column '{id_column}' not found in {input_file}. "

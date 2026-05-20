@@ -1013,6 +1013,16 @@ class TestCreateSubjectSplits:
         chunks = _read_split_files(output_dir)
         assert chunks == [["A", "B", "C"]]
 
+    def test_accepts_csv_input(self, tmp_path):
+        # RedCap exports are comma-separated; the command should dispatch on extension.
+        input_file = tmp_path / "redcap.csv"
+        pd.DataFrame({"record_id": ["A", "B", "C"]}).to_csv(input_file, index=False)
+        output_dir = tmp_path / "out"
+
+        result = CliRunner().invoke(create_subject_splits, [str(input_file), str(output_dir)])
+        assert result.exit_code == 0, result.output
+        assert _read_split_files(output_dir) == [["A", "B", "C"]]
+
     def test_custom_id_column(self, tmp_path):
         input_file = tmp_path / "ids.tsv"
         _write_ids_tsv(input_file, ["P1", "P2", "P3"], id_column="participant_id")
