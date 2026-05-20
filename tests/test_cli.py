@@ -889,20 +889,20 @@ def test_reproschema_to_redcap_cli():
 
 
 
-def test_id_remap_cli():
-    """Test the 'b2aiprep-cli id-remap command using subprocess."""
+def test_generate_id_lookup_table_cli():
+    """Test the 'b2aiprep-cli generate-id-lookup-table' command using subprocess."""
     with tempfile.TemporaryDirectory() as temp_dir:
         ids = {"participant_id": ["P001", "P002"]}
         id_df = pd.DataFrame(ids)
         id_dir = Path(temp_dir) / "ids.tsv"
-        
+
         id_df.to_csv(id_dir, sep='\t', index=False)
 
         output_dir = Path(temp_dir) / "output"
         output_dir.mkdir(parents=True, exist_ok=True)
         command = [
             "b2aiprep-cli",
-            "id-remap",
+            "generate-id-lookup-table",
             id_dir,
             output_dir
         ]
@@ -912,9 +912,9 @@ def test_id_remap_cli():
         assert result.returncode == 0, f"CLI command failed: {result.stderr}"
         assert output_dir.exists(), "Output directory was not created"
         assert output_file.exists(), "Output file was not created"
-        
-def test_id_remap_existing_remap_cli():
-    """Test the 'b2aiprep-cli id-remap command using subprocess."""
+
+def test_generate_id_lookup_table_existing_remap_cli():
+    """Test the 'b2aiprep-cli generate-id-lookup-table' command with --load_lookup."""
     with tempfile.TemporaryDirectory() as temp_dir:
         ids = {"participant_id": ["P001", "P002"]}
         id_df = pd.DataFrame(ids)
@@ -929,7 +929,7 @@ def test_id_remap_existing_remap_cli():
         output_dir.mkdir(parents=True, exist_ok=True)
         command = [
             "b2aiprep-cli",
-            "id-remap",
+            "generate-id-lookup-table",
             id_dir,
             output_dir,
             "--load_lookup",

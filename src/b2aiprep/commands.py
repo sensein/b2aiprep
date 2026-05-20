@@ -1551,11 +1551,11 @@ def create_subject_splits(input_file, output_dir, id_column, num_participants_pe
 @click.argument("input_file", type=click.Path(exists=True))
 @click.argument("output_dir", type=click.Path())
 @click.option("--load_lookup", type=click.Path(exists=True), default=None, show_default=True)
-def id_remap(input_file, output_dir, load_lookup):
+def generate_id_lookup_table(input_file, output_dir, load_lookup):
     """Generates an id lookup table for dissemination.
 
     Args:
-        input_dir (path): Path to file with original ids
+        input_file (path): Path to file with original ids
         output_dir (path): Path to output folder
         load_lookup (path): Path to pre-existing id remap file
     """
