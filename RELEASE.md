@@ -122,6 +122,18 @@ sensitive information, referred to as deidentification. Deidentification require
 - `audio_tasks_to_include.json` (File containing list of audio tasks to include during deidentification)
 
 Create these files and place them in a folder, e.g. `deidentification_config` (the "config" folder).
+
+#### (Optional) Generate or extend `id_remapping.json`
+
+When preparing a new release, the participant list often contains IDs that aren't yet in the existing `id_remapping.json`. To bootstrap the file from scratch — or to add fresh pseudonyms for any new IDs while preserving the mappings already in use — run:
+
+```sh
+b2aiprep-cli generate-id-lookup-table <path/to/ids_file> <path/to/output/dir> \
+    --load_lookup <path/to/existing/id_remapping.json>
+```
+
+The input file may be the original RedCap export (`.csv`) from step 1 or the BIDS `participants.tsv` produced in step 2 — either works, as long as it has a `record_id` or `participant_id` column. The command writes `id_lookup_table.json` to the output directory; entries from `--load_lookup` are kept verbatim, and only new IDs get new pseudonyms. Drop the `--load_lookup` flag when generating the very first lookup table for a release. Rename the resulting file to `id_remapping.json` (or copy it) and place it in your deidentification config folder before continuing.
+
 After creating these files, you can run the deidentify dataset command:
 
 ```

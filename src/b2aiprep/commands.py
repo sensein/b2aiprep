@@ -1555,11 +1555,14 @@ def generate_id_lookup_table(input_file, output_dir, load_lookup):
     """Generates an id lookup table for dissemination.
 
     Args:
-        input_file (path): Path to file with original ids
+        input_file (path): Path to file with original ids. May be a comma-separated ``.csv``
+            (e.g. a RedCap export) or a tab-separated file such as ``participants.tsv``;
+            the delimiter is selected from the file extension.
         output_dir (path): Path to output folder
         load_lookup (path): Path to pre-existing id remap file
     """
-    df = pd.read_csv(input_file, sep='\t')
+    sep = "," if str(input_file).lower().endswith(".csv") else "\t"
+    df = pd.read_csv(input_file, sep=sep)
     
     id_column = ""
     if "record_id" in df.columns:
