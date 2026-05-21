@@ -98,27 +98,32 @@ def test_get_commit_sha_reads_file(tmp_path):
     assert get_commit_sha(tmp_path) == sha
 
 
-def test_get_commit_sha_falls_back_to_git(tmp_path):
-    subprocess.run(["git", "-C", str(tmp_path), "init", "--quiet"], check=True)
-    subprocess.run(
-        ["git", "-C", str(tmp_path), "config", "user.email", "test@example.com"],
-        check=True,
-    )
-    subprocess.run(
-        ["git", "-C", str(tmp_path), "config", "user.name", "test"], check=True
-    )
-    subprocess.run(
-        ["git", "-C", str(tmp_path), "commit", "--quiet", "--allow-empty", "-m", "init"],
-        check=True,
-    )
-    expected = subprocess.run(
-        ["git", "-C", str(tmp_path), "rev-parse", "HEAD"],
-        capture_output=True, text=True, check=True,
-    ).stdout.strip()
-    assert get_commit_sha(tmp_path) == expected
+def test_get_commit_sha_falls_back_to_git(tmp_path, monkeypatch):
+    expected_sha = "a" * 40
+    captured = {}
+
+    def fake_run(cmd, capture_output, check, text):
+        captured["cmd"] = cmd
+        return subprocess.CompletedProcess(cmd, 0, stdout=expected_sha + "\n", stderr="")
+
+    monkeypatch.setattr("b2aiprep.prepare.utils.subprocess.run", fake_run)
+    assert get_commit_sha(tmp_path) == expected_sha
+    assert captured["cmd"] == ["git", "-C", str(tmp_path), "rev-parse", "HEAD"]
 
 
-def test_get_commit_sha_returns_empty_when_unrecoverable(tmp_path, caplog):
+@pytest.mark.parametrize(
+    "exc",
+    [
+        subprocess.CalledProcessError(128, ["git"]),
+        FileNotFoundError("git"),
+    ],
+    ids=["git_not_a_repo", "git_not_installed"],
+)
+def test_get_commit_sha_returns_empty_when_unrecoverable(tmp_path, monkeypatch, caplog, exc):
+    def fake_run(*args, **kwargs):
+        raise exc
+
+    monkeypatch.setattr("b2aiprep.prepare.utils.subprocess.run", fake_run)
     caplog.set_level(logging.WARNING, logger="b2aiprep.prepare.utils")
     assert get_commit_sha(tmp_path) == ""
     assert "Could not determine reproschema commit SHA" in caplog.text
