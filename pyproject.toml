@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=61.0", "versioneer[toml]"]
+requires = ["setuptools>=62.3.0", "versioneer[toml]"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -37,7 +37,8 @@ dependencies = [
 where = ["src"] # <-- this changed
 
 [tool.setuptools.package-data]
-"*" = ["*.*", ".gitkeep"] # <-- this changed
+"*" = ["*.*", ".gitkeep"]
+b2aiprep = ["redcap2rs/**/*"]
 
 [project.optional-dependencies]
 doc = [
