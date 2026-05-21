@@ -1,3 +1,15 @@
+# 3.3.2 (Thu May 21 2026)
+
+#### 🐛 Bug Fix
+
+- Fix pypi install errors [#310](https://github.com/sensein/b2aiprep/pull/310) ([@wilke0818](https://github.com/wilke0818))
+
+#### Authors: 1
+
+- Jordan Wilke ([@wilke0818](https://github.com/wilke0818))
+
+---
+
 # 3.3.1 (Thu May 21 2026)
 
 #### 🐛 Bug Fix
