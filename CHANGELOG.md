@@ -1,3 +1,15 @@
+# 3.3.1 (Thu May 21 2026)
+
+#### 🐛 Bug Fix
+
+- Include redcap2rs data files in built wheel [#309](https://github.com/sensein/b2aiprep/pull/309) ([@wilke0818](https://github.com/wilke0818))
+
+#### Authors: 1
+
+- Jordan Wilke ([@wilke0818](https://github.com/wilke0818))
+
+---
+
 # 3.3.0 (Thu May 21 2026)
 
 #### 🚀 Enhancement
