@@ -235,6 +235,8 @@ if __name__ == "__main__":
     with open(args.exclude_columns, "r") as f:
         exclude_columns = json.load(f)
         exclude_columns.append("redcap_repeat_instrument")
+        exclude_columns.append("recording_id")
+        exclude_columns.append("recording_filepath")
     df = pd.read_csv(args.csv_path, dtype=str)
     df = convert_date_columns(df)
     for col in df.columns:

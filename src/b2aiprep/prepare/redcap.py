@@ -310,7 +310,8 @@ def parse_audio(audio_list, dummy_audio_files=False):
             duration = get_wav_duration(file_path)
             file_size = (Path(file_path).stat().st_size) / 1024
         file_name = file_path.split("/")[-1]
-        recording_id = re.search(r"([a-f0-9\-]{36})\.", file_name).group(1)
+        #recording_id = re.search(r"([a-f0-9\-]{36})\.", file_name).group(1)
+        recording_id = file_name.replace(".wav", "")
         acoustic_task = re.search(r"^(.*?)(_\d+)", file_name).group(1)
         if acoustic_task in conversation_tasks:
             acoustic_task = "conversation"
@@ -352,6 +353,7 @@ def parse_audio(audio_list, dummy_audio_files=False):
             "recording_profile_version": "v1.0.0",
             "recording_input_gain": np.nan,
             "recording_microphone": "USB-C to 3.5mm Headphone Jack Adapter",
+            "recording_filepath" : f"/mounts/b2ai-api/Data/SickKids/{recording_id}.wav" # apparently we're hard coding this now...
         }
 
         acoustic_prev = acoustic_task

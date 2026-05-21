@@ -23,7 +23,7 @@ def create_questionnaire_redcap(redcap_csv, consent_csv, output_path, uuid_map_p
             continue
         consent_date = match.iloc[0]
 
-        age_match = df.loc[df["participant_study_id"] == original_id, "age"]
+        age_match = df.loc[df["participant_study_id"] == original_id, "age"].dropna()
         if age_match.empty:
             print(f"No age found for record_id {original_id}, skipping.")
             continue
@@ -85,7 +85,7 @@ def create_questionnaire_redcap(redcap_csv, consent_csv, output_path, uuid_map_p
 
     df.drop(columns=[c for c in columns_list if c in df.columns], axis=1, inplace=True)
 
-    df.to_csv(f"{output_path}/questionnaire.csv", index=False)
+    df.to_csv(f"{output_path}/questionnaire-final-may21.csv", index=False)
 
 
 if __name__ == "__main__":
