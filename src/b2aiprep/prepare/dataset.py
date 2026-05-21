@@ -654,7 +654,7 @@ class BIDSDataset:
         
         protocol_order = schema_json.get("ui", {}).get("order")
 
-        reproschema_folder: Path = reproschema_file.parents[1]
+        reproschema_folder: Path = reproschema_file.parents[1].resolve()
         commit_sha = get_commit_sha(reproschema_folder)
 
         activities = {}
