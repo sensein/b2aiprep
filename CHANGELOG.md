@@ -1,3 +1,27 @@
+# 3.3.0 (Thu May 21 2026)
+
+#### 🚀 Enhancement
+
+- Updates for internal releasing [#308](https://github.com/sensein/b2aiprep/pull/308) ([@wilke0818](https://github.com/wilke0818))
+
+#### 🐛 Bug Fix
+
+- Update files for redcap2rs-4.7.0-20260504133439 [#304](https://github.com/sensein/b2aiprep/pull/304) ([@github-actions[bot]](https://github.com/github-actions[bot]) [@wilke0818](https://github.com/wilke0818) [@b2ai-workflow-conenctor[bot]](https://github.com/b2ai-workflow-conenctor[bot]))
+- Update bids_field_organization.csv for bridge2ai-redcap v4.7.0 [#306](https://github.com/sensein/b2aiprep/pull/306) ([@wilke0818](https://github.com/wilke0818))
+- fix(audio-task-descriptions): correct ordering, content, and missing … [#305](https://github.com/sensein/b2aiprep/pull/305) ([@wilke0818](https://github.com/wilke0818))
+
+#### 📝 Documentation
+
+- Removed outdated release info and added sanitize to redcap2bids argum… [#260](https://github.com/sensein/b2aiprep/pull/260) ([@wilke0818](https://github.com/wilke0818))
+
+#### Authors: 3
+
+- [@b2ai-workflow-conenctor[bot]](https://github.com/b2ai-workflow-conenctor[bot])
+- [@github-actions[bot]](https://github.com/github-actions[bot])
+- Jordan Wilke ([@wilke0818](https://github.com/wilke0818))
+
+---
+
 # 3.2.0 (Fri Apr 17 2026)
 
 #### 🚀 Enhancement
