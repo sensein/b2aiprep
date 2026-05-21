@@ -37,7 +37,8 @@ dependencies = [
 where = ["src"] # <-- this changed
 
 [tool.setuptools.package-data]
-"*" = ["*.*", ".gitkeep"] # <-- this changed
+"*" = ["*.*", ".gitkeep"]
+b2aiprep = ["redcap2rs/**/*"]
 
 [project.optional-dependencies]
 doc = [
