@@ -1,5 +1,7 @@
 import json
+import logging
 import os
+import subprocess
 import tempfile
 from pathlib import Path
 import pandas as pd
@@ -7,6 +9,7 @@ import pytest
 
 from b2aiprep.prepare.utils import (
     copy_package_resource,
+    get_commit_sha,
     make_tsv_files,
     reformat_resources,
     remove_files_by_pattern,
@@ -87,6 +90,39 @@ def test_get_wav_duration():
     actual = get_wav_duration(b2ai_wav_path)
     expected  = 2.9257142857142857
     assert actual == expected
+
+
+def test_get_commit_sha_reads_file(tmp_path):
+    sha = "abcdef1234567890abcdef1234567890abcdef12"
+    (tmp_path / "commit_sha.txt").write_text(sha + "\n")
+    assert get_commit_sha(tmp_path) == sha
+
+
+def test_get_commit_sha_falls_back_to_git(tmp_path):
+    subprocess.run(["git", "-C", str(tmp_path), "init", "--quiet"], check=True)
+    subprocess.run(
+        ["git", "-C", str(tmp_path), "config", "user.email", "test@example.com"],
+        check=True,
+    )
+    subprocess.run(
+        ["git", "-C", str(tmp_path), "config", "user.name", "test"], check=True
+    )
+    subprocess.run(
+        ["git", "-C", str(tmp_path), "commit", "--quiet", "--allow-empty", "-m", "init"],
+        check=True,
+    )
+    expected = subprocess.run(
+        ["git", "-C", str(tmp_path), "rev-parse", "HEAD"],
+        capture_output=True, text=True, check=True,
+    ).stdout.strip()
+    assert get_commit_sha(tmp_path) == expected
+
+
+def test_get_commit_sha_returns_empty_when_unrecoverable(tmp_path, caplog):
+    caplog.set_level(logging.WARNING, logger="b2aiprep.prepare.utils")
+    assert get_commit_sha(tmp_path) == ""
+    assert "Could not determine reproschema commit SHA" in caplog.text
+
 
 if __name__ == "__main__":
     pytest.main()
