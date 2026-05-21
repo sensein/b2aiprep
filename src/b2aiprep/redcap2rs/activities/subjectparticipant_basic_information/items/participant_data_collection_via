@@ -1,0 +1,45 @@
+{
+    "id": "participant_data_collection_via",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@READONLY"
+        }
+    ],
+    "preamble": {
+        "en": "Data Collection Details"
+    },
+    "prefLabel": {
+        "en": "participant_data_collection_via"
+    },
+    "question": {
+        "en": "Data Collection via"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Data Collector"
+                },
+                "value": "data_collector"
+            },
+            {
+                "name": {
+                    "en": "Participant"
+                },
+                "value": "participant"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

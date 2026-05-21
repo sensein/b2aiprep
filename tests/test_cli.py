@@ -16,7 +16,7 @@ import shutil
 from unittest.mock import patch, MagicMock
 from click.testing import CliRunner
 
-from b2aiprep.commands import deidentify_bids_dataset
+from b2aiprep.commands import create_subject_splits, deidentify_bids_dataset
 from b2aiprep.prepare.dataset import BIDSDataset
 
 class TestDeidentifyCommand:
@@ -889,20 +889,20 @@ def test_reproschema_to_redcap_cli():
 
 
 
-def test_id_remap_cli():
-    """Test the 'b2aiprep-cli id-remap command using subprocess."""
+def test_generate_id_lookup_table_cli():
+    """Test the 'b2aiprep-cli generate-id-lookup-table' command using subprocess."""
     with tempfile.TemporaryDirectory() as temp_dir:
         ids = {"participant_id": ["P001", "P002"]}
         id_df = pd.DataFrame(ids)
         id_dir = Path(temp_dir) / "ids.tsv"
-        
+
         id_df.to_csv(id_dir, sep='\t', index=False)
 
         output_dir = Path(temp_dir) / "output"
         output_dir.mkdir(parents=True, exist_ok=True)
         command = [
             "b2aiprep-cli",
-            "id-remap",
+            "generate-id-lookup-table",
             id_dir,
             output_dir
         ]
@@ -912,9 +912,9 @@ def test_id_remap_cli():
         assert result.returncode == 0, f"CLI command failed: {result.stderr}"
         assert output_dir.exists(), "Output directory was not created"
         assert output_file.exists(), "Output file was not created"
-        
-def test_id_remap_existing_remap_cli():
-    """Test the 'b2aiprep-cli id-remap command using subprocess."""
+
+def test_generate_id_lookup_table_existing_remap_cli():
+    """Test the 'b2aiprep-cli generate-id-lookup-table' command with --load_lookup."""
     with tempfile.TemporaryDirectory() as temp_dir:
         ids = {"participant_id": ["P001", "P002"]}
         id_df = pd.DataFrame(ids)
@@ -929,7 +929,7 @@ def test_id_remap_existing_remap_cli():
         output_dir.mkdir(parents=True, exist_ok=True)
         command = [
             "b2aiprep-cli",
-            "id-remap",
+            "generate-id-lookup-table",
             id_dir,
             output_dir,
             "--load_lookup",
@@ -951,4 +951,124 @@ def test_id_remap_existing_remap_cli():
         assert data["P004"] == "678910", "Remap is incorrect"
         assert "P001" in data, "P001 is missing in remap file"
         assert "P002" in data, "P002 is missing in remap file"
-        
+
+
+def _write_ids_tsv(path, ids, id_column="record_id"):
+    pd.DataFrame({id_column: ids}).to_csv(path, sep="\t", index=False)
+
+
+def _read_split_files(output_dir):
+    files = sorted(Path(output_dir).glob("subject_ids_*.txt"))
+    return [f.read_text().strip().splitlines() for f in files]
+
+
+class TestCreateSubjectSplits:
+    """Tests for the create_subject_splits command."""
+
+    def test_splits_default_chunk_size(self, tmp_path):
+        input_file = tmp_path / "ids.tsv"
+        _write_ids_tsv(input_file, [f"R{i:03d}" for i in range(25)])
+        output_dir = tmp_path / "out"
+
+        runner = CliRunner()
+        result = runner.invoke(create_subject_splits, [str(input_file), str(output_dir)])
+        assert result.exit_code == 0, result.output
+
+        chunks = _read_split_files(output_dir)
+        assert [len(c) for c in chunks] == [10, 10, 5]
+        # Round-trip covers every unique ID exactly once.
+        flat = [x for chunk in chunks for x in chunk]
+        assert sorted(flat) == sorted({f"R{i:03d}" for i in range(25)})
+
+    def test_splits_exact_multiple(self, tmp_path):
+        input_file = tmp_path / "ids.tsv"
+        _write_ids_tsv(input_file, [f"R{i}" for i in range(20)])
+        output_dir = tmp_path / "out"
+
+        result = CliRunner().invoke(
+            create_subject_splits,
+            [str(input_file), str(output_dir), "--num_participants_per_file", "5"],
+        )
+        assert result.exit_code == 0, result.output
+        chunks = _read_split_files(output_dir)
+        assert [len(c) for c in chunks] == [5, 5, 5, 5]
+
+    def test_single_participant_creates_one_file(self, tmp_path):
+        input_file = tmp_path / "ids.tsv"
+        _write_ids_tsv(input_file, ["only_one"])
+        output_dir = tmp_path / "out"
+
+        result = CliRunner().invoke(create_subject_splits, [str(input_file), str(output_dir)])
+        assert result.exit_code == 0, result.output
+        chunks = _read_split_files(output_dir)
+        assert chunks == [["only_one"]]
+
+    def test_deduplicates_ids(self, tmp_path):
+        input_file = tmp_path / "ids.tsv"
+        _write_ids_tsv(input_file, ["A", "B", "A", "C", "B"])
+        output_dir = tmp_path / "out"
+
+        result = CliRunner().invoke(create_subject_splits, [str(input_file), str(output_dir)])
+        assert result.exit_code == 0, result.output
+        chunks = _read_split_files(output_dir)
+        assert chunks == [["A", "B", "C"]]
+
+    def test_accepts_csv_input(self, tmp_path):
+        # RedCap exports are comma-separated; the command should dispatch on extension.
+        input_file = tmp_path / "redcap.csv"
+        pd.DataFrame({"record_id": ["A", "B", "C"]}).to_csv(input_file, index=False)
+        output_dir = tmp_path / "out"
+
+        result = CliRunner().invoke(create_subject_splits, [str(input_file), str(output_dir)])
+        assert result.exit_code == 0, result.output
+        assert _read_split_files(output_dir) == [["A", "B", "C"]]
+
+    def test_custom_id_column(self, tmp_path):
+        input_file = tmp_path / "ids.tsv"
+        _write_ids_tsv(input_file, ["P1", "P2", "P3"], id_column="participant_id")
+        output_dir = tmp_path / "out"
+
+        result = CliRunner().invoke(
+            create_subject_splits,
+            [str(input_file), str(output_dir), "--id_column", "participant_id"],
+        )
+        assert result.exit_code == 0, result.output
+        chunks = _read_split_files(output_dir)
+        assert chunks == [["P1", "P2", "P3"]]
+
+    def test_creates_output_dir_when_missing(self, tmp_path):
+        input_file = tmp_path / "ids.tsv"
+        _write_ids_tsv(input_file, ["A"])
+        output_dir = tmp_path / "nested" / "not_yet_created"
+        assert not output_dir.exists()
+
+        result = CliRunner().invoke(create_subject_splits, [str(input_file), str(output_dir)])
+        assert result.exit_code == 0, result.output
+        assert output_dir.is_dir()
+        assert (output_dir / "subject_ids_0.txt").exists()
+
+    def test_missing_id_column_errors(self, tmp_path):
+        input_file = tmp_path / "ids.tsv"
+        _write_ids_tsv(input_file, ["A"], id_column="participant_id")
+        output_dir = tmp_path / "out"
+
+        result = CliRunner().invoke(create_subject_splits, [str(input_file), str(output_dir)])
+        assert result.exit_code != 0
+        assert "record_id" in result.output
+
+    def test_invalid_num_per_file_errors(self, tmp_path):
+        input_file = tmp_path / "ids.tsv"
+        _write_ids_tsv(input_file, ["A"])
+        output_dir = tmp_path / "out"
+
+        result = CliRunner().invoke(
+            create_subject_splits,
+            [str(input_file), str(output_dir), "--num_participants_per_file", "0"],
+        )
+        assert result.exit_code != 0
+
+    def test_help_documents_options(self):
+        result = CliRunner().invoke(create_subject_splits, ["--help"])
+        assert result.exit_code == 0
+        assert "num_participants_per_file" in result.output
+        assert "id_column" in result.output

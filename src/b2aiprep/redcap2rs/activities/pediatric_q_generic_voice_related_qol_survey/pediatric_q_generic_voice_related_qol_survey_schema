@@ -11,6 +11,9 @@
             "items/peds_qol_started_at",
             "items/peds_qol_completed_at",
             "items/peds_qol_duration",
+            "items/peds_qol_origin",
+            "items/peds_qol_via",
+            "items/peds_qol_language",
             "items/peds_qol_trouble_speaking_heard",
             "items/peds_qol_out_of_air",
             "items/peds_qol_come_out_speaking",
@@ -45,6 +48,24 @@
                 "isVis": false,
                 "valueRequired": false,
                 "variableName": "peds_qol_duration"
+            },
+            {
+                "isAbout": "items/peds_qol_origin",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "peds_qol_origin"
+            },
+            {
+                "isAbout": "items/peds_qol_via",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "peds_qol_via"
+            },
+            {
+                "isAbout": "items/peds_qol_language",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "peds_qol_language"
             },
             {
                 "isAbout": "items/peds_qol_trouble_speaking_heard",
@@ -103,6 +124,6 @@
         ],
         "shuffle": false
     },
-    "version": "3.24.0",
+    "version": "4.7.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }
