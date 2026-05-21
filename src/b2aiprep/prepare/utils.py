@@ -50,13 +50,23 @@ def sanitize_task_entity_in_bids_stem(stem: str) -> str:
 
 
 def get_commit_sha(submodule_root: Path) -> str:
-    result = subprocess.run(
-        ["git", "-C", str(submodule_root), "rev-parse", "HEAD"],
-        capture_output=True,
-        check=True,
-        text=True,
-    )
-    return result.stdout.strip()
+    sha_file = Path(submodule_root) / "commit_sha.txt"
+    if sha_file.is_file():
+        return sha_file.read_text().strip()
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(submodule_root), "rev-parse", "HEAD"],
+            capture_output=True,
+            check=True,
+            text=True,
+        )
+        return result.stdout.strip()
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        _LOGGER.warning(
+            "Could not determine reproschema commit SHA from %s; termURLs will be unversioned.",
+            submodule_root,
+        )
+        return ""
 
 
 def reformat_resources(input_dir: str, output_dir: str) -> None:
