@@ -50,7 +50,7 @@ def sanitize_task_entity_in_bids_stem(stem: str) -> str:
 
 
 def get_commit_sha(submodule_root: Path) -> str:
-    sha_file = Path(submodule_root) / "commit_sha.txt"
+    sha_file = submodule_root.joinpath("commit_sha.txt")
     if sha_file.is_file():
         return sha_file.read_text().strip()
     try:
