@@ -11,6 +11,9 @@
             "items/dsm_5_started_at",
             "items/dsm_5_completed_at",
             "items/dsm_5_duration",
+            "items/dsm_5_origin",
+            "items/dsm_5_via",
+            "items/dsm_5_language",
             "items/little_interest",
             "items/feeling_down",
             "items/feeling_more_irritated",
@@ -74,6 +77,24 @@
                 "isVis": false,
                 "valueRequired": false,
                 "variableName": "dsm_5_duration"
+            },
+            {
+                "isAbout": "items/dsm_5_origin",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "dsm_5_origin"
+            },
+            {
+                "isAbout": "items/dsm_5_via",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "dsm_5_via"
+            },
+            {
+                "isAbout": "items/dsm_5_language",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "dsm_5_language"
             },
             {
                 "isAbout": "items/little_interest",
@@ -306,6 +327,6 @@
         ],
         "shuffle": false
     },
-    "version": "3.24.0",
+    "version": "4.7.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

@@ -16,7 +16,8 @@
             "items/session_duration",
             "items/session_site",
             "items/session_completed_by",
-            "items/session_assigned_tasks"
+            "items/session_assigned_tasks",
+            "items/session_language"
         ],
         "addProperties": [
             {
@@ -69,19 +70,25 @@
             },
             {
                 "isAbout": "items/session_completed_by",
-                "isVis": true,
+                "isVis": false,
                 "valueRequired": false,
                 "variableName": "session_completed_by"
             },
             {
                 "isAbout": "items/session_assigned_tasks",
-                "isVis": true,
+                "isVis": false,
                 "valueRequired": false,
                 "variableName": "session_assigned_tasks"
+            },
+            {
+                "isAbout": "items/session_language",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "session_language"
             }
         ],
         "shuffle": false
     },
-    "version": "4.5.0",
+    "version": "4.7.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

@@ -11,6 +11,9 @@
             "items/gad_7_started_at",
             "items/gad_7_completed_at",
             "items/gad_7_duration",
+            "items/gad_7_origin",
+            "items/gad_7_via",
+            "items/gad_7_language",
             "items/nervous_anxious",
             "items/cant_control_worry",
             "items/worry_too_much",
@@ -44,6 +47,24 @@
                 "isVis": false,
                 "valueRequired": false,
                 "variableName": "gad_7_duration"
+            },
+            {
+                "isAbout": "items/gad_7_origin",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "gad_7_origin"
+            },
+            {
+                "isAbout": "items/gad_7_via",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "gad_7_via"
+            },
+            {
+                "isAbout": "items/gad_7_language",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "gad_7_language"
             },
             {
                 "isAbout": "items/nervous_anxious",
@@ -96,6 +117,6 @@
         ],
         "shuffle": false
     },
-    "version": "3.24.0",
+    "version": "4.7.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

@@ -11,6 +11,9 @@
             "items/voice_severity_started_at",
             "items/voice_severity_completed_at",
             "items/voice_severity_duration",
+            "items/voice_severity_origin",
+            "items/voice_severity_via",
+            "items/voice_severity_language",
             "items/describe_the_severity_of_a"
         ],
         "addProperties": [
@@ -39,6 +42,24 @@
                 "variableName": "voice_severity_duration"
             },
             {
+                "isAbout": "items/voice_severity_origin",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "voice_severity_origin"
+            },
+            {
+                "isAbout": "items/voice_severity_via",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "voice_severity_via"
+            },
+            {
+                "isAbout": "items/voice_severity_language",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "voice_severity_language"
+            },
+            {
                 "isAbout": "items/describe_the_severity_of_a",
                 "isVis": true,
                 "valueRequired": true,
@@ -47,6 +68,6 @@
         ],
         "shuffle": false
     },
-    "version": "3.24.0",
+    "version": "4.7.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }
