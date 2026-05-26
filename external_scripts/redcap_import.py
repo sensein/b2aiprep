@@ -195,6 +195,11 @@ def clean_up(df):
         .astype("Int64")
     )
 
+    df["age"] = (
+        pd.to_numeric(df["age"], errors="coerce")
+        .astype("Int64")
+    )
+
     df["peds_vhi_talkativeness"] = (
         pd.to_numeric(df["peds_vhi_talkativeness"], errors="coerce")
         .astype("Int64")
