@@ -92,6 +92,8 @@ python verify_sage_contents.py \
 
 `--get_md5` is a flag to specify whether to generate MD5 hashes of the files in the BIDS folder. If specified, it will generate the hash for the local files and compare it against the corresponding Sage file's MD5 hash.
 
+`--subject sub-XXXX` restricts the comparison to a single subject's subtree for a quick spot check (e.g. confirming one subject's metadata re-uploaded), instead of walking the entire dataset. It scopes both the local and Sage walks to `<bids_folder>/sub-XXXX`.
+
 `--sync` controls whether to actually act on the differences. Without it (the default) the script does a **dry run**: it reports the differences between Sage and the local folder and, in particular, **calls out the files/folders that are on Sage but no longer present locally** so they can be manually reviewed before anything is removed. This acts on individual files and folders, not a bulk synchronize like the upload step.
 
 Behavior for entities present on Sage but missing locally:

@@ -70,6 +70,15 @@ def walk_synapse_folder(syn, folder_id, path=""):
     return synapse_files, synapse_folders
 
 
+def find_child_folder_id(syn, parent_id, name):
+    """Return the Synapse ID of the child folder named `name`, or None."""
+    for child in syn.getChildren(parent_id):
+        if (child['name'] == name
+                and child['type'] == 'org.sagebionetworks.repo.model.Folder'):
+            return child['id']
+    return None
+
+
 def walk_local_folder(path, get_md5=False):
     local_files = {}
     local_folders = []
@@ -179,6 +188,8 @@ def main():
                         help='Compute local MD5 hashes and compare them to the Synapse files.')
     parser.add_argument('--sync', default=False, action='store_true',
                         help='Apply changes on Synapse. Without it the script only reports differences (dry run).')
+    parser.add_argument('--subject', default=None, type=str,
+                        help='Restrict the comparison to one subject (e.g. sub-010729) for a quick spot check.')
 
     args = parser.parse_args()
 
@@ -193,8 +204,23 @@ def main():
     root_data_folder = Folder(id=parent_id).get()
     validate_sync_folder(root_data_folder, config)
 
-    synapse_files, synapse_folders = walk_synapse_folder(syn, parent_id, args.bids_folder)
-    local_files, local_folders = walk_local_folder(args.bids_folder, args.get_md5)
+    if args.subject:
+        # Scope both walks to the subject's subtree. Keys on both sides are
+        # prefixed with "<bids_folder>/<subject>" so they line up.
+        local_root = os.path.join(args.bids_folder, args.subject)
+        if not os.path.isdir(local_root):
+            raise SystemExit(f"Subject folder not found locally: {local_root}")
+        subject_folder_id = find_child_folder_id(syn, parent_id, args.subject)
+        if subject_folder_id is None:
+            print(f"Subject {args.subject} not found on Sage under {parent_id}; "
+                  "all local files will report as missing on Sage.")
+            synapse_files, synapse_folders = {}, []
+        else:
+            synapse_files, synapse_folders = walk_synapse_folder(syn, subject_folder_id, local_root)
+        local_files, local_folders = walk_local_folder(local_root, args.get_md5)
+    else:
+        synapse_files, synapse_folders = walk_synapse_folder(syn, parent_id, args.bids_folder)
+        local_files, local_folders = walk_local_folder(args.bids_folder, args.get_md5)
 
     dry_run = not args.sync
     # Delete files before folders so cascading folder deletes don't trip over
