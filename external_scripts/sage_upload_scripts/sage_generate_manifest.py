@@ -6,34 +6,40 @@ import synapseclient
 import synapseutils
 from synapseclient.models import Project, Folder
 
-OVERALL_PROJECT = "syn72370534"
-PEDS_FOLDER = "syn72493849"
-ADULT_FOLDER = "syn72493850"
+from sage_config import get_dataset_config, validate_sync_folder
+
 
 def main():
     load_dotenv()
 
-    parser = argparse.ArgumentParser(description="A simple script for ...")
-    parser.add_argument('--bids_folder', default='./', type=str, help='Example help information')
-    parser.add_argument('--manifest_file', default='temp_manifest_file.tsv',type=str)
-    parser.add_argument('--adult', default=False, action='store_true', help='is adult dataset')
+    parser = argparse.ArgumentParser(
+        description="Generate a Synapse sync manifest from a local BIDS folder."
+    )
+    parser.add_argument('--bids_folder', default='./', type=str,
+                        help='Path to the local BIDS folder to upload.')
+    parser.add_argument('--manifest_file', default='temp_manifest_file.tsv', type=str,
+                        help='Path to write the generated manifest TSV.')
+    parser.add_argument('--adult', default=False, action='store_true',
+                        help='Target the adult dataset. Omit for the pediatric dataset.')
 
     args = parser.parse_args()
     print(f"Received args: {args}")
-    
+
     sage_pat = os.getenv("SAGE_PAT")
-    sage_project_id = OVERALL_PROJECT
+    config = get_dataset_config(args.adult)
 
     syn = synapseclient.login(authToken=sage_pat)
-    project = Project(id=sage_project_id).get()
+    project = Project(id=config["project"]).get()
     print(f"Looking at project: {project.name}, id: {project.id}")
-    
-    parent_id = ADULT_FOLDER if args.adult else PEDS_FOLDER
+
+    parent_id = config["folder"]
     print(f"Syncing data with parent folder: {parent_id}")
     root_data_folder = Folder(id=parent_id).get()
 
-    # Quick assertion that we are in the correct project for this code"
-    assert root_data_folder.parent_id == project.id
+    # Sanity check that we resolved the expected destination folder before upload.
+    # The folder is nested inside the project (not necessarily at its top level),
+    # so we validate by name rather than asserting it is a direct child.
+    validate_sync_folder(root_data_folder, config)
 
     synapseutils.generate_sync_manifest(
         syn=syn,

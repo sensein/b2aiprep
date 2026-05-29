@@ -7,6 +7,9 @@ import synapseutils
 from synapseclient.models import Project, Folder, File
 import hashlib
 
+from sage_config import get_dataset_config, validate_sync_folder
+
+
 def get_file_md5(filepath):
     """Calculate MD5 hash of a local file."""
     hash_md5 = hashlib.md5()
@@ -16,34 +19,28 @@ def get_file_md5(filepath):
     return hash_md5.hexdigest()
 
 
-
-PEDS_PROJECT = "syn72418607"
-ADULT_PROJECT = "syn72370534"
-OVERALL_PROJECT = "syn72370534"
-PEDS_FOLDER = "syn72493849"
-ADULT_FOLDER = "syn72493850"
-
-
 def walk_synapse_folder(syn, folder_id, path=""):
     """
     Recursively walk through a Synapse folder structure.
-    Returns dict mapping relative paths to Synapse entity info.
+    Returns a tuple ``(files, folders)`` where ``files`` is a dict mapping
+    relative paths to Synapse entity info and ``folders`` is a list of folder
+    info dicts.
     """
     synapse_files = {}
     synapse_folders = []
-    
+
     try:
         # Get all children of this folder
         children = syn.getChildren(folder_id)
-        
+
         for child in children:
             child_name = child['name']
             child_id = child['id']
             child_type = child['type']
-            
+
             # Build relative path
             rel_path = os.path.join(path, child_name) if path else child_name
-            
+
             if child_type == 'org.sagebionetworks.repo.model.Folder':
                 print(f"Scanning folder: {rel_path}")
                 synapse_folders.append({'path':rel_path,'id':child_id})
@@ -55,7 +52,7 @@ def walk_synapse_folder(syn, folder_id, path=""):
             elif child_type == 'org.sagebionetworks.repo.model.FileEntity':
                 # Get file metadata without downloading
                 file_entity = syn.get(child_id, downloadFile=False)
-                
+
                 synapse_files[rel_path] = {
                     'id': child_id,
                     'name': child_name,
@@ -64,12 +61,12 @@ def walk_synapse_folder(syn, folder_id, path=""):
                     'modifiedOn': file_entity.get('modifiedOn', None),
                     'path': rel_path
                 }
-                
+
                 #print(f"Found file: {rel_path}")
-    
+
     except Exception as e:
         print(f"Error processing folder {path}: {str(e)}")
-    
+
     return synapse_files, synapse_folders
 
 
@@ -92,34 +89,52 @@ def walk_local_folder(path, get_md5=False):
     return local_files, local_folders
 
 
-def run_folder_comparisons(sage_folders, local_folders, dry_run=True):
+def delete_from_sage(syn, entity_id, label, dry_run=True):
+    """Move a Synapse entity to the project Trash (recoverable until purged).
+
+    Returns True if a deletion was performed. Content is not fully removed until
+    the Trash is purged, which is done manually (e.g. for PII).
+    """
+    if dry_run:
+        return False
+    try:
+        syn.delete(entity_id)
+        print(f"\tDELETED {label} (id {entity_id}) -> moved to Trash "
+              "(purge the Trash to remove content, e.g. for PII)")
+        return True
+    except Exception as e:
+        print(f"\tFAILED to delete {label} (id {entity_id}): {e}")
+        return False
+
+
+def run_folder_comparisons(syn, sage_folders, local_folders, dry_run=True):
     for folder in sage_folders:
         sage_path = folder['path']
         if os.path.exists(sage_path) and not os.path.isdir(sage_path):
             print(f"Sage ID {folder['id']} ({sage_path}) found locally but is not a directory")
-            if not dry_run:
-                # not even sure what or why this might happen so not sure what to do
-                pass
 
-    sage_folder_set = set([f['path'] for f in sage_folders])
+    sage_folder_id = {f['path']: f['id'] for f in sage_folders}
+    sage_folder_set = set(sage_folder_id.keys())
     local_folder_set = set([f['path'] for f in local_folders])
-    if (sage_folder_set - local_folder_set) != set():
-        print("The following folders were found on Sage and not locally")
-        for folder in (sage_folder_set - local_folder_set):
-            print(f"\t{folder}")
-            if not dry_run:
-                # Add code to remove folders from Sage
-                pass
-    if (local_folder_set - sage_folder_set) != set():
+    sage_only = sorted(sage_folder_set - local_folder_set)
+    if sage_only:
+        header = ("The following folders are on Sage but not local (deletion candidates; "
+                  "re-run with --sync to delete):") if dry_run else \
+                 ("Deleting folders that are on Sage but not local (and their contents):")
+        print(header)
+        for folder in sage_only:
+            print(f"\t{folder} (id {sage_folder_id[folder]})")
+            # A folder deletion cascades to its contents. Some of those entities may
+            # already have been trashed (files are handled first), so tolerate errors.
+            delete_from_sage(syn, sage_folder_id[folder], folder, dry_run=dry_run)
+    if local_folder_set - sage_folder_set:
         print("The following folders were found locally and not on Sage")
+        print("(re-run the upload manifest flow to create them on Sage):")
         for folder in (local_folder_set - sage_folder_set):
             print(f"\t{folder}")
-            if not dry_run:
-                # Add code to add folder to Sage
-                pass
 
 
-def run_file_comparisons(sage_files, local_files, md5=False, dry_run=True):
+def run_file_comparisons(syn, sage_files, local_files, md5=False, dry_run=True):
     for f in sage_files:
         sage_path = f
         if not os.path.exists(sage_path):
@@ -129,56 +144,63 @@ def run_file_comparisons(sage_files, local_files, md5=False, dry_run=True):
         elif sage_path in local_files and md5:
             if sage_files[f]['md5'] != local_files[f]['md5']:
                 print(f"Sage ID {sage_files[f]['id']} ({sage_path}) md5 ({sage_files[f]['md5']}) does not match local md5 hash ({local_files[f]['md5']})")
-                if not dry_run:
-                    # Add logic for updating the files on sage
-                    pass
+                # Content changed locally; re-run the upload manifest flow to push a
+                # new version. This script does not re-upload file content.
 
     sage_file_set = set(sage_files.keys())
     local_file_set = set(local_files.keys())
-    if (sage_file_set - local_file_set) != set():
-        print("The following files were found on Sage and not locally")
-        for folder in (sage_file_set - local_file_set):
-            print(f"\t{folder}")
-            if not dry_run:
-                # Add logic for removing files from Sage
-                pass
-    if (local_file_set - sage_file_set) != set():
+    sage_only = sorted(sage_file_set - local_file_set)
+    if sage_only:
+        header = ("The following files are on Sage but not local (deletion candidates; "
+                  "re-run with --sync to delete):") if dry_run else \
+                 ("Deleting files that are on Sage but not local:")
+        print(header)
+        for path in sage_only:
+            print(f"\t{path} (id {sage_files[path]['id']})")
+            delete_from_sage(syn, sage_files[path]['id'], path, dry_run=dry_run)
+    if local_file_set - sage_file_set:
         print("The following files were found locally and not on Sage")
-        for folder in (local_file_set - sage_file_set):
-            print(f"\t{folder}")
-            if not dry_run:
-                # Add logic for adding file to Sage
-                pass
+        print("(re-run the upload manifest flow to add them to Sage):")
+        for path in (local_file_set - sage_file_set):
+            print(f"\t{path}")
 
-    
+
 def main():
     load_dotenv()
 
-    parser = argparse.ArgumentParser(description="A simple script for ...")
-    parser.add_argument('--bids_folder', default='./', type=str, help='Example help information')
-    parser.add_argument('--adult', default=False, action='store_true', help='is adult dataset')
-    parser.add_argument('--get_md5', default=False, action='store_true')
-    parser.add_argument('--sync', default=False, action='store_true')
+    parser = argparse.ArgumentParser(
+        description="Compare a local BIDS folder against its Synapse destination folder."
+    )
+    parser.add_argument('--bids_folder', default='./', type=str,
+                        help='Local BIDS folder to compare against Synapse.')
+    parser.add_argument('--adult', default=False, action='store_true',
+                        help='Target the adult dataset. Omit for the pediatric dataset.')
+    parser.add_argument('--get_md5', default=False, action='store_true',
+                        help='Compute local MD5 hashes and compare them to the Synapse files.')
+    parser.add_argument('--sync', default=False, action='store_true',
+                        help='Apply changes on Synapse. Without it the script only reports differences (dry run).')
 
     args = parser.parse_args()
-    
+
     sage_pat = os.getenv("SAGE_PAT")
-    sage_project_id = OVERALL_PROJECT#ADULT_PROJECT if args.adult else PEDS_PROJECT
+    config = get_dataset_config(args.adult)
 
     syn = synapseclient.login(authToken=sage_pat)
-    project = Project(id=sage_project_id).get()
-    print(f"I just got my project: {project.name}, id: {project.id}")
-    
-    parent_id = ADULT_FOLDER if args.adult else PEDS_FOLDER
+    project = Project(id=config["project"]).get()
+    print(f"Looking at project: {project.name}, id: {project.id}")
 
-    my_project = Folder(id=parent_id).get()
-    synapse_files, synapse_folders = walk_synapse_folder(syn,my_project,args.bids_folder)
+    parent_id = config["folder"]
+    root_data_folder = Folder(id=parent_id).get()
+    validate_sync_folder(root_data_folder, config)
+
+    synapse_files, synapse_folders = walk_synapse_folder(syn, parent_id, args.bids_folder)
     local_files, local_folders = walk_local_folder(args.bids_folder, args.get_md5)
-    
-    run_folder_comparisons(synapse_folders, local_folders, dry_run=~args.sync)
-    run_file_comparisons(synapse_files, local_files, md5=args.get_md5, dry_run=~args.sync)
 
-    #run_comparison(dir_mapping, args.bids_folder)
+    dry_run = not args.sync
+    # Delete files before folders so cascading folder deletes don't trip over
+    # children that were already trashed.
+    run_file_comparisons(syn, synapse_files, local_files, md5=args.get_md5, dry_run=dry_run)
+    run_folder_comparisons(syn, synapse_folders, local_folders, dry_run=dry_run)
 
 
 if __name__=='__main__':
