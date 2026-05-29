@@ -46,7 +46,7 @@ def save_map(id_map: pd.DataFrame, c2m2_id_map: Path):
 
 def get_biosamples_from_features(bundle_path: Path, c2m2_id_map: Path, project_local_id: str):
     """
-    Reads feature parquet files to build the anonymized biosample list.
+    Reads the bundle's feature files to build the anonymized biosample list.
 
     Returns:
         tuple: (biosample_df, id_map) where:
@@ -54,27 +54,37 @@ def get_biosamples_from_features(bundle_path: Path, c2m2_id_map: Path, project_l
             - id_map: the full participant_id/session_id -> anon_id mapping DataFrame
     """
     features_path = bundle_path / "features"
-    parquet_features = list(features_path.rglob('*.parquet'))
+    # Every feature file enumerates the recordings it covers. Both parquet
+    # extractors and the .tsv features (static_features, audio_quality_metrics)
+    # are read: different extractors succeed on different recordings, and some
+    # recordings appear only in the .tsv features, so the union over all feature
+    # files is needed to capture every biosample.
+    feature_files = sorted(features_path.rglob('*.parquet')) + sorted(features_path.rglob('*.tsv'))
 
-    if not parquet_features:
-        print("Warning: No parquet files found in features directory")
+    if not feature_files:
+        print("Warning: No feature files found in features directory")
         return pd.DataFrame(), pd.DataFrame(columns=['participant_id', 'session_id', 'anon_id'])
 
     id_map = load_or_init_map(c2m2_id_map)
 
-    # Read all parquets and union their (participant_id, session_id, task_name) triples.
-    # Different feature extractors may succeed on different recordings, so taking the
-    # union ensures all biosamples are captured.
+    cols = ['participant_id', 'session_id', 'task_name']
     dfs = []
-    for pf in parquet_features:
+    for ff in feature_files:
         try:
-            dfs.append(pd.read_parquet(pf, columns=['participant_id', 'session_id', 'task_name']))
+            if ff.suffix == '.parquet':
+                dfs.append(pd.read_parquet(ff, columns=cols))
+            else:
+                dfs.append(pd.read_csv(ff, sep='\t', usecols=cols, dtype=str))
         except Exception as e:
-            print(f"Warning: could not read {pf.name}: {e}")
+            print(f"Warning: could not read {ff.name}: {e}")
     if not dfs:
-        print("Warning: No readable parquet files found in features directory")
+        print("Warning: No readable feature files found in features directory")
         return pd.DataFrame(), pd.DataFrame(columns=['participant_id', 'session_id', 'anon_id'])
-    df = pd.concat(dfs, ignore_index=True)[['participant_id', 'session_id', 'task_name']].drop_duplicates()
+    df = pd.concat(dfs, ignore_index=True)[cols].dropna(subset=cols)
+    # Normalize to str so parquet (which may type these columns natively) and tsv
+    # (always str) agree, keeping the merge with the str-typed id_map consistent.
+    df[cols] = df[cols].astype(str)
+    df = df.drop_duplicates()
 
     # Find (participant_id, session_id) pairs not yet assigned an anon_id
     unique_pairs = df[['participant_id', 'session_id']].drop_duplicates()
@@ -430,8 +440,13 @@ def main():
     bundle_path = Path(args.bundle_path)
     c2m2_path = Path(args.c2m2_path)
     c2m2_id_map = Path(args.c2m2_id_map)
+    # Biosamples belong to the tier-neutral cohort project (adult/peds); registered
+    # files belong to the registered leaf project. The file local_id is prefixed with
+    # the file's project so registered and controlled file ids never collide.
     project_local_id = PEDS_PROJECT_LOCAL_ID if args.peds else PROJECT_LOCAL_ID
-    local_id_prefix = 'peds' if args.peds else 'adult'
+    file_project_local_id = (PEDS_REGISTERED_PROJECT_LOCAL_ID if args.peds
+                             else ADULT_REGISTERED_PROJECT_LOCAL_ID)
+    local_id_prefix = file_project_local_id
 
     # --- file.tsv ---
     all_files = get_all_files(bundle_path)
@@ -448,7 +463,7 @@ def main():
             'id_namespace': ID_NAMESPACE,
             'local_id': f"{local_id_prefix}/{str(rel_path)}",
             'project_id_namespace': PROJECT_ID_NAMESPACE,
-            'project_local_id': project_local_id,
+            'project_local_id': file_project_local_id,
             'persistent_id': None,
             'creation_time': None,
             'size_in_bytes': f.stat().st_size,

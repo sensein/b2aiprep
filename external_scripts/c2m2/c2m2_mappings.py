@@ -152,23 +152,29 @@ adult_diagnosis_to_DOID = {
 # Populate with condition column -> [DOID, ...] entries once data is validated.
 peds_condition_to_DOID = {}
 
+# file_format / data_type are EDAM ontology terms (left blank when no confident
+# EDAM term exists, e.g. WAV — both fields are optional in C2M2). mime_type is a
+# plain IANA media type and is always safe to populate.
 file_format_map = {
     '.tsv': 'format:3475',
     '.json': 'format:3464',
     '.parquet': '',
-    '.txt': 'format:1964'
+    '.txt': 'format:1964',
+    '.wav': '',
 }
 
 data_type_map = {
     '.tsv': 'data:3671',
     '.json': 'data:3671',
     '.txt': 'data:3671',
-    '.parquet': ''
+    '.parquet': '',
+    '.wav': '',
     }
 
 mime_type_map = {
     '.tsv': 'text/tab-separated-values',
     '.json': 'application/json',
     '.txt': 'text/plain',
-    '.parquet': 'application/octet-stream'
+    '.parquet': 'application/octet-stream',
+    '.wav': 'audio/x-wav',
 }
