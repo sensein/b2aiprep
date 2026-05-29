@@ -11,9 +11,12 @@
 #        python sage_generate_manifest.py --bids_folder <BIDS> --manifest_file manifest.tsv [--adult]
 #   2) Build the subject list:
 #        ls -d <BIDS>/sub-* | xargs -n1 basename > subjects.txt
-#   3) Submit, sized to the number of subjects, capped at 20 concurrent (%20):
-#        sbatch --array=0-$(($(wc -l < subjects.txt) - 1))%20 \
-#               sage_upload_array.sbatch manifest.tsv subjects.txt
+#   3) Submit. The QOS caps submitted jobs per user (pi_satra: 256), so put
+#      CHUNK subjects per task to keep the array element count under that.
+#      ntasks = ceil(nsubjects / CHUNK); %20 caps how many run at once.
+#        N=$(wc -l < subjects.txt); CHUNK=2
+#        sbatch --array=0-$(( (N + CHUNK - 1)/CHUNK - 1 ))%20 \
+#               sage_upload_array.sbatch manifest.tsv subjects.txt $CHUNK
 #   4) Upload the dataset-level (non-subject) files once, after the array:
 #        python sage_upload_manifest.py --manifest_file manifest.tsv --toplevel
 #   5) Verify:
@@ -29,22 +32,33 @@
 #   pi_satra        (up to 48h)
 #   ou_bcs_normal   (up to 24h) -- raise --time below if a task needs longer
 #SBATCH --partition=pi_satra
+# Email on completion/failure of the array as a whole (no ARRAY_TASKS => not one
+# email per subject).
+#SBATCH --mail-user=wilke18@mit.edu
+#SBATCH --mail-type=END,FAIL
 
 set -euo pipefail
 
-MANIFEST="${1:?Usage: sbatch sage_upload_array.sbatch <manifest.tsv> <subjects.txt>}"
-SUBJECTS="${2:?Usage: sbatch sage_upload_array.sbatch <manifest.tsv> <subjects.txt>}"
+MANIFEST="${1:?Usage: sbatch sage_upload_array.sbatch <manifest.tsv> <subjects.txt> [chunk]}"
+SUBJECTS="${2:?Usage: sbatch sage_upload_array.sbatch <manifest.tsv> <subjects.txt> [chunk]}"
+CHUNK="${3:-1}"   # subjects handled per array task (raise it to stay under the QOS submit cap)
 
 PY=/home/wilke18/.conda/envs/b2aiprep_test/bin/python
 SCRIPT_DIR=/orcd/data/satra/002/datasets/b2aivoice/b2aiprep/external_scripts/sage_upload_scripts
 cd "$SCRIPT_DIR"   # so load_dotenv() picks up the local .env with SAGE_PAT
 
-# Pick this task's subject (subjects.txt is one subject per line, 0-based index).
-SUBJECT=$(sed -n "$((SLURM_ARRAY_TASK_ID + 1))p" "$SUBJECTS")
-if [[ -z "$SUBJECT" ]]; then
-    echo "No subject for array index $SLURM_ARRAY_TASK_ID" >&2
-    exit 1
+# This task handles subjects [START..END] (1-based lines of subjects.txt).
+START=$(( SLURM_ARRAY_TASK_ID * CHUNK + 1 ))
+END=$(( START + CHUNK - 1 ))
+SUBJECT_LIST=$(sed -n "${START},${END}p" "$SUBJECTS")
+if [[ -z "$SUBJECT_LIST" ]]; then
+    echo "No subjects for array index $SLURM_ARRAY_TASK_ID (lines ${START}-${END})"
+    exit 0
 fi
 
-echo "Array task $SLURM_ARRAY_TASK_ID -> uploading $SUBJECT"
-$PY sage_upload_manifest.py --manifest_file "$MANIFEST" --subject "$SUBJECT"
+# Upload each subject in the chunk sequentially (disjoint subjects across tasks,
+# so no two tasks ever write to the same Synapse folder).
+for SUBJECT in $SUBJECT_LIST; do
+    echo "Array task $SLURM_ARRAY_TASK_ID -> uploading $SUBJECT"
+    $PY sage_upload_manifest.py --manifest_file "$MANIFEST" --subject "$SUBJECT"
+done
