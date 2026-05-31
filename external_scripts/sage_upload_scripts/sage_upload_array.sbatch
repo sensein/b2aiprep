@@ -57,8 +57,15 @@ if [[ -z "$SUBJECT_LIST" ]]; then
 fi
 
 # Upload each subject in the chunk sequentially (disjoint subjects across tasks,
-# so no two tasks ever write to the same Synapse folder).
+# so no two tasks ever write to the same Synapse folder). Don't let one subject's
+# failure (e.g. a 412 update conflict) abort the rest of the chunk; flag the task
+# as failed at the end instead, and re-run stragglers found by verify.
+rc=0
 for SUBJECT in $SUBJECT_LIST; do
     echo "Array task $SLURM_ARRAY_TASK_ID -> uploading $SUBJECT"
-    $PY sage_upload_manifest.py --manifest_file "$MANIFEST" --subject "$SUBJECT"
+    if ! $PY sage_upload_manifest.py --manifest_file "$MANIFEST" --subject "$SUBJECT"; then
+        echo "WARNING: subject $SUBJECT failed; continuing with the rest of the chunk" >&2
+        rc=1
+    fi
 done
+exit $rc
