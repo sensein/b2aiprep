@@ -71,7 +71,7 @@ def test_audio_csv():
                        {"record_id": "99999",
                         "redcap_repeat_instrument": "Recording",
                         "redcap_repeat_instance": 1,
-                        "recording_id": "long_sounds_task_1_10_plus-d6d7411f-c934-4bca-91a7-5ddad353b801",
+                        "recording_id": "d6d7411f-c934-4bca-91a7-5ddad353b801",
                         "recording_acoustic_task_id":
                         "long_sounds_task-14829893-3879-4723-932b-d98d6bc356a8-",
                         "recording_session_id": "14829893-3879-4723-932b-d98d6bc356a8-",
@@ -82,12 +82,12 @@ def test_audio_csv():
                         "recording_profile_version": "v1.0.0",
                         "recording_input_gain": np.nan,
                         "recording_microphone": "USB-C to 3.5mm Headphone Jack Adapter",
-                        "recording_filepath" : f"/mounts/b2ai-api/Data/SickKids/long_sounds_task_1_10_plus-d6d7411f-c934-4bca-91a7-5ddad353b801.wav"},
+                        "recording_filepath" : f"/mounts/b2ai-api/Data/SickKids/d6d7411f-c934-4bca-91a7-5ddad353b801.wav"},
 
                        {"record_id": "99999",
                        "redcap_repeat_instrument": "Recording",
                         "redcap_repeat_instance": 2,
-                        "recording_id": "long_sounds_task_2_10_plus-69181d90-aae4-49d0-861d-4ff4a939bff0",
+                        "recording_id": "69181d90-aae4-49d0-861d-4ff4a939bff0",
                         "recording_acoustic_task_id": "long_sounds_task-14829893-3879-4723-932b-d98d6bc356a8-",
                         "recording_session_id": "14829893-3879-4723-932b-d98d6bc356a8-",
                         "recording_name": "long_sounds_task-2",
@@ -97,7 +97,7 @@ def test_audio_csv():
                         "recording_profile_version": "v1.0.0",
                         "recording_input_gain": np.nan,
                         "recording_microphone": "USB-C to 3.5mm Headphone Jack Adapter",
-                        "recording_filepath" : f"/mounts/b2ai-api/Data/SickKids/long_sounds_task_2_10_plus-69181d90-aae4-49d0-861d-4ff4a939bff0.wav"}]
+                        "recording_filepath" : f"/mounts/b2ai-api/Data/SickKids/69181d90-aae4-49d0-861d-4ff4a939bff0.wav"}]
 
     actual = parse_audio(audio_files, True)
     assert expected_output == actual

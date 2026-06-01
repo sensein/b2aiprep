@@ -250,9 +250,9 @@ def parse_audio(audio_list, dummy_audio_files=False):
         "conversation": [],
         "abcs": [],
         "123s": [],
-        "naming_animals": [],
+        #"naming_animals": [],
         "role_naming": [],
-        "naming_food": [],
+        #"naming_food": [],
         "noisy_sounds": [],
         "long_sounds": [],
         "silly_sounds": [],
@@ -260,6 +260,7 @@ def parse_audio(audio_list, dummy_audio_files=False):
         "sentence": [],
         "picture_description": [],
         "passage": [],
+        "Generative Naming Task": [],
         "other": [],
     }
     # redcap groups these tasks into the conversation moniker
@@ -271,6 +272,10 @@ def parse_audio(audio_list, dummy_audio_files=False):
     "choose_book",
     "picture_and_doors"
 }
+    generative_tasks = [
+        "naming_animals",
+        "naming_food"
+    ]
 
     for name in audio_list:
         found = False
@@ -282,6 +287,11 @@ def parse_audio(audio_list, dummy_audio_files=False):
         for conversation_task in conversation_tasks:
             if conversation_task in name:
                 protocol_order["conversation"].append(name)
+                found = True
+                break
+        for generative_task in generative_tasks:
+            if generative_task in name:
+                protocol_order["Generative Naming Task"].append(name)
                 found = True
                 break
  
@@ -299,6 +309,7 @@ def parse_audio(audio_list, dummy_audio_files=False):
     acoustic_count = 1
     acoustic_prev = None
     acoustic_tasks = set()
+    task_names = set()
     # acoustic_task_dict = dict()
     for file_path in flattened_list:
         record_id = Path(file_path).parent.parent.name
@@ -310,11 +321,16 @@ def parse_audio(audio_list, dummy_audio_files=False):
             duration = get_wav_duration(file_path)
             file_size = (Path(file_path).stat().st_size) / 1024
         file_name = file_path.split("/")[-1]
-        #recording_id = re.search(r"([a-f0-9\-]{36})\.", file_name).group(1)
-        recording_id = file_name.replace(".wav", "")
+        task_name = re.match(r"([a-z]+(?:_[a-z]+)*_\d+)", file_name).group(1)
+        if task_name in task_names: # in case duplicate audio files exist of the same task
+            continue
+        recording_id = re.search(r"([a-f0-9\-]{36})\.", file_name).group(1)
+        #recording_id = file_name.replace(".wav", "")
         acoustic_task = re.search(r"^(.*?)(_\d+)", file_name).group(1)
         if acoustic_task in conversation_tasks:
             acoustic_task = "conversation"
+        if acoustic_task in generative_tasks:
+            acoustic_task = "Generative Naming Task"
         if acoustic_task not in acoustic_tasks:
 
             acoustic_tasks.add(acoustic_task)
@@ -359,6 +375,7 @@ def parse_audio(audio_list, dummy_audio_files=False):
         acoustic_prev = acoustic_task
         acoustic_count += 1
         audio_output_list.append(file_dict)
+        task_names.add(task_name)
         count += 1
 
     return audio_output_list

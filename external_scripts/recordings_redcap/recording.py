@@ -107,8 +107,8 @@ recording_names_mapping = {
     "passage9": "Reading Passage-9",
     "passage10": "Reading Passage-10",
     "passage11": "Reading Passage-11",
-    "namingAnimals": "Generative Naming Task-animals",
-    "namingFood": "Generative Naming Task-food",
+    "Generative-Naming-Task-1": "Generative Naming Task-animals",
+    "Generative-Naming-Task-2": "Generative Naming Task-food",
     "longSoundsTask1": "Long Sounds-1",
     "longSoundsTask2": "Long Sounds-2",
     "repeatWords1": "Repeating Words-smile",
@@ -170,12 +170,15 @@ def create_recording_redcap(recording_csv, output_csv):
     
     df["recording_id"] = df["recording_id"].apply(
     lambda x: re.sub(r"([a-f0-9]{32})", lambda m: f"-{str(uuid.UUID(m.group()))}", x, flags=re.IGNORECASE) if pd.notna(x) else x
-)
+)   
     
+    uuid_cols = ["acoustic_task_session_id", "session_id ", "acoustic_task_id", " ⁠recording_acoustic_task_id", "recording_session_id"]
+    for col in uuid_cols:
+        df[col] = df[col].apply(lambda x: str(uuid.UUID(x)) if pd.notna(x) else x)
     
-    df["acoustic_task_session_id"] = df["acoustic_task_session_id"].apply(
-        lambda x: str(uuid.UUID(x)) if pd.notna(x) else x
-    )
+    # df["acoustic_task_session_id"] = df["acoustic_task_session_id"].apply(
+    #     lambda x: str(uuid.UUID(x)) if pd.notna(x) else x
+    # )
     
     df["acoustic_task_name"] = df["acoustic_task_name"].apply(
         lambda x: acoustic_names_mapping[x] if pd.notna(x) and x in acoustic_names_mapping else x
@@ -185,7 +188,7 @@ def create_recording_redcap(recording_csv, output_csv):
         lambda x: recording_names_mapping[x] if pd.notna(x) and x in recording_names_mapping else x
     )
 
-    df.to_csv(f"{output_csv}/recording-final-may21.csv", index=False)
+    df.to_csv(f"{output_csv}/recording-final-may26.csv", index=False)
 
 
 if __name__ == "__main__":
