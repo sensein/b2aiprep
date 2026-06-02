@@ -1,13 +1,21 @@
 import os
+import time
 import argparse
 from dotenv import load_dotenv
 
 import synapseclient
 import synapseutils
 from synapseclient.models import Project, Folder, File
+from synapseclient import EntityViewSchema, EntityViewType
 import hashlib
 
 from sage_config import get_dataset_config, validate_sync_folder
+
+# Column-name candidates for a file's MD5 in an entity view.
+_MD5_CANDIDATES = ["dataFileMD5Hex", "md5", "contentMd5"]
+# Citation/DOI fileviews. This script must NEVER create against, query, or delete
+# these -- the --use_view path only ever uses its own temporary view.
+_DOI_VIEWS = {"syn74341293", "syn74341287"}
 
 
 def get_file_md5(filepath):
@@ -79,22 +87,47 @@ def find_child_folder_id(syn, parent_id, name):
     return None
 
 
-def walk_local_folder(path, get_md5=False):
-    local_files = {}
-    local_folders = []
+def _default_workers():
+    try:
+        return max(1, len(os.sched_getaffinity(0)))
+    except Exception:
+        return os.cpu_count() or 4
 
+
+def _enumerate_local(path):
+    """Recursively list (file_paths, folder_paths) under path (no hashing)."""
+    files, folders = [], []
     for entity in os.listdir(path):
-        rel_path = os.path.join(path,entity)
-        if os.path.isdir(rel_path):
-            local_folders.append({'path':rel_path})
-            temp_files, temp_folders = walk_local_folder(rel_path, get_md5=get_md5)
-            local_files.update(temp_files)
-            local_folders += temp_folders
+        full = os.path.join(path, entity)
+        if os.path.isdir(full):
+            folders.append(full)
+            f, d = _enumerate_local(full)
+            files += f
+            folders += d
         else:
-            local_files[rel_path] = {
-                'md5': get_file_md5(rel_path) if get_md5 else None,
-                'path': rel_path
-            }
+            files.append(full)
+    return files, folders
+
+
+def walk_local_folder(path, get_md5=False, workers=1):
+    """List local files/folders; md5 the files in parallel when get_md5 is set.
+
+    Local hashing of many small files over networked storage is I/O-latency bound,
+    so hashing files concurrently (workers>1) overlaps that latency and is much
+    faster than sequential hashing.
+    """
+    file_paths, folder_paths = _enumerate_local(path)
+    if get_md5 and file_paths:
+        if workers and workers > 1:
+            from multiprocessing import Pool
+            with Pool(workers) as pool:
+                md5s = pool.map(get_file_md5, file_paths, chunksize=8)
+        else:
+            md5s = [get_file_md5(p) for p in file_paths]
+    else:
+        md5s = [None] * len(file_paths)
+    local_files = {p: {'md5': m, 'path': p} for p, m in zip(file_paths, md5s)}
+    local_folders = [{'path': p} for p in folder_paths]
     return local_files, local_folders
 
 
@@ -174,6 +207,66 @@ def run_file_comparisons(syn, sage_files, local_files, md5=False, dry_run=True):
             print(f"\t{path}")
 
 
+def build_from_view(syn, config, bids_folder):
+    """Fast alternative to walk_synapse_folder using a TEMPORARY file+folder view.
+
+    Creates an EntityView (FILE+FOLDER) scoped to the cohort folder, queries it
+    once for all files and folders, reconstructs each path in-memory from the
+    folder rows (no per-file/per-folder syn.get), then deletes the temp view.
+    Returns (files, folders) keyed by the local-equivalent absolute path so the
+    existing comparison functions can be reused. Never touches the DOI views.
+    """
+    root = config["folder"]
+    view = syn.store(EntityViewSchema(
+        name=f"_tmp_verify_{root}", parent=config["project"], scopes=[root],
+        includeEntityTypes=[EntityViewType.FILE, EntityViewType.FOLDER],
+        addDefaultViewColumns=True, addAnnotationColumns=False))
+    vid = view.id
+    assert vid not in _DOI_VIEWS, f"refusing to operate on citation view {vid}"
+    print(f"Created temp view {vid} over {root}")
+    try:
+        cols = [c["name"] for c in syn.getColumns(vid)]
+        md5col = next((c for c in _MD5_CANDIDATES if c in cols), None)
+        select = "id,name,parentId,type" + (f",{md5col}" if md5col else "")
+        df = None
+        for attempt in range(40):  # a freshly created view needs time to index
+            try:
+                df = syn.tableQuery(f"SELECT {select} FROM {vid}").asDataFrame()
+                if len(df) > 0:
+                    break
+            except Exception as e:
+                print(f"  view query attempt {attempt + 1} failed: {str(e)[:90]}")
+            time.sleep(15)
+        if df is None or len(df) == 0:
+            raise SystemExit(f"temp view {vid} returned no rows")
+
+        folders_df = df[df["type"].astype(str).str.lower() == "folder"]
+        files_df = df[df["type"].astype(str).str.lower() == "file"]
+        print(f"View rows: {len(df)} ({len(files_df)} files, {len(folders_df)} folders)")
+        if len(folders_df) == 0 and len(files_df) > 0:
+            raise SystemExit("view has no folder rows; cannot reconstruct paths")
+        fmap = {r.id: (str(r.name), r.parentId) for r in folders_df.itertuples(index=False)}
+
+        def relpath(name, parent):
+            parts, cur, guard = [], parent, 0
+            while cur and cur != root and cur in fmap and guard < 60:
+                nm, par = fmap[cur]; parts.append(nm); cur = par; guard += 1
+            return os.path.join(*(list(reversed(parts)) + [name]))
+
+        files = {}
+        for r in files_df.itertuples(index=False):
+            key = os.path.join(bids_folder, relpath(str(r.name), r.parentId))
+            files[key] = {"id": r.id, "name": str(r.name),
+                          "md5": getattr(r, md5col) if md5col else None, "path": key}
+        folders = [{"path": os.path.join(bids_folder, relpath(str(r.name), r.parentId)),
+                    "id": r.id} for r in folders_df.itertuples(index=False)]
+        return files, folders
+    finally:
+        if vid not in _DOI_VIEWS:
+            syn.delete(vid)
+            print(f"Deleted temp view {vid}")
+
+
 def main():
     load_dotenv()
 
@@ -190,8 +283,15 @@ def main():
                         help='Apply changes on Synapse. Without it the script only reports differences (dry run).')
     parser.add_argument('--subject', default=None, type=str,
                         help='Restrict the comparison to one subject (e.g. sub-010729) for a quick spot check.')
+    parser.add_argument('--use_view', default=False, action='store_true',
+                        help='Fast md5 check via a temporary file+folder view instead of a per-file '
+                             'walk (one query + in-memory path reconstruction). Implies an md5 '
+                             'comparison and never touches the DOI/citation views.')
+    parser.add_argument('--workers', default=None, type=int,
+                        help='Parallel processes for local md5 hashing. Defaults to allocated CPUs.')
 
     args = parser.parse_args()
+    workers = args.workers or _default_workers()
 
     sage_pat = os.getenv("SAGE_PAT")
     config = get_dataset_config(args.adult)
@@ -204,7 +304,20 @@ def main():
     root_data_folder = Folder(id=parent_id).get()
     validate_sync_folder(root_data_folder, config)
 
-    if args.subject:
+    # The view path is only meaningful as an md5 comparison, so it implies --get_md5.
+    md5 = args.get_md5 or args.use_view
+    dry_run = not args.sync
+
+    if args.use_view:
+        synapse_files, synapse_folders = build_from_view(syn, config, args.bids_folder)
+        local_files, local_folders = walk_local_folder(args.bids_folder, md5, workers)
+        if args.subject:
+            seg = f"/{args.subject}/"
+            synapse_files = {k: v for k, v in synapse_files.items() if seg in k}
+            local_files = {k: v for k, v in local_files.items() if seg in k}
+            synapse_folders = [d for d in synapse_folders if seg in d['path'] + '/']
+            local_folders = [d for d in local_folders if seg in d['path'] + '/']
+    elif args.subject:
         # Scope both walks to the subject's subtree. Keys on both sides are
         # prefixed with "<bids_folder>/<subject>" so they line up.
         local_root = os.path.join(args.bids_folder, args.subject)
@@ -217,15 +330,14 @@ def main():
             synapse_files, synapse_folders = {}, []
         else:
             synapse_files, synapse_folders = walk_synapse_folder(syn, subject_folder_id, local_root)
-        local_files, local_folders = walk_local_folder(local_root, args.get_md5)
+        local_files, local_folders = walk_local_folder(local_root, md5, workers)
     else:
         synapse_files, synapse_folders = walk_synapse_folder(syn, parent_id, args.bids_folder)
-        local_files, local_folders = walk_local_folder(args.bids_folder, args.get_md5)
+        local_files, local_folders = walk_local_folder(args.bids_folder, md5, workers)
 
-    dry_run = not args.sync
     # Delete files before folders so cascading folder deletes don't trip over
     # children that were already trashed.
-    run_file_comparisons(syn, synapse_files, local_files, md5=args.get_md5, dry_run=dry_run)
+    run_file_comparisons(syn, synapse_files, local_files, md5=md5, dry_run=dry_run)
     run_folder_comparisons(syn, synapse_folders, local_folders, dry_run=dry_run)
 
 
