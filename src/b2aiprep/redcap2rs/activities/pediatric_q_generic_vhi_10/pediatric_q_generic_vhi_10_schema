@@ -11,6 +11,9 @@
             "items/peds_vhi_started_at",
             "items/peds_vhi_completed_at",
             "items/peds_vhi_duration",
+            "items/peds_vhi_origin",
+            "items/peds_vhi_via",
+            "items/peds_vhi_language",
             "items/peds_vhi_talkativeness",
             "items/peds_voice_difficult_hear",
             "items/peds_difficulty_understanding",
@@ -61,6 +64,24 @@
                 "isVis": false,
                 "valueRequired": false,
                 "variableName": "peds_vhi_duration"
+            },
+            {
+                "isAbout": "items/peds_vhi_origin",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "peds_vhi_origin"
+            },
+            {
+                "isAbout": "items/peds_vhi_via",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "peds_vhi_via"
+            },
+            {
+                "isAbout": "items/peds_vhi_language",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "peds_vhi_language"
             },
             {
                 "isAbout": "items/peds_vhi_talkativeness",
@@ -215,6 +236,6 @@
         ],
         "shuffle": false
     },
-    "version": "3.24.0",
+    "version": "4.7.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

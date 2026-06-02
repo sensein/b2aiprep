@@ -16,7 +16,7 @@ import shutil
 from unittest.mock import patch, MagicMock
 from click.testing import CliRunner
 
-from b2aiprep.commands import deidentify_bids_dataset
+from b2aiprep.commands import create_subject_splits, deidentify_bids_dataset
 from b2aiprep.prepare.dataset import BIDSDataset
 
 class TestDeidentifyCommand:
@@ -672,7 +672,7 @@ def test_validate_bundled_dataset_cli(setup_publish_config):
         task_dir.mkdir(parents=True, exist_ok=True)
 
         # Create minimal bundled dataset structure
-        df = pd.DataFrame({"participant_id": ["sub-01"], "task_name": ["task1"], "session_id": ["ses-01"]})
+        df = pd.DataFrame({"participant_id": ["sub-01"], "task_name": ["test"], "session_id": ["ses-01"]})
         df.to_parquet(features_dir / "torchaudio_spectrogram.parquet")
         df.to_parquet(features_dir / "torchaudio_mfcc.parquet")
         
@@ -758,6 +758,8 @@ def test_deidentify_bids_dataset_cli_id_rename(
     assert outdir.exists(), "Output directory was not created"
     # checked if participant_id was changed
     assert (outdir / "sub-P001").exists()
+    assert not (outdir / "audio_quality_metrics.json").exists()
+    assert not (outdir / "audio_quality_metrics.tsv").exists()
         
 def test_deidentify_bids_dataset_cli_remove_audio(
     setup_bids_structure, setup_publish_config, tmp_path
@@ -776,6 +778,19 @@ def test_deidentify_bids_dataset_cli_remove_audio(
     (phenotype_dir / "questionnaire1.json").write_text(
         '{"participant_id": {"Description": "Participant identifier"}, '
         '"record_id": {"Description": "Record identifier"}}'
+    )
+
+    # Create audio quality metrics
+    quality_metrics_file = bids_dir / "audio_quality_metrics.tsv"
+    quality_metrics_file.write_text("participant_id\tsession_id\ttask_name\n001\t001\treading\n001\t001\tnot-reading")
+
+    # Create participants.json (required for some commands)
+    participants_json = bids_dir / "participants.json"
+    participants_json.write_text(
+        '{"participant_id": {"Description": "Unique participant identifier"}, '
+        '"record_id": {"Description": "Unique record identifier"}, '
+        '"sex": {"Description": "Sex of participant"}, '
+        '"age": {"Description": "Age of participant"}}'
     )
 
     # Modify audio_filestems_to_remove.json
@@ -808,6 +823,33 @@ def test_deidentify_bids_dataset_cli_remove_audio(
         / "audio"
         / "sub-001_ses-1_task-reading_features.pt"
     ).exists()
+    assert (outdir / "audio_quality_metrics.json").exists()
+    assert (outdir / "audio_quality_metrics.tsv").exists()
+    
+    quality_deidentified = pd.read_csv((outdir / "audio_quality_metrics.tsv"),sep='\t')
+    assert len(quality_deidentified)==1, f"deidentified audio_quality_metrics.tsv should have 1 entry but found {len(quality_deidentified)}"
+
+
+def test_run_quality_control(
+    setup_bids_structure
+):
+    """Test the 'b2aiprep-cli run-quality-control' command using subprocess."""
+    bids_dir = setup_bids_structure
+
+    command = [
+        "b2aiprep-cli",
+        "run-quality-control-on-audios",
+        str(bids_dir),
+    ]
+
+    result_file = bids_dir / "audio_quality_metrics.tsv"
+    result_data_descriptor = bids_dir / "audio_quality_metrics.json"
+
+    result = subprocess.run(command, capture_output=True, text=True)
+    assert result.returncode == 0, f"CLI command failed: {result.stderr}"
+    assert result_file.exists(), "Quality metrics TSV was not created"
+    assert result_data_descriptor.exists(), "Quality metrics JSON was not created"
+
 
 def test_reproschema_to_redcap_cli():
     """Test the 'b2aiprep-cli reproschema-to-redcap' command using subprocess."""
@@ -844,3 +886,189 @@ def test_reproschema_to_redcap_cli():
         result = subprocess.run(command, capture_output=True, text=True)
         assert result.returncode == 0, f"CLI command failed: {result.stderr}"
         assert output_dir.exists(), "Output directory was not created"
+
+
+
+def test_generate_id_lookup_table_cli():
+    """Test the 'b2aiprep-cli generate-id-lookup-table' command using subprocess."""
+    with tempfile.TemporaryDirectory() as temp_dir:
+        ids = {"participant_id": ["P001", "P002"]}
+        id_df = pd.DataFrame(ids)
+        id_dir = Path(temp_dir) / "ids.tsv"
+
+        id_df.to_csv(id_dir, sep='\t', index=False)
+
+        output_dir = Path(temp_dir) / "output"
+        output_dir.mkdir(parents=True, exist_ok=True)
+        command = [
+            "b2aiprep-cli",
+            "generate-id-lookup-table",
+            id_dir,
+            output_dir
+        ]
+
+        output_file = output_dir / "id_lookup_table.json"
+        result = subprocess.run(command, capture_output=True, text=True)
+        assert result.returncode == 0, f"CLI command failed: {result.stderr}"
+        assert output_dir.exists(), "Output directory was not created"
+        assert output_file.exists(), "Output file was not created"
+
+def test_generate_id_lookup_table_existing_remap_cli():
+    """Test the 'b2aiprep-cli generate-id-lookup-table' command with --load_lookup."""
+    with tempfile.TemporaryDirectory() as temp_dir:
+        ids = {"participant_id": ["P001", "P002"]}
+        id_df = pd.DataFrame(ids)
+        id_dir = Path(temp_dir) / "ids.tsv"
+        remap = {"P003": "123456", "P004": "678910"}
+        remap_file_path = Path(temp_dir) / "id_remap.json"
+        with open(remap_file_path, "w") as file:
+            json.dump(remap, file)
+        id_df.to_csv(id_dir, sep='\t', index=False)
+
+        output_dir = Path(temp_dir) / "output"
+        output_dir.mkdir(parents=True, exist_ok=True)
+        command = [
+            "b2aiprep-cli",
+            "generate-id-lookup-table",
+            id_dir,
+            output_dir,
+            "--load_lookup",
+            remap_file_path
+        ]
+
+        output_file = output_dir / "id_lookup_table.json"
+        result = subprocess.run(command, capture_output=True, text=True)
+        assert result.returncode == 0, f"CLI command failed: {result.stderr}"
+        assert output_dir.exists(), "Output directory was not created"
+        assert output_file.exists(), "Output file was not created"
+        
+        with open(output_file, 'r') as file:
+            data = json.load(file)
+
+        assert "P003" in data, "Missing Participant in remap"
+        assert data["P003"] == "123456", "Remap is incorrect"
+        assert "P004" in data, "Missing Participant in remap"
+        assert data["P004"] == "678910", "Remap is incorrect"
+        assert "P001" in data, "P001 is missing in remap file"
+        assert "P002" in data, "P002 is missing in remap file"
+
+
+def _write_ids_tsv(path, ids, id_column="record_id"):
+    pd.DataFrame({id_column: ids}).to_csv(path, sep="\t", index=False)
+
+
+def _read_split_files(output_dir):
+    files = sorted(Path(output_dir).glob("subject_ids_*.txt"))
+    return [f.read_text().strip().splitlines() for f in files]
+
+
+class TestCreateSubjectSplits:
+    """Tests for the create_subject_splits command."""
+
+    def test_splits_default_chunk_size(self, tmp_path):
+        input_file = tmp_path / "ids.tsv"
+        _write_ids_tsv(input_file, [f"R{i:03d}" for i in range(25)])
+        output_dir = tmp_path / "out"
+
+        runner = CliRunner()
+        result = runner.invoke(create_subject_splits, [str(input_file), str(output_dir)])
+        assert result.exit_code == 0, result.output
+
+        chunks = _read_split_files(output_dir)
+        assert [len(c) for c in chunks] == [10, 10, 5]
+        # Round-trip covers every unique ID exactly once.
+        flat = [x for chunk in chunks for x in chunk]
+        assert sorted(flat) == sorted({f"R{i:03d}" for i in range(25)})
+
+    def test_splits_exact_multiple(self, tmp_path):
+        input_file = tmp_path / "ids.tsv"
+        _write_ids_tsv(input_file, [f"R{i}" for i in range(20)])
+        output_dir = tmp_path / "out"
+
+        result = CliRunner().invoke(
+            create_subject_splits,
+            [str(input_file), str(output_dir), "--num_participants_per_file", "5"],
+        )
+        assert result.exit_code == 0, result.output
+        chunks = _read_split_files(output_dir)
+        assert [len(c) for c in chunks] == [5, 5, 5, 5]
+
+    def test_single_participant_creates_one_file(self, tmp_path):
+        input_file = tmp_path / "ids.tsv"
+        _write_ids_tsv(input_file, ["only_one"])
+        output_dir = tmp_path / "out"
+
+        result = CliRunner().invoke(create_subject_splits, [str(input_file), str(output_dir)])
+        assert result.exit_code == 0, result.output
+        chunks = _read_split_files(output_dir)
+        assert chunks == [["only_one"]]
+
+    def test_deduplicates_ids(self, tmp_path):
+        input_file = tmp_path / "ids.tsv"
+        _write_ids_tsv(input_file, ["A", "B", "A", "C", "B"])
+        output_dir = tmp_path / "out"
+
+        result = CliRunner().invoke(create_subject_splits, [str(input_file), str(output_dir)])
+        assert result.exit_code == 0, result.output
+        chunks = _read_split_files(output_dir)
+        assert chunks == [["A", "B", "C"]]
+
+    def test_accepts_csv_input(self, tmp_path):
+        # RedCap exports are comma-separated; the command should dispatch on extension.
+        input_file = tmp_path / "redcap.csv"
+        pd.DataFrame({"record_id": ["A", "B", "C"]}).to_csv(input_file, index=False)
+        output_dir = tmp_path / "out"
+
+        result = CliRunner().invoke(create_subject_splits, [str(input_file), str(output_dir)])
+        assert result.exit_code == 0, result.output
+        assert _read_split_files(output_dir) == [["A", "B", "C"]]
+
+    def test_custom_id_column(self, tmp_path):
+        input_file = tmp_path / "ids.tsv"
+        _write_ids_tsv(input_file, ["P1", "P2", "P3"], id_column="participant_id")
+        output_dir = tmp_path / "out"
+
+        result = CliRunner().invoke(
+            create_subject_splits,
+            [str(input_file), str(output_dir), "--id_column", "participant_id"],
+        )
+        assert result.exit_code == 0, result.output
+        chunks = _read_split_files(output_dir)
+        assert chunks == [["P1", "P2", "P3"]]
+
+    def test_creates_output_dir_when_missing(self, tmp_path):
+        input_file = tmp_path / "ids.tsv"
+        _write_ids_tsv(input_file, ["A"])
+        output_dir = tmp_path / "nested" / "not_yet_created"
+        assert not output_dir.exists()
+
+        result = CliRunner().invoke(create_subject_splits, [str(input_file), str(output_dir)])
+        assert result.exit_code == 0, result.output
+        assert output_dir.is_dir()
+        assert (output_dir / "subject_ids_0.txt").exists()
+
+    def test_missing_id_column_errors(self, tmp_path):
+        input_file = tmp_path / "ids.tsv"
+        _write_ids_tsv(input_file, ["A"], id_column="participant_id")
+        output_dir = tmp_path / "out"
+
+        result = CliRunner().invoke(create_subject_splits, [str(input_file), str(output_dir)])
+        assert result.exit_code != 0
+        assert "record_id" in result.output
+
+    def test_invalid_num_per_file_errors(self, tmp_path):
+        input_file = tmp_path / "ids.tsv"
+        _write_ids_tsv(input_file, ["A"])
+        output_dir = tmp_path / "out"
+
+        result = CliRunner().invoke(
+            create_subject_splits,
+            [str(input_file), str(output_dir), "--num_participants_per_file", "0"],
+        )
+        assert result.exit_code != 0
+
+    def test_help_documents_options(self):
+        result = CliRunner().invoke(create_subject_splits, ["--help"])
+        assert result.exit_code == 0
+        assert "num_participants_per_file" in result.output
+        assert "id_column" in result.output

@@ -1,12 +1,6 @@
 {
     "id": "subjectparticipant_basic_information_schema",
     "category": "reproschema:Activity",
-    "compute": [
-        {
-            "jsExpression": "rounddown((datediff(dob,'today','y','ymd')),0)",
-            "variableName": "age"
-        }
-    ],
     "prefLabel": {
         "en": "subjectparticipant_basic_information"
     },
@@ -14,6 +8,7 @@
     "ui": {
         "order": [
             "items/record_id",
+            "items/age",
             "items/selected_language",
             "items/selected_language_2",
             "items/consent_status",
@@ -28,6 +23,8 @@
             "items/enrollment_reason",
             "items/enrollment_institution",
             "items/researcher_email",
+            "items/participant_data_collection_origins",
+            "items/participant_data_collection_via",
             "items/api_updates_on_behalf_of"
         ],
         "addProperties": [
@@ -39,7 +36,7 @@
             },
             {
                 "isAbout": "items/age",
-                "isVis": false,
+                "isVis": true,
                 "valueRequired": false,
                 "variableName": "age"
             },
@@ -124,8 +121,20 @@
             {
                 "isAbout": "items/researcher_email",
                 "isVis": true,
-                "valueRequired": true,
+                "valueRequired": false,
                 "variableName": "researcher_email"
+            },
+            {
+                "isAbout": "items/participant_data_collection_origins",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "participant_data_collection_origins"
+            },
+            {
+                "isAbout": "items/participant_data_collection_via",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "participant_data_collection_via"
             },
             {
                 "isAbout": "items/api_updates_on_behalf_of",
@@ -136,6 +145,6 @@
         ],
         "shuffle": false
     },
-    "version": "4.3.0",
+    "version": "4.7.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

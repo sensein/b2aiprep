@@ -1,5 +1,7 @@
 import json
+import logging
 import os
+import subprocess
 import tempfile
 from pathlib import Path
 import pandas as pd
@@ -7,6 +9,7 @@ import pytest
 
 from b2aiprep.prepare.utils import (
     copy_package_resource,
+    get_commit_sha,
     make_tsv_files,
     reformat_resources,
     remove_files_by_pattern,
@@ -87,6 +90,44 @@ def test_get_wav_duration():
     actual = get_wav_duration(b2ai_wav_path)
     expected  = 2.9257142857142857
     assert actual == expected
+
+
+def test_get_commit_sha_reads_file(tmp_path):
+    sha = "abcdef1234567890abcdef1234567890abcdef12"
+    (tmp_path / "commit_sha.txt").write_text(sha + "\n")
+    assert get_commit_sha(tmp_path) == sha
+
+
+def test_get_commit_sha_falls_back_to_git(tmp_path, monkeypatch):
+    expected_sha = "a" * 40
+    captured = {}
+
+    def fake_run(cmd, capture_output, check, text):
+        captured["cmd"] = cmd
+        return subprocess.CompletedProcess(cmd, 0, stdout=expected_sha + "\n", stderr="")
+
+    monkeypatch.setattr("b2aiprep.prepare.utils.subprocess.run", fake_run)
+    assert get_commit_sha(tmp_path) == expected_sha
+    assert captured["cmd"] == ["git", "-C", str(tmp_path), "rev-parse", "HEAD"]
+
+
+@pytest.mark.parametrize(
+    "exc",
+    [
+        subprocess.CalledProcessError(128, ["git"]),
+        FileNotFoundError("git"),
+    ],
+    ids=["git_not_a_repo", "git_not_installed"],
+)
+def test_get_commit_sha_returns_empty_when_unrecoverable(tmp_path, monkeypatch, caplog, exc):
+    def fake_run(*args, **kwargs):
+        raise exc
+
+    monkeypatch.setattr("b2aiprep.prepare.utils.subprocess.run", fake_run)
+    caplog.set_level(logging.WARNING, logger="b2aiprep.prepare.utils")
+    assert get_commit_sha(tmp_path) == ""
+    assert "Could not determine reproschema commit SHA" in caplog.text
+
 
 if __name__ == "__main__":
     pytest.main()

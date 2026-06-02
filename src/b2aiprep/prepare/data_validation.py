@@ -174,32 +174,27 @@ def validate_participant_data(data: dict, data_dictionary: dict) -> None:
         validate_field(field=field, data=data, data_dictionary=data_dictionary)
 
 
-def validate_sensitive_feature_removal_in_bundle(
+def validate_no_extra_audio_tasks_present(
     *,
     features_dir: Path,
-    sensitive_tasks: t.Set[str],
+    audio_tasks_to_include: t.Set[str],
     forbidden_features: t.Union[
         t.AbstractSet[str],
         t.Mapping[str, t.AbstractSet[str]],
     ] = _SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE,
 ) -> t.List[str]:
-    """Validate that bundled parquet feature files do not contain forbidden features for sensitive tasks.
-
-    In the current bundling implementation, sensitive audio feature arrays are removed from the per-record
-    feature `.pt` files, and the bundle generators skip those rows entirely for certain features.
-    This check makes that expectation explicit.
-
+    """Validate that only features for tasks in the inclusion list are present.
     Returns a list of human-readable issue strings.
     """
 
-    if not sensitive_tasks:
+    if not audio_tasks_to_include:
         return []
 
     if isinstance(forbidden_features, t.AbstractSet):
         forbidden_features = {"": forbidden_features}
 
     issues: t.List[str] = []
-    sensitive_normalized = {normalize_task_label(t) for t in sensitive_tasks}
+    audio_task_to_include_normalized = {normalize_task_label(t) for t in audio_tasks_to_include}
     for group, keys_to_remove in forbidden_features.items():
         for feature_name in sorted(keys_to_remove):
             if group == "":
@@ -214,7 +209,7 @@ def validate_sensitive_feature_removal_in_bundle(
             try:
                 df = pd.read_parquet(parquet_path, columns=["participant_id", "task_name", "session_id"])
             except Exception as e:
-                issues.append(f"Error reading {parquet_path.name} for sensitive-feature validation: {e}")
+                issues.append(f"Error reading {parquet_path.name} for inclusion-feature validation: {e}")
                 continue
 
             if "task_name" not in df.columns:
@@ -224,11 +219,11 @@ def validate_sensitive_feature_removal_in_bundle(
             present_sensitive = {
                 task
                 for task in set(df["task_name"].dropna().unique())
-                if normalize_task_label(task) in sensitive_normalized
+                if normalize_task_label(task) not in audio_task_to_include_normalized
             }
             if present_sensitive:
                 issues.append(
-                    "Sensitive tasks unexpectedly present in "
+                    "Audio tasks unexpectedly present in "
                     f"{parquet_path.name} (forbidden feature: {feature_name}): {sorted(present_sensitive)}"
                 )
 

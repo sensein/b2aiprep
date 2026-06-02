@@ -12,6 +12,9 @@
             "items/stroop_started_at",
             "items/stroop_completed_at",
             "items/stroop_duration",
+            "items/stroop_origin",
+            "items/stroop_via",
+            "items/stroop_language",
             "items/stroop_item_stimulus_1",
             "items/stroop_item_color_1",
             "items/stroop_item_time_1",
@@ -103,6 +106,24 @@
                 "isVis": false,
                 "valueRequired": false,
                 "variableName": "stroop_duration"
+            },
+            {
+                "isAbout": "items/stroop_origin",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "stroop_origin"
+            },
+            {
+                "isAbout": "items/stroop_via",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "stroop_via"
+            },
+            {
+                "isAbout": "items/stroop_language",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "stroop_language"
             },
             {
                 "isAbout": "items/stroop_item_stimulus_1",
@@ -467,6 +488,6 @@
         ],
         "shuffle": false
     },
-    "version": "3.24.0",
+    "version": "4.7.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

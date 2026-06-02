@@ -75,6 +75,7 @@
             "items/ef_enrollment_institution",
             "items/ef_researcher_email",
             "items/ef_enrollment_origin",
+            "items/ef_enrollment_via",
             "items/ef_started_at",
             "items/ef_completed_at",
             "items/ef_duration"
@@ -484,9 +485,15 @@
             },
             {
                 "isAbout": "items/ef_enrollment_origin",
-                "isVis": false,
-                "valueRequired": false,
+                "isVis": true,
+                "valueRequired": true,
                 "variableName": "ef_enrollment_origin"
+            },
+            {
+                "isAbout": "items/ef_enrollment_via",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ef_enrollment_via"
             },
             {
                 "isAbout": "items/ef_started_at",
@@ -509,6 +516,6 @@
         ],
         "shuffle": false
     },
-    "version": "4.1.0",
+    "version": "4.7.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

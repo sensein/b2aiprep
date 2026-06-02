@@ -1,3 +1,118 @@
+# 3.3.2 (Thu May 21 2026)
+
+#### 🐛 Bug Fix
+
+- Fix pypi install errors [#310](https://github.com/sensein/b2aiprep/pull/310) ([@wilke0818](https://github.com/wilke0818))
+
+#### Authors: 1
+
+- Jordan Wilke ([@wilke0818](https://github.com/wilke0818))
+
+---
+
+# 3.3.1 (Thu May 21 2026)
+
+#### 🐛 Bug Fix
+
+- Include redcap2rs data files in built wheel [#309](https://github.com/sensein/b2aiprep/pull/309) ([@wilke0818](https://github.com/wilke0818))
+
+#### Authors: 1
+
+- Jordan Wilke ([@wilke0818](https://github.com/wilke0818))
+
+---
+
+# 3.3.0 (Thu May 21 2026)
+
+#### 🚀 Enhancement
+
+- Updates for internal releasing [#308](https://github.com/sensein/b2aiprep/pull/308) ([@wilke0818](https://github.com/wilke0818))
+
+#### 🐛 Bug Fix
+
+- Update files for redcap2rs-4.7.0-20260504133439 [#304](https://github.com/sensein/b2aiprep/pull/304) ([@github-actions[bot]](https://github.com/github-actions[bot]) [@wilke0818](https://github.com/wilke0818) [@b2ai-workflow-conenctor[bot]](https://github.com/b2ai-workflow-conenctor[bot]))
+- Update bids_field_organization.csv for bridge2ai-redcap v4.7.0 [#306](https://github.com/sensein/b2aiprep/pull/306) ([@wilke0818](https://github.com/wilke0818))
+- fix(audio-task-descriptions): correct ordering, content, and missing … [#305](https://github.com/sensein/b2aiprep/pull/305) ([@wilke0818](https://github.com/wilke0818))
+
+#### 📝 Documentation
+
+- Removed outdated release info and added sanitize to redcap2bids argum… [#260](https://github.com/sensein/b2aiprep/pull/260) ([@wilke0818](https://github.com/wilke0818))
+
+#### Authors: 3
+
+- [@b2ai-workflow-conenctor[bot]](https://github.com/b2ai-workflow-conenctor[bot])
+- [@github-actions[bot]](https://github.com/github-actions[bot])
+- Jordan Wilke ([@wilke0818](https://github.com/wilke0818))
+
+---
+
+# 3.2.0 (Fri Apr 17 2026)
+
+#### 🚀 Enhancement
+
+- Made id remapping into a command [#302](https://github.com/sensein/b2aiprep/pull/302) ([@Evan8456](https://github.com/Evan8456))
+
+#### 🐛 Bug Fix
+
+- Change COPD and asthma field to reference gold standard diagnosis [#258](https://github.com/sensein/b2aiprep/pull/258) ([@wilke0818](https://github.com/wilke0818))
+- Update files for redcap2rs-4.6.0-20260401191141 [#257](https://github.com/sensein/b2aiprep/pull/257) ([@github-actions[bot]](https://github.com/github-actions[bot]) [@b2ai-workflow-conenctor[bot]](https://github.com/b2ai-workflow-conenctor[bot]))
+- Fixed bug with metadata bundle [#254](https://github.com/sensein/b2aiprep/pull/254) ([@Evan8456](https://github.com/Evan8456))
+- Update files for redcap2rs-4.5.0-20260317205911 [#253](https://github.com/sensein/b2aiprep/pull/253) ([@github-actions[bot]](https://github.com/github-actions[bot]) [@b2ai-workflow-conenctor[bot]](https://github.com/b2ai-workflow-conenctor[bot]))
+- Fixed naming descrepancy with redcap and file names [#252](https://github.com/sensein/b2aiprep/pull/252) ([@Evan8456](https://github.com/Evan8456))
+- Adding missing descriptors not in the documentation [#251](https://github.com/sensein/b2aiprep/pull/251) ([@Evan8456](https://github.com/Evan8456))
+
+#### Authors: 4
+
+- [@b2ai-workflow-conenctor[bot]](https://github.com/b2ai-workflow-conenctor[bot])
+- [@github-actions[bot]](https://github.com/github-actions[bot])
+- Evan Ng ([@Evan8456](https://github.com/Evan8456))
+- Jordan Wilke ([@wilke0818](https://github.com/wilke0818))
+
+---
+
+# 3.1.0 (Mon Mar 09 2026)
+
+#### 🚀 Enhancement
+
+- Add quality metrics to pipeline & improve bundle [#248](https://github.com/sensein/b2aiprep/pull/248) ([@wilke0818](https://github.com/wilke0818))
+
+#### 🐛 Bug Fix
+
+- Removed fhir and added audio task descriptors [#244](https://github.com/sensein/b2aiprep/pull/244) ([@Evan8456](https://github.com/Evan8456))
+- moved non-diagnosis csvs to questionnaire group [#247](https://github.com/sensein/b2aiprep/pull/247) ([@Evan8456](https://github.com/Evan8456))
+
+#### Authors: 2
+
+- [@wilke0818](https://github.com/wilke0818)
+- Evan Ng ([@Evan8456](https://github.com/Evan8456))
+
+---
+
+# 3.0.3 (Mon Mar 02 2026)
+
+#### 🐛 Bug Fix
+
+- Added authors to dataset description [#233](https://github.com/sensein/b2aiprep/pull/233) ([@wilke0818](https://github.com/wilke0818) [@Evan8456](https://github.com/Evan8456))
+- Inclusion config [#243](https://github.com/sensein/b2aiprep/pull/243) ([@Evan8456](https://github.com/Evan8456) [@wilke0818](https://github.com/wilke0818))
+- use 16 bits for audios [#238](https://github.com/sensein/b2aiprep/pull/238) ([@wilke0818](https://github.com/wilke0818))
+- Updated fhir ids to be unique and added deidentification of fhir ids [#237](https://github.com/sensein/b2aiprep/pull/237) ([@Evan8456](https://github.com/Evan8456))
+- Fix age on a separate row in phenotype [#234](https://github.com/sensein/b2aiprep/pull/234) ([@alistairewj](https://github.com/alistairewj))
+- Mono 16k audios [#231](https://github.com/sensein/b2aiprep/pull/231) ([@wilke0818](https://github.com/wilke0818))
+- Added script to check dataframes [#232](https://github.com/sensein/b2aiprep/pull/232) ([@Evan8456](https://github.com/Evan8456))
+- updated redcar2bids to not rely on submodule [#226](https://github.com/sensein/b2aiprep/pull/226) ([@Evan8456](https://github.com/Evan8456) [@wilke0818](https://github.com/wilke0818))
+- Initial addiition of redcap2rs files [#225](https://github.com/sensein/b2aiprep/pull/225) ([@github-actions[bot]](https://github.com/github-actions[bot]) [@Evan8456](https://github.com/Evan8456))
+- Added github actions workflow to address submodule issues [#223](https://github.com/sensein/b2aiprep/pull/223) ([@Evan8456](https://github.com/Evan8456))
+- Fixed minor bug with reproschema conversion and import [#224](https://github.com/sensein/b2aiprep/pull/224) ([@Evan8456](https://github.com/Evan8456))
+
+#### Authors: 4
+
+- [@github-actions[bot]](https://github.com/github-actions[bot])
+- [@wilke0818](https://github.com/wilke0818)
+- Alistair Johnson ([@alistairewj](https://github.com/alistairewj))
+- Evan Ng ([@Evan8456](https://github.com/Evan8456))
+
+---
+
 # 3.0.2 (Tue Jan 06 2026)
 
 #### 🐛 Bug Fix

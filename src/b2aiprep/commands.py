@@ -46,7 +46,7 @@ from tqdm import tqdm
 from b2aiprep.prepare.bids import get_paths, validate_bids_folder_audios
 from b2aiprep.prepare.constants import RepeatInstrument
 from b2aiprep.prepare.redcap import RedCapDataset
-from b2aiprep.prepare.dataset import BIDSDataset
+from b2aiprep.prepare.dataset import BIDSDataset, _SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE
 from b2aiprep.prepare.bundle_data import (
     feature_extraction_generator,
     spectrogram_generator,
@@ -58,12 +58,16 @@ from b2aiprep.prepare.prepare import (
 )
 from b2aiprep.prepare.quality_control import quality_control_wrapper
 
-from b2aiprep.prepare.data_validation import validate_phenotype, validate_sensitive_feature_removal_in_bundle
-from b2aiprep.prepare.utils import normalize_task_label
+from b2aiprep.prepare.data_validation import validate_phenotype, validate_no_extra_audio_tasks_present
+from b2aiprep.prepare.utils import normalize_task_label, generate_seed, generate_pseudonym, load_lookup_table, build_lookup_table
 from b2aiprep.prepare.update import TemplateUpdateError, reorganize_bids_activities, update_bids_template_files
 
 _LOGGER = logging.getLogger(__name__)
 
+_SENSITIVE_PARQUET_STEMS: t.FrozenSet[str] = {
+        f"{feature_group}_{feature_name}" if feature_group else feature_name
+        for feature_group in _SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE for feature_name in _SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE[feature_group]
+        }
 
 def _prime_generator(
     generator_callable: t.Callable[[], t.Iterator[t.Dict[str, t.Any]]],
@@ -273,33 +277,49 @@ def generate_audio_features(
 
 @click.command()
 @click.argument("bids_path", type=click.Path())
-@click.argument("output_metrics_path", type=click.Path())
+@click.argument("output_metrics_path", type=click.Path(), required=False)
 @click.option("-b", "--batch_size", type=int, default=8, show_default=True)
 @click.option("-n", "--num_cores", type=int, default=4, show_default=True)
-@click.option("--skip_windowing/--no-skip_windowing", type=bool, default=False, show_default=True)
+@click.option("--skip_windowing/--no-skip_windowing", type=bool, default=True, show_default=True)
+@click.option("--deep_checks/--no-deep_checks", type=bool, default=False, show_default=True)
 def run_quality_control_on_audios(
     bids_path,
     output_metrics_path,
     batch_size,
     num_cores,
     skip_windowing,
+    deep_checks,
 ):
+    """
+    Run audio quality control checks on a BIDS directory.
+
+    Args:
+        bids_path: Path to the BIDS directory with the audios to run quality control checks on
+        output_metrics_path: Optional output path for the metrics. If not provided, will use a temporary directory.
+        batch_size: Batch size to run when parallelizing
+        num_cores: Number of cores to use when parallelizing
+        skip_windowing: If True, only compute scalar metrics without windowing
+        deep_checks: If true, run deeper checks including snorkel recommendations and trimming and diarization checks
+    """
 
     bids_path = Path(bids_path)
 
     audio_paths = get_paths(bids_path, file_extension=".wav")
     audio_paths = [x["path"] for x in audio_paths]
 
-    outdir = Path(output_metrics_path)
-    outdir.mkdir(parents=True, exist_ok=True)
+    if output_metrics_path:
+        output_metrics_path = Path(output_metrics_path)
+        output_metrics_path.mkdir(parents=True, exist_ok=True)
 
 
     quality_control_wrapper(
         audio_paths=audio_paths,
-        outdir=outdir,
+        bids_path=bids_path,
+        outdir=output_metrics_path,
         batch_size=batch_size,
         num_cores=num_cores,
-        skip_windowing=skip_windowing
+        skip_windowing=skip_windowing,
+        deep_checks=deep_checks,
     )
 
 
@@ -392,6 +412,33 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
         shutil.copytree(bids_phenotype_path, phenotype_path, dirs_exist_ok=True)
         _LOGGER.info("Finished creating phenotype data")
 
+    features_dir = outdir / "features"
+    features_dir.mkdir(parents=True, exist_ok=True)
+
+    qc_tsv_src = bids_path / "audio_quality_metrics.tsv"
+    qc_json_src = bids_path / "audio_quality_metrics.json"
+    if qc_tsv_src.exists():
+        shutil.copy(qc_tsv_src, features_dir / "audio_quality_metrics.tsv")
+        _LOGGER.info("Copied audio_quality_metrics.tsv to bundle.")
+        if not qc_json_src.exists():
+            _LOGGER.warning(
+                "audio_quality_metrics.json not found in BIDS dataset; "
+                "copying schema from package resources."
+            )
+            qc_json_resource = resources.files("b2aiprep").joinpath(
+                "prepare", "resources", "audio_quality_metrics.json"
+            )
+            with qc_json_resource.open() as src, open(features_dir / "audio_quality_metrics.json", "w") as dst:
+                dst.write(src.read())
+        else:
+            shutil.copy(qc_json_src, features_dir / "audio_quality_metrics.json")
+        _LOGGER.info("Copied audio_quality_metrics.json to bundle.")
+    elif qc_json_src.exists():
+        _LOGGER.warning(
+            "audio_quality_metrics.json found but audio_quality_metrics.tsv is missing; "
+            "skipping quality metrics for bundle."
+        )
+
     _LOGGER.info("Loading audio static features.")
     static_features = []
     static_examples = 0
@@ -433,8 +480,8 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
 
         static_features.append(subj_info)
 
-    features_dir = outdir / "features"
-    features_dir.mkdir(parents=True, exist_ok=True)
+    #features_dir = outdir / "features"
+    #features_dir.mkdir(parents=True, exist_ok=True)
 
     df_static = pd.DataFrame(static_features)
     df_static.to_csv(features_dir / "static_features.tsv", sep="\t", index=False)
@@ -455,6 +502,32 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
         "tasks": static_tasks,
         "status": "created",
     }
+    
+    _LOGGER.info("Generating metadata.parquet")
+    metadata_dir = outdir / "metadata"
+    metadata_dir.mkdir(parents=True, exist_ok=True)
+    wav_paths = list(bids_path.rglob("*.wav"))
+    metadata_paths = [p.with_suffix(".json") for p in wav_paths]
+    metadata_dfs = []
+    for path in metadata_paths:
+        with open(path, 'r') as f:
+            try:
+                metadata_dfs.append(pd.DataFrame([json.load(f)]))
+            except (json.JSONDecodeError, ValueError) as e:
+                _LOGGER.warning(f"Failed to process metadata file {path}: {e}")
+                continue
+    
+    df = pd.concat(metadata_dfs, ignore_index=True)
+    df.to_parquet(metadata_dir.joinpath("metadata.parquet"), index=False)
+    
+    metadata_json_file = resources.files("b2aiprep").joinpath(
+        "prepare", "resources", "metadata.json"
+    )
+    
+    metadata = json.load(metadata_json_file.open())
+    with open(metadata_dir.joinpath("metadata.json"), "w") as f:
+        json.dump(metadata, f, indent=2)
+    _LOGGER.info("Finished creating metadata files.")
 
     _LOGGER.info("Loading other features into HF datasets.")
 
@@ -562,6 +635,19 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
             ),
         )
 
+        schema_resource = resources.files("b2aiprep").joinpath(
+            "prepare", "resources", "feature_schemas", f"{feature_alias}.json"
+        )
+        try:
+            with schema_resource.open() as src, open(features_dir / f"{feature_alias}.json", "w") as dst:
+                dst.write(src.read())
+        except FileNotFoundError:
+            _LOGGER.warning(
+                "No schema JSON found for feature '%s' in feature_schemas/; "
+                "parquet was created without a companion JSON.",
+                feature_alias,
+            )
+
         bundle_output_stats[output_parquet.name] = {
             "path": output_parquet.as_posix(),
             "examples": feature_examples,
@@ -638,11 +724,11 @@ def validate_bundled_dataset(dataset_path, config_dir):
         with open(config_dir / "participants_to_remove.json") as f:
             participants_to_remove = set(json.load(f))
         
-        with open(config_dir / "sensitive_audio_tasks.json") as f:
-            sensitive_tasks = set(json.load(f))
-            sensitive_tasks_normalized = {
+        with open(config_dir / "audio_tasks_to_include.json") as f:
+            audio_task_to_include = set(json.load(f))
+            audio_task_to_include_normalized = {
                 normalize_task_label(task)
-                for task in sensitive_tasks
+                for task in audio_task_to_include
                 if isinstance(task, str) and task.strip()
             }
             
@@ -681,19 +767,14 @@ def validate_bundled_dataset(dataset_path, config_dir):
                 
             # Check tasks
             present_tasks = set(df["task_name"].dropna().unique())
-            sensitive_present = {
+            unexpected_tasks_present = {
                 task
                 for task in present_tasks
-                if normalize_task_label(task) in sensitive_tasks_normalized
+                if normalize_task_label(task) not in audio_task_to_include_normalized
             }
-            if sensitive_present:
-                # we allow sensitive tasks in a subset of files
-                if parquet_file.name not in {
-                    "sparc_ema.parquet", "sparc_loudness.parquet",
-                    "torchaudio_pitch.parquet", "sparc_pitch.parquet",
-                    "sparc_periodicity.parquet"
-                }:
-                    issues.append(f"Found sensitive tasks in {parquet_file.name}: {sensitive_present}")
+
+            if unexpected_tasks_present and parquet_file.stem in _SENSITIVE_PARQUET_STEMS:
+                issues.append(f"Found unexpected audio tasks in {parquet_file.name}: {unexpected_tasks_present}")
                 
             # Check remapping
             unmapped_present = present_participants.intersection(original_ids)
@@ -770,11 +851,11 @@ def validate_bundled_dataset(dataset_path, config_dir):
         except Exception as e:
             issues.append(f"Error reading static_features.tsv: {e}")
 
-    # 6. Verify forbidden features are removed for sensitive tasks
+    # 6. Verify no extra audio feautures make it through
     issues.extend(
-        validate_sensitive_feature_removal_in_bundle(
+        validate_no_extra_audio_tasks_present(
             features_dir=features_dir,
-            sensitive_tasks=sensitive_tasks,
+            audio_tasks_to_include=audio_task_to_include,
         )
     )
 
@@ -809,7 +890,7 @@ def deidentify_bids_dataset(
     - participants_to_remove.json
     - audio_to_remove.json
     - id_remapping.json
-    - sensitive_audio_tasks.json
+    - audio_tasks_to_include.json
     """
     bids_path = Path(bids_path)
     deidentify_config_dir = Path(deidentify_config_dir)
@@ -1418,3 +1499,92 @@ def redcap_stats(filename, num_sessions):
         else:
             for record_id, n_sessions in over_n_sessions.items():
                 click.echo(f"Record ID: {record_id}, Sessions: {n_sessions}")
+
+
+@click.command()
+@click.argument("input_file", type=click.Path(exists=True))
+@click.argument("output_dir", type=click.Path())
+@click.option("--id_column", type=str, default="record_id", show_default=True)
+@click.option("--num_participants_per_file", type=int, default=10, show_default=True)
+def create_subject_splits(input_file, output_dir, id_column, num_participants_per_file):
+    """Split unique participant IDs into multiple subject-id list files.
+
+    Reads ``input_file`` (one row per record), extracts unique values from ``id_column``,
+    and writes them in sorted order across ``subject_ids_<i>.txt`` files under
+    ``output_dir``, one ID per line, with at most ``num_participants_per_file`` IDs per
+    file.
+
+    Args:
+        input_file (path): Path to a file containing participant IDs. May be a
+            comma-separated ``.csv`` (e.g. a RedCap export) or a tab-separated file such
+            as ``participants.tsv``; the delimiter is selected from the file extension.
+        output_dir (path): Path to output folder (created if it does not exist).
+        id_column (str): Column in the input file representing IDs to split.
+        num_participants_per_file (int): Maximum number of unique participant IDs per output file.
+
+    Returns: None
+    Effects: Writes ``subject_ids_0.txt``, ``subject_ids_1.txt``, ... under ``output_dir``.
+    """
+    if num_participants_per_file < 1:
+        raise click.UsageError("--num_participants_per_file must be >= 1.")
+
+    sep = "," if str(input_file).lower().endswith(".csv") else "\t"
+    df = pd.read_csv(input_file, sep=sep)
+    if id_column not in df.columns:
+        raise click.UsageError(
+            f"Column '{id_column}' not found in {input_file}. "
+            f"Available columns: {list(df.columns)}"
+        )
+
+    id_list = sorted({str(x) for x in df[id_column].dropna().tolist()})
+    if not id_list:
+        raise click.UsageError(f"No IDs found in column '{id_column}'.")
+
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    for idx, start in enumerate(range(0, len(id_list), num_participants_per_file)):
+        chunk = id_list[start : start + num_participants_per_file]
+        out_file = output_dir / f"subject_ids_{idx}.txt"
+        out_file.write_text("\n".join(chunk) + "\n")
+        _LOGGER.info(f"Wrote {len(chunk)} IDs to '{out_file}'")
+
+
+@click.command()
+@click.argument("input_file", type=click.Path(exists=True))
+@click.argument("output_dir", type=click.Path())
+@click.option("--load_lookup", type=click.Path(exists=True), default=None, show_default=True)
+def generate_id_lookup_table(input_file, output_dir, load_lookup):
+    """Generates an id lookup table for dissemination.
+
+    Args:
+        input_file (path): Path to file with original ids. May be a comma-separated ``.csv``
+            (e.g. a RedCap export) or a tab-separated file such as ``participants.tsv``;
+            the delimiter is selected from the file extension.
+        output_dir (path): Path to output folder
+        load_lookup (path): Path to pre-existing id remap file
+    """
+    sep = "," if str(input_file).lower().endswith(".csv") else "\t"
+    df = pd.read_csv(input_file, sep=sep)
+    
+    id_column = ""
+    if "record_id" in df.columns:
+        id_column = "record_id"
+    elif "participant_id" in df.columns:
+        id_column = "participant_id"
+    else:
+        raise ValueError(
+            "No valid ID column found (expected 'record_id' or 'participant_id')"
+        )
+    id_list = list(set(df[id_column].tolist()))
+    secret_key = generate_seed()
+    lookup = build_lookup_table(id_list, secret_key, load_lookup)
+
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    output_file = output_dir / "id_lookup_table.json"
+    with open(output_file, "w") as f:
+        json.dump(lookup, f, indent=2)
+        num_ids = len(lookup)
+        _LOGGER.info(f"Lookup table contains {num_ids} ids")
+    _LOGGER.info(f"Lookup table saved to '{output_file}'")

@@ -11,6 +11,9 @@
             "items/peds_mc_started_at",
             "items/peds_mc_completed_at",
             "items/peds_mc_duration",
+            "items/peds_mc_origin",
+            "items/peds_mc_via",
+            "items/peds_mc_language",
             "items/peds_mc_voice_disorders",
             "items/peds_mc_psych_disorders",
             "items/peds_mc_psych_disorders_other",
@@ -112,6 +115,24 @@
                 "isVis": false,
                 "valueRequired": false,
                 "variableName": "peds_mc_duration"
+            },
+            {
+                "isAbout": "items/peds_mc_origin",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "peds_mc_origin"
+            },
+            {
+                "isAbout": "items/peds_mc_via",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "peds_mc_via"
+            },
+            {
+                "isAbout": "items/peds_mc_language",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "peds_mc_language"
             },
             {
                 "isAbout": "items/peds_mc_voice_disorders",
@@ -572,6 +593,6 @@
         ],
         "shuffle": false
     },
-    "version": "4.0.0",
+    "version": "4.7.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

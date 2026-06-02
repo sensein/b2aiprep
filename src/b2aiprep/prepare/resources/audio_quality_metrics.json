@@ -1,0 +1,42 @@
+{
+    "participant_id": {
+      "description": "Unique identifier for each participant."
+    },
+    "session_id": {
+      "description": "Unique identifier for each session."
+    },
+    "task_name": {
+      "description": "The audio task conducted for the recording."
+    },
+    "proportion_clipped_metric": {
+      "description": "Proportion of audio samples at the clipping threshold."
+    },
+    "proportion_silent_metric": {
+      "description": "Proportion of audio frames classified as silent."
+    },
+    "peak_snr_from_spectral_metric": {
+      "description": "Peak signal-to-noise ratio estimated from spectral analysis, in dB."
+    },
+    "spectral_gating_snr_metric": {
+      "description": "Signal-to-noise ratio estimated using spectral gating, in dB."
+    },
+    "amplitude_modulation_depth_metric": {
+      "description": "Depth of amplitude modulation in the audio signal."
+    },
+    "high_proportion_clipped_check": {
+      "description": "True if the audio has a high proportion of clipped samples."
+    },
+    "completely_silent_check": {
+      "description": "True if the audio is completely silent."
+    },
+    "very_low_peak_snr_from_spectral_check": {
+      "description": "True if the peak spectral SNR is very low, indicating poor recording quality."
+    },
+    "low_spectral_gating_snr_check": {
+      "description": "True if the spectral gating SNR is low, indicating significant background noise."
+    },
+    "very_low_amplitude_modulation_depth_check": {
+      "description": "True if the amplitude modulation depth is very low, suggesting a flat or non-speech signal."
+    }
+}
+

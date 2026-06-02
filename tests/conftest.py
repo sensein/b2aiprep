@@ -22,7 +22,7 @@ def setup_publish_config(tmp_path):
         "audio_filestems_to_remove.json": [],
         "id_remapping.json": {},
         "participants_to_remove.json": [],
-        "sensitive_audio_tasks.json": [],
+        "audio_tasks_to_include.json": ["test"],
     }
 
     for filename, content in defaults.items():

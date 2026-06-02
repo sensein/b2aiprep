@@ -3,6 +3,11 @@
     "category": "reproschema:Item",
     "additionalNotesObj": [
         {
+            "column": "Field Note",
+            "source": "redcap",
+            "value": "5 Digit for USA and 3 Digit for Canada"
+        },
+        {
             "column": "Identifier?",
             "source": "redcap",
             "value": "y"

@@ -26,6 +26,7 @@ import typing as t
 from collections import OrderedDict, defaultdict
 from pathlib import Path
 from importlib.resources import files
+from importlib import resources
 import json
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -46,7 +47,7 @@ from b2aiprep.prepare.utils import (
     normalize_task_label,
     sanitize_task_entity_in_bids_stem,
 )
-from b2aiprep.prepare.fhir_utils import convert_response_to_fhir
+from b2aiprep.prepare.fhir_utils import convert_response_to_bids_metadata
 from b2aiprep.prepare.prepare import (
     get_value_from_metadata,
     remap_id, 
@@ -222,7 +223,10 @@ class BIDSDataset:
         audio_files: t.List[Path] = []
         if audiodir is not None and Path(audiodir).exists():
             audio_files = list(Path(audiodir).rglob("*.wav"))
-
+        
+        audio_mappings_path = files("b2aiprep.prepare.resources").joinpath("audio_task_descriptions.json")
+        with open(audio_mappings_path, 'r') as file_object:
+            audio_descriptor_dict = json.load(file_object, object_pairs_hook=OrderedDict)
         # create an index of recording_id: audio_file for later use
         # ASSUMES that audio files are named with the recording_id in the filename
         # we use a defensive regex to grab uuid-like IDs from the stem just in case
@@ -242,12 +246,13 @@ class BIDSDataset:
             audio_files_by_recording[uuid] = audio_file
 
         for participant in tqdm(participants, desc="Writing participant data to file"):
-            cls._output_participant_data_to_fhir(
+            cls._output_participant_data_to_metadata_file(
                 participant,
                 Path(outdir),
                 audio_files_by_recording=audio_files_by_recording,
                 max_audio_workers=max_audio_workers,
-                sanitize_audio_format=sanitize_audio_format
+                sanitize_audio_format=sanitize_audio_format,
+                audio_descriptor_dict=audio_descriptor_dict
             )
         
         # Return a new BIDSDataset instance pointing to the created directory
@@ -643,13 +648,13 @@ class BIDSDataset:
     @staticmethod
     def _load_reproschema(
         reproschema_file: Path,
+        reproschema_folder: Path,
     ) -> t.Dict[str, t.Dict[str, t.Any]]:
         with reproschema_file.open("r", encoding="utf-8") as fp:
             schema_json = json.load(fp)
-        
+
         protocol_order = schema_json.get("ui", {}).get("order")
 
-        reproschema_folder: Path = reproschema_file.parents[1]
         commit_sha = get_commit_sha(reproschema_folder)
 
         activities = {}
@@ -775,16 +780,18 @@ class BIDSDataset:
         # Load reproschema file
 
         source_path = files("b2aiprep.redcap2rs")
-        if source_path.joinpath('b2ai-redcap2rs_schema').exists():
+        if source_path.joinpath('b2ai-redcap2rs_schema').is_file():
             resolved_schema_file = source_path.joinpath('b2ai-redcap2rs_schema')
-        elif (source_path / 'b2ai-redcap2rs' / 'b2ai-redcap2rs_schema').exists():
-            resolved_schema_file = source_path /'b2ai-redcap2rs' /'b2ai-redcap2rs_schema'
+            reproschema_folder = Path(resolved_schema_file).parent.resolve()
+        elif (source_path / 'b2ai-redcap2rs' / 'b2ai-redcap2rs_schema').is_file():
+            resolved_schema_file = source_path / 'b2ai-redcap2rs' / 'b2ai-redcap2rs_schema'
+            reproschema_folder = Path(resolved_schema_file).parent.parent.resolve()
         else:
             raise FileNotFoundError(
                 f"Could not find 'b2ai-redcap2rs_schema' in source directory: {source_path}"
             )
 
-        schemas = BIDSDataset._load_reproschema(resolved_schema_file)
+        schemas = BIDSDataset._load_reproschema(resolved_schema_file, reproschema_folder)
 
         # create an index for data_element -> schema
         element_to_schema = {}
@@ -1050,7 +1057,7 @@ class BIDSDataset:
     @staticmethod
     def _write_pydantic_model_to_bids_file(
         output_path: Path,
-        data: BaseModel,
+        data: dict,
         schema_name: str,
         subject_id: str,
         session_id: t.Optional[str] = None,
@@ -1088,12 +1095,12 @@ class BIDSDataset:
         if not output_path.exists():
             output_path.mkdir(parents=True, exist_ok=False)
         with open(output_path / filename, "w") as f:
-            f.write(data.json(indent=2))
+            f.write(json.dumps(data, indent=2))
 
     @staticmethod
-    def _output_participant_data_to_fhir(
+    def _output_participant_data_to_metadata_file(
         participant: dict, outdir: Path, audio_files_by_recording: t.Optional[t.Dict[str, Path]] = None,
-        max_audio_workers: int = 16, sanitize_audio_format: bool = False
+        max_audio_workers: int = 16, sanitize_audio_format: bool = False, audio_descriptor_dict:OrderedDict = {}
     ):
         """Output participant data to FHIR format.
 
@@ -1119,7 +1126,7 @@ class BIDSDataset:
 
         # validated questionnaires are asked per session
         sessions_rows = []
-
+        
         for session in participant["sessions"]:
             sessions_row = {key: session[key] for key in session_instrument.columns}
             sessions_rows.append(sessions_row)
@@ -1130,7 +1137,7 @@ class BIDSDataset:
             audio_output_path = session_path / "audio"
             if not audio_output_path.exists():
                 audio_output_path.mkdir(parents=True, exist_ok=True)
-
+    
             # multiple acoustic tasks are asked per session
             for task in session["acoustic_tasks"]:
                 if task is None:
@@ -1143,15 +1150,16 @@ class BIDSDataset:
                     continue
                 
                 acoustic_task_name = acoustic_task_name.replace(" ", "-").replace("_", "-")
-                fhir_data = convert_response_to_fhir(
+                meta_data = convert_response_to_bids_metadata(
                     task,
                     questionnaire_name=task_instrument.name,
                     mapping_name=task_instrument.schema_name_clobbered,
                     columns=task_instrument.columns,
+                    audio_task_descriptions=audio_descriptor_dict,
                 )
                 BIDSDataset._write_pydantic_model_to_bids_file(
                     audio_output_path,
-                    fhir_data,
+                    meta_data,
                     schema_name=task_instrument.schema_name_clobbered,
                     subject_id=participant_id,
                     session_id=session_id,
@@ -1160,18 +1168,18 @@ class BIDSDataset:
 
                 # prefix is used to name audio files, if they are copied over
                 prefix = f"sub-{participant_id}_ses-{session_id}"
-
                 # there may be more than one recording per acoustic task
                 for recording in task["recordings"]:
-                    fhir_data = convert_response_to_fhir(
+                    meta_data = convert_response_to_bids_metadata(
                         recording,
                         questionnaire_name=recording_instrument.name,
                         mapping_name=recording_instrument.schema_name_clobbered,
                         columns=recording_instrument.columns,
+                        audio_task_descriptions=audio_descriptor_dict
                     )
                     BIDSDataset._write_pydantic_model_to_bids_file(
                         audio_output_path,
-                        fhir_data,
+                        meta_data,
                         schema_name=recording_instrument.schema_name_clobbered,
                         subject_id=participant_id,
                         session_id=session_id,
@@ -1701,18 +1709,18 @@ class BIDSDataset:
         return data
 
     @staticmethod
-    def load_sensitive_audio_tasks(deidentify_config_dir: Path) -> t.List[str]:
-        """Load list of audio tasks that are sensitive from JSON file."""
-        sensitive_audio_tasks_path = deidentify_config_dir / "sensitive_audio_tasks.json"
-        if not sensitive_audio_tasks_path.exists():
+    def load_audio_tasks_to_include(deidentify_config_dir: Path) -> t.List[str]:
+        """Load list of audio tasks that are to be included."""
+        audio_tasks_to_include_path = deidentify_config_dir / "audio_tasks_to_include.json"
+        if not audio_tasks_to_include_path.exists():
             # If file doesn't exist, raise an error
-            raise FileNotFoundError(f"Sensitive audio tasks file {sensitive_audio_tasks_path} does not exist.")
+            raise FileNotFoundError(f"Inclusion audio tasks file {audio_tasks_to_include_path} does not exist.")
 
-        with open(sensitive_audio_tasks_path, 'r') as f:
+        with open(audio_tasks_to_include_path, 'r') as f:
             data = json.load(f)
 
         if not isinstance(data, list):
-            raise ValueError(f"Sensitive audio tasks file {sensitive_audio_tasks_path} should contain a list of audio task names.")
+            raise ValueError(f"Inclusion audio tasks file {audio_tasks_to_include_path} should contain a list of audio task names.")
         
         return data
 
@@ -1741,7 +1749,7 @@ class BIDSDataset:
         participant_ids_to_remap = BIDSDataset.load_remap_id_list(deidentify_config_dir)
         participant_ids_to_remove = BIDSDataset.load_participant_ids_to_remove(deidentify_config_dir)
         audio_filestems_to_remove = BIDSDataset.load_audio_filestems_to_remove(deidentify_config_dir)
-        sensitive_audio_tasks = BIDSDataset.load_sensitive_audio_tasks(deidentify_config_dir)
+        audio_tasks_to_include = BIDSDataset.load_audio_tasks_to_include(deidentify_config_dir)
         participant_session_id_to_remap = BIDSDataset.map_sequential_session_ids(self.data_path)
 
         # Allow users to specify filestems either in the original ID space (pre-deidentify)
@@ -1784,7 +1792,7 @@ class BIDSDataset:
                 outdir, 
                 participant_ids_to_remove, 
                 audio_filestems_to_remove,
-                sensitive_audio_tasks, 
+                audio_tasks_to_include, 
                 participant_ids_to_remap, 
                 participant_session_id_to_remap,
                 max_workers=max_workers,
@@ -1795,17 +1803,30 @@ class BIDSDataset:
             # Process audio files
             _LOGGER.info("Processing audio features for deidentification.")
             BIDSDataset._deidentify_feature_files(
-                self.data_path, 
-                outdir, 
-                participant_ids_to_remove, 
+                self.data_path,
+                outdir,
+                participant_ids_to_remove,
                 audio_filestems_to_remove,
-                sensitive_audio_tasks, 
-                participant_ids_to_remap, 
+                audio_tasks_to_include,
+                participant_ids_to_remap,
                 participant_session_id_to_remap,
                 max_workers=max_workers,
             )
             _LOGGER.info("Finished processing features.")
-        
+
+        # Process quality metrics file if it exists
+        _LOGGER.info("Processing quality metrics for deidentification.")
+        BIDSDataset._deidentify_quality_metrics(
+            self.data_path,
+            outdir,
+            participant_ids_to_remove,
+            audio_filestems_to_remove,
+            audio_tasks_to_include,
+            participant_ids_to_remap,
+            participant_session_id_to_remap,
+        )
+        _LOGGER.info("Finished processing quality metrics.")
+
         # Copy over the standard BIDS template files if they exist
         for template_file in ["README.md", "CHANGES.md", "dataset_description.json"]:
             template_path = self.data_path.joinpath(template_file)
@@ -1843,7 +1864,6 @@ class BIDSDataset:
         exclusion = set(exclusion_list)
         if len(exclusion) == 0:
             return paths
-
         def _canonical_recording_stem(stem: str) -> str:
             """Canonicalize a BIDS-like recording stem for matching.
 
@@ -1893,6 +1913,30 @@ class BIDSDataset:
                 f"Removed {n - len(paths)} records due to exclusion: {exclusion_type}."
             )
         return paths
+
+    @staticmethod
+    def _grab_filepaths_list_to_include(
+        paths: t.List[Path],
+        inclusion_list: t.List[str],
+    ) -> t.List[Path]:
+        """Grabs filepaths based on overlap with a specified inclusion list."""
+        n = len(paths)
+        inclusion = set(inclusion_list)
+        if len(inclusion) == 0:
+            return []
+
+        new_paths = []
+        for file in paths:
+            for incl in inclusion_list:
+                if normalize_task_label(incl) in normalize_task_label(file.stem):
+                    new_paths.append(file)
+                    break
+
+        if len(new_paths) < n:
+            _LOGGER.info(
+                f"Removed {n - len(new_paths)} records due to not being part of inclusion list: {inclusion_list}."
+            )
+        return new_paths
 
     @staticmethod
     def _expand_filestems_for_deidentification(
@@ -1948,11 +1992,12 @@ class BIDSDataset:
         return sorted(expanded)
 
     @staticmethod
-    def _extract_participant_id_from_path(path: Path) -> str:
+    def _extract_participant_id_from_path(path: t.Union[str, Path]) -> str:
         """Extract participant ID from the path, preferring directory parts.
         Falls back to regex on filestem if needed."""
         # Prefer directory parts
-        for part in path.parts:
+        path = Path(path)
+        for part in Path(path).parts:
             if part.startswith("sub-"):
                 return part[4:]
 
@@ -1964,10 +2009,11 @@ class BIDSDataset:
         raise ValueError(f"Could not extract participant ID from path: {path}")
 
     @staticmethod
-    def _extract_session_id_from_path(path: Path) -> str:
+    def _extract_session_id_from_path(path: t.Union[str, Path]) -> str:
         """Extract session ID from the path, preferring directory parts.
         Falls back to regex on filestem using ses-(.+?)_ if needed."""
         # Prefer directory parts
+        path = Path(path)
         for part in path.parts:
             if part.startswith("ses-"):
                 return part[4:]
@@ -1980,10 +2026,11 @@ class BIDSDataset:
         raise ValueError(f"Could not extract session ID from path: {path}")
 
     @staticmethod
-    def _extract_task_name_from_path(path: Path) -> str:
+    def _extract_task_name_from_path(path: t.Union[str, Path]) -> str:
         """Extract the task name from the stem of the path.
         
         Tasks are optional components of filenames. They must follow the `task-<label>` pattern."""
+        path = Path(path)
         m = re.search(r"task-(.+?)(_|$)", path.stem)
         if m:
             return m.group(1)
@@ -1996,7 +2043,7 @@ class BIDSDataset:
         outdir: Path,
         exclude_participant_ids: t.List[str] = [],
         exclude_audio_filestems: t.List[str] = [],
-        sensitive_audio_task_list: t.List[str] = [],
+        audio_tasks_to_include_list: t.List[str] = [],
         participant_ids_to_remap: t.Dict[str, str] = {},
         participant_session_id_to_remap: t.Dict[str, str] = {},
         max_workers: int = 16,
@@ -2016,7 +2063,7 @@ class BIDSDataset:
             outdir: Output directory for deidentified audio files
             exclude_participant_ids: list of participant IDs to exclude
             exclude_audio_filestems: list of audio filenames to exclude
-            sensitive_audio_task_list: list of sensitive audio tasks
+            audio_task_to_include_list: list of sensitive audio tasks
             participant_ids_to_remap: map between old and new participant IDs
             participant_session_id_to_remap: map between old and new session IDs
         """
@@ -2041,10 +2088,14 @@ class BIDSDataset:
             audio_paths, exclusion_list=['audio-check'], exclusion_type='filestem_contains'
         )
 
-        sensitive_audio_task_list = [f"task-{normalize_task_label(task)}" for task in sensitive_audio_task_list]
-        audio_paths = BIDSDataset._apply_exclusion_list_to_filepaths(
-            audio_paths, exclusion_list=sensitive_audio_task_list, exclusion_type='filestem_contains'
+        audio_tasks_to_include_list = [f"task-{normalize_task_label(task)}" for task in audio_tasks_to_include_list]
+        audio_paths = BIDSDataset._grab_filepaths_list_to_include(
+            audio_paths, inclusion_list=audio_tasks_to_include_list
         )
+        
+        # if audio_paths:
+        #     _LOGGER.warning(f"No audio paths are present in {audio_paths}")
+        #     return
 
         _LOGGER.info(f"Copying {len(audio_paths)} recordings.")
 
@@ -2085,7 +2136,7 @@ class BIDSDataset:
         outdir: Path,
         exclude_participant_ids: t.List[str] = [],
         exclude_audio_filestems: t.List[str] = [],
-        sensitive_audio_task_list: t.List[str] = [],
+        audio_tasks_to_include_list: t.List[str] = [],
         participant_ids_to_remap: t.Dict[str, str] = {},
         participant_session_id_to_remap: t.Dict[str, str] = {},
         max_workers: int = 16,
@@ -2105,7 +2156,7 @@ class BIDSDataset:
             outdir: Output directory for deidentified audio files
             exclude_participant_ids: list of participant IDs to exclude
             exclude_audio_filestems: list of audio filenames to exclude
-            sensitive_audio_task_list: list of sensitive audio tasks
+            audio_task_to_include_list: list of sensitive audio tasks
             participant_ids_to_remap: map between old and new participant IDs
             participant_session_id_to_remap: map between old and new session IDs
         """
@@ -2130,7 +2181,7 @@ class BIDSDataset:
             paths, exclusion_list=['audio-check'], exclusion_type='filestem_contains'
         )
 
-        sensitive_task_labels = {normalize_task_label(t) for t in sensitive_audio_task_list}
+        audio_task_labels = {normalize_task_label(t) for t in audio_tasks_to_include_list}
         
         _LOGGER.info(f"Copying {len(paths)} feature files.")
 
@@ -2155,9 +2206,9 @@ class BIDSDataset:
             )
             output_path.parent.mkdir(parents=True, exist_ok=True)
 
-            # if it is not sensitive and we want to keep features, move all features over
+            # if it is a audio task we wish to include, move all features over
             task_name = BIDSDataset._extract_task_name_from_path(features_path)
-            if normalize_task_label(task_name) not in sensitive_task_labels:
+            if normalize_task_label(task_name) in audio_task_labels:
                 shutil.copy(features_path, output_path)
             else:
                 features = torch.load(features_path, weights_only=False, map_location=torch.device('cpu'))
@@ -2166,6 +2217,94 @@ class BIDSDataset:
 
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
             list(tqdm(executor.map(process_feature_file, paths), total=len(paths), desc="Copying and de-identifying feature files"))
+
+    @staticmethod
+    def _deidentify_quality_metrics(
+        data_path: Path,
+        outdir: Path,
+        exclude_participant_ids: t.List[str] = [],
+        exclude_audio_filestems: t.List[str] = [],
+        audio_tasks_to_include_list: t.List[str] = [],
+        participant_ids_to_remap: t.Dict[str, str] = {},
+        participant_session_id_to_remap: t.Dict[str, str] = {},
+    ) -> None:
+        """
+        Deidentify and copy audio quality metrics to the output directory.
+
+        If no quality metrics file exists this method is a no-op, since the file
+        is optional.  When present, the same participant exclusion, task filtering,
+        and ID remapping that is applied to audio files is applied here so the
+        released metrics are consistent with the rest of the deidentified dataset.
+
+        Args:
+            data_path: Path to the source BIDS dataset
+            outdir: Output directory for the deidentified dataset
+            exclude_participant_ids: list of participant IDs to exclude
+            exclude_audio_filestems: list of audio file stems to exclude
+            audio_tasks_to_include_list: list of audio tasks to include
+            participant_ids_to_remap: mapping from old to new participant IDs
+            participant_session_id_to_remap: mapping from old to new session IDs
+        """
+        quality_metrics_path = data_path / "audio_quality_metrics.tsv"
+        if not quality_metrics_path.exists():
+            _LOGGER.info("No audio_quality_metrics.tsv found; skipping quality metrics deidentification.")
+            return
+
+        df = pd.read_csv(quality_metrics_path, sep="\t", dtype=str)
+
+        # Remove excluded participants
+        if exclude_participant_ids and "participant_id" in df.columns:
+            idx = df["participant_id"].isin(exclude_participant_ids)
+            if idx.any():
+                _LOGGER.info(f"Removing {idx.sum()} quality metric rows for excluded participants.")
+                df = df.loc[~idx]
+
+        # Remove audio-check task rows (mirrors the exclusion in _deidentify_audio_files)
+        if "task_name" in df.columns:
+            df = df.loc[
+                df["task_name"].apply(
+                    lambda task: normalize_task_label("audio-check") not in normalize_task_label(task)
+                )
+            ]
+
+        # Doesn't filter to only included audio tasks as these are similar to non-identifiable features
+        # # Filter to only included audio tasks
+        # if audio_tasks_to_include_list and "task_name" in df.columns:
+        #     normalized_tasks = {normalize_task_label(task) for task in audio_tasks_to_include_list}
+        #     df = df.loc[df["task_name"].apply(lambda task: normalize_task_label(task) in normalized_tasks)]
+
+        # Remove rows for excluded audio file stems
+        if exclude_audio_filestems and {"participant_id", "session_id", "task_name"}.issubset(df.columns):
+            def row_is_excluded(row):
+                stem = f"sub-{row['participant_id']}_ses-{row['session_id']}_task-{row['task_name']}"
+                return any(normalize_task_label(excl) in normalize_task_label(stem) for excl in exclude_audio_filestems)
+            df = df.loc[~df.apply(row_is_excluded, axis=1)]
+
+        # Remap participant IDs
+        if participant_ids_to_remap and "participant_id" in df.columns:
+            remap_partial = partial(remap_id, id_mapping=participant_ids_to_remap)
+            df["participant_id"] = BIDSDataset._map_series(df["participant_id"], remap_partial)
+
+        # Remap session IDs
+        if participant_session_id_to_remap and "session_id" in df.columns:
+            remap_partial = partial(remap_id, id_mapping=participant_session_id_to_remap, id_type="session")
+            df["session_id"] = BIDSDataset._map_series(df["session_id"], remap_partial)
+
+        df.to_csv(outdir / "audio_quality_metrics.tsv", sep="\t", index=False)
+
+        quality_json_path = data_path / "audio_quality_metrics.json"
+        if quality_json_path.exists():
+            shutil.copy(quality_json_path, outdir)
+        else:
+            _LOGGER.warning(
+                "audio_quality_metrics.json not found in BIDS dataset; "
+                "copying schema from package resources."
+            )
+            qc_json_resource = resources.files("b2aiprep").joinpath(
+                "prepare", "resources", "audio_quality_metrics.json"
+            )
+            with qc_json_resource.open() as src, open(outdir / "audio_quality_metrics.json", "w") as dst:
+                dst.write(src.read())
 
 
 class VBAIDataset(BIDSDataset):

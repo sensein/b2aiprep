@@ -11,6 +11,9 @@
             "items/custom_affect_scale_started_at",
             "items/custom_affect_scale_completed_at",
             "items/custom_affect_scale_duration",
+            "items/custom_affect_scale_origin",
+            "items/custom_affect_scale_via",
+            "items/custom_affect_scale_language",
             "items/sad_or_down",
             "items/joyful",
             "items/motivated",
@@ -49,6 +52,24 @@
                 "isVis": false,
                 "valueRequired": false,
                 "variableName": "custom_affect_scale_duration"
+            },
+            {
+                "isAbout": "items/custom_affect_scale_origin",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "custom_affect_scale_origin"
+            },
+            {
+                "isAbout": "items/custom_affect_scale_via",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "custom_affect_scale_via"
+            },
+            {
+                "isAbout": "items/custom_affect_scale_language",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "custom_affect_scale_language"
             },
             {
                 "isAbout": "items/sad_or_down",
@@ -131,6 +152,6 @@
         ],
         "shuffle": false
     },
-    "version": "3.24.0",
+    "version": "4.7.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

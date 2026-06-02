@@ -14,54 +14,6 @@
         "choices": [
             {
                 "name": {
-                    "en": "6B80 Anorexia nervosa"
-                },
-                "value": "6B80"
-            },
-            {
-                "name": {
-                    "en": "6B81 Bulimia nervosa"
-                },
-                "value": "6B81"
-            },
-            {
-                "name": {
-                    "en": "6B82 Binge eating disorder"
-                },
-                "value": "6B82"
-            },
-            {
-                "name": {
-                    "en": "6B83 Avoidant-restrictive food intake disorder"
-                },
-                "value": "6B83"
-            },
-            {
-                "name": {
-                    "en": "6B84 Pica"
-                },
-                "value": "6B84"
-            },
-            {
-                "name": {
-                    "en": "6B85 Rumination-regurgitation disorder"
-                },
-                "value": "6B85"
-            },
-            {
-                "name": {
-                    "en": "6B8Y Other specified feeding or eating disorders"
-                },
-                "value": "6B8Y"
-            },
-            {
-                "name": {
-                    "en": "6B8Z Feeding or eating disorders, unspecified"
-                },
-                "value": "6B8Z"
-            },
-            {
-                "name": {
                     "en": "6B00 Generalized Anxiety Disorder"
                 },
                 "value": "6B00"

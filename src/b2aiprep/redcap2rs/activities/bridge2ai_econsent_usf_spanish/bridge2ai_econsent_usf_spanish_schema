@@ -19,7 +19,13 @@
             "items/usf_icf_question_es",
             "items/usf_icf_signature_es",
             "items/usf_icf_date_es",
-            "items/usf_icf_name_es"
+            "items/usf_icf_name_es",
+            "items/usf_icf_hipaa_p1_es",
+            "items/usf_icf_hipaa_p2_es",
+            "items/usf_icf_hipaa_p3_es",
+            "items/usf_icf_signature_hipaa_es",
+            "items/usf_icf_date_hipaa_es",
+            "items/usf_icf_name_hipaa_es"
         ],
         "addProperties": [
             {
@@ -99,10 +105,46 @@
                 "isVis": false,
                 "valueRequired": true,
                 "variableName": "usf_icf_name_es"
+            },
+            {
+                "isAbout": "items/usf_icf_hipaa_p1_es",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "usf_icf_hipaa_p1_es"
+            },
+            {
+                "isAbout": "items/usf_icf_hipaa_p2_es",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "usf_icf_hipaa_p2_es"
+            },
+            {
+                "isAbout": "items/usf_icf_hipaa_p3_es",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "usf_icf_hipaa_p3_es"
+            },
+            {
+                "isAbout": "items/usf_icf_signature_hipaa_es",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "usf_icf_signature_hipaa_es"
+            },
+            {
+                "isAbout": "items/usf_icf_date_hipaa_es",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "usf_icf_date_hipaa_es"
+            },
+            {
+                "isAbout": "items/usf_icf_name_hipaa_es",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "usf_icf_name_hipaa_es"
             }
         ],
         "shuffle": false
     },
-    "version": "3.27.0",
+    "version": "4.5.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }
