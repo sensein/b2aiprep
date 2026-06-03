@@ -19,6 +19,19 @@ _DEFAULT_RETRY_BASE_DELAY_S = 5
 _MAX_RETRY_DELAY_S = 60
 
 
+def resolve_range(start, end, n):
+    """Resolve --start/--end into a [start, end) row slice over n rows.
+
+    Uses `is not None` so a deliberate 0 is honored, and rejects invalid ranges
+    instead of silently coercing them. Returns (start, end); raises ValueError.
+    """
+    start = start if start is not None else 0
+    end = end if end is not None else n
+    if start < 0 or end < 0 or start > end:
+        raise ValueError(f"Invalid row range: start={start}, end={end} (have {n} rows)")
+    return start, end
+
+
 def filter_manifest(data, subject=None, toplevel=False):
     """Return the subset of manifest rows to upload.
 
@@ -145,12 +158,10 @@ def main():
         logger.warning("subject=%s matched 0 of %d manifest rows. Sample manifest path: %s",
                        args.subject, total, full['path'].iloc[0])
 
-    # Use `is not None` so a deliberate --start/--end of 0 is honored, and reject
-    # invalid ranges instead of silently coercing them.
-    start = args.start if args.start is not None else 0
-    end = args.end if args.end is not None else len(data)
-    if start < 0 or end < 0 or start > end:
-        raise SystemExit(f"Invalid row range: start={start}, end={end} (have {len(data)} rows)")
+    try:
+        start, end = resolve_range(args.start, args.end, len(data))
+    except ValueError as e:
+        raise SystemExit(str(e))
     df = data[start:end]
     logger.info("Uploading %d matched rows of %d in manifest (subject=%s, toplevel=%s, dry_run=%s)",
                 len(df), total, args.subject, args.toplevel, args.dry_run)

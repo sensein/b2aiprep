@@ -26,6 +26,23 @@ def _has_md5(value):
     return isinstance(value, str) and len(value) > 0
 
 
+def reconstruct_relpath(name, parent, fmap, root, max_depth=200):
+    """Relative path from `root` down to `name`, or None if it can't be fully
+    resolved (a folder missing from `fmap`, a None/NaN parent, a cycle, or
+    excessive depth). Returning None -- rather than a truncated path -- prevents
+    a mis-keyed entity from later being treated as a deletion candidate.
+    """
+    parts, cur, guard = [], parent, 0
+    while cur != root:
+        if guard >= max_depth or cur is None or cur not in fmap:
+            return None
+        nm, par = fmap[cur]
+        parts.append(nm)
+        cur = par
+        guard += 1
+    return os.path.join(*(list(reversed(parts)) + [name]))
+
+
 def walk_synapse_folder(syn, folder_id, path=""):
     """Recursively walk a Synapse folder via per-file ``syn.get``.
 
@@ -244,25 +261,9 @@ def build_from_view(syn, config, bids_folder):
             raise SystemExit("view has no folder rows; cannot reconstruct paths")
         fmap = {r.id: (str(r.name), r.parentId) for r in folders_df.itertuples(index=False)}
 
-        def relpath(name, parent):
-            """Relative path from `root` down to `name`, or None if it can't be
-            fully resolved (a folder missing from the view, NaN parentId, a cycle,
-            or excessive depth). Returning None -- rather than a truncated path --
-            prevents a mis-keyed entity from later being treated as a deletion
-            candidate under --sync."""
-            parts, cur, guard = [], parent, 0
-            while cur != root:
-                if guard >= 200 or cur is None or cur not in fmap:
-                    return None
-                nm, par = fmap[cur]
-                parts.append(nm)
-                cur = par
-                guard += 1
-            return os.path.join(*(list(reversed(parts)) + [name]))
-
         files, folders, unresolved = {}, [], []
         for r in files_df.itertuples(index=False):
-            rp = relpath(str(r.name), r.parentId)
+            rp = reconstruct_relpath(str(r.name), r.parentId, fmap, root)
             if rp is None:
                 unresolved.append((r.id, str(r.name)))
                 continue
@@ -270,7 +271,7 @@ def build_from_view(syn, config, bids_folder):
             files[key] = {"id": r.id, "name": str(r.name),
                           "md5": getattr(r, md5col) if md5col else None, "path": key}
         for r in folders_df.itertuples(index=False):
-            rp = relpath(str(r.name), r.parentId)
+            rp = reconstruct_relpath(str(r.name), r.parentId, fmap, root)
             if rp is None:
                 unresolved.append((r.id, str(r.name)))
                 continue
