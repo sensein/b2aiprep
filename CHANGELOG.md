@@ -1,3 +1,18 @@
+# 3.3.3 (Wed Jun 03 2026)
+
+#### 🐛 Bug Fix
+
+- Normalize task_name slug in audio_quality_metrics.tsv [#312](https://github.com/sensein/b2aiprep/pull/312) ([@wilke0818](https://github.com/wilke0818))
+- C2m2 scripts [#255](https://github.com/sensein/b2aiprep/pull/255) ([@wilke0818](https://github.com/wilke0818))
+- Add Sage upload scripts and documentation for maintainability [#239](https://github.com/sensein/b2aiprep/pull/239) ([@wilke0818](https://github.com/wilke0818))
+- Add regression tests for PyPI install fixes [#311](https://github.com/sensein/b2aiprep/pull/311) ([@wilke0818](https://github.com/wilke0818))
+
+#### Authors: 1
+
+- Jordan Wilke ([@wilke0818](https://github.com/wilke0818))
+
+---
+
 # 3.3.2 (Thu May 21 2026)
 
 #### 🐛 Bug Fix
