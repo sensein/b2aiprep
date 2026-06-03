@@ -139,11 +139,15 @@ def main():
                 'race': used_race_map[race],
             })
 
-    subject_df = pd.read_csv(c2m2_path / "subject.tsv", sep='\t')
+    # dtype=str on the read-back is essential: on the second cohort run the existing
+    # subject.tsv has an all-numeric local_id column, which pandas would otherwise infer
+    # as int64 and strip the leading zeros from 6-digit participant ids (e.g. 005009 ->
+    # 5009), corrupting the ids written by the first run.
+    subject_df = pd.read_csv(c2m2_path / "subject.tsv", sep='\t', dtype=str)
     subject_df = pd.concat([subject_df, pd.DataFrame(subjects)], ignore_index=True)
     subject_df.to_csv(c2m2_path / "subject.tsv", sep='\t', index=False)
 
-    race_df = pd.read_csv(c2m2_path / "subject_race.tsv", sep='\t')
+    race_df = pd.read_csv(c2m2_path / "subject_race.tsv", sep='\t', dtype=str)
     race_df = pd.concat([race_df, pd.DataFrame(subject_races)], ignore_index=True)
     race_df.to_csv(c2m2_path / "subject_race.tsv", sep='\t', index=False)
 
