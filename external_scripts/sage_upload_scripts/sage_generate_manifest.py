@@ -1,16 +1,17 @@
-import os
 import argparse
-from dotenv import load_dotenv
+import logging
 
-import synapseclient
 import synapseutils
+import pandas as pd
 from synapseclient.models import Project, Folder
 
-from sage_config import get_dataset_config, validate_sync_folder
+from sage_config import get_dataset_config, validate_sync_folder, login, configure_logging
+
+logger = logging.getLogger(__name__)
 
 
 def main():
-    load_dotenv()
+    configure_logging()
 
     parser = argparse.ArgumentParser(
         description="Generate a Synapse sync manifest from a local BIDS folder."
@@ -23,17 +24,16 @@ def main():
                         help='Target the adult dataset. Omit for the pediatric dataset.')
 
     args = parser.parse_args()
-    print(f"Received args: {args}")
+    logger.info("Received args: %s", args)
 
-    sage_pat = os.getenv("SAGE_PAT")
     config = get_dataset_config(args.adult)
 
-    syn = synapseclient.login(authToken=sage_pat)
+    syn = login()
     project = Project(id=config["project"]).get()
-    print(f"Looking at project: {project.name}, id: {project.id}")
+    logger.info("Looking at project: %s, id: %s", project.name, project.id)
 
     parent_id = config["folder"]
-    print(f"Syncing data with parent folder: {parent_id}")
+    logger.info("Syncing data with parent folder: %s", parent_id)
     root_data_folder = Folder(id=parent_id).get()
 
     # Sanity check that we resolved the expected destination folder before upload.
@@ -47,6 +47,16 @@ def main():
         parent_id=parent_id,
         manifest_path=args.manifest_file,
     )
+
+    # Guard: a wrong/empty --bids_folder silently yields a header-only manifest,
+    # which later "uploads" nothing. Fail loudly instead.
+    manifest = pd.read_csv(args.manifest_file, sep='\t')
+    logger.info("Wrote %s with %d file rows", args.manifest_file, len(manifest))
+    if len(manifest) == 0:
+        raise SystemExit(
+            f"Manifest {args.manifest_file} has 0 file rows -- is --bids_folder "
+            f"({args.bids_folder!r}) correct and non-empty?"
+        )
 
 
 if __name__=='__main__':

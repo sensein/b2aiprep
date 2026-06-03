@@ -1,28 +1,22 @@
 import os
-import re
 import time
-import hashlib
+import logging
 import argparse
-from dotenv import load_dotenv
-
-import synapseclient
-import synapseutils
 import tempfile
+
+import synapseutils
 import pandas as pd
 
-# Matches a BIDS subject directory segment anywhere in a path (any separator,
-# leading or mid-path), e.g. "sub-010729/..." or ".../sub-010729/...".
-_SUBJECT_DIR = r"(?:^|[\\/])sub-[^\\/]+(?:[\\/]|$)"
+from sage_config import (
+    SUBJECT_DIR_RE, subject_segment, file_md5, login, configure_logging,
+)
+
+logger = logging.getLogger(__name__)
 
 # Retry defaults for transient upload errors (e.g. 412 update conflicts).
 _DEFAULT_MAX_RETRIES = 4
 _DEFAULT_RETRY_BASE_DELAY_S = 5
 _MAX_RETRY_DELAY_S = 60
-
-
-def _subject_segment(subject):
-    """Regex matching `subject` as a path segment regardless of separators/position."""
-    return rf"(?:^|[\\/]){re.escape(subject)}(?:[\\/]|$)"
 
 
 def filter_manifest(data, subject=None, toplevel=False):
@@ -33,32 +27,34 @@ def filter_manifest(data, subject=None, toplevel=False):
     the dataset-level files that live outside any sub-* directory.
     """
     if subject:
-        return data[data['path'].str.contains(_subject_segment(subject), regex=True)]
+        return data[data['path'].str.contains(subject_segment(subject), regex=True)]
     if toplevel:
-        return data[~data['path'].str.contains(_SUBJECT_DIR, regex=True)]
+        return data[~data['path'].str.contains(SUBJECT_DIR_RE, regex=True)]
     return data
 
 
-def _local_md5(path):
-    h = hashlib.md5()
-    with open(path, "rb") as f:
-        for chunk in iter(lambda: f.read(1 << 20), b""):
-            h.update(chunk)
-    return h.hexdigest()
+def _server_md5(syn, parent_id, name, tries=3):
+    """Current Synapse md5 for child `name` under `parent_id`, or None if absent.
 
-
-def _server_md5(syn, parent_id, name):
-    """Current Synapse md5 for child `name` under `parent_id`, or None if absent."""
-    try:
-        sid = syn.findEntityId(name, parent=parent_id)
-    except Exception:
-        sid = None
+    Retries transient lookup errors so a flaky get does not make a correctly
+    uploaded file look unsynced (which would otherwise exhaust retries and raise).
+    A genuine None (entity absent) is returned only after the retries.
+    """
+    sid = None
+    for _ in range(tries):
+        try:
+            sid = syn.findEntityId(name, parent=parent_id)
+            break
+        except Exception:
+            time.sleep(1)
     if not sid:
         return None
-    try:
-        return syn.get(sid, downloadFile=False).get('md5', None)
-    except Exception:
-        return None
+    for _ in range(tries):
+        try:
+            return syn.get(sid, downloadFile=False).get('md5', None)
+        except Exception:
+            time.sleep(1)
+    return None
 
 
 def _unsynced(syn, df):
@@ -72,7 +68,7 @@ def _unsynced(syn, df):
         if not os.path.isfile(path):
             mask.append(False)  # nothing to upload locally
             continue
-        mask.append(_server_md5(syn, parent, os.path.basename(path)) != _local_md5(path))
+        mask.append(_server_md5(syn, parent, os.path.basename(path)) != file_md5(path))
     return df[mask]
 
 
@@ -97,16 +93,17 @@ def upload_with_retry(syn, df, max_retries, base_delay):
             _sync_once(syn, remaining, dry_run=False)
             return  # clean success, nothing raised
         except Exception as e:
-            print(f"Upload attempt {attempt} raised {type(e).__name__}: {e}")
+            logger.warning("Upload attempt %d raised %s: %s", attempt, type(e).__name__, e)
             remaining = _unsynced(syn, remaining)
             if len(remaining) == 0:
-                print("All files verified on Synapse with matching md5 -- "
-                      "treating as success despite the error.")
+                logger.info("All files verified on Synapse with matching md5 -- "
+                            "treating as success despite the error.")
                 return
-            print(f"{len(remaining)} file(s) still mismatch the server after attempt {attempt}.")
+            logger.info("%d file(s) still mismatch the server after attempt %d.",
+                        len(remaining), attempt)
             if attempt < max_retries:
                 delay = min(base_delay * (2 ** attempt), _MAX_RETRY_DELAY_S)
-                print(f"Retrying {len(remaining)} file(s) in {delay}s ...")
+                logger.info("Retrying %d file(s) in %ss ...", len(remaining), delay)
                 time.sleep(delay)
             else:
                 raise RuntimeError(
@@ -116,7 +113,7 @@ def upload_with_retry(syn, df, max_retries, base_delay):
 
 
 def main():
-    load_dotenv()
+    configure_logging()
 
     parser = argparse.ArgumentParser(
         description="Upload a Synapse sync manifest, optionally filtered for per-subject parallel uploads."
@@ -140,20 +137,23 @@ def main():
 
     args = parser.parse_args()
 
-    sage_pat = os.getenv("SAGE_PAT")
-
-    syn = synapseclient.login(authToken=sage_pat)
-    data = pd.read_csv(args.manifest_file, sep='\t')
-    total = len(data)
-    data = filter_manifest(data, subject=args.subject, toplevel=args.toplevel)
+    syn = login()
+    full = pd.read_csv(args.manifest_file, sep='\t')
+    total = len(full)
+    data = filter_manifest(full, subject=args.subject, toplevel=args.toplevel)
     if args.subject and len(data) == 0 and total > 0:
-        print(f"WARNING: subject={args.subject} matched 0 of {total} manifest rows. "
-              f"Sample manifest path: {data['path'].iloc[0] if len(data) else pd.read_csv(args.manifest_file, sep='\t')['path'].iloc[0]}")
-    start = args.start if args.start and args.start >= 0 else 0
-    end = args.end if args.end else len(data)
+        logger.warning("subject=%s matched 0 of %d manifest rows. Sample manifest path: %s",
+                       args.subject, total, full['path'].iloc[0])
+
+    # Use `is not None` so a deliberate --start/--end of 0 is honored, and reject
+    # invalid ranges instead of silently coercing them.
+    start = args.start if args.start is not None else 0
+    end = args.end if args.end is not None else len(data)
+    if start < 0 or end < 0 or start > end:
+        raise SystemExit(f"Invalid row range: start={start}, end={end} (have {len(data)} rows)")
     df = data[start:end]
-    print(f"Uploading {len(df)} matched rows of {total} in manifest "
-          f"(subject={args.subject}, toplevel={args.toplevel}, dry_run={args.dry_run})")
+    logger.info("Uploading %d matched rows of %d in manifest (subject=%s, toplevel=%s, dry_run=%s)",
+                len(df), total, args.subject, args.toplevel, args.dry_run)
 
     if args.dry_run:
         _sync_once(syn, df, dry_run=True)
