@@ -16,7 +16,7 @@ from pathlib import Path
 import parselmouth
 
 from b2aiprep.prepare.dataset import BIDSDataset
-from b2aiprep.prepare.utils import copy_package_resource
+from b2aiprep.prepare.utils import copy_package_resource, normalize_task_label
 
 RESAMPLE_RATE=16000
 
@@ -75,9 +75,13 @@ def quality_control_wrapper(
         evaluation_df["session_id"] = evaluation_df["path"].apply(
             BIDSDataset._extract_session_id_from_path
         )
+        # Normalize to the canonical slug (lowercase, non-alphanumerics -> '-') so the
+        # quality-metrics task_name matches the slug used by deidentified audio/feature
+        # files and the BIDS task entity. _extract_task_name_from_path returns the raw
+        # stem value, which otherwise stays capitalized (e.g. 'Cape-V-sentences-(v2)-1').
         evaluation_df["task_name"] = evaluation_df["path"].apply(
             BIDSDataset._extract_task_name_from_path
-        )
+        ).apply(normalize_task_label)
         drop_cols = [c for c in ("id", "path", "activity") if c in evaluation_df.columns]
         id_cols = ["participant_id", "session_id", "task_name"]
         metric_cols = [c for c in evaluation_df.columns if c not in drop_cols + id_cols]
