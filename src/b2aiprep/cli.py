@@ -21,6 +21,8 @@ from b2aiprep.commands import (  # gensynthtabdata,
     deidentify_bids_dataset,
     run_quality_control_on_audios,
     update_bids_template_command,
+    generate_id_lookup_table,
+    create_subject_splits,
 )
 
 
@@ -62,6 +64,8 @@ cli.add_command(bids2shadow)
 cli.add_command(validate_feature_extraction)
 cli.add_command(run_quality_control_on_audios)
 cli.add_command(update_bids_template_command)
+cli.add_command(generate_id_lookup_table)
+cli.add_command(create_subject_splits)
 
 if __name__ == "__main__":
     # include main to enable python debugging

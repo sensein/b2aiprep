@@ -648,13 +648,13 @@ class BIDSDataset:
     @staticmethod
     def _load_reproschema(
         reproschema_file: Path,
+        reproschema_folder: Path,
     ) -> t.Dict[str, t.Dict[str, t.Any]]:
         with reproschema_file.open("r", encoding="utf-8") as fp:
             schema_json = json.load(fp)
-        
+
         protocol_order = schema_json.get("ui", {}).get("order")
 
-        reproschema_folder: Path = reproschema_file.parents[1]
         commit_sha = get_commit_sha(reproschema_folder)
 
         activities = {}
@@ -780,16 +780,18 @@ class BIDSDataset:
         # Load reproschema file
 
         source_path = files("b2aiprep.redcap2rs")
-        if source_path.joinpath('b2ai-redcap2rs_schema').exists():
+        if source_path.joinpath('b2ai-redcap2rs_schema').is_file():
             resolved_schema_file = source_path.joinpath('b2ai-redcap2rs_schema')
-        elif (source_path / 'b2ai-redcap2rs' / 'b2ai-redcap2rs_schema').exists():
-            resolved_schema_file = source_path /'b2ai-redcap2rs' /'b2ai-redcap2rs_schema'
+            reproschema_folder = Path(resolved_schema_file).parent.resolve()
+        elif (source_path / 'b2ai-redcap2rs' / 'b2ai-redcap2rs_schema').is_file():
+            resolved_schema_file = source_path / 'b2ai-redcap2rs' / 'b2ai-redcap2rs_schema'
+            reproschema_folder = Path(resolved_schema_file).parent.parent.resolve()
         else:
             raise FileNotFoundError(
                 f"Could not find 'b2ai-redcap2rs_schema' in source directory: {source_path}"
             )
 
-        schemas = BIDSDataset._load_reproschema(resolved_schema_file)
+        schemas = BIDSDataset._load_reproschema(resolved_schema_file, reproschema_folder)
 
         # create an index for data_element -> schema
         element_to_schema = {}

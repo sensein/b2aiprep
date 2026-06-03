@@ -966,3 +966,111 @@ def test_validate_bids_folder_complex_filenames():
 
             # Should log success message
             mock_logger.warning.assert_not_called()
+
+
+class _StopAfterDispatch(Exception):
+    """Sentinel raised by a stubbed _load_reproschema to halt after dispatch is observed."""
+
+    def __init__(self, folder):
+        super().__init__()
+        self.folder = folder
+
+
+def _construct_phenotype_dispatch_df():
+    return pd.DataFrame({
+        "record_id": ["r1"],
+        "redcap_repeat_instrument": ["Acoustic Task"],
+    })
+
+
+def test_construct_phenotype_locates_commit_sha_for_flat_layout(tmp_path, monkeypatch):
+    """Layout A: schema directly in redcap2rs/ → reproschema_folder = redcap2rs/."""
+    redcap2rs = tmp_path / "redcap2rs"
+    redcap2rs.mkdir()
+    (redcap2rs / "b2ai-redcap2rs_schema").write_text(json.dumps({"ui": {"order": []}}))
+
+    monkeypatch.setattr("b2aiprep.prepare.dataset.files", lambda _: redcap2rs)
+
+    def stub(_schema, folder):
+        raise _StopAfterDispatch(folder)
+
+    monkeypatch.setattr(BIDSDataset, "_load_reproschema", staticmethod(stub))
+
+    with pytest.raises(_StopAfterDispatch) as exc:
+        BIDSDataset._construct_phenotype_from_reproschema(
+            _construct_phenotype_dispatch_df(), output_dir=str(tmp_path / "out")
+        )
+
+    assert exc.value.folder == redcap2rs.resolve()
+
+
+def test_construct_phenotype_locates_commit_sha_for_nested_layout(tmp_path, monkeypatch):
+    """Layout B: schema nested in redcap2rs/b2ai-redcap2rs/ → reproschema_folder = redcap2rs/."""
+    redcap2rs = tmp_path / "redcap2rs"
+    nested = redcap2rs / "b2ai-redcap2rs"
+    nested.mkdir(parents=True)
+    (nested / "b2ai-redcap2rs_schema").write_text(json.dumps({"ui": {"order": []}}))
+
+    monkeypatch.setattr("b2aiprep.prepare.dataset.files", lambda _: redcap2rs)
+
+    def stub(_schema, folder):
+        raise _StopAfterDispatch(folder)
+
+    monkeypatch.setattr(BIDSDataset, "_load_reproschema", staticmethod(stub))
+
+    with pytest.raises(_StopAfterDispatch) as exc:
+        BIDSDataset._construct_phenotype_from_reproschema(
+            _construct_phenotype_dispatch_df(), output_dir=str(tmp_path / "out")
+        )
+
+    assert exc.value.folder == redcap2rs.resolve()
+
+
+def test_construct_phenotype_resolves_symlinked_install_path(tmp_path, monkeypatch):
+    """When files() returns a symlinked path, the folder passed downstream is the resolved one."""
+    real = tmp_path / "real" / "redcap2rs"
+    nested = real / "b2ai-redcap2rs"
+    nested.mkdir(parents=True)
+    (nested / "b2ai-redcap2rs_schema").write_text(json.dumps({"ui": {"order": []}}))
+
+    link = tmp_path / "link"
+    link.symlink_to(real)
+
+    monkeypatch.setattr("b2aiprep.prepare.dataset.files", lambda _: link)
+
+    def stub(_schema, folder):
+        raise _StopAfterDispatch(folder)
+
+    monkeypatch.setattr(BIDSDataset, "_load_reproschema", staticmethod(stub))
+
+    with pytest.raises(_StopAfterDispatch) as exc:
+        BIDSDataset._construct_phenotype_from_reproschema(
+            _construct_phenotype_dispatch_df(), output_dir=str(tmp_path / "out")
+        )
+
+    assert exc.value.folder == real.resolve()
+    assert exc.value.folder != link
+
+
+def test_load_reproschema_resolves_paths_through_symlink(tmp_path):
+    """Activities reached via a symlink should not crash inside build_activity_payload."""
+    real = tmp_path / "real"
+    real.mkdir()
+    (real / "b2ai-redcap2rs_schema").write_text(
+        json.dumps({"ui": {"order": ["activities/test/test"]}})
+    )
+    activity_dir = real / "activities" / "test"
+    activity_dir.mkdir(parents=True)
+    (activity_dir / "test").write_text(json.dumps({"id": "test_id", "ui": {"order": []}}))
+    (real / "commit_sha.txt").write_text("abc12345")
+
+    link = tmp_path / "link"
+    link.symlink_to(real)
+
+    schema_via_link = link / "b2ai-redcap2rs_schema"
+    folder_resolved = link.resolve()
+
+    result = BIDSDataset._load_reproschema(schema_via_link, folder_resolved)
+
+    assert "test_id" in result
+    assert "abc12345" in result["test_id"]["url"]
