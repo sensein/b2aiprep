@@ -149,6 +149,11 @@ guide/data/
 *.DS_Store
 cache-wf/
 
+*.sh
+
+external_scripts/c2m2/*.csv
+external_scripts/c2m2/claude_notes/*
+external_scripts/c2m2/examples/*
 external_scripts/sage_upload_scripts/logs/
 external_scripts/sage_upload_scripts/*.tsv
 external_scripts/sage_upload_scripts/*.sh
