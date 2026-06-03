@@ -79,9 +79,10 @@ def quality_control_wrapper(
         # quality-metrics task_name matches the slug used by deidentified audio/feature
         # files and the BIDS task entity. _extract_task_name_from_path returns the raw
         # stem value, which otherwise stays capitalized (e.g. 'Cape-V-sentences-(v2)-1').
-        evaluation_df["task_name"] = evaluation_df["path"].apply(
-            BIDSDataset._extract_task_name_from_path
-        ).apply(normalize_task_label)
+        evaluation_df["task_name"] = [
+            normalize_task_label(BIDSDataset._extract_task_name_from_path(p))
+            for p in evaluation_df["path"]
+        ]
         drop_cols = [c for c in ("id", "path", "activity") if c in evaluation_df.columns]
         id_cols = ["participant_id", "session_id", "task_name"]
         metric_cols = [c for c in evaluation_df.columns if c not in drop_cols + id_cols]
