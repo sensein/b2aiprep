@@ -84,7 +84,7 @@ def resolve_relpaths(syn, df, name_col, parent_col, stop_ids):
             parts.append(nm)
             cur = par
             guard += 1
-        paths.append('/'.join(reversed(parts) + [name]) if parts else name)
+        paths.append('/'.join(list(reversed(parts)) + [name]) if parts else name)
     return paths
 
 

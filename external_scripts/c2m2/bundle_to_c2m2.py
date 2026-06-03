@@ -84,6 +84,11 @@ def get_biosamples_from_features(bundle_path: Path, c2m2_id_map: Path, project_l
     # Normalize to str so parquet (which may type these columns natively) and tsv
     # (always str) agree, keeping the merge with the str-typed id_map consistent.
     df[cols] = df[cols].astype(str)
+    # Normalize task_name to the canonical slug. Most feature files already use
+    # slugs (the transform is idempotent on them), but audio_quality_metrics.tsv
+    # stores raw recording names (e.g. 'Cape-V-sentences-(v2)-1'); normalizing
+    # merges those with the slug form instead of dropping them as unmapped.
+    df['task_name'] = df['task_name'].apply(_recording_name_to_task_name)
     df = df.drop_duplicates()
 
     # Find (participant_id, session_id) pairs not yet assigned an anon_id
@@ -321,6 +326,9 @@ def generate_file_describes_biosample(bundle_path: Path, all_files_df: pd.DataFr
         """Handle any file that has participant_id, session_id, task_name columns."""
         df = df[['participant_id', 'session_id', 'task_name']].drop_duplicates()
         df = df.merge(id_map_cols, on=['participant_id', 'session_id'], how='inner')
+        # Normalize raw recording names (audio_quality_metrics.tsv) to slugs so they
+        # match the biosample ids; idempotent on files that already use slugs.
+        df['task_name'] = df['task_name'].apply(_recording_name_to_task_name)
         df['bid'] = df['anon_id'] + '_' + df['task_name']
         for bid in df.loc[df['bid'].isin(valid_biosample_ids), 'bid'].unique():
             rows.add((fid, bid))
