@@ -6,7 +6,7 @@ adult/pediatric × registered/controlled access.
 ## Project structure
 
 ```
-root
+voice
 ├── adult                 (owns adult subjects + biosamples; tier-neutral)
 │   ├── adult_registered  (registered-access adult files: features/metadata/phenotype)
 │   └── adult_controlled  (controlled-access adult files: raw audio)
