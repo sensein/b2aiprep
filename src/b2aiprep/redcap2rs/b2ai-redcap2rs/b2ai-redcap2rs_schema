@@ -15,10 +15,17 @@
             "../activities/subjectparticipant_eligible_studies/subjectparticipant_eligible_studies_schema",
             "../activities/data_dissemination/data_dissemination_schema",
             "../activities/enrollment_form/enrollment_form_schema",
+            "../activities/prolific_information/prolific_information_schema",
             "../activities/bridge2ai_paper_consent_all_sites_english/bridge2ai_paper_consent_all_sites_english_schema",
             "../activities/bridge2ai_econsent_usf_english/bridge2ai_econsent_usf_english_schema",
+            "../activities/bridge2ai_econsent_usf_english_version_3/bridge2ai_econsent_usf_english_version_3_schema",
             "../activities/bridge2ai_econsent_usf_spanish/bridge2ai_econsent_usf_spanish_schema",
+            "../activities/bridge2ai_econsent_usf_spanish_version_3/bridge2ai_econsent_usf_spanish_version_3_schema",
             "../activities/bridge2ai_econsent_mit_english/bridge2ai_econsent_mit_english_schema",
+            "../activities/bridge2ai_econsent_mit_english_version_2/bridge2ai_econsent_mit_english_version_2_schema",
+            "../activities/bridge2ai_econsent_mit_spanish_version_2/bridge2ai_econsent_mit_spanish_version_2_schema",
+            "../activities/bridge2ai_econsent_wcm_english/bridge2ai_econsent_wcm_english_schema",
+            "../activities/bridge2ai_econsent_wcm_spanish_version_1/bridge2ai_econsent_wcm_spanish_version_1_schema",
             "../activities/d_control/d_control_schema",
             "../activities/d_voice_glottic_insufficiency_presbyphonia/d_voice_glottic_insufficiency_presbyphonia_schema",
             "../activities/d_voice_benign_lesions/d_voice_benign_lesions_schema",
@@ -62,7 +69,6 @@
             "../activities/q_neuro_productive_vocabulary/q_neuro_productive_vocabulary_schema",
             "../activities/q_neuro_random_item_generation/q_neuro_random_item_generation_schema",
             "../activities/q_neuro_moca/q_neuro_moca_schema",
-            "../activities/pediatric_d_healthy_developmentallytypical_childre/pediatric_d_healthy_developmentallytypical_childre_schema",
             "../activities/pediatric_q_generic_demographics/pediatric_q_generic_demographics_schema",
             "../activities/pediatric_q_generic_vhi_10/pediatric_q_generic_vhi_10_schema",
             "../activities/pediatric_q_generic_voice_outcome_survey/pediatric_q_generic_voice_outcome_survey_schema",
@@ -112,6 +118,14 @@
                 "variableName": "enrollment_form_schema"
             },
             {
+                "isAbout": "../activities/prolific_information/prolific_information_schema",
+                "isVis": true,
+                "prefLabel": {
+                    "en": "Prolific Information"
+                },
+                "variableName": "prolific_information_schema"
+            },
+            {
                 "isAbout": "../activities/bridge2ai_paper_consent_all_sites_english/bridge2ai_paper_consent_all_sites_english_schema",
                 "isVis": true,
                 "prefLabel": {
@@ -128,6 +142,14 @@
                 "variableName": "bridge2ai_econsent_usf_english_schema"
             },
             {
+                "isAbout": "../activities/bridge2ai_econsent_usf_english_version_3/bridge2ai_econsent_usf_english_version_3_schema",
+                "isVis": true,
+                "prefLabel": {
+                    "en": "Bridge2Ai Econsent Usf English Version 3"
+                },
+                "variableName": "bridge2ai_econsent_usf_english_version_3_schema"
+            },
+            {
                 "isAbout": "../activities/bridge2ai_econsent_usf_spanish/bridge2ai_econsent_usf_spanish_schema",
                 "isVis": true,
                 "prefLabel": {
@@ -136,12 +158,52 @@
                 "variableName": "bridge2ai_econsent_usf_spanish_schema"
             },
             {
+                "isAbout": "../activities/bridge2ai_econsent_usf_spanish_version_3/bridge2ai_econsent_usf_spanish_version_3_schema",
+                "isVis": true,
+                "prefLabel": {
+                    "en": "Bridge2Ai Econsent Usf Spanish Version 3"
+                },
+                "variableName": "bridge2ai_econsent_usf_spanish_version_3_schema"
+            },
+            {
                 "isAbout": "../activities/bridge2ai_econsent_mit_english/bridge2ai_econsent_mit_english_schema",
                 "isVis": true,
                 "prefLabel": {
                     "en": "Bridge2Ai Econsent Mit English"
                 },
                 "variableName": "bridge2ai_econsent_mit_english_schema"
+            },
+            {
+                "isAbout": "../activities/bridge2ai_econsent_mit_english_version_2/bridge2ai_econsent_mit_english_version_2_schema",
+                "isVis": true,
+                "prefLabel": {
+                    "en": "Bridge2Ai Econsent Mit English Version 2"
+                },
+                "variableName": "bridge2ai_econsent_mit_english_version_2_schema"
+            },
+            {
+                "isAbout": "../activities/bridge2ai_econsent_mit_spanish_version_2/bridge2ai_econsent_mit_spanish_version_2_schema",
+                "isVis": true,
+                "prefLabel": {
+                    "en": "Bridge2Ai Econsent Mit Spanish Version 2"
+                },
+                "variableName": "bridge2ai_econsent_mit_spanish_version_2_schema"
+            },
+            {
+                "isAbout": "../activities/bridge2ai_econsent_wcm_english/bridge2ai_econsent_wcm_english_schema",
+                "isVis": true,
+                "prefLabel": {
+                    "en": "Bridge2Ai Econsent Wcm English"
+                },
+                "variableName": "bridge2ai_econsent_wcm_english_schema"
+            },
+            {
+                "isAbout": "../activities/bridge2ai_econsent_wcm_spanish_version_1/bridge2ai_econsent_wcm_spanish_version_1_schema",
+                "isVis": true,
+                "prefLabel": {
+                    "en": "Bridge2Ai Econsent Wcm Spanish Version 1"
+                },
+                "variableName": "bridge2ai_econsent_wcm_spanish_version_1_schema"
             },
             {
                 "isAbout": "../activities/d_control/d_control_schema",
@@ -488,14 +550,6 @@
                 "variableName": "q_neuro_moca_schema"
             },
             {
-                "isAbout": "../activities/pediatric_d_healthy_developmentallytypical_childre/pediatric_d_healthy_developmentallytypical_childre_schema",
-                "isVis": true,
-                "prefLabel": {
-                    "en": "Pediatric D Healthy Developmentallytypical Childre"
-                },
-                "variableName": "pediatric_d_healthy_developmentallytypical_childre_schema"
-            },
-            {
                 "isAbout": "../activities/pediatric_q_generic_demographics/pediatric_q_generic_demographics_schema",
                 "isVis": true,
                 "prefLabel": {
@@ -546,6 +600,6 @@
         ],
         "shuffle": false
     },
-    "version": "4.0.0",
+    "version": "4.8.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

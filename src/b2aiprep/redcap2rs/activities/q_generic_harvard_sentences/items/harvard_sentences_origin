@@ -15,7 +15,7 @@
         "en": "harvard_sentences_origin"
     },
     "question": {
-        "en": "Harvard Sentences Origin"
+        "en": "Harvard Sentences - origin"
     },
     "responseOptions": {
         "choices": [
@@ -27,7 +27,7 @@
             },
             {
                 "name": {
-                    "en": "Bridge2AI Web Appa"
+                    "en": "Bridge2AI Web App"
                 },
                 "value": "website"
             }

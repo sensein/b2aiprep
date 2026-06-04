@@ -1,0 +1,41 @@
+{
+    "id": "prolific_information_schema",
+    "category": "reproschema:Activity",
+    "preamble": {
+        "en": "Prolific Details"
+    },
+    "prefLabel": {
+        "en": "prolific_information"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/is_prolific",
+            "items/prolific_id",
+            "items/show_prolific_study_id"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/is_prolific",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "is_prolific"
+            },
+            {
+                "isAbout": "items/prolific_id",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "prolific_id"
+            },
+            {
+                "isAbout": "items/show_prolific_study_id",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "show_prolific_study_id"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "4.8.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}
