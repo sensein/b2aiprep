@@ -235,6 +235,24 @@ def parse_survey(
     return [df]
 
 
+def get_jsonld_times(file_path): 
+    """Match jsonld to audio file by task name appearing in the 'used' URLs."""
+    audio_dir = Path(file_path).parent
+    task_name = Path(file_path).stem.split("-")[0]
+
+    for jsonld_file in sorted(audio_dir.glob("activity_*.jsonld")):
+        with open(jsonld_file) as f:
+            data = json.load(f)
+
+        for entry in data:
+            if entry.get("@type") == "reproschema:ResponseActivity":
+                used_urls = entry.get("used", [])
+                if any(task_name in url for url in used_urls):
+                    return entry.get("startedAtTime"), entry.get("endedAtTime")
+
+    return None, None
+
+
 def parse_audio(audio_list, dummy_audio_files=False):
     """
     Function that generates a list of Json's to be converted into a redcap csv based on audio files.
@@ -260,7 +278,7 @@ def parse_audio(audio_list, dummy_audio_files=False):
         "sentence": [],
         "picture_description": [],
         "passage": [],
-        "Generative Naming Task": [],
+        "generative_naming_task": [],
         "other": [],
     }
     # redcap groups these tasks into the conversation moniker
@@ -291,7 +309,7 @@ def parse_audio(audio_list, dummy_audio_files=False):
                 break
         for generative_task in generative_tasks:
             if generative_task in name:
-                protocol_order["Generative Naming Task"].append(name)
+                protocol_order["generative_naming_task"].append(name)
                 found = True
                 break
  
@@ -317,12 +335,15 @@ def parse_audio(audio_list, dummy_audio_files=False):
         if dummy_audio_files:
             duration = 0
             file_size = 0
+            start_time, end_time = None, None
         else:
             duration = get_wav_duration(file_path)
             file_size = (Path(file_path).stat().st_size) / 1024
+            start_time, end_time = get_jsonld_times(file_path)
         file_name = file_path.split("/")[-1]
         task_name = re.match(r"([a-z]+(?:_[a-z]+)*_\d+)", file_name).group(1)
         if task_name in task_names: # in case duplicate audio files exist of the same task
+            _LOGGER.warning(f"Duplicate audio task was found for {file_path}. Will be taking the first one.")
             continue
         recording_id = re.search(r"([a-f0-9\-]{36})\.", file_name).group(1)
         #recording_id = file_name.replace(".wav", "")
@@ -338,12 +359,16 @@ def parse_audio(audio_list, dummy_audio_files=False):
                 "record_id": record_id,
                 "redcap_repeat_instrument": "Acoustic Task",
                 "redcap_repeat_instance": acoustic_task_count,
-                "acoustic_task_id": f"{acoustic_task}-{session}",
+                "acoustic_task_id": f"{session}",
                 "acoustic_task_session_id": session,
                 "acoustic_task_name": acoustic_task,
-                "acoustic_task_cohort": "Pediatrics",
+                "acoustic_task_cohort": "Pediatric",
                 "acoustic_task_status": "Completed",
-                "acoustic_task_duration": duration,
+                "acoustic_task_complete": 2,
+                "acoustic_task_duration": duration, # there a chance they wont match as patients can pause during the task and duration is calculated based on sum of recordings.
+                "acoustic_task_started_at": start_time,
+                "acoustic_task_completed_at": end_time,
+                "acoustic_task_complete": 2
             }
             audio_output_list.append(acoustic_task_dict)
             acoustic_task_count += 1
@@ -352,6 +377,10 @@ def parse_audio(audio_list, dummy_audio_files=False):
                 if "acoustic_task_id" in index:
                     if acoustic_task == index["acoustic_task_name"]:
                         index["acoustic_task_duration"] += duration
+                        if start_time and (index["acoustic_task_started_at"] is None or start_time < index["acoustic_task_started_at"]):
+                            index["acoustic_task_started_at"] = start_time
+                        if end_time and (index["acoustic_task_completed_at"] is None or end_time > index["acoustic_task_completed_at"]):
+                            index["acoustic_task_completed_at"] = end_time 
 
         if acoustic_prev != acoustic_task:
             acoustic_count = 1
@@ -360,14 +389,19 @@ def parse_audio(audio_list, dummy_audio_files=False):
             "redcap_repeat_instrument": "Recording",
             "redcap_repeat_instance": count,
             "recording_id": recording_id,
-            "recording_acoustic_task_id": f"{acoustic_task}-{session}",
+            "recording_acoustic_task_id": f"{session}",
             "recording_session_id": session,
             "recording_name": f"{acoustic_task}-{acoustic_count}",
             "recording_duration": duration,
             "recording_size": file_size,
             "recording_profile_name": "Speech",
             "recording_profile_version": "v1.0.0",
+            "recording_storage_account": "",
+            "recording_file_share": "",
             "recording_input_gain": np.nan,
+            "recording_complete" : 2,
+            "recording_created_at": start_time,
+            "recording_completed_at": end_time, 
             "recording_microphone": "USB-C to 3.5mm Headphone Jack Adapter",
             "recording_filepath" : f"/mounts/b2ai-api/Data/SickKids/{recording_id}.wav" # apparently we're hard coding this now...
         }
@@ -678,7 +712,7 @@ class RedCapDataset:
                 total_duration = session_end - session_start
                 session_duration = total_duration.total_seconds()
                 if record_id not in session_durations:
-                    session_durations[record_id] = session_duration
+                    session_durations[record_id] = {"session_duration" : session_duration, "session_start": session_start, "session_end": session_end}
             else:
                 session_durations[record_id] = np.nan
         audio_folders = Path(audio_dir)
@@ -719,7 +753,9 @@ class RedCapDataset:
                 "session_id": audio_session_ids.get(subject_id, None),
                 "session_status": "Completed",
                 "session_is_control_participant": "No",
-                "session_duration": session_durations[subject_id],
+                "session_duration": session_durations[subject_id]["session_duration"],
+                "session_start_at": session_durations[subject_id]["session_start"],
+                "session_completed_at": session_durations[subject_id]["session_end"],
                 "session_site": "SickKids",
             }
             merged_csv.append(audio_session_dict)
