@@ -3,7 +3,7 @@ import argparse
 import json
 import re
 import uuid
-
+import numpy as np
 def to_camel_case(text):
     if not isinstance(text, str):
         return text
@@ -204,6 +204,17 @@ def clean_up(df):
         pd.to_numeric(df["peds_vhi_talkativeness"], errors="coerce")
         .astype("Int64")
     )
+    
+    df["recording_complete"] = (
+        pd.to_numeric(df["recording_complete"], errors="coerce")
+        .astype("Int64")
+    )
+    
+    df["acoustic_task_complete"] = (
+        pd.to_numeric(df["acoustic_task_complete"], errors="coerce")
+        .astype("Int64")
+    )
+    
     csv_string = df.to_csv(index=False)
     csv_string = csv_string.replace("preferNotToAnswer", "noAnswer")
     csv_string = csv_string.replace("problemIs“asBadAsItCanBe”", "asBadAsItCanBe")
@@ -212,12 +223,15 @@ def clean_up(df):
 def updated_record_ids(df, load_uuid_map = None):
     record_id_2_uuid_tracker = load_uuid_map or {}
     def gen_uuid(id):
+        if pd.isna(id):
+            return id
         if id not in record_id_2_uuid_tracker:
             record_id_2_uuid_tracker[id] = str(uuid.uuid4())
         return record_id_2_uuid_tracker[id]
 
     df["participant_study_id"] = df["record_id"]
     df['record_id'] = df['record_id'].apply(gen_uuid)
+    df['session_record_id'] = df['session_record_id'].apply(gen_uuid)
     return df, record_id_2_uuid_tracker
 
 if __name__ == "__main__":

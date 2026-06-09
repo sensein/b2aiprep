@@ -1,7 +1,7 @@
 import json
 import pandas as pd
 import argparse
-
+import uuid
 
 def create_questionnaire_redcap(redcap_csv, consent_csv, output_path, uuid_map_path=None):
     df = pd.read_csv(redcap_csv, dtype="str")
@@ -82,10 +82,15 @@ def create_questionnaire_redcap(redcap_csv, consent_csv, output_path, uuid_map_p
         "recording_microphone",
         "participant_study_id"
     ]
+    
+    if "session_id" in df.columns:
+        df["session_id"] = df["session_id"].apply(
+            lambda x: str(uuid.UUID(x)) if pd.notna(x) else x
+        )
 
     df.drop(columns=[c for c in columns_list if c in df.columns], axis=1, inplace=True)
 
-    df.to_csv(f"{output_path}/questionnaire-final-may21.csv", index=False)
+    df.to_csv(f"{output_path}/questionnaire-final-may26.csv", index=False)
 
 
 if __name__ == "__main__":

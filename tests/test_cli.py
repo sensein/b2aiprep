@@ -872,6 +872,30 @@ def test_reproschema_to_redcap_cli():
         # Create proper dummy audio file with UUID-like name
         audio_file = audio_subject_dir / "ready_for_school_12345678-1234-1234-1234-123456789abc.wav"
         create_dummy_wav_file(str(audio_file))
+        
+        age_file = audio_subject_dir/"activity_0.jsonld" 
+        
+        fake_jsonld = """[
+            {
+                "@context": "https://fake.context.com",
+                "@type": "reproschema:ResponseActivity",
+                "@id": "uuid:aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+                "used": [
+                    "https://fake.url.com/activities/contact_information/items/age"
+                ],
+                "startedAtTime": "2025-01-01T10:00:00.000Z",
+                "endedAtTime": "2025-01-01T10:00:05.000Z"
+            },
+            {
+                "@context": "https://fake.context.com",
+                "@type": "reproschema:Response",
+                "@id": "uuid:bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+                "isAbout": "https://fake.url.com/activities/contact_information/items/age",
+                "value": "7"
+            }
+        ]"""
+        age_file.write_text(fake_jsonld)
+
 
         output_dir = Path(temp_dir) / "output"
 

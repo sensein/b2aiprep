@@ -235,6 +235,21 @@ def parse_survey(
     return [df]
 
 
+def get_age_from_jsonld(session_dir):
+    """Search all activity jsonlds in a session directory for the age field."""
+    for jsonld_file in sorted(Path(session_dir).glob("activity_*.jsonld")):
+        with open(jsonld_file) as f:
+            data = json.load(f)
+
+        for entry in data:
+            if (
+                entry.get("@type") == "reproschema:Response"
+                and entry.get("isAbout", "").endswith("/age")
+            ):
+                return entry.get("value")
+
+    return None
+
 def get_jsonld_times(file_path): 
     """Match jsonld to audio file by task name appearing in the 'used' URLs."""
     audio_dir = Path(file_path).parent
@@ -349,7 +364,15 @@ def parse_audio(audio_list, dummy_audio_files=False):
         #recording_id = file_name.replace(".wav", "")
         acoustic_task = re.search(r"^(.*?)(_\d+)", file_name).group(1)
         if acoustic_task in conversation_tasks:
-            acoustic_task = "conversation"
+            age = get_age_from_jsonld(Path(file_path).parent)
+            if int(age) >10:
+                acoustic_task = "conversation(10+)"
+            elif int(age) >=6 and int(age) < 10:
+                acoustic_task = "conversation(6to10)"
+            elif int(age) >=4 and int(age) < 6:
+                acoustic_task = "conversation(4to6)"
+            else:
+                acoustic_task = "conversation(2to4)"
         if acoustic_task in generative_tasks:
             acoustic_task = "Generative Naming Task"
         if acoustic_task not in acoustic_tasks:
@@ -364,11 +387,10 @@ def parse_audio(audio_list, dummy_audio_files=False):
                 "acoustic_task_name": acoustic_task,
                 "acoustic_task_cohort": "Pediatric",
                 "acoustic_task_status": "Completed",
-                "acoustic_task_complete": 2,
+                "acoustic_task_complete": "2",
                 "acoustic_task_duration": duration, # there a chance they wont match as patients can pause during the task and duration is calculated based on sum of recordings.
                 "acoustic_task_started_at": start_time,
                 "acoustic_task_completed_at": end_time,
-                "acoustic_task_complete": 2
             }
             audio_output_list.append(acoustic_task_dict)
             acoustic_task_count += 1
@@ -399,9 +421,9 @@ def parse_audio(audio_list, dummy_audio_files=False):
             "recording_storage_account": "",
             "recording_file_share": "",
             "recording_input_gain": np.nan,
-            "recording_complete" : 2,
+            "recording_complete" : "2",
             "recording_created_at": start_time,
-            "recording_completed_at": end_time, 
+            #"recording_completed_at": end_time, 
             "recording_microphone": "USB-C to 3.5mm Headphone Jack Adapter",
             "recording_filepath" : f"/mounts/b2ai-api/Data/SickKids/{recording_id}.wav" # apparently we're hard coding this now...
         }
@@ -751,10 +773,11 @@ class RedCapDataset:
                 "redcap_repeat_instrument": "Session",
                 "redcap_repeat_instance": 1,
                 "session_id": audio_session_ids.get(subject_id, None),
+                "session_record_id": subject_id,
                 "session_status": "Completed",
                 "session_is_control_participant": "No",
                 "session_duration": session_durations[subject_id]["session_duration"],
-                "session_start_at": session_durations[subject_id]["session_start"],
+                "session_started_at": session_durations[subject_id]["session_start"],
                 "session_completed_at": session_durations[subject_id]["session_end"],
                 "session_site": "SickKids",
             }

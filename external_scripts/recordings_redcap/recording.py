@@ -89,10 +89,20 @@ recording_names_mapping = {
     "sentence6": "Repeating Sentences-6",
     "sentence7": "Repeating Sentences-7",
     "pictureDescription1": "Picture Description",
-    "conversation4": "Conversation (6 plus)-ready_for_school",
-    "conversation2": "Conversation (6 plus)-favorite_show_movie_game",
-    "conversation1": "Conversation (6 plus)-favorite_food",
-    "conversation3": "Conversation (6 plus)-outside_of_school",
+    "conversation(10+)1": "Conversation (10 plus)-favorite_food",
+    "conversation(10+)2": "Conversation (10 plus)-favorite_show_movie_game",
+    "conversation(10+)3": "Conversation (10 plus)-outside_of_school",
+    "conversation(10+)4": "Conversation (10 plus)-ready_for_school",
+    "conversation(6to10)1": "Conversation (6 plus)-favorite_food",
+    "conversation(6to10)2": "Conversation (6 plus)-favorite_show_movie_game",
+    "conversation(6to10)3": "Conversation (6 plus)-outside_of_school",
+    "conversation(6to10)4": "Conversation (6 plus)-ready_for_school",
+    "conversation(4to6)1": "Conversation (4 to 6)-book",
+    "conversation(2to4)1": "Conversation (2 to 4)-book",    
+    # "conversation4": "Conversation (6 plus)-ready_for_school",
+    # "conversation2": "Conversation (6 plus)-favorite_show_movie_game",
+    # "conversation1": "Conversation (6 plus)-favorite_food",
+    # "conversation3": "Conversation (6 plus)-outside_of_school",
     "roleNaming1": "Role naming tasks sounds-days",
     "roleNaming2": "Role naming tasks sounds-months",
     "roleNaming3": "Role naming tasks sounds-numbers",
@@ -107,10 +117,10 @@ recording_names_mapping = {
     "passage9": "Reading Passage-9",
     "passage10": "Reading Passage-10",
     "passage11": "Reading Passage-11",
-    "Generative-Naming-Task-1": "Generative Naming Task-animals",
-    "Generative-Naming-Task-2": "Generative Naming Task-food",
-    "longSoundsTask1": "Long Sounds-1",
-    "longSoundsTask2": "Long Sounds-2",
+    "generativeNamingTask1": "Generative Naming Task-animals",
+    "generativeNamingTask2": "Generative Naming Task-food",
+    "longSounds1": "Long Sounds-1",
+    "longSounds2": "Long Sounds-2",
     "repeatWords1": "Repeating Words-smile",
     "repeatWords2": "Repeating Words-great",
     "repeatWords3": "Repeating Words-sled",
@@ -143,7 +153,8 @@ recording_names_mapping = {
 def create_recording_redcap(recording_csv, output_csv):
 
     df = pd.read_csv(recording_csv, dtype="str")
-
+    # Clean column names first
+    df.columns = df.columns.str.strip().str.replace('\u2060', '', regex=False)
     l = []
     for col in df.columns:
         if df[col].isnull().all():
@@ -155,10 +166,8 @@ def create_recording_redcap(recording_csv, output_csv):
         "peds_mc_neck_mass___dermoid_cyst",
         "peds_mc_neck_mass___enlarged_lymph_node",
         "participant_study_id",
-        "recording_profile_name",
-        "recording_microphone",
-        "recording_profile_name"
-        
+        # "recording_profile_name",
+        # "recording_microphone",
         
     ]
     df.drop(columns=l, axis=1, inplace=True)
@@ -172,7 +181,7 @@ def create_recording_redcap(recording_csv, output_csv):
     lambda x: re.sub(r"([a-f0-9]{32})", lambda m: f"-{str(uuid.UUID(m.group()))}", x, flags=re.IGNORECASE) if pd.notna(x) else x
 )   
     
-    uuid_cols = ["acoustic_task_session_id", "session_id ", "acoustic_task_id", " ⁠recording_acoustic_task_id", "recording_session_id"]
+    uuid_cols = ["acoustic_task_session_id", "session_id","acoustic_task_id", "recording_acoustic_task_id", "recording_session_id"]
     for col in uuid_cols:
         df[col] = df[col].apply(lambda x: str(uuid.UUID(x)) if pd.notna(x) else x)
     
@@ -187,8 +196,12 @@ def create_recording_redcap(recording_csv, output_csv):
     df["recording_name"] = df["recording_name"].apply(
         lambda x: recording_names_mapping[x] if pd.notna(x) and x in recording_names_mapping else x
     )
+    
+    df["recording_input_gain"] =  ""
+    df["recording_file_share"]=   ""
+    df["recording_storage_account"] =  ""
 
-    df.to_csv(f"{output_csv}/recording-final-may26.csv", index=False)
+    df.to_csv(f"{output_csv}/recording-final-jun8.csv", index=False)
 
 
 if __name__ == "__main__":
