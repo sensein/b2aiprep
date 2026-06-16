@@ -780,6 +780,7 @@ class RedCapDataset:
                 "session_started_at": session_durations[subject_id]["session_start"],
                 "session_completed_at": session_durations[subject_id]["session_end"],
                 "session_site": "SickKids",
+                "session_complete": "2"
             }
             merged_csv.append(audio_session_dict)
             # Process audio data

@@ -3,6 +3,30 @@ import pandas as pd
 import argparse
 import uuid
 
+def mark_repeat_instruments_complete(df):
+    """For any row with a value in redcap_repeat_instrument, set {value}_complete = "2",
+    creating the column if it doesn't already exist."""
+    if "redcap_repeat_instrument" not in df.columns:
+        return df
+ 
+    # Unique, non-empty instrument values
+    instruments = df["redcap_repeat_instrument"].dropna()
+    instruments = instruments[instruments.str.strip() != ""].unique()
+ 
+    # Pre-create the *_complete columns to avoid fragmenting the frame
+    for inst in instruments:
+        col = f"{inst}_complete"
+        if col not in df.columns:
+            df[col] = pd.NA
+ 
+    # Mark each row's matching column
+    for idx, value in df["redcap_repeat_instrument"].items():
+        if pd.notna(value) and str(value).strip() != "":
+            df.at[idx, f"{value}_complete"] = "2"
+ 
+    return df
+
+
 def create_questionnaire_redcap(redcap_csv, consent_csv, output_path, uuid_map_path=None):
     df = pd.read_csv(redcap_csv, dtype="str")
     dates = pd.read_csv(consent_csv, dtype="str")
@@ -55,6 +79,21 @@ def create_questionnaire_redcap(redcap_csv, consent_csv, output_path, uuid_map_p
                     "enrollment_institution": "sickkids",
                     "is_control_participant": "no",
                     f"eligible_studies___{eligible_studies}": "1",
+                    "subjectparticipant_basic_information_complete": "2",
+                    "subjectparticipant_contact_information_complete": "2",
+                    "redcap_data_access_group": "sickkids",
+                    "is_remote_data_collection_enabled": "no",
+                    "exclude_participant": "no",
+                    "inclusion_date": consent_date, # inclusion and consent are the same date
+                    "data_dissemination_complete": "2",
+                    "subjectparticipant_eligible_studies_complete": "2",
+                    # "pediatric_q_generic_demographics_complete": "2",
+                    # "pediatric_q_generic_vhi_10_complete": "2",
+                    # "pediatric_q_generic_voice_outcome_survey_complete": "2",
+                    # "pediatric_q_generic_voice_related_qol_survey_complete": "2",
+                    # "pediatric_q_generic_phqa_complete": "2",
+                    # "pediatric_q_generic_medical_conditions_complete": "2"
+                    
                 }
             ]
         )
@@ -87,10 +126,11 @@ def create_questionnaire_redcap(redcap_csv, consent_csv, output_path, uuid_map_p
         df["session_id"] = df["session_id"].apply(
             lambda x: str(uuid.UUID(x)) if pd.notna(x) else x
         )
-
+    df = mark_repeat_instruments_complete(df)
+ 
     df.drop(columns=[c for c in columns_list if c in df.columns], axis=1, inplace=True)
 
-    df.to_csv(f"{output_path}/questionnaire-final-may26.csv", index=False)
+    df.to_csv(f"{output_path}/questionnaire-final-jun15.csv", index=False)
 
 
 if __name__ == "__main__":

@@ -215,6 +215,12 @@ def clean_up(df):
         .astype("Int64")
     )
     
+    df["session_complete"] = (
+        pd.to_numeric(df["session_complete"], errors="coerce")
+        .astype("Int64")
+    )
+    
+    
     csv_string = df.to_csv(index=False)
     csv_string = csv_string.replace("preferNotToAnswer", "noAnswer")
     csv_string = csv_string.replace("problemIs“asBadAsItCanBe”", "asBadAsItCanBe")
