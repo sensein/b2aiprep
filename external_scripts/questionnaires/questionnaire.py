@@ -2,6 +2,7 @@ import json
 import pandas as pd
 import argparse
 import uuid
+import datetime
 
 def mark_repeat_instruments_complete(df):
     """For any row with a value in redcap_repeat_instrument, set {value}_complete = "2",
@@ -87,17 +88,17 @@ def create_questionnaire_redcap(redcap_csv, consent_csv, output_path, uuid_map_p
                     "inclusion_date": consent_date, # inclusion and consent are the same date
                     "data_dissemination_complete": "2",
                     "subjectparticipant_eligible_studies_complete": "2",
-                    # "pediatric_q_generic_demographics_complete": "2",
-                    # "pediatric_q_generic_vhi_10_complete": "2",
-                    # "pediatric_q_generic_voice_outcome_survey_complete": "2",
-                    # "pediatric_q_generic_voice_related_qol_survey_complete": "2",
-                    # "pediatric_q_generic_phqa_complete": "2",
-                    # "pediatric_q_generic_medical_conditions_complete": "2"
+                    "ef_select_language": "1",
+                    "ef_primary_language": "1",
+                    "ef_enrollment": "Enroll",
+                    "ef_is_control_participant": "no",
+                    "ef_enrollment_institution": "sickkids",
+                    "enrollment_form_complete": "2"
                     
                 }
             ]
         )
-        df = pd.concat([df, feas], ignore_index=True)
+        df = pd.concat([feas,df], ignore_index=True)
 
     columns_list = [
         "session_status",
@@ -119,18 +120,22 @@ def create_questionnaire_redcap(redcap_csv, consent_csv, output_path, uuid_map_p
         "recording_profile_name",
         "recording_profile_version",
         "recording_microphone",
-        "participant_study_id"
     ]
-    
-    if "session_id" in df.columns:
-        df["session_id"] = df["session_id"].apply(
-            lambda x: str(uuid.UUID(x)) if pd.notna(x) else x
+    session_cols = [col for col in df.columns if "session_id" in col]
+    for col in session_cols:
+        df[col] = df[col].apply(
+            lambda x: str(uuid.UUID(str(x))) if pd.notna(x) and str(x).strip() != "" else x
         )
     df = mark_repeat_instruments_complete(df)
  
     df.drop(columns=[c for c in columns_list if c in df.columns], axis=1, inplace=True)
+    
+    df['participant_study_id'] = df.apply(lambda x: x["participant_study_id"] if pd.isna(x["redcap_repeat_instrument"]) else "", axis=1)
+    df['ef_participant_study_id'] = df['participant_study_id']
 
-    df.to_csv(f"{output_path}/questionnaire-final-jun15.csv", index=False)
+    today = datetime.date.today()
+    date = today.strftime('%m-%d')
+    df.to_csv(f"{output_path}/questionnaire-final-{date}.csv", index=False)
 
 
 if __name__ == "__main__":

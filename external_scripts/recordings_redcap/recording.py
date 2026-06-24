@@ -2,6 +2,7 @@ import uuid
 import pandas as pd
 import argparse
 import re
+import datetime
 acoustic_names_mapping = { # skim over the acoustic tasks.....
     "picturesAndDoors": "Conversation (2 to 4)-book",
     "abcs": "Abcs and 123s",
@@ -103,9 +104,9 @@ recording_names_mapping = {
     # "conversation2": "Conversation (6 plus)-favorite_show_movie_game",
     # "conversation1": "Conversation (6 plus)-favorite_food",
     # "conversation3": "Conversation (6 plus)-outside_of_school",
-    "roleNaming1": "Role naming tasks sounds-days",
-    "roleNaming2": "Role naming tasks sounds-months",
-    "roleNaming3": "Role naming tasks sounds-numbers",
+    "roleNamings1": "Role naming tasks sounds-days",
+    "roleNamings2": "Role naming tasks sounds-months",
+    "roleNamings3": "Role naming tasks sounds-numbers",
     "passage1": "Reading Passage-1",
     "passage2": "Reading Passage-2",
     "passage3": "Reading Passage-3",
@@ -200,8 +201,19 @@ def create_recording_redcap(recording_csv, output_csv):
     df["recording_input_gain"] =  ""
     df["recording_file_share"]=   ""
     df["recording_storage_account"] =  ""
-
-    df.to_csv(f"{output_csv}/recording-final-jun8.csv", index=False)
+    
+    def acoustic_naming_fix(df):
+        mapping = {"conversation(10+)": "Conversation (10 plus)",
+                    "conversation(6to10)": "Conversation (6 plus)",
+                    "conversation(4to6)": "Conversation (4 to 6)",
+                    "conversation(2to4)": "Conversation (2 to 4)",
+                    "roleNamings": "Role naming tasks sounds ",
+                    "generativeNamingTask": "Generative Naming Task"}
+        df["acoustic_task_name"] = df["acoustic_task_name"].map(mapping).fillna(df["acoustic_task_name"])
+    acoustic_naming_fix(df)
+    today = datetime.date.today()
+    date = today.strftime('%m-%d')
+    df.to_csv(f"{output_csv}/recording-final-{date}.csv", index=False)
 
 
 if __name__ == "__main__":
