@@ -167,8 +167,9 @@ def create_recording_redcap(recording_csv, output_csv):
         "peds_mc_neck_mass___dermoid_cyst",
         "peds_mc_neck_mass___enlarged_lymph_node",
         "participant_study_id",
-        # "recording_profile_name",
-        # "recording_microphone",
+        "recording_profile_name",
+        "recording_microphone",
+        "recording_profile_version"
         
     ]
     df.drop(columns=l, axis=1, inplace=True)
