@@ -356,7 +356,7 @@ def parse_audio(audio_list, dummy_audio_files=False):
             file_size = (Path(file_path).stat().st_size) / 1024
             start_time, end_time = get_jsonld_times(file_path)
         file_name = file_path.split("/")[-1]
-        task_name = re.match(r"([a-z]+(?:_[a-z]+)*_\d+)", file_name).group(1)
+        task_name = m.group(1) if (m := re.match(r"([a-z0-9]+(?:_[a-z0-9]+)*_\d+)", file_name, re.I)) else None
         if task_name in task_names: # in case duplicate audio files exist of the same task
             _LOGGER.warning(f"Duplicate audio task was found for {file_path}. Will be taking the first one.")
             continue
@@ -694,7 +694,7 @@ class RedCapDataset:
             record_id = (subject.split("/")[-1]).split()[0]
             for session in sessions:
                 if session.is_dir():
-                    session_files = list(session.glob("*.jsonld"))
+                    session_files = list(session.rglob("*.jsonld"))
                     for session_file in session_files:
                         try:
                             with open(session_file, 'r') as f:
