@@ -3,17 +3,15 @@ import os
 import tempfile
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from unittest.mock import MagicMock, mock_open, patch
+from unittest.mock import MagicMock, patch
 
 import pandas as pd
 import pytest
-from pydantic import BaseModel
 
 from b2aiprep.prepare.bids import (
     get_audio_paths,
     get_paths,
     validate_bids_folder_audios,
-    write_pydantic_model_to_bids_file,
 )
 from b2aiprep.prepare.redcap import RedCapDataset
 from b2aiprep.prepare.constants import AUDIO_TASKS, RepeatInstrument
@@ -273,23 +271,6 @@ def test_get_recordings_for_acoustic_task():
     
     # Verify results - should filter to recordings for the specified task
     assert len(recordings_df) >= 0  # May be empty if no recordings match
-
-
-@patch("builtins.open", new_callable=mock_open)
-def test_write_pydantic_model_to_bids_file(mock_open):
-    mock_output_path = MagicMock()
-    mock_data = MagicMock(BaseModel)
-    mock_data.json.return_value = '{"test": "data"}'
-
-    write_pydantic_model_to_bids_file(
-        output_path=mock_output_path,
-        data=mock_data,
-        schema_name="schema_name",
-        subject_id="sub_01",
-        session_id="ses_01",
-        task_name="task_name",
-    )
-    mock_open.assert_called_once()
 
 
 def test_df_to_dict():

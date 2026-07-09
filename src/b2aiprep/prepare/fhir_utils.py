@@ -2,38 +2,10 @@
 to FHIR format.
 """
 
-import json
 import typing as t
-from importlib.resources import files
 from collections import OrderedDict
-from fhir.resources.questionnaireresponse import QuestionnaireResponse
 import logging
 _logger = logging.getLogger(__name__)
-
-def is_empty_questionnaire_response(response: QuestionnaireResponse) -> bool:
-    """Determines whether a questionnaire response is empty.
-
-    Parameters
-    ----------
-    response : QuestionnaireResponse
-        The questionnaire response.
-
-    Returns
-    -------
-    bool
-        Whether the response is empty.
-    """
-    if response.item is None:
-        return True
-
-    for item in response.item:
-        # skip record_id -> it is always present
-        if (item.linkId is not None) and (item.linkId == "record_id"):
-            continue
-        if item.answer is not None:
-            return False
-
-    return True
 
 
 def extract_items(participant_json: dict, outline: list) -> t.List[dict]:
@@ -110,12 +82,6 @@ def is_invalid_response(participant: dict, outline) -> bool:
     answers = set(answers)
     return len(answers.difference({"nan", "unchecked"})) == 0
 
-
-def load_questionnaire_outline(questionnaire_name):
-    b2ai_resources = (
-        files("b2aiprep").joinpath("prepare").joinpath("resources").joinpath("instrument_columns")
-    )
-    return json.loads(b2ai_resources.joinpath(f"{questionnaire_name}.json").read_text())
 
 def convert_response_to_bids_metadata( participant: dict,
     # repeat_instrument: RepeatInstrument

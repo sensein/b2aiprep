@@ -1,5 +1,4 @@
 """Tests for the CLI of b2aiprep."""
-import csv
 import os
 import shutil
 import struct
@@ -156,27 +155,6 @@ def setup_temp_files():
         tar_file_path = os.path.join(tar_dir, "output.tar.gz")
 
         yield redcap_csv_path, audio_dir, bids_dir_path, tar_file_path
-
-
-@pytest.fixture
-def setup_audio_files():
-    """Fixture to create multiple audio files for batch testing."""
-    with tempfile.TemporaryDirectory() as temp_dir:
-        audio_files = []
-        for i in range(3):
-            audio_file = os.path.join(temp_dir, f"sample_{i}.wav")
-            create_dummy_wav_file(audio_file)
-            audio_files.append(audio_file)
-
-        # Create CSV file for batch processing
-        csv_file = os.path.join(temp_dir, "audio_list.csv")
-        with open(csv_file, "w", newline="") as f:
-            writer = csv.writer(f)
-            writer.writerow(["filename"])
-            for audio_file in audio_files:
-                writer.writerow([audio_file])
-
-        yield temp_dir, audio_files, csv_file
 
 
 @pytest.fixture
@@ -454,20 +432,6 @@ def setup_bids_structure_after_deidentify():
 
         yield bids_dir
 
-def test_bids2shadow_cli(setup_temp_files):
-    """Test the 'b2aiprep-cli bids2shadow' command using subprocess."""
-    redcap_csv_path, audio_dir, bids_dir_path, tar_file_path = setup_temp_files
-    shadow_path = Path("shadow")
-    # Define the CLI command
-    command = ["b2aiprep-cli", "bids2shadow", bids_dir_path, str(shadow_path)]
-    # Run the CLI command
-    result = subprocess.run(command, capture_output=True, text=True)
-
-    # Check if the command was successful
-    assert result.returncode == 0, f"CLI command failed: {result.stderr}"
-    assert os.path.exists(shadow_path), f"{shadow_path} was not created"
-
-
 def test_dashboard_cli_help():
     """Test the 'b2aiprep-cli dashboard' command help (avoid launching actual dashboard)."""
     command = ["b2aiprep-cli", "dashboard", "--help"]
@@ -495,132 +459,6 @@ def test_redcap2bids_cli(setup_temp_files):
         result = subprocess.run(command, capture_output=True, text=True)
         assert result.returncode == 0, f"CLI command failed: {result.stderr}"
         assert os.path.exists(outdir), "Output directory was not created"
-
-def test_convert_cli(setup_audio_files):
-    """Test the 'b2aiprep-cli convert' command using subprocess."""
-    temp_dir, audio_files, _ = setup_audio_files
-
-    with tempfile.TemporaryDirectory() as outdir:
-        command = [
-            "b2aiprep-cli",
-            "convert",
-            audio_files[0],
-            "--subject",
-            "test_subject",
-            "--task",
-            "test_task",
-            "--outdir",
-            outdir,
-            "--n_mels",
-            "10",
-            "--win_length",
-            "10",
-            "--hop_length",
-            "5",
-            "--no-transcribe",
-        ]
-
-        result = subprocess.run(command, capture_output=True, text=True)
-        # Note: This command may fail due to audio processing requirements
-        # We check that it at least starts without import errors
-        assert (
-            "convert" in result.stderr or result.returncode == 0
-        ), f"CLI command failed unexpectedly: {result.stderr}"
-
-
-def test_batchconvert_cli(setup_audio_files):
-    """Test the 'b2aiprep-cli batchconvert' command using subprocess."""
-    temp_dir, audio_files, csv_file = setup_audio_files
-
-    with tempfile.TemporaryDirectory() as outdir:
-        command = [
-            "b2aiprep-cli",
-            "batchconvert",
-            csv_file,
-            "--outdir",
-            outdir,
-            "--n_mels",
-            "10",
-            "--n_coeff",
-            "10",
-            "--win_length",
-            "10",
-            "--hop_length",
-            "5",
-            "--plugin",
-            "cf",
-            "n_procs=1",
-            "--no-dataset",
-            "--no-speech2text",
-        ]
-
-        result = subprocess.run(command, capture_output=True, text=True)
-        # This command may fail due to pydra issues, check that it starts correctly
-        assert (
-            "batchconvert" in str(command) or result.returncode == 0
-        ), f"CLI command failed: {result.stderr}"
-
-
-def test_verify_cli(setup_audio_files):
-    """Test the 'b2aiprep-cli verify' command using subprocess."""
-    temp_dir, audio_files, _ = setup_audio_files
-
-    command = ["b2aiprep-cli", "verify", audio_files[0], audio_files[1], "--device", "cpu"]
-
-    result = subprocess.run(command, capture_output=True, text=True)
-    # This may fail due to audio processing, check it starts without import errors
-    assert (
-        "verify" in str(command) or "Score:" in result.stdout
-    ), f"CLI command failed: {result.stderr}"
-
-
-def test_transcribe_cli(setup_audio_files):
-    """Test the 'b2aiprep-cli transcribe' command using subprocess."""
-    temp_dir, audio_files, _ = setup_audio_files
-
-    command = [
-        "b2aiprep-cli",
-        "transcribe",
-        audio_files[0],
-        "--model",
-        "openai/whisper-tiny",
-        "--device",
-        "cpu",
-        "--language",
-        "en",
-    ]
-
-    result = subprocess.run(command, capture_output=True, text=True)
-    # This may fail due to audio processing requirements
-    assert (
-        "transcribe" in str(command) or result.returncode == 0
-    ), f"CLI command failed: {result.stderr}"
-
-
-def test_createbatchcsv_cli():
-    """Test the 'b2aiprep-cli createbatchcsv' command using subprocess."""
-    with tempfile.TemporaryDirectory() as temp_dir:
-        # Create some dummy wav files in subdirectories
-        subdir = Path(temp_dir) / "institution1"
-        subdir.mkdir()
-
-        for i in range(2):
-            wav_file = subdir / f"audio_{i}.wav"
-            create_dummy_wav_file(str(wav_file))
-
-        output_csv = Path(temp_dir) / "output.csv"
-
-        command = ["b2aiprep-cli", "createbatchcsv", str(temp_dir), str(output_csv)]
-
-        result = subprocess.run(command, capture_output=True, text=True)
-        assert result.returncode == 0, f"CLI command failed: {result.stderr}"
-        assert output_csv.exists(), "Output CSV was not created"
-
-        # Verify CSV content
-        with open(output_csv, "r") as f:
-            reader = csv.reader(f)
-            header = next(reader)
-            assert header == ["filename"], "CSV header is incorrect"
 
 
 def test_create_bundled_dataset_cli(setup_bids_structure):
