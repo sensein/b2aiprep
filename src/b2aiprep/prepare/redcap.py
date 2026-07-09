@@ -250,11 +250,42 @@ def get_age_from_jsonld(session_dir):
 
     return None
 
-def get_jsonld_times(file_path): 
-    """Match jsonld to audio file by task name appearing in the 'used' URLs."""
-    audio_dir = Path(file_path).parent
-    task_name = Path(file_path).stem.split("-")[0]
+def get_jsonld_times(file_path):
+    """
+    Match jsonld to audio file by exact recording filename.
 
+    A reproschema:Response entry's "value" holds the exact audio filename
+    (e.g. "long_sounds_task_1_10_plus-<uuid>.wav"), and the
+    reproschema:ResponseActivity that produced it references that response's
+    "@id" via its own "generated" field. When a task is recorded more than
+    once, both attempts' Response/ResponseActivity pairs can live in the same
+    activity_{#}.jsonld file, so matching on the exact filename (rather than
+    just the task name substring) is required to get each recording's own
+    timestamps instead of always returning the first attempt's.
+    """
+    audio_dir = Path(file_path).parent
+    file_name = Path(file_path).name
+
+    for jsonld_file in sorted(audio_dir.glob("activity_*.jsonld")):
+        with open(jsonld_file) as f:
+            data = json.load(f)
+
+        response_id = None
+        for entry in data:
+            if entry.get("@type") == "reproschema:Response" and entry.get("value") == file_name:
+                response_id = entry.get("@id")
+                break
+
+        if response_id is None:
+            continue
+
+        for entry in data:
+            if entry.get("@type") == "reproschema:ResponseActivity" and entry.get("generated") == response_id:
+                return entry.get("startedAtTime"), entry.get("endedAtTime")
+
+    # Fall back to the old task-name substring match for data that doesn't
+    # carry the filename in a Response's "value" (e.g. older exports).
+    task_name = Path(file_path).stem.split("-")[0]
     for jsonld_file in sorted(audio_dir.glob("activity_*.jsonld")):
         with open(jsonld_file) as f:
             data = json.load(f)
@@ -266,6 +297,62 @@ def get_jsonld_times(file_path):
                     return entry.get("startedAtTime"), entry.get("endedAtTime")
 
     return None, None
+
+
+def _select_latest_duplicate_recordings(file_paths, dummy_audio_files=False):
+    """
+    Group audio file paths by task name (e.g. "abcs_1") and, for any task
+    recorded more than once, keep only the recording that was started last
+    according to its activity_{#}.jsonld timestamp. Order of `file_paths`
+    is preserved; only the earlier duplicate(s) are dropped.
+    """
+    groups = OrderedDict()
+    for file_path in file_paths:
+        file_name = Path(file_path).name
+        m = re.match(r"([a-z0-9]+(?:_[a-z0-9]+)*_\d+)", file_name, re.I)
+        task_name = m.group(1) if m else None
+        groups.setdefault(task_name, []).append(file_path)
+
+    selected = []
+    for task_name, paths in groups.items():
+        if task_name is None or len(paths) == 1:
+            selected.extend(paths)
+            continue
+
+        if dummy_audio_files:
+            ignored = [p for i, p in enumerate(paths) if i != 0]
+            _LOGGER.warning(
+                f"Duplicate audio task '{task_name}' found ({len(paths)} recordings). "
+                f"Using {paths[0]} (no timestamps available); ignoring: {ignored}."
+            )
+            selected.append(paths[0])
+            continue
+
+        start_times = [get_jsonld_times(path)[0] for path in paths]
+        if all(start_time is None for start_time in start_times):
+            ignored = [p for i, p in enumerate(paths) if i != 0]
+            _LOGGER.warning(
+                f"Duplicate audio task '{task_name}' found ({len(paths)} recordings) but no "
+                f"timestamps could be determined. Using {paths[0]}; ignoring: {ignored}."
+            )
+            selected.append(paths[0])
+            continue
+
+        # ISO 8601 timestamps sort correctly as strings; missing timestamps sort earliest.
+        latest_index = max(range(len(paths)), key=lambda i: start_times[i] or "")
+        ignored = [
+            f"{p} (started_at={start_times[i]})"
+            for i, p in enumerate(paths)
+            if i != latest_index
+        ]
+        _LOGGER.warning(
+            f"Duplicate audio task '{task_name}' found ({len(paths)} recordings). "
+            f"Using the most recently recorded one: {paths[latest_index]} "
+            f"(started_at={start_times[latest_index]}); ignoring: {ignored}."
+        )
+        selected.append(paths[latest_index])
+
+    return selected
 
 
 def parse_audio(audio_list, dummy_audio_files=False):
@@ -335,6 +422,7 @@ def parse_audio(audio_list, dummy_audio_files=False):
         protocol_order[questions] = sorted(protocol_order[questions])
 
     flattened_list = [value for key in protocol_order for value in protocol_order[key]]
+    flattened_list = _select_latest_duplicate_recordings(flattened_list, dummy_audio_files)
 
     audio_output_list = []
     count = 1
@@ -357,7 +445,7 @@ def parse_audio(audio_list, dummy_audio_files=False):
             start_time, end_time = get_jsonld_times(file_path)
         file_name = file_path.split("/")[-1]
         task_name = m.group(1) if (m := re.match(r"([a-z0-9]+(?:_[a-z0-9]+)*_\d+)", file_name, re.I)) else None
-        if task_name in task_names: # in case duplicate audio files exist of the same task
+        if task_name in task_names: # safety net; real duplicates are resolved above by _select_latest_duplicate_recordings
             _LOGGER.warning(f"Duplicate audio task was found for {file_path}. Will be taking the first one.")
             continue
         recording_id = re.search(r"([a-f0-9\-]{36})\.", file_name).group(1)
