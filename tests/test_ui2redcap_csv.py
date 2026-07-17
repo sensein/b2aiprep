@@ -123,3 +123,37 @@ def test_audio_csv():
 
     actual = parse_audio(audio_files, True)
     assert expected_output == actual
+
+
+def test_audio_recording_numbering():
+    """recording_name must follow the recording index in the filename, not a
+    positional counter. Regression for the >=10 lexicographic scramble where
+    noisy_sounds_10 was mislabeled noisy_sounds-2 (recordings given out of
+    order and including a double-digit index)."""
+    session = "14829893-3879-4723-932b-d98d6bc356a8-"
+    base = f"./mock_audio/99999/{session}/"
+
+    def uuid(n):  # deterministic 36-char id in [a-f0-9-]
+        return f"{n:08d}-0000-0000-0000-000000000000"
+
+    numbers = [3, 1, 10, 2]  # shuffled + double digit
+    audio_files = [
+        f"{base}noisy_sounds_{n}_10_plus-{uuid(n)}.wav" for n in numbers
+    ]
+
+    actual = parse_audio(audio_files, True)
+    recordings = [
+        r for r in actual if r["redcap_repeat_instrument"] == "Recording"
+    ]
+
+    # labels follow the filename number AND buckets sort numerically (not 1,10,2,3)
+    assert [r["recording_name"] for r in recordings] == [
+        "noisy_sounds-1",
+        "noisy_sounds-2",
+        "noisy_sounds-3",
+        "noisy_sounds-10",
+    ]
+    # each recording's label matches the number in its own filename
+    name_by_id = {r["recording_id"]: r["recording_name"] for r in recordings}
+    for n in numbers:
+        assert name_by_id[uuid(n)] == f"noisy_sounds-{n}"
