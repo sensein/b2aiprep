@@ -418,8 +418,14 @@ def parse_audio(audio_list, dummy_audio_files=False):
         if not found:
             protocol_order["other"].append(name)
 
+    def _recording_number(path):
+        # the recording's real index from the filename (e.g. noisy_sounds_10 -> 10),
+        # so buckets sort numerically (10 after 2, not lexicographically before it).
+        m = re.search(r"^(.*?)_(\d+)", path.split("/")[-1])
+        return int(m.group(2)) if m else 0
+
     for questions in protocol_order:
-        protocol_order[questions] = sorted(protocol_order[questions])
+        protocol_order[questions] = sorted(protocol_order[questions], key=_recording_number)
 
     flattened_list = [value for key in protocol_order for value in protocol_order[key]]
     flattened_list = _select_latest_duplicate_recordings(flattened_list, dummy_audio_files)
@@ -427,8 +433,6 @@ def parse_audio(audio_list, dummy_audio_files=False):
     audio_output_list = []
     count = 1
     acoustic_task_count = 1
-    acoustic_count = 1
-    acoustic_prev = None
     acoustic_tasks = set()
     task_names = set()
     # acoustic_task_dict = dict()
@@ -450,7 +454,11 @@ def parse_audio(audio_list, dummy_audio_files=False):
             continue
         recording_id = re.search(r"([a-f0-9\-]{36})\.", file_name).group(1)
         #recording_id = file_name.replace(".wav", "")
-        acoustic_task = re.search(r"^(.*?)(_\d+)", file_name).group(1)
+        _task_match = re.search(r"^(.*?)_(\d+)", file_name)
+        acoustic_task = _task_match.group(1)
+        # recording index read from the filename, NOT a positional counter -- so a
+        # task's Nth recording is always labeled -N (fixes the >=10 sort scramble).
+        recording_number = int(_task_match.group(2))
         if acoustic_task in conversation_tasks:
             age = get_age_from_jsonld(Path(file_path).parent)
             if int(age) >10:
@@ -492,8 +500,6 @@ def parse_audio(audio_list, dummy_audio_files=False):
                         if end_time and (index["acoustic_task_completed_at"] is None or end_time > index["acoustic_task_completed_at"]):
                             index["acoustic_task_completed_at"] = end_time 
 
-        if acoustic_prev != acoustic_task:
-            acoustic_count = 1
         file_dict = {
             "record_id": record_id,
             "redcap_repeat_instrument": "Recording",
@@ -501,7 +507,7 @@ def parse_audio(audio_list, dummy_audio_files=False):
             "recording_id": recording_id,
             "recording_acoustic_task_id": f"{session}",
             "recording_session_id": session,
-            "recording_name": f"{acoustic_task}-{acoustic_count}",
+            "recording_name": f"{acoustic_task}-{recording_number}",
             "recording_duration": duration,
             "recording_size": file_size,
             "recording_profile_name": "Speech",
@@ -516,8 +522,6 @@ def parse_audio(audio_list, dummy_audio_files=False):
             "recording_filepath" : f"/mounts/b2ai-api/Data/SickKids/{recording_id}.wav" # apparently we're hard coding this now...
         }
 
-        acoustic_prev = acoustic_task
-        acoustic_count += 1
         audio_output_list.append(file_dict)
         task_names.add(task_name)
         count += 1
