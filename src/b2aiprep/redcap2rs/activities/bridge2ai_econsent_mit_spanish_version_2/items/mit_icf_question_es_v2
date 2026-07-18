@@ -1,0 +1,45 @@
+{
+    "id": "mit_icf_question_es_v2",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Identifier?",
+            "source": "redcap",
+            "value": "y"
+        },
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "prefLabel": {
+        "en": "mit_icf_question_es_v2"
+    },
+    "question": {
+        "en": "Consentimiento para Participar en la Investigaci\u00f3nAl firmar abajo, doy mi consentimiento libremente para participar en este estudio. Entiendo que al firmareste formulario estoy aceptando participar en la investigaci\u00f3n. He recibido una copia de este formulariopara llevar conmigo. Entiendo que al firmar a continuaci\u00f3n, estoy dando mi consentimiento para que miinformaci\u00f3n de contacto se mantenga en un repositorio para este estudio, y que esta informaci\u00f3n puedaser utilizada para contactarme en el futuro para una mayor recopilaci\u00f3n de datos si se requiere unseguimiento a largo plazo como parte de una eventual extensi\u00f3n de esta subvenci\u00f3n despu\u00e9s de laduraci\u00f3n esperada de 4 a\u00f1os, o para ser invitado a participar en futuros estudios de investigaci\u00f3n. Miinformaci\u00f3n no ser\u00e1 compartida con terceros.Al firmar abajo, doy mi consentimiento para que todos los datos que env\u00ede sean compartidos con losinvestigadores de este estudio y para que mis grabaciones de audio, respuestas escritas y otros datos deinvestigaci\u00f3n codificados sean compartidos con otros investigadores calificados seg\u00fan se describe eneste formulario de consentimiento. Adem\u00e1s, doy mi consentimiento para el intercambio p\u00fablico de misdatos del estudio desidentificados y agregados.Me gustar\u00eda ser informado de hallazgos incidentales, en caso de que el estudio informe este tipo de informaci\u00f3n."
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "S\u00ed"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}
