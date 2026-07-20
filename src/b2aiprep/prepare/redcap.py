@@ -396,6 +396,23 @@ def parse_audio(audio_list, dummy_audio_files=False, is_import=False):
         "naming_animals",
         "naming_food"
     ]
+    # Consolidated tasks collapse several distinct sub-task stems into one
+    # acoustic task, so their recording number cannot be positional (a missing or
+    # re-done sub-task would shift every later number and mislabel them via the
+    # recording_name_remap). Instead, each sub-task stem maps to a FIXED number
+    # from the documented protocol order, so e.g. favorite_food is always -1
+    # whether or not the other sub-tasks are present.
+    consolidated_subtask_number = {
+        "favorite_food": 1,
+        "favorite_show_movie_game": 2,
+        "outside_of_school": 3,
+        "ready_for_school": 4,
+        "choose_book": 1,
+        "picture_and_doors": 1,
+        "pictures_and_doors": 1,
+        "naming_animals": 1,
+        "naming_food": 2,
+    }
     b2ai_resources = files("b2aiprep").joinpath("prepare").joinpath("resources")
     recording_name_mapping = json.loads(b2ai_resources.joinpath("recording_name_remap.json").read_text())
 
@@ -466,6 +483,7 @@ def parse_audio(audio_list, dummy_audio_files=False, is_import=False):
         recording_id = re.search(r"([a-f0-9\-]{36})\.", file_name).group(1)
         #recording_id = file_name.replace(".wav", "")
         acoustic_task = re.search(r"^(.*?)_(\d+)", file_name).group(1)
+        subtask_stem = acoustic_task   # original stem, before any consolidation rename
         if acoustic_task in conversation_tasks:
             age = get_age_from_jsonld(Path(file_path).parent)
             if int(age) >=10:
@@ -507,16 +525,22 @@ def parse_audio(audio_list, dummy_audio_files=False, is_import=False):
                         if end_time and (index["acoustic_task_completed_at"] is None or end_time > index["acoustic_task_completed_at"]):
                             index["acoustic_task_completed_at"] = end_time
 
-        # Recording index: use the number in the filename when present (e.g.
-        # noisy_sounds_10 -> 10). Tasks with only an age band (conversation
-        # sub-tasks, days/months/123s) have no such index -> number them
-        # positionally within the task so downstream mapping keys off position.
-        recording_number = _recording_index(file_path)
-        if recording_number is None:
-            if acoustic_task != acoustic_prev:
-                acoustic_count = 1
-            recording_number = acoustic_count
-            acoustic_count += 1
+        # Recording index priority:
+        #  1) consolidated sub-tasks (conversation/generative) -> a FIXED number
+        #     from the documented order, keyed on the original sub-task stem, so a
+        #     missing/re-done sub-task never shifts the others (favorite_food is
+        #     always -1);
+        #  2) else the number in the filename (e.g. noisy_sounds_10 -> 10);
+        #  3) else positional within the task (tasks with only an age band).
+        if subtask_stem in consolidated_subtask_number:
+            recording_number = consolidated_subtask_number[subtask_stem]
+        else:
+            recording_number = _recording_index(file_path)
+            if recording_number is None:
+                if acoustic_task != acoustic_prev:
+                    acoustic_count = 1
+                recording_number = acoustic_count
+                acoustic_count += 1
         acoustic_prev = acoustic_task
         recording_name_raw = f"{acoustic_task}-{recording_number}"
         recording_name = recording_name_raw
