@@ -121,7 +121,7 @@ def test_audio_csv():
         },
     ]
 
-    actual = parse_audio(audio_files, True)
+    actual = parse_audio(audio_files, True, is_import=False)
     assert expected_output == actual
 
 
@@ -152,7 +152,7 @@ def test_numbering_double_digit_not_scrambled():
     """>=10 recordings, given out of order + with an age band: labels follow the
     filename index and come out in numeric order (1,2,3,10 -- not 1,10,2,3)."""
     files = [_path(f"noisy_sounds_task_{n}_6_to_10", n) for n in [3, 1, 10, 2]]
-    actual = parse_audio(files, True)
+    actual = parse_audio(files, True, is_import=True)
     assert _recording_names(actual) == [
         "noisy_sounds_task-1", "noisy_sounds_task-2",
         "noisy_sounds_task-3", "noisy_sounds_task-10",
@@ -165,7 +165,7 @@ def test_numbering_double_digit_not_scrambled():
 def test_numbering_index_without_age_band():
     """Index-only filenames (no age band) still follow the filename number."""
     files = [_path(f"repeat_words_{n}", n) for n in [2, 1, 10]]
-    assert _recording_names(parse_audio(files, True)) == [
+    assert _recording_names(parse_audio(files, True, is_import=True)) == [
         "repeat_words-1", "repeat_words-2", "repeat_words-10"]
 
 
@@ -173,7 +173,7 @@ def test_age_band_not_used_as_recording_number():
     """Tasks carrying only an age band (days/months/123s -- no per-recording
     index) are numbered positionally (=1), never by the age-band number (4)."""
     files = [_path("days_4_to_6", 1), _path("months_4_to_6", 2), _path("123s_4_to_6", 3)]
-    names = set(_recording_names(parse_audio(files, True)))
+    names = set(_recording_names(parse_audio(files, True, is_import=True)))
     assert names == {"days-1", "months-1", "123s-1"}
     assert not any(n.endswith("-4") for n in names)   # age-band number must not leak
 
@@ -186,7 +186,7 @@ def test_conversation_positional_not_age_band(monkeypatch):
     subs = ["favorite_food", "favorite_show_movie_game",
             "outside_of_school", "ready_for_school"]
     files = [_path(f"{s}_6_to_10", i) for i, s in enumerate(subs, 1)]
-    assert _recording_names(parse_audio(files, True)) == [
+    assert _recording_names(parse_audio(files, True, is_import=True)) == [
         "conversation(6to10)-1", "conversation(6to10)-2",
         "conversation(6to10)-3", "conversation(6to10)-4",
     ]
@@ -196,5 +196,13 @@ def test_conversation_age_boundary_10(monkeypatch):
     """Age exactly 10 maps to conversation(10+), not conversation(2to4)."""
     from b2aiprep.prepare import redcap as _rc
     monkeypatch.setattr(_rc, "get_age_from_jsonld", lambda p: 10)
-    names = _recording_names(parse_audio([_path("favorite_food_10_plus", 1)], True))
+    names = _recording_names(parse_audio([_path("favorite_food_10_plus", 1)], True, is_import=True))
     assert names == ["conversation(10+)-1"]
+
+
+def test_recording_name_remap(monkeypatch):
+    """Bids generation checking recoding name remap(is_import set to false)"""
+    from b2aiprep.prepare import redcap as _rc
+    monkeypatch.setattr(_rc, "get_age_from_jsonld", lambda p: 10)
+    names = _recording_names(parse_audio([_path("favorite_food_10_plus", 1)], True, is_import=False))
+    assert names == ["Conversation-(10-plus)-favorite-food"]
