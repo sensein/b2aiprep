@@ -125,35 +125,76 @@ def test_audio_csv():
     assert expected_output == actual
 
 
-def test_audio_recording_numbering():
-    """recording_name must follow the recording index in the filename, not a
-    positional counter. Regression for the >=10 lexicographic scramble where
-    noisy_sounds_10 was mislabeled noisy_sounds-2 (recordings given out of
-    order and including a double-digit index)."""
-    session = "14829893-3879-4723-932b-d98d6bc356a8-"
-    base = f"./mock_audio/99999/{session}/"
+# --------------------------------------------------------------------------- #
+# Recording-numbering regression tests. `parse_audio` must label a task's Nth
+# recording -N. Two failure modes we have seen / could see:
+#   (1) >=10 recordings scrambled by lexicographic sort (noisy_sounds_10 -> -2)
+#   (2) the age-band suffix (_10_plus / _6_to_10) mistaken for the recording
+#       number (favorite_food_10_plus -> conversation(10+)-10; days_4_to_6 -> days-4)
+# --------------------------------------------------------------------------- #
+_SES = "14829893-3879-4723-932b-d98d6bc356a8-"
 
-    def uuid(n):  # deterministic 36-char id in [a-f0-9-]
-        return f"{n:08d}-0000-0000-0000-000000000000"
 
-    numbers = [3, 1, 10, 2]  # shuffled + double digit
-    audio_files = [
-        f"{base}noisy_sounds_{n}_10_plus-{uuid(n)}.wav" for n in numbers
+def _uuid(n):  # deterministic 36-char id in [a-f0-9-]
+    return f"{n:08d}-0000-0000-0000-000000000000"
+
+
+def _path(stem, n):
+    return f"./mock_audio/99999/{_SES}/{stem}-{_uuid(n)}.wav"
+
+
+def _recording_names(actual):
+    return [r["recording_name"] for r in actual
+            if r["redcap_repeat_instrument"] == "Recording"]
+
+
+def test_numbering_double_digit_not_scrambled():
+    """>=10 recordings, given out of order + with an age band: labels follow the
+    filename index and come out in numeric order (1,2,3,10 -- not 1,10,2,3)."""
+    files = [_path(f"noisy_sounds_task_{n}_6_to_10", n) for n in [3, 1, 10, 2]]
+    actual = parse_audio(files, True)
+    assert _recording_names(actual) == [
+        "noisy_sounds_task-1", "noisy_sounds_task-2",
+        "noisy_sounds_task-3", "noisy_sounds_task-10",
+    ]
+    by_id = {r["recording_id"]: r["recording_name"] for r in actual
+             if r["redcap_repeat_instrument"] == "Recording"}
+    assert by_id[_uuid(10)] == "noisy_sounds_task-10"   # not -2
+
+
+def test_numbering_index_without_age_band():
+    """Index-only filenames (no age band) still follow the filename number."""
+    files = [_path(f"repeat_words_{n}", n) for n in [2, 1, 10]]
+    assert _recording_names(parse_audio(files, True)) == [
+        "repeat_words-1", "repeat_words-2", "repeat_words-10"]
+
+
+def test_age_band_not_used_as_recording_number():
+    """Tasks carrying only an age band (days/months/123s -- no per-recording
+    index) are numbered positionally (=1), never by the age-band number (4)."""
+    files = [_path("days_4_to_6", 1), _path("months_4_to_6", 2), _path("123s_4_to_6", 3)]
+    names = set(_recording_names(parse_audio(files, True)))
+    assert names == {"days-1", "months-1", "123s-1"}
+    assert not any(n.endswith("-4") for n in names)   # age-band number must not leak
+
+
+def test_conversation_positional_not_age_band(monkeypatch):
+    """conversation sub-tasks (no filename index, only an age band) number
+    positionally 1..4 by sub-task -- NOT by the age band (would be -6/-10)."""
+    from b2aiprep.prepare import redcap as _rc
+    monkeypatch.setattr(_rc, "get_age_from_jsonld", lambda p: 8)
+    subs = ["favorite_food", "favorite_show_movie_game",
+            "outside_of_school", "ready_for_school"]
+    files = [_path(f"{s}_6_to_10", i) for i, s in enumerate(subs, 1)]
+    assert _recording_names(parse_audio(files, True)) == [
+        "conversation(6to10)-1", "conversation(6to10)-2",
+        "conversation(6to10)-3", "conversation(6to10)-4",
     ]
 
-    actual = parse_audio(audio_files, True)
-    recordings = [
-        r for r in actual if r["redcap_repeat_instrument"] == "Recording"
-    ]
 
-    # labels follow the filename number AND buckets sort numerically (not 1,10,2,3)
-    assert [r["recording_name"] for r in recordings] == [
-        "noisy_sounds-1",
-        "noisy_sounds-2",
-        "noisy_sounds-3",
-        "noisy_sounds-10",
-    ]
-    # each recording's label matches the number in its own filename
-    name_by_id = {r["recording_id"]: r["recording_name"] for r in recordings}
-    for n in numbers:
-        assert name_by_id[uuid(n)] == f"noisy_sounds-{n}"
+def test_conversation_age_boundary_10(monkeypatch):
+    """Age exactly 10 maps to conversation(10+), not conversation(2to4)."""
+    from b2aiprep.prepare import redcap as _rc
+    monkeypatch.setattr(_rc, "get_age_from_jsonld", lambda p: 10)
+    names = _recording_names(parse_audio([_path("favorite_food_10_plus", 1)], True))
+    assert names == ["conversation(10+)-1"]

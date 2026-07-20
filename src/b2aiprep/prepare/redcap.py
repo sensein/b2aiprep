@@ -418,14 +418,21 @@ def parse_audio(audio_list, dummy_audio_files=False):
         if not found:
             protocol_order["other"].append(name)
 
-    def _recording_number(path):
-        # the recording's real index from the filename (e.g. noisy_sounds_10 -> 10),
-        # so buckets sort numerically (10 after 2, not lexicographically before it).
-        m = re.search(r"^(.*?)_(\d+)", path.split("/")[-1])
-        return int(m.group(2)) if m else 0
+    def _recording_index(path):
+        # The recording's index from the filename, IGNORING the age-band suffix
+        # (e.g. _10_plus, _6_to_10). Returns None when the file has no per-recording
+        # index -- e.g. conversation sub-tasks / single-recording tasks, which only
+        # carry an age band. Those are numbered positionally below, NOT by the age
+        # number (so noisy_sounds_10 -> 10, but favorite_food_10_plus -> positional).
+        stem = re.sub(r"_(?:\d+_plus|\d+_to_\d+)", "", path.split("/")[-1])
+        stem = re.sub(r"-[a-f0-9\-]{36}\.wav$", "", stem, flags=re.IGNORECASE)
+        m = re.search(r"_(\d+)$", stem)
+        return int(m.group(1)) if m else None
 
     for questions in protocol_order:
-        protocol_order[questions] = sorted(protocol_order[questions], key=_recording_number)
+        # numeric where an index exists (10 after 2), else by name (stable order)
+        protocol_order[questions] = sorted(
+            protocol_order[questions], key=lambda p: (_recording_index(p) or 0, p))
 
     flattened_list = [value for key in protocol_order for value in protocol_order[key]]
     flattened_list = _select_latest_duplicate_recordings(flattened_list, dummy_audio_files)
@@ -433,6 +440,8 @@ def parse_audio(audio_list, dummy_audio_files=False):
     audio_output_list = []
     count = 1
     acoustic_task_count = 1
+    acoustic_count = 1        # positional fallback for tasks with no filename index
+    acoustic_prev = None
     acoustic_tasks = set()
     task_names = set()
     # acoustic_task_dict = dict()
@@ -454,14 +463,10 @@ def parse_audio(audio_list, dummy_audio_files=False):
             continue
         recording_id = re.search(r"([a-f0-9\-]{36})\.", file_name).group(1)
         #recording_id = file_name.replace(".wav", "")
-        _task_match = re.search(r"^(.*?)_(\d+)", file_name)
-        acoustic_task = _task_match.group(1)
-        # recording index read from the filename, NOT a positional counter -- so a
-        # task's Nth recording is always labeled -N (fixes the >=10 sort scramble).
-        recording_number = int(_task_match.group(2))
+        acoustic_task = re.search(r"^(.*?)_(\d+)", file_name).group(1)
         if acoustic_task in conversation_tasks:
             age = get_age_from_jsonld(Path(file_path).parent)
-            if int(age) >10:
+            if int(age) >=10:
                 acoustic_task = "conversation(10+)"
             elif int(age) >=6 and int(age) < 10:
                 acoustic_task = "conversation(6to10)"
@@ -498,7 +503,19 @@ def parse_audio(audio_list, dummy_audio_files=False):
                         if start_time and (index["acoustic_task_started_at"] is None or start_time < index["acoustic_task_started_at"]):
                             index["acoustic_task_started_at"] = start_time
                         if end_time and (index["acoustic_task_completed_at"] is None or end_time > index["acoustic_task_completed_at"]):
-                            index["acoustic_task_completed_at"] = end_time 
+                            index["acoustic_task_completed_at"] = end_time
+
+        # Recording index: use the number in the filename when present (e.g.
+        # noisy_sounds_10 -> 10). Tasks with only an age band (conversation
+        # sub-tasks, days/months/123s) have no such index -> number them
+        # positionally within the task so downstream mapping keys off position.
+        recording_number = _recording_index(file_path)
+        if recording_number is None:
+            if acoustic_task != acoustic_prev:
+                acoustic_count = 1
+            recording_number = acoustic_count
+            acoustic_count += 1
+        acoustic_prev = acoustic_task
 
         file_dict = {
             "record_id": record_id,
