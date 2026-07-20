@@ -235,7 +235,127 @@ def parse_survey(
     return [df]
 
 
-def parse_audio(audio_list, dummy_audio_files=False):
+def get_age_from_jsonld(session_dir):
+    """Search all activity jsonlds in a session directory for the age field."""
+    for jsonld_file in sorted(Path(session_dir).glob("activity_*.jsonld")):
+        with open(jsonld_file) as f:
+            data = json.load(f)
+
+        for entry in data:
+            if (
+                entry.get("@type") == "reproschema:Response"
+                and entry.get("isAbout", "").endswith("/age")
+            ):
+                return entry.get("value")
+
+    return None
+
+def get_jsonld_times(file_path):
+    """
+    Match jsonld to audio file by exact recording filename.
+
+    A reproschema:Response entry's "value" holds the exact audio filename
+    (e.g. "long_sounds_task_1_10_plus-<uuid>.wav"), and the
+    reproschema:ResponseActivity that produced it references that response's
+    "@id" via its own "generated" field. When a task is recorded more than
+    once, both attempts' Response/ResponseActivity pairs can live in the same
+    activity_{#}.jsonld file, so matching on the exact filename (rather than
+    just the task name substring) is required to get each recording's own
+    timestamps instead of always returning the first attempt's.
+    """
+    audio_dir = Path(file_path).parent
+    file_name = Path(file_path).name
+
+    for jsonld_file in sorted(audio_dir.glob("activity_*.jsonld")):
+        with open(jsonld_file) as f:
+            data = json.load(f)
+
+        response_id = None
+        for entry in data:
+            if entry.get("@type") == "reproschema:Response" and entry.get("value") == file_name:
+                response_id = entry.get("@id")
+                break
+
+        if response_id is None:
+            continue
+
+        for entry in data:
+            if entry.get("@type") == "reproschema:ResponseActivity" and entry.get("generated") == response_id:
+                return entry.get("startedAtTime"), entry.get("endedAtTime")
+
+    # Fall back to the old task-name substring match for data that doesn't
+    # carry the filename in a Response's "value" (e.g. older exports).
+    task_name = Path(file_path).stem.split("-")[0]
+    for jsonld_file in sorted(audio_dir.glob("activity_*.jsonld")):
+        with open(jsonld_file) as f:
+            data = json.load(f)
+
+        for entry in data:
+            if entry.get("@type") == "reproschema:ResponseActivity":
+                used_urls = entry.get("used", [])
+                if any(task_name in url for url in used_urls):
+                    return entry.get("startedAtTime"), entry.get("endedAtTime")
+
+    return None, None
+
+
+def _select_latest_duplicate_recordings(file_paths, dummy_audio_files=False):
+    """
+    Group audio file paths by task name (e.g. "abcs_1") and, for any task
+    recorded more than once, keep only the recording that was started last
+    according to its activity_{#}.jsonld timestamp. Order of `file_paths`
+    is preserved; only the earlier duplicate(s) are dropped.
+    """
+    groups = OrderedDict()
+    for file_path in file_paths:
+        file_name = Path(file_path).name
+        m = re.match(r"([a-z0-9]+(?:_[a-z0-9]+)*_\d+)", file_name, re.I)
+        task_name = m.group(1) if m else None
+        groups.setdefault(task_name, []).append(file_path)
+
+    selected = []
+    for task_name, paths in groups.items():
+        if task_name is None or len(paths) == 1:
+            selected.extend(paths)
+            continue
+
+        if dummy_audio_files:
+            ignored = [p for i, p in enumerate(paths) if i != 0]
+            _LOGGER.warning(
+                f"Duplicate audio task '{task_name}' found ({len(paths)} recordings). "
+                f"Using {paths[0]} (no timestamps available); ignoring: {ignored}."
+            )
+            selected.append(paths[0])
+            continue
+
+        start_times = [get_jsonld_times(path)[0] for path in paths]
+        if all(start_time is None for start_time in start_times):
+            ignored = [p for i, p in enumerate(paths) if i != 0]
+            _LOGGER.warning(
+                f"Duplicate audio task '{task_name}' found ({len(paths)} recordings) but no "
+                f"timestamps could be determined. Using {paths[0]}; ignoring: {ignored}."
+            )
+            selected.append(paths[0])
+            continue
+
+        # ISO 8601 timestamps sort correctly as strings; missing timestamps sort earliest.
+        latest_index = max(range(len(paths)), key=lambda i: start_times[i] or "")
+        ignored = [
+            f"{p} (started_at={start_times[i]})"
+            for i, p in enumerate(paths)
+            if i != latest_index
+        ]
+        _LOGGER.warning(
+            f"Duplicate audio task '{task_name}' found ({len(paths)} recordings). "
+            f"Using the most recently recorded one: {paths[latest_index]} "
+            f"(started_at={start_times[latest_index]}); ignoring: {ignored}."
+        )
+        selected.append(paths[latest_index])
+
+    return selected
+
+
+def parse_audio(audio_list, dummy_audio_files=False, is_import=False):
     """
     Function that generates a list of Json's to be converted into a redcap csv based on audio files.
     Args:
@@ -243,15 +363,16 @@ def parse_audio(audio_list, dummy_audio_files=False):
         dummy_audio_files is an optional variable for testing
     """
     protocol_order = {
-        "ready_for_school": [],
-        "favorite_show_movie": [],
-        "favorite_food": [],
-        "outside_of_school": [],
+        # "ready_for_school": [],
+        # "favorite_show_movie": [],
+        # "favorite_food": [],
+        # "outside_of_school": [],
+        "conversation": [],
         "abcs": [],
         "123s": [],
-        "naming_animals": [],
+        #"naming_animals": [],
         "role_naming": [],
-        "naming_food": [],
+        #"naming_food": [],
         "noisy_sounds": [],
         "long_sounds": [],
         "silly_sounds": [],
@@ -259,8 +380,41 @@ def parse_audio(audio_list, dummy_audio_files=False):
         "sentence": [],
         "picture_description": [],
         "passage": [],
+        "generative_naming_task": [],
         "other": [],
     }
+    # redcap groups these tasks into the conversation moniker
+    conversation_tasks = {
+    "favorite_food",
+    "favorite_show_movie_game",
+    "outside_of_school",
+    "ready_for_school",
+    "choose_book",
+    "picture_and_doors"
+}
+    generative_tasks = [
+        "naming_animals",
+        "naming_food"
+    ]
+    # Consolidated tasks collapse several distinct sub-task stems into one
+    # acoustic task, so their recording number cannot be positional (a missing or
+    # re-done sub-task would shift every later number and mislabel them via the
+    # recording_name_remap). Instead, each sub-task stem maps to a FIXED number
+    # from the documented protocol order, so e.g. favorite_food is always -1
+    # whether or not the other sub-tasks are present.
+    consolidated_subtask_number = {
+        "favorite_food": 1,
+        "favorite_show_movie_game": 2,
+        "outside_of_school": 3,
+        "ready_for_school": 4,
+        "choose_book": 1,
+        "picture_and_doors": 1,
+        "pictures_and_doors": 1,
+        "naming_animals": 1,
+        "naming_food": 2,
+    }
+    b2ai_resources = files("b2aiprep").joinpath("prepare").joinpath("resources")
+    recording_name_mapping = json.loads(b2ai_resources.joinpath("recording_name_remap.json").read_text())
 
     for name in audio_list:
         found = False
@@ -269,20 +423,46 @@ def parse_audio(audio_list, dummy_audio_files=False):
                 protocol_order[order].append(name)
                 found = True
                 break
+        for conversation_task in conversation_tasks:
+            if conversation_task in name:
+                protocol_order["conversation"].append(name)
+                found = True
+                break
+        for generative_task in generative_tasks:
+            if generative_task in name:
+                protocol_order["generative_naming_task"].append(name)
+                found = True
+                break
+ 
         if not found:
             protocol_order["other"].append(name)
 
+    def _recording_index(path):
+        # The recording's index from the filename, IGNORING the age-band suffix
+        # (e.g. _10_plus, _6_to_10). Returns None when the file has no per-recording
+        # index -- e.g. conversation sub-tasks / single-recording tasks, which only
+        # carry an age band. Those are numbered positionally below, NOT by the age
+        # number (so noisy_sounds_10 -> 10, but favorite_food_10_plus -> positional).
+        stem = re.sub(r"_(?:\d+_plus|\d+_to_\d+)", "", path.split("/")[-1])
+        stem = re.sub(r"-[a-f0-9\-]{36}\.wav$", "", stem, flags=re.IGNORECASE)
+        m = re.search(r"_(\d+)$", stem)
+        return int(m.group(1)) if m else None
+
     for questions in protocol_order:
-        protocol_order[questions] = sorted(protocol_order[questions])
+        # numeric where an index exists (10 after 2), else by name (stable order)
+        protocol_order[questions] = sorted(
+            protocol_order[questions], key=lambda p: (_recording_index(p) or 0, p))
 
     flattened_list = [value for key in protocol_order for value in protocol_order[key]]
+    flattened_list = _select_latest_duplicate_recordings(flattened_list, dummy_audio_files)
 
     audio_output_list = []
     count = 1
     acoustic_task_count = 1
-    acoustic_count = 1
+    acoustic_count = 1        # positional fallback for tasks with no filename index
     acoustic_prev = None
     acoustic_tasks = set()
+    task_names = set()
     # acoustic_task_dict = dict()
     for file_path in flattened_list:
         record_id = Path(file_path).parent.parent.name
@@ -290,12 +470,32 @@ def parse_audio(audio_list, dummy_audio_files=False):
         if dummy_audio_files:
             duration = 0
             file_size = 0
+            start_time, end_time = None, None
         else:
             duration = get_wav_duration(file_path)
-            file_size = Path(file_path).stat().st_size
+            file_size = (Path(file_path).stat().st_size) / 1024
+            start_time, end_time = get_jsonld_times(file_path)
         file_name = file_path.split("/")[-1]
+        task_name = m.group(1) if (m := re.match(r"([a-z0-9]+(?:_[a-z0-9]+)*_\d+)", file_name, re.I)) else None
+        if task_name in task_names: # safety net; real duplicates are resolved above by _select_latest_duplicate_recordings
+            _LOGGER.warning(f"Duplicate audio task was found for {file_path}. Will be taking the first one.")
+            continue
         recording_id = re.search(r"([a-f0-9\-]{36})\.", file_name).group(1)
-        acoustic_task = re.search(r"^(.*?)(_\d+)", file_name).group(1)
+        #recording_id = file_name.replace(".wav", "")
+        acoustic_task = re.search(r"^(.*?)_(\d+)", file_name).group(1)
+        subtask_stem = acoustic_task   # original stem, before any consolidation rename
+        if acoustic_task in conversation_tasks:
+            age = get_age_from_jsonld(Path(file_path).parent)
+            if int(age) >=10:
+                acoustic_task = "conversation(10+)"
+            elif int(age) >=6 and int(age) < 10:
+                acoustic_task = "conversation(6to10)"
+            elif int(age) >=4 and int(age) < 6:
+                acoustic_task = "conversation(4to6)"
+            else:
+                acoustic_task = "conversation(2to4)"
+        if acoustic_task in generative_tasks:
+            acoustic_task = "Generative Naming Task"
         if acoustic_task not in acoustic_tasks:
 
             acoustic_tasks.add(acoustic_task)
@@ -303,12 +503,15 @@ def parse_audio(audio_list, dummy_audio_files=False):
                 "record_id": record_id,
                 "redcap_repeat_instrument": "Acoustic Task",
                 "redcap_repeat_instance": acoustic_task_count,
-                "acoustic_task_id": f"{acoustic_task}-{session}",
+                "acoustic_task_id": f"{session}",
                 "acoustic_task_session_id": session,
                 "acoustic_task_name": acoustic_task,
-                "acoustic_task_cohort": "Pediatrics",
+                "acoustic_task_cohort": "Pediatric",
                 "acoustic_task_status": "Completed",
-                "acoustic_task_duration": duration,
+                "acoustic_task_complete": "2",
+                "acoustic_task_duration": duration, # there a chance they wont match as patients can pause during the task and duration is calculated based on sum of recordings.
+                "acoustic_task_started_at": start_time,
+                "acoustic_task_completed_at": end_time,
             }
             audio_output_list.append(acoustic_task_dict)
             acoustic_task_count += 1
@@ -317,28 +520,57 @@ def parse_audio(audio_list, dummy_audio_files=False):
                 if "acoustic_task_id" in index:
                     if acoustic_task == index["acoustic_task_name"]:
                         index["acoustic_task_duration"] += duration
+                        if start_time and (index["acoustic_task_started_at"] is None or start_time < index["acoustic_task_started_at"]):
+                            index["acoustic_task_started_at"] = start_time
+                        if end_time and (index["acoustic_task_completed_at"] is None or end_time > index["acoustic_task_completed_at"]):
+                            index["acoustic_task_completed_at"] = end_time
 
-        if acoustic_prev != acoustic_task:
-            acoustic_count = 1
+        # Recording index priority:
+        #  1) consolidated sub-tasks (conversation/generative) -> a FIXED number
+        #     from the documented order, keyed on the original sub-task stem, so a
+        #     missing/re-done sub-task never shifts the others (favorite_food is
+        #     always -1);
+        #  2) else the number in the filename (e.g. noisy_sounds_10 -> 10);
+        #  3) else positional within the task (tasks with only an age band).
+        if subtask_stem in consolidated_subtask_number:
+            recording_number = consolidated_subtask_number[subtask_stem]
+        else:
+            recording_number = _recording_index(file_path)
+            if recording_number is None:
+                if acoustic_task != acoustic_prev:
+                    acoustic_count = 1
+                recording_number = acoustic_count
+                acoustic_count += 1
+        acoustic_prev = acoustic_task
+        recording_name_raw = f"{acoustic_task}-{recording_number}"
+        recording_name = recording_name_raw
+        if not is_import:
+            recording_name = recording_name_mapping.get(recording_name_raw, recording_name_raw)
+        
         file_dict = {
             "record_id": record_id,
             "redcap_repeat_instrument": "Recording",
             "redcap_repeat_instance": count,
             "recording_id": recording_id,
-            "recording_acoustic_task_id": f"{acoustic_task}-{session}",
+            "recording_acoustic_task_id": f"{session}",
             "recording_session_id": session,
-            "recording_name": f"{acoustic_task}-{acoustic_count}",
+            "recording_name": recording_name,
             "recording_duration": duration,
             "recording_size": file_size,
             "recording_profile_name": "Speech",
             "recording_profile_version": "v1.0.0",
+            "recording_storage_account": "",
+            "recording_file_share": "",
             "recording_input_gain": np.nan,
+            "recording_complete" : "2",
+            "recording_created_at": start_time,
+            #"recording_completed_at": end_time, 
             "recording_microphone": "USB-C to 3.5mm Headphone Jack Adapter",
+            "recording_filepath" : f"/mounts/b2ai-api/Data/SickKids/{recording_id}.wav" # apparently we're hard coding this now...
         }
 
-        acoustic_prev = acoustic_task
-        acoustic_count += 1
         audio_output_list.append(file_dict)
+        task_names.add(task_name)
         count += 1
 
     return audio_output_list
@@ -601,7 +833,7 @@ class RedCapDataset:
             record_id = (subject.split("/")[-1]).split()[0]
             for session in sessions:
                 if session.is_dir():
-                    session_files = list(session.glob("*.jsonld"))
+                    session_files = list(session.rglob("*.jsonld"))
                     for session_file in session_files:
                         try:
                             with open(session_file, 'r') as f:
@@ -641,9 +873,9 @@ class RedCapDataset:
                 total_duration = session_end - session_start
                 session_duration = total_duration.total_seconds()
                 if record_id not in session_durations:
-                    session_durations[record_id] = session_duration
+                    session_durations[record_id] = {"session_duration" : session_duration, "session_start": session_start, "session_end": session_end}
             else:
-                session_durations[record_id] = np.nan
+                session_durations[record_id] = {"session_duration" : np.nan, "session_start": np.nan, "session_end": np.nan}
         audio_folders = Path(audio_dir)
         # rglob once to get all the wav files
         audio_files_across_subjects = list(audio_folders.rglob("*.wav"))
@@ -680,15 +912,19 @@ class RedCapDataset:
                 "redcap_repeat_instrument": "Session",
                 "redcap_repeat_instance": 1,
                 "session_id": audio_session_ids.get(subject_id, None),
+                "session_record_id": subject_id,
                 "session_status": "Completed",
                 "session_is_control_participant": "No",
-                "session_duration": session_durations[subject_id],
+                "session_duration": session_durations[subject_id]["session_duration"],
+                "session_started_at": session_durations[subject_id]["session_start"],
+                "session_completed_at": session_durations[subject_id]["session_end"],
                 "session_site": "SickKids",
+                "session_complete": "2"
             }
             merged_csv.append(audio_session_dict)
             # Process audio data
             audio_files = audio_files_dict.get(subject_id, [])
-            merged_csv += parse_audio(audio_files)
+            merged_csv += parse_audio(audio_files, is_import=is_import)
         audio_df = pd.DataFrame(merged_csv)
         # Convert audio data to DataFrames
         audio_dfs = [audio_df]

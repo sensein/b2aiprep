@@ -2,8 +2,8 @@ import pandas as pd
 import argparse
 import json
 import re
-
-
+import uuid
+import numpy as np
 def to_camel_case(text):
     if not isinstance(text, str):
         return text
@@ -195,24 +195,61 @@ def clean_up(df):
         .astype("Int64")
     )
 
+    df["age"] = (
+        pd.to_numeric(df["age"], errors="coerce")
+        .astype("Int64")
+    )
+
     df["peds_vhi_talkativeness"] = (
         pd.to_numeric(df["peds_vhi_talkativeness"], errors="coerce")
         .astype("Int64")
     )
+    
+    df["recording_complete"] = (
+        pd.to_numeric(df["recording_complete"], errors="coerce")
+        .astype("Int64")
+    )
+    
+    df["acoustic_task_complete"] = (
+        pd.to_numeric(df["acoustic_task_complete"], errors="coerce")
+        .astype("Int64")
+    )
+    
+    df["session_complete"] = (
+        pd.to_numeric(df["session_complete"], errors="coerce")
+        .astype("Int64")
+    )
+    
+    
     csv_string = df.to_csv(index=False)
     csv_string = csv_string.replace("preferNotToAnswer", "noAnswer")
     csv_string = csv_string.replace("problemIs“asBadAsItCanBe”", "asBadAsItCanBe")
     return csv_string
 
+def updated_record_ids(df, load_uuid_map = None):
+    record_id_2_uuid_tracker = load_uuid_map or {}
+    def gen_uuid(id):
+        if pd.isna(id):
+            return id
+        if id not in record_id_2_uuid_tracker:
+            record_id_2_uuid_tracker[id] = str(uuid.uuid4())
+        return record_id_2_uuid_tracker[id]
+
+    df["participant_study_id"] = df["record_id"]
+    df['record_id'] = df['record_id'].apply(gen_uuid)
+    df['session_record_id'] = df['session_record_id'].apply(gen_uuid)
+    return df, record_id_2_uuid_tracker
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="List .wav files and save to CSV.")
     parser.add_argument("csv_path", help="Path to the directory to csv files")
+    parser.add_argument("uuid_json_path", help="Path to the JSON file where the record_id to uuid mapping will be stored")
     parser.add_argument("remove_fields_path", help="Path to json to remove un-needed fields")
     parser.add_argument("column_remap_path", help="Path to json remap column fields")
     parser.add_argument("instrument_mapping_path", help="insrument mapping path")
     parser.add_argument("transformer_path", help="instrument mapping path")
-    parser.add_argument("exclude_columns", help="instrument mapping path")
+    parser.add_argument("exclude_columns", help="Path to the JSON file containing the list of columns to exclude")
+    parser.add_argument("--load_uuid_map", help="Path to existing record_id to uuid mapping JSON", default=None)
 
     args = parser.parse_args()
     modify_neckmass(args.csv_path)
@@ -223,12 +260,24 @@ if __name__ == "__main__":
     with open(args.exclude_columns, "r") as f:
         exclude_columns = json.load(f)
         exclude_columns.append("redcap_repeat_instrument")
+        exclude_columns.append("recording_id")
+        exclude_columns.append("recording_filepath")
     df = pd.read_csv(args.csv_path, dtype=str)
     df = convert_date_columns(df)
     for col in df.columns:
         if col not in exclude_columns:
             df[col] = df[col].apply(lambda x: transform_cell(x, args.transformer_path))
 
+    record_id_2_uuid_tracker = None
+    if args.load_uuid_map:
+        with open(args.load_uuid_map, "r") as f:
+            record_id_2_uuid_tracker = json.load(f)
+
+
+    df, record_id_remap = updated_record_ids(df, record_id_2_uuid_tracker)
     csv_output = clean_up(df)
     with open(args.csv_path, "w", newline="") as f:
         f.write(csv_output)
+    
+    with open(args.uuid_json_path, "w") as f:
+        json.dump(record_id_remap, f, indent=4)
