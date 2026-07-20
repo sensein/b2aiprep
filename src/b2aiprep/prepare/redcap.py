@@ -355,7 +355,7 @@ def _select_latest_duplicate_recordings(file_paths, dummy_audio_files=False):
     return selected
 
 
-def parse_audio(audio_list, dummy_audio_files=False):
+def parse_audio(audio_list, dummy_audio_files=False, is_import=False):
     """
     Function that generates a list of Json's to be converted into a redcap csv based on audio files.
     Args:
@@ -396,6 +396,8 @@ def parse_audio(audio_list, dummy_audio_files=False):
         "naming_animals",
         "naming_food"
     ]
+    b2ai_resources = files("b2aiprep").joinpath("prepare").joinpath("resources")
+    recording_name_mapping = json.loads(b2ai_resources.joinpath("recording_name_remap.json").read_text())
 
     for name in audio_list:
         found = False
@@ -516,7 +518,11 @@ def parse_audio(audio_list, dummy_audio_files=False):
             recording_number = acoustic_count
             acoustic_count += 1
         acoustic_prev = acoustic_task
-
+        recording_name_raw = f"{acoustic_task}-{recording_number}"
+        recording_name = recording_name_raw
+        if not is_import:
+            recording_name = recording_name_mapping.get(recording_name_raw, recording_name_raw)
+        
         file_dict = {
             "record_id": record_id,
             "redcap_repeat_instrument": "Recording",
@@ -524,7 +530,7 @@ def parse_audio(audio_list, dummy_audio_files=False):
             "recording_id": recording_id,
             "recording_acoustic_task_id": f"{session}",
             "recording_session_id": session,
-            "recording_name": f"{acoustic_task}-{recording_number}",
+            "recording_name": recording_name,
             "recording_duration": duration,
             "recording_size": file_size,
             "recording_profile_name": "Speech",
@@ -894,7 +900,7 @@ class RedCapDataset:
             merged_csv.append(audio_session_dict)
             # Process audio data
             audio_files = audio_files_dict.get(subject_id, [])
-            merged_csv += parse_audio(audio_files)
+            merged_csv += parse_audio(audio_files, is_import=is_import)
         audio_df = pd.DataFrame(merged_csv)
         # Convert audio data to DataFrames
         audio_dfs = [audio_df]
