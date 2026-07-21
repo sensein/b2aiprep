@@ -20,6 +20,8 @@
             "items/voc_fold_paralysis",
             "items/alz_dementia_mci",
             "items/als",
+            "items/neuro_ataxia",
+            "items/essential_tremor",
             "items/huntingtons",
             "items/parkinsons",
             "items/alcohol_subst_abuse",
@@ -123,6 +125,18 @@
                 "isVis": true,
                 "valueRequired": true,
                 "variableName": "als"
+            },
+            {
+                "isAbout": "items/neuro_ataxia",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "neuro_ataxia"
+            },
+            {
+                "isAbout": "items/essential_tremor",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "essential_tremor"
             },
             {
                 "isAbout": "items/huntingtons",
@@ -271,6 +285,6 @@
         ],
         "shuffle": false
     },
-    "version": "3.24.0",
+    "version": "4.9.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

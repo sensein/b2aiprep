@@ -1,0 +1,22 @@
+{
+    "id": "ataxia_relevant_labs_performed_blood_option",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "5. Imaging and diagnostic tests"
+    },
+    "prefLabel": {
+        "en": "ataxia_relevant_labs_performed_blood_option"
+    },
+    "question": {
+        "en": "Blood\n\nIdentify key results:"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

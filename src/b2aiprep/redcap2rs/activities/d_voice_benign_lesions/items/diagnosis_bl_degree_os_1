@@ -8,6 +8,16 @@
             "value": "number"
         },
         {
+            "column": "Text Validation Min",
+            "source": "redcap",
+            "value": "0.0"
+        },
+        {
+            "column": "Text Validation Max",
+            "source": "redcap",
+            "value": "100.0"
+        },
+        {
             "column": "Custom Alignment",
             "source": "redcap",
             "value": "RH"

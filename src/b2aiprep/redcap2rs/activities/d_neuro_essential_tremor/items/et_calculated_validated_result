@@ -1,0 +1,30 @@
+{
+    "id": "et_calculated_validated_result",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN-SURVEY\n@CALCTEXT(if([et_action_tremor_history_exam] = 'yes' and [et_tremor_duration_3yrs] = 'yes' and [et_no_alternative_dx_documented] = 'yes', \"Validated Yes\", \"Validated No\"))"
+        }
+    ],
+    "description": {
+        "en": "Validated Essential Tremor Result"
+    },
+    "preamble": {
+        "en": "Validation Criteria Checks"
+    },
+    "prefLabel": {
+        "en": "et_calculated_validated_result"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

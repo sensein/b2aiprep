@@ -1,0 +1,463 @@
+{
+    "id": "d_neuro_ataxia_schema",
+    "category": "reproschema:Activity",
+    "compute": [
+        {
+            "jsExpression": "if(ataxia_supported_confirmed(history_or_repeated_exam_documents_gait_truncal_limb_incoordination)==1 && ataxia_supported_confirmed(neurological_exam_shows_signs_consistent_with_ataxia)==1 && ataxia_supported_confirmed(reasonable_evaluation_exclude_major_alternative_explanations)==1,'Validated Yes','Validated No')",
+            "variableName": "ataxia_calculated_validated_result"
+        }
+    ],
+    "prefLabel": {
+        "en": "d_neuro_ataxia"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/diagnosis_ataxia_gsd",
+            "items/ataxia_type",
+            "items/ataxia_type_other",
+            "items/diagnosis_ataxia_gsd_confirmation_method",
+            "items/ataxia_neurologist_recent_date_supporting",
+            "items/ataxia_mds_recent_date_supporting",
+            "items/ataxia_other_specialist_selected",
+            "items/ataxia_supported_confirmed",
+            "items/ataxia_etiology",
+            "items/ataxia_etiology_genetic_hereditary_list_gene_mutation",
+            "items/ataxia_etiology_other_specify",
+            "items/ataxia_course_pattern",
+            "items/ataxia_present_episodic_chronic",
+            "items/ataxia_clinical_presentation",
+            "items/ataxia_clinical_presentation_other",
+            "items/ataxia_scores_standardized_scales",
+            "items/ataxia_sara_score_option",
+            "items/ataxia_icars_score_option",
+            "items/ataxia_fars_score_option",
+            "items/ataxia_aother_scale_option_label",
+            "items/ataxia_other_scale_identify_scale",
+            "items/ataxia_other_scale_total_score",
+            "items/ataxia_functional_mobility_stage",
+            "items/ataxia_emg_or_ncs_performed",
+            "items/ataxia_emg_or_ncs_specify_test",
+            "items/ataxia_emg_or_ncs_test_results",
+            "items/ataxia_emg_or_ncs_key_findings",
+            "items/ataxia_vestibular_testing_performed",
+            "items/ataxia_vestibular_test_results",
+            "items/ataxia_vestibular_key_findings",
+            "items/ataxia_tests_performed",
+            "items/ataxia_brain_mri_results",
+            "items/ataxia_brain_mri_results_abnormal",
+            "items/ataxia_brain_mri_results_other_abnormalities",
+            "items/ataxia_brain_mri_results_key_findings",
+            "items/ataxia_genetic_testing_label",
+            "items/ataxia_genetic_testing_specify",
+            "items/ataxia_genetic_testing_results",
+            "items/ataxia_genetic_testing_results_key_findings",
+            "items/ataxia_acquired_ataxia_workup_label",
+            "items/ataxia_acquired_ataxia_workup_specify",
+            "items/ataxia_workup_results",
+            "items/ataxia_workup_results_key_findings",
+            "items/ataxia_arelevant_labs_label",
+            "items/ataxia_relevant_labs_selection",
+            "items/ataxia_relevant_labs_performed_metabolic_option",
+            "items/ataxia_relevant_labs_performed_nutritional_option",
+            "items/ataxia_relevant_labs_performed_autoimmune_option",
+            "items/ataxia_relevant_labs_performed_blood_option",
+            "items/ataxia_relevant_labs_performed_csf_option",
+            "items/ataxia_relevant_labs_performed_serum_option",
+            "items/ataxia_relevant_labs_performed_other_option_label",
+            "items/ataxia_relevant_labs_performed_other_option_specify",
+            "items/ataxia_relevant_labs_performed_other_option_key_results",
+            "items/ataxia_other_testing_label",
+            "items/ataxia_other_testing_specify",
+            "items/ataxia_other_testing_results",
+            "items/ataxia_other_testing_key_findings",
+            "items/ataxia_treatment_or_therapy",
+            "items/ataxia_treatment_types_selection",
+            "items/ataxia_etiology_targeted_treatment",
+            "items/ataxia_other_treatment"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/diagnosis_ataxia_gsd",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_ataxia_gsd"
+            },
+            {
+                "isAbout": "items/ataxia_type",
+                "isVis": "diagnosis_ataxia_gsd=='yes' || diagnosis_ataxia_gsd=='notCertain'",
+                "valueRequired": true,
+                "variableName": "ataxia_type"
+            },
+            {
+                "isAbout": "items/ataxia_type_other",
+                "isVis": "ataxia_type=='other'",
+                "valueRequired": true,
+                "variableName": "ataxia_type_other"
+            },
+            {
+                "isAbout": "items/diagnosis_ataxia_gsd_confirmation_method",
+                "isVis": "diagnosis_ataxia_gsd=='yes' || diagnosis_ataxia_gsd=='notCertain'",
+                "valueRequired": true,
+                "variableName": "diagnosis_ataxia_gsd_confirmation_method"
+            },
+            {
+                "isAbout": "items/ataxia_neurologist_recent_date_supporting",
+                "isVis": "diagnosis_ataxia_gsd_confirmation_method(neurologist)==1",
+                "valueRequired": false,
+                "variableName": "ataxia_neurologist_recent_date_supporting"
+            },
+            {
+                "isAbout": "items/ataxia_mds_recent_date_supporting",
+                "isVis": "diagnosis_ataxia_gsd_confirmation_method(movement_disorders_specialist)==1",
+                "valueRequired": false,
+                "variableName": "ataxia_mds_recent_date_supporting"
+            },
+            {
+                "isAbout": "items/ataxia_other_specialist_selected",
+                "isVis": "diagnosis_ataxia_gsd_confirmation_method(other_specialist)==1",
+                "valueRequired": true,
+                "variableName": "ataxia_other_specialist_selected"
+            },
+            {
+                "isAbout": "items/ataxia_supported_confirmed",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ataxia_supported_confirmed"
+            },
+            {
+                "isAbout": "items/ataxia_calculated_validated_result",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "ataxia_calculated_validated_result"
+            },
+            {
+                "isAbout": "items/ataxia_etiology",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ataxia_etiology"
+            },
+            {
+                "isAbout": "items/ataxia_etiology_genetic_hereditary_list_gene_mutation",
+                "isVis": "ataxia_etiology(genetic_or_hereditary)==1",
+                "valueRequired": false,
+                "variableName": "ataxia_etiology_genetic_hereditary_list_gene_mutation"
+            },
+            {
+                "isAbout": "items/ataxia_etiology_other_specify",
+                "isVis": "ataxia_etiology(other)==1",
+                "valueRequired": true,
+                "variableName": "ataxia_etiology_other_specify"
+            },
+            {
+                "isAbout": "items/ataxia_course_pattern",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ataxia_course_pattern"
+            },
+            {
+                "isAbout": "items/ataxia_present_episodic_chronic",
+                "isVis": "ataxia_type=='cerebellar' || ataxia_type=='mixedOrUnclear' || ataxia_type=='other' || ataxia_type=='unknown'",
+                "valueRequired": true,
+                "variableName": "ataxia_present_episodic_chronic"
+            },
+            {
+                "isAbout": "items/ataxia_clinical_presentation",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ataxia_clinical_presentation"
+            },
+            {
+                "isAbout": "items/ataxia_clinical_presentation_other",
+                "isVis": "ataxia_clinical_presentation(other)==1",
+                "valueRequired": true,
+                "variableName": "ataxia_clinical_presentation_other"
+            },
+            {
+                "isAbout": "items/ataxia_scores_standardized_scales",
+                "isVis": "ataxia_supported_confirmed(severity_standardized_ataxia_scale)==1",
+                "valueRequired": true,
+                "variableName": "ataxia_scores_standardized_scales"
+            },
+            {
+                "isAbout": "items/ataxia_sara_score_option",
+                "isVis": "ataxia_scores_standardized_scales(sara_score)==1",
+                "valueRequired": true,
+                "variableName": "ataxia_sara_score_option"
+            },
+            {
+                "isAbout": "items/ataxia_icars_score_option",
+                "isVis": "ataxia_scores_standardized_scales(icars_score)==1",
+                "valueRequired": true,
+                "variableName": "ataxia_icars_score_option"
+            },
+            {
+                "isAbout": "items/ataxia_fars_score_option",
+                "isVis": "ataxia_scores_standardized_scales(fars_score)==1",
+                "valueRequired": true,
+                "variableName": "ataxia_fars_score_option"
+            },
+            {
+                "isAbout": "items/ataxia_aother_scale_option_label",
+                "isVis": "ataxia_scores_standardized_scales(other_scale)==1",
+                "valueRequired": false,
+                "variableName": "ataxia_aother_scale_option_label"
+            },
+            {
+                "isAbout": "items/ataxia_other_scale_identify_scale",
+                "isVis": "ataxia_scores_standardized_scales(other_scale)==1",
+                "valueRequired": true,
+                "variableName": "ataxia_other_scale_identify_scale"
+            },
+            {
+                "isAbout": "items/ataxia_other_scale_total_score",
+                "isVis": "ataxia_scores_standardized_scales(other_scale)==1",
+                "valueRequired": true,
+                "variableName": "ataxia_other_scale_total_score"
+            },
+            {
+                "isAbout": "items/ataxia_functional_mobility_stage",
+                "isVis": "ataxia_scores_standardized_scales(functional_mobility_stage)==1",
+                "valueRequired": false,
+                "variableName": "ataxia_functional_mobility_stage"
+            },
+            {
+                "isAbout": "items/ataxia_emg_or_ncs_performed",
+                "isVis": "ataxia_supported_confirmed(supporting_testing_performed)==1 && ataxia_type=='sensory'",
+                "valueRequired": true,
+                "variableName": "ataxia_emg_or_ncs_performed"
+            },
+            {
+                "isAbout": "items/ataxia_emg_or_ncs_specify_test",
+                "isVis": "ataxia_emg_or_ncs_performed=='yes'",
+                "valueRequired": true,
+                "variableName": "ataxia_emg_or_ncs_specify_test"
+            },
+            {
+                "isAbout": "items/ataxia_emg_or_ncs_test_results",
+                "isVis": "ataxia_emg_or_ncs_performed=='yes'",
+                "valueRequired": true,
+                "variableName": "ataxia_emg_or_ncs_test_results"
+            },
+            {
+                "isAbout": "items/ataxia_emg_or_ncs_key_findings",
+                "isVis": "ataxia_emg_or_ncs_performed=='yes'",
+                "valueRequired": false,
+                "variableName": "ataxia_emg_or_ncs_key_findings"
+            },
+            {
+                "isAbout": "items/ataxia_vestibular_testing_performed",
+                "isVis": "ataxia_supported_confirmed(supporting_testing_performed)==1 && ataxia_type=='vestibular'",
+                "valueRequired": true,
+                "variableName": "ataxia_vestibular_testing_performed"
+            },
+            {
+                "isAbout": "items/ataxia_vestibular_test_results",
+                "isVis": "ataxia_vestibular_testing_performed=='yes'",
+                "valueRequired": true,
+                "variableName": "ataxia_vestibular_test_results"
+            },
+            {
+                "isAbout": "items/ataxia_vestibular_key_findings",
+                "isVis": "ataxia_vestibular_testing_performed=='yes'",
+                "valueRequired": false,
+                "variableName": "ataxia_vestibular_key_findings"
+            },
+            {
+                "isAbout": "items/ataxia_tests_performed",
+                "isVis": "ataxia_supported_confirmed(supporting_testing_performed)==1",
+                "valueRequired": true,
+                "variableName": "ataxia_tests_performed"
+            },
+            {
+                "isAbout": "items/ataxia_brain_mri_results",
+                "isVis": "ataxia_tests_performed(brain_mri)==1",
+                "valueRequired": true,
+                "variableName": "ataxia_brain_mri_results"
+            },
+            {
+                "isAbout": "items/ataxia_brain_mri_results_abnormal",
+                "isVis": "ataxia_tests_performed(brain_mri)==1 && ataxia_brain_mri_results=='abnormal'",
+                "valueRequired": true,
+                "variableName": "ataxia_brain_mri_results_abnormal"
+            },
+            {
+                "isAbout": "items/ataxia_brain_mri_results_other_abnormalities",
+                "isVis": "ataxia_tests_performed(brain_mri)==1 && ataxia_brain_mri_results_abnormal=='otherAbnormalities'",
+                "valueRequired": true,
+                "variableName": "ataxia_brain_mri_results_other_abnormalities"
+            },
+            {
+                "isAbout": "items/ataxia_brain_mri_results_key_findings",
+                "isVis": "ataxia_tests_performed(brain_mri)==1",
+                "valueRequired": false,
+                "variableName": "ataxia_brain_mri_results_key_findings"
+            },
+            {
+                "isAbout": "items/ataxia_genetic_testing_label",
+                "isVis": "ataxia_tests_performed(genetic_testing)==1",
+                "valueRequired": false,
+                "variableName": "ataxia_genetic_testing_label"
+            },
+            {
+                "isAbout": "items/ataxia_genetic_testing_specify",
+                "isVis": "ataxia_tests_performed(genetic_testing)==1",
+                "valueRequired": true,
+                "variableName": "ataxia_genetic_testing_specify"
+            },
+            {
+                "isAbout": "items/ataxia_genetic_testing_results",
+                "isVis": "ataxia_tests_performed(genetic_testing)==1",
+                "valueRequired": true,
+                "variableName": "ataxia_genetic_testing_results"
+            },
+            {
+                "isAbout": "items/ataxia_genetic_testing_results_key_findings",
+                "isVis": "ataxia_tests_performed(genetic_testing)==1",
+                "valueRequired": false,
+                "variableName": "ataxia_genetic_testing_results_key_findings"
+            },
+            {
+                "isAbout": "items/ataxia_acquired_ataxia_workup_label",
+                "isVis": "ataxia_tests_performed(acquired_ataxia_workup)==1",
+                "valueRequired": false,
+                "variableName": "ataxia_acquired_ataxia_workup_label"
+            },
+            {
+                "isAbout": "items/ataxia_acquired_ataxia_workup_specify",
+                "isVis": "ataxia_tests_performed(acquired_ataxia_workup)==1",
+                "valueRequired": true,
+                "variableName": "ataxia_acquired_ataxia_workup_specify"
+            },
+            {
+                "isAbout": "items/ataxia_workup_results",
+                "isVis": "ataxia_tests_performed(acquired_ataxia_workup)==1",
+                "valueRequired": true,
+                "variableName": "ataxia_workup_results"
+            },
+            {
+                "isAbout": "items/ataxia_workup_results_key_findings",
+                "isVis": "ataxia_tests_performed(acquired_ataxia_workup)==1",
+                "valueRequired": false,
+                "variableName": "ataxia_workup_results_key_findings"
+            },
+            {
+                "isAbout": "items/ataxia_arelevant_labs_label",
+                "isVis": "ataxia_tests_performed(relevant_labs_performed)==1",
+                "valueRequired": false,
+                "variableName": "ataxia_arelevant_labs_label"
+            },
+            {
+                "isAbout": "items/ataxia_relevant_labs_selection",
+                "isVis": "ataxia_tests_performed(relevant_labs_performed)==1",
+                "valueRequired": true,
+                "variableName": "ataxia_relevant_labs_selection"
+            },
+            {
+                "isAbout": "items/ataxia_relevant_labs_performed_metabolic_option",
+                "isVis": "ataxia_tests_performed(relevant_labs_performed)==1 && ataxia_relevant_labs_selection(metabolic)==1",
+                "valueRequired": true,
+                "variableName": "ataxia_relevant_labs_performed_metabolic_option"
+            },
+            {
+                "isAbout": "items/ataxia_relevant_labs_performed_nutritional_option",
+                "isVis": "ataxia_tests_performed(relevant_labs_performed)==1 && ataxia_relevant_labs_selection(nutritional)==1",
+                "valueRequired": true,
+                "variableName": "ataxia_relevant_labs_performed_nutritional_option"
+            },
+            {
+                "isAbout": "items/ataxia_relevant_labs_performed_autoimmune_option",
+                "isVis": "ataxia_tests_performed(relevant_labs_performed)==1 && ataxia_relevant_labs_selection(autoimmune)==1",
+                "valueRequired": true,
+                "variableName": "ataxia_relevant_labs_performed_autoimmune_option"
+            },
+            {
+                "isAbout": "items/ataxia_relevant_labs_performed_blood_option",
+                "isVis": "ataxia_tests_performed(relevant_labs_performed)==1 && ataxia_relevant_labs_selection(blood)==1",
+                "valueRequired": true,
+                "variableName": "ataxia_relevant_labs_performed_blood_option"
+            },
+            {
+                "isAbout": "items/ataxia_relevant_labs_performed_csf_option",
+                "isVis": "ataxia_tests_performed(relevant_labs_performed)==1 && ataxia_relevant_labs_selection(csf)==1",
+                "valueRequired": true,
+                "variableName": "ataxia_relevant_labs_performed_csf_option"
+            },
+            {
+                "isAbout": "items/ataxia_relevant_labs_performed_serum_option",
+                "isVis": "ataxia_tests_performed(relevant_labs_performed)==1 && ataxia_relevant_labs_selection(serum)==1",
+                "valueRequired": true,
+                "variableName": "ataxia_relevant_labs_performed_serum_option"
+            },
+            {
+                "isAbout": "items/ataxia_relevant_labs_performed_other_option_label",
+                "isVis": "ataxia_tests_performed(relevant_labs_performed)==1 && ataxia_relevant_labs_selection(other)==1",
+                "valueRequired": false,
+                "variableName": "ataxia_relevant_labs_performed_other_option_label"
+            },
+            {
+                "isAbout": "items/ataxia_relevant_labs_performed_other_option_specify",
+                "isVis": "ataxia_tests_performed(relevant_labs_performed)==1 && ataxia_relevant_labs_selection(other)==1",
+                "valueRequired": true,
+                "variableName": "ataxia_relevant_labs_performed_other_option_specify"
+            },
+            {
+                "isAbout": "items/ataxia_relevant_labs_performed_other_option_key_results",
+                "isVis": "ataxia_tests_performed(relevant_labs_performed)==1 && ataxia_relevant_labs_selection(other)==1",
+                "valueRequired": true,
+                "variableName": "ataxia_relevant_labs_performed_other_option_key_results"
+            },
+            {
+                "isAbout": "items/ataxia_other_testing_label",
+                "isVis": "ataxia_tests_performed(other_testing)==1",
+                "valueRequired": false,
+                "variableName": "ataxia_other_testing_label"
+            },
+            {
+                "isAbout": "items/ataxia_other_testing_specify",
+                "isVis": "ataxia_tests_performed(other_testing)==1",
+                "valueRequired": true,
+                "variableName": "ataxia_other_testing_specify"
+            },
+            {
+                "isAbout": "items/ataxia_other_testing_results",
+                "isVis": "ataxia_tests_performed(other_testing)==1",
+                "valueRequired": true,
+                "variableName": "ataxia_other_testing_results"
+            },
+            {
+                "isAbout": "items/ataxia_other_testing_key_findings",
+                "isVis": "ataxia_tests_performed(other_testing)==1",
+                "valueRequired": false,
+                "variableName": "ataxia_other_testing_key_findings"
+            },
+            {
+                "isAbout": "items/ataxia_treatment_or_therapy",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "ataxia_treatment_or_therapy"
+            },
+            {
+                "isAbout": "items/ataxia_treatment_types_selection",
+                "isVis": "ataxia_treatment_or_therapy=='yes'",
+                "valueRequired": true,
+                "variableName": "ataxia_treatment_types_selection"
+            },
+            {
+                "isAbout": "items/ataxia_etiology_targeted_treatment",
+                "isVis": "ataxia_treatment_types_selection(etiology_targeted_treatment)==1",
+                "valueRequired": true,
+                "variableName": "ataxia_etiology_targeted_treatment"
+            },
+            {
+                "isAbout": "items/ataxia_other_treatment",
+                "isVis": "ataxia_treatment_types_selection(other)==1",
+                "valueRequired": true,
+                "variableName": "ataxia_other_treatment"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "4.9.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

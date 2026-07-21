@@ -1,0 +1,67 @@
+{
+    "id": "et_medications_selection",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "5. Treatment obtained"
+    },
+    "prefLabel": {
+        "en": "et_medications_selection"
+    },
+    "question": {
+        "en": "Medications (select all that apply)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Propranolol"
+                },
+                "value": "propranolol"
+            },
+            {
+                "name": {
+                    "en": "Primidone"
+                },
+                "value": "primidone"
+            },
+            {
+                "name": {
+                    "en": "Topiramate"
+                },
+                "value": "topiramate"
+            },
+            {
+                "name": {
+                    "en": "Gabapentin"
+                },
+                "value": "gabapentin"
+            },
+            {
+                "name": {
+                    "en": "Botulinum toxin"
+                },
+                "value": "botulinum_toxin"
+            },
+            {
+                "name": {
+                    "en": "Benzodiazepines (i.e. clonazepam)"
+                },
+                "value": "benzodiazepines"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,42 @@
+{
+    "id": "et_no_alternative_dx_documented",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Validation Criteria Checks"
+    },
+    "prefLabel": {
+        "en": "et_no_alternative_dx_documented"
+    },
+    "question": {
+        "en": "No better alternative diagnosis is documented\n(Examples: Parkinsonian, dystonic, cerebellar, functional, or medication-induced tremor)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Not certain"
+                },
+                "value": "notCertain"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}
