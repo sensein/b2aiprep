@@ -1,0 +1,61 @@
+{
+    "id": "et_tremor_distribution",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "2. Disease type"
+    },
+    "prefLabel": {
+        "en": "et_tremor_distribution"
+    },
+    "question": {
+        "en": "Tremor distribution (select all that apply)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Head"
+                },
+                "value": "head"
+            },
+            {
+                "name": {
+                    "en": "Voice"
+                },
+                "value": "voice"
+            },
+            {
+                "name": {
+                    "en": "Jaw"
+                },
+                "value": "jaw"
+            },
+            {
+                "name": {
+                    "en": "Lower limbs"
+                },
+                "value": "lower_limbs"
+            },
+            {
+                "name": {
+                    "en": "None of the above"
+                },
+                "value": "none_of_the_above"
+            },
+            {
+                "name": {
+                    "en": "Unknown"
+                },
+                "value": "unknown"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,67 @@
+{
+    "id": "et_relevant_labs_selection",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Imaging and diagnostic tests"
+    },
+    "prefLabel": {
+        "en": "et_relevant_labs_selection"
+    },
+    "question": {
+        "en": "Relevant labs (select all that apply):"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Metabolic"
+                },
+                "value": "metabolic"
+            },
+            {
+                "name": {
+                    "en": "Nutritional"
+                },
+                "value": "nutritional"
+            },
+            {
+                "name": {
+                    "en": "Autoimmune"
+                },
+                "value": "autoimmune"
+            },
+            {
+                "name": {
+                    "en": "Blood"
+                },
+                "value": "blood"
+            },
+            {
+                "name": {
+                    "en": "CSF"
+                },
+                "value": "csf"
+            },
+            {
+                "name": {
+                    "en": "Serum"
+                },
+                "value": "serum"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

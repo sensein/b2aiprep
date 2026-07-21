@@ -1,0 +1,36 @@
+{
+    "id": "ataxia_emg_or_ncs_specify_test",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "5. Imaging and diagnostic tests"
+    },
+    "prefLabel": {
+        "en": "ataxia_emg_or_ncs_specify_test"
+    },
+    "question": {
+        "en": "Please specify test"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "EMG"
+                },
+                "value": "emg"
+            },
+            {
+                "name": {
+                    "en": "NCS"
+                },
+                "value": "ncs"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,42 @@
+{
+    "id": "et_receiving_any_treatment_or_therapy",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "5. Treatment obtained"
+    },
+    "prefLabel": {
+        "en": "et_receiving_any_treatment_or_therapy"
+    },
+    "question": {
+        "en": "Is the participant currently receiving any treatment or therapy for essential tremor?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Unknown"
+                },
+                "value": "unknown"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

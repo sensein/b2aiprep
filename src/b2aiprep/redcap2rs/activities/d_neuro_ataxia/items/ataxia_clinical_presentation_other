@@ -1,0 +1,22 @@
+{
+    "id": "ataxia_clinical_presentation_other",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Presentation and severity"
+    },
+    "prefLabel": {
+        "en": "ataxia_clinical_presentation_other"
+    },
+    "question": {
+        "en": "Other\n\nPlease specify:"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

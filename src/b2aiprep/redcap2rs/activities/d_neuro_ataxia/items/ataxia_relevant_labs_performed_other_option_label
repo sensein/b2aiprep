@@ -1,0 +1,23 @@
+{
+    "id": "ataxia_relevant_labs_performed_other_option_label",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "5. Imaging and diagnostic tests"
+    },
+    "prefLabel": {
+        "en": "ataxia_relevant_labs_performed_other_option_label"
+    },
+    "question": {
+        "en": "Other"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "static",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

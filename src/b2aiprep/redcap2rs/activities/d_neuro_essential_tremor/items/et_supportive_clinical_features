@@ -1,0 +1,67 @@
+{
+    "id": "et_supportive_clinical_features",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "2. Disease type"
+    },
+    "prefLabel": {
+        "en": "et_supportive_clinical_features"
+    },
+    "question": {
+        "en": "Supportive clinical features (select all that apply)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Family history of tremor"
+                },
+                "value": "family_history_of_tremor"
+            },
+            {
+                "name": {
+                    "en": "Tremor improves with alcohol"
+                },
+                "value": "tremor_improves_with_alcohol"
+            },
+            {
+                "name": {
+                    "en": "TETRAS performance, ADL, or Fahn-Tolosa-Marin scores available"
+                },
+                "value": "tetras_performance_adl_ftmtrs_scores_available"
+            },
+            {
+                "name": {
+                    "en": "Handwriting or spiral abnormality documented"
+                },
+                "value": "handwriting_or_spiral_abnormality_documented"
+            },
+            {
+                "name": {
+                    "en": "Difficulty eating, drinking, writing, or dressing due to tremor"
+                },
+                "value": "difficulty_eating_drinking_writing_dressing_due_to_tremor"
+            },
+            {
+                "name": {
+                    "en": "Social or quality-of-life impact documented"
+                },
+                "value": "social_or_quality_of_life_impact_documented"
+            },
+            {
+                "name": {
+                    "en": "Unknown or not documented"
+                },
+                "value": "unknown_or_not_documented"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

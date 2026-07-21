@@ -15,7 +15,7 @@
         "en": "voice_severity_language"
     },
     "question": {
-        "en": "Voice Severity Language"
+        "en": "Voice Severity - Language"
     },
     "responseOptions": {
         "choices": [

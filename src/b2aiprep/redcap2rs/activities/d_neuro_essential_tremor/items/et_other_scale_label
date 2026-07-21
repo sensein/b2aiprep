@@ -1,0 +1,23 @@
+{
+    "id": "et_other_scale_label",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "3. Assessment"
+    },
+    "prefLabel": {
+        "en": "et_other_scale_label"
+    },
+    "question": {
+        "en": "Other scale"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "static",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

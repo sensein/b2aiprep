@@ -1,0 +1,60 @@
+{
+    "id": "ataxia_type",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "2. Ataxia Type"
+    },
+    "prefLabel": {
+        "en": "ataxia_type"
+    },
+    "question": {
+        "en": "What is the predominant ataxia type?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Cerebellar (central)"
+                },
+                "value": "cerebellar"
+            },
+            {
+                "name": {
+                    "en": "Sensory (proprioceptive loss predominant)"
+                },
+                "value": "sensory"
+            },
+            {
+                "name": {
+                    "en": "Vestibular (balance or vertigo predominant)"
+                },
+                "value": "vestibular"
+            },
+            {
+                "name": {
+                    "en": "Mixed or unclear"
+                },
+                "value": "mixedOrUnclear"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            },
+            {
+                "name": {
+                    "en": "Unknown"
+                },
+                "value": "unknown"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

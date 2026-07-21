@@ -1,0 +1,29 @@
+{
+    "id": "ataxia_other_scale_total_score",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Text Validation Type OR Show Slider Number",
+            "source": "redcap",
+            "value": "integer"
+        }
+    ],
+    "preamble": {
+        "en": "4. Presentation and severity"
+    },
+    "prefLabel": {
+        "en": "ataxia_other_scale_total_score"
+    },
+    "question": {
+        "en": "Total score:"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "number"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}
