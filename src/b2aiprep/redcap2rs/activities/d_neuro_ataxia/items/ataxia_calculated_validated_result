@@ -1,0 +1,30 @@
+{
+    "id": "ataxia_calculated_validated_result",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@HIDDEN-SURVEY\n@CALCTEXT(if([ataxia_supported_confirmed(history_or_repeated_exam_documents_gait_truncal_limb_incoordination)]=1 and [ataxia_supported_confirmed(neurological_exam_shows_signs_consistent_with_ataxia)]=1 and [ataxia_supported_confirmed(reasonable_evaluation_exclude_major_alternative_explanations)]=1,'Validated Yes', 'Validated No'))"
+        }
+    ],
+    "description": {
+        "en": "Validated Ataxia Result"
+    },
+    "preamble": {
+        "en": "2. Ataxia Type"
+    },
+    "prefLabel": {
+        "en": "ataxia_calculated_validated_result"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

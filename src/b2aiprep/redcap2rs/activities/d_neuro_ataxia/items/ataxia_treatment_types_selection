@@ -1,0 +1,49 @@
+{
+    "id": "ataxia_treatment_types_selection",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "6. Treatment"
+    },
+    "prefLabel": {
+        "en": "ataxia_treatment_types_selection"
+    },
+    "question": {
+        "en": "Select all treatment types that apply:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Rehabilitation therapies (PT, OT, speech therapy)"
+                },
+                "value": "rehabilitation_therapies"
+            },
+            {
+                "name": {
+                    "en": "Assistive devices (cane, walker, wheelchair)"
+                },
+                "value": "assistive_devices"
+            },
+            {
+                "name": {
+                    "en": "Etiology-targeted treatment (if applicable)"
+                },
+                "value": "etiology_targeted_treatment"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

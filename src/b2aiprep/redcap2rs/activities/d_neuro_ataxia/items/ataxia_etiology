@@ -1,0 +1,91 @@
+{
+    "id": "ataxia_etiology",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "3. Etiology"
+    },
+    "prefLabel": {
+        "en": "ataxia_etiology"
+    },
+    "question": {
+        "en": "What is the etiology? Select all that apply."
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Genetic or hereditary"
+                },
+                "value": "genetic_or_hereditary"
+            },
+            {
+                "name": {
+                    "en": "Degenerative, non-hereditary"
+                },
+                "value": "degenerative_non_hereditary"
+            },
+            {
+                "name": {
+                    "en": "Sporadic onset ataxia"
+                },
+                "value": "sporadic_onset_ataxia"
+            },
+            {
+                "name": {
+                    "en": "Vascular (example: stroke or hemorrhage)"
+                },
+                "value": "vascular"
+            },
+            {
+                "name": {
+                    "en": "Autoimmune or paraneoplastic"
+                },
+                "value": "autoimmune_or_paraneoplastic"
+            },
+            {
+                "name": {
+                    "en": "Toxic, medication-induced, or alcohol-related"
+                },
+                "value": "toxic_medication_induced_or_alcohol_related"
+            },
+            {
+                "name": {
+                    "en": "Metabolic or nutritional"
+                },
+                "value": "metabolic_or_nutritional"
+            },
+            {
+                "name": {
+                    "en": "Infectious or post-infectious"
+                },
+                "value": "infectious_or_post_infectious"
+            },
+            {
+                "name": {
+                    "en": "Structural lesion (example: tumor or malformation)"
+                },
+                "value": "structural_lesion"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            },
+            {
+                "name": {
+                    "en": "Unknown"
+                },
+                "value": "unknown"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

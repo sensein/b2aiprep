@@ -1,0 +1,42 @@
+{
+    "id": "et_rest_tremor_documented",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "2. Disease type"
+    },
+    "prefLabel": {
+        "en": "et_rest_tremor_documented"
+    },
+    "question": {
+        "en": "Is rest tremor also documented?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Not certain"
+                },
+                "value": "notCertain"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

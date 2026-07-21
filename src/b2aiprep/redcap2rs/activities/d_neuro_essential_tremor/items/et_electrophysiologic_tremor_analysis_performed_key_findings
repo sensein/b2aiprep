@@ -1,0 +1,22 @@
+{
+    "id": "et_electrophysiologic_tremor_analysis_performed_key_findings",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Imaging and diagnostic tests"
+    },
+    "prefLabel": {
+        "en": "et_electrophysiologic_tremor_analysis_performed_key_findings"
+    },
+    "question": {
+        "en": "Key findings (optional):"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

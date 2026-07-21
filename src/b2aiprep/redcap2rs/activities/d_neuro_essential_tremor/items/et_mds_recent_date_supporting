@@ -1,0 +1,34 @@
+{
+    "id": "et_mds_recent_date_supporting",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Text Validation Type OR Show Slider Number",
+            "source": "redcap",
+            "value": "date_ymd"
+        },
+        {
+            "column": "Identifier?",
+            "source": "redcap",
+            "value": "y"
+        }
+    ],
+    "preamble": {
+        "en": "1. Gold Standard Diagnosis:"
+    },
+    "prefLabel": {
+        "en": "et_mds_recent_date_supporting"
+    },
+    "question": {
+        "en": "Movement disorders specialist\n\nDate of most recent documentation supporting essential tremor:"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:date"
+        ]
+    },
+    "ui": {
+        "inputType": "date"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

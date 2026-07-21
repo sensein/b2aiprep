@@ -1,0 +1,22 @@
+{
+    "id": "ataxia_etiology_genetic_hereditary_list_gene_mutation",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "3. Etiology"
+    },
+    "prefLabel": {
+        "en": "ataxia_etiology_genetic_hereditary_list_gene_mutation"
+    },
+    "question": {
+        "en": "Genetic or hereditary\n\nList gene or mutation if known:"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

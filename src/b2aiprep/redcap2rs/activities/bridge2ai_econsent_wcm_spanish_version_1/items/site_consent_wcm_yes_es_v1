@@ -1,0 +1,33 @@
+{
+    "id": "site_consent_wcm_yes_es_v1",
+    "category": "reproschema:Item",
+    "prefLabel": {
+        "en": "site_consent_wcm_yes_es_v1"
+    },
+    "question": {
+        "en": "S\u00cd, doy mi consentimiento para que mis datos de voz, habla y sonidos respiratorios, datos\ndemogr\u00e1ficos, im\u00e1genes previamente realizadas, y respuestas a encuestas y/o cuestionarios\nvalidados sean almacenados para investigaciones futuras . Entiendo que los datos y/o muestras\nse almacenar\u00e1n indefinidamente."
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "S\u00ed"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,42 @@
+{
+    "id": "et_brain_mri_results_abnormal",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Imaging and diagnostic tests"
+    },
+    "prefLabel": {
+        "en": "et_brain_mri_results_abnormal"
+    },
+    "question": {
+        "en": "Abnormal"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Cerebellar atrophy"
+                },
+                "value": "cerebellarAtrophy"
+            },
+            {
+                "name": {
+                    "en": "Brain stem atrophy"
+                },
+                "value": "brainStemAtrophy"
+            },
+            {
+                "name": {
+                    "en": "Other abnormalities"
+                },
+                "value": "otherAbnormalities"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}
