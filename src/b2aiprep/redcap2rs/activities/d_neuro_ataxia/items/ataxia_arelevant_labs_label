@@ -1,0 +1,23 @@
+{
+    "id": "ataxia_arelevant_labs_label",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "5. Imaging and diagnostic tests"
+    },
+    "prefLabel": {
+        "en": "ataxia_arelevant_labs_label"
+    },
+    "question": {
+        "en": "Relevant labs performed (metabolic, nutritional, autoimmune, blood, CSF, or serum)"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "static",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

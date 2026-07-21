@@ -1,0 +1,48 @@
+{
+    "id": "ataxia_course_pattern",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Presentation and severity"
+    },
+    "prefLabel": {
+        "en": "ataxia_course_pattern"
+    },
+    "question": {
+        "en": "Course pattern:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Acute (hours to days)"
+                },
+                "value": "acute"
+            },
+            {
+                "name": {
+                    "en": "Subacute (days to weeks)"
+                },
+                "value": "subacute"
+            },
+            {
+                "name": {
+                    "en": "Chronic or progressive (months to years)"
+                },
+                "value": "chronicOrProgressive"
+            },
+            {
+                "name": {
+                    "en": "Unknown"
+                },
+                "value": "unknown"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

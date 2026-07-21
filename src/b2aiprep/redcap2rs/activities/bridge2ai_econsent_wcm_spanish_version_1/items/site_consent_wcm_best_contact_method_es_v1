@@ -1,0 +1,32 @@
+{
+    "id": "site_consent_wcm_best_contact_method_es_v1",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Identifier?",
+            "source": "redcap",
+            "value": "y"
+        },
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@READONLY-FORM"
+        }
+    ],
+    "prefLabel": {
+        "en": "site_consent_wcm_best_contact_method_es_v1"
+    },
+    "question": {
+        "en": "Mejor forma de contacto para futuras recolecciones de datos de voz (dejar en blanco si no desea ser contactado)"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,48 @@
+{
+    "id": "ataxia_functional_mobility_stage",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Presentation and severity"
+    },
+    "prefLabel": {
+        "en": "ataxia_functional_mobility_stage"
+    },
+    "question": {
+        "en": "Functional mobility stage:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Ambulatory without aid"
+                },
+                "value": "ambulatoryWithoutAid"
+            },
+            {
+                "name": {
+                    "en": "Ambulatory with aid (cane or walker)"
+                },
+                "value": "ambulatoryWithAid"
+            },
+            {
+                "name": {
+                    "en": "Wheelchair-dependent"
+                },
+                "value": "wheelchairDependent"
+            },
+            {
+                "name": {
+                    "en": "Bedbound or total assistance"
+                },
+                "value": "bedboundOrTotalAssistance"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

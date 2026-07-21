@@ -1,0 +1,22 @@
+{
+    "id": "ataxia_brain_mri_results_other_abnormalities",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "5. Imaging and diagnostic tests"
+    },
+    "prefLabel": {
+        "en": "ataxia_brain_mri_results_other_abnormalities"
+    },
+    "question": {
+        "en": "Other abnormalities\n\nPlease specify:"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

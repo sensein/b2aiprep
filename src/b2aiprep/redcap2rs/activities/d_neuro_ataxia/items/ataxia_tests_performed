@@ -1,0 +1,55 @@
+{
+    "id": "ataxia_tests_performed",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "5. Imaging and diagnostic tests"
+    },
+    "prefLabel": {
+        "en": "ataxia_tests_performed"
+    },
+    "question": {
+        "en": "Tests performed (select all that apply)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Brain MRI"
+                },
+                "value": "brain_mri"
+            },
+            {
+                "name": {
+                    "en": "Genetic testing"
+                },
+                "value": "genetic_testing"
+            },
+            {
+                "name": {
+                    "en": "Acquired ataxia workup"
+                },
+                "value": "acquired_ataxia_workup"
+            },
+            {
+                "name": {
+                    "en": "Relevant labs performed (metabolic, nutritional, autoimmune, blood, CSF, or serum)"
+                },
+                "value": "relevant_labs_performed"
+            },
+            {
+                "name": {
+                    "en": "Other testing"
+                },
+                "value": "other_testing"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

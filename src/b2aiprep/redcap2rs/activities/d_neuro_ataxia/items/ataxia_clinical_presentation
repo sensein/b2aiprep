@@ -1,0 +1,85 @@
+{
+    "id": "ataxia_clinical_presentation",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Presentation and severity"
+    },
+    "prefLabel": {
+        "en": "ataxia_clinical_presentation"
+    },
+    "question": {
+        "en": "Clinical presentation (select all that apply):"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Gait imbalance or wide-based gait"
+                },
+                "value": "gait_imbalance_or_wide_based_gait"
+            },
+            {
+                "name": {
+                    "en": "Limb incoordination (e.g. dysmetria on target testing, dysdiadochokinesia)"
+                },
+                "value": "limb_incoordination"
+            },
+            {
+                "name": {
+                    "en": "Changes in speech (e.g. dysarthria)"
+                },
+                "value": "changes_in_speech"
+            },
+            {
+                "name": {
+                    "en": "Truncal instability"
+                },
+                "value": "truncal_instability"
+            },
+            {
+                "name": {
+                    "en": "Dysphagia"
+                },
+                "value": "dysphagia"
+            },
+            {
+                "name": {
+                    "en": "Oculomotor abnormalities (nystagmus, abnormal pursuit, saccadic dysmetria)"
+                },
+                "value": "oculomotor_abnormalities"
+            },
+            {
+                "name": {
+                    "en": "Prominent sensory loss or proprioceptive impairment"
+                },
+                "value": "prominent_sensory_loss_or_proprioceptive_impairment"
+            },
+            {
+                "name": {
+                    "en": "Prominent vertigo or dizziness"
+                },
+                "value": "prominent_vertigo_or_dizziness"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            },
+            {
+                "name": {
+                    "en": "Unknown"
+                },
+                "value": "unknown"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}
