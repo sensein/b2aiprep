@@ -147,12 +147,31 @@ def convert_response_to_bids_metadata( participant: dict,
     if "recording_name" in metadata_file:
         metadata_file["task_name"] = metadata_file["recording_name"]
         metadata_file.pop("recording_name")
-    for task in audio_task_descriptions:
-        if (task_name is not None and task.lower() in task_name.lower()):
-            metadata_file["instructions"] = audio_task_descriptions[task]["instructions"]
-            metadata_file["prompts"] = audio_task_descriptions[task]["prompts"]
-            break
-    
+    # Resolve the task description. Prefer an exact match on the task name;
+    # otherwise fall back to the longest description key that is a substring of
+    # the task name. Numbered instances of a task (e.g. "picture-12",
+    # "productive-Vocabulary-3") intentionally share a single key ("picture",
+    # "productive-Vocabulary") through this substring fallback. Selecting the
+    # longest match rather than the first makes the lookup independent of key
+    # ordering, so e.g. "harvard-sentences-list-1-10" resolves to its own key
+    # instead of being shadowed by the shorter "harvard-sentences-list-1-1".
+    if task_name:
+        task_name_lower = task_name.lower()
+        best_task = None
+        for task in audio_task_descriptions:
+            task_lower = task.lower()
+            if task_lower == task_name_lower:
+                best_task = task
+                break
+            if task_lower in task_name_lower and (
+                best_task is None or len(task) > len(best_task)
+            ):
+                best_task = task
+        if best_task is not None:
+            metadata_file["instructions"] = audio_task_descriptions[best_task]["instructions"]
+            metadata_file["prompts"] = audio_task_descriptions[best_task]["prompts"]
+
+
     metadata_file.update({"audio_channel_count": 1, "audio_sample_rate": "16000"})
 
     return metadata_file

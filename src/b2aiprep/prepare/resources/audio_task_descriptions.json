@@ -4334,7 +4334,7 @@
     "cape-V-sentences-2": {
         "instructions": "Please read the following sentences out loud in your typical voice.",
         "prompts": [
-            "He helped her hurry home."
+            "How hard did he hit him?"
         ]
     },
     "cape-V-sentences-(v2)-2": {
@@ -4358,7 +4358,7 @@
     "cape-V-sentences-4": {
         "instructions": "Please read the following sentences out loud in your typical voice.",
         "prompts": [
-            "I eat eggs every morning."
+            "We eat eggs every Easter."
         ]
     },
     "cape-V-sentences-(v2)-4": {
@@ -4382,7 +4382,7 @@
     "cape-V-sentences-6": {
         "instructions": "Please read the following sentences out loud in your typical voice.",
         "prompts": [
-            "Papa took a piece of cake."
+            "Peter will keep at the peak."
         ]
     },
     "cape-V-sentences-(v2)-6": {
@@ -4395,9 +4395,19 @@
         "instructions": "For this task, you say as many animals as you can, while avoiding repeating the same ones. There is a 1 minute timer on this, and we will ask that you continue trying until the time is up. ",
         "prompts": []
     },
+    "random-item-generation-(v2)": {
+        "instructions": "You will have to speak a series of (i) random letters or numbers (repetition allowed), or (ii) items from a given category e.g., cities, animals, etc. (repetition not allowed), with the goal of maximizing the number of items. Time limit 2 minutes. The selection will appear when you start recording. The recording will automatically stop at the end.",
+        "prompts": [
+            "Say as many letters or numbers (0-9) as you can. You are allowed to repeat items. Your goal is to list as many as possible in a random order.",
+            "Say as many items from the following category as you can. Do not repeat any item. Your goal is to list as many as possible."
+        ]
+    },
     "random-item-generation": {
-        "instructions": "Say as many letters or numbers (0-9) as you can. You are allowed to repeat items. Your goal is to list as many as possible in a random order. Time limit 2 minutes. The selection will appear when you start recording. The recording will automatically stop at the end.",
-        "prompts": []
+        "instructions": "You will have to speak a series of (i) random letters or numbers (repetition allowed), or (ii) items from a given category e.g., cities, animals, etc. (repetition not allowed), with the goal of maximizing the number of items. Time limit 1 minute. The selection will appear when you start recording. The recording will automatically stop at the end.",
+        "prompts": [
+            "Say as many letters or numbers (0-9) as you can. You are allowed to repeat items. Your goal is to list as many as possible in a random order.",
+            "Say as many items from the following category as you can. Do not repeat any item. Your goal is to list as many as possible."
+        ]
     },
     "breath-sounds": {
         "instructions": "Breathing: Click on the Record button below and breathe deeply through your mouth. Continue to do this until the recording automatically stops after 5 seconds. Click Play to hear your recording. If you hear background noise, please go to a quieter place and try again by selecting Redo Recording. If it sounds good, continue.",
@@ -4459,8 +4469,12 @@
         "instructions": "This task helps us analyze the way your breathing is connected to your voice. Take a very deep breath, tap on the record button, and hold out “ah” for as long as possible until you completely run out of air. Try to hold it until the progress bar reaches the end of the screen.",
         "prompts": []
     },
-    "loudness": {
+    "loudness-(v2)": {
         "instructions": "This helps us to determine the loudness of the voice. When you're ready, press the record button and say “hey” in your normal voice. Then, shout “hey” as loud as you can. Try to reach the target line on the screen. Follow the prompts on the screen to continue.",
+        "prompts": []
+    },
+    "loudness": {
+        "instructions": "This helps us to determine the loudness of the voice. When you are ready, press on the record button and shout “hey” as loud as possible 3 times in a single recording.",
         "prompts": []
     },
     "glides-low-to-high": {
