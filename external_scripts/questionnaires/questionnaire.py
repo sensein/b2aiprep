@@ -3,7 +3,7 @@ import pandas as pd
 import argparse
 import uuid
 import datetime
-
+import numpy as np
 def mark_repeat_instruments_complete(df):
     """For any row with a value in redcap_repeat_instrument, set {value}_complete = "2",
     creating the column if it doesn't already exist."""
@@ -51,8 +51,10 @@ def create_questionnaire_redcap(redcap_csv, consent_csv, output_path, uuid_map_p
         age_match = df.loc[df["participant_study_id"] == original_id, "age"].dropna()
         if age_match.empty:
             print(f"No age found for record_id {original_id}, skipping.")
-            continue
-        age = int(age_match.iloc[0])
+            # continue
+            age = np.nan
+        else:
+            age = int(age_match.iloc[0])
 
         eligible_studies = None
         if age >= 2 and age < 4:
@@ -120,6 +122,7 @@ def create_questionnaire_redcap(redcap_csv, consent_csv, output_path, uuid_map_p
         "recording_profile_name",
         "recording_profile_version",
         "recording_microphone",
+        "eligible_studies___None"
     ]
     session_cols = [col for col in df.columns if "session_id" in col]
     for col in session_cols:

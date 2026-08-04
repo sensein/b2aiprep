@@ -26,9 +26,9 @@ acoustic_names_mapping = { # skim over the acoustic tasks.....
 
 
 recording_names_mapping = {
-    "picturesAndDoors": "Conversation (2 to 4)-book",
-    "abcs": "Abcs and 123s-abcs",
-    "123s": "Abcs and 123s-123s",
+    "picturesAndDoors1": "Conversation (2 to 4)-book",
+    "abcs1": "Abcs and 123s-abcs",
+    "123s1": "Abcs and 123s-123s",
     "noisySounds1": "Noisy Sounds-1",
     "noisySounds2": "Noisy Sounds-2",
     "noisySounds3": "Noisy Sounds-3",
@@ -76,8 +76,8 @@ recording_names_mapping = {
     "picture35": "Identifying Pictures-35",
     "picture36": "Identifying Pictures-36",
     "picture37": "Identifying Pictures-37",
-    "days": "Days and Number naming-days",
-    "months": "Days and Number naming-months",
+    "days1": "Days and Number naming-days",
+    "months1": "Days and Number naming-months",
     "sillySounds1": "Silly Sounds-1",
     "sillySounds2": "Silly Sounds-2",
     "sillySounds3": "Silly Sounds-3",

@@ -390,7 +390,7 @@ def parse_audio(audio_list, dummy_audio_files=False, is_import=False):
     "outside_of_school",
     "ready_for_school",
     "choose_book",
-    "picture_and_doors"
+    "pictures_and_doors"
 }
     generative_tasks = [
         "naming_animals",
@@ -406,17 +406,19 @@ def parse_audio(audio_list, dummy_audio_files=False, is_import=False):
                 protocol_order[order].append(name)
                 found = True
                 break
-        for conversation_task in conversation_tasks:
-            if conversation_task in name:
-                protocol_order["conversation"].append(name)
-                found = True
-                break
-        for generative_task in generative_tasks:
-            if generative_task in name:
-                protocol_order["generative_naming_task"].append(name)
-                found = True
-                break
- 
+        if not found:
+            for conversation_task in conversation_tasks:
+                if conversation_task in name:
+                    protocol_order["conversation"].append(name)
+                    found = True
+                    break
+        if not found:
+            for generative_task in generative_tasks:
+                if generative_task in name:
+                    protocol_order["generative_naming_task"].append(name)
+                    found = True
+                    break
+
         if not found:
             protocol_order["other"].append(name)
 
