@@ -1,0 +1,150 @@
+{
+    "id": "bridge2ai_econsent_usf_english_version_3_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "bridge2ai_econsent_usf_english_version_3"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/usf_icf_p1_en_v3",
+            "items/usf_icf_p2_en_v3",
+            "items/usf_icf_p3_en_v3",
+            "items/usf_icf_p4_en_v3",
+            "items/usf_icf_p5_en_v3",
+            "items/usf_icf_p6_en_v3",
+            "items/usf_icf_p7_en_v3",
+            "items/usf_icf_p8_en_v3",
+            "items/usf_icf_p9_en_v3",
+            "items/usf_icf_question_en_v3",
+            "items/usf_icf_signature_en_v3",
+            "items/usf_icf_date_en_v3",
+            "items/usf_icf_name_en_v3",
+            "items/usf_icf_hipaa_en_p1_v3",
+            "items/usf_icf_hipaa_en_p2_v3",
+            "items/usf_icf_hipaa_en_p3_v3",
+            "items/usf_icf_hipaa_signature_en_v3",
+            "items/usf_icf_hipaa_date_en_v3",
+            "items/usf_icf_hipaa_name_en_v3"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/usf_icf_p1_en_v3",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "usf_icf_p1_en_v3"
+            },
+            {
+                "isAbout": "items/usf_icf_p2_en_v3",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "usf_icf_p2_en_v3"
+            },
+            {
+                "isAbout": "items/usf_icf_p3_en_v3",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "usf_icf_p3_en_v3"
+            },
+            {
+                "isAbout": "items/usf_icf_p4_en_v3",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "usf_icf_p4_en_v3"
+            },
+            {
+                "isAbout": "items/usf_icf_p5_en_v3",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "usf_icf_p5_en_v3"
+            },
+            {
+                "isAbout": "items/usf_icf_p6_en_v3",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "usf_icf_p6_en_v3"
+            },
+            {
+                "isAbout": "items/usf_icf_p7_en_v3",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "usf_icf_p7_en_v3"
+            },
+            {
+                "isAbout": "items/usf_icf_p8_en_v3",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "usf_icf_p8_en_v3"
+            },
+            {
+                "isAbout": "items/usf_icf_p9_en_v3",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "usf_icf_p9_en_v3"
+            },
+            {
+                "isAbout": "items/usf_icf_question_en_v3",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "usf_icf_question_en_v3"
+            },
+            {
+                "isAbout": "items/usf_icf_signature_en_v3",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "usf_icf_signature_en_v3"
+            },
+            {
+                "isAbout": "items/usf_icf_date_en_v3",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "usf_icf_date_en_v3"
+            },
+            {
+                "isAbout": "items/usf_icf_name_en_v3",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "usf_icf_name_en_v3"
+            },
+            {
+                "isAbout": "items/usf_icf_hipaa_en_p1_v3",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "usf_icf_hipaa_en_p1_v3"
+            },
+            {
+                "isAbout": "items/usf_icf_hipaa_en_p2_v3",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "usf_icf_hipaa_en_p2_v3"
+            },
+            {
+                "isAbout": "items/usf_icf_hipaa_en_p3_v3",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "usf_icf_hipaa_en_p3_v3"
+            },
+            {
+                "isAbout": "items/usf_icf_hipaa_signature_en_v3",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "usf_icf_hipaa_signature_en_v3"
+            },
+            {
+                "isAbout": "items/usf_icf_hipaa_date_en_v3",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "usf_icf_hipaa_date_en_v3"
+            },
+            {
+                "isAbout": "items/usf_icf_hipaa_name_en_v3",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "usf_icf_hipaa_name_en_v3"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "4.8.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

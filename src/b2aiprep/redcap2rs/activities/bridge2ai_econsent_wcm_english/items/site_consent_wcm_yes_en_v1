@@ -1,0 +1,40 @@
+{
+    "id": "site_consent_wcm_yes_en_v1",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "LV"
+        }
+    ],
+    "prefLabel": {
+        "en": "site_consent_wcm_yes_en_v1"
+    },
+    "question": {
+        "en": "YES,I give permission for my voice, speech, and respiratory sound data, demographic data,previously completed imaging data, and survey and/or validated questionnaire answers to bestored for future research. I understand that the data and/or samples will be stored indefinitely"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

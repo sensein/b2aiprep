@@ -1,0 +1,55 @@
+{
+    "id": "et_tests_analyses_performed",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Imaging and diagnostic tests"
+    },
+    "prefLabel": {
+        "en": "et_tests_analyses_performed"
+    },
+    "question": {
+        "en": "Tests and analyses performed (select all that apply)."
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Brain MRI"
+                },
+                "value": "brain_mri"
+            },
+            {
+                "name": {
+                    "en": "DaTscan or dopaminergic evaluation performed"
+                },
+                "value": "datscan_or_dopaminergic_evaluation"
+            },
+            {
+                "name": {
+                    "en": "Electrophysiologic tremor analysis performed"
+                },
+                "value": "electrophysiologic_tremor_analysis"
+            },
+            {
+                "name": {
+                    "en": "Relevant labs performed (metabolic, nutritional, autoimmune, blood, CSF, or serum)"
+                },
+                "value": "relevant_labs"
+            },
+            {
+                "name": {
+                    "en": "Other testing"
+                },
+                "value": "other_testing"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

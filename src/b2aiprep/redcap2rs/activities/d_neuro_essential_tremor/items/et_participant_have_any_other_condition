@@ -1,0 +1,73 @@
+{
+    "id": "et_participant_have_any_other_condition",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "2. Disease type"
+    },
+    "prefLabel": {
+        "en": "et_participant_have_any_other_condition"
+    },
+    "question": {
+        "en": "Does the participant have signs of any other condition? (select all that apply)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Ataxia or dysmetria"
+                },
+                "value": "ataxia_or_dysmetria"
+            },
+            {
+                "name": {
+                    "en": "Parkinsonism"
+                },
+                "value": "parkinsonism"
+            },
+            {
+                "name": {
+                    "en": "Medication or substance-related tremor"
+                },
+                "value": "medication_or_substance_related_tremor"
+            },
+            {
+                "name": {
+                    "en": "Dystonia"
+                },
+                "value": "dystonia"
+            },
+            {
+                "name": {
+                    "en": "Cerebellar signs"
+                },
+                "value": "cerebellar_signs"
+            },
+            {
+                "name": {
+                    "en": "Functional tremor"
+                },
+                "value": "functional_tremor"
+            },
+            {
+                "name": {
+                    "en": "Thyroid or metabolic condition"
+                },
+                "value": "thyroid_or_metabolic_condition"
+            },
+            {
+                "name": {
+                    "en": "Not evaluated or documented"
+                },
+                "value": "not_evaluated_or_documented"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,178 @@
+{
+    "id": "bridge2ai_econsent_wcm_spanish_version_1_schema",
+    "category": "reproschema:Activity",
+    "prefLabel": {
+        "en": "bridge2ai_econsent_wcm_spanish_version_1"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/wcm_icf_p1_es_v1",
+            "items/wcm_icf_p2_es_v1",
+            "items/wcm_icf_p3_es_v1",
+            "items/wcm_icf_p4_es_v1",
+            "items/wcm_icf_p5_es_v1",
+            "items/wcm_icf_p6_es_v1",
+            "items/wcm_icf_p7_es_v1",
+            "items/wcm_icf_p8_es_v1",
+            "items/wcm_icf_p9_es_v1",
+            "items/wcm_icf_question_es_v1",
+            "items/wcm_icf_signature_es_v1",
+            "items/wcm_icf_date_es_v1",
+            "items/wcm_icf_name_es_v1",
+            "items/consent_wcm_p1_es_v1",
+            "items/consent_wcm_p2_es_v1",
+            "items/consent_wcm_p3_es_v1",
+            "items/consent_wcm_p4_es_v1",
+            "items/consent_wcm_p5_es_v1",
+            "items/site_consent_wcm_yes_es_v1",
+            "items/wcm_consent_signature_es_v1",
+            "items/wcm_consent_date_es_v1",
+            "items/wcm_consent_name_es_v1",
+            "items/site_consent_wcm_best_contact_method_es_v1"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/wcm_icf_p1_es_v1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "wcm_icf_p1_es_v1"
+            },
+            {
+                "isAbout": "items/wcm_icf_p2_es_v1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "wcm_icf_p2_es_v1"
+            },
+            {
+                "isAbout": "items/wcm_icf_p3_es_v1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "wcm_icf_p3_es_v1"
+            },
+            {
+                "isAbout": "items/wcm_icf_p4_es_v1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "wcm_icf_p4_es_v1"
+            },
+            {
+                "isAbout": "items/wcm_icf_p5_es_v1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "wcm_icf_p5_es_v1"
+            },
+            {
+                "isAbout": "items/wcm_icf_p6_es_v1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "wcm_icf_p6_es_v1"
+            },
+            {
+                "isAbout": "items/wcm_icf_p7_es_v1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "wcm_icf_p7_es_v1"
+            },
+            {
+                "isAbout": "items/wcm_icf_p8_es_v1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "wcm_icf_p8_es_v1"
+            },
+            {
+                "isAbout": "items/wcm_icf_p9_es_v1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "wcm_icf_p9_es_v1"
+            },
+            {
+                "isAbout": "items/wcm_icf_question_es_v1",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "wcm_icf_question_es_v1"
+            },
+            {
+                "isAbout": "items/wcm_icf_signature_es_v1",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "wcm_icf_signature_es_v1"
+            },
+            {
+                "isAbout": "items/wcm_icf_date_es_v1",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "wcm_icf_date_es_v1"
+            },
+            {
+                "isAbout": "items/wcm_icf_name_es_v1",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "wcm_icf_name_es_v1"
+            },
+            {
+                "isAbout": "items/consent_wcm_p1_es_v1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "consent_wcm_p1_es_v1"
+            },
+            {
+                "isAbout": "items/consent_wcm_p2_es_v1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "consent_wcm_p2_es_v1"
+            },
+            {
+                "isAbout": "items/consent_wcm_p3_es_v1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "consent_wcm_p3_es_v1"
+            },
+            {
+                "isAbout": "items/consent_wcm_p4_es_v1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "consent_wcm_p4_es_v1"
+            },
+            {
+                "isAbout": "items/consent_wcm_p5_es_v1",
+                "isVis": true,
+                "valueRequired": false,
+                "variableName": "consent_wcm_p5_es_v1"
+            },
+            {
+                "isAbout": "items/site_consent_wcm_yes_es_v1",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "site_consent_wcm_yes_es_v1"
+            },
+            {
+                "isAbout": "items/wcm_consent_signature_es_v1",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "wcm_consent_signature_es_v1"
+            },
+            {
+                "isAbout": "items/wcm_consent_date_es_v1",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "wcm_consent_date_es_v1"
+            },
+            {
+                "isAbout": "items/wcm_consent_name_es_v1",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "wcm_consent_name_es_v1"
+            },
+            {
+                "isAbout": "items/site_consent_wcm_best_contact_method_es_v1",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "site_consent_wcm_best_contact_method_es_v1"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "4.8.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

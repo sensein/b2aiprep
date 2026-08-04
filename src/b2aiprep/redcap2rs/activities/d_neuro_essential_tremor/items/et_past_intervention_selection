@@ -1,0 +1,43 @@
+{
+    "id": "et_past_intervention_selection",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "5. Treatment obtained"
+    },
+    "prefLabel": {
+        "en": "et_past_intervention_selection"
+    },
+    "question": {
+        "en": "Past intervention (select all that apply)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Deep Brain Stimulation"
+                },
+                "value": "deep_brain_stimulation"
+            },
+            {
+                "name": {
+                    "en": "Focused ultrasound"
+                },
+                "value": "focused_ultrasound"
+            },
+            {
+                "name": {
+                    "en": "Surgery"
+                },
+                "value": "surgery"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,42 @@
+{
+    "id": "ataxia_treatment_or_therapy",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "6. Treatment"
+    },
+    "prefLabel": {
+        "en": "ataxia_treatment_or_therapy"
+    },
+    "question": {
+        "en": "Has the participant received any treatment or therapy for ataxia?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Unknown"
+                },
+                "value": "unknown"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}
