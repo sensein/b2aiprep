@@ -3239,16 +3239,16 @@ enrollment_form_schema,enrollment,ef_ataxia,self_reported_ataxia,,Ataxia,YES,VAR
 enrollment_form_schema,enrollment,ef_essential_tremor,self_reported_essential_tremor,,Essential Tremor,YES,VARIABLE
 recording_schema,recording,recording_browser,recording_browser,task,Recording - Browser,NO,VARIABLE
 recording_schema,recording,recording_browser_version,recording_browser_version,task,Recording - Browser Version,NO,VARIABLE
-recording_schema,,recording_device_info,recording_device_info,,Recording - Device Info,YES,VARIABLE
+recording_schema,recording,recording_device_info,recording_device_info,task,Recording - Device Info,NO,VARIABLE
 recording_schema,recording,recording_device_type,recording_device_type,task,Recording - Device Type,NO,VARIABLE
 recording_schema,recording,recording_platform,recording_platform,task,Recording - Platform,NO,VARIABLE
-recording_schema,,recording_platform_architecture,recording_platform_architecture,,Recording - Platform Architecture,YES,VARIABLE
+recording_schema,recording,recording_platform_architecture,recording_platform_architecture,task,Recording - Platform Architecture,NO,VARIABLE
 recording_schema,recording,recording_platform_version,recording_platform_version,task,Recording - Platform Version,NO,VARIABLE
-recording_schema,,recording_screen_resolution,recording_screen_resolution,,Recording - Screen Resolution,YES,VARIABLE
+recording_schema,recording,recording_screen_resolution,recording_screen_resolution,task,Recording - Screen Resolution,NO,VARIABLE
 recording_schema,recording,recording_touch_screen,recording_touch_screen,task,Recording - Touch Screen,NO,VARIABLE
-recording_schema,,recording_window_resolution,recording_window_resolution,,Recording - Window Resolution,YES,VARIABLE
+recording_schema,recording,recording_window_resolution,recording_window_resolution,task,Recording - Window Resolution,NO,VARIABLE
 prolific_information_schema,enrollment,is_prolific,recruited_via_prolific,enrollment,Is Prolific:,NO,VARIABLE
-prolific_information_schema,,prolific_id,prolific_id,,Prolific Id:,YES,VARIABLE
+prolific_information_schema,enrollment,prolific_id,prolific_id,enrollment,Prolific Id:,NO,VARIABLE
 prolific_information_schema,,show_prolific_study_id,show_prolific_study_id,,Show Prolific Study Id:,YES,VARIABLE
 bridge2ai_econsent_mit_english_version_2_schema,,consent_mit_date_en_v2,consent_mit_date_en_v2,,Date,YES,VARIABLE
 bridge2ai_econsent_mit_english_version_2_schema,,consent_mit_name_en_v2,consent_mit_name_en_v2,,Printed Name of Person Taking Part in Study (or Their Parent),YES,VARIABLE
