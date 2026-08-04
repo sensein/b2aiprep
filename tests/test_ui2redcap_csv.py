@@ -206,3 +206,42 @@ def test_recording_name_remap(monkeypatch):
     monkeypatch.setattr(_rc, "get_age_from_jsonld", lambda p: 10)
     names = _recording_names(parse_audio([_path("favorite_food_10_plus", 1)], True, is_import=False))
     assert names == ["Conversation-(10-plus)-favorite-food"]
+
+
+def test_conversation_missing_subtask_does_not_shift(monkeypatch):
+    """A missing conversation sub-task must NOT shift the others. With
+    favorite_food absent, favorite_show_movie_game keeps its documented number 2
+    (not 1), so it is not mislabeled as favorite_food. Regression for the
+    positional-numbering fragility."""
+    from b2aiprep.prepare import redcap as _rc
+    monkeypatch.setattr(_rc, "get_age_from_jsonld", lambda p: 8)
+    subs = ["favorite_show_movie_game", "outside_of_school", "ready_for_school"]  # no favorite_food
+    files = [_path(f"{s}_6_to_10", i) for i, s in enumerate(subs, 2)]
+    # raw numbers are fixed by sub-task stem -> 2,3,4 (a gap where -1 would be)
+    assert _recording_names(parse_audio(files, True, is_import=True)) == [
+        "conversation(6to10)-2", "conversation(6to10)-3", "conversation(6to10)-4"]
+
+
+def test_conversation_missing_subtask_documented_names(monkeypatch):
+    """Same case through the remap (is_import=False): each present sub-task keeps
+    its own documented name -- favorite_food's name is NOT applied to another."""
+    from b2aiprep.prepare import redcap as _rc
+    monkeypatch.setattr(_rc, "get_age_from_jsonld", lambda p: 8)
+    subs = ["favorite_show_movie_game", "outside_of_school", "ready_for_school"]  # no favorite_food
+    files = [_path(f"{s}_6_to_10", i) for i, s in enumerate(subs, 2)]
+    names = _recording_names(parse_audio(files, True, is_import=False))
+    assert names == [
+        "Conversation-(6-plus)-favorite-show-movie-game",
+        "Conversation-(6-plus)-outside-of-school",
+        "Conversation-(6-plus)-ready-for-school",
+    ]
+    assert "Conversation-(6-plus)-favorite-food" not in names
+
+
+def test_generative_stem_fixed_numbers(monkeypatch):
+    """Generative naming sub-tasks are numbered by stem (animals=1, food=2), so a
+    missing one does not shift the other."""
+    from b2aiprep.prepare import redcap as _rc
+    files = [_path("naming_food_10_plus", 1)]   # only food present
+    assert _recording_names(parse_audio(files, True, is_import=True)) == [
+        "Generative Naming Task-2"]
