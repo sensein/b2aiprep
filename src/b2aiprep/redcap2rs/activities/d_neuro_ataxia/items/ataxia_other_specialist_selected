@@ -1,0 +1,22 @@
+{
+    "id": "ataxia_other_specialist_selected",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "2. Ataxia Type"
+    },
+    "prefLabel": {
+        "en": "ataxia_other_specialist_selected"
+    },
+    "question": {
+        "en": "Other specialist\n\nPlease specify:"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

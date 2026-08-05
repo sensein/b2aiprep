@@ -1,0 +1,49 @@
+{
+    "id": "et_scores_or_results_tremor_assessment_scales",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "3. Assessment"
+    },
+    "prefLabel": {
+        "en": "et_scores_or_results_tremor_assessment_scales"
+    },
+    "question": {
+        "en": "Please provide scores or results from tremor rating assessment scales (select all that apply)."
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "TETRAS performance score available"
+                },
+                "value": "tetras_performance_score"
+            },
+            {
+                "name": {
+                    "en": "ADL score available"
+                },
+                "value": "adl_score"
+            },
+            {
+                "name": {
+                    "en": "Fahn-Tolosa-Marin (FTMTRS) total score available"
+                },
+                "value": "ftmtrs_total_score"
+            },
+            {
+                "name": {
+                    "en": "Other scale"
+                },
+                "value": "other_scale"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

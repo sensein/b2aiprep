@@ -1,0 +1,22 @@
+{
+    "id": "ataxia_etiology_targeted_treatment",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "6. Treatment"
+    },
+    "prefLabel": {
+        "en": "ataxia_etiology_targeted_treatment"
+    },
+    "question": {
+        "en": "Etiology-targeted treatment (if applicable)\n\nPlease specify :"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

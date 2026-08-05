@@ -1,0 +1,73 @@
+{
+    "id": "diagnosis_et_gsd_confirmation_method",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "1. Gold Standard Diagnosis:"
+    },
+    "prefLabel": {
+        "en": "diagnosis_et_gsd_confirmation_method"
+    },
+    "question": {
+        "en": "How was this diagnosis confirmed? Select all that apply."
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Neurologist"
+                },
+                "value": "neurologist"
+            },
+            {
+                "name": {
+                    "en": "Movement disorders specialist"
+                },
+                "value": "movement_disorders_specialist"
+            },
+            {
+                "name": {
+                    "en": "Other specialist"
+                },
+                "value": "other_specialist"
+            },
+            {
+                "name": {
+                    "en": "Hospital discharge summary"
+                },
+                "value": "hospital_discharge_summary"
+            },
+            {
+                "name": {
+                    "en": "Problem list or ICD code"
+                },
+                "value": "problem_list_or_icd_code"
+            },
+            {
+                "name": {
+                    "en": "Diagnostic testing"
+                },
+                "value": "diagnostic_testing"
+            },
+            {
+                "name": {
+                    "en": "Participant self-report"
+                },
+                "value": "participant_self_report"
+            },
+            {
+                "name": {
+                    "en": "Unknown"
+                },
+                "value": "unknown"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

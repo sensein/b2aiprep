@@ -1,11 +1,18 @@
 {
     "id": "recording_language",
     "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Field Annotation",
+            "source": "redcap",
+            "value": "@READONLY"
+        }
+    ],
     "prefLabel": {
         "en": "recording_language"
     },
     "question": {
-        "en": "Recording Language"
+        "en": "Recording - Language"
     },
     "responseOptions": {
         "choices": [
@@ -27,7 +34,8 @@
         ]
     },
     "ui": {
-        "inputType": "radio"
+        "inputType": "radio",
+        "readonlyValue": true
     },
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }
