@@ -1,0 +1,435 @@
+{
+    "id": "d_neuro_essential_tremor_schema",
+    "category": "reproschema:Activity",
+    "compute": [
+        {
+            "jsExpression": "if(et_action_tremor_history_exam == 'yes' && et_tremor_duration_3yrs == 'yes' && et_no_alternative_dx_documented == 'yes','Validated Yes','Validated No')",
+            "variableName": "et_calculated_validated_result"
+        }
+    ],
+    "prefLabel": {
+        "en": "d_neuro_essential_tremor"
+    },
+    "schemaVersion": "1.0.0",
+    "ui": {
+        "order": [
+            "items/diagnosis_et_gsd",
+            "items/diagnosis_et_gsd_confirmation_method",
+            "items/et_neurologist_recent_date_supporting",
+            "items/et_mds_recent_date_supporting",
+            "items/et_other_specialist_selected",
+            "items/et_action_tremor_history_exam",
+            "items/et_tremor_duration_3yrs",
+            "items/et_no_alternative_dx_documented",
+            "items/et_tremor_distribution",
+            "items/et_tremor_postural_or_kinetic",
+            "items/et_rest_tremor_documented",
+            "items/et_supportive_clinical_features",
+            "items/et_participant_have_any_other_condition",
+            "items/et_scores_or_results_tremor_assessment_scales",
+            "items/et_tetras_performance_score",
+            "items/et_adl_score_available_label",
+            "items/et_adl_scale_used",
+            "items/et_adl_total_score",
+            "items/et_ftmtrs_total_score",
+            "items/et_other_scale_label",
+            "items/et_other_scale_identify_scale",
+            "items/et_other_scale_total_score",
+            "items/et_tests_analyses_performed",
+            "items/et_brain_mri_label",
+            "items/et_brain_mri_results",
+            "items/et_brain_mri_results_abnormal",
+            "items/et_brain_mri_other_abnormalities",
+            "items/et_brain_mri_key_findings",
+            "items/et_datscan_label",
+            "items/et_datscan_specify_test",
+            "items/et_datscan_dopaminergic_evaluation_results",
+            "items/et_datscan_dopaminergic_evaluation_performed_key_findings",
+            "items/et_electrophysiologic_tremor_analysis_performed_label",
+            "items/et_electrophysiologic_tremor_analysis_performed",
+            "items/et_electrophysiologic_tremor_analysis_performed_key_findings",
+            "items/et_relevant_labs_performed_label",
+            "items/et_relevant_labs_selection",
+            "items/et_relevant_labs_performed_metabolic_option",
+            "items/et_relevant_labs_performed_nutritional_option",
+            "items/et_relevant_labs_performed_autoimmune_option",
+            "items/et_relevant_labs_performed_blood_option",
+            "items/et_relevant_labs_performed_csf_option",
+            "items/et_relevant_labs_performed_serum_option",
+            "items/et_relevant_labs_performed_other_option_label",
+            "items/et_relevant_labs_performed_other_option_specify_test",
+            "items/et_relevant_labs_performed_other_option_identify_key_results",
+            "items/et_other_testing_specify_test",
+            "items/et_other_testing_label",
+            "items/et_other_testing_results",
+            "items/et_other_testing_key_findings",
+            "items/et_treatment_obtained",
+            "items/et_past_intervention_selection",
+            "items/et_receiving_any_treatment_or_therapy",
+            "items/et_treatment_types_selection",
+            "items/et_medications_selection",
+            "items/et_medications_other_specify",
+            "items/et_non_pharmacological_interventions_selection",
+            "items/et_non_pharmacological_interventions_other_specify"
+        ],
+        "addProperties": [
+            {
+                "isAbout": "items/diagnosis_et_gsd",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "diagnosis_et_gsd"
+            },
+            {
+                "isAbout": "items/diagnosis_et_gsd_confirmation_method",
+                "isVis": "diagnosis_et_gsd=='yes' || diagnosis_et_gsd=='notCertain'",
+                "valueRequired": true,
+                "variableName": "diagnosis_et_gsd_confirmation_method"
+            },
+            {
+                "isAbout": "items/et_neurologist_recent_date_supporting",
+                "isVis": "diagnosis_et_gsd_confirmation_method(neurologist)==1",
+                "valueRequired": false,
+                "variableName": "et_neurologist_recent_date_supporting"
+            },
+            {
+                "isAbout": "items/et_mds_recent_date_supporting",
+                "isVis": "diagnosis_et_gsd_confirmation_method(movement_disorders_specialist)==1",
+                "valueRequired": false,
+                "variableName": "et_mds_recent_date_supporting"
+            },
+            {
+                "isAbout": "items/et_other_specialist_selected",
+                "isVis": "diagnosis_et_gsd_confirmation_method(other_specialist)==1",
+                "valueRequired": true,
+                "variableName": "et_other_specialist_selected"
+            },
+            {
+                "isAbout": "items/et_action_tremor_history_exam",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "et_action_tremor_history_exam"
+            },
+            {
+                "isAbout": "items/et_tremor_duration_3yrs",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "et_tremor_duration_3yrs"
+            },
+            {
+                "isAbout": "items/et_no_alternative_dx_documented",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "et_no_alternative_dx_documented"
+            },
+            {
+                "isAbout": "items/et_calculated_validated_result",
+                "isVis": false,
+                "valueRequired": false,
+                "variableName": "et_calculated_validated_result"
+            },
+            {
+                "isAbout": "items/et_tremor_distribution",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "et_tremor_distribution"
+            },
+            {
+                "isAbout": "items/et_tremor_postural_or_kinetic",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "et_tremor_postural_or_kinetic"
+            },
+            {
+                "isAbout": "items/et_rest_tremor_documented",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "et_rest_tremor_documented"
+            },
+            {
+                "isAbout": "items/et_supportive_clinical_features",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "et_supportive_clinical_features"
+            },
+            {
+                "isAbout": "items/et_participant_have_any_other_condition",
+                "isVis": "et_no_alternative_dx_documented=='yes' || et_no_alternative_dx_documented=='notCertain'",
+                "valueRequired": true,
+                "variableName": "et_participant_have_any_other_condition"
+            },
+            {
+                "isAbout": "items/et_scores_or_results_tremor_assessment_scales",
+                "isVis": "et_supportive_clinical_features(tetras_performance_adl_ftmtrs_scores_available)==1",
+                "valueRequired": true,
+                "variableName": "et_scores_or_results_tremor_assessment_scales"
+            },
+            {
+                "isAbout": "items/et_tetras_performance_score",
+                "isVis": "et_supportive_clinical_features(tetras_performance_adl_ftmtrs_scores_available)==1 && et_scores_or_results_tremor_assessment_scales(tetras_performance_score)==1",
+                "valueRequired": true,
+                "variableName": "et_tetras_performance_score"
+            },
+            {
+                "isAbout": "items/et_adl_score_available_label",
+                "isVis": "et_supportive_clinical_features(tetras_performance_adl_ftmtrs_scores_available)==1 && et_scores_or_results_tremor_assessment_scales(adl_score)==1",
+                "valueRequired": false,
+                "variableName": "et_adl_score_available_label"
+            },
+            {
+                "isAbout": "items/et_adl_scale_used",
+                "isVis": "et_supportive_clinical_features(tetras_performance_adl_ftmtrs_scores_available)==1 && et_scores_or_results_tremor_assessment_scales(adl_score)==1",
+                "valueRequired": true,
+                "variableName": "et_adl_scale_used"
+            },
+            {
+                "isAbout": "items/et_adl_total_score",
+                "isVis": "et_supportive_clinical_features(tetras_performance_adl_ftmtrs_scores_available)==1 && et_scores_or_results_tremor_assessment_scales(adl_score)==1",
+                "valueRequired": true,
+                "variableName": "et_adl_total_score"
+            },
+            {
+                "isAbout": "items/et_ftmtrs_total_score",
+                "isVis": "et_supportive_clinical_features(tetras_performance_adl_ftmtrs_scores_available)==1 && et_scores_or_results_tremor_assessment_scales(ftmtrs_total_score)==1",
+                "valueRequired": true,
+                "variableName": "et_ftmtrs_total_score"
+            },
+            {
+                "isAbout": "items/et_other_scale_label",
+                "isVis": "et_supportive_clinical_features(tetras_performance_adl_ftmtrs_scores_available)==1 && et_scores_or_results_tremor_assessment_scales(other_scale)==1",
+                "valueRequired": false,
+                "variableName": "et_other_scale_label"
+            },
+            {
+                "isAbout": "items/et_other_scale_identify_scale",
+                "isVis": "et_supportive_clinical_features(tetras_performance_adl_ftmtrs_scores_available)==1 && et_scores_or_results_tremor_assessment_scales(other_scale)==1",
+                "valueRequired": true,
+                "variableName": "et_other_scale_identify_scale"
+            },
+            {
+                "isAbout": "items/et_other_scale_total_score",
+                "isVis": "et_supportive_clinical_features(tetras_performance_adl_ftmtrs_scores_available)==1 && et_scores_or_results_tremor_assessment_scales(other_scale)==1",
+                "valueRequired": true,
+                "variableName": "et_other_scale_total_score"
+            },
+            {
+                "isAbout": "items/et_tests_analyses_performed",
+                "isVis": "diagnosis_et_gsd_confirmation_method(diagnostic_testing)==1",
+                "valueRequired": true,
+                "variableName": "et_tests_analyses_performed"
+            },
+            {
+                "isAbout": "items/et_brain_mri_label",
+                "isVis": "et_tests_analyses_performed(brain_mri)==1",
+                "valueRequired": false,
+                "variableName": "et_brain_mri_label"
+            },
+            {
+                "isAbout": "items/et_brain_mri_results",
+                "isVis": "et_tests_analyses_performed(brain_mri)==1",
+                "valueRequired": true,
+                "variableName": "et_brain_mri_results"
+            },
+            {
+                "isAbout": "items/et_brain_mri_results_abnormal",
+                "isVis": "et_tests_analyses_performed(brain_mri)==1 && et_brain_mri_results=='abnormal'",
+                "valueRequired": true,
+                "variableName": "et_brain_mri_results_abnormal"
+            },
+            {
+                "isAbout": "items/et_brain_mri_other_abnormalities",
+                "isVis": "et_tests_analyses_performed(brain_mri)==1 && et_brain_mri_results_abnormal=='otherAbnormalities'",
+                "valueRequired": true,
+                "variableName": "et_brain_mri_other_abnormalities"
+            },
+            {
+                "isAbout": "items/et_brain_mri_key_findings",
+                "isVis": "et_tests_analyses_performed(brain_mri)==1",
+                "valueRequired": false,
+                "variableName": "et_brain_mri_key_findings"
+            },
+            {
+                "isAbout": "items/et_datscan_label",
+                "isVis": "et_tests_analyses_performed(datscan_or_dopaminergic_evaluation)==1",
+                "valueRequired": false,
+                "variableName": "et_datscan_label"
+            },
+            {
+                "isAbout": "items/et_datscan_specify_test",
+                "isVis": "et_tests_analyses_performed(datscan_or_dopaminergic_evaluation)==1",
+                "valueRequired": true,
+                "variableName": "et_datscan_specify_test"
+            },
+            {
+                "isAbout": "items/et_datscan_dopaminergic_evaluation_results",
+                "isVis": "et_tests_analyses_performed(datscan_or_dopaminergic_evaluation)==1",
+                "valueRequired": true,
+                "variableName": "et_datscan_dopaminergic_evaluation_results"
+            },
+            {
+                "isAbout": "items/et_datscan_dopaminergic_evaluation_performed_key_findings",
+                "isVis": "et_tests_analyses_performed(datscan_or_dopaminergic_evaluation)==1",
+                "valueRequired": false,
+                "variableName": "et_datscan_dopaminergic_evaluation_performed_key_findings"
+            },
+            {
+                "isAbout": "items/et_electrophysiologic_tremor_analysis_performed_label",
+                "isVis": "et_tests_analyses_performed(electrophysiologic_tremor_analysis)==1",
+                "valueRequired": false,
+                "variableName": "et_electrophysiologic_tremor_analysis_performed_label"
+            },
+            {
+                "isAbout": "items/et_electrophysiologic_tremor_analysis_performed",
+                "isVis": "et_tests_analyses_performed(electrophysiologic_tremor_analysis)==1",
+                "valueRequired": true,
+                "variableName": "et_electrophysiologic_tremor_analysis_performed"
+            },
+            {
+                "isAbout": "items/et_electrophysiologic_tremor_analysis_performed_key_findings",
+                "isVis": "et_tests_analyses_performed(electrophysiologic_tremor_analysis)==1",
+                "valueRequired": false,
+                "variableName": "et_electrophysiologic_tremor_analysis_performed_key_findings"
+            },
+            {
+                "isAbout": "items/et_relevant_labs_performed_label",
+                "isVis": "et_tests_analyses_performed(relevant_labs)==1",
+                "valueRequired": false,
+                "variableName": "et_relevant_labs_performed_label"
+            },
+            {
+                "isAbout": "items/et_relevant_labs_selection",
+                "isVis": "et_tests_analyses_performed(relevant_labs)==1",
+                "valueRequired": true,
+                "variableName": "et_relevant_labs_selection"
+            },
+            {
+                "isAbout": "items/et_relevant_labs_performed_metabolic_option",
+                "isVis": "et_tests_analyses_performed(relevant_labs)==1 && et_relevant_labs_selection(metabolic)==1",
+                "valueRequired": true,
+                "variableName": "et_relevant_labs_performed_metabolic_option"
+            },
+            {
+                "isAbout": "items/et_relevant_labs_performed_nutritional_option",
+                "isVis": "et_tests_analyses_performed(relevant_labs)==1 && et_relevant_labs_selection(nutritional)==1",
+                "valueRequired": true,
+                "variableName": "et_relevant_labs_performed_nutritional_option"
+            },
+            {
+                "isAbout": "items/et_relevant_labs_performed_autoimmune_option",
+                "isVis": "et_tests_analyses_performed(relevant_labs)==1 && et_relevant_labs_selection(autoimmune)==1",
+                "valueRequired": true,
+                "variableName": "et_relevant_labs_performed_autoimmune_option"
+            },
+            {
+                "isAbout": "items/et_relevant_labs_performed_blood_option",
+                "isVis": "et_tests_analyses_performed(relevant_labs)==1 && et_relevant_labs_selection(blood)==1",
+                "valueRequired": true,
+                "variableName": "et_relevant_labs_performed_blood_option"
+            },
+            {
+                "isAbout": "items/et_relevant_labs_performed_csf_option",
+                "isVis": "et_tests_analyses_performed(relevant_labs)==1 && et_relevant_labs_selection(csf)==1",
+                "valueRequired": true,
+                "variableName": "et_relevant_labs_performed_csf_option"
+            },
+            {
+                "isAbout": "items/et_relevant_labs_performed_serum_option",
+                "isVis": "et_tests_analyses_performed(relevant_labs)==1 && et_relevant_labs_selection(serum)==1",
+                "valueRequired": true,
+                "variableName": "et_relevant_labs_performed_serum_option"
+            },
+            {
+                "isAbout": "items/et_relevant_labs_performed_other_option_label",
+                "isVis": "et_tests_analyses_performed(relevant_labs)==1 && et_relevant_labs_selection(other)==1",
+                "valueRequired": false,
+                "variableName": "et_relevant_labs_performed_other_option_label"
+            },
+            {
+                "isAbout": "items/et_relevant_labs_performed_other_option_specify_test",
+                "isVis": "et_tests_analyses_performed(relevant_labs)==1 && et_relevant_labs_selection(other)==1",
+                "valueRequired": true,
+                "variableName": "et_relevant_labs_performed_other_option_specify_test"
+            },
+            {
+                "isAbout": "items/et_relevant_labs_performed_other_option_identify_key_results",
+                "isVis": "et_tests_analyses_performed(relevant_labs)==1 && et_relevant_labs_selection(other)==1",
+                "valueRequired": true,
+                "variableName": "et_relevant_labs_performed_other_option_identify_key_results"
+            },
+            {
+                "isAbout": "items/et_other_testing_specify_test",
+                "isVis": "et_tests_analyses_performed(other_testing)==1",
+                "valueRequired": true,
+                "variableName": "et_other_testing_specify_test"
+            },
+            {
+                "isAbout": "items/et_other_testing_label",
+                "isVis": "et_tests_analyses_performed(other_testing)==1",
+                "valueRequired": false,
+                "variableName": "et_other_testing_label"
+            },
+            {
+                "isAbout": "items/et_other_testing_results",
+                "isVis": "et_tests_analyses_performed(other_testing)==1",
+                "valueRequired": true,
+                "variableName": "et_other_testing_results"
+            },
+            {
+                "isAbout": "items/et_other_testing_key_findings",
+                "isVis": "et_tests_analyses_performed(other_testing)==1",
+                "valueRequired": false,
+                "variableName": "et_other_testing_key_findings"
+            },
+            {
+                "isAbout": "items/et_treatment_obtained",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "et_treatment_obtained"
+            },
+            {
+                "isAbout": "items/et_past_intervention_selection",
+                "isVis": "et_treatment_obtained=='yes'",
+                "valueRequired": true,
+                "variableName": "et_past_intervention_selection"
+            },
+            {
+                "isAbout": "items/et_receiving_any_treatment_or_therapy",
+                "isVis": true,
+                "valueRequired": true,
+                "variableName": "et_receiving_any_treatment_or_therapy"
+            },
+            {
+                "isAbout": "items/et_treatment_types_selection",
+                "isVis": "et_receiving_any_treatment_or_therapy=='yes'",
+                "valueRequired": true,
+                "variableName": "et_treatment_types_selection"
+            },
+            {
+                "isAbout": "items/et_medications_selection",
+                "isVis": "et_treatment_types_selection(medications)==1",
+                "valueRequired": true,
+                "variableName": "et_medications_selection"
+            },
+            {
+                "isAbout": "items/et_medications_other_specify",
+                "isVis": "et_treatment_types_selection(medications)==1 && et_medications_selection(other)==1",
+                "valueRequired": true,
+                "variableName": "et_medications_other_specify"
+            },
+            {
+                "isAbout": "items/et_non_pharmacological_interventions_selection",
+                "isVis": "et_treatment_types_selection(non_pharmacological_interventions)==1",
+                "valueRequired": true,
+                "variableName": "et_non_pharmacological_interventions_selection"
+            },
+            {
+                "isAbout": "items/et_non_pharmacological_interventions_other_specify",
+                "isVis": "et_treatment_types_selection(non_pharmacological_interventions)==1 && et_non_pharmacological_interventions_selection(other)==1",
+                "valueRequired": true,
+                "variableName": "et_non_pharmacological_interventions_other_specify"
+            }
+        ],
+        "shuffle": false
+    },
+    "version": "4.9.0",
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

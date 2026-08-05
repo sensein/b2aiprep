@@ -1,0 +1,42 @@
+{
+    "id": "et_tremor_postural_or_kinetic",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "2. Disease type"
+    },
+    "prefLabel": {
+        "en": "et_tremor_postural_or_kinetic"
+    },
+    "question": {
+        "en": "Is the tremor postural or kinetic?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Not certain"
+                },
+                "value": "notCertain"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,61 @@
+{
+    "id": "ataxia_supported_confirmed",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "2. Ataxia Type"
+    },
+    "prefLabel": {
+        "en": "ataxia_supported_confirmed"
+    },
+    "question": {
+        "en": "How was ataxia supported or confirmed? Select all that apply."
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "History or repeated exam documents gait, truncal, or limb incoordination"
+                },
+                "value": "history_or_repeated_exam_documents_gait_truncal_limb_incoordination"
+            },
+            {
+                "name": {
+                    "en": "Objective neurological exam signs are consistent with ataxia (examples: dysmetria, dysdiadochokinesia, dysarthria, nystagmus)"
+                },
+                "value": "neurological_exam_shows_signs_consistent_with_ataxia"
+            },
+            {
+                "name": {
+                    "en": "Reasonable evaluation was done to exclude major alternative explanations (examples: sensory loss, weakness or spasticity, intoxication or medication effect) or to classify the type with supporting findings"
+                },
+                "value": "reasonable_evaluation_exclude_major_alternative_explanations"
+            },
+            {
+                "name": {
+                    "en": "Severity quantified using a standardized ataxia scale (examples: SARA, ICARS, or FARS)"
+                },
+                "value": "severity_standardized_ataxia_scale"
+            },
+            {
+                "name": {
+                    "en": "Supporting testing performed (examples: MRI findings consistent with cerebellar pathology, or relevant labs or genetic testing depending on suspected cause)"
+                },
+                "value": "supporting_testing_performed"
+            },
+            {
+                "name": {
+                    "en": "Unknown"
+                },
+                "value": "unknown"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

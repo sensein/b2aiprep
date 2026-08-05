@@ -1,0 +1,42 @@
+{
+    "id": "et_tremor_duration_3yrs",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "Validation Criteria Checks"
+    },
+    "prefLabel": {
+        "en": "et_tremor_duration_3yrs"
+    },
+    "question": {
+        "en": "Tremor duration is at least three years"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Not certain"
+                },
+                "value": "notCertain"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}
