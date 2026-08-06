@@ -49,8 +49,8 @@ def _resolve_prompt_ref(task_name: str, prompt_ref: dict) -> str:
 
 # Provisional speech-type classification by task-name family (phase 1). It tells
 # a downstream user how the produced speech relates to a reference:
-#   read        - verbatim reading of provided text (prompted_text is WER ground truth)
-#   recall      - retelling from memory of a reference (prompted_text = reference, not verbatim)
+#   read        - verbatim reading of provided text (stimulus_text is WER ground truth)
+#   recall      - retelling from memory of a reference (stimulus_text = reference, not verbatim)
 #   elicited    - spontaneous/prompted, no target text (default)
 #   non-lexical - vocalizations without lexical content (DDK, vowels, sounds, cough...)
 # An entry may override this with an explicit "speech_type". Phase 2's registry
@@ -104,11 +104,11 @@ def _trailing_index(task_name: str):
     return int(token) if token.isdigit() else None
 
 
-def _prompted_text_from_questionnaire(best_task, task_name, join_id, questionnaire_lookup):
-    """Resolve per-participant prompted_text for tasks whose stimulus lives in a
+def _stimulus_text_from_questionnaire(best_task, task_name, join_id, questionnaire_lookup):
+    """Resolve per-participant stimulus_text for tasks whose stimulus lives in a
     linked questionnaire, joined on the recording's acoustic-task id.
 
-    Returns (prompted_text, speech_type, instructions_suffix) or None when the task
+    Returns (stimulus_text, speech_type, instructions_suffix) or None when the task
     is not questionnaire-backed or no matching row is found. `questionnaire_lookup`
     is keyed by (instrument, acoustic_task_id).
     """
@@ -314,22 +314,22 @@ def convert_response_to_bids_metadata( participant: dict,
                 description = audio_task_descriptions[target]
             metadata_file["instructions"] = description["instructions"]
             # Resolve the prompted/read speech as a single scalar string
-            # (`prompted_text`, replacing the legacy `prompts` array) plus a
+            # (`stimulus_text`, replacing the legacy `prompts` array) plus a
             # `speech_type` discriminator. Prefer a prompt_ref (bank) resolution
             # by index/word in the task name; else the entry's static text.
             prompt_ref = description.get("prompt_ref")
             if prompt_ref:
-                prompted_text = _resolve_prompt_ref(task_name_lower, prompt_ref)
-            elif "prompted_text" in description:
-                prompted_text = description["prompted_text"]
+                stimulus_text = _resolve_prompt_ref(task_name_lower, prompt_ref)
+            elif "stimulus_text" in description:
+                stimulus_text = description["stimulus_text"]
             else:
                 static_prompts = description.get("prompts", [])
                 # One stimulus per recording; join the rare multi-prompt legacy
                 # entry (peds "sentence") as a stopgap until it becomes a bank.
-                prompted_text = (
+                stimulus_text = (
                     static_prompts[0] if len(static_prompts) == 1 else " ".join(static_prompts)
                 )
-            metadata_file["prompted_text"] = prompted_text
+            metadata_file["stimulus_text"] = stimulus_text
             metadata_file["speech_type"] = description.get("speech_type") or _classify_speech_type(
                 best_task
             )
@@ -339,12 +339,12 @@ def convert_response_to_bids_metadata( participant: dict,
             # Resolve it by joining on the recording's acoustic-task id.
             if questionnaire_lookup:
                 join_id = participant.get("recording_acoustic_task_id")
-                joined = _prompted_text_from_questionnaire(
+                joined = _stimulus_text_from_questionnaire(
                     best_task, task_name_lower, join_id, questionnaire_lookup
                 )
                 if joined is not None:
                     q_text, q_type, q_instructions_suffix = joined
-                    metadata_file["prompted_text"] = q_text
+                    metadata_file["stimulus_text"] = q_text
                     metadata_file["speech_type"] = q_type
                     if q_instructions_suffix:
                         metadata_file["instructions"] = (

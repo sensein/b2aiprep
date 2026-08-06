@@ -210,7 +210,7 @@ class BIDSDataset:
         # Per-participant stimulus for a few tasks (vocab words, random category,
         # stroop colors) is stored in linked questionnaires, not in any static
         # descriptions file. Build a lookup keyed by (instrument, acoustic_task_id)
-        # so the metadata resolver can populate `prompted_text` for those tasks.
+        # so the metadata resolver can populate `stimulus_text` for those tasks.
         questionnaire_lookup: t.Dict[tuple, dict] = {}
         for instrument_key, repeat_instrument, join_column in (
             ("vocab", RepeatInstrument.NEURO_PRODUCTIVE_VOCABULARY, "vocabulary_recording_acoustic_task_id"),
