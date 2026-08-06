@@ -4716,6 +4716,19 @@
         "instructions": "Next I want you to name as many food items you can think of. When you are ready, press “record.”",
         "prompts": []
     },
+    "generative-naming-task-animals": {
+        "alias_of": "naming-animals"
+    },
+    "generative-naming-task-food": {
+        "alias_of": "naming-food"
+    },
+    "conversation-(2-to-4)-book": {
+        "alias_of": "pictures-and-doors"
+    },
+    "conversation-(4-to-6)-book": {
+        "instructions": "Tell me about some of the things you see in the book. When you are ready, press \"record\".",
+        "prompts": []
+    },
     "abcs": {
         "instructions": "Let's sing our ABCs together! A,B... When you are ready, press \"record\".",
         "prompts": []

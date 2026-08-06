@@ -208,6 +208,16 @@ def convert_response_to_bids_metadata( participant: dict,
                 best_task = task
         if best_task is not None:
             description = audio_task_descriptions[best_task]
+            # Follow alias_of pointers so variant task names (e.g.
+            # generative-naming-task-animals -> naming-animals) reuse a single
+            # canonical entry without duplicating content. Guarded against cycles.
+            seen_aliases = set()
+            while isinstance(description, dict) and "alias_of" in description:
+                target = description["alias_of"]
+                if target in seen_aliases or target not in audio_task_descriptions:
+                    break
+                seen_aliases.add(target)
+                description = audio_task_descriptions[target]
             metadata_file["instructions"] = description["instructions"]
             prompt_ref = description.get("prompt_ref")
             if prompt_ref:
