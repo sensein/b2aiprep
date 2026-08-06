@@ -2,10 +2,49 @@
 to FHIR format.
 """
 
+import json
+import re
 import typing as t
 from collections import OrderedDict
+from functools import lru_cache
+from importlib.resources import files
 import logging
 _logger = logging.getLogger(__name__)
+
+
+@lru_cache(maxsize=None)
+def _load_stimulus_bank(bank_name: str) -> tuple:
+    """Load an ordered stimulus bank (list of strings) from prepare/resources.
+
+    Cached so the resource is read once per bank, not once per recording.
+    Returns a tuple so the result is hashable/immutable.
+    """
+    resource = files("b2aiprep.prepare.resources").joinpath(f"{bank_name}.json")
+    data = json.loads(resource.read_text())
+    return tuple(data["words"])
+
+
+def _resolve_prompt_ref(task_name: str, prompt_ref: dict) -> t.List[str]:
+    """Resolve a task name to its specific stimulus via a stimulus bank.
+
+    Supports both task-name forms that occur in the data:
+    - numeral form (e.g. "repeat-words-24" / "repeat_words_24") -> bank[index-1]
+    - word form   (e.g. "repeating-words-slice")                -> the word itself,
+      validated against the bank.
+    The trailing token (after the last '-' or '_') carries the index or word.
+    Returns [] when the token can't be resolved (e.g. a bare task name).
+    """
+    words = _load_stimulus_bank(prompt_ref["bank"])
+    token = re.split(r"[-_]", task_name)[-1]
+    if token.isdigit():
+        idx = int(token)
+        if 1 <= idx <= len(words):
+            return [words[idx - 1]]
+        return []
+    for word in words:
+        if word.lower() == token.lower():
+            return [word]
+    return []
 
 
 def extract_items(participant_json: dict, outline: list) -> t.List[dict]:
@@ -168,8 +207,16 @@ def convert_response_to_bids_metadata( participant: dict,
             ):
                 best_task = task
         if best_task is not None:
-            metadata_file["instructions"] = audio_task_descriptions[best_task]["instructions"]
-            metadata_file["prompts"] = audio_task_descriptions[best_task]["prompts"]
+            description = audio_task_descriptions[best_task]
+            metadata_file["instructions"] = description["instructions"]
+            prompt_ref = description.get("prompt_ref")
+            if prompt_ref:
+                # Per-item stimulus resolved from a bank by index or word in the
+                # task name (e.g. repeat-words-24 / repeating-words-slice -> "slice").
+                resolved = _resolve_prompt_ref(task_name_lower, prompt_ref)
+                metadata_file["prompts"] = resolved if resolved else description.get("prompts", [])
+            else:
+                metadata_file["prompts"] = description.get("prompts", [])
 
 
     metadata_file.update({"audio_channel_count": 1, "audio_sample_rate": "16000"})

@@ -4575,7 +4575,13 @@
     },
     "repeat-words": {
         "instructions": "Say the following word 3 times",
-        "prompts": []
+        "prompts": [],
+        "prompt_ref": {"bank": "repeating_words_bank", "index_from": "task_name"}
+    },
+    "repeating-words": {
+        "instructions": "Say the following word 3 times",
+        "prompts": [],
+        "prompt_ref": {"bank": "repeating_words_bank", "index_from": "task_name"}
     },
     "ready-for-school": {
         "instructions": "To start, let's learn a little more about you! Tell me about how you get ready for school in the morning.",
