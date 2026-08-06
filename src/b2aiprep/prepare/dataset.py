@@ -207,6 +207,26 @@ class BIDSDataset:
         for recording in recordings_df.to_dict("records"):
             recordings_by_task[recording["recording_acoustic_task_id"]].append(recording)
 
+        # Per-participant stimulus for a few tasks (vocab words, random category,
+        # stroop colors) is stored in linked questionnaires, not in any static
+        # descriptions file. Build a lookup keyed by (instrument, acoustic_task_id)
+        # so the metadata resolver can populate `prompted_text` for those tasks.
+        questionnaire_lookup: t.Dict[tuple, dict] = {}
+        for instrument_key, repeat_instrument, join_column in (
+            ("vocab", RepeatInstrument.NEURO_PRODUCTIVE_VOCABULARY, "vocabulary_recording_acoustic_task_id"),
+            ("random", RepeatInstrument.NEURO_RANDOM_ITEM_GENERATION, "random_recording_acoustic_task_id"),
+            ("stroop", RepeatInstrument.NEURO_WORDCOLOR_STROOP, "stroop_recording_acoustic_task_id"),
+        ):
+            try:
+                instrument_df = redcap_dataset.get_df_of_repeat_instrument(repeat_instrument.value)
+            except Exception as exc:  # instrument absent for this cohort/export
+                _LOGGER.warning(f"Skipping {instrument_key} questionnaire join: {exc}")
+                continue
+            for row in instrument_df.to_dict("records"):
+                task_id = row.get(join_column)
+                if pd.notna(task_id):
+                    questionnaire_lookup[(instrument_key, task_id)] = row
+
         participants = []
         for participant in participants_df.to_dict("records"):
             participants.append(participant)
@@ -252,7 +272,8 @@ class BIDSDataset:
                 audio_files_by_recording=audio_files_by_recording,
                 max_audio_workers=max_audio_workers,
                 sanitize_audio_format=sanitize_audio_format,
-                audio_descriptor_dict=audio_descriptor_dict
+                audio_descriptor_dict=audio_descriptor_dict,
+                questionnaire_lookup=questionnaire_lookup,
             )
         
         # Return a new BIDSDataset instance pointing to the created directory
@@ -1100,7 +1121,8 @@ class BIDSDataset:
     @staticmethod
     def _output_participant_data_to_metadata_file(
         participant: dict, outdir: Path, audio_files_by_recording: t.Optional[t.Dict[str, Path]] = None,
-        max_audio_workers: int = 16, sanitize_audio_format: bool = False, audio_descriptor_dict:OrderedDict = {}
+        max_audio_workers: int = 16, sanitize_audio_format: bool = False, audio_descriptor_dict:OrderedDict = {},
+        questionnaire_lookup: t.Optional[t.Dict[tuple, dict]] = None
     ):
         """Output participant data to FHIR format.
 
@@ -1175,7 +1197,8 @@ class BIDSDataset:
                         questionnaire_name=recording_instrument.name,
                         mapping_name=recording_instrument.schema_name_clobbered,
                         columns=recording_instrument.columns,
-                        audio_task_descriptions=audio_descriptor_dict
+                        audio_task_descriptions=audio_descriptor_dict,
+                        questionnaire_lookup=questionnaire_lookup,
                     )
                     BIDSDataset._write_pydantic_model_to_bids_file(
                         audio_output_path,

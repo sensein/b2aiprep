@@ -90,6 +90,56 @@ def _classify_speech_type(key: str) -> str:
     return "elicited"
 
 
+def _is_present(value) -> bool:
+    """True when a questionnaire cell holds a real value (not None/NaN/empty)."""
+    if value is None:
+        return False
+    text = str(value).strip().lower()
+    return text not in ("", "nan", "none")
+
+
+def _trailing_index(task_name: str):
+    """The trailing integer of a task name (e.g. productive-vocabulary-3 -> 3), else None."""
+    token = re.split(r"[-_]", task_name)[-1]
+    return int(token) if token.isdigit() else None
+
+
+def _prompted_text_from_questionnaire(best_task, task_name, join_id, questionnaire_lookup):
+    """Resolve per-participant prompted_text for tasks whose stimulus lives in a
+    linked questionnaire, joined on the recording's acoustic-task id.
+
+    Returns (prompted_text, speech_type, instructions_suffix) or None when the task
+    is not questionnaire-backed or no matching row is found. `questionnaire_lookup`
+    is keyed by (instrument, acoustic_task_id).
+    """
+    if not questionnaire_lookup or not _is_present(join_id):
+        return None
+    key = best_task.lower()
+    if key.startswith("productive-vocabulary"):
+        row = questionnaire_lookup.get(("vocab", join_id))
+        idx = _trailing_index(task_name)
+        if row is None or idx is None:
+            return None
+        word = row.get(f"vocabulary_item_word_{idx}")
+        return (str(word).strip() if _is_present(word) else "", "elicited", None)
+    if key.startswith("random-item-generation"):
+        row = questionnaire_lookup.get(("random", join_id))
+        if row is None:
+            return None
+        category = row.get("random_item_generation_category")
+        suffix = f"Category: {str(category).strip()}." if _is_present(category) else None
+        return ("", "elicited", suffix)
+    if key.startswith("word-color-stroop"):
+        row = questionnaire_lookup.get(("stroop", join_id))
+        if row is None:
+            return None
+        colors = [row.get(f"stroop_item_color_{i}") for i in range(1, 16)]
+        colors = [str(c).strip() for c in colors if _is_present(c)]
+        # participant names the ink colors in order -> a known target sequence
+        return (" ".join(colors), "read", None)
+    return None
+
+
 def extract_items(participant_json: dict, outline: list) -> t.List[dict]:
     """Iterates over questions specified in the outline and extracts them from the data JSON.
 
@@ -171,6 +221,7 @@ def convert_response_to_bids_metadata( participant: dict,
     mapping_name: str,
     columns: t.List[str],
     audio_task_descriptions: OrderedDict,
+    questionnaire_lookup: t.Optional[dict] = None,
 ) -> dict:
     """Converts a participant's response to a metadata json file.
 
@@ -282,6 +333,23 @@ def convert_response_to_bids_metadata( participant: dict,
             metadata_file["speech_type"] = description.get("speech_type") or _classify_speech_type(
                 best_task
             )
+
+            # Per-participant stimulus (vocab words, random category, stroop
+            # colors) lives in a linked questionnaire, not any static file.
+            # Resolve it by joining on the recording's acoustic-task id.
+            if questionnaire_lookup:
+                join_id = participant.get("recording_acoustic_task_id")
+                joined = _prompted_text_from_questionnaire(
+                    best_task, task_name_lower, join_id, questionnaire_lookup
+                )
+                if joined is not None:
+                    q_text, q_type, q_instructions_suffix = joined
+                    metadata_file["prompted_text"] = q_text
+                    metadata_file["speech_type"] = q_type
+                    if q_instructions_suffix:
+                        metadata_file["instructions"] = (
+                            f"{metadata_file['instructions']} {q_instructions_suffix}".strip()
+                        )
 
 
     metadata_file.update({"audio_channel_count": 1, "audio_sample_rate": "16000"})
