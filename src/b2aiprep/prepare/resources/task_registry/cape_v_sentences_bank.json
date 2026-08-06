@@ -1,0 +1,21 @@
+{
+  "description": "CAPE-V sentences (v1 retired / v2 current) harvested from the curated audio_task_descriptions.json.",
+  "lists": {
+    "v1": {
+      "1": "The blue spot is on the key again.",
+      "2": "How hard did he hit him?",
+      "3": "We were away a year ago.",
+      "4": "We eat eggs every Easter.",
+      "5": "My mama makes lemon muffins.",
+      "6": "Peter will keep at the peak."
+    },
+    "v2": {
+      "1": "The blue spot is on the key again.",
+      "2": "He helped her hurry home.",
+      "3": "We were away a year ago.",
+      "4": "I eat eggs every morning.",
+      "5": "My mama makes lemon muffins.",
+      "6": "Papa took a piece of cake."
+    }
+  }
+}
