@@ -205,7 +205,7 @@ def test_recording_name_remap(monkeypatch):
     from b2aiprep.prepare import redcap as _rc
     monkeypatch.setattr(_rc, "get_age_from_jsonld", lambda p: 10)
     names = _recording_names(parse_audio([_path("favorite_food_10_plus", 1)], True, is_import=False))
-    assert names == ["Conversation-(10-plus)-favorite-food"]
+    assert names == ["Conversation-(6-plus)-favorite-food"]
 
 
 def test_conversation_missing_subtask_does_not_shift(monkeypatch):
@@ -236,6 +236,45 @@ def test_conversation_missing_subtask_documented_names(monkeypatch):
         "Conversation-(6-plus)-ready-for-school",
     ]
     assert "Conversation-(6-plus)-favorite-food" not in names
+
+
+def test_123s_remap_4to6(monkeypatch):
+    """123s at age 4-6 remaps to the Days-and-Number-naming instrument's
+    numbers field, not the Abcs-and-123s instrument's 123s field -- at this
+    age band there is no abcs recording at all, only 123s."""
+    from b2aiprep.prepare import redcap as _rc
+    monkeypatch.setattr(_rc, "get_age_from_jsonld", lambda p: 5)
+    names = _recording_names(parse_audio([_path("123s_4_to_6", 1)], True, is_import=False))
+    assert names == ["Days-and-Number-naming-numbers"]
+
+
+def test_123s_remap_2to4_unchanged(monkeypatch):
+    """123s outside the 4-6 band keeps the original Abcs-and-123s remap."""
+    from b2aiprep.prepare import redcap as _rc
+    monkeypatch.setattr(_rc, "get_age_from_jsonld", lambda p: 3)
+    names = _recording_names(parse_audio([_path("123s_2_to_4", 1)], True, is_import=False))
+    assert names == ["Abcs-and-123s-123s"]
+
+
+def test_123s_age_boundary_6_unchanged(monkeypatch):
+    """Age exactly 6 falls outside the [4, 6) band, so 123s keeps the
+    original remap rather than the 4-6 one."""
+    from b2aiprep.prepare import redcap as _rc
+    monkeypatch.setattr(_rc, "get_age_from_jsonld", lambda p: 6)
+    names = _recording_names(parse_audio([_path("123s_4_to_6", 1)], True, is_import=False))
+    assert names == ["Abcs-and-123s-123s"]
+
+
+def test_123s_acoustic_task_name_matches_recording(monkeypatch):
+    """acoustic_task_name must move with recording_name for the 4-6 band --
+    otherwise the Acoustic Task row says "123s" while its Recording row says
+    Days-and-Number-naming-numbers, a mismatched pair."""
+    from b2aiprep.prepare import redcap as _rc
+    monkeypatch.setattr(_rc, "get_age_from_jsonld", lambda p: 5)
+    actual = parse_audio([_path("123s_4_to_6", 1)], True, is_import=False)
+    acoustic_task_names = [r["acoustic_task_name"] for r in actual
+                            if r["redcap_repeat_instrument"] == "Acoustic Task"]
+    assert acoustic_task_names == ["Days and Number naming"]
 
 
 def test_generative_stem_fixed_numbers(monkeypatch):

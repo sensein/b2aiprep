@@ -498,6 +498,10 @@ def parse_audio(audio_list, dummy_audio_files=False, is_import=False):
                 acoustic_task = "conversation(2to4)"
         if acoustic_task in generative_tasks:
             acoustic_task = "Generative Naming Task"
+        if acoustic_task == "123s":
+            age = get_age_from_jsonld(Path(file_path).parent)
+            if age is not None and 4 <= int(age) < 6:
+                acoustic_task = "Days and Number naming"
         if acoustic_task not in acoustic_tasks:
 
             acoustic_tasks.add(acoustic_task)
