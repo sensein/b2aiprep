@@ -24,7 +24,7 @@ def _load_stimulus_bank(bank_name: str) -> tuple:
     return tuple(data["words"])
 
 
-def _resolve_prompt_ref(task_name: str, prompt_ref: dict) -> t.List[str]:
+def _resolve_prompt_ref(task_name: str, prompt_ref: dict) -> str:
     """Resolve a task name to its specific stimulus via a stimulus bank.
 
     Supports both task-name forms that occur in the data:
@@ -32,19 +32,62 @@ def _resolve_prompt_ref(task_name: str, prompt_ref: dict) -> t.List[str]:
     - word form   (e.g. "repeating-words-slice")                -> the word itself,
       validated against the bank.
     The trailing token (after the last '-' or '_') carries the index or word.
-    Returns [] when the token can't be resolved (e.g. a bare task name).
+    Returns "" when the token can't be resolved (e.g. a bare task name).
     """
     words = _load_stimulus_bank(prompt_ref["bank"])
     token = re.split(r"[-_]", task_name)[-1]
     if token.isdigit():
         idx = int(token)
         if 1 <= idx <= len(words):
-            return [words[idx - 1]]
-        return []
+            return words[idx - 1]
+        return ""
     for word in words:
         if word.lower() == token.lower():
-            return [word]
-    return []
+            return word
+    return ""
+
+
+# Provisional speech-type classification by task-name family (phase 1). It tells
+# a downstream user how the produced speech relates to a reference:
+#   read        - verbatim reading of provided text (prompted_text is WER ground truth)
+#   recall      - retelling from memory of a reference (prompted_text = reference, not verbatim)
+#   elicited    - spontaneous/prompted, no target text (default)
+#   non-lexical - vocalizations without lexical content (DDK, vowels, sounds, cough...)
+# An entry may override this with an explicit "speech_type". Phase 2's registry
+# generator will assign speech_type per family authoritatively.
+_SPEECH_TYPE_PREFIXES = (
+    ("harvard-sentences", "read"),
+    ("cape-v-sentences", "read"),
+    ("repeat-words", "read"),
+    ("repeating-words", "read"),
+    ("sentence", "read"),
+    ("caterpillar-passage", "read"),
+    ("passage", "read"),
+    ("rainbow", "read"),
+    ("story-recall", "recall"),
+    ("cinderella-story", "recall"),
+    ("diadochokinesis", "non-lexical"),
+    ("prolonged-vowel", "non-lexical"),
+    ("glides", "non-lexical"),
+    ("high-to-low", "non-lexical"),
+    ("loudness", "non-lexical"),
+    ("maximum-phonation-time", "non-lexical"),
+    ("respiration-and-cough", "non-lexical"),
+    ("voluntary-cough", "non-lexical"),
+    ("breath-sounds", "non-lexical"),
+    ("noisy-sounds", "non-lexical"),
+    ("silly-sounds", "non-lexical"),
+    ("long-sounds", "non-lexical"),
+)
+
+
+def _classify_speech_type(key: str) -> str:
+    """Infer speech_type from a resolved description key (see _SPEECH_TYPE_PREFIXES)."""
+    k = key.lower()
+    for prefix, speech_type in _SPEECH_TYPE_PREFIXES:
+        if k.startswith(prefix):
+            return speech_type
+    return "elicited"
 
 
 def extract_items(participant_json: dict, outline: list) -> t.List[dict]:
@@ -219,14 +262,26 @@ def convert_response_to_bids_metadata( participant: dict,
                 seen_aliases.add(target)
                 description = audio_task_descriptions[target]
             metadata_file["instructions"] = description["instructions"]
+            # Resolve the prompted/read speech as a single scalar string
+            # (`prompted_text`, replacing the legacy `prompts` array) plus a
+            # `speech_type` discriminator. Prefer a prompt_ref (bank) resolution
+            # by index/word in the task name; else the entry's static text.
             prompt_ref = description.get("prompt_ref")
             if prompt_ref:
-                # Per-item stimulus resolved from a bank by index or word in the
-                # task name (e.g. repeat-words-24 / repeating-words-slice -> "slice").
-                resolved = _resolve_prompt_ref(task_name_lower, prompt_ref)
-                metadata_file["prompts"] = resolved if resolved else description.get("prompts", [])
+                prompted_text = _resolve_prompt_ref(task_name_lower, prompt_ref)
+            elif "prompted_text" in description:
+                prompted_text = description["prompted_text"]
             else:
-                metadata_file["prompts"] = description.get("prompts", [])
+                static_prompts = description.get("prompts", [])
+                # One stimulus per recording; join the rare multi-prompt legacy
+                # entry (peds "sentence") as a stopgap until it becomes a bank.
+                prompted_text = (
+                    static_prompts[0] if len(static_prompts) == 1 else " ".join(static_prompts)
+                )
+            metadata_file["prompted_text"] = prompted_text
+            metadata_file["speech_type"] = description.get("speech_type") or _classify_speech_type(
+                best_task
+            )
 
 
     metadata_file.update({"audio_channel_count": 1, "audio_sample_rate": "16000"})
