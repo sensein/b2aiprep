@@ -30,6 +30,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 RESOURCES = REPO_ROOT / "src" / "b2aiprep" / "prepare" / "resources"
 REGISTRY_DIR = RESOURCES / "task_registry"
 FLAT_DESCRIPTIONS = RESOURCES / "audio_task_descriptions.json"
+CURATED_INSTRUCTIONS = REGISTRY_DIR / "task_instructions_curated.json"
 
 
 # --------------------------------------------------------------------------- #
@@ -113,40 +114,18 @@ def extract_harvard_bank(redcap_root: Path) -> dict:
             "lists": lists}
 
 
-def extract_productive_vocabulary_bank(redcap_root: Path) -> dict:
-    path = (redcap_root / "docs/Adults/Acoustic Tasks/Current/Productive Vocabulary/"
-            "Productive Vocabulary Words.md")
-    lists: "OrderedDict[str, list]" = OrderedDict()
-    current = None
-    for line in path.read_text().splitlines():
-        m = re.match(r"###\s*List\s*(\d+)", line.strip())
-        if m:
-            current = m.group(1)
-            lists[current] = []
-            continue
-        m = re.match(r"-\s+(.*\S)", line.strip())
-        if m and current is not None:
-            lists[current].append(m.group(1).strip())
-    return {"description": "Productive Vocabulary word pool (per-participant 6 words are randomized "
-                           "from these lists; source bridge2ai-redcap Productive Vocabulary Words.",
-            "lists": lists}
 
 
-def extract_random_categories(redcap_root: Path) -> dict:
-    base = redcap_root / "docs/Adults/Acoustic Tasks/Current/Random Item Generation - v2"
-    cats: "OrderedDict[str, list]" = OrderedDict()
-    for cat_file in sorted(base.glob("Random Item Generation Category_*.md")):
-        if "es-419" in cat_file.name:
-            continue
-        key = re.search(r"Category_(\d+)", cat_file.name).group(1)
-        items = []
-        for line in cat_file.read_text().splitlines():
-            m = re.match(r"-\s+(.*\S)", line.strip())
-            if m:
-                items.append(re.sub(r"[“”]", '"', m.group(1).strip()))
-        cats[f"category_{key}"] = items
-    return {"description": "Random Item Generation category options (source bridge2ai-redcap RIG v2).",
-            "categories": cats}
+def extract_repeating_sentences_bank() -> dict:
+    """Peds Repeating Sentences (6) harvested from the curated flat 'sentence' key
+    (redcap presents them as images; the flat file holds the transcriptions)."""
+    flat = json.loads(FLAT_DESCRIPTIONS.read_text(), object_pairs_hook=OrderedDict)
+    sentences = []
+    for prompt in flat.get("sentence", {}).get("prompts", []):
+        sentences.append(re.sub(r"\s*When you are ready.*$", "", prompt).strip())
+    return {"description": "Pediatric Repeating Sentences, transcribed from the redcap image "
+                           "stimuli via the curated audio_task_descriptions.json 'sentence' key.",
+            "sentences": sentences}
 
 
 def extract_cape_v_bank() -> dict:
@@ -194,8 +173,11 @@ POLICY = {
     "cinderella-story": ("recall", {"type": "static-inline"}),
     "rainbow-passage": ("read", {"type": "static-inline"}),
     "caterpillar-passage": ("read", {"type": "static-inline"}),
-    "reading-passage": ("read", {"type": "image", "note": "passages presented as images"}),
-    "repeating-sentences": ("read", {"type": "image", "note": "sentences presented as images"}),
+    "reading-passage": ("read", {"type": "stimulus-bank", "bank": "reading_passage_bank",
+                                  "select": "index", "note": "sentences presented as images; "
+                                  "text vision-validated against the redcap image stimuli"}),
+    "repeating-sentences": ("read", {"type": "stimulus-bank", "bank": "repeating_sentences_bank",
+                                     "select": "index", "note": "sentences presented as images"}),
     "identifying-pictures": ("elicited", {"type": "image"}),
     "picture-description": ("elicited", {"type": "image"}),
     "noisy-sounds": ("non-lexical", {"type": "image"}),
@@ -231,6 +213,9 @@ DEFAULT_POLICY = ("elicited", {"type": "static-inline"})
 BANKED_FAMILIES = {
     "harvard-sentences", "repeating-words", "cape-v-sentences", "productive-vocabulary",
     "random-item-generation", "word-color-stroop",
+    # sentence-per-recording read tasks: stimulus resolved by trailing index from the
+    # bank at BIDS-build time; instruction is uniform (task-level), so don't enumerate.
+    "reading-passage", "repeating-sentences",
 }
 
 # Recording sub-name (slug) -> flat-file key, for the few sub-recordings whose name
@@ -368,6 +353,48 @@ def harvest_recording_instructions(flat_slug_index, sub_name, family_slug):
     return ""
 
 
+def load_curated_instructions():
+    """Load the hand-curated per-recording/task instructions (greeting-stripped,
+    Respiration v2 swapped). Authoritative over the flat-file harvest for the
+    tasks it covers. Returns {} if the file is absent."""
+    if not CURATED_INSTRUCTIONS.exists():
+        return {}
+    return json.loads(CURATED_INSTRUCTIONS.read_text()).get("tasks", {})
+
+
+_VER_PREFIX = re.compile(r"^\(v(\d+)\)-?", re.IGNORECASE)
+
+
+def rows_for_version(rows, version):
+    """When a family's Recordings.md mixes versions (sub-names prefixed '(v2)-'),
+    keep only the rows for this task's version; unprefixed rows belong to the
+    base/v1 task. Families without version prefixes are returned unchanged."""
+    if not any(_VER_PREFIX.match(r["sub_name"]) for r in rows):
+        return rows
+    want = re.sub(r"^v", "", version or "1")  # "v2"->"2", ""->"1"
+    kept = []
+    for r in rows:
+        m = _VER_PREFIX.match(r["sub_name"])
+        if (m.group(1) if m else "1") == want:
+            kept.append(r)
+    return kept
+
+
+def curated_recording_instruction(cur, sub_name, index):
+    """Look up a curated per-recording instruction by version-stripped sub-name
+    slug, then by 1-based index. Returns None when not curated."""
+    recs = (cur or {}).get("recordings") or {}
+    if not recs:
+        return None
+    bare = _VER_PREFIX.sub("", sub_name or "")
+    key = slug(bare)
+    if key in recs:
+        return recs[key]
+    if str(index) in recs:
+        return recs[str(index)]
+    return None
+
+
 def build_aliases(population, family, version):
     fam_slug = slug(family)
     aliases = {fam_slug, slug(f"{family} {version}") if version else fam_slug}
@@ -409,6 +436,7 @@ def harvest_task_instructions(flat, family_slug, version):
 def build_registry(redcap_root: Path, git_tag: str):
     flat = json.loads(FLAT_DESCRIPTIONS.read_text(), object_pairs_hook=OrderedDict)
     flat_slug_index = build_flat_slug_index(flat)
+    curated = load_curated_instructions()
     tasks = OrderedDict()
     alias_index = OrderedDict()
     report = {"tasks": 0, "recordings": 0, "no_instructions": [], "unknown_policy": []}
@@ -422,19 +450,25 @@ def build_registry(redcap_root: Path, git_tag: str):
             if fam_slug not in POLICY:
                 report["unknown_policy"].append(fam_slug)
 
-            task_instructions = harvest_task_instructions(flat, fam_slug, t["version"])
+            cur = curated.get(task_id, {})
+            task_instructions = cur.get("instructions") or \
+                harvest_task_instructions(flat, fam_slug, t["version"])
 
             # Genuinely grouped tasks (distinct sub-recordings, e.g. Conversation
             # (6 plus), Generative Naming) get nested recording entries, each with
             # its OWN instructions. Uniform-repeat tasks (loudness x2, DDK syllables)
             # keep only the task-level instruction. A task is "grouped" here when >=2
-            # of its sub-recordings resolve to non-empty, distinct instructions.
+            # of its sub-recordings resolve to non-empty, distinct instructions, OR
+            # the curated file provides per-recording instructions for it.
             recordings = []
-            rows = recs_by_family.get(fam_slug, [])
+            rows = rows_for_version(recs_by_family.get(fam_slug, []), t["version"])
             if fam_slug not in BANKED_FAMILIES and len(rows) > 1:
                 candidates = []
-                for rec in rows:
-                    instr = harvest_recording_instructions(flat_slug_index, rec["sub_name"], fam_slug)
+                for i, rec in enumerate(rows, start=1):
+                    instr = curated_recording_instruction(cur, rec["sub_name"], i)
+                    if instr is None:
+                        instr = harvest_recording_instructions(
+                            flat_slug_index, rec["sub_name"], fam_slug)
                     candidates.append(OrderedDict([
                         ("recording_id", slug(rec["recording_name"])),
                         ("canonical_name", rec["recording_name"]),
@@ -442,7 +476,7 @@ def build_registry(redcap_root: Path, git_tag: str):
                         ("instructions", instr),
                     ]))
                 resolved = [c for c in candidates if c["instructions"]]
-                if len({c["instructions"] for c in resolved}) >= 2:
+                if cur.get("recordings") or len({c["instructions"] for c in resolved}) >= 2:
                     recordings = candidates
                     report["recordings"] += len(candidates)
 
@@ -479,6 +513,64 @@ def build_registry(redcap_root: Path, git_tag: str):
     return registry, report
 
 
+def build_compat_descriptions():
+    """Rebuild the flat audio_task_descriptions.json for the BANKED lexical families
+    from the registry banks: collapse the granular per-recording keys (Harvard 720,
+    CAPE-V 12) into template keys with a prompt_ref, and turn the peds 'sentence'
+    6-bundle into a template backed by the repeating_sentences bank. Every other
+    curated key is preserved unchanged. Returns the new flat OrderedDict.
+
+    This fixes the known bundled/misleading entries (the flat file was NOT fully
+    correct) by regenerating those parts from the registry, while leaving the rest
+    of the curated, working content alone.
+    """
+    flat = json.loads(FLAT_DESCRIPTIONS.read_text(), object_pairs_hook=OrderedDict)
+
+    def _first_instruction(pred):
+        for k, v in flat.items():
+            if pred(k) and isinstance(v, dict) and v.get("instructions"):
+                return v["instructions"]
+        return ""
+
+    harvard_instr = _first_instruction(lambda k: k.startswith("harvard-sentences-list-"))
+    capev_v1_instr = _first_instruction(lambda k: re.match(r"cape-V-sentences-\d+$", k))
+    capev_v2_instr = _first_instruction(lambda k: k.startswith("cape-V-sentences-(v2)-"))
+    sentence_instr = flat.get("sentence", {}).get("instructions", "")
+
+    templates = OrderedDict([
+        ("harvard-sentences", {
+            "instructions": harvard_instr, "prompts": [],
+            "prompt_ref": {"bank": "harvard_sentences_bank", "select": "list-index"}}),
+        ("cape-V-sentences", {
+            "instructions": capev_v1_instr, "prompts": [],
+            "prompt_ref": {"bank": "cape_v_sentences_bank", "select": "version-index"}}),
+        ("cape-V-sentences-(v2)", {
+            "instructions": capev_v2_instr, "prompts": [],
+            "prompt_ref": {"bank": "cape_v_sentences_bank", "select": "version-index"}}),
+        ("sentence", {
+            "instructions": sentence_instr, "prompts": [],
+            "prompt_ref": {"bank": "repeating_sentences_bank", "select": "index"}}),
+    ])
+
+    def _is_banked_granular(key):
+        return (key.startswith("harvard-sentences-list-")
+                or re.match(r"cape-V-sentences(-\(v2\))?-\d+$", key)
+                or key == "sentence")
+
+    out = OrderedDict()
+    inserted = False
+    for key, entry in flat.items():
+        if _is_banked_granular(key):
+            if not inserted:  # drop the granular keys; insert templates once, in place
+                out.update(templates)
+                inserted = True
+            continue
+        out[key] = entry
+    if not inserted:
+        out.update(templates)
+    return out
+
+
 def write_json(path: Path, obj):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(obj, indent=2, ensure_ascii=False) + "\n")
@@ -489,17 +581,22 @@ def main(argv=None):
     ap.add_argument("--redcap-root", required=True, type=Path)
     ap.add_argument("--git-tag", default="unknown")
     ap.add_argument("--check", action="store_true", help="fail if committed output would change")
+    ap.add_argument("--emit-compat", action="store_true",
+                    help="also regenerate audio_task_descriptions.json (banked families -> "
+                         "templates) from the registry banks")
     args = ap.parse_args(argv)
 
     root = args.redcap_root
     if not root.exists():
         ap.error(f"redcap root not found: {root}")
 
+    # True static resolution banks only (fixed stimulus). Vocab / Random / Stroop
+    # are per-participant and resolved from phenotype via the questionnaire-join,
+    # NOT from a static bank, so their redcap word-pools are not emitted here.
     outputs = {
         REGISTRY_DIR / "harvard_sentences_bank.json": extract_harvard_bank(root),
-        REGISTRY_DIR / "productive_vocabulary_bank.json": extract_productive_vocabulary_bank(root),
-        REGISTRY_DIR / "random_item_categories.json": extract_random_categories(root),
         REGISTRY_DIR / "cape_v_sentences_bank.json": extract_cape_v_bank(),
+        REGISTRY_DIR / "repeating_sentences_bank.json": extract_repeating_sentences_bank(),
     }
     registry, report = build_registry(root, args.git_tag)
     outputs[REGISTRY_DIR / "registry.json"] = registry
@@ -528,6 +625,13 @@ def main(argv=None):
         print(f"  families with DEFAULT policy: {sorted(set(report['unknown_policy']))}")
     if report["no_instructions"]:
         print(f"  tasks with NO instructions harvested: {report['no_instructions']}")
+
+    if args.emit_compat:
+        before = len(json.loads(FLAT_DESCRIPTIONS.read_text()))
+        compat = build_compat_descriptions()
+        write_json(FLAT_DESCRIPTIONS, compat)
+        print(f"  regenerated audio_task_descriptions.json: {before} -> {len(compat)} keys "
+              "(banked families collapsed to templates)")
     return 0
 
 

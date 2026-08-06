@@ -1,0 +1,85 @@
+{
+  "description": "Curated per-recording instructions for tasks the flat audio_task_descriptions.json got wrong (bundled/concatenated multi-recording instructions, or the Respiration v2 name/instruction misalignment). Extracted verbatim from the bridge2ai-redcap description pages by review, then greeting-stripped (pure kid-session transitions removed; task-purpose/technique text kept). Authoritative instruction source for these tasks; the generator prefers this over the flat-file harvest.",
+  "source": {
+    "repo": "bridge2ai-redcap",
+    "git_tag": "v4.9.1",
+    "commit": "67e75fac084c2763c21cce064ebbbe8a93664046"
+  },
+  "tasks": {
+    "adult.respiration-and-cough.v2": {
+      "note": "Descriptions SWAPPED to match the (verified-correct) recording names; see eipm/bridge2ai-redcap#44.",
+      "recordings": {
+        "breath": "After pressing on record, breathe comfortably through your mouth for 20 seconds, until the timer runs out.",
+        "hardcough": "Please do not cover your mouth or place your hand between your mouth and the microphone during recording. Breathe normally, then when you are ready, tap the record button below and cough HARD as if something were stuck in your throat. Tap stop when finished.",
+        "threebreaths": "After pressing on record, exhale normally, then inhale quickly through your mouth, as if you are trying to catch your breath. Record 3 of these breaths in a single recording. Tap stop when finished.",
+        "threebreathsmouth": "After pressing on record, take 3 deep breaths in and out through your mouth. Tap stop when finished.",
+        "threebreathsnose": "After pressing on record, take 3 deep breaths in and out through your nose with your mouth closed. Tap stop when finished."
+      }
+    },
+    "pediatric.long-sounds": {
+      "recordings": {
+        "1": "First, let's start by saying 'ahhhhh' for around 5 seconds. We're going to repeat this three times during one recording. Try to have the child produce the sound at a habitual pitch – some tend to use a higher \"note\" or create vibrato if they have any singing background. The sound produced should be as steady/consistent as possible. Re-record if you perceive the child is using a higher pitch when sustaining the vowel (in comparison to speaking). When you are ready, press \"record\".",
+        "2": "Next, say the 'eeeeee' sound as steady as you can for about 5 seconds. We'll do this three times as well. When you are ready, press \"record\"."
+      }
+    },
+    "pediatric.noisy-sounds": {
+      "recordings": {
+        "1": "Here's a picture of an airplane – it makes an 'ah' sound – we're going to say that three times – 'ah ah ah'. When you are ready, press \"record\".",
+        "2": "Next is a little mouse – it makes an 'ee ee ee' sound - your turn! When you are ready, press \"record\".",
+        "3": "Here's a little ghost – he says 'oo oo oo' – your turn! When you are ready, press \"record\".",
+        "4": "The baby is sleeping, so we say 'sh sh sh'. Now you try! When you are ready, press \"record\".",
+        "5": "The snake makes a 'ss ss ss'. Can I hear you make that snake sound? When you are ready, press \"record\".",
+        "6": "Eating ice cream you might say \"muh muh muh\" – your turn! When you are ready, press \"record\".",
+        "7": "Uh oh! Looks like the baby has been colouring on the walls. We should tell him to stop – \"nuh nuh nuh\". You tell him too! When you are ready, press \"record\".",
+        "8": "The little bee makes a buzzing noise – 'zz zz zz'. Your turn! When you are ready, press \"record\".",
+        "9": "Bunnies hop around – 'hh hh hh' - now you do it! When you are ready, press \"record\".",
+        "10": "Have you ever seen a kangaroo jumping around? They go 'jj jj jj' – you try! When you are ready, press \"record\"."
+      }
+    },
+    "pediatric.silly-sounds": {
+      "recordings": {
+        "1": "First, we're going to say PUH PUH PUH over and over for about 5 seconds. Remember to take a breath if you need one! When you are ready, press \"record\".",
+        "2": "Next let's do the same thing, but this time say TUH TUH TUH. When you are ready, press \"record\".",
+        "3": "We've got one more to try. Tell me KUH KUH KUH... When you are ready, press \"record\".",
+        "4": "Let's try to put them together and say PUH TUH KUH over and over until the timer stops. If that word seems a little too tricky, you can say PAT-A-CAKE over and over instead. When you are ready, press \"record\"."
+      }
+    },
+    "pediatric.conversation-6-plus": {
+      "recordings": {
+        "ready-for-school": "Tell me about how you get ready for school in the morning.",
+        "favorite-show-movie-game": "Do you have a favourite movie? Video game? Show? I'd love to hear about it! When you're ready to share, press \"record\".",
+        "favorite-food": "Do you have a favourite food? Or a food you really don't like? When you're ready to share, press \"record\".",
+        "outside-of-school": "What do you like to do when you're not at school? Tell me about any activities you do like sports, dance, karate, art, etc. When you're ready to share, press \"record\"."
+      }
+    },
+    "pediatric.generative-naming-task": {
+      "recordings": {
+        "animals": "First, I want you to name as many animals you can think of. When you are ready, press \"record\".",
+        "food": "Next I want you to name as many food items you can think of. When you are ready, press \"record\"."
+      }
+    },
+    "pediatric.days-and-number-naming": {
+      "recordings": {
+        "numbers": "Let's see how high you can count? Let's start at 1... When you are ready, press \"record\".",
+        "days": "I bet you know the days of the week too. Let's start with Monday... When you are ready, press \"record\".",
+        "months": "How about months of the year? Can you name some for me? Start with January... When you are ready, press \"record\"."
+      }
+    },
+    "pediatric.role-naming-tasks-sounds": {
+      "recordings": {
+        "days": "What are the days in the week (starting with Sunday)?",
+        "months": "I bet you know the months of the year too. Let's start with January... When you are ready, press \"record\".",
+        "numbers": "Next can you count from 60 to 70? When you are ready, press \"record\"."
+      }
+    },
+    "pediatric.abcs-and-123s": {
+      "recordings": {
+        "abcs": "Let's sing our ABCs together! A,B... When you are ready, press \"record\".",
+        "123s": "I wonder how high you can count? Let's start at 1, 2... When you are ready, press \"record\"."
+      }
+    },
+    "pediatric.reading-passage": {
+      "instructions": "We're going to read a short story about a roller coaster ride called \"The Caterpillar\". A sentence or two will appear on the screen – read it aloud as if you were reading any regular story book. If you're not sure about a word, just skip it and keep going. When you are ready, press \"record\"."
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "description": "Pediatric Reading Passage ('The Caterpillar' story, 11 sentences in order). Redcap presents each as an image; text transcribed and vision-validated against the redcap image stimuli (docs/Pediatrics/Acoustic Tasks/Current/Reading Passage/pediatric_10plus_reading_passage_1..11.jpg at bridge2ai-redcap v4.9.1 / 67e75fac084c2763c21cce064ebbbe8a93664046).",
+  "sentences": [
+    "Do you like amusement parks? Well, I sure do! To amuse myself, I went twice last spring",
+    "My most MEMORABLE moment was riding on the Caterpillar, which is a gigantic rollercoaster high above the ground",
+    "When I saw how high the Caterpillar rose into the bright blue sky, I knew it was for me",
+    "After waiting in line for thirty minutes, I made it to the front where the man measured my height to see if I was tall enough",
+    "I gave the man my coins, asked for change, and jumped on the cart.",
+    "Tick, tick, tick, the caterpillar climbed slowly up the tracks. I went SO high I could see the parking lot",
+    "Boy I was SCARED! I thought to myself, “There’s no turning back now”",
+    "People were so scared they screamed as we swiftly zoomed fast, fast, and faster along the tracks.",
+    "As quickly as it started, the Caterpillar came to a stop. Unfortunately, it was time to pack the car and drive home.",
+    "That night, I dreamt of the wild ride on the Caterpillar.",
+    "Taking a trip to the amusement park and riding on the Caterpillar was my MOST memorable moment ever!"
+  ]
+}

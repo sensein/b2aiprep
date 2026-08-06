@@ -182,7 +182,38 @@
       "prompt_ref": {
         "type": "static-inline"
       },
-      "recordings": [],
+      "recordings": [
+        {
+          "recording_id": "respiration-and-cough-v2-breath",
+          "canonical_name": "Respiration and cough (v2)-Breath",
+          "sub_name": "(v2)-Breath",
+          "instructions": "After pressing on record, breathe comfortably through your mouth for 20 seconds, until the timer runs out."
+        },
+        {
+          "recording_id": "respiration-and-cough-v2-hardcough",
+          "canonical_name": "Respiration and cough (v2)-HardCough",
+          "sub_name": "(v2)-HardCough",
+          "instructions": "Please do not cover your mouth or place your hand between your mouth and the microphone during recording. Breathe normally, then when you are ready, tap the record button below and cough HARD as if something were stuck in your throat. Tap stop when finished."
+        },
+        {
+          "recording_id": "respiration-and-cough-v2-threebreaths",
+          "canonical_name": "Respiration and cough (v2)-ThreeBreaths",
+          "sub_name": "(v2)-ThreeBreaths",
+          "instructions": "After pressing on record, exhale normally, then inhale quickly through your mouth, as if you are trying to catch your breath. Record 3 of these breaths in a single recording. Tap stop when finished."
+        },
+        {
+          "recording_id": "respiration-and-cough-v2-threebreathsmouth",
+          "canonical_name": "Respiration and cough (v2)-ThreeBreathsMouth",
+          "sub_name": "(v2)-ThreeBreathsMouth",
+          "instructions": "After pressing on record, take 3 deep breaths in and out through your mouth. Tap stop when finished."
+        },
+        {
+          "recording_id": "respiration-and-cough-v2-threebreathsnose",
+          "canonical_name": "Respiration and cough (v2)-ThreeBreathsNose",
+          "sub_name": "(v2)-ThreeBreathsNose",
+          "instructions": "After pressing on record, take 3 deep breaths in and out through your nose with your mouth closed. Tap stop when finished."
+        }
+      ],
       "aliases": [
         "respiration-and-cough",
         "respiration-and-cough(v2)",
@@ -732,7 +763,68 @@
       "prompt_ref": {
         "type": "image"
       },
-      "recordings": [],
+      "recordings": [
+        {
+          "recording_id": "noisy-sounds-1",
+          "canonical_name": "Noisy Sounds-1",
+          "sub_name": "1",
+          "instructions": "Here's a picture of an airplane – it makes an 'ah' sound – we're going to say that three times – 'ah ah ah'. When you are ready, press \"record\"."
+        },
+        {
+          "recording_id": "noisy-sounds-2",
+          "canonical_name": "Noisy Sounds-2",
+          "sub_name": "2",
+          "instructions": "Next is a little mouse – it makes an 'ee ee ee' sound - your turn! When you are ready, press \"record\"."
+        },
+        {
+          "recording_id": "noisy-sounds-3",
+          "canonical_name": "Noisy Sounds-3",
+          "sub_name": "3",
+          "instructions": "Here's a little ghost – he says 'oo oo oo' – your turn! When you are ready, press \"record\"."
+        },
+        {
+          "recording_id": "noisy-sounds-4",
+          "canonical_name": "Noisy Sounds-4",
+          "sub_name": "4",
+          "instructions": "The baby is sleeping, so we say 'sh sh sh'. Now you try! When you are ready, press \"record\"."
+        },
+        {
+          "recording_id": "noisy-sounds-5",
+          "canonical_name": "Noisy Sounds-5",
+          "sub_name": "5",
+          "instructions": "The snake makes a 'ss ss ss'. Can I hear you make that snake sound? When you are ready, press \"record\"."
+        },
+        {
+          "recording_id": "noisy-sounds-6",
+          "canonical_name": "Noisy Sounds-6",
+          "sub_name": "6",
+          "instructions": "Eating ice cream you might say \"muh muh muh\" – your turn! When you are ready, press \"record\"."
+        },
+        {
+          "recording_id": "noisy-sounds-7",
+          "canonical_name": "Noisy Sounds-7",
+          "sub_name": "7",
+          "instructions": "Uh oh! Looks like the baby has been colouring on the walls. We should tell him to stop – \"nuh nuh nuh\". You tell him too! When you are ready, press \"record\"."
+        },
+        {
+          "recording_id": "noisy-sounds-8",
+          "canonical_name": "Noisy Sounds-8",
+          "sub_name": "8",
+          "instructions": "The little bee makes a buzzing noise – 'zz zz zz'. Your turn! When you are ready, press \"record\"."
+        },
+        {
+          "recording_id": "noisy-sounds-9",
+          "canonical_name": "Noisy Sounds-9",
+          "sub_name": "9",
+          "instructions": "Bunnies hop around – 'hh hh hh' - now you do it! When you are ready, press \"record\"."
+        },
+        {
+          "recording_id": "noisy-sounds-10",
+          "canonical_name": "Noisy Sounds-10",
+          "sub_name": "10",
+          "instructions": "Have you ever seen a kangaroo jumping around? They go 'jj jj jj' – you try! When you are ready, press \"record\"."
+        }
+      ],
       "aliases": [
         "noisy-sounds"
       ]
@@ -755,7 +847,32 @@
       "prompt_ref": {
         "type": "image"
       },
-      "recordings": [],
+      "recordings": [
+        {
+          "recording_id": "silly-sounds-1",
+          "canonical_name": "Silly Sounds-1",
+          "sub_name": "1",
+          "instructions": "First, we're going to say PUH PUH PUH over and over for about 5 seconds. Remember to take a breath if you need one! When you are ready, press \"record\"."
+        },
+        {
+          "recording_id": "silly-sounds-2",
+          "canonical_name": "Silly Sounds-2",
+          "sub_name": "2",
+          "instructions": "Next let's do the same thing, but this time say TUH TUH TUH. When you are ready, press \"record\"."
+        },
+        {
+          "recording_id": "silly-sounds-3",
+          "canonical_name": "Silly Sounds-3",
+          "sub_name": "3",
+          "instructions": "We've got one more to try. Tell me KUH KUH KUH... When you are ready, press \"record\"."
+        },
+        {
+          "recording_id": "silly-sounds-4",
+          "canonical_name": "Silly Sounds-4",
+          "sub_name": "4",
+          "instructions": "Let's try to put them together and say PUH TUH KUH over and over until the timer stops. If that word seems a little too tricky, you can say PAT-A-CAKE over and over instead. When you are ready, press \"record\"."
+        }
+      ],
       "aliases": [
         "silly-sounds"
       ]
@@ -801,7 +918,9 @@
       "instructions": "Next we have some silly sentences to look at. They don’t exactly make sense – but that’s what makes them silly! If you can read them on your own go right ahead! Or you can have someone else say the sentence first and you just repeat it after them (just be sure to only record when you are talking) You are doing a great job! We have only two more tasks to complete before we’re all finished!",
       "speech_type": "read",
       "prompt_ref": {
-        "type": "image",
+        "type": "stimulus-bank",
+        "bank": "repeating_sentences_bank",
+        "select": "index",
         "note": "sentences presented as images"
       },
       "recordings": [],
@@ -844,11 +963,13 @@
         "10+"
       ],
       "recording_count": 11,
-      "instructions": "Fantastic Job! We only have one more thing to do today. Since you did so well reading the sentences earlier, let's try a few more. We're going to read a short story about a roller coaster ride called \"The Caterpillar\". A sentence or two will appear on the screen – read it aloud as if you were reading any regular story book. If you're not sure about a word, just skip it and keep going. When you are ready, press \"record\".",
+      "instructions": "We're going to read a short story about a roller coaster ride called \"The Caterpillar\". A sentence or two will appear on the screen – read it aloud as if you were reading any regular story book. If you're not sure about a word, just skip it and keep going. When you are ready, press \"record\".",
       "speech_type": "read",
       "prompt_ref": {
-        "type": "image",
-        "note": "passages presented as images"
+        "type": "stimulus-bank",
+        "bank": "reading_passage_bank",
+        "select": "index",
+        "note": "sentences presented as images; text vision-validated against the redcap image stimuli"
       },
       "recordings": [],
       "aliases": [
@@ -919,7 +1040,7 @@
           "recording_id": "conversation-6-plus-ready-for-school",
           "canonical_name": "Conversation (6 plus)-ready for school",
           "sub_name": "ready for school",
-          "instructions": "To start, let's learn a little more about you! Tell me about how you get ready for school in the morning."
+          "instructions": "Tell me about how you get ready for school in the morning."
         },
         {
           "recording_id": "conversation-6-plus-favorite-show-movie-game",
@@ -971,7 +1092,7 @@
           "recording_id": "abcs-and-123s-123s",
           "canonical_name": "Abcs and 123s-123s",
           "sub_name": "123s",
-          "instructions": "Wow that was great! I wonder how high you can count? Let's start at 1, 2... When you are ready, press \"record\"."
+          "instructions": "I wonder how high you can count? Let's start at 1, 2... When you are ready, press \"record\"."
         }
       ],
       "aliases": [
@@ -999,19 +1120,19 @@
           "recording_id": "days-and-number-naming-numbers",
           "canonical_name": "Days and Number naming-numbers",
           "sub_name": "numbers",
-          "instructions": "Wow that was great! I wonder how high you can count? Let's start at 1, 2... When you are ready, press \"record\"."
+          "instructions": "Let's see how high you can count? Let's start at 1... When you are ready, press \"record\"."
         },
         {
           "recording_id": "days-and-number-naming-days",
           "canonical_name": "Days and Number naming-days",
           "sub_name": "days",
-          "instructions": "Fantastic! I bet you know the days of the week too. Let's start with Monday... When you are ready, press \"record\"."
+          "instructions": "I bet you know the days of the week too. Let's start with Monday... When you are ready, press \"record\"."
         },
         {
           "recording_id": "days-and-number-naming-months",
           "canonical_name": "Days and Number naming-months",
           "sub_name": "months",
-          "instructions": "That was great! How about months of the year? Can you name some for me? Start with January... When you are ready, press \"record\"."
+          "instructions": "How about months of the year? Can you name some for me? Start with January... When you are ready, press \"record\"."
         }
       ],
       "aliases": [
@@ -1039,19 +1160,19 @@
           "recording_id": "role-naming-tasks-sounds-days",
           "canonical_name": "Role naming tasks sounds-days",
           "sub_name": "days",
-          "instructions": "Fantastic! I bet you know the days of the week too. Let's start with Monday... When you are ready, press \"record\"."
+          "instructions": "What are the days in the week (starting with Sunday)?"
         },
         {
           "recording_id": "role-naming-tasks-sounds-months",
           "canonical_name": "Role naming tasks sounds-months",
           "sub_name": "months",
-          "instructions": "That was great! How about months of the year? Can you name some for me? Start with January... When you are ready, press \"record\"."
+          "instructions": "I bet you know the months of the year too. Let's start with January... When you are ready, press \"record\"."
         },
         {
           "recording_id": "role-naming-tasks-sounds-numbers",
           "canonical_name": "Role naming tasks sounds-numbers",
           "sub_name": "numbers",
-          "instructions": "Wow that was great! I wonder how high you can count? Let's start at 1, 2... When you are ready, press \"record\"."
+          "instructions": "Next can you count from 60 to 70? When you are ready, press \"record\"."
         }
       ],
       "aliases": [
@@ -1079,13 +1200,13 @@
           "recording_id": "generative-naming-task-animals",
           "canonical_name": "Generative Naming Task-animals",
           "sub_name": "animals",
-          "instructions": "First, I want you to name as many animals you can think of. When you are ready, press record."
+          "instructions": "First, I want you to name as many animals you can think of. When you are ready, press \"record\"."
         },
         {
           "recording_id": "generative-naming-task-food",
           "canonical_name": "Generative Naming Task-food",
           "sub_name": "food",
-          "instructions": "Next I want you to name as many food items you can think of. When you are ready, press “record.”"
+          "instructions": "Next I want you to name as many food items you can think of. When you are ready, press \"record\"."
         }
       ],
       "aliases": [
@@ -1108,7 +1229,20 @@
       "prompt_ref": {
         "type": "image"
       },
-      "recordings": [],
+      "recordings": [
+        {
+          "recording_id": "long-sounds-1",
+          "canonical_name": "Long Sounds-1",
+          "sub_name": "1",
+          "instructions": "First, let's start by saying 'ahhhhh' for around 5 seconds. We're going to repeat this three times during one recording. Try to have the child produce the sound at a habitual pitch – some tend to use a higher \"note\" or create vibrato if they have any singing background. The sound produced should be as steady/consistent as possible. Re-record if you perceive the child is using a higher pitch when sustaining the vowel (in comparison to speaking). When you are ready, press \"record\"."
+        },
+        {
+          "recording_id": "long-sounds-2",
+          "canonical_name": "Long Sounds-2",
+          "sub_name": "2",
+          "instructions": "Next, say the 'eeeeee' sound as steady as you can for about 5 seconds. We'll do this three times as well. When you are ready, press \"record\"."
+        }
+      ],
       "aliases": [
         "long-sounds"
       ]
