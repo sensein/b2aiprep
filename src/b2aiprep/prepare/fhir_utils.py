@@ -291,6 +291,59 @@ def _asset_url(prompt_ref, task_name):
     )
 
 
+def _registry_numbering_status(task, task_name):
+    """Validate the recording index in `task_name` against the task's known
+    numbering, so impossible instances surface (e.g. a 5th maximum-phonation-time,
+    a repeating-sentences-9). Returns 'ok', 'out-of-range', or 'unknown' (can't
+    tell). The registry is the authority on how many recordings/indices exist:
+    banked tasks are bounded by their bank, grouped tasks by their nested
+    recordings, uniform tasks by recording_count."""
+    prompt_ref = task.get("prompt_ref") or {}
+    ptype = prompt_ref.get("type")
+    select = prompt_ref.get("select")
+
+    if ptype == "stimulus-bank":
+        bank = _bank(prompt_ref["bank"])
+        if select == "list-index":
+            m = re.search(r"list-(\d+)-(\d+)$", task_name)
+            if not m:
+                return "out-of-range"
+            items = bank.get("lists", {}).get(m.group(1))
+            return "ok" if items and 1 <= int(m.group(2)) <= len(items) else "out-of-range"
+        if select == "version-index":
+            version = "v2" if "(v2)" in task_name else "v1"
+            m = re.search(r"(\d+)", re.sub(r"\(v\d+\)", "", task_name))
+            if not m:
+                return "out-of-range"
+            return "ok" if m.group(1) in bank.get("lists", {}).get(version, {}) else "out-of-range"
+        if select == "index":
+            items = bank.get("sentences", bank.get("words", []))
+            idx = _trailing_index(task_name)
+            return "ok" if idx is not None and 1 <= idx <= len(items) else "out-of-range"
+        if select == "index-or-word":
+            words = bank.get("words", [])
+            token = re.split(r"[-_]", task_name)[-1]
+            if token.isdigit():
+                return "ok" if 1 <= int(token) <= len(words) else "out-of-range"
+            return "ok" if any(w.lower() == token.lower() for w in words) else "out-of-range"
+
+    recordings = task.get("recordings") or []
+    if recordings:
+        n = _norm(task_name)
+        if any(_norm(r.get("recording_id", "")) == n for r in recordings):
+            return "ok"
+        idx = _trailing_index(task_name)
+        if idx is not None and idx > len(recordings):
+            return "out-of-range"
+        return "ok"  # matched the family but no specific recording (task-level)
+
+    count = task.get("recording_count")
+    idx = _trailing_index(task_name)
+    if idx is not None and isinstance(count, int) and count > 0 and idx > count:
+        return "out-of-range"
+    return "ok"
+
+
 def _registry_bids_fields(task, rec, task_name, join_id, questionnaire_lookup):
     """Assemble sidecar fields from a registry match. `stimulus_text` is None when
     the registry cannot produce it (static-inline / image tasks carry no text) so
@@ -591,7 +644,24 @@ def convert_response_to_bids_metadata( participant: dict,
                 "stimulus_asset": reg["stimulus_asset"],
                 "instructions_suffix": reg["instructions_suffix"],
             }
+            # The registry knows how many recordings/indices each task has, so an
+            # impossible instance (a 5th maximum-phonation-time, a sentences-9) is
+            # flagged rather than silently accepted.
+            if _registry_numbering_status(task, task_name_lower) == "out-of-range":
+                _logger.warning(
+                    "task_name=%r matches family %r but its recording index is "
+                    "outside the known numbering (recording_count=%s); emitting anyway",
+                    task_name, task.get("task_id"), task.get("recording_count"),
+                )
         elif flat is not None:
+            # The registry -- the authority on known tasks -- has no match, so this
+            # name is unknown (e.g. a missed space like "rainbowpassage"). We still
+            # fall back to a flat-file best guess, but flag that it is a guess.
+            _logger.warning(
+                "unknown task_name=%r: no match in the task registry; resolved via "
+                "flat-file best-guess. Verify the task name.",
+                task_name,
+            )
             resolved = {
                 "instructions": flat["instructions"],
                 "speech_type": flat["speech_type"],

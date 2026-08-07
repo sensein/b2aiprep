@@ -133,6 +133,41 @@ def test_no_registry_or_flat_match_logs_warning(descriptions, caplog):
     assert any("no task match" in r.getMessage() for r in caplog.records)
 
 
+def test_registry_numbering_status():
+    from b2aiprep.prepare.fhir_utils import _load_registry, _registry_numbering_status
+
+    tasks = _load_registry()["tasks"]
+    # bounded by recording_count (uniform), bank (banked), and nested recordings
+    assert _registry_numbering_status(tasks["adult.maximum-phonation-time.v2"],
+                                      "maximum-phonation-time-(v2)-2") == "ok"
+    assert _registry_numbering_status(tasks["adult.maximum-phonation-time.v2"],
+                                      "maximum-phonation-time-(v2)-5") == "out-of-range"
+    assert _registry_numbering_status(tasks["pediatric.repeating-sentences"],
+                                      "repeating-sentences-9") == "out-of-range"
+    assert _registry_numbering_status(tasks["adult.harvard-sentences"],
+                                      "harvard-sentences-list-3-11") == "out-of-range"
+
+
+def test_out_of_range_index_warns_but_resolves(descriptions, caplog):
+    import logging
+
+    with caplog.at_level(logging.WARNING, logger="b2aiprep.prepare.fhir_utils"):
+        m = _resolve(descriptions, "Maximum phonation time (v2)-5")
+    assert m["instructions"] != ""  # still resolved (uniform instruction)
+    assert any("outside the known numbering" in r.getMessage() for r in caplog.records)
+
+
+def test_unknown_task_warns_but_best_guesses(descriptions, caplog):
+    import logging
+
+    # "rainbowpassage" (missed space) has no registry match; the registry -- the
+    # authority -- flags it unknown, but a flat best-guess still populates it.
+    with caplog.at_level(logging.WARNING, logger="b2aiprep.prepare.fhir_utils"):
+        m = _resolve(descriptions, "RainbowPassage")
+    assert m["instructions"] != ""
+    assert any("no match in the task registry" in r.getMessage() for r in caplog.records)
+
+
 def test_registry_respiration_v2_swapped_instructions(descriptions):
     # The recording badge names are correct; the instruction blocks were swapped
     # in redcap (eipm/bridge2ai-redcap#44). The registry carries the corrected
