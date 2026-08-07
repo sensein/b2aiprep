@@ -353,11 +353,14 @@ def generate_file_describes_biosample(bundle_path: Path, all_files_df: pd.DataFr
                 print(f"Warning: skipping {file_local_id}: {e}")
             continue
 
-        # --- metadata/ parquet ---
-        if parts[0] == 'metadata' and suffix == '.parquet':
+        # --- metadata/ (parquet or tsv) ---
+        if parts[0] == 'metadata' and suffix in ('.parquet', '.tsv'):
             try:
-                df = pd.read_parquet(abs_path,
-                                     columns=['participant_id', 'session_id', 'task_name'])
+                df = (pd.read_parquet(abs_path,
+                                      columns=['participant_id', 'session_id', 'task_name'])
+                      if suffix == '.parquet'
+                      else pd.read_csv(abs_path, sep='\t', dtype=str,
+                                       usecols=['participant_id', 'session_id', 'task_name']))
                 process_task_name_file(df, file_local_id)
             except Exception as e:
                 print(f"Warning: skipping {file_local_id}: {e}")

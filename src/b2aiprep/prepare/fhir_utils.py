@@ -517,7 +517,7 @@ def _flat_bids_fields(task_name_lower, audio_task_descriptions, join_id, questio
         description = audio_task_descriptions[target]
 
     fields = {
-        "instructions": description["instructions"],
+        "instructions": description.get("instructions", ""),
         "speech_type": description.get("speech_type") or _classify_speech_type(best_task),
         "stimulus_text": "",
         "instructions_suffix": None,
