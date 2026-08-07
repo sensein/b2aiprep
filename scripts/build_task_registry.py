@@ -149,6 +149,29 @@ def extract_cape_v_bank() -> dict:
 # Prompt-source policy: the single home for human knowledge about how each task
 # family's per-recording stimulus is resolved. Keyed by family slug.
 # --------------------------------------------------------------------------- #
+# Commit that the image stimulus assets are pinned to (bridge2ai-redcap v4.9.1).
+# Immutable, so the raw-content URLs keep resolving across future tags.
+IMAGE_ASSET_COMMIT = "67e75fac084c2763c21cce064ebbbe8a93664046"
+
+
+def _asset_keys(path_template):
+    """Commit-pinned asset fields. The resolver turns these into a raw GitHub URL
+    (https://raw.githubusercontent.com/<repo>/<commit>/<url-encoded path>) with
+    `{i}` / `{i:02d}` filled from the recording's trailing index."""
+    return {
+        "asset_repo": "eipm/bridge2ai-redcap",
+        "asset_commit": IMAGE_ASSET_COMMIT,
+        "asset_path": path_template,
+    }
+
+
+def _image(path_template):
+    """An image-stimulus prompt_ref with a per-index, commit-pinned asset."""
+    return {"type": "image", "select": "index", **_asset_keys(path_template)}
+
+
+_PEDS_ACOUSTIC = "docs/Pediatrics/Acoustic Tasks/Current"
+
 POLICY = {
     # slug: (speech_type, prompt_ref)
     "harvard-sentences": ("read", {"type": "stimulus-bank", "bank": "harvard_sentences_bank",
@@ -174,15 +197,27 @@ POLICY = {
     "rainbow-passage": ("read", {"type": "static-inline"}),
     "caterpillar-passage": ("read", {"type": "static-inline"}),
     "reading-passage": ("read", {"type": "stimulus-bank", "bank": "reading_passage_bank",
-                                  "select": "index", "note": "sentences presented as images; "
-                                  "text vision-validated against the redcap image stimuli"}),
+                                  "select": "index",
+                                  **_asset_keys(f"{_PEDS_ACOUSTIC}/Reading Passage/"
+                                                "pediatric_10plus_reading_passage_{i}.jpg"),
+                                  "note": "sentences presented as images; text vision-validated "
+                                  "against the redcap image stimuli"}),
     "repeating-sentences": ("read", {"type": "stimulus-bank", "bank": "repeating_sentences_bank",
-                                     "select": "index", "note": "sentences presented as images"}),
-    "identifying-pictures": ("elicited", {"type": "image"}),
+                                     "select": "index",
+                                     **_asset_keys(f"{_PEDS_ACOUSTIC}/Repeating Sentences/"
+                                                   "pediatric_10plus_repeating_setences_{i}.jpg"),
+                                     "note": "sentences presented as images"}),
+    "identifying-pictures": ("elicited", _image(
+        f"{_PEDS_ACOUSTIC}/Identifying Pictures/pediatric_identifying_pictures_{{i:02d}}.jpg")),
+    # picture-description spans adult (2 pictures + es variants) and peds (1); the
+    # per-recording asset is ambiguous, so mark it image without a pinned path.
     "picture-description": ("elicited", {"type": "image"}),
-    "noisy-sounds": ("non-lexical", {"type": "image"}),
-    "silly-sounds": ("non-lexical", {"type": "image"}),
-    "long-sounds": ("non-lexical", {"type": "image"}),
+    "noisy-sounds": ("non-lexical", _image(
+        f"{_PEDS_ACOUSTIC}/Noisy Sounds/pediatric_noisy_sounds_{{i}}.jpg")),
+    "silly-sounds": ("non-lexical", _image(
+        f"{_PEDS_ACOUSTIC}/Silly Sounds/pediatric_10plus_silly_sounds_{{i}}.jpg")),
+    "long-sounds": ("non-lexical", _image(
+        f"{_PEDS_ACOUSTIC}/Long Sounds/pediatric_10plus_long-sounds_{{i}}.jpg")),
     "diadochokinesis": ("non-lexical", {"type": "static-inline"}),
     "prolonged-vowel": ("non-lexical", {"type": "static-inline"}),
     "glides": ("non-lexical", {"type": "static-inline"}),

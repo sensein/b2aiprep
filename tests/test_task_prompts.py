@@ -104,6 +104,35 @@ def test_flat_per_key_instruction_wins_over_coarse_registry(descriptions):
     assert "puhtuhkuh" not in m["instructions"]
 
 
+def test_registry_image_stimulus_asset(descriptions):
+    m = _resolve(descriptions, "noisy-sounds-3")
+    assert m["stimulus_source"] == "image"
+    assert m["stimulus_text"] == ""
+    # commit-pinned raw GitHub URL, path URL-encoded (spaces -> %20)
+    assert m["stimulus_asset"].startswith(
+        "https://raw.githubusercontent.com/eipm/bridge2ai-redcap/"
+    )
+    assert "%20" in m["stimulus_asset"]
+    assert m["stimulus_asset"].endswith("pediatric_noisy_sounds_3.jpg")
+    # identifying-pictures uses a zero-padded index in the asset filename
+    ip = _resolve(descriptions, "Identifying-Pictures-8")
+    assert ip["stimulus_asset"].endswith("pediatric_identifying_pictures_08.jpg")
+    # transcribed-from-image bank tasks also carry a pinned image URL
+    rp = _resolve(descriptions, "reading-passage-2")
+    assert rp["stimulus_source"] == "transcribed"
+    assert rp["stimulus_asset"].endswith("pediatric_10plus_reading_passage_2.jpg")
+
+
+def test_no_registry_or_flat_match_logs_warning(descriptions, caplog):
+    import logging
+
+    with caplog.at_level(logging.WARNING, logger="b2aiprep.prepare.fhir_utils"):
+        m = _resolve(descriptions, "totally-unknown-task-xyz")
+    assert m["instructions"] == ""
+    assert "stimulus_text" not in m  # nothing resolved
+    assert any("no task match" in r.getMessage() for r in caplog.records)
+
+
 def test_registry_respiration_v2_swapped_instructions(descriptions):
     # The recording badge names are correct; the instruction blocks were swapped
     # in redcap (eipm/bridge2ai-redcap#44). The registry carries the corrected

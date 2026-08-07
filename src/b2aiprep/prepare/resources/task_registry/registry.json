@@ -184,7 +184,7 @@
         "All"
       ],
       "recording_count": 5,
-      "instructions": "Breathing sounds can also provide information on your health. Let's record them.",
+      "instructions": "Please do not cover your mouth or place your hand between your mouth and the microphone during recording. Breathe normally, then when you are ready, tap the record button below and cough HARD as if something were stuck in your throat. Tap stop when finished.",
       "instructions_source": "harvested",
       "speech_type": "non-lexical",
       "prompt_ref": {
@@ -774,7 +774,11 @@
       "instructions_source": "harvested",
       "speech_type": "elicited",
       "prompt_ref": {
-        "type": "image"
+        "type": "image",
+        "select": "index",
+        "asset_repo": "eipm/bridge2ai-redcap",
+        "asset_commit": "67e75fac084c2763c21cce064ebbbe8a93664046",
+        "asset_path": "docs/Pediatrics/Acoustic Tasks/Current/Identifying Pictures/pediatric_identifying_pictures_{i:02d}.jpg"
       },
       "recordings": [],
       "aliases": [
@@ -798,7 +802,11 @@
       "instructions_source": "harvested",
       "speech_type": "non-lexical",
       "prompt_ref": {
-        "type": "image"
+        "type": "image",
+        "select": "index",
+        "asset_repo": "eipm/bridge2ai-redcap",
+        "asset_commit": "67e75fac084c2763c21cce064ebbbe8a93664046",
+        "asset_path": "docs/Pediatrics/Acoustic Tasks/Current/Noisy Sounds/pediatric_noisy_sounds_{i}.jpg"
       },
       "recordings": [
         {
@@ -893,7 +901,11 @@
       "instructions_source": "harvested",
       "speech_type": "non-lexical",
       "prompt_ref": {
-        "type": "image"
+        "type": "image",
+        "select": "index",
+        "asset_repo": "eipm/bridge2ai-redcap",
+        "asset_commit": "67e75fac084c2763c21cce064ebbbe8a93664046",
+        "asset_path": "docs/Pediatrics/Acoustic Tasks/Current/Silly Sounds/pediatric_10plus_silly_sounds_{i}.jpg"
       },
       "recordings": [
         {
@@ -975,6 +987,9 @@
         "type": "stimulus-bank",
         "bank": "repeating_sentences_bank",
         "select": "index",
+        "asset_repo": "eipm/bridge2ai-redcap",
+        "asset_commit": "67e75fac084c2763c21cce064ebbbe8a93664046",
+        "asset_path": "docs/Pediatrics/Acoustic Tasks/Current/Repeating Sentences/pediatric_10plus_repeating_setences_{i}.jpg",
         "note": "sentences presented as images"
       },
       "recordings": [],
@@ -1025,6 +1040,9 @@
         "type": "stimulus-bank",
         "bank": "reading_passage_bank",
         "select": "index",
+        "asset_repo": "eipm/bridge2ai-redcap",
+        "asset_commit": "67e75fac084c2763c21cce064ebbbe8a93664046",
+        "asset_path": "docs/Pediatrics/Acoustic Tasks/Current/Reading Passage/pediatric_10plus_reading_passage_{i}.jpg",
         "note": "sentences presented as images; text vision-validated against the redcap image stimuli"
       },
       "recordings": [],
@@ -1264,7 +1282,7 @@
         "10+"
       ],
       "recording_count": 2,
-      "instructions": "First, I want you to name as many animals you can think of. When you are ready, press record.",
+      "instructions": "First, I want you to name as many animals you can think of. When you are ready, press \"record\".",
       "instructions_source": "harvested",
       "speech_type": "elicited",
       "prompt_ref": {
@@ -1305,7 +1323,11 @@
       "instructions_source": "harvested",
       "speech_type": "non-lexical",
       "prompt_ref": {
-        "type": "image"
+        "type": "image",
+        "select": "index",
+        "asset_repo": "eipm/bridge2ai-redcap",
+        "asset_commit": "67e75fac084c2763c21cce064ebbbe8a93664046",
+        "asset_path": "docs/Pediatrics/Acoustic Tasks/Current/Long Sounds/pediatric_10plus_long-sounds_{i}.jpg"
       },
       "recordings": [
         {

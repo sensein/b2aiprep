@@ -8,6 +8,7 @@ import typing as t
 from collections import OrderedDict
 from functools import lru_cache
 from importlib.resources import files
+from urllib.parse import quote
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -273,6 +274,23 @@ def _registry_questionnaire(prompt_ref, task_name, join_id, questionnaire_lookup
     return None
 
 
+def _asset_url(prompt_ref, task_name):
+    """A commit-pinned raw GitHub URL for the recording's image stimulus, or None.
+    Fills `{i}`/`{i:02d}` in prompt_ref['asset_path'] from the trailing index and
+    URL-encodes the path (spaces -> %20)."""
+    path = prompt_ref.get("asset_path")
+    if not path:
+        return None
+    idx = _trailing_index(task_name)
+    if idx is None:
+        return None
+    return "https://raw.githubusercontent.com/{repo}/{commit}/{path}".format(
+        repo=prompt_ref["asset_repo"],
+        commit=prompt_ref["asset_commit"],
+        path=quote(path.format(i=idx)),
+    )
+
+
 def _registry_bids_fields(task, rec, task_name, join_id, questionnaire_lookup):
     """Assemble sidecar fields from a registry match. `stimulus_text` is None when
     the registry cannot produce it (static-inline / image tasks carry no text) so
@@ -293,15 +311,18 @@ def _registry_bids_fields(task, rec, task_name, join_id, questionnaire_lookup):
     ptype = prompt_ref.get("type")
     stimulus_text = None
     stimulus_source = None
+    stimulus_asset = None
     instructions_suffix = None
 
     if ptype == "stimulus-bank":
         stimulus_text = _resolve_prompt_ref(task_name, prompt_ref)
-        # reading/repeating-sentences text was transcribed from image stimuli;
-        # the lexical banks (harvard/cape-v/repeating-words) are redcap doc text.
+        # reading/repeating-sentences text was transcribed from image stimuli (and
+        # carries a pinned URL to that image); the lexical banks
+        # (harvard/cape-v/repeating-words) are redcap doc text with no asset.
         stimulus_source = "transcribed" if prompt_ref.get("bank") in (
             "reading_passage_bank", "repeating_sentences_bank"
         ) else "doc-text"
+        stimulus_asset = _asset_url(prompt_ref, task_name)
     elif ptype == "questionnaire-join":
         joined = _registry_questionnaire(prompt_ref, task_name, join_id, questionnaire_lookup)
         if joined is not None:
@@ -310,7 +331,13 @@ def _registry_bids_fields(task, rec, task_name, join_id, questionnaire_lookup):
         else:
             stimulus_text = ""
             stimulus_source = "questionnaire"
-    # static-inline / image: stimulus_text stays None -> flat-file fallback.
+    elif ptype == "image":
+        # The stimulus is a shown image, not text. Mark provenance and, when the
+        # prompt_ref carries a per-index asset path, pin it to a commit-stable URL.
+        stimulus_text = ""
+        stimulus_source = "image"
+        stimulus_asset = _asset_url(prompt_ref, task_name)
+    # static-inline: stimulus_text stays None -> flat-file fallback.
 
     return {
         "instructions": instructions,
@@ -318,6 +345,7 @@ def _registry_bids_fields(task, rec, task_name, join_id, questionnaire_lookup):
         "speech_type": speech_type,
         "stimulus_text": stimulus_text,
         "stimulus_source": stimulus_source,
+        "stimulus_asset": stimulus_asset,
         "instructions_suffix": instructions_suffix,
     }
 
@@ -560,6 +588,7 @@ def convert_response_to_bids_metadata( participant: dict,
                 if reg["stimulus_text"] is not None
                 else (flat["stimulus_text"] if flat else ""),
                 "stimulus_source": reg["stimulus_source"],
+                "stimulus_asset": reg["stimulus_asset"],
                 "instructions_suffix": reg["instructions_suffix"],
             }
         elif flat is not None:
@@ -568,6 +597,7 @@ def convert_response_to_bids_metadata( participant: dict,
                 "speech_type": flat["speech_type"],
                 "stimulus_text": flat["stimulus_text"],
                 "stimulus_source": None,
+                "stimulus_asset": None,
                 "instructions_suffix": flat["instructions_suffix"],
             }
 
@@ -580,6 +610,17 @@ def convert_response_to_bids_metadata( participant: dict,
             metadata_file["speech_type"] = resolved["speech_type"]
             if resolved["stimulus_source"]:
                 metadata_file["stimulus_source"] = resolved["stimulus_source"]
+            if resolved.get("stimulus_asset"):
+                metadata_file["stimulus_asset"] = resolved["stimulus_asset"]
+        else:
+            # No match in the registry OR the flat file: the sidecar gets empty
+            # instructions/stimulus. Log it so build runs surface unknown task
+            # names (a registry/flat gap) rather than silently emitting blanks.
+            _logger.warning(
+                "no task match for recording task_name=%r (record_id=%s); "
+                "instructions/stimulus left empty",
+                task_name, participant_id,
+            )
 
 
     metadata_file.update({"audio_channel_count": 1, "audio_sample_rate": "16000"})
