@@ -133,6 +133,19 @@ def test_no_registry_or_flat_match_logs_warning(descriptions, caplog):
     assert any("no task match" in r.getMessage() for r in caplog.records)
 
 
+def test_version_aware_resolution():
+    from b2aiprep.prepare.fhir_utils import _resolve_task_registry, _registry_numbering_status
+
+    # bare (version-less) name -> v1 task (not v2, despite alias_index ordering)
+    v1 = _resolve_task_registry("maximum-phonation-time-3")
+    assert v1[0]["task_id"] == "adult.maximum-phonation-time.v1"
+    assert _registry_numbering_status(v1[0], "maximum-phonation-time-3") == "ok"  # v1 has 3
+    # "(v2)" marker -> v2 task; index 3 exceeds its 2 recordings
+    v2 = _resolve_task_registry("maximum-phonation-time-(v2)-3")
+    assert v2[0]["task_id"] == "adult.maximum-phonation-time.v2"
+    assert _registry_numbering_status(v2[0], "maximum-phonation-time-(v2)-3") == "out-of-range"
+
+
 def test_registry_numbering_status():
     from b2aiprep.prepare.fhir_utils import _load_registry, _registry_numbering_status
 

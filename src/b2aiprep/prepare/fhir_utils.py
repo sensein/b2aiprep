@@ -220,11 +220,47 @@ def _alias_items() -> tuple:
     return tuple((na, len(na), tid) for na, tid in items)
 
 
+@lru_cache(maxsize=None)
+def _family_version_index() -> dict:
+    """(population, family_slug) -> {version: task_id}. version is 'v1'/'v2'/...
+    from the task_id suffix, or '' when unversioned. Lets resolution pick the
+    version the recording name indicates rather than whichever the alias_index
+    happened to keep first."""
+    reg = _load_registry()
+    index: dict = {}
+    for tid, task in reg.get("tasks", {}).items():
+        m = re.search(r"\.(v\d+)$", tid)
+        version = m.group(1) if m else ""
+        key = (task.get("population"), _norm(task.get("family", "")))
+        index.setdefault(key, {})[version] = tid
+    return index
+
+
+def _select_version(reg, task, task_name):
+    """When a family has multiple versions, pick the one the NAME indicates:
+    '(v2)' -> v2, else the unversioned/v1 task. Fixes the alias_index collision
+    where e.g. bare 'maximum-phonation-time' resolved to v2 (its recordings are
+    fewer) rather than v1."""
+    key = (task.get("population"), _norm(task.get("family", "")))
+    versions = _family_version_index().get(key)
+    if not versions or len(versions) < 2:
+        return task
+    want = "v2" if "(v2)" in task_name.lower() else None
+    if want and want in versions:
+        return reg["tasks"][versions[want]]
+    if want is None:
+        for fallback in ("", "v1"):  # version-less name -> unversioned, else v1
+            if fallback in versions:
+                return reg["tasks"][versions[fallback]]
+    return task
+
+
 def _resolve_task_registry(task_name: str):
     """Resolve a (granular) task name to (task_entry, recording_entry|None) using
-    the registry alias_index (exact, else longest normalized-substring), then the
-    nested recording whose recording_id equals the normalized task name. Returns
-    None when the registry is absent or nothing matches."""
+    the registry alias_index (exact, else longest normalized-substring), corrected
+    to the version the name indicates, then the nested recording whose
+    recording_id equals the normalized task name. Returns None when the registry
+    is absent or nothing matches."""
     reg = _load_registry()
     if not reg:
         return None
@@ -238,7 +274,7 @@ def _resolve_task_registry(task_name: str):
             best_tid, best_len = tid, na_len
     if best_tid is None:
         return None
-    task = reg["tasks"][best_tid]
+    task = _select_version(reg, reg["tasks"][best_tid], task_name)
     rec = None
     for candidate in task.get("recordings", []):
         if _norm(candidate.get("recording_id", "")) == n:
