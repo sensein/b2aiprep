@@ -1159,7 +1159,14 @@ class BIDSDataset:
             audio_output_path = session_path / "audio"
             if not audio_output_path.exists():
                 audio_output_path.mkdir(parents=True, exist_ok=True)
-    
+
+            # Detect recording_name collisions within a session: two distinct
+            # recordings that map to the same BIDS task entity would silently
+            # overwrite each other's sidecar and drop one audio file (the copy is
+            # skipped when the destination already exists). Track the normalized
+            # entity -> recording_id and warn on a clash.
+            seen_recording_entities: t.Dict[str, str] = {}
+
             # multiple acoustic tasks are asked per session
             for task in session["acoustic_tasks"]:
                 if task is None:
@@ -1192,6 +1199,23 @@ class BIDSDataset:
                 prefix = f"sub-{participant_id}_ses-{session_id}"
                 # there may be more than one recording per acoustic task
                 for recording in task["recordings"]:
+                    # collision check: normalized recording_name is the BIDS task
+                    # entity; a clash between two recording_ids overwrites files.
+                    _rec_name = str(recording.get("recording_name", "")).strip()
+                    _rec_entity = _rec_name.replace(" ", "-").replace("_", "-").lower()
+                    _rec_id = recording.get("recording_id")
+                    if _rec_entity:
+                        _prior = seen_recording_entities.get(_rec_entity)
+                        if _prior is not None and _prior != _rec_id:
+                            _LOGGER.warning(
+                                "recording_name collision: %r maps to the same BIDS task "
+                                "entity for participant %s session %s (recording_id %s and "
+                                "%s); the later sidecar overwrites the earlier and one audio "
+                                "file is dropped",
+                                _rec_name, participant_id, session_id, _prior, _rec_id,
+                            )
+                        else:
+                            seen_recording_entities.setdefault(_rec_entity, _rec_id)
                     meta_data = convert_response_to_bids_metadata(
                         recording,
                         questionnaire_name=recording_instrument.name,
