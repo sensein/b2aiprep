@@ -4496,25 +4496,25 @@
         ]
     },
     "respiration-and-cough-(v2)-hardcough": {
-        "instructions": "Breathing sounds can also provide information on your health. Let's record them.",
+        "instructions": "Please do not cover your mouth or place your hand between your mouth and the microphone during recording. Breathe normally, then when you are ready, tap the record button below and cough HARD as if something were stuck in your throat. Tap stop when finished.",
         "prompts": [
             "Please do not cover your mouth or place your hand between your mouth and the microphone during recording. Breathe normally, then when you are ready, tap the record button below and cough HARD as if something were stuck in your throat. Tap stop when finished."
         ]
     },
     "respiration-and-cough-(v2)-threebreathsmouth": {
-        "instructions": "Breathing sounds can also provide information on your health. Let's record them.",
+        "instructions": "After pressing on record, take 3 deep breaths in and out through your mouth. Tap stop when finished.",
         "prompts": [
             "After pressing on record, take 3 deep breaths in and out through your mouth. Tap stop when finished."
         ]
     },
     "respiration-and-cough-(v2)-threebreathsnose": {
-        "instructions": "Breathing sounds can also provide information on your health. Let's record them.",
+        "instructions": "After pressing on record, take 3 deep breaths in and out through your nose with your mouth closed. Tap stop when finished.",
         "prompts": [
             "After pressing on record, take 3 deep breaths in and out through your nose with your mouth closed. Tap stop when finished."
         ]
     },
     "respiration-and-cough-(v2)-threebreaths": {
-        "instructions": "Breathing sounds can also provide information on your health. Let's record them.",
+        "instructions": "After pressing on record, exhale normally, then inhale quickly through your mouth, as if you are trying to catch your breath. Record 3 of these breaths in a single recording. Tap stop when finished.",
         "prompts": [
             "After pressing on record, exhale normally, then inhale quickly through your mouth, as if you are trying to catch your breath. Record 3 of these breaths in a single recording. Tap stop when finished."
         ]
@@ -4532,7 +4532,7 @@
         ]
     },
     "respiration-and-cough-(v2)-breath": {
-        "instructions": "Breathing sounds can also provide information on your health. Let's record them.",
+        "instructions": "After pressing on record, breathe comfortably through your mouth for 20 seconds, until the timer runs out.",
         "prompts": [
             "After pressing on record, breathe comfortably through your mouth for 20 seconds, until the timer runs out."
         ]
@@ -4576,12 +4576,18 @@
     "repeat-words": {
         "instructions": "Say the following word 3 times",
         "prompts": [],
-        "prompt_ref": {"bank": "repeating_words_bank", "index_from": "task_name"}
+        "prompt_ref": {
+            "bank": "repeating_words_bank",
+            "index_from": "task_name"
+        }
     },
     "repeating-words": {
         "instructions": "Say the following word 3 times",
         "prompts": [],
-        "prompt_ref": {"bank": "repeating_words_bank", "index_from": "task_name"}
+        "prompt_ref": {
+            "bank": "repeating_words_bank",
+            "index_from": "task_name"
+        }
     },
     "ready-for-school": {
         "instructions": "To start, let's learn a little more about you! Tell me about how you get ready for school in the morning.",
@@ -4717,10 +4723,10 @@
         "prompts": []
     },
     "generative-naming-task-animals": {
-        "alias_of": "naming-animals"
+        "instructions": "First, I want you to name as many animals you can think of. When you are ready, press \"record\"."
     },
     "generative-naming-task-food": {
-        "alias_of": "naming-food"
+        "instructions": "Next I want you to name as many food items you can think of. When you are ready, press \"record\"."
     },
     "conversation-(2-to-4)-book": {
         "alias_of": "pictures-and-doors"
