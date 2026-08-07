@@ -4760,5 +4760,117 @@
         "prompts": [
             "Do you like amusement parks? Well, I sure do. To amuse myself, I went twice last spring. My most MEMORABLE moment was riding on the Caterpillar, which is a gigantic rollercoaster high above the ground. When I saw how high the Caterpillar rose into the bright blue sky I knew it was for me. After waiting in line for thirty minutes, I made it to the front where the man measured my height to see if I was tall enough. I gave the man my coins, asked for change, and jumped on the cart. Tick, tick, tick, the Caterpillar climbed slowly up the tracks. It went SO high I could see the parking lot. Boy was I SCARED! I thought to myself, “There’s no turning back now.” People were so scared they screamed as we swiftly zoomed fast, fast, and faster along the tracks. As quickly as it started, the Caterpillar came to a stop. Unfortunately, it was time to pack the car and drive home. That night I dreamt of the wild ride on the Caterpillar. Taking a trip to the amusement park and riding on the Caterpillar was my MOST memorable moment ever!"
         ]
+    },
+    "noisy-sounds-1": {
+        "instructions": "Here's a picture of an airplane – it makes an 'ah' sound – we're going to say that three times – 'ah ah ah'. When you are ready, press \"record\".",
+        "speech_type": "non-lexical"
+    },
+    "noisy-sounds-2": {
+        "instructions": "Next is a little mouse – it makes an 'ee ee ee' sound - your turn! When you are ready, press \"record\".",
+        "speech_type": "non-lexical"
+    },
+    "noisy-sounds-3": {
+        "instructions": "Here's a little ghost – he says 'oo oo oo' – your turn! When you are ready, press \"record\".",
+        "speech_type": "non-lexical"
+    },
+    "noisy-sounds-4": {
+        "instructions": "The baby is sleeping, so we say 'sh sh sh'. Now you try! When you are ready, press \"record\".",
+        "speech_type": "non-lexical"
+    },
+    "noisy-sounds-5": {
+        "instructions": "The snake makes a 'ss ss ss'. Can I hear you make that snake sound? When you are ready, press \"record\".",
+        "speech_type": "non-lexical"
+    },
+    "noisy-sounds-6": {
+        "instructions": "Eating ice cream you might say \"muh muh muh\" – your turn! When you are ready, press \"record\".",
+        "speech_type": "non-lexical"
+    },
+    "noisy-sounds-7": {
+        "instructions": "Uh oh! Looks like the baby has been colouring on the walls. We should tell him to stop – \"nuh nuh nuh\". You tell him too! When you are ready, press \"record\".",
+        "speech_type": "non-lexical"
+    },
+    "noisy-sounds-8": {
+        "instructions": "The little bee makes a buzzing noise – 'zz zz zz'. Your turn! When you are ready, press \"record\".",
+        "speech_type": "non-lexical"
+    },
+    "noisy-sounds-9": {
+        "instructions": "Bunnies hop around – 'hh hh hh' - now you do it! When you are ready, press \"record\".",
+        "speech_type": "non-lexical"
+    },
+    "noisy-sounds-10": {
+        "instructions": "Have you ever seen a kangaroo jumping around? They go 'jj jj jj' – you try! When you are ready, press \"record\".",
+        "speech_type": "non-lexical"
+    },
+    "silly-sounds-1": {
+        "instructions": "First, we're going to say PUH PUH PUH over and over for about 5 seconds. Remember to take a breath if you need one! When you are ready, press \"record\".",
+        "speech_type": "non-lexical"
+    },
+    "silly-sounds-2": {
+        "instructions": "Next let's do the same thing, but this time say TUH TUH TUH. When you are ready, press \"record\".",
+        "speech_type": "non-lexical"
+    },
+    "silly-sounds-3": {
+        "instructions": "We've got one more to try. Tell me KUH KUH KUH... When you are ready, press \"record\".",
+        "speech_type": "non-lexical"
+    },
+    "silly-sounds-4": {
+        "instructions": "Let's try to put them together and say PUH TUH KUH over and over until the timer stops. If that word seems a little too tricky, you can say PAT-A-CAKE over and over instead. When you are ready, press \"record\".",
+        "speech_type": "non-lexical"
+    },
+    "conversation-(6-plus)-ready-for-school": {
+        "instructions": "Tell me about how you get ready for school in the morning.",
+        "speech_type": "elicited"
+    },
+    "conversation-(6-plus)-favorite-show-movie-game": {
+        "instructions": "Do you have a favourite movie? Video game? Show? I'd love to hear about it! When you're ready to share, press \"record\".",
+        "speech_type": "elicited"
+    },
+    "conversation-(6-plus)-favorite-food": {
+        "instructions": "Do you have a favourite food? Or a food you really don't like? When you're ready to share, press \"record\".",
+        "speech_type": "elicited"
+    },
+    "conversation-(6-plus)-outside-of-school": {
+        "instructions": "What do you like to do when you're not at school? Tell me about any activities you do like sports, dance, karate, art, etc. When you're ready to share, press \"record\".",
+        "speech_type": "elicited"
+    },
+    "abcs-and-123s-abcs": {
+        "instructions": "Let's sing our ABCs together! A,B... When you are ready, press \"record\".",
+        "speech_type": "elicited"
+    },
+    "abcs-and-123s-123s": {
+        "instructions": "I wonder how high you can count? Let's start at 1, 2... When you are ready, press \"record\".",
+        "speech_type": "elicited"
+    },
+    "days-and-number-naming-numbers": {
+        "instructions": "Let's see how high you can count? Let's start at 1... When you are ready, press \"record\".",
+        "speech_type": "elicited"
+    },
+    "days-and-number-naming-days": {
+        "instructions": "I bet you know the days of the week too. Let's start with Monday... When you are ready, press \"record\".",
+        "speech_type": "elicited"
+    },
+    "days-and-number-naming-months": {
+        "instructions": "How about months of the year? Can you name some for me? Start with January... When you are ready, press \"record\".",
+        "speech_type": "elicited"
+    },
+    "role-naming-tasks-sounds-days": {
+        "instructions": "What are the days in the week (starting with Sunday)?",
+        "speech_type": "elicited"
+    },
+    "role-naming-tasks-sounds-months": {
+        "instructions": "I bet you know the months of the year too. Let's start with January... When you are ready, press \"record\".",
+        "speech_type": "elicited"
+    },
+    "role-naming-tasks-sounds-numbers": {
+        "instructions": "Next can you count from 60 to 70? When you are ready, press \"record\".",
+        "speech_type": "elicited"
+    },
+    "long-sounds-1": {
+        "instructions": "First, let's start by saying 'ahhhhh' for around 5 seconds. We're going to repeat this three times during one recording. Try to have the child produce the sound at a habitual pitch – some tend to use a higher \"note\" or create vibrato if they have any singing background. The sound produced should be as steady/consistent as possible. Re-record if you perceive the child is using a higher pitch when sustaining the vowel (in comparison to speaking). When you are ready, press \"record\".",
+        "speech_type": "non-lexical"
+    },
+    "long-sounds-2": {
+        "instructions": "Next, say the 'eeeeee' sound as steady as you can for about 5 seconds. We'll do this three times as well. When you are ready, press \"record\".",
+        "speech_type": "non-lexical"
     }
 }
