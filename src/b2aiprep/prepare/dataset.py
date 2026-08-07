@@ -47,7 +47,7 @@ from b2aiprep.prepare.utils import (
     normalize_task_label,
     sanitize_task_entity_in_bids_stem,
 )
-from b2aiprep.prepare.fhir_utils import convert_response_to_bids_metadata
+from b2aiprep.prepare.fhir_utils import convert_response_to_bids_metadata, _population_from_cohort
 from b2aiprep.prepare.prepare import (
     get_value_from_metadata,
     remap_id, 
@@ -1179,12 +1179,16 @@ class BIDSDataset:
                     continue
                 
                 acoustic_task_name = acoustic_task_name.replace(" ", "-").replace("_", "-")
+                # Population (from the acoustic task's cohort) disambiguates the
+                # few families that exist in both peds and adult (picture-description).
+                task_population = _population_from_cohort(task.get("acoustic_task_cohort"))
                 meta_data = convert_response_to_bids_metadata(
                     task,
                     questionnaire_name=task_instrument.name,
                     mapping_name=task_instrument.schema_name_clobbered,
                     columns=task_instrument.columns,
                     audio_task_descriptions=audio_descriptor_dict,
+                    population=task_population,
                 )
                 BIDSDataset._write_pydantic_model_to_bids_file(
                     audio_output_path,
@@ -1223,6 +1227,7 @@ class BIDSDataset:
                         columns=recording_instrument.columns,
                         audio_task_descriptions=audio_descriptor_dict,
                         questionnaire_lookup=questionnaire_lookup,
+                        population=task_population,
                     )
                     BIDSDataset._write_pydantic_model_to_bids_file(
                         audio_output_path,

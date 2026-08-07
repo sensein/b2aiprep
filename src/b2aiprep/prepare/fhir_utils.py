@@ -258,7 +258,40 @@ def _select_version(reg, task, task_name):
     return task
 
 
-def _resolve_task_registry(task_name: str):
+@lru_cache(maxsize=None)
+def _family_population_index() -> dict:
+    """(population, family_slug) -> task_id, for routing a recording to the task
+    in its own population when a family exists in more than one (only
+    picture-description today)."""
+    reg = _load_registry()
+    index: dict = {}
+    for tid, task in reg.get("tasks", {}).items():
+        index.setdefault((task.get("population"), _norm(task.get("family", ""))), tid)
+    return index
+
+
+def _population_from_cohort(cohort):
+    """Map an acoustic_task_cohort value to a population. Pediatric cohorts are
+    'pediatric' or 'age_*'; every other (generic/neurology/voice/respiratory/mood)
+    is adult. Returns None when unknown (no cohort) -> no population preference."""
+    if not cohort:
+        return None
+    c = str(cohort).strip().lower()
+    if c == "pediatric" or c.startswith("age_") or c.startswith("age-"):
+        return "pediatric"
+    return "adult"
+
+
+def _select_population(reg, task, population):
+    """When a family exists in more than one population, route to the task in the
+    recording's population (e.g. peds vs adult picture-description)."""
+    if not population or task.get("population") == population:
+        return task
+    tid = _family_population_index().get((population, _norm(task.get("family", ""))))
+    return reg["tasks"][tid] if tid else task
+
+
+def _resolve_task_registry(task_name: str, population=None):
     """Resolve a (granular) task name to (task_entry, recording_entry|None) using
     the registry alias_index (exact, else longest normalized-substring), corrected
     to the version the name indicates, then the nested recording whose
@@ -278,6 +311,7 @@ def _resolve_task_registry(task_name: str):
     if best_tid is None:
         return None
     task = _select_version(reg, reg["tasks"][best_tid], task_name)
+    task = _select_population(reg, task, population)
     rec = None
     for candidate in task.get("recordings", []):
         if _norm(candidate.get("recording_id", "")) == n:
@@ -429,7 +463,13 @@ def _registry_bids_fields(task, rec, task_name, join_id, questionnaire_lookup):
         stimulus_text = ""
         stimulus_source = "image"
         stimulus_asset = _asset_url(prompt_ref, task_name)
-    # static-inline: stimulus_text stays None -> flat-file fallback.
+    # static-inline: stimulus_text stays None -> flat-file fallback (so read/recall
+    # tasks pick up their passage text). EXCEPT non-lexical tasks, which have no
+    # lexical reference: force "" so we don't leak the flat file's instruction
+    # (stored there under "prompts") into stimulus_text (respiration, loudness,
+    # DDK, prolonged-vowel, glides, cough, breath-sounds, ...).
+    if stimulus_text is None and speech_type == "non-lexical":
+        stimulus_text = ""
 
     return {
         "instructions": instructions,
@@ -577,6 +617,7 @@ def convert_response_to_bids_metadata( participant: dict,
     columns: t.List[str],
     audio_task_descriptions: OrderedDict,
     questionnaire_lookup: t.Optional[dict] = None,
+    population: t.Optional[str] = None,
 ) -> dict:
     """Converts a participant's response to a metadata json file.
 
@@ -655,7 +696,7 @@ def convert_response_to_bids_metadata( participant: dict,
         flat = _flat_bids_fields(
             task_name_lower, audio_task_descriptions, join_id, questionnaire_lookup
         )
-        reg_match = _resolve_task_registry(task_name_lower)
+        reg_match = _resolve_task_registry(task_name_lower, population)
 
         resolved = None
         if reg_match is not None:

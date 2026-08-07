@@ -25,7 +25,8 @@ def descriptions():
     return json.loads(path.read_text(), object_pairs_hook=collections.OrderedDict)
 
 
-def _resolve(descriptions, recording_name, questionnaire_lookup=None, acoustic_task_id="AT-1"):
+def _resolve(descriptions, recording_name, questionnaire_lookup=None, acoustic_task_id="AT-1",
+             population=None):
     """Run the recording-metadata resolver for a given recording name."""
     recording = {
         "recording_name": recording_name,
@@ -41,7 +42,29 @@ def _resolve(descriptions, recording_name, questionnaire_lookup=None, acoustic_t
         columns=columns,
         audio_task_descriptions=descriptions,
         questionnaire_lookup=questionnaire_lookup,
+        population=population,
     )
+
+
+def test_population_aware_picture_description(descriptions):
+    # picture-description exists in both populations; the recording's cohort ->
+    # population routes it to the right task (peds child-facing vs adult).
+    peds = _resolve(descriptions, "Picture Description", population="pediatric")
+    adult = _resolve(descriptions, "Picture Description", population="adult")
+    assert "no right or wrong answers" in peds["instructions"]  # peds child-facing
+    assert peds["instructions"] != adult["instructions"]
+
+
+def test_non_lexical_tasks_have_empty_stimulus(descriptions):
+    # non-lexical tasks carry no lexical reference; stimulus_text must be "" and
+    # must NOT leak the instruction (the flat file stores it under "prompts").
+    for name in ["Respiration and cough-Breath-1", "Maximum phonation time-1",
+                 "Diadochokinesis-PA", "Loudness", "Glides-Low to High"]:
+        m = _resolve(descriptions, name)
+        assert m["speech_type"] == "non-lexical"
+        assert m["stimulus_text"] == "", (name, m["stimulus_text"])
+    # read/recall still carry their reference text (not emptied)
+    assert _resolve(descriptions, "Rainbow Passage")["stimulus_text"].startswith("When the sunlight")
 
 
 def test_registry_first_grouped_recording_instruction(descriptions):
