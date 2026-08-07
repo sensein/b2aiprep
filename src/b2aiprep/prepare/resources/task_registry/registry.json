@@ -796,8 +796,8 @@
         "Respiratory"
       ],
       "recording_count": 1,
-      "instructions": "Breathing: Click on the Record button below and breathe deeply through your mouth. Continue to do this until the recording automatically stops after 5 seconds. Click Play to hear your recording. If you hear background noise, please go to a quieter place and try again by selecting Redo Recording. If it sounds good, continue.",
-      "instructions_source": "harvested",
+      "instructions": "You are being asked to record your breathing sounds. Please relax for 60 seconds until the task starts. Take three deep breaths in a row in and out of the mouth.",
+      "instructions_source": "curated",
       "speech_type": "non-lexical",
       "prompt_ref": {
         "type": "static-inline"

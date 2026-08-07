@@ -6,6 +6,10 @@
     "commit": "67e75fac084c2763c21cce064ebbbe8a93664046"
   },
   "tasks": {
+    "adult.breath-sounds": {
+      "note": "Correct instruction from Retired/Breath Sounds (relax 60s, three deep breaths in/out of the mouth); the flat file carried an unrelated '5-second auto-stop' protocol.",
+      "instructions": "You are being asked to record your breathing sounds. Please relax for 60 seconds until the task starts. Take three deep breaths in a row in and out of the mouth."
+    },
     "adult.story-recall.v1": {
       "note": "v1 (retired). Harvest carried the v2 (boy/frog) text; correct v1 instruction from Retired/Story Recall - v1. The v1 STIMULUS (grandfather/'Banana Oil' passage) is set in audio_task_descriptions.json, not here (registry does not carry recall stimulus text).",
       "instructions": "You are given a text. Read the text so you familiarize yourself with it. You have up to 5 minutes to read it as many times as you want. When you are ready, you will be asked to recall the story. This can be in your own words."
