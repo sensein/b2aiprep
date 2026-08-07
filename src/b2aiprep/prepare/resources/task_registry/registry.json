@@ -264,7 +264,14 @@
       "instructions_source": "harvested",
       "speech_type": "elicited",
       "prompt_ref": {
-        "type": "image"
+        "type": "image",
+        "asset_repo": "eipm/bridge2ai-redcap",
+        "asset_commit": "67e75fac084c2763c21cce064ebbbe8a93664046",
+        "asset_map": {
+          "description": "docs/Adults/Acoustic Tasks/Current/Picture Description/PictureDescriptionTaskPicture1.png",
+          "option1": "docs/Adults/Acoustic Tasks/Current/Picture Description/PictureDescriptionTaskPicture1.png",
+          "option2": "docs/Adults/Acoustic Tasks/Current/Picture Description/PictureDescriptionTaskPicture2.jpg"
+        }
       },
       "recordings": [],
       "aliases": [
@@ -1136,7 +1143,10 @@
       "instructions_source": "curated",
       "speech_type": "elicited",
       "prompt_ref": {
-        "type": "image"
+        "type": "image",
+        "asset_repo": "eipm/bridge2ai-redcap",
+        "asset_commit": "67e75fac084c2763c21cce064ebbbe8a93664046",
+        "asset_path": "docs/Pediatrics/Acoustic Tasks/Current/Picture Description/pediatric_10plus_picture_description.jpg"
       },
       "recordings": [],
       "aliases": [

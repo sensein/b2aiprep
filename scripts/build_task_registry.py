@@ -241,6 +241,33 @@ POLICY = {
 }
 DEFAULT_POLICY = ("elicited", {"type": "static-inline"})
 
+_ADULT_ACOUSTIC = "docs/Adults/Acoustic Tasks/Current"
+
+# Per-task prompt_ref overrides where POLICY (keyed by family slug) can't express a
+# population-specific image asset. picture-description exists in both populations
+# with different images: peds one fixed image; adult one image per option.
+PROMPT_REF_OVERRIDE_BY_TASK_ID = {
+    "pediatric.picture-description": {
+        "type": "image",
+        **_asset_keys(f"{_PEDS_ACOUSTIC}/Picture Description/"
+                      "pediatric_10plus_picture_description.jpg"),
+    },
+    "adult.picture-description": {
+        # Per the doc note, bare "Picture description" and "-option1" are the SAME
+        # picture (Picture 1, pre/post the 2nd picture's introduction); "-option2"
+        # is Picture 2. Keyed by the recording's trailing token; bare -> token
+        # "description".
+        "type": "image",
+        "asset_repo": "eipm/bridge2ai-redcap",
+        "asset_commit": IMAGE_ASSET_COMMIT,
+        "asset_map": {
+            "description": f"{_ADULT_ACOUSTIC}/Picture Description/PictureDescriptionTaskPicture1.png",
+            "option1": f"{_ADULT_ACOUSTIC}/Picture Description/PictureDescriptionTaskPicture1.png",
+            "option2": f"{_ADULT_ACOUSTIC}/Picture Description/PictureDescriptionTaskPicture2.jpg",
+        },
+    },
+}
+
 # Families whose per-recording stimulus is resolved dynamically at BIDS build via
 # the task-level prompt_ref (bank or questionnaire) -- do NOT enumerate their
 # recordings from Recordings.md (Harvard uses "[List #]" placeholders; counts are
@@ -482,6 +509,7 @@ def build_registry(redcap_root: Path, git_tag: str):
             fam_slug = slug(t["family"])
             task_id = f"{population}.{fam_slug}" + (f".{t['version']}" if t["version"] else "")
             speech_type, prompt_ref = POLICY.get(fam_slug, DEFAULT_POLICY)
+            prompt_ref = PROMPT_REF_OVERRIDE_BY_TASK_ID.get(task_id, prompt_ref)
             if fam_slug not in POLICY:
                 report["unknown_policy"].append(fam_slug)
 

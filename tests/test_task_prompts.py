@@ -55,6 +55,17 @@ def test_population_aware_picture_description(descriptions):
     assert peds["instructions"] != adult["instructions"]
 
 
+def test_picture_description_image_assets(descriptions):
+    # peds: single fixed image; adult: bare & option1 are Picture 1, option2 is
+    # Picture 2 (per the doc note that bare == option1).
+    peds = _resolve(descriptions, "Picture Description", population="pediatric")
+    assert peds["stimulus_asset"].endswith("pediatric_10plus_picture_description.jpg")
+    bare = _resolve(descriptions, "Picture description", population="adult")
+    assert bare["stimulus_asset"].endswith("PictureDescriptionTaskPicture1.png")
+    opt2 = _resolve(descriptions, "Picture description-option2", population="adult")
+    assert opt2["stimulus_asset"].endswith("PictureDescriptionTaskPicture2.jpg")
+
+
 def test_non_lexical_tasks_have_empty_stimulus(descriptions):
     # non-lexical tasks carry no lexical reference; stimulus_text must be "" and
     # must NOT leak the instruction (the flat file stores it under "prompts").

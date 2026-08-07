@@ -349,18 +349,28 @@ def _registry_questionnaire(prompt_ref, task_name, join_id, questionnaire_lookup
 
 def _asset_url(prompt_ref, task_name):
     """A commit-pinned raw GitHub URL for the recording's image stimulus, or None.
-    Fills `{i}`/`{i:02d}` in prompt_ref['asset_path'] from the trailing index and
+    Resolves the path three ways:
+    - asset_map: keyed by the recording's trailing token (e.g. picture-description
+      'option1'/'option2');
+    - asset_path with '{i}'/'{i:02d}': filled from the trailing index;
+    - asset_path without a placeholder: a single fixed image.
     URL-encodes the path (spaces -> %20)."""
-    path = prompt_ref.get("asset_path")
-    if not path:
-        return None
-    idx = _trailing_index(task_name)
-    if idx is None:
+    path = None
+    asset_map = prompt_ref.get("asset_map")
+    if asset_map:
+        path = asset_map.get(re.split(r"[-_]", task_name)[-1])
+    if path is None:
+        p = prompt_ref.get("asset_path")
+        if p and "{i" in p:
+            idx = _trailing_index(task_name)
+            path = p.format(i=idx) if idx is not None else None
+        else:
+            path = p
+    repo, commit = prompt_ref.get("asset_repo"), prompt_ref.get("asset_commit")
+    if not path or not repo or not commit:
         return None
     return "https://raw.githubusercontent.com/{repo}/{commit}/{path}".format(
-        repo=prompt_ref["asset_repo"],
-        commit=prompt_ref["asset_commit"],
-        path=quote(path.format(i=idx)),
+        repo=repo, commit=commit, path=quote(path),
     )
 
 
