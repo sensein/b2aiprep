@@ -245,7 +245,10 @@ def _select_version(reg, task, task_name):
     versions = _family_version_index().get(key)
     if not versions or len(versions) < 2:
         return task
-    want = "v2" if "(v2)" in task_name.lower() else None
+    # Detect the version token in either form: "(v2)" (real task names) or a bare
+    # "v2" token (paren-free recording_ids). Generalized to any vN.
+    m = re.search(r"\bv(\d+)\b", task_name.lower())
+    want = f"v{m.group(1)}" if m else None
     if want and want in versions:
         return reg["tasks"][versions[want]]
     if want is None:

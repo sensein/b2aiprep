@@ -6,6 +6,58 @@
     "commit": "67e75fac084c2763c21cce064ebbbe8a93664046"
   },
   "tasks": {
+    "adult.story-recall.v1": {
+      "note": "v1 (retired). Harvest carried the v2 (boy/frog) text; correct v1 instruction from Retired/Story Recall - v1. The v1 STIMULUS (grandfather/'Banana Oil' passage) is set in audio_task_descriptions.json, not here (registry does not carry recall stimulus text).",
+      "instructions": "You are given a text. Read the text so you familiarize yourself with it. You have up to 5 minutes to read it as many times as you want. When you are ready, you will be asked to recall the story. This can be in your own words."
+    },
+    "adult.maximum-phonation-time.v1": {
+      "note": "v1 (retired). Correct v1 instruction from Retired/Maximum Phonation Time - v1 (repeat 3 times; no 'progress bar').",
+      "instructions": "This task helps us analyze the way your breathing is connected to your voice. Take a very deep breath and hold out “ah” for as long as possible until you completely run out of air. We will repeat this task 3 times."
+    },
+    "adult.maximum-phonation-time.v2": {
+      "note": "Per-recording so recording 2 keeps its 'even longer' line (Current/Maximum Phonation Time - v2).",
+      "recordings": {
+        "1": "This task helps us analyze the way your breathing is connected to your voice. Take a very deep breath, tap on the record button, and hold out “ah” for as long as possible until you completely run out of air. Try to hold it until the progress bar reaches the end of the screen.",
+        "2": "This task helps us analyze the way your breathing is connected to your voice. Take a very deep breath, tap on the record button, and hold out “ah” for as long as possible until you completely run out of air. Try to hold it until the progress bar reaches the end of the screen. Now try to hold out “ah” for even longer."
+      }
+    },
+    "adult.diadochokinesis.v1": {
+      "note": "v1 (retired). Per-syllable from Retired/Diadochokinesis - v1 ('as fast as possible 10 times'); harvest carried the v2 demo/timer template.",
+      "recordings": {
+        "pa": "This task helps us analyze the ease and precision of speech sound productions. Record yourself repeating the syllable /PA/ as fast as possible 10 times.",
+        "ta": "This task helps us analyze the ease and precision of speech sound productions. Record yourself repeating the syllable /TA/ as fast as possible 10 times.",
+        "ka": "This task helps us analyze the ease and precision of speech sound productions. Record yourself repeating the syllable /KA/ as fast as possible 10 times.",
+        "pataka": "This task helps us analyze the ease and precision of speech sound productions. Now repeat the word /Pataka/ as fast as possible 10 times.",
+        "buttercup": "This task helps us analyze the ease and precision of speech sound productions. Now repeat the word /buttercup/ as fast as possible 10 times."
+      }
+    },
+    "adult.respiration-and-cough.v1": {
+      "note": "v1 (retired). Per-recording from Retired/Respiration and cough - v1 (10 recordings = 5 instructions repeated twice); harvest carried v2 text.",
+      "recordings": {
+        "breath-1": "First, let's hear you breathe comfortably for 30 seconds",
+        "breath-2": "First, let's hear you breathe comfortably for 30 seconds",
+        "fivebreaths-1": "After pressing on record, take 5 big breaths in and out through your nose with your mouth closed.",
+        "fivebreaths-3": "After pressing on record, take 5 big breaths in and out through your nose with your mouth closed.",
+        "fivebreaths-2": "After pressing on record, take 5 big breaths in and out through your mouth.",
+        "fivebreaths-4": "After pressing on record, take 5 big breaths in and out through your mouth.",
+        "threequickbreaths-1": "After pressing on record, exhale, then inhale quickly through your mouth, as if you are trying to catch your breath. Record 3 of these breaths in a single recording.",
+        "threequickbreaths-2": "After pressing on record, exhale, then inhale quickly through your mouth, as if you are trying to catch your breath. Record 3 of these breaths in a single recording.",
+        "cough-1": "After pressing record, cough 5 times",
+        "cough-2": "After pressing record, cough 5 times"
+      }
+    },
+    "adult.free-speech.v1": {
+      "note": "v1 (retired). Restore the trailing sentence dropped by the harvest (Retired/Free Speech - v1).",
+      "instructions": "This section is meant to hear you speak freely by answering an open-ended question. Please answer the following questions and record your answer. Keep talking until the time stops. Do not record yourself reading the prompt and avoid any information that could identify an individual."
+    },
+    "pediatric.identifying-pictures": {
+      "note": "Peds child-facing instruction (Current/Identifying Pictures, uniform across all 37 recordings); harvest returned an administrator note not present in the docs.",
+      "instructions": "That was great! Let's look at a few more pictures – if you know what it is, say it out loud so we can hear you! Remember, this time you're going to tell me the name of the picture, not the sound that it makes. If you're not sure, you can skip it and move on to the next picture. When you are ready, press \"record\"."
+    },
+    "pediatric.picture-description": {
+      "note": "Peds child-facing instruction (Current/Picture Description); harvest returned the ADULT picture-description text. NOTE: reaching this requires population-aware resolution since 'picture-description' exists in both populations.",
+      "instructions": "You're almost done! Now let's look at a picture that has a lot of details. Look at the picture and describe what you see – there are no right or wrong answers. Whatever you want to tell me about is perfect! When you are ready, press \"record\"."
+    },
     "adult.respiration-and-cough.v2": {
       "note": "Descriptions SWAPPED to match the (verified-correct) recording names; see eipm/bridge2ai-redcap#44.",
       "recordings": {

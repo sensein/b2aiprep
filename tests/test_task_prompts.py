@@ -94,14 +94,15 @@ def test_registry_cape_v_version_index_fix(descriptions):
     assert v2["stimulus_text"] == "He helped her hurry home."
 
 
-def test_flat_per_key_instruction_wins_over_coarse_registry(descriptions):
-    # diadochokinesis has per-syllable instructions in the flat file. The registry
-    # only carries a coarse (non-curated) task-level instruction, so the flat
-    # per-key text must win -- the 'pa' recording keeps its 'pa' syllable and is
-    # not overwritten with the task-level 'puhtuhkuh' demonstration text.
+def test_diadochokinesis_v1_curated_instruction(descriptions):
+    # diadochokinesis v1 is now curated from the Retired doc: the 'pa' recording
+    # keeps its own /PA/ syllable ("as fast as possible 10 times"), NOT the v2
+    # demonstration/timer template ("puhtuhkuh"/"until the timer runs out").
     m = _resolve(descriptions, "diadochokinesis-pa")
-    assert "'pa'" in m["instructions"]
+    assert "/PA/" in m["instructions"]
+    assert "as fast as possible 10 times" in m["instructions"]
     assert "puhtuhkuh" not in m["instructions"]
+    assert "timer" not in m["instructions"]
 
 
 def test_registry_image_stimulus_asset(descriptions):
@@ -226,9 +227,13 @@ def test_read_task_stimulus_text(descriptions):
 
 
 def test_recall_task_carries_reference(descriptions):
-    m = _resolve(descriptions, "story-recall")
-    assert m["speech_type"] == "recall"
-    assert m["stimulus_text"].startswith("There was once a boy")
+    # story-recall is versioned: bare (v1) is the grandfather / "Banana Oil"
+    # passage; (v2) is the boy-and-frog story. Each carries its own reference.
+    v1 = _resolve(descriptions, "story-recall")
+    assert v1["speech_type"] == "recall"
+    assert v1["stimulus_text"].startswith("You wished to know all about my grandfather")
+    v2 = _resolve(descriptions, "story-recall-(v2)")
+    assert v2["stimulus_text"].startswith("There was once a boy")
 
 
 def test_questionnaire_join_vocab_random_stroop(descriptions):

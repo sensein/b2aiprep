@@ -44,7 +44,22 @@
       "prompt_ref": {
         "type": "static-inline"
       },
-      "recordings": [],
+      "recordings": [
+        {
+          "recording_id": "maximum-phonation-time-v2-1",
+          "canonical_name": "Maximum phonation time (v2)-1",
+          "sub_name": "(v2)-1",
+          "instructions": "This task helps us analyze the way your breathing is connected to your voice. Take a very deep breath, tap on the record button, and hold out “ah” for as long as possible until you completely run out of air. Try to hold it until the progress bar reaches the end of the screen.",
+          "instructions_source": "curated"
+        },
+        {
+          "recording_id": "maximum-phonation-time-v2-2",
+          "canonical_name": "Maximum phonation time (v2)-2",
+          "sub_name": "(v2)-2",
+          "instructions": "This task helps us analyze the way your breathing is connected to your voice. Take a very deep breath, tap on the record button, and hold out “ah” for as long as possible until you completely run out of air. Try to hold it until the progress bar reaches the end of the screen. Now try to hold out “ah” for even longer.",
+          "instructions_source": "curated"
+        }
+      ],
       "aliases": [
         "maximum-phonation-time",
         "maximum-phonation-time(v2)",
@@ -445,8 +460,8 @@
         "All"
       ],
       "recording_count": 3,
-      "instructions": "This task helps us analyze the way your breathing is connected to your voice. Take a very deep breath, tap on the record button, and hold out “ah” for as long as possible until you completely run out of air. Try to hold it until the progress bar reaches the end of the screen.",
-      "instructions_source": "harvested",
+      "instructions": "This task helps us analyze the way your breathing is connected to your voice. Take a very deep breath and hold out “ah” for as long as possible until you completely run out of air. We will repeat this task 3 times.",
+      "instructions_source": "curated",
       "speech_type": "non-lexical",
       "prompt_ref": {
         "type": "static-inline"
@@ -497,7 +512,43 @@
       "prompt_ref": {
         "type": "static-inline"
       },
-      "recordings": [],
+      "recordings": [
+        {
+          "recording_id": "diadochokinesis-pa",
+          "canonical_name": "Diadochokinesis-PA",
+          "sub_name": "PA",
+          "instructions": "This task helps us analyze the ease and precision of speech sound productions. Record yourself repeating the syllable /PA/ as fast as possible 10 times.",
+          "instructions_source": "curated"
+        },
+        {
+          "recording_id": "diadochokinesis-ta",
+          "canonical_name": "Diadochokinesis-TA",
+          "sub_name": "TA",
+          "instructions": "This task helps us analyze the ease and precision of speech sound productions. Record yourself repeating the syllable /TA/ as fast as possible 10 times.",
+          "instructions_source": "curated"
+        },
+        {
+          "recording_id": "diadochokinesis-ka",
+          "canonical_name": "Diadochokinesis-KA",
+          "sub_name": "KA",
+          "instructions": "This task helps us analyze the ease and precision of speech sound productions. Record yourself repeating the syllable /KA/ as fast as possible 10 times.",
+          "instructions_source": "curated"
+        },
+        {
+          "recording_id": "diadochokinesis-pataka",
+          "canonical_name": "Diadochokinesis-Pataka",
+          "sub_name": "Pataka",
+          "instructions": "This task helps us analyze the ease and precision of speech sound productions. Now repeat the word /Pataka/ as fast as possible 10 times.",
+          "instructions_source": "curated"
+        },
+        {
+          "recording_id": "diadochokinesis-buttercup",
+          "canonical_name": "Diadochokinesis-Buttercup",
+          "sub_name": "Buttercup",
+          "instructions": "This task helps us analyze the ease and precision of speech sound productions. Now repeat the word /buttercup/ as fast as possible 10 times.",
+          "instructions_source": "curated"
+        }
+      ],
       "aliases": [
         "diadochokinesis",
         "diadochokinesis-v1"
@@ -514,8 +565,8 @@
         "All"
       ],
       "recording_count": 3,
-      "instructions": "This section is meant to hear you speak freely by answering an open-ended question. Please answer the following questions and record your answer. Keep talking until the time stops.",
-      "instructions_source": "harvested",
+      "instructions": "This section is meant to hear you speak freely by answering an open-ended question. Please answer the following questions and record your answer. Keep talking until the time stops. Do not record yourself reading the prompt and avoid any information that could identify an individual.",
+      "instructions_source": "curated",
       "speech_type": "elicited",
       "prompt_ref": {
         "type": "static-inline"
@@ -543,7 +594,78 @@
       "prompt_ref": {
         "type": "static-inline"
       },
-      "recordings": [],
+      "recordings": [
+        {
+          "recording_id": "respiration-and-cough-breath-1",
+          "canonical_name": "Respiration and cough-Breath-1",
+          "sub_name": "Breath-1",
+          "instructions": "First, let's hear you breathe comfortably for 30 seconds",
+          "instructions_source": "curated"
+        },
+        {
+          "recording_id": "respiration-and-cough-fivebreaths-1",
+          "canonical_name": "Respiration and cough-FiveBreaths-1",
+          "sub_name": "FiveBreaths-1",
+          "instructions": "After pressing on record, take 5 big breaths in and out through your nose with your mouth closed.",
+          "instructions_source": "curated"
+        },
+        {
+          "recording_id": "respiration-and-cough-fivebreaths-2",
+          "canonical_name": "Respiration and cough-FiveBreaths-2",
+          "sub_name": "FiveBreaths-2",
+          "instructions": "After pressing on record, take 5 big breaths in and out through your mouth.",
+          "instructions_source": "curated"
+        },
+        {
+          "recording_id": "respiration-and-cough-threequickbreaths-1",
+          "canonical_name": "Respiration and cough-ThreeQuickBreaths-1",
+          "sub_name": "ThreeQuickBreaths-1",
+          "instructions": "After pressing on record, exhale, then inhale quickly through your mouth, as if you are trying to catch your breath. Record 3 of these breaths in a single recording.",
+          "instructions_source": "curated"
+        },
+        {
+          "recording_id": "respiration-and-cough-cough-1",
+          "canonical_name": "Respiration and cough-Cough-1",
+          "sub_name": "Cough-1",
+          "instructions": "After pressing record, cough 5 times",
+          "instructions_source": "curated"
+        },
+        {
+          "recording_id": "respiration-and-cough-breath-2",
+          "canonical_name": "Respiration and cough-Breath-2",
+          "sub_name": "Breath-2",
+          "instructions": "First, let's hear you breathe comfortably for 30 seconds",
+          "instructions_source": "curated"
+        },
+        {
+          "recording_id": "respiration-and-cough-fivebreaths-3",
+          "canonical_name": "Respiration and cough-FiveBreaths-3",
+          "sub_name": "FiveBreaths-3",
+          "instructions": "After pressing on record, take 5 big breaths in and out through your nose with your mouth closed.",
+          "instructions_source": "curated"
+        },
+        {
+          "recording_id": "respiration-and-cough-fivebreaths-4",
+          "canonical_name": "Respiration and cough-FiveBreaths-4",
+          "sub_name": "FiveBreaths-4",
+          "instructions": "After pressing on record, take 5 big breaths in and out through your mouth.",
+          "instructions_source": "curated"
+        },
+        {
+          "recording_id": "respiration-and-cough-threequickbreaths-2",
+          "canonical_name": "Respiration and cough-ThreeQuickBreaths-2",
+          "sub_name": "ThreeQuickBreaths-2",
+          "instructions": "After pressing on record, exhale, then inhale quickly through your mouth, as if you are trying to catch your breath. Record 3 of these breaths in a single recording.",
+          "instructions_source": "curated"
+        },
+        {
+          "recording_id": "respiration-and-cough-cough-2",
+          "canonical_name": "Respiration and cough-Cough-2",
+          "sub_name": "Cough-2",
+          "instructions": "After pressing record, cough 5 times",
+          "instructions_source": "curated"
+        }
+      ],
       "aliases": [
         "respiration-and-cough",
         "respiration-and-cough-v1"
@@ -560,8 +682,8 @@
         "All"
       ],
       "recording_count": 1,
-      "instructions": "Below you will be presented with a story about a boy and a frog. You may click forward to see the next image in the series. Feel free to move back and forth as much as you like until you are comfortable with the story. You will have up to 5 minutes to view the story, but you are not required to use the full 5 minutes. Once the time is up, please retell the story in as much detail as possible. When you are ready, please click the record button below. Once you click the record button, the story will disappear.",
-      "instructions_source": "harvested",
+      "instructions": "You are given a text. Read the text so you familiarize yourself with it. You have up to 5 minutes to read it as many times as you want. When you are ready, you will be asked to recall the story. This can be in your own words.",
+      "instructions_source": "curated",
       "speech_type": "recall",
       "prompt_ref": {
         "type": "static-inline"
@@ -770,8 +892,8 @@
         "10+"
       ],
       "recording_count": 37,
-      "instructions": "If the child makes a sound effect vs naming the picture that’s ok! We’re not actually using this task as an evaluation of articulation. Pictures presented one at a time on the screen – option to swipe/click to “next” once the child has named the item or if it is an unknown for the child it may be skipped.",
-      "instructions_source": "harvested",
+      "instructions": "That was great! Let's look at a few more pictures – if you know what it is, say it out loud so we can hear you! Remember, this time you're going to tell me the name of the picture, not the sound that it makes. If you're not sure, you can skip it and move on to the next picture. When you are ready, press \"record\".",
+      "instructions_source": "curated",
       "speech_type": "elicited",
       "prompt_ref": {
         "type": "image",
@@ -1010,8 +1132,8 @@
         "10+"
       ],
       "recording_count": 1,
-      "instructions": "Describe everything that is happening in the picture (as though describing it for the blind), trying to use complete sentences.",
-      "instructions_source": "harvested",
+      "instructions": "You're almost done! Now let's look at a picture that has a lot of details. Look at the picture and describe what you see – there are no right or wrong answers. Whatever you want to tell me about is perfect! When you are ready, press \"record\".",
+      "instructions_source": "curated",
       "speech_type": "elicited",
       "prompt_ref": {
         "type": "image"
@@ -1106,8 +1228,8 @@
         "10+"
       ],
       "recording_count": 4,
-      "instructions": "",
-      "instructions_source": "",
+      "instructions": "Tell me about how you get ready for school in the morning.",
+      "instructions_source": "harvested",
       "speech_type": "elicited",
       "prompt_ref": {
         "type": "static-inline"
