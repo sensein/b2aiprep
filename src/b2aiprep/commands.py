@@ -462,27 +462,32 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
         "status": "created",
     }
     
-    _LOGGER.info("Generating metadata.parquet")
+    _LOGGER.info("Generating metadata.tsv")
     metadata_dir = outdir / "metadata"
     metadata_dir.mkdir(parents=True, exist_ok=True)
     wav_paths = list(bids_path.rglob("*.wav"))
-    metadata_paths = [p.with_suffix(".json") for p in wav_paths]
-    metadata_dfs = []
-    for path in metadata_paths:
-        with open(path, 'r') as f:
-            try:
-                metadata_dfs.append(pd.DataFrame([json.load(f)]))
-            except (json.JSONDecodeError, ValueError) as e:
-                _LOGGER.warning(f"Failed to process metadata file {path}: {e}")
-                continue
-    
-    df = pd.concat(metadata_dfs, ignore_index=True)
-    df.to_parquet(metadata_dir.joinpath("metadata.parquet"), index=False)
-    
+    # Every per-recording sidecar is now flat scalars (the prompts list was
+    # replaced by scalar stimulus_text), so the metadata table is emitted as a
+    # TSV -- consistent with phenotype.tsv / static_features.tsv -- instead of
+    # parquet. Collect all records into one DataFrame (columns = union of keys).
+    records = []
+    for wav_path in wav_paths:
+        path = wav_path.with_suffix(".json")
+        try:
+            records.append(json.loads(path.read_text()))
+        except FileNotFoundError:
+            continue
+        except (json.JSONDecodeError, ValueError) as e:
+            _LOGGER.warning(f"Failed to process metadata file {path}: {e}")
+            continue
+
+    df = pd.DataFrame(records)
+    df.to_csv(metadata_dir.joinpath("metadata.tsv"), sep="\t", index=False)
+
     metadata_json_file = resources.files("b2aiprep").joinpath(
         "prepare", "resources", "metadata.json"
     )
-    
+
     metadata = json.load(metadata_json_file.open())
     with open(metadata_dir.joinpath("metadata.json"), "w") as f:
         json.dump(metadata, f, indent=2)
