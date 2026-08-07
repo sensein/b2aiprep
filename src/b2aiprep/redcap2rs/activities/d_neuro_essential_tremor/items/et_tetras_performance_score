@@ -1,0 +1,46 @@
+{
+    "id": "et_tetras_performance_score",
+    "category": "reproschema:Item",
+    "additionalNotesObj": [
+        {
+            "column": "Text Validation Type OR Show Slider Number",
+            "source": "redcap",
+            "value": "integer"
+        },
+        {
+            "column": "Text Validation Min",
+            "source": "redcap",
+            "value": "0.0"
+        },
+        {
+            "column": "Text Validation Max",
+            "source": "redcap",
+            "value": "64.0"
+        },
+        {
+            "column": "Custom Alignment",
+            "source": "redcap",
+            "value": "RH"
+        }
+    ],
+    "preamble": {
+        "en": "3. Assessment"
+    },
+    "prefLabel": {
+        "en": "et_tetras_performance_score"
+    },
+    "question": {
+        "en": "TETRAS performance score available\n\nTETRAS performance score (0 to 64):"
+    },
+    "responseOptions": {
+        "maxValue": 64,
+        "minValue": 0,
+        "valueType": [
+            "xsd:integer"
+        ]
+    },
+    "ui": {
+        "inputType": "number"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

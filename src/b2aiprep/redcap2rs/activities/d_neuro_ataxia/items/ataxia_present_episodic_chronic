@@ -1,0 +1,49 @@
+{
+    "id": "ataxia_present_episodic_chronic",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Presentation and severity"
+    },
+    "prefLabel": {
+        "en": "ataxia_present_episodic_chronic"
+    },
+    "question": {
+        "en": "Does ataxia present as episodic or chronic? (Choose all that apply)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Episodic"
+                },
+                "value": "episodic"
+            },
+            {
+                "name": {
+                    "en": "Chronic"
+                },
+                "value": "chronic"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Unknown"
+                },
+                "value": "unknown"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

@@ -1,0 +1,42 @@
+{
+    "id": "ataxia_vestibular_testing_performed",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "5. Imaging and diagnostic tests"
+    },
+    "prefLabel": {
+        "en": "ataxia_vestibular_testing_performed"
+    },
+    "question": {
+        "en": "Vestibular testing performed?"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Yes"
+                },
+                "value": "yes"
+            },
+            {
+                "name": {
+                    "en": "No"
+                },
+                "value": "no"
+            },
+            {
+                "name": {
+                    "en": "Unknown"
+                },
+                "value": "unknown"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

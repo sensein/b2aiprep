@@ -1,0 +1,61 @@
+{
+    "id": "et_non_pharmacological_interventions_selection",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "5. Treatment obtained"
+    },
+    "prefLabel": {
+        "en": "et_non_pharmacological_interventions_selection"
+    },
+    "question": {
+        "en": "Non-pharmacological interventions (select all that apply)"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Physical therapy"
+                },
+                "value": "physical_therapy"
+            },
+            {
+                "name": {
+                    "en": "Occupational therapy"
+                },
+                "value": "occupational_therapy"
+            },
+            {
+                "name": {
+                    "en": "Speech therapy"
+                },
+                "value": "speech_therapy"
+            },
+            {
+                "name": {
+                    "en": "Deep Brain Stimulation (DBS)"
+                },
+                "value": "deep_brain_stimulation"
+            },
+            {
+                "name": {
+                    "en": "Focused ultrasound"
+                },
+                "value": "focused_ultrasound"
+            },
+            {
+                "name": {
+                    "en": "Other"
+                },
+                "value": "other"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

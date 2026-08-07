@@ -1,0 +1,37 @@
+{
+    "id": "et_treatment_types_selection",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "5. Treatment obtained"
+    },
+    "prefLabel": {
+        "en": "et_treatment_types_selection"
+    },
+    "question": {
+        "en": "Select all treatment types that apply:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Medications"
+                },
+                "value": "medications"
+            },
+            {
+                "name": {
+                    "en": "Non-pharmacological interventions"
+                },
+                "value": "non_pharmacological_interventions"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

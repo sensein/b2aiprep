@@ -23,7 +23,17 @@
             "items/recording_microphone",
             "items/recording_origin",
             "items/recording_via",
-            "items/recording_language"
+            "items/recording_language",
+            "items/recording_platform",
+            "items/recording_platform_version",
+            "items/recording_platform_architecture",
+            "items/recording_browser",
+            "items/recording_browser_version",
+            "items/recording_screen_resolution",
+            "items/recording_window_resolution",
+            "items/recording_device_info",
+            "items/recording_device_type",
+            "items/recording_touch_screen"
         ],
         "addProperties": [
             {
@@ -124,13 +134,73 @@
             },
             {
                 "isAbout": "items/recording_language",
-                "isVis": true,
+                "isVis": false,
                 "valueRequired": true,
                 "variableName": "recording_language"
+            },
+            {
+                "isAbout": "items/recording_platform",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "recording_platform"
+            },
+            {
+                "isAbout": "items/recording_platform_version",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "recording_platform_version"
+            },
+            {
+                "isAbout": "items/recording_platform_architecture",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "recording_platform_architecture"
+            },
+            {
+                "isAbout": "items/recording_browser",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "recording_browser"
+            },
+            {
+                "isAbout": "items/recording_browser_version",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "recording_browser_version"
+            },
+            {
+                "isAbout": "items/recording_screen_resolution",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "recording_screen_resolution"
+            },
+            {
+                "isAbout": "items/recording_window_resolution",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "recording_window_resolution"
+            },
+            {
+                "isAbout": "items/recording_device_info",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "recording_device_info"
+            },
+            {
+                "isAbout": "items/recording_device_type",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "recording_device_type"
+            },
+            {
+                "isAbout": "items/recording_touch_screen",
+                "isVis": false,
+                "valueRequired": true,
+                "variableName": "recording_touch_screen"
             }
         ],
         "shuffle": false
     },
-    "version": "4.7.0",
+    "version": "4.8.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

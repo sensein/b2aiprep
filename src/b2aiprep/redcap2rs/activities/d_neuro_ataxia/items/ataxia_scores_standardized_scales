@@ -1,0 +1,61 @@
+{
+    "id": "ataxia_scores_standardized_scales",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Presentation and severity"
+    },
+    "prefLabel": {
+        "en": "ataxia_scores_standardized_scales"
+    },
+    "question": {
+        "en": "Please provide scores or results from standardized ataxia scales (select all that apply)."
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "SARA score available"
+                },
+                "value": "sara_score"
+            },
+            {
+                "name": {
+                    "en": "ICARS score available"
+                },
+                "value": "icars_score"
+            },
+            {
+                "name": {
+                    "en": "FARS score available"
+                },
+                "value": "fars_score"
+            },
+            {
+                "name": {
+                    "en": "Functional mobility stage available"
+                },
+                "value": "functional_mobility_stage"
+            },
+            {
+                "name": {
+                    "en": "Other scale"
+                },
+                "value": "other_scale"
+            },
+            {
+                "name": {
+                    "en": "Not available"
+                },
+                "value": "not_available"
+            }
+        ],
+        "multipleChoice": true,
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

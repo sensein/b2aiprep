@@ -1,0 +1,22 @@
+{
+    "id": "et_datscan_specify_test",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Imaging and diagnostic tests"
+    },
+    "prefLabel": {
+        "en": "et_datscan_specify_test"
+    },
+    "question": {
+        "en": "Please specify test:"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

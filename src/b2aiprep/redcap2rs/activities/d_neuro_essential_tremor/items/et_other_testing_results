@@ -1,0 +1,42 @@
+{
+    "id": "et_other_testing_results",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Imaging and diagnostic tests"
+    },
+    "prefLabel": {
+        "en": "et_other_testing_results"
+    },
+    "question": {
+        "en": "Other testing results:"
+    },
+    "responseOptions": {
+        "choices": [
+            {
+                "name": {
+                    "en": "Normal"
+                },
+                "value": "normal"
+            },
+            {
+                "name": {
+                    "en": "Abnormal"
+                },
+                "value": "abnormal"
+            },
+            {
+                "name": {
+                    "en": "Unknown"
+                },
+                "value": "unknown"
+            }
+        ],
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "radio"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}
