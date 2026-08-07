@@ -44,11 +44,74 @@ def _resolve(descriptions, recording_name, questionnaire_lookup=None, acoustic_t
     )
 
 
-def test_alias_of_dereferences_to_target(descriptions):
-    naming = _resolve(descriptions, "Naming-Animals")
-    aliased = _resolve(descriptions, "Generative-Naming-Task-animals")
-    assert aliased["instructions"] == naming["instructions"]
-    assert aliased["instructions"] != ""
+def test_registry_first_grouped_recording_instruction(descriptions):
+    # Generative Naming is a grouped task: the registry now supplies the curated,
+    # per-recording instruction (verbatim from redcap), which wins over the flat
+    # alias. The animals and food recordings get distinct instructions.
+    animals = _resolve(descriptions, "Generative-Naming-Task-animals")
+    food = _resolve(descriptions, "Generative-Naming-Task-food")
+    assert animals["instructions"] != ""
+    assert "animals" in animals["instructions"].lower()
+    assert "food" in food["instructions"].lower()
+    assert animals["instructions"] != food["instructions"]
+
+
+def test_flat_alias_of_fallback():
+    # A name the registry does not cover still dereferences alias_of in the flat
+    # file (tier-2 fallback), independent of the packaged registry.
+    from b2aiprep.prepare.fhir_utils import _flat_bids_fields
+
+    descs = collections.OrderedDict(
+        [
+            ("naming-animals", {"instructions": "Name animals.", "speech_type": "elicited"}),
+            ("made-up-alias-xyz", {"alias_of": "naming-animals"}),
+        ]
+    )
+    fields = _flat_bids_fields("made-up-alias-xyz", descs, None, None)
+    assert fields["instructions"] == "Name animals."
+
+
+def test_registry_reading_passage_indexed(descriptions):
+    m = _resolve(descriptions, "reading-passage-2")
+    assert m["speech_type"] == "read"
+    assert m["stimulus_text"].startswith("My most MEMORABLE moment")
+    assert m["stimulus_source"] == "transcribed"
+
+
+def test_registry_repeating_sentences_indexed(descriptions):
+    m = _resolve(descriptions, "repeating-sentences-1")
+    assert m["stimulus_text"] == "The blue spot is on the key again."
+    assert m["speech_type"] == "read"
+
+
+def test_registry_cape_v_version_index_fix(descriptions):
+    # The adult data names v2 CAPE-V as "...-N-(v2)" (version after the number).
+    # The flat longest-substring matcher collided v2 onto the v1 key; the registry
+    # version-index resolves the correct version regardless of token position.
+    v1 = _resolve(descriptions, "Cape-V-sentences-2")
+    v2 = _resolve(descriptions, "Cape-V-sentences-2-(v2)")
+    assert v1["stimulus_text"] == "How hard did he hit him?"
+    assert v2["stimulus_text"] == "He helped her hurry home."
+
+
+def test_flat_per_key_instruction_wins_over_coarse_registry(descriptions):
+    # diadochokinesis has per-syllable instructions in the flat file. The registry
+    # only carries a coarse (non-curated) task-level instruction, so the flat
+    # per-key text must win -- the 'pa' recording keeps its 'pa' syllable and is
+    # not overwritten with the task-level 'puhtuhkuh' demonstration text.
+    m = _resolve(descriptions, "diadochokinesis-pa")
+    assert "'pa'" in m["instructions"]
+    assert "puhtuhkuh" not in m["instructions"]
+
+
+def test_registry_respiration_v2_swapped_instructions(descriptions):
+    # The recording badge names are correct; the instruction blocks were swapped
+    # in redcap (eipm/bridge2ai-redcap#44). The registry carries the corrected
+    # per-recording instructions.
+    hardcough = _resolve(descriptions, "Respiration-and-cough-(v2)-HardCough")
+    nose = _resolve(descriptions, "Respiration-and-cough-(v2)-ThreeBreathsNose")
+    assert "cough HARD" in hardcough["instructions"]
+    assert "through your nose" in nose["instructions"]
 
 
 def test_repeating_words_both_forms_resolve_to_same_word(descriptions):

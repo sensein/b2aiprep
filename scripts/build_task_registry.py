@@ -451,8 +451,16 @@ def build_registry(redcap_root: Path, git_tag: str):
                 report["unknown_policy"].append(fam_slug)
 
             cur = curated.get(task_id, {})
-            task_instructions = cur.get("instructions") or \
-                harvest_task_instructions(flat, fam_slug, t["version"])
+            # instructions_source distinguishes authoritative curated text (which
+            # the resolver lets win) from coarse flat-file harvest (which the
+            # resolver treats as a fallback below the flat per-key instruction --
+            # e.g. diadochokinesis's per-syllable text, loudness v1/v2).
+            if cur.get("instructions"):
+                task_instructions = cur["instructions"]
+                task_instr_source = "curated"
+            else:
+                task_instructions = harvest_task_instructions(flat, fam_slug, t["version"])
+                task_instr_source = "harvested" if task_instructions else ""
 
             # Genuinely grouped tasks (distinct sub-recordings, e.g. Conversation
             # (6 plus), Generative Naming) get nested recording entries, each with
@@ -466,14 +474,17 @@ def build_registry(redcap_root: Path, git_tag: str):
                 candidates = []
                 for i, rec in enumerate(rows, start=1):
                     instr = curated_recording_instruction(cur, rec["sub_name"], i)
+                    rec_source = "curated"
                     if instr is None:
                         instr = harvest_recording_instructions(
                             flat_slug_index, rec["sub_name"], fam_slug)
+                        rec_source = "harvested" if instr else ""
                     candidates.append(OrderedDict([
                         ("recording_id", slug(rec["recording_name"])),
                         ("canonical_name", rec["recording_name"]),
                         ("sub_name", rec["sub_name"]),
                         ("instructions", instr),
+                        ("instructions_source", rec_source),
                     ]))
                 resolved = [c for c in candidates if c["instructions"]]
                 if cur.get("recordings") or len({c["instructions"] for c in resolved}) >= 2:
@@ -494,6 +505,7 @@ def build_registry(redcap_root: Path, git_tag: str):
                 ("age_or_cohort", t["used_in"]),
                 ("recording_count", t["recording_count"]),
                 ("instructions", task_instructions),
+                ("instructions_source", task_instr_source),
                 ("speech_type", speech_type),
                 ("prompt_ref", prompt_ref),
                 ("recordings", recordings),

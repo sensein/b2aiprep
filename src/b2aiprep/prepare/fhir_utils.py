@@ -13,34 +13,76 @@ _logger = logging.getLogger(__name__)
 
 
 @lru_cache(maxsize=None)
-def _load_stimulus_bank(bank_name: str) -> tuple:
-    """Load an ordered stimulus bank (list of strings) from prepare/resources.
+def _load_stimulus_bank(bank_name: str) -> str:
+    """Load a stimulus bank JSON (as text, for hashable caching) from resources.
 
-    Cached so the resource is read once per bank, not once per recording.
-    Returns a tuple so the result is hashable/immutable.
+    Looks in prepare/resources/task_registry/ first (generated banks), then
+    prepare/resources/ (the phase-1 repeating_words_bank). Returns the raw JSON
+    text; callers parse it (kept as text so the lru_cache value stays hashable).
     """
-    resource = files("b2aiprep.prepare.resources").joinpath(f"{bank_name}.json")
-    data = json.loads(resource.read_text())
-    return tuple(data["words"])
+    base = files("b2aiprep.prepare.resources")
+    for parent in ("task_registry", ""):
+        resource = base.joinpath(parent, f"{bank_name}.json") if parent \
+            else base.joinpath(f"{bank_name}.json")
+        try:
+            return resource.read_text()
+        except (FileNotFoundError, OSError):
+            continue
+    raise FileNotFoundError(f"stimulus bank not found: {bank_name}")
+
+
+def _bank(bank_name: str) -> dict:
+    return json.loads(_load_stimulus_bank(bank_name))
 
 
 def _resolve_prompt_ref(task_name: str, prompt_ref: dict) -> str:
     """Resolve a task name to its specific stimulus via a stimulus bank.
 
-    Supports both task-name forms that occur in the data:
-    - numeral form (e.g. "repeat-words-24" / "repeat_words_24") -> bank[index-1]
-    - word form   (e.g. "repeating-words-slice")                -> the word itself,
-      validated against the bank.
-    The trailing token (after the last '-' or '_') carries the index or word.
-    Returns "" when the token can't be resolved (e.g. a bare task name).
+    Dispatches on prompt_ref['select']:
+    - index-or-word (default; repeating_words): trailing token -> word by 1-based
+      index (e.g. repeat-words-24) or by literal word (e.g. repeating-words-slice).
+    - index (reading_passage / repeating_sentences): trailing integer ->
+      sentences[index-1].
+    - list-index (harvard): '...-list-<L>-<N>' -> lists[L][N-1].
+    - version-index (cape-v): version from '(v2)' + trailing <N> -> lists[version][N].
+    Returns "" when it can't be resolved. `task_name` is the ORIGINAL name (parens
+    intact) so the '(v2)' / 'list-L-N' patterns still match.
     """
-    words = _load_stimulus_bank(prompt_ref["bank"])
+    bank = _bank(prompt_ref["bank"])
+    select = prompt_ref.get("select", "index-or-word")
+
+    if select == "list-index":
+        m = re.search(r"list-(\d+)-(\d+)$", task_name)
+        if not m:
+            return ""
+        lst, idx = m.group(1), int(m.group(2))
+        items = bank.get("lists", {}).get(lst, [])
+        return items[idx - 1] if 1 <= idx <= len(items) else ""
+
+    if select == "version-index":
+        # The version token appears in either position in the data
+        # ("cape-v-sentences-(v2)-4" and "cape-v-sentences-4-(v2)"); strip it, then
+        # the remaining number is the sentence index.
+        version = "v2" if "(v2)" in task_name else "v1"
+        core = re.sub(r"\(v\d+\)", "", task_name)
+        m = re.search(r"(\d+)", core)
+        if not m:
+            return ""
+        return bank.get("lists", {}).get(version, {}).get(m.group(1), "")
+
+    if select == "index":
+        items = bank.get("sentences", bank.get("words", []))
+        token = re.split(r"[-_]", task_name)[-1]
+        if token.isdigit() and 1 <= int(token) <= len(items):
+            return items[int(token) - 1]
+        return ""
+
+    # default: index-or-word over a flat "words" list
+    words = bank.get("words", [])
     token = re.split(r"[-_]", task_name)[-1]
     if token.isdigit():
         idx = int(token)
-        if 1 <= idx <= len(words):
-            return words[idx - 1]
-        return ""
+        return words[idx - 1] if 1 <= idx <= len(words) else ""
     for word in words:
         if word.lower() == token.lower():
             return word
@@ -138,6 +180,199 @@ def _stimulus_text_from_questionnaire(best_task, task_name, join_id, questionnai
         # participant names the ink colors in order -> a known target sequence
         return (" ".join(colors), "read", None)
     return None
+
+
+# --------------------------------------------------------------------------- #
+# Registry-first resolution (phase 2c). The vendored task_registry/registry.json
+# mirrors the bridge2ai-redcap hierarchy and is authoritative for instructions,
+# speech_type, and prompt_ref. Resolution is registry-first with a three-tier
+# fallback (registry -> flat dict -> substring): anything the registry cannot
+# produce (e.g. static passage text it does not carry) falls back to the flat
+# audio_task_descriptions.json so currently-populated sidecars do not regress.
+# --------------------------------------------------------------------------- #
+@lru_cache(maxsize=None)
+def _load_registry() -> dict:
+    """Load the vendored task registry, or {} when it is not packaged."""
+    try:
+        resource = files("b2aiprep.prepare.resources").joinpath(
+            "task_registry", "registry.json"
+        )
+        return json.loads(resource.read_text())
+    except (FileNotFoundError, OSError):
+        return {}
+
+
+def _norm(name: str) -> str:
+    """Normalize a task/recording name for matching: lowercase, drop parentheses,
+    collapse runs of '-'. So 'Conversation-(6-plus)-favorite-food' and the
+    registry recording_id 'conversation-6-plus-favorite-food' compare equal."""
+    return re.sub(r"-+", "-", re.sub(r"[()]", "", name.lower())).strip("-")
+
+
+@lru_cache(maxsize=None)
+def _alias_items() -> tuple:
+    """(normalized_alias, alias_len, task_id) tuples, longest alias first, so a
+    single pass yields the longest-substring match deterministically."""
+    reg = _load_registry()
+    items = [(_norm(a), tid) for a, tid in reg.get("alias_index", {}).items()]
+    items.sort(key=lambda it: len(it[0]), reverse=True)
+    return tuple((na, len(na), tid) for na, tid in items)
+
+
+def _resolve_task_registry(task_name: str):
+    """Resolve a (granular) task name to (task_entry, recording_entry|None) using
+    the registry alias_index (exact, else longest normalized-substring), then the
+    nested recording whose recording_id equals the normalized task name. Returns
+    None when the registry is absent or nothing matches."""
+    reg = _load_registry()
+    if not reg:
+        return None
+    n = _norm(task_name)
+    best_tid, best_len = None, -1
+    for na, na_len, tid in _alias_items():
+        if na == n:
+            best_tid, best_len = tid, na_len
+            break
+        if na in n and na_len > best_len:
+            best_tid, best_len = tid, na_len
+    if best_tid is None:
+        return None
+    task = reg["tasks"][best_tid]
+    rec = None
+    for candidate in task.get("recordings", []):
+        if _norm(candidate.get("recording_id", "")) == n:
+            rec = candidate
+            break
+    return task, rec
+
+
+def _registry_questionnaire(prompt_ref, task_name, join_id, questionnaire_lookup):
+    """Per-participant stimulus for a questionnaire-join prompt_ref. Returns
+    (stimulus_text, speech_type, instructions_suffix) or None."""
+    if not questionnaire_lookup or not _is_present(join_id):
+        return None
+    row = questionnaire_lookup.get((prompt_ref.get("instrument"), join_id))
+    if row is None:
+        return None
+    select = prompt_ref.get("select")
+    if select == "index-field":
+        idx = _trailing_index(task_name)
+        if idx is None:
+            return None
+        word = row.get(prompt_ref["field_template"].format(i=idx))
+        return (str(word).strip() if _is_present(word) else "", "elicited", None)
+    if select == "field":
+        value = row.get(prompt_ref["field"])
+        suffix = f"Category: {str(value).strip()}." if _is_present(value) else None
+        return ("", "elicited", suffix)
+    if select == "color-list":
+        n = prompt_ref.get("n", 15)
+        colors = [row.get(prompt_ref["field_template"].format(i=i)) for i in range(1, n + 1)]
+        colors = [str(c).strip() for c in colors if _is_present(c)]
+        return (" ".join(colors), "read", None)
+    return None
+
+
+def _registry_bids_fields(task, rec, task_name, join_id, questionnaire_lookup):
+    """Assemble sidecar fields from a registry match. `stimulus_text` is None when
+    the registry cannot produce it (static-inline / image tasks carry no text) so
+    the caller can fall back to the flat file. Returns a dict."""
+    # Instructions are authoritative only when curated (per-recording, or a
+    # curated task-level instruction such as reading-passage). A coarse harvested
+    # task-level instruction is NOT authoritative: the flat file's per-key
+    # instruction (e.g. diadochokinesis's per-syllable text, loudness v1/v2) is
+    # more specific and must win. The caller consults `instructions_authoritative`.
+    if rec and rec.get("instructions"):
+        instructions = rec["instructions"]
+        instructions_authoritative = True
+    else:
+        instructions = task.get("instructions", "") or ""
+        instructions_authoritative = task.get("instructions_source") == "curated"
+    speech_type = task.get("speech_type") or "elicited"
+    prompt_ref = task.get("prompt_ref") or {}
+    ptype = prompt_ref.get("type")
+    stimulus_text = None
+    stimulus_source = None
+    instructions_suffix = None
+
+    if ptype == "stimulus-bank":
+        stimulus_text = _resolve_prompt_ref(task_name, prompt_ref)
+        # reading/repeating-sentences text was transcribed from image stimuli;
+        # the lexical banks (harvard/cape-v/repeating-words) are redcap doc text.
+        stimulus_source = "transcribed" if prompt_ref.get("bank") in (
+            "reading_passage_bank", "repeating_sentences_bank"
+        ) else "doc-text"
+    elif ptype == "questionnaire-join":
+        joined = _registry_questionnaire(prompt_ref, task_name, join_id, questionnaire_lookup)
+        if joined is not None:
+            stimulus_text, speech_type, instructions_suffix = joined
+            stimulus_source = "questionnaire"
+        else:
+            stimulus_text = ""
+            stimulus_source = "questionnaire"
+    # static-inline / image: stimulus_text stays None -> flat-file fallback.
+
+    return {
+        "instructions": instructions,
+        "instructions_authoritative": instructions_authoritative,
+        "speech_type": speech_type,
+        "stimulus_text": stimulus_text,
+        "stimulus_source": stimulus_source,
+        "instructions_suffix": instructions_suffix,
+    }
+
+
+def _flat_bids_fields(task_name_lower, audio_task_descriptions, join_id, questionnaire_lookup):
+    """The flat audio_task_descriptions.json resolution (exact -> longest
+    substring, alias_of hop, prompt_ref/static stimulus, questionnaire join).
+    Returns a dict of fields, or None when no key matches."""
+    best_task = None
+    for task in audio_task_descriptions:
+        task_lower = task.lower()
+        if task_lower == task_name_lower:
+            best_task = task
+            break
+        if task_lower in task_name_lower and (best_task is None or len(task) > len(best_task)):
+            best_task = task
+    if best_task is None:
+        return None
+
+    description = audio_task_descriptions[best_task]
+    seen_aliases = set()
+    while isinstance(description, dict) and "alias_of" in description:
+        target = description["alias_of"]
+        if target in seen_aliases or target not in audio_task_descriptions:
+            break
+        seen_aliases.add(target)
+        description = audio_task_descriptions[target]
+
+    fields = {
+        "instructions": description["instructions"],
+        "speech_type": description.get("speech_type") or _classify_speech_type(best_task),
+        "stimulus_text": "",
+        "instructions_suffix": None,
+    }
+    prompt_ref = description.get("prompt_ref")
+    if prompt_ref:
+        fields["stimulus_text"] = _resolve_prompt_ref(task_name_lower, prompt_ref)
+    elif "stimulus_text" in description:
+        fields["stimulus_text"] = description["stimulus_text"]
+    else:
+        static_prompts = description.get("prompts", [])
+        fields["stimulus_text"] = (
+            static_prompts[0] if len(static_prompts) == 1 else " ".join(static_prompts)
+        )
+
+    if questionnaire_lookup:
+        joined = _stimulus_text_from_questionnaire(
+            best_task, task_name_lower, join_id, questionnaire_lookup
+        )
+        if joined is not None:
+            q_text, q_type, q_suffix = joined
+            fields["stimulus_text"] = q_text
+            fields["speech_type"] = q_type
+            fields["instructions_suffix"] = q_suffix
+    return fields
 
 
 def extract_items(participant_json: dict, outline: list) -> t.List[dict]:
@@ -280,76 +515,71 @@ def convert_response_to_bids_metadata( participant: dict,
     if "recording_name" in metadata_file:
         metadata_file["task_name"] = metadata_file["recording_name"]
         metadata_file.pop("recording_name")
-    # Resolve the task description. Prefer an exact match on the task name;
-    # otherwise fall back to the longest description key that is a substring of
-    # the task name. Numbered instances of a task (e.g. "picture-12",
-    # "productive-Vocabulary-3") intentionally share a single key ("picture",
-    # "productive-Vocabulary") through this substring fallback. Selecting the
-    # longest match rather than the first makes the lookup independent of key
-    # ordering, so e.g. "harvard-sentences-list-1-10" resolves to its own key
-    # instead of being shadowed by the shorter "harvard-sentences-list-1-1".
+    # Resolve the task metadata registry-first, with a flat-file fallback.
+    #
+    # Tier 1: the vendored task_registry/registry.json (mirrors bridge2ai-redcap)
+    #   is authoritative for instructions (per-recording where grouped),
+    #   speech_type, and the stimulus prompt_ref (bank / questionnaire-join).
+    # Tier 2/3: the flat audio_task_descriptions.json (exact -> longest substring,
+    #   alias_of hop) supplies anything the registry cannot -- notably the static
+    #   passage/recall text the registry does not carry -- so currently-populated
+    #   sidecars never regress.
+    #
+    # Numbered instances of a task (e.g. "picture-12") share a single key/entry;
+    # matching by longest substring keeps the lookup independent of ordering, so
+    # e.g. "harvard-sentences-list-1-10" resolves to its own list/index rather
+    # than being shadowed by the shorter "harvard-sentences-list-1-1".
     if task_name:
         task_name_lower = task_name.lower()
-        best_task = None
-        for task in audio_task_descriptions:
-            task_lower = task.lower()
-            if task_lower == task_name_lower:
-                best_task = task
-                break
-            if task_lower in task_name_lower and (
-                best_task is None or len(task) > len(best_task)
-            ):
-                best_task = task
-        if best_task is not None:
-            description = audio_task_descriptions[best_task]
-            # Follow alias_of pointers so variant task names (e.g.
-            # generative-naming-task-animals -> naming-animals) reuse a single
-            # canonical entry without duplicating content. Guarded against cycles.
-            seen_aliases = set()
-            while isinstance(description, dict) and "alias_of" in description:
-                target = description["alias_of"]
-                if target in seen_aliases or target not in audio_task_descriptions:
-                    break
-                seen_aliases.add(target)
-                description = audio_task_descriptions[target]
-            metadata_file["instructions"] = description["instructions"]
-            # Resolve the prompted/read speech as a single scalar string
-            # (`stimulus_text`, replacing the legacy `prompts` array) plus a
-            # `speech_type` discriminator. Prefer a prompt_ref (bank) resolution
-            # by index/word in the task name; else the entry's static text.
-            prompt_ref = description.get("prompt_ref")
-            if prompt_ref:
-                stimulus_text = _resolve_prompt_ref(task_name_lower, prompt_ref)
-            elif "stimulus_text" in description:
-                stimulus_text = description["stimulus_text"]
-            else:
-                static_prompts = description.get("prompts", [])
-                # One stimulus per recording; join the rare multi-prompt legacy
-                # entry (peds "sentence") as a stopgap until it becomes a bank.
-                stimulus_text = (
-                    static_prompts[0] if len(static_prompts) == 1 else " ".join(static_prompts)
-                )
-            metadata_file["stimulus_text"] = stimulus_text
-            metadata_file["speech_type"] = description.get("speech_type") or _classify_speech_type(
-                best_task
-            )
+        join_id = participant.get("recording_acoustic_task_id")
+        flat = _flat_bids_fields(
+            task_name_lower, audio_task_descriptions, join_id, questionnaire_lookup
+        )
+        reg_match = _resolve_task_registry(task_name_lower)
 
-            # Per-participant stimulus (vocab words, random category, stroop
-            # colors) lives in a linked questionnaire, not any static file.
-            # Resolve it by joining on the recording's acoustic-task id.
-            if questionnaire_lookup:
-                join_id = participant.get("recording_acoustic_task_id")
-                joined = _stimulus_text_from_questionnaire(
-                    best_task, task_name_lower, join_id, questionnaire_lookup
-                )
-                if joined is not None:
-                    q_text, q_type, q_instructions_suffix = joined
-                    metadata_file["stimulus_text"] = q_text
-                    metadata_file["speech_type"] = q_type
-                    if q_instructions_suffix:
-                        metadata_file["instructions"] = (
-                            f"{metadata_file['instructions']} {q_instructions_suffix}".strip()
-                        )
+        resolved = None
+        if reg_match is not None:
+            task, rec = reg_match
+            reg = _registry_bids_fields(
+                task, rec, task_name_lower, join_id, questionnaire_lookup
+            )
+            # Registry instructions win only when authoritative (curated);
+            # otherwise the flat file's per-key instruction is more specific.
+            if reg["instructions_authoritative"] and reg["instructions"]:
+                instructions = reg["instructions"]
+            elif flat and flat["instructions"]:
+                instructions = flat["instructions"]
+            else:
+                instructions = reg["instructions"]
+            resolved = {
+                "instructions": instructions,
+                "speech_type": reg["speech_type"],
+                # registry stimulus_text is None for static-inline/image tasks it
+                # does not carry -> fall back to the flat file's text.
+                "stimulus_text": reg["stimulus_text"]
+                if reg["stimulus_text"] is not None
+                else (flat["stimulus_text"] if flat else ""),
+                "stimulus_source": reg["stimulus_source"],
+                "instructions_suffix": reg["instructions_suffix"],
+            }
+        elif flat is not None:
+            resolved = {
+                "instructions": flat["instructions"],
+                "speech_type": flat["speech_type"],
+                "stimulus_text": flat["stimulus_text"],
+                "stimulus_source": None,
+                "instructions_suffix": flat["instructions_suffix"],
+            }
+
+        if resolved is not None:
+            instructions = resolved["instructions"]
+            if resolved["instructions_suffix"]:
+                instructions = f"{instructions} {resolved['instructions_suffix']}".strip()
+            metadata_file["instructions"] = instructions
+            metadata_file["stimulus_text"] = resolved["stimulus_text"]
+            metadata_file["speech_type"] = resolved["speech_type"]
+            if resolved["stimulus_source"]:
+                metadata_file["stimulus_source"] = resolved["stimulus_source"]
 
 
     metadata_file.update({"audio_channel_count": 1, "audio_sample_rate": "16000"})

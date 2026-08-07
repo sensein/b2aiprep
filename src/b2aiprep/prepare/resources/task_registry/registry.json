@@ -17,6 +17,7 @@
       ],
       "recording_count": 1,
       "instructions": "This task helps us analyze features in your voice. Please press the play button to listen to the demonstration on how to complete the task. Then, tap the record button and imitate the speaker by repeating the sentence “1, 2, 3 aah” in your normal voice. Please hold the sound “aah” until the timer runs out.",
+      "instructions_source": "harvested",
       "speech_type": "non-lexical",
       "prompt_ref": {
         "type": "static-inline"
@@ -38,6 +39,7 @@
       ],
       "recording_count": 2,
       "instructions": "This task helps us analyze the way your breathing is connected to your voice. Take a very deep breath, tap on the record button, and hold out “ah” for as long as possible until you completely run out of air. Try to hold it until the progress bar reaches the end of the screen.",
+      "instructions_source": "harvested",
       "speech_type": "non-lexical",
       "prompt_ref": {
         "type": "static-inline"
@@ -62,6 +64,7 @@
       ],
       "recording_count": 2,
       "instructions": "Please watch the video to help you understand the next task and imitate what the speaker does. When you're ready, press the record button and use the sound “ee” to gradually move from your lowest note to your highest.",
+      "instructions_source": "harvested",
       "speech_type": "non-lexical",
       "prompt_ref": {
         "type": "static-inline"
@@ -83,6 +86,7 @@
       ],
       "recording_count": 20,
       "instructions": "Please read the following sentences out loud in your typical voice.",
+      "instructions_source": "harvested",
       "speech_type": "read",
       "prompt_ref": {
         "type": "stimulus-bank",
@@ -106,6 +110,7 @@
       ],
       "recording_count": 1,
       "instructions": "This helps us to determine the loudness of the voice. When you're ready, press the record button and say “hey” in your normal voice. Then, shout “hey” as loud as you can. Try to reach the target line on the screen. Follow the prompts on the screen to continue.",
+      "instructions_source": "harvested",
       "speech_type": "non-lexical",
       "prompt_ref": {
         "type": "static-inline"
@@ -130,6 +135,7 @@
       ],
       "recording_count": 5,
       "instructions": "This task helps us analyze the ease and precision of speech sound productions. Please press the play button to listen to the demonstration on how to complete the task. Then, tap the record button and imitate the speaker by repeating the syllables 'puhtuhkuh' as quickly and consistently as possible until the timer runs out - 'puhtuhkuhpuhtuhkuh'",
+      "instructions_source": "harvested",
       "speech_type": "non-lexical",
       "prompt_ref": {
         "type": "static-inline"
@@ -154,6 +160,7 @@
       ],
       "recording_count": 3,
       "instructions": "This section is meant to hear you speak freely by answering an open-ended question. We'd like to get a recording of your natural speech. Please answer the following questions as though you were having a conversation. We'll record about 30 seconds of your response.",
+      "instructions_source": "harvested",
       "speech_type": "elicited",
       "prompt_ref": {
         "type": "static-inline"
@@ -178,6 +185,7 @@
       ],
       "recording_count": 5,
       "instructions": "Breathing sounds can also provide information on your health. Let's record them.",
+      "instructions_source": "harvested",
       "speech_type": "non-lexical",
       "prompt_ref": {
         "type": "static-inline"
@@ -187,31 +195,36 @@
           "recording_id": "respiration-and-cough-v2-breath",
           "canonical_name": "Respiration and cough (v2)-Breath",
           "sub_name": "(v2)-Breath",
-          "instructions": "After pressing on record, breathe comfortably through your mouth for 20 seconds, until the timer runs out."
+          "instructions": "After pressing on record, breathe comfortably through your mouth for 20 seconds, until the timer runs out.",
+          "instructions_source": "curated"
         },
         {
           "recording_id": "respiration-and-cough-v2-hardcough",
           "canonical_name": "Respiration and cough (v2)-HardCough",
           "sub_name": "(v2)-HardCough",
-          "instructions": "Please do not cover your mouth or place your hand between your mouth and the microphone during recording. Breathe normally, then when you are ready, tap the record button below and cough HARD as if something were stuck in your throat. Tap stop when finished."
+          "instructions": "Please do not cover your mouth or place your hand between your mouth and the microphone during recording. Breathe normally, then when you are ready, tap the record button below and cough HARD as if something were stuck in your throat. Tap stop when finished.",
+          "instructions_source": "curated"
         },
         {
           "recording_id": "respiration-and-cough-v2-threebreaths",
           "canonical_name": "Respiration and cough (v2)-ThreeBreaths",
           "sub_name": "(v2)-ThreeBreaths",
-          "instructions": "After pressing on record, exhale normally, then inhale quickly through your mouth, as if you are trying to catch your breath. Record 3 of these breaths in a single recording. Tap stop when finished."
+          "instructions": "After pressing on record, exhale normally, then inhale quickly through your mouth, as if you are trying to catch your breath. Record 3 of these breaths in a single recording. Tap stop when finished.",
+          "instructions_source": "curated"
         },
         {
           "recording_id": "respiration-and-cough-v2-threebreathsmouth",
           "canonical_name": "Respiration and cough (v2)-ThreeBreathsMouth",
           "sub_name": "(v2)-ThreeBreathsMouth",
-          "instructions": "After pressing on record, take 3 deep breaths in and out through your mouth. Tap stop when finished."
+          "instructions": "After pressing on record, take 3 deep breaths in and out through your mouth. Tap stop when finished.",
+          "instructions_source": "curated"
         },
         {
           "recording_id": "respiration-and-cough-v2-threebreathsnose",
           "canonical_name": "Respiration and cough (v2)-ThreeBreathsNose",
           "sub_name": "(v2)-ThreeBreathsNose",
-          "instructions": "After pressing on record, take 3 deep breaths in and out through your nose with your mouth closed. Tap stop when finished."
+          "instructions": "After pressing on record, take 3 deep breaths in and out through your nose with your mouth closed. Tap stop when finished.",
+          "instructions_source": "curated"
         }
       ],
       "aliases": [
@@ -233,6 +246,7 @@
       ],
       "recording_count": 1,
       "instructions": "Describe everything that is happening in the picture (as though describing it for the blind), trying to use complete sentences.",
+      "instructions_source": "harvested",
       "speech_type": "elicited",
       "prompt_ref": {
         "type": "image"
@@ -254,6 +268,7 @@
       ],
       "recording_count": 1,
       "instructions": "Below you will be presented with a story about a boy and a frog. You may click forward to see the next image in the series. Feel free to move back and forth as much as you like until you are comfortable with the story. You will have up to 5 minutes to view the story, but you are not required to use the full 5 minutes. Once the time is up, please retell the story in as much detail as possible. When you are ready, please click the record button below. Once you click the record button, the story will disappear.",
+      "instructions_source": "harvested",
       "speech_type": "recall",
       "prompt_ref": {
         "type": "static-inline"
@@ -278,6 +293,7 @@
       ],
       "recording_count": 1,
       "instructions": "This is a passage that contains speech sounds in English by sound frequency to test your ability to produce speech sounds. Please read the following passage out loud in your typical voice.",
+      "instructions_source": "harvested",
       "speech_type": "read",
       "prompt_ref": {
         "type": "static-inline"
@@ -299,6 +315,7 @@
       ],
       "recording_count": 6,
       "instructions": "Please read the following sentences out loud in your typical voice.",
+      "instructions_source": "harvested",
       "speech_type": "read",
       "prompt_ref": {
         "type": "stimulus-bank",
@@ -325,6 +342,7 @@
       ],
       "recording_count": 6,
       "instructions": "Below you will be provided with a series of words. You may or may not know the word. If you know the word, please provide a definition of the word. After you have defined the word, press 'Next Word'. If you do NOT know the word, press 'I don't know this word, next', and you will be provided a new word. Once 6 words are defined, the 'Done' button appears.",
+      "instructions_source": "harvested",
       "speech_type": "elicited",
       "prompt_ref": {
         "type": "questionnaire-join",
@@ -350,6 +368,7 @@
       ],
       "recording_count": 1,
       "instructions": "You will have to speak a series of (i) random letters or numbers (repetition allowed), or (ii) items from a given category e.g., cities, animals, etc. (repetition not allowed), with the goal of maximizing the number of items. Time limit 2 minutes. The selection will appear when you start recording. The recording will automatically stop at the end.",
+      "instructions_source": "harvested",
       "speech_type": "elicited",
       "prompt_ref": {
         "type": "questionnaire-join",
@@ -378,6 +397,7 @@
       ],
       "recording_count": 1,
       "instructions": "This exercise asks you to name out loud the color in which a word is displayed. Sometimes the word will be a color word: do not read the word aloud, just state the color in which it's displayed. For example, if you see the word \"brown\", and its letters are displayed in blue, you will say the word \"blue\". Please answer as quickly as possible. Time limit = 5 seconds/item, 15 random words. Total time 75s. Tap on the red circle below to start recording. The recording will continue through all tasks and automatically stop at the end.",
+      "instructions_source": "harvested",
       "speech_type": "read",
       "prompt_ref": {
         "type": "questionnaire-join",
@@ -404,6 +424,7 @@
       ],
       "recording_count": 1,
       "instructions": "This task helps us evaluate how you use breathing to support your voice. Please read the following passage out loud in your typical voice.",
+      "instructions_source": "harvested",
       "speech_type": "read",
       "prompt_ref": {
         "type": "static-inline"
@@ -425,6 +446,7 @@
       ],
       "recording_count": 3,
       "instructions": "This task helps us analyze the way your breathing is connected to your voice. Take a very deep breath, tap on the record button, and hold out “ah” for as long as possible until you completely run out of air. Try to hold it until the progress bar reaches the end of the screen.",
+      "instructions_source": "harvested",
       "speech_type": "non-lexical",
       "prompt_ref": {
         "type": "static-inline"
@@ -447,6 +469,7 @@
       ],
       "recording_count": 1,
       "instructions": "This helps us to determine the loudness of the voice. When you are ready, press on the record button and shout “hey” as loud as possible 3 times in a single recording.",
+      "instructions_source": "harvested",
       "speech_type": "non-lexical",
       "prompt_ref": {
         "type": "static-inline"
@@ -469,6 +492,7 @@
       ],
       "recording_count": 5,
       "instructions": "This task helps us analyze the ease and precision of speech sound productions. Please press the play button to listen to the demonstration on how to complete the task. Then, tap the record button and imitate the speaker by repeating the word 'buttercup' as quickly and consistently as possible until the timer runs out.",
+      "instructions_source": "harvested",
       "speech_type": "non-lexical",
       "prompt_ref": {
         "type": "static-inline"
@@ -491,6 +515,7 @@
       ],
       "recording_count": 3,
       "instructions": "This section is meant to hear you speak freely by answering an open-ended question. Please answer the following questions and record your answer. Keep talking until the time stops.",
+      "instructions_source": "harvested",
       "speech_type": "elicited",
       "prompt_ref": {
         "type": "static-inline"
@@ -513,6 +538,7 @@
       ],
       "recording_count": 10,
       "instructions": "Breathing sounds can also provide information on your health. Let's record them.",
+      "instructions_source": "harvested",
       "speech_type": "non-lexical",
       "prompt_ref": {
         "type": "static-inline"
@@ -535,6 +561,7 @@
       ],
       "recording_count": 1,
       "instructions": "Below you will be presented with a story about a boy and a frog. You may click forward to see the next image in the series. Feel free to move back and forth as much as you like until you are comfortable with the story. You will have up to 5 minutes to view the story, but you are not required to use the full 5 minutes. Once the time is up, please retell the story in as much detail as possible. When you are ready, please click the record button below. Once you click the record button, the story will disappear.",
+      "instructions_source": "harvested",
       "speech_type": "recall",
       "prompt_ref": {
         "type": "static-inline"
@@ -557,6 +584,7 @@
       ],
       "recording_count": 1,
       "instructions": "Please answer the following question. You can read the question, then click on the recording button when you are ready to answer. You can keep talking until the timer is up.",
+      "instructions_source": "harvested",
       "speech_type": "elicited",
       "prompt_ref": {
         "type": "static-inline"
@@ -578,6 +606,7 @@
       ],
       "recording_count": 6,
       "instructions": "Please read the following sentences out loud in your typical voice.",
+      "instructions_source": "harvested",
       "speech_type": "read",
       "prompt_ref": {
         "type": "stimulus-bank",
@@ -602,6 +631,7 @@
       ],
       "recording_count": 1,
       "instructions": "For this task, you say as many animals as you can, while avoiding repeating the same ones. There is a 1 minute timer on this, and we will ask that you continue trying until the time is up. ",
+      "instructions_source": "harvested",
       "speech_type": "elicited",
       "prompt_ref": {
         "type": "static-inline"
@@ -623,6 +653,7 @@
       ],
       "recording_count": 1,
       "instructions": "Please answer the following questions and record your answer.",
+      "instructions_source": "harvested",
       "speech_type": "elicited",
       "prompt_ref": {
         "type": "static-inline"
@@ -644,6 +675,7 @@
       ],
       "recording_count": 1,
       "instructions": "Breathing: Click on the Record button below and breathe deeply through your mouth. Continue to do this until the recording automatically stops after 5 seconds. Click Play to hear your recording. If you hear background noise, please go to a quieter place and try again by selecting Redo Recording. If it sounds good, continue.",
+      "instructions_source": "harvested",
       "speech_type": "non-lexical",
       "prompt_ref": {
         "type": "static-inline"
@@ -665,6 +697,7 @@
       ],
       "recording_count": 1,
       "instructions": "You are being asked to record coughing sounds. Breathe normally, then when you are ready, push record and cough HARD as if something were stuck in your throat. Then breathe normally again. Complete this task 3 times in a single recording.",
+      "instructions_source": "harvested",
       "speech_type": "non-lexical",
       "prompt_ref": {
         "type": "static-inline"
@@ -686,6 +719,7 @@
       ],
       "recording_count": 1,
       "instructions": "You'll receive a hard copy of the Cinderella storybook from our study team to refresh your memory of the story. When ready, click the 'Record' button below to begin narrating the story. Once you've finished, tap on 'Stop Recording'.",
+      "instructions_source": "harvested",
       "speech_type": "recall",
       "prompt_ref": {
         "type": "static-inline"
@@ -707,6 +741,7 @@
       ],
       "recording_count": 1,
       "instructions": "You will have to speak a series of (i) random letters or numbers (repetition allowed), or (ii) items from a given category e.g., cities, animals, etc. (repetition not allowed), with the goal of maximizing the number of items. Time limit 1 minute. The selection will appear when you start recording. The recording will automatically stop at the end.",
+      "instructions_source": "harvested",
       "speech_type": "elicited",
       "prompt_ref": {
         "type": "questionnaire-join",
@@ -736,6 +771,7 @@
       ],
       "recording_count": 37,
       "instructions": "If the child makes a sound effect vs naming the picture that’s ok! We’re not actually using this task as an evaluation of articulation. Pictures presented one at a time on the screen – option to swipe/click to “next” once the child has named the item or if it is an unknown for the child it may be skipped.",
+      "instructions_source": "harvested",
       "speech_type": "elicited",
       "prompt_ref": {
         "type": "image"
@@ -759,6 +795,7 @@
       ],
       "recording_count": 10,
       "instructions": "What a great job! Do you like making silly sounds? Do you know what sound a ghost or a mouse makes? Let's see if we can figure out what sound each of these pictures make.",
+      "instructions_source": "harvested",
       "speech_type": "non-lexical",
       "prompt_ref": {
         "type": "image"
@@ -768,61 +805,71 @@
           "recording_id": "noisy-sounds-1",
           "canonical_name": "Noisy Sounds-1",
           "sub_name": "1",
-          "instructions": "Here's a picture of an airplane – it makes an 'ah' sound – we're going to say that three times – 'ah ah ah'. When you are ready, press \"record\"."
+          "instructions": "Here's a picture of an airplane – it makes an 'ah' sound – we're going to say that three times – 'ah ah ah'. When you are ready, press \"record\".",
+          "instructions_source": "curated"
         },
         {
           "recording_id": "noisy-sounds-2",
           "canonical_name": "Noisy Sounds-2",
           "sub_name": "2",
-          "instructions": "Next is a little mouse – it makes an 'ee ee ee' sound - your turn! When you are ready, press \"record\"."
+          "instructions": "Next is a little mouse – it makes an 'ee ee ee' sound - your turn! When you are ready, press \"record\".",
+          "instructions_source": "curated"
         },
         {
           "recording_id": "noisy-sounds-3",
           "canonical_name": "Noisy Sounds-3",
           "sub_name": "3",
-          "instructions": "Here's a little ghost – he says 'oo oo oo' – your turn! When you are ready, press \"record\"."
+          "instructions": "Here's a little ghost – he says 'oo oo oo' – your turn! When you are ready, press \"record\".",
+          "instructions_source": "curated"
         },
         {
           "recording_id": "noisy-sounds-4",
           "canonical_name": "Noisy Sounds-4",
           "sub_name": "4",
-          "instructions": "The baby is sleeping, so we say 'sh sh sh'. Now you try! When you are ready, press \"record\"."
+          "instructions": "The baby is sleeping, so we say 'sh sh sh'. Now you try! When you are ready, press \"record\".",
+          "instructions_source": "curated"
         },
         {
           "recording_id": "noisy-sounds-5",
           "canonical_name": "Noisy Sounds-5",
           "sub_name": "5",
-          "instructions": "The snake makes a 'ss ss ss'. Can I hear you make that snake sound? When you are ready, press \"record\"."
+          "instructions": "The snake makes a 'ss ss ss'. Can I hear you make that snake sound? When you are ready, press \"record\".",
+          "instructions_source": "curated"
         },
         {
           "recording_id": "noisy-sounds-6",
           "canonical_name": "Noisy Sounds-6",
           "sub_name": "6",
-          "instructions": "Eating ice cream you might say \"muh muh muh\" – your turn! When you are ready, press \"record\"."
+          "instructions": "Eating ice cream you might say \"muh muh muh\" – your turn! When you are ready, press \"record\".",
+          "instructions_source": "curated"
         },
         {
           "recording_id": "noisy-sounds-7",
           "canonical_name": "Noisy Sounds-7",
           "sub_name": "7",
-          "instructions": "Uh oh! Looks like the baby has been colouring on the walls. We should tell him to stop – \"nuh nuh nuh\". You tell him too! When you are ready, press \"record\"."
+          "instructions": "Uh oh! Looks like the baby has been colouring on the walls. We should tell him to stop – \"nuh nuh nuh\". You tell him too! When you are ready, press \"record\".",
+          "instructions_source": "curated"
         },
         {
           "recording_id": "noisy-sounds-8",
           "canonical_name": "Noisy Sounds-8",
           "sub_name": "8",
-          "instructions": "The little bee makes a buzzing noise – 'zz zz zz'. Your turn! When you are ready, press \"record\"."
+          "instructions": "The little bee makes a buzzing noise – 'zz zz zz'. Your turn! When you are ready, press \"record\".",
+          "instructions_source": "curated"
         },
         {
           "recording_id": "noisy-sounds-9",
           "canonical_name": "Noisy Sounds-9",
           "sub_name": "9",
-          "instructions": "Bunnies hop around – 'hh hh hh' - now you do it! When you are ready, press \"record\"."
+          "instructions": "Bunnies hop around – 'hh hh hh' - now you do it! When you are ready, press \"record\".",
+          "instructions_source": "curated"
         },
         {
           "recording_id": "noisy-sounds-10",
           "canonical_name": "Noisy Sounds-10",
           "sub_name": "10",
-          "instructions": "Have you ever seen a kangaroo jumping around? They go 'jj jj jj' – you try! When you are ready, press \"record\"."
+          "instructions": "Have you ever seen a kangaroo jumping around? They go 'jj jj jj' – you try! When you are ready, press \"record\".",
+          "instructions_source": "curated"
         }
       ],
       "aliases": [
@@ -843,6 +890,7 @@
       ],
       "recording_count": 4,
       "instructions": "That was great! Let’s try some more sounds",
+      "instructions_source": "harvested",
       "speech_type": "non-lexical",
       "prompt_ref": {
         "type": "image"
@@ -852,25 +900,29 @@
           "recording_id": "silly-sounds-1",
           "canonical_name": "Silly Sounds-1",
           "sub_name": "1",
-          "instructions": "First, we're going to say PUH PUH PUH over and over for about 5 seconds. Remember to take a breath if you need one! When you are ready, press \"record\"."
+          "instructions": "First, we're going to say PUH PUH PUH over and over for about 5 seconds. Remember to take a breath if you need one! When you are ready, press \"record\".",
+          "instructions_source": "curated"
         },
         {
           "recording_id": "silly-sounds-2",
           "canonical_name": "Silly Sounds-2",
           "sub_name": "2",
-          "instructions": "Next let's do the same thing, but this time say TUH TUH TUH. When you are ready, press \"record\"."
+          "instructions": "Next let's do the same thing, but this time say TUH TUH TUH. When you are ready, press \"record\".",
+          "instructions_source": "curated"
         },
         {
           "recording_id": "silly-sounds-3",
           "canonical_name": "Silly Sounds-3",
           "sub_name": "3",
-          "instructions": "We've got one more to try. Tell me KUH KUH KUH... When you are ready, press \"record\"."
+          "instructions": "We've got one more to try. Tell me KUH KUH KUH... When you are ready, press \"record\".",
+          "instructions_source": "curated"
         },
         {
           "recording_id": "silly-sounds-4",
           "canonical_name": "Silly Sounds-4",
           "sub_name": "4",
-          "instructions": "Let's try to put them together and say PUH TUH KUH over and over until the timer stops. If that word seems a little too tricky, you can say PAT-A-CAKE over and over instead. When you are ready, press \"record\"."
+          "instructions": "Let's try to put them together and say PUH TUH KUH over and over until the timer stops. If that word seems a little too tricky, you can say PAT-A-CAKE over and over instead. When you are ready, press \"record\".",
+          "instructions_source": "curated"
         }
       ],
       "aliases": [
@@ -891,6 +943,7 @@
       ],
       "recording_count": 25,
       "instructions": "Say the following word 3 times",
+      "instructions_source": "harvested",
       "speech_type": "read",
       "prompt_ref": {
         "type": "stimulus-bank",
@@ -916,6 +969,7 @@
       ],
       "recording_count": 6,
       "instructions": "Next we have some silly sentences to look at. They don’t exactly make sense – but that’s what makes them silly! If you can read them on your own go right ahead! Or you can have someone else say the sentence first and you just repeat it after them (just be sure to only record when you are talking) You are doing a great job! We have only two more tasks to complete before we’re all finished!",
+      "instructions_source": "harvested",
       "speech_type": "read",
       "prompt_ref": {
         "type": "stimulus-bank",
@@ -942,6 +996,7 @@
       ],
       "recording_count": 1,
       "instructions": "Describe everything that is happening in the picture (as though describing it for the blind), trying to use complete sentences.",
+      "instructions_source": "harvested",
       "speech_type": "elicited",
       "prompt_ref": {
         "type": "image"
@@ -964,6 +1019,7 @@
       ],
       "recording_count": 11,
       "instructions": "We're going to read a short story about a roller coaster ride called \"The Caterpillar\". A sentence or two will appear on the screen – read it aloud as if you were reading any regular story book. If you're not sure about a word, just skip it and keep going. When you are ready, press \"record\".",
+      "instructions_source": "curated",
       "speech_type": "read",
       "prompt_ref": {
         "type": "stimulus-bank",
@@ -988,6 +1044,7 @@
       ],
       "recording_count": 1,
       "instructions": "There are lots of pictures inside – let's talk about some of the things you see. When you are ready, press \"record\".",
+      "instructions_source": "harvested",
       "speech_type": "elicited",
       "prompt_ref": {
         "type": "static-inline"
@@ -1009,6 +1066,7 @@
       ],
       "recording_count": 1,
       "instructions": "Tell me about some of the things you see in the book. When you are ready, press \"record\".",
+      "instructions_source": "harvested",
       "speech_type": "elicited",
       "prompt_ref": {
         "type": "static-inline"
@@ -1031,6 +1089,7 @@
       ],
       "recording_count": 4,
       "instructions": "",
+      "instructions_source": "",
       "speech_type": "elicited",
       "prompt_ref": {
         "type": "static-inline"
@@ -1040,25 +1099,29 @@
           "recording_id": "conversation-6-plus-ready-for-school",
           "canonical_name": "Conversation (6 plus)-ready for school",
           "sub_name": "ready for school",
-          "instructions": "Tell me about how you get ready for school in the morning."
+          "instructions": "Tell me about how you get ready for school in the morning.",
+          "instructions_source": "curated"
         },
         {
           "recording_id": "conversation-6-plus-favorite-show-movie-game",
           "canonical_name": "Conversation (6 plus)-favorite show movie game",
           "sub_name": "favorite show movie game",
-          "instructions": "Do you have a favourite movie? Video game? Show? I'd love to hear about it! When you're ready to share, press \"record\"."
+          "instructions": "Do you have a favourite movie? Video game? Show? I'd love to hear about it! When you're ready to share, press \"record\".",
+          "instructions_source": "curated"
         },
         {
           "recording_id": "conversation-6-plus-favorite-food",
           "canonical_name": "Conversation (6 plus)-favorite food",
           "sub_name": "favorite food",
-          "instructions": "Do you have a favourite food? Or a food you really don't like? When you're ready to share, press \"record\"."
+          "instructions": "Do you have a favourite food? Or a food you really don't like? When you're ready to share, press \"record\".",
+          "instructions_source": "curated"
         },
         {
           "recording_id": "conversation-6-plus-outside-of-school",
           "canonical_name": "Conversation (6 plus)-outside of school",
           "sub_name": "outside of school",
-          "instructions": "What do you like to do when you're not at school? Tell me about any activities you do like sports, dance, karate, art, etc. When you're ready to share, press \"record\"."
+          "instructions": "What do you like to do when you're not at school? Tell me about any activities you do like sports, dance, karate, art, etc. When you're ready to share, press \"record\".",
+          "instructions_source": "curated"
         }
       ],
       "aliases": [
@@ -1077,6 +1140,7 @@
       ],
       "recording_count": 2,
       "instructions": "Let's sing our ABCs together! A,B... When you are ready, press \"record\".",
+      "instructions_source": "harvested",
       "speech_type": "elicited",
       "prompt_ref": {
         "type": "static-inline"
@@ -1086,13 +1150,15 @@
           "recording_id": "abcs-and-123s-abcs",
           "canonical_name": "Abcs and 123s-abcs",
           "sub_name": "abcs",
-          "instructions": "Let's sing our ABCs together! A,B... When you are ready, press \"record\"."
+          "instructions": "Let's sing our ABCs together! A,B... When you are ready, press \"record\".",
+          "instructions_source": "curated"
         },
         {
           "recording_id": "abcs-and-123s-123s",
           "canonical_name": "Abcs and 123s-123s",
           "sub_name": "123s",
-          "instructions": "I wonder how high you can count? Let's start at 1, 2... When you are ready, press \"record\"."
+          "instructions": "I wonder how high you can count? Let's start at 1, 2... When you are ready, press \"record\".",
+          "instructions_source": "curated"
         }
       ],
       "aliases": [
@@ -1111,6 +1177,7 @@
       ],
       "recording_count": 3,
       "instructions": "Fantastic! I bet you know the days of the week too. Let's start with Monday... When you are ready, press \"record\".",
+      "instructions_source": "harvested",
       "speech_type": "elicited",
       "prompt_ref": {
         "type": "static-inline"
@@ -1120,19 +1187,22 @@
           "recording_id": "days-and-number-naming-numbers",
           "canonical_name": "Days and Number naming-numbers",
           "sub_name": "numbers",
-          "instructions": "Let's see how high you can count? Let's start at 1... When you are ready, press \"record\"."
+          "instructions": "Let's see how high you can count? Let's start at 1... When you are ready, press \"record\".",
+          "instructions_source": "curated"
         },
         {
           "recording_id": "days-and-number-naming-days",
           "canonical_name": "Days and Number naming-days",
           "sub_name": "days",
-          "instructions": "I bet you know the days of the week too. Let's start with Monday... When you are ready, press \"record\"."
+          "instructions": "I bet you know the days of the week too. Let's start with Monday... When you are ready, press \"record\".",
+          "instructions_source": "curated"
         },
         {
           "recording_id": "days-and-number-naming-months",
           "canonical_name": "Days and Number naming-months",
           "sub_name": "months",
-          "instructions": "How about months of the year? Can you name some for me? Start with January... When you are ready, press \"record\"."
+          "instructions": "How about months of the year? Can you name some for me? Start with January... When you are ready, press \"record\".",
+          "instructions_source": "curated"
         }
       ],
       "aliases": [
@@ -1151,6 +1221,7 @@
       ],
       "recording_count": 3,
       "instructions": "Thank you for sharing all of that information with me! It was super interesting Let's try some different questions - if you're not sure what the answer is, you can just move on to the next question. I bet you know the months of the year too. Let's start with January... When you are ready, press \"record\". That was great Next can you count from 60 to 70? When you are ready, press \"record\".",
+      "instructions_source": "harvested",
       "speech_type": "elicited",
       "prompt_ref": {
         "type": "static-inline"
@@ -1160,19 +1231,22 @@
           "recording_id": "role-naming-tasks-sounds-days",
           "canonical_name": "Role naming tasks sounds-days",
           "sub_name": "days",
-          "instructions": "What are the days in the week (starting with Sunday)?"
+          "instructions": "What are the days in the week (starting with Sunday)?",
+          "instructions_source": "curated"
         },
         {
           "recording_id": "role-naming-tasks-sounds-months",
           "canonical_name": "Role naming tasks sounds-months",
           "sub_name": "months",
-          "instructions": "I bet you know the months of the year too. Let's start with January... When you are ready, press \"record\"."
+          "instructions": "I bet you know the months of the year too. Let's start with January... When you are ready, press \"record\".",
+          "instructions_source": "curated"
         },
         {
           "recording_id": "role-naming-tasks-sounds-numbers",
           "canonical_name": "Role naming tasks sounds-numbers",
           "sub_name": "numbers",
-          "instructions": "Next can you count from 60 to 70? When you are ready, press \"record\"."
+          "instructions": "Next can you count from 60 to 70? When you are ready, press \"record\".",
+          "instructions_source": "curated"
         }
       ],
       "aliases": [
@@ -1191,6 +1265,7 @@
       ],
       "recording_count": 2,
       "instructions": "First, I want you to name as many animals you can think of. When you are ready, press record.",
+      "instructions_source": "harvested",
       "speech_type": "elicited",
       "prompt_ref": {
         "type": "static-inline"
@@ -1200,13 +1275,15 @@
           "recording_id": "generative-naming-task-animals",
           "canonical_name": "Generative Naming Task-animals",
           "sub_name": "animals",
-          "instructions": "First, I want you to name as many animals you can think of. When you are ready, press \"record\"."
+          "instructions": "First, I want you to name as many animals you can think of. When you are ready, press \"record\".",
+          "instructions_source": "curated"
         },
         {
           "recording_id": "generative-naming-task-food",
           "canonical_name": "Generative Naming Task-food",
           "sub_name": "food",
-          "instructions": "Next I want you to name as many food items you can think of. When you are ready, press \"record\"."
+          "instructions": "Next I want you to name as many food items you can think of. When you are ready, press \"record\".",
+          "instructions_source": "curated"
         }
       ],
       "aliases": [
@@ -1225,6 +1302,7 @@
       ],
       "recording_count": 2,
       "instructions": "First, let's start by saying 'ahhhhh' for around 5 seconds. We're going to repeat this three times during one recording. Try to have the child produce the sound at a habitual pitch – some tend to use a higher \"note\" or create vibrato if they have any singing background The sound produced should be as steady/consistent as possible Re-record if you perceive the child is using a higher pitch when sustaining the vowel (in comparison to speaking) When you are ready, press \"record\". Next, say the 'eeeeee' sound as steady as you can for about 5 seconds. We'll do this three times as well. When you are ready, press \"record\".",
+      "instructions_source": "harvested",
       "speech_type": "non-lexical",
       "prompt_ref": {
         "type": "image"
@@ -1234,13 +1312,15 @@
           "recording_id": "long-sounds-1",
           "canonical_name": "Long Sounds-1",
           "sub_name": "1",
-          "instructions": "First, let's start by saying 'ahhhhh' for around 5 seconds. We're going to repeat this three times during one recording. Try to have the child produce the sound at a habitual pitch – some tend to use a higher \"note\" or create vibrato if they have any singing background. The sound produced should be as steady/consistent as possible. Re-record if you perceive the child is using a higher pitch when sustaining the vowel (in comparison to speaking). When you are ready, press \"record\"."
+          "instructions": "First, let's start by saying 'ahhhhh' for around 5 seconds. We're going to repeat this three times during one recording. Try to have the child produce the sound at a habitual pitch – some tend to use a higher \"note\" or create vibrato if they have any singing background. The sound produced should be as steady/consistent as possible. Re-record if you perceive the child is using a higher pitch when sustaining the vowel (in comparison to speaking). When you are ready, press \"record\".",
+          "instructions_source": "curated"
         },
         {
           "recording_id": "long-sounds-2",
           "canonical_name": "Long Sounds-2",
           "sub_name": "2",
-          "instructions": "Next, say the 'eeeeee' sound as steady as you can for about 5 seconds. We'll do this three times as well. When you are ready, press \"record\"."
+          "instructions": "Next, say the 'eeeeee' sound as steady as you can for about 5 seconds. We'll do this three times as well. When you are ready, press \"record\".",
+          "instructions_source": "curated"
         }
       ],
       "aliases": [
