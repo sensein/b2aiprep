@@ -1,0 +1,22 @@
+{
+    "id": "ataxia_other_scale_identify_scale",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Presentation and severity"
+    },
+    "prefLabel": {
+        "en": "ataxia_other_scale_identify_scale"
+    },
+    "question": {
+        "en": "Identify scale:"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

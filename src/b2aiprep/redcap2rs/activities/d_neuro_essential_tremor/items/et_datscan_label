@@ -1,0 +1,23 @@
+{
+    "id": "et_datscan_label",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "4. Imaging and diagnostic tests"
+    },
+    "prefLabel": {
+        "en": "et_datscan_label"
+    },
+    "question": {
+        "en": "DaTscan or dopaminergic evaluation performed"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "static",
+        "readonlyValue": true
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}

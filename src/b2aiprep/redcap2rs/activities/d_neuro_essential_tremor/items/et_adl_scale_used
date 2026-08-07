@@ -1,0 +1,22 @@
+{
+    "id": "et_adl_scale_used",
+    "category": "reproschema:Item",
+    "preamble": {
+        "en": "3. Assessment"
+    },
+    "prefLabel": {
+        "en": "et_adl_scale_used"
+    },
+    "question": {
+        "en": "ADL scale used:"
+    },
+    "responseOptions": {
+        "valueType": [
+            "xsd:string"
+        ]
+    },
+    "ui": {
+        "inputType": "text"
+    },
+    "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
+}
