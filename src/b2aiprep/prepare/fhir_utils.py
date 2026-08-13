@@ -515,6 +515,10 @@ def _flat_bids_fields(task_name_lower, audio_task_descriptions, join_id, questio
             break
         seen_aliases.add(target)
         description = audio_task_descriptions[target]
+        # Classify (and join) on the resolved canonical key, not the alias name,
+        # so an alias whose name doesn't share its target's prefix (e.g.
+        # "cinderella-retell" -> a recall-family target) is not misclassified.
+        best_task = target
 
     fields = {
         "instructions": description.get("instructions", ""),
@@ -529,9 +533,7 @@ def _flat_bids_fields(task_name_lower, audio_task_descriptions, join_id, questio
         fields["stimulus_text"] = description["stimulus_text"]
     else:
         static_prompts = description.get("prompts", [])
-        fields["stimulus_text"] = (
-            static_prompts[0] if len(static_prompts) == 1 else " ".join(static_prompts)
-        )
+        fields["stimulus_text"] = " ".join(static_prompts)
 
     if questionnaire_lookup:
         joined = _stimulus_text_from_questionnaire(
