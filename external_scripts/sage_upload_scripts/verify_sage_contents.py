@@ -187,10 +187,15 @@ def run_folder_comparisons(syn, sage_folders, local_folders, dry_run=True):
 
 
 def run_file_comparisons(syn, sage_files, local_files, md5=False, dry_run=True):
+    """Report differences. Returns a count of integrity problems (missing locally,
+    md5 mismatch, or no server md5 to compare when --get_md5 was requested) so a
+    caller can escalate; the reporting itself is unchanged."""
+    problems = 0
     for f in sage_files:
         sage_path = f
         if not os.path.exists(sage_path):
             logger.info("Sage ID %s (%s) not found locally", sage_files[f]['id'], sage_path)
+            problems += 1
         elif not os.path.isfile(sage_path):
             logger.warning("Sage ID %s (%s) found locally but is not a file",
                            sage_files[f]['id'], sage_path)
@@ -199,9 +204,11 @@ def run_file_comparisons(syn, sage_files, local_files, md5=False, dry_run=True):
             if not _has_md5(smd5):
                 logger.warning("Sage ID %s (%s) has no server md5 to compare against",
                                sage_files[f]['id'], sage_path)
+                problems += 1
             elif smd5 != lmd5:
                 logger.info("Sage ID %s (%s) md5 (%s) does not match local md5 hash (%s)",
                             sage_files[f]['id'], sage_path, smd5, lmd5)
+                problems += 1
 
     sage_file_set = set(sage_files.keys())
     local_file_set = set(local_files.keys())
@@ -214,11 +221,14 @@ def run_file_comparisons(syn, sage_files, local_files, md5=False, dry_run=True):
         for path in sage_only:
             logger.info("\t%s (id %s)", path, sage_files[path]['id'])
             delete_from_sage(syn, sage_files[path]['id'], path, dry_run=dry_run)
-    if local_file_set - sage_file_set:
+    local_only = local_file_set - sage_file_set
+    if local_only:
         logger.info("The following files were found locally and not on Sage "
                     "(re-run the upload manifest flow to add them to Sage):")
-        for path in (local_file_set - sage_file_set):
+        for path in local_only:
             logger.info("\t%s", path)
+        problems += len(local_only)
+    return problems
 
 
 def build_from_view(syn, config, bids_folder):
@@ -302,6 +312,13 @@ def main():
                         help='Local BIDS folder to compare against Synapse.')
     parser.add_argument('--adult', default=False, action='store_true',
                         help='Target the adult dataset. Omit for the pediatric dataset.')
+    parser.add_argument('--strict', default=False, action='store_true',
+                        help='Exit non-zero if any integrity problem is found (file on Sage but '
+                             'missing locally, md5 mismatch, no server md5 to compare against with '
+                             '--get_md5, or file present locally but not on Sage). Off by default: '
+                             'this script is normally read as a diagnostic for deciding whether to '
+                             're-run an upload or prune a stale cache, and it reports rather than '
+                             'gates. Use --strict when the result must fail a pipeline.')
     parser.add_argument('--get_md5', default=False, action='store_true',
                         help='Compute local MD5 hashes and compare them to the Synapse files.')
     parser.add_argument('--sync', default=False, action='store_true',
@@ -365,8 +382,13 @@ def main():
 
     # Delete files before folders so cascading folder deletes don't trip over
     # children that were already trashed.
-    run_file_comparisons(syn, synapse_files, local_files, md5=md5, dry_run=dry_run)
+    problems = run_file_comparisons(syn, synapse_files, local_files, md5=md5, dry_run=dry_run)
     run_folder_comparisons(syn, synapse_folders, local_folders, dry_run=dry_run)
+
+    if problems:
+        logger.info("%d file integrity problem(s) reported above.", problems)
+        if args.strict:
+            raise SystemExit(f"--strict: {problems} file integrity problem(s); see the log above.")
 
 
 if __name__=='__main__':

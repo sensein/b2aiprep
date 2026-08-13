@@ -21,7 +21,7 @@
       "description": "Number of time frames in the PPG tensor (variable per recording)."
     },
     {
-      "name": "ppg",
+      "name": "ppgs",
       "type": "array",
       "description": "Phonetic posteriorgram probabilities across 40 phoneme categories.",
       "extras": {
