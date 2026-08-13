@@ -58,7 +58,7 @@ cohorts.
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-Evaluated against `.specify/memory/constitution.md` v1.0.0. This feature exists to close the defects the
+Evaluated against the workspace constitution v1.1.0. This feature exists to close the defects the
 constitution was written from, so most principles are satisfied by construction rather than by
 constraint.
 
@@ -68,7 +68,7 @@ constraint.
 | II. Derive, Never Transcribe | **Satisfied by design** | This is the feature's central invariant. Editorial content is the one exception and carries an approval record (FR-018, `release_metadata.yaml`). |
 | III. Immutable References Only | **Satisfied by design** | FR-008/FR-009 require resolved model commits and citable software versions. Note the live blocker in Risks: the release env installs `b2aiprep 3.1.0+51.g34174e7.dirty`, which this principle forbids in a published artifact. |
 | IV. Executed Scripts Over Prose | **Satisfied** | FR-024 makes `RELEASE.md` reconcile with the v3.1 scripts, with the scripts authoritative. |
-| V. Fail Loudly When Publishing | **Satisfied by design** | FR-021 plus `validate-release-metadata`. Includes fixing `verify_sage_contents.py`, which today exits zero on a digest mismatch. |
+| V. Fail Loudly When Publishing | **Satisfied by design** | FR-021 plus `validate-release-metadata`, whose failure path is itself tested (T030, T054). Per the v1.1.0 amendment, the gate lives in this feature's validator; `verify_sage_contents.py` stays a diagnostic and is not converted into a gate (T065). |
 | VI. Re-running Is Idempotent | **Satisfied** | FR-019. Run records are one-writer-per-file so a resumed array task replaces only its own (R4); the C2M2 writers are de-duplicated on relocation (R6). |
 | VII. Nothing Identifying Leaves the Working Tree | **Satisfied** | FR-025/FR-026; run records are internal (FR-001), unit records carry deidentified identifiers only, and crosswalk absence is verified before upload (T050, T051, T056). |
 | VIII. Synthetic Fixtures Only | **Satisfied** | Tests use the existing `data/` fixtures; the 3.0.0 comparison is a documented local procedure and no release data enters the repository. |
