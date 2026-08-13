@@ -47,7 +47,7 @@ from b2aiprep.prepare.utils import (
     normalize_task_label,
     sanitize_task_entity_in_bids_stem,
 )
-from b2aiprep.prepare.fhir_utils import convert_response_to_bids_metadata, _population_from_cohort
+from b2aiprep.prepare.fhir_utils import convert_response_to_bids_metadata, _population_from_cohort, _is_present
 from b2aiprep.prepare.prepare import (
     get_value_from_metadata,
     remap_id, 
@@ -224,8 +224,16 @@ class BIDSDataset:
                 continue
             for row in instrument_df.to_dict("records"):
                 task_id = row.get(join_column)
-                if pd.notna(task_id):
-                    questionnaire_lookup[(instrument_key, task_id)] = row
+                if not _is_present(task_id):
+                    continue
+                key = (instrument_key, task_id)
+                if key in questionnaire_lookup:
+                    _LOGGER.warning(
+                        f"Multiple {instrument_key} questionnaire rows for "
+                        f"acoustic_task_id {task_id}; keeping the first, ignoring duplicate."
+                    )
+                    continue
+                questionnaire_lookup[key] = row
 
         participants = []
         for participant in participants_df.to_dict("records"):

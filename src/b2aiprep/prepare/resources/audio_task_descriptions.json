@@ -4397,17 +4397,13 @@
     },
     "random-item-generation-(v2)": {
         "instructions": "You will have to speak a series of (i) random letters or numbers (repetition allowed), or (ii) items from a given category e.g., cities, animals, etc. (repetition not allowed), with the goal of maximizing the number of items. Time limit 2 minutes. The selection will appear when you start recording. The recording will automatically stop at the end.",
-        "prompts": [
-            "Say as many letters or numbers (0-9) as you can. You are allowed to repeat items. Your goal is to list as many as possible in a random order.",
-            "Say as many items from the following category as you can. Do not repeat any item. Your goal is to list as many as possible."
-        ]
+        "speech_type": "elicited",
+        "prompts": []
     },
     "random-item-generation": {
         "instructions": "You will have to speak a series of (i) random letters or numbers (repetition allowed), or (ii) items from a given category e.g., cities, animals, etc. (repetition not allowed), with the goal of maximizing the number of items. Time limit 1 minute. The selection will appear when you start recording. The recording will automatically stop at the end.",
-        "prompts": [
-            "Say as many letters or numbers (0-9) as you can. You are allowed to repeat items. Your goal is to list as many as possible in a random order.",
-            "Say as many items from the following category as you can. Do not repeat any item. Your goal is to list as many as possible."
-        ]
+        "speech_type": "elicited",
+        "prompts": []
     },
     "breath-sounds": {
         "instructions": "Breathing: Click on the Record button below and breathe deeply through your mouth. Continue to do this until the recording automatically stops after 5 seconds. Click Play to hear your recording. If you hear background noise, please go to a quieter place and try again by selecting Redo Recording. If it sounds good, continue.",
