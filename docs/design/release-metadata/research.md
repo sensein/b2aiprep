@@ -232,7 +232,7 @@ uploaded on its own cadence, so it cannot be folded into a per-dataset step.
 - `c2m2_mappings.py:158-172` has no entry for the new file types, and lookups are `.get(suffix, '')`, so
   provenance files enumerated by the bare `rglob('*')` at `bundle_to_c2m2.py:34` would land in
   `file.tsv` with empty format and data type. Add `.json`/`.tsv` coverage for the provenance directory
-  or exclude it explicitly — and record which was chosen, per FR-031.
+  or exclude it explicitly — and record which was chosen, per FR-028.
 - `verify_sage_contents.py:106-118` recurses unfiltered and reports any local file absent remotely.
   Either the provenance directory is uploaded or it is excluded there too; silence is not an option.
 - Writers append with no de-duplication (`bundle_to_c2m2.py:497-533`, `fill_subject_files.py:146-152`),
@@ -280,11 +280,11 @@ as a metadata patch venue).
 **Decision**: prerequisite, not scope. Register both repositories before the first release that cites
 them.
 
-**Rationale**: FR-025 requires a durable identifier that resolves to the exact version used, and it must
+**Rationale**: FR-008 requires a durable identifier that resolves to the exact version used, and it must
 exist before publication because PhysioNet cannot be corrected afterwards. That forces an ordering:
 tag and release senselab, then b2aiprep, then run the pipeline, then publish. Registration itself is an
 administrative action on the `sensein` GitHub organization — outside this feature's automation. Neither
 repository has a `.zenodo.json` today; senselab has no `CITATION.cff` either.
 
 **Consequence for the generator**: it reads the concept and version DOIs from configuration and fails if
-a PhysioNet-bound crate would cite an unresolvable identifier (FR-025 plus FR-021's fail-loud rule).
+a PhysioNet-bound crate would cite an unresolvable identifier (FR-008 plus FR-021's fail-loud rule).

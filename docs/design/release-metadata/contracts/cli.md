@@ -84,8 +84,8 @@ audited without regenerating anything (FR-022).
 | shared facts identical between RO-Crate and C2M2 | FR-016 |
 | no unmapped controlled-vocabulary term; no dropped row | FR-017 |
 | contributors and award identifiers resolvable/structured | FR-018 |
-| no participant identifiers, free text, or transcripts in any artifact | FR-026 |
-| no crosswalk file inside a published dataset | FR-029 |
+| no participant identifiers, free text, or transcripts in any artifact | FR-025 |
+| no crosswalk file inside a published dataset | FR-026 |
 
 **Exit codes**: `0` all checks pass; `1` one or more failed (every failure listed with item and
 artifact); `2` target unreadable or unrecognised.
@@ -116,7 +116,7 @@ write one fails, rather than producing data that cannot later be described.
 - `external_scripts/c2m2/*.py` keep their current argparse interfaces and continue to work as
   `external_scripts/c2m2/README.md` documents, now importing `b2aiprep.metadata.c2m2`.
 - `sage_generate_manifest.py` and `verify_sage_contents.py` must agree on whether `provenance/` is
-  uploaded; the choice is recorded (FR-031). `verify_sage_contents.py` additionally must exit non-zero on
+  uploaded; the choice is recorded (FR-028). `verify_sage_contents.py` additionally must exit non-zero on
   a digest mismatch, which today it does not.
 - `c2m2_mappings` gains entries for the provenance file types, or an explicit exclusion, so the bare
   `rglob('*')` at `bundle_to_c2m2.py:34` cannot produce rows with empty format and data type.

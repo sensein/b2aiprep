@@ -50,7 +50,7 @@ Work in the `b2aiprep_test` conda env (Python 3.12.13) — the env the release s
 - [ ] T008 [P] Implement model-identity resolution using `HFModel.get_model_info().sha` in `src/b2aiprep/metadata/models.py`, returning `{role, provider, repo, requested_revision, resolved_sha}`
 - [ ] T009 [P] Implement a release-version guard that rejects a local/dirty version segment in `src/b2aiprep/metadata/environment.py` (constitution III; the release env currently installs `3.1.0+51.g34174e7.dirty`)
 - [ ] T010 Add an optional `--provenance-dir` to `redcap2bids`, `generate-audio-features`, `run-quality-control-on-audios`, `deidentify-bids-dataset`, and `create-bundled-dataset` in `src/b2aiprep/commands.py`, defaulting to `<dataset_root>/provenance`, with no behaviour change yet
-- [ ] T011 Record the decision on whether `provenance/` is uploaded to Sage and enumerated by C2M2, in `docs/design/release-metadata/research.md` under R6 (FR-031 requires the choice be recorded, not implicit)
+- [ ] T011 Record the decision on whether `provenance/` is uploaded to Sage and enumerated by C2M2, in `docs/design/release-metadata/research.md` under R6 (FR-028 requires the choice be recorded, not implicit)
 - [ ] T012 [P] Test record round-trip, `run_id` stability across a resumed array task, and that an aborted run leaves `status: partial`, in `tests/test_provenance_records.py` (constitution gate 5)
 - [ ] T013 [P] Test that the release-version guard rejects `3.1.0+51.g34174e7.dirty` and accepts `3.1.0`, in `tests/test_provenance_records.py` (constitution gate 3)
 
@@ -77,7 +77,7 @@ schema; zero empty property values; and byte-identical output across two runs.
 
 ### Bundle-time record
 
-- [ ] T019 [US1] Emit a bundle `RunRecord` from `create_bundled_dataset` in `src/b2aiprep/commands.py`, promoting the `bundle_output_stats` dict built at `commands.py:333` from a log line into the record
+- [ ] T019 [US1] Emit a bundle `RunRecord` from `create_bundled_dataset` in `src/b2aiprep/commands.py`, promoting the `bundle_output_stats` dict built at `commands.py:333` from a log line into the record, including each feature family's own participant, session, and recording counts, since these differ between families within one release (FR-012)
 - [ ] T020 [US1] Capture per-output size and sha256 for every bundle file into the bundle record in `src/b2aiprep/commands.py`, so nothing downstream recomputes digests
 - [ ] T021 [US1] Emit bundle `UnitRecord` rows for the skip branches currently logged and discarded at `src/b2aiprep/prepare/bundle_data.py:49`, `:52`, `:145`, `:150`, mapping each to its reason-vocabulary member
 - [ ] T022 [US1] Record the `skipped(no-data)` whole-family outcome from `commands.py:532-544` and `:569-581` into the bundle record, so an absent parquet is documented rather than omitted (FR-019)
@@ -142,8 +142,8 @@ the catalogued defects).
 - [ ] T047 [US3] Implement the check suite in `src/b2aiprep/metadata/validate.py`, one function per row of the check table in `docs/design/release-metadata/contracts/cli.md`, each returning findings rather than raising
 - [ ] T048 [US3] Implement the FR-011 accounting identity in `src/b2aiprep/metadata/validate.py` — published rows plus non-`computed` unit rows must equal total (recording × family) combinations — reporting both sides on failure
 - [ ] T049 [US3] Implement the records-optional mode in `src/b2aiprep/metadata/validate.py`, so a published crate plus a file inventory can be audited with no `provenance/` present (FR-022)
-- [ ] T050 [US3] Implement the identifying-content scan in `src/b2aiprep/metadata/validate.py` — reject participant identifiers in the source space, free-text response values, and transcripts in any record or artifact (FR-026, constitution VII)
-- [ ] T051 [US3] Implement the crosswalk-absence check in `src/b2aiprep/metadata/validate.py`, failing if an identifier-map or crosswalk file is reachable inside a dataset root (FR-029)
+- [ ] T050 [US3] Implement the identifying-content scan in `src/b2aiprep/metadata/validate.py` — reject participant identifiers in the source space, free-text response values, and transcripts in any record or artifact (FR-025, constitution VII)
+- [ ] T051 [US3] Implement the crosswalk-absence check in `src/b2aiprep/metadata/validate.py`, failing if an identifier-map or crosswalk file is reachable inside a dataset root (FR-026)
 - [ ] T052 [US3] Add the `validate-release-metadata` click command to `src/b2aiprep/commands.py` per `contracts/cli.md`, with exit codes 0/1/2 and one-pass reporting of all findings
 - [ ] T053 [US3] Register `validate_release_metadata` in `src/b2aiprep/cli.py`
 - [ ] T054 [P] [US3] Test that emptying one property in generated metadata causes exit 1 naming that property, in `tests/test_metadata_validation.py` (constitution gate 4)
@@ -171,7 +171,7 @@ count, with unmatched recordings counted rather than dropped.
 - [ ] T062 [US4] Implement the pending-fact representation in `src/b2aiprep/metadata/rocrate.py` so an unminted DOI is explicitly pending rather than empty or invented, and the validator treats it as known-pending (FR-015)
 - [ ] T063 [US4] Represent the common deidentified source as a graph entity with no retrieval URL in `src/b2aiprep/metadata/rocrate.py`, with both distributions deriving from it rather than from each other (FR-022 of spec, research R1)
 - [ ] T064 [P] [US4] Apply the T011 decision in `external_scripts/sage_upload_scripts/sage_generate_manifest.py` — include or exclude `provenance/` explicitly
-- [ ] T065 [P] [US4] Make `external_scripts/sage_upload_scripts/verify_sage_contents.py` exit non-zero on a digest mismatch and honour the same `provenance/` decision; today it raises only on setup failures at `:255`, `:261`, `:281`, `:353` (constitution V)
+- [ ] T065 [P] [US4] Make `external_scripts/sage_upload_scripts/verify_sage_contents.py` verify an uploaded copy against the release record file by file — every recorded output present, every digest matching — and exit non-zero on any missing file or mismatch; today it raises only on setup failures at `:255`, `:261`, `:281`, `:353` and never on a digest mismatch. Honour the same `provenance/` decision as T064 (FR-020, constitution V)
 - [ ] T066 [P] [US4] Test reconciliation counts against the two v3.1 deid trees as a documented local procedure, and against synthetic trees in CI, in `tests/test_cross_dataset_reconcile.py`
 - [ ] T067 [P] [US4] Test that a session id of 8 characters in one tree and 16 in the other still matches, and that a genuinely unmatched recording is counted rather than dropped, in `tests/test_cross_dataset_reconcile.py` (constitution gate 1)
 
@@ -193,7 +193,7 @@ fact; `cfde-c2m2 validate` passes with no operator-supplied arguments.
 - [ ] T071 [US5] Read file sizes and digests from the bundle record instead of re-walking and re-hashing in `src/b2aiprep/metadata/c2m2/bundle.py`, replacing the `rglob('*')` plus `calculate_sha256_file_digest` at `bundle_to_c2m2.py:25`, `:34` (FR-016)
 - [ ] T072 [US5] Take the PhysioNet version from the record rather than `--physionet_version` when templating access URLs in `src/b2aiprep/metadata/c2m2/bundle.py`, and fix the adult-slug-for-pediatric bug at `bundle_to_c2m2.py:468-469`
 - [ ] T073 [US5] Close the silent-empty vocabulary paths in `src/b2aiprep/metadata/c2m2/mappings.py` — the `''` fallbacks for `.wav`/`.parquet` at `:158-172`, the empty `peds_condition_to_DOID` at `:153`, the seven adult conditions mapping to `[]` at `:132-145`, and unmapped task names — so an absent mapping fails and names the unmapped value (FR-017, constitution I)
-- [ ] T074 [US5] Apply the T011 decision to C2M2 enumeration in `src/b2aiprep/metadata/c2m2/bundle.py` and `controlled.py` — describe `provenance/` with correct types or exclude it explicitly (FR-031)
+- [ ] T074 [US5] Apply the T011 decision to C2M2 enumeration in `src/b2aiprep/metadata/c2m2/bundle.py` and `controlled.py` — describe `provenance/` with correct types or exclude it explicitly (FR-028)
 - [ ] T075 [US5] Wire `--c2m2-out` into `generate-release-metadata` in `src/b2aiprep/commands.py` so both artifacts come from one invocation
 - [ ] T076 [P] [US5] Implement the cross-format agreement check in `src/b2aiprep/metadata/validate.py` — every fact present in both the RO-Crate and the C2M2 submission must be identical, and the file inventories must cover the same set (FR-016)
 - [ ] T077 [P] [US5] Test that running C2M2 generation twice produces identical output rather than doubled rows, in `tests/test_c2m2_generation.py` (constitution gate 5)
@@ -208,7 +208,7 @@ fact; `cfde-c2m2 validate` passes with no operator-supplied arguments.
 
 - [ ] T080 Add the two new steps to `RELEASE.md` and reconcile it with the release scripts — the documented example passes `--update` and a `tiny` transcription model while `post_3.0/v3.1/scripts/adult_feature_extraction.sh` passes no `--update` and uses `large-v3-turbo` (FR-024, constitution IV)
 - [ ] T081 [P] Add `GeneratedBy`, `SourceDatasets`, and `DatasetDOI` to `src/b2aiprep/template/dataset_description.json`, so the BIDS trees carry provenance natively
-- [ ] T082 [P] Add `.zenodo.json` and update `CITATION.cff` in `b2aiprep/`, and add both to `senselab/` which has neither, so FR-025's durable identifiers exist before the release citing them
+- [ ] T082 [P] Add `.zenodo.json` and update `CITATION.cff` in `b2aiprep/`, and add both to `senselab/` which has neither, so FR-008's durable identifiers exist before the release citing them
 - [ ] T083 Document the release ordering in `RELEASE.md` — tag and release senselab, then b2aiprep, mint both DOIs, then run the pipeline, then generate and validate, then upload — since PhysioNet cannot be corrected afterwards
 - [ ] T084 [P] Add the missing `sage_upload_array.sbatch` referenced at `external_scripts/sage_upload_scripts/README.md:54,66-67`, or remove the instruction (constitution IV)
 - [ ] T085 [P] Wire the identifying-content scan into the test suite so it runs on every change to a publishing path, in `tests/test_metadata_validation.py` (constitution gate 6)

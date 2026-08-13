@@ -70,7 +70,7 @@ constraint.
 | IV. Executed Scripts Over Prose | **Satisfied** | FR-024 makes `RELEASE.md` reconcile with the v3.1 scripts, with the scripts authoritative. |
 | V. Fail Loudly When Publishing | **Satisfied by design** | FR-021 plus `validate-release-metadata`. Includes fixing `verify_sage_contents.py`, which today exits zero on a digest mismatch. |
 | VI. Re-running Is Idempotent | **Satisfied** | FR-019. Run records are one-writer-per-file so a resumed array task replaces only its own (R4); the C2M2 writers are de-duplicated on relocation (R6). |
-| VII. Nothing Identifying Leaves the Working Tree | **Satisfied** | FR-026/FR-029; run records are internal (FR-001), unit records carry deidentified identifiers only, and crosswalk absence is verified before upload. |
+| VII. Nothing Identifying Leaves the Working Tree | **Satisfied** | FR-025/FR-026; run records are internal (FR-001), unit records carry deidentified identifiers only, and crosswalk absence is verified before upload (T050, T051, T056). |
 | VIII. Synthetic Fixtures Only | **Satisfied** | Tests use the existing `data/` fixtures; the 3.0.0 comparison is a documented local procedure and no release data enters the repository. |
 
 Two conventions also honoured, both load-bearing for existing users: CLI naming stays verb-first and
@@ -173,7 +173,7 @@ fan-out part of the pipeline.
 | The release env installs `b2aiprep 3.1.0+51.g34174e7.dirty`; a dirty version cannot resolve to a citable record, so the generator's own gate would reject it (R2) | Surface this as an explicit, actionable failure early; the env must be installed from a tagged commit before a PhysioNet-bound crate is generated |
 | Zenodo DOIs must exist before the release that cites them, and registration is an org-admin action (R9) | Sequence it first; the generator reads DOIs from config and fails loudly when absent |
 | Session pseudonyms can differ in length between the two datasets if a truncation collision fires in one tree only (R1) | Length-tolerant matching on the 8-character prefix, plus a reported count of unmatched recordings |
-| Provenance files are visible to two bare `rglob('*')` call sites and to the unfiltered Sage verifier (R4, R6) | Each is handled explicitly — described with a correct type, or excluded — and the choice recorded, per FR-031 |
+| Provenance files are visible to two bare `rglob('*')` call sites and to the unfiltered Sage verifier (R4, R6) | Each is handled explicitly — described with a correct type, or excluded — and the choice recorded, per FR-028 |
 | Two shipped feature dictionaries name columns that do not exist, so "use the shipped dictionary" would publish wrong schemas | Fix both, and make dictionary-vs-file column agreement a validation check (FR-007) |
 | C2M2 writers append with no de-duplication, so a re-run doubles the submission | De-duplicate on relocation; covered by FR-019 |
 

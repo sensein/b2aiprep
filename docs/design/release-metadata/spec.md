@@ -171,6 +171,10 @@ The engineer produces the C2M2 submission for the CFDE catalogue for both datase
 - **FR-022**: The completeness check MUST be runnable against an already-published release's metadata and file inventory without regenerating either.
 - **FR-023**: Run provenance MUST be recorded per invocation rather than per recording, and concurrent array tasks MUST be able to record without coordinating with one another.
 - **FR-024**: The documented release procedure (`RELEASE.md`) MUST include the metadata generation and completeness steps, and MUST agree with the scripts actually used to build a release — today it documents `generate-audio-features --update` and a `tiny` transcription model, while the v3.1 scripts pass no `--update` and use `large-v3-turbo`. Where doc and script disagree, the script is the reference.
+- **FR-025**: No run record or published metadata artifact may contain participant identifiers in the source space, free-text response values, or transcribed speech. Records describing a deidentified distribution MUST use only deidentified identifiers and MUST NOT inherit records written in the pre-deidentification identifier space. Coverage differences between access tiers MUST be expressed as cohort-level counts, never as a per-participant statement of which consent applies to whom.
+- **FR-026**: Files mapping deidentified identifiers back to source identifiers MUST remain outside every published dataset, and their absence MUST be verified before a dataset is uploaded.
+- **FR-027**: Introducing run records and metadata artifacts MUST NOT change the behaviour or output of any existing pipeline step, validator, or upload tool, and MUST NOT change the address of any published file.
+- **FR-028**: Where an existing process enumerates files indiscriminately, the new files MUST be handled deliberately — either described with a correct type or excluded explicitly — and the choice MUST be recorded rather than left implicit.
 
 ### Key Entities
 
@@ -201,6 +205,8 @@ The engineer produces the C2M2 submission for the CFDE catalogue for both datase
 - **SC-010**: Zero published items are dropped or left with an empty vocabulary term because a mapping is missing. Baseline in the C2M2 path: every `.wav` and `.parquet` row untyped, the whole pediatric cohort contributing no disease rows, seven adult conditions dropped with a print, and unmapped task names yielding files with no biosample link.
 - **SC-011**: Regenerating a release's metadata without changing the dataset produces no difference, making a diff against the published version a reliable correction signal for an immutable host. Baseline: not reproducible; regeneration is a notebook execution.
 - **SC-012**: For a release publishing both datasets, the participant and recording overlap between them is stated as counted values for every cohort published. Baseline: not stated in any published artifact.
+- **SC-013**: An automated scan finds zero participant identifiers in the source space, free-text response values, transcripts, or per-participant consent statements in any run record or published artifact. Baseline: not scanned today.
+- **SC-014**: Existing pipeline steps, the bundle validator, and the Sage upload verifier produce identical results before and after run records are introduced. Baseline: unverified.
 
 ## Assumptions
 

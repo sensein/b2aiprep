@@ -48,7 +48,7 @@ not to attribute versions — attribution comes from the RunRecord.
 
 | Column | Notes |
 |---|---|
-| `participant_id`, `session_id`, `task_name` | deidentified identifiers only (FR-027) |
+| `participant_id`, `session_id`, `task_name` | deidentified identifiers only (FR-025) |
 | `family` | `opensmile` \| `praat_parselmouth` \| `torchaudio` \| `torchaudio_squim` \| `sparc` \| `ppgs` \| `transcription` \| `diarization` \| `speaker_embedding` |
 | `outcome` | `computed` \| `preserved` \| `skipped` \| `failed` |
 | `reason` | required unless `outcome == computed`; from the closed set below |
@@ -142,7 +142,7 @@ At each dataset root, so relative paths resolve (R3):
 ```
 
 C2M2 goes to a separate output directory, never inside a published dataset, and never alongside the
-identifier map or crosswalk files (FR-029).
+identifier map or crosswalk files (FR-026).
 
 ---
 
