@@ -1,6 +1,6 @@
 {
-  "Instructions": {
-    "description": "Instructions given to the participant."
+  "instructions": {
+    "description": "Instructions given to the participant for the recording task."
   },
   "recording_id": {
     "description": "Unique identifier for the specific audio recording."
@@ -32,8 +32,17 @@
   "recording_microphone": {
     "description": "Name or description of the microphone used to capture the audio."
   },
-  "Prompts": {
-    "description": "List of prompts or stimuli presented during the recording task."
+  "stimulus_text": {
+    "description": "The reference/target text the participant was asked to produce, as a single string (replaces the former 'Prompts' list). Populated for read tasks (the verbatim reading target, i.e. WER ground truth) and recall tasks (the reference, not necessarily verbatim); empty for spontaneous/elicited, non-lexical, or image-only tasks."
+  },
+  "speech_type": {
+    "description": "How the produced speech relates to a reference: 'read' (verbatim reading of provided text), 'recall' (retelling a reference from memory), 'elicited' (spontaneous/prompted, no target text), or 'non-lexical' (vocalizations without lexical content, e.g. sustained vowels, diadochokinesis, cough)."
+  },
+  "stimulus_source": {
+    "description": "Provenance of stimulus_text: 'doc-text' (redcap plain text), 'transcribed' (human transcription of an image stimulus), 'questionnaire' (per-participant value joined from a phenotype instrument), or 'image' (image stimulus with no text target). Absent when no stimulus applies."
+  },
+  "stimulus_asset": {
+    "description": "For image-based stimuli, a commit-pinned raw GitHub URL of the shown image (https://raw.githubusercontent.com/eipm/bridge2ai-redcap/<commit>/<url-encoded path>). Absent for non-image tasks."
   },
   "audio_channel_count": {
     "description": "Number of audio channels in the recording."

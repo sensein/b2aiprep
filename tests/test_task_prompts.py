@@ -123,6 +123,17 @@ def test_questionnaire_join_vocab_random_stroop(descriptions):
     assert stroop["speech_type"] == "read"
 
 
+def test_random_item_no_lookup_yields_empty_stimulus(descriptions):
+    # Regression: random-item-generation must not concatenate its two
+    # mutually-exclusive instruction variants into stimulus_text when no
+    # questionnaire row is available. The per-participant category is joined
+    # from the questionnaire; the reference text is otherwise empty.
+    for name in ("Random-Item-Generation", "Random-Item-Generation-(v2)"):
+        m = _resolve(descriptions, name)
+        assert m["stimulus_text"] == ""
+        assert m["speech_type"] == "elicited"
+
+
 def test_questionnaire_join_absent_is_noop(descriptions):
     # No lookup provided -> vocab stimulus_text stays empty, no crash.
     vocab = _resolve(descriptions, "Productive-Vocabulary-3", questionnaire_lookup=None)
