@@ -124,11 +124,53 @@ cfde-c2m2 prepare
 cfde-c2m2 validate
 ```
 
-Fix any validation errors, then package:
+`cfde-c2m2 validate` covers the schema and frictionless referential checks. Run
+`verify_c2m2.py` as well for the data-level checks it does not do — that every file row carries a
+checksum, that primary keys are unique, that `file_describes_biosample` has no orphans on either
+side, that no crosswalk or id-map file ended up inside the package, and that no Synapse ids appear
+in the tables (the disease firewall):
+
+```
+python verify_c2m2.py --package /path/to/c2m2_output
+```
+
+It exits non-zero on any hard failure and prints warnings for the rest. Fix everything both tools
+report, then package:
 
 ```
 cfde-c2m2 package -o /output/path/for/zip/2026_03_C2M2.zip
 ```
+
+## Versioning the citation DOI
+
+The controlled-access step reads md5 and size from the **citation-versioned** Synapse fileviews
+(`synapse_manifest.py`), so each release needs its own snapshot of those views with its own DOI. A
+new-version DOI must carry over the existing metadata — the long creator list, title, publisher,
+resourceType — and change only the version, so `prepare_doi.py` clones the existing DOI rather than
+building one from scratch.
+
+It is deliberately two-step and review-gated. Prepare is read-only and mints nothing:
+
+```
+# 1. Create the snapshot of the view in Synapse first, then prepare a payload for it
+python prepare_doi.py --view <viewSynId> --to-version <snapshotVersion>
+
+# 2. Review (and if needed edit) prepared_doi.json, then mint
+python prepare_doi.py --submit --payload prepared_doi.json
+```
+
+Notes worth knowing before you run it:
+
+- Auth comes from `SAGE_PAT` or `SYNAPSE_PAT`, else `~/.synapseConfig`.
+- The snapshot version must already exist; prepare refuses a version the entity does not have.
+- Server-assigned and old-DOI identity fields are stripped, so the new DOI is not a partial copy of
+  the old one's identity.
+- Synapse mangles non-ASCII creator names on GET, so names come back containing `?`. Pass
+  `--names-from-doi <existing DataCite DOI>` to source correctly encoded names from DataCite and
+  replace the mangled ones by position; it aborts rather than guess if the two orderings disagree.
+- **PII screening must happen before a snapshot is taken**, not after. A file deleted later is
+  removed from Synapse but its metadata (name, md5, path) remains in any DOI'd snapshot that already
+  included it — see the note in `../sage_upload_scripts/README.md`.
 
 # Post Metadata Generation
 
