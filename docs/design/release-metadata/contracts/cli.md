@@ -83,7 +83,7 @@ audited without regenerating anything (FR-022).
 | pending facts marked pending, not empty or invented | FR-015 |
 | shared facts identical between RO-Crate and C2M2 | FR-016 |
 | no unmapped controlled-vocabulary term; no dropped row | FR-017 |
-| contributors and award identifiers resolvable/structured | FR-018 |
+| every contributor identifier present resolves, the count lacking one is stated, award identifiers are structured | FR-018 |
 | no participant identifiers, free text, or transcripts in any artifact | FR-025 |
 | no crosswalk file inside a published dataset | FR-026 |
 

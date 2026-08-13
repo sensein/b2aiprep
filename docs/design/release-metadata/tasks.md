@@ -73,7 +73,7 @@ schema; zero empty property values; and byte-identical output across two runs.
 - [ ] T015 [P] [US1] Fix the field name in `src/b2aiprep/prepare/resources/feature_schemas/torchaudio_spectrogram.json` from `spectrograms` to `spectrogram`
 - [ ] T016 [US1] Remove the hard-coded backend version strings and the unset `extraction_date` from all nine files in `src/b2aiprep/prepare/resources/feature_schemas/`, so versions come from the run record instead
 - [ ] T017 [P] [US1] Resolve the duplicated arXiv identifier between `ppgs.json:87` and `sparc_ema.json:66-67` in `src/b2aiprep/prepare/resources/feature_schemas/`, or mark the uncertain one as unverified
-- [ ] T018 [P] [US1] Create `src/b2aiprep/prepare/resources/release_metadata.yaml` holding the single editorial source — authorship with ORCIDs, rights, ethics, collection method, limitations, intended uses, citation, structured funder award — plus `approved_by`, `approved_on`, and a digest of the approved text
+- [ ] T018 [P] [US1] Create `src/b2aiprep/prepare/resources/release_metadata.yaml` holding the single editorial source — authorship with a resolvable identifier per contributor where known plus an explicit count of those without one, rights, ethics, collection method, limitations, intended uses, citation, structured funder award — plus `approved_by`, `approved_on`, and a digest of the approved text
 
 ### Bundle-time record
 
@@ -214,6 +214,7 @@ fact; `cfde-c2m2 validate` passes with no operator-supplied arguments.
 - [ ] T085 [P] Wire the identifying-content scan into the test suite so it runs on every change to a publishing path, in `tests/test_metadata_validation.py` (constitution gate 6)
 - [ ] T086 Run the full quickstart end to end on the fixtures in `data/` and correct any divergence in `docs/design/release-metadata/quickstart.md`
 - [ ] T087 Perform the 3.0.0 audit locally per quickstart step 4 and record the findings in `docs/design/release-metadata/research.md`, confirming the validator detects each catalogued defect (SC-007)
+- [ ] T088 Capture the output of `validate-bundled-dataset`, the C2M2 validator, and `verify_sage_contents.py --dry_run` on a fixture release before and after run records exist, and assert the results are identical, in `tests/test_no_regression.py` (FR-027, SC-014, constitution Quality Gate for Principle I)
 
 ---
 
@@ -228,7 +229,7 @@ fact; `cfde-c2m2 validate` passes with no operator-supplied arguments.
 - **US3 (T047–T057)**: needs Foundational; reuses US1's gate checks, so US1 first
 - **US4 (T058–T067)**: needs US1 and US3
 - **US5 (T068–T079)**: needs US1 and US2 (reads the bundle record's digests)
-- **Polish (T080–T087)**: needs the stories it documents
+- **Polish (T080–T088)**: needs the stories it documents
 
 ### Story dependencies
 
@@ -247,7 +248,7 @@ US2 tests:     T044, T045, T046 in parallel
 US3 tests:     T054, T055, T056 in parallel
 US4:           T064, T065 in parallel with T058–T063; T066, T067 in parallel
 US5 tests:     T077, T078, T079 in parallel
-Polish:        T081, T082, T084, T085 in parallel
+Polish:        T081, T082, T084, T085, T088 in parallel
 ```
 
 Sequential within US1's generator chain: T023 → T024 → T025 → T026 → T027 → T028, all touching
@@ -277,7 +278,7 @@ the Zenodo registrations in T082 need an administrative action on the `sensein` 
 | US3 (P3) | T047–T057 | 11 |
 | US4 (P4) | T058–T067 | 10 |
 | US5 (P5) | T068–T079 | 12 |
-| Polish | T080–T087 | 8 |
-| **Total** | | **87** |
+| Polish | T080–T088 | 9 |
+| **Total** | | **88** |
 
-Test tasks: 20 of 87, each citing the constitution Quality Gate that requires it.
+Test tasks: 21 of 88, each citing the constitution Quality Gate that requires it.

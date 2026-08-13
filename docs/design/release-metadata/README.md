@@ -15,7 +15,7 @@ planning workspace and copied here so they sit alongside the code they describe.
 | [data-model.md](./data-model.md) | the run-record and per-unit-record shapes, and the artifacts generated from them |
 | [contracts/cli.md](./contracts/cli.md) | the two new commands, their preconditions and exit codes |
 | [quickstart.md](./quickstart.md) | end-to-end on the synthetic fixtures in `data/` |
-| [tasks.md](./tasks.md) | 87 tasks in 8 phases; the MVP is Setup + Foundational + User Story 1 |
+| [tasks.md](./tasks.md) | 88 tasks in 8 phases; the MVP is Setup + Foundational + User Story 1 |
 
 Two things gate a real release independently of the work itself: the release environment must be
 installed from a tagged commit rather than a dirty tree, and the software cited in the provenance graph
