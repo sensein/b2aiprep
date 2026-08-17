@@ -48,6 +48,26 @@
   tagged as another language.
 - The flat-file fallback path now threads `language` into `_resolve_prompt_ref`.
 
+**Random Item Generation — category-driven, variant-aware instruction**:
+- One recording per session (verified: 339 sessions, all count 1); the drawn
+  category is stored in `random_item_generation_category` and the variant
+  (repeatable letters/numbers vs non-repeatable category) is chosen from it.
+- A category outside {Numbers, Letters} appears **only** in Category_2, so it is
+  unambiguously the **non-repeatable** variant -> the category instruction with the
+  category named.
+- **Numbers / Letters appear in BOTH** Category_1 and Category_2, and nothing in
+  the data disambiguates them (no session records both, no combined value), so
+  those keep the **general** instruction (which describes both variants) rather
+  than asserting a repeatability the data can't confirm.
+- Curated `random_item_instructions.json` (en + es-419); category lines verbatim
+  from source, es-419 `general` composed from the es-419 source phrases (the
+  Spanish page has no single combined line). Both variants carry the
+  "selection appears / auto-stops" procedural line.
+- **Time limit is intentionally omitted**: it is version-specific (v1 1 min /
+  v2 2 min per the English pages) and the source is inconsistent (the es-419 "- v2"
+  page reads "1 minuto" while the English "- v2" page reads "2 minutes"). Encoding
+  it would propagate that discrepancy; revisit if the source is reconciled.
+
 **Deferred / follow-up**:
 - **Free Speech cue** — its `stimulus_text` (the open-ended prompt) is still the
   English cue for Spanish sessions; the cue varies per recording and is not a WER

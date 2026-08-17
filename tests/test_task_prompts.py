@@ -264,9 +264,38 @@ def test_questionnaire_join_language_agnostic(descriptions):
     v = es("Productive-Vocabulary-3")
     assert v["language"] == "es-419" and v["stimulus_text"] == "enredar"
     r = es("Random-Item-Generation")
-    assert r["language"] == "es-419" and r["instructions"].endswith("Category: animales.")
+    # a semantic category (Category_2 only) -> Spanish non-repeatable instruction,
+    # with the Spanish category label.
+    assert r["language"] == "es-419"
+    assert r["instructions"].startswith("Diga tantos elementos de la siguiente categoría")
+    assert r["instructions"].endswith("Categoría: animales.")
     s = es("Word-color-Stroop")
     assert s["language"] == "es-419" and s["stimulus_text"] == "rojo verde"
+
+
+def test_random_item_instruction_by_category(descriptions):
+    def R(cat, lang):
+        lk = {("random", "AT"): {"random_item_generation_category": cat}}
+        return convert_response_to_bids_metadata(
+            {"recording_name": "Random-Item-Generation", "recording_acoustic_task_id": "AT",
+             "recording_session_id": "S", "record_id": "r"},
+            questionnaire_name="recordings", mapping_name="recordingschema",
+            columns=["recording_name", "recording_acoustic_task_id", "recording_session_id"],
+            audio_task_descriptions=descriptions, questionnaire_lookup=lk,
+            population="adult", language=lang)["instructions"]
+
+    # A semantic category is unambiguously the non-repeatable variant.
+    assert R("Drinks", "en").startswith("Say as many items from the following category")
+    assert "Do not repeat any item" in R("Drinks", "en")
+    assert R("Drinks", "en").endswith("Category: Drinks.")
+    assert R("Drinks", "es-419").startswith("Diga tantos elementos de la siguiente categoría")
+    # Numbers/Letters appear in BOTH category lists -> ambiguous -> the general
+    # instruction (describes both variants), never asserting repeatability.
+    for cat in ("Numbers", "Letters"):
+        assert R(cat, "en").startswith("You will have to speak a series of")
+        assert R(cat, "es-419").startswith("Deberá decir una serie de")
+    # Both variants carry the "selection appears / auto-stops" procedural line.
+    assert "automatically stop at the end" in R("Drinks", "en")
 
 
 def test_static_inline_read_recall_has_doc_text_source(descriptions):

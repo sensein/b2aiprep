@@ -391,9 +391,41 @@ def _resolve_task_registry(task_name: str, population=None):
     return task, rec
 
 
-def _registry_questionnaire(prompt_ref, task_name, join_id, questionnaire_lookup):
+@lru_cache(maxsize=None)
+def _random_item_instructions() -> dict:
+    """Curated per-language random-item instruction texts (general + category)."""
+    try:
+        return json.loads(_load_stimulus_bank("random_item_instructions"))
+    except FileNotFoundError:
+        return {}
+
+
+def _random_item_instruction(category, language):
+    """The random-item instruction for a recording, chosen by its category.
+
+    A category outside {Numbers, Letters} appears only in Category_2 -> it is
+    unambiguously the non-repeatable category variant, so use the category-variant
+    instruction with the category named. Numbers/Letters appear in BOTH category
+    lists, so the variant (repeatable vs not) is not determinable from the data --
+    those keep the 'general' instruction, which describes both variants without
+    asserting a repeatability we cannot confirm. Returns None if no resource."""
+    data = _random_item_instructions()
+    entry = data.get(language) or data.get("en")
+    if not entry:
+        return None
+    if category and str(category).strip().lower() not in ("numbers", "letters"):
+        label = entry.get("category_label", "Category")
+        procedural = entry.get("procedural", "")
+        parts = [entry["category"], procedural, f"{label}: {str(category).strip()}."]
+        return " ".join(p for p in parts if p).strip()
+    return entry.get("general")
+
+
+def _registry_questionnaire(prompt_ref, task_name, join_id, questionnaire_lookup, language="en"):
     """Per-participant stimulus for a questionnaire-join prompt_ref. Returns
-    (stimulus_text, speech_type, instructions_suffix) or None."""
+    (stimulus_text, speech_type, instructions_suffix, instructions_override) or
+    None. instructions_override, when set, replaces the task instruction entirely
+    (used for random-item, whose instruction depends on the drawn category)."""
     if not questionnaire_lookup or not _is_present(join_id):
         return None
     row = questionnaire_lookup.get((prompt_ref.get("instrument"), join_id))
@@ -405,16 +437,20 @@ def _registry_questionnaire(prompt_ref, task_name, join_id, questionnaire_lookup
         if idx is None:
             return None
         word = row.get(prompt_ref["field_template"].format(i=idx))
-        return (str(word).strip() if _is_present(word) else "", "elicited", None)
+        return (str(word).strip() if _is_present(word) else "", "elicited", None, None)
     if select == "field":
         value = row.get(prompt_ref["field"])
-        suffix = f"Category: {str(value).strip()}." if _is_present(value) else None
-        return ("", "elicited", suffix)
+        cat = str(value).strip() if _is_present(value) else None
+        instr = _random_item_instruction(cat, language)
+        # The variant-specific instruction embeds the category, so no extra suffix;
+        # if there is no instruction resource, fall back to surfacing the category.
+        suffix = None if instr else (f"Category: {cat}." if cat else None)
+        return ("", "elicited", suffix, instr)
     if select == "color-list":
         n = prompt_ref.get("n", 15)
         colors = [row.get(prompt_ref["field_template"].format(i=i)) for i in range(1, n + 1)]
         colors = [str(c).strip() for c in colors if _is_present(c)]
-        return (" ".join(colors), "read", None)
+        return (" ".join(colors), "read", None, None)
     return None
 
 
@@ -579,10 +615,15 @@ def _registry_bids_fields(task, rec, task_name, join_id, questionnaire_lookup, l
         ) else "doc-text"
         stimulus_asset = _asset_url(prompt_ref, task_name)
     elif ptype == "questionnaire-join":
-        joined = _registry_questionnaire(prompt_ref, task_name, join_id, questionnaire_lookup)
+        joined = _registry_questionnaire(prompt_ref, task_name, join_id, questionnaire_lookup, language)
         if joined is not None:
-            stimulus_text, speech_type, instructions_suffix = joined
+            stimulus_text, speech_type, instructions_suffix, instr_override = joined
             stimulus_source = "questionnaire"
+            # random-item's instruction depends on the drawn category (and language),
+            # so it fully overrides the task-level instruction when resolved.
+            if instr_override:
+                instructions = instr_override
+                instructions_authoritative = True
         else:
             stimulus_text = ""
             stimulus_source = "questionnaire"
