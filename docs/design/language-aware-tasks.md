@@ -81,12 +81,18 @@
   English cue and are never given the v2 questions -- the numbered/voice
   distinction is preserved.
 
-**Deferred / follow-up**:
-- **Grouped-task instruction granularity** — Spanish instructions are family-level,
-  so per-recording English detail (e.g. diadochokinesis per-syllable) is not
-  mirrored in Spanish. Acceptable; instructions are documentation, not references.
-- **Generator integration** — the es-419 harvest is a standalone script; fold it
-  into `build_task_registry.py` so `--check` drift-guards the Spanish banks too.
+**Complete for all meaningful content** (every WER reference, every current-protocol
+instruction, the language field). The items below are not functional gaps:
+- **Grouped-task instruction granularity** (minor, not a gap) — Spanish non-lexical
+  grouped tasks (e.g. diadochokinesis per syllable) get one family-level Spanish
+  instruction rather than per-recording prose. Nothing is lost: the discriminating
+  target (the syllable) is in the recording name; only the prose is general.
+- **Generator integration** (optional cleanup, not a gap) — the es-419 harvest is a
+  standalone script that is already `--check` drift-guarded; folding it into
+  `build_task_registry.py` would just consolidate the two generators.
+- **Time-limit discrepancy** (upstream data bug, not fixable here) — the es-419 "- v2"
+  page says "1 minuto" vs the English "2 minutes"; report to bridge2ai-redcap.
+  Already handled downstream by removing the time limit from the instruction.
 - ~~**vocab / random-item** stimulus from the questionnaire join~~ — **verified
   moot**: Spanish sessions (07_01) recorded zero Productive-Vocabulary,
   Random-Item, and Stroop tasks (0 recordings and 0 questionnaire rows). Their
