@@ -135,6 +135,13 @@ FAMILY_DESC = {
     "loudness": "Loudness - v2/Loudness - Acoustic Task Description (Spanish).md",
     "picture-description": "Picture Description/Picture Description - Acoustic Task Description (Spanish).md",
     "respiration-and-cough": "Respiration and cough - v2/Respiration and cough - Acoustic Task Description (Spanish).md",
+    # Questionnaire-join tasks: no current Spanish participant recorded these, but
+    # they have Spanish descriptions, so harvest their instructions too for
+    # completeness (their per-participant stimulus comes from the join, which is
+    # already language-agnostic).
+    "productive-vocabulary": "Productive Vocabulary/Productive Vocabulary - Acoustic Task Description (Spanish).md",
+    "random-item-generation": "Random Item Generation - v2/Random Item Generation - Acoustic Task Description (Spanish).md",
+    "word-color-stroop": "Word-color Stroop/Word-color Stroop - Acoustic Task Description (Spanish).md",
 }
 
 # Prose lines that are never instruction text (logo/nav/preamble boilerplate).
