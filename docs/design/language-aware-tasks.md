@@ -28,9 +28,12 @@
   WER reference) was the priority. Wire `instructions` next.
 - **Generator integration** — the es-419 harvest is a standalone script; fold it
   into `build_task_registry.py` so `--check` drift-guards the Spanish banks too.
-- **vocab / random-item** stimulus is per-participant from the questionnaire join,
-  so it should already reflect the Spanish values the participant saw — verify
-  against a real Spanish session rather than assume.
+- ~~**vocab / random-item** stimulus from the questionnaire join~~ — **verified
+  moot**: Spanish sessions (07_01) recorded zero Productive-Vocabulary,
+  Random-Item, and Stroop tasks (0 recordings and 0 questionnaire rows). Their
+  only elicited recordings are Free Speech (no reference text) and Picture
+  Description (language-neutral image), so the join has nothing language-dependent
+  to resolve for Spanish. No change needed.
 
 ## Original proposal
 
