@@ -104,32 +104,79 @@ def _instruction_lines(text: str, stop_prefixes=(">",)) -> str:
     return " ".join(out).strip()
 
 
+# The stimulus text (WER reference) is keyed by task FAMILY so any version of a
+# family that a Spanish session recorded (incl. a v1-labelled recording) picks it
+# up -- Spanish only has the current stimulus set per family.
 def harvest_static(root: Path) -> dict:
     a = _acoustic(root)
     out: dict = {}
 
     cat = (a / "Caterpillar Passage" / "Caterpillar Passage - Acoustic Task Description (Spanish).md").read_text()
-    out["adult.caterpillar-passage"] = {
-        "stimulus_text": _blockquote(cat),
-        "instructions": _instruction_lines(cat),
-        "speech_type": "read",
-    }
+    out["caterpillar-passage"] = {"stimulus_text": _blockquote(cat), "speech_type": "read"}
 
     story = (a / "Story Recall - v2" / "Story Recall - Acoustic Task Description (Spanish).md").read_text()
     scenes = [m.group(1).strip() for m in re.finditer(r"^\d+\.\s+(.*\S)\s*$", story, re.MULTILINE)]
-    # The instruction block is the prose before the first numbered scene.
-    instr = []
-    for ln in story.splitlines():
+    out["story-recall"] = {"stimulus_text": " ".join(scenes).strip(), "speech_type": "recall"}
+    return out
+
+
+# Family slug -> Spanish "Acoustic Task Description" file (relative to Current/),
+# for the current-protocol adult tasks Spanish sessions record.
+FAMILY_DESC = {
+    "harvard-sentences": "Harvard Sentences/Harvard Sentences - Acoustic Task Description (Spanish).md",
+    "cape-v-sentences": "Cape V Sentences - v2/Cape V Sentences - Acoustic Task Description (Spanish).md",
+    "caterpillar-passage": "Caterpillar Passage/Caterpillar Passage - Acoustic Task Description (Spanish).md",
+    "story-recall": "Story Recall - v2/Story Recall - Acoustic Task Description (Spanish).md",
+    "free-speech": "Free Speech - v2/Free Speech - Acoustic Task Description (Spanish).md",
+    "glides": "Glides/Glides - Acoustic Task Description (Spanish).md",
+    "diadochokinesis": "Diadochokinesis - v2/Diadochokinesis - Acoustic Task Description (Spanish).md",
+    "maximum-phonation-time": "Maximum Phonation Time - v2/Maximum Phonation Time - Acoustic Task Description (Spanish).md",
+    "prolonged-vowel": "Prolonged Vowel/Prolonged Vowel - Acoustic Task Description (Spanish).md",
+    "loudness": "Loudness - v2/Loudness - Acoustic Task Description (Spanish).md",
+    "picture-description": "Picture Description/Picture Description - Acoustic Task Description (Spanish).md",
+    "respiration-and-cough": "Respiration and cough - v2/Respiration and cough - Acoustic Task Description (Spanish).md",
+}
+
+# Prose lines that are never instruction text (logo/nav/preamble boilerplate).
+_SKIP_PROSE = ("Voice as a Biomarker", "Para ver la lista completa")
+
+
+def _instruction_from_desc(text: str) -> str:
+    """Extract the Spanish instruction from an Acoustic Task Description page.
+
+    The instruction is the imperative prose that recurs across the recording
+    blocks; the stimulus (a read sentence, a scene) appears once. So: keep the
+    prose lines that occur more than once (in first-seen order). If nothing
+    repeats (a single-block passage), keep the prose that isn't the blockquote /
+    numbered-scene stimulus -- i.e. the preamble instruction.
+    """
+    prose = []
+    for ln in text.splitlines():
         s = ln.strip()
-        if re.match(r"^\d+\.", s):
-            break
-        if s and not s.startswith(("#", "!", "[", "<", ">")) and "Voice as a Biomarker" not in s:
-            instr.append(s)
-    out["adult.story-recall.v2"] = {
-        "stimulus_text": " ".join(scenes).strip(),
-        "instructions": " ".join(instr).strip(),
-        "speech_type": "recall",
-    }
+        if not s or s.startswith(("#", "!", "[", "<", ">", "|", "-")):
+            continue
+        if re.match(r"^\d+\.\s", s):  # numbered stimulus scene
+            continue
+        if any(k in s for k in _SKIP_PROSE):
+            continue
+        prose.append(s)
+    counts: dict = {}
+    for s in prose:
+        counts[s] = counts.get(s, 0) + 1
+    repeated = [s for s in dict.fromkeys(prose) if counts[s] > 1]
+    lines = repeated if repeated else list(dict.fromkeys(prose))
+    return " ".join(lines).strip()
+
+
+def harvest_instructions(root: Path) -> dict:
+    a = _acoustic(root)
+    out: dict = {}
+    for family, rel in FAMILY_DESC.items():
+        p = a / rel
+        if p.exists():
+            instr = _instruction_from_desc(p.read_text())
+            if instr:
+                out[family] = instr
     return out
 
 
@@ -137,6 +184,7 @@ BANKS = {
     "harvard_sentences_bank_es_419.json": harvest_harvard,
     "cape_v_sentences_bank_es_419.json": harvest_cape_v,
     "static_stimulus_es_419.json": harvest_static,
+    "task_instructions_es_419.json": harvest_instructions,
 }
 
 

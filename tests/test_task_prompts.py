@@ -190,6 +190,55 @@ def test_spanish_es419_stimulus(descriptions):
     rainbow = es("Rainbow Passage")
     assert rainbow["language"] == "es-419"
     assert rainbow["stimulus_text"].startswith("When the sunlight")
+    # A v1-labelled CAPE-V recording in a Spanish session still gets the current
+    # Spanish sentence set (Spanish has one set per family); story-recall v1 too.
+    assert es("Cape V sentences-1")["stimulus_text"] == "Este bus de aquí para poco en el mes de agosto."
+    assert es("Story recall")["stimulus_text"].startswith("Había un niño")
+
+
+def test_spanish_es419_instructions(descriptions):
+    def es(name):
+        return convert_response_to_bids_metadata(
+            {"recording_name": name, "recording_acoustic_task_id": "AT",
+             "recording_session_id": "S", "record_id": "r"},
+            questionnaire_name="recordings", mapping_name="recordingschema",
+            columns=["recording_name", "recording_acoustic_task_id", "recording_session_id"],
+            audio_task_descriptions=descriptions, population="adult", language="es-419")
+
+    assert es("Harvard Sentences-List 4-1")["instructions"].startswith("Por favor, lea")
+    assert es("Caterpillar Passage")["instructions"].startswith("Este es un pasaje")
+    assert es("Diadochokinesis (v2)-puh")["instructions"].startswith("Esta tarea nos ayuda")
+    # English is unchanged
+    assert _resolve(descriptions, "Harvard Sentences-List 4-1", population="adult")["instructions"].startswith("Please read")
+
+
+def test_questionnaire_join_language_agnostic(descriptions):
+    # The vocab/random/stroop stimulus comes from the questionnaire join, which
+    # passes through whatever value was stored (Spanish for a Spanish session).
+    # No es-419 sessions recorded these tasks in 07_01, but if one did the join
+    # must still resolve, in the recording's language, from the stored values.
+    tid = "AT-ES"
+    lookup = {
+        ("vocab", tid): {"vocabulary_item_word_3": "enredar"},
+        ("random", tid): {"random_item_generation_category": "animales"},
+        ("stroop", tid): {"stroop_item_color_1": "rojo", "stroop_item_color_2": "verde"},
+    }
+
+    def es(name):
+        return convert_response_to_bids_metadata(
+            {"recording_name": name, "recording_acoustic_task_id": tid,
+             "recording_session_id": "S", "record_id": "r"},
+            questionnaire_name="recordings", mapping_name="recordingschema",
+            columns=["recording_name", "recording_acoustic_task_id", "recording_session_id"],
+            audio_task_descriptions=descriptions, questionnaire_lookup=lookup,
+            language="es-419", population="adult")
+
+    v = es("Productive-Vocabulary-3")
+    assert v["language"] == "es-419" and v["stimulus_text"] == "enredar"
+    r = es("Random-Item-Generation")
+    assert r["language"] == "es-419" and r["instructions"].endswith("Category: animales.")
+    s = es("Word-color-Stroop")
+    assert s["language"] == "es-419" and s["stimulus_text"] == "rojo verde"
 
 
 def test_static_inline_read_recall_has_doc_text_source(descriptions):

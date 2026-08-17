@@ -84,7 +84,14 @@ def _resolve_prompt_ref(task_name: str, prompt_ref: dict, language: str = "en") 
         m = re.search(r"(\d+)", core)
         if not m:
             return ""
-        return bank.get("lists", {}).get(version, {}).get(m.group(1), "")
+        lists = bank.get("lists", {})
+        sub = lists.get(version)
+        # A language bank may carry only the current-protocol version; a v1-labelled
+        # non-English recording still read that (single) Spanish set, so fall back
+        # to the only version present. English keeps both, so this never triggers.
+        if not sub and lists:
+            sub = next(iter(lists.values()))
+        return (sub or {}).get(m.group(1), "")
 
     if select == "index":
         items = bank.get("sentences", bank.get("words", []))
@@ -469,20 +476,33 @@ def _registry_numbering_status(task, task_name):
 
 
 @lru_cache(maxsize=None)
-def _static_stimulus_bank(language: str) -> str:
-    """Language-specific static-inline stimulus (passage/recall reference) bank as
-    text, or '{}' when none exists for the language."""
+def _language_resource(name: str, language: str) -> str:
+    """A per-language resource bank (`<name>_<lang>`) as text, or '{}' when absent."""
     try:
-        return _load_stimulus_bank(f"static_stimulus_{language.replace('-', '_')}")
+        return _load_stimulus_bank(f"{name}_{language.replace('-', '_')}")
     except FileNotFoundError:
         return "{}"
 
 
-def _static_stimulus(task_id, language):
-    """The static-inline stimulus entry for a task in a language, or None."""
-    if not language or language == "en" or not task_id:
+def _family_slug(family) -> str:
+    """Registry family name ('Cape V Sentences') -> bank key slug ('cape-v-sentences')."""
+    return str(family or "").strip().lower().replace(" ", "-")
+
+
+def _static_stimulus(family, language):
+    """The static-inline stimulus entry (passage/recall reference) for a task
+    family in a language, or None. Keyed by family so any version of the family a
+    non-English session recorded picks up the current-protocol reference."""
+    if not language or language == "en" or not family:
         return None
-    return json.loads(_static_stimulus_bank(language)).get(task_id)
+    return json.loads(_language_resource("static_stimulus", language)).get(_family_slug(family))
+
+
+def _language_instructions(family, language):
+    """The Spanish/other-language instruction for a task family, or None."""
+    if not language or language == "en" or not family:
+        return None
+    return json.loads(_language_resource("task_instructions", language)).get(_family_slug(family))
 
 
 def _registry_bids_fields(task, rec, task_name, join_id, questionnaire_lookup, language="en"):
@@ -494,7 +514,13 @@ def _registry_bids_fields(task, rec, task_name, join_id, questionnaire_lookup, l
     # task-level instruction is NOT authoritative: the flat file's per-key
     # instruction (e.g. diadochokinesis's per-syllable text, loudness v1/v2) is
     # more specific and must win. The caller consults `instructions_authoritative`.
-    if rec and rec.get("instructions"):
+    # A language-specific instruction (harvested from the es-419 task description)
+    # wins for non-English sessions -- the participant received it in that language.
+    lang_instr = _language_instructions(task.get("family"), language)
+    if lang_instr:
+        instructions = lang_instr
+        instructions_authoritative = True
+    elif rec and rec.get("instructions"):
         instructions = rec["instructions"]
         instructions_authoritative = True
     else:
@@ -544,7 +570,7 @@ def _registry_bids_fields(task, rec, task_name, join_id, questionnaire_lookup, l
     # so a Spanish session's read/recall recording carries its Spanish reference
     # rather than inheriting the English passage.
     if stimulus_text is None:
-        static = _static_stimulus(task.get("task_id"), language)
+        static = _static_stimulus(task.get("family"), language)
         if static and static.get("stimulus_text"):
             stimulus_text = static["stimulus_text"]
             stimulus_source = "doc-text"

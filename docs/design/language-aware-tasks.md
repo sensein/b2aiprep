@@ -22,10 +22,22 @@
   the English text but is still tagged `language: es-419`, so it is filterable. These
   are edge/retired cases, not current-protocol Spanish tasks.
 
+- **Spanish instructions** — `task_instructions_es_419.json` (family-keyed),
+  harvested from the es-419 acoustic-task description pages, override the English
+  instruction for non-English recordings of that family. Covers all current-protocol
+  adult families Spanish sessions record (Harvard, CAPE-V, Caterpillar, Story Recall,
+  Free Speech, Picture Description, Glides, Diadochokinesis, MPT, Prolonged Vowel,
+  Loudness, Respiration & Cough). Family-keyed, so a v1-labelled recording in a
+  Spanish session gets the current Spanish instruction (Spanish has one per family);
+  the CAPE-V stimulus bank likewise falls back to its single current version.
+
 **Deferred / follow-up**:
-- **Spanish instructions** — the es-419 docs carry them (and the static bank
-  harvests them), but `instructions` are still English for now; stimulus_text (the
-  WER reference) was the priority. Wire `instructions` next.
+- **Free Speech cue** — its `stimulus_text` (the open-ended prompt) is still the
+  English cue for Spanish sessions; the cue varies per recording and is not a WER
+  reference, so it's low priority. The instruction is Spanish.
+- **Grouped-task instruction granularity** — Spanish instructions are family-level,
+  so per-recording English detail (e.g. diadochokinesis per-syllable) is not
+  mirrored in Spanish. Acceptable; instructions are documentation, not references.
 - **Generator integration** — the es-419 harvest is a standalone script; fold it
   into `build_task_registry.py` so `--check` drift-guards the Spanish banks too.
 - ~~**vocab / random-item** stimulus from the questionnaire join~~ — **verified
