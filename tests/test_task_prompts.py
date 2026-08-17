@@ -304,6 +304,27 @@ def test_random_item_instruction_by_category(descriptions):
         assert "Límite de tiempo" not in R(cat, "es-419")
 
 
+def test_free_speech_es419_cue_v2_only(descriptions):
+    def es(name):
+        return convert_response_to_bids_metadata(
+            {"recording_name": name, "recording_acoustic_task_id": "AT",
+             "recording_session_id": "S", "record_id": "r"},
+            questionnaire_name="recordings", mapping_name="recordingschema",
+            columns=["recording_name", "recording_acoustic_task_id", "recording_session_id"],
+            audio_task_descriptions=descriptions, population="adult", language="es-419")
+
+    # Numbered current (v2) free-speech gets its per-recording Spanish cue.
+    assert es("Free speech (v2)-1")["stimulus_text"].startswith("¿Cuál es su estación favorita")
+    assert es("Free speech (v2)-3")["stimulus_text"].startswith("Cuéntenos sobre su libro")
+    # The voice variant (unnumbered) and v1 (both Retired, no es-419 source) must
+    # NOT be given the v2 questions -- they keep their English cue.
+    voice = es("Free speech")
+    assert voice["stimulus_text"].startswith("Can you explain your voice/speech problems")
+    v1 = es("Free speech-1")
+    assert v1["stimulus_text"].startswith("Can you")  # English v1 cue, not the v2 Spanish one
+    assert "favorita" not in v1["stimulus_text"] and "estación" not in v1["stimulus_text"]
+
+
 def test_static_inline_read_recall_has_doc_text_source(descriptions):
     # Static-inline read/recall tasks (rainbow/caterpillar passages, story recall)
     # carry their reference text via the flat fallback; the sidecar must still tag

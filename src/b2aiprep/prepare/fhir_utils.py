@@ -569,6 +569,19 @@ def _language_instructions(family, language):
     return json.loads(_language_resource("task_instructions", language)).get(_family_slug(family))
 
 
+def _free_speech_cue(task_name, language):
+    """Per-recording free-speech cue in a language, for the NUMBERED current (v2)
+    task only. The voice variant (unnumbered "free-speech") and v1 have no es-419
+    source, so they keep the English cue -- keyed on the '(v2)' marker + trailing
+    index so those are never given the v2 questions."""
+    if not language or language == "en" or "(v2)" not in task_name:
+        return None
+    idx = _trailing_index(task_name)
+    if idx is None:
+        return None
+    return json.loads(_language_resource("free_speech_bank", language)).get(str(idx))
+
+
 def _registry_bids_fields(task, rec, task_name, join_id, questionnaire_lookup, language="en"):
     """Assemble sidecar fields from a registry match. `stimulus_text` is None when
     the registry cannot produce it (static-inline / image tasks carry no text) so
@@ -651,10 +664,16 @@ def _registry_bids_fields(task, rec, task_name, join_id, questionnaire_lookup, l
     # so a Spanish session's read/recall recording carries its Spanish reference
     # rather than inheriting the English passage.
     if stimulus_text is None:
-        static = _static_stimulus(task.get("family"), language)
-        if static and static.get("stimulus_text"):
-            stimulus_text = static["stimulus_text"]
-            stimulus_source = "doc-text"
+        # Free Speech (numbered v2) carries a per-recording Spanish cue; the voice
+        # (unnumbered) and v1 variants have no es-419 source and keep the English cue.
+        cue = _free_speech_cue(task_name, language)
+        if cue:
+            stimulus_text = cue
+        else:
+            static = _static_stimulus(task.get("family"), language)
+            if static and static.get("stimulus_text"):
+                stimulus_text = static["stimulus_text"]
+                stimulus_source = "doc-text"
 
     return {
         "instructions": instructions,

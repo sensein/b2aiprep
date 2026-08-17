@@ -73,10 +73,15 @@
   fruits, drinks, animals, wordStartingWithT); the drawn category is surfaced on
   every random-item instruction regardless of variant.
 
+- **Free Speech cue** — the numbered current (v2) free-speech carries a
+  per-recording Spanish cue (`free_speech_bank_es_419.json`, keyed by index),
+  wired via `_free_speech_cue` and gated on the `(v2)` marker + trailing index.
+  The **voice** variant (unnumbered `free-speech`) and **v1** are both Retired and
+  have no es-419 source anywhere (no doc, no MLM translation), so they keep the
+  English cue and are never given the v2 questions -- the numbered/voice
+  distinction is preserved.
+
 **Deferred / follow-up**:
-- **Free Speech cue** — its `stimulus_text` (the open-ended prompt) is still the
-  English cue for Spanish sessions; the cue varies per recording and is not a WER
-  reference, so it's low priority. The instruction is Spanish.
 - **Grouped-task instruction granularity** — Spanish instructions are family-level,
   so per-recording English detail (e.g. diadochokinesis per-syllable) is not
   mirrored in Spanish. Acceptable; instructions are documentation, not references.

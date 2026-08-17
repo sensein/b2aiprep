@@ -195,11 +195,34 @@ def harvest_instructions(root: Path) -> dict:
     return out
 
 
+def harvest_free_speech(root: Path) -> dict:
+    """Per-recording Spanish free-speech cues (the open-ended question), indexed
+    1..N by recording block, from the current (v2) Free Speech Spanish page."""
+    p = _acoustic(root) / "Free Speech - v2" / "Free Speech - Acoustic Task Description (Spanish).md"
+    preamble = ("Esta sección está diseñada", "Nos gustaría obtener", "⚠")
+    cues: dict = {}
+    n = 0
+    for block in re.split(r"\n-{3,}\n", p.read_text()):
+        qs = []
+        for ln in block.splitlines():
+            s = ln.strip()
+            if not s or s.startswith(("#", "!", "[", "<", ">")):
+                continue
+            if any(m in s for m in preamble) or "Voice as a Biomarker" in s:
+                continue
+            qs.append(s)
+        if qs:
+            n += 1
+            cues[str(n)] = qs[-1]  # the question is the last prose line of the block
+    return cues
+
+
 BANKS = {
     "harvard_sentences_bank_es_419.json": harvest_harvard,
     "cape_v_sentences_bank_es_419.json": harvest_cape_v,
     "static_stimulus_es_419.json": harvest_static,
     "task_instructions_es_419.json": harvest_instructions,
+    "free_speech_bank_es_419.json": harvest_free_speech,
 }
 
 
