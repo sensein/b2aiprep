@@ -100,6 +100,36 @@ instruction, the language field). The items below are not functional gaps:
   Description (language-neutral image), so the join has nothing language-dependent
   to resolve for Spanish. No change needed.
 
+## ASR validation (07_01, whisper-large-v3-turbo, GPU)
+
+Ran multilingual Whisper (auto language, no forced `en`) over a spread of one
+Spanish CAPE-V participant's recordings to confirm (a) the audio is Spanish and
+(b) the es banks match what was actually said:
+- **CAPE-V** (v1-labelled recordings) transcribed to the es-419 bank almost
+  verbatim — 5/6 exact ("Este bus de aquí para poco en el mes de agosto.",
+  "Hacen más fuerza si crece la asociación.", "Me acompañan 25 niñas.", …); the
+  6th was an ASR glitch on a short clip, not a content mismatch. This **confirms
+  the single-Spanish-set assumption and validates the version-index fallback** —
+  the v1-labelled Spanish CAPE-V read exactly the es bank sentences.
+- **Harvard** List-16 #1/#10 transcribed **exactly** to the es bank ("Se ríe
+  aunque le digan cosas feas." / "Creo que la guerra es muy cruel para los niños.").
+- **Caterpillar** transcribed verbatim to the Spanish passage; **Story-recall(v2)**
+  was a Spanish retelling of the boy/dog/frog story (recall, not verbatim);
+  **Free-speech(v2)-1** was the participant answering the season question in
+  Spanish (confirms the cue). All Spanish.
+
+Version consistency (from `acoustic_task_name`): across the 6 versioned families
+(diadochokinesis, free-speech, loudness, MPT, respiration, story-recall) Spanish
+participants are **per-participant consistent** — 12 v2-protocol, 4 v1-protocol, 0
+mixed. **CAPE-V is a naming special case**: it has no `(v2)` slug at all, so 5 of
+the 8 CAPE-V participants are v2-protocol yet carry a bare "Cape V sentences" slug.
+Harmless: bare CAPE-V classifies as v1, the version-index fallback yields the single
+Spanish CAPE-V set, and ASR confirms that is what was read. The Spanish CAPE-V (and
+Harvard) sentences are an **independent Spanish phonetically-balanced set, not a
+translation of the English v1 or v2 sentences**.
+
+(Validation scripts/results live on `pool/005`, not in the repo.)
+
 ## Original proposal
 
 **Status**: proposed · **Created**: 2026-08-17
