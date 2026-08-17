@@ -413,12 +413,17 @@ def _random_item_instruction(category, language):
     entry = data.get(language) or data.get("en")
     if not entry:
         return None
-    if category and str(category).strip().lower() not in ("numbers", "letters"):
-        label = entry.get("category_label", "Category")
-        procedural = entry.get("procedural", "")
-        parts = [entry["category"], procedural, f"{label}: {str(category).strip()}."]
-        return " ".join(p for p in parts if p).strip()
-    return entry.get("general")
+    cat = str(category).strip() if category else None
+    label = entry.get("category_label", "Category")
+    suffix = f"{label}: {cat}." if cat else ""
+    if cat and cat.lower() not in ("numbers", "letters"):
+        # unambiguously the non-repeatable category variant (Category_2 only)
+        parts = [entry["category"], entry.get("procedural", ""), suffix]
+    else:
+        # Numbers/Letters (in both category lists) or no category: the general
+        # instruction (describes both variants); still surface the drawn category.
+        parts = [entry["general"], suffix]
+    return " ".join(p for p in parts if p).strip()
 
 
 def _registry_questionnaire(prompt_ref, task_name, join_id, questionnaire_lookup, language="en"):

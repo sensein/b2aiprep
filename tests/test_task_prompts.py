@@ -290,12 +290,18 @@ def test_random_item_instruction_by_category(descriptions):
     assert R("Drinks", "en").endswith("Category: Drinks.")
     assert R("Drinks", "es-419").startswith("Diga tantos elementos de la siguiente categoría")
     # Numbers/Letters appear in BOTH category lists -> ambiguous -> the general
-    # instruction (describes both variants), never asserting repeatability.
+    # instruction (describes both variants), never asserting repeatability, but the
+    # drawn category is still surfaced.
     for cat in ("Numbers", "Letters"):
         assert R(cat, "en").startswith("You will have to speak a series of")
+        assert R(cat, "en").endswith(f"Category: {cat}.")
         assert R(cat, "es-419").startswith("Deberá decir una serie de")
     # Both variants carry the "selection appears / auto-stops" procedural line.
     assert "automatically stop at the end" in R("Drinks", "en")
+    # Time limit is removed for random-item (durations show it was not enforced).
+    for cat in ("Drinks", "Numbers"):
+        assert "Time limit" not in R(cat, "en")
+        assert "Límite de tiempo" not in R(cat, "es-419")
 
 
 def test_static_inline_read_recall_has_doc_text_source(descriptions):

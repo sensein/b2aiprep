@@ -63,10 +63,15 @@
   from source, es-419 `general` composed from the es-419 source phrases (the
   Spanish page has no single combined line). Both variants carry the
   "selection appears / auto-stops" procedural line.
-- **Time limit is intentionally omitted**: it is version-specific (v1 1 min /
-  v2 2 min per the English pages) and the source is inconsistent (the es-419 "- v2"
-  page reads "1 minuto" while the English "- v2" page reads "2 minutes"). Encoding
-  it would propagate that discrepancy; revisit if the source is reconciled.
+- **Time limit removed** from the random-item instruction (flat + registry + the
+  new resource). The source states v1 1 min / v2 2 min (English) and the es-419
+  "- v2" page contradicts it ("1 minuto"), but more decisively `random_duration`
+  shows recordings routinely blow past any limit (v1 median 98 s, 95/237 over
+  2 min; v2 max 1554 s), so it was not an enforced cap and stating one would
+  misrepresent the data. `random_item_generation_category` is a RedCap radio with
+  10 fixed choices (numbers, letters, firstNames, cityNames, countryNames, jobs,
+  fruits, drinks, animals, wordStartingWithT); the drawn category is surfaced on
+  every random-item instruction regardless of variant.
 
 **Deferred / follow-up**:
 - **Free Speech cue** — its `stimulus_text` (the open-ended prompt) is still the
