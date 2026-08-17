@@ -31,6 +31,23 @@
   Spanish session gets the current Spanish instruction (Spanish has one per family);
   the CAPE-V stimulus bank likewise falls back to its single current version.
 
+**Robustness (from code review)**:
+- `selected_language` is a RedCap radio with three choices (data dictionary:
+  `1, English | 2, French | 3, Spanish`; `selected_language_2` carries the same as
+  BCP-47 `en-US/fr-CA/es-419` but is absent from the exports). `_language_from_selected`
+  maps every form an export can carry — text labels, the integer codes `1/2/3`, and
+  the BCP-47 codes — to `en` / `fr-CA` / `es-419`, so a *coded* export never
+  silently collapses Spanish (`3`) or French (`2`) to English. Anything still
+  unrecognized **warns** and defaults to `en` rather than silently mislabeling.
+- **French** is a valid choice with no fr-CA acoustic-task content in the repo, so a
+  French session is tagged `fr-CA` (filterable) and its read tasks trip the
+  missing-language-bank warning below — never silently presented as English.
+- A non-English **read/recall** task whose bank has no `<bank>_<lang>` variant
+  (reading-passage / repeating-sentences / repeating-words — all peds, so never
+  es-419 in practice) **warns** rather than silently shipping the English reference
+  tagged as another language.
+- The flat-file fallback path now threads `language` into `_resolve_prompt_ref`.
+
 **Deferred / follow-up**:
 - **Free Speech cue** — its `stimulus_text` (the open-ended prompt) is still the
   English cue for Spanish sessions; the cue varies per recording and is not a WER

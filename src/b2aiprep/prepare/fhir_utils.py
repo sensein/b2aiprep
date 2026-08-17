@@ -312,22 +312,45 @@ def _population_from_cohort(cohort):
 # code that matches the bridge2ai-redcap translation layer (es-419 = the project's
 # Latin-American Spanish). Unknown/blank -> the release default, English.
 DEFAULT_LANGUAGE = "en"
+# The RedCap `selected_language` is a radio with exactly three choices
+# (data dictionary: "1, English | 2, French | 3, Spanish"); `selected_language_2`
+# carries the same three as BCP-47 codes ("en-US, English | fr-CA, French |
+# es-419, Spanish"). Map every form an export can carry -- text labels, the
+# integer codes of a coded export, and the BCP-47 codes -- so a coded export
+# never silently collapses Spanish/French to English.
 _LANGUAGE_CODES = {
-    "english": "en",
-    "en": "en",
-    "spanish": "es-419",
-    "espanol": "es-419",
-    "español": "es-419",
-    "es": "es-419",
-    "es-419": "es-419",
+    # text labels
+    "english": "en", "french": "fr-CA", "spanish": "es-419",
+    "espanol": "es-419", "español": "es-419", "français": "fr-CA", "francais": "fr-CA",
+    # selected_language integer codes (1/2/3)
+    "1": "en", "2": "fr-CA", "3": "es-419",
+    # BCP-47 (selected_language_2 codes, and normalized outputs)
+    "en": "en", "en-us": "en", "fr": "fr-CA", "fr-ca": "fr-CA",
+    "es": "es-419", "es-419": "es-419",
 }
 
 
 def _language_from_selected(value) -> str:
-    """Map a RedCap `selected_language` value to a BCP-47 code (default 'en')."""
+    """Map a RedCap `selected_language` value to a BCP-47 code (default 'en').
+
+    A value that is present but unrecognized (a new language, or a coded/integer
+    export instead of labels) is NOT silently treated as English -- it is logged,
+    because defaulting a non-English session to 'en' pairs English stimulus with
+    non-English audio, the exact failure this feature prevents."""
     if value is None:
         return DEFAULT_LANGUAGE
-    return _LANGUAGE_CODES.get(str(value).strip().lower(), DEFAULT_LANGUAGE)
+    key = str(value).strip().lower()
+    if key in ("", "nan", "none"):
+        return DEFAULT_LANGUAGE
+    code = _LANGUAGE_CODES.get(key)
+    if code is None:
+        _logger.warning(
+            "unrecognized selected_language=%r; defaulting to %r. If the export is "
+            "coded (integers) or a new language was added, extend _LANGUAGE_CODES.",
+            value, DEFAULT_LANGUAGE,
+        )
+        return DEFAULT_LANGUAGE
+    return code
 
 
 def _select_population(reg, task, population):
@@ -536,6 +559,18 @@ def _registry_bids_fields(task, rec, task_name, join_id, questionnaire_lookup, l
 
     if ptype == "stimulus-bank":
         stimulus_text = _resolve_prompt_ref(task_name, prompt_ref, language)
+        # A read/recall bank with no <bank>_<lang> variant falls back to the English
+        # bank; flag it so a non-English read task never silently ships an English
+        # reference tagged as another language (the mismatch WER would score against).
+        base_bank = prompt_ref.get("bank")
+        if (language and language != "en" and speech_type in ("read", "recall")
+                and _bank_name_for_language(base_bank, language) == base_bank):
+            _logger.warning(
+                "no %s stimulus bank for %r; %r (%s) emits the English reference "
+                "tagged language=%s -- add a %s_%s bank or expect a WER mismatch",
+                language, base_bank, task_name, speech_type, language,
+                base_bank, language.replace("-", "_"),
+            )
         # reading/repeating-sentences text was transcribed from image stimuli (and
         # carries a pinned URL to that image); the lexical banks
         # (harvard/cape-v/repeating-words) are redcap doc text with no asset.
@@ -586,7 +621,7 @@ def _registry_bids_fields(task, rec, task_name, join_id, questionnaire_lookup, l
     }
 
 
-def _flat_bids_fields(task_name_lower, audio_task_descriptions, join_id, questionnaire_lookup):
+def _flat_bids_fields(task_name_lower, audio_task_descriptions, join_id, questionnaire_lookup, language="en"):
     """The flat audio_task_descriptions.json resolution (exact -> longest
     substring, alias_of hop, prompt_ref/static stimulus, questionnaire join).
     Returns a dict of fields, or None when no key matches."""
@@ -622,7 +657,7 @@ def _flat_bids_fields(task_name_lower, audio_task_descriptions, join_id, questio
     }
     prompt_ref = description.get("prompt_ref")
     if prompt_ref:
-        fields["stimulus_text"] = _resolve_prompt_ref(task_name_lower, prompt_ref)
+        fields["stimulus_text"] = _resolve_prompt_ref(task_name_lower, prompt_ref, language)
     elif "stimulus_text" in description:
         fields["stimulus_text"] = description["stimulus_text"]
     else:
@@ -806,7 +841,7 @@ def convert_response_to_bids_metadata( participant: dict,
         task_name_lower = task_name.lower()
         join_id = participant.get("recording_acoustic_task_id")
         flat = _flat_bids_fields(
-            task_name_lower, audio_task_descriptions, join_id, questionnaire_lookup
+            task_name_lower, audio_task_descriptions, join_id, questionnaire_lookup, lang
         )
         reg_match = _resolve_task_registry(task_name_lower, population)
 

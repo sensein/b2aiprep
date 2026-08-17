@@ -3,7 +3,7 @@
     "description": "Instructions given to the participant for the recording task."
   },
   "language": {
-    "description": "BCP-47 code for the language the session was administered in, from the RedCap 'selected_language' ('en', 'es-419'). Filter on this before comparing read-task audio to 'stimulus_text': a non-'en' recording's speech is in that language."
+    "description": "BCP-47 code for the language the session was administered in, from the RedCap 'selected_language' radio (English/French/Spanish -> 'en', 'fr-CA', 'es-419'). Filter on this before comparing read-task audio to 'stimulus_text': a non-'en' recording's speech is in that language."
   },
   "recording_id": {
     "description": "Unique identifier for the specific audio recording."

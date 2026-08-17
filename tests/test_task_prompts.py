@@ -145,7 +145,17 @@ def test_language_field_recorded(descriptions):
     assert _language_from_selected("English") == "en"
     assert _language_from_selected("Spanish") == "es-419"
     assert _language_from_selected("Español") == "es-419"
+    assert _language_from_selected("French") == "fr-CA"
     assert _language_from_selected(None) == "en"
+    assert _language_from_selected("nan") == "en"
+    # A coded export (selected_language radio codes 1/2/3) must not collapse
+    # Spanish/French to English.
+    assert _language_from_selected("3") == "es-419"
+    assert _language_from_selected("2") == "fr-CA"
+    assert _language_from_selected("1") == "en"
+    # selected_language_2 BCP-47 codes
+    assert _language_from_selected("es-419") == "es-419"
+    assert _language_from_selected("fr-CA") == "fr-CA"
     # Every sidecar carries a language; default is 'en', explicit values pass through.
     assert _resolve(descriptions, "Rainbow Passage")["language"] == "en"
     m = convert_response_to_bids_metadata(
@@ -156,6 +166,24 @@ def test_language_field_recorded(descriptions):
         audio_task_descriptions=descriptions, language="es-419",
     )
     assert m["language"] == "es-419"
+
+
+def test_unrecognized_language_warns(caplog):
+    import logging
+    from b2aiprep.prepare.fhir_utils import _language_from_selected
+
+    # A present-but-unmapped value (a new language, or a coded/integer export)
+    # must default to 'en' AND warn -- never silently mislabel a non-English
+    # session as English.
+    with caplog.at_level(logging.WARNING, logger="b2aiprep.prepare.fhir_utils"):
+        assert _language_from_selected("German") == "en"
+        assert _language_from_selected("9") == "en"
+    assert "unrecognized selected_language" in caplog.text
+    # A recognized value does not warn.
+    caplog.clear()
+    with caplog.at_level(logging.WARNING, logger="b2aiprep.prepare.fhir_utils"):
+        assert _language_from_selected("Spanish") == "es-419"
+    assert "unrecognized selected_language" not in caplog.text
 
 
 def test_spanish_es419_stimulus(descriptions):

@@ -140,8 +140,12 @@ FAMILY_DESC = {
     # completeness (their per-participant stimulus comes from the join, which is
     # already language-agnostic).
     "productive-vocabulary": "Productive Vocabulary/Productive Vocabulary - Acoustic Task Description (Spanish).md",
-    "random-item-generation": "Random Item Generation - v2/Random Item Generation - Acoustic Task Description (Spanish).md",
     "word-color-stroop": "Word-color Stroop/Word-color Stroop - Acoustic Task Description (Spanish).md",
+    # random-item-generation is intentionally omitted: its Spanish description holds
+    # two mutually-exclusive variant prompts (letters/numbers vs category) that
+    # cannot be merged into one non-contradictory instruction. Non-English
+    # random-item recordings fall back to the English combined "(i).../(ii)..."
+    # instruction (coherent); their category stimulus still comes from the join.
 }
 
 # Prose lines that are never instruction text (logo/nav/preamble boilerplate).
@@ -167,6 +171,10 @@ def _instruction_from_desc(text: str) -> str:
         if any(k in s for k in _SKIP_PROSE):
             continue
         prose.append(s)
+    # Drop UI button-label lines: a short prose line that reappears (quoted) inside
+    # a longer line is a button caption the page also references in its prose (e.g.
+    # 'No conozco esta palabra, siguiente'), not instruction text.
+    prose = [s for s in prose if not any(o != s and s in o for o in prose)]
     counts: dict = {}
     for s in prose:
         counts[s] = counts.get(s, 0) + 1
