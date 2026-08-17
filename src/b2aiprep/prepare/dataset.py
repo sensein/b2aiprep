@@ -47,7 +47,7 @@ from b2aiprep.prepare.utils import (
     normalize_task_label,
     sanitize_task_entity_in_bids_stem,
 )
-from b2aiprep.prepare.fhir_utils import convert_response_to_bids_metadata
+from b2aiprep.prepare.fhir_utils import convert_response_to_bids_metadata, _population_from_cohort, _is_present
 from b2aiprep.prepare.prepare import (
     get_value_from_metadata,
     remap_id, 
@@ -207,6 +207,34 @@ class BIDSDataset:
         for recording in recordings_df.to_dict("records"):
             recordings_by_task[recording["recording_acoustic_task_id"]].append(recording)
 
+        # Per-participant stimulus for a few tasks (vocab words, random category,
+        # stroop colors) is stored in linked questionnaires, not in any static
+        # descriptions file. Build a lookup keyed by (instrument, acoustic_task_id)
+        # so the metadata resolver can populate `stimulus_text` for those tasks.
+        questionnaire_lookup: t.Dict[tuple, dict] = {}
+        for instrument_key, repeat_instrument, join_column in (
+            ("vocab", RepeatInstrument.NEURO_PRODUCTIVE_VOCABULARY, "vocabulary_recording_acoustic_task_id"),
+            ("random", RepeatInstrument.NEURO_RANDOM_ITEM_GENERATION, "random_recording_acoustic_task_id"),
+            ("stroop", RepeatInstrument.NEURO_WORDCOLOR_STROOP, "stroop_recording_acoustic_task_id"),
+        ):
+            try:
+                instrument_df = redcap_dataset.get_df_of_repeat_instrument(repeat_instrument.value)
+            except Exception as exc:  # instrument absent for this cohort/export
+                _LOGGER.warning(f"Skipping {instrument_key} questionnaire join: {exc}")
+                continue
+            for row in instrument_df.to_dict("records"):
+                task_id = row.get(join_column)
+                if not _is_present(task_id):
+                    continue
+                key = (instrument_key, task_id)
+                if key in questionnaire_lookup:
+                    _LOGGER.warning(
+                        f"Multiple {instrument_key} questionnaire rows for "
+                        f"acoustic_task_id {task_id}; keeping the first, ignoring duplicate."
+                    )
+                    continue
+                questionnaire_lookup[key] = row
+
         participants = []
         for participant in participants_df.to_dict("records"):
             participants.append(participant)
@@ -252,7 +280,8 @@ class BIDSDataset:
                 audio_files_by_recording=audio_files_by_recording,
                 max_audio_workers=max_audio_workers,
                 sanitize_audio_format=sanitize_audio_format,
-                audio_descriptor_dict=audio_descriptor_dict
+                audio_descriptor_dict=audio_descriptor_dict,
+                questionnaire_lookup=questionnaire_lookup,
             )
         
         # Return a new BIDSDataset instance pointing to the created directory
@@ -1100,7 +1129,8 @@ class BIDSDataset:
     @staticmethod
     def _output_participant_data_to_metadata_file(
         participant: dict, outdir: Path, audio_files_by_recording: t.Optional[t.Dict[str, Path]] = None,
-        max_audio_workers: int = 16, sanitize_audio_format: bool = False, audio_descriptor_dict:OrderedDict = {}
+        max_audio_workers: int = 16, sanitize_audio_format: bool = False, audio_descriptor_dict:OrderedDict = {},
+        questionnaire_lookup: t.Optional[t.Dict[tuple, dict]] = None
     ):
         """Output participant data to FHIR format.
 
@@ -1137,7 +1167,14 @@ class BIDSDataset:
             audio_output_path = session_path / "audio"
             if not audio_output_path.exists():
                 audio_output_path.mkdir(parents=True, exist_ok=True)
-    
+
+            # Detect recording_name collisions within a session: two distinct
+            # recordings that map to the same BIDS task entity would silently
+            # overwrite each other's sidecar and drop one audio file (the copy is
+            # skipped when the destination already exists). Track the normalized
+            # entity -> recording_id and warn on a clash.
+            seen_recording_entities: t.Dict[str, str] = {}
+
             # multiple acoustic tasks are asked per session
             for task in session["acoustic_tasks"]:
                 if task is None:
@@ -1150,12 +1187,16 @@ class BIDSDataset:
                     continue
                 
                 acoustic_task_name = acoustic_task_name.replace(" ", "-").replace("_", "-")
+                # Population (from the acoustic task's cohort) disambiguates the
+                # few families that exist in both peds and adult (picture-description).
+                task_population = _population_from_cohort(task.get("acoustic_task_cohort"))
                 meta_data = convert_response_to_bids_metadata(
                     task,
                     questionnaire_name=task_instrument.name,
                     mapping_name=task_instrument.schema_name_clobbered,
                     columns=task_instrument.columns,
                     audio_task_descriptions=audio_descriptor_dict,
+                    population=task_population,
                 )
                 BIDSDataset._write_pydantic_model_to_bids_file(
                     audio_output_path,
@@ -1170,12 +1211,31 @@ class BIDSDataset:
                 prefix = f"sub-{participant_id}_ses-{session_id}"
                 # there may be more than one recording per acoustic task
                 for recording in task["recordings"]:
+                    # collision check: normalized recording_name is the BIDS task
+                    # entity; a clash between two recording_ids overwrites files.
+                    _rec_name = str(recording.get("recording_name", "")).strip()
+                    _rec_entity = _rec_name.replace(" ", "-").replace("_", "-").lower()
+                    _rec_id = recording.get("recording_id")
+                    if _rec_entity:
+                        _prior = seen_recording_entities.get(_rec_entity)
+                        if _prior is not None and _prior != _rec_id:
+                            _LOGGER.warning(
+                                "recording_name collision: %r maps to the same BIDS task "
+                                "entity for participant %s session %s (recording_id %s and "
+                                "%s); the later sidecar overwrites the earlier and one audio "
+                                "file is dropped",
+                                _rec_name, participant_id, session_id, _prior, _rec_id,
+                            )
+                        else:
+                            seen_recording_entities.setdefault(_rec_entity, _rec_id)
                     meta_data = convert_response_to_bids_metadata(
                         recording,
                         questionnaire_name=recording_instrument.name,
                         mapping_name=recording_instrument.schema_name_clobbered,
                         columns=recording_instrument.columns,
-                        audio_task_descriptions=audio_descriptor_dict
+                        audio_task_descriptions=audio_descriptor_dict,
+                        questionnaire_lookup=questionnaire_lookup,
+                        population=task_population,
                     )
                     BIDSDataset._write_pydantic_model_to_bids_file(
                         audio_output_path,

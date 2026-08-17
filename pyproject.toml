@@ -38,7 +38,7 @@ where = ["src"] # <-- this changed
 
 [tool.setuptools.package-data]
 "*" = ["*.*", ".gitkeep"]
-b2aiprep = ["redcap2rs/**/*"]
+b2aiprep = ["redcap2rs/**/*", "prepare/resources/task_registry/**/*"]
 
 [project.optional-dependencies]
 doc = [

@@ -1,0 +1,21 @@
+{
+  "description": "Random Item Generation category options (source bridge2ai-redcap RIG v2).",
+  "categories": {
+    "category_1": [
+      "Numbers",
+      "Letters"
+    ],
+    "category_2": [
+      "Numbers",
+      "Letters",
+      "First names",
+      "City names",
+      "Country names",
+      "Jobs",
+      "Fruits",
+      "Drinks",
+      "Animals",
+      "English words starting with \"t\""
+    ]
+  }
+}

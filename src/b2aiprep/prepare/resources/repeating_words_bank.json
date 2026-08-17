@@ -1,0 +1,30 @@
+{
+    "description": "Pediatric 'Repeating Words' task stimuli in recording order (1-based index). Source: bridge2ai-redcap docs/Pediatrics/Acoustic Tasks/Current/Repeating Words. Used to resolve both the numeral task-name form (repeat-words-<N>) and the word form (Repeating-Words-<word>) to the specific word.",
+    "words": [
+        "smile",
+        "great",
+        "sled",
+        "slip",
+        "pants",
+        "bad",
+        "pinch",
+        "such",
+        "take",
+        "need",
+        "scab",
+        "five",
+        "class",
+        "mouth",
+        "me",
+        "fed",
+        "beef",
+        "fold",
+        "hunt",
+        "no",
+        "are",
+        "pond",
+        "teach",
+        "slice",
+        "tree"
+    ]
+}

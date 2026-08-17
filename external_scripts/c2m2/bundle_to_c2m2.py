@@ -292,7 +292,7 @@ def generate_file_describes_biosample(bundle_path: Path, all_files_df: pd.DataFr
 
     Only task-related files are linked to biosamples:
       - features/*.parquet and features/*.tsv: have task_name column
-      - metadata/metadata.parquet: has task_name column
+      - metadata/metadata.tsv (or legacy metadata.parquet): has task_name column
       - phenotype/task/recording.tsv: recording_name -> exact task_name slug
       - phenotype/task/acoustic_task.tsv: acoustic_task_name prefix per (participant, session)
       - phenotype/task/stroop.tsv: exact 'word-color-stroop'
@@ -353,11 +353,14 @@ def generate_file_describes_biosample(bundle_path: Path, all_files_df: pd.DataFr
                 print(f"Warning: skipping {file_local_id}: {e}")
             continue
 
-        # --- metadata/ parquet ---
-        if parts[0] == 'metadata' and suffix == '.parquet':
+        # --- metadata/ (parquet or tsv) ---
+        if parts[0] == 'metadata' and suffix in ('.parquet', '.tsv'):
             try:
-                df = pd.read_parquet(abs_path,
-                                     columns=['participant_id', 'session_id', 'task_name'])
+                df = (pd.read_parquet(abs_path,
+                                      columns=['participant_id', 'session_id', 'task_name'])
+                      if suffix == '.parquet'
+                      else pd.read_csv(abs_path, sep='\t', dtype=str,
+                                       usecols=['participant_id', 'session_id', 'task_name']))
                 process_task_name_file(df, file_local_id)
             except Exception as e:
                 print(f"Warning: skipping {file_local_id}: {e}")

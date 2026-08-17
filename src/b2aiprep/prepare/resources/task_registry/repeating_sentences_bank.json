@@ -1,0 +1,11 @@
+{
+  "description": "Pediatric Repeating Sentences, transcribed from the redcap image stimuli via the curated audio_task_descriptions.json 'sentence' key.",
+  "sentences": [
+    "The blue spot is on the key again.",
+    "How hard did he hug him.",
+    "We were away a year ago.",
+    "We eat eggs every eve.",
+    "My momma makes lemon muffins.",
+    "Peter will keep at the park."
+  ]
+}
