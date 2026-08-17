@@ -139,6 +139,25 @@ def test_diadochokinesis_v1_curated_instruction(descriptions):
     assert "timer" not in m["instructions"]
 
 
+def test_language_field_recorded(descriptions):
+    from b2aiprep.prepare.fhir_utils import _language_from_selected
+
+    assert _language_from_selected("English") == "en"
+    assert _language_from_selected("Spanish") == "es-419"
+    assert _language_from_selected("Español") == "es-419"
+    assert _language_from_selected(None) == "en"
+    # Every sidecar carries a language; default is 'en', explicit values pass through.
+    assert _resolve(descriptions, "Rainbow Passage")["language"] == "en"
+    m = convert_response_to_bids_metadata(
+        {"recording_name": "Rainbow Passage", "recording_acoustic_task_id": "AT",
+         "recording_session_id": "S", "record_id": "r"},
+        questionnaire_name="recordings", mapping_name="recordingschema",
+        columns=["recording_name", "recording_acoustic_task_id", "recording_session_id"],
+        audio_task_descriptions=descriptions, language="es-419",
+    )
+    assert m["language"] == "es-419"
+
+
 def test_static_inline_read_recall_has_doc_text_source(descriptions):
     # Static-inline read/recall tasks (rainbow/caterpillar passages, story recall)
     # carry their reference text via the flat fallback; the sidecar must still tag

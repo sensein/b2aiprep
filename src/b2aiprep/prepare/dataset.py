@@ -47,7 +47,7 @@ from b2aiprep.prepare.utils import (
     normalize_task_label,
     sanitize_task_entity_in_bids_stem,
 )
-from b2aiprep.prepare.fhir_utils import convert_response_to_bids_metadata, _population_from_cohort, _is_present
+from b2aiprep.prepare.fhir_utils import convert_response_to_bids_metadata, _population_from_cohort, _is_present, _language_from_selected
 from b2aiprep.prepare.prepare import (
     get_value_from_metadata,
     remap_id, 
@@ -1143,6 +1143,10 @@ class BIDSDataset:
         """
         participant_id = participant["record_id"]
         subject_path = outdir / f"sub-{participant_id}"
+        # Administration language is recorded once per participant (the RedCap
+        # base row's `selected_language`); every recording of this participant
+        # inherits it (there are no mixed-language sessions).
+        participant_language = _language_from_selected(participant.get("selected_language"))
 
         # TODO: prepare a Patient resource to use as the reference for each questionnaire
         # patient = create_fhir_patient(participant)
@@ -1197,6 +1201,7 @@ class BIDSDataset:
                     columns=task_instrument.columns,
                     audio_task_descriptions=audio_descriptor_dict,
                     population=task_population,
+                    language=participant_language,
                 )
                 BIDSDataset._write_pydantic_model_to_bids_file(
                     audio_output_path,
@@ -1236,6 +1241,7 @@ class BIDSDataset:
                         audio_task_descriptions=audio_descriptor_dict,
                         questionnaire_lookup=questionnaire_lookup,
                         population=task_population,
+                        language=participant_language,
                     )
                     BIDSDataset._write_pydantic_model_to_bids_file(
                         audio_output_path,

@@ -285,6 +285,29 @@ def _population_from_cohort(cohort):
     return "adult"
 
 
+# Administration-language codes. The RedCap `selected_language` records the
+# language a session was run in ("English", "Spanish", ...); map it to a BCP-47
+# code that matches the bridge2ai-redcap translation layer (es-419 = the project's
+# Latin-American Spanish). Unknown/blank -> the release default, English.
+DEFAULT_LANGUAGE = "en"
+_LANGUAGE_CODES = {
+    "english": "en",
+    "en": "en",
+    "spanish": "es-419",
+    "espanol": "es-419",
+    "español": "es-419",
+    "es": "es-419",
+    "es-419": "es-419",
+}
+
+
+def _language_from_selected(value) -> str:
+    """Map a RedCap `selected_language` value to a BCP-47 code (default 'en')."""
+    if value is None:
+        return DEFAULT_LANGUAGE
+    return _LANGUAGE_CODES.get(str(value).strip().lower(), DEFAULT_LANGUAGE)
+
+
 def _select_population(reg, task, population):
     """When a family exists in more than one population, route to the task in the
     recording's population (e.g. peds vs adult picture-description)."""
@@ -633,6 +656,7 @@ def convert_response_to_bids_metadata( participant: dict,
     audio_task_descriptions: OrderedDict,
     questionnaire_lookup: t.Optional[dict] = None,
     population: t.Optional[str] = None,
+    language: t.Optional[str] = None,
 ) -> dict:
     """Converts a participant's response to a metadata json file.
 
@@ -675,6 +699,11 @@ def convert_response_to_bids_metadata( participant: dict,
     
     metadata_file = {}
     task_name = ""
+    lang = language or DEFAULT_LANGUAGE
+    # Administration language of the session, recorded on every sidecar so a
+    # consumer can tell (and filter) which recordings are non-English -- and so a
+    # WER pipeline never scores non-English speech against an English reference.
+    metadata_file["language"] = lang
     metadata_file["instructions"] = ""
     for item in generic_items:
         metadata_field = item.get("metadata")
