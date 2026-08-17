@@ -158,6 +158,40 @@ def test_language_field_recorded(descriptions):
     assert m["language"] == "es-419"
 
 
+def test_spanish_es419_stimulus(descriptions):
+    # es-419 sessions get the Spanish reference for read/recall tasks that have a
+    # Spanish stimulus in the redcap (Harvard, CAPE-V v2, Caterpillar, Story Recall
+    # v2) -- never the English text. English output is unchanged.
+    harv_en = _resolve(descriptions, "Harvard Sentences-List 4-1", population="adult")
+    harv_es = _resolve(descriptions, "Harvard Sentences-List 4-1", population="adult")
+    harv_es = convert_response_to_bids_metadata(
+        {"recording_name": "Harvard Sentences-List 4-1", "recording_acoustic_task_id": "AT",
+         "recording_session_id": "S", "record_id": "r"},
+        questionnaire_name="recordings", mapping_name="recordingschema",
+        columns=["recording_name", "recording_acoustic_task_id", "recording_session_id"],
+        audio_task_descriptions=descriptions, population="adult", language="es-419")
+    assert harv_en["stimulus_text"] != harv_es["stimulus_text"]
+    assert harv_es["stimulus_text"] == "El duque salió del parque en un coche negro."
+    assert harv_es["language"] == "es-419" and harv_es["stimulus_source"] == "doc-text"
+
+    def es(name):
+        return convert_response_to_bids_metadata(
+            {"recording_name": name, "recording_acoustic_task_id": "AT",
+             "recording_session_id": "S", "record_id": "r"},
+            questionnaire_name="recordings", mapping_name="recordingschema",
+            columns=["recording_name", "recording_acoustic_task_id", "recording_session_id"],
+            audio_task_descriptions=descriptions, population="adult", language="es-419")
+
+    assert es("Cape V sentences-2-(v2)")["stimulus_text"] == "Hacen más fuerza si crece la asociación."
+    assert es("Caterpillar Passage")["stimulus_text"].startswith("¿Te gustan los parques de atracciones?")
+    assert es("Story-Recall-(v2)")["stimulus_text"].startswith("Había un niño")
+    # A task with no Spanish stimulus (Rainbow, retired) falls back to English text
+    # but is still tagged es-419 so it is filterable -- never silently mislabeled.
+    rainbow = es("Rainbow Passage")
+    assert rainbow["language"] == "es-419"
+    assert rainbow["stimulus_text"].startswith("When the sunlight")
+
+
 def test_static_inline_read_recall_has_doc_text_source(descriptions):
     # Static-inline read/recall tasks (rainbow/caterpillar passages, story recall)
     # carry their reference text via the flat fallback; the sidecar must still tag

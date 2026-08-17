@@ -1,0 +1,13 @@
+{
+  "description": "CAPE-V sentences, Spanish (es-419), current protocol (v2), from bridge2ai-redcap Cape V Sentences - v2 (Spanish) description.",
+  "lists": {
+    "v2": {
+      "1": "Este bus de aquí para poco en el mes de agosto.",
+      "2": "Hacen más fuerza si crece la asociación.",
+      "3": "Hoy no hay agua en el aula.",
+      "4": "Ayer. Hoy. Ahora. A tiempo.",
+      "5": "Me acompañan veinticinco niñas.",
+      "6": "Este paquete ocupa poco."
+    }
+  }
+}

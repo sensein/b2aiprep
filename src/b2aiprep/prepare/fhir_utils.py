@@ -36,7 +36,22 @@ def _bank(bank_name: str) -> dict:
     return json.loads(_load_stimulus_bank(bank_name))
 
 
-def _resolve_prompt_ref(task_name: str, prompt_ref: dict) -> str:
+@lru_cache(maxsize=None)
+def _bank_name_for_language(base: str, language: str) -> str:
+    """Return the language-specific bank name (`<base>_<lang>`, e.g.
+    harvard_sentences_bank_es_419) when that bank exists, else the base
+    (English) bank. So a language with no bank transparently falls back."""
+    if not language or language == "en":
+        return base
+    candidate = f"{base}_{language.replace('-', '_')}"
+    try:
+        _load_stimulus_bank(candidate)
+        return candidate
+    except FileNotFoundError:
+        return base
+
+
+def _resolve_prompt_ref(task_name: str, prompt_ref: dict, language: str = "en") -> str:
     """Resolve a task name to its specific stimulus via a stimulus bank.
 
     Dispatches on prompt_ref['select']:
@@ -49,7 +64,7 @@ def _resolve_prompt_ref(task_name: str, prompt_ref: dict) -> str:
     Returns "" when it can't be resolved. `task_name` is the ORIGINAL name (parens
     intact) so the '(v2)' / 'list-L-N' patterns still match.
     """
-    bank = _bank(prompt_ref["bank"])
+    bank = _bank(_bank_name_for_language(prompt_ref["bank"], language))
     select = prompt_ref.get("select", "index-or-word")
 
     if select == "list-index":
@@ -453,7 +468,24 @@ def _registry_numbering_status(task, task_name):
     return "ok"
 
 
-def _registry_bids_fields(task, rec, task_name, join_id, questionnaire_lookup):
+@lru_cache(maxsize=None)
+def _static_stimulus_bank(language: str) -> str:
+    """Language-specific static-inline stimulus (passage/recall reference) bank as
+    text, or '{}' when none exists for the language."""
+    try:
+        return _load_stimulus_bank(f"static_stimulus_{language.replace('-', '_')}")
+    except FileNotFoundError:
+        return "{}"
+
+
+def _static_stimulus(task_id, language):
+    """The static-inline stimulus entry for a task in a language, or None."""
+    if not language or language == "en" or not task_id:
+        return None
+    return json.loads(_static_stimulus_bank(language)).get(task_id)
+
+
+def _registry_bids_fields(task, rec, task_name, join_id, questionnaire_lookup, language="en"):
     """Assemble sidecar fields from a registry match. `stimulus_text` is None when
     the registry cannot produce it (static-inline / image tasks carry no text) so
     the caller can fall back to the flat file. Returns a dict."""
@@ -477,7 +509,7 @@ def _registry_bids_fields(task, rec, task_name, join_id, questionnaire_lookup):
     instructions_suffix = None
 
     if ptype == "stimulus-bank":
-        stimulus_text = _resolve_prompt_ref(task_name, prompt_ref)
+        stimulus_text = _resolve_prompt_ref(task_name, prompt_ref, language)
         # reading/repeating-sentences text was transcribed from image stimuli (and
         # carries a pinned URL to that image); the lexical banks
         # (harvard/cape-v/repeating-words) are redcap doc text with no asset.
@@ -506,6 +538,16 @@ def _registry_bids_fields(task, rec, task_name, join_id, questionnaire_lookup):
     # DDK, prolonged-vowel, glides, cough, breath-sounds, ...).
     if stimulus_text is None and speech_type == "non-lexical":
         stimulus_text = ""
+
+    # Non-English static-inline read/recall reference text (passages, story recall)
+    # lives in a language-specific static bank, not the English flat file. Use it
+    # so a Spanish session's read/recall recording carries its Spanish reference
+    # rather than inheriting the English passage.
+    if stimulus_text is None:
+        static = _static_stimulus(task.get("task_id"), language)
+        if static and static.get("stimulus_text"):
+            stimulus_text = static["stimulus_text"]
+            stimulus_source = "doc-text"
 
     return {
         "instructions": instructions,
@@ -746,7 +788,7 @@ def convert_response_to_bids_metadata( participant: dict,
         if reg_match is not None:
             task, rec = reg_match
             reg = _registry_bids_fields(
-                task, rec, task_name_lower, join_id, questionnaire_lookup
+                task, rec, task_name_lower, join_id, questionnaire_lookup, lang
             )
             # Registry instructions win only when authoritative (curated);
             # otherwise the flat file's per-key instruction is more specific.
