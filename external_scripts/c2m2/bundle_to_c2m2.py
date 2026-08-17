@@ -292,7 +292,7 @@ def generate_file_describes_biosample(bundle_path: Path, all_files_df: pd.DataFr
 
     Only task-related files are linked to biosamples:
       - features/*.parquet and features/*.tsv: have task_name column
-      - metadata/metadata.parquet: has task_name column
+      - metadata/metadata.tsv (or legacy metadata.parquet): has task_name column
       - phenotype/task/recording.tsv: recording_name -> exact task_name slug
       - phenotype/task/acoustic_task.tsv: acoustic_task_name prefix per (participant, session)
       - phenotype/task/stroop.tsv: exact 'word-color-stroop'

@@ -139,6 +139,37 @@ def test_diadochokinesis_v1_curated_instruction(descriptions):
     assert "timer" not in m["instructions"]
 
 
+def test_static_inline_read_recall_has_doc_text_source(descriptions):
+    # Static-inline read/recall tasks (rainbow/caterpillar passages, story recall)
+    # carry their reference text via the flat fallback; the sidecar must still tag
+    # provenance as doc-text so consumers can identify these WER/reference targets.
+    for name in ["Rainbow Passage", "Caterpillar Passage", "Story-Recall"]:
+        m = _resolve(descriptions, name, population="adult")
+        assert m["speech_type"] in ("read", "recall"), name
+        assert m["stimulus_text"], name
+        assert m["stimulus_source"] == "doc-text", (name, m["stimulus_source"])
+    # non-read/recall static-inline tasks must NOT be tagged doc-text (empty stim)
+    mpt = _resolve(descriptions, "Maximum phonation time-1")
+    assert mpt["stimulus_text"] == ""
+    assert "stimulus_source" not in mpt or mpt.get("stimulus_source") is None
+
+
+def test_version_select_tolerates_glued_alias():
+    # _select_version must find the version token in "(v2)", bare "v2", and the
+    # glued "...timev2" form _norm() yields, without mistaking family names.
+    from b2aiprep.prepare.fhir_utils import _resolve_task_registry, _norm
+
+    for name in ("maximum-phonation-time-(v2)", "maximum-phonation-time (v2)",
+                 _norm("maximum-phonation-time(v2)")):
+        match = _resolve_task_registry(name, population="adult")
+        assert match is not None, name
+        task, _ = match
+        assert task["task_id"].endswith(".v2"), (name, task["task_id"])
+    # the version-less name resolves to the unversioned/v1 task, not v2
+    bare = _resolve_task_registry("maximum-phonation-time", population="adult")
+    assert bare is not None and not bare[0]["task_id"].endswith(".v2")
+
+
 def test_registry_image_stimulus_asset(descriptions):
     m = _resolve(descriptions, "noisy-sounds-3")
     assert m["stimulus_source"] == "image"

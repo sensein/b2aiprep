@@ -245,9 +245,12 @@ def _select_version(reg, task, task_name):
     versions = _family_version_index().get(key)
     if not versions or len(versions) < 2:
         return task
-    # Detect the version token in either form: "(v2)" (real task names) or a bare
-    # "v2" token (paren-free recording_ids). Generalized to any vN.
-    m = re.search(r"\bv(\d+)\b", task_name.lower())
+    # Detect the version token in every form it occurs: "(v2)" (real task names),
+    # a bare "v2" token (paren-free recording_ids), and the glued "...timev2" form
+    # that _norm() produces when parens are stripped without a separator. Require a
+    # digit run not followed by another letter so "cape-v-sentences" (v then '-')
+    # and family names are never mistaken for a version. Generalized to any vN.
+    m = re.search(r"v(\d+)(?![a-z0-9])", task_name.lower())
     want = f"v{m.group(1)}" if m else None
     if want and want in versions:
         return reg["tasks"][versions[want]]
@@ -724,15 +727,26 @@ def convert_response_to_bids_metadata( participant: dict,
                 instructions = flat["instructions"]
             else:
                 instructions = reg["instructions"]
+            # registry stimulus_text is None for static-inline/image tasks it does
+            # not carry -> fall back to the flat file's text.
+            stim_text = (
+                reg["stimulus_text"]
+                if reg["stimulus_text"] is not None
+                else (flat["stimulus_text"] if flat else "")
+            )
+            stim_source = reg["stimulus_source"]
+            # Static-inline read/recall tasks (rainbow/caterpillar passages, story
+            # recall, cinderella) carry their reference text via the flat fallback,
+            # so the registry leaves stimulus_source unset. Tag it doc-text: the
+            # reference is redcap/hand-entered plain text (any accompanying image is
+            # illustrative, not the reading target), matching metadata.json.
+            if stim_source is None and stim_text and reg["speech_type"] in ("read", "recall"):
+                stim_source = "doc-text"
             resolved = {
                 "instructions": instructions,
                 "speech_type": reg["speech_type"],
-                # registry stimulus_text is None for static-inline/image tasks it
-                # does not carry -> fall back to the flat file's text.
-                "stimulus_text": reg["stimulus_text"]
-                if reg["stimulus_text"] is not None
-                else (flat["stimulus_text"] if flat else ""),
-                "stimulus_source": reg["stimulus_source"],
+                "stimulus_text": stim_text,
+                "stimulus_source": stim_source,
                 "stimulus_asset": reg["stimulus_asset"],
                 "instructions_suffix": reg["instructions_suffix"],
             }
