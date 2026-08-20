@@ -40,6 +40,7 @@ from soundfile import LibsndfileError
 from tqdm import tqdm
 
 from b2aiprep.prepare.constants import RepeatInstrument, Instrument
+from b2aiprep.prepare.deid import classify_phi_columns
 from b2aiprep.prepare.update import build_activity_payload
 from b2aiprep.prepare.utils import (
     copy_package_resource,
@@ -1392,71 +1393,16 @@ class BIDSDataset:
 
     @staticmethod
     def _remove_sensitive_columns(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
-        """Remove columns with sensitive data (free-text, geo-location, etc)."""
+        """Remove columns with sensitive data (free-text, dates, identifiers, etc).
 
-        # TODO: Revisit this list. The deidentification is now implicitly applied by the
-        # use of bids_field_reorganization.csv to select only desired columns.
-        # This is kept here for now as an extra layer of safety, particularly for pediatrics
-        # which has not had the RedCap dataset imported/tested yet. In the future, this code may
-        # remove useful non-PHI columns, so care should be taken.
-        columns_to_drop = [
-            "state_province",
-            "zipcode",
-            "other_edu_level",
-            "others_household_specify",
-            "diagnosis_alz_dementia_mci_ca_rudas_score",
-            "diagnosis_alz_dementia_mci_ca_mmse_score",
-            "diagnosis_alz_dementia_mci_ca_moca_score",
-            "diagnosis_alz_dementia_mci_ca_adas_cog_score",
-            "diagnosis_alz_dementia_mci_ca_other",
-            "diagnosis_alz_dementia_mci_ca_other_score",
-            "diagnosis_parkinsons_ma_updrs_part_i_score",
-            "diagnosis_parkinsons_ma_updrs_part_ii_score",
-            "diagnosis_parkinsons_ma_updrs_part_iii_score",
-            "diagnosis_parkinsons_ma_updrs_part_iv_score",
-            "diagnosis_parkinsons_non_motor_symptoms_yes",
-            "traumatic_event",
-            # pediatric columns
-            "city",
-            "state_province",
-            "peds_zipcode",
-            "peds_other_race_specify",
-            "peds_other_primary_language",
-            "peds_mc_conditions_other_specified",
-            "peds_mc_chronic_medical_condition_specified",
-            "peds_mc_genetic_syndromes_specified",
-            "peds_mc_hospitalized_specified",
-            "peds_mc_allergies_specified",
-            "peds_mc_dif_swallowing_specified",
-            "peds_mc_ear_inf_ant_py_specified",
-            "peds_mc_etp_procedure",
-            "peds_mc_eval_voice_swal_c_specified",
-            "peds_mc_ft_specified",
-            "peds_mc_reflux_specified",
-            "peds_mc_hl_specified",
-            "peds_mc_hw_voice_2_w_specified",
-            "peds_mc_no_surgeries_procedure",
-            "peds_mc_stridor_specified",
-            "peds_mc_ox_sup_specified",
-            "peds_mc_meds_specified",
-            "peds_mc_v_dis_specified",
-            "peds_mc_a_therapy_specified",
-            "peds_mc_surgery_t_vc_a_specified",
-            "peds_mc_fr_inf_tons_specified",
-            "peds_mc_fr_v_f_specified",
-            # below could be considered for inclusion in the future
-            "peds_mc_tonsillectomy_date",
-            "peds_mc_adenoidectomy_date",
-            "peds_mc_neck_mass_branchial_cleft_cyst_surgery_date",
-            "peds_mc_etp_procedure_date",
-            "peds_mc_neck_mass_dermoid_cyst_surgery_date",
-            "peds_mc_neck_mass_enlarged_lymph_node_surgery_date",
-            "peds_mc_lingual_tonsillectomy_date",
-            "peds_mc_no_surgeries_procedure_date",
-            "peds_mc_neck_mass_thyroglossal_duct_cyst_surgery_date",
-            "peds_mc_neck_mass_hyroid_nodule_or_cancer_surgery_date",
-            "peds_mc_v_dis_specified"
-        ]
+        (1) Primary deidentification is the allowlist in ``bids_field_organization.csv``
+        (2) This is a fail-safe which drops columns with possible PHI; see deid.py
+        """
+        phi_columns = classify_phi_columns(df.columns)
+        columns_to_drop = list(phi_columns.keys())
+        if columns_to_drop:
+            reasons = ", ".join(f"{col} ({reason})" for col, reason in phi_columns.items())
+            _LOGGER.info(f"PHI columns identified for removal: {reasons}")
         df, phenotype = BIDSDataset._drop_columns_from_df_and_data_dict(
             df, phenotype, columns_to_drop, "Removing PHI containing columns"
         )
