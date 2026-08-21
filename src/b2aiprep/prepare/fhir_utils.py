@@ -43,7 +43,7 @@ def _bank_name_for_language(base: str, language: str) -> str:
     (English) bank. So a language with no bank transparently falls back."""
     if not language or language == "en":
         return base
-    candidate = f"{base}_{language.replace('-', '_')}"
+    candidate = f"{base}_{language.replace('-', '_').lower()}"
     try:
         _load_stimulus_bank(candidate)
         return candidate
@@ -418,12 +418,12 @@ def _random_item_instruction(category, language):
     suffix = f"{label}: {cat}." if cat else ""
     if cat and cat.lower() not in ("numbers", "letters"):
         # unambiguously the non-repeatable category variant (Category_2 only)
-        parts = [entry["category"], entry.get("procedural", ""), suffix]
+        parts = [entry.get("category", ""), entry.get("procedural", ""), suffix]
     else:
         # Numbers/Letters (in both category lists) or no category: the general
         # instruction (describes both variants); still surface the drawn category.
-        parts = [entry["general"], suffix]
-    return " ".join(p for p in parts if p).strip()
+        parts = [entry.get("general", ""), suffix]
+    return " ".join(p for p in parts if p).strip() or None
 
 
 def _registry_questionnaire(prompt_ref, task_name, join_id, questionnaire_lookup, language="en"):
@@ -543,7 +543,7 @@ def _registry_numbering_status(task, task_name):
 def _language_resource(name: str, language: str) -> str:
     """A per-language resource bank (`<name>_<lang>`) as text, or '{}' when absent."""
     try:
-        return _load_stimulus_bank(f"{name}_{language.replace('-', '_')}")
+        return _load_stimulus_bank(f"{name}_{language.replace('-', '_').lower()}")
     except FileNotFoundError:
         return "{}"
 
@@ -665,8 +665,11 @@ def _registry_bids_fields(task, rec, task_name, join_id, questionnaire_lookup, l
     # rather than inheriting the English passage.
     if stimulus_text is None:
         # Free Speech (numbered v2) carries a per-recording Spanish cue; the voice
-        # (unnumbered) and v1 variants have no es-419 source and keep the English cue.
-        cue = _free_speech_cue(task_name, language)
+        # (unnumbered) and v1 variants have no es-419 source and keep the English
+        # cue. Scoped to the Free Speech family so no other "(v2)-N" static-inline
+        # task is ever handed the free-speech question.
+        cue = (_free_speech_cue(task_name, language)
+               if _family_slug(task.get("family")) == "free-speech" else None)
         if cue:
             stimulus_text = cue
         else:
@@ -674,6 +677,16 @@ def _registry_bids_fields(task, rec, task_name, join_id, questionnaire_lookup, l
             if static and static.get("stimulus_text"):
                 stimulus_text = static["stimulus_text"]
                 stimulus_source = "doc-text"
+
+    # Symmetric with the stimulus-bank path: a non-English read/recall task with no
+    # language-specific reference will fall back to the English flat-file text in the
+    # caller -- flag that mismatch rather than shipping it silently.
+    if stimulus_text is None and language and language != "en" and speech_type in ("read", "recall"):
+        _logger.warning(
+            "no %s reference for read/recall task %r; the English text will be emitted "
+            "tagged language=%s -- add a language static/bank entry or expect a WER mismatch",
+            language, task_name, language,
+        )
 
     return {
         "instructions": instructions,

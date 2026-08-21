@@ -189,7 +189,9 @@ def test_unrecognized_language_warns(caplog):
 def test_spanish_es419_stimulus(descriptions):
     # es-419 sessions get the Spanish reference for read/recall tasks that have a
     # Spanish stimulus in the redcap (Harvard, CAPE-V v2, Caterpillar, Story Recall
-    # v2) -- never the English text. English output is unchanged.
+    # v2) -- never the English text. English stimulus_text is unchanged. (English
+    # random-item *instructions* do change intentionally -- the time limit was
+    # dropped per request, which makes v1/v2 identical; see the random-item test.)
     harv_en = _resolve(descriptions, "Harvard Sentences-List 4-1", population="adult")
     harv_es = _resolve(descriptions, "Harvard Sentences-List 4-1", population="adult")
     harv_es = convert_response_to_bids_metadata(
