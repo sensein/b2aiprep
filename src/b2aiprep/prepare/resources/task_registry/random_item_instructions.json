@@ -1,0 +1,15 @@
+{
+  "_source": "bridge2ai-redcap Current/Random Item Generation - v2 description pages (English + Spanish) and Category_1/Category_2 lists. The per-recording variant (repeatable letters/numbers vs non-repeatable category) is only fully determined for categories outside {Numbers, Letters}: those appear ONLY in Category_2 (non-repeatable). Numbers and Letters appear in BOTH lists, so a recording with that category is ambiguous and keeps the 'general' instruction (which describes both variants) rather than asserting a repeatability the data cannot confirm. 'category' lines are verbatim from source; the es-419 'general' is composed from the es-419 source phrases mirroring the English structure (the Spanish page has no single combined line).",
+  "en": {
+    "general": "You will have to speak a series of (i) random letters or numbers (repetition allowed), or (ii) items from a given category e.g., cities, animals, etc. (repetition not allowed), with the goal of maximizing the number of items. The selection will appear when you start recording. The recording will automatically stop at the end.",
+    "category": "Say as many items from the following category as you can. Do not repeat any item. Your goal is to list as many as possible.",
+    "procedural": "The selection will appear when you start recording. The recording will automatically stop at the end.",
+    "category_label": "Category"
+  },
+  "es-419": {
+    "general": "Deberá decir una serie de (i) letras o números aleatorios (se permite repetir), o (ii) elementos de una categoría dada (no repita ningún elemento), con el objetivo de maximizar la cantidad de elementos. La selección aparecerá cuando comience a grabar. La grabación se detendrá automáticamente al final.",
+    "category": "Diga tantos elementos de la siguiente categoría como pueda. No repita ningún elemento. Su objetivo es enumerar la mayor cantidad posible.",
+    "procedural": "La selección aparecerá cuando comience a grabar. La grabación se detendrá automáticamente al final.",
+    "category_label": "Categoría"
+  }
+}

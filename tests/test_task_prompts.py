@@ -139,6 +139,194 @@ def test_diadochokinesis_v1_curated_instruction(descriptions):
     assert "timer" not in m["instructions"]
 
 
+def test_language_field_recorded(descriptions):
+    from b2aiprep.prepare.fhir_utils import _language_from_selected
+
+    assert _language_from_selected("English") == "en"
+    assert _language_from_selected("Spanish") == "es-419"
+    assert _language_from_selected("Español") == "es-419"
+    assert _language_from_selected("French") == "fr-CA"
+    assert _language_from_selected(None) == "en"
+    assert _language_from_selected("nan") == "en"
+    # A coded export (selected_language radio codes 1/2/3) must not collapse
+    # Spanish/French to English.
+    assert _language_from_selected("3") == "es-419"
+    assert _language_from_selected("2") == "fr-CA"
+    assert _language_from_selected("1") == "en"
+    # selected_language_2 BCP-47 codes
+    assert _language_from_selected("es-419") == "es-419"
+    assert _language_from_selected("fr-CA") == "fr-CA"
+    # Every sidecar carries a language; default is 'en', explicit values pass through.
+    assert _resolve(descriptions, "Rainbow Passage")["language"] == "en"
+    m = convert_response_to_bids_metadata(
+        {"recording_name": "Rainbow Passage", "recording_acoustic_task_id": "AT",
+         "recording_session_id": "S", "record_id": "r"},
+        questionnaire_name="recordings", mapping_name="recordingschema",
+        columns=["recording_name", "recording_acoustic_task_id", "recording_session_id"],
+        audio_task_descriptions=descriptions, language="es-419",
+    )
+    assert m["language"] == "es-419"
+
+
+def test_unrecognized_language_warns(caplog):
+    import logging
+    from b2aiprep.prepare.fhir_utils import _language_from_selected
+
+    # A present-but-unmapped value (a new language, or a coded/integer export)
+    # must default to 'en' AND warn -- never silently mislabel a non-English
+    # session as English.
+    with caplog.at_level(logging.WARNING, logger="b2aiprep.prepare.fhir_utils"):
+        assert _language_from_selected("German") == "en"
+        assert _language_from_selected("9") == "en"
+    assert "unrecognized selected_language" in caplog.text
+    # A recognized value does not warn.
+    caplog.clear()
+    with caplog.at_level(logging.WARNING, logger="b2aiprep.prepare.fhir_utils"):
+        assert _language_from_selected("Spanish") == "es-419"
+    assert "unrecognized selected_language" not in caplog.text
+
+
+def test_spanish_es419_stimulus(descriptions):
+    # es-419 sessions get the Spanish reference for read/recall tasks that have a
+    # Spanish stimulus in the redcap (Harvard, CAPE-V v2, Caterpillar, Story Recall
+    # v2) -- never the English text. English stimulus_text is unchanged. (English
+    # random-item *instructions* do change intentionally -- the time limit was
+    # dropped per request, which makes v1/v2 identical; see the random-item test.)
+    harv_en = _resolve(descriptions, "Harvard Sentences-List 4-1", population="adult")
+    harv_es = _resolve(descriptions, "Harvard Sentences-List 4-1", population="adult")
+    harv_es = convert_response_to_bids_metadata(
+        {"recording_name": "Harvard Sentences-List 4-1", "recording_acoustic_task_id": "AT",
+         "recording_session_id": "S", "record_id": "r"},
+        questionnaire_name="recordings", mapping_name="recordingschema",
+        columns=["recording_name", "recording_acoustic_task_id", "recording_session_id"],
+        audio_task_descriptions=descriptions, population="adult", language="es-419")
+    assert harv_en["stimulus_text"] != harv_es["stimulus_text"]
+    assert harv_es["stimulus_text"] == "El duque salió del parque en un coche negro."
+    assert harv_es["language"] == "es-419" and harv_es["stimulus_source"] == "doc-text"
+
+    def es(name):
+        return convert_response_to_bids_metadata(
+            {"recording_name": name, "recording_acoustic_task_id": "AT",
+             "recording_session_id": "S", "record_id": "r"},
+            questionnaire_name="recordings", mapping_name="recordingschema",
+            columns=["recording_name", "recording_acoustic_task_id", "recording_session_id"],
+            audio_task_descriptions=descriptions, population="adult", language="es-419")
+
+    assert es("Cape V sentences-2-(v2)")["stimulus_text"] == "Hacen más fuerza si crece la asociación."
+    assert es("Caterpillar Passage")["stimulus_text"].startswith("¿Te gustan los parques de atracciones?")
+    assert es("Story-Recall-(v2)")["stimulus_text"].startswith("Había un niño")
+    # A task with no Spanish stimulus (Rainbow, retired) falls back to English text
+    # but is still tagged es-419 so it is filterable -- never silently mislabeled.
+    rainbow = es("Rainbow Passage")
+    assert rainbow["language"] == "es-419"
+    assert rainbow["stimulus_text"].startswith("When the sunlight")
+    # A v1-labelled CAPE-V recording in a Spanish session still gets the current
+    # Spanish sentence set (Spanish has one set per family); story-recall v1 too.
+    assert es("Cape V sentences-1")["stimulus_text"] == "Este bus de aquí para poco en el mes de agosto."
+    assert es("Story recall")["stimulus_text"].startswith("Había un niño")
+
+
+def test_spanish_es419_instructions(descriptions):
+    def es(name):
+        return convert_response_to_bids_metadata(
+            {"recording_name": name, "recording_acoustic_task_id": "AT",
+             "recording_session_id": "S", "record_id": "r"},
+            questionnaire_name="recordings", mapping_name="recordingschema",
+            columns=["recording_name", "recording_acoustic_task_id", "recording_session_id"],
+            audio_task_descriptions=descriptions, population="adult", language="es-419")
+
+    assert es("Harvard Sentences-List 4-1")["instructions"].startswith("Por favor, lea")
+    assert es("Caterpillar Passage")["instructions"].startswith("Este es un pasaje")
+    assert es("Diadochokinesis (v2)-puh")["instructions"].startswith("Esta tarea nos ayuda")
+    # English is unchanged
+    assert _resolve(descriptions, "Harvard Sentences-List 4-1", population="adult")["instructions"].startswith("Please read")
+
+
+def test_questionnaire_join_language_agnostic(descriptions):
+    # The vocab/random/stroop stimulus comes from the questionnaire join, which
+    # passes through whatever value was stored (Spanish for a Spanish session).
+    # No es-419 sessions recorded these tasks in 07_01, but if one did the join
+    # must still resolve, in the recording's language, from the stored values.
+    tid = "AT-ES"
+    lookup = {
+        ("vocab", tid): {"vocabulary_item_word_3": "enredar"},
+        ("random", tid): {"random_item_generation_category": "animales"},
+        ("stroop", tid): {"stroop_item_color_1": "rojo", "stroop_item_color_2": "verde"},
+    }
+
+    def es(name):
+        return convert_response_to_bids_metadata(
+            {"recording_name": name, "recording_acoustic_task_id": tid,
+             "recording_session_id": "S", "record_id": "r"},
+            questionnaire_name="recordings", mapping_name="recordingschema",
+            columns=["recording_name", "recording_acoustic_task_id", "recording_session_id"],
+            audio_task_descriptions=descriptions, questionnaire_lookup=lookup,
+            language="es-419", population="adult")
+
+    v = es("Productive-Vocabulary-3")
+    assert v["language"] == "es-419" and v["stimulus_text"] == "enredar"
+    r = es("Random-Item-Generation")
+    # a semantic category (Category_2 only) -> Spanish non-repeatable instruction,
+    # with the Spanish category label.
+    assert r["language"] == "es-419"
+    assert r["instructions"].startswith("Diga tantos elementos de la siguiente categoría")
+    assert r["instructions"].endswith("Categoría: animales.")
+    s = es("Word-color-Stroop")
+    assert s["language"] == "es-419" and s["stimulus_text"] == "rojo verde"
+
+
+def test_random_item_instruction_by_category(descriptions):
+    def R(cat, lang):
+        lk = {("random", "AT"): {"random_item_generation_category": cat}}
+        return convert_response_to_bids_metadata(
+            {"recording_name": "Random-Item-Generation", "recording_acoustic_task_id": "AT",
+             "recording_session_id": "S", "record_id": "r"},
+            questionnaire_name="recordings", mapping_name="recordingschema",
+            columns=["recording_name", "recording_acoustic_task_id", "recording_session_id"],
+            audio_task_descriptions=descriptions, questionnaire_lookup=lk,
+            population="adult", language=lang)["instructions"]
+
+    # A semantic category is unambiguously the non-repeatable variant.
+    assert R("Drinks", "en").startswith("Say as many items from the following category")
+    assert "Do not repeat any item" in R("Drinks", "en")
+    assert R("Drinks", "en").endswith("Category: Drinks.")
+    assert R("Drinks", "es-419").startswith("Diga tantos elementos de la siguiente categoría")
+    # Numbers/Letters appear in BOTH category lists -> ambiguous -> the general
+    # instruction (describes both variants), never asserting repeatability, but the
+    # drawn category is still surfaced.
+    for cat in ("Numbers", "Letters"):
+        assert R(cat, "en").startswith("You will have to speak a series of")
+        assert R(cat, "en").endswith(f"Category: {cat}.")
+        assert R(cat, "es-419").startswith("Deberá decir una serie de")
+    # Both variants carry the "selection appears / auto-stops" procedural line.
+    assert "automatically stop at the end" in R("Drinks", "en")
+    # Time limit is removed for random-item (durations show it was not enforced).
+    for cat in ("Drinks", "Numbers"):
+        assert "Time limit" not in R(cat, "en")
+        assert "Límite de tiempo" not in R(cat, "es-419")
+
+
+def test_free_speech_es419_cue_v2_only(descriptions):
+    def es(name):
+        return convert_response_to_bids_metadata(
+            {"recording_name": name, "recording_acoustic_task_id": "AT",
+             "recording_session_id": "S", "record_id": "r"},
+            questionnaire_name="recordings", mapping_name="recordingschema",
+            columns=["recording_name", "recording_acoustic_task_id", "recording_session_id"],
+            audio_task_descriptions=descriptions, population="adult", language="es-419")
+
+    # Numbered current (v2) free-speech gets its per-recording Spanish cue.
+    assert es("Free speech (v2)-1")["stimulus_text"].startswith("¿Cuál es su estación favorita")
+    assert es("Free speech (v2)-3")["stimulus_text"].startswith("Cuéntenos sobre su libro")
+    # The voice variant (unnumbered) and v1 (both Retired, no es-419 source) must
+    # NOT be given the v2 questions -- they keep their English cue.
+    voice = es("Free speech")
+    assert voice["stimulus_text"].startswith("Can you explain your voice/speech problems")
+    v1 = es("Free speech-1")
+    assert v1["stimulus_text"].startswith("Can you")  # English v1 cue, not the v2 Spanish one
+    assert "favorita" not in v1["stimulus_text"] and "estación" not in v1["stimulus_text"]
+
+
 def test_static_inline_read_recall_has_doc_text_source(descriptions):
     # Static-inline read/recall tasks (rainbow/caterpillar passages, story recall)
     # carry their reference text via the flat fallback; the sidecar must still tag

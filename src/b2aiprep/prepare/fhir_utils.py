@@ -36,7 +36,22 @@ def _bank(bank_name: str) -> dict:
     return json.loads(_load_stimulus_bank(bank_name))
 
 
-def _resolve_prompt_ref(task_name: str, prompt_ref: dict) -> str:
+@lru_cache(maxsize=None)
+def _bank_name_for_language(base: str, language: str) -> str:
+    """Return the language-specific bank name (`<base>_<lang>`, e.g.
+    harvard_sentences_bank_es_419) when that bank exists, else the base
+    (English) bank. So a language with no bank transparently falls back."""
+    if not language or language == "en":
+        return base
+    candidate = f"{base}_{language.replace('-', '_').lower()}"
+    try:
+        _load_stimulus_bank(candidate)
+        return candidate
+    except FileNotFoundError:
+        return base
+
+
+def _resolve_prompt_ref(task_name: str, prompt_ref: dict, language: str = "en") -> str:
     """Resolve a task name to its specific stimulus via a stimulus bank.
 
     Dispatches on prompt_ref['select']:
@@ -49,7 +64,7 @@ def _resolve_prompt_ref(task_name: str, prompt_ref: dict) -> str:
     Returns "" when it can't be resolved. `task_name` is the ORIGINAL name (parens
     intact) so the '(v2)' / 'list-L-N' patterns still match.
     """
-    bank = _bank(prompt_ref["bank"])
+    bank = _bank(_bank_name_for_language(prompt_ref["bank"], language))
     select = prompt_ref.get("select", "index-or-word")
 
     if select == "list-index":
@@ -69,7 +84,14 @@ def _resolve_prompt_ref(task_name: str, prompt_ref: dict) -> str:
         m = re.search(r"(\d+)", core)
         if not m:
             return ""
-        return bank.get("lists", {}).get(version, {}).get(m.group(1), "")
+        lists = bank.get("lists", {})
+        sub = lists.get(version)
+        # A language bank may carry only the current-protocol version; a v1-labelled
+        # non-English recording still read that (single) Spanish set, so fall back
+        # to the only version present. English keeps both, so this never triggers.
+        if not sub and lists:
+            sub = next(iter(lists.values()))
+        return (sub or {}).get(m.group(1), "")
 
     if select == "index":
         items = bank.get("sentences", bank.get("words", []))
@@ -285,6 +307,52 @@ def _population_from_cohort(cohort):
     return "adult"
 
 
+# Administration-language codes. The RedCap `selected_language` records the
+# language a session was run in ("English", "Spanish", ...); map it to a BCP-47
+# code that matches the bridge2ai-redcap translation layer (es-419 = the project's
+# Latin-American Spanish). Unknown/blank -> the release default, English.
+DEFAULT_LANGUAGE = "en"
+# The RedCap `selected_language` is a radio with exactly three choices
+# (data dictionary: "1, English | 2, French | 3, Spanish"); `selected_language_2`
+# carries the same three as BCP-47 codes ("en-US, English | fr-CA, French |
+# es-419, Spanish"). Map every form an export can carry -- text labels, the
+# integer codes of a coded export, and the BCP-47 codes -- so a coded export
+# never silently collapses Spanish/French to English.
+_LANGUAGE_CODES = {
+    # text labels
+    "english": "en", "french": "fr-CA", "spanish": "es-419",
+    "espanol": "es-419", "español": "es-419", "français": "fr-CA", "francais": "fr-CA",
+    # selected_language integer codes (1/2/3)
+    "1": "en", "2": "fr-CA", "3": "es-419",
+    # BCP-47 (selected_language_2 codes, and normalized outputs)
+    "en": "en", "en-us": "en", "fr": "fr-CA", "fr-ca": "fr-CA",
+    "es": "es-419", "es-419": "es-419",
+}
+
+
+def _language_from_selected(value) -> str:
+    """Map a RedCap `selected_language` value to a BCP-47 code (default 'en').
+
+    A value that is present but unrecognized (a new language, or a coded/integer
+    export instead of labels) is NOT silently treated as English -- it is logged,
+    because defaulting a non-English session to 'en' pairs English stimulus with
+    non-English audio, the exact failure this feature prevents."""
+    if value is None:
+        return DEFAULT_LANGUAGE
+    key = str(value).strip().lower()
+    if key in ("", "nan", "none"):
+        return DEFAULT_LANGUAGE
+    code = _LANGUAGE_CODES.get(key)
+    if code is None:
+        _logger.warning(
+            "unrecognized selected_language=%r; defaulting to %r. If the export is "
+            "coded (integers) or a new language was added, extend _LANGUAGE_CODES.",
+            value, DEFAULT_LANGUAGE,
+        )
+        return DEFAULT_LANGUAGE
+    return code
+
+
 def _select_population(reg, task, population):
     """When a family exists in more than one population, route to the task in the
     recording's population (e.g. peds vs adult picture-description)."""
@@ -323,9 +391,46 @@ def _resolve_task_registry(task_name: str, population=None):
     return task, rec
 
 
-def _registry_questionnaire(prompt_ref, task_name, join_id, questionnaire_lookup):
+@lru_cache(maxsize=None)
+def _random_item_instructions() -> dict:
+    """Curated per-language random-item instruction texts (general + category)."""
+    try:
+        return json.loads(_load_stimulus_bank("random_item_instructions"))
+    except FileNotFoundError:
+        return {}
+
+
+def _random_item_instruction(category, language):
+    """The random-item instruction for a recording, chosen by its category.
+
+    A category outside {Numbers, Letters} appears only in Category_2 -> it is
+    unambiguously the non-repeatable category variant, so use the category-variant
+    instruction with the category named. Numbers/Letters appear in BOTH category
+    lists, so the variant (repeatable vs not) is not determinable from the data --
+    those keep the 'general' instruction, which describes both variants without
+    asserting a repeatability we cannot confirm. Returns None if no resource."""
+    data = _random_item_instructions()
+    entry = data.get(language) or data.get("en")
+    if not entry:
+        return None
+    cat = str(category).strip() if category else None
+    label = entry.get("category_label", "Category")
+    suffix = f"{label}: {cat}." if cat else ""
+    if cat and cat.lower() not in ("numbers", "letters"):
+        # unambiguously the non-repeatable category variant (Category_2 only)
+        parts = [entry.get("category", ""), entry.get("procedural", ""), suffix]
+    else:
+        # Numbers/Letters (in both category lists) or no category: the general
+        # instruction (describes both variants); still surface the drawn category.
+        parts = [entry.get("general", ""), suffix]
+    return " ".join(p for p in parts if p).strip() or None
+
+
+def _registry_questionnaire(prompt_ref, task_name, join_id, questionnaire_lookup, language="en"):
     """Per-participant stimulus for a questionnaire-join prompt_ref. Returns
-    (stimulus_text, speech_type, instructions_suffix) or None."""
+    (stimulus_text, speech_type, instructions_suffix, instructions_override) or
+    None. instructions_override, when set, replaces the task instruction entirely
+    (used for random-item, whose instruction depends on the drawn category)."""
     if not questionnaire_lookup or not _is_present(join_id):
         return None
     row = questionnaire_lookup.get((prompt_ref.get("instrument"), join_id))
@@ -337,16 +442,20 @@ def _registry_questionnaire(prompt_ref, task_name, join_id, questionnaire_lookup
         if idx is None:
             return None
         word = row.get(prompt_ref["field_template"].format(i=idx))
-        return (str(word).strip() if _is_present(word) else "", "elicited", None)
+        return (str(word).strip() if _is_present(word) else "", "elicited", None, None)
     if select == "field":
         value = row.get(prompt_ref["field"])
-        suffix = f"Category: {str(value).strip()}." if _is_present(value) else None
-        return ("", "elicited", suffix)
+        cat = str(value).strip() if _is_present(value) else None
+        instr = _random_item_instruction(cat, language)
+        # The variant-specific instruction embeds the category, so no extra suffix;
+        # if there is no instruction resource, fall back to surfacing the category.
+        suffix = None if instr else (f"Category: {cat}." if cat else None)
+        return ("", "elicited", suffix, instr)
     if select == "color-list":
         n = prompt_ref.get("n", 15)
         colors = [row.get(prompt_ref["field_template"].format(i=i)) for i in range(1, n + 1)]
         colors = [str(c).strip() for c in colors if _is_present(c)]
-        return (" ".join(colors), "read", None)
+        return (" ".join(colors), "read", None, None)
     return None
 
 
@@ -430,7 +539,50 @@ def _registry_numbering_status(task, task_name):
     return "ok"
 
 
-def _registry_bids_fields(task, rec, task_name, join_id, questionnaire_lookup):
+@lru_cache(maxsize=None)
+def _language_resource(name: str, language: str) -> str:
+    """A per-language resource bank (`<name>_<lang>`) as text, or '{}' when absent."""
+    try:
+        return _load_stimulus_bank(f"{name}_{language.replace('-', '_').lower()}")
+    except FileNotFoundError:
+        return "{}"
+
+
+def _family_slug(family) -> str:
+    """Registry family name ('Cape V Sentences') -> bank key slug ('cape-v-sentences')."""
+    return str(family or "").strip().lower().replace(" ", "-")
+
+
+def _static_stimulus(family, language):
+    """The static-inline stimulus entry (passage/recall reference) for a task
+    family in a language, or None. Keyed by family so any version of the family a
+    non-English session recorded picks up the current-protocol reference."""
+    if not language or language == "en" or not family:
+        return None
+    return json.loads(_language_resource("static_stimulus", language)).get(_family_slug(family))
+
+
+def _language_instructions(family, language):
+    """The Spanish/other-language instruction for a task family, or None."""
+    if not language or language == "en" or not family:
+        return None
+    return json.loads(_language_resource("task_instructions", language)).get(_family_slug(family))
+
+
+def _free_speech_cue(task_name, language):
+    """Per-recording free-speech cue in a language, for the NUMBERED current (v2)
+    task only. The voice variant (unnumbered "free-speech") and v1 have no es-419
+    source, so they keep the English cue -- keyed on the '(v2)' marker + trailing
+    index so those are never given the v2 questions."""
+    if not language or language == "en" or "(v2)" not in task_name:
+        return None
+    idx = _trailing_index(task_name)
+    if idx is None:
+        return None
+    return json.loads(_language_resource("free_speech_bank", language)).get(str(idx))
+
+
+def _registry_bids_fields(task, rec, task_name, join_id, questionnaire_lookup, language="en"):
     """Assemble sidecar fields from a registry match. `stimulus_text` is None when
     the registry cannot produce it (static-inline / image tasks carry no text) so
     the caller can fall back to the flat file. Returns a dict."""
@@ -439,7 +591,13 @@ def _registry_bids_fields(task, rec, task_name, join_id, questionnaire_lookup):
     # task-level instruction is NOT authoritative: the flat file's per-key
     # instruction (e.g. diadochokinesis's per-syllable text, loudness v1/v2) is
     # more specific and must win. The caller consults `instructions_authoritative`.
-    if rec and rec.get("instructions"):
+    # A language-specific instruction (harvested from the es-419 task description)
+    # wins for non-English sessions -- the participant received it in that language.
+    lang_instr = _language_instructions(task.get("family"), language)
+    if lang_instr:
+        instructions = lang_instr
+        instructions_authoritative = True
+    elif rec and rec.get("instructions"):
         instructions = rec["instructions"]
         instructions_authoritative = True
     else:
@@ -454,7 +612,19 @@ def _registry_bids_fields(task, rec, task_name, join_id, questionnaire_lookup):
     instructions_suffix = None
 
     if ptype == "stimulus-bank":
-        stimulus_text = _resolve_prompt_ref(task_name, prompt_ref)
+        stimulus_text = _resolve_prompt_ref(task_name, prompt_ref, language)
+        # A read/recall bank with no <bank>_<lang> variant falls back to the English
+        # bank; flag it so a non-English read task never silently ships an English
+        # reference tagged as another language (the mismatch WER would score against).
+        base_bank = prompt_ref.get("bank")
+        if (language and language != "en" and speech_type in ("read", "recall")
+                and _bank_name_for_language(base_bank, language) == base_bank):
+            _logger.warning(
+                "no %s stimulus bank for %r; %r (%s) emits the English reference "
+                "tagged language=%s -- add a %s_%s bank or expect a WER mismatch",
+                language, base_bank, task_name, speech_type, language,
+                base_bank, language.replace("-", "_"),
+            )
         # reading/repeating-sentences text was transcribed from image stimuli (and
         # carries a pinned URL to that image); the lexical banks
         # (harvard/cape-v/repeating-words) are redcap doc text with no asset.
@@ -463,10 +633,15 @@ def _registry_bids_fields(task, rec, task_name, join_id, questionnaire_lookup):
         ) else "doc-text"
         stimulus_asset = _asset_url(prompt_ref, task_name)
     elif ptype == "questionnaire-join":
-        joined = _registry_questionnaire(prompt_ref, task_name, join_id, questionnaire_lookup)
+        joined = _registry_questionnaire(prompt_ref, task_name, join_id, questionnaire_lookup, language)
         if joined is not None:
-            stimulus_text, speech_type, instructions_suffix = joined
+            stimulus_text, speech_type, instructions_suffix, instr_override = joined
             stimulus_source = "questionnaire"
+            # random-item's instruction depends on the drawn category (and language),
+            # so it fully overrides the task-level instruction when resolved.
+            if instr_override:
+                instructions = instr_override
+                instructions_authoritative = True
         else:
             stimulus_text = ""
             stimulus_source = "questionnaire"
@@ -484,6 +659,35 @@ def _registry_bids_fields(task, rec, task_name, join_id, questionnaire_lookup):
     if stimulus_text is None and speech_type == "non-lexical":
         stimulus_text = ""
 
+    # Non-English static-inline read/recall reference text (passages, story recall)
+    # lives in a language-specific static bank, not the English flat file. Use it
+    # so a Spanish session's read/recall recording carries its Spanish reference
+    # rather than inheriting the English passage.
+    if stimulus_text is None:
+        # Free Speech (numbered v2) carries a per-recording Spanish cue; the voice
+        # (unnumbered) and v1 variants have no es-419 source and keep the English
+        # cue. Scoped to the Free Speech family so no other "(v2)-N" static-inline
+        # task is ever handed the free-speech question.
+        cue = (_free_speech_cue(task_name, language)
+               if _family_slug(task.get("family")) == "free-speech" else None)
+        if cue:
+            stimulus_text = cue
+        else:
+            static = _static_stimulus(task.get("family"), language)
+            if static and static.get("stimulus_text"):
+                stimulus_text = static["stimulus_text"]
+                stimulus_source = "doc-text"
+
+    # Symmetric with the stimulus-bank path: a non-English read/recall task with no
+    # language-specific reference will fall back to the English flat-file text in the
+    # caller -- flag that mismatch rather than shipping it silently.
+    if stimulus_text is None and language and language != "en" and speech_type in ("read", "recall"):
+        _logger.warning(
+            "no %s reference for read/recall task %r; the English text will be emitted "
+            "tagged language=%s -- add a language static/bank entry or expect a WER mismatch",
+            language, task_name, language,
+        )
+
     return {
         "instructions": instructions,
         "instructions_authoritative": instructions_authoritative,
@@ -495,7 +699,7 @@ def _registry_bids_fields(task, rec, task_name, join_id, questionnaire_lookup):
     }
 
 
-def _flat_bids_fields(task_name_lower, audio_task_descriptions, join_id, questionnaire_lookup):
+def _flat_bids_fields(task_name_lower, audio_task_descriptions, join_id, questionnaire_lookup, language="en"):
     """The flat audio_task_descriptions.json resolution (exact -> longest
     substring, alias_of hop, prompt_ref/static stimulus, questionnaire join).
     Returns a dict of fields, or None when no key matches."""
@@ -531,7 +735,7 @@ def _flat_bids_fields(task_name_lower, audio_task_descriptions, join_id, questio
     }
     prompt_ref = description.get("prompt_ref")
     if prompt_ref:
-        fields["stimulus_text"] = _resolve_prompt_ref(task_name_lower, prompt_ref)
+        fields["stimulus_text"] = _resolve_prompt_ref(task_name_lower, prompt_ref, language)
     elif "stimulus_text" in description:
         fields["stimulus_text"] = description["stimulus_text"]
     else:
@@ -633,6 +837,7 @@ def convert_response_to_bids_metadata( participant: dict,
     audio_task_descriptions: OrderedDict,
     questionnaire_lookup: t.Optional[dict] = None,
     population: t.Optional[str] = None,
+    language: t.Optional[str] = None,
 ) -> dict:
     """Converts a participant's response to a metadata json file.
 
@@ -675,6 +880,11 @@ def convert_response_to_bids_metadata( participant: dict,
     
     metadata_file = {}
     task_name = ""
+    lang = language or DEFAULT_LANGUAGE
+    # Administration language of the session, recorded on every sidecar so a
+    # consumer can tell (and filter) which recordings are non-English -- and so a
+    # WER pipeline never scores non-English speech against an English reference.
+    metadata_file["language"] = lang
     metadata_file["instructions"] = ""
     for item in generic_items:
         metadata_field = item.get("metadata")
@@ -709,7 +919,7 @@ def convert_response_to_bids_metadata( participant: dict,
         task_name_lower = task_name.lower()
         join_id = participant.get("recording_acoustic_task_id")
         flat = _flat_bids_fields(
-            task_name_lower, audio_task_descriptions, join_id, questionnaire_lookup
+            task_name_lower, audio_task_descriptions, join_id, questionnaire_lookup, lang
         )
         reg_match = _resolve_task_registry(task_name_lower, population)
 
@@ -717,7 +927,7 @@ def convert_response_to_bids_metadata( participant: dict,
         if reg_match is not None:
             task, rec = reg_match
             reg = _registry_bids_fields(
-                task, rec, task_name_lower, join_id, questionnaire_lookup
+                task, rec, task_name_lower, join_id, questionnaire_lookup, lang
             )
             # Registry instructions win only when authoritative (curated);
             # otherwise the flat file's per-key instruction is more specific.

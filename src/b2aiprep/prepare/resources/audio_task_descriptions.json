@@ -4396,12 +4396,12 @@
         "prompts": []
     },
     "random-item-generation-(v2)": {
-        "instructions": "You will have to speak a series of (i) random letters or numbers (repetition allowed), or (ii) items from a given category e.g., cities, animals, etc. (repetition not allowed), with the goal of maximizing the number of items. Time limit 2 minutes. The selection will appear when you start recording. The recording will automatically stop at the end.",
+        "instructions": "You will have to speak a series of (i) random letters or numbers (repetition allowed), or (ii) items from a given category e.g., cities, animals, etc. (repetition not allowed), with the goal of maximizing the number of items. The selection will appear when you start recording. The recording will automatically stop at the end.",
         "speech_type": "elicited",
         "prompts": []
     },
     "random-item-generation": {
-        "instructions": "You will have to speak a series of (i) random letters or numbers (repetition allowed), or (ii) items from a given category e.g., cities, animals, etc. (repetition not allowed), with the goal of maximizing the number of items. Time limit 1 minute. The selection will appear when you start recording. The recording will automatically stop at the end.",
+        "instructions": "You will have to speak a series of (i) random letters or numbers (repetition allowed), or (ii) items from a given category e.g., cities, animals, etc. (repetition not allowed), with the goal of maximizing the number of items. The selection will appear when you start recording. The recording will automatically stop at the end.",
         "speech_type": "elicited",
         "prompts": []
     },
