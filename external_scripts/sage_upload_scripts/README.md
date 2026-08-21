@@ -51,7 +51,23 @@ Files whose MD5 already matches what is on Sage are skipped, so re-running an up
 
 The old approach of splitting the manifest by `--start`/`--end` row ranges tended to fail with concurrent-upload errors because rows for the *same* folder landed in different jobs, which then raced to create that folder. Uploading **one subject per job** avoids this: the only shared parent is the dataset folder, which already exists.
 
-`sage_upload_array.sbatch` is a SLURM array job that uploads one subject per array task. The partition is set to `pi_satra` (up to 48h); `ou_bcs_normal` (up to 24h) is an alternative. The per-task `--time` is generous for a single subject. Output goes to the repo `logs/` directory.
+Scheduler submission scripts are **site-specific and deliberately not in this repository**
+(`.gitignore` excludes `external_scripts/sage_upload_scripts/*.sbatch` and `*.sh`), so write your own
+for your cluster. What it has to do:
+
+- Take the manifest, a subject list, and a chunk size as arguments.
+- Map each array task to a disjoint set of subjects — `SLURM_ARRAY_TASK_ID` selects a slice of the
+  subject list — and call `sage_upload_manifest.py --subject` once per subject in that slice. One
+  subject per folder subtree is what avoids the race; never split a single subject across tasks.
+- Size the array to `ceil(n_subjects / chunk)`. Chunk more than one subject per task when the subject
+  count exceeds your queue's submitted-job cap (256 on `pi_satra`), and cap concurrency with `%N` so a
+  burst of parallel uploads does not trip Synapse rate limits — `%20` has worked.
+- Request modest resources (2 CPUs, ~4 GB, a few hours per task) and write per-task stdout/stderr to a
+  log directory outside the repository.
+- Leave the dataset-level files to a single post-array run of `--toplevel`; they are not subject-scoped
+  and must not be uploaded concurrently from many tasks.
+
+The full flow:
 
 ```
 # 1. Generate the manifest once (step 1 above), e.g. to manifest.tsv
@@ -62,9 +78,9 @@ ls -d path/to/bids/folder/sub-* | xargs -n1 basename > subjects.txt
 python sage_upload_manifest.py --manifest_file manifest.tsv \
     --subject "$(head -1 subjects.txt)" --dry_run
 
-# 4. Submit the array, sized to the subject count and capped at 20 concurrent (%20)
-sbatch --array=0-$(($(wc -l < subjects.txt) - 1))%20 \
-    sage_upload_array.sbatch manifest.tsv subjects.txt
+# 4. Submit your own array job over subjects.txt, capping concurrency (e.g. %20).
+#    Each task runs, for each subject in its slice:
+#      python sage_upload_manifest.py --manifest_file manifest.tsv --subject "$SUBJECT"
 
 # 5. After the array finishes, upload the dataset-level files once
 python sage_upload_manifest.py --manifest_file manifest.tsv --toplevel
@@ -91,6 +107,8 @@ python verify_sage_contents.py \
 `--adult` is a flag to specify whether to check that the Sage folder to compare against is for the adult data. Leave off the flag for checking the pediatric data.
 
 `--get_md5` is a flag to specify whether to generate MD5 hashes of the files in the BIDS folder. If specified, it will generate the hash for the local files and compare it against the corresponding Sage file's MD5 hash.
+
+This script **reports**; it does not gate. Its normal use is diagnostic — deciding whether an upload needs re-running or a stale local cache needs pruning — so differences are logged and the script exits successfully. A mismatch means the bytes on Sage are not the bytes you have locally: a truncated or corrupted upload, a local file regenerated after upload, or an older version still on Sage. Pass `--strict` when the outcome must fail something automated; it exits non-zero if any file is on Sage but missing locally, present locally but not on Sage, has a differing md5, or has no server-side md5 to compare against when `--get_md5` was requested. That last case matters: without it, a comparison that silently never happened looks the same as one that passed.
 
 `--subject sub-XXXX` restricts the comparison to a single subject's subtree for a quick spot check (e.g. confirming one subject's metadata re-uploaded), instead of walking the entire dataset. It scopes both the local and Sage walks to `<bids_folder>/sub-XXXX`.
 

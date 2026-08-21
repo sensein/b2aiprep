@@ -21,7 +21,7 @@
       "description": "Number of time frames in the spectrogram (variable per recording)."
     },
     {
-      "name": "spectrograms",
+      "name": "spectrogram",
       "type": "array",
       "description": "2D tensor representing the log-magnitude spectrogram.",
       "extras": {
