@@ -15,6 +15,7 @@ import logging
 import os
 import re
 import typing as t
+import uuid
 from collections import OrderedDict
 from datetime import datetime
 from pathlib import Path
@@ -458,6 +459,12 @@ def parse_audio(audio_list, dummy_audio_files=False, is_import=False):
     flattened_list = [value for key in protocol_order for value in protocol_order[key]]
     flattened_list = _select_latest_duplicate_recordings(flattened_list, dummy_audio_files)
 
+    # Deterministic (uuid5) so re-processing the same session/task never mints a
+    # new id -- the acoustic task and its recordings must keep matching join keys
+    # across repeated pipeline runs.
+    def acoustic_task_uuid(session_value, task_name):
+        return str(uuid.uuid5(uuid.NAMESPACE_DNS, f"{session_value}:{task_name}"))
+
     audio_output_list = []
     count = 1
     acoustic_task_count = 1
@@ -509,7 +516,7 @@ def parse_audio(audio_list, dummy_audio_files=False, is_import=False):
                 "record_id": record_id,
                 "redcap_repeat_instrument": "Acoustic Task",
                 "redcap_repeat_instance": acoustic_task_count,
-                "acoustic_task_id": f"{session}",
+                "acoustic_task_id": acoustic_task_uuid(session, acoustic_task),
                 "acoustic_task_session_id": session,
                 "acoustic_task_name": acoustic_task,
                 "acoustic_task_cohort": "Pediatric",
@@ -558,7 +565,7 @@ def parse_audio(audio_list, dummy_audio_files=False, is_import=False):
             "redcap_repeat_instrument": "Recording",
             "redcap_repeat_instance": count,
             "recording_id": recording_id,
-            "recording_acoustic_task_id": f"{session}",
+            "recording_acoustic_task_id": acoustic_task_uuid(session, acoustic_task),
             "recording_session_id": session,
             "recording_name": recording_name,
             "recording_duration": duration,
@@ -770,9 +777,6 @@ class RedCapDataset:
         # session_id: remove the trailing "-"
         for col in df.columns:
             if col.endswith("session_id"):
-                df[col] = df[col].astype(str).str.replace(r'-$', '', regex=True)
-            if col.endswith("acoustic_task_id"):
-                # session was the suffix, so remove it here too
                 df[col] = df[col].astype(str).str.replace(r'-$', '', regex=True)
         
         # tasks: remove "_task" from all task_id and task_name columns

@@ -1,3 +1,5 @@
+import uuid
+
 import numpy as np
 from b2aiprep.prepare.redcap import parse_survey, parse_audio
 import pandas as pd
@@ -69,7 +71,7 @@ def test_audio_csv():
             "record_id": "99999",
             "redcap_repeat_instrument": "Acoustic Task",
             "redcap_repeat_instance": 1,
-            "acoustic_task_id": "14829893-3879-4723-932b-d98d6bc356a8-",
+            "acoustic_task_id": "69127781-5c56-544f-9465-39a9fe2b39e6",
             "acoustic_task_session_id": "14829893-3879-4723-932b-d98d6bc356a8-",
             "acoustic_task_name": "long_sounds_task",
             "acoustic_task_cohort": "Pediatric",
@@ -84,7 +86,7 @@ def test_audio_csv():
             "redcap_repeat_instrument": "Recording",
             "redcap_repeat_instance": 1,
             "recording_id": "d6d7411f-c934-4bca-91a7-5ddad353b801",
-            "recording_acoustic_task_id": "14829893-3879-4723-932b-d98d6bc356a8-",
+            "recording_acoustic_task_id": "69127781-5c56-544f-9465-39a9fe2b39e6",
             "recording_session_id": "14829893-3879-4723-932b-d98d6bc356a8-",
             "recording_name": "long_sounds_task-1",
             "recording_duration": 0,
@@ -104,7 +106,7 @@ def test_audio_csv():
             "redcap_repeat_instrument": "Recording",
             "redcap_repeat_instance": 2,
             "recording_id": "69181d90-aae4-49d0-861d-4ff4a939bff0",
-            "recording_acoustic_task_id": "14829893-3879-4723-932b-d98d6bc356a8-",
+            "recording_acoustic_task_id": "69127781-5c56-544f-9465-39a9fe2b39e6",
             "recording_session_id": "14829893-3879-4723-932b-d98d6bc356a8-",
             "recording_name": "long_sounds_task-2",
             "recording_duration": 0,
@@ -123,6 +125,44 @@ def test_audio_csv():
 
     actual = parse_audio(audio_files, True, is_import=False)
     assert expected_output == actual
+
+
+def test_acoustic_task_id_is_stable_uuid_per_session_and_task():
+    """acoustic_task_id must be a UUID, identical across reruns for the same
+    (session, task), and distinct across different tasks in the same session."""
+    audio_files = [
+        "./mock_audio/99999/14829893-3879-4723-932b-d98d6bc356a8-/long_sounds_task_1_10_plus-d6d7411f-c934-4bca-91a7-5ddad353b801.wav",
+        "./mock_audio/99999/14829893-3879-4723-932b-d98d6bc356a8-/silly_sounds_task_1_10_plus-69181d90-aae4-49d0-861d-4ff4a939bff0.wav",
+    ]
+
+    first_run = parse_audio(audio_files, True, is_import=False)
+    second_run = parse_audio(audio_files, True, is_import=False)
+
+    task_ids = {
+        row["acoustic_task_name"]: row["acoustic_task_id"]
+        for row in first_run
+        if row["redcap_repeat_instrument"] == "Acoustic Task"
+    }
+    task_ids_rerun = {
+        row["acoustic_task_name"]: row["acoustic_task_id"]
+        for row in second_run
+        if row["redcap_repeat_instrument"] == "Acoustic Task"
+    }
+
+    # rerunning on the same data must not mint new ids
+    assert task_ids == task_ids_rerun
+    # different tasks in the same session must get different ids
+    assert len(set(task_ids.values())) == len(task_ids)
+    # ids look like uuids, not the raw session string
+    for task_id in task_ids.values():
+        assert uuid.UUID(task_id)
+
+    recording_task_ids = {
+        row["recording_id"]: row["recording_acoustic_task_id"] for row in first_run
+        if row["redcap_repeat_instrument"] == "Recording"
+    }
+    assert recording_task_ids["d6d7411f-c934-4bca-91a7-5ddad353b801"] == task_ids["long_sounds_task"]
+    assert recording_task_ids["69181d90-aae4-49d0-861d-4ff4a939bff0"] == task_ids["silly_sounds_task"]
 
 
 # --------------------------------------------------------------------------- #
