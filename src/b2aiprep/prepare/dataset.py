@@ -74,11 +74,17 @@ def _guard_resample_overshoot(resampled_audio, in_peak: float):
     resampled peak is already in range. Returns (audio, scale) with scale=None when
     unchanged."""
     wf = resampled_audio.waveform
+    if wf.numel() == 0:
+        return resampled_audio, None
     out_peak = float(wf.abs().max())
     if out_peak <= 1.0:
         return resampled_audio, None
     scale = min(1.0, float(in_peak)) / out_peak
-    return Audio(waveform=wf * scale, sampling_rate=resampled_audio.sampling_rate), scale
+    return (
+        Audio(waveform=wf * scale, sampling_rate=resampled_audio.sampling_rate,
+              metadata=resampled_audio.metadata),
+        scale,
+    )
 
 # Sensitive audio feature content that must not be present for sensitive tasks.
 #
