@@ -63,6 +63,29 @@ _LOGGER = logging.getLogger(__name__)
 DEFAULT_RESAMPLE_RATE = 16000
 DEFAULT_BIT_DEPTH = 16
 
+
+def _guard_resample_overshoot(resampled_audio, in_peak: float):
+    """Prevent the 16-bit save from silently hard-clamping resample overshoot.
+
+    Resampling can push samples past full-scale (|x| > 1); writing those to PCM
+    would clamp them destructively with no error. If that happened, rescale the
+    resampled waveform down to the input's peak so nothing exceeds [-1, 1] --
+    preserving gain and waveform shape and introducing no clipping. No-op when the
+    resampled peak is already in range. Returns (audio, scale) with scale=None when
+    unchanged."""
+    wf = resampled_audio.waveform
+    if wf.numel() == 0:
+        return resampled_audio, None
+    out_peak = float(wf.abs().max())
+    if out_peak <= 1.0:
+        return resampled_audio, None
+    scale = min(1.0, float(in_peak)) / out_peak
+    return (
+        Audio(waveform=wf * scale, sampling_rate=resampled_audio.sampling_rate,
+              metadata=resampled_audio.metadata),
+        scale,
+    )
+
 # Sensitive audio feature content that must not be present for sensitive tasks.
 #
 # This is a grouped spec because the per-record feature `.pt` files are nested dicts
@@ -107,6 +130,14 @@ def _copy_audio_files_parallel(copy_tasks: t.List[t.Tuple[Path, Path]], max_work
                 src_audio = Audio(filepath=src)
                 downmixed_audio = downmix_audios_to_mono([src_audio])[0]
                 audio_16k = resample_audios([downmixed_audio], DEFAULT_RESAMPLE_RATE)[0]
+                # Guard against the 16-bit save silently clamping resample overshoot.
+                in_peak = float(downmixed_audio.waveform.abs().max())
+                audio_16k, scale = _guard_resample_overshoot(audio_16k, in_peak)
+                if scale is not None:
+                    _LOGGER.warning(
+                        "Resample overshoot for %s; rescaled x%.5f to input peak %.4f "
+                        "to avoid destructive 16-bit clamp.", src, scale, in_peak,
+                    )
                 audio_16k.save_to_file(dst,bits_per_sample=DEFAULT_BIT_DEPTH)
             else:
                 shutil.copyfile(src, dst)
