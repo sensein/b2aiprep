@@ -486,6 +486,30 @@ def _asset_url(prompt_ref, task_name):
     )
 
 
+def _asset_sequence_url(prompt_ref):
+    """A single SCALAR template URL for an ordered multi-image stimulus (e.g. Story
+    Recall v2's 10 wordless panels the participant views before retelling). Kept
+    scalar -- not a list -- so the sidecar metadata stays flat/parquet-friendly: the
+    URL carries a literal '{n}' placeholder and the companion sidecar field
+    'stimulus_asset_n_images' gives N, so a consumer substitutes n = 1..N to get the
+    panel URLs. The panels are wordless, so this is language-independent (the same
+    sequence for every language; only stimulus_text differs). Returns None unless
+    prompt_ref carries a '{n}'-templated asset_path and a positive asset_count.
+    Distinct from _asset_url's per-recording '{i}' single, directly-resolvable image
+    (which has no '{n}' and no n-images count)."""
+    p = prompt_ref.get("asset_path")
+    n = prompt_ref.get("asset_count")
+    if not p or "{n" not in p or not isinstance(n, int) or n < 1:
+        return None
+    repo, commit = prompt_ref.get("asset_repo"), prompt_ref.get("asset_commit")
+    if not repo or not commit:
+        return None
+    # URL-encode the path but keep '/' separators and the literal '{n}' placeholder.
+    return "https://raw.githubusercontent.com/{repo}/{commit}/{path}".format(
+        repo=repo, commit=commit, path=quote(p, safe="/{}"),
+    )
+
+
 def _registry_numbering_status(task, task_name):
     """Validate the recording index in `task_name` against the task's known
     numbering, so impossible instances surface (e.g. a 5th maximum-phonation-time,
@@ -609,6 +633,7 @@ def _registry_bids_fields(task, rec, task_name, join_id, questionnaire_lookup, l
     stimulus_text = None
     stimulus_source = None
     stimulus_asset = None
+    stimulus_asset_n_images = None
     instructions_suffix = None
 
     if ptype == "stimulus-bank":
@@ -646,11 +671,26 @@ def _registry_bids_fields(task, rec, task_name, join_id, questionnaire_lookup, l
             stimulus_text = ""
             stimulus_source = "questionnaire"
     elif ptype == "image":
-        # The stimulus is a shown image, not text. Mark provenance and, when the
-        # prompt_ref carries a per-index asset path, pin it to a commit-stable URL.
+        # The stimulus is a shown image; pin it to a commit-stable URL when the
+        # prompt_ref carries a per-index asset path.
         stimulus_text = ""
         stimulus_source = "image"
         stimulus_asset = _asset_url(prompt_ref, task_name)
+        # Some image cards also print the target on the card itself -- the word to
+        # read (Identifying Pictures) or the sound to make (Noisy/Silly/Long
+        # Sounds). That target is in neither the task name nor the instructions, so
+        # it is transcribed once into an index-keyed text_bank (words[i-1] for the
+        # trailing index). When present, emit it as the stimulus_text and keep the
+        # image asset; provenance is 'transcribed' (read off the image). speech_type
+        # stays whatever the task declares (read for Identifying Pictures, so it is
+        # WER-scorable; non-lexical for the sound cards).
+        text_bank = prompt_ref.get("text_bank")
+        if text_bank:
+            idx = _trailing_index(task_name)
+            items = _bank(text_bank).get("words", [])
+            if idx is not None and 1 <= idx <= len(items):
+                stimulus_text = items[idx - 1]
+                stimulus_source = "transcribed"
     # static-inline: stimulus_text stays None -> flat-file fallback (so read/recall
     # tasks pick up their passage text). EXCEPT non-lexical tasks, which have no
     # lexical reference: force "" so we don't leak the flat file's instruction
@@ -688,6 +728,17 @@ def _registry_bids_fields(task, rec, task_name, join_id, questionnaire_lookup, l
             language, task_name, language,
         )
 
+    # An ordered multi-image sequence stimulus (Story Recall v2's wordless panels)
+    # is recorded as ONE scalar template URL plus an n-images count -- resolved after
+    # the language-specific text and independent of language (the panels are
+    # wordless). A single directly-resolvable image leaves n_images None (the field
+    # is then omitted from the sidecar, which itself documents "resolvable as-is").
+    if stimulus_asset is None:
+        seq = _asset_sequence_url(prompt_ref)
+        if seq:
+            stimulus_asset = seq
+            stimulus_asset_n_images = prompt_ref.get("asset_count")
+
     return {
         "instructions": instructions,
         "instructions_authoritative": instructions_authoritative,
@@ -695,6 +746,7 @@ def _registry_bids_fields(task, rec, task_name, join_id, questionnaire_lookup, l
         "stimulus_text": stimulus_text,
         "stimulus_source": stimulus_source,
         "stimulus_asset": stimulus_asset,
+        "stimulus_asset_n_images": stimulus_asset_n_images,
         "instructions_suffix": instructions_suffix,
     }
 
@@ -958,6 +1010,7 @@ def convert_response_to_bids_metadata( participant: dict,
                 "stimulus_text": stim_text,
                 "stimulus_source": stim_source,
                 "stimulus_asset": reg["stimulus_asset"],
+                "stimulus_asset_n_images": reg.get("stimulus_asset_n_images"),
                 "instructions_suffix": reg["instructions_suffix"],
             }
             # The registry knows how many recordings/indices each task has, so an
@@ -984,6 +1037,7 @@ def convert_response_to_bids_metadata( participant: dict,
                 "stimulus_text": flat["stimulus_text"],
                 "stimulus_source": None,
                 "stimulus_asset": None,
+                "stimulus_asset_n_images": None,
                 "instructions_suffix": flat["instructions_suffix"],
             }
 
@@ -998,6 +1052,11 @@ def convert_response_to_bids_metadata( participant: dict,
                 metadata_file["stimulus_source"] = resolved["stimulus_source"]
             if resolved.get("stimulus_asset"):
                 metadata_file["stimulus_asset"] = resolved["stimulus_asset"]
+            # Present only for an ordered multi-image sequence (stimulus_asset carries
+            # a '{n}' placeholder); its ABSENCE documents that stimulus_asset is a
+            # single, directly-resolvable image.
+            if resolved.get("stimulus_asset_n_images"):
+                metadata_file["stimulus_asset_n_images"] = resolved["stimulus_asset_n_images"]
         else:
             # No match in the registry OR the flat file: the sidecar gets empty
             # instructions/stimulus. Log it so build runs surface unknown task

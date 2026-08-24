@@ -1,0 +1,9 @@
+{
+  "_source": "bridge2ai-redcap Pediatrics/Acoustic Tasks/Current/Silly Sounds (10+). The target is printed on each card (pediatric_10plus_silly_sounds_{1..4}.jpg) and is nowhere in the task name or instructions. speech_type stays 'non-lexical': diadochokinesis-style syllable repetitions produced over and over until the recording time limit -- the trailing '.....' is the 'keep going' cue, not a count. Transcribed verbatim. 1-based: words[i-1] for silly-sounds-<i>.",
+  "words": [
+    "puh puh puh puh puh puh.....",
+    "tuh tuh tuh tuh tuh....",
+    "kuh kuh kuh kuh kuh...",
+    "Pat-a-Cake Pat-a-Cake Pat-a-Cake"
+  ]
+}

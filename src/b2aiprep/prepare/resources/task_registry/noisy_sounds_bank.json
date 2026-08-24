@@ -1,0 +1,7 @@
+{
+  "_source": "bridge2ai-redcap Pediatrics/Acoustic Tasks/Current/Noisy Sounds. The target sound is printed on each card (pediatric_noisy_sounds_{1..10}.jpg) and appears nowhere in the task name or instructions. speech_type stays 'non-lexical': these are vocalizations, not lexical content, repeated to the recording time limit -- the token is transcribed verbatim as shown (its repetition is illustrative, not a count to score). 1-based: words[i-1] for noisy-sounds-<i>.",
+  "words": [
+    "aa aa aa", "ee ee ee", "oo oo oo", "shh shh shh", "ss ss ss",
+    "muh muh muh", "nuh nuh nuh", "zz zz zz", "hh hh hh", "jj jj jj"
+  ]
+}

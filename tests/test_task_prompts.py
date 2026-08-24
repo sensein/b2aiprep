@@ -360,8 +360,10 @@ def test_version_select_tolerates_glued_alias():
 
 def test_registry_image_stimulus_asset(descriptions):
     m = _resolve(descriptions, "noisy-sounds-3")
-    assert m["stimulus_source"] == "image"
-    assert m["stimulus_text"] == ""
+    # the target sound is printed on the card -> transcribed into the text bank,
+    # but the image asset is still pinned (see test_sound_cards_* for the token).
+    assert m["stimulus_source"] == "transcribed"
+    assert m["stimulus_text"] == "oo oo oo"
     # commit-pinned raw GitHub URL, path URL-encoded (spaces -> %20)
     assert m["stimulus_asset"].startswith(
         "https://raw.githubusercontent.com/eipm/bridge2ai-redcap/"
@@ -539,3 +541,114 @@ def test_questionnaire_join_absent_is_noop(descriptions):
     # A lookup missing this task id -> also empty.
     vocab2 = _resolve(descriptions, "Productive-Vocabulary-3", {}, "AT-MISSING")
     assert vocab2["stimulus_text"] == ""
+
+
+def test_identifying_pictures_read_target(descriptions):
+    # The target word is printed on each flashcard and is in neither the task name
+    # nor the instructions; it is transcribed into an index-keyed bank and emitted
+    # as a read (WER-scorable) reference, with the image asset still pinned.
+    m = _resolve(descriptions, "Identifying Pictures-10", population="pediatric")
+    assert m["speech_type"] == "read"
+    assert m["stimulus_text"] == "WEB"
+    assert m["stimulus_source"] == "transcribed"
+    assert m["stimulus_asset"].endswith("pediatric_identifying_pictures_10.jpg")
+    assert _resolve(descriptions, "Identifying Pictures-1", population="pediatric")["stimulus_text"] == "MY"
+    assert _resolve(descriptions, "Identifying Pictures-37", population="pediatric")["stimulus_text"] == "TEETH"
+
+
+def test_sound_cards_nonlexical_with_printed_token(descriptions):
+    # Noisy/Silly/Long Sounds print the target sound on the card. Capture it as the
+    # (verbatim) stimulus_text but keep speech_type non-lexical: it is a sound
+    # repeated to the time limit, not a WER target. Image asset stays pinned.
+    m = _resolve(descriptions, "Noisy Sounds-3", population="pediatric")
+    assert m["speech_type"] == "non-lexical"
+    assert m["stimulus_text"] == "oo oo oo"
+    assert m["stimulus_source"] == "transcribed"
+    assert m["stimulus_asset"].endswith("pediatric_noisy_sounds_3.jpg")
+    assert _resolve(descriptions, "Silly Sounds-1", population="pediatric")["stimulus_text"].startswith("puh puh")
+
+
+def test_identifying_pictures_bank_matches_recording_count():
+    # Exactly one transcribed word per card the registry declares.
+    from importlib.resources import files as _files
+    base = _files("b2aiprep.prepare.resources.task_registry")
+    reg = json.loads(base.joinpath("registry.json").read_text())
+    bank = json.loads(base.joinpath("identifying_pictures_bank.json").read_text())
+    assert len(bank["words"]) == reg["tasks"]["pediatric.identifying-pictures"]["recording_count"] == 37
+
+
+def test_story_recall_v2_image_sequence_scalar(descriptions):
+    # Story Recall v2 shows a wordless 10-panel picture story before the retelling.
+    # Capture it as ONE scalar template URL (NOT a list -> the sidecar stays flat /
+    # parquet-friendly): a '{n}' placeholder + ' [n=1..N]' range. Language-independent
+    # (wordless); the recall reference narrative stays a scalar string.
+    m = _resolve(descriptions, "Story Recall-(v2)", population="adult")
+    a = m["stimulus_asset"]
+    assert isinstance(a, str) and a.startswith(
+        "https://raw.githubusercontent.com/eipm/bridge2ai-redcap/"
+    )
+    assert a.endswith("/StoryRecall_{n}.jpg")           # '{n}' kept literal, not %7B
+    assert "%20" in a                                   # path spaces url-encoded
+    # the count lives in its own scalar field, not baked into the URL
+    assert m["stimulus_asset_n_images"] == 10
+    assert m["speech_type"] == "recall"
+    assert isinstance(m["stimulus_text"], str) and m["stimulus_text"].startswith("There was once a boy")
+    # v1 (Grandfather Passage) is text-only -- no image sequence, no count
+    v1 = _resolve(descriptions, "Story Recall-1", population="adult")
+    assert v1.get("stimulus_asset") is None
+    assert v1.get("stimulus_asset_n_images") is None
+
+
+def test_single_image_tasks_omit_n_images(descriptions):
+    # A single, directly-resolvable image carries NO stimulus_asset_n_images -- its
+    # absence is the documented signal that stimulus_asset needs no {n} expansion.
+    for name, pop in [("Identifying Pictures-10", "pediatric"),
+                      ("Picture Description", "pediatric"),
+                      ("Picture description", "adult")]:
+        m = _resolve(descriptions, name, population=pop)
+        assert m["stimulus_asset"] and "{n}" not in m["stimulus_asset"]
+        assert "stimulus_asset_n_images" not in m
+
+
+def test_metadata_bundle_tsv_null_equivalence(descriptions):
+    # Mirror the metadata bundling step (commands.py create_bundled_dataset:
+    # records=[sidecar dicts] -> pd.DataFrame -> to_csv(sep='\t')). A sequence task
+    # carries stimulus_asset_n_images; single-image / no-image sidecars OMIT the key
+    # (JSON), which must materialize as a null column cell (TSV/parquet) and round-
+    # trip as NaN == absent. Also proves the '{n}' template survives the TSV.
+    import io
+    import pandas as pd
+
+    recs = [
+        _resolve(descriptions, "Story Recall-(v2)", population="adult"),      # sequence -> 10
+        _resolve(descriptions, "Identifying Pictures-10", population="pediatric"),  # single image, no count
+        _resolve(descriptions, "Rainbow Passage", population="adult"),         # no asset at all
+    ]
+    # the single-image / no-asset sidecars must NOT carry the key (absent in JSON)
+    assert "stimulus_asset_n_images" not in recs[1]
+    assert "stimulus_asset_n_images" not in recs[2]
+
+    df = pd.DataFrame(recs)
+    assert "stimulus_asset_n_images" in df.columns  # union of keys -> column exists
+    # bundler casts to nullable Int64 so the count stays an integer (not 10.0) while
+    # absent rows write as an empty cell.
+    df["stimulus_asset_n_images"] = df["stimulus_asset_n_images"].astype("Int64")
+    buf = io.StringIO()
+    df.to_csv(buf, sep="\t", index=False)
+    tsv = buf.getvalue()
+
+    # on-disk cells: integer '10' (NOT '10.0') for the sequence, empty otherwise
+    hdr = tsv.splitlines()[0].split("\t")
+    ci, ti = hdr.index("stimulus_asset_n_images"), hdr.index("task_name")
+    cells = {ln.split("\t")[ti]: ln.split("\t")[ci] for ln in tsv.splitlines()[1:]}
+    assert cells["story-recall-(v2)"] == "10"
+    assert cells["identifying-pictures-10"] == ""
+    assert cells["rainbow-passage"] == ""
+
+    rt = pd.read_csv(io.StringIO(tsv), sep="\t")
+    by = {r["task_name"]: r for _, r in rt.iterrows()}
+    assert int(by["story-recall-(v2)"]["stimulus_asset_n_images"]) == 10
+    assert "{n}" in by["story-recall-(v2)"]["stimulus_asset"]
+    # absent-key sidecars -> null table cells (== absent)
+    assert pd.isna(by["identifying-pictures-10"]["stimulus_asset_n_images"])
+    assert pd.isna(by["rainbow-passage"]["stimulus_asset_n_images"])

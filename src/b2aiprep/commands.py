@@ -482,6 +482,14 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
             continue
 
     df = pd.DataFrame(records)
+    # stimulus_asset_n_images is an integer count present only for multi-image
+    # sequence stimuli (Story Recall v2); absent otherwise. A plain DataFrame would
+    # promote that column to float (rendering '10.0') because the absent rows are
+    # NaN. The nullable-integer dtype keeps present counts as '10' and writes absent
+    # rows as an empty cell -- matching the 'absent key (JSON) == null (table)'
+    # contract documented in resources/metadata.json.
+    if "stimulus_asset_n_images" in df.columns:
+        df["stimulus_asset_n_images"] = df["stimulus_asset_n_images"].astype("Int64")
     df.to_csv(metadata_dir.joinpath("metadata.tsv"), sep="\t", index=False)
 
     metadata_json_file = resources.files("b2aiprep").joinpath(

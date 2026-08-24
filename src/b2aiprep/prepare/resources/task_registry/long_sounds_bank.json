@@ -1,0 +1,7 @@
+{
+  "_source": "bridge2ai-redcap Pediatrics/Acoustic Tasks/Current/Long Sounds (10+). The target is printed on each card (pediatric_10plus_long-sounds_{1..2}.jpg) and is nowhere in the task name or instructions. speech_type stays 'non-lexical': a sustained vowel produced across breaths until the recording time limit. Transcribed verbatim (including the '(take a breath)' cue). 1-based: words[i-1] for long-sounds-<i>.",
+  "words": [
+    "Ahhhhhh.... (take a breath) Ahhhhhh.... (take a breath) Ahhhhhh...",
+    "Eeeeeee... (take a breath) Eeeeeee... (take a breath) Eeeeeee..."
+  ]
+}
