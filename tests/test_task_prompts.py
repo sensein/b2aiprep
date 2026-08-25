@@ -652,3 +652,20 @@ def test_metadata_bundle_tsv_null_equivalence(descriptions):
     # absent-key sidecars -> null table cells (== absent)
     assert pd.isna(by["identifying-pictures-10"]["stimulus_asset_n_images"])
     assert pd.isna(by["rainbow-passage"]["stimulus_asset_n_images"])
+
+
+def test_asset_url_defers_n_templates_to_sequence():
+    # A '{n}'-templated asset is a multi-image SEQUENCE, not a single image:
+    # _asset_url must defer (return None) so a '{n}' path is never percent-encoded
+    # into a broken single URL -- regardless of task ptype -- while
+    # _asset_sequence_url owns it and preserves the literal '{n}'. Guards the latent
+    # trap of a sequence task authored with a single-image prompt_ref type.
+    from b2aiprep.prepare.fhir_utils import _asset_url, _asset_sequence_url
+
+    seq = {"asset_repo": "r", "asset_commit": "c",
+           "asset_path": "docs/A B/StoryRecall_{n}.jpg", "asset_count": 10}
+    assert _asset_url(seq, "story-recall-(v2)") is None
+    assert _asset_sequence_url(seq).endswith("/docs/A%20B/StoryRecall_{n}.jpg")
+    # single image still resolves via _asset_url (shared builder, '{i}' index)
+    single = {"asset_repo": "r", "asset_commit": "c", "asset_path": "docs/pic_{i:02d}.jpg"}
+    assert _asset_url(single, "pic-3").endswith("/docs/pic_03.jpg")

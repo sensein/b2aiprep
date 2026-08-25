@@ -32,7 +32,11 @@ def _load_stimulus_bank(bank_name: str) -> str:
     raise FileNotFoundError(f"stimulus bank not found: {bank_name}")
 
 
+@lru_cache(maxsize=None)
 def _bank(bank_name: str) -> dict:
+    # Parsed once per bank and cached: the per-recording resolver hits the same
+    # banks thousands of times in a large build. Callers read the dict (.get) and
+    # must not mutate the shared instance.
     return json.loads(_load_stimulus_bank(bank_name))
 
 
@@ -459,14 +463,30 @@ def _registry_questionnaire(prompt_ref, task_name, join_id, questionnaire_lookup
     return None
 
 
+def _raw_github_url(prompt_ref, path, safe="/"):
+    """Build a commit-pinned raw GitHub URL from a prompt_ref's asset_repo/asset_commit
+    and an (already resolved) path, URL-encoding the path. `safe` keeps extra
+    characters unescaped -- the default '/' preserves separators; '/{}' additionally
+    preserves a literal '{n}' template. Returns None when repo/commit/path are
+    missing. Single source for both the single-image and sequence URL forms."""
+    repo, commit = prompt_ref.get("asset_repo"), prompt_ref.get("asset_commit")
+    if not path or not repo or not commit:
+        return None
+    return "https://raw.githubusercontent.com/{repo}/{commit}/{path}".format(
+        repo=repo, commit=commit, path=quote(path, safe=safe),
+    )
+
+
 def _asset_url(prompt_ref, task_name):
-    """A commit-pinned raw GitHub URL for the recording's image stimulus, or None.
-    Resolves the path three ways:
+    """A commit-pinned raw GitHub URL for the recording's SINGLE, directly-resolvable
+    image stimulus, or None. Resolves the path three ways:
     - asset_map: keyed by the recording's trailing token (e.g. picture-description
       'option1'/'option2');
     - asset_path with '{i}'/'{i:02d}': filled from the trailing index;
     - asset_path without a placeholder: a single fixed image.
-    URL-encodes the path (spaces -> %20)."""
+    A '{n}'-templated path is a multi-image SEQUENCE, not a single image, so this
+    returns None regardless of task type -- _asset_sequence_url owns those (prevents
+    a '{n}' path from being percent-encoded into a broken single URL)."""
     path = None
     asset_map = prompt_ref.get("asset_map")
     if asset_map:
@@ -478,12 +498,9 @@ def _asset_url(prompt_ref, task_name):
             path = p.format(i=idx) if idx is not None else None
         else:
             path = p
-    repo, commit = prompt_ref.get("asset_repo"), prompt_ref.get("asset_commit")
-    if not path or not repo or not commit:
+    if path and "{n" in path:
         return None
-    return "https://raw.githubusercontent.com/{repo}/{commit}/{path}".format(
-        repo=repo, commit=commit, path=quote(path),
-    )
+    return _raw_github_url(prompt_ref, path)
 
 
 def _asset_sequence_url(prompt_ref):
@@ -501,13 +518,8 @@ def _asset_sequence_url(prompt_ref):
     n = prompt_ref.get("asset_count")
     if not p or "{n" not in p or not isinstance(n, int) or n < 1:
         return None
-    repo, commit = prompt_ref.get("asset_repo"), prompt_ref.get("asset_commit")
-    if not repo or not commit:
-        return None
-    # URL-encode the path but keep '/' separators and the literal '{n}' placeholder.
-    return "https://raw.githubusercontent.com/{repo}/{commit}/{path}".format(
-        repo=repo, commit=commit, path=quote(p, safe="/{}"),
-    )
+    # keep '/' separators and the literal '{n}' placeholder unescaped
+    return _raw_github_url(prompt_ref, p, safe="/{}")
 
 
 def _registry_numbering_status(task, task_name):
