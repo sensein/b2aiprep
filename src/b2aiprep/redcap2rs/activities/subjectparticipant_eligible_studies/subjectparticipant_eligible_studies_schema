@@ -135,7 +135,7 @@
             {
                 "isAbout": "items/essential_tremor",
                 "isVis": true,
-                "valueRequired": false,
+                "valueRequired": true,
                 "variableName": "essential_tremor"
             },
             {
@@ -285,6 +285,6 @@
         ],
         "shuffle": false
     },
-    "version": "4.9.0",
+    "version": "4.10.0",
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

@@ -30,6 +30,12 @@
                     "en": "Bridge2AI Web App"
                 },
                 "value": "website"
+            },
+            {
+                "name": {
+                    "en": "Bridge2AI Reproschema"
+                },
+                "value": "reproschema"
             }
         ],
         "multipleChoice": true,

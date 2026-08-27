@@ -1,13 +1,6 @@
 {
     "id": "et_other_scale_total_score",
     "category": "reproschema:Item",
-    "additionalNotesObj": [
-        {
-            "column": "Text Validation Type OR Show Slider Number",
-            "source": "redcap",
-            "value": "number"
-        }
-    ],
     "preamble": {
         "en": "3. Assessment"
     },
@@ -19,11 +12,11 @@
     },
     "responseOptions": {
         "valueType": [
-            "xsd:decimal"
+            "xsd:string"
         ]
     },
     "ui": {
-        "inputType": "float"
+        "inputType": "text"
     },
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }

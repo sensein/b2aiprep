@@ -5,7 +5,7 @@
         {
             "column": "Text Validation Type OR Show Slider Number",
             "source": "redcap",
-            "value": "integer"
+            "value": "number"
         },
         {
             "column": "Text Validation Min",
@@ -31,11 +31,11 @@
         "maxValue": 100,
         "minValue": 0,
         "valueType": [
-            "xsd:integer"
+            "xsd:decimal"
         ]
     },
     "ui": {
-        "inputType": "number"
+        "inputType": "float"
     },
     "@context": "https://raw.githubusercontent.com/ReproNim/reproschema/main/releases/1.0.0/reproschema"
 }
