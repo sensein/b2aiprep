@@ -55,6 +55,20 @@ jobs:
           cp -r b2ai-redcap2rs/* src/b2aiprep/redcap2rs
           git -C b2ai-redcap2rs rev-parse HEAD > src/b2aiprep/redcap2rs/commit_sha.txt
 
+      - name: Flag stimulus-asset & docs drift vs new bridge2ai-redcap
+        continue-on-error: true
+        env:
+          # reads the public eipm/bridge2ai-redcap repo (the images/docs source, which is
+          # separate from b2ai-redcap2rs above); the default token suffices for public reads
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          python scripts/flag_stimulus_asset_changes.py \
+            --registry src/b2aiprep/prepare/resources/task_registry/registry.json \
+            --report drift_report.md \
+            || echo "STIMULUS_DRIFT=1" >> "$GITHUB_ENV"
+          { echo "## RedCap docs / stimulus-asset drift"; echo; cat drift_report.md; } \
+            >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
+
       - name: Commit redcap2rs files
         run: |
           git add src/b2aiprep/redcap2rs
@@ -63,14 +77,19 @@ jobs:
           
       - name: Create Pull Request
         run: |
+          BODY="Automatically added RedCap2RS files to b2aiprep."
+          if [ -f drift_report.md ]; then
+            BODY="$BODY"$'\n\n---\n\n'"$(cat drift_report.md)"
+          fi
+          jq -n \
+            --arg title "Update files for $BRANCH_NAME" \
+            --arg head "$BRANCH_NAME" \
+            --arg base "main" \
+            --arg body "$BODY" \
+            '{title: $title, head: $head, base: $base, body: $body}' > pr_payload.json
           curl -X POST \
             -H "Authorization: Bearer ${{ steps.app-token.outputs.token }}" \
             -H "Accept: application/vnd.github.v3+json" \
             https://api.github.com/repos/sensein/b2aiprep/pulls \
-            -d '{
-                  "title": "Update files for '"$BRANCH_NAME"'",
-                  "head": "'"$BRANCH_NAME"'",
-                  "base": "main",
-                  "body": "Automatically added RedCap2RS files to b2aiprep."
-                }'
+            -d @pr_payload.json
       
