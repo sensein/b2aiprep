@@ -1,0 +1,9 @@
+{
+  "_source": "bridge2ai-redcap Pediatrics/Acoustic Tasks/Current/Identifying Pictures. The target word is rendered as printed text on each flashcard image (pediatric_identifying_pictures_{01..37}.jpg); it is neither in the task name nor in the instructions, so it is transcribed here once (the 37 cards are fixed and shared across all participants). 1-based: words[i-1] is the target for identifying-pictures-<i>. speech_type is 'read' -- the child says the printed word (several cards, e.g. MY/GO/ONE, are sight words that cannot be named from the picture alone), so this is a WER-scorable reference.",
+  "words": [
+    "MY", "HOME", "PIE", "HOP", "ONE", "TWO", "THREE", "HAT", "BEE", "WEB",
+    "HOT", "DOOR", "HEAD", "KEY", "BOOK", "GO", "DOG", "FOOT", "LEAF", "SOCK",
+    "BUS", "SHOE", "FISH", "JAM", "BRIDGE", "CHEESE", "WATCH", "ZIPPER", "EYES", "VACUUM",
+    "FIVE", "LION", "BALL", "RAINBOW", "BEAR", "THUMB", "TEETH"
+  ]
+}
