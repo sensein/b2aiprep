@@ -62,12 +62,15 @@ jobs:
           # separate from b2ai-redcap2rs above); the default token suffices for public reads
           GITHUB_TOKEN: ${{ github.token }}
         run: |
-          python scripts/flag_stimulus_asset_changes.py \
-            --registry src/b2aiprep/prepare/resources/task_registry/registry.json \
-            --report drift_report.md \
-            || echo "STIMULUS_DRIFT=1" >> "$GITHUB_ENV"
-          { echo "## RedCap docs / stimulus-asset drift"; echo; cat drift_report.md; } \
-            >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
+          if python scripts/flag_stimulus_asset_changes.py \
+               --registry src/b2aiprep/prepare/resources/task_registry/registry.json \
+               --report drift_report.md; then
+            echo "no drift"
+          else
+            echo "::warning title=stimulus/docs drift::bridge2ai-redcap docs or stimulus assets changed (or the check errored) -- see the PR body / job summary"
+          fi
+          { echo "## RedCap docs / stimulus-asset drift"; echo; cat drift_report.md 2>/dev/null || echo "(no report produced)"; } \
+            >> "$GITHUB_STEP_SUMMARY" || true
 
       - name: Commit redcap2rs files
         run: |
@@ -79,7 +82,13 @@ jobs:
         run: |
           BODY="Automatically added RedCap2RS files to b2aiprep."
           if [ -f drift_report.md ]; then
-            BODY="$BODY"$'\n\n---\n\n'"$(cat drift_report.md)"
+            # cap the embedded report so the PR body stays under GitHub's 65536-char limit;
+            # the full report is always in the job summary
+            REPORT="$(head -c 50000 drift_report.md)"
+            if [ "$(wc -c < drift_report.md)" -gt 50000 ]; then
+              REPORT="$REPORT"$'\n\n...(truncated; see the job summary for the full report)'
+            fi
+            BODY="$BODY"$'\n\n---\n\n'"$REPORT"
           fi
           jq -n \
             --arg title "Update files for $BRANCH_NAME" \
@@ -87,7 +96,7 @@ jobs:
             --arg base "main" \
             --arg body "$BODY" \
             '{title: $title, head: $head, base: $base, body: $body}' > pr_payload.json
-          curl -X POST \
+          curl -sS --fail-with-body -X POST \
             -H "Authorization: Bearer ${{ steps.app-token.outputs.token }}" \
             -H "Accept: application/vnd.github.v3+json" \
             https://api.github.com/repos/sensein/b2aiprep/pulls \
