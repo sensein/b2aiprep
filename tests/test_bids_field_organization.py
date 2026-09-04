@@ -190,3 +190,97 @@ def test_schema_name_source_matches_the_reproschema_activity_id():
         assert any(row["schema_name_source"] == source for row in rows), (
             f"no rows carry schema_name_source={source}"
         )
+
+
+@pytest.fixture(scope="module")
+def reproschema_choices(reachable_elements):
+    """``{element: [choice values]}`` for every reachable element that declares choices."""
+    choices = {}
+    for element, activity_id in reachable_elements.items():
+        activity = activity_id[: -len("_schema")] if activity_id.endswith("_schema") else activity_id
+        item_file = _resource("redcap2rs", "activities", activity, "items", element)
+        if not item_file.is_file():
+            continue
+        item = json.loads(item_file.read_text(encoding="utf-8"))
+        values = [c.get("value") for c in item.get("responseOptions", {}).get("choices", []) or []]
+        if values:
+            choices[element] = values
+    return choices
+
+
+def test_checkbox_option_codes_resolve_to_a_reproschema_choice(reorg_rows, reproschema_choices):
+    """Every ``field___code`` row must name a choice of its base element.
+
+    RedCap option codes are opaque strings; the redcap→reproschema conversion stores codes such
+    as ``2029_7`` as the integer ``20297``, so a code is accepted when it equals a choice value
+    directly or, for digit-and-underscore codes, with the underscores removed — the same rule
+    ``BIDSDataset._checkbox_choice_matches`` applies when building the phenotype dictionary.
+    A row whose code matches nothing can never be populated: the export column is silently
+    dropped from the release.
+
+    Limitation: this CSV was generated from the vendored reproschema, so a code the *conversion*
+    mangled (``asian_race___20297``) agrees with the reproschema and passes here. Only
+    :func:`test_checkbox_option_codes_match_the_redcap_dictionary` catches that class, which is
+    how 45 detailed-race columns went missing without any test noticing.
+    """
+    from b2aiprep.prepare.dataset import BIDSDataset
+
+    unresolved = []
+    for row in reorg_rows:
+        source = row["column_name_source"].strip()
+        if "___" not in source:
+            continue
+        base, code = source.split("___", 1)
+        values = reproschema_choices.get(base)
+        if values is None:
+            continue  # base without declared choices is covered by other guards
+        if not any(BIDSDataset._checkbox_choice_matches(v, code) for v in values):
+            unresolved.append(source)
+    assert not unresolved, (
+        f"{len(unresolved)} checkbox option row(s) match no reproschema choice and would be "
+        f"silently dropped from phenotype/: {unresolved}"
+    )
+
+
+@pytest.fixture(scope="module")
+def redcap_dictionary_rows():
+    """Rows of the REDCap project data dictionary.
+
+    The dictionary (``eipm/bridge2ai-redcap`` → ``data/bridge2ai_voice_redcap_project_data_dictionary.csv``)
+    is vendored next to the reproschema under ``src/b2aiprep/redcap2rs/`` and refreshed by the same
+    workflow that bumps the reproschema; ``B2AI_REDCAP_DICTIONARY`` overrides the path.
+    """
+    import os
+
+    override = os.environ.get("B2AI_REDCAP_DICTIONARY")
+    if override:
+        with open(override, newline="", encoding="utf-8-sig") as fp:
+            return list(csv.DictReader(fp))
+    vendored = _resource("redcap2rs", "bridge2ai_voice_redcap_project_data_dictionary.csv")
+    assert vendored.is_file(), "vendored REDCap data dictionary is missing from src/b2aiprep/redcap2rs/"
+    with vendored.open("r", newline="", encoding="utf-8-sig") as fp:
+        return list(csv.DictReader(fp))
+
+
+def test_checkbox_option_codes_match_the_redcap_dictionary(reorg_rows, redcap_dictionary_rows):
+    """Against the REDCap data dictionary itself, option codes must match exactly.
+
+    Unlike the reproschema, the dictionary keeps the literal codes (``2029_7``), so no
+    normalisation is allowed here; this is the guard that catches conversion-mangled codes.
+    """
+    dictionary = redcap_dictionary_rows
+    codes_by_field = {}
+    for field in dictionary:
+        if field["Field Type"] != "checkbox":
+            continue
+        codes = [part.split(",", 1)[0].strip() for part in field["Choices, Calculations, OR Slider Labels"].split("|")]
+        codes_by_field[field["Variable / Field Name"]] = {c for c in codes if c}
+
+    mismatched = sorted(
+        row["column_name_source"]
+        for row in reorg_rows
+        if "___" in row["column_name_source"]
+        and row["column_name_source"].split("___", 1)[0] in codes_by_field
+        and row["column_name_source"].split("___", 1)[1] not in codes_by_field[row["column_name_source"].split("___", 1)[0]]
+    )
+    assert not mismatched, f"checkbox option rows whose code is not a dictionary choice code: {mismatched}"

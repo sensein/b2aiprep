@@ -55,6 +55,21 @@ jobs:
           cp -r b2ai-redcap2rs/* src/b2aiprep/redcap2rs
           git -C b2ai-redcap2rs rev-parse HEAD > src/b2aiprep/redcap2rs/commit_sha.txt
 
+      - name: Get the REDCap data dictionary
+        # The reproschema conversion loses information the pipeline and its tests need from the
+        # original dictionary (literal checkbox option codes such as 2029_7, Identifier? flags,
+        # validation types), so the dictionary the reproschema was generated from is vendored
+        # alongside it. eipm/bridge2ai-redcap is public; the default token suffices.
+        run: |
+          git clone --depth 1 https://github.com/eipm/bridge2ai-redcap
+          cp bridge2ai-redcap/data/bridge2ai_voice_redcap_project_data_dictionary.csv src/b2aiprep/redcap2rs/
+          {
+            echo "repository: https://github.com/eipm/bridge2ai-redcap"
+            echo "path: data/bridge2ai_voice_redcap_project_data_dictionary.csv"
+            echo "tag: $(git -C bridge2ai-redcap describe --tags --always)"
+            echo "commit: $(git -C bridge2ai-redcap rev-parse HEAD)"
+          } > src/b2aiprep/redcap2rs/dictionary_source.txt
+
       - name: Flag stimulus-asset & docs drift vs new bridge2ai-redcap
         continue-on-error: true
         env:

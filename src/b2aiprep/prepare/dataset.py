@@ -774,6 +774,24 @@ class BIDSDataset:
         return checkbox_columns
 
     @staticmethod
+    def _checkbox_choice_matches(choice_value: t.Any, option_code: t.Optional[str]) -> bool:
+        """Whether a reproschema choice ``value`` denotes the RedCap checkbox option ``option_code``.
+
+        RedCap option codes are opaque strings (``1``, ``past``, ``age_2_4``, ``2029_7``). The
+        redcap→reproschema conversion stores digit-and-underscore codes such as ``2029_7`` as the
+        integer ``20297`` (``int("2029_7") == 20297``), so those are also compared with the
+        underscores removed. Word codes are never altered.
+        """
+        if option_code is None or choice_value is None:
+            return False
+        value_str = str(choice_value)
+        if value_str == option_code:
+            return True
+        if re.fullmatch(r'\d+(?:_\d+)+', option_code):
+            return value_str == option_code.replace('_', '')
+        return False
+
+    @staticmethod
     def _fix_disjoint_demographic_rows(
         df: pd.DataFrame,
         id_col: str,
@@ -941,8 +959,13 @@ class BIDSDataset:
                     # reduce the choices to just the choice for this checkbox
                     data_element['choices'] = [
                         choice for choice in data_element.get('choices', [])
-                        if str(choice.get('value')) == str(column_choice)
+                        if BIDSDataset._checkbox_choice_matches(choice.get('value'), column_choice)
                     ]
+                    if not data_element['choices']:
+                        _LOGGER.warning(
+                            f'Checkbox option "{column}" matched no choice in the reproschema element '
+                            f'"{column_base}"; its data dictionary entry will list no choices.'
+                        )
                     if clean_phenotype_data:
                         # for checkbox columns, we convert to integer 0/1
                         data_element['valueType'] = ['xsd:integer']
@@ -1499,6 +1522,19 @@ class BIDSDataset:
         columns_to_drop = [
             "state_province",
             "zipcode",
+            # Stopgap until deidentification is policy-driven (bids_field_organization.csv
+            # `policy` column): these are dictionary Identifier?=y fields that are active in
+            # the field organization and were reaching the published tree.
+            "edu_level",
+            "peds_edu_level",
+            "ataxia_mds_recent_date_supporting",
+            "ataxia_neurologist_recent_date_supporting",
+            "et_mds_recent_date_supporting",
+            "et_neurologist_recent_date_supporting",
+            "mbd_last_depressive_episode",
+            "mbd_last_manic_episode",
+            "dmdd_last_depressive_episode",
+            "diagnosis_ad_last_anxious_episode",
             "other_edu_level",
             "others_household_specify",
             "diagnosis_alz_dementia_mci_ca_rudas_score",

@@ -242,11 +242,14 @@ def reorganize_bids_activities(
     
     reorganization_file = files("b2aiprep.prepare.resources").joinpath("bids_field_organization.csv")
     df_reorg = pd.read_csv(reorganization_file, sep=',', header=0)
+    # rows flagged delete=YES are never emitted; the template elements are keyed by the
+    # *source* (reproschema) name and renamed to column_name on output.
+    df_reorg = df_reorg.loc[df_reorg['delete'].str.upper() != 'YES']
 
     updated_schemas = {}
     element_used = {} # keep track of whether we have used an element, for logging later.
     for activity_id, group in df_reorg.groupby('schema_name'):
-        column_mapping = group.set_index('column_name').to_dict(orient='index')
+        column_mapping = group.set_index('column_name_source').to_dict(orient='index')
 
         payload = {
             "description": "",
@@ -263,7 +266,7 @@ def reorganize_bids_activities(
             else:
                 description = data_element.get("question", "").get("en", "")
             data_element["description"] = description
-            new_element_name = updated_data["renamed_column"]
+            new_element_name = updated_data["column_name"]
             payload["data_elements"][new_element_name] = data_element
             element_used[column] = True
 

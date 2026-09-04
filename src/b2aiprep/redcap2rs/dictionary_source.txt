@@ -1,0 +1,4 @@
+repository: https://github.com/eipm/bridge2ai-redcap
+path: data/bridge2ai_voice_redcap_project_data_dictionary.csv
+tag: v4.10.0
+commit: 696af262c5c50a97b6fbf6f01eb3ef92944e4309
