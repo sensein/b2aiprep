@@ -1312,31 +1312,60 @@ class BIDSDataset:
         sessions_df.to_csv(sessions_tsv_path, sep="\t", index=False)
 
     @staticmethod
+    def load_phenotype_file(
+        phenotype_filepath: Path,
+    ) -> t.Tuple[pd.DataFrame, str, t.Dict[str, t.Any], t.Dict[str, t.Any]]:
+        """
+        Load a phenotype TSV and its JSON sidecar, keeping the sidecar's schema wrapper.
+
+        ``redcap2bids`` writes sidecars as ``{schema_name: {description, ..., data_elements}}``.
+        Older trees may carry a flat ``{column: element}`` dictionary instead; both are accepted.
+
+        Args:
+            phenotype_filepath: Path to the phenotype file (extension is ignored)
+
+        Returns:
+            Tuple of (DataFrame, schema_name, header, data_elements) where ``header`` holds every
+            schema-level key other than ``data_elements`` (e.g. ``description``, ``url``) so a
+            writer can rebuild the wrapper with ``{schema_name: {**header, "data_elements": ...}}``.
+        """
+        df = pd.read_csv(phenotype_filepath.with_suffix('.tsv'), sep="\t")
+        with open(phenotype_filepath.with_suffix('.json'), "r") as f:
+            raw = json.load(f)
+
+        wrapped_keys = [
+            key for key, value in raw.items()
+            if isinstance(value, dict) and "data_elements" in value
+        ]
+        if wrapped_keys:
+            schema_name = wrapped_keys[0]
+            header = {k: v for k, v in raw[schema_name].items() if k != "data_elements"}
+            data_elements: t.Dict[str, t.Any] = {}
+            for key in wrapped_keys:
+                data_elements.update(raw[key]["data_elements"])
+        else:
+            # flat legacy sidecar: the file stem is the only schema name we have
+            schema_name = phenotype_filepath.stem
+            header = {"description": ""}
+            data_elements = raw
+
+        return df, schema_name, header, data_elements
+
+    @staticmethod
     def load_phenotype_data(phenotype_filepath: Path) -> t.Tuple[pd.DataFrame, t.Dict[str, t.Any]]:
         """
         Load phenotype data from TSV and JSON files.
-        
+
+        Convenience wrapper around :meth:`load_phenotype_file` that discards the schema wrapper.
+
         Args:
             phenotype_filepath: Path to the phenotype file (without extension)
-            
+
         Returns:
             Tuple of (DataFrame, phenotype_metadata_dict)
         """
         phenotype_name = phenotype_filepath.stem
-        # Load TSV and JSON files
-        df = pd.read_csv(phenotype_filepath.with_suffix('.tsv'), sep="\t")
-        with open(phenotype_filepath.with_suffix('.json'), "r") as f:
-            phenotype = json.load(f)
-            data_elements = {}
-            for schema in phenotype:
-                data_elements.update(phenotype[schema].get("data_elements", {}))
-            phenotype = data_elements
-
-        # Handle nested phenotype structure which occurs in ReproSchema activities
-        if len(phenotype) == 1:
-            only_key = next(iter(phenotype))
-            if 'data_elements' in phenotype[only_key]:
-                phenotype = phenotype[only_key]['data_elements']
+        df, _, _, phenotype = BIDSDataset.load_phenotype_file(phenotype_filepath)
 
         # Add record_id to phenotype if missing
         if df.shape[1] > 0:
@@ -1867,18 +1896,19 @@ class BIDSDataset:
             
             for phenotype_filepath in phenotype_base_path.rglob("*.tsv"):
                 _LOGGER.info(f"Processing {phenotype_filepath.stem}.")
-                df_pheno, phenotype_dict = BIDSDataset.load_phenotype_data(phenotype_filepath)
+                df_pheno, schema_name, header, phenotype_dict = BIDSDataset.load_phenotype_file(phenotype_filepath)
                 df_pheno, phenotype_dict = BIDSDataset._deidentify_phenotype(df_pheno, phenotype_dict, participant_ids_to_remove, participant_ids_to_remap, participant_session_id_to_remap)
-                
-                # Write out phenotype data and data dictionary
+
+                # Write out phenotype data and data dictionary, preserving the
+                # {schema_name: {description, ..., data_elements}} wrapper redcap2bids wrote.
                 phenotype_subdir = phenotype_output_path.joinpath(phenotype_filepath.parent.relative_to(phenotype_base_path))
                 phenotype_subdir.mkdir(parents=True, exist_ok=True)
                 df_pheno.to_csv(
-                    phenotype_subdir.joinpath(f"{phenotype_filepath.stem}.tsv"), 
+                    phenotype_subdir.joinpath(f"{phenotype_filepath.stem}.tsv"),
                     sep="\t", index=False
                 )
                 with open(phenotype_subdir.joinpath(f"{phenotype_filepath.stem}.json"), "w") as f:
-                    json.dump(phenotype_dict, f, indent=2)
+                    json.dump({schema_name: {**header, "data_elements": phenotype_dict}}, f, indent=2)
             _LOGGER.info("Finished processing phenotype data.")
         
         if not skip_audio:

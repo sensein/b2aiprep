@@ -219,6 +219,41 @@ class TestBIDSDatasetDeidentification:
         assert test_pheno_tsv.exists()
         assert test_pheno_json.exists()
 
+    def test_deidentify_preserves_sidecar_wrapper(self, temp_bids_dir, output_dir, setup_publish_config):
+        """The deidentified sidecar keeps {schema: {description, ..., data_elements}} in step with the TSV."""
+        subdir = temp_bids_dir / "phenotype" / "demographics"
+        subdir.mkdir(parents=True, exist_ok=True)
+        pd.DataFrame({"record_id": ["participant001", "participant002"], "age": [25, 30]}).to_csv(
+            subdir / "wrapped.tsv", sep="\t", index=False
+        )
+        wrapped = {
+            "demographics_schema": {
+                "description": "Demographics",
+                "url": "https://example.org/demographics_schema",
+                "data_elements": {
+                    "record_id": {"description": "Participant ID"},
+                    "age": {"description": "Age"},
+                },
+            }
+        }
+        (subdir / "wrapped.json").write_text(json.dumps(wrapped))
+
+        BIDSDataset(temp_bids_dir).deidentify(outdir=output_dir, deidentify_config_dir=setup_publish_config)
+
+        out_tsv = pd.read_csv(output_dir / "phenotype" / "demographics" / "wrapped.tsv", sep="\t")
+        out_json = json.loads((output_dir / "phenotype" / "demographics" / "wrapped.json").read_text())
+        assert list(out_json) == ["demographics_schema"]
+        payload = out_json["demographics_schema"]
+        assert payload["description"] == "Demographics"
+        assert payload["url"] == "https://example.org/demographics_schema"
+        # record_id is renamed on both sides and the element order matches the TSV header
+        assert list(payload["data_elements"]) == list(out_tsv.columns) == ["participant_id", "age"]
+
+        # a flat legacy sidecar is re-wrapped under its file stem rather than emptied
+        legacy = json.loads((output_dir / "phenotype" / "test_phenotype.json").read_text())
+        assert list(legacy) == ["test_phenotype"]
+        assert set(legacy["test_phenotype"]["data_elements"]) == {"participant_id", "test_score", "session_id"}
+
     def test_deidentify_template_files_copied(self, temp_bids_dir, output_dir, setup_publish_config):
         """Test that BIDS template files are copied."""
         dataset = BIDSDataset(temp_bids_dir)
@@ -480,6 +515,53 @@ class TestBIDSDatasetClean:
             assert "record_id" in df.columns
         finally:
             # Cleanup
+            shutil.rmtree(temp_dir)
+
+    def test_load_phenotype_file_wrapped_and_flat(self):
+        """load_phenotype_file keeps the schema wrapper and accepts flat legacy sidecars."""
+        temp_dir = tempfile.mkdtemp()
+        try:
+            root = Path(temp_dir)
+            pd.DataFrame({"record_id": ["p1"], "age": [30]}).to_csv(
+                root / "wrapped.tsv", sep="\t", index=False
+            )
+            wrapped = {
+                "demographics_schema": {
+                    "description": "Demographics",
+                    "url": "https://example.org/demographics_schema",
+                    "data_elements": {
+                        "record_id": {"description": "Participant ID"},
+                        "age": {"description": "Age"},
+                    },
+                }
+            }
+            (root / "wrapped.json").write_text(json.dumps(wrapped))
+
+            df, schema_name, header, elements = BIDSDataset.load_phenotype_file(root / "wrapped.tsv")
+            assert list(df.columns) == ["record_id", "age"]
+            assert schema_name == "demographics_schema"
+            assert header == {
+                "description": "Demographics",
+                "url": "https://example.org/demographics_schema",
+            }
+            assert list(elements) == ["record_id", "age"]
+
+            # flat legacy sidecar: the stem stands in for the schema name
+            pd.DataFrame({"record_id": ["p1"], "score": [1]}).to_csv(
+                root / "flat.tsv", sep="\t", index=False
+            )
+            flat = {"record_id": {"description": "Participant ID"}, "score": {"description": "Score"}}
+            (root / "flat.json").write_text(json.dumps(flat))
+
+            _, schema_name, header, elements = BIDSDataset.load_phenotype_file(root / "flat.tsv")
+            assert schema_name == "flat"
+            assert header == {"description": ""}
+            assert elements == flat
+
+            # the compatibility wrapper still returns only the element dictionary
+            _, phenotype = BIDSDataset.load_phenotype_data(root / "wrapped.tsv")
+            assert list(phenotype) == ["record_id", "age"]
+        finally:
             shutil.rmtree(temp_dir)
 
     def test_clean_preserves_phenotype_structure(self):
