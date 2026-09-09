@@ -44,6 +44,7 @@ from b2aiprep.prepare.update import build_activity_payload
 from b2aiprep.prepare.utils import (
     copy_package_resource,
     get_commit_sha,
+    canonical_task_entity,
     normalize_task_label,
     sanitize_task_entity_in_bids_stem,
 )
@@ -1123,6 +1124,7 @@ class BIDSDataset:
         session_id: t.Optional[str] = None,
         task_name: t.Optional[str] = None,
         recording_name: t.Optional[str] = None,
+        task_entity: t.Optional[str] = None,
     ):
         """Write a Pydantic model (presumably a FHIR resource) to a JSON file.
 
@@ -1136,17 +1138,25 @@ class BIDSDataset:
             session_id: The session ID.
             task_name: The task name.
             recording_name: The recording name.
+            task_entity: Pre-computed BIDS ``task-`` entity. Callers that also name an audio
+                file pass the entity they used, so the sidecar and the audio cannot end up
+                with different names. When omitted it is derived from recording_name or
+                task_name.
         """
         # sub-<participant_id>_ses-<session_id>_task-<task_name>_run-_metadata.json
         filename = f"sub-{subject_id}"
         if pd.notna(session_id):
             session_id = str(session_id).replace(" ", "-").replace("_", "-")
             filename += f"_ses-{session_id}"
-        if pd.notna(task_name):
-            task_name = str(task_name).replace(" ", "-").replace("_", "-")
-            if pd.notna(recording_name):
-                task_name = str(recording_name).replace(" ", "-").replace("_", "-")
-            filename += f"_task-{task_name}"
+        if task_entity:
+            filename += f"_task-{task_entity}"
+        elif pd.notna(task_name):
+            # The task entity is normalized at ingest (lowercase, non-alphanumerics -> "-",
+            # curated aliases) so the internal and published trees share one naming and no
+            # parentheses or spaces reach a file name. The raw RedCap name stays in the
+            # sidecar contents and the phenotype tables.
+            label = recording_name if pd.notna(recording_name) else task_name
+            filename += f"_task-{canonical_task_entity(label)}"
 
         schema_name = schema_name.replace(" ", "-").replace("schema", "").replace("_", "-")
         schema_name = schema_name + "-metadata"
@@ -1209,6 +1219,12 @@ class BIDSDataset:
             # skipped when the destination already exists). Track the normalized
             # entity -> recording_id and warn on a clash.
             seen_recording_entities: t.Dict[str, str] = {}
+            # Same for the acoustic-task sidecars. Two acoustic tasks in one session whose
+            # names differ only in case (e.g. "Free speech" and "Free Speech") are distinct
+            # task instances that now share one entity, so the second sidecar overwrites the
+            # first. Only the sidecar is affected -- the recordings under each task keep
+            # their own names -- and the same rows remain in phenotype/task/acoustic_task.tsv.
+            seen_task_entities: t.Dict[str, str] = {}
 
             # multiple acoustic tasks are asked per session
             for task in session["acoustic_tasks"]:
@@ -1222,6 +1238,19 @@ class BIDSDataset:
                     continue
                 
                 acoustic_task_name = acoustic_task_name.replace(" ", "-").replace("_", "-")
+                _task_entity = canonical_task_entity(acoustic_task_name)
+                _task_id = task.get("acoustic_task_id")
+                _prior_task = seen_task_entities.get(_task_entity)
+                if _prior_task is not None and _prior_task != _task_id:
+                    _LOGGER.warning(
+                        "acoustic_task_name collision: %r maps to the same BIDS task entity "
+                        "for participant %s session %s (acoustic_task_id %s and %s); the "
+                        "later sidecar overwrites the earlier. Recordings are unaffected and "
+                        "both tasks remain in phenotype/task/acoustic_task.tsv",
+                        acoustic_task_name, participant_id, session_id, _prior_task, _task_id,
+                    )
+                else:
+                    seen_task_entities.setdefault(_task_entity, _task_id)
                 # Population (from the acoustic task's cohort) disambiguates the
                 # few families that exist in both peds and adult (picture-description).
                 task_population = _population_from_cohort(task.get("acoustic_task_cohort"))
@@ -1241,6 +1270,7 @@ class BIDSDataset:
                     subject_id=participant_id,
                     session_id=session_id,
                     task_name=acoustic_task_name,
+                    task_entity=_task_entity,
                 )
 
                 # prefix is used to name audio files, if they are copied over
@@ -1249,21 +1279,31 @@ class BIDSDataset:
                 for recording in task["recordings"]:
                     # collision check: normalized recording_name is the BIDS task
                     # entity; a clash between two recording_ids overwrites files.
-                    _rec_name = str(recording.get("recording_name", "")).strip()
-                    _rec_entity = _rec_name.replace(" ", "-").replace("_", "-").lower()
+                    _raw_rec_name = recording.get("recording_name")
+                    _rec_name = str(_raw_rec_name).strip() if pd.notna(_raw_rec_name) else ""
+                    if not _rec_name:
+                        # Mirrors the acoustic_task_name guard above: without a name there is
+                        # no task entity, and emitting one anyway produced a "task-nan" audio
+                        # file whose sidecar was named after the acoustic task instead.
+                        _LOGGER.warning(
+                            "Skipping recording with missing recording_name for participant %s, "
+                            "session %s (recording_id %s)",
+                            participant_id, session_id, recording.get("recording_id"),
+                        )
+                        continue
+                    _rec_entity = canonical_task_entity(_rec_name)
                     _rec_id = recording.get("recording_id")
-                    if _rec_entity:
-                        _prior = seen_recording_entities.get(_rec_entity)
-                        if _prior is not None and _prior != _rec_id:
-                            _LOGGER.warning(
-                                "recording_name collision: %r maps to the same BIDS task "
-                                "entity for participant %s session %s (recording_id %s and "
-                                "%s); the later sidecar overwrites the earlier and one audio "
-                                "file is dropped",
-                                _rec_name, participant_id, session_id, _prior, _rec_id,
-                            )
-                        else:
-                            seen_recording_entities.setdefault(_rec_entity, _rec_id)
+                    _prior = seen_recording_entities.get(_rec_entity)
+                    if _prior is not None and _prior != _rec_id:
+                        _LOGGER.warning(
+                            "recording_name collision: %r maps to the same BIDS task "
+                            "entity for participant %s session %s (recording_id %s and "
+                            "%s); the later sidecar overwrites the earlier and one audio "
+                            "file is dropped",
+                            _rec_name, participant_id, session_id, _prior, _rec_id,
+                        )
+                    else:
+                        seen_recording_entities.setdefault(_rec_entity, _rec_id)
                     meta_data = convert_response_to_bids_metadata(
                         recording,
                         questionnaire_name=recording_instrument.name,
@@ -1281,7 +1321,8 @@ class BIDSDataset:
                         subject_id=participant_id,
                         session_id=session_id,
                         task_name=acoustic_task_name,
-                        recording_name=recording["recording_name"],
+                        recording_name=_rec_name,
+                        task_entity=_rec_entity,
                     )
                     if audio_files_by_recording is None:
                         continue
@@ -1292,9 +1333,8 @@ class BIDSDataset:
 
                     # Schedule audio copy (to be executed in parallel later)
                     ext = audio_file.suffix
-                    recording_name = recording["recording_name"].replace(" ", "-").replace("_", "-")
                     audio_file_destination = (
-                        audio_output_path / f"{prefix}_task-{recording_name}{ext}"
+                        audio_output_path / f"{prefix}_task-{_rec_entity}{ext}"
                     )
                     
                     if not audio_file_destination.exists():
@@ -1968,6 +2008,12 @@ class BIDSDataset:
             entities (e.g. "_features", "_run-1", "_rec-foo"). For exclusion matching,
             we treat the canonical identifier as everything up through the `task-...`
             entity, inclusive.
+
+            The task entity is normalized so an exclusion entry written against an
+            older tree ("task-Animal-fluency") still matches a tree built after
+            redcap2bids began normalizing at ingest ("task-animal-fluency"). Only the
+            task entity is normalized; the subject and session entities are compared
+            verbatim, so this cannot make an entry match a different participant.
             """
 
             parts = stem.split("_")
@@ -1977,7 +2023,8 @@ class BIDSDataset:
                 return stem
 
             # Join up to and including the task entity (e.g. sub-..._ses-..._task-...)
-            return "_".join(parts[: task_idx + 1])
+            canonical = "_".join(parts[: task_idx + 1])
+            return sanitize_task_entity_in_bids_stem(canonical)
 
         if exclusion_type == 'participant':
             paths = [
@@ -1989,6 +2036,19 @@ class BIDSDataset:
             canonical_exclusion = {
                 _canonical_recording_stem(Path(excl).stem) for excl in exclusion
             }
+            present = {_canonical_recording_stem(a.stem) for a in paths}
+            unmatched = canonical_exclusion - present
+            if unmatched:
+                # An exclusion list that matches nothing is indistinguishable from one that
+                # was applied, so say so rather than reporting a silent "removed 0 records".
+                # Stale identifiers are the expected cause: participant/session ids change
+                # between collection platforms, and a list built for one tree does not
+                # transfer to another.
+                _LOGGER.warning(
+                    "%d of %d filename exclusions matched no file; those recordings were not "
+                    "removed because nothing in this tree carries their identity. Examples: %s",
+                    len(unmatched), len(canonical_exclusion), sorted(unmatched)[:5],
+                )
             paths = [
                 a for a in paths
                 if _canonical_recording_stem(a.stem) not in canonical_exclusion
@@ -2201,7 +2261,7 @@ class BIDSDataset:
             
             if not json_path.exists():
                 _LOGGER.warning(f"Metadata file {json_path} not found. Skipping {audio_path}.")
-                return
+                return False
 
             metadata = json.loads(json_path.read_text())
             
@@ -2212,6 +2272,11 @@ class BIDSDataset:
             
             # Create output path with deidentified structure
             sanitized_stem = sanitize_task_entity_in_bids_stem(audio_path.stem)
+            # redcap2bids normalizes the task entity at ingest; a difference here means the
+            # input tree predates that (or was renamed by hand). Counted rather than logged
+            # per file: on a pre-normalization tree every file differs, which would emit one
+            # line per recording.
+            renamed = sanitized_stem != audio_path.stem
             audio_path_stem_ending = '-'.join(sanitized_stem.split("_")[2:])
             output_path = outdir.joinpath(
                 f"sub-{participant_id}/ses-{session_id}/audio/sub-{participant_id}_ses-{session_id}_{audio_path_stem_ending}.wav"
@@ -2222,9 +2287,18 @@ class BIDSDataset:
             with open(output_path.with_suffix(".json"), "w") as fp:
                 json.dump(metadata, fp, indent=2)
             shutil.copy(audio_path, output_path)
+            return renamed
 
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
-            list(tqdm(executor.map(process_audio_file, audio_paths), total=len(audio_paths), desc="Copying audio and metadata files"))
+            results = list(tqdm(executor.map(process_audio_file, audio_paths), total=len(audio_paths), desc="Copying audio and metadata files"))
+        n_renamed = sum(1 for r in results if r)
+        if n_renamed:
+            _LOGGER.warning(
+                "%d of %d task entities were not normalized at ingest; deidentify normalized "
+                "them on write. Rebuild the input tree with a current redcap2bids so the "
+                "internal and published trees carry the same names.",
+                n_renamed, len(results),
+            )
 
 
     @staticmethod
