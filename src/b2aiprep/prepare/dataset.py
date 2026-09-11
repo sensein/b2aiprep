@@ -99,6 +99,30 @@ _SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE: t.Mapping[str, t.FrozenSet[str]] = {
 }
 
 
+def _note_entity_collision(
+    seen: t.Dict[str, t.Any], entity: str, identifier: t.Any
+) -> t.Tuple[bool, t.Any]:
+    """Record `identifier` under `entity`; report whether a different record already claimed it.
+
+    Returns (collided, prior_identifier). `collided` is True when `entity` has been
+    seen before for a record that is not provably the same one.
+
+    Membership is tested with `in`, never with a truthiness or `is not None` check on
+    the stored value: an id that is missing (None/NaN/"") must still mark the entity as
+    seen. Testing the value instead would read "seen, with a missing id" as "not seen
+    yet" and silently skip the warning for a real collision -- the exact failure these
+    guards exist to catch. Two ids are treated as the same record only when both are
+    present and equal, so NaN != NaN cannot manufacture a false collision either.
+    """
+    if entity not in seen:
+        seen[entity] = identifier
+        return False, None
+    prior = seen[entity]
+    if _is_present(prior) and _is_present(identifier) and prior == identifier:
+        return False, prior
+    return True, prior
+
+
 def _remove_sensitive_features_from_feature_payload(
     features: t.MutableMapping[str, t.Any],
     spec: t.Mapping[str, t.AbstractSet[str]] = _SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE,
@@ -1240,8 +1264,10 @@ class BIDSDataset:
                 acoustic_task_name = acoustic_task_name.replace(" ", "-").replace("_", "-")
                 _task_entity = canonical_task_entity(acoustic_task_name)
                 _task_id = task.get("acoustic_task_id")
-                _prior_task = seen_task_entities.get(_task_entity)
-                if _prior_task is not None and _prior_task != _task_id:
+                _task_collided, _prior_task = _note_entity_collision(
+                    seen_task_entities, _task_entity, _task_id
+                )
+                if _task_collided:
                     _LOGGER.warning(
                         "acoustic_task_name collision: %r maps to the same BIDS task entity "
                         "for participant %s session %s (acoustic_task_id %s and %s); the "
@@ -1249,8 +1275,6 @@ class BIDSDataset:
                         "both tasks remain in phenotype/task/acoustic_task.tsv",
                         acoustic_task_name, participant_id, session_id, _prior_task, _task_id,
                     )
-                else:
-                    seen_task_entities.setdefault(_task_entity, _task_id)
                 # Population (from the acoustic task's cohort) disambiguates the
                 # few families that exist in both peds and adult (picture-description).
                 task_population = _population_from_cohort(task.get("acoustic_task_cohort"))
@@ -1293,8 +1317,10 @@ class BIDSDataset:
                         continue
                     _rec_entity = canonical_task_entity(_rec_name)
                     _rec_id = recording.get("recording_id")
-                    _prior = seen_recording_entities.get(_rec_entity)
-                    if _prior is not None and _prior != _rec_id:
+                    _rec_collided, _prior = _note_entity_collision(
+                        seen_recording_entities, _rec_entity, _rec_id
+                    )
+                    if _rec_collided:
                         _LOGGER.warning(
                             "recording_name collision: %r maps to the same BIDS task "
                             "entity for participant %s session %s (recording_id %s and "
@@ -1302,8 +1328,6 @@ class BIDSDataset:
                             "file is dropped",
                             _rec_name, participant_id, session_id, _prior, _rec_id,
                         )
-                    else:
-                        seen_recording_entities.setdefault(_rec_entity, _rec_id)
                     meta_data = convert_response_to_bids_metadata(
                         recording,
                         questionnaire_name=recording_instrument.name,
@@ -2036,8 +2060,10 @@ class BIDSDataset:
             canonical_exclusion = {
                 _canonical_recording_stem(Path(excl).stem) for excl in exclusion
             }
-            present = {_canonical_recording_stem(a.stem) for a in paths}
-            unmatched = canonical_exclusion - present
+            # One canonical stem per path, reused by both the unmatched-report and the
+            # filter below; recomputing it per path twice is pure waste on a full tree.
+            canonical_paths = [(a, _canonical_recording_stem(a.stem)) for a in paths]
+            unmatched = canonical_exclusion - {stem for _, stem in canonical_paths}
             if unmatched:
                 # An exclusion list that matches nothing is indistinguishable from one that
                 # was applied, so say so rather than reporting a silent "removed 0 records".
@@ -2049,10 +2075,7 @@ class BIDSDataset:
                     "removed because nothing in this tree carries their identity. Examples: %s",
                     len(unmatched), len(canonical_exclusion), sorted(unmatched)[:5],
                 )
-            paths = [
-                a for a in paths
-                if _canonical_recording_stem(a.stem) not in canonical_exclusion
-            ]
+            paths = [a for a, stem in canonical_paths if stem not in canonical_exclusion]
         elif exclusion_type == 'filestem_contains':
             paths = [
                 a for a in paths

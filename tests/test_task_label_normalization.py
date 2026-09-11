@@ -334,3 +334,38 @@ def test_missing_alias_resource_raises(monkeypatch):
             load_recording_name_aliases()
     finally:
         load_recording_name_aliases.cache_clear()
+
+
+def test_collision_bookkeeping_survives_a_missing_id():
+    """A missing id must still mark the entity as seen.
+
+    Regression guard for the review finding on #333: the checks used
+    `seen.get(entity) is not None`, so an entity first recorded with a None/NaN id
+    read as "never seen" and the next record mapping to the same entity was
+    overwritten without a warning -- silently, which is what these guards exist to
+    prevent. Equality is only trusted when both ids are present, so NaN != NaN
+    cannot fabricate a collision either.
+    """
+    from b2aiprep.prepare.dataset import _note_entity_collision
+
+    # first record carries no id at all
+    seen = {}
+    assert _note_entity_collision(seen, "glides-high-to-low", None) == (False, None)
+    assert "glides-high-to-low" in seen, "a missing id must still mark the entity as seen"
+    collided, prior = _note_entity_collision(seen, "glides-high-to-low", "REC-2")
+    assert collided, "a second record on the same entity is a collision even if the first had no id"
+    assert prior is None
+
+    # NaN is treated the same way, and never collides with itself
+    nan = float("nan")
+    seen = {}
+    assert _note_entity_collision(seen, "free-speech", nan) == (False, None)
+    collided, _ = _note_entity_collision(seen, "free-speech", nan)
+    assert collided, "two distinct records with unusable ids are still a collision"
+
+    # the ordinary cases are unchanged
+    seen = {}
+    assert _note_entity_collision(seen, "audio-check", "A") == (False, None)
+    assert _note_entity_collision(seen, "audio-check", "A") == (False, "A"), "same id twice is not a collision"
+    collided, prior = _note_entity_collision(seen, "audio-check", "B")
+    assert (collided, prior) == (True, "A")
