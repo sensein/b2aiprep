@@ -8,7 +8,8 @@ import shutil
 import subprocess
 import time
 import wave
-from typing import Any, Dict, List
+from functools import lru_cache
+from typing import Any, Dict, List, Mapping, Optional
 import re
 import hmac
 import hashlib
@@ -47,6 +48,59 @@ def sanitize_task_entity_in_bids_stem(stem: str) -> str:
         return f"{prefix}{normalize_task_label(raw_label)}"
 
     return _TASK_ENTITY_RE.sub(_repl, stem)
+
+
+_RECORDING_NAME_ALIASES = ("prepare", "resources", "task_registry", "recording_name_aliases.json")
+
+
+@lru_cache(maxsize=None)
+def load_recording_name_aliases() -> Dict[str, str]:
+    """Curated map of *normalized* recording-name variants to the canonical normalized label.
+
+    RedCap recording names carry spelling/ordering variants of the same task (e.g.
+    ``Cape V sentences-1 (v2)`` next to ``Cape V sentences (v2)-1``). Case and punctuation
+    variants collapse under :func:`normalize_task_label`; anything else is declared here.
+    Keys and values must already be normalized. The file is curated by hand and kept apart
+    from ``task_registry/registry.json``, which is generated and would drop hand edits.
+    Keys beginning with ``_`` are documentation and ignored.
+    """
+    resource = files("b2aiprep").joinpath(*_RECORDING_NAME_ALIASES)
+    if not resource.is_file():
+        # The file is packaged (pyproject.toml ships prepare/resources/task_registry/**/*),
+        # so absence means a broken install. Returning {} instead would silently name files
+        # differently than a correct install -- a difference no downstream check would catch.
+        raise FileNotFoundError(
+            f"Missing packaged resource {'/'.join(_RECORDING_NAME_ALIASES)}; "
+            "b2aiprep cannot derive BIDS task entities without it."
+        )
+    data = json.loads(resource.read_text(encoding="utf-8"))
+    aliases = {k: v for k, v in data.items() if not k.startswith("_")}
+    malformed = sorted(
+        k for k, v in aliases.items()
+        if normalize_task_label(k) != k or normalize_task_label(v) != v or v in aliases
+    )
+    if malformed:
+        raise ValueError(
+            "recording_name_aliases.json entries must be normalized labels whose target is "
+            f"not itself an alias: {malformed}"
+        )
+    return aliases
+
+
+def canonical_task_entity(recording_name: Any, aliases: Optional[Mapping[str, str]] = None) -> str:
+    """The BIDS ``task-`` entity for a RedCap recording (or acoustic task) name.
+
+    Normalizes the name (lowercase; runs of non-alphanumerics become a single ``-``) and then
+    applies the curated aliases, so ``Audio Check (v2)-1`` -> ``audio-check-v2-1`` and
+    ``Cape V sentences-1 (v2)`` -> ``cape-v-sentences-v2-1``. Idempotent: applying it to its
+    own output returns the same label, which is what lets ``deidentify`` verify rather than
+    rename. This is the single place file names derive their task entity from; the raw
+    RedCap name stays in the phenotype tables and sidecar contents.
+    """
+    label = normalize_task_label(recording_name)
+    if aliases is None:
+        aliases = load_recording_name_aliases()
+    return aliases.get(label, label)
 
 
 def get_commit_sha(submodule_root: Path) -> str:

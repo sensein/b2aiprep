@@ -78,7 +78,7 @@ from b2aiprep.prepare.constants import (
 
 from b2aiprep.prepare.bids import get_audio_paths
 from b2aiprep.prepare.constants import SPEECH_TASKS
-from b2aiprep.prepare.utils import retry
+from b2aiprep.prepare.utils import normalize_task_label, retry
 
 SUBJECT_ID = "sub"
 SESSION_ID = "ses"
@@ -166,7 +166,11 @@ def extract_single(
     win_length = 25
     hop_length = 10
 
-    is_speech_task = any([v.replace(" ", "-") in wav_path.name for v in SPEECH_TASKS])
+    # Compare normalized forms on both sides. SPEECH_TASKS is Title Case with spaces
+    # ("Free Speech"), while the BIDS task entity is lowercase and hyphenated
+    # ("task-free-speech-1"), so a raw substring test matches nothing.
+    _normalized_stem = normalize_task_label(wav_path.stem)
+    is_speech_task = any(normalize_task_label(v) in _normalized_stem for v in SPEECH_TASKS)
 
     opensmile = True
     torchaudio_squim = True

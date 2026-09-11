@@ -10,6 +10,8 @@ from functools import lru_cache
 from importlib.resources import files
 from urllib.parse import quote
 import logging
+
+from b2aiprep.prepare.utils import canonical_task_entity
 _logger = logging.getLogger(__name__)
 
 
@@ -375,7 +377,13 @@ def _resolve_task_registry(task_name: str, population=None):
     reg = _load_registry()
     if not reg:
         return None
-    n = _norm(task_name)
+    # Resolve through the curated recording-name aliases first, so a variant spelling finds
+    # the same task as its canonical form. Only aliased names are affected: for every other
+    # name canonical_task_entity() differs from _norm() by punctuation that _norm() already
+    # strips. Measured over all 949 task names in the v4 exports, exactly one resolution
+    # changes -- the bare "High to Low", the Glides pair's second half, which resolved to
+    # nothing and now resolves to adult.glides.
+    n = _norm(canonical_task_entity(task_name))
     best_tid, best_len = None, -1
     for na, na_len, tid in _alias_items():
         if na == n:
