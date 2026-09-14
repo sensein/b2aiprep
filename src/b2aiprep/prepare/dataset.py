@@ -833,6 +833,68 @@ class BIDSDataset:
             df.drop(index=df[mask_only_id_and_demo].index, inplace=True)
         
     @staticmethod
+    @staticmethod
+    def _drop_rows_without_substantive_data(
+        df: pd.DataFrame, id_col: str, csv_only_columns: t.AbstractSet[str]
+    ) -> pd.DataFrame:
+        """Drop rows whose only content is the participant id and RedCap bookkeeping.
+
+        `csv_only_columns` are the output columns with no ReproSchema definition -- the
+        `<form>_complete` and `<form>_timestamp` columns RedCap emits for every record whether
+        or not the form was ever filled in. They must not count as content: a participant who
+        never had an ALS assessment still gets `d_neuro_..._complete = Incomplete`, so treating
+        that as data keeps a row for every participant in every table. Measured on the v4 adult
+        export, counting them turned `diagnosis/amyotrophic_lateral_sclerosis.tsv` from 6 rows
+        into 2005.
+
+        When every column is bookkeeping there is nothing to test against, so the rows are kept
+        as-is rather than silently emptying the table.
+        """
+        substantive = [c for c in df.columns if c != id_col and c not in csv_only_columns]
+        if not substantive:
+            return df
+        return df.dropna(how="all", subset=substantive)
+
+    @staticmethod
+    def _synthetic_data_element(
+        column: str,
+        updated_data: t.Mapping[str, t.Any],
+        column_choice: t.Optional[str] = None,
+        clean_phenotype_data: bool = True,
+    ) -> t.Dict[str, t.Any]:
+        """Build a minimal data dictionary entry for a column with no ReproSchema definition.
+
+        ReproSchema is generated from the RedCap data dictionary, so it only describes columns
+        that someone authored as a field. It legitimately has no entry for the columns RedCap
+        synthesizes per instrument (`<form>_complete`, `<form>_timestamp`), for RedCap's own
+        structural columns, or for values b2aiprep computes itself. For those the reorganization
+        CSV is the only description that exists, so it becomes the description of record.
+
+        The result deliberately carries no `termURL`, no `choices` and no `question`: there is no
+        authored definition to cite, and minting an ontology reference here would put an unsourced
+        term into a published data dictionary. Consumers can therefore identify CSV-described
+        columns by the absence of `termURL`. This matches the shape already used for the
+        synthetic `participant_id` element.
+
+        Args:
+            column: the source (RedCap) column name.
+            updated_data: the row from bids_field_organization.csv describing this column.
+            column_choice: the option code when `column` is a `___`-suffixed checkbox option.
+            clean_phenotype_data: when True, checkbox options are emitted as 0/1 integers.
+        """
+        description = (updated_data.get("description") or "").strip()
+        if not description:
+            # Never leave a published dictionary entry without a description; say plainly that
+            # the field map did not supply one rather than emitting an empty string.
+            description = (
+                f"No description available for {column}; this column has no ReproSchema "
+                "definition and bids_field_organization.csv does not describe it."
+            )
+        value_type = (
+            ["xsd:integer"] if (column_choice is not None and clean_phenotype_data) else ["xsd:string"]
+        )
+        return {"description": description, "valueType": value_type}
+
     def _construct_phenotype_from_reproschema(
         df: pd.DataFrame,
         output_dir: str,
@@ -918,6 +980,8 @@ class BIDSDataset:
         included_cols: t.Set[str] = set()
         missing_in_df_cols: t.Set[str] = set()
         redcap_group_cols: t.Set[str] = set()
+        # Columns described by bids_field_organization.csv alone, with no ReproSchema element.
+        synthesized_cols: t.Set[str] = set()
 
         df_reorg = df_reorg_active
 
@@ -933,6 +997,9 @@ class BIDSDataset:
             "group": "",
             # source schema name is used to filter rows
             "schema_name_source": [],
+            # output columns with no ReproSchema definition (RedCap form status/timestamps).
+            # Tracked so they can be excluded from the "is this row empty?" test below.
+            "columns_csv_only": [],
         }
         updated_schemas = defaultdict(lambda: deepcopy(payload))
         for updated_schema_name, group in df_reorg.groupby('schema_name'):
@@ -952,17 +1019,33 @@ class BIDSDataset:
                     continue
                 included_cols.add(col_norm)
                 
-                # the source schema is defined based on the element itself;
-                # we do not need the schema_name_source column, but it is kept for ease of reading the CSV.
-                schema_to_use = element_to_schema[column]
-                
                 if '___' in column:
                     column_base, column_choice = column.rsplit('___', maxsplit=1)
                 else:
                     column_base = column
                     column_choice = None
-                if column_base in checkbox_columns:
-                    data_element = copy(schemas[schema_to_use]["data_elements"][column_base])
+
+                # the source schema is defined based on the element itself;
+                # we do not need the schema_name_source column, but it is kept for ease of reading the CSV.
+                schema_to_use = element_to_schema.get(column)
+                source_elements = schemas[schema_to_use]["data_elements"] if schema_to_use else {}
+                lookup_key = column_base if column_base in checkbox_columns else column
+                csv_only_column = False
+                if lookup_key not in source_elements:
+                    # No ReproSchema definition exists for this column, so there is nothing to look
+                    # up. RedCap emits columns that were never authored as fields -- <form>_complete,
+                    # <form>_timestamp, its own structural columns -- and ReproSchema is generated
+                    # from the data dictionary, which does not describe them. Derived columns that
+                    # b2aiprep computes itself land here too. Synthesize a minimal element from the
+                    # reorganization CSV instead of raising KeyError, and record the name so the run
+                    # reports exactly which columns are described by the CSV alone.
+                    data_element = BIDSDataset._synthetic_data_element(
+                        column, updated_data, column_choice, clean_phenotype_data
+                    )
+                    synthesized_cols.add(col_norm)
+                    csv_only_column = True
+                elif column_base in checkbox_columns:
+                    data_element = copy(source_elements[column_base])
                     # reduce the choices to just the choice for this checkbox
                     data_element['choices'] = [
                         choice for choice in data_element.get('choices', [])
@@ -973,7 +1056,7 @@ class BIDSDataset:
                         data_element['valueType'] = ['xsd:integer']
                 else:
                     # populate the detailed metadata for this column
-                    data_element = copy(schemas[schema_to_use]["data_elements"][column])
+                    data_element = copy(source_elements[column])
                 if "description" in updated_data and (updated_data["description"] != ""):
                     description = updated_data["description"]
                 elif "description" in data_element and (data_element["description"] != ""):
@@ -986,6 +1069,8 @@ class BIDSDataset:
                 updated_schema_name = updated_data["schema_name"]
                 updated_schemas[updated_schema_name]['columns_for_indexing'].append(column)
                 updated_schemas[updated_schema_name]['columns_for_output'].append(new_element_name)
+                if csv_only_column:
+                    updated_schemas[updated_schema_name]['columns_csv_only'].append(new_element_name)
                 updated_schemas[updated_schema_name]['schema_name_source'].append(updated_data["schema_name_source"])
 
                 # update the payload so we have a reproschema json for this df
@@ -999,6 +1084,7 @@ class BIDSDataset:
             columns_for_indexing = payload.pop("columns_for_indexing")
             columns_for_output = payload.pop("columns_for_output")
             schema_name_sources = set(payload.pop("schema_name_source"))
+            csv_only_columns = set(payload.pop("columns_csv_only"))
             group = payload.pop("group")
             if "record_id" not in columns_for_indexing:
                 columns_for_indexing = ["record_id"] + columns_for_indexing
@@ -1068,15 +1154,23 @@ class BIDSDataset:
             if clean_phenotype_data:
                 selected_df, updated_schema = BIDSDataset._clean_phenotype_data(selected_df, updated_schema)
 
-            # Remove rows where the only non-null value is record_id/participant_id
-            selected_df = selected_df.dropna(how="all", subset=[col for col in selected_df.columns if col != id_col])
+            # Remove rows where the only non-null value is record_id/participant_id.
+            # Columns with no ReproSchema definition are excluded from this test: RedCap emits a
+            # <form>_complete for every record whether or not the form was ever filled in, so
+            # counting it as content would keep a row for every participant in every table -- e.g.
+            # every diagnosis table would list the whole cohort instead of the diagnosed subset.
+            selected_df = BIDSDataset._drop_rows_without_substantive_data(
+                selected_df, id_col, csv_only_columns
+            )
             if selected_df.empty:
                 _LOGGER.warning(f"No data remaining after dropping empty rows for {schema_name}")
                 continue
 
             if 'age' in selected_df.columns:
                 BIDSDataset._fix_disjoint_demographic_rows(selected_df, id_col, 'age', schema_name=schema_name)
-                selected_df = selected_df.dropna(how="all", subset=[col for col in selected_df.columns if col != id_col])
+                selected_df = BIDSDataset._drop_rows_without_substantive_data(
+                    selected_df, id_col, csv_only_columns
+                )
                 if selected_df.empty:
                     _LOGGER.warning(f"No data remaining after dropping empty rows for {schema_name}")
                     continue
@@ -1114,6 +1208,19 @@ class BIDSDataset:
             len(cols_for_deletion),
             len(missing_in_df_cols),
         )
+        if synthesized_cols:
+            # Surfaced at INFO, not debug: these columns reach the output with a data dictionary
+            # entry carrying only a description and a valueType. They have no termURL, no choices
+            # and no question text, because no authored definition exists to cite -- inventing an
+            # ontology reference for them would put an unsourced term into a published dictionary.
+            _LOGGER.info(
+                "%d column(s) had no ReproSchema element and were described from "
+                "bids_field_organization.csv alone (no termURL/choices in the data dictionary): %s",
+                len(synthesized_cols),
+                ", ".join(sorted(synthesized_cols)[:10])
+                + (", ..." if len(synthesized_cols) > 10 else ""),
+            )
+            _LOGGER.debug(f"Synthesized (CSV-only) columns: {sorted(synthesized_cols)}")
         _LOGGER.debug(f"Included columns: {sorted(included_cols)}")
         _LOGGER.debug(f"Excluded (missing in df) columns: {sorted(missing_in_df_cols)}")
         _LOGGER.debug(f"Excluded (redcap group) columns: {sorted(redcap_group_cols)}")

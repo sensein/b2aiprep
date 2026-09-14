@@ -78,23 +78,63 @@ def test_every_reachable_element_has_a_row(reorg_rows, reachable_elements):
     )
 
 
-def test_every_active_row_resolves_to_a_reachable_element(reorg_rows, reachable_elements):
-    """Active rows must resolve, or ``element_to_schema[column]`` raises KeyError.
+# RedCap synthesizes these per instrument; they are never data-dictionary variables, so
+# reproschema (which is generated from the dictionary) cannot describe them. They are the only
+# columns allowed to reach the phenotype writer without a reproschema element.
+REDCAP_GENERATED_SUFFIXES = ("_complete", "_timestamp")
+REDCAP_STRUCTURAL_COLUMNS = {
+    "redcap_repeat_instrument",
+    "redcap_repeat_instance",
+    "redcap_survey_identifier",
+}
 
-    ``_construct_phenotype_from_reproschema`` only reaches that lookup when the
-    column is present in the RedCap export, so a stale row is a latent crash
-    rather than a guaranteed one. Retire stale rows with ``delete=YES``.
+
+def _is_redcap_generated(column_name_source):
+    return (
+        column_name_source in REDCAP_STRUCTURAL_COLUMNS
+        or column_name_source.endswith(REDCAP_GENERATED_SUFFIXES)
+    )
+
+
+def test_every_active_row_resolves_or_is_a_redcap_generated_column(reorg_rows, reachable_elements):
+    """Active rows resolve to a reproschema element, or are RedCap-generated columns.
+
+    ``_construct_phenotype_from_reproschema`` used to raise KeyError on an unresolved row;
+    it now falls back to ``_synthetic_data_element`` and describes the column from this CSV
+    alone. That fallback exists for the columns RedCap invents per instrument
+    (``<form>_complete``, ``<form>_timestamp``) and its structural columns -- never for a
+    typo or a row left behind by a renamed field, which would otherwise be published with a
+    generic description and no termURL instead of failing loudly. Retire stale rows with
+    ``delete=YES``.
     """
     unresolved = sorted(
         row["column_name_source"]
         for row in reorg_rows
         if row["delete"].strip().upper() != "YES"
         and row["column_name_source"].rsplit("___", 1)[0] not in reachable_elements
+        and not _is_redcap_generated(row["column_name_source"])
     )
     assert not unresolved, (
         f"{len(unresolved)} active row(s) reference elements absent from the vendored "
-        f"reproschema protocol order: {unresolved}"
+        f"reproschema protocol order and are not RedCap-generated columns: {unresolved}"
     )
+
+
+def test_redcap_generated_rows_are_described_by_the_csv(reorg_rows):
+    """Their description here is the only one that will ever exist.
+
+    No upstream defines these columns, so ``_synthetic_data_element`` copies this CSV's
+    description verbatim into the published data dictionary. An empty one would ship an
+    entry saying nothing.
+    """
+    undescribed = sorted(
+        row["column_name_source"]
+        for row in reorg_rows
+        if row["delete"].strip().upper() != "YES"
+        and _is_redcap_generated(row["column_name_source"])
+        and not row["description"].strip()
+    )
+    assert not undescribed, f"RedCap-generated rows with no description: {undescribed}"
 
 
 def test_active_rows_are_well_formed(reorg_rows):
