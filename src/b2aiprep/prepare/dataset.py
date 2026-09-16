@@ -94,6 +94,11 @@ def _guard_resample_overshoot(resampled_audio, in_peak: float):
 # This is a grouped spec because the per-record feature `.pt` files are nested dicts
 # (e.g., `features["torchaudio"]["mfcc"]`), while some sensitive artifacts live at
 # the top-level (e.g., `features["transcription"]`).
+# A full wav header is 44 bytes and even a 1-second 16kHz mono clip is ~32 KB.
+# Anything under this threshold is not a usable recording (the v4 exports contain
+# 259 sources at exactly 4096 bytes -- collection-side non-recordings).
+_MIN_AUDIO_BYTES = 8192
+
 _SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE: t.Mapping[str, t.FrozenSet[str]] = {
     "torchaudio": frozenset({"mel_filter_bank", "mfcc", "mel_spectrogram", "spectrogram"}),
     "": frozenset({"ppgs", "transcription"}),
@@ -185,20 +190,23 @@ def _copy_audio_files_parallel(copy_tasks: t.List[t.Tuple[Path, Path]], max_work
                 errors.append(error)
                 _LOGGER.error(error)
     
-    if errors:        
-        failed_files = [err.split("->")[0].replace("Failed to copy", "").strip() for err in errors]  
-        total_files = len(copy_tasks)  
-        unique_error_types = set()  
-        for err in errors:  
-            # Try to extract the exception type from the error message  
-            if ":" in err:  
-                unique_error_types.add(err.split(":")[-1].strip())  
-        summary = (  
-            f"Encountered {len(errors)} errors out of {total_files} files during parallel audio copying.\n"  
-            f"Failed files (up to 5 shown): {failed_files[:5]}\n"  
-            f"Unique error types (up to 3 shown): {list(unique_error_types)[:3]}"  
-        )  
-        _LOGGER.warning(summary)  
+    if errors:
+        failed_files = [err.split("->")[0].replace("Failed to copy", "").strip() for err in errors]
+        total_files = len(copy_tasks)
+        unique_error_types = set()
+        for err in errors:
+            if ":" in err:
+                unique_error_types.add(err.split(":")[-1].strip())
+        _LOGGER.warning(
+            "Encountered %d errors out of %d files during parallel audio copying. "
+            "Error types: %s",
+            len(errors), total_files, list(unique_error_types),
+        )
+        _LOGGER.warning(
+            "All %d failed audio files (QA -- verify these are expected; "
+            "truncated/corrupt sources should be caught by the pre-scan instead): %s",
+            len(failed_files), failed_files,
+        )
 
 
 class BIDSDataset:
@@ -338,8 +346,10 @@ class BIDSDataset:
                 )
             audio_files_by_recording[uuid] = audio_file
 
+        participants_with_audio = set()
+        all_recording_ids_with_sidecar: t.Set[str] = set()
         for participant in tqdm(participants, desc="Writing participant data to file"):
-            cls._output_participant_data_to_metadata_file(
+            had_audio, rec_ids_with_sidecar = cls._output_participant_data_to_metadata_file(
                 participant,
                 Path(outdir),
                 audio_files_by_recording=audio_files_by_recording,
@@ -348,9 +358,64 @@ class BIDSDataset:
                 audio_descriptor_dict=audio_descriptor_dict,
                 questionnaire_lookup=questionnaire_lookup,
             )
-        
+            if had_audio:
+                participants_with_audio.add(participant["record_id"])
+                all_recording_ids_with_sidecar.update(rec_ids_with_sidecar)
+
+        # Filter recording.tsv to only recordings that
+        # produced a sidecar. Recordings whose source was missing or truncated
+        # were skipped; their rows would otherwise reference nonexistent files.
+        if audio_files_by_recording is not None and all_recording_ids_with_sidecar:
+            phenotype_dir = os.path.join(outdir, "phenotype")
+            for tsv_name, id_col in [("task/recording.tsv", "recording_id")]:
+                fp = os.path.join(phenotype_dir, tsv_name)
+                if not os.path.isfile(fp):
+                    continue
+                df_tsv = pd.read_csv(fp, sep="\t", dtype=str)
+                if id_col not in df_tsv.columns:
+                    continue
+                before = len(df_tsv)
+                df_tsv = df_tsv.loc[df_tsv[id_col].isin(all_recording_ids_with_sidecar)]
+                after = len(df_tsv)
+                if before != after:
+                    df_tsv.to_csv(fp, sep="\t", index=False)
+                    _LOGGER.info(
+                        "phenotype/%s: %d -> %d rows after removing recordings/tasks "
+                        "without a sidecar on disk.",
+                        tsv_name, before, after,
+                    )
+
+        # QA report: participants with no distributed audio
+        participants_without_audio = {p["record_id"] for p in participants} - participants_with_audio
+        if participants_without_audio:
+            _LOGGER.warning(
+                "%d of %d participant(s) produced no audio files and were excluded from "
+                "the BIDS tree (no sub-*/ directory, no rows in phenotype). Their records "
+                "exist in the REDCap export but had no recordings with a locatable source "
+                "file after filtering. QA: verify these are expected (enrollment-only, "
+                "audio-check-only, or missing source audio). IDs: %s",
+                len(participants_without_audio),
+                len(participants),
+                ", ".join(sorted(participants_without_audio)),
+            )
+
+        # Filter phenotype tables to only participants with audio
+        if participants_without_audio:
+            phenotype_dir = os.path.join(outdir, "phenotype")
+            if os.path.isdir(phenotype_dir):
+                _LOGGER.info(
+                    "Filtering phenotype tables to %d participants with audio "
+                    "(removing %d without).",
+                    len(participants_with_audio),
+                    len(participants_without_audio),
+                )
+                BIDSDataset._filter_phenotype_to_participants(
+                    phenotype_dir, participants_with_audio
+                )
+
         # Return a new BIDSDataset instance pointing to the created directory
         return cls(outdir)
+
 
     @staticmethod
     def _initialize_data_directory(bids_dir_path: str) -> None:
@@ -842,6 +907,44 @@ class BIDSDataset:
             df.drop(index=df[mask_only_id_and_demo].index, inplace=True)
         
     @staticmethod
+    def _filter_phenotype_to_participants(
+        phenotype_dir: str, keep_ids: t.AbstractSet[str]
+    ) -> None:
+        """Remove rows for participants without audio from every phenotype TSV.
+
+        Called after the participant loop when some participants were skipped entirely
+        because they had no locatable source audio. Without this, the phenotype tables
+        would list participants whose sub-*/ directory does not exist, and recording.tsv
+        would reference files that were never written.
+
+        Logs a per-file summary so the output is auditable.
+        """
+        for dp, _, fs in os.walk(phenotype_dir):
+            for fn in sorted(fs):
+                if not fn.endswith(".tsv"):
+                    continue
+                fp = os.path.join(dp, fn)
+                df = pd.read_csv(fp, sep="\t", dtype=str)
+                id_col = None
+                for candidate in ("participant_id", "record_id"):
+                    if candidate in df.columns:
+                        id_col = candidate
+                        break
+                if id_col is None:
+                    continue
+                before = len(df)
+                df = df.loc[df[id_col].isin(keep_ids)]
+                after = len(df)
+                if before != after:
+                    df.to_csv(fp, sep="\t", index=False)
+                    rel = os.path.relpath(fp, phenotype_dir)
+                    _LOGGER.info(
+                        "phenotype/%s: %d -> %d rows after removing participants without audio.",
+                        rel, before, after,
+                    )
+                    # Update the companion JSON if it exists (it carries data-element metadata,
+                    # not row counts, so it does not need rewriting -- but we log for completeness).
+
     @staticmethod
     def _drop_audio_check_rows(df: pd.DataFrame) -> pd.DataFrame:
         """Remove every row describing the session's microphone check.
@@ -1107,7 +1210,7 @@ class BIDSDataset:
                 elif "description" in data_element and (data_element["description"] != ""):
                     description = data_element["description"]
                 else:
-                    description = data_element.get("question", "").get("en", "")
+                    description = data_element.get("question", {}).get("en", "")
                 data_element["description"] = description
                 new_element_name = updated_data["column_name"]
 
@@ -1348,7 +1451,7 @@ class BIDSDataset:
         participant: dict, outdir: Path, audio_files_by_recording: t.Optional[t.Dict[str, Path]] = None,
         max_audio_workers: int = 16, sanitize_audio_format: bool = False, audio_descriptor_dict:OrderedDict = {},
         questionnaire_lookup: t.Optional[t.Dict[tuple, dict]] = None
-    ):
+    ) -> t.Tuple[bool, t.Set[str]]:
         """Output participant data to FHIR format.
 
         Args:
@@ -1374,6 +1477,56 @@ class BIDSDataset:
 
         # Collect all audio copy tasks for parallel execution
         audio_copy_tasks = []
+
+        # Pre-scan: determine which recordings have a locatable source file.
+        # Only those get sidecars and copy tasks; the rest are logged for QA.
+        recordings_with_source: t.Set[str] = set()
+        recordings_without_source: t.List[t.Tuple[str, str, str]] = []  # (rec_id, rec_name, session_id)
+        if audio_files_by_recording is not None:
+            for session in participant.get("sessions", []):
+                for task in session.get("acoustic_tasks", []):
+                    if task is None:
+                        continue
+                    for recording in task.get("recordings", []):
+                        rec_id = recording.get("recording_id", "")
+                        if not rec_id:
+                            continue
+                        audio_path = audio_files_by_recording.get(rec_id)
+                        if audio_path is not None:
+                            try:
+                                sz = audio_path.stat().st_size
+                            except OSError:
+                                sz = 0
+                            if sz >= _MIN_AUDIO_BYTES:
+                                recordings_with_source.add(rec_id)
+                            else:
+                                recordings_without_source.append(
+                                    (rec_id, recording.get("recording_name", ""),
+                                     session.get("session_id", ""))
+                                )
+                                continue
+                        else:
+                            recordings_without_source.append(
+                                (rec_id, recording.get("recording_name", ""), session.get("session_id", ""))
+                            )
+
+        if audio_files_by_recording is not None and not recordings_with_source:
+            # No audio at all for this participant -- skip entirely.
+            # The caller aggregates these and logs a single QA warning.
+            return False, set()
+
+        if recordings_without_source:
+            _LOGGER.info(
+                "Participant %s: %d of %d recording(s) have no source audio file and will "
+                "not receive a sidecar or audio copy. QA: verify these are expected "
+                "(truncated source, missing from Wasabi, collection error). "
+                "recording_ids: %s",
+                participant_id,
+                len(recordings_without_source),
+                len(recordings_with_source) + len(recordings_without_source),
+                ", ".join(r[0] for r in recordings_without_source),
+            )
+
 
         # validated questionnaires are asked per session
         sessions_rows = []
@@ -1480,6 +1633,11 @@ class BIDSDataset:
                             "file is dropped",
                             _rec_name, participant_id, session_id, _prior, _rec_id,
                         )
+                    # Skip recordings whose source audio is missing -- no sidecar, no copy.
+                    # The per-participant log above already named them for QA.
+                    if audio_files_by_recording is not None and _rec_id not in recordings_with_source:
+                        continue
+
                     meta_data = convert_response_to_bids_metadata(
                         recording,
                         questionnaire_name=recording_instrument.name,
@@ -1520,6 +1678,17 @@ class BIDSDataset:
         if audio_copy_tasks:
             _copy_audio_files_parallel(audio_copy_tasks, max_workers=max_audio_workers, sanitize_audio_format=sanitize_audio_format)
 
+        # Remove session directories that ended up empty (no sidecars or audio).
+        # This happens when every recording in a session had no source file.
+        for session in participant["sessions"]:
+            session_id = session["session_id"]
+            session_audio = subject_path / f"ses-{session_id}" / "audio"
+            if session_audio.is_dir() and not any(session_audio.iterdir()):
+                session_audio.rmdir()
+                session_dir = session_audio.parent
+                if session_dir.is_dir() and not any(session_dir.iterdir()):
+                    session_dir.rmdir()
+
         # Save sessions.tsv
         sessions_df = pd.DataFrame(sessions_rows)
         if not os.path.exists(subject_path):
@@ -1527,6 +1696,7 @@ class BIDSDataset:
         sessions_tsv_path = subject_path / "sessions.tsv"
         sessions_df.to_csv(sessions_tsv_path, sep="\t", index=False)
 
+        return True, recordings_with_source
     @staticmethod
     def load_phenotype_data(phenotype_filepath: Path) -> t.Tuple[pd.DataFrame, t.Dict[str, t.Any]]:
         """

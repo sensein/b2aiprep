@@ -80,3 +80,48 @@ def test_the_registry_miss_warning_is_not_suppressed():
         "it is silent only because those rows are filtered upstream"
     )
     assert AUDIO_CHECK_LABEL == "audio-check"
+
+
+def test_participants_without_audio_are_excluded_from_tree():
+    """No sub-*/ directory is created for participants with no locatable source file."""
+    from b2aiprep.prepare.dataset import BIDSDataset
+    import tempfile, os
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        outdir = os.path.join(tmpdir, "bids")
+        os.makedirs(outdir)
+        # Simulate: had_audio returns False when audio_files_by_recording has nothing
+        participant = {
+            "record_id": "test-no-audio",
+            "sessions": [{
+                "session_id": "S1",
+                "session_status": "Completed",
+                "session_is_control_participant": "No",
+                "session_duration": "100",
+                "session_site": "MIT",
+                "acoustic_tasks": [{
+                    "acoustic_task_id": "T1",
+                    "acoustic_task_session_id": "S1",
+                    "acoustic_task_name": "Rainbow Passage",
+                    "acoustic_task_cohort": "adult",
+                    "acoustic_task_status": "Completed",
+                    "recordings": [{
+                        "recording_id": "NONEXISTENT-UUID",
+                        "recording_name": "Rainbow Passage",
+                        "recording_duration": "5.0",
+                    }]
+                }]
+            }],
+        }
+        from pathlib import Path
+        from collections import OrderedDict
+        had_audio = BIDSDataset._output_participant_data_to_metadata_file(
+            participant, Path(outdir),
+            audio_files_by_recording={},  # no audio at all
+            audio_descriptor_dict=OrderedDict(),
+            questionnaire_lookup={},
+        )
+        assert had_audio[0] is False, "should return False when no recordings have source audio"
+        assert not os.path.exists(os.path.join(outdir, "sub-test-no-audio")), (
+            "no sub-*/ directory should exist for a participant with no audio"
+        )
