@@ -87,6 +87,36 @@ def load_recording_name_aliases() -> Dict[str, str]:
     return aliases
 
 
+# The microphone check that opens every session. It is collection apparatus, not research
+# data: it is deliberately absent from the task registry, it is stripped again at deidentify,
+# and no published release has ever contained it. Measured on the v4 exports it is 7,970 of
+# 70,520 adult recordings (11%) and 1,383 of 99,724 pediatric.
+AUDIO_CHECK_LABEL = "audio-check"
+
+
+def is_audio_check(name: Any) -> bool:
+    """True when `name` denotes the session's microphone check, in any spelling.
+
+    The single definition of "this is an audio check" for the whole pipeline. Matching is
+    on the normalized label, so every collected variant resolves the same way:
+    ``Audio Check``, ``Audio Check (v2)-5``, ``audio-check-v2-3`` and so on all reduce to a
+    label containing ``audio-check``.
+
+    Substring, not equality, because the numbered and versioned forms are the common case --
+    a session records several audio checks and they arrive as ``Audio Check-1`` through
+    ``Audio Check-5``. Accepts anything name-like (including NaN) so callers can pass a raw
+    RedCap cell without guarding first.
+    """
+    if name is None:
+        return False
+    text = str(name).strip().lower()
+    if text in ("", "nan", "none"):
+        # `utils` is a leaf module -- fhir_utils._is_present() imports from here, so it
+        # cannot be imported back. This is the same emptiness test, inlined.
+        return False
+    return AUDIO_CHECK_LABEL in normalize_task_label(name)
+
+
 def canonical_task_entity(recording_name: Any, aliases: Optional[Mapping[str, str]] = None) -> str:
     """The BIDS ``task-`` entity for a RedCap recording (or acoustic task) name.
 

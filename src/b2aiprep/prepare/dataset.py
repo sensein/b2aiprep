@@ -47,6 +47,8 @@ from b2aiprep.prepare.utils import (
     canonical_task_entity,
     normalize_task_label,
     sanitize_task_entity_in_bids_stem,
+    AUDIO_CHECK_LABEL,
+    is_audio_check,
 )
 from b2aiprep.prepare.fhir_utils import convert_response_to_bids_metadata, _population_from_cohort, _is_present, _language_from_selected
 from b2aiprep.prepare.prepare import (
@@ -211,6 +213,7 @@ class BIDSDataset:
         audiodir: t.Optional[t.Union[str, Path]] = None,
         max_audio_workers: int = 16,
         sanitize_audio_format: bool = False,
+        drop_audio_check: bool = True,
     ) -> 'BIDSDataset':
         """
         Create a BIDSDataset by converting a RedCapDataset to BIDS format.
@@ -221,12 +224,18 @@ class BIDSDataset:
             audiodir: Optional directory containing audio files
             max_audio_workers: Number of parallel threads for audio copying (default: 16)
             sanitize_audio_format: Whether to standardize the audio to 16KHz and mono-channel
-            
+            drop_audio_check: Exclude the session microphone check from every output (default
+                True). Pass False to keep it for internal quality review -- it must never
+                reach a release.
+
         Returns:
             BIDSDataset instance pointing to the created BIDS directory
         """
         outdir = Path(outdir).as_posix()
         BIDSDataset._initialize_data_directory(outdir)
+
+        if drop_audio_check:
+            redcap_dataset.df = BIDSDataset._drop_audio_check_rows(redcap_dataset.df)
 
         _LOGGER.info("Converting RedCap dataset to BIDS phenotype files.")
         # Subselect the RedCap dataframe and output components to individual files in the phenotype directory
@@ -833,6 +842,42 @@ class BIDSDataset:
             df.drop(index=df[mask_only_id_and_demo].index, inplace=True)
         
     @staticmethod
+    @staticmethod
+    def _drop_audio_check_rows(df: pd.DataFrame) -> pd.DataFrame:
+        """Remove every row describing the session's microphone check.
+
+        Applied once, to the RedCap dataframe, before anything reads it -- so a single filter
+        covers every artifact at once: the `recording`/`acoustic_task` phenotype tables, the
+        per-recording and per-acoustic-task sidecars, and the audio copy list. Filtering later
+        would mean repeating the rule per artifact and finding a new place to repeat it every
+        time one is added, which is how the three existing copies in deidentify came about.
+
+        The audio check is collection apparatus, not research data: it is absent from the task
+        registry (so every one of them logged a "no task match" warning -- 1,668 in the v4
+        pediatric build alone), it is stripped again at deidentify, and it has never shipped in
+        a release. Measured on the v4 exports: 7,970 of 70,520 adult recordings and 1,383 of
+        99,724 pediatric.
+        """
+        if "redcap_repeat_instrument" not in df.columns:
+            return df
+        drop = pd.Series(False, index=df.index)
+        for instrument, column in (("Recording", "recording_name"),
+                                   ("Acoustic Task", "acoustic_task_name")):
+            if column not in df.columns:
+                continue
+            is_row = df["redcap_repeat_instrument"].eq(instrument)
+            drop |= is_row & df[column].apply(is_audio_check)
+        if not drop.any():
+            return df
+        counts = df.loc[drop, "redcap_repeat_instrument"].value_counts().to_dict()
+        _LOGGER.info(
+            "Dropping %d audio-check row(s) at ingest (%s); they are excluded from the "
+            "phenotype tables, sidecars and audio copies.",
+            int(drop.sum()),
+            ", ".join(f"{k}: {v}" for k, v in sorted(counts.items())),
+        )
+        return df.loc[~drop]
+
     @staticmethod
     def _drop_rows_without_substantive_data(
         df: pd.DataFrame, id_col: str, csv_only_columns: t.AbstractSet[str]
@@ -2372,7 +2417,7 @@ class BIDSDataset:
 
         # Remove specific tasks
         audio_paths = BIDSDataset._apply_exclusion_list_to_filepaths(
-            audio_paths, exclusion_list=['audio-check'], exclusion_type='filestem_contains'
+            audio_paths, exclusion_list=[AUDIO_CHECK_LABEL], exclusion_type='filestem_contains'
         )
 
         audio_tasks_to_include_list = [f"task-{normalize_task_label(task)}" for task in audio_tasks_to_include_list]
@@ -2479,7 +2524,7 @@ class BIDSDataset:
 
         # Remove specific tasks
         paths = BIDSDataset._apply_exclusion_list_to_filepaths(
-            paths, exclusion_list=['audio-check'], exclusion_type='filestem_contains'
+            paths, exclusion_list=[AUDIO_CHECK_LABEL], exclusion_type='filestem_contains'
         )
 
         audio_task_labels = {normalize_task_label(t) for t in audio_tasks_to_include_list}
@@ -2560,13 +2605,11 @@ class BIDSDataset:
                 _LOGGER.info(f"Removing {idx.sum()} quality metric rows for excluded participants.")
                 df = df.loc[~idx]
 
-        # Remove audio-check task rows (mirrors the exclusion in _deidentify_audio_files)
+        # Remove audio-check task rows. Uses the same predicate as every other audio-check
+        # filter; on a tree built with drop_audio_check=True there is nothing left to remove,
+        # but older trees and internal-review builds still pass through here.
         if "task_name" in df.columns:
-            df = df.loc[
-                df["task_name"].apply(
-                    lambda task: normalize_task_label("audio-check") not in normalize_task_label(task)
-                )
-            ]
+            df = df.loc[~df["task_name"].apply(is_audio_check)]
 
         # Doesn't filter to only included audio tasks as these are similar to non-identifiable features
         # # Filter to only included audio tasks
