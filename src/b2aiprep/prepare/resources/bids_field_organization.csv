@@ -1495,8 +1495,8 @@ session_schema,,session_completed_at,session_completed_at,,"Date and time when t
 session_schema,session,session_completed_by,session_completed_by,task,"Identifies who assisted the participant in providing answers during the session (e.g., self/no one, spouse/partner, family member, caregiver, friend, clinician, or other).",NO,VARIABLE,pre-v4,NO
 session_schema,session,session_duration,session_duration,task,"Total elapsed duration of the session in seconds, recorded as a numeric value.",NO,VARIABLE,pre-v4,NO
 session_schema,session,session_id,session_id,task,"Unique alphanumeric identifier for this participant session (string), used to link data collected during the same visit or recording.",NO,VARIABLE,pre-v4,NO
-session_schema,session,session_is_control_participant,session_is_control_participant,task,Indicates whether the participant for this session is a control participant (binary response: Yes/No).,NO,VARIABLE,pre-v4,NO
-session_schema,session,session_language,session_language,task,Language in which the session was conducted (1 = English; 3 = Spanish); automatically assigned from the participant's selected language.,NO,VARIABLE,v4,NO
+session_schema,session,session_is_control_participant,session_is_control_participant,task,Indicates whether the participant for this session is a control participant (binary response: Yes/No).,YES,VARIABLE,pre-v4,NO
+session_schema,session,session_language,session_language,task,Language in which the session was conducted (1 = English; 3 = Spanish); automatically assigned from the participant's selected language.,YES,VARIABLE,v4,NO
 session_schema,,session_record_id,session_participant_id,,"Alphanumeric unique identifier assigned to this session to link session-level data (e.g., participant and visit) across dataset files.",YES,VARIABLE,pre-v4,NO
 session_schema,,session_site,session_site,,"Name or code of the study site where the participant session took place (e.g., institution or site ID).",YES,VARIABLE,v4,NO
 session_schema,,session_started_at,session_started_at,,"Date and time when the session began, recorded as an ISO 8601 timestamp (e.g., YYYY-MM-DDThh:mm:ss±hh:mm).",YES,VARIABLE,v4,NO
