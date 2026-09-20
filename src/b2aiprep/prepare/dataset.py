@@ -2242,10 +2242,7 @@ class BIDSDataset:
 
     @staticmethod
     def map_sequential_session_ids(folder_path: Path, sequential: bool = False) ->  t.Dict[str, str]:
-        """
-            Function retrieves all session ids for all participants from the sessions.tsv files and maps them to an integer.
-            If there are mutliple session exists for a participant, the seqiential will increase sequentially.
-        """
+        """Map session UUIDs to shortened IDs. Deprecated: use _build_session_id_mapping instead."""
         folder = Path(folder_path)
         session_files = list(folder.rglob("sessions.tsv"))
         
@@ -2416,6 +2413,7 @@ class BIDSDataset:
 
         def _process_one(pdir: Path) -> t.Optional[str]:
             pid = pdir.name[4:]
+            new_pid = participant_ids_to_remap.get(pid, pid)
             try:
                 had_output = BIDSDataset._deidentify_one_participant(
                     pdir, outdir, participant_ids_to_remap,
@@ -2429,6 +2427,9 @@ class BIDSDataset:
                 return None
             except Exception:
                 _LOGGER.exception("Failed to process participant %s.", pid)
+                out_participant = outdir / f"sub-{new_pid}"
+                if out_participant.exists():
+                    shutil.rmtree(out_participant)
                 return None
 
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
@@ -2443,6 +2444,11 @@ class BIDSDataset:
             "Per-participant processing complete: %d of %d produced output.",
             len(participants_with_output), len(participant_dirs),
         )
+        if not participants_with_output and participant_dirs and not skip_audio:
+            raise RuntimeError(
+                f"Deidentify produced zero output from {len(participant_dirs)} participants. "
+                "Check the logs above for per-participant errors."
+            )
 
         # Derive exclusion set for phenotype/QM (everyone NOT in output set)
         participant_ids_to_exclude = list(input_tree_participants - participants_with_output)
@@ -2499,10 +2505,22 @@ class BIDSDataset:
         )
         _LOGGER.info("Finished processing quality metrics.")
 
-        # --- session ID mapping ---
+        # --- session ID mapping (filtered to output participants only) ---
+        output_session_mapping = {}
+        for pid in participants_with_output:
+            participant_dir = self.data_path / f"sub-{pid}"
+            sessions_path = participant_dir / "sessions.tsv"
+            if not sessions_path.exists():
+                sessions_path = participant_dir / f"sub-{pid}_sessions.tsv"
+            if sessions_path.exists():
+                df_ses = pd.read_csv(sessions_path, sep="\t", dtype=str)
+                if "session_id" in df_ses.columns:
+                    for sid in df_ses["session_id"]:
+                        if sid in participant_session_id_to_remap:
+                            output_session_mapping[sid] = participant_session_id_to_remap[sid]
         with open(outdir / "session_id_mapping.json", "w") as f:
-            json.dump(participant_session_id_to_remap, f, indent=2)
-        _LOGGER.info("Wrote session_id_mapping.json with %d entries.", len(participant_session_id_to_remap))
+            json.dump(output_session_mapping, f, indent=2)
+        _LOGGER.info("Wrote session_id_mapping.json with %d entries.", len(output_session_mapping))
 
         # --- template files ---
         for template_file in ["README.md", "CHANGES.md", "dataset_description.json"]:
@@ -2786,8 +2804,11 @@ class BIDSDataset:
                     _LOGGER.debug("Skipping excluded filestem: %s", wav_path.name)
                     continue
 
-                # Task inclusion
-                if task_match and normalized_include_tasks:
+                # Task inclusion (empty list = publish nothing, matching old behavior)
+                if task_match:
+                    if not normalized_include_tasks:
+                        n_skipped += 1
+                        continue
                     task_label = normalize_task_label(task_match.group(1))
                     if task_label not in normalized_include_tasks:
                         n_skipped += 1
@@ -2800,25 +2821,27 @@ class BIDSDataset:
                 sanitized_stem = sanitize_task_entity_in_bids_stem(wav_path.stem)
                 stem_ending = "-".join(sanitized_stem.split("_")[2:])
 
+                # Sidecar must exist before we copy the wav (match old behavior)
+                json_path = wav_path.parent / f"{wav_path.stem}_recording-metadata.json"
+                if not json_path.exists():
+                    _LOGGER.warning("Missing sidecar for %s; skipping.", wav_path.name)
+                    n_skipped += 1
+                    continue
+
                 out_wav = outdir / f"sub-{new_pid}" / f"ses-{new_session_id}" / "audio" / (
                     f"sub-{new_pid}_ses-{new_session_id}_{stem_ending}.wav"
                 )
                 out_wav.parent.mkdir(parents=True, exist_ok=True)
+
+                metadata = json.loads(json_path.read_text())
+                update_metadata_record_and_session_id(
+                    metadata, participant_ids_to_remap, participant_session_id_to_remap
+                )
+                out_json = out_wav.with_suffix(".json")
+                with open(out_json, "w") as f:
+                    json.dump(metadata, f, indent=2)
                 shutil.copyfile(wav_path, out_wav)
                 n_audio_written += 1
-
-                # Sidecar JSON
-                json_path = wav_path.parent / f"{wav_path.stem}_recording-metadata.json"
-                if json_path.exists():
-                    metadata = json.loads(json_path.read_text())
-                    update_metadata_record_and_session_id(
-                        metadata, participant_ids_to_remap, participant_session_id_to_remap
-                    )
-                    out_json = out_wav.with_suffix(".json")
-                    with open(out_json, "w") as f:
-                        json.dump(metadata, f, indent=2)
-                else:
-                    _LOGGER.warning("Missing sidecar for %s", wav_path.name)
 
         # --- Feature files ---
         if not skip_audio_features:
@@ -2888,9 +2911,10 @@ class BIDSDataset:
             else:
                 _LOGGER.warning("No sessions.tsv found for participant %s; skipping carry-forward.", pid)
 
-        # --- Cleanup if no audio output ---
-        if n_audio_written == 0 and not skip_audio:
-            out_participant = outdir / f"sub-{new_pid}"
+        # --- Cleanup if no output ---
+        out_participant = outdir / f"sub-{new_pid}"
+        has_output = n_audio_written > 0 or (skip_audio and out_participant.exists())
+        if not has_output:
             if out_participant.exists():
                 shutil.rmtree(out_participant)
             _LOGGER.info(
