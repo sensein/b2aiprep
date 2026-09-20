@@ -243,42 +243,36 @@ class TestBIDSDatasetDeidentification:
             dataset.deidentify(outdir=output_dir, deidentify_config_dir=setup_publish_config)
 
     def test_participant_removal(self, temp_bids_dir, output_dir, setup_publish_config):
-        """Test that hard-coded participants are removed."""
+        """Test that participants on the removal list are excluded."""
         dataset = BIDSDataset(temp_bids_dir)
 
-        # Mock filter to exclude the hard-coded participant
-        with patch("b2aiprep.prepare.dataset.BIDSDataset.load_participant_ids_to_remove") as mock_filter:
-            mock_filter.return_value = ["participant001"]
+        # Write removal list to config (the allowlist fallback inverts this)
+        with open(setup_publish_config / "participants_to_remove.json", "w") as f:
+            json.dump(["participant001"], f)
 
-            # Test deidentification
-            dataset.deidentify(
-                outdir=output_dir, deidentify_config_dir=setup_publish_config, skip_audio=False
-            )
+        # Test deidentification
+        dataset.deidentify(
+            outdir=output_dir, deidentify_config_dir=setup_publish_config, skip_audio=False
+        )
 
         # Check that participant001 files are not in output
         participant001_files = list(output_dir.rglob("*participant001*"))
         assert len(participant001_files) == 0
 
     def test_audio_metadata_processing(self, temp_bids_dir, output_dir, setup_publish_config):
-        """Test that audio metadata is properly processed."""
+        """Test that audio files and metadata are properly processed."""
         dataset = BIDSDataset(temp_bids_dir)
 
-        # Mock the necessary functions for testing
-        with (
-            patch("b2aiprep.prepare.dataset.update_metadata_record_and_session_id") as mock_update,
-            patch("b2aiprep.prepare.dataset.get_value_from_metadata") as mock_get_value,
-        ):
-            # Setup mocks
-            mock_get_value.side_effect = lambda metadata, linkid, endswith: "test_id"
+        # Test deidentification
+        dataset.deidentify(
+            outdir=output_dir, deidentify_config_dir=setup_publish_config, skip_audio=False
+        )
 
-            # Test deidentification
-            dataset.deidentify(
-                outdir=output_dir, deidentify_config_dir=setup_publish_config, skip_audio=False
-            )
-
-            # Check that metadata functions were called
-            assert mock_update.called
-            assert mock_get_value.called
+        # Check that audio files and sidecars were written
+        wav_files = list(output_dir.rglob("*.wav"))
+        json_files = list(output_dir.rglob("*.json"))
+        assert len(wav_files) > 0, "Expected at least one wav file in output"
+        assert len(json_files) > 0, "Expected at least one json file in output"
 
     def test_logging_messages(self, temp_bids_dir, output_dir, caplog, setup_publish_config):
         """Test that appropriate logging messages are generated."""

@@ -27,6 +27,21 @@ class TestDeidentifyCommand:
         temp_dir = tempfile.mkdtemp()
         bids_path = Path(temp_dir) / "test_bids"
         bids_path.mkdir(parents=True, exist_ok=True)
+
+        # Create a minimal participant so the allowlist is non-empty
+        audio_dir = bids_path / "sub-p1" / "ses-s1" / "audio"
+        audio_dir.mkdir(parents=True)
+        (audio_dir / "sub-p1_ses-s1_task-test.wav").write_bytes(b"RIFF" + b"\x00" * 100)
+        (audio_dir / "sub-p1_ses-s1_task-test_recording-metadata.json").write_text(
+            json.dumps({"item": [
+                {"linkId": "record_id", "answer": [{"valueString": "p1"}]},
+                {"linkId": "session_id", "answer": [{"valueString": "s1"}]},
+            ]})
+        )
+        pd.DataFrame({"record_id": ["p1"], "session_id": ["s1"]}).to_csv(
+            bids_path / "sub-p1" / "sessions.tsv", sep="\t", index=False
+        )
+
         yield str(bids_path)
         
         # Cleanup
@@ -583,6 +598,10 @@ def test_deidentify_bids_dataset_cli_id_rename(
     with open(id_remapping_path, "w") as f:
         json.dump({"001": "P001"}, f, indent=2)
 
+    # Match the task name used in setup_bids_structure
+    with open(config_dir / "audio_tasks_to_include.json", "w") as f:
+        json.dump(["reading"], f)
+
     command = [
         "b2aiprep-cli",
         "deidentify-bids-dataset",
@@ -635,6 +654,21 @@ def test_deidentify_bids_dataset_cli_remove_audio(
     audio_to_remove_path = config_dir / "audio_filestems_to_remove.json"
     with open(audio_to_remove_path, "w") as f:
         json.dump(["sub-001_ses-001_task-reading"], f, indent=2)
+
+    # Match the task names used in setup_bids_structure + extra task below
+    with open(config_dir / "audio_tasks_to_include.json", "w") as f:
+        json.dump(["reading", "not-reading"], f)
+
+    # Add a second audio file so the participant still has output after removing reading
+    extra_audio = bids_dir / "sub-001" / "ses-001" / "audio" / "sub-001_ses-001_task-not-reading.wav"
+    create_dummy_wav_file(str(extra_audio))
+    extra_sidecar = bids_dir / "sub-001" / "ses-001" / "audio" / "sub-001_ses-001_task-not-reading_recording-metadata.json"
+    extra_sidecar.write_text(json.dumps({
+        "item": [
+            {"linkId": "record_id", "answer": [{"valueString": "001"}]},
+            {"linkId": "session_id", "answer": [{"valueString": "001"}]},
+        ]
+    }))
 
     command = [
         "b2aiprep-cli",

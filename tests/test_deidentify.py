@@ -1,11 +1,13 @@
 """Tests for the deidentify_bids_dataset command."""
 
+import json
 import tempfile
 import shutil
 from pathlib import Path
 from unittest.mock import patch, MagicMock
 from click.testing import CliRunner
 
+import pandas as pd
 import pytest
 
 from b2aiprep.commands import deidentify_bids_dataset
@@ -21,6 +23,21 @@ class TestDeidentifyCommand:
         temp_dir = tempfile.mkdtemp()
         bids_path = Path(temp_dir) / "test_bids"
         bids_path.mkdir(parents=True, exist_ok=True)
+
+        # Create a minimal participant so the allowlist is non-empty
+        audio_dir = bids_path / "sub-p1" / "ses-s1" / "audio"
+        audio_dir.mkdir(parents=True)
+        (audio_dir / "sub-p1_ses-s1_task-test.wav").write_bytes(b"RIFF" + b"\x00" * 100)
+        (audio_dir / "sub-p1_ses-s1_task-test_recording-metadata.json").write_text(
+            json.dumps({"item": [
+                {"linkId": "record_id", "answer": [{"valueString": "p1"}]},
+                {"linkId": "session_id", "answer": [{"valueString": "s1"}]},
+            ]})
+        )
+        pd.DataFrame({"record_id": ["p1"], "session_id": ["s1"]}).to_csv(
+            bids_path / "sub-p1" / "sessions.tsv", sep="\t", index=False
+        )
+
         yield str(bids_path)
         
         # Cleanup
