@@ -987,6 +987,7 @@ class BIDSDataset:
                 _LOGGER.warning("sessions.tsv for participant %s has no session_id column; skipping.", pid)
                 continue
 
+            df = df.drop_duplicates(subset=["session_id"])
             if "session_index" in df.columns:
                 df = df.sort_values("session_index", key=lambda s: pd.to_numeric(s, errors="coerce"))
             else:
@@ -1000,19 +1001,23 @@ class BIDSDataset:
                       len(mapping), len(participant_allowlist))
         return mapping
 
+    _cached_field_map_df: t.ClassVar[t.Optional[pd.DataFrame]] = None
+
     @staticmethod
     def _drop_columns_by_disposition(
         df: pd.DataFrame, field_map_df: t.Optional[pd.DataFrame] = None
     ) -> t.Tuple[pd.DataFrame, t.List[str]]:
         """Drop columns whose disposition is ``internal`` or ``review``.
 
-        If *field_map_df* is not supplied it is loaded from the packaged CSV.
-        Falls back to the ``delete`` column when ``disposition`` is absent (older
-        field maps).  Columns not in the field map are kept (they are
-        pipeline-authored, not REDCap).
+        If *field_map_df* is not supplied it is loaded from the packaged CSV
+        (cached after first load).  Falls back to the ``delete`` column when
+        ``disposition`` is absent (older field maps).  Columns not in the field
+        map are kept (they are pipeline-authored, not REDCap).
         """
         if field_map_df is None:
-            field_map_df = BIDSDataset._load_reorganization_file(drop_deleted_columns=False)
+            if BIDSDataset._cached_field_map_df is None:
+                BIDSDataset._cached_field_map_df = BIDSDataset._load_reorganization_file(drop_deleted_columns=False)
+            field_map_df = BIDSDataset._cached_field_map_df
 
         if "disposition" in field_map_df.columns:
             to_drop_names = set(
@@ -2440,11 +2445,13 @@ class BIDSDataset:
             ))
 
         participants_with_output = {pid for pid in results if pid is not None}
+        if skip_audio:
+            participants_with_output = set(participant_allowlist)
         _LOGGER.info(
             "Per-participant processing complete: %d of %d produced output.",
             len(participants_with_output), len(participant_dirs),
         )
-        if not participants_with_output and participant_dirs and not skip_audio:
+        if not participants_with_output and participant_dirs:
             raise RuntimeError(
                 f"Deidentify produced zero output from {len(participant_dirs)} participants. "
                 "Check the logs above for per-participant errors."
@@ -2865,9 +2872,17 @@ class BIDSDataset:
                 )
                 out_feat.parent.mkdir(parents=True, exist_ok=True)
 
-                features = torch.load(feat_path, weights_only=False, map_location=torch.device("cpu"))
-                _remove_sensitive_features_from_feature_payload(features)
-                torch.save(features, out_feat)
+                task_match_feat = re.search(r"task-(.+?)(_|$)", feat_path.stem)
+                task_is_included = (
+                    task_match_feat
+                    and normalize_task_label(task_match_feat.group(1)) in normalized_include_tasks
+                )
+                if task_is_included:
+                    shutil.copyfile(feat_path, out_feat)
+                else:
+                    features = torch.load(feat_path, weights_only=False, map_location=torch.device("cpu"))
+                    _remove_sensitive_features_from_feature_payload(features)
+                    torch.save(features, out_feat)
                 n_features_written += 1
 
         # --- Sessions metadata carry-forward ---

@@ -144,7 +144,6 @@ The output will be remain in BIDS format. The primary changes are:
 
 - participant IDs are modified
 - session directories use ordinal names (`ses-01`, `ses-02`) instead of UUIDs
-- `session_id_mapping.json` at the output root maps original session UUIDs to ordinals
 - per-participant `sub-<id>_sessions.tsv` is present with session metadata
 - columns with `disposition=internal` or `disposition=review` in the field map are removed from phenotype tables
 - sensitive columns are removed
