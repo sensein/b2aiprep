@@ -243,6 +243,7 @@ class BIDSDataset:
         BIDSDataset._initialize_data_directory(outdir)
 
         if drop_audio_check:
+            redcap_dataset = copy(redcap_dataset)
             redcap_dataset.df = BIDSDataset._drop_audio_check_rows(redcap_dataset.df)
 
         _LOGGER.info("Converting RedCap dataset to BIDS phenotype files.")
@@ -1030,7 +1031,8 @@ class BIDSDataset:
             column_choice: the option code when `column` is a `___`-suffixed checkbox option.
             clean_phenotype_data: when True, checkbox options are emitted as 0/1 integers.
         """
-        description = (updated_data.get("description") or "").strip()
+        _raw_desc = updated_data.get("description")
+        description = str(_raw_desc).strip() if pd.notna(_raw_desc) else ""
         if not description:
             # Never leave a published dictionary entry without a description; say plainly that
             # the field map did not supply one rather than emitting an empty string.
@@ -1205,9 +1207,9 @@ class BIDSDataset:
                 else:
                     # populate the detailed metadata for this column
                     data_element = copy(source_elements[column])
-                if "description" in updated_data and (updated_data["description"] != ""):
+                if "description" in updated_data and pd.notna(updated_data["description"]) and str(updated_data["description"]).strip():
                     description = updated_data["description"]
-                elif "description" in data_element and (data_element["description"] != ""):
+                elif "description" in data_element and pd.notna(data_element["description"]) and str(data_element["description"]).strip():
                     description = data_element["description"]
                 else:
                     description = data_element.get("question", {}).get("en", "")
@@ -1491,6 +1493,12 @@ class BIDSDataset:
                         rec_id = recording.get("recording_id", "")
                         if not rec_id:
                             continue
+                        _raw_name = recording.get("recording_name")
+                        if not (pd.notna(_raw_name) and str(_raw_name).strip()):
+                            recordings_without_source.append(
+                                (rec_id, "", session.get("session_id", ""))
+                            )
+                            continue
                         audio_path = audio_files_by_recording.get(rec_id)
                         if audio_path is not None:
                             try:
@@ -1560,9 +1568,8 @@ class BIDSDataset:
                 if task is None:
                     continue
                 
-                # Handle NaN/None values in acoustic_task_name
                 acoustic_task_name = task.get("acoustic_task_name")
-                if pd.isna(acoustic_task_name):
+                if not acoustic_task_name or pd.isna(acoustic_task_name):
                     _LOGGER.warning(f"Skipping task with missing acoustic_task_name for participant {participant_id}, session {session_id}")
                     continue
                 
@@ -1580,6 +1587,15 @@ class BIDSDataset:
                         "both tasks remain in phenotype/task/acoustic_task.tsv",
                         acoustic_task_name, participant_id, session_id, _prior_task, _task_id,
                     )
+                # Skip the task sidecar when none of its recordings have source audio.
+                if audio_files_by_recording is not None:
+                    _task_has_audio = any(
+                        recording.get("recording_id", "") in recordings_with_source
+                        for recording in task.get("recordings", [])
+                    )
+                    if not _task_has_audio:
+                        continue
+
                 # Population (from the acoustic task's cohort) disambiguates the
                 # few families that exist in both peds and adult (picture-description).
                 task_population = _population_from_cohort(task.get("acoustic_task_cohort"))
@@ -1678,18 +1694,25 @@ class BIDSDataset:
         if audio_copy_tasks:
             _copy_audio_files_parallel(audio_copy_tasks, max_workers=max_audio_workers, sanitize_audio_format=sanitize_audio_format)
 
-        # Remove session directories that ended up empty (no sidecars or audio).
-        # This happens when every recording in a session had no source file.
+        # Remove session directories that have no audio files (only task
+        # sidecars). This happens when every recording in a session had no
+        # source file but the task-level sidecar was still written.
+        removed_sessions: t.Set[str] = set()
         for session in participant["sessions"]:
             session_id = session["session_id"]
             session_audio = subject_path / f"ses-{session_id}" / "audio"
-            if session_audio.is_dir() and not any(session_audio.iterdir()):
-                session_audio.rmdir()
+            if not session_audio.is_dir():
+                continue
+            has_audio = any(f.suffix == ".wav" for f in session_audio.iterdir())
+            if not has_audio:
+                shutil.rmtree(session_audio)
+                removed_sessions.add(session_id)
                 session_dir = session_audio.parent
                 if session_dir.is_dir() and not any(session_dir.iterdir()):
                     session_dir.rmdir()
 
-        # Save sessions.tsv
+        # Save sessions.tsv, excluding sessions whose directories were removed
+        sessions_rows = [r for r in sessions_rows if r["session_id"] not in removed_sessions]
         sessions_df = pd.DataFrame(sessions_rows)
         if not os.path.exists(subject_path):
             os.mkdir(subject_path)
@@ -2606,7 +2629,7 @@ class BIDSDataset:
             
             if not json_path.exists():
                 _LOGGER.warning(f"Metadata file {json_path} not found. Skipping {audio_path}.")
-                return False
+                return None
 
             metadata = json.loads(json_path.read_text())
             
@@ -2636,13 +2659,14 @@ class BIDSDataset:
 
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
             results = list(tqdm(executor.map(process_audio_file, audio_paths), total=len(audio_paths), desc="Copying audio and metadata files"))
+        n_processed = sum(1 for r in results if r is not None)
         n_renamed = sum(1 for r in results if r)
         if n_renamed:
             _LOGGER.warning(
                 "%d of %d task entities were not normalized at ingest; deidentify normalized "
                 "them on write. Rebuild the input tree with a current redcap2bids so the "
                 "internal and published trees carry the same names.",
-                n_renamed, len(results),
+                n_renamed, n_processed,
             )
 
 
