@@ -333,7 +333,9 @@ class BIDSDataset:
         # ASSUMES that audio files are named with the recording_id in the filename
         # we use a defensive regex to grab uuid-like IDs from the stem just in case
         p_uuid = re.compile(r'[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}')
-        audio_files_by_recording: t.Dict[str, Path] = {}
+        audio_files_by_recording: t.Optional[t.Dict[str, Path]] = None
+        if audiodir is not None:
+            audio_files_by_recording = {}
         for audio_file in audio_files:
             match = p_uuid.search(audio_file.stem)
             if not match:
