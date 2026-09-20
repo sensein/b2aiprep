@@ -2505,22 +2505,10 @@ class BIDSDataset:
         )
         _LOGGER.info("Finished processing quality metrics.")
 
-        # --- session ID mapping (filtered to output participants only) ---
-        output_session_mapping = {}
-        for pid in participants_with_output:
-            participant_dir = self.data_path / f"sub-{pid}"
-            sessions_path = participant_dir / "sessions.tsv"
-            if not sessions_path.exists():
-                sessions_path = participant_dir / f"sub-{pid}_sessions.tsv"
-            if sessions_path.exists():
-                df_ses = pd.read_csv(sessions_path, sep="\t", dtype=str)
-                if "session_id" in df_ses.columns:
-                    for sid in df_ses["session_id"]:
-                        if sid in participant_session_id_to_remap:
-                            output_session_mapping[sid] = participant_session_id_to_remap[sid]
-        with open(outdir / "session_id_mapping.json", "w") as f:
-            json.dump(output_session_mapping, f, indent=2)
-        _LOGGER.info("Wrote session_id_mapping.json with %d entries.", len(output_session_mapping))
+        # session_id_mapping.json generation is disabled pending a decision on
+        # whether to ship it (contains original session UUIDs) and whether the
+        # mapping should be generated at ingest rather than deidentify.
+        # _build_session_id_mapping is still used internally for the renaming.
 
         # --- template files ---
         for template_file in ["README.md", "CHANGES.md", "dataset_description.json"]:

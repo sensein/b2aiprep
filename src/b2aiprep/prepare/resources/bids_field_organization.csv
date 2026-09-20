@@ -25,7 +25,7 @@ adhd_adult_schema,adhd_adult,difficulty_unwinding,difficulty_unwinding,questionn
 adhd_adult_schema,adhd_adult,difficulty_waiting,difficulty_waiting,questionnaire,How often do you have difficulty waiting your turn in situations when turn taking is required?,NO,release,VARIABLE,redcap,pre-v4,NO
 adhd_adult_schema,adhd_adult,distracted,distracted,questionnaire,How often are you distracted by activity or noise around you?,NO,release,VARIABLE,redcap,pre-v4,NO
 adhd_adult_schema,adhd_adult,fidget,fidget,questionnaire,How often do you fidget or squirm with your hands or feet when you have to sit down for a long time?,NO,release,VARIABLE,redcap,pre-v4,NO
-adhd_adult_schema,adhd_adult,finish_other_sent,finish_other_sent,questionnaire,"When you're in a conversation, how often do you find yourself finishing the sentences of the people you are talking to, before they can finish them themselves?",NO,review,VARIABLE,redcap,pre-v4,NO
+adhd_adult_schema,adhd_adult,finish_other_sent,finish_other_sent,questionnaire,"When you're in a conversation, how often do you find yourself finishing the sentences of the people you are talking to, before they can finish them themselves?",NO,release,VARIABLE,redcap,pre-v4,NO
 adhd_adult_schema,adhd_adult,interrupt_others,interrupt_others,questionnaire,How often do you interrupt others when they are busy?,NO,release,VARIABLE,redcap,pre-v4,NO
 adhd_adult_schema,adhd_adult,misplace,misplace,questionnaire,How often do you misplace or have difficulty finding things at home or at work?,NO,release,VARIABLE,redcap,pre-v4,NO
 adhd_adult_schema,adhd_adult,overly_active,overly_active,questionnaire,"How often do you feel overly active and compelled to do things, like you were driven by a motor?",NO,release,VARIABLE,redcap,pre-v4,NO
@@ -1525,7 +1525,7 @@ leicester_cough_questionnaire_lcq_schema,leicester_cough_questionnaire,lcq_hoars
 leicester_cough_questionnaire_lcq_schema,leicester_cough_questionnaire,lcq_interfere_job,lcq_interfere_job,questionnaire,"In the last 2 weeks, my cough has interfered with my job or other daily tasks.",NO,release,VARIABLE,redcap,pre-v4,NO
 leicester_cough_questionnaire_lcq_schema,leicester_cough_questionnaire,lcq_interfere_life,lcq_interfere_life,questionnaire,"In the last 2 weeks, I felt that my cough interfered with the overall enjoyment of my life.",NO,release,VARIABLE,redcap,pre-v4,NO
 leicester_cough_questionnaire_lcq_schema,leicester_cough_questionnaire,lcq_interrupt_conversation,lcq_interrupt_conversation,questionnaire,"In the last 2 weeks, my cough has interrupted conversation or telephone calls.",NO,release,VARIABLE,redcap,pre-v4,NO
-leicester_cough_questionnaire_lcq_schema,leicester_cough_questionnaire,lcq_other_people,lcq_other_people,questionnaire,"In the last 2 weeks, have you been concerned that other people think something is wrong with you, because of your cough?",NO,review,VARIABLE,redcap,pre-v4,NO
+leicester_cough_questionnaire_lcq_schema,leicester_cough_questionnaire,lcq_other_people,lcq_other_people,questionnaire,"In the last 2 weeks, have you been concerned that other people think something is wrong with you, because of your cough?",NO,release,VARIABLE,redcap,pre-v4,NO
 leicester_cough_questionnaire_lcq_schema,leicester_cough_questionnaire,lcq_partner,lcq_partner,questionnaire,"In the last 2 weeks, I feel that my cough has annoyed my partner, family, or friends.",NO,release,VARIABLE,redcap,pre-v4,NO
 leicester_cough_questionnaire_lcq_schema,leicester_cough_questionnaire,lcq_serious_illness,lcq_serious_illness,questionnaire,"In the last 2 weeks, have you worried that your cough may indicate serious illness?",NO,release,VARIABLE,redcap,pre-v4,NO
 leicester_cough_questionnaire_lcq_schema,leicester_cough_questionnaire,lcq_sleep,lcq_sleep,questionnaire,"In the last 2 weeks, has your cough disturbed your sleep?",NO,release,VARIABLE,redcap,pre-v4,NO
@@ -2406,11 +2406,11 @@ alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_etiology___age_related_changes,diagnosis_alz_dementia_mci_etiology___age_related_changes,diagnosis,What is the suspected or known etiology in the participant?,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_etiology___genetic_factors,diagnosis_alz_dementia_mci_etiology___genetic_factors,diagnosis,What is the suspected or known etiology in the participant?,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_etiology___other,diagnosis_alz_dementia_mci_etiology___other,diagnosis,What is the suspected or known etiology in the participant?,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO
-alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_etiology___other_medical_conditions,diagnosis_alz_dementia_mci_etiology___other_medical_conditions,diagnosis,What is the suspected or known etiology in the participant?,NO,review,CHECKBOX_OPTION,redcap,pre-v4,NO
+alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_etiology___other_medical_conditions,diagnosis_alz_dementia_mci_etiology___other_medical_conditions,diagnosis,What is the suspected or known etiology in the participant?,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_etiology___substance_related,diagnosis_alz_dementia_mci_etiology___substance_related,diagnosis,What is the suspected or known etiology in the participant?,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_etiology_gf___apolipoprotein_e,diagnosis_alz_dementia_mci_etiology_gf___apolipoprotein_e,diagnosis,Genetic Factors Subcategory,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_etiology_gf___familial_alzheimers_disease,diagnosis_alz_dementia_mci_etiology_gf___familial_alzheimers_disease,diagnosis,Genetic Factors Subcategory,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO
-alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_etiology_gf___other_genetic_factors,diagnosis_alz_dementia_mci_etiology_gf___other_genetic_factors,diagnosis,Genetic Factors Subcategory,NO,review,CHECKBOX_OPTION,redcap,pre-v4,NO
+alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_etiology_gf___other_genetic_factors,diagnosis_alz_dementia_mci_etiology_gf___other_genetic_factors,diagnosis,Genetic Factors Subcategory,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_gsd_confirmation_method___blood_biomarkers,diagnosis_alz_dementia_mci_gold_standard_diagnosis_confirmation_method___blood_biomarkers,diagnosis,How was this diagnosis confirmed? (Check all that apply),NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_gsd_confirmation_method___clinical_history,diagnosis_alz_dementia_mci_gold_standard_diagnosis_confirmation_method___clinical_history,diagnosis,How was this diagnosis confirmed? (Check all that apply),NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_gsd_confirmation_method___cognitive_testing,diagnosis_alz_dementia_mci_gold_standard_diagnosis_confirmation_method___cognitive_testing,diagnosis,How was this diagnosis confirmed? (Check all that apply),NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO
@@ -2881,10 +2881,10 @@ confounders_schema,confounders,panic_disorder___current,panic_disorder___current
 confounders_schema,confounders,panic_disorder___never,panic_disorder___never,confounders,Panic disorder,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO
 confounders_schema,confounders,panic_disorder___no_answer,panic_disorder___no_answer,confounders,Panic disorder,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO
 confounders_schema,confounders,panic_disorder___past,panic_disorder___past,confounders,Panic disorder,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO
-confounders_schema,confounders,psychological_condition_other___current,psychological_condition_other___current,confounders,Other psychological condition,NO,review,CHECKBOX_OPTION,redcap,pre-v4,NO
-confounders_schema,confounders,psychological_condition_other___never,psychological_condition_other___never,confounders,Other psychological condition,NO,review,CHECKBOX_OPTION,redcap,pre-v4,NO
-confounders_schema,confounders,psychological_condition_other___no_answer,psychological_condition_other___no_answer,confounders,Other psychological condition,NO,review,CHECKBOX_OPTION,redcap,pre-v4,NO
-confounders_schema,confounders,psychological_condition_other___past,psychological_condition_other___past,confounders,Other psychological condition,NO,review,CHECKBOX_OPTION,redcap,pre-v4,NO
+confounders_schema,confounders,psychological_condition_other___current,psychological_condition_other___current,confounders,Other psychological condition,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO
+confounders_schema,confounders,psychological_condition_other___never,psychological_condition_other___never,confounders,Other psychological condition,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO
+confounders_schema,confounders,psychological_condition_other___no_answer,psychological_condition_other___no_answer,confounders,Other psychological condition,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO
+confounders_schema,confounders,psychological_condition_other___past,psychological_condition_other___past,confounders,Other psychological condition,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO
 confounders_schema,confounders,ptsd_med_hist_psychological___current,ptsd_med_hist_psychological___current,confounders,Post-traumatic stress disorder (PTSD),NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO
 confounders_schema,confounders,ptsd_med_hist_psychological___never,ptsd_med_hist_psychological___never,confounders,Post-traumatic stress disorder (PTSD),NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO
 confounders_schema,confounders,ptsd_med_hist_psychological___no_answer,ptsd_med_hist_psychological___no_answer,confounders,Post-traumatic stress disorder (PTSD),NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO
@@ -3516,7 +3516,7 @@ laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_ds___ventricular_folds,dia
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_etiology___alcohol,diagnosis_lc_etiology___alcohol,diagnosis,"Check any risk factors of this participant in relation to their laryngeal cancer.
 (Select all that apply).",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_etiology___exposure_other_harmful_substances,diagnosis_lc_etiology___exposure_other_harmful_substances,diagnosis,"Check any risk factors of this participant in relation to their laryngeal cancer.
-(Select all that apply).",NO,review,CHECKBOX_OPTION,redcap,pre-v4,NO
+(Select all that apply).",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_etiology___family_history,diagnosis_lc_etiology___family_history,diagnosis,"Check any risk factors of this participant in relation to their laryngeal cancer.
 (Select all that apply).",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_etiology___hpv,diagnosis_lc_etiology___hpv,diagnosis,"Check any risk factors of this participant in relation to their laryngeal cancer.
@@ -3570,7 +3570,7 @@ laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_etiology_cc___essentia
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_etiology_cc___jaw_tremor,diagnosis_ld_etiology_cc___jaw_tremor,diagnosis,"Does the participant have any of the following concomitant conditions?
 (Select all that apply).",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_etiology_cc___other_type_of_dystonia,diagnosis_ld_etiology_cc___other_type_of_dystonia,diagnosis,"Does the participant have any of the following concomitant conditions?
-(Select all that apply).",NO,review,CHECKBOX_OPTION,redcap,pre-v4,NO
+(Select all that apply).",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_qete___laryngologist,diagnosis_ld_qete___laryngologist,diagnosis,"[DEPRECATED]
 Does the participant have laryngeal dystonia as determined by qualitative expert team evaluation?
 (Select all that apply).",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO
@@ -3594,7 +3594,7 @@ laryngitis_schema,laryngitis,diagnosis_l_etiology___infection,diagnosis_l_etiolo
 laryngitis_schema,laryngitis,diagnosis_l_etiology___other,diagnosis_l_etiology___other,diagnosis,What is the etiology?,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO
 laryngitis_schema,laryngitis,diagnosis_l_etiology___vocal_misuse_and_abuse,diagnosis_l_etiology___vocal_misuse_and_abuse,diagnosis,What is the etiology?,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO
 laryngitis_schema,laryngitis,diagnosis_l_etiology_ei___other_inhaled,diagnosis_l_etiology_ei___other_inhaled,diagnosis,"Environmental irritants:
-(Select all that apply).",NO,review,CHECKBOX_OPTION,redcap,pre-v4,NO
+(Select all that apply).",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO
 laryngitis_schema,laryngitis,diagnosis_l_etiology_ei___smoker,diagnosis_l_etiology_ei___smoker,diagnosis,"Environmental irritants:
 (Select all that apply).",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO
 laryngitis_schema,laryngitis,diagnosis_l_etiology_infection___bacterial,diagnosis_l_etiology_infection___bacterial,diagnosis,"Infection:
@@ -3719,7 +3719,7 @@ precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_ds_ll___ventricula
 precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_etiology___laryngopharyngeal_reflux,diagnosis_pl_etiology___laryngopharyngeal_reflux,diagnosis,"Does the participant have the following risk factors?
 (Select all that apply).",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO
 precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_etiology___other_irritants,diagnosis_pl_etiology___other_irritants,diagnosis,"Does the participant have the following risk factors?
-(Select all that apply).",NO,review,CHECKBOX_OPTION,redcap,pre-v4,NO
+(Select all that apply).",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO
 precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_etiology___past_or_present_smoking,diagnosis_pl_etiology___past_or_present_smoking,diagnosis,"Does the participant have the following risk factors?
 (Select all that apply).",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO
 precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_gsd_confirmation_method___biopsy_pathology,diagnosis_pl_gold_standard_diagnosis_confirmation_method___biopsy_pathology,diagnosis,How was this confirmed? Select all that apply:,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO

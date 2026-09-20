@@ -393,6 +393,5 @@ class TestEndToEndAllowlistFiltering:
         result_pheno = pd.read_csv(out / "phenotype" / "test.tsv", sep="\t", dtype=str)
         assert set(result_pheno["participant_id"]) == {"p1", "p2"}
 
-        # session_id_mapping.json should exist
-        mapping = json.loads((out / "session_id_mapping.json").read_text())
-        assert "s1" in mapping
+        # session_id_mapping.json generation is currently disabled
+        assert not (out / "session_id_mapping.json").exists()
