@@ -71,7 +71,7 @@ airway_stenosis_schema,airway_stenosis,diagnosis_as_treatment_surgery_other,diag
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_ca_adas_cog_score,diagnosis_alz_dementia_mci_ca_adas_cog_score,diagnosis,Alzheimer's Disease Assessment Scale-Cognitive Subscale (ADAS-Cog) score:,NO,release,VARIABLE,redcap,v4,NO
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_ca_mmse_score,diagnosis_alz_dementia_mci_ca_mmse_score,diagnosis,Mini-Mental State Examination (MMSE) score:,NO,release,VARIABLE,redcap,v4,NO
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_ca_moca_score,diagnosis_alz_dementia_mci_ca_moca_score,diagnosis,Montreal Cognitive Assessment (MoCA) score:,NO,release,VARIABLE,redcap,v4,NO
-alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_ca_other,diagnosis_alz_dementia_mci_ca_other,diagnosis,Other cognitive assessment tool (Please Specify):,NO,release,VARIABLE,redcap,v4,NO
+alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_ca_other,diagnosis_alz_dementia_mci_ca_other,diagnosis,Other cognitive assessment tool (Please Specify):,NO,review,VARIABLE,redcap,v4,NO
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_ca_other_score,diagnosis_alz_dementia_mci_ca_other_score,diagnosis,Other cognitive assessment tool score:,NO,review,VARIABLE,redcap,v4,NO
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_ca_rudas_score,diagnosis_alz_dementia_mci_ca_rudas_score,diagnosis,Rowland Universal Dementia Assessment Scale (RUDAS) score:,NO,release,VARIABLE,redcap,v4,NO
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_causes,diagnosis_alz_dementia_mci_causes,diagnosis,Have you excluded other causes of cognitive/functional changes (and/or other subtypes)?,NO,release,VARIABLE,redcap,pre-v4,NO
@@ -874,7 +874,7 @@ demographics_schema,demographics,marital_status,marital_status,demographics,What
 demographics_schema,demographics,mobility,mobility,demographics,Do you have serious difficulty walking or climbing stairs?,NO,release,VARIABLE,redcap,pre-v4,NO
 demographics_schema,demographics,native_american_race,native_american_race,demographics,American Indian or Alaska Native,NO,release,VARIABLE,redcap,pre-v4,NO
 demographics_schema,demographics,occupation,occupation,demographics,What do you consider to be or have been your primary occupation?,NO,release,VARIABLE,redcap,v4,NO
-demographics_schema,demographics,other_edu_level,other_edu_level,demographics,"If you selected ""other"" level of education, please specify:",NO,release,VARIABLE,redcap,v4,NO
+demographics_schema,demographics,other_edu_level,other_edu_level,demographics,"If you selected ""other"" level of education, please specify:",NO,review,VARIABLE,redcap,v4,NO
 demographics_schema,demographics,other_employ_specify,other_employ_specify,demographics,"If you selected ""other"" employment status, please specify.",NO,review,VARIABLE,redcap,v4,NO
 demographics_schema,demographics,other_gender_identity,other_gender_identity,demographics,"If you selected ""other"" for gender identity, please specify:",NO,release,VARIABLE,redcap,v4,NO
 demographics_schema,demographics,other_live_with,other_live_with,demographics,Other,NO,release,VARIABLE,redcap,pre-v4,NO
@@ -901,7 +901,7 @@ Do you have a reliable mode of transportation?",YES,drop,VARIABLE,redcap,pre-v4,
 demographics_schema,demographics,veteran,veteran,demographics,Are you a veteran?,NO,release,VARIABLE,redcap,v4,NO
 demographics_schema,demographics,vision,vision,demographics,"Are you blind or do you have serious difficulty seeing, even when wearing glasses?",NO,release,VARIABLE,redcap,pre-v4,NO
 demographics_schema,demographics,white_race,white_race,demographics,White,NO,release,VARIABLE,redcap,pre-v4,NO
-demographics_schema,demographics,zipcode,zipcode,demographics,Zipcode,NO,release,VARIABLE,redcap,v4,NO
+demographics_schema,demographics,zipcode,zipcode,demographics,Zipcode,YES,drop,VARIABLE,redcap,v4,NO
 depression_or_major_depressive_disorder_schema,depression,diagnosis_bipolar_active_problems_depression,diagnosis_bipolar_active_problems_depression,,"[DEPRECATED]
 Enter list of active problems",YES,drop,VARIABLE,redcap,v4,NO
 depression_or_major_depressive_disorder_schema,depression,diagnosis_bipolar_current_med_therapies_depression,diagnosis_bipolar_current_med_therapies_depression,,"[DEPRECATED]
@@ -1148,11 +1148,11 @@ generic_demographics_schema,pediatric_demographics,peds_self_care,peds_self_care
 generic_demographics_schema,pediatric_demographics,peds_state_province,peds_state_province,pediatric,"[DEPRECATED]
 State/Province",YES,drop,VARIABLE,redcap,pre-v4,NO
 generic_demographics_schema,pediatric_demographics,peds_vision,peds_vision,pediatric,"Are you blind or do you have serious difficulty seeing, even when wearing glasses?",NO,release,VARIABLE,redcap,pre-v4,NO
-generic_demographics_schema,pediatric_demographics,peds_zipcode,peds_zipcode,pediatric,Zipcode,NO,release,VARIABLE,redcap,v4,NO
+generic_demographics_schema,pediatric_demographics,peds_zipcode,peds_zipcode,pediatric,Zipcode,YES,drop,VARIABLE,redcap,v4,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_a_therapy,peds_mc_a_therapy,pediatric,Has your child ever had speech therapy for articulation or voice-related issues?,NO,release,VARIABLE,redcap,pre-v4,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_a_therapy_specified,peds_mc_a_therapy_specified,pediatric,Please specify,NO,review,VARIABLE,redcap,v4,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_adenoidectomy,peds_mc_adenoidectomy,pediatric,Have they had an adenoidectomy?,NO,release,VARIABLE,redcap,pre-v4,NO
-generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_adenoidectomy_date,peds_mc_adenoidectomy_date,pediatric,What was the date of the surgery?,NO,release,VARIABLE,redcap,v4,NO
+generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_adenoidectomy_date,peds_mc_adenoidectomy_date,pediatric,What was the date of the surgery?,YES,internal,VARIABLE,redcap,v4,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_allergies,peds_mc_allergies,pediatric,"Does your child have any known allergies (food, environmental, or medication)?",NO,release,VARIABLE,redcap,pre-v4,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_allergies_specified,peds_mc_allergies_specified,pediatric,Please specify,NO,review,VARIABLE,redcap,v4,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_breathing_conditions,peds_mc_breathing_conditions,pediatric,Does your child have a history of a breathing or airway conditions? (Select all that apply),NO,release,VARIABLE,redcap,pre-v4,NO
@@ -1168,8 +1168,8 @@ generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_ear_inf_a
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_ear_inf_ant_py_specified,peds_mc_ear_inf_ant_py_specified,pediatric,Please specify,NO,review,VARIABLE,redcap,v4,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_epistaxis,peds_mc_epistaxis,pediatric,Does your child have a history of epistaxis?,NO,release,VARIABLE,redcap,pre-v4,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_etp,peds_mc_etp,pediatric,Has your child ever undergone ear tube placement (tympanostomy tubes)?,NO,release,VARIABLE,redcap,pre-v4,NO
-generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_etp_procedure,peds_mc_etp_procedure,pediatric,Please specify which procedure,NO,release,VARIABLE,redcap,v4,NO
-generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_etp_procedure_date,peds_mc_etp_procedure_date,pediatric,What was the date of the surgery?,NO,release,VARIABLE,redcap,v4,NO
+generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_etp_procedure,peds_mc_etp_procedure,pediatric,Please specify which procedure,NO,review,VARIABLE,redcap,v4,NO
+generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_etp_procedure_date,peds_mc_etp_procedure_date,pediatric,What was the date of the surgery?,YES,internal,VARIABLE,redcap,v4,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_eval_voice_swal_c,peds_mc_eval_voice_swal_c,pediatric,"Has your child ever been evaluated by an ENT (ear, nose, and throat) specialist or speech-language pathologist for voice or swallowing concerns?",NO,release,VARIABLE,redcap,pre-v4,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_eval_voice_swal_c_specified,peds_mc_eval_voice_swal_c_specified,pediatric,Please specify,NO,review,VARIABLE,redcap,v4,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_fr_inf_tons,peds_mc_fr_inf_tons,pediatric,Has your child had frequent throat infections or tonsillitis?,NO,release,VARIABLE,redcap,pre-v4,NO
@@ -1190,27 +1190,27 @@ generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_hw_voice_
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_l2w,peds_mc_l2w,pediatric,Has your child had any of the following in the 2 weeks? (Select all that apply),NO,release,VARIABLE,redcap,pre-v4,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_language,peds_mc_language,pediatric,Peds Medical Conditions - Language,NO,release,VARIABLE,redcap,v4,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_lingual_tonsillectomy,peds_mc_lingual_tonsillectomy,pediatric,Have they had a lingual tonsillectomy?,NO,release,VARIABLE,redcap,pre-v4,NO
-generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_lingual_tonsillectomy_date,peds_mc_lingual_tonsillectomy_date,pediatric,What was the date of the surgery?,NO,release,VARIABLE,redcap,v4,NO
+generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_lingual_tonsillectomy_date,peds_mc_lingual_tonsillectomy_date,pediatric,What was the date of the surgery?,YES,internal,VARIABLE,redcap,v4,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_meds,peds_mc_meds,pediatric,"Is your child currently taking any medications that could affect voice, breathing, or swallowing?",NO,release,VARIABLE,redcap,pre-v4,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_meds_specified,peds_mc_meds_specified,pediatric,Please specify,NO,review,VARIABLE,redcap,v4,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_nasal_fractures,peds_mc_nasal_fractures,pediatric,Does your child have a history of nasal fractures?,NO,release,VARIABLE,redcap,pre-v4,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_neck_mass,peds_mc_neck_mass,pediatric,Does your child have a history of a neck mass? (Select all that apply),NO,release,VARIABLE,redcap,pre-v4,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_neck_mass_branchial_cleft_cyst_surgery,peds_mc_neck_mass_branchial_cleft_cyst_surgery,pediatric,Have they had a surgery for this?,NO,release,VARIABLE,redcap,pre-v4,NO
-generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_neck_mass_branchial_cleft_cyst_surgery_date,peds_mc_neck_mass_branchial_cleft_cyst_surgery_date,pediatric,What was the date of the surgery?,NO,release,VARIABLE,redcap,v4,NO
+generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_neck_mass_branchial_cleft_cyst_surgery_date,peds_mc_neck_mass_branchial_cleft_cyst_surgery_date,pediatric,What was the date of the surgery?,YES,internal,VARIABLE,redcap,v4,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_neck_mass_dermoid_cyst_surgery,peds_mc_neck_mass_dermoid_cyst_surgery,pediatric,Have they had a surgery for this?,NO,release,VARIABLE,redcap,pre-v4,NO
-generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_neck_mass_dermoid_cyst_surgery_date,peds_mc_neck_mass_dermoid_cyst_surgery_date,pediatric,What was the date of the surgery?,NO,release,VARIABLE,redcap,v4,NO
+generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_neck_mass_dermoid_cyst_surgery_date,peds_mc_neck_mass_dermoid_cyst_surgery_date,pediatric,What was the date of the surgery?,YES,internal,VARIABLE,redcap,v4,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_neck_mass_enlarged_lymph_node_surgery,peds_mc_neck_mass_enlarged_lymph_node_surgery,pediatric,Have they had a surgery for this?,NO,release,VARIABLE,redcap,pre-v4,NO
-generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_neck_mass_enlarged_lymph_node_surgery_date,peds_mc_neck_mass_enlarged_lymph_node_surgery_date,pediatric,What was the date of the surgery?,NO,release,VARIABLE,redcap,v4,NO
+generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_neck_mass_enlarged_lymph_node_surgery_date,peds_mc_neck_mass_enlarged_lymph_node_surgery_date,pediatric,What was the date of the surgery?,YES,internal,VARIABLE,redcap,v4,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_neck_mass_hyroid_nodule_or_cancer_surgery,peds_mc_neck_mass_hyroid_nodule_or_cancer_surgery,pediatric,Have they had a surgery for this?,NO,release,VARIABLE,redcap,pre-v4,NO
-generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_neck_mass_hyroid_nodule_or_cancer_surgery_date,peds_mc_neck_mass_hyroid_nodule_or_cancer_surgery_date,pediatric,What was the date of the surgery?,NO,release,VARIABLE,redcap,v4,NO
+generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_neck_mass_hyroid_nodule_or_cancer_surgery_date,peds_mc_neck_mass_hyroid_nodule_or_cancer_surgery_date,pediatric,What was the date of the surgery?,YES,internal,VARIABLE,redcap,v4,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_neck_mass_other,peds_mc_neck_mass_other,pediatric,Please specify,NO,release,VARIABLE,redcap,v4,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_neck_mass_thyroglossal_duct_cyst_surgery,peds_mc_neck_mass_thyroglossal_duct_cyst_surgery,pediatric,Have they had a surgery for this?,NO,release,VARIABLE,redcap,pre-v4,NO
-generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_neck_mass_thyroglossal_duct_cyst_surgery_date,peds_mc_neck_mass_thyroglossal_duct_cyst_surgery_date,pediatric,What was the date of the surgery?,NO,release,VARIABLE,redcap,v4,NO
+generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_neck_mass_thyroglossal_duct_cyst_surgery_date,peds_mc_neck_mass_thyroglossal_duct_cyst_surgery_date,pediatric,What was the date of the surgery?,YES,internal,VARIABLE,redcap,v4,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_neurological_disorders,peds_mc_neurological_disorders,pediatric,"Does your child have any history of neurological disorders (e.g., cerebral palsy, muscular dystrophy)?",NO,release,VARIABLE,redcap,pre-v4,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_neurological_disorders_specified,peds_mc_neurological_disorders_specified,pediatric,Please specify,NO,review,VARIABLE,redcap,v4,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_no_surgeries,peds_mc_no_surgeries,pediatric,Has your child ever had any neurological or orthopedic surgeries that could affect breathing or speech?,NO,release,VARIABLE,redcap,pre-v4,NO
-generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_no_surgeries_procedure,peds_mc_no_surgeries_procedure,pediatric,Please specify which procedure,NO,release,VARIABLE,redcap,v4,NO
-generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_no_surgeries_procedure_date,peds_mc_no_surgeries_procedure_date,pediatric,What was the date of the surgery?,NO,release,VARIABLE,redcap,v4,NO
+generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_no_surgeries_procedure,peds_mc_no_surgeries_procedure,pediatric,Please specify which procedure,NO,review,VARIABLE,redcap,v4,NO
+generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_no_surgeries_procedure_date,peds_mc_no_surgeries_procedure_date,pediatric,What was the date of the surgery?,YES,internal,VARIABLE,redcap,v4,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_origin,peds_mc_origin,pediatric,Peds Medical Conditions - Origin,NO,release,VARIABLE,redcap,v4,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_ox_sup,peds_mc_ox_sup,pediatric,"Has your child ever required oxygen support, intubation, a ventilator, or a tracheostomy?",NO,release,VARIABLE,redcap,pre-v4,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_ox_sup_specified,peds_mc_ox_sup_specified,pediatric,Please specify,NO,review,VARIABLE,redcap,v4,NO
@@ -1228,7 +1228,7 @@ generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_stridor_s
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_surgery_t_vc_a,peds_mc_surgery_t_vc_a,pediatric,"Has your child ever had surgery involving the throat, vocal cords, or airway?",NO,release,VARIABLE,redcap,pre-v4,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_surgery_t_vc_a_specified,peds_mc_surgery_t_vc_a_specified,pediatric,Please specify,NO,review,VARIABLE,redcap,v4,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_tonsillectomy,peds_mc_tonsillectomy,pediatric,Have they had a tonsillectomy?,NO,release,VARIABLE,redcap,pre-v4,NO
-generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_tonsillectomy_date,peds_mc_tonsillectomy_date,pediatric,What was the date of the surgery?,NO,release,VARIABLE,redcap,v4,NO
+generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_tonsillectomy_date,peds_mc_tonsillectomy_date,pediatric,What was the date of the surgery?,YES,internal,VARIABLE,redcap,v4,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_v_dis,peds_mc_v_dis,pediatric,Has your child ever been diagnosed with a voice disorder or speech delay?,NO,release,VARIABLE,redcap,pre-v4,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_v_dis_specified,peds_mc_v_dis_specified,pediatric,Please specify,NO,review,VARIABLE,redcap,v4,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_via,peds_mc_via,pediatric,Peds Medical Conditions - via,NO,release,VARIABLE,redcap,v4,NO
@@ -1622,7 +1622,7 @@ parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_ma_updrs_part_
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_ma_updrs_part_iv_score,diagnosis_parkinsons_ma_updrs_part_iv_score,clinically_validated_diagnosis,Part IV (Motor complications) score:,YES,drop,VARIABLE,redcap,pre-v4,NO
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_ma_uprds,diagnosis_parkinsons_ma_uprds,diagnosis,Unified Parkinson's Disease Rating Scale (UPDRS),NO,release,VARIABLE,redcap,pre-v4,NO
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_non_motor_symptoms,diagnosis_parkinsons_non_motor_symptoms,diagnosis,Are there significant non-motor symptoms associated with Parkinson's disease in the participant?,NO,release,VARIABLE,redcap,pre-v4,NO
-parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_non_motor_symptoms_yes,diagnosis_parkinsons_non_motor_symptoms_yes,diagnosis,"If you selected ""Yes"", please specify:",NO,release,VARIABLE,redcap,v4,NO
+parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_non_motor_symptoms_yes,diagnosis_parkinsons_non_motor_symptoms_yes,diagnosis,"If you selected ""Yes"", please specify:",NO,review,VARIABLE,redcap,v4,NO
 parkinsons_disease_schema,,diagnosis_parkinsons_treatment_obtained,diagnosis_parkinsons_treatment_obtained,,"[DEPRECATED]
 Has the participant undergone any treatment for Parkinson's disease?",YES,drop,VARIABLE,redcap,pre-v4,NO
 parkinsons_disease_schema,,diagnosis_parkinsons_treatment_obtained_yes,diagnosis_parkinsons_treatment_obtained_yes,,"[DEPRECATED]
@@ -1774,7 +1774,7 @@ ptsd_adult_schema,ptsd_adult,ptsd_started_at,ptsd_started_at,clinically_validate
 ptsd_adult_schema,ptsd_adult,ptsd_via,ptsd_via,questionnaire,PTSD Adult - via,NO,release,VARIABLE,redcap,v4,NO
 ptsd_adult_schema,ptsd_adult,super_alert,super_alert,questionnaire,"Being ""super alert"", on guard, or constantly on the lookout for danger?",NO,release,VARIABLE,redcap,pre-v4,NO
 ptsd_adult_schema,ptsd_adult,thinking_stressful_event,thinking_stressful_event,questionnaire,"Thinking that a stressful event happened because you or someone else (who didn't directly harm you) did something wrong or didn't do everything possible to prevent it, or because of something about you?",NO,release,VARIABLE,redcap,pre-v4,NO
-ptsd_adult_schema,ptsd_adult,traumatic_event,traumatic_event,questionnaire,Please list the traumatic event that you experienced,NO,release,VARIABLE,redcap,v4,NO
+ptsd_adult_schema,ptsd_adult,traumatic_event,traumatic_event,questionnaire,Please list the traumatic event that you experienced,NO,review,VARIABLE,redcap,v4,NO
 ptsd_adult_schema,ptsd_adult,traumatic_event_date,traumatic_event_date,clinically_validated_diagnosis,Date of the traumatic event:,YES,drop,VARIABLE,redcap,v4,NO
 random_item_generation_schema,,random_completed_at,random_completed_at,,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO
 random_item_generation_schema,random_item_generation,random_duration,random_duration,task,Questionnaire Duration (seconds),NO,release,VARIABLE,redcap,pre-v4,NO

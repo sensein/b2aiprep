@@ -396,3 +396,121 @@ class TestEndToEndAllowlistFiltering:
 
         # session_id_mapping.json generation is currently disabled
         assert not (out / "session_id_mapping.json").exists()
+
+
+# ---------------------------------------------------------------------------
+# Column value review manifest tests
+# ---------------------------------------------------------------------------
+
+class TestLoadColumnValueReviews:
+
+    def test_loads_verdicts(self, tmp_path):
+        manifest = {
+            "verdicts": [
+                {"participant_id": "p1", "column_name": "col_a", "verdict": "safe"},
+                {"participant_id": "p2", "column_name": "col_a", "verdict": "redact"},
+            ]
+        }
+        (tmp_path / "column_value_reviews.json").write_text(json.dumps(manifest))
+        result = BIDSDataset._load_column_value_reviews(tmp_path)
+        assert result[("p1", "col_a")] == "safe"
+        assert result[("p2", "col_a")] == "redact"
+
+    def test_missing_file_returns_empty(self, tmp_path):
+        result = BIDSDataset._load_column_value_reviews(tmp_path)
+        assert result == {}
+
+    def test_duplicate_last_wins(self, tmp_path, caplog):
+        manifest = {
+            "verdicts": [
+                {"participant_id": "p1", "column_name": "col_a", "verdict": "safe"},
+                {"participant_id": "p1", "column_name": "col_a", "verdict": "redact"},
+            ]
+        }
+        (tmp_path / "column_value_reviews.json").write_text(json.dumps(manifest))
+        with caplog.at_level(logging.WARNING):
+            result = BIDSDataset._load_column_value_reviews(tmp_path)
+        assert result[("p1", "col_a")] == "redact"
+        assert any("duplicate" in r.message.lower() for r in caplog.records)
+
+
+class TestApplyColumnValueReviews:
+
+    def test_safe_passes_through(self):
+        df = pd.DataFrame({
+            "participant_id": ["p1", "p2"],
+            "score": [10, 20],
+            "free_text": ["safe value", "also safe"],
+        })
+        verdicts = {
+            ("p1", "free_text"): "safe",
+            ("p2", "free_text"): "safe",
+        }
+        result, dropped = BIDSDataset._apply_column_value_reviews(
+            df, {"free_text"}, verdicts
+        )
+        assert result.loc[result["participant_id"] == "p1", "free_text"].values[0] == "safe value"
+        assert dropped == []
+
+    def test_redact_replaces(self):
+        df = pd.DataFrame({
+            "participant_id": ["p1", "p2"],
+            "free_text": ["Dr. Smith", "safe"],
+        })
+        verdicts = {
+            ("p1", "free_text"): "redact",
+            ("p2", "free_text"): "safe",
+        }
+        result, _ = BIDSDataset._apply_column_value_reviews(
+            df, {"free_text"}, verdicts
+        )
+        assert result.loc[result["participant_id"] == "p1", "free_text"].values[0] == "[REDACTED]"
+        assert result.loc[result["participant_id"] == "p2", "free_text"].values[0] == "safe"
+
+    def test_drop_nulls_value(self):
+        df = pd.DataFrame({
+            "participant_id": ["p1"],
+            "free_text": ["PII content"],
+        })
+        verdicts = {("p1", "free_text"): "drop"}
+        result, _ = BIDSDataset._apply_column_value_reviews(
+            df, {"free_text"}, verdicts
+        )
+        assert pd.isna(result.loc[0, "free_text"])
+
+    def test_no_verdict_nulls_value(self):
+        df = pd.DataFrame({
+            "participant_id": ["p1", "p2"],
+            "free_text": ["reviewed", "unreviewed"],
+        })
+        verdicts = {("p1", "free_text"): "safe"}  # p2 has no verdict
+        result, _ = BIDSDataset._apply_column_value_reviews(
+            df, {"free_text"}, verdicts
+        )
+        assert result.loc[result["participant_id"] == "p1", "free_text"].values[0] == "reviewed"
+        assert pd.isna(result.loc[result["participant_id"] == "p2", "free_text"].values[0])
+
+    def test_no_verdicts_for_column_drops_it(self):
+        df = pd.DataFrame({
+            "participant_id": ["p1"],
+            "reviewed_col": ["has verdict"],
+            "unreviewed_col": ["no verdicts at all"],
+        })
+        verdicts = {("p1", "reviewed_col"): "safe"}
+        result, dropped = BIDSDataset._apply_column_value_reviews(
+            df, {"reviewed_col", "unreviewed_col"}, verdicts
+        )
+        assert "reviewed_col" in result.columns
+        assert "unreviewed_col" not in result.columns
+        assert "unreviewed_col" in dropped
+
+    def test_empty_verdicts_drops_all_review_columns(self):
+        df = pd.DataFrame({
+            "participant_id": ["p1"],
+            "review_col": ["some value"],
+        })
+        result, dropped = BIDSDataset._apply_column_value_reviews(
+            df, {"review_col"}, {}
+        )
+        assert "review_col" not in result.columns
+        assert "review_col" in dropped
