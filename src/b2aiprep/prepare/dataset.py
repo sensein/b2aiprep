@@ -965,13 +965,15 @@ class BIDSDataset:
     def _build_session_id_mapping(
         data_path: Path, participant_allowlist: t.AbstractSet[str]
     ) -> t.Dict[str, str]:
-        """Build a mapping from original session UUIDs to zero-padded ordinals.
+        """Build a mapping from original session UUIDs to shortened IDs.
 
         For each participant on the allowlist, reads their ``sessions.tsv`` and
-        assigns ordinals from ``session_index`` (if present) or from alphabetical
-        sort of ``session_id``.  Returns a single flat dict covering all
-        participants.
+        assigns ordinals from ``session_index`` (if present) or falls back to
+        the legacy truncated-UUID behavior (8-char prefix, 16-char on collision).
+        Returns a single flat dict covering all participants.
         """
+        from b2aiprep.prepare.prepare import reduce_id_length
+
         mapping: t.Dict[str, str] = {}
         for pid in sorted(participant_allowlist):
             participant_dir = data_path / f"sub-{pid}"
@@ -990,12 +992,12 @@ class BIDSDataset:
             df = df.drop_duplicates(subset=["session_id"])
             if "session_index" in df.columns:
                 df = df.sort_values("session_index", key=lambda s: pd.to_numeric(s, errors="coerce"))
+                for ordinal, (_, row) in enumerate(df.iterrows(), start=1):
+                    mapping[row["session_id"]] = f"{ordinal:02d}"
             else:
-                df = df.sort_values("session_id")
-
-            for ordinal, (_, row) in enumerate(df.iterrows(), start=1):
-                session_uuid = row["session_id"]
-                mapping[session_uuid] = f"{ordinal:02d}"
+                _LOGGER.info("No session_index for participant %s; using truncated UUID fallback.", pid)
+                for _, row in df.iterrows():
+                    mapping[row["session_id"]] = reduce_id_length(row["session_id"])
 
         _LOGGER.info("Built session ID mapping: %d sessions across %d participants.",
                       len(mapping), len(participant_allowlist))

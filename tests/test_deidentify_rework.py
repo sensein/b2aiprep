@@ -89,17 +89,18 @@ class TestBuildSessionIdMapping:
         assert mapping["uuid-aaa"] == "01"
         assert mapping["uuid-bbb"] == "02"
 
-    def test_session_mapping_alphabetical_fallback(self, tmp_path):
+    def test_session_mapping_truncated_uuid_fallback(self, tmp_path):
+        """Without session_index, falls back to truncated UUID (reduce_id_length)."""
         p1 = tmp_path / "sub-p1"
         _make_sessions_tsv(p1, [
-            ["zzz"],
-            ["aaa"],
+            ["abcd1234-5678-9abc-def0-111111111111"],
+            ["ffffffff-eeee-dddd-cccc-bbbbbbbbbbbb"],
         ], has_index=False)
         mapping = BIDSDataset._build_session_id_mapping(
             tmp_path, {"p1"}
         )
-        assert mapping["aaa"] == "01"
-        assert mapping["zzz"] == "02"
+        assert mapping["abcd1234-5678-9abc-def0-111111111111"] == "abcd1234"
+        assert mapping["ffffffff-eeee-dddd-cccc-bbbbbbbbbbbb"] == "ffffffff"
 
     def test_session_mapping_single_session(self, tmp_path):
         p1 = tmp_path / "sub-p1"
@@ -225,20 +226,20 @@ class TestSessionOrdinalIntegration:
         assert mapping["xyz-uvw-789"] == "01"
         assert mapping["abc-def-123"] == "02"
 
-    def test_alphabetical_fallback_is_deterministic(self, tmp_path):
-        """Without session_index, alphabetical sort is deterministic."""
+    def test_truncated_uuid_fallback_is_deterministic(self, tmp_path):
+        """Without session_index, truncated UUID mapping is deterministic."""
         p1 = tmp_path / "sub-p1"
         _make_sessions_tsv(p1, [
-            ["zzz-uuid"],
-            ["aaa-uuid"],
-            ["mmm-uuid"],
+            ["zzz00000-1111-2222-3333-444444444444"],
+            ["aaa00000-5555-6666-7777-888888888888"],
+            ["mmm00000-9999-aaaa-bbbb-cccccccccccc"],
         ], has_index=False)
         m1 = BIDSDataset._build_session_id_mapping(tmp_path, {"p1"})
         m2 = BIDSDataset._build_session_id_mapping(tmp_path, {"p1"})
         assert m1 == m2
-        assert m1["aaa-uuid"] == "01"
-        assert m1["mmm-uuid"] == "02"
-        assert m1["zzz-uuid"] == "03"
+        assert m1["aaa00000-5555-6666-7777-888888888888"] == "aaa00000"
+        assert m1["mmm00000-9999-aaaa-bbbb-cccccccccccc"] == "mmm00000"
+        assert m1["zzz00000-1111-2222-3333-444444444444"] == "zzz00000"
 
 
 # ---------------------------------------------------------------------------
