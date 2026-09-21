@@ -1249,31 +1249,118 @@ class BIDSDataset:
         )
         return df.loc[~drop]
 
+    _FORM_COMPLETE_VALUES = frozenset({"Complete", "2"})
+
     @staticmethod
     def _drop_rows_without_substantive_data(
-        df: pd.DataFrame, id_col: str, csv_only_columns: t.AbstractSet[str]
+        df: pd.DataFrame,
+        id_col: str,
+        csv_only_columns: t.AbstractSet[str],
+        calculated_columns: t.AbstractSet[str] = frozenset(),
+        schema_name: str = "",
+        schema_group: str = "",
     ) -> pd.DataFrame:
-        """Drop rows whose only content is the participant id and RedCap bookkeeping.
+        """Drop rows that contain no participant-entered data.
 
-        `csv_only_columns` are the output columns with no ReproSchema definition -- the
-        `<form>_complete` and `<form>_timestamp` columns RedCap emits for every record whether
-        or not the form was ever filled in. They must not count as content: a participant who
-        never had an ALS assessment still gets `d_neuro_..._complete = Incomplete`, so treating
-        that as data keeps a row for every participant in every table. Measured on the v4 adult
-        export, counting them turned `diagnosis/amyotrophic_lateral_sclerosis.tsv` from 6 rows
-        into 2005.
+        Two classes of column are excluded from the emptiness test:
+
+        * ``csv_only_columns``: columns with no ReproSchema definition --
+          ``<form>_complete``, ``<form>_timestamp``, and other RedCap-generated
+          infrastructure.
+        * ``calculated_columns``: ``is_redcap_calculation=YES`` in the field map.
+          RedCap evaluates these for every record regardless of form completion,
+          so a participant who never had an ALS assessment can still have
+          ``gsd_calculation = 0``.
+
+        For **diagnosis** forms (``schema_group == "diagnosis"``), any row where
+        ``<form>_complete`` is not ``Complete`` is dropped regardless of data
+        content.  An incomplete diagnosis form has not been clinician-verified and
+        must not be disseminated.  Different scenarios are logged at appropriate
+        levels so QA can triage them.
 
         When every column is bookkeeping there is nothing to test against, so
         the table is emptied — a table with no participant-entered data has no
         research value.
         """
-        substantive = [c for c in df.columns if c != id_col and c not in csv_only_columns]
+        non_substantive = set(csv_only_columns) | set(calculated_columns)
+        substantive = [c for c in df.columns if c != id_col and c not in non_substantive]
         if not substantive:
             _LOGGER.warning(
-                "No substantive columns — only bookkeeping. Returning empty table."
+                "%s: no substantive columns — only bookkeeping. Returning empty table.",
+                schema_name or "unknown",
             )
             return df.iloc[0:0]
-        return df.dropna(how="all", subset=substantive)
+
+        complete_col = None
+        for col in csv_only_columns:
+            if col.endswith("_complete") and col in df.columns:
+                complete_col = col
+                break
+
+        all_substantive_null = df[substantive].isna().all(axis=1)
+        calc_cols_present = [c for c in calculated_columns if c in df.columns]
+        has_calc_data = (
+            df[calc_cols_present].notna().any(axis=1)
+            if calc_cols_present
+            else pd.Series(False, index=df.index)
+        )
+
+        if complete_col is not None:
+            form_complete = df[complete_col].isin(BIDSDataset._FORM_COMPLETE_VALUES)
+        else:
+            form_complete = pd.Series(True, index=df.index)
+
+        is_diagnosis = schema_group == "diagnosis"
+
+        if is_diagnosis and complete_col is not None:
+            drop_mask = ~form_complete
+            dropped = df[drop_mask]
+            if not dropped.empty:
+                inc_no_data = dropped[
+                    all_substantive_null[drop_mask] & ~has_calc_data[drop_mask]
+                ]
+                inc_calc_only = dropped[
+                    all_substantive_null[drop_mask] & has_calc_data[drop_mask]
+                ]
+                inc_with_data = dropped[~all_substantive_null[drop_mask]]
+
+                if len(inc_no_data):
+                    _LOGGER.debug(
+                        "%s: dropping %d incomplete rows with no data",
+                        schema_name, len(inc_no_data),
+                    )
+                if len(inc_calc_only):
+                    _LOGGER.info(
+                        "%s: dropping %d incomplete rows whose only data is "
+                        "auto-calculated fields",
+                        schema_name, len(inc_calc_only),
+                    )
+                if len(inc_with_data):
+                    _LOGGER.warning(
+                        "%s: dropping %d incomplete rows that contain "
+                        "participant-entered data (form not clinician-verified)",
+                        schema_name, len(inc_with_data),
+                    )
+        else:
+            drop_mask = all_substantive_null
+            dropped = df[drop_mask]
+            if not dropped.empty and complete_col is not None:
+                inc_dropped = dropped[~form_complete[drop_mask]]
+                comp_dropped = dropped[form_complete[drop_mask]]
+                if len(inc_dropped):
+                    _LOGGER.debug(
+                        "%s: dropping %d rows with no substantive data "
+                        "(form incomplete)",
+                        schema_name, len(inc_dropped),
+                    )
+                if len(comp_dropped):
+                    _LOGGER.warning(
+                        "%s: dropping %d rows with no substantive data "
+                        "despite form marked Complete (data quality anomaly)",
+                        schema_name, len(comp_dropped),
+                    )
+
+        return df.loc[~drop_mask]
 
     @staticmethod
     def _synthetic_data_element(
@@ -1421,6 +1508,10 @@ class BIDSDataset:
             # output columns with no ReproSchema definition (RedCap form status/timestamps).
             # Tracked so they can be excluded from the "is this row empty?" test below.
             "columns_csv_only": [],
+            # columns flagged is_redcap_calculation=YES in the field map.
+            # Tracked separately from csv_only because they DO have ReproSchema definitions
+            # but should not count as substantive participant-entered data.
+            "columns_calculated": [],
         }
         updated_schemas = defaultdict(lambda: deepcopy(payload))
         for updated_schema_name, group in df_reorg.groupby('schema_name'):
@@ -1492,6 +1583,8 @@ class BIDSDataset:
                 updated_schemas[updated_schema_name]['columns_for_output'].append(new_element_name)
                 if csv_only_column:
                     updated_schemas[updated_schema_name]['columns_csv_only'].append(new_element_name)
+                if str(updated_data.get("is_redcap_calculation", "")).upper() == "YES":
+                    updated_schemas[updated_schema_name]['columns_calculated'].append(new_element_name)
                 updated_schemas[updated_schema_name]['schema_name_source'].append(updated_data["schema_name_source"])
 
                 # update the payload so we have a reproschema json for this df
@@ -1506,6 +1599,7 @@ class BIDSDataset:
             columns_for_output = payload.pop("columns_for_output")
             schema_name_sources = set(payload.pop("schema_name_source"))
             csv_only_columns = set(payload.pop("columns_csv_only"))
+            calculated_columns = set(payload.pop("columns_calculated"))
             group = payload.pop("group")
             if "record_id" not in columns_for_indexing:
                 columns_for_indexing = ["record_id"] + columns_for_indexing
@@ -1581,7 +1675,8 @@ class BIDSDataset:
             # counting it as content would keep a row for every participant in every table -- e.g.
             # every diagnosis table would list the whole cohort instead of the diagnosed subset.
             selected_df = BIDSDataset._drop_rows_without_substantive_data(
-                selected_df, id_col, csv_only_columns
+                selected_df, id_col, csv_only_columns, calculated_columns,
+                schema_name=schema_name, schema_group=group,
             )
             if selected_df.empty:
                 _LOGGER.warning(f"No data remaining after dropping empty rows for {schema_name}")
@@ -1590,7 +1685,8 @@ class BIDSDataset:
             if 'age' in selected_df.columns:
                 BIDSDataset._fix_disjoint_demographic_rows(selected_df, id_col, 'age', schema_name=schema_name)
                 selected_df = BIDSDataset._drop_rows_without_substantive_data(
-                    selected_df, id_col, csv_only_columns
+                    selected_df, id_col, csv_only_columns, calculated_columns,
+                    schema_name=schema_name, schema_group=group,
                 )
                 if selected_df.empty:
                     _LOGGER.warning(f"No data remaining after dropping empty rows for {schema_name}")

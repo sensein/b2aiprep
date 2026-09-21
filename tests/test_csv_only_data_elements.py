@@ -94,3 +94,155 @@ def test_a_table_of_only_bookkeeping_columns_is_emptied():
     )
     assert len(result) == 0
     assert list(result.columns) == list(df.columns)
+
+
+# ---------------------------------------------------------------------------
+# Calculated-column exclusion and diagnosis completeness check
+# ---------------------------------------------------------------------------
+
+def test_calculated_fields_do_not_keep_incomplete_diagnosis_rows():
+    """A diagnosis form with only auto-calculated values and _complete=Incomplete is phantom."""
+    import numpy as np
+    import pandas as pd
+
+    df = pd.DataFrame(
+        {
+            "participant_id": ["real-als", "phantom"],
+            "diagnosis_als_onset": ["bulbar", np.nan],
+            "diagnosis_als_gsd_calculation": [1, 0],
+            "d_neuro_als_complete": ["Complete", "Incomplete"],
+        }
+    )
+    kept = BIDSDataset._drop_rows_without_substantive_data(
+        df,
+        "participant_id",
+        csv_only_columns={"d_neuro_als_complete"},
+        calculated_columns={"diagnosis_als_gsd_calculation"},
+        schema_group="diagnosis",
+    )
+    assert kept["participant_id"].tolist() == ["real-als"]
+
+
+def test_calculated_fields_excluded_from_substantive_check_non_diagnosis():
+    """For non-diagnosis forms, calculated fields are excluded from the emptiness test."""
+    import numpy as np
+    import pandas as pd
+
+    df = pd.DataFrame(
+        {
+            "participant_id": ["has-score", "calc-only"],
+            "vhi_item_1": ["Sometimes", np.nan],
+            "vhi_10_calc_score": [12, 0],
+            "vhi10_complete": ["Complete", "Incomplete"],
+        }
+    )
+    kept = BIDSDataset._drop_rows_without_substantive_data(
+        df,
+        "participant_id",
+        csv_only_columns={"vhi10_complete"},
+        calculated_columns={"vhi_10_calc_score"},
+        schema_group="questionnaire",
+    )
+    assert kept["participant_id"].tolist() == ["has-score"]
+
+
+def test_diagnosis_incomplete_with_real_data_is_dropped():
+    """Diagnosis forms require _complete=Complete; incomplete rows with real data are dropped."""
+    import pandas as pd
+
+    df = pd.DataFrame(
+        {
+            "participant_id": ["verified", "unverified"],
+            "diagnosis_mtd_degree": [50.0, 30.0],
+            "d_voice_mtd_complete": ["Complete", "Incomplete"],
+        }
+    )
+    kept = BIDSDataset._drop_rows_without_substantive_data(
+        df,
+        "participant_id",
+        csv_only_columns={"d_voice_mtd_complete"},
+        schema_group="diagnosis",
+    )
+    assert kept["participant_id"].tolist() == ["verified"]
+
+
+def test_diagnosis_unverified_is_also_dropped():
+    """Unverified diagnosis forms are not clinician-verified and must be dropped."""
+    import pandas as pd
+
+    df = pd.DataFrame(
+        {
+            "participant_id": ["complete", "unverified"],
+            "diagnosis_pd_subtype": ["IPD", "PSP"],
+            "d_neuro_pd_complete": ["Complete", "Unverified"],
+        }
+    )
+    kept = BIDSDataset._drop_rows_without_substantive_data(
+        df,
+        "participant_id",
+        csv_only_columns={"d_neuro_pd_complete"},
+        schema_group="diagnosis",
+    )
+    assert kept["participant_id"].tolist() == ["complete"]
+
+
+def test_non_diagnosis_keeps_incomplete_rows_with_data():
+    """Questionnaires/enrollment keep Incomplete rows that have real data."""
+    import pandas as pd
+
+    df = pd.DataFrame(
+        {
+            "participant_id": ["complete", "incomplete-but-data"],
+            "phq9_score": [12, 8],
+            "phq9_complete": ["Complete", "Incomplete"],
+        }
+    )
+    kept = BIDSDataset._drop_rows_without_substantive_data(
+        df,
+        "participant_id",
+        csv_only_columns={"phq9_complete"},
+        schema_group="questionnaire",
+    )
+    assert len(kept) == 2
+
+
+def test_complete_form_with_no_data_is_dropped_non_diagnosis():
+    """A Complete form with all-null substantive columns is still dropped (data anomaly)."""
+    import numpy as np
+    import pandas as pd
+
+    df = pd.DataFrame(
+        {
+            "participant_id": ["has-data", "empty-complete"],
+            "confounders_smoking": ["Yes", np.nan],
+            "confounders_complete": ["Complete", "Complete"],
+        }
+    )
+    kept = BIDSDataset._drop_rows_without_substantive_data(
+        df,
+        "participant_id",
+        csv_only_columns={"confounders_complete"},
+        schema_group="confounders",
+    )
+    assert kept["participant_id"].tolist() == ["has-data"]
+
+
+def test_diagnosis_no_complete_col_falls_back_to_substantive_check():
+    """If no _complete column exists, diagnosis forms fall back to the data check."""
+    import numpy as np
+    import pandas as pd
+
+    df = pd.DataFrame(
+        {
+            "participant_id": ["has-data", "empty"],
+            "diagnosis_field": ["Yes", np.nan],
+        }
+    )
+    kept = BIDSDataset._drop_rows_without_substantive_data(
+        df,
+        "participant_id",
+        csv_only_columns=set(),
+        schema_group="diagnosis",
+    )
+    assert kept["participant_id"].tolist() == ["has-data"]
+
