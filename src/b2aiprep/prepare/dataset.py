@@ -1046,6 +1046,14 @@ class BIDSDataset:
                 _LOGGER.info("Dropping column '%s' (disposition-based).", col)
             df = df.drop(columns=present)
 
+        all_field_map_names = set(field_map_df["column_name"].dropna())
+        unknown = [c for c in df.columns if c not in all_field_map_names]
+        if unknown:
+            _LOGGER.warning(
+                "Columns not in field map (kept as pipeline-authored): %s",
+                ", ".join(sorted(unknown)),
+            )
+
         return df, present
 
     @staticmethod
