@@ -1067,17 +1067,43 @@ class BIDSDataset:
     @staticmethod
     def _load_column_value_reviews(
         config_dir: Path,
+        field_map_df: t.Optional[pd.DataFrame] = None,
     ) -> t.Dict[t.Tuple[str, str], str]:
-        """Load the column value review manifest from the config directory."""
+        """Load the column value review manifest from the config directory.
+
+        Entries may use either ``column_name`` (the output/BIDS name) or
+        ``source_column_name`` (the original REDCap name).  Source names are
+        normalized to output names via the field map so that lookups in
+        ``_apply_column_value_reviews`` always use output names.
+        """
         manifest_path = config_dir / "column_value_reviews.json"
         if not manifest_path.exists():
             return {}
+
+        if field_map_df is None:
+            if BIDSDataset._cached_field_map_df is None:
+                BIDSDataset._cached_field_map_df = BIDSDataset._load_reorganization_file(drop_deleted_columns=False)
+            field_map_df = BIDSDataset._cached_field_map_df
+
+        source_to_output: t.Dict[str, str] = {}
+        if "column_name_source" in field_map_df.columns and "column_name" in field_map_df.columns:
+            for _, row in field_map_df.iterrows():
+                src = row.get("column_name_source")
+                out = row.get("column_name")
+                if pd.notna(src) and pd.notna(out) and str(src) != str(out):
+                    source_to_output[str(src)] = str(out)
+
         with open(manifest_path, "r") as f:
             data = json.load(f)
         verdicts_list = data.get("verdicts", [])
         lookup: t.Dict[t.Tuple[str, str], str] = {}
+        normalized_count = 0
         for entry in verdicts_list:
-            key = (entry["participant_id"], entry["column_name"])
+            col = entry.get("column_name") or entry.get("source_column_name", "")
+            if col in source_to_output:
+                col = source_to_output[col]
+                normalized_count += 1
+            key = (entry["participant_id"], col)
             if key in lookup:
                 _LOGGER.warning(
                     "Duplicate column value review for %s/%s; last entry wins.",
@@ -1085,6 +1111,8 @@ class BIDSDataset:
                 )
             lookup[key] = entry["verdict"].strip().lower()
         _LOGGER.info("Loaded %d column value review verdicts from %s.", len(lookup), manifest_path)
+        if normalized_count:
+            _LOGGER.info("Normalized %d verdicts from source to output column names.", normalized_count)
         return lookup
 
     @staticmethod

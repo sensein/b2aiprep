@@ -434,6 +434,40 @@ class TestLoadColumnValueReviews:
         assert any("duplicate" in r.message.lower() for r in caplog.records)
 
 
+    def test_source_column_name_normalized(self, tmp_path):
+        """Verdicts using source_column_name are normalized to output names."""
+        manifest = {
+            "verdicts": [
+                {"participant_id": "p1", "source_column_name": "old_src_name", "verdict": "safe"},
+                {"participant_id": "p2", "column_name": "new_out_name", "verdict": "redact"},
+            ]
+        }
+        (tmp_path / "column_value_reviews.json").write_text(json.dumps(manifest))
+        field_map = pd.DataFrame({
+            "column_name_source": ["old_src_name", "other_col"],
+            "column_name": ["new_out_name", "other_col"],
+        })
+        result = BIDSDataset._load_column_value_reviews(tmp_path, field_map_df=field_map)
+        assert ("p1", "new_out_name") in result
+        assert result[("p1", "new_out_name")] == "safe"
+        assert result[("p2", "new_out_name")] == "redact"
+
+    def test_column_name_not_in_field_map_kept_as_is(self, tmp_path):
+        """Verdicts with column names not in the field map are kept unchanged."""
+        manifest = {
+            "verdicts": [
+                {"participant_id": "p1", "column_name": "unknown_col", "verdict": "safe"},
+            ]
+        }
+        (tmp_path / "column_value_reviews.json").write_text(json.dumps(manifest))
+        field_map = pd.DataFrame({
+            "column_name_source": ["other"],
+            "column_name": ["other"],
+        })
+        result = BIDSDataset._load_column_value_reviews(tmp_path, field_map_df=field_map)
+        assert ("p1", "unknown_col") in result
+
+
 class TestApplyColumnValueReviews:
 
     def test_safe_passes_through(self):
