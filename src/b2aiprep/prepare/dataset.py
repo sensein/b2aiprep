@@ -1526,6 +1526,9 @@ class BIDSDataset:
                         )
                         redcap_group_cols.add(col_norm)
                         continue
+                    if str(updated_data.get("source", "")).lower() == "pipeline":
+                        _LOGGER.debug(f'Pipeline-computed column "{column}" not in RedCap source (will be populated by enrichment).')
+                        continue
                     _LOGGER.warning(f'Requested output for "{column}", but this column was not found in the source df.')
                     missing_in_df_cols.add(col_norm)
                     continue
@@ -1966,24 +1969,6 @@ class BIDSDataset:
                 # Population (from the acoustic task's cohort) disambiguates the
                 # few families that exist in both peds and adult (picture-description).
                 task_population = _population_from_cohort(task.get("acoustic_task_cohort"))
-                meta_data = convert_response_to_bids_metadata(
-                    task,
-                    questionnaire_name=task_instrument.name,
-                    mapping_name=task_instrument.schema_name_clobbered,
-                    columns=task_instrument.columns,
-                    audio_task_descriptions=audio_descriptor_dict,
-                    population=task_population,
-                    language=participant_language,
-                )
-                BIDSDataset._write_pydantic_model_to_bids_file(
-                    audio_output_path,
-                    meta_data,
-                    schema_name=task_instrument.schema_name_clobbered,
-                    subject_id=participant_id,
-                    session_id=session_id,
-                    task_name=acoustic_task_name,
-                    task_entity=_task_entity,
-                )
 
                 # prefix is used to name audio files, if they are copied over
                 prefix = f"sub-{participant_id}_ses-{session_id}"
