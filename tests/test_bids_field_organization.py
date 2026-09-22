@@ -230,3 +230,45 @@ def test_schema_name_source_matches_the_reproschema_activity_id():
         assert any(row["schema_name_source"] == source for row in rows), (
             f"no rows carry schema_name_source={source}"
         )
+
+
+VALID_DISPOSITIONS = {"drop", "internal", "release", "review"}
+
+
+def test_disposition_values_are_valid(reorg_rows):
+    """Every row must carry one of the four defined dispositions.
+
+    A typo or an empty cell would silently miscategorise a field -- e.g. a misspelled
+    'relase' would be treated as unknown by any filter, and the field's handling would
+    depend on which branch the code takes for unrecognised values.
+    """
+    problems = []
+    for index, row in enumerate(reorg_rows, start=2):
+        d = row.get("disposition", "").strip()
+        if d not in VALID_DISPOSITIONS:
+            problems.append(
+                f"line {index}: disposition={d!r} for {row['column_name_source']} "
+                f"(expected one of {sorted(VALID_DISPOSITIONS)})"
+            )
+    assert not problems, "\n".join(problems)
+
+
+def test_drop_fields_have_delete_yes(reorg_rows):
+    """disposition=drop must agree with delete=YES until delete is retired."""
+    mismatches = [
+        (row["column_name_source"], row["delete"], row["disposition"])
+        for row in reorg_rows
+        if row["disposition"] == "drop" and row["delete"].strip().upper() != "YES"
+    ]
+    assert not mismatches, f"drop disposition but delete!=YES: {mismatches[:10]}"
+
+
+def test_internal_fields_have_delete_yes(reorg_rows):
+    """disposition=internal fields are consumed at ingest but never published,
+    so delete=YES must hold until the pipeline reads disposition natively."""
+    mismatches = [
+        (row["column_name_source"], row["delete"], row["disposition"])
+        for row in reorg_rows
+        if row["disposition"] == "internal" and row["delete"].strip().upper() != "YES"
+    ]
+    assert not mismatches, f"internal disposition but delete!=YES: {mismatches[:10]}"

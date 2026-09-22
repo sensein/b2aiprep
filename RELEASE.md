@@ -113,10 +113,11 @@ These files summarize per-recording quality metrics (clipping, silence, SNR, amp
 Once the data has been been reformatted into BIDS format and features have been extracted, we need to make sure to remove any entries that could have
 sensitive information, referred to as deidentification. Deidentification requires creation of the following configuration files:
 
-- `audio_filestems_to_remove.json` (File containing a list of sensitive audio files to remove)
 - `id_remapping.json` (File containing participant ids to change)
-- `participants_to_remove.json` (File containing list of participants to remove)
 - `audio_tasks_to_include.json` (File containing list of audio tasks to include during deidentification)
+- `audio_filestems_to_remove.json` (File containing a list of sensitive audio files to remove)
+- `participants_to_include.json` (Optional: explicit allowlist of participant IDs to include. When present, only these participants appear in the output)
+- `participants_to_remove.json` (Fallback: used only when `participants_to_include.json` is absent; the allowlist is derived by inverting this list against the input tree)
 
 Create these files and place them in a folder, e.g. `deidentification_config` (the "config" folder).
 
@@ -142,6 +143,9 @@ b2aiprep-cli deidentify-bids-dataset <path/to/bids/folder> \
 The output will be remain in BIDS format. The primary changes are:
 
 - participant IDs are modified
+- session directories use ordinal names (`ses-01`, `ses-02`) instead of UUIDs
+- per-participant `sub-<id>_sessions.tsv` is present with session metadata
+- columns with `disposition=internal` or `disposition=review` in the field map are removed from phenotype tables
 - sensitive columns are removed
 - sensitive audio clips, particularly those which may contain protected health information, are removed
 - features that can be used to identify individuals or re-create transcripts for sensitive audios (such as free-speech) are removed, but for only those files
