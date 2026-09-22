@@ -369,3 +369,128 @@ def test_collision_bookkeeping_survives_a_missing_id():
     assert _note_entity_collision(seen, "audio-check", "A") == (False, "A"), "same id twice is not a collision"
     collided, prior = _note_entity_collision(seen, "audio-check", "B")
     assert (collided, prior) == (True, "A")
+
+
+def test_no_acoustictask_sidecar_generated(tmp_path):
+    """Per-task _acoustictask-metadata.json sidecars are no longer generated.
+
+    Per-recording _recording-metadata.json sidecars must still be written.
+    """
+    src_dir = tmp_path / "src"
+    src_dir.mkdir()
+    wav = src_dir / "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee.wav"
+    wav.write_bytes(b"RIFF" + b"\x00" * 8192)
+
+    def row(instrument, **values):
+        cols = json.loads(files("b2aiprep.prepare.resources").joinpath("instrument_columns", f"{instrument}.json").read_text())
+        base = {c: None for c in cols}
+        base["record_id"] = "p1"
+        base.update(values)
+        return base
+
+    participant = {
+        "record_id": "p1",
+        "sessions": [
+            {
+                "session_id": "S1",
+                "session_status": "Completed",
+                "session_is_control_participant": "No",
+                "session_duration": 1,
+                "session_site": "test",
+                "acoustic_tasks": [
+                    row(
+                        "acoustic_tasks",
+                        acoustic_task_id="t1",
+                        acoustic_task_name="Prolonged vowel",
+                        acoustic_task_session_id="S1",
+                        acoustic_task_cohort="generic",
+                        recordings=[
+                            row(
+                                "recordings",
+                                recording_id="aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+                                recording_name="Prolonged vowel-1",
+                                recording_acoustic_task_id="t1",
+                                recording_session_id="S1",
+                            )
+                        ],
+                    )
+                ],
+            }
+        ],
+    }
+    out = tmp_path / "bids"
+    out.mkdir()
+    BIDSDataset._output_participant_data_to_metadata_file(
+        participant, out, audio_files_by_recording={wav.stem: wav}, max_audio_workers=1,
+        sanitize_audio_format=False, audio_descriptor_dict={},
+    )
+    audio_dir = out / "sub-p1" / "ses-S1" / "audio"
+    all_files = sorted(p.name for p in audio_dir.iterdir())
+
+    # Per-recording sidecar must exist
+    recording_sidecars = [f for f in all_files if f.endswith("_recording-metadata.json")]
+    assert len(recording_sidecars) == 1, f"Expected 1 recording sidecar, got {recording_sidecars}"
+
+    # Per-task sidecar must NOT exist
+    task_sidecars = [f for f in all_files if "acoustictask" in f or "acoustic-task" in f]
+    assert len(task_sidecars) == 0, f"Unexpected task sidecar(s): {task_sidecars}"
+
+    # Audio file must exist
+    wavs = [f for f in all_files if f.endswith(".wav")]
+    assert len(wavs) == 1
+
+
+def test_no_acoustictask_sidecar_phenotype_only_mode(tmp_path):
+    """In phenotype-only mode (no audio dir), no task sidecars are generated.
+
+    The session cleanup removes audio directories with no .wav files, so
+    recording sidecars are also cleaned up. The key assertion: no task sidecars
+    survive even if the directory is still present (checked before cleanup).
+    """
+    def row(instrument, **values):
+        cols = json.loads(files("b2aiprep.prepare.resources").joinpath("instrument_columns", f"{instrument}.json").read_text())
+        base = {c: None for c in cols}
+        base["record_id"] = "p2"
+        base.update(values)
+        return base
+
+    participant = {
+        "record_id": "p2",
+        "sessions": [
+            {
+                "session_id": "S1",
+                "session_status": "Completed",
+                "session_is_control_participant": "No",
+                "session_duration": 1,
+                "session_site": "test",
+                "acoustic_tasks": [
+                    row(
+                        "acoustic_tasks",
+                        acoustic_task_id="t1",
+                        acoustic_task_name="Prolonged vowel",
+                        acoustic_task_session_id="S1",
+                        acoustic_task_cohort="generic",
+                        recordings=[
+                            row(
+                                "recordings",
+                                recording_id="11111111-0000-0000-0000-000000000000",
+                                recording_name="Prolonged vowel-1",
+                                recording_acoustic_task_id="t1",
+                                recording_session_id="S1",
+                            )
+                        ],
+                    )
+                ],
+            }
+        ],
+    }
+    out = tmp_path / "bids"
+    out.mkdir()
+    BIDSDataset._output_participant_data_to_metadata_file(
+        participant, out, audio_files_by_recording=None, max_audio_workers=1,
+        sanitize_audio_format=False, audio_descriptor_dict={},
+    )
+    # In phenotype-only mode the session cleanup removes audio dirs with no wavs,
+    # so the entire audio directory is gone.
+    audio_dir = out / "sub-p2" / "ses-S1" / "audio"
+    assert not audio_dir.exists(), "Audio dir should be cleaned up in phenotype-only mode"

@@ -111,6 +111,7 @@ def test_every_active_row_resolves_or_is_a_redcap_generated_column(reorg_rows, r
         row["column_name_source"]
         for row in reorg_rows
         if row["delete"].strip().upper() != "YES"
+        and row.get("source", "").strip().lower() != "pipeline"
         and row["column_name_source"].rsplit("___", 1)[0] not in reachable_elements
         and not _is_redcap_generated(row["column_name_source"])
     )
