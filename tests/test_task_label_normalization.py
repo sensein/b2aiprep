@@ -131,7 +131,7 @@ def test_audio_and_sidecar_share_the_entity(tmp_path):
     src_dir = tmp_path / "src"
     src_dir.mkdir()
     wav = src_dir / "11111111-2222-3333-4444-555555555555.wav"
-    wav.write_bytes(b"RIFF")  # never decoded: sanitize_audio_format=False copies bytes
+    wav.write_bytes(b"RIFF" + b"\x00" * 8192)  # must exceed _MIN_AUDIO_BYTES to pass pre-scan
     # convert_response_to_bids_metadata indexes every instrument column, so give the task and
     # recording rows the full column set (as a RedCap export row would) and override a few.
     def row(instrument, **values):

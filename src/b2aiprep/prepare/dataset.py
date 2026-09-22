@@ -47,6 +47,8 @@ from b2aiprep.prepare.utils import (
     canonical_task_entity,
     normalize_task_label,
     sanitize_task_entity_in_bids_stem,
+    AUDIO_CHECK_LABEL,
+    is_audio_check,
 )
 from b2aiprep.prepare.fhir_utils import convert_response_to_bids_metadata, _population_from_cohort, _is_present, _language_from_selected
 from b2aiprep.prepare.prepare import (
@@ -92,6 +94,11 @@ def _guard_resample_overshoot(resampled_audio, in_peak: float):
 # This is a grouped spec because the per-record feature `.pt` files are nested dicts
 # (e.g., `features["torchaudio"]["mfcc"]`), while some sensitive artifacts live at
 # the top-level (e.g., `features["transcription"]`).
+# A full wav header is 44 bytes and even a 1-second 16kHz mono clip is ~32 KB.
+# Anything under this threshold is not a usable recording (the v4 exports contain
+# 259 sources at exactly 4096 bytes -- collection-side non-recordings).
+_MIN_AUDIO_BYTES = 8192
+
 _SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE: t.Mapping[str, t.FrozenSet[str]] = {
     "torchaudio": frozenset({"mel_filter_bank", "mfcc", "mel_spectrogram", "spectrogram"}),
     "": frozenset({"ppgs", "transcription"}),
@@ -183,20 +190,23 @@ def _copy_audio_files_parallel(copy_tasks: t.List[t.Tuple[Path, Path]], max_work
                 errors.append(error)
                 _LOGGER.error(error)
     
-    if errors:        
-        failed_files = [err.split("->")[0].replace("Failed to copy", "").strip() for err in errors]  
-        total_files = len(copy_tasks)  
-        unique_error_types = set()  
-        for err in errors:  
-            # Try to extract the exception type from the error message  
-            if ":" in err:  
-                unique_error_types.add(err.split(":")[-1].strip())  
-        summary = (  
-            f"Encountered {len(errors)} errors out of {total_files} files during parallel audio copying.\n"  
-            f"Failed files (up to 5 shown): {failed_files[:5]}\n"  
-            f"Unique error types (up to 3 shown): {list(unique_error_types)[:3]}"  
-        )  
-        _LOGGER.warning(summary)  
+    if errors:
+        failed_files = [err.split("->")[0].replace("Failed to copy", "").strip() for err in errors]
+        total_files = len(copy_tasks)
+        unique_error_types = set()
+        for err in errors:
+            if ":" in err:
+                unique_error_types.add(err.split(":")[-1].strip())
+        _LOGGER.warning(
+            "Encountered %d errors out of %d files during parallel audio copying. "
+            "Error types: %s",
+            len(errors), total_files, list(unique_error_types),
+        )
+        _LOGGER.warning(
+            "All %d failed audio files (QA -- verify these are expected; "
+            "truncated/corrupt sources should be caught by the pre-scan instead): %s",
+            len(failed_files), failed_files,
+        )
 
 
 class BIDSDataset:
@@ -211,6 +221,7 @@ class BIDSDataset:
         audiodir: t.Optional[t.Union[str, Path]] = None,
         max_audio_workers: int = 16,
         sanitize_audio_format: bool = False,
+        drop_audio_check: bool = True,
     ) -> 'BIDSDataset':
         """
         Create a BIDSDataset by converting a RedCapDataset to BIDS format.
@@ -221,12 +232,19 @@ class BIDSDataset:
             audiodir: Optional directory containing audio files
             max_audio_workers: Number of parallel threads for audio copying (default: 16)
             sanitize_audio_format: Whether to standardize the audio to 16KHz and mono-channel
-            
+            drop_audio_check: Exclude the session microphone check from every output (default
+                True). Pass False to keep it for internal quality review -- it must never
+                reach a release.
+
         Returns:
             BIDSDataset instance pointing to the created BIDS directory
         """
         outdir = Path(outdir).as_posix()
         BIDSDataset._initialize_data_directory(outdir)
+
+        if drop_audio_check:
+            redcap_dataset = copy(redcap_dataset)
+            redcap_dataset.df = BIDSDataset._drop_audio_check_rows(redcap_dataset.df)
 
         _LOGGER.info("Converting RedCap dataset to BIDS phenotype files.")
         # Subselect the RedCap dataframe and output components to individual files in the phenotype directory
@@ -315,7 +333,9 @@ class BIDSDataset:
         # ASSUMES that audio files are named with the recording_id in the filename
         # we use a defensive regex to grab uuid-like IDs from the stem just in case
         p_uuid = re.compile(r'[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}')
-        audio_files_by_recording: t.Dict[str, Path] = {}
+        audio_files_by_recording: t.Optional[t.Dict[str, Path]] = None
+        if audiodir is not None:
+            audio_files_by_recording = {}
         for audio_file in audio_files:
             match = p_uuid.search(audio_file.stem)
             if not match:
@@ -329,8 +349,10 @@ class BIDSDataset:
                 )
             audio_files_by_recording[uuid] = audio_file
 
+        participants_with_audio = set()
+        all_recording_ids_with_sidecar: t.Set[str] = set()
         for participant in tqdm(participants, desc="Writing participant data to file"):
-            cls._output_participant_data_to_metadata_file(
+            had_audio, rec_ids_with_sidecar = cls._output_participant_data_to_metadata_file(
                 participant,
                 Path(outdir),
                 audio_files_by_recording=audio_files_by_recording,
@@ -339,9 +361,64 @@ class BIDSDataset:
                 audio_descriptor_dict=audio_descriptor_dict,
                 questionnaire_lookup=questionnaire_lookup,
             )
-        
+            if had_audio:
+                participants_with_audio.add(participant["record_id"])
+                all_recording_ids_with_sidecar.update(rec_ids_with_sidecar)
+
+        # Filter recording.tsv to only recordings that
+        # produced a sidecar. Recordings whose source was missing or truncated
+        # were skipped; their rows would otherwise reference nonexistent files.
+        if audio_files_by_recording is not None and all_recording_ids_with_sidecar:
+            phenotype_dir = os.path.join(outdir, "phenotype")
+            for tsv_name, id_col in [("task/recording.tsv", "recording_id")]:
+                fp = os.path.join(phenotype_dir, tsv_name)
+                if not os.path.isfile(fp):
+                    continue
+                df_tsv = pd.read_csv(fp, sep="\t", dtype=str)
+                if id_col not in df_tsv.columns:
+                    continue
+                before = len(df_tsv)
+                df_tsv = df_tsv.loc[df_tsv[id_col].isin(all_recording_ids_with_sidecar)]
+                after = len(df_tsv)
+                if before != after:
+                    df_tsv.to_csv(fp, sep="\t", index=False)
+                    _LOGGER.info(
+                        "phenotype/%s: %d -> %d rows after removing recordings/tasks "
+                        "without a sidecar on disk.",
+                        tsv_name, before, after,
+                    )
+
+        # QA report: participants with no distributed audio
+        participants_without_audio = {p["record_id"] for p in participants} - participants_with_audio
+        if participants_without_audio:
+            _LOGGER.warning(
+                "%d of %d participant(s) produced no audio files and were excluded from "
+                "the BIDS tree (no sub-*/ directory, no rows in phenotype). Their records "
+                "exist in the REDCap export but had no recordings with a locatable source "
+                "file after filtering. QA: verify these are expected (enrollment-only, "
+                "audio-check-only, or missing source audio). IDs: %s",
+                len(participants_without_audio),
+                len(participants),
+                ", ".join(sorted(participants_without_audio)),
+            )
+
+        # Filter phenotype tables to only participants with audio
+        if participants_without_audio:
+            phenotype_dir = os.path.join(outdir, "phenotype")
+            if os.path.isdir(phenotype_dir):
+                _LOGGER.info(
+                    "Filtering phenotype tables to %d participants with audio "
+                    "(removing %d without).",
+                    len(participants_with_audio),
+                    len(participants_without_audio),
+                )
+                BIDSDataset._filter_phenotype_to_participants(
+                    phenotype_dir, participants_with_audio
+                )
+
         # Return a new BIDSDataset instance pointing to the created directory
         return cls(outdir)
+
 
     @staticmethod
     def _initialize_data_directory(bids_dir_path: str) -> None:
@@ -833,6 +910,147 @@ class BIDSDataset:
             df.drop(index=df[mask_only_id_and_demo].index, inplace=True)
         
     @staticmethod
+    def _filter_phenotype_to_participants(
+        phenotype_dir: str, keep_ids: t.AbstractSet[str]
+    ) -> None:
+        """Remove rows for participants without audio from every phenotype TSV.
+
+        Called after the participant loop when some participants were skipped entirely
+        because they had no locatable source audio. Without this, the phenotype tables
+        would list participants whose sub-*/ directory does not exist, and recording.tsv
+        would reference files that were never written.
+
+        Logs a per-file summary so the output is auditable.
+        """
+        for dp, _, fs in os.walk(phenotype_dir):
+            for fn in sorted(fs):
+                if not fn.endswith(".tsv"):
+                    continue
+                fp = os.path.join(dp, fn)
+                df = pd.read_csv(fp, sep="\t", dtype=str)
+                id_col = None
+                for candidate in ("participant_id", "record_id"):
+                    if candidate in df.columns:
+                        id_col = candidate
+                        break
+                if id_col is None:
+                    continue
+                before = len(df)
+                df = df.loc[df[id_col].isin(keep_ids)]
+                after = len(df)
+                if before != after:
+                    df.to_csv(fp, sep="\t", index=False)
+                    rel = os.path.relpath(fp, phenotype_dir)
+                    _LOGGER.info(
+                        "phenotype/%s: %d -> %d rows after removing participants without audio.",
+                        rel, before, after,
+                    )
+                    # Update the companion JSON if it exists (it carries data-element metadata,
+                    # not row counts, so it does not need rewriting -- but we log for completeness).
+
+    @staticmethod
+    def _drop_audio_check_rows(df: pd.DataFrame) -> pd.DataFrame:
+        """Remove every row describing the session's microphone check.
+
+        Applied once, to the RedCap dataframe, before anything reads it -- so a single filter
+        covers every artifact at once: the `recording`/`acoustic_task` phenotype tables, the
+        per-recording and per-acoustic-task sidecars, and the audio copy list. Filtering later
+        would mean repeating the rule per artifact and finding a new place to repeat it every
+        time one is added, which is how the three existing copies in deidentify came about.
+
+        The audio check is collection apparatus, not research data: it is absent from the task
+        registry (so every one of them logged a "no task match" warning -- 1,668 in the v4
+        pediatric build alone), it is stripped again at deidentify, and it has never shipped in
+        a release. Measured on the v4 exports: 7,970 of 70,520 adult recordings and 1,383 of
+        99,724 pediatric.
+        """
+        if "redcap_repeat_instrument" not in df.columns:
+            return df
+        drop = pd.Series(False, index=df.index)
+        for instrument, column in (("Recording", "recording_name"),
+                                   ("Acoustic Task", "acoustic_task_name")):
+            if column not in df.columns:
+                continue
+            is_row = df["redcap_repeat_instrument"].eq(instrument)
+            drop |= is_row & df[column].apply(is_audio_check)
+        if not drop.any():
+            return df
+        counts = df.loc[drop, "redcap_repeat_instrument"].value_counts().to_dict()
+        _LOGGER.info(
+            "Dropping %d audio-check row(s) at ingest (%s); they are excluded from the "
+            "phenotype tables, sidecars and audio copies.",
+            int(drop.sum()),
+            ", ".join(f"{k}: {v}" for k, v in sorted(counts.items())),
+        )
+        return df.loc[~drop]
+
+    @staticmethod
+    def _drop_rows_without_substantive_data(
+        df: pd.DataFrame, id_col: str, csv_only_columns: t.AbstractSet[str]
+    ) -> pd.DataFrame:
+        """Drop rows whose only content is the participant id and RedCap bookkeeping.
+
+        `csv_only_columns` are the output columns with no ReproSchema definition -- the
+        `<form>_complete` and `<form>_timestamp` columns RedCap emits for every record whether
+        or not the form was ever filled in. They must not count as content: a participant who
+        never had an ALS assessment still gets `d_neuro_..._complete = Incomplete`, so treating
+        that as data keeps a row for every participant in every table. Measured on the v4 adult
+        export, counting them turned `diagnosis/amyotrophic_lateral_sclerosis.tsv` from 6 rows
+        into 2005.
+
+        When every column is bookkeeping there is nothing to test against, so
+        the table is emptied — a table with no participant-entered data has no
+        research value.
+        """
+        substantive = [c for c in df.columns if c != id_col and c not in csv_only_columns]
+        if not substantive:
+            _LOGGER.warning(
+                "No substantive columns — only bookkeeping. Returning empty table."
+            )
+            return df.iloc[0:0]
+        return df.dropna(how="all", subset=substantive)
+
+    @staticmethod
+    def _synthetic_data_element(
+        column: str,
+        updated_data: t.Mapping[str, t.Any],
+        column_choice: t.Optional[str] = None,
+        clean_phenotype_data: bool = True,
+    ) -> t.Dict[str, t.Any]:
+        """Build a minimal data dictionary entry for a column with no ReproSchema definition.
+
+        ReproSchema is generated from the RedCap data dictionary, so it only describes columns
+        that someone authored as a field. It legitimately has no entry for the columns RedCap
+        synthesizes per instrument (`<form>_complete`, `<form>_timestamp`), for RedCap's own
+        structural columns, or for values b2aiprep computes itself. For those the reorganization
+        CSV is the only description that exists, so it becomes the description of record.
+
+        The result deliberately carries no `termURL`, no `choices` and no `question`: there is no
+        authored definition to cite, and minting an ontology reference here would put an unsourced
+        term into a published data dictionary. Consumers can therefore identify CSV-described
+        columns by the absence of `termURL`. This matches the shape already used for the
+        synthetic `participant_id` element.
+
+        Args:
+            column: the source (RedCap) column name.
+            updated_data: the row from bids_field_organization.csv describing this column.
+            column_choice: the option code when `column` is a `___`-suffixed checkbox option.
+            clean_phenotype_data: when True, checkbox options are emitted as 0/1 integers.
+        """
+        _raw_desc = updated_data.get("description")
+        description = str(_raw_desc).strip() if pd.notna(_raw_desc) else ""
+        if not description:
+            # Never leave a published dictionary entry without a description; say plainly that
+            # the field map did not supply one rather than emitting an empty string.
+            description = (
+                f"No description available for {column}; this column has no ReproSchema "
+                "definition and bids_field_organization.csv does not describe it."
+            )
+        value_type = (
+            ["xsd:integer"] if (column_choice is not None and clean_phenotype_data) else ["xsd:string"]
+        )
+        return {"description": description, "valueType": value_type}
+
     def _construct_phenotype_from_reproschema(
         df: pd.DataFrame,
         output_dir: str,
@@ -918,6 +1136,8 @@ class BIDSDataset:
         included_cols: t.Set[str] = set()
         missing_in_df_cols: t.Set[str] = set()
         redcap_group_cols: t.Set[str] = set()
+        # Columns described by bids_field_organization.csv alone, with no ReproSchema element.
+        synthesized_cols: t.Set[str] = set()
 
         df_reorg = df_reorg_active
 
@@ -933,6 +1153,9 @@ class BIDSDataset:
             "group": "",
             # source schema name is used to filter rows
             "schema_name_source": [],
+            # output columns with no ReproSchema definition (RedCap form status/timestamps).
+            # Tracked so they can be excluded from the "is this row empty?" test below.
+            "columns_csv_only": [],
         }
         updated_schemas = defaultdict(lambda: deepcopy(payload))
         for updated_schema_name, group in df_reorg.groupby('schema_name'):
@@ -952,17 +1175,33 @@ class BIDSDataset:
                     continue
                 included_cols.add(col_norm)
                 
-                # the source schema is defined based on the element itself;
-                # we do not need the schema_name_source column, but it is kept for ease of reading the CSV.
-                schema_to_use = element_to_schema[column]
-                
                 if '___' in column:
                     column_base, column_choice = column.rsplit('___', maxsplit=1)
                 else:
                     column_base = column
                     column_choice = None
-                if column_base in checkbox_columns:
-                    data_element = copy(schemas[schema_to_use]["data_elements"][column_base])
+
+                # the source schema is defined based on the element itself;
+                # we do not need the schema_name_source column, but it is kept for ease of reading the CSV.
+                schema_to_use = element_to_schema.get(column)
+                source_elements = schemas[schema_to_use]["data_elements"] if schema_to_use else {}
+                lookup_key = column_base if column_base in checkbox_columns else column
+                csv_only_column = False
+                if lookup_key not in source_elements:
+                    # No ReproSchema definition exists for this column, so there is nothing to look
+                    # up. RedCap emits columns that were never authored as fields -- <form>_complete,
+                    # <form>_timestamp, its own structural columns -- and ReproSchema is generated
+                    # from the data dictionary, which does not describe them. Derived columns that
+                    # b2aiprep computes itself land here too. Synthesize a minimal element from the
+                    # reorganization CSV instead of raising KeyError, and record the name so the run
+                    # reports exactly which columns are described by the CSV alone.
+                    data_element = BIDSDataset._synthetic_data_element(
+                        column, updated_data, column_choice, clean_phenotype_data
+                    )
+                    synthesized_cols.add(col_norm)
+                    csv_only_column = True
+                elif column_base in checkbox_columns:
+                    data_element = copy(source_elements[column_base])
                     # reduce the choices to just the choice for this checkbox
                     data_element['choices'] = [
                         choice for choice in data_element.get('choices', [])
@@ -973,19 +1212,21 @@ class BIDSDataset:
                         data_element['valueType'] = ['xsd:integer']
                 else:
                     # populate the detailed metadata for this column
-                    data_element = copy(schemas[schema_to_use]["data_elements"][column])
-                if "description" in updated_data and (updated_data["description"] != ""):
+                    data_element = copy(source_elements[column])
+                if "description" in updated_data and pd.notna(updated_data["description"]) and str(updated_data["description"]).strip():
                     description = updated_data["description"]
-                elif "description" in data_element and (data_element["description"] != ""):
+                elif "description" in data_element and pd.notna(data_element["description"]) and str(data_element["description"]).strip():
                     description = data_element["description"]
                 else:
-                    description = data_element.get("question", "").get("en", "")
+                    description = data_element.get("question", {}).get("en", "")
                 data_element["description"] = description
                 new_element_name = updated_data["column_name"]
 
                 updated_schema_name = updated_data["schema_name"]
                 updated_schemas[updated_schema_name]['columns_for_indexing'].append(column)
                 updated_schemas[updated_schema_name]['columns_for_output'].append(new_element_name)
+                if csv_only_column:
+                    updated_schemas[updated_schema_name]['columns_csv_only'].append(new_element_name)
                 updated_schemas[updated_schema_name]['schema_name_source'].append(updated_data["schema_name_source"])
 
                 # update the payload so we have a reproschema json for this df
@@ -999,6 +1240,7 @@ class BIDSDataset:
             columns_for_indexing = payload.pop("columns_for_indexing")
             columns_for_output = payload.pop("columns_for_output")
             schema_name_sources = set(payload.pop("schema_name_source"))
+            csv_only_columns = set(payload.pop("columns_csv_only"))
             group = payload.pop("group")
             if "record_id" not in columns_for_indexing:
                 columns_for_indexing = ["record_id"] + columns_for_indexing
@@ -1068,15 +1310,23 @@ class BIDSDataset:
             if clean_phenotype_data:
                 selected_df, updated_schema = BIDSDataset._clean_phenotype_data(selected_df, updated_schema)
 
-            # Remove rows where the only non-null value is record_id/participant_id
-            selected_df = selected_df.dropna(how="all", subset=[col for col in selected_df.columns if col != id_col])
+            # Remove rows where the only non-null value is record_id/participant_id.
+            # Columns with no ReproSchema definition are excluded from this test: RedCap emits a
+            # <form>_complete for every record whether or not the form was ever filled in, so
+            # counting it as content would keep a row for every participant in every table -- e.g.
+            # every diagnosis table would list the whole cohort instead of the diagnosed subset.
+            selected_df = BIDSDataset._drop_rows_without_substantive_data(
+                selected_df, id_col, csv_only_columns
+            )
             if selected_df.empty:
                 _LOGGER.warning(f"No data remaining after dropping empty rows for {schema_name}")
                 continue
 
             if 'age' in selected_df.columns:
                 BIDSDataset._fix_disjoint_demographic_rows(selected_df, id_col, 'age', schema_name=schema_name)
-                selected_df = selected_df.dropna(how="all", subset=[col for col in selected_df.columns if col != id_col])
+                selected_df = BIDSDataset._drop_rows_without_substantive_data(
+                    selected_df, id_col, csv_only_columns
+                )
                 if selected_df.empty:
                     _LOGGER.warning(f"No data remaining after dropping empty rows for {schema_name}")
                     continue
@@ -1114,6 +1364,19 @@ class BIDSDataset:
             len(cols_for_deletion),
             len(missing_in_df_cols),
         )
+        if synthesized_cols:
+            # Surfaced at INFO, not debug: these columns reach the output with a data dictionary
+            # entry carrying only a description and a valueType. They have no termURL, no choices
+            # and no question text, because no authored definition exists to cite -- inventing an
+            # ontology reference for them would put an unsourced term into a published dictionary.
+            _LOGGER.info(
+                "%d column(s) had no ReproSchema element and were described from "
+                "bids_field_organization.csv alone (no termURL/choices in the data dictionary): %s",
+                len(synthesized_cols),
+                ", ".join(sorted(synthesized_cols)[:10])
+                + (", ..." if len(synthesized_cols) > 10 else ""),
+            )
+            _LOGGER.debug(f"Synthesized (CSV-only) columns: {sorted(synthesized_cols)}")
         _LOGGER.debug(f"Included columns: {sorted(included_cols)}")
         _LOGGER.debug(f"Excluded (missing in df) columns: {sorted(missing_in_df_cols)}")
         _LOGGER.debug(f"Excluded (redcap group) columns: {sorted(redcap_group_cols)}")
@@ -1196,7 +1459,7 @@ class BIDSDataset:
         participant: dict, outdir: Path, audio_files_by_recording: t.Optional[t.Dict[str, Path]] = None,
         max_audio_workers: int = 16, sanitize_audio_format: bool = False, audio_descriptor_dict:OrderedDict = {},
         questionnaire_lookup: t.Optional[t.Dict[tuple, dict]] = None
-    ):
+    ) -> t.Tuple[bool, t.Set[str]]:
         """Output participant data to FHIR format.
 
         Args:
@@ -1222,6 +1485,62 @@ class BIDSDataset:
 
         # Collect all audio copy tasks for parallel execution
         audio_copy_tasks = []
+
+        # Pre-scan: determine which recordings have a locatable source file.
+        # Only those get sidecars and copy tasks; the rest are logged for QA.
+        recordings_with_source: t.Set[str] = set()
+        recordings_without_source: t.List[t.Tuple[str, str, str]] = []  # (rec_id, rec_name, session_id)
+        if audio_files_by_recording is not None:
+            for session in participant.get("sessions", []):
+                for task in session.get("acoustic_tasks", []):
+                    if task is None:
+                        continue
+                    for recording in task.get("recordings", []):
+                        rec_id = recording.get("recording_id", "")
+                        if not rec_id:
+                            continue
+                        _raw_name = recording.get("recording_name")
+                        if not (pd.notna(_raw_name) and str(_raw_name).strip()):
+                            recordings_without_source.append(
+                                (rec_id, "", session.get("session_id", ""))
+                            )
+                            continue
+                        audio_path = audio_files_by_recording.get(rec_id)
+                        if audio_path is not None:
+                            try:
+                                sz = audio_path.stat().st_size
+                            except OSError:
+                                sz = 0
+                            if sz >= _MIN_AUDIO_BYTES:
+                                recordings_with_source.add(rec_id)
+                            else:
+                                recordings_without_source.append(
+                                    (rec_id, recording.get("recording_name", ""),
+                                     session.get("session_id", ""))
+                                )
+                                continue
+                        else:
+                            recordings_without_source.append(
+                                (rec_id, recording.get("recording_name", ""), session.get("session_id", ""))
+                            )
+
+        if audio_files_by_recording is not None and not recordings_with_source:
+            # No audio at all for this participant -- skip entirely.
+            # The caller aggregates these and logs a single QA warning.
+            return False, set()
+
+        if recordings_without_source:
+            _LOGGER.info(
+                "Participant %s: %d of %d recording(s) have no source audio file and will "
+                "not receive a sidecar or audio copy. QA: verify these are expected "
+                "(truncated source, missing from Wasabi, collection error). "
+                "recording_ids: %s",
+                participant_id,
+                len(recordings_without_source),
+                len(recordings_with_source) + len(recordings_without_source),
+                ", ".join(r[0] for r in recordings_without_source),
+            )
+
 
         # validated questionnaires are asked per session
         sessions_rows = []
@@ -1255,9 +1574,8 @@ class BIDSDataset:
                 if task is None:
                     continue
                 
-                # Handle NaN/None values in acoustic_task_name
                 acoustic_task_name = task.get("acoustic_task_name")
-                if pd.isna(acoustic_task_name):
+                if not acoustic_task_name or pd.isna(acoustic_task_name):
                     _LOGGER.warning(f"Skipping task with missing acoustic_task_name for participant {participant_id}, session {session_id}")
                     continue
                 
@@ -1275,6 +1593,15 @@ class BIDSDataset:
                         "both tasks remain in phenotype/task/acoustic_task.tsv",
                         acoustic_task_name, participant_id, session_id, _prior_task, _task_id,
                     )
+                # Skip the task sidecar when none of its recordings have source audio.
+                if audio_files_by_recording is not None:
+                    _task_has_audio = any(
+                        recording.get("recording_id", "") in recordings_with_source
+                        for recording in task.get("recordings", [])
+                    )
+                    if not _task_has_audio:
+                        continue
+
                 # Population (from the acoustic task's cohort) disambiguates the
                 # few families that exist in both peds and adult (picture-description).
                 task_population = _population_from_cohort(task.get("acoustic_task_cohort"))
@@ -1328,6 +1655,11 @@ class BIDSDataset:
                             "file is dropped",
                             _rec_name, participant_id, session_id, _prior, _rec_id,
                         )
+                    # Skip recordings whose source audio is missing -- no sidecar, no copy.
+                    # The per-participant log above already named them for QA.
+                    if audio_files_by_recording is not None and _rec_id not in recordings_with_source:
+                        continue
+
                     meta_data = convert_response_to_bids_metadata(
                         recording,
                         questionnaire_name=recording_instrument.name,
@@ -1368,13 +1700,32 @@ class BIDSDataset:
         if audio_copy_tasks:
             _copy_audio_files_parallel(audio_copy_tasks, max_workers=max_audio_workers, sanitize_audio_format=sanitize_audio_format)
 
-        # Save sessions.tsv
+        # Remove session directories that have no audio files (only task
+        # sidecars). This happens when every recording in a session had no
+        # source file but the task-level sidecar was still written.
+        removed_sessions: t.Set[str] = set()
+        for session in participant["sessions"]:
+            session_id = session["session_id"]
+            session_audio = subject_path / f"ses-{session_id}" / "audio"
+            if not session_audio.is_dir():
+                continue
+            has_audio = any(f.suffix == ".wav" for f in session_audio.iterdir())
+            if not has_audio:
+                shutil.rmtree(session_audio)
+                removed_sessions.add(session_id)
+                session_dir = session_audio.parent
+                if session_dir.is_dir() and not any(session_dir.iterdir()):
+                    session_dir.rmdir()
+
+        # Save sessions.tsv, excluding sessions whose directories were removed
+        sessions_rows = [r for r in sessions_rows if r["session_id"] not in removed_sessions]
         sessions_df = pd.DataFrame(sessions_rows)
         if not os.path.exists(subject_path):
             os.mkdir(subject_path)
         sessions_tsv_path = subject_path / "sessions.tsv"
         sessions_df.to_csv(sessions_tsv_path, sep="\t", index=False)
 
+        return True, recordings_with_source
     @staticmethod
     def load_phenotype_data(phenotype_filepath: Path) -> t.Tuple[pd.DataFrame, t.Dict[str, t.Any]]:
         """
@@ -2265,7 +2616,7 @@ class BIDSDataset:
 
         # Remove specific tasks
         audio_paths = BIDSDataset._apply_exclusion_list_to_filepaths(
-            audio_paths, exclusion_list=['audio-check'], exclusion_type='filestem_contains'
+            audio_paths, exclusion_list=[AUDIO_CHECK_LABEL], exclusion_type='filestem_contains'
         )
 
         audio_tasks_to_include_list = [f"task-{normalize_task_label(task)}" for task in audio_tasks_to_include_list]
@@ -2284,7 +2635,7 @@ class BIDSDataset:
             
             if not json_path.exists():
                 _LOGGER.warning(f"Metadata file {json_path} not found. Skipping {audio_path}.")
-                return False
+                return None
 
             metadata = json.loads(json_path.read_text())
             
@@ -2314,13 +2665,14 @@ class BIDSDataset:
 
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
             results = list(tqdm(executor.map(process_audio_file, audio_paths), total=len(audio_paths), desc="Copying audio and metadata files"))
+        n_processed = sum(1 for r in results if r is not None)
         n_renamed = sum(1 for r in results if r)
         if n_renamed:
             _LOGGER.warning(
                 "%d of %d task entities were not normalized at ingest; deidentify normalized "
                 "them on write. Rebuild the input tree with a current redcap2bids so the "
                 "internal and published trees carry the same names.",
-                n_renamed, len(results),
+                n_renamed, n_processed,
             )
 
 
@@ -2372,7 +2724,7 @@ class BIDSDataset:
 
         # Remove specific tasks
         paths = BIDSDataset._apply_exclusion_list_to_filepaths(
-            paths, exclusion_list=['audio-check'], exclusion_type='filestem_contains'
+            paths, exclusion_list=[AUDIO_CHECK_LABEL], exclusion_type='filestem_contains'
         )
 
         audio_task_labels = {normalize_task_label(t) for t in audio_tasks_to_include_list}
@@ -2453,13 +2805,11 @@ class BIDSDataset:
                 _LOGGER.info(f"Removing {idx.sum()} quality metric rows for excluded participants.")
                 df = df.loc[~idx]
 
-        # Remove audio-check task rows (mirrors the exclusion in _deidentify_audio_files)
+        # Remove audio-check task rows. Uses the same predicate as every other audio-check
+        # filter; on a tree built with drop_audio_check=True there is nothing left to remove,
+        # but older trees and internal-review builds still pass through here.
         if "task_name" in df.columns:
-            df = df.loc[
-                df["task_name"].apply(
-                    lambda task: normalize_task_label("audio-check") not in normalize_task_label(task)
-                )
-            ]
+            df = df.loc[~df["task_name"].apply(is_audio_check)]
 
         # Doesn't filter to only included audio tasks as these are similar to non-identifiable features
         # # Filter to only included audio tasks
