@@ -84,12 +84,13 @@ def test_form_status_does_not_keep_an_otherwise_empty_row():
     assert len(BIDSDataset._drop_rows_without_substantive_data(df, "participant_id", set())) == 2
 
 
-def test_a_table_of_only_bookkeeping_columns_is_left_alone():
-    """Nothing to test against, so keep the rows rather than silently emptying the table."""
+def test_a_table_of_only_bookkeeping_columns_is_emptied():
+    """No substantive columns means no research value — table is emptied."""
     import pandas as pd
 
     df = pd.DataFrame({"participant_id": ["a", "b"], "some_form_complete": ["Incomplete"] * 2})
-    kept = BIDSDataset._drop_rows_without_substantive_data(
+    result = BIDSDataset._drop_rows_without_substantive_data(
         df, "participant_id", {"some_form_complete"}
     )
-    assert len(kept) == 2
+    assert len(result) == 0
+    assert list(result.columns) == list(df.columns)

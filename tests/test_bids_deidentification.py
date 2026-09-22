@@ -285,7 +285,7 @@ class TestBIDSDatasetDeidentification:
 
         # Check for expected log messages
         log_messages = [record.message for record in caplog.records]
-        assert any("Finished processing phenotype data." in msg for msg in log_messages)
+        assert any("Finished processing phenotype data" in msg for msg in log_messages)
         assert any("Deidentification completed" in msg for msg in log_messages)
 
 

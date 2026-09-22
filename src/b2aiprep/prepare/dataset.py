@@ -22,6 +22,7 @@ import logging
 import os
 import re
 import shutil
+import enum
 import typing as t
 from collections import OrderedDict, defaultdict
 from pathlib import Path
@@ -62,6 +63,18 @@ from pydantic import BaseModel
 from b2aiprep.prepare.redcap import RedCapDataset
 
 _LOGGER = logging.getLogger(__name__)
+
+
+class DispositionLevel(enum.Enum):
+    """Threshold for which disposition levels survive column dropping.
+
+    The hierarchy is RELEASE < REVIEW < INTERNAL.  Passing a level keeps
+    columns at that level and below, dropping everything above.
+    """
+    RELEASE = "release"
+    REVIEW = "review"
+    INTERNAL = "internal"
+
 
 DEFAULT_RESAMPLE_RATE = 16000
 DEFAULT_BIT_DEPTH = 16
@@ -1007,40 +1020,40 @@ class BIDSDataset:
 
     @staticmethod
     def _drop_columns_by_disposition(
-        df: pd.DataFrame, field_map_df: t.Optional[pd.DataFrame] = None
+        df: pd.DataFrame,
+        field_map_df: t.Optional[pd.DataFrame] = None,
+        level: DispositionLevel = DispositionLevel.RELEASE,
     ) -> t.Tuple[pd.DataFrame, t.List[str]]:
-        """Drop columns whose disposition is ``internal`` or ``review``.
+        """Drop columns above *level* in the disposition hierarchy.
 
-        If *field_map_df* is not supplied it is loaded from the packaged CSV
-        (cached after first load).  Falls back to the ``delete`` column when
-        ``disposition`` is absent (older field maps).  Columns not in the field
-        map are kept (they are pipeline-authored, not REDCap).
+        The hierarchy is RELEASE < REVIEW < INTERNAL.  At the default
+        ``RELEASE`` level, both ``internal`` and ``review`` columns are
+        dropped.  At ``REVIEW``, only ``internal`` columns are dropped
+        (``review`` columns are kept for per-value processing).  At
+        ``INTERNAL``, nothing is dropped.
+
+        Columns not in the field map are kept (pipeline-authored).
         """
         if field_map_df is None:
             if BIDSDataset._cached_field_map_df is None:
                 BIDSDataset._cached_field_map_df = BIDSDataset._load_reorganization_file(drop_deleted_columns=False)
             field_map_df = BIDSDataset._cached_field_map_df
 
-        if "disposition" in field_map_df.columns:
-            to_drop_names = set(
-                field_map_df.loc[
-                    field_map_df["disposition"].isin(["internal", "review"]),
-                    "column_name",
-                ].dropna()
-            )
-        elif "delete" in field_map_df.columns:
-            _LOGGER.warning(
-                "Field map has no 'disposition' column; falling back to 'delete' column."
-            )
-            to_drop_names = set(
-                field_map_df.loc[
-                    field_map_df["delete"].str.upper() == "YES",
-                    "column_name",
-                ].dropna()
-            )
-        else:
-            _LOGGER.warning("Field map has neither 'disposition' nor 'delete' column; no columns dropped.")
+        if "disposition" not in field_map_df.columns:
+            raise ValueError("Field map is missing the 'disposition' column.")
+
+        if level == DispositionLevel.INTERNAL:
             return df, []
+
+        hierarchy = {"release": 0, "review": 1, "internal": 2}
+        threshold = hierarchy[level.value]
+        drop_dispositions = [d for d, rank in hierarchy.items() if rank > threshold]
+        to_drop_names = set(
+            field_map_df.loc[
+                field_map_df["disposition"].isin(drop_dispositions),
+                "column_name",
+            ].dropna()
+        )
 
         present = [c for c in df.columns if c in to_drop_names]
         if present:
@@ -1057,6 +1070,109 @@ class BIDSDataset:
             )
 
         return df, present
+
+    @staticmethod
+    def _load_column_value_reviews(
+        config_dir: Path,
+        field_map_df: t.Optional[pd.DataFrame] = None,
+    ) -> t.Dict[t.Tuple[str, str], str]:
+        """Load the column value review manifest from the config directory.
+
+        Entries may use either ``column_name`` (the output/BIDS name) or
+        ``source_column_name`` (the original REDCap name).  Source names are
+        normalized to output names via the field map so that lookups in
+        ``_apply_column_value_reviews`` always use output names.
+        """
+        manifest_path = config_dir / "column_value_reviews.json"
+        if not manifest_path.exists():
+            return {}
+
+        if field_map_df is None:
+            if BIDSDataset._cached_field_map_df is None:
+                BIDSDataset._cached_field_map_df = BIDSDataset._load_reorganization_file(drop_deleted_columns=False)
+            field_map_df = BIDSDataset._cached_field_map_df
+
+        source_to_output: t.Dict[str, str] = {}
+        if "column_name_source" in field_map_df.columns and "column_name" in field_map_df.columns:
+            for _, row in field_map_df.iterrows():
+                src = row.get("column_name_source")
+                out = row.get("column_name")
+                if pd.notna(src) and pd.notna(out) and str(src) != str(out):
+                    source_to_output[str(src)] = str(out)
+
+        with open(manifest_path, "r") as f:
+            data = json.load(f)
+        verdicts_list = data.get("verdicts", [])
+        lookup: t.Dict[t.Tuple[str, str], str] = {}
+        normalized_count = 0
+        for entry in verdicts_list:
+            col = entry.get("column_name") or entry.get("source_column_name", "")
+            if col in source_to_output:
+                col = source_to_output[col]
+                normalized_count += 1
+            key = (entry["participant_id"], col)
+            if key in lookup:
+                _LOGGER.warning(
+                    "Duplicate column value review for %s/%s; last entry wins.",
+                    key[0], key[1],
+                )
+            lookup[key] = entry["verdict"].strip().lower()
+        _LOGGER.info("Loaded %d column value review verdicts from %s.", len(lookup), manifest_path)
+        if normalized_count:
+            _LOGGER.info("Normalized %d verdicts from source to output column names.", normalized_count)
+        return lookup
+
+    @staticmethod
+    def _get_review_column_names(
+        field_map_df: t.Optional[pd.DataFrame] = None,
+    ) -> t.Set[str]:
+        """Return the set of column names with disposition=review."""
+        if field_map_df is None:
+            if BIDSDataset._cached_field_map_df is None:
+                BIDSDataset._cached_field_map_df = BIDSDataset._load_reorganization_file(drop_deleted_columns=False)
+            field_map_df = BIDSDataset._cached_field_map_df
+        if "disposition" not in field_map_df.columns:
+            return set()
+        return set(
+            field_map_df.loc[
+                field_map_df["disposition"] == "review", "column_name"
+            ].dropna()
+        )
+
+    @staticmethod
+    def _apply_column_value_reviews(
+        df: pd.DataFrame,
+        review_columns: t.AbstractSet[str],
+        verdicts: t.Dict[t.Tuple[str, str], str],
+    ) -> t.Tuple[pd.DataFrame, t.List[str]]:
+        """Apply per-cell verdicts to review-disposition columns.
+
+        Columns with zero verdicts are dropped entirely (backward compat).
+        Cells with no verdict default to null (fail-safe).
+        """
+        id_col = "participant_id" if "participant_id" in df.columns else "record_id"
+        if id_col not in df.columns:
+            return df, []
+
+        fully_dropped = []
+        for col in sorted(review_columns & set(df.columns)):
+            col_verdicts = {
+                pid: v for (pid, cname), v in verdicts.items() if cname == col
+            }
+            if not col_verdicts:
+                df = df.drop(columns=[col])
+                fully_dropped.append(col)
+                continue
+            for idx, row in df.iterrows():
+                pid = row[id_col]
+                verdict = col_verdicts.get(pid)
+                if verdict == "safe":
+                    pass
+                elif verdict == "redact":
+                    df.at[idx, col] = "[REDACTED]"
+                else:
+                    df.at[idx, col] = pd.NA
+        return df, fully_dropped
 
     @staticmethod
     def _filter_phenotype_to_participants(
@@ -1991,9 +2107,6 @@ class BIDSDataset:
                 if "session_id" in col:
                     df.loc[:, col] = BIDSDataset._map_series(df[col], remap_partial)
 
-        # Remove sensitive columns
-        df, phenotype = BIDSDataset._remove_sensitive_columns(df, phenotype)
-
         # Sanitize task labels in task phenotype tables (e.g., phenotype/task/acoustic_task.tsv)
         if "acoustic_task_name" in df.columns:
             df.loc[:, "acoustic_task_name"] = df["acoustic_task_name"].apply(
@@ -2070,7 +2183,7 @@ class BIDSDataset:
 
     @staticmethod
     def _remove_sensitive_columns(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
-        """Remove columns with sensitive data (free-text, geo-location, etc)."""
+        """Remove columns with sensitive data. Deprecated: use disposition column in field map."""
 
         # TODO: Revisit this list. The deidentification is now implicitly applied by the
         # use of bids_field_reorganization.csv to select only desired columns.
@@ -2444,6 +2557,12 @@ class BIDSDataset:
         )
         _LOGGER.info("Deidentifying %d participants (max_workers=%d).", len(participant_dirs), max_workers)
 
+        normalized_include_tasks = {normalize_task_label(t) for t in audio_tasks_to_include}
+        canonical_exclusions = {
+            sanitize_task_entity_in_bids_stem(Path(s).stem)
+            for s in audio_filestems_to_remove
+        }
+
         def _process_one(pdir: Path) -> t.Optional[str]:
             pid = pdir.name[4:]
             new_pid = participant_ids_to_remap.get(pid, pid)
@@ -2453,6 +2572,8 @@ class BIDSDataset:
                     participant_session_id_to_remap,
                     audio_filestems_to_remove, audio_tasks_to_include,
                     skip_audio, skip_audio_features,
+                    _normalized_include_tasks=normalized_include_tasks,
+                    _canonical_exclusions=canonical_exclusions,
                 )
                 if had_output:
                     return pid
@@ -2489,15 +2610,32 @@ class BIDSDataset:
         participant_ids_to_exclude = list(input_tree_participants - participants_with_output)
 
         # --- phenotype ---
+        column_value_verdicts = BIDSDataset._load_column_value_reviews(deidentify_config_dir)
+        has_review_verdicts = bool(column_value_verdicts)
+        review_col_names = BIDSDataset._get_review_column_names()
+
+        # Warm the field-map cache before parallel phenotype processing
+        BIDSDataset._drop_columns_by_disposition(pd.DataFrame())
+
         phenotype_base_path = self.data_path.joinpath("phenotype")
         if phenotype_base_path.exists():
             _LOGGER.info("Processing phenotype data for deidentification.")
             phenotype_output_path = outdir.joinpath("phenotype")
             phenotype_output_path.mkdir(parents=True, exist_ok=True)
 
-            for phenotype_filepath in phenotype_base_path.rglob("*.tsv"):
-                _LOGGER.info(f"Processing {phenotype_filepath.stem}.")
+            phenotype_files = sorted(phenotype_base_path.rglob("*.tsv"))
+
+            def _process_one_phenotype(phenotype_filepath: Path) -> str:
                 df_pheno, schema_name, header, phenotype_dict = BIDSDataset.load_phenotype_file(phenotype_filepath)
+
+                # Apply per-value verdicts BEFORE ID remapping (verdicts use original IDs)
+                if has_review_verdicts:
+                    df_pheno, review_dropped = BIDSDataset._apply_column_value_reviews(
+                        df_pheno, review_col_names, column_value_verdicts,
+                    )
+                    for col in review_dropped:
+                        phenotype_dict.pop(col, None)
+
                 df_pheno, phenotype_dict = BIDSDataset._deidentify_phenotype(
                     df_pheno, phenotype_dict,
                     participant_ids_to_exclude,
@@ -2505,11 +2643,17 @@ class BIDSDataset:
                     participant_session_id_to_remap,
                 )
 
-                # Drop columns by disposition (internal, review)
-                df_pheno, dropped_cols = BIDSDataset._drop_columns_by_disposition(df_pheno)
+                # Drop internal columns (and review if no manifest)
+                df_pheno, dropped_cols = BIDSDataset._drop_columns_by_disposition(
+                    df_pheno, level=DispositionLevel.REVIEW if has_review_verdicts else DispositionLevel.RELEASE,
+                )
+                for col in dropped_cols:
+                    phenotype_dict.pop(col, None)
+
+                if has_review_verdicts:
+                    dropped_cols.extend(review_dropped)
+
                 if dropped_cols:
-                    for col in dropped_cols:
-                        phenotype_dict.pop(col, None)
                     _LOGGER.info(
                         "phenotype/%s: dropped %d columns by disposition: %s",
                         phenotype_filepath.stem, len(dropped_cols), ", ".join(sorted(dropped_cols)),
@@ -2525,7 +2669,16 @@ class BIDSDataset:
                 )
                 with open(phenotype_subdir.joinpath(f"{phenotype_filepath.stem}.json"), "w") as f:
                     json.dump({schema_name: {**header, "data_elements": phenotype_dict}}, f, indent=2)
-            _LOGGER.info("Finished processing phenotype data.")
+                return phenotype_filepath.stem
+
+            n_pheno_workers = max(1, min(max_workers, len(phenotype_files)))
+            with ThreadPoolExecutor(max_workers=n_pheno_workers) as executor:
+                list(tqdm(
+                    executor.map(_process_one_phenotype, phenotype_files),
+                    total=len(phenotype_files),
+                    desc="Deidentifying phenotype",
+                ))
+            _LOGGER.info("Finished processing phenotype data (%d files).", len(phenotype_files))
 
         # --- quality metrics ---
         _LOGGER.info("Processing quality metrics for deidentification.")
@@ -2784,6 +2937,8 @@ class BIDSDataset:
         audio_tasks_to_include: t.List[str],
         skip_audio: bool = False,
         skip_audio_features: bool = False,
+        _normalized_include_tasks: t.Optional[t.Set[str]] = None,
+        _canonical_exclusions: t.Optional[t.Set[str]] = None,
     ) -> bool:
         """Process one participant directory for deidentification.
 
@@ -2793,13 +2948,17 @@ class BIDSDataset:
         pid = participant_dir.name[4:]
         new_pid = participant_ids_to_remap.get(pid, pid)
 
-        # Pre-compute inclusion set for task filtering
-        normalized_include_tasks = {normalize_task_label(t) for t in audio_tasks_to_include}
-        # Pre-compute exclusion set for filestem matching
-        canonical_exclusions = {
-            sanitize_task_entity_in_bids_stem(Path(s).stem)
-            for s in audio_filestems_to_remove
-        }
+        if _normalized_include_tasks is not None:
+            normalized_include_tasks = _normalized_include_tasks
+        else:
+            normalized_include_tasks = {normalize_task_label(t) for t in audio_tasks_to_include}
+        if _canonical_exclusions is not None:
+            canonical_exclusions = _canonical_exclusions
+        else:
+            canonical_exclusions = {
+                sanitize_task_entity_in_bids_stem(Path(s).stem)
+                for s in audio_filestems_to_remove
+            }
 
         n_audio_written = 0
         n_features_written = 0
