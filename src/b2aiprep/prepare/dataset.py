@@ -22,6 +22,7 @@ import logging
 import os
 import re
 import shutil
+import enum
 import typing as t
 from collections import OrderedDict, defaultdict
 from pathlib import Path
@@ -62,6 +63,18 @@ from pydantic import BaseModel
 from b2aiprep.prepare.redcap import RedCapDataset
 
 _LOGGER = logging.getLogger(__name__)
+
+
+class DispositionLevel(enum.Enum):
+    """Threshold for which disposition levels survive column dropping.
+
+    The hierarchy is RELEASE < REVIEW < INTERNAL.  Passing a level keeps
+    columns at that level and below, dropping everything above.
+    """
+    RELEASE = "release"
+    REVIEW = "review"
+    INTERNAL = "internal"
+
 
 DEFAULT_RESAMPLE_RATE = 16000
 DEFAULT_BIT_DEPTH = 16
@@ -1009,44 +1022,38 @@ class BIDSDataset:
     def _drop_columns_by_disposition(
         df: pd.DataFrame,
         field_map_df: t.Optional[pd.DataFrame] = None,
-        keep_review: bool = False,
+        level: DispositionLevel = DispositionLevel.RELEASE,
     ) -> t.Tuple[pd.DataFrame, t.List[str]]:
-        """Drop columns whose disposition is ``internal`` or ``review``.
+        """Drop columns above *level* in the disposition hierarchy.
 
-        If *field_map_df* is not supplied it is loaded from the packaged CSV
-        (cached after first load).  Falls back to the ``delete`` column when
-        ``disposition`` is absent (older field maps).  Columns not in the field
-        map are kept (they are pipeline-authored, not REDCap).
+        The hierarchy is RELEASE < REVIEW < INTERNAL.  At the default
+        ``RELEASE`` level, both ``internal`` and ``review`` columns are
+        dropped.  At ``REVIEW``, only ``internal`` columns are dropped
+        (``review`` columns are kept for per-value processing).  At
+        ``INTERNAL``, nothing is dropped.
 
-        When *keep_review* is True, only ``internal`` columns are dropped;
-        ``review`` columns are left for per-value processing.
+        Columns not in the field map are kept (pipeline-authored).
         """
         if field_map_df is None:
             if BIDSDataset._cached_field_map_df is None:
                 BIDSDataset._cached_field_map_df = BIDSDataset._load_reorganization_file(drop_deleted_columns=False)
             field_map_df = BIDSDataset._cached_field_map_df
 
-        if "disposition" in field_map_df.columns:
-            drop_dispositions = ["internal"] if keep_review else ["internal", "review"]
-            to_drop_names = set(
-                field_map_df.loc[
-                    field_map_df["disposition"].isin(drop_dispositions),
-                    "column_name",
-                ].dropna()
-            )
-        elif "delete" in field_map_df.columns:
-            _LOGGER.warning(
-                "Field map has no 'disposition' column; falling back to 'delete' column."
-            )
-            to_drop_names = set(
-                field_map_df.loc[
-                    field_map_df["delete"].str.upper() == "YES",
-                    "column_name",
-                ].dropna()
-            )
-        else:
-            _LOGGER.warning("Field map has neither 'disposition' nor 'delete' column; no columns dropped.")
+        if "disposition" not in field_map_df.columns:
+            raise ValueError("Field map is missing the 'disposition' column.")
+
+        if level == DispositionLevel.INTERNAL:
             return df, []
+
+        hierarchy = {"release": 0, "review": 1, "internal": 2}
+        threshold = hierarchy[level.value]
+        drop_dispositions = [d for d, rank in hierarchy.items() if rank > threshold]
+        to_drop_names = set(
+            field_map_df.loc[
+                field_map_df["disposition"].isin(drop_dispositions),
+                "column_name",
+            ].dropna()
+        )
 
         present = [c for c in df.columns if c in to_drop_names]
         if present:
@@ -2100,14 +2107,6 @@ class BIDSDataset:
                 if "session_id" in col:
                     df.loc[:, col] = BIDSDataset._map_series(df[col], remap_partial)
 
-        # Gender identity transform (column drops now handled by disposition)
-        if 'gender_identity' in df.columns:
-            _LOGGER.info(f"sex_at_birth value_counts: {df['sex_at_birth'].value_counts(dropna=False).to_dict()}")
-            _LOGGER.info(f"gender_identity value_counts: {df['gender_identity'].value_counts(dropna=False).to_dict()}")
-            df, phenotype = BIDSDataset._drop_columns_from_df_and_data_dict(
-                df, phenotype, ["gender_identity"], "Remove sensitive demographic columns"
-            )
-
         # Sanitize task labels in task phenotype tables (e.g., phenotype/task/acoustic_task.tsv)
         if "acoustic_task_name" in df.columns:
             df.loc[:, "acoustic_task_name"] = df["acoustic_task_name"].apply(
@@ -2646,7 +2645,7 @@ class BIDSDataset:
 
                 # Drop internal columns (and review if no manifest)
                 df_pheno, dropped_cols = BIDSDataset._drop_columns_by_disposition(
-                    df_pheno, keep_review=has_review_verdicts,
+                    df_pheno, level=DispositionLevel.REVIEW if has_review_verdicts else DispositionLevel.RELEASE,
                 )
                 for col in dropped_cols:
                     phenotype_dict.pop(col, None)

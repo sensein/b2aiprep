@@ -159,17 +159,14 @@ class TestDropColumnsByDisposition:
         assert list(result.columns) == ["col_a"]
         assert set(dropped) == {"col_b", "col_c"}
 
-    def test_fallback_to_delete(self):
+    def test_error_when_no_disposition(self):
         fm = _field_map_df([
             {"column_name": "col_a", "delete": "NO"},
             {"column_name": "col_b", "delete": "YES"},
         ])
         df = pd.DataFrame({"col_a": [1], "col_b": [2]})
-        result, dropped = BIDSDataset._drop_columns_by_disposition(
-            df, field_map_df=fm
-        )
-        assert list(result.columns) == ["col_a"]
-        assert dropped == ["col_b"]
+        with pytest.raises(ValueError, match="disposition"):
+            BIDSDataset._drop_columns_by_disposition(df, field_map_df=fm)
 
     def test_columns_not_in_field_map_kept(self):
         fm = _field_map_df([
@@ -313,16 +310,15 @@ class TestDispositionInPhenotypeContext:
         assert "computed_by_pipeline" in result.columns
         assert dropped == []
 
-    def test_fallback_to_delete_when_no_disposition(self):
-        """When field map has no disposition column, falls back to delete column."""
+    def test_error_when_no_disposition_in_phenotype_context(self):
+        """When field map has no disposition column, raises ValueError."""
         fm = _field_map_df([
             {"column_name": "age", "delete": "NO"},
             {"column_name": "zipcode", "delete": "YES"},
         ])
         df = pd.DataFrame({"age": ["30"], "zipcode": ["02139"]})
-        result, dropped = BIDSDataset._drop_columns_by_disposition(df, field_map_df=fm)
-        assert "age" in result.columns
-        assert "zipcode" not in result.columns
+        with pytest.raises(ValueError, match="disposition"):
+            BIDSDataset._drop_columns_by_disposition(df, field_map_df=fm)
 
 
 # ---------------------------------------------------------------------------
