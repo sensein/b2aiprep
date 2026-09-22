@@ -2448,7 +2448,7 @@ class BIDSDataset:
             pid = pdir.name[4:]
             new_pid = participant_ids_to_remap.get(pid, pid)
             try:
-                had_output = BIDSDataset._deidentify_one_participant(
+                had_output = BIDSDataset._deidentify_participant_files(
                     pdir, outdir, participant_ids_to_remap,
                     participant_session_id_to_remap,
                     audio_filestems_to_remove, audio_tasks_to_include,
@@ -2775,7 +2775,7 @@ class BIDSDataset:
         raise ValueError(f"Could not extract task name from path: {path}")
 
     @staticmethod
-    def _deidentify_one_participant(
+    def _deidentify_participant_files(
         participant_dir: Path,
         outdir: Path,
         participant_ids_to_remap: t.Dict[str, str],
