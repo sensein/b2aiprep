@@ -1964,12 +1964,12 @@ voice_perception_schema,voice_perception,voice_quality_perception,voice_quality_
 1 is the lowest quality and 10 is the best voice quality",NO,release,VARIABLE,redcap,pre-v4,NO
 voice_problem_severity_schema,voice_problem_severity,describe_the_severity_of_a,describe_the_severity_of_a,task,"Describe the severity of auditory-perceptual attributes of a voice problem
 *Overall severity scale (0-100)",YES,drop,VARIABLE,redcap,pre-v4,NO
-voice_problem_severity_schema,,voice_severity_completed_at,voice_severity_completed_at,,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO
+voice_problem_severity_schema,,voice_severity_completed_at,voice_severity_completed_at,,Questionnaire Completed At,YES,drop,VARIABLE,redcap,v4,NO
 voice_problem_severity_schema,voice_problem_severity,voice_severity_duration,voice_severity_duration,task,Questionnaire Duration (seconds),YES,drop,VARIABLE,redcap,pre-v4,NO
 voice_problem_severity_schema,voice_problem_severity,voice_severity_language,voice_severity_language,task,Voice Severity - Language,YES,drop,VARIABLE,redcap,v4,NO
 voice_problem_severity_schema,voice_problem_severity,voice_severity_origin,voice_severity_origin,task,Voice Severity - origin,YES,drop,VARIABLE,redcap,v4,NO
 voice_problem_severity_schema,voice_problem_severity,voice_severity_session_id,voice_severity_session_id,task,Session ID,YES,drop,VARIABLE,redcap,pre-v4,NO
-voice_problem_severity_schema,,voice_severity_started_at,voice_severity_started_at,,Questionnaire Started At,YES,internal,VARIABLE,redcap,v4,NO
+voice_problem_severity_schema,,voice_severity_started_at,voice_severity_started_at,,Questionnaire Started At,YES,drop,VARIABLE,redcap,v4,NO
 voice_problem_severity_schema,voice_problem_severity,voice_severity_via,voice_severity_via,task,Voice Severity - via,YES,drop,VARIABLE,redcap,v4,NO
 winograd_schemas_schema,,winograd_completed_at,winograd_completed_at,,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO
 winograd_schemas_schema,winograd,winograd_duration,winograd_duration,task,Questionnaire Duration (seconds),NO,release,VARIABLE,redcap,pre-v4,NO
@@ -3841,10 +3841,10 @@ d_neuro_ataxia_schema,ataxia,ataxia_icars_score_option,ataxia_icars_score_option
 ICARS total score (0 to 100):",NO,release,VARIABLE,redcap,v4,NO
 d_neuro_ataxia_schema,ataxia,ataxia_mds_recent_date_supporting,ataxia_mds_recent_date_supporting,diagnosis,"Movement disorders specialist
 
-Date of most recent documentation supporting ataxia:",NO,release,VARIABLE,redcap,v4,NO
+Date of most recent documentation supporting ataxia:",YES,internal,VARIABLE,redcap,v4,NO
 d_neuro_ataxia_schema,ataxia,ataxia_neurologist_recent_date_supporting,ataxia_neurologist_recent_date_supporting,diagnosis,"Neurologist
 
-Date of most recent documentation supporting ataxia:",NO,release,VARIABLE,redcap,v4,NO
+Date of most recent documentation supporting ataxia:",YES,internal,VARIABLE,redcap,v4,NO
 d_neuro_ataxia_schema,ataxia,ataxia_other_scale_identify_scale,ataxia_other_scale_identify_scale,diagnosis,Identify scale:,NO,review,VARIABLE,redcap,v4,NO
 d_neuro_ataxia_schema,ataxia,ataxia_other_scale_total_score,ataxia_other_scale_total_score,diagnosis,Total score:,NO,review,VARIABLE,redcap,v4,NO
 d_neuro_ataxia_schema,ataxia,ataxia_other_specialist_selected,ataxia_other_specialist_selected,diagnosis,"Other specialist
@@ -3972,7 +3972,7 @@ d_neuro_essential_tremor_schema,essential_tremor,et_ftmtrs_total_score,et_ftmtrs
 FTMTRS total score (0 to 144):",NO,release,VARIABLE,redcap,v4,NO
 d_neuro_essential_tremor_schema,essential_tremor,et_mds_recent_date_supporting,et_mds_recent_date_supporting,diagnosis,"Movement disorders specialist
 
-Date of most recent documentation supporting essential tremor:",NO,release,VARIABLE,redcap,v4,NO
+Date of most recent documentation supporting essential tremor:",YES,internal,VARIABLE,redcap,v4,NO
 d_neuro_essential_tremor_schema,essential_tremor,et_medications_other_specify,et_medications_other_specify,diagnosis,"Other 
 
 Please specify:",NO,review,VARIABLE,redcap,v4,NO
@@ -3986,7 +3986,7 @@ d_neuro_essential_tremor_schema,essential_tremor,et_medications_selection___prop
 d_neuro_essential_tremor_schema,essential_tremor,et_medications_selection___topiramate,et_medications_selection___topiramate,diagnosis,Medications (select all that apply),NO,release,CHECKBOX_OPTION,redcap,v4,NO
 d_neuro_essential_tremor_schema,essential_tremor,et_neurologist_recent_date_supporting,et_neurologist_recent_date_supporting,diagnosis,"Neurologist
 
-Date of most recent documentation supporting essential tremor:",NO,release,VARIABLE,redcap,v4,NO
+Date of most recent documentation supporting essential tremor:",YES,internal,VARIABLE,redcap,v4,NO
 d_neuro_essential_tremor_schema,essential_tremor,et_no_alternative_dx_documented,et_no_alternative_dx_documented,diagnosis,"No better alternative diagnosis is documented
 (Examples: Parkinsonian, dystonic, cerebellar, functional, or medication-induced tremor)",NO,release,VARIABLE,redcap,v4,NO
 d_neuro_essential_tremor_schema,essential_tremor,et_non_pharmacological_interventions_other_specify,et_non_pharmacological_interventions_other_specify,diagnosis,"Other 
