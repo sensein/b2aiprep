@@ -998,12 +998,16 @@ class BIDSDataset:
         export, counting them turned `diagnosis/amyotrophic_lateral_sclerosis.tsv` from 6 rows
         into 2005.
 
-        When every column is bookkeeping there is nothing to test against, so the rows are kept
-        as-is rather than silently emptying the table.
+        When every column is bookkeeping there is nothing to test against, so
+        the table is emptied — a table with no participant-entered data has no
+        research value.
         """
         substantive = [c for c in df.columns if c != id_col and c not in csv_only_columns]
         if not substantive:
-            return df
+            _LOGGER.warning(
+                "No substantive columns — only bookkeeping. Returning empty table."
+            )
+            return df.iloc[0:0]
         return df.dropna(how="all", subset=substantive)
 
     @staticmethod
