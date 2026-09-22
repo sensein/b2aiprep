@@ -1487,6 +1487,7 @@ class BIDSDataset:
         # the rest we will track as we go
         included_cols: t.Set[str] = set()
         missing_in_df_cols: t.Set[str] = set()
+        pipeline_cols: t.Set[str] = set()
         redcap_group_cols: t.Set[str] = set()
         # Columns described by bids_field_organization.csv alone, with no ReproSchema element.
         synthesized_cols: t.Set[str] = set()
@@ -1527,7 +1528,8 @@ class BIDSDataset:
                         redcap_group_cols.add(col_norm)
                         continue
                     if str(updated_data.get("source", "")).lower() == "pipeline":
-                        _LOGGER.debug(f'Pipeline-computed column "{column}" not in RedCap source (will be populated by enrichment).')
+                        _LOGGER.debug(f'Pipeline-computed column "{column}" not in RedCap source.')
+                        pipeline_cols.add(col_norm)
                         continue
                     _LOGGER.warning(f'Requested output for "{column}", but this column was not found in the source df.')
                     missing_in_df_cols.add(col_norm)
@@ -1721,11 +1723,13 @@ class BIDSDataset:
             len(excluded_in_df_not_in_reorg),
         )
         _LOGGER.info(
-            "RedCap ReproSchema expected column report: total=%d, included=%d, redcap_group_general_q=%d, deleted_intentionally=%d, missing_in_df=%d",
+            "RedCap ReproSchema expected column report: total=%d, included=%d, "
+            "redcap_group_general_q=%d, deleted_intentionally=%d, pipeline=%d, missing_in_df=%d",
             df_reorg_active.shape[0] + df_deleted.shape[0],
             len(included_cols),
             len(redcap_group_cols),
             len(cols_for_deletion),
+            len(pipeline_cols),
             len(missing_in_df_cols),
         )
         if synthesized_cols:
@@ -1844,7 +1848,6 @@ class BIDSDataset:
         # patient = create_fhir_patient(participant)
 
         session_instrument = BIDSDataset._get_instrument_for_name("sessions")
-        task_instrument = BIDSDataset._get_instrument_for_name("acoustic_tasks")
         recording_instrument = BIDSDataset._get_instrument_for_name("recordings")
 
         # Collect all audio copy tasks for parallel execution
@@ -1926,11 +1929,10 @@ class BIDSDataset:
             # skipped when the destination already exists). Track the normalized
             # entity -> recording_id and warn on a clash.
             seen_recording_entities: t.Dict[str, str] = {}
-            # Same for the acoustic-task sidecars. Two acoustic tasks in one session whose
-            # names differ only in case (e.g. "Free speech" and "Free Speech") are distinct
-            # task instances that now share one entity, so the second sidecar overwrites the
-            # first. Only the sidecar is affected -- the recordings under each task keep
-            # their own names -- and the same rows remain in phenotype/task/acoustic_task.tsv.
+            # Two acoustic tasks in one session whose names differ only in case
+            # (e.g. "Free speech" and "Free Speech") share one BIDS entity. Recordings
+            # under each task keep their own names and both tasks remain in
+            # phenotype/task/acoustic_task.tsv.
             seen_task_entities: t.Dict[str, str] = {}
 
             # multiple acoustic tasks are asked per session
@@ -1952,12 +1954,12 @@ class BIDSDataset:
                 if _task_collided:
                     _LOGGER.warning(
                         "acoustic_task_name collision: %r maps to the same BIDS task entity "
-                        "for participant %s session %s (acoustic_task_id %s and %s); the "
-                        "later sidecar overwrites the earlier. Recordings are unaffected and "
-                        "both tasks remain in phenotype/task/acoustic_task.tsv",
+                        "for participant %s session %s (acoustic_task_id %s and %s); "
+                        "recordings are unaffected and both tasks remain in "
+                        "phenotype/task/acoustic_task.tsv",
                         acoustic_task_name, participant_id, session_id, _prior_task, _task_id,
                     )
-                # Skip the task sidecar when none of its recordings have source audio.
+                # Skip tasks with no source audio — no recordings to process.
                 if audio_files_by_recording is not None:
                     _task_has_audio = any(
                         recording.get("recording_id", "") in recordings_with_source
@@ -2046,9 +2048,8 @@ class BIDSDataset:
         if audio_copy_tasks:
             _copy_audio_files_parallel(audio_copy_tasks, max_workers=max_audio_workers, sanitize_audio_format=sanitize_audio_format)
 
-        # Remove session directories that have no audio files (only task
-        # sidecars). This happens when every recording in a session had no
-        # source file but the task-level sidecar was still written.
+        # Remove session directories that have no audio files. This can
+        # happen when every recording in a session had no source file.
         removed_sessions: t.Set[str] = set()
         for session in participant["sessions"]:
             session_id = session["session_id"]
