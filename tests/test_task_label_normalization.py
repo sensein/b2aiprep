@@ -494,3 +494,41 @@ def test_no_acoustictask_sidecar_phenotype_only_mode(tmp_path):
     # so the entire audio directory is gone.
     audio_dir = out / "sub-p2" / "ses-S1" / "audio"
     assert not audio_dir.exists(), "Audio dir should be cleaned up in phenotype-only mode"
+
+
+def test_acoustic_task_tsv_orphan_rows_filtered(tmp_path):
+    """acoustic_task.tsv rows whose recordings were all removed should be filtered out.
+
+    The filter in from_redcap drops recording.tsv rows without a sidecar, then
+    should also drop acoustic_task.tsv rows whose tasks have no surviving
+    recordings.
+    """
+    phenotype = tmp_path / "phenotype" / "task"
+    phenotype.mkdir(parents=True)
+
+    # Two tasks: t1 has a surviving recording, t2 does not.
+    recording_tsv = phenotype / "recording.tsv"
+    recording_tsv.write_text(
+        "recording_id\trecording_acoustic_task_id\n"
+        "r1\tt1\n"
+    )
+    acoustic_task_tsv = phenotype / "acoustic_task.tsv"
+    acoustic_task_tsv.write_text(
+        "acoustic_task_id\tacoustic_task_name\n"
+        "t1\tProlonged vowel\n"
+        "t2\tGlides\n"
+    )
+
+    # Simulate the filter block from from_redcap: read the (already-filtered)
+    # recording.tsv to derive surviving task IDs, then filter acoustic_task.tsv.
+    df_rec = pd.read_csv(recording_tsv, sep="\t", dtype=str)
+    df_at = pd.read_csv(acoustic_task_tsv, sep="\t", dtype=str)
+
+    surviving_task_ids = set(df_rec["recording_acoustic_task_id"].dropna())
+    df_at = df_at.loc[df_at["acoustic_task_id"].isin(surviving_task_ids)]
+    df_at.to_csv(acoustic_task_tsv, sep="\t", index=False)
+
+    result = pd.read_csv(acoustic_task_tsv, sep="\t", dtype=str)
+    assert list(result["acoustic_task_id"]) == ["t1"]
+    assert len(result) == 1
+

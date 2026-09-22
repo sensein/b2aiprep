@@ -378,9 +378,10 @@ class BIDSDataset:
                 participants_with_audio.add(participant["record_id"])
                 all_recording_ids_with_sidecar.update(rec_ids_with_sidecar)
 
-        # Filter recording.tsv to only recordings that
-        # produced a sidecar. Recordings whose source was missing or truncated
-        # were skipped; their rows would otherwise reference nonexistent files.
+        # Filter recording.tsv to only recordings that produced a sidecar, then
+        # filter acoustic_task.tsv to only tasks that still have at least one
+        # recording. Recordings whose source was missing or truncated were
+        # skipped; their rows would otherwise reference nonexistent files.
         if audio_files_by_recording is not None and all_recording_ids_with_sidecar:
             phenotype_dir = os.path.join(outdir, "phenotype")
             for tsv_name, id_col in [("task/recording.tsv", "recording_id")]:
@@ -400,6 +401,29 @@ class BIDSDataset:
                         "without a sidecar on disk.",
                         tsv_name, before, after,
                     )
+
+            # acoustic_task.tsv rows whose recordings were all filtered out above
+            # are orphans — no file on disk references their acoustic_task_id.
+            recording_fp = os.path.join(phenotype_dir, "task/recording.tsv")
+            acoustic_task_fp = os.path.join(phenotype_dir, "task/acoustic_task.tsv")
+            if os.path.isfile(recording_fp) and os.path.isfile(acoustic_task_fp):
+                df_rec = pd.read_csv(recording_fp, sep="\t", dtype=str)
+                df_at = pd.read_csv(acoustic_task_fp, sep="\t", dtype=str)
+                if (
+                    "recording_acoustic_task_id" in df_rec.columns
+                    and "acoustic_task_id" in df_at.columns
+                ):
+                    surviving_task_ids = set(df_rec["recording_acoustic_task_id"].dropna())
+                    before_at = len(df_at)
+                    df_at = df_at.loc[df_at["acoustic_task_id"].isin(surviving_task_ids)]
+                    after_at = len(df_at)
+                    if before_at != after_at:
+                        df_at.to_csv(acoustic_task_fp, sep="\t", index=False)
+                        _LOGGER.info(
+                            "phenotype/task/acoustic_task.tsv: %d -> %d rows after "
+                            "removing tasks with no surviving recordings.",
+                            before_at, after_at,
+                        )
 
         # QA report: participants with no distributed audio
         participants_without_audio = {p["record_id"] for p in participants} - participants_with_audio
