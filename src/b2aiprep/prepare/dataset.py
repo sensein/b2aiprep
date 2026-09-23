@@ -254,9 +254,9 @@ class BIDSDataset:
                 reach a release.
             date_shift_anchor: Date each participant's earliest session is shifted to (within
                 three days). With None, every ``date_shift=YES`` column is blanked.
-            date_shift_log: Where to write the date-shift report (anchor and counts). Must be
-                outside ``outdir``: the anchor lets anyone holding a shifted table recover the
-                real dates.
+            date_shift_log: Optionally also write the date-shift report (anchor and counts) as
+                JSON. Must be outside ``outdir``: the anchor lets anyone holding a shifted table
+                recover the real dates. The report is always logged.
 
         Returns:
             BIDSDataset instance pointing to the created BIDS directory
@@ -915,6 +915,18 @@ class BIDSDataset:
         present = [c for c in df.columns if c in dropped]
         df = df.drop(columns=present)
         _LOGGER.info("Removed %d disposition=drop column(s) at ingest.", len(present))
+
+        # The anchor is logged with the run so the shifts can be reproduced; the log lives with
+        # the job output, outside the BIDS tree.
+        _LOGGER.info(
+            "Date shift: anchor=%s, %d of %d participant(s) shifted, session time zones %s.",
+            date_shift_anchor.isoformat() if date_shift_anchor else None,
+            report["participants_shifted"],
+            report["participants"],
+            report["session_timezone_sources"],
+        )
+        if report["participants_without_offset"]:
+            _LOGGER.info("Participants without a date offset: %s", report["participants_without_offset"])
 
         if date_shift_log is not None:
             log_path = Path(date_shift_log).resolve()

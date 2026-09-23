@@ -61,7 +61,10 @@ def test_mt_sinai_is_toronto():
 
 def _frame(rows):
     columns = ["record_id", "redcap_repeat_instrument", "session_site", "session_started_at", "phq_9_started_at", "surgery_date"]
-    return pd.DataFrame([dict(zip(columns, r)) for r in rows], columns=columns, dtype=object)
+    df = pd.DataFrame([dict(zip(columns, r)) for r in rows], columns=columns, dtype=object)
+    is_session = df["redcap_repeat_instrument"] == "Session"
+    df["session_id"] = [f"{rid}-s{i}" if s else None for i, (rid, s) in enumerate(zip(df["record_id"], is_session))]
+    return df
 
 
 def test_shift_keeps_local_time_and_real_offset():
@@ -98,13 +101,11 @@ def test_participants_without_offset_are_blanked():
     df = _frame([
         ("no_site", "Session", None, "2024-07-01T16:00:00Z", None, None),
         ("unknown_site", "Session", "Elsewhere", "2024-07-01T16:00:00Z", None, None),
-        ("two_sites", "Session", "MIT", "2024-07-01T16:00:00Z", None, None),
-        ("two_sites", "Session", "USF", "2024-08-01T16:00:00Z", None, None),
         ("no_session", "Q", None, None, "2024-07-01T16:00:00Z", None),
     ])
     out, report = shift_dates(df, ["session_started_at", "phq_9_started_at"], ANCHOR)
     assert out[["session_started_at", "phq_9_started_at"]].isna().all().all()
-    assert set(report["participants_without_offset"]) == {"no_site", "unknown_site", "two_sites", "no_session"}
+    assert set(report["participants_without_offset"]) == {"no_site", "unknown_site", "no_session"}
 
 
 def test_unparseable_and_empty_markers_are_blanked():
@@ -138,7 +139,7 @@ def _ingest_frame():
             {"record_id": "a", "redcap_repeat_instrument": "Session", "session_id": "s1",
              "session_site": "MIT", "session_started_at": "2024-07-01T16:00:00Z",
              "session_is_control_participant": "No"},
-            {"record_id": "a", "redcap_repeat_instrument": "Participant", "zipcode": "02139"},
+            {"record_id": "a", "redcap_repeat_instrument": "Participant", "city": "Cambridge"},
         ],
         dtype=object,
     )
@@ -148,7 +149,7 @@ def test_ingest_shifts_dates_and_removes_drop_columns(tmp_path):
     dataset = RedCapDataset(df=_ingest_frame(), source_type="redcap")
     log = tmp_path / "logs" / "date_shift.json"
     out = BIDSDataset._apply_field_map_at_ingest(dataset, ANCHOR, log, tmp_path / "bids")
-    assert "zipcode" not in out.df.columns
+    assert "city" not in out.df.columns
     assert "session_is_control_participant" not in out.df.columns
     # internal columns the pipeline reads are kept
     assert {"redcap_repeat_instrument", "session_site"} <= set(out.df.columns)
@@ -174,3 +175,69 @@ def test_instrument_columns_skip_dropped_columns():
     sessions = dataset.get_df_of_repeat_instrument(RepeatInstrument.SESSION.value)
     assert "session_is_control_participant" not in sessions.columns
     assert "session_started_at" in sessions.columns
+
+
+def _remote_frame(zipcode=None, state=None, via="Participant", site="MIT"):
+    """One participant: a session at 2024-07-01 20:00Z with one self-administered recording."""
+    return pd.DataFrame(
+        [
+            {"record_id": "r", "redcap_repeat_instrument": "Session", "session_id": "s1",
+             "session_site": site, "session_started_at": "2024-07-01T20:00:00Z"},
+            {"record_id": "r", "redcap_repeat_instrument": "Recording", "recording_session_id": "s1",
+             "recording_via": via, "recording_created_at": "2024-07-01T20:05:00Z"},
+            {"record_id": "r", "redcap_repeat_instrument": "Q - Generic - Demographics",
+             "zipcode": zipcode, "state_province": state},
+        ],
+        dtype=object,
+    )
+
+
+def _local_hour(df, col, row):
+    return datetime.datetime.fromisoformat(df.loc[row, col]).hour
+
+
+@pytest.mark.parametrize(
+    "zipcode, state, expected_hour, source",
+    [
+        ("90210", None, 13, "self_administered_postal_code"),   # Los Angeles, PDT
+        ("80202-1234", None, 14, "self_administered_postal_code"),  # Denver, MDT
+        ("M5G 1X5", None, 16, "self_administered_postal_code"),  # Toronto, EDT
+        (None, "IL", 15, "self_administered_region"),            # Chicago, CDT
+        (None, "FL", 16, "self_administered_site_fallback"),     # FL spans two zones -> site
+        (None, None, 16, "self_administered_site_fallback"),
+    ],
+)
+def test_self_administered_sessions_use_the_participants_location(zipcode, state, expected_hour, source):
+    out, report = shift_dates(_remote_frame(zipcode, state), ["session_started_at", "recording_created_at"], ANCHOR)
+    assert _local_hour(out, "session_started_at", 0) == expected_hour
+    assert _local_hour(out, "recording_created_at", 1) == expected_hour
+    assert report["session_timezone_sources"] == {source: 1}
+
+
+def test_in_person_sessions_use_the_site_even_if_the_participant_lives_elsewhere():
+    out, report = shift_dates(
+        _remote_frame("90210", via="Data Collector"), ["session_started_at", "recording_created_at"], ANCHOR
+    )
+    assert _local_hour(out, "session_started_at", 0) == 16  # MIT, EDT
+    assert report["session_timezone_sources"] == {"site": 1}
+
+
+def test_split_state_zip_codes_resolve_to_their_own_zone():
+    from b2aiprep.prepare.date_shift import postal_code_timezone, region_timezone
+
+    assert postal_code_timezone("37203") == "America/Chicago"   # Nashville
+    assert postal_code_timezone("37902") == "America/New_York"  # Knoxville
+    assert postal_code_timezone("32501") == "America/Chicago"   # Pensacola
+    assert postal_code_timezone("P9N 1A1") == "America/Winnipeg"  # Kenora
+    assert postal_code_timezone("2139") == "America/New_York"   # leading zero lost
+    assert region_timezone("TN") is None and region_timezone("ON") is None
+
+
+def test_participant_with_sessions_at_two_sites_is_shifted_per_session():
+    df = _frame([
+        ("a", "Session", "MIT", "2024-07-01T16:00:00Z", None, None),
+        ("a", "Session", "VUMC", "2024-08-01T16:00:00Z", None, None),
+    ])
+    out, _ = shift_dates(df, ["session_started_at"], ANCHOR)
+    assert _local_hour(out, "session_started_at", 0) == 12  # New York
+    assert _local_hour(out, "session_started_at", 1) == 11  # Chicago

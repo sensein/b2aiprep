@@ -120,8 +120,9 @@ def dashboard(bids_dir: str):
 @click.option(
     "--date-shift-log",
     type=click.Path(dir_okay=False),
-    required=True,
-    help="JSON report of the date shift (anchor and counts). Must be outside --outdir.",
+    default=None,
+    help="Also write the date-shift report (anchor and counts) as JSON here. Must be outside "
+    "--outdir. The report is always logged.",
 )
 def redcap2bids(
     filename,
@@ -143,7 +144,7 @@ def redcap2bids(
         max_audio_workers (int, optional): Number of parallel threads for audio copying. Defaults to 16.
         sanitize_audio_format (bool, optional): Standardize the audio to 16KHz, mono-channel. Default False.
         date_shift_anchor (datetime): Anchor date for per-participant date shifting.
-        date_shift_log (str): Path for the date-shift report, outside ``outdir``.
+        date_shift_log (str, optional): Also write the date-shift report here, outside ``outdir``.
 
     Raises:
         ValueError: If the specified output directory path exists but is not a directory.
