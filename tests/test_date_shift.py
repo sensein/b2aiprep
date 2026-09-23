@@ -292,3 +292,35 @@ def test_internal_only_rows_survive_ingest_and_are_dropped_after_deidentify(monk
     monkeypatch.setattr(BIDSDataset, "_cached_field_map_df", field_map)
     out = BIDSDataset._drop_rows_emptied_by_deidentify(deidentified, "enrollment")
     assert list(out.participant_id) == ["has_release"]
+
+
+def _sidecar_tree(root, pid="p1", ses="S1", recordings=(("rec-A", "noisy-sounds-1"), ("rec-B", "noisy-sounds-2"))):
+    audio = root / f"sub-{pid}" / f"ses-{ses}" / "audio"
+    audio.mkdir(parents=True)
+    for rec_id, task in recordings:
+        stem = f"sub-{pid}_ses-{ses}_task-{task}"
+        (audio / f"{stem}_recording-metadata.json").write_text(
+            json.dumps({"record_id": pid, "recording_id": rec_id.upper(), "session_id": ses})
+        )
+    return root / f"sub-{pid}"
+
+
+def test_recordings_are_removed_by_recording_id(tmp_path):
+    pdir = _sidecar_tree(tmp_path / "in")
+    out = tmp_path / "out"
+    BIDSDataset._deidentify_participant_files(
+        pdir, out, {"p1": "900001"}, {"S1": "01"}, [], ["noisy-sounds-1", "noisy-sounds-2"],
+        skip_audio=True, skip_audio_features=True, _recording_ids_to_remove={"rec-a"},
+    )
+    written = sorted(p.name for p in out.rglob("*.json"))
+    assert len(written) == 1 and "noisy-sounds-2" in written[0]
+
+
+def test_filestem_list_from_another_registration_warns(tmp_path, caplog):
+    import logging
+
+    with caplog.at_level(logging.INFO):
+        BIDSDataset._report_exclusion_coverage(
+            tmp_path, ["sub-001js_ses-x_task-passage-10"], set(), {"a-uuid-participant"}
+        )
+    assert any(r.levelno == logging.WARNING and "None match" in r.getMessage() for r in caplog.records)

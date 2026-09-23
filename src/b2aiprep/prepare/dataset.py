@@ -2750,6 +2750,56 @@ class BIDSDataset:
         return data
     
     @staticmethod
+    def _report_exclusion_coverage(
+        bids_path: Path,
+        filestems: t.Iterable[str],
+        recording_ids: t.AbstractSet[str],
+        input_tree_participants: t.AbstractSet[str],
+    ) -> None:
+        """Warn when an exclusion list cannot match this tree, instead of silently removing nothing."""
+        stems = list(filestems)
+        if stems:
+            subjects = {Path(s).stem.split("_")[0][len("sub-"):] for s in stems}
+            matched = subjects & set(input_tree_participants)
+            level = logging.WARNING if not matched else logging.INFO
+            _LOGGER.log(
+                level,
+                "audio_filestems_to_remove: %d stem(s) over %d subject(s); %d of those subjects are in "
+                "this tree.%s",
+                len(stems), len(subjects), len(matched),
+                " None match: the list uses IDs from another registration and removes nothing here "
+                "(use audio_recording_ids_to_remove.json)." if not matched else "",
+            )
+        if recording_ids:
+            recording_tsv = bids_path / "phenotype" / "task" / "recording.tsv"
+            if recording_tsv.exists():
+                present = set(
+                    pd.read_csv(recording_tsv, sep="\t", usecols=["recording_id"], dtype=str)
+                    ["recording_id"].dropna().str.lower()
+                )
+                _LOGGER.info(
+                    "audio_recording_ids_to_remove: %d ID(s), %d present in this tree.",
+                    len(recording_ids), len(recording_ids & present),
+                )
+
+    @staticmethod
+    def load_audio_recording_ids_to_remove(publish_config_dir: Path) -> t.Set[str]:
+        """Recording IDs to remove (optional ``audio_recording_ids_to_remove.json``), lowercased.
+
+        Preferred over filestems: ``recording_id`` is stable, while filestems embed participant
+        IDs and task labels that change between registrations (the pediatric filestem list uses
+        pre-RedCap subject IDs and old task names, and matches nothing in a v4 tree).
+        """
+        path = publish_config_dir / "audio_recording_ids_to_remove.json"
+        if not path.exists():
+            return set()
+        with open(path, "r") as f:
+            data = json.load(f)
+        if not isinstance(data, list):
+            raise ValueError(f"{path} should contain a list of recording IDs.")
+        return {str(r).strip().lower() for r in data if str(r).strip()}
+
+    @staticmethod
     def load_audio_filestems_to_remove(publish_config_dir: Path) -> t.List[str]:
         """Load list of audio file stems to remove from JSON file."""
         audio_to_remove_path = publish_config_dir / "audio_filestems_to_remove.json"
@@ -2839,6 +2889,10 @@ class BIDSDataset:
             sanitize_task_entity_in_bids_stem(Path(s).stem)
             for s in audio_filestems_to_remove
         }
+        recording_ids_to_remove = BIDSDataset.load_audio_recording_ids_to_remove(deidentify_config_dir)
+        BIDSDataset._report_exclusion_coverage(
+            self.data_path, audio_filestems_to_remove, recording_ids_to_remove, input_tree_participants
+        )
 
         def _process_one(pdir: Path) -> t.Optional[str]:
             pid = pdir.name[4:]
@@ -2851,6 +2905,7 @@ class BIDSDataset:
                     skip_audio, skip_audio_features,
                     _normalized_include_tasks=normalized_include_tasks,
                     _canonical_exclusions=canonical_exclusions,
+                    _recording_ids_to_remove=recording_ids_to_remove,
                     disposition_level=disposition_level or DispositionLevel.RELEASE,
                     keep_shifted_dates=keep_shifted_dates,
                 )
@@ -3239,6 +3294,7 @@ class BIDSDataset:
         skip_audio_features: bool = False,
         _normalized_include_tasks: t.Optional[t.Set[str]] = None,
         _canonical_exclusions: t.Optional[t.Set[str]] = None,
+        _recording_ids_to_remove: t.AbstractSet[str] = frozenset(),
         disposition_level: DispositionLevel = DispositionLevel.RELEASE,
         keep_shifted_dates: bool = False,
     ) -> bool:
@@ -3264,6 +3320,8 @@ class BIDSDataset:
 
         n_audio_written = 0
         n_features_written = 0
+        # Filestems of recordings removed by recording_id, so their features are removed too.
+        excluded_recording_stems: t.Set[str] = set()
         n_skipped = 0
 
         # --- Audio files and their sidecars ---
@@ -3325,9 +3383,12 @@ class BIDSDataset:
             out_wav = outdir / f"sub-{new_pid}" / f"ses-{new_session_id}" / "audio" / (
                 f"sub-{new_pid}_ses-{new_session_id}_{stem_ending}.wav"
             )
-            out_wav.parent.mkdir(parents=True, exist_ok=True)
-
             metadata = json.loads(json_path.read_text())
+            if str(metadata.get("recording_id", "")).strip().lower() in _recording_ids_to_remove:
+                n_skipped += 1
+                excluded_recording_stems.add(recording_stem)
+                continue
+            out_wav.parent.mkdir(parents=True, exist_ok=True)
             update_metadata_record_and_session_id(
                 metadata, participant_ids_to_remap, participant_session_id_to_remap
             )
@@ -3356,7 +3417,7 @@ class BIDSDataset:
                     recording_stem = "_".join(parts[:task_idx + 1])
                 except StopIteration:
                     recording_stem = canonical_stem
-                if recording_stem in canonical_exclusions:
+                if recording_stem in canonical_exclusions or recording_stem in excluded_recording_stems:
                     n_skipped += 1
                     continue
 
