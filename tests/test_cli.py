@@ -460,7 +460,7 @@ def test_redcap2bids_cli(setup_temp_files):
     """Test the 'b2aiprep-cli redcap2bids' command using subprocess."""
     redcap_csv_path, audio_dir, _, _ = setup_temp_files
 
-    with tempfile.TemporaryDirectory() as outdir:
+    with tempfile.TemporaryDirectory() as outdir, tempfile.TemporaryDirectory() as logdir:
         command = [
             "b2aiprep-cli",
             "redcap2bids",
@@ -469,11 +469,29 @@ def test_redcap2bids_cli(setup_temp_files):
             outdir,
             "--audiodir",
             audio_dir,
+            "--date-shift-anchor",
+            "2100-01-01",
+            "--date-shift-log",
+            os.path.join(logdir, "date_shift.json"),
         ]
 
         result = subprocess.run(command, capture_output=True, text=True)
         assert result.returncode == 0, f"CLI command failed: {result.stderr}"
         assert os.path.exists(outdir), "Output directory was not created"
+        assert os.path.exists(os.path.join(logdir, "date_shift.json")), "Date-shift log not written"
+
+
+def test_redcap2bids_cli_requires_a_date_shift_anchor(setup_temp_files):
+    """The anchor has no default, so it can never be recovered from the code."""
+    redcap_csv_path, _, _, _ = setup_temp_files
+    with tempfile.TemporaryDirectory() as outdir:
+        result = subprocess.run(
+            ["b2aiprep-cli", "redcap2bids", redcap_csv_path, "--outdir", outdir],
+            capture_output=True,
+            text=True,
+        )
+    assert result.returncode != 0
+    assert "--date-shift-anchor" in result.stderr
 
 
 def test_create_bundled_dataset_cli(setup_bids_structure):

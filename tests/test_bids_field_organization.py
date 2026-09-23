@@ -110,7 +110,7 @@ def test_every_active_row_resolves_or_is_a_redcap_generated_column(reorg_rows, r
     unresolved = sorted(
         row["column_name_source"]
         for row in reorg_rows
-        if row["delete"].strip().upper() != "YES"
+        if row["disposition"] != "drop"
         and row.get("source", "").strip().lower() != "pipeline"
         and row["column_name_source"].rsplit("___", 1)[0] not in reachable_elements
         and not _is_redcap_generated(row["column_name_source"])
@@ -131,7 +131,7 @@ def test_redcap_generated_rows_are_described_by_the_csv(reorg_rows):
     undescribed = sorted(
         row["column_name_source"]
         for row in reorg_rows
-        if row["delete"].strip().upper() != "YES"
+        if row["disposition"] != "drop"
         and _is_redcap_generated(row["column_name_source"])
         and not row["description"].strip()
     )
@@ -150,7 +150,11 @@ def test_active_rows_are_well_formed(reorg_rows):
             )
         if not row["description"].strip():
             problems.append(f"line {index}: empty description for {row['column_name_source']}")
-        if row["delete"].strip().upper() == "YES":
+        if row["disposition"] == "drop":
+            continue
+        # Internal rows the pipeline only reads (e.g. redcap_repeat_instrument) are never
+        # written to phenotype/; shifted dates are, so they need a table like any other row.
+        if row["disposition"] == "internal" and row["date_shift"].strip().upper() != "YES":
             continue
         # group becomes a phenotype/ subdirectory and schema_name a filename
         if not row["schema_name"].strip():
@@ -181,7 +185,7 @@ def test_output_column_names_are_unique_per_schema(reorg_rows):
     seen = {}
     collisions = []
     for row in reorg_rows:
-        if row["delete"].strip().upper() == "YES":
+        if row["disposition"] == "drop":
             continue
         key = (row["schema_name"].strip(), row["column_name"].strip())
         if key in seen:
@@ -198,7 +202,7 @@ def test_group_is_consistent_within_a_schema(reorg_rows):
     """
     groups = {}
     for row in reorg_rows:
-        if row["delete"].strip().upper() == "YES":
+        if row["disposition"] == "drop" or not row["schema_name"].strip():
             continue
         groups.setdefault(row["schema_name"].strip(), set()).add(row["group"].strip())
     inconsistent = {name: sorted(v) for name, v in groups.items() if len(v) > 1}
@@ -255,7 +259,8 @@ def test_disposition_values_are_valid(reorg_rows):
 
 
 def test_drop_fields_have_delete_yes(reorg_rows):
-    """disposition=drop must agree with delete=YES until delete is retired."""
+    """``delete`` is retired (disposition decides) but kept as a historical record; keep it
+    consistent so the record stays readable."""
     mismatches = [
         (row["column_name_source"], row["delete"], row["disposition"])
         for row in reorg_rows
@@ -265,8 +270,8 @@ def test_drop_fields_have_delete_yes(reorg_rows):
 
 
 def test_internal_fields_have_delete_yes(reorg_rows):
-    """disposition=internal fields are consumed at ingest but never published,
-    so delete=YES must hold until the pipeline reads disposition natively."""
+    """disposition=internal fields were ``delete=YES`` when ``delete`` was the control; the
+    retired column is kept consistent as a historical record."""
     mismatches = [
         (row["column_name_source"], row["delete"], row["disposition"])
         for row in reorg_rows

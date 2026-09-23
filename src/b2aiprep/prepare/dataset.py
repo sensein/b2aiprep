@@ -18,6 +18,7 @@ sub-p1/
 
 from copy import copy, deepcopy
 from functools import partial
+import datetime
 import logging
 import os
 import re
@@ -41,6 +42,7 @@ from soundfile import LibsndfileError
 from tqdm import tqdm
 
 from b2aiprep.prepare.constants import RepeatInstrument, Instrument
+from b2aiprep.prepare.date_shift import shift_dates
 from b2aiprep.prepare.update import build_activity_payload
 from b2aiprep.prepare.utils import (
     copy_package_resource,
@@ -235,6 +237,8 @@ class BIDSDataset:
         max_audio_workers: int = 16,
         sanitize_audio_format: bool = False,
         drop_audio_check: bool = True,
+        date_shift_anchor: t.Optional[datetime.date] = None,
+        date_shift_log: t.Optional[t.Union[str, Path]] = None,
     ) -> 'BIDSDataset':
         """
         Create a BIDSDataset by converting a RedCapDataset to BIDS format.
@@ -248,6 +252,11 @@ class BIDSDataset:
             drop_audio_check: Exclude the session microphone check from every output (default
                 True). Pass False to keep it for internal quality review -- it must never
                 reach a release.
+            date_shift_anchor: Date each participant's earliest session is shifted to (within
+                three days). With None, every ``date_shift=YES`` column is blanked.
+            date_shift_log: Where to write the date-shift report (anchor and counts). Must be
+                outside ``outdir``: the anchor lets anyone holding a shifted table recover the
+                real dates.
 
         Returns:
             BIDSDataset instance pointing to the created BIDS directory
@@ -258,6 +267,10 @@ class BIDSDataset:
         if drop_audio_check:
             redcap_dataset = copy(redcap_dataset)
             redcap_dataset.df = BIDSDataset._drop_audio_check_rows(redcap_dataset.df)
+
+        redcap_dataset = BIDSDataset._apply_field_map_at_ingest(
+            redcap_dataset, date_shift_anchor, date_shift_log, outdir
+        )
 
         _LOGGER.info("Converting RedCap dataset to BIDS phenotype files.")
         # Subselect the RedCap dataframe and output components to individual files in the phenotype directory
@@ -879,16 +892,68 @@ class BIDSDataset:
         return activities
 
     @staticmethod
-    def _load_reorganization_file(drop_deleted_columns: bool = True) -> pd.DataFrame:
-        """Load the reproschema reorganization CSV file.
+    def _apply_field_map_at_ingest(
+        redcap_dataset: RedCapDataset,
+        date_shift_anchor: t.Optional[datetime.date],
+        date_shift_log: t.Optional[t.Union[str, Path]],
+        outdir: t.Union[str, Path],
+    ) -> RedCapDataset:
+        """Shift ``date_shift=YES`` dates, then remove every ``disposition=drop`` column.
+
+        Runs before any output is written, so real dates and dropped columns never reach the
+        BIDS tree. Dates are shifted first because the shift reads ``session_site``.
+        """
+        field_map = BIDSDataset._load_reorganization_file(exclude_dropped=False)
+        date_columns = field_map.loc[
+            field_map["date_shift"].astype(str).str.upper() == "YES", "column_name_source"
+        ].tolist()
+        df, report = shift_dates(redcap_dataset.df, date_columns, date_shift_anchor)
+
+        # A source column is removed only when no row keeps it.
+        kept = set(field_map.loc[field_map["disposition"] != "drop", "column_name_source"])
+        dropped = set(field_map.loc[field_map["disposition"] == "drop", "column_name_source"]) - kept
+        present = [c for c in df.columns if c in dropped]
+        df = df.drop(columns=present)
+        _LOGGER.info("Removed %d disposition=drop column(s) at ingest.", len(present))
+
+        if date_shift_log is not None:
+            log_path = Path(date_shift_log).resolve()
+            if log_path.is_relative_to(Path(outdir).resolve()):
+                raise ValueError(f"date_shift_log must be outside the BIDS output: {log_path}")
+            log_path.parent.mkdir(parents=True, exist_ok=True)
+            with open(log_path, "w") as fp:
+                json.dump(
+                    {
+                        "anchor": date_shift_anchor.isoformat() if date_shift_anchor else None,
+                        "source": redcap_dataset.metadata.get("source_file"),
+                        "outdir": str(Path(outdir).resolve()),
+                        "written_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+                        **report,
+                    },
+                    fp,
+                    indent=2,
+                )
+            _LOGGER.info("Date-shift report written to %s", log_path)
+
+        shifted = copy(redcap_dataset)
+        shifted.df = df
+        return shifted
+
+    @staticmethod
+    def _load_reorganization_file(exclude_dropped: bool = True) -> pd.DataFrame:
+        """Load the field map (bids_field_organization.csv).
+
+        Args:
+            exclude_dropped: Leave out ``disposition=drop`` rows. The CSV's ``delete`` column is
+                kept as a historical record only and is not read.
 
         Returns:
             DataFrame containing the reorganization data.
         """
         reorganization_file = files("b2aiprep.prepare.resources").joinpath("bids_field_organization.csv")
         df = pd.read_csv(reorganization_file, sep=',', header=0)
-        if drop_deleted_columns:
-            df = df.loc[df['delete'].str.upper() != 'YES']
+        if exclude_dropped:
+            df = df.loc[df['disposition'] != 'drop']
         return df
 
     @staticmethod
@@ -1060,7 +1125,7 @@ class BIDSDataset:
         """
         if field_map_df is None:
             if BIDSDataset._cached_field_map_df is None:
-                BIDSDataset._cached_field_map_df = BIDSDataset._load_reorganization_file(drop_deleted_columns=False)
+                BIDSDataset._cached_field_map_df = BIDSDataset._load_reorganization_file(exclude_dropped=False)
             field_map_df = BIDSDataset._cached_field_map_df
 
         if "disposition" not in field_map_df.columns:
@@ -1113,7 +1178,7 @@ class BIDSDataset:
 
         if field_map_df is None:
             if BIDSDataset._cached_field_map_df is None:
-                BIDSDataset._cached_field_map_df = BIDSDataset._load_reorganization_file(drop_deleted_columns=False)
+                BIDSDataset._cached_field_map_df = BIDSDataset._load_reorganization_file(exclude_dropped=False)
             field_map_df = BIDSDataset._cached_field_map_df
 
         source_to_output: t.Dict[str, str] = {}
@@ -1153,7 +1218,7 @@ class BIDSDataset:
         """Return the set of column names with disposition=review."""
         if field_map_df is None:
             if BIDSDataset._cached_field_map_df is None:
-                BIDSDataset._cached_field_map_df = BIDSDataset._load_reorganization_file(drop_deleted_columns=False)
+                BIDSDataset._cached_field_map_df = BIDSDataset._load_reorganization_file(exclude_dropped=False)
             field_map_df = BIDSDataset._cached_field_map_df
         if "disposition" not in field_map_df.columns:
             return set()
@@ -1283,10 +1348,11 @@ class BIDSDataset:
         calculated_columns: t.AbstractSet[str] = frozenset(),
         schema_name: str = "",
         schema_group: str = "",
+        internal_columns: t.AbstractSet[str] = frozenset(),
     ) -> pd.DataFrame:
         """Drop rows that contain no participant-entered data.
 
-        Two classes of column are excluded from the emptiness test:
+        Three classes of column are excluded from the emptiness test:
 
         * ``csv_only_columns``: columns with no ReproSchema definition --
           ``<form>_complete``, ``<form>_timestamp``, and other RedCap-generated
@@ -1295,6 +1361,9 @@ class BIDSDataset:
           RedCap evaluates these for every record regardless of form completion,
           so a participant who never had an ALS assessment can still have
           ``gsd_calculation = 0``.
+        * ``internal_columns``: ``disposition=internal`` in the field map (form
+          timestamps, date-shifted dates). They are stripped at deidentification,
+          so a row holding only these has nothing to publish.
 
         For **diagnosis** forms (``schema_group == "diagnosis"``), any row where
         ``<form>_complete`` is not ``Complete`` is dropped regardless of data
@@ -1306,7 +1375,7 @@ class BIDSDataset:
         the table is emptied — a table with no participant-entered data has no
         research value.
         """
-        non_substantive = set(csv_only_columns) | set(calculated_columns)
+        non_substantive = set(csv_only_columns) | set(calculated_columns) | set(internal_columns)
         substantive = [c for c in df.columns if c != id_col and c not in non_substantive]
         if not substantive:
             _LOGGER.warning(
@@ -1494,12 +1563,12 @@ class BIDSDataset:
         #   (the schema_name becomes the filename)
         # and to map from column_name_source -> column_name
         #   (the column_name becomes the column in the TSV file)
-        df_reorg = BIDSDataset._load_reorganization_file(drop_deleted_columns=False)
+        df_reorg = BIDSDataset._load_reorganization_file(exclude_dropped=False)
 
         # Track inclusion/exclusion for a final report.
         # Note: columns are tracked using their *source* names (i.e., RedCap/df column names).
-        df_deleted = df_reorg.loc[df_reorg['delete'].str.upper() == 'YES']
-        df_reorg_active = df_reorg.loc[df_reorg['delete'].str.upper() != 'YES']
+        df_deleted = df_reorg.loc[df_reorg['disposition'] == 'drop']
+        df_reorg_active = df_reorg.loc[df_reorg['disposition'] != 'drop']
 
         _norm = lambda c: str(c)
         df_cols = {_norm(c) for c in df.columns}
@@ -1537,6 +1606,9 @@ class BIDSDataset:
             # Tracked separately from csv_only because they DO have ReproSchema definitions
             # but should not count as substantive participant-entered data.
             "columns_calculated": [],
+            # disposition=internal columns: kept in the pre-deidentification tree for internal
+            # use and stripped at deidentify, so they must not decide whether a row has data.
+            "columns_internal": [],
         }
         updated_schemas = defaultdict(lambda: deepcopy(payload))
         for updated_schema_name, group in df_reorg.groupby('schema_name'):
@@ -1614,6 +1686,8 @@ class BIDSDataset:
                     updated_schemas[updated_schema_name]['columns_csv_only'].append(new_element_name)
                 if str(updated_data.get("is_redcap_calculation", "")).upper() == "YES":
                     updated_schemas[updated_schema_name]['columns_calculated'].append(new_element_name)
+                if updated_data.get("disposition") == "internal":
+                    updated_schemas[updated_schema_name]['columns_internal'].append(new_element_name)
                 updated_schemas[updated_schema_name]['schema_name_source'].append(updated_data["schema_name_source"])
 
                 # update the payload so we have a reproschema json for this df
@@ -1629,6 +1703,7 @@ class BIDSDataset:
             schema_name_sources = set(payload.pop("schema_name_source"))
             csv_only_columns = set(payload.pop("columns_csv_only"))
             calculated_columns = set(payload.pop("columns_calculated"))
+            internal_columns = set(payload.pop("columns_internal"))
             group = payload.pop("group")
             if "record_id" not in columns_for_indexing:
                 columns_for_indexing = ["record_id"] + columns_for_indexing
@@ -1706,6 +1781,7 @@ class BIDSDataset:
             selected_df = BIDSDataset._drop_rows_without_substantive_data(
                 selected_df, id_col, csv_only_columns, calculated_columns,
                 schema_name=schema_name, schema_group=group,
+                internal_columns=internal_columns,
             )
             if selected_df.empty:
                 _LOGGER.warning(f"No data remaining after dropping empty rows for {schema_name}")
@@ -1716,6 +1792,7 @@ class BIDSDataset:
                 selected_df = BIDSDataset._drop_rows_without_substantive_data(
                     selected_df, id_col, csv_only_columns, calculated_columns,
                     schema_name=schema_name, schema_group=group,
+                    internal_columns=internal_columns,
                 )
                 if selected_df.empty:
                     _LOGGER.warning(f"No data remaining after dropping empty rows for {schema_name}")
@@ -1937,7 +2014,8 @@ class BIDSDataset:
         sessions_rows = []
         
         for session in participant["sessions"]:
-            sessions_row = {key: session[key] for key in session_instrument.columns}
+            # Columns removed at ingest (disposition=drop) are absent from the session dict.
+            sessions_row = {key: session[key] for key in session_instrument.columns if key in session}
             sessions_rows.append(sessions_row)
             session_id = session["session_id"]
             # TODO: prepare a session resource to use as the encounter reference for

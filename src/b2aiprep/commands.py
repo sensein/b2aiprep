@@ -110,12 +110,27 @@ def dashboard(bids_dir: str):
 @click.option("--audiodir", type=click.Path(), default=None, show_default=True)
 @click.option("--max-audio-workers", type=int, default=16, show_default=True, help="Number of parallel threads for audio file copying")
 @click.option("--sanitize_audio_format/--no-sanitize_audio_format", type=bool, default=False, show_default=True)
+@click.option(
+    "--date-shift-anchor",
+    type=click.DateTime(formats=["%Y-%m-%d"]),
+    required=True,
+    help="Date (YYYY-MM-DD) each participant's earliest session is shifted to, within three days. "
+    "No default: the anchor must never be stored in code.",
+)
+@click.option(
+    "--date-shift-log",
+    type=click.Path(dir_okay=False),
+    required=True,
+    help="JSON report of the date shift (anchor and counts). Must be outside --outdir.",
+)
 def redcap2bids(
     filename,
     outdir,
     audiodir,
     max_audio_workers,
     sanitize_audio_format,
+    date_shift_anchor,
+    date_shift_log,
 ):
     """Parses a RedCap CSV and a folder of audio files into the Brain Imaging Data Structure (BIDS) format.
 
@@ -127,6 +142,8 @@ def redcap2bids(
                                   If not provided, only the REDCap data is processed.
         max_audio_workers (int, optional): Number of parallel threads for audio copying. Defaults to 16.
         sanitize_audio_format (bool, optional): Standardize the audio to 16KHz, mono-channel. Default False.
+        date_shift_anchor (datetime): Anchor date for per-participant date shifting.
+        date_shift_log (str): Path for the date-shift report, outside ``outdir``.
 
     Raises:
         ValueError: If the specified output directory path exists but is not a directory.
@@ -147,7 +164,9 @@ def redcap2bids(
         outdir=Path(outdir),
         audiodir=audiodir,
         max_audio_workers=max_audio_workers,
-        sanitize_audio_format=sanitize_audio_format
+        sanitize_audio_format=sanitize_audio_format,
+        date_shift_anchor=date_shift_anchor.date(),
+        date_shift_log=date_shift_log,
     )
 
 @click.command()

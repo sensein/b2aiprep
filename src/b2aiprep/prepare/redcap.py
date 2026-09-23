@@ -10,6 +10,7 @@ The RedCapDataset class handles validation, imputation, and export functionality
 that is common to both data sources.
 """
 
+import functools
 import json
 import logging
 import os
@@ -592,6 +593,23 @@ def parse_audio(audio_list, dummy_audio_files=False, is_import=False):
 _LOGGER = logging.getLogger(__name__)
 
 
+@functools.lru_cache(maxsize=1)
+def _dropped_source_columns() -> t.FrozenSet[str]:
+    """Source columns whose every field-map row is ``disposition=drop``.
+
+    ``BIDSDataset.from_redcap`` removes these at ingest, so an instrument column list naming
+    one must not re-create it.
+    """
+    field_map = pd.read_csv(
+        files("b2aiprep").joinpath("prepare", "resources", "bids_field_organization.csv"),
+        dtype=str,
+    )
+    kept = set(field_map.loc[field_map["disposition"] != "drop", "column_name_source"])
+    return frozenset(
+        set(field_map.loc[field_map["disposition"] == "drop", "column_name_source"]) - kept
+    )
+
+
 class RedCapDataset:
     """
     A centralized class for parsing and managing data from RedCap and ReproSchema sources.
@@ -1039,7 +1057,10 @@ class RedCapDataset:
         Returns:
             The filtered DataFrame
         """
-        columns = instrument.get_columns()
+        columns = [
+            c for c in instrument.get_columns()
+            if c in self.df.columns or c not in _dropped_source_columns()
+        ]
         idx = self.df["redcap_repeat_instrument"] == instrument.text
         columns_present = [c for c in columns if c in self.df.columns]
         dff = self.df.loc[idx, columns_present].copy()

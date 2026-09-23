@@ -10,12 +10,12 @@ acoustic_task_schema,acoustic_task,acoustic_task_session_id,acoustic_task_sessio
 acoustic_task_schema,acoustic_task,acoustic_task_started_at,acoustic_task_started_at,task,Acoustic Task Started At,YES,internal,VARIABLE,redcap,v4,NO,YES
 acoustic_task_schema,acoustic_task,acoustic_task_status,acoustic_task_status,task,Acoustic Task Status,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 acoustic_task_schema,acoustic_task,acoustic_task_via,acoustic_task_via,task,Acoustic Task - via,NO,release,VARIABLE,redcap,v4,NO,NO
-adhd_adult_schema,adhd,adhd_completed_at,adhd_completed_at,,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES
+adhd_adult_schema,adhd_adult,adhd_completed_at,adhd_completed_at,questionnaire,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES
 adhd_adult_schema,adhd_adult,adhd_duration,adhd_duration,questionnaire,Questionnaire Duration (seconds),NO,release,VARIABLE,redcap,pre-v4,NO,NO
 adhd_adult_schema,adhd_adult,adhd_language,adhd_language,questionnaire,ADHD Adult - Language,NO,release,VARIABLE,redcap,v4,NO,NO
 adhd_adult_schema,adhd_adult,adhd_origin,adhd_origin,questionnaire,ADHD Adult - Origin,NO,release,VARIABLE,redcap,v4,NO,NO
 adhd_adult_schema,adhd_adult,adhd_session_id,adhd_session_id,questionnaire,Session ID,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-adhd_adult_schema,adhd,adhd_started_at,adhd_started_at,,Questionnaire Started At,YES,internal,VARIABLE,redcap,v4,NO,YES
+adhd_adult_schema,adhd_adult,adhd_started_at,adhd_started_at,questionnaire,Questionnaire Started At,YES,internal,VARIABLE,redcap,v4,NO,YES
 adhd_adult_schema,adhd_adult,adhd_via,adhd_via,questionnaire,ADHD Adult - via,NO,release,VARIABLE,redcap,v4,NO,NO
 adhd_adult_schema,adhd_adult,avoidance,avoidance,questionnaire,"When you have a task that requires a lot of thought, how often do you avoid or delay getting started?",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 adhd_adult_schema,adhd_adult,careless,careless,questionnaire,How often do you make careless mistakes when you have to work on a boring or difficult project?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -1125,12 +1125,12 @@ gad7_anxiety_schema,gad7_anxiety,trouble_relaxing,trouble_relaxing,questionnaire
 gad7_anxiety_schema,gad7_anxiety,worry_too_much,worry_too_much,questionnaire,Worrying too much about different things.,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 generic_demographics_schema,pediatric_demographics,peds_cognition,peds_cognition,pediatric,"Because of a physical, mental, or emotional condition, do you have serious difficulty concentrating, remembering, or making decisions?",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 generic_demographics_schema,pediatric_demographics,peds_country,peds_country,pediatric,Country,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-generic_demographics_schema,pediatric_demographics,peds_demographics_completed_at,peds_demographics_completed_at,,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES
+generic_demographics_schema,pediatric_demographics,peds_demographics_completed_at,peds_demographics_completed_at,pediatric,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES
 generic_demographics_schema,pediatric_demographics,peds_demographics_duration,peds_demographics_duration,pediatric,Questionnaire Duration (seconds),NO,release,VARIABLE,redcap,pre-v4,NO,NO
 generic_demographics_schema,pediatric_demographics,peds_demographics_language,peds_demographics_language,pediatric,Peds Demographics - Language,NO,release,VARIABLE,redcap,v4,NO,NO
 generic_demographics_schema,pediatric_demographics,peds_demographics_origin,peds_demographics_origin,pediatric,Peds Demographics - origin,NO,release,VARIABLE,redcap,v4,NO,NO
 generic_demographics_schema,pediatric_demographics,peds_demographics_session_id,peds_demographics_session_id,pediatric,Session ID,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-generic_demographics_schema,pediatric_demographics,peds_demographics_started_at,peds_demographics_started_at,,Questionnaire Started At,YES,internal,VARIABLE,redcap,v4,NO,YES
+generic_demographics_schema,pediatric_demographics,peds_demographics_started_at,peds_demographics_started_at,pediatric,Questionnaire Started At,YES,internal,VARIABLE,redcap,v4,NO,YES
 generic_demographics_schema,pediatric_demographics,peds_demographics_via,peds_demographics_via,pediatric,Peds Demographics - via,NO,release,VARIABLE,redcap,v4,NO,NO
 generic_demographics_schema,pediatric_demographics,peds_edu_level,peds_edu_level,pediatric,What is your highest level of education?,NO,release,VARIABLE,redcap,v4,NO,NO
 generic_demographics_schema,pediatric_demographics,peds_first_language,peds_first_language,pediatric,What was your first language?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -1233,7 +1233,7 @@ generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_v_dis,ped
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_v_dis_specified,peds_mc_v_dis_specified,pediatric,Please specify,NO,review,VARIABLE,redcap,v4,NO,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_via,peds_mc_via,pediatric,Peds Medical Conditions - via,NO,release,VARIABLE,redcap,v4,NO,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_voice_disorders,peds_mc_voice_disorders,pediatric,Does your child have a history of a voice disorder? (Select all that apply),NO,release,VARIABLE,redcap,pre-v4,NO,NO
-generic_phqa_schema,pediatric_hqa,peds_phqa_completed_at,peds_phqa_completed_at,pediatric,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES
+generic_phqa_schema,pediatric_hqa,peds_phqa_completed_at,peds_phqa_completed_at,pediatric_questionnaire,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES
 generic_phqa_schema,pediatric_hqa,peds_phqa_duration,peds_phqa_duration,pediatric_questionnaire,Questionnaire Duration (seconds),NO,release,VARIABLE,redcap,pre-v4,NO,NO
 generic_phqa_schema,pediatric_hqa,peds_phqa_feeling_bad_self,peds_phqa_feeling_bad_self,pediatric_questionnaire,"Feeling bad about yourself - or feeling that you are a failure, or that you have let yourself or your family down?",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 generic_phqa_schema,pediatric_hqa,peds_phqa_feeling_depressed,peds_phqa_feeling_depressed,pediatric_questionnaire,"Feeling down, depressed, irritable, or hopeless?",NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -1342,14 +1342,14 @@ glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_slo
 glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_treatment,diagnosis_gi_treatment,diagnosis,Has the participant undergone any treatment for their condition?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_treatment_other,diagnosis_gi_treatment_other,diagnosis,"Other, please specify",NO,release,VARIABLE,redcap,v4,NO,NO
 glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_treatment_select,diagnosis_gi_treatment_select,diagnosis,Select all that apply:,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-harvard_sentences_schema,,harvard_sentences_completed_at,harvard_sentences_completed_at,,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES
+harvard_sentences_schema,harvard_sentences,harvard_sentences_completed_at,harvard_sentences_completed_at,task,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES
 harvard_sentences_schema,harvard_sentences,harvard_sentences_duration,harvard_sentences_duration,task,Questionnaire Duration (seconds),NO,release,VARIABLE,redcap,pre-v4,NO,NO
 harvard_sentences_schema,harvard_sentences,harvard_sentences_language,harvard_sentences_language,task,Harvard Sentences - Language,NO,release,VARIABLE,redcap,v4,NO,NO
 harvard_sentences_schema,harvard_sentences,harvard_sentences_list_order,harvard_sentences_list_order,task,Harvard Sentence List Order Array (comma separated),NO,release,VARIABLE,redcap,pre-v4,NO,NO
 harvard_sentences_schema,harvard_sentences,harvard_sentences_origin,harvard_sentences_origin,task,Harvard Sentences - origin,NO,release,VARIABLE,redcap,v4,NO,NO
 harvard_sentences_schema,harvard_sentences,harvard_sentences_recording_acoustic_task_id,harvard_sentences_recording_acoustic_task_id,task,Acoustic Task ID,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 harvard_sentences_schema,harvard_sentences,harvard_sentences_session_id,harvard_sentences_session_id,task,Session ID,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-harvard_sentences_schema,,harvard_sentences_started_at,harvard_sentences_started_at,,Questionnaire Started At,YES,internal,VARIABLE,redcap,v4,NO,YES
+harvard_sentences_schema,harvard_sentences,harvard_sentences_started_at,harvard_sentences_started_at,task,Questionnaire Started At,YES,internal,VARIABLE,redcap,v4,NO,YES
 harvard_sentences_schema,harvard_sentences,harvard_sentences_via,harvard_sentences_via,task,Harvard Sentences - via,NO,release,VARIABLE,redcap,v4,NO,NO
 healthy_developmentallytypical_childre_schema,,diagnosis_healthy_developmentally_typical_children_ci,diagnosis_healthy_developmentally_typical_children_ci,,Retired: this field's source activity was removed from b2ai-redcap2rs and is absent from the current REDCap data dictionary.,YES,drop,VARIABLE,redcap,pre-v4,NO,NO
 huntingtons_disease_schema,huntingtons_disease,diagnosis_hd_gsd,diagnosis_hd_gold_standard_diagnosis,diagnosis,Does the participant have Huntington's Disease (HD)?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -1636,7 +1636,7 @@ Non-pharmacological interventions:",YES,drop,VARIABLE,redcap,pre-v4,NO,NO
 parkinsons_disease_schema,,diagnosis_parkinsons_treatment_obtained_yes_npi_other,diagnosis_parkinsons_treatment_obtained_yes_npi_other,,"[DEPRECATED]
 If you selected ""Other"", please specify:",YES,drop,VARIABLE,redcap,v4,NO,NO
 participant_history_schema,psychiatric_history,mph_active_psy_medical_problems,mph_active_psy_medical_problems,questionnaire,Please list any active psychiatric problems and medical problems.,NO,release,VARIABLE,redcap,v4,NO,NO
-participant_history_schema,,mph_completed_at,mph_completed_at,,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES
+participant_history_schema,psychiatric_history,mph_completed_at,mph_completed_at,questionnaire,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES
 participant_history_schema,psychiatric_history,mph_current_medication,mph_current_medication,questionnaire,"Please list any current psychiatric medications (to the best of your recollection), including medication names, dosage, and how many times per day.",NO,release,VARIABLE,redcap,v4,NO,NO
 participant_history_schema,psychiatric_history,mph_describe_psychotherapy,mph_describe_psychotherapy,questionnaire,"Please briefly describe your psychotherapy history (e.g., dates, reasons for seeking therapy, etc.).",NO,release,VARIABLE,redcap,v4,NO,NO
 participant_history_schema,psychiatric_history,mph_duration,mph_duration,questionnaire,Questionnaire Duration (seconds),NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -1648,7 +1648,7 @@ participant_history_schema,psychiatric_history,mph_previous_medication,mph_previ
 approximate dates you were taking them, and why they were discontinued.",NO,release,VARIABLE,redcap,v4,NO,NO
 participant_history_schema,psychiatric_history,mph_see_mental_health_professional,mph_see_mental_health_professional,questionnaire,"Have you ever seen a mental health professional for talk therapy (could include social workers, psychiatrists, etc.)?",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 participant_history_schema,psychiatric_history,mph_session_id,mph_session_id,questionnaire,Session ID,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-participant_history_schema,,mph_started_at,mph_started_at,,Questionnaire Started At,YES,internal,VARIABLE,redcap,v4,NO,YES
+participant_history_schema,psychiatric_history,mph_started_at,mph_started_at,questionnaire,Questionnaire Started At,YES,internal,VARIABLE,redcap,v4,NO,YES
 participant_history_schema,psychiatric_history,mph_via,mph_via,questionnaire,Mood Participant History - via,NO,release,VARIABLE,redcap,v4,NO,NO
 patient_health_questionnaire9_schema,phq9,feeling_bad_self,feeling_bad_self,questionnaire,Feeling bad about yourself - or that you are a failure or have let yourself or your family down.,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 patient_health_questionnaire9_schema,phq9,feeling_depressed,feeling_depressed,questionnaire,"Feeling down, depressed, or hopeless.",NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -1714,7 +1714,7 @@ precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_gsd_confirmation_m
 precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_treatment,diagnosis_pl_treatment,diagnosis,Has the participant undergone any treatment for this condition?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_treatment_other,diagnosis_pl_treatment_other,diagnosis,"Other, please specify",NO,release,VARIABLE,redcap,v4,NO,NO
 precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_treatment_select,diagnosis_pl_treatment_select,diagnosis,What treatments did the participant undergo? (Select all that apply):,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-productive_vocabulary_schema,,vocabulary_completed_at,vocabulary_completed_at,,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES
+productive_vocabulary_schema,productive_vocabulary,vocabulary_completed_at,vocabulary_completed_at,questionnaire,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES
 productive_vocabulary_schema,productive_vocabulary,vocabulary_duration,vocabulary_duration,questionnaire,Questionnaire Duration (seconds),NO,release,VARIABLE,redcap,pre-v4,NO,NO
 productive_vocabulary_schema,productive_vocabulary,vocabulary_item_correct_1,vocabulary_item_correct_1,questionnaire,"Item 1
 Correct?",NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -1756,7 +1756,7 @@ productive_vocabulary_schema,productive_vocabulary,vocabulary_language,vocabular
 productive_vocabulary_schema,productive_vocabulary,vocabulary_origin,vocabulary_origin,questionnaire,Productive Vocabulary - origin,NO,release,VARIABLE,redcap,v4,NO,NO
 productive_vocabulary_schema,productive_vocabulary,vocabulary_recording_acoustic_task_id,vocabulary_recording_acoustic_task_id,questionnaire,Acoustic Task ID,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 productive_vocabulary_schema,productive_vocabulary,vocabulary_session_id,vocabulary_session_id,questionnaire,Session ID,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-productive_vocabulary_schema,,vocabulary_started_at,vocabulary_started_at,,Questionnaire Started At,YES,internal,VARIABLE,redcap,v4,NO,YES
+productive_vocabulary_schema,productive_vocabulary,vocabulary_started_at,vocabulary_started_at,questionnaire,Questionnaire Started At,YES,internal,VARIABLE,redcap,v4,NO,YES
 productive_vocabulary_schema,productive_vocabulary,vocabulary_via,vocabulary_via,questionnaire,Productive Vocabulary - via,NO,release,VARIABLE,redcap,v4,NO,NO
 ptsd_adult_schema,ptsd_adult,avoiding_reminders,avoiding_reminders,questionnaire,"Trying to avoid thoughts, feelings, or physical sensations that reminded you of a stressful experience?",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 ptsd_adult_schema,ptsd_adult,emotionally_upset,emotionally_upset,questionnaire,Feeling very emotionally upset when something reminded you of a stressful experience?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -1765,28 +1765,28 @@ ptsd_adult_schema,ptsd_adult,flashbacks,flashbacks,questionnaire,"Having ""flash
 ptsd_adult_schema,ptsd_adult,irritable,irritable,questionnaire,"Being extremely irritable or angry to the point where you yelled at other people, got into fights, or destroyed things?",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 ptsd_adult_schema,ptsd_adult,losing_interest,losing_interest,questionnaire,Losing interest in activities you used to enjoy before having a stressful experience?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 ptsd_adult_schema,ptsd_adult,neg_emotional_state,neg_emotional_state,questionnaire,"Having a very negative emotional state (for example, you were experiencing lots of fear, anger, guilt, shame, or horror) after a stressful experience?",NO,release,VARIABLE,redcap,pre-v4,NO,NO
-ptsd_adult_schema,ptsd_adult,ptsd_completed_at,ptsd_completed_at,clinically_validated_diagnosis,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES
+ptsd_adult_schema,ptsd_adult,ptsd_completed_at,ptsd_completed_at,questionnaire,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES
 ptsd_adult_schema,ptsd_adult,ptsd_duration,ptsd_duration,questionnaire,Questionnaire Duration (seconds),NO,release,VARIABLE,redcap,pre-v4,NO,NO
 ptsd_adult_schema,ptsd_adult,ptsd_language,ptsd_language,questionnaire,PTSD Adult - Language,NO,release,VARIABLE,redcap,v4,NO,NO
 ptsd_adult_schema,ptsd_adult,ptsd_origin,ptsd_origin,questionnaire,PTSD Adult - origin,NO,release,VARIABLE,redcap,v4,NO,NO
 ptsd_adult_schema,ptsd_adult,ptsd_session_id,ptsd_session_id,questionnaire,Session ID,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-ptsd_adult_schema,ptsd_adult,ptsd_started_at,ptsd_started_at,clinically_validated_diagnosis,Questionnaire Started At,YES,internal,VARIABLE,redcap,v4,NO,YES
+ptsd_adult_schema,ptsd_adult,ptsd_started_at,ptsd_started_at,questionnaire,Questionnaire Started At,YES,internal,VARIABLE,redcap,v4,NO,YES
 ptsd_adult_schema,ptsd_adult,ptsd_via,ptsd_via,questionnaire,PTSD Adult - via,NO,release,VARIABLE,redcap,v4,NO,NO
 ptsd_adult_schema,ptsd_adult,super_alert,super_alert,questionnaire,"Being ""super alert"", on guard, or constantly on the lookout for danger?",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 ptsd_adult_schema,ptsd_adult,thinking_stressful_event,thinking_stressful_event,questionnaire,"Thinking that a stressful event happened because you or someone else (who didn't directly harm you) did something wrong or didn't do everything possible to prevent it, or because of something about you?",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 ptsd_adult_schema,ptsd_adult,traumatic_event,traumatic_event,questionnaire,Please list the traumatic event that you experienced,NO,review,VARIABLE,redcap,v4,NO,NO
 ptsd_adult_schema,ptsd_adult,traumatic_event_date,traumatic_event_date,clinically_validated_diagnosis,Date of the traumatic event:,YES,drop,VARIABLE,redcap,v4,NO,NO
-random_item_generation_schema,,random_completed_at,random_completed_at,,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES
+random_item_generation_schema,random_item_generation,random_completed_at,random_completed_at,task,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES
 random_item_generation_schema,random_item_generation,random_duration,random_duration,task,Questionnaire Duration (seconds),NO,release,VARIABLE,redcap,pre-v4,NO,NO
 random_item_generation_schema,random_item_generation,random_item_generation_category,random_item_generation_category,task,Random item generation category,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 random_item_generation_schema,random_item_generation,random_language,random_language,task,Random Item Generation - Language,NO,release,VARIABLE,redcap,v4,NO,NO
 random_item_generation_schema,random_item_generation,random_origin,random_origin,task,Random Item Generation - origin,NO,release,VARIABLE,redcap,v4,NO,NO
 random_item_generation_schema,random_item_generation,random_recording_acoustic_task_id,random_recording_acoustic_task_id,task,Acoustic Task ID,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 random_item_generation_schema,random_item_generation,random_session_id,random_session_id,task,Session ID,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-random_item_generation_schema,,random_started_at,random_started_at,,Questionnaire Started At,YES,internal,VARIABLE,redcap,v4,NO,YES
+random_item_generation_schema,random_item_generation,random_started_at,random_started_at,task,Questionnaire Started At,YES,internal,VARIABLE,redcap,v4,NO,YES
 random_item_generation_schema,random_item_generation,random_via,random_via,task,Random Item Generation - via,NO,release,VARIABLE,redcap,v4,NO,NO
 recording_schema,recording,recording_acoustic_task_id,recording_acoustic_task_id,task,Acoustic Task ID,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-recording_schema,recording,recording_created_at,recording_created_at,,"Recording start time (UTC in the RedCap export). Not documented upstream; every adult recording falls inside its acoustic task window and consecutive recordings are spaced by at least the earlier recording's duration, consistent with the start of capture. Date-shifted at ingest.",YES,internal,VARIABLE,redcap,v4,NO,YES
+recording_schema,recording,recording_created_at,recording_created_at,task,"Recording start time (UTC in the RedCap export). Not documented upstream; every adult recording falls inside its acoustic task window and consecutive recordings are spaced by at least the earlier recording's duration, consistent with the start of capture. Date-shifted at ingest.",YES,internal,VARIABLE,redcap,v4,NO,YES
 recording_schema,recording,recording_duration,recording_duration,task,Duration (Seconds),NO,release,VARIABLE,redcap,pre-v4,NO,NO
 recording_schema,recording,recording_file_share,recording_file_share,,File Share,YES,drop,VARIABLE,redcap,v4,NO,NO
 recording_schema,recording,recording_filepath,recording_filepath,,Recording Filepath,YES,drop,VARIABLE,redcap,v4,NO,NO
@@ -1803,15 +1803,15 @@ recording_schema,recording,recording_size,recording_size,task,Recording Size (Ki
 recording_schema,recording,recording_storage_account,recording_storage_account,,Storage Account,YES,drop,VARIABLE,redcap,v4,NO,NO
 recording_schema,recording,recording_via,recording_via,task,Recording - via,NO,release,VARIABLE,redcap,v4,NO,NO
 session_schema,session,session_assigned_tasks,session_assigned_tasks,task,Session Assigned Tasks,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-session_schema,,session_completed_at,session_completed_at,,Session Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES
+session_schema,session,session_completed_at,session_completed_at,task,Session Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES
 session_schema,session,session_completed_by,session_completed_by,task,"Who helped you answer the questions today? For example, did someone help you remember your medication list or how tired you are? This isn't the person who helps you understand the question, but the one who helps you provide the answers",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 session_schema,session,session_duration,session_duration,task,Session Duration (seconds),NO,release,VARIABLE,redcap,pre-v4,NO,NO
 session_schema,session,session_id,session_id,task,Session ID,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 session_schema,session,session_is_control_participant,session_is_control_participant,task,Is Control Participant?,YES,drop,VARIABLE,redcap,pre-v4,NO,NO
 session_schema,session,session_language,session_language,task,Session - Language,YES,drop,VARIABLE,redcap,v4,NO,NO
 session_schema,,session_record_id,session_participant_id,,Record ID,YES,drop,VARIABLE,redcap,pre-v4,NO,NO
-session_schema,,session_site,session_site,,Session Site?,YES,drop,VARIABLE,redcap,v4,NO,NO
-session_schema,,session_started_at,session_started_at,,Session Started At,YES,internal,VARIABLE,redcap,v4,NO,YES
+session_schema,session,session_site,session_site,task,Session Site?,YES,internal,VARIABLE,redcap,v4,NO,NO
+session_schema,session,session_started_at,session_started_at,task,Session Started At,YES,internal,VARIABLE,redcap,v4,NO,YES
 session_schema,session,session_status,session_status,task,Session Status,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 subjectparticipant_basic_information_schema,demographics,age,age,demographics,Age,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 subjectparticipant_basic_information_schema,participant,api_updates_on_behalf_of,api_updates_on_behalf_of,,API Updates on behalf of,YES,drop,VARIABLE,redcap,v4,NO,NO
@@ -1940,12 +1940,12 @@ voice_handicap_index_vhi10_schema,vhi10,left_out_convo,left_out_convo,questionna
 voice_handicap_index_vhi10_schema,vhi10,strain_voice,strain_voice,questionnaire,I feel as though I have to strain to produce voice.,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 voice_handicap_index_vhi10_schema,vhi10,tough_to_understand,tough_to_understand,questionnaire,People have difficulty understanding me in a noisy room.,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 voice_handicap_index_vhi10_schema,vhi10,vhi_10_calc_score,vhi_10_calc_score,questionnaire,"Total Voice Handicap Index-10 (VHI-10) score, calculated as the sum of the 10 items (range 0–40 points), with higher scores indicating greater self-perceived voice handicap.",NO,release,VARIABLE,redcap,pre-v4,YES,NO
-voice_handicap_index_vhi10_schema,,vhi_completed_at,vhi_completed_at,,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES
+voice_handicap_index_vhi10_schema,vhi10,vhi_completed_at,vhi_completed_at,questionnaire,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES
 voice_handicap_index_vhi10_schema,vhi10,vhi_duration,vhi_duration,questionnaire,Questionnaire Duration (seconds),NO,release,VARIABLE,redcap,pre-v4,NO,NO
 voice_handicap_index_vhi10_schema,vhi10,vhi_language,vhi_language,questionnaire,VHI-10 - Language,NO,release,VARIABLE,redcap,v4,NO,NO
 voice_handicap_index_vhi10_schema,vhi10,vhi_origin,vhi_origin,questionnaire,VHI-10 - origin,NO,release,VARIABLE,redcap,v4,NO,NO
 voice_handicap_index_vhi10_schema,vhi10,vhi_session_id,vhi_session_id,questionnaire,Session ID,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-voice_handicap_index_vhi10_schema,,vhi_started_at,vhi_started_at,,Questionnaire Started At,YES,internal,VARIABLE,redcap,v4,NO,YES
+voice_handicap_index_vhi10_schema,vhi10,vhi_started_at,vhi_started_at,questionnaire,Questionnaire Started At,YES,internal,VARIABLE,redcap,v4,NO,YES
 voice_handicap_index_vhi10_schema,vhi10,vhi_via,vhi_via,questionnaire,VHI-10 - via,NO,release,VARIABLE,redcap,v4,NO,NO
 voice_handicap_index_vhi10_schema,vhi10,voice_clarity,voice_clarity,questionnaire,The clarity of my voice is unpredictable.,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 voice_handicap_index_vhi10_schema,vhi10,voice_difficult_hear,voice_difficult_hear,questionnaire,My voice makes it difficult for people to hear me.,NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -1953,12 +1953,12 @@ voice_handicap_index_vhi10_schema,vhi10,voice_handicapped,voice_handicapped,ques
 voice_handicap_index_vhi10_schema,vhi10,voice_lose_income,voice_lose_income,questionnaire,My voice problem causes me to lose income.,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 voice_handicap_index_vhi10_schema,vhi10,voice_restrict_social,voice_restrict_social,questionnaire,My voice difficulties restrict personal and social life.,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 voice_handicap_index_vhi10_schema,vhi10,voice_upsetting,voice_upsetting,questionnaire,My voice problem upsets me.,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-voice_perception_schema,,voice_perception_completed_at,voice_perception_completed_at,,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES
+voice_perception_schema,voice_perception,voice_perception_completed_at,voice_perception_completed_at,questionnaire,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES
 voice_perception_schema,voice_perception,voice_perception_duration,voice_perception_duration,questionnaire,Questionnaire Duration (seconds),NO,release,VARIABLE,redcap,pre-v4,NO,NO
 voice_perception_schema,voice_perception,voice_perception_language,voice_perception_language,questionnaire,Voice Perception - Language,NO,release,VARIABLE,redcap,v4,NO,NO
 voice_perception_schema,voice_perception,voice_perception_origin,voice_perception_origin,questionnaire,Voice Perception - origin,NO,release,VARIABLE,redcap,v4,NO,NO
 voice_perception_schema,voice_perception,voice_perception_session_id,voice_perception_session_id,questionnaire,Session ID,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-voice_perception_schema,,voice_perception_started_at,voice_perception_started_at,,Questionnaire Started At,YES,internal,VARIABLE,redcap,v4,NO,YES
+voice_perception_schema,voice_perception,voice_perception_started_at,voice_perception_started_at,questionnaire,Questionnaire Started At,YES,internal,VARIABLE,redcap,v4,NO,YES
 voice_perception_schema,voice_perception,voice_perception_via,voice_perception_via,questionnaire,Voice Perception - via,NO,release,VARIABLE,redcap,v4,NO,NO
 voice_perception_schema,voice_perception,voice_quality_perception,voice_quality_perception,questionnaire,"How would rate your voice quality today from 1-10?
 1 is the lowest quality and 10 is the best voice quality",NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -1971,7 +1971,7 @@ voice_problem_severity_schema,voice_problem_severity,voice_severity_origin,voice
 voice_problem_severity_schema,voice_problem_severity,voice_severity_session_id,voice_severity_session_id,task,Session ID,YES,drop,VARIABLE,redcap,pre-v4,NO,NO
 voice_problem_severity_schema,,voice_severity_started_at,voice_severity_started_at,,Questionnaire Started At,YES,drop,VARIABLE,redcap,v4,NO,NO
 voice_problem_severity_schema,voice_problem_severity,voice_severity_via,voice_severity_via,task,Voice Severity - via,YES,drop,VARIABLE,redcap,v4,NO,NO
-winograd_schemas_schema,,winograd_completed_at,winograd_completed_at,,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES
+winograd_schemas_schema,winograd,winograd_completed_at,winograd_completed_at,task,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES
 winograd_schemas_schema,winograd,winograd_duration,winograd_duration,task,Questionnaire Duration (seconds),NO,release,VARIABLE,redcap,pre-v4,NO,NO
 winograd_schemas_schema,winograd,winograd_language,winograd_language,task,Winograd Schemas - Language,NO,release,VARIABLE,redcap,v4,NO,NO
 winograd_schemas_schema,winograd,winograd_number_questions,winograd_number_questions,task,Number of questions asked,NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -2256,9 +2256,9 @@ winograd_schemas_schema,winograd,winograd_questions_asked,winograd_questions_ask
 (Comma separated)",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 winograd_schemas_schema,winograd,winograd_score,winograd_score,task,Winograd Schema Score,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 winograd_schemas_schema,winograd,winograd_session_id,winograd_session_id,task,Session ID,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-winograd_schemas_schema,,winograd_started_at,winograd_started_at,,Questionnaire Started At,YES,internal,VARIABLE,redcap,v4,NO,YES
+winograd_schemas_schema,winograd,winograd_started_at,winograd_started_at,task,Questionnaire Started At,YES,internal,VARIABLE,redcap,v4,NO,YES
 winograd_schemas_schema,winograd,winograd_via,winograd_via,task,Winograd Schemas - via,NO,release,VARIABLE,redcap,v4,NO,NO
-wordcolor_stroop_schema,,stroop_completed_at,stroop_completed_at,,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES
+wordcolor_stroop_schema,stroop,stroop_completed_at,stroop_completed_at,task,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES
 wordcolor_stroop_schema,stroop,stroop_duration,stroop_duration,task,Questionnaire Duration (seconds),NO,release,VARIABLE,redcap,pre-v4,NO,NO
 wordcolor_stroop_schema,stroop,stroop_item_color_1,stroop_item_color_1,task,"Item 1
 Color",NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -2384,7 +2384,7 @@ wordcolor_stroop_schema,stroop,stroop_language,stroop_language,task,Word-Color S
 wordcolor_stroop_schema,stroop,stroop_origin,stroop_origin,task,Word-Color Stroop - origin,NO,release,VARIABLE,redcap,v4,NO,NO
 wordcolor_stroop_schema,stroop,stroop_recording_acoustic_task_id,stroop_recording_acoustic_task_id,task,Acoustic Task ID,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 wordcolor_stroop_schema,stroop,stroop_session_id,stroop_session_id,task,Session ID,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-wordcolor_stroop_schema,,stroop_started_at,stroop_started_at,,Questionnaire Started At,YES,internal,VARIABLE,redcap,v4,NO,YES
+wordcolor_stroop_schema,stroop,stroop_started_at,stroop_started_at,task,Questionnaire Started At,YES,internal,VARIABLE,redcap,v4,NO,YES
 wordcolor_stroop_schema,stroop,stroop_via,stroop_via,task,Word-Color Stroop - via,NO,release,VARIABLE,redcap,v4,NO,NO
 airway_stenosis_schema,airway_stenosis,diagnosis_as_gsd_yes___bronchoscopy,diagnosis_as_gold_standard_diagnosis_yes___bronchoscopy,diagnosis,Confirmed by,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
 airway_stenosis_schema,airway_stenosis,diagnosis_as_gsd_yes___ct,diagnosis_as_gold_standard_diagnosis_yes___ct,diagnosis,Confirmed by,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
@@ -4245,7 +4245,7 @@ bridge2ai_econsent_wcm_spanish_version_1_schema,,wcm_icf_p9_es_v1,wcm_icf_p9_es_
 bridge2ai_econsent_wcm_spanish_version_1_schema,,wcm_icf_question_es_v1,wcm_icf_question_es_v1,,"Consentimiento para Participar en la InvestigaciónAl firmar abajo, doy mi consentimiento libremente para participar en este estudio. Entiendo que al firmareste formulario estoy aceptando participar en la investigación. He recibido una copia de este formulariopara llevar conmigo. Entiendo que al firmar a continuación, estoy dando mi consentimiento para que miinformación de contacto se mantenga en un repositorio para este estudio, y que esta información puedaser utilizada para contactarme en el futuro para una mayor recopilación de datos si se requiere unseguimiento a largo plazo como parte de una eventual extensión de esta subvención después de laduración esperada de 4 años, o para ser invitado a participar en futuros estudios de investigación. Miinformación no será compartida con terceros.Al firmar abajo, doy mi consentimiento para que todos los datos que envíe sean compartidos con losinvestigadores de este estudio y para que mis grabaciones de audio, respuestas escritas y otros datos deinvestigación codificados sean compartidos con otros investigadores calificados según se describe eneste formulario de consentimiento. Además, doy mi consentimiento para el intercambio público de misdatos del estudio desidentificados y agregados.Me gustaría ser informado de hallazgos incidentales, en caso de que el estudio informe este tipo deinformación.",YES,drop,VARIABLE,redcap,pre-v4,NO,NO
 bridge2ai_econsent_wcm_spanish_version_1_schema,,wcm_icf_signature_es_v1,wcm_icf_signature_es_v1,,"Firma de la Persona que Participa en el Estudio
 [Autorización]",YES,drop,VARIABLE,redcap,pre-v4,NO,NO
-,,redcap_repeat_instrument,redcap_repeat_instrument,,REDCap structural column naming the repeating instrument a row belongs to.,YES,drop,VARIABLE,redcap_generated,v4,NO,NO
+,,redcap_repeat_instrument,redcap_repeat_instrument,,REDCap structural column naming the repeating instrument a row belongs to.,YES,internal,VARIABLE,redcap_generated,v4,NO,NO
 ,,redcap_repeat_instance,redcap_repeat_instance,,REDCap structural column giving the 1-based instance number of a repeating instrument row.,YES,drop,VARIABLE,redcap_generated,v4,NO,NO
 ,,redcap_survey_identifier,redcap_survey_identifier,,"REDCap survey identifier; can carry a participant-supplied identifier, so dropped by default.",YES,drop,VARIABLE,redcap_generated,v4,NO,NO
 subjectparticipant_basic_information_schema,participant,participant_data_collection_origins___reproschema,participant_data_collection_origins___reproschema,enrollment,Data Collection - origin(s),NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO
