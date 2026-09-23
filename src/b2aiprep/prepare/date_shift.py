@@ -2,8 +2,9 @@
 
 Every date the field map marks ``date_shift=YES`` is moved by a whole number of weeks chosen per
 participant, so that the participant's earliest session lands within three days of an anchor date
-supplied at run time. The anchor is never stored in code: anyone holding the code and a shifted
-table must not be able to recover real dates.
+supplied at run time. The anchor itself is not secret -- it can be read off any shifted table,
+since every first session sits within three days of it. What protects the real dates is each
+participant's offset, which depends on their real first-session date and is never stored.
 
 Shifted timestamps keep the participant's local wall-clock time and the UTC offset that was in
 force at the *real* moment, e.g. ``2100-01-05T13:34:41-05:00``. Local time of day and elapsed
@@ -112,7 +113,9 @@ def shift_timestamp(real_utc: datetime.datetime, tz: ZoneInfo, weeks: int) -> st
     """Shift by *weeks* in local wall-clock time, keeping the real moment's UTC offset."""
     local = real_utc.astimezone(tz)
     shifted = local.replace(tzinfo=None) + datetime.timedelta(weeks=weeks)
-    return shifted.replace(tzinfo=datetime.timezone(local.utcoffset())).isoformat(timespec="seconds")
+    # Keep sub-second precision when the source had it, so intervals stay exact.
+    timespec = "milliseconds" if shifted.microsecond else "seconds"
+    return shifted.replace(tzinfo=datetime.timezone(local.utcoffset())).isoformat(timespec=timespec)
 
 
 def _column(df: pd.DataFrame, name: str) -> pd.Series:

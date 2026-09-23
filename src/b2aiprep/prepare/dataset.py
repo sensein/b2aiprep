@@ -25,7 +25,7 @@ import re
 import shutil
 import enum
 import typing as t
-from collections import OrderedDict, defaultdict
+from collections import Counter, OrderedDict, defaultdict
 from pathlib import Path
 from importlib.resources import files
 from importlib import resources
@@ -254,13 +254,15 @@ class BIDSDataset:
                 reach a release.
             date_shift_anchor: Date each participant's earliest session is shifted to (within
                 three days). With None, every ``date_shift=YES`` column is blanked.
-            date_shift_log: Optionally also write the date-shift report (anchor and counts) as
-                JSON. Must be outside ``outdir``: the anchor lets anyone holding a shifted table
-                recover the real dates. The report is always logged.
+            date_shift_log: Optionally also write the date-shift report (anchor, counts, and the
+                internal IDs left unshifted) as JSON. Must be outside ``outdir``. A summary is
+                always logged.
 
         Returns:
             BIDSDataset instance pointing to the created BIDS directory
         """
+        if date_shift_log is not None:
+            BIDSDataset._check_date_shift_log(date_shift_log, outdir)
         outdir = Path(outdir).as_posix()
         BIDSDataset._initialize_data_directory(outdir)
 
@@ -277,6 +279,7 @@ class BIDSDataset:
         BIDSDataset._construct_phenotype_from_reproschema(
             df=redcap_dataset.df,
             output_dir=os.path.join(outdir, "phenotype"),
+            dropped_at_ingest=redcap_dataset.metadata.get("dropped_at_ingest", ()),
         )
 
         if audiodir is None:
@@ -892,6 +895,14 @@ class BIDSDataset:
         return activities
 
     @staticmethod
+    def _check_date_shift_log(date_shift_log: t.Union[str, Path], outdir: t.Union[str, Path]) -> Path:
+        """The report names internal record and session IDs, so it must not land in the tree."""
+        log_path = Path(date_shift_log).resolve()
+        if log_path.is_relative_to(Path(outdir).resolve()):
+            raise ValueError(f"date_shift_log must be outside the BIDS output: {log_path}")
+        return log_path
+
+    @staticmethod
     def _apply_field_map_at_ingest(
         redcap_dataset: RedCapDataset,
         date_shift_anchor: t.Optional[datetime.date],
@@ -901,7 +912,9 @@ class BIDSDataset:
         """Shift ``date_shift=YES`` dates, then remove every ``disposition=drop`` column.
 
         Runs before any output is written, so real dates and dropped columns never reach the
-        BIDS tree. Dates are shifted first because the shift reads ``session_site``.
+        BIDS tree. Dates are shifted first: the shift reads ``enrollment_institution``, the
+        ``*_via`` columns and the participant's postal code / state, and those must still be
+        present even if a future field map drops them.
         """
         field_map = BIDSDataset._load_reorganization_file(exclude_dropped=False)
         date_columns = field_map.loc[
@@ -926,12 +939,13 @@ class BIDSDataset:
             report["session_timezone_sources"],
         )
         if report["participants_without_offset"]:
-            _LOGGER.info("Participants without a date offset: %s", report["participants_without_offset"])
+            _LOGGER.info(
+                "Participants without a date offset, by reason: %s",
+                dict(Counter(report["participants_without_offset"].values())),
+            )
 
         if date_shift_log is not None:
-            log_path = Path(date_shift_log).resolve()
-            if log_path.is_relative_to(Path(outdir).resolve()):
-                raise ValueError(f"date_shift_log must be outside the BIDS output: {log_path}")
+            log_path = BIDSDataset._check_date_shift_log(date_shift_log, outdir)
             log_path.parent.mkdir(parents=True, exist_ok=True)
             with open(log_path, "w") as fp:
                 json.dump(
@@ -949,6 +963,7 @@ class BIDSDataset:
 
         shifted = copy(redcap_dataset)
         shifted.df = df
+        shifted.metadata = {**redcap_dataset.metadata, "dropped_at_ingest": present}
         return shifted
 
     @staticmethod
@@ -1124,8 +1139,13 @@ class BIDSDataset:
         df: pd.DataFrame,
         field_map_df: t.Optional[pd.DataFrame] = None,
         level: DispositionLevel = DispositionLevel.RELEASE,
+        schema_name: t.Optional[str] = None,
     ) -> t.Tuple[pd.DataFrame, t.List[str]]:
         """Drop columns above *level* in the disposition hierarchy.
+
+        With *schema_name* (a phenotype table), only that table's field-map rows are consulted:
+        output names are unique within a table but not across tables (e.g. ``self_reported_*`` is
+        released in ``eligibility`` and internal in ``enrollment``).
 
         The hierarchy is RELEASE < REVIEW < INTERNAL.  At the default
         ``RELEASE`` level, both ``internal`` and ``review`` columns are
@@ -1142,6 +1162,8 @@ class BIDSDataset:
 
         if "disposition" not in field_map_df.columns:
             raise ValueError("Field map is missing the 'disposition' column.")
+        if schema_name is not None and "schema_name" in field_map_df.columns:
+            field_map_df = field_map_df.loc[field_map_df["schema_name"] == schema_name]
 
         if level == DispositionLevel.INTERNAL:
             return df, []
@@ -1360,11 +1382,10 @@ class BIDSDataset:
         calculated_columns: t.AbstractSet[str] = frozenset(),
         schema_name: str = "",
         schema_group: str = "",
-        internal_columns: t.AbstractSet[str] = frozenset(),
     ) -> pd.DataFrame:
         """Drop rows that contain no participant-entered data.
 
-        Three classes of column are excluded from the emptiness test:
+        Two classes of column are excluded from the emptiness test:
 
         * ``csv_only_columns``: columns with no ReproSchema definition --
           ``<form>_complete``, ``<form>_timestamp``, and other RedCap-generated
@@ -1373,9 +1394,10 @@ class BIDSDataset:
           RedCap evaluates these for every record regardless of form completion,
           so a participant who never had an ALS assessment can still have
           ``gsd_calculation = 0``.
-        * ``internal_columns``: ``disposition=internal`` in the field map (form
-          timestamps, date-shifted dates). They are stripped at deidentification,
-          so a row holding only these has nothing to publish.
+
+        Internal columns count as data here, so the pre-deidentification tree keeps rows
+        holding only internal data; ``_drop_rows_emptied_by_deidentify`` re-runs this test
+        once deidentify has removed them.
 
         For **diagnosis** forms (``schema_group == "diagnosis"``), any row where
         ``<form>_complete`` is not ``Complete`` is dropped regardless of data
@@ -1387,7 +1409,7 @@ class BIDSDataset:
         the table is emptied — a table with no participant-entered data has no
         research value.
         """
-        non_substantive = set(csv_only_columns) | set(calculated_columns) | set(internal_columns)
+        non_substantive = set(csv_only_columns) | set(calculated_columns)
         substantive = [c for c in df.columns if c != id_col and c not in non_substantive]
         if not substantive:
             _LOGGER.warning(
@@ -1468,6 +1490,38 @@ class BIDSDataset:
         return df.loc[~drop_mask]
 
     @staticmethod
+    def _drop_rows_emptied_by_deidentify(df: pd.DataFrame, schema_name: str) -> pd.DataFrame:
+        """Re-run the ingest emptiness test on a deidentified phenotype table.
+
+        Ingest keeps rows whose only data is internal (they are useful before deidentification).
+        Once deidentify has removed internal and unreviewed columns, such rows hold only the
+        participant id and bookkeeping, and are dropped here with the same rule as at ingest.
+        """
+        if "participant_id" not in df.columns or df.empty:
+            return df
+        if BIDSDataset._cached_field_map_df is None:
+            BIDSDataset._cached_field_map_df = BIDSDataset._load_reorganization_file(exclude_dropped=False)
+        rows = BIDSDataset._cached_field_map_df
+        rows = rows.loc[rows["schema_name"] == schema_name]
+        bookkeeping = set(
+            rows.loc[rows["source"].isin(["redcap_generated", "pipeline"]), "column_name"].dropna()
+        )
+        calculated = set(
+            rows.loc[rows["is_redcap_calculation"].astype(str).str.upper() == "YES", "column_name"].dropna()
+        )
+        group = rows["group"].dropna().iloc[0] if rows["group"].notna().any() else ""
+        before = len(df)
+        df = BIDSDataset._drop_rows_without_substantive_data(
+            df, "participant_id", bookkeeping, calculated, schema_name=schema_name, schema_group=group,
+        )
+        if len(df) < before:
+            _LOGGER.info(
+                "phenotype/%s: dropped %d row(s) left with no publishable data after deidentify.",
+                schema_name, before - len(df),
+            )
+        return df
+
+    @staticmethod
     def _synthetic_data_element(
         column: str,
         updated_data: t.Mapping[str, t.Any],
@@ -1511,7 +1565,8 @@ class BIDSDataset:
     def _construct_phenotype_from_reproschema(
         df: pd.DataFrame,
         output_dir: str,
-        clean_phenotype_data: bool = True
+        clean_phenotype_data: bool = True,
+        dropped_at_ingest: t.Iterable[str] = (),
     ) -> None:
         """Construct TSV/JSON files from a source ReproSchema folder.
 
@@ -1519,6 +1574,8 @@ class BIDSDataset:
             df: DataFrame containing the data.
             output_dir: Directory where the TSV files will be saved.
             clean_phenotype_data: Whether to clean the phenotype data (default: True).
+            dropped_at_ingest: ``disposition=drop`` columns already removed from *df*; counted
+                in the column report as deleted intentionally.
         """
 
         # We will ignore data dictionary columns when there are corresponding columns
@@ -1618,9 +1675,6 @@ class BIDSDataset:
             # Tracked separately from csv_only because they DO have ReproSchema definitions
             # but should not count as substantive participant-entered data.
             "columns_calculated": [],
-            # disposition=internal columns: kept in the pre-deidentification tree for internal
-            # use and stripped at deidentify, so they must not decide whether a row has data.
-            "columns_internal": [],
         }
         updated_schemas = defaultdict(lambda: deepcopy(payload))
         for updated_schema_name, group in df_reorg.groupby('schema_name'):
@@ -1698,8 +1752,6 @@ class BIDSDataset:
                     updated_schemas[updated_schema_name]['columns_csv_only'].append(new_element_name)
                 if str(updated_data.get("is_redcap_calculation", "")).upper() == "YES":
                     updated_schemas[updated_schema_name]['columns_calculated'].append(new_element_name)
-                if updated_data.get("disposition") == "internal":
-                    updated_schemas[updated_schema_name]['columns_internal'].append(new_element_name)
                 updated_schemas[updated_schema_name]['schema_name_source'].append(updated_data["schema_name_source"])
 
                 # update the payload so we have a reproschema json for this df
@@ -1715,7 +1767,6 @@ class BIDSDataset:
             schema_name_sources = set(payload.pop("schema_name_source"))
             csv_only_columns = set(payload.pop("columns_csv_only"))
             calculated_columns = set(payload.pop("columns_calculated"))
-            internal_columns = set(payload.pop("columns_internal"))
             group = payload.pop("group")
             if "record_id" not in columns_for_indexing:
                 columns_for_indexing = ["record_id"] + columns_for_indexing
@@ -1793,7 +1844,6 @@ class BIDSDataset:
             selected_df = BIDSDataset._drop_rows_without_substantive_data(
                 selected_df, id_col, csv_only_columns, calculated_columns,
                 schema_name=schema_name, schema_group=group,
-                internal_columns=internal_columns,
             )
             if selected_df.empty:
                 _LOGGER.warning(f"No data remaining after dropping empty rows for {schema_name}")
@@ -1804,7 +1854,6 @@ class BIDSDataset:
                 selected_df = BIDSDataset._drop_rows_without_substantive_data(
                     selected_df, id_col, csv_only_columns, calculated_columns,
                     schema_name=schema_name, schema_group=group,
-                    internal_columns=internal_columns,
                 )
                 if selected_df.empty:
                     _LOGGER.warning(f"No data remaining after dropping empty rows for {schema_name}")
@@ -1832,7 +1881,7 @@ class BIDSDataset:
             "RedCap Dataframe column report: total=%d, included=%d, deleted_intentionally=%d, only_in_df=%d",
             len(df_cols),
             len(included_cols.intersection(df_cols)),
-            len(cols_for_deletion.intersection(df_cols)),
+            len(cols_for_deletion.intersection(df_cols | set(dropped_at_ingest))),
             len(excluded_in_df_not_in_reorg),
         )
         _LOGGER.info(
@@ -2841,10 +2890,15 @@ class BIDSDataset:
 
                 # Drop internal columns (and review if no manifest)
                 df_pheno, dropped_cols = BIDSDataset._drop_columns_by_disposition(
-                    df_pheno, level=DispositionLevel.REVIEW if has_review_verdicts else DispositionLevel.RELEASE,
+                    df_pheno,
+                    level=DispositionLevel.REVIEW if has_review_verdicts else DispositionLevel.RELEASE,
+                    schema_name=schema_name,
                 )
                 for col in dropped_cols:
                     phenotype_dict.pop(col, None)
+
+                # Rows kept at ingest for their internal columns may now hold nothing publishable.
+                df_pheno = BIDSDataset._drop_rows_emptied_by_deidentify(df_pheno, schema_name)
 
                 if has_review_verdicts:
                     dropped_cols.extend(review_dropped)

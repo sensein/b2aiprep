@@ -152,9 +152,13 @@ def test_active_rows_are_well_formed(reorg_rows):
             problems.append(f"line {index}: empty description for {row['column_name_source']}")
         if row["disposition"] == "drop":
             continue
-        # Internal rows the pipeline only reads (e.g. redcap_repeat_instrument) are never
-        # written to phenotype/; shifted dates are, so they need a table like any other row.
-        if row["disposition"] == "internal" and row["date_shift"].strip().upper() != "YES":
+        # Rows with no schema_name are never written to phenotype/ (e.g. the structural
+        # redcap_repeat_instrument); that is only allowed for internal rows that are not dates.
+        if (
+            row["disposition"] == "internal"
+            and row["date_shift"].strip().upper() != "YES"
+            and not row["schema_name"].strip()
+        ):
             continue
         # group becomes a phenotype/ subdirectory and schema_name a filename
         if not row["schema_name"].strip():

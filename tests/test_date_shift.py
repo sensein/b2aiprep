@@ -244,3 +244,51 @@ def test_site_comes_from_enrollment_institution_not_session_site():
     assert _local_hour(out, "session_started_at", 0) == 11  # Chicago
     assert _local_hour(out, "session_started_at", 1) == 11  # institution is per participant
     assert report["session_timezone_sources"] == {"site": 2}
+
+
+def test_shifted_timestamps_keep_milliseconds():
+    df = _frame([("a", "Session", "MIT", "2024-07-01T16:00:00.900Z", "2024-07-01T16:00:01.100Z", None)])
+    out, _ = shift_dates(df, ["session_started_at", "phq_9_started_at"], ANCHOR)
+    start = datetime.datetime.fromisoformat(out.loc[0, "session_started_at"])
+    later = datetime.datetime.fromisoformat(out.loc[0, "phq_9_started_at"])
+    assert later - start == datetime.timedelta(milliseconds=200)
+
+
+def test_disposition_is_matched_within_the_table():
+    """self_reported_* is released in eligibility and internal in enrollment."""
+    field_map = pd.DataFrame(
+        [
+            {"schema_name": "eligibility", "column_name": "self_reported_asthma", "disposition": "release"},
+            {"schema_name": "enrollment", "column_name": "self_reported_asthma", "disposition": "internal"},
+        ]
+    )
+    df = pd.DataFrame({"participant_id": ["p"], "self_reported_asthma": ["Yes"]})
+    kept, dropped = BIDSDataset._drop_columns_by_disposition(df, field_map, schema_name="eligibility")
+    assert "self_reported_asthma" in kept.columns and not dropped
+    kept, dropped = BIDSDataset._drop_columns_by_disposition(df, field_map, schema_name="enrollment")
+    assert dropped == ["self_reported_asthma"]
+
+
+def test_internal_only_rows_survive_ingest_and_are_dropped_after_deidentify(monkeypatch):
+    df = pd.DataFrame(
+        {
+            "participant_id": ["has_release", "internal_only"],
+            "is_prolific": ["Yes", None],
+            "self_reported_asthma": [None, "Yes"],  # internal in enrollment
+            "enrollment_form_complete": ["Complete", "Complete"],
+        }
+    )
+    # Ingest: the internal column counts as data, so both rows are kept.
+    kept = BIDSDataset._drop_rows_without_substantive_data(
+        df, "participant_id", {"enrollment_form_complete"}, set(), schema_name="enrollment"
+    )
+    assert list(kept.participant_id) == ["has_release", "internal_only"]
+    # Deidentify strips the internal columns, then re-checks.
+    deidentified = kept.drop(columns=["self_reported_asthma", "enrollment_form_complete"])
+    field_map = pd.DataFrame(
+        [{"schema_name": "enrollment", "column_name": "is_prolific", "disposition": "release",
+          "source": "redcap", "is_redcap_calculation": "NO", "group": "enrollment"}]
+    )
+    monkeypatch.setattr(BIDSDataset, "_cached_field_map_df", field_map)
+    out = BIDSDataset._drop_rows_emptied_by_deidentify(deidentified, "enrollment")
+    assert list(out.participant_id) == ["has_release"]

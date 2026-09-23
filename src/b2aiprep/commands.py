@@ -115,7 +115,7 @@ def dashboard(bids_dir: str):
     type=click.DateTime(formats=["%Y-%m-%d"]),
     required=True,
     help="Date (YYYY-MM-DD) each participant's earliest session is shifted to, within three days. "
-    "No default: the anchor must never be stored in code.",
+    "No default, so every build states its anchor explicitly.",
 )
 @click.option(
     "--date-shift-log",

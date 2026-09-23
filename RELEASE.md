@@ -16,7 +16,7 @@ Note that there are implicit assumptions made regarding the structured data and 
 WORKING_DIR=${HOME}/data/bridge2ai/pediatric
 
 b2aiprep-cli reproschema-to-redcap $WORKING_DIR/Audio_300_Release $WORKING_DIR/Survey_300_Release $WORKING_DIR/redcap.csv
-b2aiprep-cli redcap2bids $WORKING_DIR/redcap.csv --outdir $WORKING_DIR/bids --audiodir $WORKING_DIR/Audio_300_Release --sanitize_audio_format
+b2aiprep-cli redcap2bids $WORKING_DIR/redcap.csv --outdir $WORKING_DIR/bids --audiodir $WORKING_DIR/Audio_300_Release --sanitize_audio_format --date-shift-anchor $DATE_SHIFT_ANCHOR
 b2aiprep-cli generate-audio-features $WORKING_DIR/bids $WORKING_DIR/bids --update
 b2aiprep-cli run-quality-control-on-audios $WORKING_DIR/bids
 b2aiprep-cli deidentify-bids-dataset $WORKING_DIR/bids $WORKING_DIR/de-identified-bids $WORKING_DIR/release_config
@@ -54,8 +54,16 @@ b2aiprep-cli redcap2bids <path/to/redcap_csv> \
     --outdir <path/to/bids/folder> \
     --audiodir <path/to/audio/files> \
     --sanitize_audio_format \
-    --max-audio-workers=8
+    --max-audio-workers=8 \
+    --date-shift-anchor <YYYY-MM-DD> \
+    --date-shift-log <path/outside/the/bids/folder/date_shift.json>
 ```
+
+`--date-shift-anchor` is required and has no default. Every date marked `date_shift=YES` in
+`bids_field_organization.csv` is moved by whole weeks so each participant's earliest session lands
+within three days of the anchor; see `src/b2aiprep/prepare/date_shift.py`. Use the same anchor for
+both cohorts and for reruns so the internal shifted dates stay comparable. `--date-shift-log` is
+optional (a summary is always logged) and must be outside `--outdir`.
 
 An optional `--max-audio-workers` controls the number of threads used for writing out audio files as writing of audio files is the speed bottleneck of this command. An optional `--sanitize_audio_format` can be used to sanitize the audio format into 16KHz mono-channel WAVs.
 
