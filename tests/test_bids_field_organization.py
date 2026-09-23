@@ -273,3 +273,87 @@ def test_internal_fields_have_delete_yes(reorg_rows):
         if row["disposition"] == "internal" and row["delete"].strip().upper() != "YES"
     ]
     assert not mismatches, f"internal disposition but delete!=YES: {mismatches[:10]}"
+
+
+# RedCap app instruments record participant timing in these columns. The vendored ReproSchema
+# types them as xsd:string, so the suffix is the only marker the snapshot carries.
+APP_TIMESTAMP_SUFFIXES = ("_started_at", "_completed_at", "_created_at")
+DATE_VALUE_TYPES = ("xsd:date", "xsd:datetime")
+
+
+def _vendored_date_items():
+    """Variable names of every vendored ReproSchema item typed as a date or datetime."""
+    names = set()
+    for activity in _resource("redcap2rs", "activities").iterdir():
+        items = activity.joinpath("items")
+        if not items.is_dir():
+            continue
+        for item in items.iterdir():
+            try:
+                schema = json.loads(item.read_text(encoding="utf-8"))
+            except (json.JSONDecodeError, UnicodeDecodeError):
+                continue
+            options = schema.get("responseOptions")
+            value_type = options.get("valueType", "") if isinstance(options, dict) else ""
+            if isinstance(value_type, list):
+                value_type = " ".join(value_type)
+            if any(t in value_type.lower() for t in DATE_VALUE_TYPES):
+                names.add(item.name)
+    return names
+
+
+def test_date_shift_values_are_valid(reorg_rows):
+    problems = [
+        (row["column_name_source"], row.get("date_shift"))
+        for row in reorg_rows
+        if row.get("date_shift", "").strip().upper() not in VALID_DELETE
+    ]
+    assert not problems, f"date_shift must be YES or NO: {problems[:10]}"
+
+
+def test_date_shift_fields_are_internal(reorg_rows):
+    """Shifted dates are kept for internal derivations only and never published."""
+    mismatches = [
+        (row["column_name_source"], row["disposition"])
+        for row in reorg_rows
+        if row["date_shift"].strip().upper() == "YES" and row["disposition"] != "internal"
+    ]
+    assert not mismatches, f"date_shift=YES but disposition!=internal: {mismatches}"
+
+
+def test_vendored_date_items_are_shifted_or_dropped(reorg_rows):
+    """A date the data dictionary declares must be shifted at ingest or never ingested.
+
+    Anything else carries a real calendar date into the BIDS tree.
+    """
+    date_items = _vendored_date_items()
+    assert date_items, "no xsd:date items found; the vendored snapshot layout changed"
+    unshifted = sorted(
+        (row["column_name_source"], row["disposition"])
+        for row in reorg_rows
+        if row["column_name_source"] in date_items
+        and row["disposition"] != "drop"
+        and row["date_shift"].strip().upper() != "YES"
+    )
+    assert not unshifted, f"date items neither shifted nor dropped: {unshifted}"
+
+
+def test_app_timestamps_are_shifted_or_dropped(reorg_rows):
+    unshifted = sorted(
+        (row["column_name_source"], row["disposition"])
+        for row in reorg_rows
+        if row["column_name_source"].endswith(APP_TIMESTAMP_SUFFIXES)
+        and row["disposition"] != "drop"
+        and row["date_shift"].strip().upper() != "YES"
+    )
+    assert not unshifted, f"timestamps neither shifted nor dropped: {unshifted}"
+
+
+def test_redcap_timestamps_are_dropped(reorg_rows):
+    """``<form>_timestamp`` is set when staff complete a form and carries no time zone."""
+    kept = sorted(
+        row["column_name_source"]
+        for row in reorg_rows
+        if row["column_name_source"].endswith("_timestamp") and row["disposition"] != "drop"
+    )
+    assert not kept, f"RedCap _timestamp columns must be drop: {kept}"
