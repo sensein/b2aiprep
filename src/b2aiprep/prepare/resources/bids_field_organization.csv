@@ -42,19 +42,19 @@ airway_stenosis_schema,airway_stenosis,diagnosis_as_ds,diagnosis_as_ds,diagnosis
 airway_stenosis_schema,airway_stenosis,diagnosis_as_ds_ac,diagnosis_as_ds_ac,diagnosis,Grade of Stenosis (Aziz Classification of Supraglottic Stenosis),NO,release,VARIABLE,redcap,pre-v4,NO
 airway_stenosis_schema,airway_stenosis,diagnosis_as_ds_ac_grade_4,diagnosis_as_ds_ac_grade_4,diagnosis,Grade of Stenosis (Aziz Classification of Supraglottic Stenosis),NO,release,VARIABLE,redcap,pre-v4,NO
 airway_stenosis_schema,airway_stenosis,diagnosis_as_ds_ac_ref,diagnosis_as_ds_ac_ref,diagnosis,"Grade of Stenosis (Aziz Classification of Supraglottic Stenosis)
-Picture for reference",NO,release,VARIABLE,redcap,pre-v4,NO
+Picture for reference",YES,drop,VARIABLE,redcap,pre-v4,NO
 airway_stenosis_schema,airway_stenosis,diagnosis_as_ds_agw,diagnosis_as_ds_agw,diagnosis,Anterior Glottic Web classification (Cohen),NO,release,VARIABLE,redcap,pre-v4,NO
 airway_stenosis_schema,airway_stenosis,diagnosis_as_ds_bc,diagnosis_as_ds_bc,diagnosis,Degree of Stenosis (Bogdasarian Classification),NO,release,VARIABLE,redcap,pre-v4,NO
 airway_stenosis_schema,airway_stenosis,diagnosis_as_ds_bc_ref,diagnosis_as_ds_bc_ref,diagnosis,"Degree of Stenosis (Bogdasarian Classification)
-Picture for reference",NO,release,VARIABLE,redcap,pre-v4,NO
+Picture for reference",YES,drop,VARIABLE,redcap,pre-v4,NO
 airway_stenosis_schema,airway_stenosis,diagnosis_as_ds_bvfi_gs,diagnosis_as_ds_bvfi_gs,diagnosis,Bilateral Vocal fold immobility or Glottic Stenosis Subtype,NO,release,VARIABLE,redcap,pre-v4,NO
 airway_stenosis_schema,airway_stenosis,diagnosis_as_ds_bvfi_gs_other,diagnosis_as_ds_bvfi_gs_other,diagnosis,"Other, Please specify",NO,release,VARIABLE,redcap,v4,NO
 airway_stenosis_schema,airway_stenosis,diagnosis_as_ds_cc_ref,diagnosis_as_ds_cc_ref,diagnosis,"Anterior Glottic Web classification (Cohen)
-Picture for reference",NO,release,VARIABLE,redcap,pre-v4,NO
+Picture for reference",YES,drop,VARIABLE,redcap,pre-v4,NO
 airway_stenosis_schema,airway_stenosis,diagnosis_as_ds_eps,diagnosis_as_ds_eps,diagnosis,How would you subjectively estimate the percent of stenosis from 0 to 100?,NO,release,VARIABLE,redcap,pre-v4,NO
 airway_stenosis_schema,airway_stenosis,diagnosis_as_ds_mcg,diagnosis_as_ds_mcg,diagnosis,Degree of Stenosis (Myer-Cotton Grade),NO,release,VARIABLE,redcap,pre-v4,NO
 airway_stenosis_schema,airway_stenosis,diagnosis_as_ds_mcg_ref,diagnosis_as_ds_mcg_ref,diagnosis,"Degree of Stenosis (Myer-Cotton Grade) 
-Picture for reference",NO,release,VARIABLE,redcap,pre-v4,NO
+Picture for reference",YES,drop,VARIABLE,redcap,pre-v4,NO
 airway_stenosis_schema,airway_stenosis,diagnosis_as_ds_mluas,diagnosis_as_ds_mluas,diagnosis,Please describe levels and severity of stenosis involved,NO,release,VARIABLE,redcap,v4,NO
 airway_stenosis_schema,airway_stenosis,diagnosis_as_ds_ods,diagnosis_as_ds_ods,diagnosis,How would you subjectively classify the overall degree of stenosis?,NO,release,VARIABLE,redcap,pre-v4,NO
 airway_stenosis_schema,airway_stenosis,diagnosis_as_etiology,diagnosis_as_etiology,diagnosis,What is the etiology?,NO,release,VARIABLE,redcap,pre-v4,NO
@@ -180,7 +180,7 @@ benign_lesions_schema,benign_lesions,diagnosis_bl_degree_l_1,diagnosis_bl_degree
 benign_lesions_schema,benign_lesions,diagnosis_bl_degree_l_2,diagnosis_bl_degree_l_2,diagnosis,Loudness,NO,release,VARIABLE,redcap,pre-v4,NO
 benign_lesions_schema,benign_lesions,diagnosis_bl_degree_l_nature,diagnosis_bl_degree_l_nature,diagnosis,"Loudness
 (Indicate the nature of the abnormality):",NO,release,VARIABLE,redcap,v4,NO
-benign_lesions_schema,benign_lesions,diagnosis_bl_degree_legend,diagnosis_bl_degree_legend,diagnosis,Legend: C- Sonsistent I = IntermittentMI = Mildly DeviantMO = Moderately DeviantSE = Severely Deviant,NO,release,VARIABLE,redcap,pre-v4,NO
+benign_lesions_schema,benign_lesions,diagnosis_bl_degree_legend,diagnosis_bl_degree_legend,diagnosis,Legend: C- Sonsistent I = IntermittentMI = Mildly DeviantMO = Moderately DeviantSE = Severely Deviant,YES,drop,VARIABLE,redcap,pre-v4,NO
 benign_lesions_schema,benign_lesions,diagnosis_bl_degree_os_1,diagnosis_bl_degree_os_1,diagnosis,Overall Severity,NO,release,VARIABLE,redcap,pre-v4,NO
 benign_lesions_schema,benign_lesions,diagnosis_bl_degree_os_2,diagnosis_bl_degree_os_2,diagnosis,Overall Severity,NO,release,VARIABLE,redcap,pre-v4,NO
 benign_lesions_schema,benign_lesions,diagnosis_bl_degree_p_1,diagnosis_bl_degree_p_1,diagnosis,Pitch,NO,release,VARIABLE,redcap,pre-v4,NO
@@ -193,7 +193,7 @@ benign_lesions_schema,benign_lesions,diagnosis_bl_degree_s_1,diagnosis_bl_degree
 benign_lesions_schema,benign_lesions,diagnosis_bl_degree_s_2,diagnosis_bl_degree_s_2,diagnosis,Strain,NO,release,VARIABLE,redcap,pre-v4,NO
 benign_lesions_schema,benign_lesions,diagnosis_bl_degree_text,diagnosis_bl_degree_text,diagnosis,"Degree of dysphonia
 
-CAPE-V scale",NO,release,VARIABLE,redcap,pre-v4,NO
+CAPE-V scale",YES,drop,VARIABLE,redcap,pre-v4,NO
 benign_lesions_schema,benign_lesions,diagnosis_bl_ds,diagnosis_bl_ds,diagnosis,What is the benign lesion diagnosis?,NO,release,VARIABLE,redcap,pre-v4,NO
 benign_lesions_schema,benign_lesions,diagnosis_bl_ds_ll,diagnosis_bl_ds_ll,diagnosis,Location of lesion(s),NO,release,VARIABLE,redcap,pre-v4,NO
 benign_lesions_schema,benign_lesions,diagnosis_bl_ds_other,diagnosis_bl_ds_other,diagnosis,Please specify,NO,release,VARIABLE,redcap,v4,NO
@@ -715,7 +715,7 @@ confounders_schema,confounders,swallowing_disorder,swallowing_disorder,confounde
 confounders_schema,confounders,symptoms,symptoms,,"[DEPRECATED]
 There are some symptoms that can affect your voice. Are you currently experiencing any of these symptoms? Check all that apply.",YES,drop,VARIABLE,redcap,pre-v4,NO
 confounders_schema,confounders,talk_therapy_mental_health_prof,talk_therapy_mental_health_prof,confounders,"Talk therapy with a mental health professional (e.g. social worker, psychiatrist, etc.)",NO,release,VARIABLE,redcap,pre-v4,NO
-confounders_schema,confounders,tell_us_about_you_health_header,tell_us_about_you_health_header,confounders,"TELL US ABOUT YOUR HEALTHMEDICAL HISTORYThere are some medical conditions that could have long term effects on your voice. In the following questions you will be asked about your CURRENT conditions as well as those you may have had in the PAST. Please read each set of questions carefully.NOTE:[All fields will be pre-populated to NO/NEVER unless the person noted the condition at enrollment. E.g. if the person enrolled with chronic cough, then ""Chronic cough"" will be pre-populated to YES/CURRENT.]",NO,release,VARIABLE,redcap,pre-v4,NO
+confounders_schema,confounders,tell_us_about_you_health_header,tell_us_about_you_health_header,confounders,"TELL US ABOUT YOUR HEALTHMEDICAL HISTORYThere are some medical conditions that could have long term effects on your voice. In the following questions you will be asked about your CURRENT conditions as well as those you may have had in the PAST. Please read each set of questions carefully.NOTE:[All fields will be pre-populated to NO/NEVER unless the person noted the condition at enrollment. E.g. if the person enrolled with chronic cough, then ""Chronic cough"" will be pre-populated to YES/CURRENT.]",YES,drop,VARIABLE,redcap,pre-v4,NO
 confounders_schema,confounders,throat_med_history,throat_med_history,,"[DEPRECATED]
 Throat",YES,drop,VARIABLE,redcap,pre-v4,NO
 confounders_schema,confounders,throat_surgical,throat_surgical,,"[DEPRECATED]
@@ -1053,9 +1053,9 @@ enrollment_form_schema,enrollment,ef_bipolar,self_reported_bipolar,,Bipolar Diso
 enrollment_form_schema,enrollment,ef_bpd,self_reported_bpd,,Borderline Personality Disorder (BPD),YES,drop,VARIABLE,redcap,v4,NO
 enrollment_form_schema,enrollment,ef_chronic_cough,self_reported_chronic_cough,,Chronic Cough,YES,drop,VARIABLE,redcap,v4,NO
 enrollment_form_schema,enrollment_form,ef_cognitive_a11y_options,ef_cognitive_a11y_options,enrollment,"Yes, I would like to use some of the accessibility features of the app",NO,release,VARIABLE,redcap,pre-v4,NO
-enrollment_form_schema,enrollment_form,ef_completed_at,ef_completed_at,enrollment,Enrollment Form Completed At,YES,internal,VARIABLE,redcap,v4,NO
+enrollment_form_schema,enrollment_form,ef_completed_at,ef_completed_at,enrollment,Enrollment Form Completed At,YES,drop,VARIABLE,redcap,v4,NO
 enrollment_form_schema,enrollment_form,ef_completed_by,ef_completed_by,enrollment,Check all that apply,NO,release,VARIABLE,redcap,pre-v4,NO
-enrollment_form_schema,enrollment_form,ef_cond_prompt,ef_cond_prompt,enrollment,(Check all that apply if you currently have the condition),NO,release,VARIABLE,redcap,pre-v4,NO
+enrollment_form_schema,enrollment_form,ef_cond_prompt,ef_cond_prompt,enrollment,(Check all that apply if you currently have the condition),YES,drop,VARIABLE,redcap,pre-v4,NO
 enrollment_form_schema,enrollment,ef_contact_info_stored,ef_contact_info_stored,,[DEPRECATED] I want my contact information to be kept in a repository for this study which can be used to contact me to ask me to enroll in further studies or return important results. My information will not be shared with third parties.,YES,drop,VARIABLE,redcap,pre-v4,NO
 enrollment_form_schema,enrollment,ef_copd,self_reported_copd,,COPD,YES,drop,VARIABLE,redcap,v4,NO
 enrollment_form_schema,enrollment,ef_depression,self_reported_depression,,Depression or Major Depressive Disorder,YES,drop,VARIABLE,redcap,v4,NO
@@ -1105,7 +1105,7 @@ enrollment_form_schema,enrollment_form,ef_select_language,ef_select_language,enr
 enrollment_form_schema,enrollment,ef_soc_anx_dis,self_reported_soc_anx_dis,,Social Anxiety Disorder,YES,drop,VARIABLE,redcap,v4,NO
 enrollment_form_schema,enrollment,ef_spas_dys,self_reported_spas_dys,,Spasmodic Dysphonia / Laryngeal Tremor,YES,drop,VARIABLE,redcap,v4,NO
 enrollment_form_schema,enrollment,ef_speech_delay,self_reported_speech_delay,,Speech Delay,YES,drop,VARIABLE,redcap,v4,NO
-enrollment_form_schema,enrollment_form,ef_started_at,ef_started_at,enrollment,Enrollment Form Started At,YES,internal,VARIABLE,redcap,v4,NO
+enrollment_form_schema,enrollment_form,ef_started_at,ef_started_at,enrollment,Enrollment Form Started At,YES,drop,VARIABLE,redcap,v4,NO
 enrollment_form_schema,enrollment_form,ef_vision_a11y_options,ef_vision_a11y_options,enrollment,"Yes, I would like to use some of the accessibility features of the app",NO,release,VARIABLE,redcap,pre-v4,NO
 enrollment_form_schema,enrollment,ef_voc_fold_paralysis,self_reported_unilateral_vocal_fold_paralysis,,Unilateral Vocal Fold Paralysis,YES,drop,VARIABLE,redcap,v4,NO
 gad7_anxiety_schema,gad7_anxiety,afraid_of_things,afraid_of_things,questionnaire,"Feeling afraid, as if something awful might happen.",NO,release,VARIABLE,redcap,pre-v4,NO
@@ -1323,7 +1323,7 @@ glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_deg
 glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_degree_l_2,diagnosis_gi_degree_l_2,diagnosis,Loudness,NO,release,VARIABLE,redcap,pre-v4,NO
 glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_degree_l_nature,diagnosis_gi_degree_l_nature,diagnosis,"Loudness
 (Indicate the nature of the abnormality):",NO,release,VARIABLE,redcap,v4,NO
-glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_degree_legend,diagnosis_gi_degree_legend,diagnosis,Legend: C- Sonsistent I = IntermittentMI = Mildly DeviantMO = Moderately DeviantSE = Severely Deviant,NO,release,VARIABLE,redcap,pre-v4,NO
+glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_degree_legend,diagnosis_gi_degree_legend,diagnosis,Legend: C- Sonsistent I = IntermittentMI = Mildly DeviantMO = Moderately DeviantSE = Severely Deviant,YES,drop,VARIABLE,redcap,pre-v4,NO
 glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_degree_os_1,diagnosis_gi_degree_os_1,diagnosis,Overall Severity,NO,release,VARIABLE,redcap,pre-v4,NO
 glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_degree_os_2,diagnosis_gi_degree_os_2,diagnosis,Overall Severity,NO,release,VARIABLE,redcap,pre-v4,NO
 glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_degree_p_1,diagnosis_gi_degree_p_1,diagnosis,Pitch,NO,release,VARIABLE,redcap,pre-v4,NO
@@ -1336,7 +1336,7 @@ glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_deg
 glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_degree_s_2,diagnosis_gi_degree_s_2,diagnosis,Strain,NO,release,VARIABLE,redcap,pre-v4,NO
 glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_degree_text,diagnosis_gi_degree_text,diagnosis,"Degree of dysphonia
 
-CAPE-V scale",NO,release,VARIABLE,redcap,pre-v4,NO
+CAPE-V scale",YES,drop,VARIABLE,redcap,pre-v4,NO
 glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_dogg,diagnosis_gi_dogg,diagnosis,Please assess degree of glottic gap:,NO,release,VARIABLE,redcap,pre-v4,NO
 glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_slogg,diagnosis_gi_slogg,diagnosis,Please assess shape/location of glottic gap. Choose all that apply.,NO,release,VARIABLE,redcap,pre-v4,NO
 glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_treatment,diagnosis_gi_treatment,diagnosis,Has the participant undergone any treatment for their condition?,NO,release,VARIABLE,redcap,pre-v4,NO
@@ -1370,12 +1370,12 @@ huntingtons_disease_schema,huntingtons_disease,hd_disease_subtype,hd_disease_sub
 huntingtons_disease_schema,huntingtons_disease,hd_domestic_chores,hd_domestic_chores,diagnosis,Domestic chores:,NO,release,VARIABLE,redcap,pre-v4,NO
 huntingtons_disease_schema,huntingtons_disease,hd_finances,hd_finances,diagnosis,Finances:,NO,release,VARIABLE,redcap,pre-v4,NO
 huntingtons_disease_schema,huntingtons_disease,hd_medications_selection,hd_medications_selection,diagnosis,Please select all that apply and provide further details if available,NO,release,VARIABLE,redcap,pre-v4,NO
-huntingtons_disease_schema,huntingtons_disease,hd_motor_exam,hd_motor_exam,diagnosis,Motor Exam,NO,release,VARIABLE,redcap,pre-v4,NO
+huntingtons_disease_schema,huntingtons_disease,hd_motor_exam,hd_motor_exam,diagnosis,Motor Exam,YES,drop,VARIABLE,redcap,pre-v4,NO
 huntingtons_disease_schema,huntingtons_disease,hd_neuroleptic_specify,hd_neuroleptic_specify,diagnosis,Neuroleptic selected. Please specify,NO,review,VARIABLE,redcap,v4,NO
 huntingtons_disease_schema,huntingtons_disease,hd_occupation,hd_occupation,diagnosis,Occupation,NO,release,VARIABLE,redcap,pre-v4,NO
 huntingtons_disease_schema,huntingtons_disease,hd_slp_therapy_selection,hd_slp_therapy_selection,diagnosis,Prior or current SLP therapy selected. Please select all that apply:,NO,release,VARIABLE,redcap,pre-v4,NO
 huntingtons_disease_schema,huntingtons_disease,hd_total,hd_total,diagnosis,"Numeric total score summarizing the Huntington's Disease clinical assessment (reported in points), with higher values typically indicating greater disease severity.",NO,release,VARIABLE,redcap,pre-v4,YES
-huntingtons_disease_schema,huntingtons_disease,hd_total_func_cap_rating_scale,hd_total_func_cap_rating_scale,diagnosis,HD Total Functional Capacity Rating Scale,NO,release,VARIABLE,redcap,pre-v4,NO
+huntingtons_disease_schema,huntingtons_disease,hd_total_func_cap_rating_scale,hd_total_func_cap_rating_scale,diagnosis,HD Total Functional Capacity Rating Scale,YES,drop,VARIABLE,redcap,pre-v4,NO
 huntingtons_disease_schema,huntingtons_disease,hd_type_of_treatment,hd_type_of_treatment,diagnosis,Please select the type of treatment:,NO,release,VARIABLE,redcap,pre-v4,NO
 huntingtons_disease_schema,huntingtons_disease,hd_uhdrs_speech_training,hd_uhdrs_speech_training,diagnosis,UHDRS speech training,NO,release,VARIABLE,redcap,pre-v4,NO
 huntingtons_disease_schema,huntingtons_disease,hd_uhdrs_total_chorea_score,hd_uhdrs_total_chorea_score,diagnosis,UHDRS total chorea score,NO,release,VARIABLE,redcap,pre-v4,NO
@@ -1394,7 +1394,7 @@ laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_degree_l_1,diagnosis_lc_de
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_degree_l_2,diagnosis_lc_degree_l_2,diagnosis,Loudness,NO,release,VARIABLE,redcap,v4,NO
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_degree_l_nature,diagnosis_lc_degree_l_nature,diagnosis,"Loudness
 (Indicate the nature of the abnormality):",NO,release,VARIABLE,redcap,v4,NO
-laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_degree_legend,diagnosis_lc_degree_legend,diagnosis,Legend: C- Sonsistent I = IntermittentMI = Mildly DeviantMO = Moderately DeviantSE = Severely Deviant,NO,release,VARIABLE,redcap,pre-v4,NO
+laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_degree_legend,diagnosis_lc_degree_legend,diagnosis,Legend: C- Sonsistent I = IntermittentMI = Mildly DeviantMO = Moderately DeviantSE = Severely Deviant,YES,drop,VARIABLE,redcap,pre-v4,NO
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_degree_os_1,diagnosis_lc_degree_os_1,diagnosis,Overall Severity,NO,release,VARIABLE,redcap,pre-v4,NO
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_degree_os_2,diagnosis_lc_degree_os_2,diagnosis,Overall Severity,NO,release,VARIABLE,redcap,pre-v4,NO
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_degree_p_1,diagnosis_lc_degree_p_1,diagnosis,Pitch,NO,release,VARIABLE,redcap,pre-v4,NO
@@ -1408,13 +1408,13 @@ laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_degree_s_2,diagnosis_lc_de
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_degree_text,diagnosis_lc_degree_text,diagnosis,"What is the degree of dysphonia?
 
 Clinician places slider between 0 and 100; indicates C or I. ""Indicate the nature.."" and Additional
-features responses are free text. Comments about resonance: Indicate normal or Other, if other then free text",NO,release,VARIABLE,redcap,pre-v4,NO
+features responses are free text. Comments about resonance: Indicate normal or Other, if other then free text",YES,drop,VARIABLE,redcap,pre-v4,NO
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_ds,diagnosis_lc_ds,diagnosis,"Which laryngeal structures are/were involved?
 (Select all that apply).",NO,release,VARIABLE,redcap,pre-v4,NO
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_ds_m_stage,diagnosis_lc_ds_m_stage,diagnosis,What is the M stage of the cancer based on the AJCC Classification?,NO,release,VARIABLE,redcap,pre-v4,NO
-laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_ds_n_ref,diagnosis_lc_ds_n_ref,diagnosis,Please see Table for reference:,NO,release,VARIABLE,redcap,pre-v4,NO
+laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_ds_n_ref,diagnosis_lc_ds_n_ref,diagnosis,Please see Table for reference:,YES,drop,VARIABLE,redcap,pre-v4,NO
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_ds_n_stage,diagnosis_lc_ds_n_stage,diagnosis,What is the N stage of the cancer based on the AJCC Classification?,NO,release,VARIABLE,redcap,pre-v4,NO
-laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_ds_t_ref,diagnosis_lc_ds_t_ref,diagnosis,Please see the table for reference:,NO,release,VARIABLE,redcap,pre-v4,NO
+laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_ds_t_ref,diagnosis_lc_ds_t_ref,diagnosis,Please see the table for reference:,YES,drop,VARIABLE,redcap,pre-v4,NO
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_ds_t_stage,diagnosis_lc_ds_t_stage,diagnosis,What is the T stage of the cancer based on the AJCC Classification?,NO,release,VARIABLE,redcap,pre-v4,NO
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_etiology,diagnosis_lc_etiology,diagnosis,"Check any risk factors of this participant in relation to their laryngeal cancer.
 (Select all that apply).",NO,release,VARIABLE,redcap,pre-v4,NO
@@ -1441,7 +1441,7 @@ laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_degree_l_1,diagnosis_l
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_degree_l_2,diagnosis_ld_degree_l_2,diagnosis,Loudness,NO,release,VARIABLE,redcap,pre-v4,NO
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_degree_l_nature,diagnosis_ld_degree_l_nature,diagnosis,"Loudness
 (Indicate the nature of the abnormality):",NO,release,VARIABLE,redcap,v4,NO
-laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_degree_legend,diagnosis_ld_degree_legend,diagnosis,Legend:C- Sonsistent I = IntermittentMI = Mildly DeviantMO = Moderately DeviantSE = Severely Deviant,NO,release,VARIABLE,redcap,pre-v4,NO
+laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_degree_legend,diagnosis_ld_degree_legend,diagnosis,Legend:C- Sonsistent I = IntermittentMI = Mildly DeviantMO = Moderately DeviantSE = Severely Deviant,YES,drop,VARIABLE,redcap,pre-v4,NO
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_degree_os_1,diagnosis_ld_degree_os_1,diagnosis,Overall Severity,NO,release,VARIABLE,redcap,pre-v4,NO
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_degree_os_2,diagnosis_ld_degree_os_2,diagnosis,Overall Severity,NO,release,VARIABLE,redcap,pre-v4,NO
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_degree_p_1,diagnosis_ld_degree_p_1,diagnosis,Pitch,NO,release,VARIABLE,redcap,pre-v4,NO
@@ -1454,7 +1454,7 @@ laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_degree_s_1,diagnosis_l
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_degree_s_2,diagnosis_ld_degree_s_2,diagnosis,Strain,NO,release,VARIABLE,redcap,pre-v4,NO
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_degree_text,diagnosis_ld_degree_text,diagnosis,"Degree of dysphonia
 
-CAPE-V scale",NO,release,VARIABLE,redcap,pre-v4,NO
+CAPE-V scale",YES,drop,VARIABLE,redcap,pre-v4,NO
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_ds,diagnosis_ld_ds,diagnosis,"Disease Subtypes:
 (Select all that apply)",NO,release,VARIABLE,redcap,pre-v4,NO
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_etiology,diagnosis_ld_etiology,diagnosis,What is the etiology?,NO,release,VARIABLE,redcap,pre-v4,NO
@@ -1481,7 +1481,7 @@ laryngitis_schema,laryngitis,diagnosis_l_degree_l_1,diagnosis_l_degree_l_1,diagn
 laryngitis_schema,laryngitis,diagnosis_l_degree_l_2,diagnosis_l_degree_l_2,diagnosis,Loudness,NO,release,VARIABLE,redcap,pre-v4,NO
 laryngitis_schema,laryngitis,diagnosis_l_degree_l_nature,diagnosis_l_degree_l_nature,diagnosis,"Loudness
 (Indicate the nature of the abnormality):",NO,release,VARIABLE,redcap,v4,NO
-laryngitis_schema,laryngitis,diagnosis_l_degree_legend,diagnosis_l_degree_legend,diagnosis,Legend:C- Sonsistent I = IntermittentMI = Mildly DeviantMO = Moderately DeviantSE = Severely Deviant,NO,release,VARIABLE,redcap,pre-v4,NO
+laryngitis_schema,laryngitis,diagnosis_l_degree_legend,diagnosis_l_degree_legend,diagnosis,Legend:C- Sonsistent I = IntermittentMI = Mildly DeviantMO = Moderately DeviantSE = Severely Deviant,YES,drop,VARIABLE,redcap,pre-v4,NO
 laryngitis_schema,laryngitis,diagnosis_l_degree_os_1,diagnosis_l_degree_os_1,diagnosis,Overall Severity,NO,release,VARIABLE,redcap,pre-v4,NO
 laryngitis_schema,laryngitis,diagnosis_l_degree_os_2,diagnosis_l_degree_os_2,diagnosis,Overall Severity,NO,release,VARIABLE,redcap,pre-v4,NO
 laryngitis_schema,laryngitis,diagnosis_l_degree_p_1,diagnosis_l_degree_p_1,diagnosis,Pitch,NO,release,VARIABLE,redcap,pre-v4,NO
@@ -1494,7 +1494,7 @@ laryngitis_schema,laryngitis,diagnosis_l_degree_s_1,diagnosis_l_degree_s_1,diagn
 laryngitis_schema,laryngitis,diagnosis_l_degree_s_2,diagnosis_l_degree_s_2,diagnosis,Strain,NO,release,VARIABLE,redcap,pre-v4,NO
 laryngitis_schema,laryngitis,diagnosis_l_degree_text,diagnosis_l_degree_text,diagnosis,"Degree of dysphonia
 
-CAPE-V scale",NO,release,VARIABLE,redcap,pre-v4,NO
+CAPE-V scale",YES,drop,VARIABLE,redcap,pre-v4,NO
 laryngitis_schema,laryngitis,diagnosis_l_determined_by,diagnosis_l_determined_by,diagnosis,Determined by (Select all that apply):,NO,release,VARIABLE,redcap,pre-v4,NO
 laryngitis_schema,laryngitis,diagnosis_l_determined_by_other,diagnosis_l_determined_by_other,diagnosis,Please specify,NO,release,VARIABLE,redcap,v4,NO
 laryngitis_schema,laryngitis,diagnosis_l_etiology,diagnosis_l_etiology,diagnosis,What is the etiology?,NO,release,VARIABLE,redcap,pre-v4,NO
@@ -1551,7 +1551,7 @@ muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_degre
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_degree_l_2,diagnosis_mtd_degree_l_2,diagnosis,Pitch,NO,release,VARIABLE,redcap,pre-v4,NO
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_degree_l_nature,diagnosis_mtd_degree_l_nature,clinically_validated_diagnosis,"Loudness
 (Indicate the nature of the abnormality):",YES,drop,VARIABLE,redcap,pre-v4,NO
-muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_degree_legend,diagnosis_mtd_degree_legend,diagnosis,Legend: C- Sonsistent I = IntermittentMI = Mildly DeviantMO = Moderately DeviantSE = Severely Deviant,NO,release,VARIABLE,redcap,pre-v4,NO
+muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_degree_legend,diagnosis_mtd_degree_legend,diagnosis,Legend: C- Sonsistent I = IntermittentMI = Mildly DeviantMO = Moderately DeviantSE = Severely Deviant,YES,drop,VARIABLE,redcap,pre-v4,NO
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_degree_os_1,diagnosis_mtd_degree_os_1,diagnosis,Overall Severity,NO,release,VARIABLE,redcap,pre-v4,NO
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_degree_os_2,diagnosis_mtd_degree_os_2,diagnosis,Overall Severity,NO,release,VARIABLE,redcap,pre-v4,NO
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_degree_p_1,diagnosis_mtd_degree_p_1,diagnosis,Pitch,NO,release,VARIABLE,redcap,pre-v4,NO
@@ -1562,7 +1562,7 @@ muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_degre
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_degree_r_2,diagnosis_mtd_degree_r_2,diagnosis,Roughness,NO,release,VARIABLE,redcap,pre-v4,NO
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_degree_s_1,diagnosis_mtd_degree_s_1,diagnosis,Strain,NO,release,VARIABLE,redcap,pre-v4,NO
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_degree_s_2,diagnosis_mtd_degree_s_2,diagnosis,Strain,NO,release,VARIABLE,redcap,pre-v4,NO
-muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_degree_text,diagnosis_mtd_degree_text,diagnosis,Degree of dysphoniaCAPE-V scale,NO,release,VARIABLE,redcap,pre-v4,NO
+muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_degree_text,diagnosis_mtd_degree_text,diagnosis,Degree of dysphoniaCAPE-V scale,YES,drop,VARIABLE,redcap,pre-v4,NO
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_ds,diagnosis_mtd_ds,diagnosis,"Whether the participant has a clinical diagnosis of muscle tension dysphonia (MTD), recorded with key responses such as ""Yes"" or ""No.""",NO,release,VARIABLE,redcap,pre-v4,NO
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_etiology,diagnosis_mtd_etiology,diagnosis,What is the etiology? (Select all that apply),NO,release,VARIABLE,redcap,pre-v4,NO
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_etiology_other,diagnosis_mtd_etiology_other,diagnosis,Please specify,NO,release,VARIABLE,redcap,v4,NO
@@ -1681,7 +1681,7 @@ precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_degree_l_1,diagnos
 precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_degree_l_2,diagnosis_pl_degree_l_2,diagnosis,Loudness,NO,release,VARIABLE,redcap,pre-v4,NO
 precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_degree_l_nature,diagnosis_pl_degree_l_nature,diagnosis,"Loudness
 (Indicate the nature of the abnormality):",NO,release,VARIABLE,redcap,v4,NO
-precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_degree_legend,diagnosis_pl_degree_legend,diagnosis,Legend:C- Sonsistent I = IntermittentMI = Mildly DeviantMO = Moderately DeviantSE = Severely Deviant,NO,release,VARIABLE,redcap,pre-v4,NO
+precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_degree_legend,diagnosis_pl_degree_legend,diagnosis,Legend:C- Sonsistent I = IntermittentMI = Mildly DeviantMO = Moderately DeviantSE = Severely Deviant,YES,drop,VARIABLE,redcap,pre-v4,NO
 precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_degree_os_1,diagnosis_pl_degree_os_1,diagnosis,Overall Severity,NO,release,VARIABLE,redcap,pre-v4,NO
 precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_degree_os_2,diagnosis_pl_degree_os_2,diagnosis,Overall Severity,NO,release,VARIABLE,redcap,pre-v4,NO
 precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_degree_p_1,diagnosis_pl_degree_p_1,diagnosis,Pitch,NO,release,VARIABLE,redcap,pre-v4,NO
@@ -1694,7 +1694,7 @@ precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_degree_s_1,diagnos
 precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_degree_s_2,diagnosis_pl_degree_s_2,diagnosis,Strain,NO,release,VARIABLE,redcap,pre-v4,NO
 precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_degree_text,diagnosis_pl_degree_text,diagnosis,"Degree of dysphonia
 
-Clinician places slider between 0 and 100; indicates C or I. ""Indicate the nature.."" and Additional features responses are free text. Comments about resonance: Indicate normal or Other, if other then free text",NO,release,VARIABLE,redcap,pre-v4,NO
+Clinician places slider between 0 and 100; indicates C or I. ""Indicate the nature.."" and Additional features responses are free text. Comments about resonance: Indicate normal or Other, if other then free text",YES,drop,VARIABLE,redcap,pre-v4,NO
 precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_ds,diagnosis_pl_ds,diagnosis,"What is the diagnosis?
 (Select all that apply).",NO,release,VARIABLE,redcap,pre-v4,NO
 precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_ds_e,diagnosis_pl_ds_e,diagnosis,Erythroplakia,NO,release,VARIABLE,redcap,pre-v4,NO
@@ -1854,7 +1854,7 @@ subjectparticipant_eligible_studies_schema,eligibility,benign_cord_lesion,self_r
 subjectparticipant_eligible_studies_schema,eligibility,bipolar,self_reported_bipolar,enrollment,Bipolar Disorder,NO,release,VARIABLE,redcap,pre-v4,NO
 subjectparticipant_eligible_studies_schema,eligibility,bpd,self_reported_bpd,enrollment,Borderline Personality Disorder (BPD),NO,release,VARIABLE,redcap,pre-v4,NO
 subjectparticipant_eligible_studies_schema,eligibility,chronic_cough,self_reported_chronic_cough,enrollment,Chronic Cough,NO,release,VARIABLE,redcap,pre-v4,NO
-subjectparticipant_eligible_studies_schema,eligibility,cond_sel_prompt,cond_sel_prompt,enrollment,(Check all that apply if you currently have the condition),NO,release,VARIABLE,redcap,pre-v4,NO
+subjectparticipant_eligible_studies_schema,eligibility,cond_sel_prompt,cond_sel_prompt,enrollment,(Check all that apply if you currently have the condition),YES,drop,VARIABLE,redcap,pre-v4,NO
 subjectparticipant_eligible_studies_schema,eligibility,copd,self_reported_copd,enrollment,COPD,NO,release,VARIABLE,redcap,pre-v4,NO
 subjectparticipant_eligible_studies_schema,eligibility,depression,self_reported_depression,enrollment,Depression or Major Depressive Disorder,NO,release,VARIABLE,redcap,pre-v4,NO
 subjectparticipant_eligible_studies_schema,eligibility,ed,self_reported_ed,enrollment,Eating Disorder (ED),NO,release,VARIABLE,redcap,pre-v4,NO
@@ -1926,10 +1926,10 @@ unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis
 unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_uvfp_treatment_surgery_other,diagnosis_uvfp_treatment_surgery_other,diagnosis,"Other Surgery / Procedure, please specify",NO,release,VARIABLE,redcap,v4,NO
 unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_uvfp_treatment_surgery_thyroplasty,diagnosis_uvfp_treatment_surgery_thyroplasty,diagnosis,Thyroplasty - Subcategory,NO,release,VARIABLE,redcap,pre-v4,NO
 unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_uvfp_treatment_surgery_vfia,diagnosis_uvfp_treatment_surgery_vfia,diagnosis,Vocal fold injection augmentation - Subcategory,NO,release,VARIABLE,redcap,pre-v4,NO
-unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_vfp_degree_legend,diagnosis_uvfp_degree_legend,diagnosis,Legend:C- Sonsistent I = IntermittentMI = Mildly DeviantMO = Moderately DeviantSE = Severely Deviant,NO,release,VARIABLE,redcap,pre-v4,NO
+unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_vfp_degree_legend,diagnosis_uvfp_degree_legend,diagnosis,Legend:C- Sonsistent I = IntermittentMI = Mildly DeviantMO = Moderately DeviantSE = Severely Deviant,YES,drop,VARIABLE,redcap,pre-v4,NO
 unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_vfp_degree_text,diagnosis_uvfp_degree_text,diagnosis,"Degree of dysphonia
 
-CAPE-V scale",NO,release,VARIABLE,redcap,pre-v4,NO
+CAPE-V scale",YES,drop,VARIABLE,redcap,pre-v4,NO
 unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_vfp_dse,diagnosis_uvfp_dse,diagnosis,Degree of Glottic Gap,NO,release,VARIABLE,redcap,pre-v4,NO
 unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_vfp_etiology,diagnosis_uvfp_etiology,diagnosis,What is the etiology?,NO,release,VARIABLE,redcap,pre-v4,NO
 unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_vfp_gsd,diagnosis_uvfp_gold_standard_diagnosis,diagnosis,Does the participant have Unilateral Vocal Fold Paralysis (UVFP) confirmed by laryngoscopy/stroboscopy?,NO,release,VARIABLE,redcap,pre-v4,NO
@@ -4252,50 +4252,50 @@ subjectparticipant_basic_information_schema,participant,participant_data_collect
 subjectparticipant_basic_information_schema,participant,subjectparticipant_basic_information_complete,subjectparticipant_basic_information_complete,enrollment,REDCap form-completion status for the subjectparticipant_basic_information instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO
 subjectparticipant_eligible_studies_schema,eligibility,subjectparticipant_eligible_studies_complete,subjectparticipant_eligible_studies_complete,enrollment,REDCap form-completion status for the subjectparticipant_eligible_studies instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO
 data_dissemination_schema,data_dissemination,data_dissemination_complete,data_dissemination_complete,enrollment,REDCap form-completion status for the data_dissemination instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO
-enrollment_form_schema,enrollment_form,enrollment_form_timestamp,enrollment_form_timestamp,enrollment,Timestamp when the enrollment_form form was submitted in REDCap.,YES,internal,VARIABLE,redcap_generated,v4,NO
+enrollment_form_schema,enrollment_form,enrollment_form_timestamp,enrollment_form_timestamp,enrollment,Timestamp when the enrollment_form form was submitted in REDCap.,YES,drop,VARIABLE,redcap_generated,v4,NO
 enrollment_form_schema,enrollment_form,enrollment_form_complete,enrollment_form_complete,enrollment,REDCap form-completion status for the enrollment_form instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO
 prolific_information_schema,enrollment,prolific_information_complete,prolific_information_complete,enrollment,REDCap form-completion status for the prolific_information instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO
-d_control_schema,control,d_control_timestamp,d_control_timestamp,diagnosis,Timestamp when the d_control form was submitted in REDCap.,YES,internal,VARIABLE,redcap_generated,v4,NO
+d_control_schema,control,d_control_timestamp,d_control_timestamp,diagnosis,Timestamp when the d_control form was submitted in REDCap.,YES,drop,VARIABLE,redcap_generated,v4,NO
 d_control_schema,control,d_control_complete,d_control_complete,diagnosis,REDCap form-completion status for the d_control instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO
-glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,d_voice_glottic_insufficiency_presbyphonia_timestamp,d_voice_glottic_insufficiency_presbyphonia_timestamp,diagnosis,Timestamp when the d_voice_glottic_insufficiency_presbyphonia form was submitted in REDCap.,YES,internal,VARIABLE,redcap_generated,v4,NO
+glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,d_voice_glottic_insufficiency_presbyphonia_timestamp,d_voice_glottic_insufficiency_presbyphonia_timestamp,diagnosis,Timestamp when the d_voice_glottic_insufficiency_presbyphonia form was submitted in REDCap.,YES,drop,VARIABLE,redcap_generated,v4,NO
 glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,d_voice_glottic_insufficiency_presbyphonia_complete,d_voice_glottic_insufficiency_presbyphonia_complete,diagnosis,REDCap form-completion status for the d_voice_glottic_insufficiency_presbyphonia instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO
-benign_lesions_schema,benign_lesions,d_voice_benign_lesions_timestamp,d_voice_benign_lesions_timestamp,diagnosis,Timestamp when the d_voice_benign_lesions form was submitted in REDCap.,YES,internal,VARIABLE,redcap_generated,v4,NO
+benign_lesions_schema,benign_lesions,d_voice_benign_lesions_timestamp,d_voice_benign_lesions_timestamp,diagnosis,Timestamp when the d_voice_benign_lesions form was submitted in REDCap.,YES,drop,VARIABLE,redcap_generated,v4,NO
 benign_lesions_schema,benign_lesions,d_voice_benign_lesions_complete,d_voice_benign_lesions_complete,diagnosis,REDCap form-completion status for the d_voice_benign_lesions instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO
-laryngeal_cancer_schema,laryngeal_cancer,d_voice_laryngeal_cancer_timestamp,d_voice_laryngeal_cancer_timestamp,diagnosis,Timestamp when the d_voice_laryngeal_cancer form was submitted in REDCap.,YES,internal,VARIABLE,redcap_generated,v4,NO
+laryngeal_cancer_schema,laryngeal_cancer,d_voice_laryngeal_cancer_timestamp,d_voice_laryngeal_cancer_timestamp,diagnosis,Timestamp when the d_voice_laryngeal_cancer form was submitted in REDCap.,YES,drop,VARIABLE,redcap_generated,v4,NO
 laryngeal_cancer_schema,laryngeal_cancer,d_voice_laryngeal_cancer_complete,d_voice_laryngeal_cancer_complete,diagnosis,REDCap form-completion status for the d_voice_laryngeal_cancer instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO
-laryngeal_dystonia_schema,laryngeal_dystonia,d_voice_laryngeal_dystonia_timestamp,d_voice_laryngeal_dystonia_timestamp,diagnosis,Timestamp when the d_voice_laryngeal_dystonia form was submitted in REDCap.,YES,internal,VARIABLE,redcap_generated,v4,NO
+laryngeal_dystonia_schema,laryngeal_dystonia,d_voice_laryngeal_dystonia_timestamp,d_voice_laryngeal_dystonia_timestamp,diagnosis,Timestamp when the d_voice_laryngeal_dystonia form was submitted in REDCap.,YES,drop,VARIABLE,redcap_generated,v4,NO
 laryngeal_dystonia_schema,laryngeal_dystonia,d_voice_laryngeal_dystonia_complete,d_voice_laryngeal_dystonia_complete,diagnosis,REDCap form-completion status for the d_voice_laryngeal_dystonia instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO
-laryngitis_schema,laryngitis,d_voice_laryngitis_timestamp,d_voice_laryngitis_timestamp,diagnosis,Timestamp when the d_voice_laryngitis form was submitted in REDCap.,YES,internal,VARIABLE,redcap_generated,v4,NO
+laryngitis_schema,laryngitis,d_voice_laryngitis_timestamp,d_voice_laryngitis_timestamp,diagnosis,Timestamp when the d_voice_laryngitis form was submitted in REDCap.,YES,drop,VARIABLE,redcap_generated,v4,NO
 laryngitis_schema,laryngitis,d_voice_laryngitis_complete,d_voice_laryngitis_complete,diagnosis,REDCap form-completion status for the d_voice_laryngitis instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO
-muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,d_voice_muscle_tension_dysphonia_mtd_timestamp,d_voice_muscle_tension_dysphonia_mtd_timestamp,diagnosis,Timestamp when the d_voice_muscle_tension_dysphonia_mtd form was submitted in REDCap.,YES,internal,VARIABLE,redcap_generated,v4,NO
+muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,d_voice_muscle_tension_dysphonia_mtd_timestamp,d_voice_muscle_tension_dysphonia_mtd_timestamp,diagnosis,Timestamp when the d_voice_muscle_tension_dysphonia_mtd form was submitted in REDCap.,YES,drop,VARIABLE,redcap_generated,v4,NO
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,d_voice_muscle_tension_dysphonia_mtd_complete,d_voice_muscle_tension_dysphonia_mtd_complete,diagnosis,REDCap form-completion status for the d_voice_muscle_tension_dysphonia_mtd instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO
-precancerous_lesions_schema,precancerous_lesions,d_voice_precancerous_lesions_timestamp,d_voice_precancerous_lesions_timestamp,diagnosis,Timestamp when the d_voice_precancerous_lesions form was submitted in REDCap.,YES,internal,VARIABLE,redcap_generated,v4,NO
+precancerous_lesions_schema,precancerous_lesions,d_voice_precancerous_lesions_timestamp,d_voice_precancerous_lesions_timestamp,diagnosis,Timestamp when the d_voice_precancerous_lesions form was submitted in REDCap.,YES,drop,VARIABLE,redcap_generated,v4,NO
 precancerous_lesions_schema,precancerous_lesions,d_voice_precancerous_lesions_complete,d_voice_precancerous_lesions_complete,diagnosis,REDCap form-completion status for the d_voice_precancerous_lesions instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO
-unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,d_voice_unilateral_vocal_fold_paralysis_timestamp,d_voice_unilateral_vocal_fold_paralysis_timestamp,diagnosis,Timestamp when the d_voice_unilateral_vocal_fold_paralysis form was submitted in REDCap.,YES,internal,VARIABLE,redcap_generated,v4,NO
+unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,d_voice_unilateral_vocal_fold_paralysis_timestamp,d_voice_unilateral_vocal_fold_paralysis_timestamp,diagnosis,Timestamp when the d_voice_unilateral_vocal_fold_paralysis form was submitted in REDCap.,YES,drop,VARIABLE,redcap_generated,v4,NO
 unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,d_voice_unilateral_vocal_fold_paralysis_complete,d_voice_unilateral_vocal_fold_paralysis_complete,diagnosis,REDCap form-completion status for the d_voice_unilateral_vocal_fold_paralysis instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO
-bipolar_disorder_schema,bipolar_disorder,d_mood_bipolar_disorder_timestamp,d_mood_bipolar_disorder_timestamp,diagnosis,Timestamp when the d_mood_bipolar_disorder form was submitted in REDCap.,YES,internal,VARIABLE,redcap_generated,v4,NO
+bipolar_disorder_schema,bipolar_disorder,d_mood_bipolar_disorder_timestamp,d_mood_bipolar_disorder_timestamp,diagnosis,Timestamp when the d_mood_bipolar_disorder form was submitted in REDCap.,YES,drop,VARIABLE,redcap_generated,v4,NO
 bipolar_disorder_schema,bipolar_disorder,d_mood_bipolar_disorder_complete,d_mood_bipolar_disorder_complete,diagnosis,REDCap form-completion status for the d_mood_bipolar_disorder instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO
-depression_or_major_depressive_disorder_schema,depression,d_mood_depression_or_major_depressive_disorder_timestamp,d_mood_depression_or_major_depressive_disorder_timestamp,diagnosis,Timestamp when the d_mood_depression_or_major_depressive_disorder form was submitted in REDCap.,YES,internal,VARIABLE,redcap_generated,v4,NO
+depression_or_major_depressive_disorder_schema,depression,d_mood_depression_or_major_depressive_disorder_timestamp,d_mood_depression_or_major_depressive_disorder_timestamp,diagnosis,Timestamp when the d_mood_depression_or_major_depressive_disorder form was submitted in REDCap.,YES,drop,VARIABLE,redcap_generated,v4,NO
 depression_or_major_depressive_disorder_schema,depression,d_mood_depression_or_major_depressive_disorder_complete,d_mood_depression_or_major_depressive_disorder_complete,diagnosis,REDCap form-completion status for the d_mood_depression_or_major_depressive_disorder instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO
-anxiety_disorder_schema,anxiety,d_mood_anxiety_disorder_timestamp,d_mood_anxiety_disorder_timestamp,diagnosis,Timestamp when the d_mood_anxiety_disorder form was submitted in REDCap.,YES,internal,VARIABLE,redcap_generated,v4,NO
+anxiety_disorder_schema,anxiety,d_mood_anxiety_disorder_timestamp,d_mood_anxiety_disorder_timestamp,diagnosis,Timestamp when the d_mood_anxiety_disorder form was submitted in REDCap.,YES,drop,VARIABLE,redcap_generated,v4,NO
 anxiety_disorder_schema,anxiety,d_mood_anxiety_disorder_complete,d_mood_anxiety_disorder_complete,diagnosis,REDCap form-completion status for the d_mood_anxiety_disorder instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO
-airway_stenosis_schema,airway_stenosis,d_resp_airway_stenosis_timestamp,d_resp_airway_stenosis_timestamp,diagnosis,Timestamp when the d_resp_airway_stenosis form was submitted in REDCap.,YES,internal,VARIABLE,redcap_generated,v4,NO
+airway_stenosis_schema,airway_stenosis,d_resp_airway_stenosis_timestamp,d_resp_airway_stenosis_timestamp,diagnosis,Timestamp when the d_resp_airway_stenosis form was submitted in REDCap.,YES,drop,VARIABLE,redcap_generated,v4,NO
 airway_stenosis_schema,airway_stenosis,d_resp_airway_stenosis_complete,d_resp_airway_stenosis_complete,diagnosis,REDCap form-completion status for the d_resp_airway_stenosis instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO
-copd_and_asthma_schema,copd_and_asthma,d_resp_copd_and_asthma_timestamp,d_resp_copd_and_asthma_timestamp,diagnosis,Timestamp when the d_resp_copd_and_asthma form was submitted in REDCap.,YES,internal,VARIABLE,redcap_generated,v4,NO
+copd_and_asthma_schema,copd_and_asthma,d_resp_copd_and_asthma_timestamp,d_resp_copd_and_asthma_timestamp,diagnosis,Timestamp when the d_resp_copd_and_asthma form was submitted in REDCap.,YES,drop,VARIABLE,redcap_generated,v4,NO
 copd_and_asthma_schema,copd_and_asthma,d_resp_copd_and_asthma_complete,d_resp_copd_and_asthma_complete,diagnosis,REDCap form-completion status for the d_resp_copd_and_asthma instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO
-unexplained_chronic_cough_schema,unexplained_chronic_cough,d_resp_unexplained_chronic_cough_timestamp,d_resp_unexplained_chronic_cough_timestamp,diagnosis,Timestamp when the d_resp_unexplained_chronic_cough form was submitted in REDCap.,YES,internal,VARIABLE,redcap_generated,v4,NO
+unexplained_chronic_cough_schema,unexplained_chronic_cough,d_resp_unexplained_chronic_cough_timestamp,d_resp_unexplained_chronic_cough_timestamp,diagnosis,Timestamp when the d_resp_unexplained_chronic_cough form was submitted in REDCap.,YES,drop,VARIABLE,redcap_generated,v4,NO
 unexplained_chronic_cough_schema,unexplained_chronic_cough,d_resp_unexplained_chronic_cough_complete,d_resp_unexplained_chronic_cough_complete,diagnosis,REDCap form-completion status for the d_resp_unexplained_chronic_cough instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO
-alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,d_neuro_alzheimers_disease_mild_cognitive_impairme_timestamp,d_neuro_alzheimers_disease_mild_cognitive_impairme_timestamp,diagnosis,Timestamp when the Alzheimer's disease / mild cognitive impairment form was submitted in REDCap.,YES,internal,VARIABLE,redcap_generated,v4,NO
+alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,d_neuro_alzheimers_disease_mild_cognitive_impairme_timestamp,d_neuro_alzheimers_disease_mild_cognitive_impairme_timestamp,diagnosis,Timestamp when the Alzheimer's disease / mild cognitive impairment form was submitted in REDCap.,YES,drop,VARIABLE,redcap_generated,v4,NO
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,d_neuro_alzheimers_disease_mild_cognitive_impairme_complete,d_neuro_alzheimers_disease_mild_cognitive_impairme_complete,diagnosis,REDCap form-completion status for the Alzheimer's disease / mild cognitive impairment instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO
-amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,d_neuro_amyotrophic_lateral_sclerosis_als_timestamp,d_neuro_amyotrophic_lateral_sclerosis_als_timestamp,diagnosis,Timestamp when the d_neuro_amyotrophic_lateral_sclerosis_als form was submitted in REDCap.,YES,internal,VARIABLE,redcap_generated,v4,NO
+amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,d_neuro_amyotrophic_lateral_sclerosis_als_timestamp,d_neuro_amyotrophic_lateral_sclerosis_als_timestamp,diagnosis,Timestamp when the d_neuro_amyotrophic_lateral_sclerosis_als form was submitted in REDCap.,YES,drop,VARIABLE,redcap_generated,v4,NO
 amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,d_neuro_amyotrophic_lateral_sclerosis_als_complete,d_neuro_amyotrophic_lateral_sclerosis_als_complete,diagnosis,REDCap form-completion status for the d_neuro_amyotrophic_lateral_sclerosis_als instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO
-d_neuro_ataxia_schema,ataxia,d_neuro_ataxia_timestamp,d_neuro_ataxia_timestamp,diagnosis,Timestamp when the d_neuro_ataxia form was submitted in REDCap.,YES,internal,VARIABLE,redcap_generated,v4,NO
+d_neuro_ataxia_schema,ataxia,d_neuro_ataxia_timestamp,d_neuro_ataxia_timestamp,diagnosis,Timestamp when the d_neuro_ataxia form was submitted in REDCap.,YES,drop,VARIABLE,redcap_generated,v4,NO
 d_neuro_ataxia_schema,ataxia,d_neuro_ataxia_complete,d_neuro_ataxia_complete,diagnosis,REDCap form-completion status for the d_neuro_ataxia instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO
-d_neuro_essential_tremor_schema,essential_tremor,d_neuro_essential_tremor_timestamp,d_neuro_essential_tremor_timestamp,diagnosis,Timestamp when the d_neuro_essential_tremor form was submitted in REDCap.,YES,internal,VARIABLE,redcap_generated,v4,NO
+d_neuro_essential_tremor_schema,essential_tremor,d_neuro_essential_tremor_timestamp,d_neuro_essential_tremor_timestamp,diagnosis,Timestamp when the d_neuro_essential_tremor form was submitted in REDCap.,YES,drop,VARIABLE,redcap_generated,v4,NO
 d_neuro_essential_tremor_schema,essential_tremor,d_neuro_essential_tremor_complete,d_neuro_essential_tremor_complete,diagnosis,REDCap form-completion status for the d_neuro_essential_tremor instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO
-parkinsons_disease_schema,parkinsons_disease,d_neuro_parkinsons_disease_timestamp,d_neuro_parkinsons_disease_timestamp,diagnosis,Timestamp when the d_neuro_parkinsons_disease form was submitted in REDCap.,YES,internal,VARIABLE,redcap_generated,v4,NO
+parkinsons_disease_schema,parkinsons_disease,d_neuro_parkinsons_disease_timestamp,d_neuro_parkinsons_disease_timestamp,diagnosis,Timestamp when the d_neuro_parkinsons_disease form was submitted in REDCap.,YES,drop,VARIABLE,redcap_generated,v4,NO
 parkinsons_disease_schema,parkinsons_disease,d_neuro_parkinsons_disease_complete,d_neuro_parkinsons_disease_complete,diagnosis,REDCap form-completion status for the d_neuro_parkinsons_disease instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO
-huntingtons_disease_schema,huntingtons_disease,d_neuro_huntingtons_disease_timestamp,d_neuro_huntingtons_disease_timestamp,diagnosis,Timestamp when the d_neuro_huntingtons_disease form was submitted in REDCap.,YES,internal,VARIABLE,redcap_generated,v4,NO
+huntingtons_disease_schema,huntingtons_disease,d_neuro_huntingtons_disease_timestamp,d_neuro_huntingtons_disease_timestamp,diagnosis,Timestamp when the d_neuro_huntingtons_disease form was submitted in REDCap.,YES,drop,VARIABLE,redcap_generated,v4,NO
 huntingtons_disease_schema,huntingtons_disease,d_neuro_huntingtons_disease_complete,d_neuro_huntingtons_disease_complete,diagnosis,REDCap form-completion status for the d_neuro_huntingtons_disease instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO
 session_schema,session,session_complete,session_complete,task,REDCap form-completion status for the session instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO
 acoustic_task_schema,acoustic_task,acoustic_task_complete,acoustic_task_complete,task,REDCap form-completion status for the acoustic_task instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO
