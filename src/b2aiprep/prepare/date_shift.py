@@ -12,7 +12,9 @@ season of the real date, which is acceptable because every shifted column is
 ``disposition=internal`` and stripped at deidentification.
 
 Each timestamp is localized in the time zone where its session happened. A session a data
-collector ran happened at the site. A self-administered session (any row of it with
+collector ran happened at the participant's site: ``enrollment_institution``, recorded once per
+participant (it agrees with every populated ``session_site`` in the 2026-09-04 exports and is
+complete where ``session_site`` is not). A self-administered session (any row of it with
 ``<prefix>_via == "Participant"``) happened wherever the participant was, taken from their
 postal code, else their state or province when that region has a single zone, else the site
 (with a warning). The postal and region tables are built by
@@ -46,6 +48,7 @@ SITE_TIMEZONES = {
 }
 
 SESSION_INSTRUMENT = "Session"
+SITE_COLUMN = "enrollment_institution"
 SELF_ADMINISTERED = "Participant"
 
 # Participant location columns; adult and pediatric exports name them differently.
@@ -207,12 +210,19 @@ def session_timezones(
     sessions = df.loc[df["redcap_repeat_instrument"] == SESSION_INSTRUMENT]
     _, self_administered = _session_links(df)
     homes = home_timezones(df)
+    site_of = (
+        df.loc[_column(df, SITE_COLUMN).notna(), ["record_id", SITE_COLUMN]]
+        .drop_duplicates("record_id")
+        .set_index("record_id")[SITE_COLUMN]
+        .to_dict()
+        if SITE_COLUMN in df.columns
+        else {}
+    )
     zones: t.Dict[str, ZoneInfo] = {}
     sources: Counter = Counter()
     unresolved: t.Dict[str, str] = {}
-    for record_id, session_id, site in zip(
-        sessions["record_id"], _column(sessions, "session_id"), _column(sessions, "session_site")
-    ):
+    for record_id, session_id in zip(sessions["record_id"], _column(sessions, "session_id")):
+        site = site_of.get(record_id)
         site_zone = SITE_TIMEZONES.get(site) if isinstance(site, str) else None
         if session_id in self_administered:
             home = homes.get(record_id)

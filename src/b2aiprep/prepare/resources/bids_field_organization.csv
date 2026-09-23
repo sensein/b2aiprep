@@ -172,10 +172,10 @@ anxiety_disorder_schema,anxiety,diagnosis_diagnosed_ad_selection,diagnosis_ad_se
 benign_lesions_schema,benign_lesions,diagnois_bl_gsd,diagnois_bl_gold_standard_diagnosis,diagnosis,Does the participant have a benign lesion confirmed by laryngoscopy/stroboscopy?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 benign_lesions_schema,benign_lesions,diagnosis_bl_degree_b_1,diagnosis_bl_degree_b_1,diagnosis,Breathiness,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 benign_lesions_schema,benign_lesions,diagnosis_bl_degree_b_2,diagnosis_bl_degree_b_2,diagnosis,Breathiness,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-benign_lesions_schema,benign_lesions,diagnosis_bl_degree_comments,diagnosis_bl_degree_comments,,Comments about resonance,YES,drop,VARIABLE,redcap,pre-v4,NO,NO
-benign_lesions_schema,benign_lesions,diagnosis_bl_degree_comments_other,diagnosis_bl_degree_comments_other,,Please specify,YES,drop,VARIABLE,redcap,v4,NO,NO
-benign_lesions_schema,benign_lesions,diagnosis_bl_degree_comments_other_2,diagnosis_bl_degree_comments_other_2,,"Additional Features
-(for example, diplophonia, fry, falsetto, asthenia, aphonia, pitch instability, tremor, wet/gurgly, or other relevant terms):",YES,drop,VARIABLE,redcap,v4,NO,NO
+benign_lesions_schema,benign_lesions,diagnosis_bl_degree_comments,diagnosis_bl_degree_comments,diagnosis,Comments about resonance,YES,review,VARIABLE,redcap,pre-v4,NO,NO
+benign_lesions_schema,benign_lesions,diagnosis_bl_degree_comments_other,diagnosis_bl_degree_comments_other,diagnosis,Please specify,YES,review,VARIABLE,redcap,v4,NO,NO
+benign_lesions_schema,benign_lesions,diagnosis_bl_degree_comments_other_2,diagnosis_bl_degree_comments_other_2,diagnosis,"Additional Features
+(for example, diplophonia, fry, falsetto, asthenia, aphonia, pitch instability, tremor, wet/gurgly, or other relevant terms):",YES,review,VARIABLE,redcap,v4,NO,NO
 benign_lesions_schema,benign_lesions,diagnosis_bl_degree_l_1,diagnosis_bl_degree_l_1,diagnosis,Loudness,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 benign_lesions_schema,benign_lesions,diagnosis_bl_degree_l_2,diagnosis_bl_degree_l_2,diagnosis,Loudness,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 benign_lesions_schema,benign_lesions,diagnosis_bl_degree_l_nature,diagnosis_bl_degree_l_nature,diagnosis,"Loudness
@@ -1036,32 +1036,32 @@ dyspnea_index_di_schema,dyspnea_index,dyspnea_index_origin,dyspnea_index_origin,
 dyspnea_index_di_schema,dyspnea_index,dyspnea_index_session_id,dyspnea_index_session_id,questionnaire,Session ID,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 dyspnea_index_di_schema,dyspnea_index,dyspnea_index_started_at,dyspnea_index_started_at,questionnaire,Questionnaire Started At,YES,internal,VARIABLE,redcap,v4,NO,YES
 dyspnea_index_di_schema,dyspnea_index,dyspnea_index_via,dyspnea_index_via,questionnaire,Dyspnea Index (DI) - via,NO,release,VARIABLE,redcap,v4,NO,NO
-enrollment_form_schema,enrollment,ef_add_adhd,self_reported_add_adhd,,Attention-Deficit / Hyperactivity Disorder (ADHD),YES,drop,VARIABLE,redcap,v4,NO,NO
-enrollment_form_schema,enrollment,ef_airway_stenosis,self_reported_airway_stenosis,,Airway Stenosis (for example: bilateral vocal fold paralysis; laryngeal stenosis),YES,drop,VARIABLE,redcap,v4,NO,NO
-enrollment_form_schema,enrollment,ef_alcohol_subst_abuse,self_reported_alcohol_subst_abuse,,Alcohol or Substance Use Disorder,YES,drop,VARIABLE,redcap,v4,NO,NO
-enrollment_form_schema,enrollment,ef_als,self_reported_als,,Amyotrophic Lateral Sclerosis (ALS),YES,drop,VARIABLE,redcap,v4,NO,NO
-enrollment_form_schema,enrollment,ef_alz_dementia_mci,self_reported_alz_dementia_mci,,"Alzheimer's, Dementia, or Mild Cognitive Impairment",YES,drop,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_add_adhd,self_reported_add_adhd,enrollment,Attention-Deficit / Hyperactivity Disorder (ADHD),YES,internal,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_airway_stenosis,self_reported_airway_stenosis,enrollment,Airway Stenosis (for example: bilateral vocal fold paralysis; laryngeal stenosis),YES,internal,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_alcohol_subst_abuse,self_reported_alcohol_subst_abuse,enrollment,Alcohol or Substance Use Disorder,YES,internal,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_als,self_reported_als,enrollment,Amyotrophic Lateral Sclerosis (ALS),YES,internal,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_alz_dementia_mci,self_reported_alz_dementia_mci,enrollment,"Alzheimer's, Dementia, or Mild Cognitive Impairment",YES,internal,VARIABLE,redcap,v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_any_cognitive_challeges,ef_any_cognitive_challeges,enrollment,"This application requires you to read text, answer questions, and follow directions. Do you have any cognitive challenges, including difficulty reading, that we can assist with?",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_any_hearing_related_req,ef_any_hearing_related_req,enrollment,This application may present some sound files for you to listen to. Do you have any hearing-related requirements we can assist with?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_any_physical_challenges,ef_any_physical_challenges,enrollment,This application requires you to navigate through the questions using a touch screen. Do you have any physical challenges we can accommodate?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_any_vision_related_req,ef_any_vision_related_req,enrollment,This application requires you to read text to answer questions. Do you have any vision-related requirements we can assist with?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-enrollment_form_schema,enrollment,ef_asd,self_reported_asd,,Autism Spectrum Disorder (ASD),YES,drop,VARIABLE,redcap,v4,NO,NO
-enrollment_form_schema,enrollment,ef_asthma,self_reported_asthma,,Asthma,YES,drop,VARIABLE,redcap,v4,NO,NO
-enrollment_form_schema,enrollment,ef_autism,self_reported_autism,,Autism Spectrum Disorder (ASD),YES,drop,VARIABLE,redcap,v4,NO,NO
-enrollment_form_schema,enrollment,ef_benign_cord_lesion,self_reported_benign_cord_lesion,,"Lesions of the vocal cord (nodule, polyp, cyst)",YES,drop,VARIABLE,redcap,v4,NO,NO
-enrollment_form_schema,enrollment,ef_bipolar,self_reported_bipolar,,Bipolar Disorder,YES,drop,VARIABLE,redcap,v4,NO,NO
-enrollment_form_schema,enrollment,ef_bpd,self_reported_bpd,,Borderline Personality Disorder (BPD),YES,drop,VARIABLE,redcap,v4,NO,NO
-enrollment_form_schema,enrollment,ef_chronic_cough,self_reported_chronic_cough,,Chronic Cough,YES,drop,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_asd,self_reported_asd,enrollment,Autism Spectrum Disorder (ASD),YES,internal,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_asthma,self_reported_asthma,enrollment,Asthma,YES,internal,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_autism,self_reported_autism,enrollment,Autism Spectrum Disorder (ASD),YES,internal,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_benign_cord_lesion,self_reported_benign_cord_lesion,enrollment,"Lesions of the vocal cord (nodule, polyp, cyst)",YES,internal,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_bipolar,self_reported_bipolar,enrollment,Bipolar Disorder,YES,internal,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_bpd,self_reported_bpd,enrollment,Borderline Personality Disorder (BPD),YES,internal,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_chronic_cough,self_reported_chronic_cough,enrollment,Chronic Cough,YES,internal,VARIABLE,redcap,v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_cognitive_a11y_options,ef_cognitive_a11y_options,enrollment,"Yes, I would like to use some of the accessibility features of the app",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_completed_at,ef_completed_at,enrollment,Enrollment Form Completed At,YES,drop,VARIABLE,redcap,v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_completed_by,ef_completed_by,enrollment,Check all that apply,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_cond_prompt,ef_cond_prompt,enrollment,(Check all that apply if you currently have the condition),YES,drop,VARIABLE,redcap,pre-v4,NO,NO
 enrollment_form_schema,enrollment,ef_contact_info_stored,ef_contact_info_stored,,[DEPRECATED] I want my contact information to be kept in a repository for this study which can be used to contact me to ask me to enroll in further studies or return important results. My information will not be shared with third parties.,YES,drop,VARIABLE,redcap,pre-v4,NO,NO
-enrollment_form_schema,enrollment,ef_copd,self_reported_copd,,COPD,YES,drop,VARIABLE,redcap,v4,NO,NO
-enrollment_form_schema,enrollment,ef_depression,self_reported_depression,,Depression or Major Depressive Disorder,YES,drop,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_copd,self_reported_copd,enrollment,COPD,YES,internal,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_depression,self_reported_depression,enrollment,Depression or Major Depressive Disorder,YES,internal,VARIABLE,redcap,v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_dob,ef_dob,enrollment,What is your date of birth?,YES,drop,VARIABLE,redcap,pre-v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_duration,ef_duration,enrollment,Enrollment Form Duration (seconds),NO,release,VARIABLE,redcap,v4,NO,NO
-enrollment_form_schema,enrollment,ef_ed,self_reported_ed,,Eating Disorder (ED),YES,drop,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_ed,self_reported_ed,enrollment,Eating Disorder (ED),YES,internal,VARIABLE,redcap,v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_eligible_studies,ef_eligible_studies,enrollment,Eligible Studies,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_email,ef_email,enrollment,Email,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_enrollment,ef_enrollment,enrollment,"Please review your answers reading all the way through the bottom and select an option. If you have any questions, you can still proceed with enrollment and ask or make changes at a later time.",NO,release,VARIABLE,redcap,v4,NO,NO
@@ -1071,43 +1071,43 @@ enrollment_form_schema,enrollment_form,ef_enrollment_via,ef_enrollment_via,enrol
 enrollment_form_schema,enrollment_form,ef_first_name,ef_first_name,enrollment,First Name,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_fluent_language_other,ef_fluent_language_other,enrollment,"If you speak any other languages fluently, please specify:",NO,release,VARIABLE,redcap,v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_fluent_languages,ef_fluent_languages,enrollment,Do you speak any additional language(s) fluently (similar to a native speaker)?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-enrollment_form_schema,enrollment,ef_gad,self_reported_gad,,Anxiety Disorder,YES,drop,VARIABLE,redcap,v4,NO,NO
-enrollment_form_schema,enrollment,ef_glottic_insufficiency,self_reported_glottic_insufficiency,,Glottic Insufficiency / Presbyphonia,YES,drop,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_gad,self_reported_gad,enrollment,Anxiety Disorder,YES,internal,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_glottic_insufficiency,self_reported_glottic_insufficiency,enrollment,Glottic Insufficiency / Presbyphonia,YES,internal,VARIABLE,redcap,v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_hearing_a11y_options,ef_hearing_a11y_options,enrollment,"Yes, I would like to use some of the accessibility features of the app",NO,release,VARIABLE,redcap,pre-v4,NO,NO
-enrollment_form_schema,enrollment,ef_huntingtons,self_reported_huntingtons,,Huntington's Disease,YES,drop,VARIABLE,redcap,v4,NO,NO
-enrollment_form_schema,enrollment,ef_insomnia,self_reported_insomnia,,Insomnia / Sleep Disorder,YES,drop,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_huntingtons,self_reported_huntingtons,enrollment,Huntington's Disease,YES,internal,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_insomnia,self_reported_insomnia,enrollment,Insomnia / Sleep Disorder,YES,internal,VARIABLE,redcap,v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_is_control_participant,ef_is_control_participant,enrollment,Is Control Participant?,NO,release,VARIABLE,redcap,v4,NO,NO
-enrollment_form_schema,enrollment,ef_laryng_cancer,self_reported_laryng_cancer,,Laryngeal Cancer,YES,drop,VARIABLE,redcap,v4,NO,NO
-enrollment_form_schema,enrollment,ef_laryngitis,self_reported_laryngitis,,Laryngitis,YES,drop,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_laryng_cancer,self_reported_laryng_cancer,enrollment,Laryngeal Cancer,YES,internal,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_laryngitis,self_reported_laryngitis,enrollment,Laryngitis,YES,internal,VARIABLE,redcap,v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_last_name,ef_last_name,enrollment,Last Name,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_learn_about_this_study,ef_learn_about_this_study,enrollment,How did you learn about this study?,NO,release,VARIABLE,redcap,v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_learn_about_this_study_event,ef_learn_about_this_study_event,enrollment,"If ""At an event"", please specify:",NO,release,VARIABLE,redcap,v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_learn_about_this_study_other,ef_learn_about_this_study_other,enrollment,"If ""Other"", please specify:",NO,release,VARIABLE,redcap,v4,NO,NO
-enrollment_form_schema,enrollment,ef_mtd,self_reported_mtd,,Muscle Tension Dysphonia (MTD),YES,drop,VARIABLE,redcap,v4,NO,NO
-enrollment_form_schema,enrollment,ef_ocd,self_reported_ocd,,Obsessive-Compulsive Disorder (OCD),YES,drop,VARIABLE,redcap,v4,NO,NO
-enrollment_form_schema,enrollment,ef_osa,self_reported_osa,,Obstructive Sleep Apnea (OSA),YES,drop,VARIABLE,redcap,v4,NO,NO
-enrollment_form_schema,enrollment,ef_other_psych,self_reported_other_psych,,Other Psychiatric Disorder,YES,drop,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_mtd,self_reported_mtd,enrollment,Muscle Tension Dysphonia (MTD),YES,internal,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_ocd,self_reported_ocd,enrollment,Obsessive-Compulsive Disorder (OCD),YES,internal,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_osa,self_reported_osa,enrollment,Obstructive Sleep Apnea (OSA),YES,internal,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_other_psych,self_reported_other_psych,enrollment,Other Psychiatric Disorder,YES,internal,VARIABLE,redcap,v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_other_reason_decline,ef_other_reason_decline,enrollment,"If ""Other"" reason for declining enrollment, please specify:",NO,review,VARIABLE,redcap,v4,NO,NO
-enrollment_form_schema,enrollment,ef_panic,self_reported_panic,,Panic Disorder,YES,drop,VARIABLE,redcap,v4,NO,NO
-enrollment_form_schema,enrollment,ef_parkinsons,self_reported_parkinsons,,Parkinson's disease,YES,drop,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_panic,self_reported_panic,enrollment,Panic Disorder,YES,internal,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_parkinsons,self_reported_parkinsons,enrollment,Parkinson's disease,YES,internal,VARIABLE,redcap,v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_participant_study_id,ef_participant_study_id,enrollment,Participant Study ID,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_phone_number,ef_phone_number,enrollment,Phone Number,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_physical_a11y_options,ef_physical_a11y_options,enrollment,"Yes, I would like to use some of the accessibility features of the app",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_primary_language,ef_primary_language,enrollment,What is your primary language?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_primary_language_other,ef_primary_language_other,enrollment,"If primary language is ""other"", please specify:",NO,release,VARIABLE,redcap,v4,NO,NO
-enrollment_form_schema,enrollment,ef_ptsd,self_reported_ptsd,,Post-Traumatic Stress Disorder (PTSD),YES,drop,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_ptsd,self_reported_ptsd,enrollment,Post-Traumatic Stress Disorder (PTSD),YES,internal,VARIABLE,redcap,v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_reason_decline_enroll,ef_reason_decline_enroll,enrollment,Please select a reason for declining,NO,release,VARIABLE,redcap,v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_remote_collection_agreement_terms,ef_remote_collection_agreement_terms,enrollment,I acknowledge that:,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_researcher_email,ef_researcher_email,enrollment,Researcher Email,YES,drop,VARIABLE,redcap,v4,NO,NO
-enrollment_form_schema,enrollment,ef_rrp,self_reported_rrp,,Recurrent Laryngeal Papilloma (RRP),YES,drop,VARIABLE,redcap,v4,NO,NO
-enrollment_form_schema,enrollment,ef_schizophrenia,self_reported_schizophrenia,,Schizophrenia,YES,drop,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_rrp,self_reported_rrp,enrollment,Recurrent Laryngeal Papilloma (RRP),YES,internal,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_schizophrenia,self_reported_schizophrenia,enrollment,Schizophrenia,YES,internal,VARIABLE,redcap,v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_select_language,ef_select_language,enrollment,Select a language,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-enrollment_form_schema,enrollment,ef_soc_anx_dis,self_reported_soc_anx_dis,,Social Anxiety Disorder,YES,drop,VARIABLE,redcap,v4,NO,NO
-enrollment_form_schema,enrollment,ef_spas_dys,self_reported_spas_dys,,Spasmodic Dysphonia / Laryngeal Tremor,YES,drop,VARIABLE,redcap,v4,NO,NO
-enrollment_form_schema,enrollment,ef_speech_delay,self_reported_speech_delay,,Speech Delay,YES,drop,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_soc_anx_dis,self_reported_soc_anx_dis,enrollment,Social Anxiety Disorder,YES,internal,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_spas_dys,self_reported_spas_dys,enrollment,Spasmodic Dysphonia / Laryngeal Tremor,YES,internal,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_speech_delay,self_reported_speech_delay,enrollment,Speech Delay,YES,internal,VARIABLE,redcap,v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_started_at,ef_started_at,enrollment,Enrollment Form Started At,YES,drop,VARIABLE,redcap,v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_vision_a11y_options,ef_vision_a11y_options,enrollment,"Yes, I would like to use some of the accessibility features of the app",NO,release,VARIABLE,redcap,pre-v4,NO,NO
-enrollment_form_schema,enrollment,ef_voc_fold_paralysis,self_reported_unilateral_vocal_fold_paralysis,,Unilateral Vocal Fold Paralysis,YES,drop,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_voc_fold_paralysis,self_reported_unilateral_vocal_fold_paralysis,enrollment,Unilateral Vocal Fold Paralysis,YES,internal,VARIABLE,redcap,v4,NO,NO
 gad7_anxiety_schema,gad7_anxiety,afraid_of_things,afraid_of_things,questionnaire,"Feeling afraid, as if something awful might happen.",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 gad7_anxiety_schema,gad7_anxiety,cant_control_worry,cant_control_worry,questionnaire,Not being able to stop or control worrying.,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 gad7_anxiety_schema,gad7_anxiety,easily_agitated,easily_agitated,questionnaire,Becoming easily annoyed or irritable.,NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -1386,10 +1386,10 @@ Did the participant get a laryngoscopy/stroboscopy confirming the presence of a 
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_as_ds_ccsr,diagnosis_as_ds_ccsr,diagnosis,Is the cancer causing stridor at rest?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_degree_b_1,diagnosis_lc_degree_b_1,diagnosis,Breathiness,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_degree_b_2,diagnosis_lc_degree_b_2,diagnosis,Breathiness,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-laryngeal_cancer_schema,,diagnosis_lc_degree_comments,diagnosis_lc_degree_comments,,Comments about resonance,YES,drop,VARIABLE,redcap,pre-v4,NO,NO
-laryngeal_cancer_schema,,diagnosis_lc_degree_comments_other,diagnosis_lc_degree_comments_other,,Please specify,YES,drop,VARIABLE,redcap,v4,NO,NO
-laryngeal_cancer_schema,,diagnosis_lc_degree_comments_other_2,diagnosis_lc_degree_comments_other_2,,"Additional Features
-(for example, diplophonia, fry, falsetto, asthenia, aphonia, pitch instability, tremor, wet/gurgly, or other relevant terms):",YES,drop,VARIABLE,redcap,v4,NO,NO
+laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_degree_comments,diagnosis_lc_degree_comments,diagnosis,Comments about resonance,YES,review,VARIABLE,redcap,pre-v4,NO,NO
+laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_degree_comments_other,diagnosis_lc_degree_comments_other,diagnosis,Please specify,YES,review,VARIABLE,redcap,v4,NO,NO
+laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_degree_comments_other_2,diagnosis_lc_degree_comments_other_2,diagnosis,"Additional Features
+(for example, diplophonia, fry, falsetto, asthenia, aphonia, pitch instability, tremor, wet/gurgly, or other relevant terms):",YES,review,VARIABLE,redcap,v4,NO,NO
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_degree_l_1,diagnosis_lc_degree_l_1,diagnosis,Loudness,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_degree_l_2,diagnosis_lc_degree_l_2,diagnosis,Loudness,NO,release,VARIABLE,redcap,v4,NO,NO
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_degree_l_nature,diagnosis_lc_degree_l_nature,diagnosis,"Loudness
@@ -1616,10 +1616,10 @@ parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_gsd_category_3
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_gsd_category_3_calculation,diagnosis_parkinsons_gold_standard_diagnosis_category_3_calculation,diagnosis,"Calculated variable indicating whether the participant meets criteria for Parkinson’s disease GSD category 3, recorded as a categorical value (e.g., yes / no / unknown).",NO,release,VARIABLE,redcap,pre-v4,YES,NO
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_ma,diagnosis_parkinsons_ma,diagnosis,Please provide scores or results from validated cognitive assessment tools:,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_ma_other,diagnosis_parkinsons_ma_other,diagnosis,"If you selected ""Other motor assessment tool"", please specify:",NO,release,VARIABLE,redcap,v4,NO,NO
-parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_ma_updrs_part_i_score,diagnosis_parkinsons_ma_updrs_part_i_score,clinically_validated_diagnosis,"Part I (Intellectual function, mood, behavior) score:",YES,drop,VARIABLE,redcap,pre-v4,NO,NO
-parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_ma_updrs_part_ii_score,diagnosis_parkinsons_ma_updrs_part_ii_score,clinically_validated_diagnosis,Part II (Activities of daily living) score:,YES,drop,VARIABLE,redcap,pre-v4,NO,NO
-parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_ma_updrs_part_iii_score,diagnosis_parkinsons_ma_updrs_part_iii_score,clinically_validated_diagnosis,Part III (Motor Examination) score:,YES,drop,VARIABLE,redcap,pre-v4,NO,NO
-parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_ma_updrs_part_iv_score,diagnosis_parkinsons_ma_updrs_part_iv_score,clinically_validated_diagnosis,Part IV (Motor complications) score:,YES,drop,VARIABLE,redcap,pre-v4,NO,NO
+parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_ma_updrs_part_i_score,diagnosis_parkinsons_ma_updrs_part_i_score,diagnosis,"Part I (Intellectual function, mood, behavior) score:",YES,review,VARIABLE,redcap,pre-v4,NO,NO
+parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_ma_updrs_part_ii_score,diagnosis_parkinsons_ma_updrs_part_ii_score,diagnosis,Part II (Activities of daily living) score:,YES,review,VARIABLE,redcap,pre-v4,NO,NO
+parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_ma_updrs_part_iii_score,diagnosis_parkinsons_ma_updrs_part_iii_score,diagnosis,Part III (Motor Examination) score:,YES,review,VARIABLE,redcap,pre-v4,NO,NO
+parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_ma_updrs_part_iv_score,diagnosis_parkinsons_ma_updrs_part_iv_score,diagnosis,Part IV (Motor complications) score:,YES,review,VARIABLE,redcap,pre-v4,NO,NO
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_ma_uprds,diagnosis_parkinsons_ma_uprds,diagnosis,Unified Parkinson's Disease Rating Scale (UPDRS),NO,release,VARIABLE,redcap,pre-v4,NO,NO
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_non_motor_symptoms,diagnosis_parkinsons_non_motor_symptoms,diagnosis,Are there significant non-motor symptoms associated with Parkinson's disease in the participant?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_non_motor_symptoms_yes,diagnosis_parkinsons_non_motor_symptoms_yes,diagnosis,"If you selected ""Yes"", please specify:",NO,review,VARIABLE,redcap,v4,NO,NO
@@ -1775,7 +1775,7 @@ ptsd_adult_schema,ptsd_adult,ptsd_via,ptsd_via,questionnaire,PTSD Adult - via,NO
 ptsd_adult_schema,ptsd_adult,super_alert,super_alert,questionnaire,"Being ""super alert"", on guard, or constantly on the lookout for danger?",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 ptsd_adult_schema,ptsd_adult,thinking_stressful_event,thinking_stressful_event,questionnaire,"Thinking that a stressful event happened because you or someone else (who didn't directly harm you) did something wrong or didn't do everything possible to prevent it, or because of something about you?",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 ptsd_adult_schema,ptsd_adult,traumatic_event,traumatic_event,questionnaire,Please list the traumatic event that you experienced,NO,review,VARIABLE,redcap,v4,NO,NO
-ptsd_adult_schema,ptsd_adult,traumatic_event_date,traumatic_event_date,clinically_validated_diagnosis,Date of the traumatic event:,YES,drop,VARIABLE,redcap,v4,NO,NO
+ptsd_adult_schema,ptsd_adult,traumatic_event_date,traumatic_event_date,questionnaire,Date of the traumatic event:,YES,internal,VARIABLE,redcap,v4,NO,YES
 random_item_generation_schema,random_item_generation,random_completed_at,random_completed_at,task,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES
 random_item_generation_schema,random_item_generation,random_duration,random_duration,task,Questionnaire Duration (seconds),NO,release,VARIABLE,redcap,pre-v4,NO,NO
 random_item_generation_schema,random_item_generation,random_item_generation_category,random_item_generation_category,task,Random item generation category,NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -1809,8 +1809,8 @@ session_schema,session,session_duration,session_duration,task,Session Duration (
 session_schema,session,session_id,session_id,task,Session ID,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 session_schema,session,session_is_control_participant,session_is_control_participant,task,Is Control Participant?,YES,drop,VARIABLE,redcap,pre-v4,NO,NO
 session_schema,session,session_language,session_language,task,Session - Language,YES,drop,VARIABLE,redcap,v4,NO,NO
-session_schema,,session_record_id,session_participant_id,,Record ID,YES,drop,VARIABLE,redcap,pre-v4,NO,NO
-session_schema,session,session_site,session_site,task,Session Site?,YES,internal,VARIABLE,redcap,v4,NO,NO
+session_schema,,session_record_id,session_participant_id,,Record ID,YES,internal,VARIABLE,redcap,pre-v4,NO,NO
+session_schema,session,session_site,session_site,task,Session Site?,YES,drop,VARIABLE,redcap,v4,NO,NO
 session_schema,session,session_started_at,session_started_at,task,Session Started At,YES,internal,VARIABLE,redcap,v4,NO,YES
 session_schema,session,session_status,session_status,task,Session Status,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 subjectparticipant_basic_information_schema,demographics,age,age,demographics,Age,NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -1820,7 +1820,7 @@ subjectparticipant_basic_information_schema,participant,consent_method,consent_m
 subjectparticipant_basic_information_schema,participant,consent_status,consent_status,,Consent Status,YES,drop,VARIABLE,redcap,pre-v4,NO,NO
 subjectparticipant_basic_information_schema,participant,contact_participant,contact_participant,,Contact participant re: incidental findings?,YES,drop,VARIABLE,redcap,pre-v4,NO,NO
 subjectparticipant_basic_information_schema,participant,enrolled,enrolled,,Enrolled,YES,drop,VARIABLE,redcap,v4,NO,NO
-subjectparticipant_basic_information_schema,participant,enrollment_institution,enrollment_institution,,Enrollment Institution,YES,drop,VARIABLE,redcap,v4,NO,NO
+subjectparticipant_basic_information_schema,participant,enrollment_institution,enrollment_institution,enrollment,Enrollment Institution,YES,internal,VARIABLE,redcap,v4,NO,NO
 subjectparticipant_basic_information_schema,participant,enrollment_reason,enrollment_reason,,"Enrollment Reason
 
 To be completed when enrolling a person that declined initially.",YES,drop,VARIABLE,redcap,v4,NO,NO
@@ -1898,10 +1898,10 @@ unexplained_chronic_cough_schema,unexplained_chronic_cough,diagnosis_ucc_persist
 unexplained_chronic_cough_schema,unexplained_chronic_cough,diagnosis_ucc_rada,diagnosis_ucc_rada,diagnosis,Result,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_degree_b,diagnosis_degree_b,diagnosis,Breathiness,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_degree_b_2,diagnosis_degree_b_2,diagnosis,Breathiness,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_degree_comments,diagnosis_degree_comments,,Comments about resonance,YES,drop,VARIABLE,redcap,pre-v4,NO,NO
-unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_degree_comments_other,diagnosis_degree_comments_other,,Please specify,YES,drop,VARIABLE,redcap,v4,NO,NO
-unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_degree_comments_other_2,diagnosis_degree_comments_other_2,,"Additional Features
-(for example, diplophonia, fry, falsetto, asthenia, aphonia, pitch instability, tremor, wet/gurgly, or other relevant terms):",YES,drop,VARIABLE,redcap,v4,NO,NO
+unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_degree_comments,diagnosis_degree_comments,diagnosis,Comments about resonance,YES,review,VARIABLE,redcap,pre-v4,NO,NO
+unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_degree_comments_other,diagnosis_degree_comments_other,diagnosis,Please specify,YES,review,VARIABLE,redcap,v4,NO,NO
+unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_degree_comments_other_2,diagnosis_degree_comments_other_2,diagnosis,"Additional Features
+(for example, diplophonia, fry, falsetto, asthenia, aphonia, pitch instability, tremor, wet/gurgly, or other relevant terms):",YES,review,VARIABLE,redcap,v4,NO,NO
 unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_degree_l,diagnosis_degree_l,diagnosis,Loudness,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_degree_l_2,diagnosis_degree_l_2,diagnosis,Loudness,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_degree_l_nature,diagnosis_degree_l_nature,clinically_validated_diagnosis,"Loudness
@@ -3142,30 +3142,30 @@ data_dissemination_schema,data_dissemination,exclude_reason___other,exclude_reas
 data_dissemination_schema,data_dissemination,exclude_reason___participant_lost_to_follow_up,exclude_reason___participant_lost_to_follow_up,enrollment,Check all that apply,NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO
 data_dissemination_schema,data_dissemination,exclude_reason___participant_removed_from_eligibility,exclude_reason___participant_removed_from_eligibility,enrollment,Check all that apply,NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO
 data_dissemination_schema,data_dissemination,exclude_reason___participant_withdrew,exclude_reason___participant_withdrew,enrollment,Check all that apply,NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,asian_race___2029_7,asian_race___2029_7,demographics,Asian,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,asian_race___2030_5,asian_race___2030_5,demographics,Asian,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,asian_race___2031_3,asian_race___2031_3,demographics,Asian,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,asian_race___2032_1,asian_race___2032_1,demographics,Asian,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,asian_race___2033_9,asian_race___2033_9,demographics,Asian,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,asian_race___2034_7,asian_race___2034_7,demographics,Asian,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,asian_race___2035_4,asian_race___2035_4,demographics,Asian,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,asian_race___2036_2,asian_race___2036_2,demographics,Asian,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,asian_race___2037_0,asian_race___2037_0,demographics,Asian,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,asian_race___2038_8,asian_race___2038_8,demographics,Asian,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,asian_race___2039_6,asian_race___2039_6,demographics,Asian,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,asian_race___2040_4,asian_race___2040_4,demographics,Asian,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,asian_race___2041_2,asian_race___2041_2,demographics,Asian,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,asian_race___2042_0,asian_race___2042_0,demographics,Asian,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,asian_race___2043_8,asian_race___2043_8,demographics,Asian,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,asian_race___2044_6,asian_race___2044_6,demographics,Asian,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,asian_race___2045_3,asian_race___2045_3,demographics,Asian,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,asian_race___2046_1,asian_race___2046_1,demographics,Asian,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,asian_race___2047_9,asian_race___2047_9,demographics,Asian,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,asian_race___2048_7,asian_race___2048_7,demographics,Asian,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,asian_race___2049_5,asian_race___2049_5,demographics,Asian,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,asian_race___2050_3,asian_race___2050_3,demographics,Asian,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,asian_race___2051_1,asian_race___2051_1,demographics,Asian,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,asian_race___2052_9,asian_race___2052_9,demographics,Asian,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,asian_race___2029_7,asian_race___2029_7,demographics,Asian,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,asian_race___2030_5,asian_race___2030_5,demographics,Asian,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,asian_race___2031_3,asian_race___2031_3,demographics,Asian,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,asian_race___2032_1,asian_race___2032_1,demographics,Asian,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,asian_race___2033_9,asian_race___2033_9,demographics,Asian,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,asian_race___2034_7,asian_race___2034_7,demographics,Asian,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,asian_race___2035_4,asian_race___2035_4,demographics,Asian,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,asian_race___2036_2,asian_race___2036_2,demographics,Asian,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,asian_race___2037_0,asian_race___2037_0,demographics,Asian,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,asian_race___2038_8,asian_race___2038_8,demographics,Asian,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,asian_race___2039_6,asian_race___2039_6,demographics,Asian,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,asian_race___2040_4,asian_race___2040_4,demographics,Asian,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,asian_race___2041_2,asian_race___2041_2,demographics,Asian,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,asian_race___2042_0,asian_race___2042_0,demographics,Asian,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,asian_race___2043_8,asian_race___2043_8,demographics,Asian,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,asian_race___2044_6,asian_race___2044_6,demographics,Asian,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,asian_race___2045_3,asian_race___2045_3,demographics,Asian,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,asian_race___2046_1,asian_race___2046_1,demographics,Asian,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,asian_race___2047_9,asian_race___2047_9,demographics,Asian,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,asian_race___2048_7,asian_race___2048_7,demographics,Asian,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,asian_race___2049_5,asian_race___2049_5,demographics,Asian,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,asian_race___2050_3,asian_race___2050_3,demographics,Asian,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,asian_race___2051_1,asian_race___2051_1,demographics,Asian,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,asian_race___2052_9,asian_race___2052_9,demographics,Asian,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
 demographics_schema,demographics,assistance_programs_ca___1,assistance_programs_ca___1,demographics,"[DEPRECATED]
 Do you take advantage of any of the following programs? Choose all that apply",NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO
 demographics_schema,demographics,assistance_programs_ca___2,assistance_programs_ca___2,demographics,"[DEPRECATED]
@@ -3186,18 +3186,18 @@ demographics_schema,demographics,assistance_programs_usa___4,assistance_programs
 Do you take advantage of any of the following programs? Choose all that apply",NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO
 demographics_schema,demographics,assistance_programs_usa___5,assistance_programs_usa___5,demographics,"[DEPRECATED]
 Do you take advantage of any of the following programs? Choose all that apply",NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,black_race___2056_0,black_race___2056_0,demographics,Black or African American,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,black_race___2058_6,black_race___2058_6,demographics,Black or African American,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,black_race___2060_2,black_race___2060_2,demographics,Black or African American,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,black_race___2067_7,black_race___2067_7,demographics,Black or African American,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,black_race___2068_5,black_race___2068_5,demographics,Black or African American,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,black_race___2069_3,black_race___2069_3,demographics,Black or African American,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,black_race___2070_1,black_race___2070_1,demographics,Black or African American,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,black_race___2071_9,black_race___2071_9,demographics,Black or African American,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,black_race___2072_7,black_race___2072_7,demographics,Black or African American,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,black_race___2073_5,black_race___2073_5,demographics,Black or African American,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,black_race___2074_3,black_race___2074_3,demographics,Black or African American,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,black_race___2075_0,black_race___2075_0,demographics,Black or African American,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,black_race___2056_0,black_race___2056_0,demographics,Black or African American,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,black_race___2058_6,black_race___2058_6,demographics,Black or African American,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,black_race___2060_2,black_race___2060_2,demographics,Black or African American,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,black_race___2067_7,black_race___2067_7,demographics,Black or African American,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,black_race___2068_5,black_race___2068_5,demographics,Black or African American,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,black_race___2069_3,black_race___2069_3,demographics,Black or African American,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,black_race___2070_1,black_race___2070_1,demographics,Black or African American,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,black_race___2071_9,black_race___2071_9,demographics,Black or African American,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,black_race___2072_7,black_race___2072_7,demographics,Black or African American,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,black_race___2073_5,black_race___2073_5,demographics,Black or African American,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,black_race___2074_3,black_race___2074_3,demographics,Black or African American,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,black_race___2075_0,black_race___2075_0,demographics,Black or African American,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
 demographics_schema,demographics,canadian_race___ca_first_nation,canadian_race___ca_first_nation,demographics,Canadian Indigenous or Aboriginal,NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO
 demographics_schema,demographics,canadian_race___ca_inuit,canadian_race___ca_inuit,demographics,Canadian Indigenous or Aboriginal,NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO
 demographics_schema,demographics,canadian_race___ca_metis,canadian_race___ca_metis,demographics,Canadian Indigenous or Aboriginal,NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO
@@ -3299,12 +3299,12 @@ demographics_schema,demographics,marital_status___4,marital_status___4,demograph
 demographics_schema,demographics,marital_status___5,marital_status___5,demographics,What is your marital status? Choose all that apply,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
 demographics_schema,demographics,marital_status___6,marital_status___6,demographics,What is your marital status? Choose all that apply,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
 demographics_schema,demographics,marital_status___7,marital_status___7,demographics,What is your marital status? Choose all that apply,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
-demographics_schema,demographics,native_american_race___1004_1,native_american_race___1004_1,demographics,American Indian or Alaska Native,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,native_american_race___1735_0,native_american_race___1735_0,demographics,American Indian or Alaska Native,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,pacific_islander_race___2078_4,pacific_islander_race___2078_4,demographics,Native Hawaiian or other Pacific Islander,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,pacific_islander_race___2085_9,pacific_islander_race___2085_9,demographics,Native Hawaiian or other Pacific Islander,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,pacific_islander_race___2100_6,pacific_islander_race___2100_6,demographics,Native Hawaiian or other Pacific Islander,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,pacific_islander_race___2500_7,pacific_islander_race___2500_7,demographics,Native Hawaiian or other Pacific Islander,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,native_american_race___1004_1,native_american_race___1004_1,demographics,American Indian or Alaska Native,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,native_american_race___1735_0,native_american_race___1735_0,demographics,American Indian or Alaska Native,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,pacific_islander_race___2078_4,pacific_islander_race___2078_4,demographics,Native Hawaiian or other Pacific Islander,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,pacific_islander_race___2085_9,pacific_islander_race___2085_9,demographics,Native Hawaiian or other Pacific Islander,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,pacific_islander_race___2100_6,pacific_islander_race___2100_6,demographics,Native Hawaiian or other Pacific Islander,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,pacific_islander_race___2500_7,pacific_islander_race___2500_7,demographics,Native Hawaiian or other Pacific Islander,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
 demographics_schema,demographics,race___1,race___1,demographics,Which race category best describes you? Choose all that apply,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
 demographics_schema,demographics,race___2,race___2,demographics,Which race category best describes you? Choose all that apply,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
 demographics_schema,demographics,race___3,race___3,demographics,Which race category best describes you? Choose all that apply,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
@@ -3313,9 +3313,9 @@ demographics_schema,demographics,race___5,race___5,demographics,Which race categ
 demographics_schema,demographics,race___6,race___6,demographics,Which race category best describes you? Choose all that apply,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
 demographics_schema,demographics,race___7,race___7,demographics,Which race category best describes you? Choose all that apply,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
 demographics_schema,demographics,race___8,race___8,demographics,Which race category best describes you? Choose all that apply,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
-demographics_schema,demographics,white_race___2108_9,white_race___2108_9,demographics,White,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,white_race___2118_8,white_race___2118_8,demographics,White,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
-demographics_schema,demographics,white_race___2129_5,white_race___2129_5,demographics,White,YES,drop,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,white_race___2108_9,white_race___2108_9,demographics,White,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,white_race___2118_8,white_race___2118_8,demographics,White,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+demographics_schema,demographics,white_race___2129_5,white_race___2129_5,demographics,White,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
 depression_or_major_depressive_disorder_schema,depression,dmdd_active_psy_med_problems___adhd,dmdd_active_psy_med_problems___adhd,diagnosis,"[DEPRECATED]
 Please select any active psychiatric problems and medical problems (select all that apply).
 
@@ -4092,8 +4092,8 @@ d_neuro_essential_tremor_schema,essential_tremor,et_tremor_duration_3yrs,et_trem
 d_neuro_essential_tremor_schema,essential_tremor,et_tremor_postural_or_kinetic,et_tremor_postural_or_kinetic,diagnosis,Is the tremor postural or kinetic?,NO,release,VARIABLE,redcap,v4,NO,NO
 subjectparticipant_eligible_studies_schema,eligibility,essential_tremor,self_reported_essential_tremor,enrollment,Essential Tremor,NO,release,VARIABLE,redcap,v4,NO,NO
 subjectparticipant_eligible_studies_schema,eligibility,neuro_ataxia,self_reported_neuro_ataxia,enrollment,Ataxia,NO,release,VARIABLE,redcap,v4,NO,NO
-enrollment_form_schema,enrollment,ef_ataxia,self_reported_ataxia,,Ataxia,YES,drop,VARIABLE,redcap,v4,NO,NO
-enrollment_form_schema,enrollment,ef_essential_tremor,self_reported_essential_tremor,,Essential Tremor,YES,drop,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_ataxia,self_reported_ataxia,enrollment,Ataxia,YES,internal,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment,ef_essential_tremor,self_reported_essential_tremor,enrollment,Essential Tremor,YES,internal,VARIABLE,redcap,v4,NO,NO
 recording_schema,recording,recording_browser,recording_browser,task,Recording - Browser,NO,release,VARIABLE,redcap,v4,NO,NO
 recording_schema,recording,recording_browser_version,recording_browser_version,task,Recording - Browser Version,NO,release,VARIABLE,redcap,v4,NO,NO
 recording_schema,recording,recording_device_info,recording_device_info,task,Recording - Device Info,NO,release,VARIABLE,redcap,v4,NO,NO

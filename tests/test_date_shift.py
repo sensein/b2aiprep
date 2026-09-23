@@ -60,7 +60,7 @@ def test_mt_sinai_is_toronto():
 
 
 def _frame(rows):
-    columns = ["record_id", "redcap_repeat_instrument", "session_site", "session_started_at", "phq_9_started_at", "surgery_date"]
+    columns = ["record_id", "redcap_repeat_instrument", "enrollment_institution", "session_started_at", "phq_9_started_at", "surgery_date"]
     df = pd.DataFrame([dict(zip(columns, r)) for r in rows], columns=columns, dtype=object)
     is_session = df["redcap_repeat_instrument"] == "Session"
     df["session_id"] = [f"{rid}-s{i}" if s else None for i, (rid, s) in enumerate(zip(df["record_id"], is_session))]
@@ -137,7 +137,7 @@ def _ingest_frame():
     return pd.DataFrame(
         [
             {"record_id": "a", "redcap_repeat_instrument": "Session", "session_id": "s1",
-             "session_site": "MIT", "session_started_at": "2024-07-01T16:00:00Z",
+             "enrollment_institution": "MIT", "session_site": "MIT", "session_started_at": "2024-07-01T16:00:00Z",
              "session_is_control_participant": "No"},
             {"record_id": "a", "redcap_repeat_instrument": "Participant", "city": "Cambridge"},
         ],
@@ -152,7 +152,8 @@ def test_ingest_shifts_dates_and_removes_drop_columns(tmp_path):
     assert "city" not in out.df.columns
     assert "session_is_control_participant" not in out.df.columns
     # internal columns the pipeline reads are kept
-    assert {"redcap_repeat_instrument", "session_site"} <= set(out.df.columns)
+    assert {"redcap_repeat_instrument", "enrollment_institution"} <= set(out.df.columns)
+    assert "session_site" not in out.df.columns
     shifted = datetime.datetime.fromisoformat(out.df.loc[0, "session_started_at"]).date()
     assert abs((shifted - ANCHOR).days) <= 3
     report = json.loads(log.read_text())
@@ -182,7 +183,7 @@ def _remote_frame(zipcode=None, state=None, via="Participant", site="MIT"):
     return pd.DataFrame(
         [
             {"record_id": "r", "redcap_repeat_instrument": "Session", "session_id": "s1",
-             "session_site": site, "session_started_at": "2024-07-01T20:00:00Z"},
+             "enrollment_institution": site, "session_started_at": "2024-07-01T20:00:00Z"},
             {"record_id": "r", "redcap_repeat_instrument": "Recording", "recording_session_id": "s1",
              "recording_via": via, "recording_created_at": "2024-07-01T20:05:00Z"},
             {"record_id": "r", "redcap_repeat_instrument": "Q - Generic - Demographics",
@@ -233,11 +234,13 @@ def test_split_state_zip_codes_resolve_to_their_own_zone():
     assert region_timezone("TN") is None and region_timezone("ON") is None
 
 
-def test_participant_with_sessions_at_two_sites_is_shifted_per_session():
+def test_site_comes_from_enrollment_institution_not_session_site():
     df = _frame([
-        ("a", "Session", "MIT", "2024-07-01T16:00:00Z", None, None),
-        ("a", "Session", "VUMC", "2024-08-01T16:00:00Z", None, None),
+        ("a", "Session", "VUMC", "2024-07-01T16:00:00Z", None, None),
+        ("a", "Session", None, "2024-08-01T16:00:00Z", None, None),
     ])
-    out, _ = shift_dates(df, ["session_started_at"], ANCHOR)
-    assert _local_hour(out, "session_started_at", 0) == 12  # New York
-    assert _local_hour(out, "session_started_at", 1) == 11  # Chicago
+    df["session_site"] = ["MIT", None]  # ignored
+    out, report = shift_dates(df, ["session_started_at"], ANCHOR)
+    assert _local_hour(out, "session_started_at", 0) == 11  # Chicago
+    assert _local_hour(out, "session_started_at", 1) == 11  # institution is per participant
+    assert report["session_timezone_sources"] == {"site": 2}
