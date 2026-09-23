@@ -22,7 +22,7 @@ from tqdm import tqdm
 from b2aiprep.prepare.bids import get_paths, validate_bids_folder_audios
 from b2aiprep.prepare.constants import RepeatInstrument
 from b2aiprep.prepare.redcap import RedCapDataset
-from b2aiprep.prepare.dataset import BIDSDataset, _SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE
+from b2aiprep.prepare.dataset import BIDSDataset, DispositionLevel, _SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE
 from b2aiprep.prepare.bundle_data import (
     feature_extraction_generator,
     spectrogram_generator,
@@ -124,6 +124,13 @@ def dashboard(bids_dir: str):
     help="Also write the date-shift report (anchor and counts) as JSON here. Must be outside "
     "--outdir. The report is always logged.",
 )
+@click.option(
+    "--skip-audio-copy",
+    is_flag=True,
+    default=False,
+    help="Resolve source audio and write every sidecar and sessions.tsv, but copy no audio files. "
+    "For metadata-only builds; not for a release.",
+)
 def redcap2bids(
     filename,
     outdir,
@@ -132,6 +139,7 @@ def redcap2bids(
     sanitize_audio_format,
     date_shift_anchor,
     date_shift_log,
+    skip_audio_copy,
 ):
     """Parses a RedCap CSV and a folder of audio files into the Brain Imaging Data Structure (BIDS) format.
 
@@ -168,6 +176,7 @@ def redcap2bids(
         sanitize_audio_format=sanitize_audio_format,
         date_shift_anchor=date_shift_anchor.date(),
         date_shift_log=date_shift_log,
+        skip_audio_copy=skip_audio_copy,
     )
 
 @click.command()
@@ -866,8 +875,23 @@ def validate_bundled_dataset(dataset_path, config_dir):
 @click.option("--skip_audio/--no-skip_audio", type=bool, default=False, show_default=True, help="Skip processing audio files")
 @click.option("--skip_audio_features/--no-skip_audio_features", type=bool, default=False, show_default=True, help="Skip processing audio feature files")
 @click.option("--max_workers", type=int, default=16, show_default=True, help="Maximum number of worker threads to use")
+@click.option(
+    "--disposition-level",
+    type=click.Choice(["release", "review", "internal"]),
+    default=None,
+    help="QA builds only: keep columns up to this disposition (internal keeps everything; review "
+    "passes unreviewed columns through unchecked). Default: release, or review when a "
+    "column_value_reviews.json manifest is present.",
+)
+@click.option(
+    "--keep-shifted-dates",
+    is_flag=True,
+    default=False,
+    help="QA builds only: keep date_shift=YES columns even when internal columns are removed.",
+)
 def deidentify_bids_dataset(
-    bids_path, outdir, deidentify_config_dir, skip_audio, skip_audio_features, max_workers: int = 16
+    bids_path, outdir, deidentify_config_dir, skip_audio, skip_audio_features, max_workers: int = 16,
+    disposition_level=None, keep_shifted_dates=False,
 ):
     """Creates a deidentified version of a given BIDS dataset.
 
@@ -895,6 +919,8 @@ def deidentify_bids_dataset(
         skip_audio=skip_audio,
         skip_audio_features=skip_audio_features,
         max_workers=max_workers,
+        disposition_level=DispositionLevel(disposition_level) if disposition_level else None,
+        keep_shifted_dates=keep_shifted_dates,
     )
     
     _LOGGER.info("Deidentified dataset created successfully.")

@@ -69,7 +69,7 @@ class TestDeidentifyCommand:
             assert result.exit_code == 0
             
             # Check that deidentify was called with correct parameters
-            mock_deidentify.assert_called_once_with(outdir=temp_output_dir, deidentify_config_dir=Path(setup_publish_config), skip_audio=False, skip_audio_features=False, max_workers=16)
+            mock_deidentify.assert_called_once_with(outdir=temp_output_dir, deidentify_config_dir=Path(setup_publish_config), skip_audio=False, skip_audio_features=False, max_workers=16, disposition_level=None, keep_shifted_dates=False)
 
     def test_deidentify_command_help_text(self):
         """Test that the help text is updated correctly."""

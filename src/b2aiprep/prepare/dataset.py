@@ -239,6 +239,7 @@ class BIDSDataset:
         drop_audio_check: bool = True,
         date_shift_anchor: t.Optional[datetime.date] = None,
         date_shift_log: t.Optional[t.Union[str, Path]] = None,
+        skip_audio_copy: bool = False,
     ) -> 'BIDSDataset':
         """
         Create a BIDSDataset by converting a RedCapDataset to BIDS format.
@@ -254,6 +255,9 @@ class BIDSDataset:
                 reach a release.
             date_shift_anchor: Date each participant's earliest session is shifted to (within
                 three days). With None, every ``date_shift=YES`` column is blanked.
+            skip_audio_copy: Resolve source audio as usual (so sidecars, sessions.tsv and
+                recording.tsv are exactly what a full build writes) but copy no audio files.
+                For metadata-only builds; not for a release.
             date_shift_log: Optionally also write the date-shift report (anchor, counts, and the
                 internal IDs left unshifted) as JSON. Must be outside ``outdir``. A summary is
                 always logged.
@@ -389,6 +393,7 @@ class BIDSDataset:
                 sanitize_audio_format=sanitize_audio_format,
                 audio_descriptor_dict=audio_descriptor_dict,
                 questionnaire_lookup=questionnaire_lookup,
+                skip_audio_copy=skip_audio_copy,
             )
             if had_audio:
                 participants_with_audio.add(participant["record_id"])
@@ -1144,12 +1149,16 @@ class BIDSDataset:
         field_map_df: t.Optional[pd.DataFrame] = None,
         level: DispositionLevel = DispositionLevel.RELEASE,
         schema_name: t.Optional[str] = None,
+        keep_date_shifted: bool = False,
     ) -> t.Tuple[pd.DataFrame, t.List[str]]:
         """Drop columns above *level* in the disposition hierarchy.
 
         With *schema_name* (a phenotype table), only that table's field-map rows are consulted:
         output names are unique within a table but not across tables (e.g. ``self_reported_*`` is
         released in ``eligibility`` and internal in ``enrollment``).
+
+        With *keep_date_shifted*, ``date_shift=YES`` columns are kept whatever the level: for
+        builds that show the shifted dates alongside a release-like tree.
 
         The hierarchy is RELEASE < REVIEW < INTERNAL.  At the default
         ``RELEASE`` level, both ``internal`` and ``review`` columns are
@@ -1175,12 +1184,10 @@ class BIDSDataset:
         hierarchy = {"release": 0, "review": 1, "internal": 2}
         threshold = hierarchy[level.value]
         drop_dispositions = [d for d, rank in hierarchy.items() if rank > threshold]
-        to_drop_names = set(
-            field_map_df.loc[
-                field_map_df["disposition"].isin(drop_dispositions),
-                "column_name",
-            ].dropna()
-        )
+        drop_rows = field_map_df["disposition"].isin(drop_dispositions)
+        if keep_date_shifted and "date_shift" in field_map_df.columns:
+            drop_rows &= field_map_df["date_shift"].astype(str).str.upper() != "YES"
+        to_drop_names = set(field_map_df.loc[drop_rows, "column_name"].dropna())
 
         present = [c for c in df.columns if c in to_drop_names]
         if present:
@@ -1507,8 +1514,14 @@ class BIDSDataset:
             BIDSDataset._cached_field_map_df = BIDSDataset._load_reorganization_file(exclude_dropped=False)
         rows = BIDSDataset._cached_field_map_df
         rows = rows.loc[rows["schema_name"] == schema_name]
+        # Shifted dates are timing metadata, not data: kept for discussion in some builds, but a
+        # row holding only a date has nothing to publish.
         bookkeeping = set(
-            rows.loc[rows["source"].isin(["redcap_generated", "pipeline"]), "column_name"].dropna()
+            rows.loc[
+                rows["source"].isin(["redcap_generated", "pipeline"])
+                | (rows.get("date_shift", pd.Series("", index=rows.index)).astype(str).str.upper() == "YES"),
+                "column_name",
+            ].dropna()
         )
         calculated = set(
             rows.loc[rows["is_redcap_calculation"].astype(str).str.upper() == "YES", "column_name"].dropna()
@@ -1992,7 +2005,8 @@ class BIDSDataset:
     def _output_participant_data_to_metadata_file(
         participant: dict, outdir: Path, audio_files_by_recording: t.Optional[t.Dict[str, Path]] = None,
         max_audio_workers: int = 16, sanitize_audio_format: bool = False, audio_descriptor_dict:OrderedDict = {},
-        questionnaire_lookup: t.Optional[t.Dict[tuple, dict]] = None
+        questionnaire_lookup: t.Optional[t.Dict[tuple, dict]] = None,
+        skip_audio_copy: bool = False,
     ) -> t.Tuple[bool, t.Set[str]]:
         """Output participant data to FHIR format.
 
@@ -2022,6 +2036,7 @@ class BIDSDataset:
         # Pre-scan: determine which recordings have a locatable source file.
         # Only those get sidecars and copy tasks; the rest are logged for QA.
         recordings_with_source: t.Set[str] = set()
+        sessions_with_source: t.Set[str] = set()
         recordings_without_source: t.List[t.Tuple[str, str, str]] = []  # (rec_id, rec_name, session_id)
         if audio_files_by_recording is not None:
             for session in participant.get("sessions", []):
@@ -2046,6 +2061,7 @@ class BIDSDataset:
                                 sz = 0
                             if sz >= _MIN_AUDIO_BYTES:
                                 recordings_with_source.add(rec_id)
+                                sessions_with_source.add(session.get("session_id", ""))
                             else:
                                 recordings_without_source.append(
                                     (rec_id, recording.get("recording_name", ""),
@@ -2208,7 +2224,7 @@ class BIDSDataset:
                         audio_output_path / f"{prefix}_task-{_rec_entity}{ext}"
                     )
                     
-                    if not audio_file_destination.exists():
+                    if not skip_audio_copy and not audio_file_destination.exists():
                         audio_copy_tasks.append((audio_file, audio_file_destination))
 
         # Execute all audio copies in parallel
@@ -2223,7 +2239,10 @@ class BIDSDataset:
             session_audio = subject_path / f"ses-{session_id}" / "audio"
             if not session_audio.is_dir():
                 continue
-            has_audio = any(f.suffix == ".wav" for f in session_audio.iterdir())
+            if skip_audio_copy:
+                has_audio = session_id in sessions_with_source
+            else:
+                has_audio = any(f.suffix == ".wav" for f in session_audio.iterdir())
             if not has_audio:
                 shutil.rmtree(session_audio)
                 removed_sessions.add(session_id)
@@ -2762,7 +2781,16 @@ class BIDSDataset:
         
         return data
 
-    def deidentify(self, outdir: t.Union[str, Path], deidentify_config_dir: Path, skip_audio: bool = False, skip_audio_features: bool = False, max_workers: int = 16) -> 'BIDSDataset':
+    def deidentify(
+        self,
+        outdir: t.Union[str, Path],
+        deidentify_config_dir: Path,
+        skip_audio: bool = False,
+        skip_audio_features: bool = False,
+        max_workers: int = 16,
+        disposition_level: t.Optional[DispositionLevel] = None,
+        keep_shifted_dates: bool = False,
+    ) -> 'BIDSDataset':
         """Create a deidentified version of the BIDS dataset.
 
         Uses per-participant parallelization: each participant directory is
@@ -2823,6 +2851,8 @@ class BIDSDataset:
                     skip_audio, skip_audio_features,
                     _normalized_include_tasks=normalized_include_tasks,
                     _canonical_exclusions=canonical_exclusions,
+                    disposition_level=disposition_level or DispositionLevel.RELEASE,
+                    keep_shifted_dates=keep_shifted_dates,
                 )
                 if had_output:
                     return pid
@@ -2861,6 +2891,17 @@ class BIDSDataset:
         # --- phenotype ---
         column_value_verdicts = BIDSDataset._load_column_value_reviews(deidentify_config_dir)
         has_review_verdicts = bool(column_value_verdicts)
+        # Default: keep review columns only when a verdict manifest checked them. An explicit
+        # level is for QA builds (e.g. INTERNAL keeps everything, REVIEW passes unreviewed
+        # columns through unchecked) and must never be used for a release.
+        phenotype_level = disposition_level or (
+            DispositionLevel.REVIEW if has_review_verdicts else DispositionLevel.RELEASE
+        )
+        if disposition_level is not None or keep_shifted_dates:
+            _LOGGER.warning(
+                "QA deidentify: disposition level %s, keep shifted dates=%s. Not a release build.",
+                phenotype_level.value, keep_shifted_dates,
+            )
         review_col_names = BIDSDataset._get_review_column_names()
 
         # Warm the field-map cache before parallel phenotype processing
@@ -2895,14 +2936,19 @@ class BIDSDataset:
                 # Drop internal columns (and review if no manifest)
                 df_pheno, dropped_cols = BIDSDataset._drop_columns_by_disposition(
                     df_pheno,
-                    level=DispositionLevel.REVIEW if has_review_verdicts else DispositionLevel.RELEASE,
+                    level=phenotype_level,
                     schema_name=schema_name,
+                    keep_date_shifted=keep_shifted_dates,
                 )
                 for col in dropped_cols:
                     phenotype_dict.pop(col, None)
 
                 # Rows kept at ingest for their internal columns may now hold nothing publishable.
                 df_pheno = BIDSDataset._drop_rows_emptied_by_deidentify(df_pheno, schema_name)
+                if df_pheno.empty:
+                    # Same as ingest: a table with no rows is not written.
+                    _LOGGER.info("phenotype/%s: no rows left after deidentify; not written.", phenotype_filepath.stem)
+                    return phenotype_filepath.stem
 
                 if has_review_verdicts:
                     dropped_cols.extend(review_dropped)
@@ -3193,6 +3239,8 @@ class BIDSDataset:
         skip_audio_features: bool = False,
         _normalized_include_tasks: t.Optional[t.Set[str]] = None,
         _canonical_exclusions: t.Optional[t.Set[str]] = None,
+        disposition_level: DispositionLevel = DispositionLevel.RELEASE,
+        keep_shifted_dates: bool = False,
     ) -> bool:
         """Process one participant directory for deidentification.
 
@@ -3218,66 +3266,77 @@ class BIDSDataset:
         n_features_written = 0
         n_skipped = 0
 
-        # --- Audio files ---
-        if not skip_audio:
-            for wav_path in sorted(participant_dir.rglob("*.wav")):
-                # Audio-check safety net
-                task_match = re.search(r"task-(.+?)(_|$)", wav_path.stem)
-                if task_match and is_audio_check(task_match.group(1)):
+        # --- Audio files and their sidecars ---
+        # With skip_audio the recordings are walked through their sidecars instead, so a
+        # metadata-only tree (redcap2bids --skip-audio-copy) still gets deidentified sidecars
+        # and sessions.tsv, with no audio copied.
+        if skip_audio:
+            suffix = "_recording-metadata.json"
+            recordings = [
+                p.with_name(p.name[: -len(suffix)] + ".wav")
+                for p in sorted(participant_dir.rglob(f"*{suffix}"))
+            ]
+        else:
+            recordings = sorted(participant_dir.rglob("*.wav"))
+        for wav_path in recordings:
+            # Audio-check safety net
+            task_match = re.search(r"task-(.+?)(_|$)", wav_path.stem)
+            if task_match and is_audio_check(task_match.group(1)):
+                n_skipped += 1
+                continue
+
+            # Filestem exclusion
+            canonical_stem = sanitize_task_entity_in_bids_stem(wav_path.stem)
+            parts = canonical_stem.split("_")
+            try:
+                task_idx = next(i for i, p in enumerate(parts) if p.startswith("task-"))
+                recording_stem = "_".join(parts[:task_idx + 1])
+            except StopIteration:
+                recording_stem = canonical_stem
+            if recording_stem in canonical_exclusions:
+                n_skipped += 1
+                _LOGGER.debug("Skipping excluded filestem: %s", wav_path.name)
+                continue
+
+            # Task inclusion (empty list = publish nothing, matching old behavior)
+            if task_match:
+                if not normalized_include_tasks:
+                    n_skipped += 1
+                    continue
+                task_label = normalize_task_label(task_match.group(1))
+                if task_label not in normalized_include_tasks:
                     n_skipped += 1
                     continue
 
-                # Filestem exclusion
-                canonical_stem = sanitize_task_entity_in_bids_stem(wav_path.stem)
-                parts = canonical_stem.split("_")
-                try:
-                    task_idx = next(i for i, p in enumerate(parts) if p.startswith("task-"))
-                    recording_stem = "_".join(parts[:task_idx + 1])
-                except StopIteration:
-                    recording_stem = canonical_stem
-                if recording_stem in canonical_exclusions:
-                    n_skipped += 1
-                    _LOGGER.debug("Skipping excluded filestem: %s", wav_path.name)
-                    continue
+            # Remap IDs in path
+            session_id_raw = BIDSDataset._extract_session_id_from_path(wav_path)
+            new_session_id = remap_id(session_id_raw, participant_session_id_to_remap, id_type="session")
 
-                # Task inclusion (empty list = publish nothing, matching old behavior)
-                if task_match:
-                    if not normalized_include_tasks:
-                        n_skipped += 1
-                        continue
-                    task_label = normalize_task_label(task_match.group(1))
-                    if task_label not in normalized_include_tasks:
-                        n_skipped += 1
-                        continue
+            sanitized_stem = sanitize_task_entity_in_bids_stem(wav_path.stem)
+            stem_ending = "-".join(sanitized_stem.split("_")[2:])
 
-                # Remap IDs in path
-                session_id_raw = BIDSDataset._extract_session_id_from_path(wav_path)
-                new_session_id = remap_id(session_id_raw, participant_session_id_to_remap, id_type="session")
+            # Sidecar must exist before we copy the wav (match old behavior)
+            json_path = wav_path.parent / f"{wav_path.stem}_recording-metadata.json"
+            if not json_path.exists():
+                _LOGGER.warning("Missing sidecar for %s; skipping.", wav_path.name)
+                n_skipped += 1
+                continue
 
-                sanitized_stem = sanitize_task_entity_in_bids_stem(wav_path.stem)
-                stem_ending = "-".join(sanitized_stem.split("_")[2:])
+            out_wav = outdir / f"sub-{new_pid}" / f"ses-{new_session_id}" / "audio" / (
+                f"sub-{new_pid}_ses-{new_session_id}_{stem_ending}.wav"
+            )
+            out_wav.parent.mkdir(parents=True, exist_ok=True)
 
-                # Sidecar must exist before we copy the wav (match old behavior)
-                json_path = wav_path.parent / f"{wav_path.stem}_recording-metadata.json"
-                if not json_path.exists():
-                    _LOGGER.warning("Missing sidecar for %s; skipping.", wav_path.name)
-                    n_skipped += 1
-                    continue
-
-                out_wav = outdir / f"sub-{new_pid}" / f"ses-{new_session_id}" / "audio" / (
-                    f"sub-{new_pid}_ses-{new_session_id}_{stem_ending}.wav"
-                )
-                out_wav.parent.mkdir(parents=True, exist_ok=True)
-
-                metadata = json.loads(json_path.read_text())
-                update_metadata_record_and_session_id(
-                    metadata, participant_ids_to_remap, participant_session_id_to_remap
-                )
-                out_json = out_wav.with_suffix(".json")
-                with open(out_json, "w") as f:
-                    json.dump(metadata, f, indent=2)
+            metadata = json.loads(json_path.read_text())
+            update_metadata_record_and_session_id(
+                metadata, participant_ids_to_remap, participant_session_id_to_remap
+            )
+            out_json = out_wav.with_suffix(".json")
+            with open(out_json, "w") as f:
+                json.dump(metadata, f, indent=2)
+            if not skip_audio:
                 shutil.copyfile(wav_path, out_wav)
-                n_audio_written += 1
+            n_audio_written += 1
 
         # --- Feature files ---
         if not skip_audio_features:
@@ -3335,7 +3394,9 @@ class BIDSDataset:
             if sessions_path.exists():
                 df_ses = pd.read_csv(sessions_path, sep="\t", dtype=str)
                 # Drop columns by disposition
-                df_ses, dropped_cols = BIDSDataset._drop_columns_by_disposition(df_ses)
+                df_ses, dropped_cols = BIDSDataset._drop_columns_by_disposition(
+                    df_ses, level=disposition_level, keep_date_shifted=keep_shifted_dates,
+                )
                 if dropped_cols:
                     _LOGGER.debug("Participant %s sessions.tsv: dropped %d columns (%s).",
                                   pid, len(dropped_cols), ", ".join(dropped_cols))
