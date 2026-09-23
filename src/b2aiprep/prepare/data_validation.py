@@ -6,7 +6,7 @@ import logging
 import typing as t
 
 from b2aiprep.prepare.dataset import _SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE
-from b2aiprep.prepare.utils import normalize_task_label
+from b2aiprep.prepare.utils import TaskMatcher, normalize_task_label
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -194,7 +194,7 @@ def validate_no_extra_audio_tasks_present(
         forbidden_features = {"": forbidden_features}
 
     issues: t.List[str] = []
-    audio_task_to_include_normalized = {normalize_task_label(t) for t in audio_tasks_to_include}
+    audio_task_to_include_normalized = TaskMatcher(audio_tasks_to_include)
     for group, keys_to_remove in forbidden_features.items():
         for feature_name in sorted(keys_to_remove):
             if group == "":

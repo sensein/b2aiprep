@@ -52,6 +52,7 @@ from b2aiprep.prepare.utils import (
     sanitize_task_entity_in_bids_stem,
     AUDIO_CHECK_LABEL,
     is_audio_check,
+    TaskMatcher,
 )
 from b2aiprep.prepare.fhir_utils import convert_response_to_bids_metadata, _population_from_cohort, _is_present, _language_from_selected
 from b2aiprep.prepare.prepare import (
@@ -2884,7 +2885,8 @@ class BIDSDataset:
         )
         _LOGGER.info("Deidentifying %d participants (max_workers=%d).", len(participant_dirs), max_workers)
 
-        normalized_include_tasks = {normalize_task_label(t) for t in audio_tasks_to_include}
+        # Exact labels, globs ("identifying-pictures-*") and regexes ("re:...").
+        normalized_include_tasks = TaskMatcher(audio_tasks_to_include)
         canonical_exclusions = {
             sanitize_task_entity_in_bids_stem(Path(s).stem)
             for s in audio_filestems_to_remove
@@ -3292,7 +3294,7 @@ class BIDSDataset:
         audio_tasks_to_include: t.List[str],
         skip_audio: bool = False,
         skip_audio_features: bool = False,
-        _normalized_include_tasks: t.Optional[t.Set[str]] = None,
+        _normalized_include_tasks: t.Optional[TaskMatcher] = None,
         _canonical_exclusions: t.Optional[t.Set[str]] = None,
         _recording_ids_to_remove: t.AbstractSet[str] = frozenset(),
         disposition_level: DispositionLevel = DispositionLevel.RELEASE,
@@ -3309,7 +3311,7 @@ class BIDSDataset:
         if _normalized_include_tasks is not None:
             normalized_include_tasks = _normalized_include_tasks
         else:
-            normalized_include_tasks = {normalize_task_label(t) for t in audio_tasks_to_include}
+            normalized_include_tasks = TaskMatcher(audio_tasks_to_include)
         if _canonical_exclusions is not None:
             canonical_exclusions = _canonical_exclusions
         else:

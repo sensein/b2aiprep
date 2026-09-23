@@ -324,3 +324,28 @@ def test_filestem_list_from_another_registration_warns(tmp_path, caplog):
             tmp_path, ["sub-001js_ses-x_task-passage-10"], set(), {"a-uuid-participant"}
         )
     assert any(r.levelno == logging.WARNING and "None match" in r.getMessage() for r in caplog.records)
+
+
+def test_task_matcher_exact_glob_and_regex():
+    from b2aiprep.prepare.utils import TaskMatcher
+
+    m = TaskMatcher(["Noisy-Sounds-1", "identifying-pictures-*", "picture-description",
+                     "Repeating Words *", "re:role-naming-tasks-sounds-(days|months)", "conversation-*"])
+    assert "noisy-sounds-1" in m and "Noisy Sounds 1" in m
+    assert "Identifying-Pictures-35" in m and "identifying-pictures" not in m
+    assert "picture-description" in m and "picture-description-2" not in m and "picture-28" not in m
+    assert "repeating-words-bad" in m
+    assert "Role-Naming-Tasks-Sounds-Days" in m and "role-naming-tasks-sounds-numbers" not in m
+    assert "Conversation-(6-plus)-favorite-food" in m
+    assert not TaskMatcher([]) and TaskMatcher(["re:x"])
+
+
+def test_deidentify_includes_tasks_by_pattern(tmp_path):
+    pdir = _sidecar_tree(tmp_path / "in", recordings=(("rec-A", "identifying-pictures-35"), ("rec-B", "reading-passage-3")))
+    out = tmp_path / "out"
+    BIDSDataset._deidentify_participant_files(
+        pdir, out, {"p1": "900001"}, {"S1": "01"}, [], ["identifying-pictures-*"],
+        skip_audio=True, skip_audio_features=True,
+    )
+    written = [p.name for p in out.rglob("*.json")]
+    assert len(written) == 1 and "identifying-pictures-35" in written[0]
