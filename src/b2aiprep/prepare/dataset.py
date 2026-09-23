@@ -939,10 +939,14 @@ class BIDSDataset:
             report["session_timezone_sources"],
         )
         if report["participants_without_offset"]:
+            # IDs are listed for QA; this log lives with the job output, outside the BIDS tree.
             _LOGGER.info(
                 "Participants without a date offset, by reason: %s",
                 dict(Counter(report["participants_without_offset"].values())),
             )
+            _LOGGER.info("Participants without a date offset: %s", report["participants_without_offset"])
+        if report["sessions_without_timezone"]:
+            _LOGGER.info("Sessions without a time zone: %s", report["sessions_without_timezone"])
 
         if date_shift_log is not None:
             log_path = BIDSDataset._check_date_shift_log(date_shift_log, outdir)
