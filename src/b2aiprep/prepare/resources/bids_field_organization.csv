@@ -153,7 +153,7 @@ Please select any historical psychiatric problems and medical problems (select a
 
 MOVED IT TO ""Q - Mood - Participant History""",YES,drop,VARIABLE,redcap,pre-v4,NO
 anxiety_disorder_schema,anxiety,diagnosis_ad_last_anxious_episode,diagnosis_ad_last_anxious_episode,diagnosis,"When was your last anxious episode (feeling anxious more days than not over
-two weeks)?",NO,release,VARIABLE,redcap,v4,NO
+two weeks)?",YES,internal,VARIABLE,redcap,v4,NO
 anxiety_disorder_schema,anxiety,diagnosis_ad_prescribed_medication,diagnosis_ad_prescribed_medication,diagnosis,"[DEPRECATED]
 Have you ever been prescribed medication for mental or emotional problems (e.g., antidepressants, anxiolytics, antipsychotics, mood stabilizers, etc.)?
 
@@ -260,8 +260,8 @@ bipolar_disorder_schema,bipolar_disorder,mbd_hist_psy_med_problems,mbd_hist_psy_
 Please select any historical psychiatric problems and medical problems (select all that apply).
 
 MOVED IT TO ""Q - Mood - Participant History""",YES,drop,VARIABLE,redcap,pre-v4,NO
-bipolar_disorder_schema,bipolar_disorder,mbd_last_depressive_episode,diagnosis_mbd_last_depressive_episode,diagnosis,When was your last depressive episode (feeling down and depressed more days than not over two weeks)?,NO,release,VARIABLE,redcap,v4,NO
-bipolar_disorder_schema,bipolar_disorder,mbd_last_manic_episode,diagnosis_mbd_last_manic_episode,diagnosis,When was your last manic episode?,NO,release,VARIABLE,redcap,v4,NO
+bipolar_disorder_schema,bipolar_disorder,mbd_last_depressive_episode,diagnosis_mbd_last_depressive_episode,diagnosis,When was your last depressive episode (feeling down and depressed more days than not over two weeks)?,YES,internal,VARIABLE,redcap,v4,NO
+bipolar_disorder_schema,bipolar_disorder,mbd_last_manic_episode,diagnosis_mbd_last_manic_episode,diagnosis,When was your last manic episode?,YES,internal,VARIABLE,redcap,v4,NO
 bipolar_disorder_schema,bipolar_disorder,mbd_many_depressive_episodes,diagnosis_mbd_many_depressive_episodes,diagnosis,Approximately how many depressive episodes have you had in your life (feeling down and depressed more days than not over two weeks)?,NO,release,VARIABLE,redcap,pre-v4,NO
 bipolar_disorder_schema,bipolar_disorder,mbd_many_manic_episodes,diagnosis_mbd_many_manic_episodes,diagnosis,Approximately how many manic episodes have you had in your life?,NO,release,VARIABLE,redcap,pre-v4,NO
 bipolar_disorder_schema,bipolar_disorder,mbd_prescribed_medication,diagnosis_mbd_prescribed_medication,diagnosis,"[DEPRECATED]
@@ -960,7 +960,7 @@ Please select any historical psychiatric problems and medical problems (select a
 MOVED IT TO ""Q - Mood - Participant History""",YES,drop,VARIABLE,redcap,pre-v4,NO
 depression_or_major_depressive_disorder_schema,depression,dmdd_how_many_depressive_episodes,diagnosis_dmdd_how_many_depressive_episodes,diagnosis,Approximately how many depressive episodes have you had in your life (feeling down and depressed more days than not over two weeks)?,NO,release,VARIABLE,redcap,pre-v4,NO
 depression_or_major_depressive_disorder_schema,depression,dmdd_last_depressive_episode,diagnosis_dmdd_last_depressive_episode,diagnosis,"When was your last depressive episode (feeling depressed more days than not over
-two weeks)?",NO,release,VARIABLE,redcap,v4,NO
+two weeks)?",YES,internal,VARIABLE,redcap,v4,NO
 depression_or_major_depressive_disorder_schema,depression,dmdd_prescribed_medication,dmdd_prescribed_medication,,"[DEPRECATED]
 Have you ever been prescribed medication for mental or emotional problems (e.g., antidepressants, anxiolytics, antipsychotics, mood stabilizers, etc.)?
 
@@ -1059,7 +1059,7 @@ enrollment_form_schema,enrollment_form,ef_cond_prompt,ef_cond_prompt,enrollment,
 enrollment_form_schema,enrollment,ef_contact_info_stored,ef_contact_info_stored,,[DEPRECATED] I want my contact information to be kept in a repository for this study which can be used to contact me to ask me to enroll in further studies or return important results. My information will not be shared with third parties.,YES,drop,VARIABLE,redcap,pre-v4,NO
 enrollment_form_schema,enrollment,ef_copd,self_reported_copd,,COPD,YES,drop,VARIABLE,redcap,v4,NO
 enrollment_form_schema,enrollment,ef_depression,self_reported_depression,,Depression or Major Depressive Disorder,YES,drop,VARIABLE,redcap,v4,NO
-enrollment_form_schema,enrollment_form,ef_dob,ef_dob,enrollment,What is your date of birth?,NO,release,VARIABLE,redcap,pre-v4,NO
+enrollment_form_schema,enrollment_form,ef_dob,ef_dob,enrollment,What is your date of birth?,YES,drop,VARIABLE,redcap,pre-v4,NO
 enrollment_form_schema,enrollment_form,ef_duration,ef_duration,enrollment,Enrollment Form Duration (seconds),NO,release,VARIABLE,redcap,v4,NO
 enrollment_form_schema,enrollment,ef_ed,self_reported_ed,,Eating Disorder (ED),YES,drop,VARIABLE,redcap,v4,NO
 enrollment_form_schema,enrollment_form,ef_eligible_studies,ef_eligible_studies,enrollment,Eligible Studies,NO,release,VARIABLE,redcap,pre-v4,NO
@@ -1467,7 +1467,7 @@ laryngeal_dystonia_schema,,diagnosis_ld_qete,diagnosis_ld_qete,,"[DEPRECATED]
 Does the participant have laryngeal dystonia as determined by qualitative expert team evaluation?
 (Select all that apply).",YES,drop,VARIABLE,redcap,pre-v4,NO
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_treatment,diagnosis_ld_treatment,diagnosis,Has the participant undergone any treatment for this condition?,NO,release,VARIABLE,redcap,pre-v4,NO
-laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_treatment_bi_li,diagnosis_ld_treatment_bi_li,diagnosis,When was the last injection?,NO,release,VARIABLE,redcap,pre-v4,NO
+laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_treatment_bi_li,diagnosis_ld_treatment_bi_li,diagnosis,When was the last injection?,NO,review,VARIABLE,redcap,pre-v4,NO
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_treatment_other,diagnosis_ld_treatment_other,diagnosis,"Other, please specify",NO,release,VARIABLE,redcap,v4,NO
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_treatment_select,diagnosis_ld_treatment_select,diagnosis,What treatments did the participant undergo? (Select all that apply):,NO,release,VARIABLE,redcap,pre-v4,NO
 laryngitis_schema,laryngitis,diagnosis_l_acute_or_chronic,diagnosis_l_acute_or_chronic,diagnosis,Is it acute or chronic laryngitis?,NO,release,VARIABLE,redcap,pre-v4,NO
