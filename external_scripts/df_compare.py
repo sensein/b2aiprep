@@ -49,6 +49,16 @@ def compare(registered, controlled):
     registered_aligned = registered_counts.reindex(controlled_counts.index, fill_value=0)
 
     is_subset = (controlled_counts <= registered_aligned).all()
+      
+    if not is_subset:
+        filestem = Path(controlled).stem.replace(".tsv", "")
+        offending_rows_values = controlled_counts[controlled_counts > registered_aligned].index
+
+        controlled_offending_df = controlled_df[
+            controlled_df.apply(lambda row: tuple(row) in offending_rows_values, axis=1)
+        ]    
+        controlled_offending_df.to_csv(f"error_{filestem}.tsv", sep="\t")
+
     return is_subset
 
 
