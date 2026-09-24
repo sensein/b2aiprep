@@ -2871,6 +2871,7 @@ class BIDSDataset:
             self.data_path, participant_allowlist
         )
 
+        configured_filestems = list(audio_filestems_to_remove)
         audio_filestems_to_remove = BIDSDataset._expand_filestems_for_deidentification(
             audio_filestems_to_remove,
             participant_ids_to_remap=participant_ids_to_remap,
@@ -2893,7 +2894,7 @@ class BIDSDataset:
         }
         recording_ids_to_remove = BIDSDataset.load_audio_recording_ids_to_remove(deidentify_config_dir)
         BIDSDataset._report_exclusion_coverage(
-            self.data_path, audio_filestems_to_remove, recording_ids_to_remove, input_tree_participants
+            self.data_path, configured_filestems, recording_ids_to_remove, input_tree_participants
         )
 
         def _process_one(pdir: Path) -> t.Optional[str]:
