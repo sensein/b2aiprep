@@ -603,10 +603,10 @@ def test_deidentify_bids_dataset_cli_id_rename(
     # Create phenotype directory structure
     phenotype_dir = bids_dir / "phenotype"
     phenotype_dir.mkdir()
-    (phenotype_dir / "questionnaire1.tsv").write_text(
+    (phenotype_dir / "confounders.tsv").write_text(
         "participant_id\trecord_id\ntest\trec-test"
     )
-    (phenotype_dir / "questionnaire1.json").write_text(
+    (phenotype_dir / "confounders.json").write_text(
         '{"participant_id": {"Description": "Participant identifier"}, '
         '"record_id": {"Description": "Record identifier"}}'
     )
@@ -647,10 +647,10 @@ def test_deidentify_bids_dataset_cli_remove_audio(
     # Create phenotype directory structure
     phenotype_dir = bids_dir / "phenotype"
     phenotype_dir.mkdir()
-    (phenotype_dir / "questionnaire1.tsv").write_text(
+    (phenotype_dir / "confounders.tsv").write_text(
         "participant_id\trecord_id\ntest\trec-test"
     )
-    (phenotype_dir / "questionnaire1.json").write_text(
+    (phenotype_dir / "confounders.json").write_text(
         '{"participant_id": {"Description": "Participant identifier"}, '
         '"record_id": {"Description": "Record identifier"}}'
     )
