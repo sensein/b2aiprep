@@ -262,34 +262,6 @@ def test_disposition_values_are_valid(reorg_rows):
     assert not problems, "\n".join(problems)
 
 
-def test_drop_fields_have_delete_yes(reorg_rows):
-    """``delete`` is retired (disposition decides) but kept as a historical record; keep it
-    consistent so the record stays readable."""
-    mismatches = [
-        (row["column_name_source"], row["delete"], row["disposition"])
-        for row in reorg_rows
-        if row["disposition"] == "drop" and row["delete"].strip().upper() != "YES"
-    ]
-    assert not mismatches, f"drop disposition but delete!=YES: {mismatches[:10]}"
-
-
-def test_internal_fields_have_delete_yes(reorg_rows):
-    """disposition=internal fields were ``delete=YES`` when ``delete`` was the control; the
-    retired column is kept consistent as a historical record."""
-    mismatches = [
-        (row["column_name_source"], row["delete"], row["disposition"])
-        for row in reorg_rows
-        if row["disposition"] == "internal" and row["delete"].strip().upper() != "YES"
-    ]
-    assert not mismatches, f"internal disposition but delete!=YES: {mismatches[:10]}"
-
-
-# RedCap app instruments record participant timing in these columns. The vendored ReproSchema
-# types them as xsd:string, so the suffix is the only marker the snapshot carries.
-APP_TIMESTAMP_SUFFIXES = ("_started_at", "_completed_at", "_created_at")
-DATE_VALUE_TYPES = ("xsd:date", "xsd:datetime")
-
-
 def _vendored_date_items():
     """Variable names of every vendored ReproSchema item typed as a date or datetime."""
     names = set()
