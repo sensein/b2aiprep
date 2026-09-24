@@ -48,7 +48,7 @@ airway_stenosis_schema,airway_stenosis,diagnosis_as_ds_bc,diagnosis_as_ds_bc,dia
 airway_stenosis_schema,airway_stenosis,diagnosis_as_ds_bc_ref,diagnosis_as_ds_bc_ref,diagnosis,"Degree of Stenosis (Bogdasarian Classification)
 Picture for reference",YES,drop,VARIABLE,redcap,pre-v4,NO,NO
 airway_stenosis_schema,airway_stenosis,diagnosis_as_ds_bvfi_gs,diagnosis_as_ds_bvfi_gs,diagnosis,Bilateral Vocal fold immobility or Glottic Stenosis Subtype,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-airway_stenosis_schema,airway_stenosis,diagnosis_as_ds_bvfi_gs_other,diagnosis_as_ds_bvfi_gs_other,diagnosis,"Other, Please specify",NO,release,VARIABLE,redcap,v4,NO,NO
+airway_stenosis_schema,airway_stenosis,diagnosis_as_ds_bvfi_gs_other,diagnosis_as_ds_bvfi_gs_other,diagnosis,"Other, Please specify",NO,review,VARIABLE,redcap,v4,NO,NO
 airway_stenosis_schema,airway_stenosis,diagnosis_as_ds_cc_ref,diagnosis_as_ds_cc_ref,diagnosis,"Anterior Glottic Web classification (Cohen)
 Picture for reference",YES,drop,VARIABLE,redcap,pre-v4,NO,NO
 airway_stenosis_schema,airway_stenosis,diagnosis_as_ds_eps,diagnosis_as_ds_eps,diagnosis,How would you subjectively estimate the percent of stenosis from 0 to 100?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -59,7 +59,7 @@ airway_stenosis_schema,airway_stenosis,diagnosis_as_ds_mluas,diagnosis_as_ds_mlu
 airway_stenosis_schema,airway_stenosis,diagnosis_as_ds_ods,diagnosis_as_ds_ods,diagnosis,How would you subjectively classify the overall degree of stenosis?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 airway_stenosis_schema,airway_stenosis,diagnosis_as_etiology,diagnosis_as_etiology,diagnosis,What is the etiology?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 airway_stenosis_schema,airway_stenosis,diagnosis_as_etiology_auto_immune,diagnosis_as_etiology_auto_immune,diagnosis,Auto-immune or granulomatous disease Subcategory,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-airway_stenosis_schema,airway_stenosis,diagnosis_as_etiology_other,diagnosis_as_etiology_other,diagnosis,"Other, Please specify",NO,release,VARIABLE,redcap,v4,NO,NO
+airway_stenosis_schema,airway_stenosis,diagnosis_as_etiology_other,diagnosis_as_etiology_other,diagnosis,"Other, Please specify",NO,review,VARIABLE,redcap,v4,NO,NO
 airway_stenosis_schema,airway_stenosis,diagnosis_as_gsd,diagnosis_as_gold_standard_diagnosis,diagnosis,"Does the participant have airway stenosis confirmed by a laryngoscopy, bronchoscopy or CT imaging?",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 airway_stenosis_schema,airway_stenosis,diagnosis_as_gsd_yes,diagnosis_as_gold_standard_diagnosis_yes,diagnosis,Confirmed by,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 airway_stenosis_schema,airway_stenosis,diagnosis_as_pft,diagnosis_as_pft,diagnosis,Has the participant had pulmonary function testing within the past 3 months?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -67,7 +67,7 @@ airway_stenosis_schema,airway_stenosis,diagnosis_as_pft_document,diagnosis_as_pf
 airway_stenosis_schema,airway_stenosis,diagnosis_as_treatment,diagnosis_as_treatment,diagnosis,What treatment has the participant undergone for their stenosis?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 airway_stenosis_schema,airway_stenosis,diagnosis_as_treatment_in_office,diagnosis_as_treatment_in_office,diagnosis,In-office/awake treatment options,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 airway_stenosis_schema,airway_stenosis,diagnosis_as_treatment_surgery,diagnosis_as_treatment_surgery,diagnosis,Surgery options,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-airway_stenosis_schema,airway_stenosis,diagnosis_as_treatment_surgery_other,diagnosis_as_treatment_surgery_other,diagnosis,"Other Surgery option, Please Specify",NO,release,VARIABLE,redcap,v4,NO,NO
+airway_stenosis_schema,airway_stenosis,diagnosis_as_treatment_surgery_other,diagnosis_as_treatment_surgery_other,diagnosis,"Other Surgery option, Please Specify",NO,review,VARIABLE,redcap,v4,NO,NO
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_ca_adas_cog_score,diagnosis_alz_dementia_mci_ca_adas_cog_score,diagnosis,Alzheimer's Disease Assessment Scale-Cognitive Subscale (ADAS-Cog) score:,NO,release,VARIABLE,redcap,v4,NO,NO
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_ca_mmse_score,diagnosis_alz_dementia_mci_ca_mmse_score,diagnosis,Mini-Mental State Examination (MMSE) score:,NO,release,VARIABLE,redcap,v4,NO,NO
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_ca_moca_score,diagnosis_alz_dementia_mci_ca_moca_score,diagnosis,Montreal Cognitive Assessment (MoCA) score:,NO,release,VARIABLE,redcap,v4,NO,NO
@@ -78,25 +78,25 @@ alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_ds,diagnosis_alz_dementia_mci_ds,diagnosis,What is the current stage/severity of cognitive impairment or dementia in the participant?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_ds_cdr,diagnosis_alz_dementia_mci_ds_cdr,diagnosis,Clinical dementia rating (CDR) staging subcategory:,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_dt,diagnosis_alz_dementia_mci_dt,diagnosis,Specify the disease type in the participant:,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_dt_other,diagnosis_alz_dementia_mci_dt_other,diagnosis,"If you selected ""other"", please specify:",NO,release,VARIABLE,redcap,v4,NO,NO
+alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_dt_other,diagnosis_alz_dementia_mci_dt_other,diagnosis,"If you selected ""other"", please specify:",NO,review,VARIABLE,redcap,v4,NO,NO
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_etiology,diagnosis_alz_dementia_mci_etiology,diagnosis,What is the suspected or known etiology in the participant?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_etiology_gf,diagnosis_alz_dementia_mci_etiology_gf,diagnosis,Genetic Factors Subcategory,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_etiology_gf_other,diagnosis_alz_dementia_mci_etiology_gf_other,diagnosis,"If you selected ""Other genetic factors"", please specify:",NO,release,VARIABLE,redcap,v4,NO,NO
-alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_etiology_other,diagnosis_alz_dementia_mci_etiology_other,diagnosis,"If you selected ""other"", please specify:",NO,release,VARIABLE,redcap,v4,NO,NO
+alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_etiology_gf_other,diagnosis_alz_dementia_mci_etiology_gf_other,diagnosis,"If you selected ""Other genetic factors"", please specify:",NO,review,VARIABLE,redcap,v4,NO,NO
+alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_etiology_other,diagnosis_alz_dementia_mci_etiology_other,diagnosis,"If you selected ""other"", please specify:",NO,review,VARIABLE,redcap,v4,NO,NO
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_etiology_other_medical_conditions,diagnosis_alz_dementia_mci_etiology_other_medical_conditions,diagnosis,"If you selected ""other medical conditions"", please specify:",NO,review,VARIABLE,redcap,v4,NO,NO
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_gsd,diagnosis_alz_dementia_mci_gold_standard_diagnosis,diagnosis,"Does the participant have Major Neurocognitive Disorder - Alzheimer's Type, Mild Cognitive Impairment or other types of dementia?",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_gsd_clinical_history,diagnosis_alz_dementia_mci_gold_standard_diagnosis_clinical_history,diagnosis,Clinical history:,NO,release,VARIABLE,redcap,v4,NO,NO
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_gsd_cognitive_testing,diagnosis_alz_dementia_mci_gold_standard_diagnosis_cognitive_testing,diagnosis,Cognitive Testing:,NO,release,VARIABLE,redcap,v4,NO,NO
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_gsd_confirmation_method,diagnosis_alz_dementia_mci_gold_standard_diagnosis_confirmation_method,diagnosis,How was this diagnosis confirmed? (Check all that apply),NO,release,VARIABLE,redcap,pre-v4,NO,NO
-alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_gsd_confirmation_method_other,diagnosis_alz_dementia_mci_gold_standard_diagnosis_confirmation_method_other,diagnosis,Please specify:,NO,release,VARIABLE,redcap,v4,NO,NO
+alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_gsd_confirmation_method_other,diagnosis_alz_dementia_mci_gold_standard_diagnosis_confirmation_method_other,diagnosis,Please specify:,NO,review,VARIABLE,redcap,v4,NO,NO
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_gsd_functional_inventory,diagnosis_alz_dementia_mci_gold_standard_diagnosis_functional_inventory,diagnosis,Functional Inventory:,NO,release,VARIABLE,redcap,v4,NO,NO
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_gsd_other_investigations,diagnosis_alz_dementia_mci_gold_standard_diagnosis_other_investigations,diagnosis,Other investigations:,NO,review,VARIABLE,redcap,v4,NO,NO
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_treatment_obtained,diagnosis_alz_dementia_mci_treatment_obtained,diagnosis,Has the participant undergone any treatment for Alzheimer's disease or cognitive impairment or other types of dementia?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_treatment_obtained_yes,diagnosis_alz_dementia_mci_treatment_obtained_yes,diagnosis,Yes,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_treatment_obtained_yes_medications,diagnosis_alz_dementia_mci_treatment_obtained_yes_medications,diagnosis,Medications:,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_treatment_obtained_yes_medications_other,diagnosis_alz_dementia_mci_treatment_obtained_yes_medications_other,diagnosis,"If you selected ""Other"", please specify:",NO,release,VARIABLE,redcap,v4,NO,NO
+alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_treatment_obtained_yes_medications_other,diagnosis_alz_dementia_mci_treatment_obtained_yes_medications_other,diagnosis,"If you selected ""Other"", please specify:",NO,review,VARIABLE,redcap,v4,NO,NO
 alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_treatment_obtained_yes_npi,diagnosis_alz_dementia_mci_treatment_obtained_yes_npi,diagnosis,Non-pharmacological interventions:,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_treatment_obtained_yes_npi_other,diagnosis_alz_dementia_mci_treatment_obtained_yes_npi_other,diagnosis,"If you selected ""Other"", please specify:",NO,release,VARIABLE,redcap,v4,NO,NO
+alzheimers_disease_mild_cognitive_impairme_schema,cognitive_impairment,diagnosis_alz_dementia_mci_treatment_obtained_yes_npi_other,diagnosis_alz_dementia_mci_treatment_obtained_yes_npi_other,diagnosis,"If you selected ""Other"", please specify:",NO,review,VARIABLE,redcap,v4,NO,NO
 amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis_als_cp,diagnosis_als_cp,diagnosis,Describe the clinical features and symptoms of ALS in the participant:,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis_als_disease_subtype,diagnosis_als_disease_subtype,diagnosis,Specify the type of ALS in the participant:,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis_als_disease_subtype_familial,diagnosis_als_disease_subtype_familial,diagnosis,"If you selected ""Familial ALS"", please specify the genetic mutation if known:",NO,release,VARIABLE,redcap,v4,NO,NO
@@ -104,7 +104,7 @@ amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis
 amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis_als_etiology,diagnosis_als_etiology,diagnosis,What is the suspected or known etiology of ALS in the participant?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis_als_etiology_environmental_factors,diagnosis_als_etiology_environmental_factors,diagnosis,"If you selected ""Environmental factors"", please specify:",NO,release,VARIABLE,redcap,v4,NO,NO
 amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis_als_etiology_genetic_factors,diagnosis_als_etiology_genetic_factors,diagnosis,Genetic Factors,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis_als_etiology_genetic_factors_other,diagnosis_als_etiology_genetic_factors_other,diagnosis,"If you selected ""Other genetic factors"", please specify:",NO,release,VARIABLE,redcap,v4,NO,NO
+amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis_als_etiology_genetic_factors_other,diagnosis_als_etiology_genetic_factors_other,diagnosis,"If you selected ""Other genetic factors"", please specify:",NO,review,VARIABLE,redcap,v4,NO,NO
 amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis_als_gsd,diagnosis_als_gold_standard_diagnosis,diagnosis,Does the participant have Amyotrophic Lateral Sclerosis (ALS)?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis_als_gsd_calculation,diagnosis_als_gold_standard_diagnosis_calculation,diagnosis,"Calculated ALS score: a unitless numeric value representing overall ALS disease severity, with higher values indicating greater severity.",NO,release,VARIABLE,redcap,pre-v4,YES,NO
 amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis_als_gsd_category_1,diagnosis_als_gold_standard_diagnosis_category_1,diagnosis,"(1) Progressive motor impairment documented by history or repeated clinical assessment, preceded by normal motor function;",NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -115,16 +115,16 @@ amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis
 amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis_als_idt_genetic_testing,diagnosis_als_idt_genetic_testing,diagnosis,"Genetic testing (if applicable, specify results):",NO,release,VARIABLE,redcap,v4,NO,NO
 amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis_als_idt_lumbar_puncture,diagnosis_als_idt_lumbar_puncture,diagnosis,"Lumbar Puncture (if performed, specify findings):",NO,release,VARIABLE,redcap,v4,NO,NO
 amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis_als_idt_mri,diagnosis_als_idt_mri,diagnosis,Magnetic Resonance Imaging (MRI) of the brain and spinal cord:,NO,release,VARIABLE,redcap,v4,NO,NO
-amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis_als_idt_other,diagnosis_als_idt_other,diagnosis,Other diagnostic tests (please specify):,NO,release,VARIABLE,redcap,v4,NO,NO
+amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis_als_idt_other,diagnosis_als_idt_other,diagnosis,Other diagnostic tests (please specify):,NO,review,VARIABLE,redcap,v4,NO,NO
 amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis_als_na_alsfrs_r_score,diagnosis_als_na_alsfrs_r_score,diagnosis,Revised ALS Functional Rating Scale (ALSFRS-R) score:,NO,release,VARIABLE,redcap,v4,NO,NO
 amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis_als_na_fvc_percentage,diagnosis_als_na_fvc_percentage,diagnosis,Forced Vital Capacity (FVC) percentage (if measured):,NO,release,VARIABLE,redcap,v4,NO,NO
-amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis_als_na_other,diagnosis_als_na_other,diagnosis,Other neurological assessment (please specify):,NO,release,VARIABLE,redcap,v4,NO,NO
+amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis_als_na_other,diagnosis_als_na_other,diagnosis,Other neurological assessment (please specify):,NO,review,VARIABLE,redcap,v4,NO,NO
 amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis_als_treatment_and_management,diagnosis_als_treatment_and_management,diagnosis,Has the participant undergone any treatment or interventions for ALS?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis_als_treatment_and_management_yes,diagnosis_als_treatment_and_management_yes,diagnosis,Yes,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis_als_treatment_and_management_yes_medications,diagnosis_als_treatment_and_management_yes_medications,diagnosis,Medications (if applicable):,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis_als_treatment_and_management_yes_medications_other,diagnosis_als_treatment_and_management_yes_medications_other,diagnosis,"If you selected ""Other"", please specify:",NO,release,VARIABLE,redcap,v4,NO,NO
+amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis_als_treatment_and_management_yes_medications_other,diagnosis_als_treatment_and_management_yes_medications_other,diagnosis,"If you selected ""Other"", please specify:",NO,review,VARIABLE,redcap,v4,NO,NO
 amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis_als_treatment_and_management_yes_supportive_care,diagnosis_als_treatment_and_management_yes_supportive_care,diagnosis,Supportive Care:,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis_als_treatment_and_management_yes_supportive_care_other,diagnosis_als_treatment_and_management_yes_supportive_care_other,diagnosis,"If you selected ""Other"", please specify:",NO,release,VARIABLE,redcap,v4,NO,NO
+amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis_als_treatment_and_management_yes_supportive_care_other,diagnosis_als_treatment_and_management_yes_supportive_care_other,diagnosis,"If you selected ""Other"", please specify:",NO,review,VARIABLE,redcap,v4,NO,NO
 anxiety_disorder_schema,anxiety,diagnosis_ad_active_psy_med_prob_other,diagnosis_ad_active_psy_med_prob_other,,"[DEPRECATED]
 Please specify
 
@@ -143,7 +143,7 @@ anxiety_disorder_schema,anxiety,diagnosis_ad_describe_psychotherapy,diagnosis_ad
 Please briefly describe your psychotherapy history (e.g.,
 dates, reasons for seeking therapy, etc.).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,release,VARIABLE,redcap,v4,NO,NO
+MOVED IT TO ""Q - Mood - Participant History""",NO,review,VARIABLE,redcap,v4,NO,NO
 anxiety_disorder_schema,anxiety,diagnosis_ad_hist_psy_med_prob_other,diagnosis_ad_hist_psy_med_prob_other,,"[DEPRECATED]
 Please specify
 
@@ -196,12 +196,12 @@ benign_lesions_schema,benign_lesions,diagnosis_bl_degree_text,diagnosis_bl_degre
 CAPE-V scale",YES,drop,VARIABLE,redcap,pre-v4,NO,NO
 benign_lesions_schema,benign_lesions,diagnosis_bl_ds,diagnosis_bl_ds,diagnosis,What is the benign lesion diagnosis?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 benign_lesions_schema,benign_lesions,diagnosis_bl_ds_ll,diagnosis_bl_ds_ll,diagnosis,Location of lesion(s),NO,release,VARIABLE,redcap,pre-v4,NO,NO
-benign_lesions_schema,benign_lesions,diagnosis_bl_ds_other,diagnosis_bl_ds_other,diagnosis,Please specify,NO,release,VARIABLE,redcap,v4,NO,NO
+benign_lesions_schema,benign_lesions,diagnosis_bl_ds_other,diagnosis_bl_ds_other,diagnosis,Please specify,NO,review,VARIABLE,redcap,v4,NO,NO
 benign_lesions_schema,benign_lesions,diagnosis_bl_etiology,diagnosis_bl_etiology,diagnosis,What is the etiology?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-benign_lesions_schema,benign_lesions,diagnosis_bl_etiology_other,diagnosis_bl_etiology_other,diagnosis,Please specify,NO,release,VARIABLE,redcap,v4,NO,NO
+benign_lesions_schema,benign_lesions,diagnosis_bl_etiology_other,diagnosis_bl_etiology_other,diagnosis,Please specify,NO,review,VARIABLE,redcap,v4,NO,NO
 benign_lesions_schema,benign_lesions,diagnosis_bl_treatment,diagnosis_bl_treatment,diagnosis,Has the participant undergone any treatment for this condition?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 benign_lesions_schema,benign_lesions,diagnosis_bl_treatment_lm,diagnosis_bl_treatment_lm,diagnosis,Laryngeal microsurgery,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-benign_lesions_schema,benign_lesions,diagnosis_bl_treatment_other,diagnosis_bl_treatment_other,diagnosis,"Other, please specify",NO,release,VARIABLE,redcap,v4,NO,NO
+benign_lesions_schema,benign_lesions,diagnosis_bl_treatment_other,diagnosis_bl_treatment_other,diagnosis,"Other, please specify",NO,review,VARIABLE,redcap,v4,NO,NO
 benign_lesions_schema,benign_lesions,diagnosis_bl_treatment_select,diagnosis_bl_treatment_select,diagnosis,Select all that apply:,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 bipolar_disorder_schema,bipolar_disorder,diagnosis_bipolar_active_problems,diagnosis_bipolar_active_problems,,"[DEPRECATED]
 Enter list of active problems",YES,drop,VARIABLE,redcap,v4,NO,NO
@@ -249,7 +249,7 @@ MOVED IT TO ""Q - Mood - Participant History""",YES,drop,VARIABLE,redcap,v4,NO,N
 bipolar_disorder_schema,bipolar_disorder,mbd_diagnosed_bipolar_i_ii_other,diagnosis_mbd_bipolar_i_ii_other,diagnosis,"Were you diagnosed with Bipolar I, Bipolar II, or Other/unspecified?",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 bipolar_disorder_schema,bipolar_disorder,mbd_diagnosed_bm,diagnosis_mbd_gold_standard_diagnosis,diagnosis,Have you been diagnosed with Bipolar Disorder?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 bipolar_disorder_schema,bipolar_disorder,mbd_diagnosed_bm_selection,diagnosis_mbd_selection,diagnosis,Bipolar I and II Disorders,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-bipolar_disorder_schema,bipolar_disorder,mbd_diagnosed_other,diagnosis_mbd_other,diagnosis,Please specify,NO,release,VARIABLE,redcap,v4,NO,NO
+bipolar_disorder_schema,bipolar_disorder,mbd_diagnosed_other,diagnosis_mbd_other,diagnosis,Please specify,NO,review,VARIABLE,redcap,v4,NO,NO
 bipolar_disorder_schema,bipolar_disorder,mbd_ever_seen_heard,diagnosis_mbd_ever_seen_heard,diagnosis,Have you ever seen things other people can't see or heard things other people can't hear?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 bipolar_disorder_schema,bipolar_disorder,mbd_had_manic_episode,diagnosis_mbd_had_manic_episode,diagnosis,"Have you ever had a manic episode (i.e., While not under the influence of substances, a distinct period of abnormally and persistently elevated, expansive, or irritable mood and abnormally and persistently goal-directed behavior or energy, lasting at least 1 week and present most of the day, nearly every day)?",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 bipolar_disorder_schema,bipolar_disorder,mbd_hist_psy_med_prob_other,mbd_hist_psy_med_prob_other,,"[DEPRECATED]
@@ -597,7 +597,7 @@ confounders_schema,confounders,other_throat_condition_specify,other_throat_condi
 confounders_schema,confounders,other_treatment_cancer_current_specify,other_treatment_cancer_current_specify,confounders,Please specify what other cancer treatment(s) you are currently receiving.,NO,review,VARIABLE,redcap,v4,NO,NO
 confounders_schema,confounders,other_treatment_psychological_condition,other_treatment_psychological_condition,confounders,Other treatment for a psychological condition,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 confounders_schema,confounders,other_treatment_psychological_condition_specify,other_treatment_psychological_condition_specify,confounders,Please specify what other treatment(s) you are currently receiving for your psychological condition(s).,NO,review,VARIABLE,redcap,v4,NO,NO
-confounders_schema,confounders,other_voice_activity,other_voice_activity,confounders,Please specify what other job or hobby you have that requires you to use your voice loudly for many hours a day.,NO,release,VARIABLE,redcap,v4,NO,NO
+confounders_schema,confounders,other_voice_activity,other_voice_activity,confounders,Please specify what other job or hobby you have that requires you to use your voice loudly for many hours a day.,NO,review,VARIABLE,redcap,v4,NO,NO
 confounders_schema,confounders,pain_medication,pain_medication,,"[DEPRECATED]
 Chronic Pain medication",YES,drop,VARIABLE,redcap,pre-v4,NO,NO
 confounders_schema,confounders,pain_medications,pain_medications,confounders,Pain medications,NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -760,7 +760,7 @@ copd_and_asthma_schema,copd_and_asthma,diagnosis_ca_asthma,diagnosis_ca_asthma,d
 copd_and_asthma_schema,copd_and_asthma,diagnosis_ca_asthma_has_subtype,diagnosis_ca_asthma_has_subtype,diagnosis,Does the participant have disease subtype for asthma?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 copd_and_asthma_schema,copd_and_asthma,diagnosis_ca_asthma_probability,diagnosis_ca_asthma_probability,diagnosis,"Is the clinical probability of asthma high (e.g. allergic or eosinophilic phenotype, variable respiratory symptoms including wheezing, cough, chest tightness, dyspnea, etc)?",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 copd_and_asthma_schema,copd_and_asthma,diagnosis_ca_asthma_subtype,diagnosis_ca_asthma_subtype,diagnosis,Please select all that apply:,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-copd_and_asthma_schema,copd_and_asthma,diagnosis_ca_asthma_subtype_other,diagnosis_ca_asthma_subtype_other,diagnosis,Please specify:,NO,release,VARIABLE,redcap,v4,NO,NO
+copd_and_asthma_schema,copd_and_asthma,diagnosis_ca_asthma_subtype_other,diagnosis_ca_asthma_subtype_other,diagnosis,Please specify:,NO,review,VARIABLE,redcap,v4,NO,NO
 copd_and_asthma_schema,copd_and_asthma,diagnosis_ca_ats_ers_criteria_fev1,diagnosis_ca_ats_ers_criteria_fev1,diagnosis,FEV1/FVC < 5th percentile OR z score ≤ -1.65 ?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 copd_and_asthma_schema,copd_and_asthma,diagnosis_ca_ats_ers_criteria_fvc,diagnosis_ca_ats_ers_criteria_fvc,diagnosis,FVC < 0.7 OR z score ≤ -1.65 ?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 copd_and_asthma_schema,copd_and_asthma,diagnosis_ca_cat_score,diagnosis_ca_cat_score,diagnosis,What is the CAT score?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -788,7 +788,7 @@ copd_and_asthma_schema,copd_and_asthma,diagnosis_ca_restrictive,diagnosis_ca_res
 copd_and_asthma_schema,copd_and_asthma,diagnosis_ca_severe_exacerbations_count,diagnosis_ca_severe_exacerbations_count,diagnosis,How many severe (requiring hospitalization) exacerbations in prior 12 months ?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 copd_and_asthma_schema,copd_and_asthma,diagnosis_ca_significant_inhalation_exposure_history,diagnosis_ca_significant_inhalation_exposure_history,diagnosis,Does the participant have any other significant inhalation exposure history?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 copd_and_asthma_schema,copd_and_asthma,diagnosis_ca_significant_inhalation_exposure_history_explanation,diagnosis_ca_significant_inhalation_exposure_history_explanation,diagnosis,Please select all that apply (optional):,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-copd_and_asthma_schema,copd_and_asthma,diagnosis_ca_significant_inhalation_exposure_history_explanation_other,diagnosis_ca_significant_inhalation_exposure_history_explanation_other,diagnosis,Please specify:,NO,release,VARIABLE,redcap,v4,NO,NO
+copd_and_asthma_schema,copd_and_asthma,diagnosis_ca_significant_inhalation_exposure_history_explanation_other,diagnosis_ca_significant_inhalation_exposure_history_explanation_other,diagnosis,Please specify:,NO,review,VARIABLE,redcap,v4,NO,NO
 copd_and_asthma_schema,copd_and_asthma,diagnosis_ca_spirometry_ce,diagnosis_ca_spirometry_ce,diagnosis,Does the participant have clinical evidence of obstruction as diagnosed by spirometry?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 copd_and_asthma_schema,copd_and_asthma,diagnosis_ca_spirometry_test,diagnosis_ca_spirometry_test,diagnosis,Has the participant had a spirometry test?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 copd_and_asthma_schema,copd_and_asthma,diagnosis_ca_spirometry_verification,diagnosis_ca_spirometry_verification,diagnosis,"Please select one of the two options below for verification of the spirometry test. 
@@ -876,11 +876,11 @@ demographics_schema,demographics,native_american_race,native_american_race,demog
 demographics_schema,demographics,occupation,occupation,demographics,What do you consider to be or have been your primary occupation?,NO,release,VARIABLE,redcap,v4,NO,NO
 demographics_schema,demographics,other_edu_level,other_edu_level,demographics,"If you selected ""other"" level of education, please specify:",NO,review,VARIABLE,redcap,v4,NO,NO
 demographics_schema,demographics,other_employ_specify,other_employ_specify,demographics,"If you selected ""other"" employment status, please specify.",NO,review,VARIABLE,redcap,v4,NO,NO
-demographics_schema,demographics,other_gender_identity,other_gender_identity,demographics,"If you selected ""other"" for gender identity, please specify:",NO,release,VARIABLE,redcap,v4,NO,NO
+demographics_schema,demographics,other_gender_identity,other_gender_identity,demographics,"If you selected ""other"" for gender identity, please specify:",NO,review,VARIABLE,redcap,v4,NO,NO
 demographics_schema,demographics,other_live_with,other_live_with,demographics,Other,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 demographics_schema,demographics,other_race_specify,other_race_specify,demographics,"If race not listed above, please specify:",NO,review,VARIABLE,redcap,v4,NO,NO
-demographics_schema,demographics,other_sex_orientation,other_sex_orientation,demographics,"If you selected ""other"" for sexual orientation, please specify:",NO,release,VARIABLE,redcap,v4,NO,NO
-demographics_schema,demographics,other_transportation,other_transportation,demographics,"If you selected ""other"" transportation, please specify.",NO,release,VARIABLE,redcap,v4,NO,NO
+demographics_schema,demographics,other_sex_orientation,other_sex_orientation,demographics,"If you selected ""other"" for sexual orientation, please specify:",NO,review,VARIABLE,redcap,v4,NO,NO
+demographics_schema,demographics,other_transportation,other_transportation,demographics,"If you selected ""other"" transportation, please specify.",NO,review,VARIABLE,redcap,v4,NO,NO
 demographics_schema,demographics,others_household_specify,others_household_specify,demographics,"If ""others"" live in your household, please specify:",NO,review,VARIABLE,redcap,v4,NO,NO
 demographics_schema,demographics,pacific_islander_race,pacific_islander_race,demographics,Native Hawaiian or other Pacific Islander,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 demographics_schema,demographics,parent,parent,demographics,One or more parent,NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -1065,11 +1065,11 @@ enrollment_form_schema,enrollment,ef_ed,self_reported_ed,enrollment,Eating Disor
 enrollment_form_schema,enrollment_form,ef_eligible_studies,ef_eligible_studies,enrollment,Eligible Studies,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_email,ef_email,enrollment,Email,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_enrollment,ef_enrollment,enrollment,"Please review your answers reading all the way through the bottom and select an option. If you have any questions, you can still proceed with enrollment and ask or make changes at a later time.",NO,release,VARIABLE,redcap,v4,NO,NO
-enrollment_form_schema,enrollment_form,ef_enrollment_institution,ef_enrollment_institution,enrollment,Enrollment Institution,NO,release,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment_form,ef_enrollment_institution,ef_enrollment_institution,enrollment,Enrollment Institution,NO,internal,VARIABLE,redcap,v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_enrollment_origin,ef_enrollment_origin,enrollment,Enrollment Origin,NO,release,VARIABLE,redcap,v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_enrollment_via,ef_enrollment_via,enrollment,Enrollment via,NO,release,VARIABLE,redcap,v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_first_name,ef_first_name,enrollment,First Name,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-enrollment_form_schema,enrollment_form,ef_fluent_language_other,ef_fluent_language_other,enrollment,"If you speak any other languages fluently, please specify:",NO,release,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment_form,ef_fluent_language_other,ef_fluent_language_other,enrollment,"If you speak any other languages fluently, please specify:",NO,review,VARIABLE,redcap,v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_fluent_languages,ef_fluent_languages,enrollment,Do you speak any additional language(s) fluently (similar to a native speaker)?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 enrollment_form_schema,enrollment,ef_gad,self_reported_gad,enrollment,Anxiety Disorder,YES,internal,VARIABLE,redcap,v4,NO,NO
 enrollment_form_schema,enrollment,ef_glottic_insufficiency,self_reported_glottic_insufficiency,enrollment,Glottic Insufficiency / Presbyphonia,YES,internal,VARIABLE,redcap,v4,NO,NO
@@ -1082,7 +1082,7 @@ enrollment_form_schema,enrollment,ef_laryngitis,self_reported_laryngitis,enrollm
 enrollment_form_schema,enrollment_form,ef_last_name,ef_last_name,enrollment,Last Name,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_learn_about_this_study,ef_learn_about_this_study,enrollment,How did you learn about this study?,NO,release,VARIABLE,redcap,v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_learn_about_this_study_event,ef_learn_about_this_study_event,enrollment,"If ""At an event"", please specify:",NO,release,VARIABLE,redcap,v4,NO,NO
-enrollment_form_schema,enrollment_form,ef_learn_about_this_study_other,ef_learn_about_this_study_other,enrollment,"If ""Other"", please specify:",NO,release,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment_form,ef_learn_about_this_study_other,ef_learn_about_this_study_other,enrollment,"If ""Other"", please specify:",NO,review,VARIABLE,redcap,v4,NO,NO
 enrollment_form_schema,enrollment,ef_mtd,self_reported_mtd,enrollment,Muscle Tension Dysphonia (MTD),YES,internal,VARIABLE,redcap,v4,NO,NO
 enrollment_form_schema,enrollment,ef_ocd,self_reported_ocd,enrollment,Obsessive-Compulsive Disorder (OCD),YES,internal,VARIABLE,redcap,v4,NO,NO
 enrollment_form_schema,enrollment,ef_osa,self_reported_osa,enrollment,Obstructive Sleep Apnea (OSA),YES,internal,VARIABLE,redcap,v4,NO,NO
@@ -1094,7 +1094,7 @@ enrollment_form_schema,enrollment_form,ef_participant_study_id,ef_participant_st
 enrollment_form_schema,enrollment_form,ef_phone_number,ef_phone_number,enrollment,Phone Number,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_physical_a11y_options,ef_physical_a11y_options,enrollment,"Yes, I would like to use some of the accessibility features of the app",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_primary_language,ef_primary_language,enrollment,What is your primary language?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-enrollment_form_schema,enrollment_form,ef_primary_language_other,ef_primary_language_other,enrollment,"If primary language is ""other"", please specify:",NO,release,VARIABLE,redcap,v4,NO,NO
+enrollment_form_schema,enrollment_form,ef_primary_language_other,ef_primary_language_other,enrollment,"If primary language is ""other"", please specify:",NO,review,VARIABLE,redcap,v4,NO,NO
 enrollment_form_schema,enrollment,ef_ptsd,self_reported_ptsd,enrollment,Post-Traumatic Stress Disorder (PTSD),YES,internal,VARIABLE,redcap,v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_reason_decline_enroll,ef_reason_decline_enroll,enrollment,Please select a reason for declining,NO,release,VARIABLE,redcap,v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_remote_collection_agreement_terms,ef_remote_collection_agreement_terms,enrollment,I acknowledge that:,NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -1203,7 +1203,7 @@ generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_neck_mass
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_neck_mass_enlarged_lymph_node_surgery_date,peds_mc_neck_mass_enlarged_lymph_node_surgery_date,pediatric,What was the date of the surgery?,YES,internal,VARIABLE,redcap,v4,NO,YES
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_neck_mass_hyroid_nodule_or_cancer_surgery,peds_mc_neck_mass_hyroid_nodule_or_cancer_surgery,pediatric,Have they had a surgery for this?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_neck_mass_hyroid_nodule_or_cancer_surgery_date,peds_mc_neck_mass_hyroid_nodule_or_cancer_surgery_date,pediatric,What was the date of the surgery?,YES,internal,VARIABLE,redcap,v4,NO,YES
-generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_neck_mass_other,peds_mc_neck_mass_other,pediatric,Please specify,NO,release,VARIABLE,redcap,v4,NO,NO
+generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_neck_mass_other,peds_mc_neck_mass_other,pediatric,Please specify,NO,review,VARIABLE,redcap,v4,NO,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_neck_mass_thyroglossal_duct_cyst_surgery,peds_mc_neck_mass_thyroglossal_duct_cyst_surgery,pediatric,Have they had a surgery for this?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_neck_mass_thyroglossal_duct_cyst_surgery_date,peds_mc_neck_mass_thyroglossal_duct_cyst_surgery_date,pediatric,What was the date of the surgery?,YES,internal,VARIABLE,redcap,v4,NO,YES
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_neurological_disorders,peds_mc_neurological_disorders,pediatric,"Does your child have any history of neurological disorders (e.g., cerebral palsy, muscular dystrophy)?",NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -1215,7 +1215,7 @@ generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_origin,pe
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_ox_sup,peds_mc_ox_sup,pediatric,"Has your child ever required oxygen support, intubation, a ventilator, or a tracheostomy?",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_ox_sup_specified,peds_mc_ox_sup_specified,pediatric,Please specify,NO,review,VARIABLE,redcap,v4,NO,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_psych_disorders,peds_mc_psych_disorders,pediatric,Does your child have a history of a psychological disorders or mood problems? (Select all that apply),NO,release,VARIABLE,redcap,pre-v4,NO,NO
-generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_psych_disorders_other,peds_mc_psych_disorders_other,pediatric,Please Specify,NO,release,VARIABLE,redcap,v4,NO,NO
+generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_psych_disorders_other,peds_mc_psych_disorders_other,pediatric,Please Specify,NO,review,VARIABLE,redcap,v4,NO,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_reflux,peds_mc_reflux,pediatric,Has your child ever been diagnosed with reflux (GERD) or required medication for acid reflux?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_reflux_specified,peds_mc_reflux_specified,pediatric,Please specify,NO,review,VARIABLE,redcap,v4,NO,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_session_id,peds_mc_session_id,pediatric,Session ID,NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -1311,12 +1311,12 @@ generic_voice_related_qol_survey_schema,pediatric_voice_related_qol_survey,peds_
 glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnois_gi_gsd,diagnosis_gi_gold_standard_diagnosis,diagnosis,Does the participant have glottic insufficiency confirmed by laryngoscopy/stroboscopy?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_d,diagnosis_gi_d,diagnosis,What is the glottic insufficiency diagnosis?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_d_aoc,diagnosis_gi_d_aoc,diagnosis,What is the glottic insufficiency diagnosis?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_d_aoc_other,diagnosis_gi_d_aoc_other,diagnosis,Please specify,NO,release,VARIABLE,redcap,v4,NO,NO
-glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_d_other,diagnosis_gi_d_other,diagnosis,Please specify,NO,release,VARIABLE,redcap,v4,NO,NO
+glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_d_aoc_other,diagnosis_gi_d_aoc_other,diagnosis,Please specify,NO,review,VARIABLE,redcap,v4,NO,NO
+glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_d_other,diagnosis_gi_d_other,diagnosis,Please specify,NO,review,VARIABLE,redcap,v4,NO,NO
 glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_degree_b_1,diagnosis_gi_degree_b_1,diagnosis,Breathiness,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_degree_b_2,diagnosis_gi_degree_b_2,diagnosis,Breathiness,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_degree_comments,diagnosis_gi_degree_comments,diagnosis,Comments about resonance,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_degree_comments_other,diagnosis_gi_degree_comments_other,diagnosis,Please specify,NO,release,VARIABLE,redcap,v4,NO,NO
+glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_degree_comments_other,diagnosis_gi_degree_comments_other,diagnosis,Please specify,NO,review,VARIABLE,redcap,v4,NO,NO
 glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_degree_comments_other_2,diagnosis_gi_degree_comments_other_2,diagnosis,"Additional Features
 (for example, diplophonia, fry, falsetto, asthenia, aphonia, pitch instability, tremor, wet/gurgly, or other relevant terms):",NO,review,VARIABLE,redcap,v4,NO,NO
 glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_degree_l_1,diagnosis_gi_degree_l_1,diagnosis,Loudness,NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -1340,7 +1340,7 @@ CAPE-V scale",YES,drop,VARIABLE,redcap,pre-v4,NO,NO
 glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_dogg,diagnosis_gi_dogg,diagnosis,Please assess degree of glottic gap:,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_slogg,diagnosis_gi_slogg,diagnosis,Please assess shape/location of glottic gap. Choose all that apply.,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_treatment,diagnosis_gi_treatment,diagnosis,Has the participant undergone any treatment for their condition?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_treatment_other,diagnosis_gi_treatment_other,diagnosis,"Other, please specify",NO,release,VARIABLE,redcap,v4,NO,NO
+glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_treatment_other,diagnosis_gi_treatment_other,diagnosis,"Other, please specify",NO,review,VARIABLE,redcap,v4,NO,NO
 glottic_insufficiency_presbyphonia_schema,glottic_insufficiency,diagnosis_gi_treatment_select,diagnosis_gi_treatment_select,diagnosis,Select all that apply:,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 harvard_sentences_schema,harvard_sentences,harvard_sentences_completed_at,harvard_sentences_completed_at,task,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES
 harvard_sentences_schema,harvard_sentences,harvard_sentences_duration,harvard_sentences_duration,task,Questionnaire Duration (seconds),NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -1418,7 +1418,7 @@ laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_ds_t_ref,diagnosis_lc_ds_t
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_ds_t_stage,diagnosis_lc_ds_t_stage,diagnosis,What is the T stage of the cancer based on the AJCC Classification?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_etiology,diagnosis_lc_etiology,diagnosis,"Check any risk factors of this participant in relation to their laryngeal cancer.
 (Select all that apply).",NO,release,VARIABLE,redcap,pre-v4,NO,NO
-laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_etiology_other,diagnosis_lc_etiology_other,diagnosis,Please specify:,NO,release,VARIABLE,redcap,v4,NO,NO
+laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_etiology_other,diagnosis_lc_etiology_other,diagnosis,Please specify:,NO,review,VARIABLE,redcap,v4,NO,NO
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_gsd,diagnosis_lc_gold_standard_diagnosis,diagnosis,Does the participant have Laryngeal Cancer?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 laryngeal_cancer_schema,,diagnosis_lc_gsd_bpr,diagnosis_lc_gold_standard_diagnosis_bpr,,"[DEPRECATED]
 Does the participant have laryngeal cancer confirmed by biopsy/pathology report?",YES,drop,VARIABLE,redcap,pre-v4,NO,NO
@@ -1426,7 +1426,7 @@ laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_gsd_confirmation_method,di
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_gsd_uots,diagnosis_lc_gold_standard_diagnosis_uots,diagnosis,"Did the participant undergo other types of scans?
 (Select all that apply).",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_treatment,diagnosis_lc_treatment,diagnosis,Has the participant undergone any treatment for their condition?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_treatment_other,diagnosis_lc_treatment_other,diagnosis,"Other, please specify",NO,release,VARIABLE,redcap,v4,NO,NO
+laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_treatment_other,diagnosis_lc_treatment_other,diagnosis,"Other, please specify",NO,review,VARIABLE,redcap,v4,NO,NO
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_treatment_s,diagnosis_lc_treatment_s,diagnosis,Surgery,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_treatment_select,diagnosis_lc_treatment_select,diagnosis,Select all that apply:,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_assessment,diagnosis_ld_assessment,diagnosis,"Did the participant have the following assessment?
@@ -1434,7 +1434,7 @@ laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_assessment,diagnosis_l
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_degree_b_1,diagnosis_ld_degree_b_1,diagnosis,Breathiness,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_degree_b_2,diagnosis_ld_degree_b_2,diagnosis,Breathiness,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_degree_comments,diagnosis_ld_degree_comments,diagnosis,Comments about resonance,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_degree_comments_other,diagnosis_ld_degree_comments_other,diagnosis,Please specify,NO,release,VARIABLE,redcap,v4,NO,NO
+laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_degree_comments_other,diagnosis_ld_degree_comments_other,diagnosis,Please specify,NO,review,VARIABLE,redcap,v4,NO,NO
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_degree_comments_other_2,diagnosis_ld_degree_comments_other_2,diagnosis,"Additional Features
 (for example, diplophonia, fry, falsetto, asthenia, aphonia, pitch instability, tremor, wet/gurgly, or other relevant terms):",NO,review,VARIABLE,redcap,v4,NO,NO
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_degree_l_1,diagnosis_ld_degree_l_1,diagnosis,Loudness,NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -1460,21 +1460,21 @@ laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_ds,diagnosis_ld_ds,dia
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_etiology,diagnosis_ld_etiology,diagnosis,What is the etiology?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_etiology_cc,diagnosis_ld_etiology_cc,diagnosis,"Does the participant have any of the following concomitant conditions?
 (Select all that apply).",NO,release,VARIABLE,redcap,pre-v4,NO,NO
-laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_etiology_cc_other,diagnosis_ld_etiology_cc_other,diagnosis,Other type of dystonia,NO,release,VARIABLE,redcap,v4,NO,NO
-laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_etiology_other,diagnosis_ld_etiology_other,diagnosis,Please specify,NO,release,VARIABLE,redcap,v4,NO,NO
+laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_etiology_cc_other,diagnosis_ld_etiology_cc_other,diagnosis,Other type of dystonia,NO,review,VARIABLE,redcap,v4,NO,NO
+laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_etiology_other,diagnosis_ld_etiology_other,diagnosis,Please specify,NO,review,VARIABLE,redcap,v4,NO,NO
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_gsd,diagnosis_ld_gold_standard_diagnosis,diagnosis,Does the participant have laryngeal dystonia as determined by qualitative expert team evaluation?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 laryngeal_dystonia_schema,,diagnosis_ld_qete,diagnosis_ld_qete,,"[DEPRECATED]
 Does the participant have laryngeal dystonia as determined by qualitative expert team evaluation?
 (Select all that apply).",YES,drop,VARIABLE,redcap,pre-v4,NO,NO
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_treatment,diagnosis_ld_treatment,diagnosis,Has the participant undergone any treatment for this condition?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_treatment_bi_li,diagnosis_ld_treatment_bi_li,diagnosis,When was the last injection?,NO,review,VARIABLE,redcap,pre-v4,NO,NO
-laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_treatment_other,diagnosis_ld_treatment_other,diagnosis,"Other, please specify",NO,release,VARIABLE,redcap,v4,NO,NO
+laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_treatment_other,diagnosis_ld_treatment_other,diagnosis,"Other, please specify",NO,review,VARIABLE,redcap,v4,NO,NO
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_treatment_select,diagnosis_ld_treatment_select,diagnosis,What treatments did the participant undergo? (Select all that apply):,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 laryngitis_schema,laryngitis,diagnosis_l_acute_or_chronic,diagnosis_l_acute_or_chronic,diagnosis,Is it acute or chronic laryngitis?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 laryngitis_schema,laryngitis,diagnosis_l_degree_b_1,diagnosis_l_degree_b_1,diagnosis,Breathiness,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 laryngitis_schema,laryngitis,diagnosis_l_degree_b_2,diagnosis_l_degree_b_2,diagnosis,Breathiness,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 laryngitis_schema,laryngitis,diagnosis_l_degree_comments,diagnosis_l_degree_comments,diagnosis,Comments about resonance,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-laryngitis_schema,laryngitis,diagnosis_l_degree_comments_other,diagnosis_l_degree_comments_other,diagnosis,Please specify,NO,release,VARIABLE,redcap,v4,NO,NO
+laryngitis_schema,laryngitis,diagnosis_l_degree_comments_other,diagnosis_l_degree_comments_other,diagnosis,Please specify,NO,review,VARIABLE,redcap,v4,NO,NO
 laryngitis_schema,laryngitis,diagnosis_l_degree_comments_other_2,diagnosis_l_degree_comments_other_2,diagnosis,"Additional Features
 (for example, diplophonia, fry, falsetto, asthenia, aphonia, pitch instability, tremor, wet/gurgly, or other relevant terms):",NO,review,VARIABLE,redcap,v4,NO,NO
 laryngitis_schema,laryngitis,diagnosis_l_degree_l_1,diagnosis_l_degree_l_1,diagnosis,Loudness,NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -1496,21 +1496,21 @@ laryngitis_schema,laryngitis,diagnosis_l_degree_text,diagnosis_l_degree_text,dia
 
 CAPE-V scale",YES,drop,VARIABLE,redcap,pre-v4,NO,NO
 laryngitis_schema,laryngitis,diagnosis_l_determined_by,diagnosis_l_determined_by,diagnosis,Determined by (Select all that apply):,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-laryngitis_schema,laryngitis,diagnosis_l_determined_by_other,diagnosis_l_determined_by_other,diagnosis,Please specify,NO,release,VARIABLE,redcap,v4,NO,NO
+laryngitis_schema,laryngitis,diagnosis_l_determined_by_other,diagnosis_l_determined_by_other,diagnosis,Please specify,NO,review,VARIABLE,redcap,v4,NO,NO
 laryngitis_schema,laryngitis,diagnosis_l_etiology,diagnosis_l_etiology,diagnosis,What is the etiology?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 laryngitis_schema,laryngitis,diagnosis_l_etiology_ei,diagnosis_l_etiology_ei,diagnosis,"Environmental irritants:
 (Select all that apply).",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 laryngitis_schema,laryngitis,diagnosis_l_etiology_ei_oi,diagnosis_l_etiology_ei_oi,diagnosis,Please specify,NO,release,VARIABLE,redcap,v4,NO,NO
 laryngitis_schema,laryngitis,diagnosis_l_etiology_infection,diagnosis_l_etiology_infection,diagnosis,"Infection:
 (Select all that apply).",NO,release,VARIABLE,redcap,pre-v4,NO,NO
-laryngitis_schema,laryngitis,diagnosis_l_etiology_other,diagnosis_l_etiology_other,diagnosis,Please specify,NO,release,VARIABLE,redcap,v4,NO,NO
+laryngitis_schema,laryngitis,diagnosis_l_etiology_other,diagnosis_l_etiology_other,diagnosis,Please specify,NO,review,VARIABLE,redcap,v4,NO,NO
 laryngitis_schema,laryngitis,diagnosis_l_gsd,diagnosis_l_gold_standard_diagnosis,diagnosis,Does the participant have Laryngitis confirmed by laryngoscopy/stroboscopy?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 laryngitis_schema,laryngitis,diagnosis_l_sd,diagnosis_l_sd,diagnosis,For how long (in weeks) have symptoms been present?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 laryngitis_schema,laryngitis,diagnosis_l_sd_known,diagnosis_l_sd_known,diagnosis,Do you know how long (in weeks) have symptoms been present?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 laryngitis_schema,laryngitis,diagnosis_l_treatment,diagnosis_l_treatment,diagnosis,Has the participant undergone any treatment for this condition?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 laryngitis_schema,laryngitis,diagnosis_l_treatment_mt,diagnosis_l_treatment_mt,diagnosis,"Medical treatment
 (Select all that apply)",NO,release,VARIABLE,redcap,pre-v4,NO,NO
-laryngitis_schema,laryngitis,diagnosis_l_treatment_mt_other,diagnosis_l_treatment_mt_other,diagnosis,"Other, please specify",NO,release,VARIABLE,redcap,v4,NO,NO
+laryngitis_schema,laryngitis,diagnosis_l_treatment_mt_other,diagnosis_l_treatment_mt_other,diagnosis,"Other, please specify",NO,review,VARIABLE,redcap,v4,NO,NO
 laryngitis_schema,laryngitis,diagnosis_l_treatment_select,diagnosis_l_treatment_select,diagnosis,Select all that apply:,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 leicester_cough_questionnaire_lcq_schema,leicester_cough_questionnaire,lcq_anxious,lcq_anxious,questionnaire,"In the last 2 weeks, my cough has made me feel anxious.",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 leicester_cough_questionnaire_lcq_schema,leicester_cough_questionnaire,lcq_bout,lcq_bout,questionnaire,"In the last 2 weeks, how many times a day have you had a coughing bout?",NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -1544,7 +1544,7 @@ moca_schema,,moca_pdf_uploaded_by,moca_pdf_uploaded_by,,MoCA DUO PDF Uploaded By
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_degree_b_1,diagnosis_mtd_degree_b_1,diagnosis,Breathiness,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_degree_b_2,diagnosis_mtd_degree_b_2,diagnosis,Breathiness,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_degree_comments,diagnosis_mtd_degree_comments,diagnosis,Comments about resonance,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_degree_comments_other,diagnosis_mtd_degree_comments_other,diagnosis,Please specify,NO,release,VARIABLE,redcap,v4,NO,NO
+muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_degree_comments_other,diagnosis_mtd_degree_comments_other,diagnosis,Please specify,NO,review,VARIABLE,redcap,v4,NO,NO
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_degree_comments_other_2,diagnosis_mtd_degree_comments_other_2,diagnosis,"Additional Features
 (for example, diplophonia, fry, falsetto, asthenia, aphonia, pitch instability, tremor, wet/gurgly, or other relevant terms):",NO,review,VARIABLE,redcap,v4,NO,NO
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_degree_l_1,diagnosis_mtd_degree_l_1,diagnosis,Loudness,NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -1565,14 +1565,14 @@ muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_degre
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_degree_text,diagnosis_mtd_degree_text,diagnosis,Degree of dysphoniaCAPE-V scale,YES,drop,VARIABLE,redcap,pre-v4,NO,NO
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_ds,diagnosis_mtd_ds,diagnosis,"Whether the participant has a clinical diagnosis of muscle tension dysphonia (MTD), recorded with key responses such as ""Yes"" or ""No.""",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_etiology,diagnosis_mtd_etiology,diagnosis,What is the etiology? (Select all that apply),NO,release,VARIABLE,redcap,pre-v4,NO,NO
-muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_etiology_other,diagnosis_mtd_etiology_other,diagnosis,Please specify,NO,release,VARIABLE,redcap,v4,NO,NO
+muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_etiology_other,diagnosis_mtd_etiology_other,diagnosis,Please specify,NO,review,VARIABLE,redcap,v4,NO,NO
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_gsd,diagnosis_mtd_gold_standard_diagnosis,diagnosis,Does the participant have Muscle Tension Dysphonia (MTD)?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_gsd_assessments,diagnosis_mtd_gold_standard_diagnosis_assessments,diagnosis,Did the participant have any of the following assessments? (Select all that apply),NO,release,VARIABLE,redcap,pre-v4,NO,NO
 muscle_tension_dysphonia_mtd_schema,,diagnosis_mtd_gsd_evaluations,diagnosis_mtd_gold_standard_diagnosis_evaluations,,"[DEPRECATED]
 Determined by (Select all that apply):",YES,drop,VARIABLE,redcap,pre-v4,NO,NO
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_gsd_evaluations_2,diagnosis_mtd_gold_standard_diagnosis_evaluations_2,diagnosis,How was this confirmed? Select all that apply:,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_treatment,diagnosis_mtd_treatment,diagnosis,Has the participant undergone any treatment for this condition?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_treatment_other,diagnosis_mtd_treatment_other,diagnosis,Please specify,NO,release,VARIABLE,redcap,v4,NO,NO
+muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_treatment_other,diagnosis_mtd_treatment_other,diagnosis,Please specify,NO,review,VARIABLE,redcap,v4,NO,NO
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_treatment_select,diagnosis_mtd_treatment_select,diagnosis,Select all that apply:,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 panas_schema,panas,active,active,questionnaire,Active,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 panas_schema,panas,afraid,afraid,questionnaire,Afraid,NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -1594,13 +1594,13 @@ panas_schema,panas,upset,upset,questionnaire,Upset,NO,release,VARIABLE,redcap,pr
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_current_treatment_obtained,diagnosis_parkinsons_current_treatment_obtained,diagnosis,Is the participant currently undergoing any treatment for Parkinson's disease?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_current_treatment_obtained_yes,diagnosis_parkinsons_current_treatment_obtained_yes,diagnosis,Yes,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_current_treatment_obtained_yes_medications,diagnosis_parkinsons_current_treatment_obtained_yes_medications,diagnosis,Medications:,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_current_treatment_obtained_yes_medications_other,diagnosis_parkinsons_current_treatment_obtained_yes_medications_other,diagnosis,"If you selected ""Other"", please specify:",NO,release,VARIABLE,redcap,v4,NO,NO
+parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_current_treatment_obtained_yes_medications_other,diagnosis_parkinsons_current_treatment_obtained_yes_medications_other,diagnosis,"If you selected ""Other"", please specify:",NO,review,VARIABLE,redcap,v4,NO,NO
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_current_treatment_obtained_yes_npi,diagnosis_parkinsons_current_treatment_obtained_yes_npi,diagnosis,Non-pharmacological interventions:,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_current_treatment_obtained_yes_npi_dbs,diagnosis_parkinsons_current_treatment_obtained_yes_npi_dbs,diagnosis,What targets?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_current_treatment_obtained_yes_npi_dbs_other,diagnosis_parkinsons_current_treatment_obtained_yes_npi_dbs_other,diagnosis,"If you selected ""Other"", please specify:",NO,release,VARIABLE,redcap,v4,NO,NO
-parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_current_treatment_obtained_yes_npi_other,diagnosis_parkinsons_current_treatment_obtained_yes_npi_other,diagnosis,"If you selected ""Other"", please specify:",NO,release,VARIABLE,redcap,v4,NO,NO
+parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_current_treatment_obtained_yes_npi_dbs_other,diagnosis_parkinsons_current_treatment_obtained_yes_npi_dbs_other,diagnosis,"If you selected ""Other"", please specify:",NO,review,VARIABLE,redcap,v4,NO,NO
+parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_current_treatment_obtained_yes_npi_other,diagnosis_parkinsons_current_treatment_obtained_yes_npi_other,diagnosis,"If you selected ""Other"", please specify:",NO,review,VARIABLE,redcap,v4,NO,NO
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_disease_subtype,diagnosis_parkinsons_disease_subtype,diagnosis,Specify the subtype of Parkinson's Disease in the participant:,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_disease_subtype_other,diagnosis_parkinsons_disease_subtype_other,diagnosis,"If you selected ""Other Parkinsonism or Atypical Parkinsonism"", please specify:",NO,release,VARIABLE,redcap,v4,NO,NO
+parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_disease_subtype_other,diagnosis_parkinsons_disease_subtype_other,diagnosis,"If you selected ""Other Parkinsonism or Atypical Parkinsonism"", please specify:",NO,review,VARIABLE,redcap,v4,NO,NO
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_ds,diagnosis_parkinsons_ds,diagnosis,"What is the current stage/severity of Parkinson's disease in the participant?
 •	Hoehn and Yahr Scale:",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_etiology,diagnosis_parkinsons_etiology,diagnosis,What is the suspected or known etiology of Parkinson's disease in the participant?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -1615,7 +1615,7 @@ parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_gsd_category_2
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_gsd_category_3,diagnosis_parkinsons_gold_standard_diagnosis_category_3,diagnosis,Category 3 - Supportive criteria,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_gsd_category_3_calculation,diagnosis_parkinsons_gold_standard_diagnosis_category_3_calculation,diagnosis,"Calculated variable indicating whether the participant meets criteria for Parkinson’s disease GSD category 3, recorded as a categorical value (e.g., yes / no / unknown).",NO,release,VARIABLE,redcap,pre-v4,YES,NO
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_ma,diagnosis_parkinsons_ma,diagnosis,Please provide scores or results from validated cognitive assessment tools:,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_ma_other,diagnosis_parkinsons_ma_other,diagnosis,"If you selected ""Other motor assessment tool"", please specify:",NO,release,VARIABLE,redcap,v4,NO,NO
+parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_ma_other,diagnosis_parkinsons_ma_other,diagnosis,"If you selected ""Other motor assessment tool"", please specify:",NO,review,VARIABLE,redcap,v4,NO,NO
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_ma_updrs_part_i_score,diagnosis_parkinsons_ma_updrs_part_i_score,diagnosis,"Part I (Intellectual function, mood, behavior) score:",YES,review,VARIABLE,redcap,pre-v4,NO,NO
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_ma_updrs_part_ii_score,diagnosis_parkinsons_ma_updrs_part_ii_score,diagnosis,Part II (Activities of daily living) score:,YES,review,VARIABLE,redcap,pre-v4,NO,NO
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_ma_updrs_part_iii_score,diagnosis_parkinsons_ma_updrs_part_iii_score,diagnosis,Part III (Motor Examination) score:,YES,review,VARIABLE,redcap,pre-v4,NO,NO
@@ -1638,7 +1638,7 @@ If you selected ""Other"", please specify:",YES,drop,VARIABLE,redcap,v4,NO,NO
 participant_history_schema,psychiatric_history,mph_active_psy_medical_problems,mph_active_psy_medical_problems,questionnaire,Please list any active psychiatric problems and medical problems.,NO,release,VARIABLE,redcap,v4,NO,NO
 participant_history_schema,psychiatric_history,mph_completed_at,mph_completed_at,questionnaire,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES
 participant_history_schema,psychiatric_history,mph_current_medication,mph_current_medication,questionnaire,"Please list any current psychiatric medications (to the best of your recollection), including medication names, dosage, and how many times per day.",NO,release,VARIABLE,redcap,v4,NO,NO
-participant_history_schema,psychiatric_history,mph_describe_psychotherapy,mph_describe_psychotherapy,questionnaire,"Please briefly describe your psychotherapy history (e.g., dates, reasons for seeking therapy, etc.).",NO,release,VARIABLE,redcap,v4,NO,NO
+participant_history_schema,psychiatric_history,mph_describe_psychotherapy,mph_describe_psychotherapy,questionnaire,"Please briefly describe your psychotherapy history (e.g., dates, reasons for seeking therapy, etc.).",NO,review,VARIABLE,redcap,v4,NO,NO
 participant_history_schema,psychiatric_history,mph_duration,mph_duration,questionnaire,Questionnaire Duration (seconds),NO,release,VARIABLE,redcap,pre-v4,NO,NO
 participant_history_schema,psychiatric_history,mph_hist_psy_medical_problems,mph_hist_psy_medical_problems,questionnaire,Please list any historical psychiatric problems and medical problems.,NO,release,VARIABLE,redcap,v4,NO,NO
 participant_history_schema,psychiatric_history,mph_language,mph_language,questionnaire,Mood Participant History - Language,NO,release,VARIABLE,redcap,v4,NO,NO
@@ -1674,7 +1674,7 @@ Does the participant have a precancerous vocal fold lesion confirmed by laryngos
 precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_degree_b_1,diagnosis_pl_degree_b_1,diagnosis,Breathiness,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_degree_b_2,diagnosis_pl_degree_b_2,diagnosis,Breathiness,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_degree_comments,diagnosis_pl_degree_comments,diagnosis,Comments about resonance,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_degree_comments_other,diagnosis_pl_degree_comments_other,diagnosis,Please specify,NO,release,VARIABLE,redcap,v4,NO,NO
+precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_degree_comments_other,diagnosis_pl_degree_comments_other,diagnosis,Please specify,NO,review,VARIABLE,redcap,v4,NO,NO
 precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_degree_comments_other_2,diagnosis_pl_degree_comments_other_2,diagnosis,"Additional Features
 (for example, diplophonia, fry, falsetto, asthenia, aphonia, pitch instability, tremor, wet/gurgly, or other relevant terms):",NO,review,VARIABLE,redcap,v4,NO,NO
 precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_degree_l_1,diagnosis_pl_degree_l_1,diagnosis,Loudness,NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -1705,59 +1705,59 @@ precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_ds_l,diagnosis_pl_
 precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_ds_l_wd_g,diagnosis_pl_ds_l_wd_g,diagnosis,Leukoplakia with dysplasia,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_ds_ll,diagnosis_pl_ds_ll,diagnosis,"Location of lesion(s)
 (Select all that apply).",NO,release,VARIABLE,redcap,pre-v4,NO,NO
-precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_ds_other,diagnosis_pl_ds_other,diagnosis,"Other, please specify",NO,release,VARIABLE,redcap,v4,NO,NO
+precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_ds_other,diagnosis_pl_ds_other,diagnosis,"Other, please specify",NO,review,VARIABLE,redcap,v4,NO,NO
 precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_etiology,diagnosis_pl_etiology,diagnosis,"Does the participant have the following risk factors?
 (Select all that apply).",NO,release,VARIABLE,redcap,pre-v4,NO,NO
-precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_etiology_other,diagnosis_pl_etiology_other,diagnosis,Other irritants,NO,release,VARIABLE,redcap,v4,NO,NO
+precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_etiology_other,diagnosis_pl_etiology_other,diagnosis,Other irritants,NO,review,VARIABLE,redcap,v4,NO,NO
 precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_gsd,diagnosis_pl_gold_standard_diagnosis,diagnosis,Does the participant have a precancerous vocal fold lesion?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_gsd_confirmation_method,diagnosis_pl_gold_standard_diagnosis_confirmation_method,diagnosis,How was this confirmed? Select all that apply:,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_treatment,diagnosis_pl_treatment,diagnosis,Has the participant undergone any treatment for this condition?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_treatment_other,diagnosis_pl_treatment_other,diagnosis,"Other, please specify",NO,release,VARIABLE,redcap,v4,NO,NO
+precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_treatment_other,diagnosis_pl_treatment_other,diagnosis,"Other, please specify",NO,review,VARIABLE,redcap,v4,NO,NO
 precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_treatment_select,diagnosis_pl_treatment_select,diagnosis,What treatments did the participant undergo? (Select all that apply):,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-productive_vocabulary_schema,productive_vocabulary,vocabulary_completed_at,vocabulary_completed_at,questionnaire,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES
-productive_vocabulary_schema,productive_vocabulary,vocabulary_duration,vocabulary_duration,questionnaire,Questionnaire Duration (seconds),NO,release,VARIABLE,redcap,pre-v4,NO,NO
-productive_vocabulary_schema,productive_vocabulary,vocabulary_item_correct_1,vocabulary_item_correct_1,questionnaire,"Item 1
+productive_vocabulary_schema,productive_vocabulary,vocabulary_completed_at,vocabulary_completed_at,task,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES
+productive_vocabulary_schema,productive_vocabulary,vocabulary_duration,vocabulary_duration,task,Questionnaire Duration (seconds),NO,release,VARIABLE,redcap,pre-v4,NO,NO
+productive_vocabulary_schema,productive_vocabulary,vocabulary_item_correct_1,vocabulary_item_correct_1,task,"Item 1
 Correct?",NO,release,VARIABLE,redcap,pre-v4,NO,NO
-productive_vocabulary_schema,productive_vocabulary,vocabulary_item_correct_2,vocabulary_item_correct_2,questionnaire,"Item 2
+productive_vocabulary_schema,productive_vocabulary,vocabulary_item_correct_2,vocabulary_item_correct_2,task,"Item 2
 Correct?",NO,release,VARIABLE,redcap,pre-v4,NO,NO
-productive_vocabulary_schema,productive_vocabulary,vocabulary_item_correct_3,vocabulary_item_correct_3,questionnaire,"Item 3
+productive_vocabulary_schema,productive_vocabulary,vocabulary_item_correct_3,vocabulary_item_correct_3,task,"Item 3
 Correct?",NO,release,VARIABLE,redcap,pre-v4,NO,NO
-productive_vocabulary_schema,productive_vocabulary,vocabulary_item_correct_4,vocabulary_item_correct_4,questionnaire,"Item 4
+productive_vocabulary_schema,productive_vocabulary,vocabulary_item_correct_4,vocabulary_item_correct_4,task,"Item 4
 Correct?",NO,release,VARIABLE,redcap,pre-v4,NO,NO
-productive_vocabulary_schema,productive_vocabulary,vocabulary_item_correct_5,vocabulary_item_correct_5,questionnaire,"Item 5
+productive_vocabulary_schema,productive_vocabulary,vocabulary_item_correct_5,vocabulary_item_correct_5,task,"Item 5
 Correct?",NO,release,VARIABLE,redcap,pre-v4,NO,NO
-productive_vocabulary_schema,productive_vocabulary,vocabulary_item_correct_6,vocabulary_item_correct_6,questionnaire,"Item 6
+productive_vocabulary_schema,productive_vocabulary,vocabulary_item_correct_6,vocabulary_item_correct_6,task,"Item 6
 Correct?",NO,release,VARIABLE,redcap,pre-v4,NO,NO
-productive_vocabulary_schema,productive_vocabulary,vocabulary_item_difficulty_1,vocabulary_item_difficulty_1,questionnaire,"Item 1
+productive_vocabulary_schema,productive_vocabulary,vocabulary_item_difficulty_1,vocabulary_item_difficulty_1,task,"Item 1
 Word Difficulty",NO,release,VARIABLE,redcap,pre-v4,NO,NO
-productive_vocabulary_schema,productive_vocabulary,vocabulary_item_difficulty_2,vocabulary_item_difficulty_2,questionnaire,"Item 2
+productive_vocabulary_schema,productive_vocabulary,vocabulary_item_difficulty_2,vocabulary_item_difficulty_2,task,"Item 2
 Word Difficulty",NO,release,VARIABLE,redcap,pre-v4,NO,NO
-productive_vocabulary_schema,productive_vocabulary,vocabulary_item_difficulty_3,vocabulary_item_difficulty_3,questionnaire,"Item 3
+productive_vocabulary_schema,productive_vocabulary,vocabulary_item_difficulty_3,vocabulary_item_difficulty_3,task,"Item 3
 Word Difficulty",NO,release,VARIABLE,redcap,pre-v4,NO,NO
-productive_vocabulary_schema,productive_vocabulary,vocabulary_item_difficulty_4,vocabulary_item_difficulty_4,questionnaire,"Item 4
+productive_vocabulary_schema,productive_vocabulary,vocabulary_item_difficulty_4,vocabulary_item_difficulty_4,task,"Item 4
 Word Difficulty",NO,release,VARIABLE,redcap,pre-v4,NO,NO
-productive_vocabulary_schema,productive_vocabulary,vocabulary_item_difficulty_5,vocabulary_item_difficulty_5,questionnaire,"Item 5
+productive_vocabulary_schema,productive_vocabulary,vocabulary_item_difficulty_5,vocabulary_item_difficulty_5,task,"Item 5
 Word Difficulty",NO,release,VARIABLE,redcap,pre-v4,NO,NO
-productive_vocabulary_schema,productive_vocabulary,vocabulary_item_difficulty_6,vocabulary_item_difficulty_6,questionnaire,"Item 6
+productive_vocabulary_schema,productive_vocabulary,vocabulary_item_difficulty_6,vocabulary_item_difficulty_6,task,"Item 6
 Word Difficulty",NO,release,VARIABLE,redcap,pre-v4,NO,NO
-productive_vocabulary_schema,productive_vocabulary,vocabulary_item_word_1,vocabulary_item_word_1,questionnaire,"Item 1
+productive_vocabulary_schema,productive_vocabulary,vocabulary_item_word_1,vocabulary_item_word_1,task,"Item 1
 Word",NO,release,VARIABLE,redcap,pre-v4,NO,NO
-productive_vocabulary_schema,productive_vocabulary,vocabulary_item_word_2,vocabulary_item_word_2,questionnaire,"Item 2
+productive_vocabulary_schema,productive_vocabulary,vocabulary_item_word_2,vocabulary_item_word_2,task,"Item 2
 Word",NO,release,VARIABLE,redcap,pre-v4,NO,NO
-productive_vocabulary_schema,productive_vocabulary,vocabulary_item_word_3,vocabulary_item_word_3,questionnaire,"Item 3
+productive_vocabulary_schema,productive_vocabulary,vocabulary_item_word_3,vocabulary_item_word_3,task,"Item 3
 Word",NO,release,VARIABLE,redcap,pre-v4,NO,NO
-productive_vocabulary_schema,productive_vocabulary,vocabulary_item_word_4,vocabulary_item_word_4,questionnaire,"Item 4
+productive_vocabulary_schema,productive_vocabulary,vocabulary_item_word_4,vocabulary_item_word_4,task,"Item 4
 Word",NO,release,VARIABLE,redcap,pre-v4,NO,NO
-productive_vocabulary_schema,productive_vocabulary,vocabulary_item_word_5,vocabulary_item_word_5,questionnaire,"Item 5
+productive_vocabulary_schema,productive_vocabulary,vocabulary_item_word_5,vocabulary_item_word_5,task,"Item 5
 Word",NO,release,VARIABLE,redcap,pre-v4,NO,NO
-productive_vocabulary_schema,productive_vocabulary,vocabulary_item_word_6,vocabulary_item_word_6,questionnaire,"Item 6
+productive_vocabulary_schema,productive_vocabulary,vocabulary_item_word_6,vocabulary_item_word_6,task,"Item 6
 Word",NO,release,VARIABLE,redcap,pre-v4,NO,NO
-productive_vocabulary_schema,productive_vocabulary,vocabulary_language,vocabulary_language,questionnaire,Productive Vocabulary - Language,NO,release,VARIABLE,redcap,v4,NO,NO
-productive_vocabulary_schema,productive_vocabulary,vocabulary_origin,vocabulary_origin,questionnaire,Productive Vocabulary - origin,NO,release,VARIABLE,redcap,v4,NO,NO
-productive_vocabulary_schema,productive_vocabulary,vocabulary_recording_acoustic_task_id,vocabulary_recording_acoustic_task_id,questionnaire,Acoustic Task ID,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-productive_vocabulary_schema,productive_vocabulary,vocabulary_session_id,vocabulary_session_id,questionnaire,Session ID,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-productive_vocabulary_schema,productive_vocabulary,vocabulary_started_at,vocabulary_started_at,questionnaire,Questionnaire Started At,YES,internal,VARIABLE,redcap,v4,NO,YES
-productive_vocabulary_schema,productive_vocabulary,vocabulary_via,vocabulary_via,questionnaire,Productive Vocabulary - via,NO,release,VARIABLE,redcap,v4,NO,NO
+productive_vocabulary_schema,productive_vocabulary,vocabulary_language,vocabulary_language,task,Productive Vocabulary - Language,NO,release,VARIABLE,redcap,v4,NO,NO
+productive_vocabulary_schema,productive_vocabulary,vocabulary_origin,vocabulary_origin,task,Productive Vocabulary - origin,NO,release,VARIABLE,redcap,v4,NO,NO
+productive_vocabulary_schema,productive_vocabulary,vocabulary_recording_acoustic_task_id,vocabulary_recording_acoustic_task_id,task,Acoustic Task ID,NO,release,VARIABLE,redcap,pre-v4,NO,NO
+productive_vocabulary_schema,productive_vocabulary,vocabulary_session_id,vocabulary_session_id,task,Session ID,NO,release,VARIABLE,redcap,pre-v4,NO,NO
+productive_vocabulary_schema,productive_vocabulary,vocabulary_started_at,vocabulary_started_at,task,Questionnaire Started At,YES,internal,VARIABLE,redcap,v4,NO,YES
+productive_vocabulary_schema,productive_vocabulary,vocabulary_via,vocabulary_via,task,Productive Vocabulary - via,NO,release,VARIABLE,redcap,v4,NO,NO
 ptsd_adult_schema,ptsd_adult,avoiding_reminders,avoiding_reminders,questionnaire,"Trying to avoid thoughts, feelings, or physical sensations that reminded you of a stressful experience?",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 ptsd_adult_schema,ptsd_adult,emotionally_upset,emotionally_upset,questionnaire,Feeling very emotionally upset when something reminded you of a stressful experience?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 ptsd_adult_schema,ptsd_adult,feeling_jumpy,feeling_jumpy,questionnaire,Feeling jumpy or easily startled when you hear an unexpected noise?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -1881,7 +1881,7 @@ subjectparticipant_eligible_studies_schema,eligibility,speech_delay,self_reporte
 subjectparticipant_eligible_studies_schema,eligibility,voc_fold_paralysis,self_reported_unilateral_vocal_fold_paralysis,enrollment,Unilateral Vocal Fold Paralysis,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 unexplained_chronic_cough_schema,unexplained_chronic_cough,diagnosis_ucc_at,diagnosis_ucc_at,diagnosis,Has the participant undergone any treatment for this condition?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 unexplained_chronic_cough_schema,unexplained_chronic_cough,diagnosis_ucc_at_s,diagnosis_ucc_at_s,diagnosis,Select all that apply,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-unexplained_chronic_cough_schema,unexplained_chronic_cough,diagnosis_ucc_at_s_other,diagnosis_ucc_at_s_other,diagnosis,Please Specify,NO,release,VARIABLE,redcap,v4,NO,NO
+unexplained_chronic_cough_schema,unexplained_chronic_cough,diagnosis_ucc_at_s_other,diagnosis_ucc_at_s_other,diagnosis,Please Specify,NO,review,VARIABLE,redcap,v4,NO,NO
 unexplained_chronic_cough_schema,unexplained_chronic_cough,diagnosis_ucc_atot,diagnosis_ucc_atot,diagnosis,How was it investigated? (Select all that apply),NO,release,VARIABLE,redcap,pre-v4,NO,NO
 unexplained_chronic_cough_schema,unexplained_chronic_cough,diagnosis_ucc_cuae,diagnosis_ucc_cuae,diagnosis,Has the chronic cough remained unexplained after evaluation and therapeutic intervention?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 unexplained_chronic_cough_schema,unexplained_chronic_cough,diagnosis_ucc_cxcob,diagnosis_ucc_cxcob,diagnosis,Select all that apply,NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -1917,13 +1917,13 @@ unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis
 unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_degree_s,diagnosis_degree_s,diagnosis,Strain,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_degree_s_2,diagnosis_degree_s_2,diagnosis,Strain,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_uvfp_ds,diagnosis_uvfp_ds,diagnosis,On which side is the paralysis?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_uvfp_etiology_other,diagnosis_uvfp_etiology_other,diagnosis,Please specify,NO,release,VARIABLE,redcap,v4,NO,NO
-unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_uvfp_latrogenic_other,diagnosis_uvfp_latrogenic_other,diagnosis,Please specify,NO,release,VARIABLE,redcap,v4,NO,NO
+unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_uvfp_etiology_other,diagnosis_uvfp_etiology_other,diagnosis,Please specify,NO,review,VARIABLE,redcap,v4,NO,NO
+unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_uvfp_latrogenic_other,diagnosis_uvfp_latrogenic_other,diagnosis,Please specify,NO,review,VARIABLE,redcap,v4,NO,NO
 unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_uvfp_treatment,diagnosis_uvfp_treatment,diagnosis,Has the participant undergone any treatment for this condition?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_uvfp_treatment_other,diagnosis_uvfp_treatment_other,,"Other treatment, please specify",YES,drop,VARIABLE,redcap,v4,NO,NO
 unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_uvfp_treatment_select,diagnosis_uvfp_treatment_select,diagnosis,What treatments did the participant undergo? (Select all that apply):,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_uvfp_treatment_surgery,diagnosis_uvfp_treatment_surgery,diagnosis,Surgery / Procedure,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_uvfp_treatment_surgery_other,diagnosis_uvfp_treatment_surgery_other,diagnosis,"Other Surgery / Procedure, please specify",NO,release,VARIABLE,redcap,v4,NO,NO
+unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_uvfp_treatment_surgery_other,diagnosis_uvfp_treatment_surgery_other,diagnosis,"Other Surgery / Procedure, please specify",NO,review,VARIABLE,redcap,v4,NO,NO
 unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_uvfp_treatment_surgery_thyroplasty,diagnosis_uvfp_treatment_surgery_thyroplasty,diagnosis,Thyroplasty - Subcategory,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_uvfp_treatment_surgery_vfia,diagnosis_uvfp_treatment_surgery_vfia,diagnosis,Vocal fold injection augmentation - Subcategory,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 unilateral_vocal_fold_paralysis_schema,unilateral_vocal_fold_paralysis,diagnosis_vfp_degree_legend,diagnosis_uvfp_degree_legend,diagnosis,Legend:C- Sonsistent I = IntermittentMI = Mildly DeviantMO = Moderately DeviantSE = Severely Deviant,YES,drop,VARIABLE,redcap,pre-v4,NO,NO
@@ -3801,7 +3801,7 @@ d_neuro_ataxia_schema,ataxia,ataxia_clinical_presentation___truncal_instability,
 d_neuro_ataxia_schema,ataxia,ataxia_clinical_presentation___unknown,ataxia_clinical_presentation___unknown,diagnosis,Clinical presentation (select all that apply):,NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO
 d_neuro_ataxia_schema,ataxia,ataxia_clinical_presentation_other,ataxia_clinical_presentation_other,diagnosis,"Other
 
-Please specify:",NO,release,VARIABLE,redcap,v4,NO,NO
+Please specify:",NO,review,VARIABLE,redcap,v4,NO,NO
 d_neuro_ataxia_schema,ataxia,ataxia_course_pattern,ataxia_course_pattern,diagnosis,Course pattern:,NO,release,VARIABLE,redcap,v4,NO,NO
 d_neuro_ataxia_schema,ataxia,ataxia_emg_or_ncs_key_findings,ataxia_emg_or_ncs_key_findings,diagnosis,Key findings (optional):,NO,release,VARIABLE,redcap,v4,NO,NO
 d_neuro_ataxia_schema,ataxia,ataxia_emg_or_ncs_performed,ataxia_emg_or_ncs_performed,diagnosis,EMG or NCS performed?,NO,release,VARIABLE,redcap,v4,NO,NO
@@ -3923,7 +3923,7 @@ d_neuro_ataxia_schema,ataxia,ataxia_treatment_types_selection___rehabilitation_t
 d_neuro_ataxia_schema,ataxia,ataxia_type,ataxia_type,diagnosis,What is the predominant ataxia type?,NO,release,VARIABLE,redcap,v4,NO,NO
 d_neuro_ataxia_schema,ataxia,ataxia_type_other,ataxia_type_other,diagnosis,"Other
 
-Please specify:",NO,release,VARIABLE,redcap,v4,NO,NO
+Please specify:",NO,review,VARIABLE,redcap,v4,NO,NO
 d_neuro_ataxia_schema,ataxia,ataxia_vestibular_key_findings,ataxia_vestibular_key_findings,diagnosis,Key findings (optional):,NO,release,VARIABLE,redcap,v4,NO,NO
 d_neuro_ataxia_schema,ataxia,ataxia_vestibular_test_results,ataxia_vestibular_test_results,diagnosis,Test results:,NO,release,VARIABLE,redcap,v4,NO,NO
 d_neuro_ataxia_schema,ataxia,ataxia_vestibular_testing_performed,ataxia_vestibular_testing_performed,diagnosis,Vestibular testing performed?,NO,release,VARIABLE,redcap,v4,NO,NO
@@ -4318,7 +4318,7 @@ dyspnea_index_di_schema,dyspnea_index,q_resp_dyspnea_index_di_complete,q_resp_dy
 leicester_cough_questionnaire_lcq_schema,leicester_cough_questionnaire,q_resp_leicester_cough_questionnaire_lcq_complete,q_resp_leicester_cough_questionnaire_lcq_complete,questionnaire,REDCap form-completion status for the q_resp_leicester_cough_questionnaire_lcq instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO,NO
 winograd_schemas_schema,winograd,q_neuro_winograd_schemas_complete,q_neuro_winograd_schemas_complete,task,REDCap form-completion status for the q_neuro_winograd_schemas instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO,NO
 wordcolor_stroop_schema,stroop,q_neuro_wordcolor_stroop_complete,q_neuro_wordcolor_stroop_complete,task,REDCap form-completion status for the q_neuro_wordcolor_stroop instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO,NO
-productive_vocabulary_schema,productive_vocabulary,q_neuro_productive_vocabulary_complete,q_neuro_productive_vocabulary_complete,questionnaire,REDCap form-completion status for the q_neuro_productive_vocabulary instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO,NO
+productive_vocabulary_schema,productive_vocabulary,q_neuro_productive_vocabulary_complete,q_neuro_productive_vocabulary_complete,task,REDCap form-completion status for the q_neuro_productive_vocabulary instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO,NO
 random_item_generation_schema,random_item_generation,q_neuro_random_item_generation_complete,q_neuro_random_item_generation_complete,task,REDCap form-completion status for the q_neuro_random_item_generation instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO,NO
 moca_schema,,q_neuro_moca_complete,q_neuro_moca_complete,,REDCap form-completion status for the q_neuro_moca instrument (Incomplete/Unverified/Complete).,YES,drop,VARIABLE,redcap_generated,v4,NO,NO
 generic_demographics_schema,pediatric_demographics,pediatric_q_generic_demographics_complete,pediatric_q_generic_demographics_complete,pediatric,REDCap form-completion status for the pediatric_q_generic_demographics instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO,NO
