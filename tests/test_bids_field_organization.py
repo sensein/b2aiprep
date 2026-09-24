@@ -262,6 +262,12 @@ def test_disposition_values_are_valid(reorg_rows):
     assert not problems, "\n".join(problems)
 
 
+# RedCap app instruments record participant timing in these columns. The vendored ReproSchema
+# types them as xsd:string, so the suffix is the only marker the snapshot carries.
+APP_TIMESTAMP_SUFFIXES = ("_started_at", "_completed_at", "_created_at")
+DATE_VALUE_TYPES = ("xsd:date", "xsd:datetime")
+
+
 def _vendored_date_items():
     """Variable names of every vendored ReproSchema item typed as a date or datetime."""
     names = set()
