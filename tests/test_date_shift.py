@@ -305,16 +305,26 @@ def _sidecar_tree(root, pid="p1", ses="S1", recordings=(("rec-A", "noisy-sounds-
     return root / f"sub-{pid}"
 
 
-def test_recordings_are_removed_by_recording_id(tmp_path):
-    pdir = _sidecar_tree(tmp_path / "in")
+def test_recording_ids_resolve_to_filestems_and_remove_audio_and_features(tmp_path):
+    """Removal by recording_id uses the filestem mechanism, so features go too, even for a
+    recording whose task is not included (its audio loop skips it before any ID check)."""
+    import torch
+
+    pdir = _sidecar_tree(tmp_path / "in", recordings=(("rec-A", "free-speech-1"), ("rec-B", "noisy-sounds-2")))
+    audio = pdir / "ses-S1" / "audio"
+    for task in ("free-speech-1", "noisy-sounds-2"):
+        torch.save({"opensmile": {"x": 1}}, audio / f"sub-p1_ses-S1_task-{task}_features.pt")
+    stems = BIDSDataset._filestems_for_recording_ids(tmp_path / "in", ["p1"], {"rec-a"})
+    assert stems == ["sub-p1_ses-S1_task-free-speech-1"]
     out = tmp_path / "out"
     BIDSDataset._deidentify_participant_files(
-        pdir, out, {"p1": "900001"}, {"S1": "01"}, [], ["noisy-sounds-1", "noisy-sounds-2"],
-        skip_audio=True, skip_audio_features=True, _recording_ids_to_remove={"rec-a"},
+        pdir, out, {"p1": "900001"}, {"S1": "01"}, stems, ["noisy-sounds-*"],
+        skip_audio=True, skip_audio_features=False,
     )
-    written = sorted(p.name for p in out.rglob("*.json"))
-    assert len(written) == 1 and "noisy-sounds-2" in written[0]
-
+    names = sorted(p.name for p in out.rglob("*") if p.is_file())
+    assert not any("free-speech" in n for n in names), names
+    assert any(n.endswith("noisy-sounds-2.json") for n in names)
+    assert any("noisy-sounds-2_features" in n for n in names)
 
 def test_filestem_list_from_another_registration_warns(tmp_path, caplog):
     import logging
@@ -349,3 +359,51 @@ def test_deidentify_includes_tasks_by_pattern(tmp_path):
     )
     written = [p.name for p in out.rglob("*.json")]
     assert len(written) == 1 and "identifying-pictures-35" in written[0]
+
+
+def test_anchor_that_leaves_real_dates_is_refused():
+    df = _frame([("a", "Session", "MIT", "2025-06-02T16:00:00Z", None, "2019-02-28")])
+    with pytest.raises(ValueError, match="would not be shifted"):
+        shift_dates(df, ["session_started_at", "surgery_date"], datetime.date(2025, 6, 1))
+
+
+def test_anchor_close_to_real_dates_warns(caplog):
+    import logging
+
+    df = _frame([("a", "Session", "MIT", "2024-07-01T16:00:00Z", None, None)])
+    with caplog.at_level(logging.WARNING):
+        shift_dates(df, ["session_started_at"], datetime.date(2027, 1, 1))
+    assert any("years from the nearest real first session" in r.getMessage() for r in caplog.records)
+
+
+def test_numeric_and_unhyphenated_zip_codes_resolve():
+    from b2aiprep.prepare.date_shift import postal_code_timezone
+
+    assert postal_code_timezone(2139.0) == "America/New_York"   # numeric column, leading zero lost
+    assert postal_code_timezone(90210) == "America/Los_Angeles"
+    assert postal_code_timezone("902101234") == "America/Los_Angeles"
+
+
+def test_unknown_table_refuses_instead_of_keeping_everything():
+    field_map = pd.DataFrame([{"schema_name": "demographics", "column_name": "zipcode", "disposition": "internal"}])
+    df = pd.DataFrame({"participant_id": ["p"], "zipcode": ["02139"]})
+    with pytest.raises(ValueError, match="no rows in the field map"):
+        BIDSDataset._drop_columns_by_disposition(df, field_map, schema_name="renamed_table")
+
+
+def test_deidentified_sessions_tsv_keeps_only_written_sessions(tmp_path):
+    pdir = _sidecar_tree(tmp_path / "in", recordings=(("rec-A", "noisy-sounds-1"),))
+    (pdir / "ses-S2" / "audio").mkdir(parents=True)
+    (pdir / "ses-S2" / "audio" / "sub-p1_ses-S2_task-free-speech-1_recording-metadata.json").write_text(
+        json.dumps({"record_id": "p1", "recording_id": "REC-C", "session_id": "S2"})
+    )
+    pd.DataFrame({"record_id": ["p1", "p1"], "session_id": ["S1", "S2"], "session_status": ["Completed"] * 2}).to_csv(
+        pdir / "sessions.tsv", sep="\t", index=False
+    )
+    out = tmp_path / "out"
+    BIDSDataset._deidentify_participant_files(
+        pdir, out, {"p1": "900001"}, {"S1": "01", "S2": "02"}, [], ["noisy-sounds-*"],
+        skip_audio=True, skip_audio_features=True,
+    )
+    ses = pd.read_csv(out / "sub-900001" / "sub-900001_sessions.tsv", sep="\t", dtype=str)
+    assert list(ses["session_id"]) == ["01"]

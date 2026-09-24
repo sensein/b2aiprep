@@ -375,8 +375,8 @@ class TestEndToEndAllowlistFiltering:
             "participant_id": ["p1", "p2", "p3"],
             "score": [10, 20, 30],
         })
-        pheno_df.to_csv(pheno_dir / "test.tsv", sep="\t", index=False)
-        (pheno_dir / "test.json").write_text(json.dumps({}))
+        pheno_df.to_csv(pheno_dir / "confounders.tsv", sep="\t", index=False)
+        (pheno_dir / "confounders.json").write_text(json.dumps({}))
 
         # Template files
         (bids / "dataset_description.json").write_text(json.dumps({"Name": "test"}))
@@ -387,7 +387,7 @@ class TestEndToEndAllowlistFiltering:
         # p3 should be excluded
         assert not (out / "sub-p3").exists()
         # Phenotype should only have p1 and p2
-        result_pheno = pd.read_csv(out / "phenotype" / "test.tsv", sep="\t", dtype=str)
+        result_pheno = pd.read_csv(out / "phenotype" / "confounders.tsv", sep="\t", dtype=str)
         assert set(result_pheno["participant_id"]) == {"p1", "p2"}
 
         # session_id_mapping.json generation is currently disabled

@@ -63,7 +63,7 @@ from b2aiprep.prepare.prepare import (
 )
 from b2aiprep.prepare.bids import get_paths
 from pydantic import BaseModel
-from b2aiprep.prepare.redcap import RedCapDataset
+from b2aiprep.prepare.redcap import RedCapDataset, _dropped_source_columns
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -928,9 +928,8 @@ class BIDSDataset:
         ].tolist()
         df, report = shift_dates(redcap_dataset.df, date_columns, date_shift_anchor)
 
-        # A source column is removed only when no row keeps it.
-        kept = set(field_map.loc[field_map["disposition"] != "drop", "column_name_source"])
-        dropped = set(field_map.loc[field_map["disposition"] == "drop", "column_name_source"]) - kept
+        # A source column is removed only when no row keeps it (shared with instrument selection).
+        dropped = _dropped_source_columns()
         present = [c for c in df.columns if c in dropped]
         df = df.drop(columns=present)
         _LOGGER.info("Removed %d disposition=drop column(s) at ingest.", len(present))
@@ -1144,6 +1143,11 @@ class BIDSDataset:
 
     _cached_field_map_df: t.ClassVar[t.Optional[pd.DataFrame]] = None
 
+    # Identifier columns the pipeline adds to every table; not field-map rows of each table.
+    _PIPELINE_ID_COLUMNS = frozenset({"participant_id", "record_id"})
+    # Field-map table that describes the per-participant sessions.tsv columns.
+    _SESSIONS_SCHEMA = "session"
+
     @staticmethod
     def _drop_columns_by_disposition(
         df: pd.DataFrame,
@@ -1178,6 +1182,12 @@ class BIDSDataset:
             raise ValueError("Field map is missing the 'disposition' column.")
         if schema_name is not None and "schema_name" in field_map_df.columns:
             field_map_df = field_map_df.loc[field_map_df["schema_name"] == schema_name]
+            if field_map_df.empty:
+                # Without the table's rules nothing would be dropped: refuse instead.
+                raise ValueError(
+                    f"Table {schema_name!r} has no rows in the field map; cannot apply dispositions. "
+                    "Was the tree built with a different bids_field_organization.csv?"
+                )
 
         if level == DispositionLevel.INTERNAL:
             return df, []
@@ -1197,7 +1207,10 @@ class BIDSDataset:
             df = df.drop(columns=present)
 
         all_field_map_names = set(field_map_df["column_name"].dropna())
-        unknown = [c for c in df.columns if c not in all_field_map_names]
+        unknown = [
+            c for c in df.columns
+            if c not in all_field_map_names and c not in BIDSDataset._PIPELINE_ID_COLUMNS
+        ]
         if unknown:
             _LOGGER.warning(
                 "Columns not in field map (kept as pipeline-authored): %s",
@@ -1260,14 +1273,17 @@ class BIDSDataset:
     @staticmethod
     def _get_review_column_names(
         field_map_df: t.Optional[pd.DataFrame] = None,
+        schema_name: t.Optional[str] = None,
     ) -> t.Set[str]:
-        """Return the set of column names with disposition=review."""
+        """Return the column names with disposition=review, within *schema_name* when given."""
         if field_map_df is None:
             if BIDSDataset._cached_field_map_df is None:
                 BIDSDataset._cached_field_map_df = BIDSDataset._load_reorganization_file(exclude_dropped=False)
             field_map_df = BIDSDataset._cached_field_map_df
         if "disposition" not in field_map_df.columns:
             return set()
+        if schema_name is not None and "schema_name" in field_map_df.columns:
+            field_map_df = field_map_df.loc[field_map_df["schema_name"] == schema_name]
         return set(
             field_map_df.loc[
                 field_map_df["disposition"] == "review", "column_name"
@@ -2044,6 +2060,11 @@ class BIDSDataset:
                 for task in session.get("acoustic_tasks", []):
                     if task is None:
                         continue
+                    # The writing loop below skips tasks with no name; count them the same way so
+                    # a metadata-only build keeps exactly the sessions a full build keeps.
+                    _task_name = task.get("acoustic_task_name")
+                    if not _task_name or pd.isna(_task_name):
+                        continue
                     for recording in task.get("recordings", []):
                         rec_id = recording.get("recording_id", "")
                         if not rec_id:
@@ -2751,6 +2772,68 @@ class BIDSDataset:
         return data
     
     @staticmethod
+    def _check_phenotype_tables_in_field_map(phenotype_dir: Path) -> None:
+        """Stop before writing if any phenotype table (or sessions.tsv's table) is unknown.
+
+        redcap2bids names every table after a field-map ``schema_name``, so an unknown name means
+        the tree was built with a different field map, and its dispositions cannot be trusted.
+        """
+        if BIDSDataset._cached_field_map_df is None:
+            BIDSDataset._cached_field_map_df = BIDSDataset._load_reorganization_file(exclude_dropped=False)
+        known = set(BIDSDataset._cached_field_map_df["schema_name"].dropna())
+        unknown = []
+        if BIDSDataset._SESSIONS_SCHEMA not in known:
+            unknown.append(f"{BIDSDataset._SESSIONS_SCHEMA} (sessions.tsv)")
+        if phenotype_dir.exists():
+            for tsv in sorted(phenotype_dir.rglob("*.tsv")):
+                _, schema_name, _, _ = BIDSDataset.load_phenotype_file(tsv)
+                if schema_name not in known:
+                    unknown.append(f"{schema_name} ({tsv.relative_to(phenotype_dir)})")
+        if unknown:
+            raise ValueError(
+                "Phenotype tables not in the field map (was the tree built with a different "
+                f"bids_field_organization.csv?): {unknown}"
+            )
+
+    @staticmethod
+    def _filestems_for_recording_ids(
+        bids_path: Path,
+        participant_ids: t.Iterable[str],
+        recording_ids: t.AbstractSet[str],
+        max_workers: int = 16,
+    ) -> t.List[str]:
+        """Filestems in *bids_path* of the recordings whose sidecar ``recording_id`` is listed.
+
+        Only the given participants' sidecars are read, and only when *recording_ids* is
+        non-empty. Each stem is cut at the task entity, matching how filestem exclusions compare.
+        """
+        if not recording_ids:
+            return []
+        suffix = "_recording-metadata.json"
+
+        def _scan(pid: str) -> t.List[str]:
+            found = []
+            for sidecar in (bids_path / f"sub-{pid}").glob(f"ses-*/audio/*{suffix}"):
+                try:
+                    rid = json.loads(sidecar.read_text()).get("recording_id", "")
+                except (OSError, json.JSONDecodeError):
+                    continue
+                if str(rid).strip().lower() in recording_ids:
+                    stem = sidecar.name[: -len(suffix)]
+                    parts = stem.split("_")
+                    task_idx = next((i for i, p in enumerate(parts) if p.startswith("task-")), None)
+                    found.append("_".join(parts[: task_idx + 1]) if task_idx is not None else stem)
+            return found
+
+        with ThreadPoolExecutor(max_workers=max(1, max_workers)) as executor:
+            stems = [s for chunk in executor.map(_scan, sorted(participant_ids)) for s in chunk]
+        _LOGGER.info(
+            "audio_recording_ids_to_remove: %d ID(s) resolved to %d filestem(s) in this tree.",
+            len(recording_ids), len(stems),
+        )
+        return stems
+
+    @staticmethod
     def _report_exclusion_coverage(
         bids_path: Path,
         filestems: t.Iterable[str],
@@ -2872,6 +2955,12 @@ class BIDSDataset:
         )
 
         configured_filestems = list(audio_filestems_to_remove)
+        # Recording IDs are resolved to this tree's filestems, so audio, sidecars, features and
+        # quality metrics are all filtered by the one filestem mechanism below.
+        recording_ids_to_remove = BIDSDataset.load_audio_recording_ids_to_remove(deidentify_config_dir)
+        audio_filestems_to_remove = list(audio_filestems_to_remove) + BIDSDataset._filestems_for_recording_ids(
+            self.data_path, participant_allowlist, recording_ids_to_remove, max_workers=max_workers
+        )
         audio_filestems_to_remove = BIDSDataset._expand_filestems_for_deidentification(
             audio_filestems_to_remove,
             participant_ids_to_remap=participant_ids_to_remap,
@@ -2892,7 +2981,6 @@ class BIDSDataset:
             sanitize_task_entity_in_bids_stem(Path(s).stem)
             for s in audio_filestems_to_remove
         }
-        recording_ids_to_remove = BIDSDataset.load_audio_recording_ids_to_remove(deidentify_config_dir)
         BIDSDataset._report_exclusion_coverage(
             self.data_path, configured_filestems, recording_ids_to_remove, input_tree_participants
         )
@@ -2908,7 +2996,6 @@ class BIDSDataset:
                     skip_audio, skip_audio_features,
                     _normalized_include_tasks=normalized_include_tasks,
                     _canonical_exclusions=canonical_exclusions,
-                    _recording_ids_to_remove=recording_ids_to_remove,
                     disposition_level=disposition_level or DispositionLevel.RELEASE,
                     keep_shifted_dates=keep_shifted_dates,
                 )
@@ -2930,9 +3017,9 @@ class BIDSDataset:
                 desc="Deidentifying participants",
             ))
 
+        # With skip_audio the per-participant pass still walks every sidecar, so its results say
+        # exactly who has output; no override is needed.
         participants_with_output = {pid for pid in results if pid is not None}
-        if skip_audio:
-            participants_with_output = set(participant_allowlist)
         _LOGGER.info(
             "Per-participant processing complete: %d of %d produced output.",
             len(participants_with_output), len(participant_dirs),
@@ -2960,12 +3047,12 @@ class BIDSDataset:
                 "QA deidentify: disposition level %s, keep shifted dates=%s. Not a release build.",
                 phenotype_level.value, keep_shifted_dates,
             )
-        review_col_names = BIDSDataset._get_review_column_names()
 
         # Warm the field-map cache before parallel phenotype processing
         BIDSDataset._drop_columns_by_disposition(pd.DataFrame())
 
         phenotype_base_path = self.data_path.joinpath("phenotype")
+        BIDSDataset._check_phenotype_tables_in_field_map(phenotype_base_path)
         if phenotype_base_path.exists():
             _LOGGER.info("Processing phenotype data for deidentification.")
             phenotype_output_path = outdir.joinpath("phenotype")
@@ -2976,10 +3063,12 @@ class BIDSDataset:
             def _process_one_phenotype(phenotype_filepath: Path) -> str:
                 df_pheno, schema_name, header, phenotype_dict = BIDSDataset.load_phenotype_file(phenotype_filepath)
 
-                # Apply per-value verdicts BEFORE ID remapping (verdicts use original IDs)
-                if has_review_verdicts:
+                # Apply per-value verdicts BEFORE ID remapping (verdicts use original IDs). An
+                # explicit QA level shows the values unchecked, so verdicts are not applied.
+                if has_review_verdicts and disposition_level is None:
                     df_pheno, review_dropped = BIDSDataset._apply_column_value_reviews(
-                        df_pheno, review_col_names, column_value_verdicts,
+                        df_pheno, BIDSDataset._get_review_column_names(schema_name=schema_name),
+                        column_value_verdicts,
                     )
                     for col in review_dropped:
                         phenotype_dict.pop(col, None)
@@ -3008,7 +3097,7 @@ class BIDSDataset:
                     _LOGGER.info("phenotype/%s: no rows left after deidentify; not written.", phenotype_filepath.stem)
                     return phenotype_filepath.stem
 
-                if has_review_verdicts:
+                if has_review_verdicts and disposition_level is None:
                     dropped_cols.extend(review_dropped)
 
                 if dropped_cols:
@@ -3297,7 +3386,6 @@ class BIDSDataset:
         skip_audio_features: bool = False,
         _normalized_include_tasks: t.Optional[TaskMatcher] = None,
         _canonical_exclusions: t.Optional[t.Set[str]] = None,
-        _recording_ids_to_remove: t.AbstractSet[str] = frozenset(),
         disposition_level: DispositionLevel = DispositionLevel.RELEASE,
         keep_shifted_dates: bool = False,
     ) -> bool:
@@ -3323,8 +3411,6 @@ class BIDSDataset:
 
         n_audio_written = 0
         n_features_written = 0
-        # Filestems of recordings removed by recording_id, so their features are removed too.
-        excluded_recording_stems: t.Set[str] = set()
         n_skipped = 0
 
         # --- Audio files and their sidecars ---
@@ -3387,10 +3473,6 @@ class BIDSDataset:
                 f"sub-{new_pid}_ses-{new_session_id}_{stem_ending}.wav"
             )
             metadata = json.loads(json_path.read_text())
-            if str(metadata.get("recording_id", "")).strip().lower() in _recording_ids_to_remove:
-                n_skipped += 1
-                excluded_recording_stems.add(recording_stem)
-                continue
             out_wav.parent.mkdir(parents=True, exist_ok=True)
             update_metadata_record_and_session_id(
                 metadata, participant_ids_to_remap, participant_session_id_to_remap
@@ -3420,7 +3502,7 @@ class BIDSDataset:
                     recording_stem = "_".join(parts[:task_idx + 1])
                 except StopIteration:
                     recording_stem = canonical_stem
-                if recording_stem in canonical_exclusions or recording_stem in excluded_recording_stems:
+                if recording_stem in canonical_exclusions:
                     n_skipped += 1
                     continue
 
@@ -3460,6 +3542,7 @@ class BIDSDataset:
                 # Drop columns by disposition
                 df_ses, dropped_cols = BIDSDataset._drop_columns_by_disposition(
                     df_ses, level=disposition_level, keep_date_shifted=keep_shifted_dates,
+                    schema_name=BIDSDataset._SESSIONS_SCHEMA,
                 )
                 if dropped_cols:
                     _LOGGER.debug("Participant %s sessions.tsv: dropped %d columns (%s).",
@@ -3474,6 +3557,16 @@ class BIDSDataset:
                 if "session_id" in df_ses.columns:
                     remap_ses = partial(remap_id, id_mapping=participant_session_id_to_remap, id_type="session")
                     df_ses["session_id"] = BIDSDataset._map_series(df_ses["session_id"], remap_ses)
+                    # Keep only sessions that were written: every recording of the others was
+                    # filtered out (task list, filestem or recording-ID exclusions).
+                    written = {d.name[len("ses-"):] for d in out_participant.glob("ses-*") if d.is_dir()}
+                    kept = df_ses["session_id"].astype(str).isin(written)
+                    if not kept.all():
+                        _LOGGER.info(
+                            "Participant %s sessions.tsv: dropped %d session(s) with no output: %s",
+                            pid, int((~kept).sum()), ", ".join(df_ses.loc[~kept, "session_id"].astype(str)),
+                        )
+                    df_ses = df_ses.loc[kept]
                 # Write with BIDS-compliant naming
                 out_sessions = out_participant / f"sub-{new_pid}_sessions.tsv"
                 df_ses.to_csv(out_sessions, sep="\t", index=False)

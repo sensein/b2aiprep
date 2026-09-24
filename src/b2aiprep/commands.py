@@ -35,7 +35,7 @@ from b2aiprep.prepare.prepare import (
 from b2aiprep.prepare.quality_control import quality_control_wrapper
 
 from b2aiprep.prepare.data_validation import validate_phenotype, validate_no_extra_audio_tasks_present
-from b2aiprep.prepare.utils import normalize_task_label, generate_seed, generate_pseudonym, load_lookup_table, build_lookup_table
+from b2aiprep.prepare.utils import TaskMatcher, normalize_task_label, generate_seed, generate_pseudonym, load_lookup_table, build_lookup_table
 from b2aiprep.prepare.update import TemplateUpdateError, reorganize_bids_activities, update_bids_template_files
 
 _LOGGER = logging.getLogger(__name__)
@@ -727,11 +727,10 @@ def validate_bundled_dataset(dataset_path, config_dir):
         
         with open(config_dir / "audio_tasks_to_include.json") as f:
             audio_task_to_include = set(json.load(f))
-            audio_task_to_include_normalized = {
-                normalize_task_label(task)
-                for task in audio_task_to_include
-                if isinstance(task, str) and task.strip()
-            }
+            # Exact labels, globs and regexes, as deidentify matches them.
+            audio_task_to_include_normalized = TaskMatcher(
+                task for task in audio_task_to_include if isinstance(task, str) and task.strip()
+            )
             
         with open(config_dir / "id_remapping.json") as f:
             id_remapping = json.load(f)

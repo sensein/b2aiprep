@@ -73,7 +73,8 @@ def canada_fsa_timezones() -> tuple:
     finder = TimezoneFinder()
     zones, provinces = {}, {}
     for row in _geonames_rows(GEONAMES_CA, "CA.txt"):
-        fsa, province, lat, lon = row[1].strip().upper(), row[4].strip(), row[9], row[10]
+        # A few GeoNames rows carry a full postal code; the lookup keys on the 3-character FSA.
+        fsa, province, lat, lon = row[1].strip().upper()[:3], row[4].strip(), row[9], row[10]
         if not (lat and lon):
             continue
         zone = finder.timezone_at(lat=float(lat), lng=float(lon))

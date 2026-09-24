@@ -57,14 +57,14 @@ class TestBIDSDatasetDeidentification:
             "session_id": ["session001", "session002"],
         }
         test_pheno_df = pd.DataFrame(test_pheno_data)
-        test_pheno_df.to_csv(phenotype_dir / "test_phenotype.tsv", sep="\t", index=False)
+        test_pheno_df.to_csv(phenotype_dir / "confounders.tsv", sep="\t", index=False)
 
         test_pheno_json = {
             "record_id": {"description": "Participant ID"},
             "test_score": {"description": "Test score"},
             "session_id": {"description": "Session ID"},
         }
-        with open(phenotype_dir / "test_phenotype.json", "w") as f:
+        with open(phenotype_dir / "confounders.json", "w") as f:
             json.dump(test_pheno_json, f, indent=2)
 
         # Create audio files and metadata
@@ -214,8 +214,8 @@ class TestBIDSDatasetDeidentification:
         assert phenotype_dir.exists()
 
         # Check that test phenotype files were processed
-        test_pheno_tsv = phenotype_dir / "test_phenotype.tsv"
-        test_pheno_json = phenotype_dir / "test_phenotype.json"
+        test_pheno_tsv = phenotype_dir / "confounders.tsv"
+        test_pheno_json = phenotype_dir / "confounders.json"
         assert test_pheno_tsv.exists()
         assert test_pheno_json.exists()
 

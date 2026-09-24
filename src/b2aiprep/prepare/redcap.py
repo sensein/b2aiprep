@@ -741,7 +741,10 @@ class RedCapDataset:
         if not Path(file_path).exists():
             raise FileNotFoundError(f"File {file_path} does not exist.")
 
-        data = pd.read_csv(file_path, low_memory=False, na_values="")
+        # Postal codes are text: read as numbers they lose leading zeros (02139 -> 2139).
+        header = pd.read_csv(file_path, nrows=0).columns
+        text_columns = {c: str for c in ("zipcode", "peds_zipcode") if c in header}
+        data = pd.read_csv(file_path, low_memory=False, na_values="", dtype=text_columns)
         
         # Determine the repeat instrument column name
         if "redcap_repeat_instrument" in data.columns:

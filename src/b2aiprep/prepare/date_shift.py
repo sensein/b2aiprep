@@ -56,7 +56,9 @@ SELF_ADMINISTERED = "Participant"
 POSTAL_CODE_COLUMNS = ("zipcode", "peds_zipcode")
 REGION_COLUMNS = ("state_province", "peds_state_province")
 
-_US_ZIP = re.compile(r"^(\d{5})(-\d{4})?$")
+_US_ZIP = re.compile(r"^(\d{5})(-?\d{4})?$")
+# An anchor closer than this to any participant's real first session is warned about.
+ANCHOR_MIN_DISTANCE_YEARS = 10
 _CA_POSTAL = re.compile(r"^([A-Z]\d[A-Z])\s*(\d[A-Z]\d)?$")
 
 # Values RedCap writes into timestamp columns that mean "no value".
@@ -145,6 +147,8 @@ def _region_timezones() -> t.Dict[str, str]:
 
 def postal_code_timezone(value: t.Any) -> t.Optional[str]:
     """Zone for a US ZIP (5 digits, optional +4) or Canadian postal code / FSA."""
+    if isinstance(value, (int, float)) and not isinstance(value, bool) and not pd.isna(value):
+        value = str(int(value))  # a column of US-only ZIPs is read as numbers
     if not isinstance(value, str):
         return None
     text = value.strip().upper()
@@ -258,9 +262,13 @@ def participant_offsets(
 
     Anchored on the participant's earliest session start, in that session's local time.
     """
-    sessions = df.loc[df["redcap_repeat_instrument"] == SESSION_INSTRUMENT]
+    sessions = df.loc[
+        df["redcap_repeat_instrument"] == SESSION_INSTRUMENT,
+        [c for c in ("record_id", "session_id", "session_started_at") if c in df.columns],
+    ]
     offsets: t.Dict[str, int] = {}
     skipped: t.Dict[str, str] = {}
+    firsts: t.List[datetime.date] = []
     for record_id, rows in sessions.groupby("record_id"):
         starts = []
         for session_id, value in zip(_column(rows, "session_id"), _column(rows, "session_started_at")):
@@ -271,8 +279,34 @@ def participant_offsets(
             skipped[record_id] = "no session with a parseable start time and a time zone"
             continue
         first, zone = min(starts, key=lambda pair: pair[0])
-        offsets[record_id] = offset_weeks(anchor, first.astimezone(zone).date())
+        first_local = first.astimezone(zone).date()
+        firsts.append(first_local)
+        offsets[record_id] = offset_weeks(anchor, first_local)
+    check_anchor(anchor, offsets, firsts)
     return offsets, skipped
+
+
+def check_anchor(anchor: datetime.date, offsets: t.Dict[str, int], firsts: t.List[datetime.date]) -> None:
+    """Refuse an anchor that leaves anyone's dates unshifted; warn when it is close to real dates.
+
+    A participant whose first session is within three days of the anchor gets a zero-week offset,
+    i.e. their real dates. Anchors far outside the study period (e.g. 2100) avoid that entirely.
+    """
+    zero = sorted(r for r, w in offsets.items() if w == 0)
+    if zero:
+        raise ValueError(
+            f"Date-shift anchor {anchor} is within three days of the real first session of "
+            f"{len(zero)} participant(s), whose dates would not be shifted: {zero}. "
+            "Choose an anchor far from the study period."
+        )
+    if firsts:
+        nearest = min(abs((anchor - d).days) for d in firsts) / 365.25
+        if nearest < ANCHOR_MIN_DISTANCE_YEARS:
+            _LOGGER.warning(
+                "Date-shift anchor %s is only %.1f years from the nearest real first session; "
+                "an anchor at least %d years away keeps shifted dates clearly distinct from real ones.",
+                anchor, nearest, ANCHOR_MIN_DISTANCE_YEARS,
+            )
 
 
 def shift_dates(
