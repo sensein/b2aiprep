@@ -3575,13 +3575,15 @@ class BIDSDataset:
 
         # --- Cleanup if no output ---
         out_participant = outdir / f"sub-{new_pid}"
-        has_output = n_audio_written > 0 or (skip_audio and out_participant.exists())
+        # Feature files count: a participant whose recordings are all from tasks whose audio is
+        # not released still has (stripped) features to publish.
+        has_output = n_audio_written > 0 or n_features_written > 0 or (skip_audio and out_participant.exists())
         if not has_output:
             if out_participant.exists():
                 shutil.rmtree(out_participant)
             _LOGGER.info(
-                "Participant %s: 0 audio files after filtering (%d skipped, %d features). Removed output dir.",
-                pid, n_skipped, n_features_written,
+                "Participant %s: no audio or feature files after filtering (%d skipped). Removed output dir.",
+                pid, n_skipped,
             )
             return False
 

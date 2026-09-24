@@ -407,3 +407,18 @@ def test_deidentified_sessions_tsv_keeps_only_written_sessions(tmp_path):
     )
     ses = pd.read_csv(out / "sub-900001" / "sub-900001_sessions.tsv", sep="\t", dtype=str)
     assert list(ses["session_id"]) == ["01"]
+
+
+def test_participant_with_only_feature_output_is_kept(tmp_path):
+    """Recordings whose task audio is not released still publish stripped features."""
+    import torch
+
+    pdir = _sidecar_tree(tmp_path / "in", recordings=(("rec-A", "free-speech-1"),))
+    torch.save({"opensmile": {"x": 1}}, pdir / "ses-S1" / "audio" / "sub-p1_ses-S1_task-free-speech-1_features.pt")
+    out = tmp_path / "out"
+    had_output = BIDSDataset._deidentify_participant_files(
+        pdir, out, {"p1": "900001"}, {"S1": "01"}, [], ["noisy-sounds-*"],
+        skip_audio=False, skip_audio_features=False,
+    )
+    assert had_output
+    assert list(out.rglob("*free-speech-1_features.pt"))
