@@ -1147,6 +1147,44 @@ class BIDSDataset:
     _PIPELINE_ID_COLUMNS = frozenset({"participant_id", "record_id"})
     # Field-map table that describes the per-participant sessions.tsv columns.
     _SESSIONS_SCHEMA = "session"
+    # Field-map table whose dispositions govern the per-recording audio sidecar keys.
+    _RECORDING_SCHEMA = "recording"
+
+    @staticmethod
+    def _field_map_rows_for_table(
+        field_map_df: t.Optional[pd.DataFrame], schema_name: t.Optional[str]
+    ) -> pd.DataFrame:
+        """The field map (loaded if not given), narrowed to *schema_name*'s rows when given."""
+        if field_map_df is None:
+            if BIDSDataset._cached_field_map_df is None:
+                BIDSDataset._cached_field_map_df = BIDSDataset._load_reorganization_file(exclude_dropped=False)
+            field_map_df = BIDSDataset._cached_field_map_df
+        if "disposition" not in field_map_df.columns:
+            raise ValueError("Field map is missing the 'disposition' column.")
+        if schema_name is not None and "schema_name" in field_map_df.columns:
+            field_map_df = field_map_df.loc[field_map_df["schema_name"] == schema_name]
+            if field_map_df.empty:
+                # Without the table's rules nothing would be dropped: refuse instead.
+                raise ValueError(
+                    f"Table {schema_name!r} has no rows in the field map; cannot apply dispositions. "
+                    "Was the tree built with a different bids_field_organization.csv?"
+                )
+        return field_map_df
+
+    @staticmethod
+    def _names_to_drop_at_level(
+        field_map_df: pd.DataFrame, level: DispositionLevel, keep_date_shifted: bool = False
+    ) -> t.Set[str]:
+        """Output names whose disposition is above *level* (RELEASE < REVIEW < INTERNAL)."""
+        if level == DispositionLevel.INTERNAL:
+            return set()
+        hierarchy = {"release": 0, "review": 1, "internal": 2}
+        threshold = hierarchy[level.value]
+        drop_dispositions = [d for d, rank in hierarchy.items() if rank > threshold]
+        drop_rows = field_map_df["disposition"].isin(drop_dispositions)
+        if keep_date_shifted and "date_shift" in field_map_df.columns:
+            drop_rows &= field_map_df["date_shift"].astype(str).str.upper() != "YES"
+        return set(field_map_df.loc[drop_rows, "column_name"].dropna())
 
     @staticmethod
     def _drop_columns_by_disposition(
@@ -1173,32 +1211,10 @@ class BIDSDataset:
 
         Columns not in the field map are kept (pipeline-authored).
         """
-        if field_map_df is None:
-            if BIDSDataset._cached_field_map_df is None:
-                BIDSDataset._cached_field_map_df = BIDSDataset._load_reorganization_file(exclude_dropped=False)
-            field_map_df = BIDSDataset._cached_field_map_df
-
-        if "disposition" not in field_map_df.columns:
-            raise ValueError("Field map is missing the 'disposition' column.")
-        if schema_name is not None and "schema_name" in field_map_df.columns:
-            field_map_df = field_map_df.loc[field_map_df["schema_name"] == schema_name]
-            if field_map_df.empty:
-                # Without the table's rules nothing would be dropped: refuse instead.
-                raise ValueError(
-                    f"Table {schema_name!r} has no rows in the field map; cannot apply dispositions. "
-                    "Was the tree built with a different bids_field_organization.csv?"
-                )
-
+        field_map_df = BIDSDataset._field_map_rows_for_table(field_map_df, schema_name)
         if level == DispositionLevel.INTERNAL:
             return df, []
-
-        hierarchy = {"release": 0, "review": 1, "internal": 2}
-        threshold = hierarchy[level.value]
-        drop_dispositions = [d for d, rank in hierarchy.items() if rank > threshold]
-        drop_rows = field_map_df["disposition"].isin(drop_dispositions)
-        if keep_date_shifted and "date_shift" in field_map_df.columns:
-            drop_rows &= field_map_df["date_shift"].astype(str).str.upper() != "YES"
-        to_drop_names = set(field_map_df.loc[drop_rows, "column_name"].dropna())
+        to_drop_names = BIDSDataset._names_to_drop_at_level(field_map_df, level, keep_date_shifted)
 
         present = [c for c in df.columns if c in to_drop_names]
         if present:
@@ -3412,6 +3428,12 @@ class BIDSDataset:
         n_audio_written = 0
         n_features_written = 0
         n_skipped = 0
+        # Sidecar keys follow the recording table's dispositions, as sessions.tsv follows the
+        # session table's; keys not in the field map (task_name, stimulus_*) are kept.
+        sidecar_keys_to_drop = BIDSDataset._names_to_drop_at_level(
+            BIDSDataset._field_map_rows_for_table(None, BIDSDataset._RECORDING_SCHEMA),
+            disposition_level, keep_shifted_dates,
+        )
 
         # --- Audio files and their sidecars ---
         # With skip_audio the recordings are walked through their sidecars instead, so a
@@ -3477,6 +3499,8 @@ class BIDSDataset:
             update_metadata_record_and_session_id(
                 metadata, participant_ids_to_remap, participant_session_id_to_remap
             )
+            for key in sidecar_keys_to_drop.intersection(metadata):
+                del metadata[key]
             out_json = out_wav.with_suffix(".json")
             with open(out_json, "w") as f:
                 json.dump(metadata, f, indent=2)
