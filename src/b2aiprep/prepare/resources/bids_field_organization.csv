@@ -853,7 +853,7 @@ demographics_schema,demographics,employ_status,employ_status,demographics,What i
 demographics_schema,demographics,ethnicity,ethnicity,demographics,What is your ethnic or cultural origin?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 demographics_schema,demographics,financial_assistance_ca,financial_assistance_ca,demographics,"Do you receive a significant portion (>20%) of your income through the following federally-funded income assistance program(s): Veteran Disability Pension, Employment Insurance Sickness Benefits, or Canada Pension Plan Disability Benefits",NO,release,VARIABLE,redcap,v4,NO,NO
 demographics_schema,demographics,financial_assistance_usa,financial_assistance_usa,demographics,"Do you receive a significant portion (>20%) of your income through any of the following federally-funded income assistance programs: SNAP, WIC, or Social Security?",NO,release,VARIABLE,redcap,v4,NO,NO
-demographics_schema,demographics,gender_identity,gender_identity,demographics,What is your gender identity?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
+demographics_schema,demographics,gender_identity,gender_identity,demographics,What is your gender identity?,NO,internal,VARIABLE,redcap,pre-v4,NO,NO
 demographics_schema,demographics,grandparent,grandparent,demographics,One or more grandparent,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 demographics_schema,demographics,hearing,hearing,demographics,Are you deaf or do you have serious difficulty hearing?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 demographics_schema,demographics,hispanic_latino_selection,hispanic_latino_selection,,"Check all that apply
@@ -889,6 +889,7 @@ demographics_schema,demographics,race,race,demographics,Which race category best
 demographics_schema,demographics,roommate,roommate,demographics,Roommate(s),NO,release,VARIABLE,redcap,pre-v4,NO,NO
 demographics_schema,demographics,self_care,self_care,demographics,Do you have difficulty dressing or bathing?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 demographics_schema,demographics,sex_assigned_at_birth,sex_assigned_at_birth,demographics,What was your sex assigned at birth?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
+demographics_schema,demographics,sex_at_birth,sex_at_birth,demographics,Sex assigned at birth: the participant's answer to sex_assigned_at_birth where given; otherwise the male/female gender identity of a participant who specified it as Cis (same as the sex assigned at birth). Nothing is inferred from a Trans answer.,NO,release,VARIABLE,pipeline,v4,NO,NO
 demographics_schema,demographics,sexual_orientation,sexual_orientation,demographics,What is your sexual orientation?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 demographics_schema,demographics,specify_gender_identity,specify_gender_identity,demographics,Please specify gender identity,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 demographics_schema,demographics,spouse_partner_sig_other,spouse_partner_sig_other,demographics,Spouse/partner/significant other,NO,release,VARIABLE,redcap,pre-v4,NO,NO

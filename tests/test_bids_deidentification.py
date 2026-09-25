@@ -53,7 +53,7 @@ class TestBIDSDatasetDeidentification:
         # Create a test phenotype file
         test_pheno_data = {
             "record_id": ["participant001", "participant002"],
-            "test_score": [85, 90],
+            "acid_reflux": ["Yes", "No"],
             "session_id": ["session001", "session002"],
         }
         test_pheno_df = pd.DataFrame(test_pheno_data)
@@ -61,7 +61,7 @@ class TestBIDSDatasetDeidentification:
 
         test_pheno_json = {
             "record_id": {"description": "Participant ID"},
-            "test_score": {"description": "Test score"},
+            "acid_reflux": {"description": "Acid reflux"},
             "session_id": {"description": "Session ID"},
         }
         with open(phenotype_dir / "confounders.json", "w") as f:
@@ -405,12 +405,18 @@ class TestBIDSDatasetClean:
         """Test the _add_sex_at_birth_column method."""
         dataset = BIDSDataset(Path("/dummy"))
 
+        # As exported: an answered sex_assigned_at_birth (including "Prefer not to answer") is
+        # kept; without one, a Cis answer gives the sex at birth and a Trans answer gives none.
         df = pd.DataFrame(
             {
-                "record_id": ["p1", "p2"],
-                "gender_identity": ["Male", "Female"],
-                "specify_gender_identity": ["Male", "Female"],
-                "age": [25, 30],
+                "record_id": ["p1", "p2", "p3", "p4", "p5"],
+                "gender_identity": ["Male gender identity", "Female gender identity",
+                                    "Female gender identity", "Male gender identity",
+                                    "Non-binary or genderqueer gender identity"],
+                "specify_gender_identity": ["Cis: same gender as the sex assigned at birth", "Cis: same gender as the sex assigned at birth",
+                                            "Cis: same gender as the sex assigned at birth", "Trans", None],
+                "sex_assigned_at_birth": ["Male", "Prefer not to answer", None, None, None],
+                "age": [25, 30, 35, 40, 45],
             }
         )
 
@@ -430,8 +436,8 @@ class TestBIDSDatasetClean:
         # Check that sex_at_birth column was added
         assert "sex_at_birth" in df_sex.columns
         assert "sex_at_birth" in phenotype_sex["place_holder_schema"]["data_elements"]
-        assert df_sex["sex_at_birth"].iloc[0] == "Male"
-        assert df_sex["sex_at_birth"].iloc[1] == "Female"
+        assert [v if pd.notna(v) else None for v in df_sex["sex_at_birth"]] == [
+            "Male", "Prefer not to answer", "Female", None, None]
 
         # Check that specify_gender_identity was removed
         assert "specify_gender_identity" not in df_sex.columns

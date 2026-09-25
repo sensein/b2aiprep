@@ -1316,11 +1316,10 @@ class BIDSDataset:
         (``review`` columns are kept for per-value processing).  At
         ``INTERNAL``, nothing is dropped.
 
-        Columns not in the field map are kept (pipeline-authored).
+        Columns not in the field map are removed and logged; ``participant_id``/``record_id``
+        are kept.
         """
         field_map_df = BIDSDataset._field_map_rows_for_table(field_map_df, schema_name)
-        if level == DispositionLevel.INTERNAL:
-            return df, []
         to_drop_names = BIDSDataset._names_to_drop_at_level(field_map_df, level, keep_date_shifted)
 
         present = [c for c in df.columns if c in to_drop_names]
@@ -1329,6 +1328,8 @@ class BIDSDataset:
                 _LOGGER.info("Dropping column '%s' (disposition-based).", col)
             df = df.drop(columns=present)
 
+        # A column the table's field-map rows do not describe has no disposition, so it is never
+        # published: it is removed and named, whatever the level.
         all_field_map_names = set(field_map_df["column_name"].dropna())
         unknown = [
             c for c in df.columns
@@ -1336,11 +1337,12 @@ class BIDSDataset:
         ]
         if unknown:
             _LOGGER.warning(
-                "Columns not in field map (kept as pipeline-authored): %s",
-                ", ".join(sorted(unknown)),
+                "Removed columns not in the field map%s: %s",
+                f" (table {schema_name})" if schema_name else "", ", ".join(sorted(unknown)),
             )
+            df = df.drop(columns=unknown)
 
-        return df, present
+        return df, present + unknown
 
     @staticmethod
     def _load_column_value_reviews(
@@ -2731,14 +2733,22 @@ class BIDSDataset:
 
     @staticmethod
     def _add_sex_at_birth_column(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
-        """Add sex_at_birth column derived from gender_identity and specify_gender_identity."""
-        df["sex_at_birth"] = None
+        """Add sex_at_birth: sex_assigned_at_birth where answered, otherwise inferred from a Cis answer.
+
+        sex_assigned_at_birth was added to the form later, so earlier participants have none. For
+        them, a male/female gender identity specified as "Cis" (same as the sex assigned at birth)
+        gives the sex at birth. An answered sex_assigned_at_birth, including "Prefer not to
+        answer", is kept as given, and nothing is inferred for "Trans" or any other answer.
+        """
+        if "sex_assigned_at_birth" in df.columns:
+            df["sex_at_birth"] = df["sex_assigned_at_birth"]
+        else:
+            df["sex_at_birth"] = None
+        unanswered = df["sex_at_birth"].isna()
+        cis = df["specify_gender_identity"].fillna("").astype(str).str.startswith("Cis")
+        identity = df["gender_identity"].fillna("").astype(str)
         for sex_at_birth in ["Male", "Female"]:
-            idx = (
-                df["gender_identity"].str.contains(sex_at_birth)
-                & df["specify_gender_identity"].notnull()
-            )
-            df.loc[idx, "sex_at_birth"] = sex_at_birth
+            df.loc[unanswered & cis & identity.str.startswith(sex_at_birth), "sex_at_birth"] = sex_at_birth
 
         # Re-order columns to place sex_at_birth after gender_identity
         phenotype_reordered = deepcopy(phenotype)
@@ -2756,7 +2766,12 @@ class BIDSDataset:
                 columns.append("sex_at_birth")
                 data_elements_updated[c] = phenotype[first_key]["data_elements"][c]
                 data_elements_updated["sex_at_birth"] = {
-                    "description": "The sex at birth for the individual."
+                    "description": (
+                        "Sex assigned at birth: the participant's answer to sex_assigned_at_birth "
+                        "where given; otherwise the male/female gender identity of a participant "
+                        "who specified it as Cis (same as the sex assigned at birth)."
+                    ),
+                    "valueType": ["xsd:string"],
                 }
             elif c == "sex_at_birth":
                 continue

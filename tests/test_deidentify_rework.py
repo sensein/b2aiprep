@@ -168,16 +168,20 @@ class TestDropColumnsByDisposition:
         with pytest.raises(ValueError, match="disposition"):
             BIDSDataset._drop_columns_by_disposition(df, field_map_df=fm)
 
-    def test_columns_not_in_field_map_kept(self):
+    def test_columns_not_in_field_map_removed(self, caplog):
+        """A column with no field-map row has no disposition, so it is never published."""
         fm = _field_map_df([
             {"column_name": "col_a", "disposition": "release", "delete": "NO"},
         ])
-        df = pd.DataFrame({"col_a": [1], "pipeline_computed": [99]})
-        result, dropped = BIDSDataset._drop_columns_by_disposition(
-            df, field_map_df=fm
-        )
-        assert "pipeline_computed" in result.columns
-        assert "col_a" in result.columns
+        df = pd.DataFrame({"participant_id": ["p1"], "col_a": [1], "pipeline_computed": [99]})
+        with caplog.at_level(logging.WARNING):
+            result, dropped = BIDSDataset._drop_columns_by_disposition(df, field_map_df=fm)
+        assert list(result.columns) == ["participant_id", "col_a"]
+        assert dropped == ["pipeline_computed"]
+        assert any("pipeline_computed" in r.getMessage() for r in caplog.records)
+        result, _ = BIDSDataset._drop_columns_by_disposition(
+            df, field_map_df=fm, level=DispositionLevel.INTERNAL)
+        assert "pipeline_computed" not in result.columns
 
     def test_review_columns_stripped(self):
         fm = _field_map_df([
@@ -297,8 +301,8 @@ class TestDispositionInPhenotypeContext:
         assert set(result.columns) == {"participant_id", "age"}
         assert set(dropped) == {"session_complete", "free_text_specify"}
 
-    def test_pipeline_columns_kept_when_not_in_field_map(self):
-        """Pipeline-authored columns not in the field map survive disposition drop."""
+    def test_pipeline_columns_need_a_field_map_row(self):
+        """A pipeline-computed column is published only once the field map describes it."""
         fm = _field_map_df([
             {"column_name": "participant_id", "disposition": "release", "delete": "NO"},
         ])
@@ -307,8 +311,8 @@ class TestDispositionInPhenotypeContext:
             "computed_by_pipeline": ["value"],
         })
         result, dropped = BIDSDataset._drop_columns_by_disposition(df, field_map_df=fm)
-        assert "computed_by_pipeline" in result.columns
-        assert dropped == []
+        assert "computed_by_pipeline" not in result.columns
+        assert dropped == ["computed_by_pipeline"]
 
     def test_error_when_no_disposition_in_phenotype_context(self):
         """When field map has no disposition column, raises ValueError."""
@@ -373,7 +377,7 @@ class TestEndToEndAllowlistFiltering:
         pheno_dir.mkdir()
         pheno_df = pd.DataFrame({
             "participant_id": ["p1", "p2", "p3"],
-            "score": [10, 20, 30],
+            "acid_reflux": ["Yes", "No", "Yes"],
         })
         pheno_df.to_csv(pheno_dir / "confounders.tsv", sep="\t", index=False)
         (pheno_dir / "confounders.json").write_text(json.dumps({}))
@@ -477,7 +481,7 @@ class TestReleasedSessions:
                       "session_index": ["1", "2", "3"], "session_status": ["Completed"] * 3}).to_csv(
             pheno / "session.tsv", sep="\t", index=False)
         (pheno / "session.json").write_text(json.dumps({}))
-        pd.DataFrame({"participant_id": ["p1"], "session_id": [self.C], "score": ["7"]}).to_csv(
+        pd.DataFrame({"participant_id": ["p1"], "confounders_session_id": [self.C], "acid_reflux": ["Yes"]}).to_csv(
             pheno / "confounders.tsv", sep="\t", index=False)
         (pheno / "confounders.json").write_text(json.dumps({}))
         (bids / "dataset_description.json").write_text(json.dumps({"Name": "test"}))
@@ -498,7 +502,7 @@ class TestReleasedSessions:
         session = pd.read_csv(out / "phenotype" / "session.tsv", sep="\t", dtype=str)
         assert sorted(session.session_id) == ["01", "02"] and sorted(session.session_index) == ["1", "2"]
         conf = pd.read_csv(out / "phenotype" / "confounders.tsv", sep="\t", dtype=str)
-        assert list(conf.session_id) == ["02"]
+        assert list(conf.confounders_session_id) == ["02"]
         self._no_original_ids(out)
         record = json.loads((tmp_path / "internal" / "map.json").read_text())
         assert record["session_labels"] == "ordinal"
@@ -510,14 +514,14 @@ class TestReleasedSessions:
         ses = pd.read_csv(out / "sub-900001" / "sub-900001_sessions.tsv", sep="\t", dtype=str)
         assert list(ses.session_id) == ["01", "03"] and list(ses.session_index) == ["1", "3"]
         conf = pd.read_csv(out / "phenotype" / "confounders.tsv", sep="\t", dtype=str)
-        assert list(conf.session_id) == ["03"]
+        assert list(conf.confounders_session_id) == ["03"]
         self._no_original_ids(out)
 
     def test_uuid(self, tmp_path):
         out = self._deidentify(tmp_path, session_labels=SessionLabels.UUID)
         assert [d.name for d in (out / "sub-900001").glob("ses-*")] == ["ses-aaaa1111"]
         conf = pd.read_csv(out / "phenotype" / "confounders.tsv", sep="\t", dtype=str)
-        assert list(conf.session_id) == ["cccc3333"]
+        assert list(conf.confounders_session_id) == ["cccc3333"]
 
     def test_crosswalk_between_label_schemes(self, tmp_path):
         import importlib.util
