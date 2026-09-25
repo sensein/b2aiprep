@@ -15,7 +15,7 @@ import shutil
 from unittest.mock import patch, MagicMock
 from click.testing import CliRunner
 
-from b2aiprep.commands import create_subject_splits, deidentify_bids_dataset
+from b2aiprep.commands import create_subject_splits, deidentify_bids_dataset, validate_bundled_dataset
 from b2aiprep.prepare.dataset import BIDSDataset, SessionLabels
 
 class TestDeidentifyCommand:
@@ -989,3 +989,57 @@ class TestCreateSubjectSplits:
         assert result.exit_code == 0
         assert "num_participants_per_file" in result.output
         assert "id_column" in result.output
+
+
+def _v4_bundle(root, phenotype_participants):
+    """A minimal bundle in v4 naming: zero-padded pseudonyms and ordinal session labels."""
+    features, task = root / "features", root / "phenotype" / "task"
+    features.mkdir(parents=True)
+    task.mkdir(parents=True)
+    df = pd.DataFrame({"participant_id": ["005009"], "task_name": ["test"], "session_id": ["01"]})
+    df.to_parquet(features / "torchaudio_spectrogram.parquet")
+    df.to_parquet(features / "torchaudio_mfcc.parquet")
+    (features / "static_features.tsv").write_text("participant_id\tsession_id\n005009\t01\n")
+    (features / "static_features.json").write_text("{}")
+    (task / "session.tsv").write_text("participant_id\tsession_id\n005009\t01\n")
+    pd.DataFrame({"participant_id": phenotype_participants}).to_csv(
+        root / "phenotype" / "demographics.tsv", sep="\t", index=False)
+
+
+def _v4_config(root):
+    """A v4 deidentify config: an allowlist, no participants_to_remove.json."""
+    root.mkdir()
+    (root / "participants_to_include.json").write_text(json.dumps(["p1", "p2"]))
+    (root / "id_remapping.json").write_text(json.dumps({"p1": "005009", "p2": "005010"}))
+    (root / "audio_tasks_to_include.json").write_text(json.dumps(["test"]))
+    return root
+
+
+def test_validate_bundled_dataset_v4_config_passes(tmp_path):
+    from click.testing import CliRunner
+    _v4_bundle(tmp_path / "bundle", ["005009", "005010"])
+    result = CliRunner().invoke(
+        validate_bundled_dataset, [str(tmp_path / "bundle"), str(_v4_config(tmp_path / "cfg"))])
+    assert result.exit_code == 0, result.output
+    assert "PASSED" in result.output
+
+
+def test_validate_bundled_dataset_flags_participant_not_on_allowlist(tmp_path):
+    """"089247" must not be read as the integer 89247, and is not an allowlisted pseudonym."""
+    from click.testing import CliRunner
+    _v4_bundle(tmp_path / "bundle", ["005009", "089247"])
+    result = CliRunner().invoke(
+        validate_bundled_dataset, [str(tmp_path / "bundle"), str(_v4_config(tmp_path / "cfg"))])
+    assert result.exit_code != 0
+    assert "should not be released in demographics.tsv: 1" in result.output
+    assert "not found in" not in result.output  # ordinal "01" labels still match
+
+
+def test_validate_bundled_dataset_missing_config_fails(tmp_path):
+    from click.testing import CliRunner
+    _v4_bundle(tmp_path / "bundle", ["005009"])
+    cfg = tmp_path / "cfg"
+    cfg.mkdir()
+    (cfg / "id_remapping.json").write_text("{}")
+    result = CliRunner().invoke(validate_bundled_dataset, [str(tmp_path / "bundle"), str(cfg)])
+    assert result.exit_code != 0 and "config file not found" in result.output

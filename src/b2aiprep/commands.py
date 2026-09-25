@@ -720,24 +720,41 @@ def validate_bundled_dataset(dataset_path, config_dir):
     if not phenotype_dir.exists():
         issues.append("Phenotype directory missing")
 
-    # 2. Load config
+    # 2. Load config. Participants are checked against the allowlist (participants_to_include.json,
+    # as deidentify uses it), or else against the older removal list.
     try:
-        with open(config_dir / "participants_to_remove.json") as f:
-            participants_to_remove = set(json.load(f))
-        
+        with open(config_dir / "id_remapping.json") as f:
+            id_remapping = json.load(f)
+            original_ids = set(id_remapping.keys())
+        include_path = config_dir / "participants_to_include.json"
+        remove_path = config_dir / "participants_to_remove.json"
+        allowed_released: t.Optional[set] = None
+        participants_to_remove: set = set()
+        if include_path.exists():
+            with open(include_path) as f:
+                allowed_released = {str(id_remapping.get(p, p)) for p in json.load(f)}
+        else:
+            with open(remove_path) as f:
+                removed = [str(p) for p in json.load(f)]
+            # Removed participants would appear under their released pseudonym, if anywhere.
+            participants_to_remove = set(removed) | {str(id_remapping.get(p, p)) for p in removed}
+
         with open(config_dir / "audio_tasks_to_include.json") as f:
             audio_task_to_include = set(json.load(f))
             # Exact labels, globs and regexes, as deidentify matches them.
             audio_task_to_include_normalized = TaskMatcher(
                 task for task in audio_task_to_include if isinstance(task, str) and task.strip()
             )
-            
-        with open(config_dir / "id_remapping.json") as f:
-            id_remapping = json.load(f)
-            original_ids = set(id_remapping.keys())
     except FileNotFoundError as e:
-        click.echo(f"ERROR: Config file not found: {e}")
-        return
+        click.echo(f"\nValidation FAILED: config file not found: {e}")
+        raise SystemExit(1)
+
+    def _unexpected_participants(present: set) -> set:
+        """Participants that should not be in the release."""
+        present = {str(p) for p in present}
+        if allowed_released is not None:
+            return present - allowed_released
+        return present & participants_to_remove
 
     # 3. Check participants and tasks in Parquet files
     parquet_files = list(features_dir.glob("*.parquet"))
@@ -760,10 +777,10 @@ def validate_bundled_dataset(dataset_path, config_dir):
             df = pd.read_parquet(parquet_file, columns=["participant_id", "task_name", "session_id"])
             
             # Check participants
-            present_participants = set(df["participant_id"].unique())
-            removed_present = present_participants.intersection(participants_to_remove)
+            present_participants = set(df["participant_id"].dropna().astype(str).unique())
+            removed_present = _unexpected_participants(present_participants)
             if removed_present:
-                issues.append(f"Found participants that should be removed in {parquet_file.name}: {len(removed_present)} participants")
+                issues.append(f"Found participants that should not be released in {parquet_file.name}: {len(removed_present)} participants")
                 
             # Check tasks
             present_tasks = set(df["task_name"].dropna().unique())
@@ -787,12 +804,12 @@ def validate_bundled_dataset(dataset_path, config_dir):
     if phenotype_dir.exists():
         for tsv_file in phenotype_dir.rglob("*.tsv"):
             try:
-                df = pd.read_csv(tsv_file, sep="\t")
+                df = pd.read_csv(tsv_file, sep="\t", dtype=str)
                 if "participant_id" in df.columns:
-                    present_participants = set(df["participant_id"].unique())
-                    removed_present = present_participants.intersection(participants_to_remove)
+                    present_participants = set(df["participant_id"].dropna().unique())
+                    removed_present = _unexpected_participants(present_participants)
                     if removed_present:
-                        issues.append(f"Found participants that should be removed in {tsv_file.name}: {len(removed_present)} participants")
+                        issues.append(f"Found participants that should not be released in {tsv_file.name}: {len(removed_present)} participants")
                     
                     unmapped_present = present_participants.intersection(original_ids)
                     if unmapped_present:
@@ -810,7 +827,7 @@ def validate_bundled_dataset(dataset_path, config_dir):
     sessions_file = next((p for p in sessions_candidates if p.exists()), None)
     if sessions_file is not None:
         try:
-            sessions_df = pd.read_csv(sessions_file, sep="\t")
+            sessions_df = pd.read_csv(sessions_file, sep="\t", dtype=str)
             if "session_id" not in sessions_df.columns:
                 issues.append(f"Sessions file missing required column session_id: {sessions_file.as_posix()}")
             else:
@@ -837,7 +854,7 @@ def validate_bundled_dataset(dataset_path, config_dir):
     static_features_path = features_dir / "static_features.tsv"
     if static_features_path.exists():
         try:
-            static_df = pd.read_csv(static_features_path, sep="\t")
+            static_df = pd.read_csv(static_features_path, sep="\t", dtype=str)
             if "session_id" not in static_df.columns:
                 issues.append("static_features.tsv missing required column session_id")
             else:
