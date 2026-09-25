@@ -302,6 +302,9 @@ def _sidecar_tree(root, pid="p1", ses="S1", recordings=(("rec-A", "noisy-sounds-
         (audio / f"{stem}_recording-metadata.json").write_text(
             json.dumps({"record_id": pid, "recording_id": rec_id.upper(), "session_id": ses})
         )
+    pd.DataFrame({"record_id": [pid], "session_id": [ses], "session_index": ["1"]}).to_csv(
+        root / f"sub-{pid}" / "sessions.tsv", sep="\t", index=False
+    )
     return root / f"sub-{pid}"
 
 
@@ -318,7 +321,7 @@ def test_recording_ids_resolve_to_filestems_and_remove_audio_and_features(tmp_pa
     assert stems == ["sub-p1_ses-S1_task-free-speech-1"]
     out = tmp_path / "out"
     BIDSDataset._deidentify_participant_files(
-        pdir, out, {"p1": "900001"}, {"S1": "01"}, stems, ["noisy-sounds-*"],
+        pdir, out, {"p1": "900001"}, stems, ["noisy-sounds-*"],
         skip_audio=True, skip_audio_features=False,
     )
     names = sorted(p.name for p in out.rglob("*") if p.is_file())
@@ -354,7 +357,7 @@ def test_deidentify_includes_tasks_by_pattern(tmp_path):
     pdir = _sidecar_tree(tmp_path / "in", recordings=(("rec-A", "identifying-pictures-35"), ("rec-B", "reading-passage-3")))
     out = tmp_path / "out"
     BIDSDataset._deidentify_participant_files(
-        pdir, out, {"p1": "900001"}, {"S1": "01"}, [], ["identifying-pictures-*"],
+        pdir, out, {"p1": "900001"}, [], ["identifying-pictures-*"],
         skip_audio=True, skip_audio_features=True,
     )
     written = [p.name for p in out.rglob("*.json")]
@@ -397,12 +400,13 @@ def test_deidentified_sessions_tsv_keeps_only_written_sessions(tmp_path):
     (pdir / "ses-S2" / "audio" / "sub-p1_ses-S2_task-free-speech-1_recording-metadata.json").write_text(
         json.dumps({"record_id": "p1", "recording_id": "REC-C", "session_id": "S2"})
     )
-    pd.DataFrame({"record_id": ["p1", "p1"], "session_id": ["S1", "S2"], "session_status": ["Completed"] * 2}).to_csv(
+    pd.DataFrame({"record_id": ["p1", "p1"], "session_id": ["S1", "S2"], "session_index": ["1", "2"],
+                  "session_status": ["Completed"] * 2}).to_csv(
         pdir / "sessions.tsv", sep="\t", index=False
     )
     out = tmp_path / "out"
     BIDSDataset._deidentify_participant_files(
-        pdir, out, {"p1": "900001"}, {"S1": "01", "S2": "02"}, [], ["noisy-sounds-*"],
+        pdir, out, {"p1": "900001"}, [], ["noisy-sounds-*"],
         skip_audio=True, skip_audio_features=True,
     )
     ses = pd.read_csv(out / "sub-900001" / "sub-900001_sessions.tsv", sep="\t", dtype=str)
@@ -416,9 +420,9 @@ def test_participant_with_only_feature_output_is_kept(tmp_path):
     pdir = _sidecar_tree(tmp_path / "in", recordings=(("rec-A", "free-speech-1"),))
     torch.save({"opensmile": {"x": 1}}, pdir / "ses-S1" / "audio" / "sub-p1_ses-S1_task-free-speech-1_features.pt")
     out = tmp_path / "out"
-    had_output = BIDSDataset._deidentify_participant_files(
-        pdir, out, {"p1": "900001"}, {"S1": "01"}, [], ["noisy-sounds-*"],
+    labels, _ = BIDSDataset._deidentify_participant_files(
+        pdir, out, {"p1": "900001"}, [], ["noisy-sounds-*"],
         skip_audio=False, skip_audio_features=False,
     )
-    assert had_output
+    assert labels == {"S1": "01"}
     assert list(out.rglob("*free-speech-1_features.pt"))

@@ -13,7 +13,7 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
-from b2aiprep.prepare.dataset import BIDSDataset
+from b2aiprep.prepare.dataset import BIDSDataset, SessionLabels
 
 
 # ---------------------------------------------------------------------------
@@ -365,7 +365,7 @@ class TestEndToEndAllowlistFiltering:
                 ]
             }))
             # sessions.tsv
-            ses_df = pd.DataFrame({"record_id": [pid], "session_id": ["s1"]})
+            ses_df = pd.DataFrame({"record_id": [pid], "session_id": ["s1"], "session_index": ["1"]})
             ses_df.to_csv(bids / f"sub-{pid}" / "sessions.tsv", sep="\t", index=False)
 
         # Phenotype with all 3
@@ -394,6 +394,154 @@ class TestEndToEndAllowlistFiltering:
         assert not (out / "session_id_mapping.json").exists()
 
 
+class TestSessionIndexAtIngest:
+
+    def test_numbers_by_start_time_undated_last_duplicates_share(self):
+        df = pd.DataFrame({
+            "record_id": ["p1", "p1", "p1", "p1", "p2", "p1"],
+            "redcap_repeat_instrument": ["Session"] * 5 + ["Acoustic Task"],
+            "session_id": ["B", "A", "C", "B", "Z", None],
+            "session_started_at": ["2025-03-01T10:00:00Z", "2025-01-01T10:00:00Z", None,
+                                   "2025-03-01T10:00:00Z", "2024-01-01T00:00:00Z", None],
+        })
+        out = BIDSDataset._add_session_index(df)
+        got = dict(zip(zip(out.record_id, out.session_id), out.session_index))
+        assert got[("p1", "A")] == "1" and got[("p1", "B")] == "2" and got[("p1", "C")] == "3"
+        assert got[("p2", "Z")] == "1"
+        assert out.loc[5, "session_index"] is pd.NA
+        assert list(out.loc[out.session_id == "B", "session_index"]) == ["2", "2"]
+
+
+class TestSessionLabels:
+
+    def _sessions(self):
+        return pd.DataFrame({
+            "session_id": ["AAAA1111-0000-0000-0000-000000000001", "BBBB2222-0000-0000-0000-000000000002",
+                           "CCCC3333-0000-0000-0000-000000000003"],
+            "session_index": ["1", "2", "3"],
+        })
+
+    def test_ordinal_numbers_released_without_gaps(self):
+        ses = self._sessions()
+        released = {ses.session_id[0], ses.session_id[2]}
+        labels, order = BIDSDataset._session_labels(ses, SessionLabels.ORDINAL, released)
+        assert labels == {ses.session_id[0]: "01", ses.session_id[2]: "02"}
+        assert order == {ses.session_id[0]: 1, ses.session_id[2]: 2}
+
+    def test_index_keeps_numbers_with_gaps(self):
+        ses = self._sessions()
+        released = {ses.session_id[0], ses.session_id[2]}
+        labels, order = BIDSDataset._session_labels(ses, SessionLabels.INDEX, released)
+        assert labels == {ses.session_id[0]: "01", ses.session_id[2]: "03"}
+        assert order == {ses.session_id[0]: 1, ses.session_id[2]: 3}
+
+    def test_uuid_lower_case_and_long_on_collision(self):
+        ses = pd.DataFrame({"session_id": ["ABCD1234-0000-0000-0000-00000000000A",
+                                           "ABCD1234-1111-0000-0000-00000000000B",
+                                           "FFFF0000-0000-0000-0000-00000000000C"]})
+        labels, _ = BIDSDataset._session_labels(ses, SessionLabels.UUID)
+        assert labels == {ses.session_id[0]: "abcd123400000000", ses.session_id[1]: "abcd123411110000",
+                          ses.session_id[2]: "ffff0000"}
+
+    def test_ordinal_without_session_index_refuses(self):
+        with pytest.raises(ValueError, match="session_index"):
+            BIDSDataset._session_labels(pd.DataFrame({"session_id": ["x"]}), SessionLabels.ORDINAL)
+
+
+class TestReleasedSessions:
+    """A session is released with a file to publish or questionnaire rows; empty ones are not,
+    and no original session ID reaches the output."""
+
+    A, B, C = ("AAAA1111-0000-0000-0000-000000000001", "BBBB2222-0000-0000-0000-000000000002",
+               "CCCC3333-0000-0000-0000-000000000003")
+
+    def _deidentify(self, tmp_path, **kwargs):
+        bids, config, out = tmp_path / "bids", tmp_path / "config", tmp_path / "out"
+        config.mkdir(parents=True)
+        (config / "participants_to_include.json").write_text(json.dumps(["p1"]))
+        (config / "id_remapping.json").write_text(json.dumps({"p1": "900001"}))
+        (config / "audio_filestems_to_remove.json").write_text(json.dumps([]))
+        (config / "audio_tasks_to_include.json").write_text(json.dumps(["rainbow-passage"]))
+        audio_dir = bids / "sub-p1" / f"ses-{self.A}" / "audio"
+        audio_dir.mkdir(parents=True)
+        stem = f"sub-p1_ses-{self.A}_task-rainbow-passage"
+        (audio_dir / f"{stem}.wav").write_bytes(b"RIFF" + b"\x00" * 8192)
+        (audio_dir / f"{stem}_recording-metadata.json").write_text(
+            json.dumps({"record_id": "p1", "session_id": self.A}))
+        pd.DataFrame({"record_id": ["p1"] * 3, "session_id": [self.A, self.B, self.C],
+                      "session_index": ["1", "2", "3"], "session_status": ["Completed"] * 3}).to_csv(
+            bids / "sub-p1" / "sessions.tsv", sep="\t", index=False)
+        pheno = bids / "phenotype"
+        pheno.mkdir()
+        pd.DataFrame({"participant_id": ["p1"] * 3, "session_id": [self.A, self.B, self.C],
+                      "session_index": ["1", "2", "3"], "session_status": ["Completed"] * 3}).to_csv(
+            pheno / "session.tsv", sep="\t", index=False)
+        (pheno / "session.json").write_text(json.dumps({}))
+        pd.DataFrame({"participant_id": ["p1"], "session_id": [self.C], "score": ["7"]}).to_csv(
+            pheno / "confounders.tsv", sep="\t", index=False)
+        (pheno / "confounders.json").write_text(json.dumps({}))
+        (bids / "dataset_description.json").write_text(json.dumps({"Name": "test"}))
+        BIDSDataset(bids).deidentify(outdir=out, deidentify_config_dir=config, **kwargs)
+        return out
+
+    def _no_original_ids(self, out):
+        for f in out.rglob("*"):
+            if f.is_file() and f.suffix in (".tsv", ".json"):
+                text = f.read_text()
+                assert not any(x in text or x.lower() in text for x in (self.A, self.B, self.C)), f
+
+    def test_ordinal(self, tmp_path):
+        out = self._deidentify(tmp_path, session_id_map=tmp_path / "internal" / "map.json")
+        assert [d.name for d in (out / "sub-900001").glob("ses-*")] == ["ses-01"]
+        ses = pd.read_csv(out / "sub-900001" / "sub-900001_sessions.tsv", sep="\t", dtype=str)
+        assert list(ses.session_id) == ["01", "02"] and list(ses.session_index) == ["1", "2"]
+        session = pd.read_csv(out / "phenotype" / "session.tsv", sep="\t", dtype=str)
+        assert sorted(session.session_id) == ["01", "02"] and sorted(session.session_index) == ["1", "2"]
+        conf = pd.read_csv(out / "phenotype" / "confounders.tsv", sep="\t", dtype=str)
+        assert list(conf.session_id) == ["02"]
+        self._no_original_ids(out)
+        record = json.loads((tmp_path / "internal" / "map.json").read_text())
+        assert record["session_labels"] == "ordinal"
+        assert [(r["session_id"], r["released_session_label"]) for r in record["sessions"]] == [
+            (self.A, "01"), (self.C, "02")]
+
+    def test_index_leaves_gap(self, tmp_path):
+        out = self._deidentify(tmp_path, session_labels=SessionLabels.INDEX)
+        ses = pd.read_csv(out / "sub-900001" / "sub-900001_sessions.tsv", sep="\t", dtype=str)
+        assert list(ses.session_id) == ["01", "03"] and list(ses.session_index) == ["1", "3"]
+        conf = pd.read_csv(out / "phenotype" / "confounders.tsv", sep="\t", dtype=str)
+        assert list(conf.session_id) == ["03"]
+        self._no_original_ids(out)
+
+    def test_uuid(self, tmp_path):
+        out = self._deidentify(tmp_path, session_labels=SessionLabels.UUID)
+        assert [d.name for d in (out / "sub-900001").glob("ses-*")] == ["ses-aaaa1111"]
+        conf = pd.read_csv(out / "phenotype" / "confounders.tsv", sep="\t", dtype=str)
+        assert list(conf.session_id) == ["cccc3333"]
+
+    def test_crosswalk_between_label_schemes(self, tmp_path):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "session_label_crosswalk", Path(__file__).parents[1] / "scripts" / "session_label_crosswalk.py")
+        xw = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(xw)
+        self._deidentify(tmp_path / "a", session_labels=SessionLabels.INDEX, session_id_map=tmp_path / "index.json")
+        self._deidentify(tmp_path / "b", session_id_map=tmp_path / "ordinal.json")
+        table = xw.crosswalk(xw.load_map(tmp_path / "index.json"), xw.load_map(tmp_path / "ordinal.json"))
+        assert table.to_dict("records") == [
+            {"participant_id": "900001", "old_session_label": "01", "new_session_label": "01"},
+            {"participant_id": "900001", "old_session_label": "03", "new_session_label": "02"},
+        ]
+        v31 = xw.crosswalk(xw.uuid_labels(xw.load_map(tmp_path / "ordinal.json")), xw.load_map(tmp_path / "ordinal.json"))
+        assert list(v31.old_session_label) == ["aaaa1111", "cccc3333"]
+        assert xw.main(["--old-uuid-labels", "--new", str(tmp_path / "ordinal.json"), "-o", str(tmp_path / "x.tsv")]) == 0
+        assert not any(x in (tmp_path / "x.tsv").read_text() for x in (self.A, self.C))
+
+    def test_session_id_map_inside_output_refused(self, tmp_path):
+        with pytest.raises(ValueError, match="outside the output"):
+            self._deidentify(tmp_path, session_id_map=tmp_path / "out" / "map.json")
+
+
 class TestSidecarDispositions:
     """Audio sidecar keys follow the recording table's dispositions, as sessions.tsv follows
     the session table's."""
@@ -416,7 +564,7 @@ class TestSidecarDispositions:
             "recording_created_at": "2025-01-01",    # internal, date_shift=YES
             "task_name": "rainbow-passage",          # not in the field map
         }))
-        pd.DataFrame({"record_id": ["p1"], "session_id": ["s1"]}).to_csv(
+        pd.DataFrame({"record_id": ["p1"], "session_id": ["s1"], "session_index": ["1"]}).to_csv(
             bids / "sub-p1" / "sessions.tsv", sep="\t", index=False)
         (bids / "phenotype").mkdir()
         (bids / "dataset_description.json").write_text(json.dumps({"Name": "test"}))

@@ -16,7 +16,7 @@ from unittest.mock import patch, MagicMock
 from click.testing import CliRunner
 
 from b2aiprep.commands import create_subject_splits, deidentify_bids_dataset
-from b2aiprep.prepare.dataset import BIDSDataset
+from b2aiprep.prepare.dataset import BIDSDataset, SessionLabels
 
 class TestDeidentifyCommand:
     """Test cases for the deidentify_bids_dataset command."""
@@ -38,7 +38,7 @@ class TestDeidentifyCommand:
                 {"linkId": "session_id", "answer": [{"valueString": "s1"}]},
             ]})
         )
-        pd.DataFrame({"record_id": ["p1"], "session_id": ["s1"]}).to_csv(
+        pd.DataFrame({"record_id": ["p1"], "session_id": ["s1"], "session_index": ["1"]}).to_csv(
             bids_path / "sub-p1" / "sessions.tsv", sep="\t", index=False
         )
 
@@ -73,7 +73,7 @@ class TestDeidentifyCommand:
             assert result.exit_code == 0
             
             # Check that deidentify was called with correct parameters
-            mock_deidentify.assert_called_once_with(outdir=temp_output_dir, deidentify_config_dir=Path(setup_publish_config), skip_audio=False, skip_audio_features=False, max_workers=16, disposition_level=None, keep_shifted_dates=False)
+            mock_deidentify.assert_called_once_with(outdir=temp_output_dir, deidentify_config_dir=Path(setup_publish_config), skip_audio=False, skip_audio_features=False, max_workers=16, disposition_level=None, keep_shifted_dates=False, session_labels=SessionLabels.ORDINAL, session_id_map=None)
 
     def test_deidentify_command_help_text(self):
         """Test that the help text is updated correctly."""
@@ -186,6 +186,7 @@ def setup_bids_structure():
         session_data = {
             "record_id": ["001"],
             "session_id": ["001"],
+            "session_index": ["1"],
         }
         session_df = pd.DataFrame(session_data)
 
@@ -278,6 +279,7 @@ def setup_bids_structure_with_nan_feature():
         session_data = {
             "record_id": ["001"],
             "session_id": ["001"],
+            "session_index": ["1"],
         }
         session_df = pd.DataFrame(session_data)
 
@@ -370,6 +372,7 @@ def setup_bids_structure_after_deidentify():
         session_data = {
             "record_id": ["001"],
             "session_id": ["001"],
+            "session_index": ["1"],
         }
         session_df = pd.DataFrame(session_data)
 

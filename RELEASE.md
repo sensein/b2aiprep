@@ -165,14 +165,33 @@ b2aiprep-cli deidentify-bids-dataset <path/to/bids/folder> \
 The output will be remain in BIDS format. The primary changes are:
 
 - participant IDs are modified
-- session directories use ordinal names (`ses-01`, `ses-02`) instead of UUIDs
-- per-participant `sub-<id>_sessions.tsv` is present with session metadata
+- a session is released when it has released audio or feature files, or rows in a questionnaire
+  table; a session with nothing else (for example one abandoned after the microphone check) is not.
+  A session without released audio has a `sessions.tsv` row but no `ses-*` directory
+- sessions are renamed by `--session-labels` (see below); no original session ID is released
+- per-participant `sub-<id>_sessions.tsv` is present with session metadata, including
+  `session_index`, the session's place in the participant's released sessions by start time
 - `internal` columns are removed from phenotype tables and `sessions.tsv`; `review` columns are removed
   too unless `column_value_reviews.json` has checked their values
 - rows left with no publishable data once those columns are removed are dropped, and tables left with
   no rows are not written
 - sensitive audio clips, particularly those which may contain protected health information, are removed
 - features that can be used to identify individuals or re-create transcripts for sensitive audios (such as free-speech) are removed, but for only those files
+
+#### Session labels
+
+`redcap2bids` numbers each participant's sessions by start time (`session_index`, over every
+session). `--session-labels` chooses the released names:
+
+| value | label | a label can change when |
+|---|---|---|
+| `ordinal` (default) | `01`, `02`, … over the released sessions | an earlier session becomes, or stops being, releasable |
+| `index` | the session's `session_index`; gaps where a session is withheld | a session is added before, or removed from, the RedCap export |
+| `uuid` | first 8 characters of the session ID, lower case (16 on a clash), as in v3.1 | never |
+
+Pass `--session-id-map <path outside the output>` to record each released session's original ID and
+label. The file holds original IDs and is never released; `scripts/session_label_crosswalk.py` turns
+two releases' maps (or, for v3.1, `--old-uuid-labels`) into a publishable old-to-new label table.
 
 #### QA deidentify builds
 

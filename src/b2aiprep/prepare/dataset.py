@@ -42,7 +42,7 @@ from soundfile import LibsndfileError
 from tqdm import tqdm
 
 from b2aiprep.prepare.constants import RepeatInstrument, Instrument
-from b2aiprep.prepare.date_shift import shift_dates
+from b2aiprep.prepare.date_shift import parse_utc_timestamp, shift_dates
 from b2aiprep.prepare.update import build_activity_payload
 from b2aiprep.prepare.utils import (
     copy_package_resource,
@@ -77,6 +77,20 @@ class DispositionLevel(enum.Enum):
     RELEASE = "release"
     REVIEW = "review"
     INTERNAL = "internal"
+
+
+class SessionLabels(enum.Enum):
+    """How deidentify names released sessions (``ses-<label>``).
+
+    ORDINAL numbers the released sessions 01, 02, … in ``session_index`` order (no gaps; a
+    session's number moves if an earlier one becomes, or stops being, releasable). INDEX uses
+    ``session_index`` itself (stable; gaps where a session is withheld). UUID uses the first 8
+    characters of the session ID, lower case, 16 when two of a participant's sessions share 8
+    (the v3.1 labels).
+    """
+    ORDINAL = "ordinal"
+    INDEX = "index"
+    UUID = "uuid"
 
 
 DEFAULT_RESAMPLE_RATE = 16000
@@ -909,6 +923,48 @@ class BIDSDataset:
         return log_path
 
     @staticmethod
+    def _add_session_index(df: pd.DataFrame) -> pd.DataFrame:
+        """Add ``session_index``: each participant's sessions numbered 1, 2, … by start time.
+
+        Every Session row is numbered, whatever data the session holds, so a session keeps its
+        number across rebuilds and access tiers; deidentify derives the released labels from it.
+        Sessions without a parseable ``session_started_at`` follow the dated ones, ordered by
+        session ID. Repeated rows of one session share its number.
+        """
+        df = df.copy()
+        df["session_index"] = pd.Series(pd.NA, index=df.index, dtype="object")
+        if "redcap_repeat_instrument" not in df.columns or "session_id" not in df.columns:
+            return df
+        is_session = (df["redcap_repeat_instrument"] == RepeatInstrument.SESSION.value.text) & df["session_id"].notna()
+        if "session_started_at" in df.columns:
+            started = df.loc[is_session, "session_started_at"].map(parse_utc_timestamp)
+        else:
+            started = pd.Series(None, index=df.index[is_session], dtype="object")
+        index: t.Dict[t.Tuple[str, str], int] = {}
+        undated: t.List[str] = []
+        for record_id, rows in df.loc[is_session, ["record_id", "session_id"]].groupby("record_id", sort=False):
+            first: t.Dict[str, t.Optional[datetime.datetime]] = {}
+            for row_index, session_id in rows["session_id"].items():
+                ts = started.get(row_index)
+                ts = None if ts is None or pd.isna(ts) else ts
+                if session_id not in first or (ts is not None and (first[session_id] is None or ts < first[session_id])):
+                    first[session_id] = ts
+            ordered = sorted(first, key=lambda s: (first[s] is None, first[s] or datetime.datetime.min.replace(tzinfo=datetime.timezone.utc), s))
+            undated.extend(s for s in ordered if first[s] is None)
+            for number, session_id in enumerate(ordered, start=1):
+                index[(record_id, session_id)] = number
+        df.loc[is_session, "session_index"] = [
+            str(index[(r, s)]) for r, s in zip(df.loc[is_session, "record_id"], df.loc[is_session, "session_id"])
+        ]
+        _LOGGER.info("session_index: numbered %d session(s) of %d participant(s).",
+                     len(index), df.loc[is_session, "record_id"].nunique())
+        if undated:
+            # IDs are listed for QA; this log lives with the job output, outside the BIDS tree.
+            _LOGGER.warning("session_index: %d session(s) without a start time, numbered last: %s",
+                            len(undated), ", ".join(undated))
+        return df
+
+    @staticmethod
     def _apply_field_map_at_ingest(
         redcap_dataset: RedCapDataset,
         date_shift_anchor: t.Optional[datetime.date],
@@ -926,7 +982,9 @@ class BIDSDataset:
         date_columns = field_map.loc[
             field_map["date_shift"].astype(str).str.upper() == "YES", "column_name_source"
         ].tolist()
-        df, report = shift_dates(redcap_dataset.df, date_columns, date_shift_anchor)
+        # Ordered on the real start times, which the shift below replaces.
+        df = BIDSDataset._add_session_index(redcap_dataset.df)
+        df, report = shift_dates(df, date_columns, date_shift_anchor)
 
         # A source column is removed only when no row keeps it (shared with instrument selection).
         dropped = _dropped_source_columns()
@@ -1100,45 +1158,91 @@ class BIDSDataset:
         return allowlist
 
     @staticmethod
-    def _build_session_id_mapping(
-        data_path: Path, participant_allowlist: t.AbstractSet[str]
-    ) -> t.Dict[str, str]:
-        """Build a mapping from original session UUIDs to shortened IDs.
+    def _read_participant_sessions(participant_dir: Path) -> t.Optional[pd.DataFrame]:
+        """A participant's ``sessions.tsv`` (either naming), one row per session, or None."""
+        pid = participant_dir.name[len("sub-"):]
+        for name in ("sessions.tsv", f"sub-{pid}_sessions.tsv"):
+            path = participant_dir / name
+            if path.exists():
+                df = pd.read_csv(path, sep="\t", dtype=str)
+                if "session_id" not in df.columns:
+                    _LOGGER.warning("sessions.tsv for participant %s has no session_id column.", pid)
+                    return None
+                return df.dropna(subset=["session_id"]).drop_duplicates(subset=["session_id"])
+        return None
 
-        For each participant on the allowlist, reads their ``sessions.tsv`` and
-        assigns ordinals from ``session_index`` (if present) or falls back to
-        the legacy truncated-UUID behavior (8-char prefix, 16-char on collision).
-        Returns a single flat dict covering all participants.
+    @staticmethod
+    def _session_labels(
+        sessions: pd.DataFrame,
+        mode: SessionLabels,
+        released: t.Optional[t.AbstractSet[str]] = None,
+    ) -> t.Tuple[t.Dict[str, str], t.Dict[str, int]]:
+        """Released label and released order for each of one participant's sessions.
+
+        *sessions* is the participant's sessions.tsv; *released* the session IDs to label (all
+        when None). Returns ``({session_id: label}, {session_id: order})``, where order is the
+        number shown in the released ``session_index`` column. ORDINAL and INDEX need
+        ``session_index``, which redcap2bids writes.
         """
-        from b2aiprep.prepare.prepare import reduce_id_length
+        ids = [s for s in sessions["session_id"] if released is None or s in released]
+        if mode is SessionLabels.UUID:
+            # Collisions are judged over all the participant's sessions, so a label does not
+            # change when another session becomes releasable.
+            short = {s: reduce_id_length(s, 8).lower() for s in sessions["session_id"]}
+            clash = {v for v, n in Counter(short.values()).items() if n > 1}
+            labels = {
+                s: reduce_id_length(s, 16).lower() if short[s] in clash else short[s]
+                for s in ids
+            }
+            if "session_index" in sessions.columns:
+                index = dict(zip(sessions["session_id"], pd.to_numeric(sessions["session_index"], errors="coerce")))
+                ids = sorted(ids, key=lambda s: (pd.isna(index[s]), index[s] if pd.notna(index[s]) else 0, s))
+            else:
+                ids = sorted(ids)
+            return labels, {s: n for n, s in enumerate(ids, start=1)}
 
+        if "session_index" not in sessions.columns or sessions["session_index"].isna().any():
+            raise ValueError(
+                f"--session-labels {mode.value} needs session_index in every sessions.tsv row; "
+                "rebuild the tree with this redcap2bids, or use --session-labels uuid."
+            )
+        index = dict(zip(sessions["session_id"], pd.to_numeric(sessions["session_index"]).astype(int)))
+        ids = sorted(ids, key=lambda s: (index[s], s))
+        if mode is SessionLabels.INDEX:
+            width = max(2, len(str(max(index.values(), default=0))))
+            return {s: f"{index[s]:0{width}d}" for s in ids}, {s: index[s] for s in ids}
+        width = max(2, len(str(len(ids))))
+        return (
+            {s: f"{n:0{width}d}" for n, s in enumerate(ids, start=1)},
+            {s: n for n, s in enumerate(ids, start=1)},
+        )
+
+    @staticmethod
+    def _build_session_id_mapping(
+        data_path: Path,
+        participant_allowlist: t.AbstractSet[str],
+        mode: t.Optional[SessionLabels] = None,
+    ) -> t.Dict[str, str]:
+        """Label every session of the allowlisted participants: ``{session_id: label}``.
+
+        *mode* None keeps the historical choice: INDEX-style ordinals when sessions.tsv has
+        ``session_index``, UUID labels otherwise. Deidentify labels only released sessions, per
+        participant (``_session_labels``); this full mapping serves exclusion-list expansion.
+        """
         mapping: t.Dict[str, str] = {}
         for pid in sorted(participant_allowlist):
-            participant_dir = data_path / f"sub-{pid}"
-            sessions_path = participant_dir / "sessions.tsv"
-            if not sessions_path.exists():
-                sessions_path = participant_dir / f"sub-{pid}_sessions.tsv"
-            if not sessions_path.exists():
+            sessions = BIDSDataset._read_participant_sessions(data_path / f"sub-{pid}")
+            if sessions is None:
                 _LOGGER.warning("No sessions.tsv found for participant %s; skipping session mapping.", pid)
                 continue
-
-            df = pd.read_csv(sessions_path, sep="\t", dtype=str)
-            if "session_id" not in df.columns:
-                _LOGGER.warning("sessions.tsv for participant %s has no session_id column; skipping.", pid)
-                continue
-
-            df = df.drop_duplicates(subset=["session_id"])
-            if "session_index" in df.columns:
-                df = df.sort_values("session_index", key=lambda s: pd.to_numeric(s, errors="coerce"))
-                for ordinal, (_, row) in enumerate(df.iterrows(), start=1):
-                    mapping[row["session_id"]] = f"{ordinal:02d}"
-            else:
-                _LOGGER.info("No session_index for participant %s; using truncated UUID fallback.", pid)
-                for _, row in df.iterrows():
-                    mapping[row["session_id"]] = reduce_id_length(row["session_id"])
-
+            use = mode
+            if use is None:
+                use = SessionLabels.ORDINAL if "session_index" in sessions.columns else SessionLabels.UUID
+                if use is SessionLabels.UUID:
+                    _LOGGER.info("No session_index for participant %s; using truncated UUID fallback.", pid)
+            mapping.update(BIDSDataset._session_labels(sessions, use)[0])
         _LOGGER.info("Built session ID mapping: %d sessions across %d participants.",
-                      len(mapping), len(participant_allowlist))
+                     len(mapping), len(participant_allowlist))
         return mapping
 
     _cached_field_map_df: t.ClassVar[t.Optional[pd.DataFrame]] = None
@@ -2288,8 +2392,11 @@ class BIDSDataset:
                 if session_dir.is_dir() and not any(session_dir.iterdir()):
                     session_dir.rmdir()
 
-        # Save sessions.tsv, excluding sessions whose directories were removed
-        sessions_rows = [r for r in sessions_rows if r["session_id"] not in removed_sessions]
+        # Save sessions.tsv with every session, including those whose audio directory was removed:
+        # their questionnaire rows still reference them, and deidentify decides which to release.
+        if removed_sessions:
+            _LOGGER.debug("Participant %s: %d session(s) without audio kept in sessions.tsv.",
+                          participant_id, len(removed_sessions))
         sessions_df = pd.DataFrame(sessions_rows)
         if not os.path.exists(subject_path):
             os.mkdir(subject_path)
@@ -2787,6 +2894,81 @@ class BIDSDataset:
         _LOGGER.info(f"Loaded {len(data)} participant IDs to remove: {data}.")
         return data
     
+    # Tables that describe sessions and recordings rather than hold a participant's answers: a
+    # row in one of them does not by itself make a session worth releasing.
+    _SESSION_BOOKKEEPING_SCHEMAS = frozenset({"session", "recording", "acoustic_task"})
+
+    @staticmethod
+    def _session_id_columns(df: pd.DataFrame) -> t.List[str]:
+        return [c for c in df.columns if c == "session_id" or c.endswith("_session_id")]
+
+    @staticmethod
+    def _sessions_with_questionnaire_data(phenotype_dir: Path) -> t.Set[str]:
+        """Session IDs with at least one row in a phenotype table other than the bookkeeping ones."""
+        found: t.Set[str] = set()
+        if not phenotype_dir.exists():
+            return found
+        for tsv in sorted(phenotype_dir.rglob("*.tsv")):
+            df, schema_name, _, _ = BIDSDataset.load_phenotype_file(tsv)
+            if schema_name in BIDSDataset._SESSION_BOOKKEEPING_SCHEMAS:
+                continue
+            for col in BIDSDataset._session_id_columns(df):
+                found.update(df[col].dropna().astype(str))
+        return found
+
+    @staticmethod
+    def _keep_released_session_rows(
+        df: pd.DataFrame,
+        schema_name: str,
+        released_sessions: t.Mapping[str, str],
+        released_participants: t.AbstractSet[str],
+    ) -> pd.DataFrame:
+        """Drop released participants' rows that name a session which is not released.
+
+        In the bookkeeping tables these are the sessions with nothing to publish. Anywhere else a
+        row would name a session missing from its participant's sessions.tsv; it is dropped rather
+        than published under its original ID, and logged.
+        """
+        cols = BIDSDataset._session_id_columns(df)
+        if not cols or "participant_id" not in df.columns:
+            return df
+        unreleased = pd.Series(False, index=df.index)
+        for col in cols:
+            unreleased |= df[col].notna() & ~df[col].astype(str).isin(released_sessions)
+        unreleased &= df["participant_id"].astype(str).isin(released_participants)
+        if unreleased.any():
+            ids = sorted({str(v) for col in cols for v in df.loc[unreleased, col].dropna()} - set(released_sessions))
+            level = logging.INFO if schema_name in BIDSDataset._SESSION_BOOKKEEPING_SCHEMAS else logging.WARNING
+            # IDs are listed for QA; this log lives with the job output, outside the release.
+            _LOGGER.log(level, "phenotype/%s: dropped %d row(s) of %d unreleased session(s): %s",
+                        schema_name, int(unreleased.sum()), len(ids), ", ".join(ids))
+        return df.loc[~unreleased]
+
+    @staticmethod
+    def _write_session_id_map(
+        path: Path,
+        results: t.Iterable[t.Optional[t.Tuple[str, t.Dict[str, str], t.Dict[str, int]]]],
+        participant_ids_to_remap: t.Mapping[str, str],
+        session_labels: SessionLabels,
+    ) -> None:
+        """Internal record of the released sessions (original IDs; never part of a release)."""
+        rows = [
+            {
+                "participant_id": pid,
+                "released_participant_id": participant_ids_to_remap.get(pid, pid),
+                "session_id": session_id,
+                "released_session_label": label,
+                "released_session_index": order[session_id],
+            }
+            for r in results if r is not None
+            for pid, labels, order in [r]
+            for session_id, label in sorted(labels.items(), key=lambda kv: order[kv[0]])
+        ]
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with open(path, "w") as fp:
+            json.dump({"session_labels": session_labels.value, "sessions": rows}, fp, indent=2)
+        _LOGGER.info("Session ID map (%d sessions) written to %s", len(rows), path)
+
     @staticmethod
     def _check_phenotype_tables_in_field_map(phenotype_dir: Path) -> None:
         """Stop before writing if any phenotype table (or sessions.tsv's table) is unknown.
@@ -2940,6 +3122,8 @@ class BIDSDataset:
         max_workers: int = 16,
         disposition_level: t.Optional[DispositionLevel] = None,
         keep_shifted_dates: bool = False,
+        session_labels: SessionLabels = SessionLabels.ORDINAL,
+        session_id_map: t.Optional[t.Union[str, Path]] = None,
     ) -> 'BIDSDataset':
         """Create a deidentified version of the BIDS dataset.
 
@@ -2947,8 +3131,17 @@ class BIDSDataset:
         processed as an independent unit (audio, features, sidecars).  Phenotype
         tables and quality metrics are processed globally afterward, filtered to
         only the participants that actually produced output.
+
+        A session is released when it has released audio or feature files, or rows in a
+        questionnaire table; *session_labels* chooses how released sessions are named.
+        *session_id_map*, a path outside *outdir*, receives the internal record of each released
+        session's original ID and label, from which release-to-release label crosswalks are built.
         """
         outdir = Path(outdir)
+        if session_id_map is not None:
+            session_id_map = Path(session_id_map).resolve()
+            if session_id_map.is_relative_to(outdir.resolve()):
+                raise ValueError(f"session_id_map must be outside the output: {session_id_map}")
         outdir.mkdir(parents=True, exist_ok=False)
 
         # --- config loading ---
@@ -2965,10 +3158,12 @@ class BIDSDataset:
             deidentify_config_dir, input_tree_participants
         )
 
-        # Session mapping from allowlist participants
-        participant_session_id_to_remap = BIDSDataset._build_session_id_mapping(
-            self.data_path, participant_allowlist
+        # Labels of released sessions are settled per participant, once its output is known.
+        # Exclusion lists written in deidentified naming use the v3.1 (UUID) labels.
+        exclusion_session_map = BIDSDataset._build_session_id_mapping(
+            self.data_path, participant_allowlist, SessionLabels.UUID
         )
+        sessions_with_data = BIDSDataset._sessions_with_questionnaire_data(self.data_path / "phenotype")
 
         configured_filestems = list(audio_filestems_to_remove)
         # Recording IDs are resolved to this tree's filestems, so audio, sidecars, features and
@@ -2980,7 +3175,7 @@ class BIDSDataset:
         audio_filestems_to_remove = BIDSDataset._expand_filestems_for_deidentification(
             audio_filestems_to_remove,
             participant_ids_to_remap=participant_ids_to_remap,
-            participant_session_id_to_remap=participant_session_id_to_remap,
+            participant_session_id_to_remap=exclusion_session_map,
         )
 
         # --- per-participant processing ---
@@ -3001,22 +3196,23 @@ class BIDSDataset:
             self.data_path, configured_filestems, recording_ids_to_remove, input_tree_participants
         )
 
-        def _process_one(pdir: Path) -> t.Optional[str]:
+        def _process_one(pdir: Path) -> t.Optional[t.Tuple[str, t.Dict[str, str], t.Dict[str, int]]]:
             pid = pdir.name[4:]
             new_pid = participant_ids_to_remap.get(pid, pid)
             try:
-                had_output = BIDSDataset._deidentify_participant_files(
+                labels, order = BIDSDataset._deidentify_participant_files(
                     pdir, outdir, participant_ids_to_remap,
-                    participant_session_id_to_remap,
                     audio_filestems_to_remove, audio_tasks_to_include,
                     skip_audio, skip_audio_features,
                     _normalized_include_tasks=normalized_include_tasks,
                     _canonical_exclusions=canonical_exclusions,
                     disposition_level=disposition_level or DispositionLevel.RELEASE,
                     keep_shifted_dates=keep_shifted_dates,
+                    session_labels=session_labels,
+                    sessions_with_data=sessions_with_data,
                 )
-                if had_output:
-                    return pid
+                if labels is not None:
+                    return pid, labels, order
                 _LOGGER.info("Participant %s excluded: no audio after task filtering.", pid)
                 return None
             except Exception:
@@ -3035,7 +3231,19 @@ class BIDSDataset:
 
         # With skip_audio the per-participant pass still walks every sidecar, so its results say
         # exactly who has output; no override is needed.
-        participants_with_output = {pid for pid in results if pid is not None}
+        participants_with_output = {r[0] for r in results if r is not None}
+        participant_session_id_to_remap: t.Dict[str, str] = {}
+        released_session_order: t.Dict[str, int] = {}
+        for r in results:
+            if r is not None:
+                participant_session_id_to_remap.update(r[1])
+                released_session_order.update(r[2])
+        _LOGGER.info("Released %d session(s), labelled by %s.",
+                     len(participant_session_id_to_remap), session_labels.value)
+        if session_id_map is not None:
+            BIDSDataset._write_session_id_map(
+                session_id_map, results, participant_ids_to_remap, session_labels,
+            )
         _LOGGER.info(
             "Per-participant processing complete: %d of %d produced output.",
             len(participants_with_output), len(participant_dirs),
@@ -3089,6 +3297,12 @@ class BIDSDataset:
                     for col in review_dropped:
                         phenotype_dict.pop(col, None)
 
+                # A released row names a released session, so no original session ID survives.
+                df_pheno = BIDSDataset._keep_released_session_rows(
+                    df_pheno, schema_name, participant_session_id_to_remap, participants_with_output,
+                )
+                if schema_name == BIDSDataset._SESSIONS_SCHEMA and "session_index" in df_pheno.columns:
+                    df_pheno["session_index"] = df_pheno["session_id"].map(released_session_order).astype("Int64")
                 df_pheno, phenotype_dict = BIDSDataset._deidentify_phenotype(
                     df_pheno, phenotype_dict,
                     participant_ids_to_exclude,
@@ -3395,7 +3609,6 @@ class BIDSDataset:
         participant_dir: Path,
         outdir: Path,
         participant_ids_to_remap: t.Dict[str, str],
-        participant_session_id_to_remap: t.Dict[str, str],
         audio_filestems_to_remove: t.List[str],
         audio_tasks_to_include: t.List[str],
         skip_audio: bool = False,
@@ -3404,11 +3617,18 @@ class BIDSDataset:
         _canonical_exclusions: t.Optional[t.Set[str]] = None,
         disposition_level: DispositionLevel = DispositionLevel.RELEASE,
         keep_shifted_dates: bool = False,
-    ) -> bool:
+        session_labels: SessionLabels = SessionLabels.ORDINAL,
+        sessions_with_data: t.AbstractSet[str] = frozenset(),
+    ) -> t.Tuple[t.Optional[t.Dict[str, str]], t.Optional[t.Dict[str, int]]]:
         """Process one participant directory for deidentification.
 
-        Returns True if at least one audio file was written, False otherwise.
-        When False, any partially-created output directory is cleaned up.
+        The participant's recordings and feature files are filtered first; its released sessions
+        are those with a file to publish or a row in *sessions_with_data*, and are labelled by
+        *session_labels* before anything is written.
+
+        Returns ``({session_id: label}, {session_id: released order})`` for the released
+        sessions, or ``(None, None)`` when no audio or feature file survives filtering (any
+        partially-created output directory is removed).
         """
         pid = participant_dir.name[4:]
         new_pid = participant_ids_to_remap.get(pid, pid)
@@ -3425,8 +3645,15 @@ class BIDSDataset:
                 for s in audio_filestems_to_remove
             }
 
-        n_audio_written = 0
-        n_features_written = 0
+        def _recording_stem(stem: str) -> str:
+            canonical = sanitize_task_entity_in_bids_stem(stem)
+            parts = canonical.split("_")
+            try:
+                task_idx = next(i for i, p in enumerate(parts) if p.startswith("task-"))
+            except StopIteration:
+                return canonical
+            return "_".join(parts[:task_idx + 1])
+
         n_skipped = 0
         # Sidecar keys follow the recording table's dispositions, as sessions.tsv follows the
         # session table's; keys not in the field map (task_name, stimulus_*) are kept.
@@ -3435,7 +3662,7 @@ class BIDSDataset:
             disposition_level, keep_shifted_dates,
         )
 
-        # --- Audio files and their sidecars ---
+        # --- Plan: which audio files (with sidecars) and feature files are published ---
         # With skip_audio the recordings are walked through their sidecars instead, so a
         # metadata-only tree (redcap2bids --skip-audio-copy) still gets deidentified sidecars
         # and sessions.tsv, with no audio copied.
@@ -3447,6 +3674,7 @@ class BIDSDataset:
             ]
         else:
             recordings = sorted(participant_dir.rglob("*.wav"))
+        audio_jobs: t.List[t.Tuple[Path, Path, str, str]] = []
         for wav_path in recordings:
             # Audio-check safety net
             task_match = re.search(r"task-(.+?)(_|$)", wav_path.stem)
@@ -3455,14 +3683,7 @@ class BIDSDataset:
                 continue
 
             # Filestem exclusion
-            canonical_stem = sanitize_task_entity_in_bids_stem(wav_path.stem)
-            parts = canonical_stem.split("_")
-            try:
-                task_idx = next(i for i, p in enumerate(parts) if p.startswith("task-"))
-                recording_stem = "_".join(parts[:task_idx + 1])
-            except StopIteration:
-                recording_stem = canonical_stem
-            if recording_stem in canonical_exclusions:
+            if _recording_stem(wav_path.stem) in canonical_exclusions:
                 n_skipped += 1
                 _LOGGER.debug("Skipping excluded filestem: %s", wav_path.name)
                 continue
@@ -3477,13 +3698,6 @@ class BIDSDataset:
                     n_skipped += 1
                     continue
 
-            # Remap IDs in path
-            session_id_raw = BIDSDataset._extract_session_id_from_path(wav_path)
-            new_session_id = remap_id(session_id_raw, participant_session_id_to_remap, id_type="session")
-
-            sanitized_stem = sanitize_task_entity_in_bids_stem(wav_path.stem)
-            stem_ending = "-".join(sanitized_stem.split("_")[2:])
-
             # Sidecar must exist before we copy the wav (match old behavior)
             json_path = wav_path.parent / f"{wav_path.stem}_recording-metadata.json"
             if not json_path.exists():
@@ -3491,24 +3705,12 @@ class BIDSDataset:
                 n_skipped += 1
                 continue
 
-            out_wav = outdir / f"sub-{new_pid}" / f"ses-{new_session_id}" / "audio" / (
-                f"sub-{new_pid}_ses-{new_session_id}_{stem_ending}.wav"
-            )
-            metadata = json.loads(json_path.read_text())
-            out_wav.parent.mkdir(parents=True, exist_ok=True)
-            update_metadata_record_and_session_id(
-                metadata, participant_ids_to_remap, participant_session_id_to_remap
-            )
-            for key in sidecar_keys_to_drop.intersection(metadata):
-                del metadata[key]
-            out_json = out_wav.with_suffix(".json")
-            with open(out_json, "w") as f:
-                json.dump(metadata, f, indent=2)
-            if not skip_audio:
-                shutil.copyfile(wav_path, out_wav)
-            n_audio_written += 1
+            stem_ending = "-".join(sanitize_task_entity_in_bids_stem(wav_path.stem).split("_")[2:])
+            audio_jobs.append((
+                wav_path, json_path, BIDSDataset._extract_session_id_from_path(wav_path), stem_ending,
+            ))
 
-        # --- Feature files ---
+        feature_jobs: t.List[t.Tuple[Path, str, str, bool]] = []
         if not skip_audio_features:
             for feat_path in sorted(participant_dir.rglob("*.pt")):
                 # Audio-check safety net
@@ -3519,103 +3721,102 @@ class BIDSDataset:
 
                 # Filestem exclusion (strip _features suffix first)
                 base_stem = feat_path.stem.replace("_features", "")
-                canonical_stem = sanitize_task_entity_in_bids_stem(base_stem)
-                parts = canonical_stem.split("_")
-                try:
-                    task_idx = next(i for i, p in enumerate(parts) if p.startswith("task-"))
-                    recording_stem = "_".join(parts[:task_idx + 1])
-                except StopIteration:
-                    recording_stem = canonical_stem
-                if recording_stem in canonical_exclusions:
+                if _recording_stem(base_stem) in canonical_exclusions:
                     n_skipped += 1
                     continue
 
-                # Remap IDs in path
-                session_id_raw = BIDSDataset._extract_session_id_from_path(feat_path)
-                new_session_id = remap_id(session_id_raw, participant_session_id_to_remap, id_type="session")
-
-                sanitized_base = sanitize_task_entity_in_bids_stem(base_stem)
-                stem_ending = "-".join(sanitized_base.split("_")[2:]) + "_features"
-
-                out_feat = outdir / f"sub-{new_pid}" / f"ses-{new_session_id}" / "audio" / (
-                    f"sub-{new_pid}_ses-{new_session_id}_{stem_ending}{feat_path.suffix}"
+                stem_ending = "-".join(sanitize_task_entity_in_bids_stem(base_stem).split("_")[2:]) + "_features"
+                task_is_included = bool(
+                    task_match and normalize_task_label(task_match.group(1)) in normalized_include_tasks
                 )
-                out_feat.parent.mkdir(parents=True, exist_ok=True)
+                feature_jobs.append((
+                    feat_path, BIDSDataset._extract_session_id_from_path(feat_path), stem_ending, task_is_included,
+                ))
 
-                task_match_feat = re.search(r"task-(.+?)(_|$)", feat_path.stem)
-                task_is_included = (
-                    task_match_feat
-                    and normalize_task_label(task_match_feat.group(1)) in normalized_include_tasks
-                )
-                if task_is_included:
-                    shutil.copyfile(feat_path, out_feat)
-                else:
-                    features = torch.load(feat_path, weights_only=False, map_location=torch.device("cpu"))
-                    _remove_sensitive_features_from_feature_payload(features)
-                    torch.save(features, out_feat)
-                n_features_written += 1
-
-        # --- Sessions metadata carry-forward ---
-        out_participant = outdir / f"sub-{new_pid}"
-        if out_participant.exists():
-            sessions_path = participant_dir / "sessions.tsv"
-            if not sessions_path.exists():
-                sessions_path = participant_dir / f"sub-{pid}_sessions.tsv"
-            if sessions_path.exists():
-                df_ses = pd.read_csv(sessions_path, sep="\t", dtype=str)
-                # Drop columns by disposition
-                df_ses, dropped_cols = BIDSDataset._drop_columns_by_disposition(
-                    df_ses, level=disposition_level, keep_date_shifted=keep_shifted_dates,
-                    schema_name=BIDSDataset._SESSIONS_SCHEMA,
-                )
-                if dropped_cols:
-                    _LOGGER.debug("Participant %s sessions.tsv: dropped %d columns (%s).",
-                                  pid, len(dropped_cols), ", ".join(dropped_cols))
-                # Remap record_id → participant_id
-                if "record_id" in df_ses.columns:
-                    df_ses = df_ses.rename(columns={"record_id": "participant_id"})
-                if "participant_id" in df_ses.columns:
-                    remap_partial = partial(remap_id, id_mapping=participant_ids_to_remap)
-                    df_ses["participant_id"] = BIDSDataset._map_series(df_ses["participant_id"], remap_partial)
-                # Remap session_id
-                if "session_id" in df_ses.columns:
-                    remap_ses = partial(remap_id, id_mapping=participant_session_id_to_remap, id_type="session")
-                    df_ses["session_id"] = BIDSDataset._map_series(df_ses["session_id"], remap_ses)
-                    # Keep only sessions that were written: every recording of the others was
-                    # filtered out (task list, filestem or recording-ID exclusions).
-                    written = {d.name[len("ses-"):] for d in out_participant.glob("ses-*") if d.is_dir()}
-                    kept = df_ses["session_id"].astype(str).isin(written)
-                    if not kept.all():
-                        _LOGGER.info(
-                            "Participant %s sessions.tsv: dropped %d session(s) with no output: %s",
-                            pid, int((~kept).sum()), ", ".join(df_ses.loc[~kept, "session_id"].astype(str)),
-                        )
-                    df_ses = df_ses.loc[kept]
-                # Write with BIDS-compliant naming
-                out_sessions = out_participant / f"sub-{new_pid}_sessions.tsv"
-                df_ses.to_csv(out_sessions, sep="\t", index=False)
-            else:
-                _LOGGER.warning("No sessions.tsv found for participant %s; skipping carry-forward.", pid)
-
-        # --- Cleanup if no output ---
-        out_participant = outdir / f"sub-{new_pid}"
         # Feature files count: a participant whose recordings are all from tasks whose audio is
         # not released still has (stripped) features to publish.
-        has_output = n_audio_written > 0 or n_features_written > 0 or (skip_audio and out_participant.exists())
-        if not has_output:
+        out_participant = outdir / f"sub-{new_pid}"
+        if not audio_jobs and not feature_jobs:
             if out_participant.exists():
                 shutil.rmtree(out_participant)
             _LOGGER.info(
-                "Participant %s: no audio or feature files after filtering (%d skipped). Removed output dir.",
-                pid, n_skipped,
+                "Participant %s: no audio or feature files after filtering (%d skipped).", pid, n_skipped,
             )
-            return False
+            return None, None
+
+        # --- Label the released sessions ---
+        sessions = BIDSDataset._read_participant_sessions(participant_dir)
+        with_files = {job[2] for job in audio_jobs} | {job[1] for job in feature_jobs}
+        if sessions is None:
+            _LOGGER.warning("No sessions.tsv found for participant %s; labelling sessions from files.", pid)
+            sessions = pd.DataFrame({"session_id": sorted(with_files)})
+        unlisted = with_files - set(sessions["session_id"])
+        if unlisted:
+            raise ValueError(
+                f"Participant {pid}: session(s) with files but no sessions.tsv row: {sorted(unlisted)}"
+            )
+        released = with_files | (set(sessions["session_id"]) & set(sessions_with_data))
+        labels, order = BIDSDataset._session_labels(sessions, session_labels, released)
+
+        # --- Write audio, sidecars and features ---
+        for wav_path, json_path, session_id_raw, stem_ending in audio_jobs:
+            label = labels[session_id_raw]
+            out_wav = outdir / f"sub-{new_pid}" / f"ses-{label}" / "audio" / (
+                f"sub-{new_pid}_ses-{label}_{stem_ending}.wav"
+            )
+            metadata = json.loads(json_path.read_text())
+            out_wav.parent.mkdir(parents=True, exist_ok=True)
+            update_metadata_record_and_session_id(metadata, participant_ids_to_remap, labels)
+            for key in sidecar_keys_to_drop.intersection(metadata):
+                del metadata[key]
+            with open(out_wav.with_suffix(".json"), "w") as f:
+                json.dump(metadata, f, indent=2)
+            if not skip_audio:
+                shutil.copyfile(wav_path, out_wav)
+
+        for feat_path, session_id_raw, stem_ending, task_is_included in feature_jobs:
+            label = labels[session_id_raw]
+            out_feat = outdir / f"sub-{new_pid}" / f"ses-{label}" / "audio" / (
+                f"sub-{new_pid}_ses-{label}_{stem_ending}{feat_path.suffix}"
+            )
+            out_feat.parent.mkdir(parents=True, exist_ok=True)
+            if task_is_included:
+                shutil.copyfile(feat_path, out_feat)
+            else:
+                features = torch.load(feat_path, weights_only=False, map_location=torch.device("cpu"))
+                _remove_sensitive_features_from_feature_payload(features)
+                torch.save(features, out_feat)
+
+        # --- Sessions metadata carry-forward: the released sessions, in released order ---
+        out_participant.mkdir(parents=True, exist_ok=True)
+        df_ses = sessions.loc[sessions["session_id"].isin(released)].copy()
+        df_ses["session_index"] = df_ses["session_id"].map(order).astype("Int64")
+        df_ses = df_ses.sort_values("session_index")
+        withheld = sorted(set(sessions["session_id"]) - released)
+        if withheld:
+            _LOGGER.info("Participant %s: %d session(s) with nothing to release: %s",
+                         pid, len(withheld), ", ".join(withheld))
+        df_ses, dropped_cols = BIDSDataset._drop_columns_by_disposition(
+            df_ses, level=disposition_level, keep_date_shifted=keep_shifted_dates,
+            schema_name=BIDSDataset._SESSIONS_SCHEMA,
+        )
+        if dropped_cols:
+            _LOGGER.debug("Participant %s sessions.tsv: dropped %d columns (%s).",
+                          pid, len(dropped_cols), ", ".join(dropped_cols))
+        if "record_id" in df_ses.columns:
+            df_ses = df_ses.rename(columns={"record_id": "participant_id"})
+        if "participant_id" in df_ses.columns:
+            remap_partial = partial(remap_id, id_mapping=participant_ids_to_remap)
+            df_ses["participant_id"] = BIDSDataset._map_series(df_ses["participant_id"], remap_partial)
+        df_ses["session_id"] = df_ses["session_id"].map(labels)
+        # Write with BIDS-compliant naming
+        df_ses.to_csv(out_participant / f"sub-{new_pid}_sessions.tsv", sep="\t", index=False)
 
         _LOGGER.debug(
-            "Participant %s: %d audio, %d features, %d skipped.",
-            pid, n_audio_written, n_features_written, n_skipped,
+            "Participant %s: %d audio, %d features, %d released session(s), %d skipped.",
+            pid, len(audio_jobs), len(feature_jobs), len(labels), n_skipped,
         )
-        return True
+        return labels, order
 
     @staticmethod
     def _deidentify_quality_metrics(
@@ -3682,8 +3883,12 @@ class BIDSDataset:
             remap_partial = partial(remap_id, id_mapping=participant_ids_to_remap)
             df["participant_id"] = BIDSDataset._map_series(df["participant_id"], remap_partial)
 
-        # Remap session IDs
+        # Remap session IDs; a row of a session that is not released would keep its original ID.
         if participant_session_id_to_remap and "session_id" in df.columns:
+            unreleased = df["session_id"].notna() & ~df["session_id"].isin(participant_session_id_to_remap)
+            if unreleased.any():
+                _LOGGER.info("Removing %d quality metric rows of unreleased sessions.", int(unreleased.sum()))
+                df = df.loc[~unreleased]
             remap_partial = partial(remap_id, id_mapping=participant_session_id_to_remap, id_type="session")
             df["session_id"] = BIDSDataset._map_series(df["session_id"], remap_partial)
 

@@ -22,7 +22,7 @@ from tqdm import tqdm
 from b2aiprep.prepare.bids import get_paths, validate_bids_folder_audios
 from b2aiprep.prepare.constants import RepeatInstrument
 from b2aiprep.prepare.redcap import RedCapDataset
-from b2aiprep.prepare.dataset import BIDSDataset, DispositionLevel, _SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE
+from b2aiprep.prepare.dataset import BIDSDataset, DispositionLevel, SessionLabels, _SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE
 from b2aiprep.prepare.bundle_data import (
     feature_extraction_generator,
     spectrogram_generator,
@@ -888,9 +888,27 @@ def validate_bundled_dataset(dataset_path, config_dir):
     default=False,
     help="QA builds only: keep date_shift=YES columns even when internal columns are removed.",
 )
+@click.option(
+    "--session-labels",
+    type=click.Choice([m.value for m in SessionLabels]),
+    default=SessionLabels.ORDINAL.value,
+    show_default=True,
+    help="How released sessions are named. ordinal: 01, 02, ... over the released sessions in "
+    "start order. index: the session's number among all its participant's sessions (gaps where "
+    "one is withheld). uuid: first 8 characters of the session ID, as in v3.1.",
+)
+@click.option(
+    "--session-id-map",
+    type=click.Path(dir_okay=False),
+    default=None,
+    help="Write the internal record of each released session's original ID and label here "
+    "(outside OUTDIR; it holds original IDs and is never released). Used to build label "
+    "crosswalks between releases.",
+)
 def deidentify_bids_dataset(
     bids_path, outdir, deidentify_config_dir, skip_audio, skip_audio_features, max_workers: int = 16,
-    disposition_level=None, keep_shifted_dates=False,
+    disposition_level=None, keep_shifted_dates=False, session_labels=SessionLabels.ORDINAL.value,
+    session_id_map=None,
 ):
     """Creates a deidentified version of a given BIDS dataset.
 
@@ -920,6 +938,8 @@ def deidentify_bids_dataset(
         max_workers=max_workers,
         disposition_level=DispositionLevel(disposition_level) if disposition_level else None,
         keep_shifted_dates=keep_shifted_dates,
+        session_labels=SessionLabels(session_labels),
+        session_id_map=session_id_map,
     )
     
     _LOGGER.info("Deidentified dataset created successfully.")

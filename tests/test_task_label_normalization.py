@@ -532,3 +532,31 @@ def test_acoustic_task_tsv_orphan_rows_filtered(tmp_path):
     assert list(result["acoustic_task_id"]) == ["t1"]
     assert len(result) == 1
 
+
+
+def test_sessions_tsv_keeps_sessions_without_audio(tmp_path):
+    """A session with no audio gets no audio directory but stays in sessions.tsv, so its
+    questionnaire rows still name a listed session."""
+    wav = tmp_path / "11111111-2222-3333-4444-555555555555.wav"
+    wav.write_bytes(b"RIFF" + b"\x00" * 8192)  # must exceed _MIN_AUDIO_BYTES to pass pre-scan
+    task = _row("acoustic_tasks", acoustic_task_id="t1", acoustic_task_name="Rainbow Passage",
+                acoustic_task_session_id="S1",
+                recordings=[_row("recordings", recording_id=wav.stem, recording_name="Rainbow Passage",
+                                 recording_acoustic_task_id="t1", recording_session_id="S1")])
+    participant = {
+        "record_id": "p1",
+        "sessions": [
+            {**_session(task), "session_id": "S1", "session_index": "1"},
+            {**_session(), "session_id": "S2", "session_index": "2"},
+        ],
+    }
+    out = tmp_path / "bids"
+    out.mkdir()
+    BIDSDataset._output_participant_data_to_metadata_file(
+        participant, out, audio_files_by_recording={wav.stem: wav}, max_audio_workers=1,
+        sanitize_audio_format=False, audio_descriptor_dict={},
+    )
+    ses = pd.read_csv(out / "sub-p1" / "sessions.tsv", sep="\t", dtype=str)
+    assert list(ses.session_id) == ["S1", "S2"] and list(ses.session_index) == ["1", "2"]
+    assert (out / "sub-p1" / "ses-S1" / "audio").is_dir()
+    assert not (out / "sub-p1" / "ses-S2").exists()

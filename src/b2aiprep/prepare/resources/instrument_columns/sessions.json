@@ -1,5 +1,6 @@
 [
     "session_id",
+    "session_index",
     "session_status",
     "session_is_control_participant",
     "session_duration",

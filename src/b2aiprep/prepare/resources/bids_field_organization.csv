@@ -1807,6 +1807,7 @@ session_schema,session,session_completed_at,session_completed_at,task,Session Co
 session_schema,session,session_completed_by,session_completed_by,task,"Who helped you answer the questions today? For example, did someone help you remember your medication list or how tired you are? This isn't the person who helps you understand the question, but the one who helps you provide the answers",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 session_schema,session,session_duration,session_duration,task,Session Duration (seconds),NO,release,VARIABLE,redcap,pre-v4,NO,NO
 session_schema,session,session_id,session_id,task,Session ID,NO,release,VARIABLE,redcap,pre-v4,NO,NO
+session_schema,session,session_index,session_index,task,"Order of the session among the participant's sessions by start time (1 = first). In a released dataset, the order of the session among the released sessions.",NO,release,VARIABLE,pipeline,v4,NO,NO
 session_schema,session,session_is_control_participant,session_is_control_participant,task,Is Control Participant?,YES,drop,VARIABLE,redcap,pre-v4,NO,NO
 session_schema,session,session_language,session_language,task,Session - Language,YES,drop,VARIABLE,redcap,v4,NO,NO
 session_schema,,session_record_id,session_participant_id,,Record ID,YES,internal,VARIABLE,redcap,pre-v4,NO,NO
