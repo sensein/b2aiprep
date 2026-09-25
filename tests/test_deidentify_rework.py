@@ -546,6 +546,40 @@ class TestReleasedSessions:
             self._deidentify(tmp_path, session_id_map=tmp_path / "out" / "map.json")
 
 
+class TestFormBookkeepingIsNotData:
+    """A questionnaire row holding only its form's session/via/origin/duration has no answers."""
+
+    def test_form_metadata_columns(self):
+        cols = ["participant_id", "demographics_session_id", "demographics_via", "demographics_origin",
+                "demographics_duration", "demographics_started_at", "marital_status", "employ_status"]
+        assert BIDSDataset._form_metadata_columns(cols) == {
+            "demographics_session_id", "demographics_via", "demographics_origin",
+            "demographics_duration", "demographics_started_at"}
+
+    def test_metadata_only_row_dropped(self):
+        df = pd.DataFrame({
+            "participant_id": ["p1", "p2"],
+            "confounders_session_id": ["s1", "s2"],
+            "confounders_via": ["Participant", "Participant"],
+            "confounders_duration": ["30", "12"],
+            "acid_reflux": ["Yes", None],
+        })
+        out = BIDSDataset._drop_rows_emptied_by_deidentify(df, "confounders")
+        assert list(out.participant_id) == ["p1"]
+
+    def test_metadata_only_row_releases_no_session(self, tmp_path):
+        pheno = tmp_path / "phenotype"
+        pheno.mkdir()
+        pd.DataFrame({
+            "participant_id": ["p1", "p1"],
+            "confounders_session_id": ["S1", "S2"],
+            "confounders_via": ["Participant", "Participant"],
+            "acid_reflux": ["Yes", None],
+        }).to_csv(pheno / "confounders.tsv", sep="\t", index=False)
+        (pheno / "confounders.json").write_text(json.dumps({}))
+        assert BIDSDataset._sessions_with_questionnaire_data(pheno) == {"S1"}
+
+
 class TestParticipantFailureStopsRun:
 
     def test_one_failing_participant_raises(self, tmp_path):

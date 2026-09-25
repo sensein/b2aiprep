@@ -1527,6 +1527,29 @@ class BIDSDataset:
 
     _FORM_COMPLETE_VALUES = frozenset({"Complete", "2"})
 
+    # A questionnaire's own bookkeeping fields, named <form prefix>_<suffix>.
+    _FORM_METADATA_SUFFIXES = (
+        "session_id", "via", "origin", "duration", "started_at", "completed_at",
+        "language", "timestamp", "complete",
+    )
+
+    @staticmethod
+    def _form_metadata_columns(columns: t.Iterable[str]) -> t.Set[str]:
+        """A table's form bookkeeping columns (which session, how, when, how long).
+
+        The form prefix is what precedes ``_session_id``/``_started_at``/``_completed_at``; only
+        ``<prefix>_<suffix>`` columns count, so answers such as ``marital_status`` or
+        ``peds_primary_language`` are not mistaken for bookkeeping.
+        """
+        cols = set(columns)
+        prefixes = {
+            c[: -len(anchor) - 1]
+            for c in cols
+            for anchor in ("session_id", "started_at", "completed_at")
+            if c.endswith("_" + anchor) and len(c) > len(anchor) + 1
+        }
+        return {f"{p}_{s}" for p in prefixes for s in BIDSDataset._FORM_METADATA_SUFFIXES} & cols
+
     @staticmethod
     def _drop_rows_without_substantive_data(
         df: pd.DataFrame,
@@ -1563,6 +1586,8 @@ class BIDSDataset:
         research value.
         """
         non_substantive = set(csv_only_columns) | set(calculated_columns)
+        if schema_name not in BIDSDataset._SESSION_BOOKKEEPING_SCHEMAS:
+            non_substantive |= BIDSDataset._form_metadata_columns(df.columns)
         substantive = [c for c in df.columns if c != id_col and c not in non_substantive]
         if not substantive:
             _LOGGER.warning(
@@ -2923,8 +2948,17 @@ class BIDSDataset:
         return [c for c in df.columns if c == "session_id" or c.endswith("_session_id")]
 
     @staticmethod
-    def _sessions_with_questionnaire_data(phenotype_dir: Path) -> t.Set[str]:
-        """Session IDs with at least one row in a phenotype table other than the bookkeeping ones."""
+    def _sessions_with_questionnaire_data(
+        phenotype_dir: Path,
+        level: DispositionLevel = DispositionLevel.RELEASE,
+        keep_shifted_dates: bool = False,
+    ) -> t.Set[str]:
+        """Session IDs with a row a questionnaire table will publish at *level*.
+
+        Each table other than the bookkeeping ones is reduced as deidentify reduces it (columns
+        above *level* removed, then rows left with no answers dropped) before its session IDs
+        are read, so a row holding only internal data or form bookkeeping releases no session.
+        """
         found: t.Set[str] = set()
         if not phenotype_dir.exists():
             return found
@@ -2932,8 +2966,16 @@ class BIDSDataset:
             df, schema_name, _, _ = BIDSDataset.load_phenotype_file(tsv)
             if schema_name in BIDSDataset._SESSION_BOOKKEEPING_SCHEMAS:
                 continue
-            for col in BIDSDataset._session_id_columns(df):
-                found.update(df[col].dropna().astype(str))
+            cols = BIDSDataset._session_id_columns(df)
+            if not cols:
+                continue
+            ids = df[cols]
+            reduced, _ = BIDSDataset._drop_columns_by_disposition(
+                df, level=level, schema_name=schema_name, keep_date_shifted=keep_shifted_dates,
+            )
+            reduced = BIDSDataset._drop_rows_emptied_by_deidentify(reduced, schema_name)
+            for col in cols:
+                found.update(ids.loc[reduced.index, col].dropna().astype(str))
         return found
 
     @staticmethod
@@ -3183,7 +3225,18 @@ class BIDSDataset:
         exclusion_session_map = BIDSDataset._build_session_id_mapping(
             self.data_path, participant_allowlist, SessionLabels.UUID
         )
-        sessions_with_data = BIDSDataset._sessions_with_questionnaire_data(self.data_path / "phenotype")
+        # Default: keep review columns only when a verdict manifest checked them. An explicit
+        # level is for QA builds (e.g. INTERNAL keeps everything, REVIEW passes unreviewed
+        # columns through unchecked) and must never be used for a release.
+        column_value_verdicts = BIDSDataset._load_column_value_reviews(deidentify_config_dir)
+        has_review_verdicts = bool(column_value_verdicts)
+        phenotype_level = disposition_level or (
+            DispositionLevel.REVIEW if has_review_verdicts else DispositionLevel.RELEASE
+        )
+        BIDSDataset._check_phenotype_tables_in_field_map(self.data_path / "phenotype")
+        sessions_with_data = BIDSDataset._sessions_with_questionnaire_data(
+            self.data_path / "phenotype", phenotype_level, keep_shifted_dates,
+        )
 
         configured_filestems = list(audio_filestems_to_remove)
         # Recording IDs are resolved to this tree's filestems, so audio, sidecars, features and
@@ -3295,14 +3348,6 @@ class BIDSDataset:
         participant_ids_to_exclude = list(input_tree_participants - participants_with_output)
 
         # --- phenotype ---
-        column_value_verdicts = BIDSDataset._load_column_value_reviews(deidentify_config_dir)
-        has_review_verdicts = bool(column_value_verdicts)
-        # Default: keep review columns only when a verdict manifest checked them. An explicit
-        # level is for QA builds (e.g. INTERNAL keeps everything, REVIEW passes unreviewed
-        # columns through unchecked) and must never be used for a release.
-        phenotype_level = disposition_level or (
-            DispositionLevel.REVIEW if has_review_verdicts else DispositionLevel.RELEASE
-        )
         if disposition_level is not None or keep_shifted_dates:
             _LOGGER.warning(
                 "QA deidentify: disposition level %s, keep shifted dates=%s. Not a release build.",
@@ -3313,7 +3358,6 @@ class BIDSDataset:
         BIDSDataset._drop_columns_by_disposition(pd.DataFrame())
 
         phenotype_base_path = self.data_path.joinpath("phenotype")
-        BIDSDataset._check_phenotype_tables_in_field_map(phenotype_base_path)
         if phenotype_base_path.exists():
             _LOGGER.info("Processing phenotype data for deidentification.")
             phenotype_output_path = outdir.joinpath("phenotype")
