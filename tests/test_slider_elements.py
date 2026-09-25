@@ -13,22 +13,19 @@ def _activity(tmp_path, item):
 
 
 def test_slider_labels_are_not_choices(tmp_path):
-    # As redcap2reproschema writes a CAPE-V slider: labels as string choices, fixed 0-100.
+    # A CAPE-V slider as b2ai-redcap2rs defines it: anchor labels in choices, range in min/max.
     element = _activity(tmp_path, {
         "id": "diagnosis_degree_s",
         "ui": {"inputType": "slider"},
-        "additionalNotesObj": [
-            {"column": "Text Validation Min", "source": "redcap", "value": "0.0"},
-            {"column": "Text Validation Max", "source": "redcap", "value": "150.0"},
-        ],
         "responseOptions": {
             "choices": [{"name": {"en": v}, "value": v} for v in ("MI", "MO", "SE")],
             "minValue": 0, "maxValue": 100, "valueType": ["xsd:string"],
         },
     })["diagnosis_degree_s"]
+    assert element["inputType"] == "slider"
     assert element["valueType"] == ["xsd:integer"] and element["choices"] is None
     assert element["sliderLabels"] == ["MI", "MO", "SE"]
-    assert (element["minValue"], element["maxValue"]) == (0, 150)
+    assert (element["minValue"], element["maxValue"]) == (0, 100)
 
 
 def test_radio_choices_untouched(tmp_path):

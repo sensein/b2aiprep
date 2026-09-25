@@ -48,27 +48,23 @@ def _build_raw_url(commit_sha: str, relative_path: Path) -> str:
 
 
 def _describe_slider(element_payload: Dict, item_json: Dict) -> None:
-    """Describe a RedCap slider as the integer it records.
+    """Describe a slider item as the integer position it records.
 
-    redcap2reproschema (reproschema-py 1.1.0) parses a slider's end labels ("MI | MO | SE") as its
-    answer choices and infers the value type from them (``xsd:string``), and sets 0-100 whatever
-    the data dictionary says. The recorded value is the slider position, an integer. Until the
-    converter is fixed, the labels are kept as ``sliderLabels`` and the range is read from the
-    dictionary's validation min/max, carried in ``additionalNotesObj``.
+    A ReproSchema slider with ``minValue``/``maxValue`` records a whole number in that range; its
+    ``choices`` are the anchor labels (RedCap's "MI | MO | SE"), not the allowed answers, as the
+    reference reproschema-ui reads them. Copied without the item's ``inputType`` the element would
+    read as a three-choice field, so it keeps ``inputType`` and the labels move to ``sliderLabels``.
+    The items' ``valueType`` is inferred from the labels by redcap2reproschema (``xsd:string`` for
+    text labels) and is replaced by the integer RedCap records.
     """
     choices = element_payload.get("choices") or []
     labels = [c.get("name", {}).get("en", c.get("value")) for c in choices]
+    element_payload["inputType"] = "slider"
     element_payload["choices"] = None
     element_payload["valueType"] = ["xsd:integer"]
     element_payload["datatype"] = ["xsd:integer"]
     if labels:
         element_payload["sliderLabels"] = labels
-    notes = {n.get("column"): n.get("value") for n in item_json.get("additionalNotesObj") or []}
-    for column, key in (("Text Validation Min", "minValue"), ("Text Validation Max", "maxValue")):
-        try:
-            element_payload[key] = int(float(notes[column]))
-        except (KeyError, TypeError, ValueError):
-            pass
 
 
 def _build_data_elements(
