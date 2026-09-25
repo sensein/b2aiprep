@@ -893,7 +893,7 @@ demographics_schema,demographics,sexual_orientation,sexual_orientation,demograph
 demographics_schema,demographics,specify_gender_identity,specify_gender_identity,demographics,Please specify gender identity,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 demographics_schema,demographics,spouse_partner_sig_other,spouse_partner_sig_other,demographics,Spouse/partner/significant other,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 demographics_schema,demographics,state_province,state_province,demographics,"[DEPRECATED]
-State/Province",YES,release,VARIABLE,redcap,pre-v4,NO,NO
+State/Province",YES,review,VARIABLE,redcap,pre-v4,NO,NO
 demographics_schema,demographics,tone_deaf,tone_deaf,demographics,Are you tone deaf?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 demographics_schema,demographics,transportation,transportation,demographics,Do you have a reliable mode of transportation?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 demographics_schema,demographics,transportation_yn,transportation_yn,demographics,"[DEPRECATED]
@@ -1146,7 +1146,7 @@ generic_demographics_schema,pediatric_demographics,peds_primary_language,peds_pr
 generic_demographics_schema,pediatric_demographics,peds_race,peds_race,pediatric,Which race category best describes you? Choose all that apply,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 generic_demographics_schema,pediatric_demographics,peds_self_care,peds_self_care,pediatric,Do you have difficulty dressing or bathing?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 generic_demographics_schema,pediatric_demographics,peds_state_province,peds_state_province,pediatric,"[DEPRECATED]
-State/Province",YES,release,VARIABLE,redcap,pre-v4,NO,NO
+State/Province",YES,review,VARIABLE,redcap,pre-v4,NO,NO
 generic_demographics_schema,pediatric_demographics,peds_vision,peds_vision,pediatric,"Are you blind or do you have serious difficulty seeing, even when wearing glasses?",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 generic_demographics_schema,pediatric_demographics,peds_zipcode,peds_zipcode,pediatric,Zipcode,YES,internal,VARIABLE,redcap,v4,NO,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,peds_mc_a_therapy,peds_mc_a_therapy,pediatric,Has your child ever had speech therapy for articulation or voice-related issues?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
