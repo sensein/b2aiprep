@@ -173,6 +173,8 @@ The output will be remain in BIDS format. The primary changes are:
   `session_index`, the session's place in the participant's released sessions by start time
 - `internal` columns are removed from phenotype tables and `sessions.tsv`; `review` columns are removed
   too unless `column_value_reviews.json` has checked their values
+- audio sidecar keys follow the field map's `audio_sidecar` table the same way; a key the table does not
+  list is removed, and the run logs each such key with the number of sidecars it was removed from
 - rows left with no publishable data once those columns are removed are dropped, and tables left with
   no rows are not written
 - sensitive audio clips, particularly those which may contain protected health information, are removed

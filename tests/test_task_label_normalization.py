@@ -181,6 +181,13 @@ def test_audio_and_sidecar_share_the_entity(tmp_path):
     names = sorted(p.name for p in audio_dir.iterdir())
     assert "sub-p1_ses-S1_task-audio-check-v2-1.wav" in names
     assert "sub-p1_ses-S1_task-audio-check-v2-1_recording-metadata.json" in names
+    # Every key redcap2bids writes is described by the field map's audio_sidecar table (after
+    # deidentify renames record_id), so none is removed as unknown at release.
+    sidecar = json.loads((audio_dir / "sub-p1_ses-S1_task-audio-check-v2-1_recording-metadata.json").read_text())
+    fm = BIDSDataset._load_reorganization_file(exclude_dropped=False)
+    table = set(fm.loc[fm.schema_name == "audio_sidecar", "column_name"])
+    keys = {"participant_id" if k == "record_id" else k for k in sidecar}
+    assert keys <= table, keys - table
     assert not any("(" in n or ")" in n or n != n.lower().replace("sub-p1_ses-s1", "sub-p1_ses-S1") for n in names if n.endswith(".wav"))
 
 

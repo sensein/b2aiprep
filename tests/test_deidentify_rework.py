@@ -13,7 +13,7 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
-from b2aiprep.prepare.dataset import BIDSDataset, SessionLabels
+from b2aiprep.prepare.dataset import BIDSDataset, DispositionLevel, SessionLabels
 
 
 # ---------------------------------------------------------------------------
@@ -543,12 +543,12 @@ class TestReleasedSessions:
 
 
 class TestSidecarDispositions:
-    """Audio sidecar keys follow the recording table's dispositions, as sessions.tsv follows
-    the session table's."""
+    """Audio sidecar keys follow the audio_sidecar table's dispositions, as sessions.tsv follows
+    the session table's; a key the table does not list is removed and logged."""
 
     def _deidentify(self, tmp_path, **kwargs):
         bids, config, out = tmp_path / "bids", tmp_path / "config", tmp_path / "out"
-        config.mkdir()
+        config.mkdir(parents=True)
         (config / "participants_to_include.json").write_text(json.dumps(["p1"]))
         (config / "id_remapping.json").write_text(json.dumps({}))
         (config / "audio_filestems_to_remove.json").write_text(json.dumps([]))
@@ -560,9 +560,10 @@ class TestSidecarDispositions:
         (audio_dir / f"{stem}_recording-metadata.json").write_text(json.dumps({
             "record_id": "p1",
             "session_id": "s1",
-            "recording_duration": 1.5,               # release in the recording table
-            "recording_created_at": "2025-01-01",    # internal, date_shift=YES
-            "task_name": "rainbow-passage",          # not in the field map
+            "recording_duration": 1.5,
+            "recording_microphone": "Built-in",
+            "task_name": "rainbow-passage",
+            "not_a_sidecar_key": "x",
         }))
         pd.DataFrame({"record_id": ["p1"], "session_id": ["s1"], "session_index": ["1"]}).to_csv(
             bids / "sub-p1" / "sessions.tsv", sep="\t", index=False)
@@ -572,16 +573,21 @@ class TestSidecarDispositions:
         (sidecar,) = (out / "sub-p1").rglob("*.json")
         return json.loads(sidecar.read_text())
 
-    def test_internal_key_removed_at_release(self, tmp_path):
-        meta = self._deidentify(tmp_path)
-        assert "recording_created_at" not in meta
-        assert meta["recording_duration"] == 1.5
-        assert meta["task_name"] == "rainbow-passage"
-        assert meta["participant_id"] == "p1"
+    def test_known_keys_kept_unknown_removed_and_logged(self, tmp_path, caplog):
+        with caplog.at_level(logging.WARNING):
+            meta = self._deidentify(tmp_path)
+        assert meta == {"participant_id": "p1", "session_id": "01", "recording_duration": 1.5,
+                        "recording_microphone": "Built-in", "task_name": "rainbow-passage"}
+        assert any("not_a_sidecar_key" in r.getMessage() for r in caplog.records)
 
-    def test_shifted_date_kept_with_keep_shifted_dates(self, tmp_path):
-        meta = self._deidentify(tmp_path, keep_shifted_dates=True)
-        assert meta["recording_created_at"] == "2025-01-01"
+    def test_internal_key_removed_at_release_kept_at_internal(self, tmp_path, monkeypatch):
+        fm = BIDSDataset._load_reorganization_file(exclude_dropped=False)
+        fm.loc[(fm.schema_name == "audio_sidecar") & (fm.column_name == "recording_microphone"),
+               "disposition"] = "internal"
+        monkeypatch.setattr(BIDSDataset, "_cached_field_map_df", fm)
+        assert "recording_microphone" not in self._deidentify(tmp_path / "a")
+        assert "recording_microphone" in self._deidentify(
+            tmp_path / "b", disposition_level=DispositionLevel.INTERNAL)
 
 
 # ---------------------------------------------------------------------------

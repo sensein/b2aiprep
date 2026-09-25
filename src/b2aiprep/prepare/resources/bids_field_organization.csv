@@ -4329,8 +4329,23 @@ generic_voice_related_qol_survey_schema,pediatric_voice_related_qol_survey,pedia
 generic_phqa_schema,pediatric_hqa,pediatric_q_generic_phqa_complete,pediatric_q_generic_phqa_complete,pediatric_questionnaire,REDCap form-completion status for the pediatric_q_generic_phqa instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO,NO
 generic_medical_conditions_schema,pediatric_medical_conditions,pediatric_q_generic_medical_conditions_complete,pediatric_q_generic_medical_conditions_complete,pediatric,REDCap form-completion status for the pediatric_q_generic_medical_conditions instrument (Incomplete/Unverified/Complete).,YES,internal,VARIABLE,redcap_generated,v4,NO,NO
 acoustic_task_schema,acoustic_task,speech_type,speech_type,task,Speech elicitation type for this task family (read/recall/elicited/non-lexical).,NO,release,VARIABLE,pipeline,v4,NO,NO
-recording_schema,recording,instructions,instructions,task,Task instruction text shown to the participant.,NO,release,VARIABLE,pipeline,v4,NO,NO
-recording_schema,recording,stimulus_text,stimulus_text,task,Stimulus content for this recording (sentence text or prompt).,NO,release,VARIABLE,pipeline,v4,NO,NO
-recording_schema,recording,speech_type,speech_type,task,Speech elicitation type for this recording (read/recall/elicited/non-lexical).,NO,release,VARIABLE,pipeline,v4,NO,NO
-recording_schema,recording,audio_sample_rate,audio_sample_rate,task,Sample rate of the saved audio file in Hz.,NO,release,VARIABLE,pipeline,v4,NO,NO
-recording_schema,recording,audio_channel_count,audio_channel_count,task,Number of audio channels in the saved audio file.,NO,release,VARIABLE,pipeline,v4,NO,NO
+audio_sidecar,audio_sidecar,record_id,participant_id,task,Participant ID (pseudonymized at deidentify).,NO,release,VARIABLE,pipeline,v4,NO,NO
+audio_sidecar,audio_sidecar,recording_session_id,session_id,task,Session label (pseudonymized at deidentify).,NO,release,VARIABLE,pipeline,v4,NO,NO
+audio_sidecar,audio_sidecar,recording_name,task_name,task,"Task name of the recording, normalized to lower case with hyphens.",NO,release,VARIABLE,pipeline,v4,NO,NO
+audio_sidecar,audio_sidecar,language,language,task,Administration language of the session (BCP-47 code).,NO,release,VARIABLE,pipeline,v4,NO,NO
+audio_sidecar,audio_sidecar,recording_id,recording_id,task,Recording ID,NO,release,VARIABLE,redcap,v4,NO,NO
+audio_sidecar,audio_sidecar,recording_acoustic_task_id,recording_acoustic_task_id,task,Acoustic Task ID,NO,release,VARIABLE,redcap,v4,NO,NO
+audio_sidecar,audio_sidecar,recording_duration,recording_duration,task,Duration (Seconds),NO,release,VARIABLE,redcap,v4,NO,NO
+audio_sidecar,audio_sidecar,recording_size,recording_size,task,Recording Size (KiB),NO,release,VARIABLE,redcap,v4,NO,NO
+audio_sidecar,audio_sidecar,recording_profile_name,recording_profile_name,task,Recording Profile Name,NO,release,VARIABLE,redcap,v4,NO,NO
+audio_sidecar,audio_sidecar,recording_profile_version,recording_profile_version,task,Recording Profile Version,NO,release,VARIABLE,redcap,v4,NO,NO
+audio_sidecar,audio_sidecar,recording_input_gain,recording_input_gain,task,Recording Input Gain,NO,release,VARIABLE,redcap,v4,NO,NO
+audio_sidecar,audio_sidecar,recording_microphone,recording_microphone,task,Recording Microphone,NO,release,VARIABLE,redcap,v4,NO,NO
+audio_sidecar,audio_sidecar,instructions,instructions,task,Task instruction text shown to the participant.,NO,release,VARIABLE,pipeline,v4,NO,NO
+audio_sidecar,audio_sidecar,stimulus_text,stimulus_text,task,Stimulus content for this recording (sentence text or prompt).,NO,release,VARIABLE,pipeline,v4,NO,NO
+audio_sidecar,audio_sidecar,speech_type,speech_type,task,Speech elicitation type for this recording (read/recall/elicited/non-lexical).,NO,release,VARIABLE,pipeline,v4,NO,NO
+audio_sidecar,audio_sidecar,audio_sample_rate,audio_sample_rate,task,Sample rate of the saved audio file in Hz.,NO,release,VARIABLE,pipeline,v4,NO,NO
+audio_sidecar,audio_sidecar,audio_channel_count,audio_channel_count,task,Number of audio channels in the saved audio file.,NO,release,VARIABLE,pipeline,v4,NO,NO
+audio_sidecar,audio_sidecar,stimulus_source,stimulus_source,task,"Where stimulus_text comes from: transcribed (text transcribed from an image stimulus), questionnaire (the prompt recorded in the session's task questionnaire), image (the stimulus is an image) or doc-text (reference text entered in RedCap).",NO,release,VARIABLE,pipeline,v4,NO,NO
+audio_sidecar,audio_sidecar,stimulus_asset,stimulus_asset,task,"URL of the image shown as the stimulus, pinned to the commit used at collection.",NO,release,VARIABLE,pipeline,v4,NO,NO
+audio_sidecar,audio_sidecar,stimulus_asset_n_images,stimulus_asset_n_images,task,Number of images in an ordered multi-image stimulus; absent for a single image.,NO,release,VARIABLE,pipeline,v4,NO,NO

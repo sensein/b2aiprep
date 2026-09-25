@@ -1251,8 +1251,8 @@ class BIDSDataset:
     _PIPELINE_ID_COLUMNS = frozenset({"participant_id", "record_id"})
     # Field-map table that describes the per-participant sessions.tsv columns.
     _SESSIONS_SCHEMA = "session"
-    # Field-map table whose dispositions govern the per-recording audio sidecar keys.
-    _RECORDING_SCHEMA = "recording"
+    # Field-map table describing the keys of the per-recording audio sidecars; not a phenotype table.
+    _AUDIO_SIDECAR_SCHEMA = "audio_sidecar"
 
     @staticmethod
     def _field_map_rows_for_table(
@@ -1787,6 +1787,8 @@ class BIDSDataset:
         # and to map from column_name_source -> column_name
         #   (the column_name becomes the column in the TSV file)
         df_reorg = BIDSDataset._load_reorganization_file(exclude_dropped=False)
+        # The sidecar table describes audio sidecars, which are written with the audio.
+        df_reorg = df_reorg.loc[df_reorg["schema_name"] != BIDSDataset._AUDIO_SIDECAR_SCHEMA]
 
         # Track inclusion/exclusion for a final report.
         # Note: columns are tracked using their *source* names (i.e., RedCap/df column names).
@@ -2947,7 +2949,7 @@ class BIDSDataset:
     @staticmethod
     def _write_session_id_map(
         path: Path,
-        results: t.Iterable[t.Optional[t.Tuple[str, t.Dict[str, str], t.Dict[str, int]]]],
+        results: t.Iterable[t.Optional[t.Tuple[str, t.Dict[str, str], t.Dict[str, int], t.Counter[str]]]],
         participant_ids_to_remap: t.Mapping[str, str],
         session_labels: SessionLabels,
     ) -> None:
@@ -2961,7 +2963,7 @@ class BIDSDataset:
                 "released_session_index": order[session_id],
             }
             for r in results if r is not None
-            for pid, labels, order in [r]
+            for pid, labels, order, _ in [r]
             for session_id, label in sorted(labels.items(), key=lambda kv: order[kv[0]])
         ]
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -3196,11 +3198,11 @@ class BIDSDataset:
             self.data_path, configured_filestems, recording_ids_to_remove, input_tree_participants
         )
 
-        def _process_one(pdir: Path) -> t.Optional[t.Tuple[str, t.Dict[str, str], t.Dict[str, int]]]:
+        def _process_one(pdir: Path) -> t.Optional[t.Tuple[str, t.Dict[str, str], t.Dict[str, int], t.Counter[str]]]:
             pid = pdir.name[4:]
             new_pid = participant_ids_to_remap.get(pid, pid)
             try:
-                labels, order = BIDSDataset._deidentify_participant_files(
+                labels, order, unknown_keys = BIDSDataset._deidentify_participant_files(
                     pdir, outdir, participant_ids_to_remap,
                     audio_filestems_to_remove, audio_tasks_to_include,
                     skip_audio, skip_audio_features,
@@ -3212,7 +3214,7 @@ class BIDSDataset:
                     sessions_with_data=sessions_with_data,
                 )
                 if labels is not None:
-                    return pid, labels, order
+                    return pid, labels, order, unknown_keys
                 _LOGGER.info("Participant %s excluded: no audio after task filtering.", pid)
                 return None
             except Exception:
@@ -3234,10 +3236,17 @@ class BIDSDataset:
         participants_with_output = {r[0] for r in results if r is not None}
         participant_session_id_to_remap: t.Dict[str, str] = {}
         released_session_order: t.Dict[str, int] = {}
+        unknown_sidecar_keys: t.Counter[str] = Counter()
         for r in results:
             if r is not None:
                 participant_session_id_to_remap.update(r[1])
                 released_session_order.update(r[2])
+                unknown_sidecar_keys.update(r[3])
+        if unknown_sidecar_keys:
+            _LOGGER.warning(
+                "Removed sidecar keys not in the field map's audio_sidecar table (key: sidecars): %s",
+                dict(unknown_sidecar_keys.most_common()),
+            )
         _LOGGER.info("Released %d session(s), labelled by %s.",
                      len(participant_session_id_to_remap), session_labels.value)
         if session_id_map is not None:
@@ -3619,16 +3628,17 @@ class BIDSDataset:
         keep_shifted_dates: bool = False,
         session_labels: SessionLabels = SessionLabels.ORDINAL,
         sessions_with_data: t.AbstractSet[str] = frozenset(),
-    ) -> t.Tuple[t.Optional[t.Dict[str, str]], t.Optional[t.Dict[str, int]]]:
+    ) -> t.Tuple[t.Optional[t.Dict[str, str]], t.Optional[t.Dict[str, int]], t.Counter[str]]:
         """Process one participant directory for deidentification.
 
         The participant's recordings and feature files are filtered first; its released sessions
         are those with a file to publish or a row in *sessions_with_data*, and are labelled by
         *session_labels* before anything is written.
 
-        Returns ``({session_id: label}, {session_id: released order})`` for the released
-        sessions, or ``(None, None)`` when no audio or feature file survives filtering (any
-        partially-created output directory is removed).
+        Returns ``({session_id: label}, {session_id: released order}, removed sidecar keys)``
+        for the released sessions, where the last counts sidecar keys removed for not being in
+        the audio_sidecar table; or ``(None, None, Counter())`` when no audio or feature file
+        survives filtering (any partially-created output directory is removed).
         """
         pid = participant_dir.name[4:]
         new_pid = participant_ids_to_remap.get(pid, pid)
@@ -3655,12 +3665,14 @@ class BIDSDataset:
             return "_".join(parts[:task_idx + 1])
 
         n_skipped = 0
-        # Sidecar keys follow the recording table's dispositions, as sessions.tsv follows the
-        # session table's; keys not in the field map (task_name, stimulus_*) are kept.
+        # Sidecar keys follow the audio_sidecar table's dispositions, as sessions.tsv follows the
+        # session table's. A key the table does not list is removed and counted.
+        sidecar_table = BIDSDataset._field_map_rows_for_table(None, BIDSDataset._AUDIO_SIDECAR_SCHEMA)
+        sidecar_keys_known = set(sidecar_table["column_name"].dropna())
         sidecar_keys_to_drop = BIDSDataset._names_to_drop_at_level(
-            BIDSDataset._field_map_rows_for_table(None, BIDSDataset._RECORDING_SCHEMA),
-            disposition_level, keep_shifted_dates,
+            sidecar_table, disposition_level, keep_shifted_dates,
         )
+        unknown_sidecar_keys: t.Counter[str] = Counter()
 
         # --- Plan: which audio files (with sidecars) and feature files are published ---
         # With skip_audio the recordings are walked through their sidecars instead, so a
@@ -3742,7 +3754,7 @@ class BIDSDataset:
             _LOGGER.info(
                 "Participant %s: no audio or feature files after filtering (%d skipped).", pid, n_skipped,
             )
-            return None, None
+            return None, None, Counter()
 
         # --- Label the released sessions ---
         sessions = BIDSDataset._read_participant_sessions(participant_dir)
@@ -3767,7 +3779,9 @@ class BIDSDataset:
             metadata = json.loads(json_path.read_text())
             out_wav.parent.mkdir(parents=True, exist_ok=True)
             update_metadata_record_and_session_id(metadata, participant_ids_to_remap, labels)
-            for key in sidecar_keys_to_drop.intersection(metadata):
+            unknown = set(metadata) - sidecar_keys_known
+            unknown_sidecar_keys.update(unknown)
+            for key in (sidecar_keys_to_drop | unknown).intersection(metadata):
                 del metadata[key]
             with open(out_wav.with_suffix(".json"), "w") as f:
                 json.dump(metadata, f, indent=2)
@@ -3816,7 +3830,7 @@ class BIDSDataset:
             "Participant %s: %d audio, %d features, %d released session(s), %d skipped.",
             pid, len(audio_jobs), len(feature_jobs), len(labels), n_skipped,
         )
-        return labels, order
+        return labels, order, unknown_sidecar_keys
 
     @staticmethod
     def _deidentify_quality_metrics(

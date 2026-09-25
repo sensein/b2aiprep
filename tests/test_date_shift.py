@@ -420,7 +420,7 @@ def test_participant_with_only_feature_output_is_kept(tmp_path):
     pdir = _sidecar_tree(tmp_path / "in", recordings=(("rec-A", "free-speech-1"),))
     torch.save({"opensmile": {"x": 1}}, pdir / "ses-S1" / "audio" / "sub-p1_ses-S1_task-free-speech-1_features.pt")
     out = tmp_path / "out"
-    labels, _ = BIDSDataset._deidentify_participant_files(
+    labels, _, _ = BIDSDataset._deidentify_participant_files(
         pdir, out, {"p1": "900001"}, [], ["noisy-sounds-*"],
         skip_audio=False, skip_audio_features=False,
     )

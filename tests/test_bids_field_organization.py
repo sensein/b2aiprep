@@ -344,3 +344,14 @@ def test_redcap_timestamps_are_dropped(reorg_rows):
         if row["column_name_source"].endswith("_timestamp") and row["disposition"] != "drop"
     )
     assert not kept, f"RedCap _timestamp columns must be drop: {kept}"
+
+
+def test_sidecar_recording_keys_match_recording_table(reorg_rows):
+    """A recording_* key has the same disposition in a sidecar as in recording.tsv."""
+    by_table = {}
+    for row in reorg_rows:
+        by_table.setdefault(row["schema_name"], {})[row["column_name"]] = row["disposition"]
+    sidecar, recording = by_table["audio_sidecar"], by_table["recording"]
+    shared = sorted(set(sidecar) & set(recording))
+    assert len(shared) >= 8
+    assert {k: sidecar[k] for k in shared} == {k: recording[k] for k in shared}
