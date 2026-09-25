@@ -47,6 +47,30 @@ def _build_raw_url(commit_sha: str, relative_path: Path) -> str:
     return f"{_RAW_BASE_URL}/{commit_sha}/{relative_path.as_posix()}"
 
 
+def _describe_slider(element_payload: Dict, item_json: Dict) -> None:
+    """Describe a RedCap slider as the integer it records.
+
+    redcap2reproschema (reproschema-py 1.1.0) parses a slider's end labels ("MI | MO | SE") as its
+    answer choices and infers the value type from them (``xsd:string``), and sets 0-100 whatever
+    the data dictionary says. The recorded value is the slider position, an integer. Until the
+    converter is fixed, the labels are kept as ``sliderLabels`` and the range is read from the
+    dictionary's validation min/max, carried in ``additionalNotesObj``.
+    """
+    choices = element_payload.get("choices") or []
+    labels = [c.get("name", {}).get("en", c.get("value")) for c in choices]
+    element_payload["choices"] = None
+    element_payload["valueType"] = ["xsd:integer"]
+    element_payload["datatype"] = ["xsd:integer"]
+    if labels:
+        element_payload["sliderLabels"] = labels
+    notes = {n.get("column"): n.get("value") for n in item_json.get("additionalNotesObj") or []}
+    for column, key in (("Text Validation Min", "minValue"), ("Text Validation Max", "maxValue")):
+        try:
+            element_payload[key] = int(float(notes[column]))
+        except (KeyError, TypeError, ValueError):
+            pass
+
+
 def _build_data_elements(
     activity_json: Dict,
     activity_path: Path,
@@ -98,6 +122,9 @@ def _build_data_elements(
             if key in {"choices", "valueType", "datatype"}:
                 continue
             element_payload[key] = value
+
+        if (item_json.get("ui") or {}).get("inputType") == "slider":
+            _describe_slider(element_payload, item_json)
 
         data_elements[element_id] = element_payload
 
