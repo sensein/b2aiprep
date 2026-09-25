@@ -97,9 +97,9 @@ class TestBIDSDatasetDeidentification:
                 json.dump(metadata, f, indent=2)
                 
             session_data = {
-                "record_id": ["participant001", "participant002"],
-                "session_id": ["session001", "session002"],
-                "session_index": ["1", "2"],
+                "record_id": [participant],
+                "session_id": [session],
+                "session_index": ["1"],
             }
             session_df = pd.DataFrame(session_data)
             session_dir = bids_path / f"sub-{participant}"

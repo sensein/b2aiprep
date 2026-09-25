@@ -3216,6 +3216,10 @@ class BIDSDataset:
             self.data_path, configured_filestems, recording_ids_to_remove, input_tree_participants
         )
 
+        # A participant that errors is not the same as one with nothing to release: the run
+        # stops rather than publish a dataset silently missing them.
+        failed_participants: t.List[str] = []
+
         def _process_one(pdir: Path) -> t.Optional[t.Tuple[str, t.Dict[str, str], t.Dict[str, int], t.Counter[str]]]:
             pid = pdir.name[4:]
             new_pid = participant_ids_to_remap.get(pid, pid)
@@ -3237,6 +3241,7 @@ class BIDSDataset:
                 return None
             except Exception:
                 _LOGGER.exception("Failed to process participant %s.", pid)
+                failed_participants.append(pid)
                 out_participant = outdir / f"sub-{new_pid}"
                 if out_participant.exists():
                     shutil.rmtree(out_participant)
@@ -3251,6 +3256,11 @@ class BIDSDataset:
 
         # With skip_audio the per-participant pass still walks every sidecar, so its results say
         # exactly who has output; no override is needed.
+        if failed_participants:
+            raise RuntimeError(
+                f"Deidentify failed for {len(failed_participants)} participant(s); see the tracebacks "
+                f"above. Fix the cause and rerun into a new output directory: {sorted(failed_participants)}"
+            )
         participants_with_output = {r[0] for r in results if r is not None}
         participant_session_id_to_remap: t.Dict[str, str] = {}
         released_session_order: t.Dict[str, int] = {}

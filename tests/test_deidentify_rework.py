@@ -546,6 +546,32 @@ class TestReleasedSessions:
             self._deidentify(tmp_path, session_id_map=tmp_path / "out" / "map.json")
 
 
+class TestParticipantFailureStopsRun:
+
+    def test_one_failing_participant_raises(self, tmp_path):
+        """A participant that errors must not vanish from the release like one with no audio."""
+        bids, config, out = tmp_path / "bids", tmp_path / "config", tmp_path / "out"
+        config.mkdir()
+        (config / "participants_to_include.json").write_text(json.dumps(["p1", "p2"]))
+        (config / "id_remapping.json").write_text(json.dumps({}))
+        (config / "audio_filestems_to_remove.json").write_text(json.dumps([]))
+        (config / "audio_tasks_to_include.json").write_text(json.dumps(["rainbow-passage"]))
+        for pid in ("p1", "p2"):
+            audio = bids / f"sub-{pid}" / "ses-s1" / "audio"
+            audio.mkdir(parents=True)
+            stem = f"sub-{pid}_ses-s1_task-rainbow-passage"
+            (audio / f"{stem}.wav").write_bytes(b"RIFF" + b"\x00" * 8192)
+            (audio / f"{stem}_recording-metadata.json").write_text(json.dumps({"record_id": pid, "session_id": "s1"}))
+            ses = {"record_id": [pid], "session_id": ["s1"]}
+            if pid == "p1":
+                ses["session_index"] = ["1"]  # p2 lacks it, so ordinal labelling fails for p2 only
+            pd.DataFrame(ses).to_csv(bids / f"sub-{pid}" / "sessions.tsv", sep="\t", index=False)
+        (bids / "phenotype").mkdir()
+        (bids / "dataset_description.json").write_text(json.dumps({"Name": "test"}))
+        with pytest.raises(RuntimeError, match=r"failed for 1 participant.*p2"):
+            BIDSDataset(bids).deidentify(outdir=out, deidentify_config_dir=config)
+
+
 class TestLabelsSharedAcrossTiers:
     """A features-only session is released where features are, and withheld where they are not;
     either way the other sessions keep the same labels."""
