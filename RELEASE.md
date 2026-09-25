@@ -187,7 +187,7 @@ session). `--session-labels` chooses the released names:
 
 | value | label | a label can change when |
 |---|---|---|
-| `ordinal` (default) | `01`, `02`, … over the released sessions | an earlier session becomes, or stops being, releasable |
+| `ordinal` (default) | `01`, `02`, … over the sessions any access tier could release (a file surviving the removal lists, whatever the task list or `--skip_audio_features`, or questionnaire rows); a tier that withholds one, such as a features-only session in the audio release, shows a gap | an earlier session becomes, or stops being, releasable in any tier |
 | `index` | the session's `session_index`; gaps where a session is withheld | a session is added before, or removed from, the RedCap export |
 | `uuid` | first 8 characters of the session ID, lower case (16 on a clash), as in v3.1 | never |
 

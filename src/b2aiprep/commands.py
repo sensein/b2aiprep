@@ -893,8 +893,8 @@ def validate_bundled_dataset(dataset_path, config_dir):
     type=click.Choice([m.value for m in SessionLabels]),
     default=SessionLabels.ORDINAL.value,
     show_default=True,
-    help="How released sessions are named. ordinal: 01, 02, ... over the released sessions in "
-    "start order. index: the session's number among all its participant's sessions (gaps where "
+    help="How released sessions are named. ordinal: 01, 02, ... in start order over the sessions "
+    "any access tier could release, so tiers share labels. index: the session's number among all its participant's sessions (gaps where "
     "one is withheld). uuid: first 8 characters of the session ID, as in v3.1.",
 )
 @click.option(

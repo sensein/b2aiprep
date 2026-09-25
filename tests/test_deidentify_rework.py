@@ -542,6 +542,36 @@ class TestReleasedSessions:
             self._deidentify(tmp_path, session_id_map=tmp_path / "out" / "map.json")
 
 
+class TestLabelsSharedAcrossTiers:
+    """A features-only session is released where features are, and withheld where they are not;
+    either way the other sessions keep the same labels."""
+
+    def _tree(self, root):
+        import torch
+        pdir = root / "sub-p1"
+        for ses, task in (("S1", "free-speech-1"), ("S2", "rainbow-passage")):
+            audio = pdir / f"ses-{ses}" / "audio"
+            audio.mkdir(parents=True)
+            stem = f"sub-p1_ses-{ses}_task-{task}"
+            (audio / f"{stem}.wav").write_bytes(b"RIFF" + b"\x00" * 8192)
+            (audio / f"{stem}_recording-metadata.json").write_text(json.dumps({"record_id": "p1", "session_id": ses}))
+            torch.save({"opensmile": {"x": 1}}, audio / f"{stem}_features.pt")
+        pd.DataFrame({"record_id": ["p1", "p1"], "session_id": ["S1", "S2"], "session_index": ["1", "2"]}).to_csv(
+            pdir / "sessions.tsv", sep="\t", index=False)
+        return pdir
+
+    def test_registered_and_controlled_share_labels(self, tmp_path):
+        pdir = self._tree(tmp_path / "in")
+        registered, _, _ = BIDSDataset._deidentify_participant_files(
+            pdir, tmp_path / "reg", {"p1": "900001"}, [], ["rainbow-passage"])
+        controlled, order, _ = BIDSDataset._deidentify_participant_files(
+            pdir, tmp_path / "con", {"p1": "900001"}, [], ["rainbow-passage"], skip_audio_features=True)
+        assert registered == {"S1": "01", "S2": "02"}
+        assert controlled == {"S2": "02"} and order == {"S2": 2}
+        ses = pd.read_csv(tmp_path / "con" / "sub-900001" / "sub-900001_sessions.tsv", sep="\t", dtype=str)
+        assert list(ses.session_id) == ["02"] and list(ses.session_index) == ["2"]
+
+
 class TestSidecarDispositions:
     """Audio sidecar keys follow the audio_sidecar table's dispositions, as sessions.tsv follows
     the session table's; a key the table does not list is removed and logged."""

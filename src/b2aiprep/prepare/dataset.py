@@ -82,8 +82,11 @@ class DispositionLevel(enum.Enum):
 class SessionLabels(enum.Enum):
     """How deidentify names released sessions (``ses-<label>``).
 
-    ORDINAL numbers the released sessions 01, 02, … in ``session_index`` order (no gaps; a
-    session's number moves if an earlier one becomes, or stops being, releasable). INDEX uses
+    ORDINAL numbers 01, 02, … in ``session_index`` order the sessions some access tier could
+    release (a file surviving the removal lists, whatever the task list or --skip_audio_features,
+    or questionnaire rows), so both tiers share labels; a tier that withholds such a session
+    (features-only, in an audio release) shows a gap, and a label moves only if an earlier
+    session becomes, or stops being, releasable in any tier. INDEX uses
     ``session_index`` itself (stable; gaps where a session is withheld). UUID uses the first 8
     characters of the session ID, lower case, 16 when two of a participant's sessions share 8
     (the v3.1 labels).
@@ -3632,8 +3635,9 @@ class BIDSDataset:
         """Process one participant directory for deidentification.
 
         The participant's recordings and feature files are filtered first; its released sessions
-        are those with a file to publish or a row in *sessions_with_data*, and are labelled by
-        *session_labels* before anything is written.
+        are those with a file to publish or a row in *sessions_with_data*. Labels are assigned by
+        *session_labels* over the sessions any tier could release (see ``SessionLabels``) before
+        anything is written.
 
         Returns ``({session_id: label}, {session_id: released order}, removed sidecar keys)``
         for the released sessions, where the last counts sidecar keys removed for not being in
@@ -3687,6 +3691,10 @@ class BIDSDataset:
         else:
             recordings = sorted(participant_dir.rglob("*.wav"))
         audio_jobs: t.List[t.Tuple[Path, Path, str, str]] = []
+        # Sessions with a file some access tier could publish: it survives the audio-check and
+        # the removal lists, whatever this tier's task list or --skip_audio_features. Labels are
+        # numbered over these, so a session keeps its label in every tier.
+        labelable: t.Set[str] = set()
         for wav_path in recordings:
             # Audio-check safety net
             task_match = re.search(r"task-(.+?)(_|$)", wav_path.stem)
@@ -3700,6 +3708,14 @@ class BIDSDataset:
                 _LOGGER.debug("Skipping excluded filestem: %s", wav_path.name)
                 continue
 
+            # Sidecar must exist before we copy the wav (match old behavior)
+            json_path = wav_path.parent / f"{wav_path.stem}_recording-metadata.json"
+            if not json_path.exists():
+                _LOGGER.warning("Missing sidecar for %s; skipping.", wav_path.name)
+                n_skipped += 1
+                continue
+            labelable.add(BIDSDataset._extract_session_id_from_path(wav_path))
+
             # Task inclusion (empty list = publish nothing, matching old behavior)
             if task_match:
                 if not normalized_include_tasks:
@@ -3710,40 +3726,36 @@ class BIDSDataset:
                     n_skipped += 1
                     continue
 
-            # Sidecar must exist before we copy the wav (match old behavior)
-            json_path = wav_path.parent / f"{wav_path.stem}_recording-metadata.json"
-            if not json_path.exists():
-                _LOGGER.warning("Missing sidecar for %s; skipping.", wav_path.name)
-                n_skipped += 1
-                continue
-
             stem_ending = "-".join(sanitize_task_entity_in_bids_stem(wav_path.stem).split("_")[2:])
             audio_jobs.append((
                 wav_path, json_path, BIDSDataset._extract_session_id_from_path(wav_path), stem_ending,
             ))
 
         feature_jobs: t.List[t.Tuple[Path, str, str, bool]] = []
-        if not skip_audio_features:
-            for feat_path in sorted(participant_dir.rglob("*.pt")):
-                # Audio-check safety net
-                task_match = re.search(r"task-(.+?)(_|$)", feat_path.stem)
-                if task_match and is_audio_check(task_match.group(1)):
-                    n_skipped += 1
-                    continue
+        # Feature files are walked even when this tier skips them, for the labels.
+        for feat_path in sorted(participant_dir.rglob("*.pt")):
+            # Audio-check safety net
+            task_match = re.search(r"task-(.+?)(_|$)", feat_path.stem)
+            if task_match and is_audio_check(task_match.group(1)):
+                n_skipped += 1
+                continue
 
-                # Filestem exclusion (strip _features suffix first)
-                base_stem = feat_path.stem.replace("_features", "")
-                if _recording_stem(base_stem) in canonical_exclusions:
-                    n_skipped += 1
-                    continue
+            # Filestem exclusion (strip _features suffix first)
+            base_stem = feat_path.stem.replace("_features", "")
+            if _recording_stem(base_stem) in canonical_exclusions:
+                n_skipped += 1
+                continue
+            labelable.add(BIDSDataset._extract_session_id_from_path(feat_path))
+            if skip_audio_features:
+                continue
 
-                stem_ending = "-".join(sanitize_task_entity_in_bids_stem(base_stem).split("_")[2:]) + "_features"
-                task_is_included = bool(
-                    task_match and normalize_task_label(task_match.group(1)) in normalized_include_tasks
-                )
-                feature_jobs.append((
-                    feat_path, BIDSDataset._extract_session_id_from_path(feat_path), stem_ending, task_is_included,
-                ))
+            stem_ending = "-".join(sanitize_task_entity_in_bids_stem(base_stem).split("_")[2:]) + "_features"
+            task_is_included = bool(
+                task_match and normalize_task_label(task_match.group(1)) in normalized_include_tasks
+            )
+            feature_jobs.append((
+                feat_path, BIDSDataset._extract_session_id_from_path(feat_path), stem_ending, task_is_included,
+            ))
 
         # Feature files count: a participant whose recordings are all from tasks whose audio is
         # not released still has (stripped) features to publish.
@@ -3761,14 +3773,17 @@ class BIDSDataset:
         with_files = {job[2] for job in audio_jobs} | {job[1] for job in feature_jobs}
         if sessions is None:
             _LOGGER.warning("No sessions.tsv found for participant %s; labelling sessions from files.", pid)
-            sessions = pd.DataFrame({"session_id": sorted(with_files)})
-        unlisted = with_files - set(sessions["session_id"])
+            sessions = pd.DataFrame({"session_id": sorted(labelable | with_files)})
+        unlisted = (labelable | with_files) - set(sessions["session_id"])
         if unlisted:
             raise ValueError(
                 f"Participant {pid}: session(s) with files but no sessions.tsv row: {sorted(unlisted)}"
             )
-        released = with_files | (set(sessions["session_id"]) & set(sessions_with_data))
-        labels, order = BIDSDataset._session_labels(sessions, session_labels, released)
+        with_data = set(sessions["session_id"]) & set(sessions_with_data)
+        released = with_files | with_data
+        labels, order = BIDSDataset._session_labels(sessions, session_labels, labelable | with_data)
+        labels = {s: labels[s] for s in released}
+        order = {s: order[s] for s in released}
 
         # --- Write audio, sidecars and features ---
         for wav_path, json_path, session_id_raw, stem_ending in audio_jobs:
