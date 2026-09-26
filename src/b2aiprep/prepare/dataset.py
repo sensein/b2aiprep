@@ -2286,11 +2286,6 @@ class BIDSDataset:
             # skipped when the destination already exists). Track the normalized
             # entity -> recording_id and warn on a clash.
             seen_recording_entities: t.Dict[str, str] = {}
-            # Two acoustic tasks in one session whose names differ only in case
-            # (e.g. "Free speech" and "Free Speech") share one BIDS entity. Recordings
-            # under each task keep their own names and both tasks remain in
-            # phenotype/task/acoustic_task.tsv.
-            seen_task_entities: t.Dict[str, str] = {}
 
             # multiple acoustic tasks are asked per session
             for task in session["acoustic_tasks"]:
@@ -2302,20 +2297,11 @@ class BIDSDataset:
                     _LOGGER.warning(f"Skipping task with missing acoustic_task_name for participant {participant_id}, session {session_id}")
                     continue
                 
+                # Tasks may share a name within a session (the adult voice cohort's
+                # unnumbered "Free Speech" beside the numbered "Free speech"; the pediatric app
+                # splitting one task into same-named parts). Files are named per recording, and
+                # recording-name collisions are checked below.
                 acoustic_task_name = acoustic_task_name.replace(" ", "-").replace("_", "-")
-                _task_entity = canonical_task_entity(acoustic_task_name)
-                _task_id = task.get("acoustic_task_id")
-                _task_collided, _prior_task = _note_entity_collision(
-                    seen_task_entities, _task_entity, _task_id
-                )
-                if _task_collided:
-                    _LOGGER.warning(
-                        "acoustic_task_name collision: %r maps to the same BIDS task entity "
-                        "for participant %s session %s (acoustic_task_id %s and %s); "
-                        "recordings are unaffected and both tasks remain in "
-                        "phenotype/task/acoustic_task.tsv",
-                        acoustic_task_name, participant_id, session_id, _prior_task, _task_id,
-                    )
                 # Skip tasks with no source audio — no recordings to process.
                 if audio_files_by_recording is not None:
                     _task_has_audio = any(
@@ -3093,38 +3079,68 @@ class BIDSDataset:
         )
         return stems
 
+    _EXCLUSION_SUFFIXES = (".wav", ".json", ".pt", "_recording-metadata", "_features")
+
+    @staticmethod
+    def _exclusion_key(stem: str) -> str:
+        """The key a removal entry and a recording file are matched on.
+
+        Known suffixes are stripped (not everything after a dot), the task entity is sanitized,
+        the stem is cut after the task entity, and the result is lower-cased, so an entry
+        differing from the tree only in the case of its IDs or its task spelling still matches.
+        """
+        stem = str(stem).strip()
+        stripped = True
+        while stripped:
+            stripped = False
+            for suffix in BIDSDataset._EXCLUSION_SUFFIXES:
+                if stem.lower().endswith(suffix):
+                    stem = stem[: -len(suffix)]
+                    stripped = True
+        canonical = sanitize_task_entity_in_bids_stem(stem)
+        parts = canonical.split("_")
+        task_idx = next((i for i, p in enumerate(parts) if p.startswith("task-")), None)
+        if task_idx is not None:
+            canonical = "_".join(parts[: task_idx + 1])
+        return canonical.lower()
+
     @staticmethod
     def _report_exclusion_coverage(
-        bids_path: Path,
-        filestems: t.Iterable[str],
+        configured_filestems: t.Sequence[str],
+        filestem_keys: t.Mapping[str, t.AbstractSet[str]],
+        matched_keys: t.AbstractSet[str],
+        participants_in_run: t.AbstractSet[str],
         recording_ids: t.AbstractSet[str],
-        input_tree_participants: t.AbstractSet[str],
+        recording_id_stems: t.Sequence[str],
     ) -> None:
-        """Warn when an exclusion list cannot match this tree, instead of silently removing nothing."""
-        stems = list(filestems)
-        if stems:
-            subjects = {Path(s).stem.split("_")[0][len("sub-"):] for s in stems}
-            matched = subjects & set(input_tree_participants)
-            level = logging.WARNING if not matched else logging.INFO
+        """Say how much of each removal list matched this tree, and warn when part of it did not.
+
+        A configured filestem counts as matched when any of its keys (original or deidentified
+        naming) matched a recording. Entries for participants outside this run cannot match and
+        are only counted.
+        """
+        if configured_filestems:
+            matched = [s for s in configured_filestems if filestem_keys[s] & matched_keys]
+            subject = lambda s: BIDSDataset._exclusion_key(s).split("_")[0][len("sub-"):]
+            in_run = [s for s in configured_filestems if subject(s) in participants_in_run]
+            unmatched = [s for s in in_run if s not in matched]
             _LOGGER.log(
-                level,
-                "audio_filestems_to_remove: %d stem(s) over %d subject(s); %d of those subjects are in "
-                "this tree.%s",
-                len(stems), len(subjects), len(matched),
-                " None match: the list uses IDs from another registration and removes nothing here "
-                "(use audio_recording_ids_to_remove.json)." if not matched else "",
+                logging.WARNING if unmatched or not matched else logging.INFO,
+                "audio_filestems_to_remove: %d entr(y/ies); %d matched a recording; %d are for "
+                "participants outside this run; %d for participants in this run matched nothing%s",
+                len(configured_filestems), len(matched), len(configured_filestems) - len(in_run),
+                len(unmatched),
+                f" (nothing was removed for them), e.g. {sorted(unmatched)[:5]}" if unmatched else ".",
             )
         if recording_ids:
-            recording_tsv = bids_path / "phenotype" / "task" / "recording.tsv"
-            if recording_tsv.exists():
-                present = set(
-                    pd.read_csv(recording_tsv, sep="\t", usecols=["recording_id"], dtype=str)
-                    ["recording_id"].dropna().str.lower()
-                )
-                _LOGGER.info(
-                    "audio_recording_ids_to_remove: %d ID(s), %d present in this tree.",
-                    len(recording_ids), len(recording_ids & present),
-                )
+            found = len(recording_id_stems)
+            _LOGGER.log(
+                logging.WARNING if found == 0 else logging.INFO,
+                "audio_recording_ids_to_remove: %d ID(s); %d found in this tree's sidecars and removed.%s",
+                len(recording_ids), found,
+                " None was found: the list removes nothing here (expected only if it is meant for "
+                "another cohort)." if found == 0 else "",
+            )
 
     @staticmethod
     def load_audio_recording_ids_to_remove(publish_config_dir: Path) -> t.Set[str]:
@@ -3242,13 +3258,19 @@ class BIDSDataset:
         # Recording IDs are resolved to this tree's filestems, so audio, sidecars, features and
         # quality metrics are all filtered by the one filestem mechanism below.
         recording_ids_to_remove = BIDSDataset.load_audio_recording_ids_to_remove(deidentify_config_dir)
-        audio_filestems_to_remove = list(audio_filestems_to_remove) + BIDSDataset._filestems_for_recording_ids(
+        recording_id_stems = BIDSDataset._filestems_for_recording_ids(
             self.data_path, participant_allowlist, recording_ids_to_remove, max_workers=max_workers
         )
-        audio_filestems_to_remove = BIDSDataset._expand_filestems_for_deidentification(
-            audio_filestems_to_remove,
-            participant_ids_to_remap=participant_ids_to_remap,
-            participant_session_id_to_remap=exclusion_session_map,
+        # Each configured entry may name a recording in original or deidentified naming.
+        filestem_keys = {
+            s: {BIDSDataset._exclusion_key(x) for x in BIDSDataset._expand_filestems_for_deidentification(
+                [s], participant_ids_to_remap=participant_ids_to_remap,
+                participant_session_id_to_remap=exclusion_session_map,
+            )}
+            for s in configured_filestems
+        }
+        audio_filestems_to_remove = sorted(
+            set().union(*filestem_keys.values()) | {BIDSDataset._exclusion_key(x) for x in recording_id_stems}
         )
 
         # --- per-participant processing ---
@@ -3261,23 +3283,18 @@ class BIDSDataset:
 
         # Exact labels, globs ("identifying-pictures-*") and regexes ("re:...").
         normalized_include_tasks = TaskMatcher(audio_tasks_to_include)
-        canonical_exclusions = {
-            sanitize_task_entity_in_bids_stem(Path(s).stem)
-            for s in audio_filestems_to_remove
-        }
-        BIDSDataset._report_exclusion_coverage(
-            self.data_path, configured_filestems, recording_ids_to_remove, input_tree_participants
-        )
+        canonical_exclusions = set(audio_filestems_to_remove)
 
         # A participant that errors is not the same as one with nothing to release: the run
         # stops rather than publish a dataset silently missing them.
         failed_participants: t.List[str] = []
+        matched_exclusion_keys: t.Set[str] = set()
 
         def _process_one(pdir: Path) -> t.Optional[t.Tuple[str, t.Dict[str, str], t.Dict[str, int], t.Counter[str]]]:
             pid = pdir.name[4:]
             new_pid = participant_ids_to_remap.get(pid, pid)
             try:
-                labels, order, unknown_keys = BIDSDataset._deidentify_participant_files(
+                labels, order, unknown_keys, matched = BIDSDataset._deidentify_participant_files(
                     pdir, outdir, participant_ids_to_remap,
                     audio_filestems_to_remove, audio_tasks_to_include,
                     skip_audio, skip_audio_features,
@@ -3288,6 +3305,7 @@ class BIDSDataset:
                     session_labels=session_labels,
                     sessions_with_data=sessions_with_data,
                 )
+                matched_exclusion_keys.update(matched)
                 if labels is not None:
                     return pid, labels, order, unknown_keys
                 _LOGGER.info("Participant %s excluded: no audio after task filtering.", pid)
@@ -3309,6 +3327,12 @@ class BIDSDataset:
 
         # With skip_audio the per-participant pass still walks every sidecar, so its results say
         # exactly who has output; no override is needed.
+        BIDSDataset._report_exclusion_coverage(
+            configured_filestems, filestem_keys, matched_exclusion_keys,
+            {d.name[len("sub-"):].lower() for d in participant_dirs}
+            | {str(participant_ids_to_remap.get(d.name[len("sub-"):], "")).lower() for d in participant_dirs},
+            recording_ids_to_remove, recording_id_stems,
+        )
         if failed_participants:
             raise RuntimeError(
                 f"Deidentify failed for {len(failed_participants)} participant(s); see the tracebacks "
@@ -3700,7 +3724,7 @@ class BIDSDataset:
         keep_shifted_dates: bool = False,
         session_labels: SessionLabels = SessionLabels.ORDINAL,
         sessions_with_data: t.AbstractSet[str] = frozenset(),
-    ) -> t.Tuple[t.Optional[t.Dict[str, str]], t.Optional[t.Dict[str, int]], t.Counter[str]]:
+    ) -> t.Tuple[t.Optional[t.Dict[str, str]], t.Optional[t.Dict[str, int]], t.Counter[str], t.Set[str]]:
         """Process one participant directory for deidentification.
 
         The participant's recordings and feature files are filtered first; its released sessions
@@ -3708,10 +3732,12 @@ class BIDSDataset:
         *session_labels* over the sessions any tier could release (see ``SessionLabels``) before
         anything is written.
 
-        Returns ``({session_id: label}, {session_id: released order}, removed sidecar keys)``
-        for the released sessions, where the last counts sidecar keys removed for not being in
-        the audio_sidecar table; or ``(None, None, Counter())`` when no audio or feature file
-        survives filtering (any partially-created output directory is removed).
+        Returns ``({session_id: label}, {session_id: released order}, removed sidecar keys,
+        matched removal keys)`` for the released sessions, where the third counts sidecar keys
+        removed for not being in the audio_sidecar table and the last holds the removal-list
+        keys that matched a file here; or ``(None, None, Counter(), matched removal keys)`` when
+        no audio or feature file survives filtering (any partially-created output directory is
+        removed).
         """
         pid = participant_dir.name[4:]
         new_pid = participant_ids_to_remap.get(pid, pid)
@@ -3723,19 +3749,15 @@ class BIDSDataset:
         if _canonical_exclusions is not None:
             canonical_exclusions = _canonical_exclusions
         else:
-            canonical_exclusions = {
-                sanitize_task_entity_in_bids_stem(Path(s).stem)
-                for s in audio_filestems_to_remove
-            }
+            canonical_exclusions = {BIDSDataset._exclusion_key(s) for s in audio_filestems_to_remove}
+        matched_exclusions: t.Set[str] = set()
 
-        def _recording_stem(stem: str) -> str:
-            canonical = sanitize_task_entity_in_bids_stem(stem)
-            parts = canonical.split("_")
-            try:
-                task_idx = next(i for i, p in enumerate(parts) if p.startswith("task-"))
-            except StopIteration:
-                return canonical
-            return "_".join(parts[:task_idx + 1])
+        def _excluded(stem: str) -> bool:
+            key = BIDSDataset._exclusion_key(stem)
+            if key in canonical_exclusions:
+                matched_exclusions.add(key)
+                return True
+            return False
 
         n_skipped = 0
         # Sidecar keys follow the audio_sidecar table's dispositions, as sessions.tsv follows the
@@ -3772,7 +3794,7 @@ class BIDSDataset:
                 continue
 
             # Filestem exclusion
-            if _recording_stem(wav_path.stem) in canonical_exclusions:
+            if _excluded(wav_path.stem):
                 n_skipped += 1
                 _LOGGER.debug("Skipping excluded filestem: %s", wav_path.name)
                 continue
@@ -3811,7 +3833,7 @@ class BIDSDataset:
 
             # Filestem exclusion (strip _features suffix first)
             base_stem = feat_path.stem.replace("_features", "")
-            if _recording_stem(base_stem) in canonical_exclusions:
+            if _excluded(base_stem):
                 n_skipped += 1
                 continue
             labelable.add(BIDSDataset._extract_session_id_from_path(feat_path))
@@ -3835,7 +3857,7 @@ class BIDSDataset:
             _LOGGER.info(
                 "Participant %s: no audio or feature files after filtering (%d skipped).", pid, n_skipped,
             )
-            return None, None, Counter()
+            return None, None, Counter(), matched_exclusions
 
         # --- Label the released sessions ---
         sessions = BIDSDataset._read_participant_sessions(participant_dir)
@@ -3914,7 +3936,7 @@ class BIDSDataset:
             "Participant %s: %d audio, %d features, %d released session(s), %d skipped.",
             pid, len(audio_jobs), len(feature_jobs), len(labels), n_skipped,
         )
-        return labels, order, unknown_sidecar_keys
+        return labels, order, unknown_sidecar_keys, matched_exclusions
 
     @staticmethod
     def _deidentify_quality_metrics(

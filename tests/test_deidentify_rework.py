@@ -626,9 +626,9 @@ class TestLabelsSharedAcrossTiers:
 
     def test_registered_and_controlled_share_labels(self, tmp_path):
         pdir = self._tree(tmp_path / "in")
-        registered, _, _ = BIDSDataset._deidentify_participant_files(
+        registered, _, _, _ = BIDSDataset._deidentify_participant_files(
             pdir, tmp_path / "reg", {"p1": "900001"}, [], ["rainbow-passage"])
-        controlled, order, _ = BIDSDataset._deidentify_participant_files(
+        controlled, order, _, _ = BIDSDataset._deidentify_participant_files(
             pdir, tmp_path / "con", {"p1": "900001"}, [], ["rainbow-passage"], skip_audio_features=True)
         assert registered == {"S1": "01", "S2": "02"}
         assert controlled == {"S2": "02"} and order == {"S2": 2}

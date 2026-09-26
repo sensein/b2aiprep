@@ -330,13 +330,49 @@ def test_recording_ids_resolve_to_filestems_and_remove_audio_and_features(tmp_pa
     assert any("noisy-sounds-2_features" in n for n in names)
 
 def test_filestem_list_from_another_registration_warns(tmp_path, caplog):
+    """Entries naming participants outside the run match nothing: counted, and no match warns."""
     import logging
 
+    stems = ["sub-001js_ses-x_task-passage-10"]
+    keys = {s: {BIDSDataset._exclusion_key(s)} for s in stems}
+    with caplog.at_level(logging.INFO):
+        BIDSDataset._report_exclusion_coverage(stems, keys, set(), {"a-uuid-participant"}, set(), [])
+    assert any(r.levelno == logging.WARNING and "0 matched" in r.getMessage()
+               and "1 are for participants outside this run" in r.getMessage() for r in caplog.records)
+
+
+def test_exclusion_key_ignores_case_and_suffixes():
+    key = BIDSDataset._exclusion_key
+    assert key("sub-P1_ses-ABCD-1234_task-Rainbow-Passage.wav") == key(
+        "sub-p1_ses-abcd-1234_task-rainbow-passage_recording-metadata.json")
+    assert key("sub-p1_ses-s1_task-noisy-sounds-2_features.pt") == "sub-p1_ses-s1_task-noisy-sounds-2"
+
+
+def test_filestem_differing_in_case_still_removes(tmp_path, caplog):
+    """A configured stem with a lower-case session ID removes the recording in an upper-case tree."""
+    import logging
+
+    pdir = _sidecar_tree(tmp_path / "in", ses="ABC1", recordings=(("rec-A", "noisy-sounds-1"), ("rec-B", "noisy-sounds-2")))
+    out = tmp_path / "out"
+    BIDSDataset._deidentify_participant_files(
+        pdir, out, {"p1": "900001"}, ["sub-p1_ses-abc1_task-Noisy-Sounds-1"], ["noisy-sounds-*"],
+        skip_audio=True, skip_audio_features=True,
+    )
+    names = [p.name for p in out.rglob("*.json")]
+    assert len(names) == 1 and "noisy-sounds-2" in names[0]
+
+
+def test_unmatched_entries_for_run_participants_warn(caplog):
+    import logging
+
+    stems = ["sub-p1_ses-s1_task-noisy-sounds-1", "sub-p1_ses-s1_task-noisy-sounds-9"]
+    keys = {s: {BIDSDataset._exclusion_key(s)} for s in stems}
     with caplog.at_level(logging.INFO):
         BIDSDataset._report_exclusion_coverage(
-            tmp_path, ["sub-001js_ses-x_task-passage-10"], set(), {"a-uuid-participant"}
-        )
-    assert any(r.levelno == logging.WARNING and "None match" in r.getMessage() for r in caplog.records)
+            stems, keys, {BIDSDataset._exclusion_key(stems[0])}, {"p1"}, {"rid-x"}, [])
+    msgs = [r.getMessage() for r in caplog.records if r.levelno == logging.WARNING]
+    assert any("1 matched" in m and "1 for participants in this run matched nothing" in m for m in msgs)
+    assert any("None was found" in m for m in msgs)
 
 
 def test_task_matcher_exact_glob_and_regex():
@@ -420,7 +456,7 @@ def test_participant_with_only_feature_output_is_kept(tmp_path):
     pdir = _sidecar_tree(tmp_path / "in", recordings=(("rec-A", "free-speech-1"),))
     torch.save({"opensmile": {"x": 1}}, pdir / "ses-S1" / "audio" / "sub-p1_ses-S1_task-free-speech-1_features.pt")
     out = tmp_path / "out"
-    labels, _, _ = BIDSDataset._deidentify_participant_files(
+    labels, _, _, _ = BIDSDataset._deidentify_participant_files(
         pdir, out, {"p1": "900001"}, [], ["noisy-sounds-*"],
         skip_audio=False, skip_audio_features=False,
     )
