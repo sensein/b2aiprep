@@ -970,6 +970,7 @@ class BIDSDataset:
     # Transforms the ethics review asked for (2026-09-28): answers so rare they could identify someone
     # are folded into a broader answer before anything is written.
     _AGE_TOP_CODE = 90
+    _AGE_TOP_CODE_LABEL = "90 and above"  # REDCap's own label for this bucket
     _GROUPED_AS_NO_ANSWER = {
         "gender_identity": {"other"},
         "sex_assigned_at_birth": {"intersex", "unknown"},
@@ -980,8 +981,8 @@ class BIDSDataset:
     def _apply_disclosure_transforms(df: pd.DataFrame) -> pd.DataFrame:
         """Top-code ``age`` at 90 and group rare gender/sex answers under "Prefer not to answer".
 
-        Ages of 90 or more, including REDCap's "90 and above" label, become "90.0", meaning "90 or
-        older" (HIPAA Safe Harbor), in the column's usual one-decimal format. For
+        Ages of 90 or more become "90 and above" (HIPAA Safe Harbor), the label REDCap already uses for
+        this bucket, so the column holds one form of it. For
         ``gender_identity`` "Other", and for ``sex_assigned_at_birth`` "Intersex"/"Unknown", the answer
         becomes "Prefer not to answer"; ``sex_at_birth`` is derived from the transformed value.
         Affected records are logged for QA (the log stays with the job output).
@@ -993,9 +994,9 @@ class BIDSDataset:
                                 errors="coerce")
             over = age >= BIDSDataset._AGE_TOP_CODE
             if over.any():
-                df.loc[over, "age"] = f"{BIDSDataset._AGE_TOP_CODE}.0"
-                _LOGGER.warning("age: top-coded %d value(s) at %d (records %s).", int(over.sum()),
-                                BIDSDataset._AGE_TOP_CODE, ", ".join(sorted(set(df.loc[over, "record_id"].astype(str)))))
+                df.loc[over, "age"] = BIDSDataset._AGE_TOP_CODE_LABEL
+                _LOGGER.warning("age: %d value(s) at %d or above released as %r (records %s).", int(over.sum()),
+                                BIDSDataset._AGE_TOP_CODE, BIDSDataset._AGE_TOP_CODE_LABEL, ", ".join(sorted(set(df.loc[over, "record_id"].astype(str)))))
         for column, rare in BIDSDataset._GROUPED_AS_NO_ANSWER.items():
             if column not in df.columns:
                 continue

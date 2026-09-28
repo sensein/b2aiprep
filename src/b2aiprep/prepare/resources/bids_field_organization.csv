@@ -1815,7 +1815,7 @@ session_schema,,session_record_id,session_participant_id,,Record ID,YES,internal
 session_schema,session,session_site,session_site,task,Session Site?,YES,drop,VARIABLE,redcap,v4,NO,NO
 session_schema,session,session_started_at,session_started_at,task,Session Started At,YES,internal,VARIABLE,redcap,v4,NO,YES
 session_schema,session,session_status,session_status,task,Session Status,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-subjectparticipant_basic_information_schema,demographics,age,age,demographics,"Age in years; top-coded at ingest, so 90.0 means 90 or older",NO,release,VARIABLE,redcap,pre-v4,NO,NO
+subjectparticipant_basic_information_schema,demographics,age,age,demographics,"Age in years; ages of 90 or more are released as '90 and above'",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 subjectparticipant_basic_information_schema,participant,api_updates_on_behalf_of,api_updates_on_behalf_of,,API Updates on behalf of,YES,drop,VARIABLE,redcap,v4,NO,NO
 subjectparticipant_basic_information_schema,participant,consent_date,consent_date,,Consent Date,YES,drop,VARIABLE,redcap,pre-v4,NO,NO
 subjectparticipant_basic_information_schema,participant,consent_method,consent_method,,Consent Method,YES,drop,VARIABLE,redcap,pre-v4,NO,NO

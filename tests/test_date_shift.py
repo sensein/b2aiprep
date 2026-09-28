@@ -473,7 +473,7 @@ def test_disclosure_transforms_top_code_age_and_group_rare_answers():
     })
     out = BIDSDataset._apply_disclosure_transforms(df)
     vals = lambda col: [v if isinstance(v, str) else None for v in out[col]]
-    assert vals("age") == ["89", "90.0", "90.0", None, "90.0"]
+    assert vals("age") == ["89", "90 and above", "90 and above", None, "90 and above"]
     assert vals("gender_identity") == ["Female gender identity", "Prefer not to answer",
                                        "Non-binary or genderqueer gender identity", None, None]
     assert vals("sex_assigned_at_birth") == ["Male", "Prefer not to answer", "Prefer not to answer",
