@@ -967,6 +967,42 @@ class BIDSDataset:
                             len(undated), ", ".join(undated))
         return df
 
+    # Transforms the ethics review asked for (2026-09-28): answers so rare they could identify someone
+    # are folded into a broader answer before anything is written.
+    _AGE_TOP_CODE = 90
+    _GROUPED_AS_NO_ANSWER = {
+        "gender_identity": {"other"},
+        "sex_assigned_at_birth": {"intersex", "unknown"},
+    }
+    _NO_ANSWER_LABEL = "Prefer not to answer"
+
+    @staticmethod
+    def _apply_disclosure_transforms(df: pd.DataFrame) -> pd.DataFrame:
+        """Top-code ``age`` at 90 and group rare gender/sex answers under "Prefer not to answer".
+
+        Ages of 90 or more become 90, meaning "90 or older" (HIPAA Safe Harbor). For
+        ``gender_identity`` "Other", and for ``sex_assigned_at_birth`` "Intersex"/"Unknown", the answer
+        becomes "Prefer not to answer"; ``sex_at_birth`` is derived from the transformed value.
+        Affected records are logged for QA (the log stays with the job output).
+        """
+        df = df.copy()
+        if "age" in df.columns:
+            age = pd.to_numeric(df["age"], errors="coerce")
+            over = age >= BIDSDataset._AGE_TOP_CODE
+            if over.any():
+                df.loc[over, "age"] = str(BIDSDataset._AGE_TOP_CODE)
+                _LOGGER.warning("age: top-coded %d value(s) at %d (records %s).", int(over.sum()),
+                                BIDSDataset._AGE_TOP_CODE, ", ".join(sorted(set(df.loc[over, "record_id"].astype(str)))))
+        for column, rare in BIDSDataset._GROUPED_AS_NO_ANSWER.items():
+            if column not in df.columns:
+                continue
+            hit = df[column].astype(str).str.strip().str.lower().isin(rare)
+            if hit.any():
+                df.loc[hit, column] = BIDSDataset._NO_ANSWER_LABEL
+                _LOGGER.warning("%s: grouped %d answer(s) under %r (records %s).", column, int(hit.sum()),
+                                BIDSDataset._NO_ANSWER_LABEL, ", ".join(sorted(set(df.loc[hit, "record_id"].astype(str)))))
+        return df
+
     @staticmethod
     def _apply_field_map_at_ingest(
         redcap_dataset: RedCapDataset,
@@ -988,6 +1024,7 @@ class BIDSDataset:
         # Ordered on the real start times, which the shift below replaces.
         df = BIDSDataset._add_session_index(redcap_dataset.df)
         df, report = shift_dates(df, date_columns, date_shift_anchor)
+        df = BIDSDataset._apply_disclosure_transforms(df)
 
         # A source column is removed only when no row keeps it (shared with instrument selection).
         dropped = _dropped_source_columns()
