@@ -978,11 +978,11 @@ class BIDSDataset:
 
     @staticmethod
     def _apply_disclosure_transforms(df: pd.DataFrame) -> pd.DataFrame:
-        """Stop on numeric ages of 90 or more, and group rare gender/sex answers under "Prefer not to answer".
+        """Flag numeric ages of 90 or more for QA, and group rare gender/sex answers under "Prefer not to answer".
 
         REDCap exports ages of 90 or more as the text "90 and above", which is released as is. A
-        numeric ``age`` of 90 or more means that cap was bypassed; ingest stops so someone decides how
-        to release it (HIPAA Safe Harbor) rather than the pipeline guessing. For ``gender_identity``
+        numeric ``age`` of 90 or more means that cap was bypassed; it is left unchanged and logged as a
+        QA review item so someone decides how to release it (HIPAA Safe Harbor) before publication. For ``gender_identity``
         "Other", and for ``sex_assigned_at_birth`` "Intersex"/"Unknown", the answer becomes "Prefer not
         to answer"; ``sex_at_birth`` is derived from the transformed value. Affected records are logged
         for QA (the log stays with the job output).
@@ -991,11 +991,11 @@ class BIDSDataset:
         if "age" in df.columns:
             over = pd.to_numeric(df["age"], errors="coerce") >= BIDSDataset._AGE_REVIEW_THRESHOLD
             if over.any():
-                raise ValueError(
-                    f"age: {int(over.sum())} numeric value(s) of {BIDSDataset._AGE_REVIEW_THRESHOLD} or more "
-                    f"(records {', '.join(sorted(set(df.loc[over, 'record_id'].astype(str))))}); REDCap normally "
-                    f"exports these as '90 and above'. Decide how to release them before ingesting."
-                )
+                _LOGGER.warning(
+                    "QA REVIEW REQUIRED: age: %d numeric value(s) of %d or more, left unchanged (records %s); "
+                    "REDCap normally exports these as '90 and above'. Decide how to release them before "
+                    "publishing.", int(over.sum()), BIDSDataset._AGE_REVIEW_THRESHOLD,
+                    ", ".join(sorted(set(df.loc[over, "record_id"].astype(str)))))
         for column, rare in BIDSDataset._GROUPED_AS_NO_ANSWER.items():
             if column not in df.columns:
                 continue

@@ -482,7 +482,9 @@ def test_disclosure_transforms_group_rare_answers_and_pass_redcap_age_label():
 
 
 @pytest.mark.parametrize("age", ["90", "97.0"])
-def test_disclosure_transforms_stop_on_numeric_age_of_90_or_more(age):
+def test_disclosure_transforms_flag_numeric_age_of_90_or_more(age, caplog):
     df = pd.DataFrame({"record_id": ["a", "b"], "age": ["45", age]})
-    with pytest.raises(ValueError, match="records b"):
-        BIDSDataset._apply_disclosure_transforms(df)
+    with caplog.at_level("WARNING"):
+        out = BIDSDataset._apply_disclosure_transforms(df)
+    assert list(out.age) == ["45", age]
+    assert "QA REVIEW REQUIRED: age: 1 numeric value(s)" in caplog.text and "records b" in caplog.text
