@@ -466,16 +466,16 @@ def test_participant_with_only_feature_output_is_kept(tmp_path):
 
 def test_disclosure_transforms_top_code_age_and_group_rare_answers():
     df = pd.DataFrame({
-        "record_id": ["a", "b", "c", "d"],
-        "age": ["89", "90", "97.0", None],
-        "gender_identity": ["Female gender identity", "Other", "Non-binary or genderqueer gender identity", None],
-        "sex_assigned_at_birth": ["Male", "Intersex", "Unknown", "Prefer not to answer"],
+        "record_id": ["a", "b", "c", "d", "e"],
+        "age": ["89", "90", "97.0", None, "90 and above"],
+        "gender_identity": ["Female gender identity", "Other", "Non-binary or genderqueer gender identity", None, None],
+        "sex_assigned_at_birth": ["Male", "Intersex", "Unknown", "Prefer not to answer", None],
     })
     out = BIDSDataset._apply_disclosure_transforms(df)
     vals = lambda col: [v if isinstance(v, str) else None for v in out[col]]
-    assert vals("age") == ["89", "90", "90", None]
+    assert vals("age") == ["89", "90.0", "90.0", None, "90.0"]
     assert vals("gender_identity") == ["Female gender identity", "Prefer not to answer",
-                                       "Non-binary or genderqueer gender identity", None]
+                                       "Non-binary or genderqueer gender identity", None, None]
     assert vals("sex_assigned_at_birth") == ["Male", "Prefer not to answer", "Prefer not to answer",
-                                               "Prefer not to answer"]
-    assert [v if isinstance(v, str) else None for v in df.age] == ["89", "90", "97.0", None]  # input untouched
+                                               "Prefer not to answer", None]
+    assert [v if isinstance(v, str) else None for v in df.age] == ["89", "90", "97.0", None, "90 and above"]  # input untouched

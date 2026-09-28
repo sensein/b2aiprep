@@ -980,17 +980,20 @@ class BIDSDataset:
     def _apply_disclosure_transforms(df: pd.DataFrame) -> pd.DataFrame:
         """Top-code ``age`` at 90 and group rare gender/sex answers under "Prefer not to answer".
 
-        Ages of 90 or more become 90, meaning "90 or older" (HIPAA Safe Harbor). For
+        Ages of 90 or more, including REDCap's "90 and above" label, become "90.0", meaning "90 or
+        older" (HIPAA Safe Harbor), in the column's usual one-decimal format. For
         ``gender_identity`` "Other", and for ``sex_assigned_at_birth`` "Intersex"/"Unknown", the answer
         becomes "Prefer not to answer"; ``sex_at_birth`` is derived from the transformed value.
         Affected records are logged for QA (the log stays with the job output).
         """
         df = df.copy()
         if "age" in df.columns:
-            age = pd.to_numeric(df["age"], errors="coerce")
+            # Leading number, so REDCap's own bucket labels ("90 and above", "90+") are caught too.
+            age = pd.to_numeric(df["age"].astype(str).str.extract(r"^\s*(\d+(?:\.\d+)?)", expand=False),
+                                errors="coerce")
             over = age >= BIDSDataset._AGE_TOP_CODE
             if over.any():
-                df.loc[over, "age"] = str(BIDSDataset._AGE_TOP_CODE)
+                df.loc[over, "age"] = f"{BIDSDataset._AGE_TOP_CODE}.0"
                 _LOGGER.warning("age: top-coded %d value(s) at %d (records %s).", int(over.sum()),
                                 BIDSDataset._AGE_TOP_CODE, ", ".join(sorted(set(df.loc[over, "record_id"].astype(str)))))
         for column, rare in BIDSDataset._GROUPED_AS_NO_ANSWER.items():
