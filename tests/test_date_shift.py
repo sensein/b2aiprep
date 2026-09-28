@@ -464,18 +464,25 @@ def test_participant_with_only_feature_output_is_kept(tmp_path):
     assert list(out.rglob("*free-speech-1_features.pt"))
 
 
-def test_disclosure_transforms_top_code_age_and_group_rare_answers():
+def test_disclosure_transforms_group_rare_answers_and_pass_redcap_age_label():
     df = pd.DataFrame({
         "record_id": ["a", "b", "c", "d", "e"],
-        "age": ["89", "90", "97.0", None, "90 and above"],
+        "age": ["89", "89.0", None, "90 and above", "18"],
         "gender_identity": ["Female gender identity", "Other", "Non-binary or genderqueer gender identity", None, None],
         "sex_assigned_at_birth": ["Male", "Intersex", "Unknown", "Prefer not to answer", None],
     })
     out = BIDSDataset._apply_disclosure_transforms(df)
     vals = lambda col: [v if isinstance(v, str) else None for v in out[col]]
-    assert vals("age") == ["89", "90 and above", "90 and above", None, "90 and above"]
+    assert vals("age") == ["89", "89.0", None, "90 and above", "18"]
     assert vals("gender_identity") == ["Female gender identity", "Prefer not to answer",
                                        "Non-binary or genderqueer gender identity", None, None]
     assert vals("sex_assigned_at_birth") == ["Male", "Prefer not to answer", "Prefer not to answer",
                                                "Prefer not to answer", None]
-    assert [v if isinstance(v, str) else None for v in df.age] == ["89", "90", "97.0", None, "90 and above"]  # input untouched
+    assert [v if isinstance(v, str) else None for v in df.gender_identity][1] == "Other"  # input untouched
+
+
+@pytest.mark.parametrize("age", ["90", "97.0"])
+def test_disclosure_transforms_stop_on_numeric_age_of_90_or_more(age):
+    df = pd.DataFrame({"record_id": ["a", "b"], "age": ["45", age]})
+    with pytest.raises(ValueError, match="records b"):
+        BIDSDataset._apply_disclosure_transforms(df)
