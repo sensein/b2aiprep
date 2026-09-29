@@ -549,3 +549,38 @@ def test_session_hour_check_lists_in_clinic_sessions_outside_clinic_hours(caplog
         BIDSDataset._check_session_hours(df)
     assert "1 in-clinic session(s) of 3 started outside 07:00-19:59" in caplog.text
     assert "p1 S1 (02h)" in caplog.text and "S3" not in caplog.text
+
+
+def test_days_since_surgery_measures_to_the_forms_session(caplog):
+    mc = "Q - Pediatric - Generic Medical Conditions"
+    df = pd.DataFrame([
+        {"record_id": "c1", "redcap_repeat_instrument": "Session", "session_id": "S1",
+         "session_started_at": "2100-01-05T23:30:00-05:00"},  # local date 2100-01-05, not the UTC date
+        {"record_id": "c1", "redcap_repeat_instrument": mc, "peds_mc_session_id": "S1",
+         "peds_mc_tonsillectomy_date": "2099-12-29", "peds_mc_etp_procedure_date": "2100-01-07"},
+        {"record_id": "c2", "redcap_repeat_instrument": mc, "peds_mc_session_id": "S9",
+         "peds_mc_tonsillectomy_date": "2099-01-01", "peds_mc_etp_procedure_date": None},
+        {"record_id": "c3", "redcap_repeat_instrument": "Participant", "age": "4"},
+        {"record_id": "c3", "redcap_repeat_instrument": "Session", "session_id": "S3",
+         "session_started_at": "2100-01-05T10:00:00-05:00"},
+        {"record_id": "c3", "redcap_repeat_instrument": mc, "peds_mc_session_id": "S3",
+         "peds_mc_tonsillectomy_date": "2090-01-05", "peds_mc_etp_procedure_date": "2098-01-05"},
+    ], dtype=object)
+    with caplog.at_level("WARNING"):
+        out = BIDSDataset._add_days_since_surgery(df)
+    assert _na(out.peds_mc_tonsillectomy_days_since) == [None, "7", None, None, None, "3652"]
+    assert _na(out.peds_mc_etp_procedure_days_since) == [None, "-2", None, None, None, "730"]
+    assert "peds_mc_adenoidectomy_days_since" not in out.columns  # source column absent
+    assert "1 surgery date(s) after the session: c1 peds_mc_etp_procedure_date" in caplog.text
+    assert "1 surgery date(s) with no dated session" in caplog.text
+    assert "1 surgery date(s) before the participant was born" in caplog.text
+    assert "c3 peds_mc_tonsillectomy_date (3652 days, age 4)" in caplog.text
+
+
+def test_every_surgery_date_has_a_derived_field_map_row():
+    fm = BIDSDataset._load_reorganization_file(exclude_dropped=False)
+    shifted = set(fm.loc[fm.date_shift == "YES", "column_name_source"])
+    assert set(BIDSDataset._SURGERY_DATE_COLUMNS) <= shifted
+    rows = fm.set_index("column_name_source")
+    for out in BIDSDataset._SURGERY_DATE_COLUMNS.values():
+        assert rows.loc[out, "source"] == "pipeline" and rows.loc[out, "disposition"] == "internal"

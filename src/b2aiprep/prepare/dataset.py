@@ -44,6 +44,7 @@ from tqdm import tqdm
 from b2aiprep.prepare.constants import RepeatInstrument, Instrument
 from b2aiprep.prepare.date_shift import (
     parse_utc_timestamp,
+    row_sessions,
     self_administered_sessions,
     shift_dates,
 )
@@ -1059,6 +1060,90 @@ class BIDSDataset:
             df[column] = pd.Series([hour(v) for v in values], index=df.index, dtype="object")
         return df
 
+    # Surgery dates (all on the pediatric medical-conditions form) and the derived column for each.
+    _SURGERY_DATE_COLUMNS = {
+        "peds_mc_tonsillectomy_date": "peds_mc_tonsillectomy_days_since",
+        "peds_mc_adenoidectomy_date": "peds_mc_adenoidectomy_days_since",
+        "peds_mc_lingual_tonsillectomy_date": "peds_mc_lingual_tonsillectomy_days_since",
+        "peds_mc_etp_procedure_date": "peds_mc_etp_procedure_days_since",
+        "peds_mc_neck_mass_thyroglossal_duct_cyst_surgery_date": "peds_mc_neck_mass_thyroglossal_duct_cyst_surgery_days_since",
+        "peds_mc_neck_mass_branchial_cleft_cyst_surgery_date": "peds_mc_neck_mass_branchial_cleft_cyst_surgery_days_since",
+        "peds_mc_neck_mass_dermoid_cyst_surgery_date": "peds_mc_neck_mass_dermoid_cyst_surgery_days_since",
+        "peds_mc_neck_mass_hyroid_nodule_or_cancer_surgery_date": "peds_mc_neck_mass_hyroid_nodule_or_cancer_surgery_days_since",
+        "peds_mc_neck_mass_enlarged_lymph_node_surgery_date": "peds_mc_neck_mass_enlarged_lymph_node_surgery_days_since",
+        # "Has your child ever had any neurological or orthopedic surgeries that could affect breathing or speech?"
+        "peds_mc_no_surgeries_procedure_date": "peds_mc_no_surgeries_procedure_days_since",
+    }
+
+    @staticmethod
+    def _add_days_since_surgery(df: pd.DataFrame) -> pd.DataFrame:
+        """Add ``<surgery>_days_since`` for every surgery date: days from the surgery to the session.
+
+        The reference is the local start date of the session the form belongs to. Both dates are
+        read after the shift, which moves all of a participant's dates by the same whole weeks, so
+        the difference is the real one. Blank when either date is missing (including dates the
+        shift blanked). A negative value (surgery after the session), or one longer than the
+        participant has been alive (numeric ``age`` + 1 years), is kept and logged for QA.
+        """
+        df = df.copy()
+        columns = {src: out for src, out in BIDSDataset._SURGERY_DATE_COLUMNS.items() if src in df.columns}
+        if not columns:
+            return df
+        session_date: t.Dict[str, datetime.date] = {}
+        if {"session_id", "session_started_at"} <= set(df.columns):
+            is_session = df["redcap_repeat_instrument"] == RepeatInstrument.SESSION.value.text
+            for session_id, value in zip(df.loc[is_session, "session_id"], df.loc[is_session, "session_started_at"]):
+                if not isinstance(session_id, str) or not isinstance(value, str) or not value.strip():
+                    continue
+                try:
+                    day = datetime.datetime.fromisoformat(value.strip()).date()
+                except ValueError:
+                    continue
+                if session_id not in session_date or day < session_date[session_id]:
+                    session_date[session_id] = day
+        reference = row_sessions(df).map(session_date)
+        age: t.Dict[str, float] = {}
+        if "age" in df.columns:
+            numeric_age = pd.to_numeric(df["age"], errors="coerce")
+            age = {r: a for r, a in zip(df["record_id"], numeric_age) if pd.notna(a) and r not in age}
+        negative: t.List[str] = []
+        before_birth: t.List[str] = []
+        no_reference = 0
+        for src, out in columns.items():
+            values: t.List[t.Any] = []
+            for record_id, value, ref in zip(df["record_id"], df[src], reference):
+                if not isinstance(value, str) or not value.strip():
+                    values.append(pd.NA)
+                    continue
+                if not isinstance(ref, datetime.date):
+                    no_reference += 1
+                    values.append(pd.NA)
+                    continue
+                try:
+                    days = (ref - datetime.date.fromisoformat(value.strip())).days
+                except ValueError:
+                    values.append(pd.NA)
+                    continue
+                if days < 0:
+                    negative.append(f"{record_id} {src}")
+                elif record_id in age and days > (age[record_id] + 1) * 365.25:
+                    before_birth.append(f"{record_id} {src} ({days} days, age {age[record_id]:g})")
+                values.append(str(days))
+            df[out] = pd.Series(values, index=df.index, dtype="object")
+        _LOGGER.info("days since surgery: %d value(s) computed over %d surgery date column(s).",
+                     int(sum(df[out].notna().sum() for out in columns.values())), len(columns))
+        if no_reference:
+            _LOGGER.warning("days since surgery: %d surgery date(s) with no dated session to measure from; left blank.",
+                            no_reference)
+        if negative:
+            # IDs are listed for QA; this log lives with the job output, outside the BIDS tree.
+            _LOGGER.warning("QA check: days since surgery: %d surgery date(s) after the session: %s",
+                            len(negative), "; ".join(negative))
+        if before_birth:
+            _LOGGER.warning("QA check: days since surgery: %d surgery date(s) before the participant was born "
+                            "(more days than age + 1 years): %s", len(before_birth), "; ".join(before_birth))
+        return df
+
     # In-clinic sessions normally start between 07:00 and 19:59 local time (1,919 of 1,928 adult
     # sessions in the 2026-09-04 export).
     _CLINIC_HOURS = range(7, 20)
@@ -1152,6 +1237,7 @@ class BIDSDataset:
         df = BIDSDataset._add_recording_order_and_gaps(df)
         df, report = shift_dates(df, date_columns, date_shift_anchor)
         df = BIDSDataset._add_local_hours(df)
+        df = BIDSDataset._add_days_since_surgery(df)
         BIDSDataset._check_session_hours(df)
         df = BIDSDataset._apply_disclosure_transforms(df)
 

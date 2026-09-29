@@ -210,6 +210,11 @@ def _session_links(df: pd.DataFrame) -> t.Tuple[pd.Series, t.Set[str]]:
     return row_session, self_administered
 
 
+def row_sessions(df: pd.DataFrame) -> pd.Series:
+    """The session each row belongs to (``session_id`` or its form's ``<prefix>_session_id``)."""
+    return _session_links(df)[0]
+
+
 def self_administered_sessions(df: pd.DataFrame) -> t.Set[str]:
     """Sessions with any row the participant completed themselves (``*_via`` = Participant)."""
     return _session_links(df)[1]
