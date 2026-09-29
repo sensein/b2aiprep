@@ -889,7 +889,7 @@ demographics_schema,demographics,race,race,demographics,Which race category best
 demographics_schema,demographics,roommate,roommate,demographics,Roommate(s),NO,release,VARIABLE,redcap,pre-v4,NO,NO
 demographics_schema,demographics,self_care,self_care,demographics,Do you have difficulty dressing or bathing?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 demographics_schema,demographics,sex_assigned_at_birth,sex_assigned_at_birth,demographics,What was your sex assigned at birth?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-demographics_schema,demographics,sex_at_birth,sex_at_birth,demographics,Sex assigned at birth: the participant's answer to sex_assigned_at_birth where given; otherwise the male/female gender identity of a participant who specified it as Cis (same as the sex assigned at birth). Nothing is inferred from a Trans answer.,NO,release,VARIABLE,pipeline,v4,NO,NO
+demographics_schema,demographics,sex_at_birth,sex_at_birth,demographics,"Sex assigned at birth, from the participant's own answers.",NO,release,VARIABLE,pipeline,pre-v4,NO,NO
 demographics_schema,demographics,sexual_orientation,sexual_orientation,demographics,What is your sexual orientation?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 demographics_schema,demographics,specify_gender_identity,specify_gender_identity,demographics,Please specify gender identity,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 demographics_schema,demographics,spouse_partner_sig_other,spouse_partner_sig_other,demographics,Spouse/partner/significant other,NO,release,VARIABLE,redcap,pre-v4,NO,NO
