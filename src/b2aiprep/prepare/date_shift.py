@@ -221,11 +221,15 @@ def self_administered_sessions(df: pd.DataFrame) -> t.Set[str]:
 
 
 def session_timezones(
-    df: pd.DataFrame,
+    df: pd.DataFrame, also_self_administered: t.Iterable[str] = (),
 ) -> t.Tuple[t.Dict[str, ZoneInfo], Counter, t.Dict[str, str]]:
-    """Session -> zone where it happened, counts by source, and sessions left without a zone."""
+    """Session -> zone where it happened, counts by source, and sessions left without a zone.
+
+    *also_self_administered* adds sessions known to be self-administered from rows no longer in
+    *df* (the microphone check, dropped before ingest).
+    """
     sessions = df.loc[df["redcap_repeat_instrument"] == SESSION_INSTRUMENT]
-    _, self_administered = _session_links(df)
+    self_administered = _session_links(df)[1] | set(also_self_administered)
     homes = home_timezones(df)
     site_of = (
         df.loc[_column(df, SITE_COLUMN).notna(), ["record_id", SITE_COLUMN]]
@@ -320,11 +324,15 @@ def check_anchor(anchor: datetime.date, offsets: t.Dict[str, int], firsts: t.Lis
 
 
 def shift_dates(
-    df: pd.DataFrame, date_columns: t.Iterable[str], anchor: t.Optional[datetime.date]
+    df: pd.DataFrame,
+    date_columns: t.Iterable[str],
+    anchor: t.Optional[datetime.date],
+    also_self_administered: t.Iterable[str] = (),
 ) -> t.Tuple[pd.DataFrame, dict]:
     """Return a copy of *df* with every *date_columns* value shifted or blanked, and a report.
 
     With no *anchor*, every value is blanked: the caller asked for no dates.
+    *also_self_administered*: see :func:`session_timezones`.
     """
     df = df.copy()
     columns = [c for c in date_columns if c in df.columns]
@@ -333,7 +341,7 @@ def shift_dates(
     if anchor is None:
         offsets, skipped, zones = {}, {}, {}
     else:
-        zones, zone_sources, unresolved = session_timezones(df)
+        zones, zone_sources, unresolved = session_timezones(df, also_self_administered)
         offsets, skipped = participant_offsets(df, anchor, zones)
 
     # A row is localized in its own session's zone; rows tied to no session (the participant's

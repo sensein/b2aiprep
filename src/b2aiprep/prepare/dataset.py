@@ -295,7 +295,11 @@ class BIDSDataset:
 
         if drop_audio_check:
             redcap_dataset = copy(redcap_dataset)
+            # Who ran a session is read from its rows' *_via; a session abandoned after a
+            # self-administered microphone check has no other row saying so.
+            self_administered = self_administered_sessions(redcap_dataset.df)
             redcap_dataset.df = BIDSDataset._drop_audio_check_rows(redcap_dataset.df)
+            redcap_dataset.metadata = {**redcap_dataset.metadata, "self_administered_sessions": self_administered}
 
         redcap_dataset = BIDSDataset._apply_field_map_at_ingest(
             redcap_dataset, date_shift_anchor, date_shift_log, outdir
@@ -1149,7 +1153,7 @@ class BIDSDataset:
     _CLINIC_HOURS = range(7, 20)
 
     @staticmethod
-    def _check_session_hours(df: pd.DataFrame) -> None:
+    def _check_session_hours(df: pd.DataFrame, also_self_administered: t.Iterable[str] = ()) -> None:
         """Log in-clinic sessions that start outside clinic hours, for QA. Nothing is changed.
 
         A start at night in the site's time zone can mean a test or re-recorded session, a session
@@ -1158,7 +1162,7 @@ class BIDSDataset:
         """
         if not {"session_local_hour", "session_id", "redcap_repeat_instrument"} <= set(df.columns):
             return
-        remote = self_administered_sessions(df)
+        remote = self_administered_sessions(df) | set(also_self_administered)
         sessions = df.loc[
             (df["redcap_repeat_instrument"] == RepeatInstrument.SESSION.value.text)
             & df["session_id"].notna() & ~df["session_id"].isin(remote),
@@ -1233,12 +1237,13 @@ class BIDSDataset:
             field_map["date_shift"].astype(str).str.upper() == "YES", "column_name_source"
         ].tolist()
         # Ordered on the real start times, which the shift below replaces.
+        self_administered = redcap_dataset.metadata.get("self_administered_sessions", set())
         df = BIDSDataset._add_session_index(redcap_dataset.df)
         df = BIDSDataset._add_recording_order_and_gaps(df)
-        df, report = shift_dates(df, date_columns, date_shift_anchor)
+        df, report = shift_dates(df, date_columns, date_shift_anchor, self_administered)
         df = BIDSDataset._add_local_hours(df)
         df = BIDSDataset._add_days_since_surgery(df)
-        BIDSDataset._check_session_hours(df)
+        BIDSDataset._check_session_hours(df, self_administered)
         df = BIDSDataset._apply_disclosure_transforms(df)
 
         # A source column is removed only when no row keeps it (shared with instrument selection).

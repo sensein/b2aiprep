@@ -584,3 +584,21 @@ def test_every_surgery_date_has_a_derived_field_map_row():
     rows = fm.set_index("column_name_source")
     for out in BIDSDataset._SURGERY_DATE_COLUMNS.values():
         assert rows.loc[out, "source"] == "pipeline" and rows.loc[out, "disposition"] == "internal"
+
+
+def test_sessions_self_administered_only_in_dropped_rows_use_the_home_time_zone():
+    # The only "Participant" row was the microphone check, dropped before ingest (Data Collector here).
+    df = _remote_frame(zipcode="90210", via="Data Collector")
+    as_site, _ = shift_dates(df, ["session_started_at"], ANCHOR)
+    as_home, _ = shift_dates(df, ["session_started_at"], ANCHOR, also_self_administered={"s1"})
+    # 2024-07-01 20:00Z: 16:00 at MIT (EDT), 13:00 in Beverly Hills (PDT)
+    assert as_site.loc[0, "session_started_at"].endswith("T16:00:00-04:00")
+    assert as_home.loc[0, "session_started_at"].endswith("T13:00:00-07:00")
+
+
+def test_session_hour_check_skips_sessions_self_administered_in_dropped_rows(caplog):
+    df = pd.DataFrame([{"record_id": "p1", "redcap_repeat_instrument": "Session", "session_id": "S1",
+                        "session_local_hour": "0"}], dtype=object)
+    with caplog.at_level("WARNING"):
+        BIDSDataset._check_session_hours(df, also_self_administered={"S1"})
+    assert "session hours" not in caplog.text
