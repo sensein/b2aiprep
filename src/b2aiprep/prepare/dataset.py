@@ -42,7 +42,11 @@ from soundfile import LibsndfileError
 from tqdm import tqdm
 
 from b2aiprep.prepare.constants import RepeatInstrument, Instrument
-from b2aiprep.prepare.date_shift import parse_utc_timestamp, shift_dates
+from b2aiprep.prepare.date_shift import (
+    parse_utc_timestamp,
+    self_administered_sessions,
+    shift_dates,
+)
 from b2aiprep.prepare.update import build_activity_payload
 from b2aiprep.prepare.utils import (
     copy_package_resource,
@@ -1055,6 +1059,37 @@ class BIDSDataset:
             df[column] = pd.Series([hour(v) for v in values], index=df.index, dtype="object")
         return df
 
+    # In-clinic sessions normally start between 07:00 and 19:59 local time (1,919 of 1,928 adult
+    # sessions in the 2026-09-04 export).
+    _CLINIC_HOURS = range(7, 20)
+
+    @staticmethod
+    def _check_session_hours(df: pd.DataFrame) -> None:
+        """Log in-clinic sessions that start outside clinic hours, for QA. Nothing is changed.
+
+        A start at night in the site's time zone can mean a test or re-recorded session, a session
+        that was really self-administered elsewhere, or a wrong time zone; only the site can say.
+        Self-administered sessions are not checked: participants record at any hour.
+        """
+        if not {"session_local_hour", "session_id", "redcap_repeat_instrument"} <= set(df.columns):
+            return
+        remote = self_administered_sessions(df)
+        sessions = df.loc[
+            (df["redcap_repeat_instrument"] == RepeatInstrument.SESSION.value.text)
+            & df["session_id"].notna() & ~df["session_id"].isin(remote),
+            ["record_id", "session_id", "session_local_hour"],
+        ].drop_duplicates("session_id")
+        hour = pd.to_numeric(sessions["session_local_hour"], errors="coerce")
+        odd = sessions[hour.notna() & ~hour.isin(BIDSDataset._CLINIC_HOURS)]
+        if len(odd):
+            # IDs are listed for QA; this log lives with the job output, outside the BIDS tree.
+            _LOGGER.warning(
+                "QA check: session hours: %d in-clinic session(s) of %d started outside %02d:00-%02d:59 local "
+                "time; confirm with the site: %s", len(odd), len(sessions), BIDSDataset._CLINIC_HOURS.start,
+                BIDSDataset._CLINIC_HOURS.stop - 1,
+                "; ".join(f"{r} {s} ({int(h):02d}h)" for r, s, h in
+                          zip(odd["record_id"], odd["session_id"], pd.to_numeric(odd["session_local_hour"]))))
+
     # Transforms the ethics review asked for (2026-09-28): answers so rare they could identify someone
     # are folded into a broader answer before anything is written.
     _AGE_REVIEW_THRESHOLD = 90
@@ -1117,6 +1152,7 @@ class BIDSDataset:
         df = BIDSDataset._add_recording_order_and_gaps(df)
         df, report = shift_dates(df, date_columns, date_shift_anchor)
         df = BIDSDataset._add_local_hours(df)
+        BIDSDataset._check_session_hours(df)
         df = BIDSDataset._apply_disclosure_transforms(df)
 
         # A source column is removed only when no row keeps it (shared with instrument selection).

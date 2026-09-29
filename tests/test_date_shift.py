@@ -534,3 +534,18 @@ def test_ingest_adds_derived_session_and_recording_fields(tmp_path):
     assert out.df.loc[0, "session_local_hour"] == "16" and out.df.loc[1, "recording_local_hour"] == "16"
     assert out.df.loc[1, "recording_order"] == "1"
     assert _na([out.df.loc[0, "session_seconds_since_previous"], out.df.loc[1, "recording_seconds_since_previous"]]) == [None, None]
+
+
+def test_session_hour_check_lists_in_clinic_sessions_outside_clinic_hours(caplog):
+    df = pd.DataFrame([
+        {"record_id": "p1", "redcap_repeat_instrument": "Session", "session_id": "S1", "session_local_hour": "2"},
+        {"record_id": "p1", "redcap_repeat_instrument": "Session", "session_id": "S2", "session_local_hour": "19"},
+        {"record_id": "p2", "redcap_repeat_instrument": "Session", "session_id": "S3", "session_local_hour": "23"},
+        {"record_id": "p2", "redcap_repeat_instrument": "Recording", "recording_session_id": "S3",
+         "recording_via": "Participant"},
+        {"record_id": "p3", "redcap_repeat_instrument": "Session", "session_id": "S4", "session_local_hour": None},
+    ], dtype=object)
+    with caplog.at_level("WARNING"):
+        BIDSDataset._check_session_hours(df)
+    assert "1 in-clinic session(s) of 3 started outside 07:00-19:59" in caplog.text
+    assert "p1 S1 (02h)" in caplog.text and "S3" not in caplog.text

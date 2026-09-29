@@ -210,6 +210,11 @@ def _session_links(df: pd.DataFrame) -> t.Tuple[pd.Series, t.Set[str]]:
     return row_session, self_administered
 
 
+def self_administered_sessions(df: pd.DataFrame) -> t.Set[str]:
+    """Sessions with any row the participant completed themselves (``*_via`` = Participant)."""
+    return _session_links(df)[1]
+
+
 def session_timezones(
     df: pd.DataFrame,
 ) -> t.Tuple[t.Dict[str, ZoneInfo], Counter, t.Dict[str, str]]:
