@@ -967,6 +967,94 @@ class BIDSDataset:
                             len(undated), ", ".join(undated))
         return df
 
+    @staticmethod
+    def _add_recording_order_and_gaps(df: pd.DataFrame) -> pd.DataFrame:
+        """Add ``session_seconds_since_previous``, ``recording_order`` and ``recording_seconds_since_previous``.
+
+        Computed on the real start times, before dates are shifted; the shift moves all of a
+        participant's times by the same whole weeks, so the intervals would be the same after it.
+
+        - ``session_seconds_since_previous``: whole seconds from the participant's previous dated
+          session's start. Blank for the first dated session and for a session without a start time.
+        - ``recording_order``: order of the recording within its session by start time (1 = first),
+          ties broken by recording ID. Blank for a recording without a start time: nothing says
+          when it happened. Numbers are kept as computed here, so removing a recording later
+          leaves a gap rather than renumbering the rest.
+        - ``recording_seconds_since_previous``: whole seconds from the previous dated recording's
+          start in the same session. Blank for the first dated recording and for an undated one.
+
+        Values are strings, like ``session_index``.
+        """
+        df = df.copy()
+        for column in ("session_seconds_since_previous", "recording_order", "recording_seconds_since_previous"):
+            df[column] = pd.Series(pd.NA, index=df.index, dtype="object")
+        if "redcap_repeat_instrument" not in df.columns:
+            return df
+
+        def seconds(later: datetime.datetime, earlier: datetime.datetime) -> str:
+            return str(int(round((later - earlier).total_seconds())))
+
+        if {"session_id", "session_started_at"} <= set(df.columns):
+            is_session = (df["redcap_repeat_instrument"] == RepeatInstrument.SESSION.value.text) & df["session_id"].notna()
+            sessions = df.loc[is_session, ["record_id", "session_id"]].assign(
+                started=df.loc[is_session, "session_started_at"].map(parse_utc_timestamp))
+            gap: t.Dict[t.Tuple[str, str], str] = {}
+            for record_id, rows in sessions.dropna(subset=["started"]).groupby("record_id", sort=False):
+                first = rows.groupby("session_id")["started"].min().sort_values(kind="stable")
+                for (_, prev), (session_id, ts) in zip(first.items(), list(first.items())[1:]):
+                    gap[(record_id, session_id)] = seconds(ts, prev)
+            df.loc[is_session, "session_seconds_since_previous"] = [
+                gap.get((r, s), pd.NA) for r, s in zip(sessions["record_id"], sessions["session_id"])
+            ]
+
+        if {"recording_id", "recording_session_id", "recording_created_at"} <= set(df.columns):
+            is_recording = (df["redcap_repeat_instrument"] == RepeatInstrument.RECORDING.value.text) & df["recording_id"].notna()
+            recordings = df.loc[is_recording, ["record_id", "recording_session_id", "recording_id"]].assign(
+                created=df.loc[is_recording, "recording_created_at"].map(parse_utc_timestamp))
+            undated = recordings.loc[recordings["created"].isna(), "recording_id"].astype(str).tolist()
+            dated = recordings.dropna(subset=["created"]).sort_values(["created", "recording_id"], kind="stable")
+            order: t.Dict[t.Any, str] = {}
+            gap_rec: t.Dict[t.Any, str] = {}
+            for _, rows in dated.groupby(["record_id", "recording_session_id"], sort=False):
+                previous = None
+                for number, (row_index, ts) in enumerate(rows["created"].items(), start=1):
+                    order[row_index] = str(number)
+                    if previous is not None:
+                        gap_rec[row_index] = seconds(ts, previous)
+                    previous = ts
+            df.loc[is_recording, "recording_order"] = [order.get(i, pd.NA) for i in recordings.index]
+            df.loc[is_recording, "recording_seconds_since_previous"] = [gap_rec.get(i, pd.NA) for i in recordings.index]
+            _LOGGER.info("recording_order: ordered %d of %d recording(s).", len(order), len(recordings))
+            if undated:
+                # IDs are listed for QA; this log lives with the job output, outside the BIDS tree.
+                _LOGGER.warning("recording_order: %d recording(s) without a start time, left unordered: %s",
+                                len(undated), ", ".join(sorted(undated)))
+        return df
+
+    @staticmethod
+    def _add_local_hours(df: pd.DataFrame) -> pd.DataFrame:
+        """Add ``session_local_hour`` and ``recording_local_hour``: the hour (0-23) of the start time.
+
+        Read from the shifted times, which are local wall-clock time; the shift is in whole weeks,
+        so the hour is the real local hour. Blank where the shifted time is blank (no time zone,
+        no date offset, or no start time).
+        """
+        df = df.copy()
+        for source, column in (("session_started_at", "session_local_hour"),
+                               ("recording_created_at", "recording_local_hour")):
+            values = df[source] if source in df.columns else pd.Series(None, index=df.index, dtype="object")
+
+            def hour(value: t.Any) -> t.Any:
+                if not isinstance(value, str) or not value.strip():
+                    return pd.NA
+                try:
+                    return str(datetime.datetime.fromisoformat(value.strip()).hour)
+                except ValueError:
+                    return pd.NA
+
+            df[column] = pd.Series([hour(v) for v in values], index=df.index, dtype="object")
+        return df
+
     # Transforms the ethics review asked for (2026-09-28): answers so rare they could identify someone
     # are folded into a broader answer before anything is written.
     _AGE_REVIEW_THRESHOLD = 90
@@ -1026,7 +1114,9 @@ class BIDSDataset:
         ].tolist()
         # Ordered on the real start times, which the shift below replaces.
         df = BIDSDataset._add_session_index(redcap_dataset.df)
+        df = BIDSDataset._add_recording_order_and_gaps(df)
         df, report = shift_dates(df, date_columns, date_shift_anchor)
+        df = BIDSDataset._add_local_hours(df)
         df = BIDSDataset._apply_disclosure_transforms(df)
 
         # A source column is removed only when no row keeps it (shared with instrument selection).

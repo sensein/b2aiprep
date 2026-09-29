@@ -488,3 +488,49 @@ def test_disclosure_transforms_flag_numeric_age_of_90_or_more(age, caplog):
         out = BIDSDataset._apply_disclosure_transforms(df)
     assert list(out.age) == ["45", age]
     assert "QA REVIEW REQUIRED: age: 1 numeric value(s)" in caplog.text and "records b" in caplog.text
+
+
+def _na(values):
+    return [v if isinstance(v, str) else None for v in values]
+
+
+def test_recording_order_and_gaps_use_real_times_and_leave_undated_blank(caplog):
+    rows = [
+        ("Session", {"session_id": "S2", "session_started_at": "2024-07-01T17:00:00Z"}),
+        ("Session", {"session_id": "S1", "session_started_at": "2024-07-01T16:00:00Z"}),
+        ("Session", {"session_id": "S1", "session_started_at": None}),  # repeated row of S1
+        ("Session", {"session_id": "S3", "session_started_at": None}),
+        ("Recording", {"recording_session_id": "S1", "recording_id": "R2", "recording_created_at": "2024-07-01T16:01:00Z"}),
+        ("Recording", {"recording_session_id": "S1", "recording_id": "R1", "recording_created_at": "2024-07-01T16:01:00Z"}),
+        ("Recording", {"recording_session_id": "S1", "recording_id": "R4", "recording_created_at": None}),
+        ("Recording", {"recording_session_id": "S1", "recording_id": "R3", "recording_created_at": "2024-07-01T16:01:30.400Z"}),
+        ("Recording", {"recording_session_id": "S2", "recording_id": "R5", "recording_created_at": "2024-07-01T17:02:00Z"}),
+    ]
+    df = pd.DataFrame([{"record_id": "p1", "redcap_repeat_instrument": i, **v} for i, v in rows], dtype=object)
+    with caplog.at_level("WARNING"):
+        out = BIDSDataset._add_recording_order_and_gaps(df)
+    assert _na(out.session_seconds_since_previous) == ["3600", None, None, None] + [None] * 5
+    assert _na(out.recording_order) == [None] * 4 + ["2", "1", None, "3", "1"]
+    assert _na(out.recording_seconds_since_previous) == [None] * 4 + ["0", None, None, "30", None]
+    assert "1 recording(s) without a start time, left unordered: R4" in caplog.text
+    assert "recording_order" not in df.columns  # input untouched
+
+
+def test_local_hours_read_the_shifted_wall_clock_time():
+    df = pd.DataFrame({
+        "session_started_at": ["2100-01-05T13:34:41-05:00", None, "2100-01-05T00:10:00.250+01:00"],
+        "recording_created_at": [None, "2100-01-05T23:59:59-08:00", "not a time"],
+    }, dtype=object)
+    out = BIDSDataset._add_local_hours(df)
+    assert _na(out.session_local_hour) == ["13", None, "0"]
+    assert _na(out.recording_local_hour) == [None, "23", None]
+
+
+def test_ingest_adds_derived_session_and_recording_fields(tmp_path):
+    df = _remote_frame(zipcode="02139")
+    df.loc[1, "recording_id"] = "R1"
+    out = BIDSDataset._apply_field_map_at_ingest(RedCapDataset(df=df, source_type="redcap"), ANCHOR, None, tmp_path)
+    # 20:00Z and 20:05Z on 2024-07-01 are 16:00 and 16:05 in Cambridge, MA (EDT)
+    assert out.df.loc[0, "session_local_hour"] == "16" and out.df.loc[1, "recording_local_hour"] == "16"
+    assert out.df.loc[1, "recording_order"] == "1"
+    assert _na([out.df.loc[0, "session_seconds_since_previous"], out.df.loc[1, "recording_seconds_since_previous"]]) == [None, None]
