@@ -347,7 +347,8 @@ class TestEndToEndAllowlistFiltering:
         (config / "participants_to_include.json").write_text(
             json.dumps(["p1", "p2", "p3"])
         )
-        (config / "id_remapping.json").write_text(json.dumps({}))
+        # identity pseudonyms: deidentify refuses an allowlisted participant without one
+        (config / "id_remapping.json").write_text(json.dumps({p: p for p in ("p1", "p2", "p3")}))
         (config / "audio_filestems_to_remove.json").write_text(json.dumps([]))
         (config / "audio_tasks_to_include.json").write_text(
             json.dumps(["rainbow-passage"])
@@ -587,7 +588,7 @@ class TestParticipantFailureStopsRun:
         bids, config, out = tmp_path / "bids", tmp_path / "config", tmp_path / "out"
         config.mkdir()
         (config / "participants_to_include.json").write_text(json.dumps(["p1", "p2"]))
-        (config / "id_remapping.json").write_text(json.dumps({}))
+        (config / "id_remapping.json").write_text(json.dumps({"p1": "p1", "p2": "p2"}))
         (config / "audio_filestems_to_remove.json").write_text(json.dumps([]))
         (config / "audio_tasks_to_include.json").write_text(json.dumps(["rainbow-passage"]))
         for pid in ("p1", "p2"):
@@ -644,7 +645,7 @@ class TestSidecarDispositions:
         bids, config, out = tmp_path / "bids", tmp_path / "config", tmp_path / "out"
         config.mkdir(parents=True)
         (config / "participants_to_include.json").write_text(json.dumps(["p1"]))
-        (config / "id_remapping.json").write_text(json.dumps({}))
+        (config / "id_remapping.json").write_text(json.dumps({"p1": "p1"}))
         (config / "audio_filestems_to_remove.json").write_text(json.dumps([]))
         (config / "audio_tasks_to_include.json").write_text(json.dumps(["rainbow-passage"]))
         audio_dir = bids / "sub-p1" / "ses-s1" / "audio"

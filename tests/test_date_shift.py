@@ -547,7 +547,7 @@ def test_session_hour_check_lists_in_clinic_sessions_outside_clinic_hours(caplog
     ], dtype=object)
     with caplog.at_level("WARNING"):
         BIDSDataset._check_session_hours(df)
-    assert "1 in-clinic session(s) of 3 started outside 07:00-19:59" in caplog.text
+    assert "1 in-clinic session(s) of 2 started outside 07:00-19:59" in caplog.text  # S4 has no hour
     assert "p1 S1 (02h)" in caplog.text and "S3" not in caplog.text
 
 

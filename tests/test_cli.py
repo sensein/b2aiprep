@@ -92,6 +92,8 @@ class TestDeidentifyCommand:
     def test_deidentify_command_integration(self, temp_bids_dir, temp_output_dir, setup_publish_config):
         """Integration test for the deidentify command without mocking."""
         runner = CliRunner()
+        # deidentify refuses an allowlisted participant without a pseudonym
+        (setup_publish_config / "id_remapping.json").write_text(json.dumps({"p1": "p1"}))
         setup_publish_config = setup_publish_config.as_posix()
         
         # Run the command without mocking (will use actual implementation)
@@ -675,6 +677,7 @@ def test_deidentify_bids_dataset_cli_remove_audio(
     audio_to_remove_path = config_dir / "audio_filestems_to_remove.json"
     with open(audio_to_remove_path, "w") as f:
         json.dump(["sub-001_ses-001_task-reading"], f, indent=2)
+    (config_dir / "id_remapping.json").write_text(json.dumps({"001": "001"}))  # deidentify requires a pseudonym
 
     # Match the task names used in setup_bids_structure + extra task below
     with open(config_dir / "audio_tasks_to_include.json", "w") as f:

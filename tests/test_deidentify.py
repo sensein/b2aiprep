@@ -88,6 +88,8 @@ class TestDeidentifyCommand:
     def test_deidentify_command_integration(self, temp_bids_dir, temp_output_dir, setup_publish_config):
         """Integration test for the deidentify command without mocking."""
         runner = CliRunner()
+        # deidentify refuses an allowlisted participant without a pseudonym
+        (setup_publish_config / "id_remapping.json").write_text(json.dumps({"p1": "p1"}))
         setup_publish_config = setup_publish_config.as_posix()
         
         # Run the command without mocking (will use actual implementation)

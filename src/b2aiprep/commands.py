@@ -674,6 +674,34 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
     )
 
 
+def _unreleasable_columns(tsv_file, columns, field_map):
+    """Issues for columns a release must not contain: internal, drop, date-shifted, or unknown.
+
+    A table is matched to its field-map rows by file name (``demographics.tsv`` -> table
+    ``demographics``), as deidentify writes it. Nothing on disk marks a QA build
+    (``--disposition-level internal/review``, ``--keep-shifted-dates``), so this is what stops
+    one from passing as a release.
+    """
+    table = tsv_file.stem
+    rows = field_map.loc[field_map["schema_name"] == table]
+    if rows.empty:
+        return [f"{tsv_file.name}: table {table!r} is not in the field map"]
+    published = rows["disposition"].isin(["release", "review"]) & (
+        rows["date_shift"].astype(str).str.upper() != "YES"
+    )
+    allowed = set(rows.loc[published, "column_name"].dropna())
+    known = set(rows["column_name"].dropna())
+    ids = set(BIDSDataset._PIPELINE_ID_COLUMNS)
+    withheld = sorted(c for c in columns if c in known and c not in allowed and c not in ids)
+    unknown = sorted(c for c in columns if c not in known and c not in ids)
+    issues = []
+    if withheld:
+        issues.append(f"{tsv_file.name}: {len(withheld)} internal/drop/date column(s) present: {', '.join(withheld)}")
+    if unknown:
+        issues.append(f"{tsv_file.name}: {len(unknown)} column(s) not in the field map: {', '.join(unknown)}")
+    return issues
+
+
 @click.command()
 @click.argument("dataset_path", type=click.Path(exists=True))
 @click.argument("config_dir", type=click.Path(exists=True))
@@ -801,10 +829,12 @@ def validate_bundled_dataset(dataset_path, config_dir):
             issues.append(f"Error reading {parquet_file.name}: {e}")
 
     # 4. Check phenotype files
+    field_map = BIDSDataset._load_reorganization_file(exclude_dropped=False)
     if phenotype_dir.exists():
         for tsv_file in phenotype_dir.rglob("*.tsv"):
             try:
                 df = pd.read_csv(tsv_file, sep="\t", dtype=str)
+                issues.extend(_unreleasable_columns(tsv_file, df.columns, field_map))
                 if "participant_id" in df.columns:
                     present_participants = set(df["participant_id"].dropna().unique())
                     removed_present = _unexpected_participants(present_participants)

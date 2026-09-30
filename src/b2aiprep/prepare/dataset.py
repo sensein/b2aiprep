@@ -992,7 +992,8 @@ class BIDSDataset:
         - ``recording_seconds_since_previous``: whole seconds from the previous dated recording's
           start in the same session. Blank for the first dated recording and for an undated one.
 
-        Values are strings, like ``session_index``.
+        Values are strings, like ``session_index``. A recording without ``recording_session_id``
+        is placed in its acoustic task's session; one with neither is left unordered and logged.
         """
         df = df.copy()
         for column in ("session_seconds_since_previous", "recording_order", "recording_seconds_since_previous"):
@@ -1020,8 +1021,17 @@ class BIDSDataset:
             is_recording = (df["redcap_repeat_instrument"] == RepeatInstrument.RECORDING.value.text) & df["recording_id"].notna()
             recordings = df.loc[is_recording, ["record_id", "recording_session_id", "recording_id"]].assign(
                 created=df.loc[is_recording, "recording_created_at"].map(parse_utc_timestamp))
+            # A recording without its own session ID belongs to its acoustic task's session.
+            if {"recording_acoustic_task_id", "acoustic_task_id", "acoustic_task_session_id"} <= set(df.columns):
+                is_task = df["redcap_repeat_instrument"] == RepeatInstrument.ACOUSTIC_TASK.value.text
+                task_session = dict(zip(df.loc[is_task, "acoustic_task_id"], df.loc[is_task, "acoustic_task_session_id"]))
+                recordings["recording_session_id"] = recordings["recording_session_id"].fillna(
+                    df.loc[is_recording, "recording_acoustic_task_id"].map(task_session))
             undated = recordings.loc[recordings["created"].isna(), "recording_id"].astype(str).tolist()
-            dated = recordings.dropna(subset=["created"]).sort_values(["created", "recording_id"], kind="stable")
+            no_session = recordings.loc[recordings["created"].notna() & recordings["recording_session_id"].isna(),
+                                        "recording_id"].astype(str).tolist()
+            dated = recordings.dropna(subset=["created", "recording_session_id"]).sort_values(
+                ["created", "recording_id"], kind="stable")
             order: t.Dict[t.Any, str] = {}
             gap_rec: t.Dict[t.Any, str] = {}
             for _, rows in dated.groupby(["record_id", "recording_session_id"], sort=False):
@@ -1038,6 +1048,9 @@ class BIDSDataset:
                 # IDs are listed for QA; this log lives with the job output, outside the BIDS tree.
                 _LOGGER.warning("recording_order: %d recording(s) without a start time, left unordered: %s",
                                 len(undated), ", ".join(sorted(undated)))
+            if no_session:
+                _LOGGER.warning("recording_order: %d recording(s) without a session, left unordered: %s",
+                                len(no_session), ", ".join(sorted(no_session)))
         return df
 
     @staticmethod
@@ -1054,7 +1067,8 @@ class BIDSDataset:
             values = df[source] if source in df.columns else pd.Series(None, index=df.index, dtype="object")
 
             def hour(value: t.Any) -> t.Any:
-                if not isinstance(value, str) or not value.strip():
+                # a date-only value ("2100-01-05") has no time of day
+                if not isinstance(value, str) or "T" not in value.strip():
                     return pd.NA
                 try:
                     return str(datetime.datetime.fromisoformat(value.strip()).hour)
@@ -1109,7 +1123,9 @@ class BIDSDataset:
         age: t.Dict[str, float] = {}
         if "age" in df.columns:
             numeric_age = pd.to_numeric(df["age"], errors="coerce")
-            age = {r: a for r, a in zip(df["record_id"], numeric_age) if pd.notna(a) and r not in age}
+            for r, a in zip(df["record_id"], numeric_age):
+                if pd.notna(a):
+                    age.setdefault(r, a)
         negative: t.List[str] = []
         before_birth: t.List[str] = []
         no_reference = 0
@@ -1167,9 +1183,12 @@ class BIDSDataset:
             (df["redcap_repeat_instrument"] == RepeatInstrument.SESSION.value.text)
             & df["session_id"].notna() & ~df["session_id"].isin(remote),
             ["record_id", "session_id", "session_local_hour"],
-        ].drop_duplicates("session_id")
+        ]
+        # A session can span several rows, some without a start time: every dated row counts.
         hour = pd.to_numeric(sessions["session_local_hour"], errors="coerce")
-        odd = sessions[hour.notna() & ~hour.isin(BIDSDataset._CLINIC_HOURS)]
+        sessions = sessions[hour.notna()].assign(hour=hour[hour.notna()])
+        odd = sessions[~sessions["hour"].isin(BIDSDataset._CLINIC_HOURS)].drop_duplicates("session_id")
+        sessions = sessions.drop_duplicates("session_id")
         if len(odd):
             # IDs are listed for QA; this log lives with the job output, outside the BIDS tree.
             _LOGGER.warning(
@@ -1539,15 +1558,21 @@ class BIDSDataset:
     def _names_to_drop_at_level(
         field_map_df: pd.DataFrame, level: DispositionLevel, keep_date_shifted: bool = False
     ) -> t.Set[str]:
-        """Output names whose disposition is above *level* (RELEASE < REVIEW < INTERNAL)."""
-        if level == DispositionLevel.INTERNAL:
-            return set()
-        hierarchy = {"release": 0, "review": 1, "internal": 2}
-        threshold = hierarchy[level.value]
-        drop_dispositions = [d for d, rank in hierarchy.items() if rank > threshold]
-        drop_rows = field_map_df["disposition"].isin(drop_dispositions)
-        if keep_date_shifted and "date_shift" in field_map_df.columns:
-            drop_rows &= field_map_df["date_shift"].astype(str).str.upper() != "YES"
+        """Output names whose disposition is above *level* (RELEASE < REVIEW < INTERNAL), plus
+        every ``drop`` column.
+
+        ``drop`` columns are removed at ingest, so a tree built now has none; one that reaches
+        deidentify comes from an older tree or a later field-map edit, and is removed at every
+        level, *keep_date_shifted* included.
+        """
+        drop_rows = field_map_df["disposition"].eq("drop")
+        if level != DispositionLevel.INTERNAL:
+            hierarchy = {"release": 0, "review": 1, "internal": 2}
+            threshold = hierarchy[level.value]
+            ranked = field_map_df["disposition"].isin([d for d, rank in hierarchy.items() if rank > threshold])
+            if keep_date_shifted and "date_shift" in field_map_df.columns:
+                ranked &= field_map_df["date_shift"].astype(str).str.upper() != "YES"
+            drop_rows |= ranked
         return set(field_map_df.loc[drop_rows, "column_name"].dropna())
 
     @staticmethod
@@ -1571,7 +1596,7 @@ class BIDSDataset:
         ``RELEASE`` level, both ``internal`` and ``review`` columns are
         dropped.  At ``REVIEW``, only ``internal`` columns are dropped
         (``review`` columns are kept for per-value processing).  At
-        ``INTERNAL``, nothing is dropped.
+        ``INTERNAL``, nothing is dropped.  ``drop`` columns are removed at every level.
 
         Columns not in the field map are removed and logged; ``participant_id``/``record_id``
         are kept.
@@ -3488,6 +3513,13 @@ class BIDSDataset:
         participant_allowlist = BIDSDataset._load_participant_allowlist(
             deidentify_config_dir, input_tree_participants
         )
+        # A participant without a pseudonym would be published under the raw record ID.
+        no_pseudonym = sorted(p for p in participant_allowlist if p not in participant_ids_to_remap)
+        if no_pseudonym:
+            raise ValueError(
+                f"{len(no_pseudonym)} allowlisted participant(s) have no pseudonym in id_remapping.json; "
+                f"add them with generate-id-lookup-table before deidentifying: {', '.join(no_pseudonym)}"
+            )
 
         # Labels of released sessions are settled per participant, once its output is known.
         # Exclusion lists written in deidentified naming use the v3.1 (UUID) labels.
@@ -4244,12 +4276,19 @@ class BIDSDataset:
         #     normalized_tasks = {normalize_task_label(task) for task in audio_tasks_to_include_list}
         #     df = df.loc[df["task_name"].apply(lambda task: normalize_task_label(task) in normalized_tasks)]
 
-        # Remove rows for excluded audio file stems
+        # Remove rows for excluded audio file stems. Matched exactly on the exclusion key, as audio
+        # and feature files are: a substring match would also drop "task-X-20" when "task-X-2"
+        # is excluded.
         if exclude_audio_filestems and {"participant_id", "session_id", "task_name"}.issubset(df.columns):
-            def row_is_excluded(row):
-                stem = f"sub-{row['participant_id']}_ses-{row['session_id']}_task-{row['task_name']}"
-                return any(normalize_task_label(excl) in normalize_task_label(stem) for excl in exclude_audio_filestems)
-            df = df.loc[~df.apply(row_is_excluded, axis=1)]
+            excluded_keys = {BIDSDataset._exclusion_key(x) for x in exclude_audio_filestems}
+            keys = [
+                BIDSDataset._exclusion_key(f"sub-{p}_ses-{s}_task-{t}")
+                for p, s, t in zip(df["participant_id"], df["session_id"], df["task_name"])
+            ]
+            excluded = pd.Series([k in excluded_keys for k in keys], index=df.index)
+            if excluded.any():
+                _LOGGER.info("Removing %d quality metric row(s) for excluded recordings.", int(excluded.sum()))
+            df = df.loc[~excluded]
 
         # Remap participant IDs
         if participant_ids_to_remap and "participant_id" in df.columns:

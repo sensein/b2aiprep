@@ -15,6 +15,12 @@ from b2aiprep.prepare.dataset import BIDSDataset
 class TestBIDSDatasetDeidentification:
     """Test cases for BIDSDataset deidentification methods."""
 
+    @pytest.fixture(autouse=True)
+    def _identity_pseudonyms(self, setup_publish_config):
+        """Deidentify refuses an allowlisted participant without a pseudonym; keep IDs as they are."""
+        ids = [f"participant00{i}" for i in (1, 2, 3)]
+        (setup_publish_config / "id_remapping.json").write_text(json.dumps({p: p for p in ids}))
+
     @pytest.fixture
     def temp_bids_dir(self):
         """Create a temporary BIDS directory structure for testing."""
