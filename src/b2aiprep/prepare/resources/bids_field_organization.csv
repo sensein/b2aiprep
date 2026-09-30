@@ -1063,7 +1063,7 @@ enrollment_form_schema,enrollment,ef_depression,self_reported_depression,enrollm
 enrollment_form_schema,enrollment_form,ef_dob,ef_dob,enrollment,What is your date of birth?,YES,drop,VARIABLE,redcap,pre-v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_duration,ef_duration,enrollment,Enrollment Form Duration (seconds),NO,release,VARIABLE,redcap,v4,NO,NO
 enrollment_form_schema,enrollment,ef_ed,self_reported_ed,enrollment,Eating Disorder (ED),YES,internal,VARIABLE,redcap,v4,NO,NO
-enrollment_form_schema,enrollment_form,ef_eligible_studies,ef_eligible_studies,enrollment,Eligible Studies,NO,release,VARIABLE,redcap,pre-v4,NO,NO
+enrollment_form_schema,enrollment_form,ef_eligible_studies,ef_eligible_studies,enrollment,Eligible Studies,NO,internal,VARIABLE,redcap,pre-v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_email,ef_email,enrollment,Email,NO,drop,VARIABLE,redcap,pre-v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_enrollment,ef_enrollment,enrollment,"Please review your answers reading all the way through the bottom and select an option. If you have any questions, you can still proceed with enrollment and ask or make changes at a later time.",NO,internal,VARIABLE,redcap,v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_enrollment_institution,ef_enrollment_institution,enrollment,Enrollment Institution,NO,internal,VARIABLE,redcap,v4,NO,NO
@@ -1875,7 +1875,7 @@ subjectparticipant_eligible_studies_schema,eligibility,cond_sel_prompt,cond_sel_
 subjectparticipant_eligible_studies_schema,eligibility,copd,self_reported_copd,enrollment,COPD,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 subjectparticipant_eligible_studies_schema,eligibility,depression,self_reported_depression,enrollment,Depression or Major Depressive Disorder,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 subjectparticipant_eligible_studies_schema,eligibility,ed,self_reported_ed,enrollment,Eating Disorder (ED),NO,release,VARIABLE,redcap,pre-v4,NO,NO
-subjectparticipant_eligible_studies_schema,eligibility,eligible_studies,eligible_studies,enrollment,Eligible Studies,NO,release,VARIABLE,redcap,pre-v4,NO,NO
+subjectparticipant_eligible_studies_schema,eligibility,eligible_studies,eligible_studies,enrollment,Eligible Studies,NO,internal,VARIABLE,redcap,pre-v4,NO,NO
 subjectparticipant_eligible_studies_schema,eligibility,gad,self_reported_gad,enrollment,Anxiety Disorder,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 subjectparticipant_eligible_studies_schema,eligibility,glottic_insufficiency,self_reported_glottic_insufficiency,enrollment,Glottic Insufficiency / Presbyphonia,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 subjectparticipant_eligible_studies_schema,eligibility,huntingtons,self_reported_huntingtons,enrollment,Huntington's Disease,NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -3388,11 +3388,11 @@ enrollment_form_schema,enrollment_form,ef_cognitive_a11y_options___3,ef_cognitiv
 enrollment_form_schema,enrollment_form,ef_completed_by___1,ef_completed_by___1,enrollment,Check all that apply,NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_completed_by___2,ef_completed_by___2,enrollment,Check all that apply,NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_completed_by___3,ef_completed_by___3,enrollment,Check all that apply,NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
-enrollment_form_schema,enrollment_form,ef_eligible_studies___1,ef_eligible_studies___1,enrollment,Eligible Studies,NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO
-enrollment_form_schema,enrollment_form,ef_eligible_studies___2,ef_eligible_studies___2,enrollment,Eligible Studies,NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO
-enrollment_form_schema,enrollment_form,ef_eligible_studies___3,ef_eligible_studies___3,enrollment,Eligible Studies,NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO
-enrollment_form_schema,enrollment_form,ef_eligible_studies___4,ef_eligible_studies___4,enrollment,Eligible Studies,NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO
-enrollment_form_schema,enrollment_form,ef_eligible_studies___5,ef_eligible_studies___5,enrollment,Eligible Studies,NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO
+enrollment_form_schema,enrollment_form,ef_eligible_studies___1,ef_eligible_studies___1,enrollment,Eligible Studies,NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+enrollment_form_schema,enrollment_form,ef_eligible_studies___2,ef_eligible_studies___2,enrollment,Eligible Studies,NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+enrollment_form_schema,enrollment_form,ef_eligible_studies___3,ef_eligible_studies___3,enrollment,Eligible Studies,NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+enrollment_form_schema,enrollment_form,ef_eligible_studies___4,ef_eligible_studies___4,enrollment,Eligible Studies,NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
+enrollment_form_schema,enrollment_form,ef_eligible_studies___5,ef_eligible_studies___5,enrollment,Eligible Studies,NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_fluent_languages___1,ef_fluent_languages___1,enrollment,Do you speak any additional language(s) fluently (similar to a native speaker)?,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_fluent_languages___2,ef_fluent_languages___2,enrollment,Do you speak any additional language(s) fluently (similar to a native speaker)?,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
 enrollment_form_schema,enrollment_form,ef_fluent_languages___3,ef_fluent_languages___3,enrollment,Do you speak any additional language(s) fluently (similar to a native speaker)?,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
@@ -3739,14 +3739,14 @@ subjectparticipant_basic_information_schema,participant,participant_data_collect
 subjectparticipant_basic_information_schema,participant,participant_data_collection_origins___website,participant_data_collection_origins___website,enrollment,Data Collection - origin(s),NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
 subjectparticipant_basic_information_schema,participant,participant_data_collection_via___data_collector,participant_data_collection_via___data_collector,enrollment,Data Collection - via,NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
 subjectparticipant_basic_information_schema,participant,participant_data_collection_via___participant,participant_data_collection_via___participant,enrollment,Data Collection - via,NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO
-subjectparticipant_eligible_studies_schema,eligibility,eligible_studies___1,eligible_studies___1,enrollment,Eligible Studies,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
-subjectparticipant_eligible_studies_schema,eligibility,eligible_studies___2,eligible_studies___2,enrollment,Eligible Studies,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
-subjectparticipant_eligible_studies_schema,eligibility,eligible_studies___3,eligible_studies___3,enrollment,Eligible Studies,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
-subjectparticipant_eligible_studies_schema,eligibility,eligible_studies___4,eligible_studies___4,enrollment,Eligible Studies,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
-subjectparticipant_eligible_studies_schema,eligibility,eligible_studies___age_10_plus,eligible_studies___age_10_plus,enrollment,Eligible Studies,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
-subjectparticipant_eligible_studies_schema,eligibility,eligible_studies___age_2_4,eligible_studies___age_2_4,enrollment,Eligible Studies,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
-subjectparticipant_eligible_studies_schema,eligibility,eligible_studies___age_4_6,eligible_studies___age_4_6,enrollment,Eligible Studies,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
-subjectparticipant_eligible_studies_schema,eligibility,eligible_studies___age_6_10,eligible_studies___age_6_10,enrollment,Eligible Studies,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
+subjectparticipant_eligible_studies_schema,eligibility,eligible_studies___1,eligible_studies___1,enrollment,Eligible Studies,NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
+subjectparticipant_eligible_studies_schema,eligibility,eligible_studies___2,eligible_studies___2,enrollment,Eligible Studies,NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
+subjectparticipant_eligible_studies_schema,eligibility,eligible_studies___3,eligible_studies___3,enrollment,Eligible Studies,NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
+subjectparticipant_eligible_studies_schema,eligibility,eligible_studies___4,eligible_studies___4,enrollment,Eligible Studies,NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
+subjectparticipant_eligible_studies_schema,eligibility,eligible_studies___age_10_plus,eligible_studies___age_10_plus,enrollment,Eligible Studies,NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
+subjectparticipant_eligible_studies_schema,eligibility,eligible_studies___age_2_4,eligible_studies___age_2_4,enrollment,Eligible Studies,NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
+subjectparticipant_eligible_studies_schema,eligibility,eligible_studies___age_4_6,eligible_studies___age_4_6,enrollment,Eligible Studies,NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
+subjectparticipant_eligible_studies_schema,eligibility,eligible_studies___age_6_10,eligible_studies___age_6_10,enrollment,Eligible Studies,NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
 unexplained_chronic_cough_schema,unexplained_chronic_cough,diagnosis_ucc_at_s___multimodality_speech_pathology_therapy,diagnosis_ucc_at_s___multimodality_speech_pathology_therapy,diagnosis,Select all that apply,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
 unexplained_chronic_cough_schema,unexplained_chronic_cough,diagnosis_ucc_at_s___neuromodulator,diagnosis_ucc_at_s___neuromodulator,diagnosis,Select all that apply,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
 unexplained_chronic_cough_schema,unexplained_chronic_cough,diagnosis_ucc_at_s___other,diagnosis_ucc_at_s___other,diagnosis,Select all that apply,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO
