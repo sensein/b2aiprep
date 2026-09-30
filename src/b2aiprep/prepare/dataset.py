@@ -3026,22 +3026,35 @@ class BIDSDataset:
 
     @staticmethod
     def _add_sex_at_birth_column(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
-        """Add sex_at_birth: sex_assigned_at_birth where answered, otherwise inferred from a Cis answer.
+        """Add sex_at_birth: sex_assigned_at_birth where answered, otherwise from a Cis answer.
 
         sex_assigned_at_birth was added to the form later, so earlier participants have none. For
         them, a male/female gender identity specified as "Cis" (same as the sex assigned at birth)
         gives the sex at birth. An answered sex_assigned_at_birth, including "Prefer not to
-        answer", is kept as given, and nothing is inferred for "Trans" or any other answer.
+        answer", is kept as given, and nothing is inferred from "Trans" or any other answer.
+
+        An earlier participant who answered the gender-identity question with anything other than
+        a Cis male/female answer gets "Prefer not to answer": left blank, the value would show that
+        they are not cis, which is what keeping gender_identity internal protects. Only someone who
+        answered neither question stays blank. sex_at_birth is the one released sex column;
+        sex_assigned_at_birth and specify_gender_identity are internal (2026-09-30).
         """
         if "sex_assigned_at_birth" in df.columns:
-            df["sex_at_birth"] = df["sex_assigned_at_birth"]
+            # object dtype: a column with no answers is read as float and would refuse "Male"
+            df["sex_at_birth"] = df["sex_assigned_at_birth"].astype(object)
         else:
-            df["sex_at_birth"] = None
+            df["sex_at_birth"] = pd.Series(None, index=df.index, dtype=object)
         unanswered = df["sex_at_birth"].isna()
         cis = df["specify_gender_identity"].fillna("").astype(str).str.startswith("Cis")
         identity = df["gender_identity"].fillna("").astype(str)
         for sex_at_birth in ["Male", "Female"]:
             df.loc[unanswered & cis & identity.str.startswith(sex_at_birth), "sex_at_birth"] = sex_at_birth
+        undisclosed = df["sex_at_birth"].isna() & identity.str.strip().ne("")
+        if undisclosed.any():
+            df.loc[undisclosed, "sex_at_birth"] = BIDSDataset._NO_ANSWER_LABEL
+            # a count only: the IDs would name participants who are not cis
+            _LOGGER.info("sex_at_birth: %d participant row(s) without a stated sex at birth set to %r.",
+                         int(undisclosed.sum()), BIDSDataset._NO_ANSWER_LABEL)
 
         # Re-order columns to place sex_at_birth after gender_identity
         phenotype_reordered = deepcopy(phenotype)
