@@ -652,7 +652,7 @@ def test_postal_code_region_uses_prefix_rules_and_exceptions():
     assert postal_code_region("12") is None and postal_code_region("not a zip") is None
 
 
-def test_state_province_derived_prefers_postal_code_then_stated_value(caplog):
+def test_state_province_prefers_the_stated_value_then_the_postal_code(caplog):
     demo = "Q - Generic - Demographics"
     df = pd.DataFrame([
         {"record_id": "a", "redcap_repeat_instrument": demo, "zipcode": "02139", "state_province": "Massachusetts"},
@@ -664,5 +664,5 @@ def test_state_province_derived_prefers_postal_code_then_stated_value(caplog):
     ], dtype=object)
     with caplog.at_level("WARNING"):
         out = BIDSDataset._add_state_province(df)
-    assert _na(out.state_province_derived) == ["MA", "NY", "QC", "Unknown", "NY", None]
+    assert _na(out.state_province_standardized) == ["MA", "NY", "QC", "Unknown", "NJ", None]  # e: the stated NJ wins
     assert "1 form(s) whose postal code and stated state/province disagree" in caplog.text and "e" in caplog.text

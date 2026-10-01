@@ -1227,9 +1227,10 @@ class BIDSDataset:
                             "(more days than age + 1 years), left blank: %s", len(before_birth), "; ".join(before_birth))
         return df
 
-    # State or province of residence, derived (2026-10-01): from the reported zip / postal code,
-    # else the stated state or province, else "Unknown". Raw state_province is deprecated and city
-    # adds nothing (no form has a city without a zip code or state).
+    # State or province of residence (2026-10-01): the stated state or province, standardized to its
+    # two-letter code, else the one the reported zip / postal code is in, else "Unknown". Released as
+    # state_province / peds_state_province; the free-text answers are kept internal as
+    # *_state_province_as_entered. City adds nothing (no form has a city without a zip code or state).
     _US_STATES = {
         "AL": "Alabama", "AK": "Alaska", "AZ": "Arizona", "AR": "Arkansas", "CA": "California", "CO": "Colorado",
         "CT": "Connecticut", "DE": "Delaware", "DC": "District of Columbia", "FL": "Florida", "GA": "Georgia",
@@ -1248,8 +1249,8 @@ class BIDSDataset:
         "ON": "Ontario", "PE": "Prince Edward Island", "QC": "Quebec", "SK": "Saskatchewan", "YT": "Yukon",
     }
     _STATE_PROVINCE_FIELDS = (  # (form instrument, postal code, stated state/province, derived column)
-        ("Q - Generic - Demographics", "zipcode", "state_province", "state_province_derived"),
-        ("Q - Pediatric - Generic - Demographics", "peds_zipcode", "peds_state_province", "peds_state_province_derived"),
+        ("Q - Generic - Demographics", "zipcode", "state_province", "state_province_standardized"),
+        ("Q - Pediatric - Generic - Demographics", "peds_zipcode", "peds_state_province", "peds_state_province_standardized"),
     )
 
     @staticmethod
@@ -1267,7 +1268,11 @@ class BIDSDataset:
 
     @staticmethod
     def _add_state_province(df: pd.DataFrame) -> pd.DataFrame:
-        """Add ``state_province_derived`` / ``peds_state_province_derived`` on the demographics rows."""
+        """Add the standardized state/province (``*_state_province_standardized``) on the demographics rows.
+
+        The stated state or province comes first (it agrees with the postal code on 1,069 of 1,072
+        adult forms that give both, and 208 of 208 pediatric); the postal code fills in the rest.
+        """
         df = df.copy()
         for instrument, postal, stated, out in BIDSDataset._STATE_PROVINCE_FIELDS:
             rows = df["redcap_repeat_instrument"] == instrument
@@ -1275,17 +1280,17 @@ class BIDSDataset:
                 continue
             from_zip = df.loc[rows, postal].map(postal_code_region) if postal in df.columns else pd.Series(None, index=df.index[rows])
             from_text = df.loc[rows, stated].map(BIDSDataset._region_code) if stated in df.columns else pd.Series(None, index=df.index[rows])
-            value = from_zip.where(from_zip.notna(), from_text).fillna(BIDSDataset._SEX_UNKNOWN_LABEL)
+            value = from_text.where(from_text.notna(), from_zip).fillna(BIDSDataset._SEX_UNKNOWN_LABEL)
             df[out] = pd.Series(pd.NA, index=df.index, dtype="object")
             df.loc[rows, out] = value
             disagree = from_zip.notna() & from_text.notna() & (from_zip != from_text)
-            _LOGGER.info("%s: %d from the postal code, %d from the stated state/province, %d unknown.", out,
-                         int(from_zip.notna().sum()), int((from_zip.isna() & from_text.notna()).sum()),
+            _LOGGER.info("%s: %d from the stated state/province, %d from the postal code, %d unknown.", out,
+                         int(from_text.notna().sum()), int((from_text.isna() & from_zip.notna()).sum()),
                          int((value == BIDSDataset._SEX_UNKNOWN_LABEL).sum()))
             if disagree.any():
                 # IDs are listed for QA; this log lives with the job output, outside the BIDS tree.
                 _LOGGER.warning("QA check: %s: %d form(s) whose postal code and stated state/province disagree "
-                                "(the postal code is used): %s", out, int(disagree.sum()),
+                                "(the stated value is used): %s", out, int(disagree.sum()),
                                 ", ".join(sorted(df.loc[disagree[disagree].index, "record_id"].astype(str))))
         return df
 
