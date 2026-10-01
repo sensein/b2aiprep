@@ -1093,24 +1093,49 @@ class BIDSDataset:
         "peds_mc_no_surgeries_procedure_date": "peds_mc_no_surgeries_procedure_days_since",
     }
 
+    # Episode and event dates (mood diagnosis forms, PTSD) and the derived column for each. The
+    # diagnosis forms sit on the participant row with no session, so they are measured to the
+    # participant's first session; the PTSD form has its own session.
+    _EPISODE_DATE_COLUMNS = {
+        "mbd_last_depressive_episode": "mbd_last_depressive_episode_days_since",
+        "mbd_last_manic_episode": "mbd_last_manic_episode_days_since",
+        "dmdd_last_depressive_episode": "dmdd_last_depressive_episode_days_since",
+        "diagnosis_ad_last_anxious_episode": "diagnosis_ad_last_anxious_episode_days_since",
+        "traumatic_event_date": "traumatic_event_days_since",
+    }
+
     @staticmethod
     def _add_days_since_surgery(df: pd.DataFrame) -> pd.DataFrame:
-        """Add ``<surgery>_days_since`` for every surgery date: days from the surgery to the session.
+        """Add ``<surgery>_days_since`` for every surgery date (see ``_add_days_since_dates``)."""
+        return BIDSDataset._add_days_since_dates(df, BIDSDataset._SURGERY_DATE_COLUMNS, "surgery")
 
-        The reference is the local start date of the session the form belongs to. Both dates are
-        read after the shift, which moves all of a participant's dates by the same whole weeks, so
-        the difference is the real one. Blank when either date is missing (including dates the
-        shift blanked). A negative value (surgery after the session), or one longer than the
-        participant has been alive (numeric ``age`` + 1 years), is kept and logged for QA.
+    @staticmethod
+    def _add_days_since_episodes(df: pd.DataFrame) -> pd.DataFrame:
+        """Add ``<episode>_days_since`` for the last mood episodes and the traumatic event."""
+        return BIDSDataset._add_days_since_dates(df, BIDSDataset._EPISODE_DATE_COLUMNS, "episode")
+
+    @staticmethod
+    def _add_days_since_dates(df: pd.DataFrame, date_columns: t.Mapping[str, str], what: str) -> pd.DataFrame:
+        """Add one ``*_days_since`` column per date in *date_columns*: days from the date to the session.
+
+        The reference is the local start date of the session the row belongs to; a row with no
+        session (e.g. a diagnosis form on the participant row) uses the participant's first
+        session. Both dates are read after the shift, which moves all of a participant's dates by
+        the same whole weeks, so the difference is the real one. Blank when either date is missing
+        (including dates the shift blanked). A date after the reference session, or earlier than
+        the participant's numeric ``age`` + 1 years allows, is left blank and logged for QA until
+        the site corrects it.
         """
         df = df.copy()
-        columns = {src: out for src, out in BIDSDataset._SURGERY_DATE_COLUMNS.items() if src in df.columns}
+        columns = {src: out for src, out in date_columns.items() if src in df.columns}
         if not columns:
             return df
         session_date: t.Dict[str, datetime.date] = {}
+        first_session: t.Dict[str, datetime.date] = {}
         if {"session_id", "session_started_at"} <= set(df.columns):
             is_session = df["redcap_repeat_instrument"] == RepeatInstrument.SESSION.value.text
-            for session_id, value in zip(df.loc[is_session, "session_id"], df.loc[is_session, "session_started_at"]):
+            for record_id, session_id, value in zip(df.loc[is_session, "record_id"], df.loc[is_session, "session_id"],
+                                                    df.loc[is_session, "session_started_at"]):
                 if not isinstance(session_id, str) or not isinstance(value, str) or not value.strip():
                     continue
                 try:
@@ -1119,7 +1144,10 @@ class BIDSDataset:
                     continue
                 if session_id not in session_date or day < session_date[session_id]:
                     session_date[session_id] = day
+                if record_id not in first_session or day < first_session[record_id]:
+                    first_session[record_id] = day
         reference = row_sessions(df).map(session_date)
+        reference = reference.where(reference.notna(), df["record_id"].map(first_session))
         age: t.Dict[str, float] = {}
         if "age" in df.columns:
             numeric_age = pd.to_numeric(df["age"], errors="coerce")
@@ -1144,24 +1172,30 @@ class BIDSDataset:
                 except ValueError:
                     values.append(pd.NA)
                     continue
+                # An impossible interval is left blank for now (the source date stays, internal) and
+                # logged so the site can correct the date.
                 if days < 0:
                     negative.append(f"{record_id} {src}")
-                elif record_id in age and days > (age[record_id] + 1) * 365.25:
+                    values.append(pd.NA)
+                    continue
+                if record_id in age and days > (age[record_id] + 1) * 365.25:
                     before_birth.append(f"{record_id} {src} ({days} days, age {age[record_id]:g})")
+                    values.append(pd.NA)
+                    continue
                 values.append(str(days))
             df[out] = pd.Series(values, index=df.index, dtype="object")
-        _LOGGER.info("days since surgery: %d value(s) computed over %d surgery date column(s).",
+        _LOGGER.info(f"days since {what}: %d value(s) computed over %d {what} date column(s).",
                      int(sum(df[out].notna().sum() for out in columns.values())), len(columns))
         if no_reference:
-            _LOGGER.warning("days since surgery: %d surgery date(s) with no dated session to measure from; left blank.",
+            _LOGGER.warning(f"days since {what}: %d {what} date(s) with no dated session to measure from; left blank.",
                             no_reference)
         if negative:
             # IDs are listed for QA; this log lives with the job output, outside the BIDS tree.
-            _LOGGER.warning("QA check: days since surgery: %d surgery date(s) after the session: %s",
+            _LOGGER.warning(f"QA check: days since {what}: %d {what} date(s) after the session, left blank: %s",
                             len(negative), "; ".join(negative))
         if before_birth:
-            _LOGGER.warning("QA check: days since surgery: %d surgery date(s) before the participant was born "
-                            "(more days than age + 1 years): %s", len(before_birth), "; ".join(before_birth))
+            _LOGGER.warning(f"QA check: days since {what}: %d {what} date(s) before the participant was born "
+                            "(more days than age + 1 years), left blank: %s", len(before_birth), "; ".join(before_birth))
         return df
 
     # In-clinic sessions normally start between 07:00 and 19:59 local time (1,919 of 1,928 adult
@@ -1262,6 +1296,7 @@ class BIDSDataset:
         df, report = shift_dates(df, date_columns, date_shift_anchor, self_administered)
         df = BIDSDataset._add_local_hours(df)
         df = BIDSDataset._add_days_since_surgery(df)
+        df = BIDSDataset._add_days_since_episodes(df)
         BIDSDataset._check_session_hours(df, self_administered)
         df = BIDSDataset._apply_disclosure_transforms(df)
 

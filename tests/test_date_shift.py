@@ -568,10 +568,10 @@ def test_days_since_surgery_measures_to_the_forms_session(caplog):
     ], dtype=object)
     with caplog.at_level("WARNING"):
         out = BIDSDataset._add_days_since_surgery(df)
-    assert _na(out.peds_mc_tonsillectomy_days_since) == [None, "7", None, None, None, "3652"]
-    assert _na(out.peds_mc_etp_procedure_days_since) == [None, "-2", None, None, None, "730"]
+    assert _na(out.peds_mc_tonsillectomy_days_since) == [None, "7", None, None, None, None]  # before birth: blank
+    assert _na(out.peds_mc_etp_procedure_days_since) == [None, None, None, None, None, "730"]  # after the session: blank
     assert "peds_mc_adenoidectomy_days_since" not in out.columns  # source column absent
-    assert "1 surgery date(s) after the session: c1 peds_mc_etp_procedure_date" in caplog.text
+    assert "1 surgery date(s) after the session, left blank: c1 peds_mc_etp_procedure_date" in caplog.text
     assert "1 surgery date(s) with no dated session" in caplog.text
     assert "1 surgery date(s) before the participant was born" in caplog.text
     assert "c3 peds_mc_tonsillectomy_date (3652 days, age 4)" in caplog.text
@@ -602,3 +602,23 @@ def test_session_hour_check_skips_sessions_self_administered_in_dropped_rows(cap
     with caplog.at_level("WARNING"):
         BIDSDataset._check_session_hours(df, also_self_administered={"S1"})
     assert "session hours" not in caplog.text
+
+
+def test_episode_dates_without_a_session_measure_to_the_first_session(caplog):
+    df = pd.DataFrame([
+        {"record_id": "a", "redcap_repeat_instrument": None, "mbd_last_manic_episode": "2099-12-06", "age": "30"},
+        {"record_id": "a", "redcap_repeat_instrument": "Session", "session_id": "S2",
+         "session_started_at": "2100-02-01T10:00:00-05:00"},
+        {"record_id": "a", "redcap_repeat_instrument": "Session", "session_id": "S1",
+         "session_started_at": "2100-01-05T10:00:00-05:00"},
+        {"record_id": "a", "redcap_repeat_instrument": "Q - Mood - PTSD Adult", "ptsd_session_id": "S2",
+         "traumatic_event_date": "2100-01-25"},
+        {"record_id": "b", "redcap_repeat_instrument": None, "mbd_last_manic_episode": "2100-03-01"},
+        {"record_id": "b", "redcap_repeat_instrument": "Session", "session_id": "S3",
+         "session_started_at": "2100-01-05T10:00:00-05:00"},
+    ], dtype=object)
+    with caplog.at_level("WARNING"):
+        out = BIDSDataset._add_days_since_episodes(df)
+    assert _na(out.mbd_last_manic_episode_days_since) == ["30", None, None, None, None, None]  # b: after the session
+    assert _na(out.traumatic_event_days_since) == [None, None, None, "7", None, None]
+    assert "1 episode date(s) after the session, left blank: b mbd_last_manic_episode" in caplog.text

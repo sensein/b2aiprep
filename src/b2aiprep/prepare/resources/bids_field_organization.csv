@@ -154,6 +154,7 @@ Please select any historical psychiatric problems and medical problems (select a
 MOVED IT TO ""Q - Mood - Participant History""",YES,internal,VARIABLE,redcap,pre-v4,NO,NO
 anxiety_disorder_schema,anxiety,diagnosis_ad_last_anxious_episode,diagnosis_ad_last_anxious_episode,diagnosis,"When was your last anxious episode (feeling anxious more days than not over
 two weeks)?",YES,internal,VARIABLE,redcap,v4,NO,YES
+anxiety_disorder_schema,anxiety,diagnosis_ad_last_anxious_episode_days_since,diagnosis_ad_last_anxious_episode_days_since,diagnosis,"Days from the last anxious episode to the participant's first session (the diagnosis form has no session) (computed from diagnosis_ad_last_anxious_episode; the date shift does not change it). Blank if either date is missing, or if the date is after that session or before the participant was born.",NO,internal,VARIABLE,pipeline,v4,NO,NO
 anxiety_disorder_schema,anxiety,diagnosis_ad_prescribed_medication,diagnosis_ad_prescribed_medication,diagnosis,"[DEPRECATED]
 Have you ever been prescribed medication for mental or emotional problems (e.g., antidepressants, anxiolytics, antipsychotics, mood stabilizers, etc.)?
 
@@ -261,7 +262,9 @@ Please select any historical psychiatric problems and medical problems (select a
 
 MOVED IT TO ""Q - Mood - Participant History""",YES,internal,VARIABLE,redcap,pre-v4,NO,NO
 bipolar_disorder_schema,bipolar_disorder,mbd_last_depressive_episode,diagnosis_mbd_last_depressive_episode,diagnosis,When was your last depressive episode (feeling down and depressed more days than not over two weeks)?,YES,internal,VARIABLE,redcap,v4,NO,YES
+bipolar_disorder_schema,bipolar_disorder,mbd_last_depressive_episode_days_since,mbd_last_depressive_episode_days_since,diagnosis,"Days from the last depressive episode to the participant's first session (the diagnosis form has no session) (computed from mbd_last_depressive_episode; the date shift does not change it). Blank if either date is missing, or if the date is after that session or before the participant was born.",NO,internal,VARIABLE,pipeline,v4,NO,NO
 bipolar_disorder_schema,bipolar_disorder,mbd_last_manic_episode,diagnosis_mbd_last_manic_episode,diagnosis,When was your last manic episode?,YES,internal,VARIABLE,redcap,v4,NO,YES
+bipolar_disorder_schema,bipolar_disorder,mbd_last_manic_episode_days_since,mbd_last_manic_episode_days_since,diagnosis,"Days from the last manic episode to the participant's first session (the diagnosis form has no session) (computed from mbd_last_manic_episode; the date shift does not change it). Blank if either date is missing, or if the date is after that session or before the participant was born.",NO,internal,VARIABLE,pipeline,v4,NO,NO
 bipolar_disorder_schema,bipolar_disorder,mbd_many_depressive_episodes,diagnosis_mbd_many_depressive_episodes,diagnosis,Approximately how many depressive episodes have you had in your life (feeling down and depressed more days than not over two weeks)?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 bipolar_disorder_schema,bipolar_disorder,mbd_many_manic_episodes,diagnosis_mbd_many_manic_episodes,diagnosis,Approximately how many manic episodes have you had in your life?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 bipolar_disorder_schema,bipolar_disorder,mbd_prescribed_medication,diagnosis_mbd_prescribed_medication,diagnosis,"[DEPRECATED]
@@ -865,7 +868,7 @@ NOTE: Once the options completed map to new options, the following options [Depr
 7, Cuban
 8, Dominican",YES,drop,VARIABLE,redcap,pre-v4,NO,NO
 demographics_schema,demographics,household_count,household_count,demographics,How many people live with you?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-demographics_schema,demographics,household_income_ca,household_income_ca,demographics,"What was your total household income last year (CAD)? Please include all sources of income, including pensions, dividends, alimony, child support, etc.",NO,internal,VARIABLE,redcap,v4,NO,NO
+demographics_schema,demographics,household_income_ca,household_income_ca,demographics,"What was your total household income last year (CAD)? Please include all sources of income, including pensions, dividends, alimony, child support, etc.",NO,release,VARIABLE,redcap,v4,NO,NO
 demographics_schema,demographics,household_income_usa,household_income_usa,demographics,"What was your total household income last year (USD)? Please include all sources of income, including pensions, dividends, alimony, child support, etc.",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 demographics_schema,demographics,housing_status,housing_status,demographics,What is your current housing status?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 demographics_schema,demographics,independent_living,independent_living,demographics,"Because of a physical, mental, or emotional condition, do you have difficulty doing errands alone such as visiting a doctor's office or shopping?",NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -890,7 +893,7 @@ demographics_schema,demographics,roommate,roommate,demographics,Roommate(s),NO,r
 demographics_schema,demographics,self_care,self_care,demographics,Do you have difficulty dressing or bathing?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 demographics_schema,demographics,sex_assigned_at_birth,sex_assigned_at_birth,demographics,What was your sex assigned at birth?,NO,internal,VARIABLE,redcap,pre-v4,NO,NO
 demographics_schema,demographics,sex_at_birth,sex_at_birth,demographics,"Sex assigned at birth, from the participant's own answers.",NO,release,VARIABLE,pipeline,pre-v4,NO,NO
-demographics_schema,demographics,sexual_orientation,sexual_orientation,demographics,What is your sexual orientation?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
+demographics_schema,demographics,sexual_orientation,sexual_orientation,demographics,What is your sexual orientation?,NO,internal,VARIABLE,redcap,pre-v4,NO,NO
 demographics_schema,demographics,specify_gender_identity,specify_gender_identity,demographics,Please specify gender identity,NO,internal,VARIABLE,redcap,pre-v4,NO,NO
 demographics_schema,demographics,spouse_partner_sig_other,spouse_partner_sig_other,demographics,Spouse/partner/significant other,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 demographics_schema,demographics,state_province,state_province,demographics,"[DEPRECATED]
@@ -962,6 +965,7 @@ MOVED IT TO ""Q - Mood - Participant History""",YES,internal,VARIABLE,redcap,pre
 depression_or_major_depressive_disorder_schema,depression,dmdd_how_many_depressive_episodes,diagnosis_dmdd_how_many_depressive_episodes,diagnosis,Approximately how many depressive episodes have you had in your life (feeling down and depressed more days than not over two weeks)?,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 depression_or_major_depressive_disorder_schema,depression,dmdd_last_depressive_episode,diagnosis_dmdd_last_depressive_episode,diagnosis,"When was your last depressive episode (feeling depressed more days than not over
 two weeks)?",YES,internal,VARIABLE,redcap,v4,NO,YES
+depression_or_major_depressive_disorder_schema,depression,dmdd_last_depressive_episode_days_since,dmdd_last_depressive_episode_days_since,diagnosis,"Days from the last depressive episode to the participant's first session (the diagnosis form has no session) (computed from dmdd_last_depressive_episode; the date shift does not change it). Blank if either date is missing, or if the date is after that session or before the participant was born.",NO,internal,VARIABLE,pipeline,v4,NO,NO
 depression_or_major_depressive_disorder_schema,depression,dmdd_prescribed_medication,dmdd_prescribed_medication,diagnosis,"[DEPRECATED]
 Have you ever been prescribed medication for mental or emotional problems (e.g., antidepressants, anxiolytics, antipsychotics, mood stabilizers, etc.)?
 
@@ -1273,7 +1277,7 @@ generic_vhi_10_schema,pediatric_vhi10,peds_other_not_understand,peds_other_not_u
 generic_vhi_10_schema,pediatric_vhi10,peds_out_of_air_talking,peds_out_of_air_talking,pediatric_questionnaire,My child runs out of air when talking.,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 generic_vhi_10_schema,pediatric_vhi10,peds_repeat_speaking,peds_repeat_speaking,pediatric_questionnaire,People ask my child to repeat him/herself when speaking face-to-face.,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 generic_vhi_10_schema,pediatric_vhi10,peds_seem_irritated,peds_seem_irritated,pediatric_questionnaire,People seem irritated with my child's voice.,NO,release,VARIABLE,redcap,pre-v4,NO,NO
-generic_vhi_10_schema,pediatric_vhi10,peds_severity_voice_problem,peds_severity_voice_problem,pediatric_questionnaire,Please indicate the severity of your child's voice problem,NO,internal,VARIABLE,redcap,pre-v4,NO,NO
+generic_vhi_10_schema,pediatric_vhi10,peds_severity_voice_problem,peds_severity_voice_problem,pediatric_questionnaire,Please indicate the severity of your child's voice problem,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 generic_vhi_10_schema,pediatric_vhi10,peds_speaks_less,peds_speaks_less,pediatric_questionnaire,"My child speaks with friends, neighbours, or relatives less often because of his/her voice.",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 generic_vhi_10_schema,pediatric_vhi10,peds_straining,peds_straining,pediatric_questionnaire,"My child uses a great deal of effort to speak (e.g., straining).",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 generic_vhi_10_schema,pediatric_vhi10,peds_tense_talking,peds_tense_talking,pediatric_questionnaire,My child appears tense when talking with others because of his/her voice.,NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -1284,7 +1288,7 @@ generic_vhi_10_schema,pediatric_vhi10,peds_vhi_language,peds_vhi_language,pediat
 generic_vhi_10_schema,pediatric_vhi10,peds_vhi_origin,peds_vhi_origin,pediatric_questionnaire,Peds VHI-10 - origin,NO,internal,VARIABLE,redcap,v4,NO,NO
 generic_vhi_10_schema,pediatric_vhi10,peds_vhi_session_id,peds_vhi_session_id,pediatric_questionnaire,Session ID,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 generic_vhi_10_schema,pediatric_vhi10,peds_vhi_started_at,peds_vhi_started_at,pediatric_questionnaire,Questionnaire Started At,YES,internal,VARIABLE,redcap,v4,NO,YES
-generic_vhi_10_schema,pediatric_vhi10,peds_vhi_talkativeness,peds_vhi_talkativeness,pediatric_questionnaire,I would rate my child's talkativeness as the following:,NO,internal,VARIABLE,redcap,pre-v4,NO,NO
+generic_vhi_10_schema,pediatric_vhi10,peds_vhi_talkativeness,peds_vhi_talkativeness,pediatric_questionnaire,I would rate my child's talkativeness as the following:,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 generic_vhi_10_schema,pediatric_vhi10,peds_vhi_via,peds_vhi_via,pediatric_questionnaire,Peds VHI-10 - via,NO,internal,VARIABLE,redcap,v4,NO,NO
 generic_vhi_10_schema,pediatric_vhi10,peds_voice_changes,peds_voice_changes,pediatric_questionnaire,The sound of my child's voice changes throughout the day.,NO,release,VARIABLE,redcap,pre-v4,NO,NO
 generic_vhi_10_schema,pediatric_vhi10,peds_voice_diffculities,peds_voice_diffculities,pediatric_questionnaire,"My child's voice difficulties restrict personal, educational and social activities.",NO,release,VARIABLE,redcap,pre-v4,NO,NO
@@ -1787,6 +1791,7 @@ ptsd_adult_schema,ptsd_adult,super_alert,super_alert,questionnaire,"Being ""supe
 ptsd_adult_schema,ptsd_adult,thinking_stressful_event,thinking_stressful_event,questionnaire,"Thinking that a stressful event happened because you or someone else (who didn't directly harm you) did something wrong or didn't do everything possible to prevent it, or because of something about you?",NO,release,VARIABLE,redcap,pre-v4,NO,NO
 ptsd_adult_schema,ptsd_adult,traumatic_event,traumatic_event,questionnaire,Please list the traumatic event that you experienced,NO,review,VARIABLE,redcap,v4,NO,NO
 ptsd_adult_schema,ptsd_adult,traumatic_event_date,traumatic_event_date,questionnaire,Date of the traumatic event:,YES,internal,VARIABLE,redcap,v4,NO,YES
+ptsd_adult_schema,ptsd_adult,traumatic_event_days_since,traumatic_event_days_since,questionnaire,"Days from the traumatic event to the start of the session this form belongs to (computed from traumatic_event_date; the date shift does not change it). Blank if either date is missing, or if the date is after that session or before the participant was born.",NO,internal,VARIABLE,pipeline,v4,NO,NO
 random_item_generation_schema,random_item_generation,random_completed_at,random_completed_at,task,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES
 random_item_generation_schema,random_item_generation,random_duration,random_duration,task,Questionnaire Duration (seconds),NO,release,VARIABLE,redcap,pre-v4,NO,NO
 random_item_generation_schema,random_item_generation,random_item_generation_category,random_item_generation_category,task,Random item generation category,NO,release,VARIABLE,redcap,pre-v4,NO,NO
