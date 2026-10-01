@@ -1,8 +1,11 @@
-"""Build resources/postal_code_timezones.csv and region_timezones.csv.
+"""Build resources/postal_code_timezones.csv, region_timezones.csv and postal_code_regions.csv.
 
 ``postal_code_timezones.csv``: US ZIP code or Canadian FSA -> IANA time zone.
 ``region_timezones.csv``: US state / Canadian province -> IANA time zone, only for regions whose
 every postal code falls in a single zone (a fallback when no postal code was reported).
+``postal_code_regions.csv``: two-letter state / province code by US ZIP prefix (3 digits, plus the
+few ZIPs that differ) and by first letter of a Canadian postal code (FSAs for the letter X), from
+GeoNames, for the derived state/province field.
 
 Used by date shifting to find where a self-administered session actually happened. Run by
 hand when the sources should be refreshed; the output is committed, so the pipeline has no
@@ -16,9 +19,10 @@ Sources (both assign the zone by point-in-polygon on a postal-code centroid, wit
 * Canadian forward sortation areas (first three characters of a postal code): GeoNames
   ``CA.zip`` (CC BY 4.0, https://www.geonames.org), resolved here.
 
-Usage (``timezonefinder`` is needed only for this script)::
+Usage (``timezonefinder`` is needed only for this script: ``pip install b2aiprep[scripts]``)::
 
-    python scripts/build_postal_code_timezones.py
+    python scripts/build_postal_code_timezones.py                 # all three tables
+    python scripts/build_postal_code_timezones.py --regions-only  # postal_code_regions.csv only (no timezonefinder)
 """
 
 import ast
@@ -30,7 +34,6 @@ import urllib.request
 import zipfile
 from pathlib import Path
 
-from timezonefinder import TimezoneFinder
 
 ZIP2INFO_COMMIT = "5876e295eb"
 ZIP2INFO_DATA = (
@@ -41,6 +44,7 @@ GEONAMES_US = "https://download.geonames.org/export/zip/US.zip"
 RESOURCES = Path(__file__).resolve().parents[1] / "src/b2aiprep/prepare/resources"
 OUTPUT = RESOURCES / "postal_code_timezones.csv"
 REGION_OUTPUT = RESOURCES / "region_timezones.csv"
+POSTAL_REGION_OUTPUT = RESOURCES / "postal_code_regions.csv"
 
 
 def _fetch(url: str) -> bytes:
@@ -70,6 +74,8 @@ def _geonames_rows(url: str, member: str):
 
 def canada_fsa_timezones() -> tuple:
     """FSA -> zone from GeoNames FSA centroids, and FSA -> province code."""
+    from timezonefinder import TimezoneFinder  # only this script needs it
+
     finder = TimezoneFinder()
     zones, provinces = {}, {}
     for row in _geonames_rows(GEONAMES_CA, "CA.txt"):
@@ -89,6 +95,47 @@ def us_zip_states() -> dict:
     return {row[1].strip(): row[4].strip() for row in _geonames_rows(GEONAMES_US, "US.txt") if row[4].strip()}
 
 
+def canada_fsa_provinces() -> dict:
+    """FSA -> province code, from GeoNames (no time-zone lookup)."""
+    out = {}
+    for row in _geonames_rows(GEONAMES_CA, "CA.txt"):
+        fsa, province = row[1].strip().upper()[:3], row[4].strip()
+        if fsa and province:
+            out.setdefault(fsa, province)
+    return out
+
+
+def write_postal_regions(us_states: dict, ca_provinces: dict) -> None:
+    """Compact postal code -> state / province rules (a complete public list, no participant data).
+
+    US: one row per 3-digit ZIP prefix (its majority state), plus the few full ZIP codes whose state
+    differs from their prefix's. Canada: one row per first letter of the postal code; the letter X
+    covers two territories, so its FSAs are listed individually.
+    """
+    from collections import Counter, defaultdict
+    by_prefix = defaultdict(Counter)
+    for code, region in us_states.items():
+        by_prefix[code[:3]][region] += 1
+    rows = []
+    for prefix, counts in sorted(by_prefix.items()):
+        majority = counts.most_common(1)[0][0]
+        rows.append(("US", prefix, majority))
+        rows += [("US", code, region) for code, region in sorted(us_states.items()) if code[:3] == prefix and region != majority]
+    by_letter = defaultdict(set)
+    for fsa, region in ca_provinces.items():
+        by_letter[fsa[0]].add(region)
+    for letter, regions in sorted(by_letter.items()):
+        if len(regions) == 1:
+            rows.append(("CA", letter, next(iter(regions))))
+        else:
+            rows += [("CA", fsa, region) for fsa, region in sorted(ca_provinces.items()) if fsa[0] == letter]
+    with open(POSTAL_REGION_OUTPUT, "w", newline="") as fp:
+        writer = csv.writer(fp, lineterminator="\n")
+        writer.writerow(("country", "postal_code_prefix", "region"))
+        writer.writerows(rows)
+    print(f"wrote {len(rows)} rows to {POSTAL_REGION_OUTPUT}", file=sys.stderr)
+
+
 def single_zone_regions(zones: dict, regions: dict) -> dict:
     """Region -> zone for regions where every postal code with a known zone shares one zone."""
     seen = {}
@@ -99,6 +146,9 @@ def single_zone_regions(zones: dict, regions: dict) -> dict:
 
 
 def main() -> None:
+    if "--regions-only" in sys.argv[1:]:
+        write_postal_regions(us_zip_states(), canada_fsa_provinces())
+        return
     us_zones = us_zip_timezones()
     ca_zones, ca_provinces = canada_fsa_timezones()
     rows = [("US", code, zone) for code, zone in sorted(us_zones.items())]
@@ -116,6 +166,7 @@ def main() -> None:
         writer.writerow(("country", "region", "timezone"))
         writer.writerows(regions)
     print(f"wrote {len(regions)} single-zone regions to {REGION_OUTPUT}", file=sys.stderr)
+    write_postal_regions(us_zip_states(), canada_fsa_provinces())
 
 
 if __name__ == "__main__":

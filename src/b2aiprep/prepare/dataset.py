@@ -44,6 +44,7 @@ from tqdm import tqdm
 from b2aiprep.prepare.constants import RepeatInstrument, Instrument
 from b2aiprep.prepare.date_shift import (
     parse_utc_timestamp,
+    postal_code_region,
     row_sessions,
     self_administered_sessions,
     shift_dates,
@@ -1226,6 +1227,68 @@ class BIDSDataset:
                             "(more days than age + 1 years), left blank: %s", len(before_birth), "; ".join(before_birth))
         return df
 
+    # State or province of residence, derived (2026-10-01): from the reported zip / postal code,
+    # else the stated state or province, else "Unknown". Raw state_province is deprecated and city
+    # adds nothing (no form has a city without a zip code or state).
+    _US_STATES = {
+        "AL": "Alabama", "AK": "Alaska", "AZ": "Arizona", "AR": "Arkansas", "CA": "California", "CO": "Colorado",
+        "CT": "Connecticut", "DE": "Delaware", "DC": "District of Columbia", "FL": "Florida", "GA": "Georgia",
+        "HI": "Hawaii", "ID": "Idaho", "IL": "Illinois", "IN": "Indiana", "IA": "Iowa", "KS": "Kansas",
+        "KY": "Kentucky", "LA": "Louisiana", "ME": "Maine", "MD": "Maryland", "MA": "Massachusetts",
+        "MI": "Michigan", "MN": "Minnesota", "MS": "Mississippi", "MO": "Missouri", "MT": "Montana",
+        "NE": "Nebraska", "NV": "Nevada", "NH": "New Hampshire", "NJ": "New Jersey", "NM": "New Mexico",
+        "NY": "New York", "NC": "North Carolina", "ND": "North Dakota", "OH": "Ohio", "OK": "Oklahoma",
+        "OR": "Oregon", "PA": "Pennsylvania", "RI": "Rhode Island", "SC": "South Carolina", "SD": "South Dakota",
+        "TN": "Tennessee", "TX": "Texas", "UT": "Utah", "VT": "Vermont", "VA": "Virginia", "WA": "Washington",
+        "WV": "West Virginia", "WI": "Wisconsin", "WY": "Wyoming", "PR": "Puerto Rico",
+    }
+    _CA_PROVINCES = {
+        "AB": "Alberta", "BC": "British Columbia", "MB": "Manitoba", "NB": "New Brunswick",
+        "NL": "Newfoundland and Labrador", "NS": "Nova Scotia", "NT": "Northwest Territories", "NU": "Nunavut",
+        "ON": "Ontario", "PE": "Prince Edward Island", "QC": "Quebec", "SK": "Saskatchewan", "YT": "Yukon",
+    }
+    _STATE_PROVINCE_FIELDS = (  # (form instrument, postal code, stated state/province, derived column)
+        ("Q - Generic - Demographics", "zipcode", "state_province", "state_province_derived"),
+        ("Q - Pediatric - Generic - Demographics", "peds_zipcode", "peds_state_province", "peds_state_province_derived"),
+    )
+
+    @staticmethod
+    def _region_code(value: t.Any) -> t.Optional[str]:
+        """Two-letter code for a stated state or province, given as a code or a name."""
+        if not isinstance(value, str) or not value.strip():
+            return None
+        text = re.sub(r"[^a-z ]", "", value.strip().lower())
+        names = {**BIDSDataset._US_STATES, **BIDSDataset._CA_PROVINCES}
+        if text.upper() in names:
+            return text.upper()
+        by_name = {n.lower(): c for c, n in names.items()}
+        by_name.update({"quebec": "QC", "qubec": "QC", "newfoundland": "NL", "washington dc": "DC"})
+        return by_name.get(text)
+
+    @staticmethod
+    def _add_state_province(df: pd.DataFrame) -> pd.DataFrame:
+        """Add ``state_province_derived`` / ``peds_state_province_derived`` on the demographics rows."""
+        df = df.copy()
+        for instrument, postal, stated, out in BIDSDataset._STATE_PROVINCE_FIELDS:
+            rows = df["redcap_repeat_instrument"] == instrument
+            if not rows.any() or out in df.columns:
+                continue
+            from_zip = df.loc[rows, postal].map(postal_code_region) if postal in df.columns else pd.Series(None, index=df.index[rows])
+            from_text = df.loc[rows, stated].map(BIDSDataset._region_code) if stated in df.columns else pd.Series(None, index=df.index[rows])
+            value = from_zip.where(from_zip.notna(), from_text).fillna(BIDSDataset._SEX_UNKNOWN_LABEL)
+            df[out] = pd.Series(pd.NA, index=df.index, dtype="object")
+            df.loc[rows, out] = value
+            disagree = from_zip.notna() & from_text.notna() & (from_zip != from_text)
+            _LOGGER.info("%s: %d from the postal code, %d from the stated state/province, %d unknown.", out,
+                         int(from_zip.notna().sum()), int((from_zip.isna() & from_text.notna()).sum()),
+                         int((value == BIDSDataset._SEX_UNKNOWN_LABEL).sum()))
+            if disagree.any():
+                # IDs are listed for QA; this log lives with the job output, outside the BIDS tree.
+                _LOGGER.warning("QA check: %s: %d form(s) whose postal code and stated state/province disagree "
+                                "(the postal code is used): %s", out, int(disagree.sum()),
+                                ", ".join(sorted(df.loc[disagree[disagree].index, "record_id"].astype(str))))
+        return df
+
     # In-clinic sessions normally start between 07:00 and 19:59 local time (1,919 of 1,928 adult
     # sessions in the 2026-09-04 export).
     _CLINIC_HOURS = range(7, 20)
@@ -1326,6 +1389,7 @@ class BIDSDataset:
         df = BIDSDataset._add_local_hours(df)
         df = BIDSDataset._add_days_since_surgery(df)
         df = BIDSDataset._add_days_since_episodes(df)
+        df = BIDSDataset._add_state_province(df)
         BIDSDataset._check_session_hours(df, self_administered)
         df = BIDSDataset._apply_disclosure_transforms(df)
 

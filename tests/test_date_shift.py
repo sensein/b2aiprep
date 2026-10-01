@@ -642,3 +642,27 @@ def test_episode_after_enrollment_is_kept_negative_and_trauma_on_session_day_is_
     assert _na(out.traumatic_event_days_since) == [None] * 4
     assert "1 episode date(s) equal to the session date, treated as not given" in caplog.text
     assert "a mbd_last_manic_episode (10 days after)" in caplog.text
+
+
+def test_postal_code_region_uses_prefix_rules_and_exceptions():
+    from b2aiprep.prepare.date_shift import postal_code_region
+    assert postal_code_region("02139") == "MA" and postal_code_region(2139.0) == "MA"   # numeric read, zero lost
+    assert postal_code_region("90210-1234") == "CA"
+    assert postal_code_region("M5V 3L9") == "ON" and postal_code_region("h2x") == "QC"
+    assert postal_code_region("12") is None and postal_code_region("not a zip") is None
+
+
+def test_state_province_derived_prefers_postal_code_then_stated_value(caplog):
+    demo = "Q - Generic - Demographics"
+    df = pd.DataFrame([
+        {"record_id": "a", "redcap_repeat_instrument": demo, "zipcode": "02139", "state_province": "Massachusetts"},
+        {"record_id": "b", "redcap_repeat_instrument": demo, "zipcode": None, "state_province": "ny"},
+        {"record_id": "c", "redcap_repeat_instrument": demo, "zipcode": "bad", "state_province": "Quebec"},
+        {"record_id": "d", "redcap_repeat_instrument": demo, "zipcode": None, "state_province": None},
+        {"record_id": "e", "redcap_repeat_instrument": demo, "zipcode": "10001", "state_province": "NJ"},
+        {"record_id": "f", "redcap_repeat_instrument": "Session", "zipcode": None, "state_province": None},
+    ], dtype=object)
+    with caplog.at_level("WARNING"):
+        out = BIDSDataset._add_state_province(df)
+    assert _na(out.state_province_derived) == ["MA", "NY", "QC", "Unknown", "NY", None]
+    assert "1 form(s) whose postal code and stated state/province disagree" in caplog.text and "e" in caplog.text

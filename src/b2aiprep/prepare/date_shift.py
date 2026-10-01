@@ -145,8 +145,8 @@ def _region_timezones() -> t.Dict[str, str]:
         return {r["region"]: r["timezone"] for r in csv.DictReader(fp)}
 
 
-def postal_code_timezone(value: t.Any) -> t.Optional[str]:
-    """Zone for a US ZIP (5 digits, optional +4) or Canadian postal code / FSA."""
+def postal_key(value: t.Any) -> t.Optional[t.Tuple[str, str]]:
+    """("US", 5-digit ZIP) or ("CA", forward sortation area) for a reported postal code, else None."""
     if isinstance(value, (int, float)) and not isinstance(value, bool) and not pd.isna(value):
         value = str(int(value))  # a column of US-only ZIPs is read as numbers
     if not isinstance(value, str):
@@ -156,10 +156,40 @@ def postal_code_timezone(value: t.Any) -> t.Optional[str]:
         text = text.zfill(5)  # leading zeros lost to a numeric read
     us = _US_ZIP.match(text)
     if us:
-        return _postal_timezones().get(("US", us.group(1)))
+        return ("US", us.group(1))
     ca = _CA_POSTAL.match(text)
     if ca:
-        return _postal_timezones().get(("CA", ca.group(1)))
+        return ("CA", ca.group(1))
+    return None
+
+
+def postal_code_timezone(value: t.Any) -> t.Optional[str]:
+    """Zone for a US ZIP (5 digits, optional +4) or Canadian postal code / FSA."""
+    key = postal_key(value)
+    return _postal_timezones().get(key) if key else None
+
+
+@functools.lru_cache(maxsize=1)
+def _postal_regions() -> t.Dict[t.Tuple[str, str], str]:
+    path = files("b2aiprep").joinpath("prepare", "resources", "postal_code_regions.csv")
+    with path.open("r", encoding="utf-8") as fp:
+        return {(r["country"], r["postal_code_prefix"]): r["region"] for r in csv.DictReader(fp)}
+
+
+def postal_code_region(value: t.Any) -> t.Optional[str]:
+    """Two-letter US state or Canadian province code for a reported postal code.
+
+    The table holds a region per 3-digit ZIP prefix and per first letter of a Canadian postal code,
+    with the full codes that differ from their prefix; the most specific match wins.
+    """
+    key = postal_key(value)
+    if not key:
+        return None
+    country, code = key
+    table = _postal_regions()
+    for prefix in (code, code[:3], code[:1]):
+        if (country, prefix) in table:
+            return table[(country, prefix)]
     return None
 
 
