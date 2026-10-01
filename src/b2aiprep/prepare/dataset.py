@@ -1268,6 +1268,7 @@ class BIDSDataset:
         "sex_assigned_at_birth": {"intersex", "unknown"},
     }
     _NO_ANSWER_LABEL = "Prefer not to answer"
+    _SEX_UNKNOWN_LABEL = "Unknown"  # sex_at_birth when not stated or not verifiable
 
     @staticmethod
     def _apply_disclosure_transforms(df: pd.DataFrame) -> pd.DataFrame:
@@ -3089,35 +3090,34 @@ class BIDSDataset:
 
     @staticmethod
     def _add_sex_at_birth_column(df: pd.DataFrame, phenotype: dict) -> t.Tuple[pd.DataFrame, dict]:
-        """Add sex_at_birth: sex_assigned_at_birth where answered, otherwise from a Cis answer.
+        """Add sex_at_birth: the sex assigned at birth the participant stated, otherwise "Unknown".
 
-        sex_assigned_at_birth was added to the form later, so earlier participants have none. For
-        them, a male/female gender identity specified as "Cis" (same as the sex assigned at birth)
-        gives the sex at birth. An answered sex_assigned_at_birth, including "Prefer not to
-        answer", is kept as given, and nothing is inferred from "Trans" or any other answer.
+        - A Male / Female answer to sex_assigned_at_birth is kept as given, whatever the gender answer.
+        - "Prefer not to answer" (which also holds Intersex / Unknown, grouped at ingest) becomes "Unknown".
+        - sex_assigned_at_birth was added to the form later, so earlier participants have none. For
+          them, a male/female gender identity specified as "Cis" (same as the sex assigned at birth)
+          gives the sex at birth; any other gender answer gives "Unknown". Nothing is inferred from a
+          "Trans" or other answer.
+        - Someone who answered neither question is also "Unknown".
 
-        An earlier participant who answered the gender-identity question with anything other than
-        a Cis male/female answer gets "Prefer not to answer": left blank, the value would show that
-        they are not cis, which is what keeping gender_identity internal protects. Only someone who
-        answered neither question stays blank. sex_at_birth is the one released sex column;
-        sex_assigned_at_birth and specify_gender_identity are internal (2026-09-30).
+        "Unknown" is shared by everyone whose sex at birth is not stated (decliners, cis or not, and
+        those who cannot be verified), so it does not show that a participant is not cis, which is
+        what keeping gender_identity internal protects. sex_at_birth is the one released sex
+        column; sex_assigned_at_birth and specify_gender_identity are internal (rule agreed
+        2026-10-01).
         """
-        if "sex_assigned_at_birth" in df.columns:
-            # object dtype: a column with no answers is read as float and would refuse "Male"
-            df["sex_at_birth"] = df["sex_assigned_at_birth"].astype(object)
-        else:
-            df["sex_at_birth"] = pd.Series(None, index=df.index, dtype=object)
-        unanswered = df["sex_at_birth"].isna()
+        stated = df["sex_assigned_at_birth"].astype(object) if "sex_assigned_at_birth" in df.columns \
+            else pd.Series(None, index=df.index, dtype=object)  # object: an all-blank column reads as float
+        df["sex_at_birth"] = stated.where(stated.isin(["Male", "Female"]))
         cis = df["specify_gender_identity"].fillna("").astype(str).str.startswith("Cis")
         identity = df["gender_identity"].fillna("").astype(str)
+        never_asked = stated.isna()
         for sex_at_birth in ["Male", "Female"]:
-            df.loc[unanswered & cis & identity.str.startswith(sex_at_birth), "sex_at_birth"] = sex_at_birth
-        undisclosed = df["sex_at_birth"].isna() & identity.str.strip().ne("")
-        if undisclosed.any():
-            df.loc[undisclosed, "sex_at_birth"] = BIDSDataset._NO_ANSWER_LABEL
-            # a count only: the IDs would name participants who are not cis
-            _LOGGER.info("sex_at_birth: %d participant row(s) without a stated sex at birth set to %r.",
-                         int(undisclosed.sum()), BIDSDataset._NO_ANSWER_LABEL)
+            df.loc[never_asked & cis & identity.str.startswith(sex_at_birth), "sex_at_birth"] = sex_at_birth
+        unknown = df["sex_at_birth"].isna()  # declined, not verifiable, or nothing answered
+        df.loc[unknown, "sex_at_birth"] = BIDSDataset._SEX_UNKNOWN_LABEL
+        # a count only: the IDs would name participants who are not cis
+        _LOGGER.info("sex_at_birth: %d participant row(s) set to %r.", int(unknown.sum()), BIDSDataset._SEX_UNKNOWN_LABEL)
 
         # Re-order columns to place sex_at_birth after gender_identity
         phenotype_reordered = deepcopy(phenotype)
