@@ -45,6 +45,7 @@ from b2aiprep.prepare.constants import RepeatInstrument, Instrument
 from b2aiprep.prepare.date_shift import (
     parse_utc_timestamp,
     postal_code_region,
+    region_code,
     row_sessions,
     self_administered_sessions,
     shift_dates,
@@ -1231,40 +1232,10 @@ class BIDSDataset:
     # two-letter code, else the one the reported zip / postal code is in, else "Unknown". Released as
     # state_province / peds_state_province; the free-text answers are kept internal as
     # *_state_province_as_entered. City adds nothing (no form has a city without a zip code or state).
-    _US_STATES = {
-        "AL": "Alabama", "AK": "Alaska", "AZ": "Arizona", "AR": "Arkansas", "CA": "California", "CO": "Colorado",
-        "CT": "Connecticut", "DE": "Delaware", "DC": "District of Columbia", "FL": "Florida", "GA": "Georgia",
-        "HI": "Hawaii", "ID": "Idaho", "IL": "Illinois", "IN": "Indiana", "IA": "Iowa", "KS": "Kansas",
-        "KY": "Kentucky", "LA": "Louisiana", "ME": "Maine", "MD": "Maryland", "MA": "Massachusetts",
-        "MI": "Michigan", "MN": "Minnesota", "MS": "Mississippi", "MO": "Missouri", "MT": "Montana",
-        "NE": "Nebraska", "NV": "Nevada", "NH": "New Hampshire", "NJ": "New Jersey", "NM": "New Mexico",
-        "NY": "New York", "NC": "North Carolina", "ND": "North Dakota", "OH": "Ohio", "OK": "Oklahoma",
-        "OR": "Oregon", "PA": "Pennsylvania", "RI": "Rhode Island", "SC": "South Carolina", "SD": "South Dakota",
-        "TN": "Tennessee", "TX": "Texas", "UT": "Utah", "VT": "Vermont", "VA": "Virginia", "WA": "Washington",
-        "WV": "West Virginia", "WI": "Wisconsin", "WY": "Wyoming", "PR": "Puerto Rico",
-    }
-    _CA_PROVINCES = {
-        "AB": "Alberta", "BC": "British Columbia", "MB": "Manitoba", "NB": "New Brunswick",
-        "NL": "Newfoundland and Labrador", "NS": "Nova Scotia", "NT": "Northwest Territories", "NU": "Nunavut",
-        "ON": "Ontario", "PE": "Prince Edward Island", "QC": "Quebec", "SK": "Saskatchewan", "YT": "Yukon",
-    }
     _STATE_PROVINCE_FIELDS = (  # (form instrument, postal code, stated state/province, derived column)
         ("Q - Generic - Demographics", "zipcode", "state_province", "state_province_standardized"),
         ("Q - Pediatric - Generic - Demographics", "peds_zipcode", "peds_state_province", "peds_state_province_standardized"),
     )
-
-    @staticmethod
-    def _region_code(value: t.Any) -> t.Optional[str]:
-        """Two-letter code for a stated state or province, given as a code or a name."""
-        if not isinstance(value, str) or not value.strip():
-            return None
-        text = re.sub(r"[^a-z ]", "", value.strip().lower())
-        names = {**BIDSDataset._US_STATES, **BIDSDataset._CA_PROVINCES}
-        if text.upper() in names:
-            return text.upper()
-        by_name = {n.lower(): c for c, n in names.items()}
-        by_name.update({"quebec": "QC", "qubec": "QC", "newfoundland": "NL", "washington dc": "DC"})
-        return by_name.get(text)
 
     @staticmethod
     def _add_state_province(df: pd.DataFrame) -> pd.DataFrame:
@@ -1279,7 +1250,7 @@ class BIDSDataset:
             if not rows.any() or out in df.columns:
                 continue
             from_zip = df.loc[rows, postal].map(postal_code_region) if postal in df.columns else pd.Series(None, index=df.index[rows])
-            from_text = df.loc[rows, stated].map(BIDSDataset._region_code) if stated in df.columns else pd.Series(None, index=df.index[rows])
+            from_text = df.loc[rows, stated].map(region_code) if stated in df.columns else pd.Series(None, index=df.index[rows])
             value = from_text.where(from_text.notna(), from_zip).fillna(BIDSDataset._SEX_UNKNOWN_LABEL)
             df[out] = pd.Series(pd.NA, index=df.index, dtype="object")
             df.loc[rows, out] = value

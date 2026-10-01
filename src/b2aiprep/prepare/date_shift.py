@@ -193,11 +193,42 @@ def postal_code_region(value: t.Any) -> t.Optional[str]:
     return None
 
 
-def region_timezone(value: t.Any) -> t.Optional[str]:
-    """Zone for a state or province code, only when the whole region is one zone."""
-    if not isinstance(value, str):
+# States and provinces by two-letter code, for reading a stated state or province.
+US_STATES = {
+    "AL": "Alabama", "AK": "Alaska", "AZ": "Arizona", "AR": "Arkansas", "CA": "California", "CO": "Colorado",
+    "CT": "Connecticut", "DE": "Delaware", "DC": "District of Columbia", "FL": "Florida", "GA": "Georgia",
+    "HI": "Hawaii", "ID": "Idaho", "IL": "Illinois", "IN": "Indiana", "IA": "Iowa", "KS": "Kansas",
+    "KY": "Kentucky", "LA": "Louisiana", "ME": "Maine", "MD": "Maryland", "MA": "Massachusetts",
+    "MI": "Michigan", "MN": "Minnesota", "MS": "Mississippi", "MO": "Missouri", "MT": "Montana",
+    "NE": "Nebraska", "NV": "Nevada", "NH": "New Hampshire", "NJ": "New Jersey", "NM": "New Mexico",
+    "NY": "New York", "NC": "North Carolina", "ND": "North Dakota", "OH": "Ohio", "OK": "Oklahoma",
+    "OR": "Oregon", "PA": "Pennsylvania", "RI": "Rhode Island", "SC": "South Carolina", "SD": "South Dakota",
+    "TN": "Tennessee", "TX": "Texas", "UT": "Utah", "VT": "Vermont", "VA": "Virginia", "WA": "Washington",
+    "WV": "West Virginia", "WI": "Wisconsin", "WY": "Wyoming", "PR": "Puerto Rico",
+}
+CA_PROVINCES = {
+    "AB": "Alberta", "BC": "British Columbia", "MB": "Manitoba", "NB": "New Brunswick",
+    "NL": "Newfoundland and Labrador", "NS": "Nova Scotia", "NT": "Northwest Territories", "NU": "Nunavut",
+    "ON": "Ontario", "PE": "Prince Edward Island", "QC": "Quebec", "SK": "Saskatchewan", "YT": "Yukon",
+}
+
+def region_code(value: t.Any) -> t.Optional[str]:
+    """Two-letter code for a stated state or province, given as a code or a name."""
+    if not isinstance(value, str) or not value.strip():
         return None
-    return _region_timezones().get(value.strip().upper())
+    text = re.sub(r"[^a-z ]", "", value.strip().lower())
+    names = {**US_STATES, **CA_PROVINCES}
+    if text.upper() in names:
+        return text.upper()
+    by_name = {n.lower(): c for c, n in names.items()}
+    by_name.update({"quebec": "QC", "qubec": "QC", "newfoundland": "NL", "washington dc": "DC"})
+    return by_name.get(text)
+
+
+def region_timezone(value: t.Any) -> t.Optional[str]:
+    """Zone for a state or province (code or name), only when the whole region is one zone."""
+    code = region_code(value)
+    return _region_timezones().get(code) if code else None
 
 
 def home_timezones(df: pd.DataFrame) -> t.Dict[str, t.Tuple[str, str]]:
@@ -272,6 +303,7 @@ def session_timezones(
     zones: t.Dict[str, ZoneInfo] = {}
     sources: Counter = Counter()
     unresolved: t.Dict[str, str] = {}
+    site_fallback: t.List[str] = []  # record/session IDs, for QA; the log stays outside the BIDS tree
     for record_id, session_id in zip(sessions["record_id"], _column(sessions, "session_id")):
         site = site_of.get(record_id)
         site_zone = SITE_TIMEZONES.get(site) if isinstance(site, str) else None
@@ -283,6 +315,7 @@ def session_timezones(
             elif site_zone:
                 zones[session_id] = ZoneInfo(site_zone)
                 sources["self_administered_site_fallback"] += 1
+                site_fallback.append(f"{record_id}/{session_id}")
             else:
                 unresolved[session_id] = "self-administered, no location and no known site"
         elif site_zone:
@@ -293,8 +326,8 @@ def session_timezones(
     if sources["self_administered_site_fallback"]:
         _LOGGER.warning(
             "%d self-administered session(s) have no usable participant location; used the "
-            "site's time zone, which may not be where the participant was.",
-            sources["self_administered_site_fallback"],
+            "site's time zone, which may not be where the participant was: %s",
+            sources["self_administered_site_fallback"], ", ".join(site_fallback),
         )
     return zones, sources, unresolved
 

@@ -232,6 +232,7 @@ def test_split_state_zip_codes_resolve_to_their_own_zone():
     assert postal_code_timezone("P9N 1A1") == "America/Winnipeg"  # Kenora
     assert postal_code_timezone("2139") == "America/New_York"   # leading zero lost
     assert region_timezone("TN") is None and region_timezone("ON") is None
+    assert region_timezone("Massachusetts") == region_timezone("MA") == "America/New_York"  # a name works too
 
 
 def test_site_comes_from_enrollment_institution_not_session_site():
