@@ -128,6 +128,17 @@ def test_registry_cape_v_version_index_fix(descriptions):
     assert v2["stimulus_text"] == "He helped her hurry home."
 
 
+def test_sidecar_task_name_is_the_file_name_entity(descriptions):
+    # The sidecar's task_name matches the file name and acoustic_task.tsv; the version marker
+    # in the raw name still drives resolution.
+    from b2aiprep.prepare.utils import canonical_task_entity
+    for raw in ["Diadochokinesis-(v2)-PUH", "Cape-V-sentences-2-(v2)"]:
+        m = _resolve(descriptions, raw)
+        assert m["task_name"] == canonical_task_entity(raw)
+        assert "(" not in m["task_name"]
+    assert _resolve(descriptions, "Cape-V-sentences-2-(v2)")["stimulus_text"] == "He helped her hurry home."
+
+
 def test_diadochokinesis_v1_curated_instruction(descriptions):
     # diadochokinesis v1 is now curated from the Retired doc: the 'pa' recording
     # keeps its own /PA/ syllable ("as fast as possible 10 times"), NOT the v2
@@ -641,14 +652,14 @@ def test_metadata_bundle_tsv_null_equivalence(descriptions):
     hdr = tsv.splitlines()[0].split("\t")
     ci, ti = hdr.index("stimulus_asset_n_images"), hdr.index("task_name")
     cells = {ln.split("\t")[ti]: ln.split("\t")[ci] for ln in tsv.splitlines()[1:]}
-    assert cells["story-recall-(v2)"] == "10"
+    assert cells["story-recall-v2"] == "10"
     assert cells["identifying-pictures-10"] == ""
     assert cells["rainbow-passage"] == ""
 
     rt = pd.read_csv(io.StringIO(tsv), sep="\t")
     by = {r["task_name"]: r for _, r in rt.iterrows()}
-    assert int(by["story-recall-(v2)"]["stimulus_asset_n_images"]) == 10
-    assert "{n}" in by["story-recall-(v2)"]["stimulus_asset"]
+    assert int(by["story-recall-v2"]["stimulus_asset_n_images"]) == 10
+    assert "{n}" in by["story-recall-v2"]["stimulus_asset"]
     # absent-key sidecars -> null table cells (== absent)
     assert pd.isna(by["identifying-pictures-10"]["stimulus_asset_n_images"])
     assert pd.isna(by["rainbow-passage"]["stimulus_asset_n_images"])

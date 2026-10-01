@@ -4,18 +4,16 @@ This README provides an overview of the directory structure and the purpose of e
 
 ## Root Directory
 
-### phenotype
-The phenotype directory stores participant-specific data that is not directly related to specific audio tasks but is relevant for understanding participants' characteristics. Primarily it contains responses to questionnaires by the individual.
-
-- **phenotype/<measurement_tool_name>.tsv**: A tab-separated values (TSV) file containing phenotype data collected using a specific measurement tool.
-
-- **phenotype/<measurement_tool_name>.json**: A JSON file that provides metadata or additional information about the phenotype data collected using a specific measurement tool.
-
 - **dataset_description.json**: A JSON file describing the dataset, including information such as the dataset's purpose, structure, and any relevant metadata.
 
-- **participants.json**: A JSON file containing metadata about the participants involved in the study, including demographic information and other relevant details.
+### phenotype
+The phenotype directory stores participant-specific data that is not directly related to specific audio tasks but is relevant for understanding participants' characteristics. Primarily it contains responses to questionnaires by the individual. Tables are grouped into subdirectories (for example `enrollment`, `demographics`, `diagnosis`, `questionnaire`, `task`).
 
-- **participants.tsv**: A TSV file listing the participants involved in the study, along with their corresponding IDs and other relevant information.
+- **phenotype/<group>/<table>.tsv**: A tab-separated values (TSV) file with one table of phenotype data, keyed by `participant_id` (and `session_id` where the data belongs to a session).
+
+- **phenotype/<group>/<table>.json**: A JSON file describing each column of the matching TSV file.
+
+- **phenotype/enrollment/participant.tsv** and **participant.json**: The list of participants and their enrollment information. This dataset has no `participants.tsv` at the root.
 
 ## Participant-Specific Directories
 

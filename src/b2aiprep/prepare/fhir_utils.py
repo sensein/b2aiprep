@@ -966,7 +966,10 @@ def convert_response_to_bids_metadata( participant: dict,
         elif metadata_field in ("acoustic_task_name", "recording_name") and metadata_field is not None:
             if isinstance(metadata_value, str):
                 task_name = metadata_value.replace(" ", "-").lower()
-            metadata_file[metadata_field] = task_name
+            # The sidecar records the BIDS task entity, the same label as the file name and
+            # acoustic_task.tsv; the raw name (task_name) is kept for the lookups below, which
+            # read markers such as "(v2)".
+            metadata_file[metadata_field] = canonical_task_entity(metadata_value) if task_name else task_name
         elif metadata_file is not None and metadata_field is not None:
             metadata_file[metadata_field] = metadata_value
     
