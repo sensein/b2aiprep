@@ -246,3 +246,41 @@ def test_diagnosis_no_complete_col_falls_back_to_substantive_check():
     )
     assert kept["participant_id"].tolist() == ["has-data"]
 
+
+
+def test_every_computed_column_has_a_derived_field_spec():
+    """Each source=pipeline phenotype column has datatype/choices in derived_fields.json, and back."""
+    import pandas as pd
+    from importlib.resources import files
+    from b2aiprep.prepare.dataset import derived_field_specs
+
+    field_map = pd.read_csv(
+        files("b2aiprep").joinpath("prepare", "resources", "bids_field_organization.csv"), dtype=str
+    )
+    computed = set(field_map.loc[(field_map["source"] == "pipeline")
+                                 & (field_map["schema_name"] != "audio_sidecar"), "column_name"])
+    specs = derived_field_specs()
+    assert computed == set(specs)
+    for name, spec in specs.items():
+        assert spec["datatype"] in ("xsd:integer", "xsd:string"), name
+        assert set(spec) <= {"datatype", "choices", "minValue", "maxValue", "unit", "derivedFrom"}, name
+
+
+def test_computed_column_element_carries_its_spec_and_no_term():
+    element = BIDSDataset._synthetic_data_element(
+        "session_local_hour",
+        {"description": "Hour of day.", "column_name": "session_local_hour", "source": "pipeline"},
+    )
+    assert element["valueType"] == element["datatype"] == ["xsd:integer"]
+    assert (element["minValue"], element["maxValue"]) == (0, 23)
+    assert "termURL" not in element and "question" not in element
+
+
+def test_derived_choices_cover_what_the_pipeline_writes():
+    from b2aiprep.prepare.dataset import derived_field_specs
+    from b2aiprep.prepare.date_shift import CA_PROVINCES, US_STATES
+
+    values = lambda name: {c["value"] for c in derived_field_specs()[name]["choices"]}
+    assert values("sex_at_birth") == {"Female", "Male", BIDSDataset._SEX_UNKNOWN_LABEL}
+    for name in ("state_province", "peds_state_province"):
+        assert values(name) == set(US_STATES) | set(CA_PROVINCES) | {BIDSDataset._SEX_UNKNOWN_LABEL}

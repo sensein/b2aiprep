@@ -17,7 +17,7 @@ sub-p1/
 """
 
 from copy import copy, deepcopy
-from functools import partial
+from functools import lru_cache, partial
 import datetime
 import logging
 import os
@@ -105,6 +105,31 @@ class SessionLabels(enum.Enum):
 
 DEFAULT_RESAMPLE_RATE = 16000
 DEFAULT_BIT_DEPTH = 16
+
+
+@lru_cache(maxsize=1)
+def derived_field_specs() -> t.Dict[str, t.Dict[str, t.Any]]:
+    """Data dictionary details (datatype, choices, range, unit, derivedFrom) for computed columns.
+
+    Keyed by output column name; see resources/derived_fields.json.
+    """
+    path = files("b2aiprep").joinpath("prepare", "resources", "derived_fields.json")
+    return json.loads(path.read_text(encoding="utf-8"))["fields"]
+
+
+def _derived_data_element(column_name: str, description: str) -> t.Dict[str, t.Any]:
+    """Data element for a computed column: its description plus its entry in derived_fields.json."""
+    spec = derived_field_specs()[column_name]
+    element: t.Dict[str, t.Any] = {
+        "description": description,
+        "datatype": [spec["datatype"]],
+        "choices": spec.get("choices"),
+        "valueType": [spec["datatype"]],
+    }
+    for key in ("minValue", "maxValue", "unit", "derivedFrom"):
+        if key in spec:
+            element[key] = spec[key]
+    return element
 
 
 def _guard_resample_overshoot(resampled_audio, in_peak: float):
@@ -2127,6 +2152,10 @@ class BIDSDataset:
                 f"No description available for {column}; this column has no ReproSchema "
                 "definition and bids_field_organization.csv does not describe it."
             )
+        output_name = updated_data.get("column_name", column)
+        if str(updated_data.get("source", "")).lower() == "pipeline" and output_name in derived_field_specs():
+            # Computed by b2aiprep: the spec gives its datatype, choices and range (still no termURL).
+            return _derived_data_element(output_name, description)
         value_type = (
             ["xsd:integer"] if (column_choice is not None and clean_phenotype_data) else ["xsd:string"]
         )
@@ -3174,10 +3203,9 @@ class BIDSDataset:
                 columns.append(c)
                 columns.append("sex_at_birth")
                 data_elements_updated[c] = phenotype[first_key]["data_elements"][c]
-                data_elements_updated["sex_at_birth"] = {
-                    "description": "Sex assigned at birth, from the participant's own answers.",
-                    "valueType": ["xsd:string"],
-                }
+                data_elements_updated["sex_at_birth"] = _derived_data_element(
+                    "sex_at_birth", "Sex assigned at birth, from the participant's own answers."
+                )
             elif c == "sex_at_birth":
                 continue
             else:
