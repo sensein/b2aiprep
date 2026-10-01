@@ -3135,7 +3135,7 @@ class BIDSDataset:
                 columns.append("sex_at_birth")
                 data_elements_updated[c] = phenotype[first_key]["data_elements"][c]
                 data_elements_updated["sex_at_birth"] = {
-                    "description": 'Sex assigned at birth, from the participant's own answers; "Unknown" when not stated.',
+                    "description": "Sex assigned at birth, from the participant's own answers.",
                     "valueType": ["xsd:string"],
                 }
             elif c == "sex_at_birth":
