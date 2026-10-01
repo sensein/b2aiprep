@@ -619,6 +619,26 @@ def test_episode_dates_without_a_session_measure_to_the_first_session(caplog):
     ], dtype=object)
     with caplog.at_level("WARNING"):
         out = BIDSDataset._add_days_since_episodes(df)
-    assert _na(out.mbd_last_manic_episode_days_since) == ["30", None, None, None, None, None]  # b: after the session
+    assert _na(out.mbd_last_manic_episode_days_since) == ["30", None, None, None, "-55", None]  # b: kept, logged (2100 is not a leap year)
     assert _na(out.traumatic_event_days_since) == [None, None, None, "7", None, None]
-    assert "1 episode date(s) after the session, left blank: b mbd_last_manic_episode" in caplog.text
+    assert "1 episode date(s) on a form with no session fall after the participant's first session" in caplog.text
+    assert "b mbd_last_manic_episode (55 days after)" in caplog.text
+
+
+def test_episode_after_enrollment_is_kept_negative_and_trauma_on_session_day_is_not_given(caplog):
+    df = pd.DataFrame([
+        # an episode between the first (2100-01-05) and last (2100-02-01) session: reported at a later visit
+        {"record_id": "a", "redcap_repeat_instrument": None, "mbd_last_manic_episode": "2100-01-15"},
+        {"record_id": "a", "redcap_repeat_instrument": "Session", "session_id": "S1",
+         "session_started_at": "2100-01-05T10:00:00-05:00"},
+        {"record_id": "a", "redcap_repeat_instrument": "Session", "session_id": "S2",
+         "session_started_at": "2100-02-01T10:00:00-05:00"},
+        {"record_id": "a", "redcap_repeat_instrument": "Q - Mood - PTSD Adult", "ptsd_session_id": "S2",
+         "traumatic_event_date": "2100-02-01"},
+    ], dtype=object)
+    with caplog.at_level("WARNING"):
+        out = BIDSDataset._add_days_since_episodes(df)
+    assert _na(out.mbd_last_manic_episode_days_since) == ["-10", None, None, None]
+    assert _na(out.traumatic_event_days_since) == [None] * 4
+    assert "1 episode date(s) equal to the session date, treated as not given" in caplog.text
+    assert "a mbd_last_manic_episode (10 days after)" in caplog.text

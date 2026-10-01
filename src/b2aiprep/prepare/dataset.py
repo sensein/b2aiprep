@@ -1104,6 +1104,10 @@ class BIDSDataset:
         "traumatic_event_date": "traumatic_event_days_since",
     }
 
+    # Date boxes that default to the day the form is filled: a value equal to the session date is
+    # "not given" (76 of 172 traumatic_event_date answers, 58 of them with no event described).
+    _DATE_NOT_GIVEN_ON_SESSION_DAY = frozenset({"traumatic_event_date"})
+
     @staticmethod
     def _add_days_since_surgery(df: pd.DataFrame) -> pd.DataFrame:
         """Add ``<surgery>_days_since`` for every surgery date (see ``_add_days_since_dates``)."""
@@ -1120,11 +1124,14 @@ class BIDSDataset:
 
         The reference is the local start date of the session the row belongs to; a row with no
         session (e.g. a diagnosis form on the participant row) uses the participant's first
-        session. Both dates are read after the shift, which moves all of a participant's dates by
-        the same whole weeks, so the difference is the real one. Blank when either date is missing
-        (including dates the shift blanked). A date after the reference session, or earlier than
-        the participant's numeric ``age`` + 1 years allows, is left blank and logged for QA until
-        the site corrects it.
+        session (such a value can be negative: an episode recorded at a later visit). Both dates are read
+        after the shift, which moves all of a participant's dates by the same whole weeks, so the
+        difference is the real one. Blank when either date is missing (including dates the shift
+        blanked). A row with no session (a clinician-filled diagnosis form) is never blanked for its
+        timing; one after the first session is logged. Left blank and logged for QA until the site
+        corrects it: a date after the session the row belongs to, a date
+        earlier than the participant's numeric ``age`` + 1 years allows, and, for the fields in
+        ``_DATE_NOT_GIVEN_ON_SESSION_DAY``, a date equal to the session date.
         """
         df = df.copy()
         columns = {src: out for src, out in date_columns.items() if src in df.columns}
@@ -1146,8 +1153,10 @@ class BIDSDataset:
                     session_date[session_id] = day
                 if record_id not in first_session or day < first_session[record_id]:
                     first_session[record_id] = day
-        reference = row_sessions(df).map(session_date)
-        reference = reference.where(reference.notna(), df["record_id"].map(first_session))
+        own = row_sessions(df).map(session_date)
+        # A row with no session (a diagnosis form has no date of its own) is measured to the first session.
+        reference = own.where(own.notna(), df["record_id"].map(first_session))
+        has_session = own.notna()
         age: t.Dict[str, float] = {}
         if "age" in df.columns:
             numeric_age = pd.to_numeric(df["age"], errors="coerce")
@@ -1156,10 +1165,12 @@ class BIDSDataset:
                     age.setdefault(r, a)
         negative: t.List[str] = []
         before_birth: t.List[str] = []
+        same_day: t.List[str] = []
+        after_first: t.List[str] = []
         no_reference = 0
         for src, out in columns.items():
             values: t.List[t.Any] = []
-            for record_id, value, ref in zip(df["record_id"], df[src], reference):
+            for record_id, value, ref, in_session in zip(df["record_id"], df[src], reference, has_session):
                 if not isinstance(value, str) or not value.strip():
                     values.append(pd.NA)
                     continue
@@ -1168,13 +1179,23 @@ class BIDSDataset:
                     values.append(pd.NA)
                     continue
                 try:
-                    days = (ref - datetime.date.fromisoformat(value.strip())).days
+                    when = datetime.date.fromisoformat(value.strip())
                 except ValueError:
+                    values.append(pd.NA)
+                    continue
+                days = (ref - when).days
+                if src in BIDSDataset._DATE_NOT_GIVEN_ON_SESSION_DAY and days == 0:
+                    # the form's date box defaults to today: a date equal to the session is not an answer
+                    same_day.append(f"{record_id} {src}")
                     values.append(pd.NA)
                     continue
                 # An impossible interval is left blank for now (the source date stays, internal) and
                 # logged so the site can correct the date.
-                if days < 0:
+                if days < 0 and not in_session:
+                    # a clinician-filled form with no date of its own, possibly filled at a later
+                    # visit: kept (negative = after enrollment) and logged
+                    after_first.append(f"{record_id} {src} ({-days} days after)")
+                elif days < 0:
                     negative.append(f"{record_id} {src}")
                     values.append(pd.NA)
                     continue
@@ -1193,6 +1214,13 @@ class BIDSDataset:
             # IDs are listed for QA; this log lives with the job output, outside the BIDS tree.
             _LOGGER.warning(f"QA check: days since {what}: %d {what} date(s) after the session, left blank: %s",
                             len(negative), "; ".join(negative))
+        if after_first:
+            _LOGGER.warning(f"QA check: days since {what}: %d {what} date(s) on a form with no session fall after "
+                            "the participant's first session; kept as negative values: %s",
+                            len(after_first), "; ".join(after_first))
+        if same_day:
+            _LOGGER.warning(f"QA check: days since {what}: %d {what} date(s) equal to the session date, treated as "
+                            "not given (the date box defaults to today): %s", len(same_day), "; ".join(same_day))
         if before_birth:
             _LOGGER.warning(f"QA check: days since {what}: %d {what} date(s) before the participant was born "
                             "(more days than age + 1 years), left blank: %s", len(before_birth), "; ".join(before_birth))
@@ -3290,6 +3318,74 @@ class BIDSDataset:
                 found.update(ids.loc[reduced.index, col].dropna().astype(str))
         return found
 
+    # Checkbox questions whose rare options are released only folded into "Other" (ethics,
+    # 2026-09-30): an option chosen by fewer than ``min_participants`` released participants is
+    # reported as the question's Other option, its label is added to the "please specify" answer
+    # (a review column, so it is published only once checked), and the option's column is removed.
+    # Counted per deidentify run, over the participants it releases. A deidentify config file
+    # ``checkbox_small_options.json`` of the same shape replaces this default.
+    _SMALL_CHECKBOX_OPTIONS = {
+        "confounders": {
+            "voice_activity_v2": {"other": "voice_activity_v2___other", "specify": "other_voice_activity",
+                                  "keep": ["voice_activity_v2___none"], "min_participants": 10},
+        },
+    }
+
+    @staticmethod
+    def _load_small_checkbox_options(config_dir: Path) -> t.Dict[str, t.Dict[str, dict]]:
+        path = Path(config_dir) / "checkbox_small_options.json"
+        if not path.exists():
+            return BIDSDataset._SMALL_CHECKBOX_OPTIONS
+        with open(path) as f:
+            spec = json.load(f)
+        _LOGGER.info("Loaded small-option checkbox rules from %s.", path)
+        return spec
+
+    @staticmethod
+    def _fold_small_checkbox_options(
+        df: pd.DataFrame, phenotype: dict, schema_name: str, spec: t.Mapping[str, t.Mapping[str, dict]],
+    ) -> t.Tuple[pd.DataFrame, dict]:
+        """Fold rarely chosen options of the configured checkbox questions into their Other option.
+
+        *df* holds only the participants being released. Checkbox option columns are named
+        ``<question>___<code>`` and hold 1 when ticked.
+        """
+        rules = spec.get(schema_name) or {}
+        if not rules or "participant_id" not in df.columns:
+            return df, phenotype
+        df = df.copy()
+        elements = phenotype  # {column: data element}, as load_phenotype_file returns it
+        for question, rule in rules.items():
+            other, specify = rule["other"], rule.get("specify")
+            minimum = int(rule.get("min_participants", 10))
+            keep = set(rule.get("keep", [])) | {other}
+            options = [c for c in df.columns if c.startswith(f"{question}___") and c not in keep]
+            if other not in df.columns or not options:
+                continue
+            folded = []
+            for col in options:
+                ticked = pd.to_numeric(df[col], errors="coerce").eq(1)
+                n = df.loc[ticked, "participant_id"].nunique()
+                if n >= minimum:
+                    continue
+                if ticked.any():
+                    df.loc[ticked, other] = 1
+                    if specify in df.columns:
+                        choices = (elements.get(col) or {}).get("choices") or []
+                        label = col.split("___", 1)[1]
+                        if choices:
+                            name = choices[0].get("name")
+                            label = (name.get("en") if isinstance(name, dict) else name) or label
+                        current = df.loc[ticked, specify].fillna("").astype(str).str.strip()
+                        df.loc[ticked, specify] = [f"{c}; {label}" if c else label for c in current]
+                df = df.drop(columns=[col])
+                elements.pop(col, None)
+                folded.append(f"{col.split('___', 1)[1]} ({n})")
+            if folded:
+                _LOGGER.info("%s.%s: %d option(s) chosen by fewer than %d released participants folded into "
+                             "%s: %s", schema_name, question, len(folded), minimum, other, ", ".join(folded))
+        return df, phenotype
+
     @staticmethod
     def _keep_released_session_rows(
         df: pd.DataFrame,
@@ -3578,6 +3674,7 @@ class BIDSDataset:
         # level is for QA builds (e.g. INTERNAL keeps everything, REVIEW passes unreviewed
         # columns through unchecked) and must never be used for a release.
         column_value_verdicts = BIDSDataset._load_column_value_reviews(deidentify_config_dir)
+        small_checkbox_options = BIDSDataset._load_small_checkbox_options(deidentify_config_dir)
         has_review_verdicts = bool(column_value_verdicts)
         phenotype_level = disposition_level or (
             DispositionLevel.REVIEW if has_review_verdicts else DispositionLevel.RELEASE
@@ -3746,6 +3843,10 @@ class BIDSDataset:
                     participant_ids_to_exclude,
                     participant_ids_to_remap,
                     participant_session_id_to_remap,
+                )
+                # Counted over the released participants only, so after the exclusions above.
+                df_pheno, phenotype_dict = BIDSDataset._fold_small_checkbox_options(
+                    df_pheno, phenotype_dict, schema_name, small_checkbox_options,
                 )
 
                 # Drop internal columns (and review if no manifest)

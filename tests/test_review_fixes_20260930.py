@@ -152,3 +152,28 @@ def test_session_hour_check_sees_a_later_dated_row_of_the_session(caplog):
     with caplog.at_level("WARNING"):
         BIDSDataset._check_session_hours(df)
     assert "1 in-clinic session(s) of 1" in caplog.text and "p1 S1 (22h)" in caplog.text
+
+
+def test_rare_checkbox_options_fold_into_other_counted_over_released_participants():
+    pids = [f"p{i}" for i in range(12)]
+    df = pd.DataFrame({
+        "participant_id": pids,
+        "voice_activity_v2___teacher": [1] * 10 + [None, None],          # 10 participants: kept
+        "voice_activity_v2___attorney": [None] * 10 + [1, 1],            # 2: folded
+        "voice_activity_v2___other": [None] * 11 + [1],
+        "voice_activity_v2___none": [None] * 12,
+        "other_voice_activity": [None] * 11 + ["Podcaster"],
+    }, dtype=object)
+    elements = {c: {"description": c} for c in df.columns}
+    elements["voice_activity_v2___attorney"]["choices"] = [{"name": {"en": "Attorney"}, "value": "attorney"}]
+    out, el = BIDSDataset._fold_small_checkbox_options(df, elements, "confounders", BIDSDataset._SMALL_CHECKBOX_OPTIONS)
+    assert "voice_activity_v2___attorney" not in out.columns and "voice_activity_v2___attorney" not in el
+    assert "voice_activity_v2___teacher" in out.columns
+    assert list(out["voice_activity_v2___other"])[-2:] == [1, 1]
+    assert list(out["other_voice_activity"])[-2:] == ["Attorney", "Podcaster; Attorney"]
+
+
+def test_small_checkbox_rules_can_come_from_the_deidentify_config(tmp_path):
+    (tmp_path / "checkbox_small_options.json").write_text(json.dumps({"t": {"q": {"other": "q___other", "min_participants": 5}}}))
+    assert BIDSDataset._load_small_checkbox_options(tmp_path) == {"t": {"q": {"other": "q___other", "min_participants": 5}}}
+    assert BIDSDataset._load_small_checkbox_options(tmp_path / "missing") == BIDSDataset._SMALL_CHECKBOX_OPTIONS
