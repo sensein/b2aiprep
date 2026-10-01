@@ -139,7 +139,7 @@ def _ingest_frame():
             {"record_id": "a", "redcap_repeat_instrument": "Session", "session_id": "s1",
              "enrollment_institution": "MIT", "session_site": "MIT", "session_started_at": "2024-07-01T16:00:00Z",
              "session_is_control_participant": "No"},
-            {"record_id": "a", "redcap_repeat_instrument": "Participant", "city": "Cambridge"},
+            {"record_id": "a", "redcap_repeat_instrument": "Participant", "demographics_language": "English"},
         ],
         dtype=object,
     )
@@ -149,7 +149,7 @@ def test_ingest_shifts_dates_and_removes_drop_columns(tmp_path):
     dataset = RedCapDataset(df=_ingest_frame(), source_type="redcap")
     log = tmp_path / "logs" / "date_shift.json"
     out = BIDSDataset._apply_field_map_at_ingest(dataset, ANCHOR, log, tmp_path / "bids")
-    assert "city" not in out.df.columns
+    assert "demographics_language" not in out.df.columns
     assert "session_is_control_participant" not in out.df.columns
     # internal columns the pipeline reads are kept
     assert {"redcap_repeat_instrument", "enrollment_institution"} <= set(out.df.columns)
@@ -584,7 +584,7 @@ def test_every_surgery_date_has_a_derived_field_map_row():
     assert set(BIDSDataset._SURGERY_DATE_COLUMNS) <= shifted
     rows = fm.set_index("column_name_source")
     for out in BIDSDataset._SURGERY_DATE_COLUMNS.values():
-        assert rows.loc[out, "source"] == "pipeline" and rows.loc[out, "disposition"] == "internal"
+        assert rows.loc[out, "source"] == "pipeline" and rows.loc[out, "disposition"] == "release"  # ethics approved
 
 
 def test_sessions_self_administered_only_in_dropped_rows_use_the_home_time_zone():

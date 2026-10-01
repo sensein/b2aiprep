@@ -87,7 +87,7 @@ def _config(root):
     return root
 
 
-@pytest.mark.parametrize("column", ["session_started_at", "session_local_hour", "session_site", "not_a_field"])
+@pytest.mark.parametrize("column", ["session_started_at", "session_complete", "session_site", "not_a_field"])
 def test_bundle_validation_fails_on_columns_a_release_must_not_have(tmp_path, column):
     _bundle(tmp_path / "bundle", [column])
     result = CliRunner().invoke(validate_bundled_dataset, [str(tmp_path / "bundle"), str(_config(tmp_path / "cfg"))])
@@ -95,7 +95,7 @@ def test_bundle_validation_fails_on_columns_a_release_must_not_have(tmp_path, co
 
 
 def test_bundle_validation_passes_released_columns(tmp_path):
-    _bundle(tmp_path / "bundle", ["session_status", "session_index"])
+    _bundle(tmp_path / "bundle", ["session_status", "session_index", "session_local_hour"])
     result = CliRunner().invoke(validate_bundled_dataset, [str(tmp_path / "bundle"), str(_config(tmp_path / "cfg"))])
     assert result.exit_code == 0, result.output
 
