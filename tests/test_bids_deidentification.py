@@ -20,6 +20,7 @@ class TestBIDSDatasetDeidentification:
         """Deidentify refuses an allowlisted participant without a pseudonym; keep IDs as they are."""
         ids = [f"participant00{i}" for i in (1, 2, 3)]
         (setup_publish_config / "id_remapping.json").write_text(json.dumps({p: p for p in ids}))
+        (setup_publish_config / "deidentify_settings.json").write_text(json.dumps({"access_tier": "registered"}))
 
     @pytest.fixture
     def temp_bids_dir(self):

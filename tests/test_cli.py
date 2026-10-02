@@ -678,6 +678,7 @@ def test_deidentify_bids_dataset_cli_remove_audio(
     with open(audio_to_remove_path, "w") as f:
         json.dump(["sub-001_ses-001_task-reading"], f, indent=2)
     (config_dir / "id_remapping.json").write_text(json.dumps({"001": "001"}))  # deidentify requires a pseudonym
+    (config_dir / "deidentify_settings.json").write_text(json.dumps({"access_tier": "registered"}))
 
     # Match the task names used in setup_bids_structure + extra task below
     with open(config_dir / "audio_tasks_to_include.json", "w") as f:
@@ -1014,6 +1015,7 @@ def _v4_config(root):
     root.mkdir()
     (root / "participants_to_include.json").write_text(json.dumps(["p1", "p2"]))
     (root / "id_remapping.json").write_text(json.dumps({"p1": "005009", "p2": "005010"}))
+    (root / "deidentify_settings.json").write_text(json.dumps({"access_tier": "registered"}))
     (root / "audio_tasks_to_include.json").write_text(json.dumps(["test"]))
     return root
 
@@ -1044,5 +1046,6 @@ def test_validate_bundled_dataset_missing_config_fails(tmp_path):
     cfg = tmp_path / "cfg"
     cfg.mkdir()
     (cfg / "id_remapping.json").write_text("{}")
+    (cfg / "deidentify_settings.json").write_text(json.dumps({"access_tier": "registered"}))
     result = CliRunner().invoke(validate_bundled_dataset, [str(tmp_path / "bundle"), str(cfg)])
     assert result.exit_code != 0 and "config file not found" in result.output

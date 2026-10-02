@@ -22,7 +22,7 @@ from tqdm import tqdm
 from b2aiprep.prepare.bids import get_paths, validate_bids_folder_audios
 from b2aiprep.prepare.constants import RepeatInstrument
 from b2aiprep.prepare.redcap import RedCapDataset
-from b2aiprep.prepare.dataset import BIDSDataset, DispositionLevel, SessionLabels, _SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE
+from b2aiprep.prepare.dataset import AccessTier, BIDSDataset, DispositionLevel, SessionLabels, _SENSITIVE_FEATURES_REMOVED_FROM_BUNDLE
 from b2aiprep.prepare.bundle_data import (
     feature_extraction_generator,
     spectrogram_generator,
@@ -685,8 +685,9 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
     )
 
 
-def _unreleasable_columns(tsv_file, columns, field_map):
-    """Issues for columns a release must not contain: internal, drop, date-shifted, or unknown.
+def _unreleasable_columns(tsv_file, columns, field_map, access_tier=AccessTier.REGISTERED):
+    """Issues for columns a release must not contain: internal, drop, date-shifted, unknown, or
+    (outside the controlled tier) ``access_tier=controlled``.
 
     A table is matched to its field-map rows by file name (``demographics.tsv`` -> table
     ``demographics``), as deidentify writes it. Nothing on disk marks a QA build
@@ -700,6 +701,8 @@ def _unreleasable_columns(tsv_file, columns, field_map):
     published = rows["disposition"].isin(["release", "review"]) & (
         rows["date_shift"].astype(str).str.upper() != "YES"
     )
+    if access_tier != AccessTier.CONTROLLED and "access_tier" in rows.columns:
+        published &= ~rows["access_tier"].fillna("").astype(str).str.strip().str.lower().eq("controlled")
     allowed = set(rows.loc[published, "column_name"].dropna())
     known = set(rows["column_name"].dropna())
     ids = set(BIDSDataset._PIPELINE_ID_COLUMNS)
@@ -707,7 +710,7 @@ def _unreleasable_columns(tsv_file, columns, field_map):
     unknown = sorted(c for c in columns if c not in known and c not in ids)
     issues = []
     if withheld:
-        issues.append(f"{tsv_file.name}: {len(withheld)} internal/drop/date column(s) present: {', '.join(withheld)}")
+        issues.append(f"{tsv_file.name}: {len(withheld)} internal/drop/date/controlled-only column(s) present: {', '.join(withheld)}")
     if unknown:
         issues.append(f"{tsv_file.name}: {len(unknown)} column(s) not in the field map: {', '.join(unknown)}")
     return issues
@@ -731,8 +734,13 @@ def validate_bundled_dataset(dataset_path, config_dir):
     """
     dataset_path = Path(dataset_path)
     config_dir = Path(config_dir)
+    # The tier the config builds; without deidentify_settings.json, the registered (narrower) rules.
+    access_tier = (
+        BIDSDataset._load_deidentify_settings(config_dir)["access_tier"]
+        if (config_dir / "deidentify_settings.json").exists() else AccessTier.REGISTERED
+    )
 
-    click.echo(f"Validating bundled dataset at {dataset_path}")
+    click.echo(f"Validating bundled dataset at {dataset_path} (access tier: {access_tier.value})")
 
     issues: t.List[str] = []
     
@@ -845,7 +853,7 @@ def validate_bundled_dataset(dataset_path, config_dir):
         for tsv_file in phenotype_dir.rglob("*.tsv"):
             try:
                 df = pd.read_csv(tsv_file, sep="\t", dtype=str)
-                issues.extend(_unreleasable_columns(tsv_file, df.columns, field_map))
+                issues.extend(_unreleasable_columns(tsv_file, df.columns, field_map, access_tier))
                 if "participant_id" in df.columns:
                     present_participants = set(df["participant_id"].dropna().unique())
                     removed_present = _unexpected_participants(present_participants)

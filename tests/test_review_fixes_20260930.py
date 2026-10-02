@@ -30,6 +30,7 @@ def _tree(tmp_path, remap):
     config.mkdir(parents=True)
     (config / "participants_to_include.json").write_text(json.dumps(["p1"]))
     (config / "id_remapping.json").write_text(json.dumps(remap))
+    (config / "deidentify_settings.json").write_text(json.dumps({"access_tier": "registered"}))
     (config / "audio_filestems_to_remove.json").write_text(json.dumps([]))
     (config / "audio_tasks_to_include.json").write_text(json.dumps(["rainbow-passage"]))
     audio = bids / "sub-p1" / "ses-s1" / "audio"
@@ -83,6 +84,7 @@ def _config(root):
     root.mkdir()
     (root / "participants_to_include.json").write_text(json.dumps(["p1"]))
     (root / "id_remapping.json").write_text(json.dumps({"p1": "005009"}))
+    (root / "deidentify_settings.json").write_text(json.dumps({"access_tier": "registered"}))
     (root / "audio_tasks_to_include.json").write_text(json.dumps(["test"]))
     return root
 
@@ -185,7 +187,11 @@ def test_checkbox_fold_works_on_a_table_read_as_text():
     assert out["voice_activity_v2___other"].tolist()[0::2] == ["1", "1"]
 
 
-def test_small_checkbox_rules_can_come_from_the_deidentify_config(tmp_path):
-    (tmp_path / "checkbox_small_options.json").write_text(json.dumps({"t": {"q": {"other": "q___other", "min_participants": 5}}}))
-    assert BIDSDataset._load_small_checkbox_options(tmp_path) == {"t": {"q": {"other": "q___other", "min_participants": 5}}}
-    assert BIDSDataset._load_small_checkbox_options(tmp_path / "missing") == BIDSDataset._SMALL_CHECKBOX_OPTIONS
+def test_small_checkbox_rules_can_come_from_the_deidentify_settings(tmp_path):
+    rules = {"t": {"q": {"other": "q___other", "min_participants": 5}}}
+    (tmp_path / "deidentify_settings.json").write_text(json.dumps({"access_tier": "registered", "small_checkbox_options": rules}))
+    assert BIDSDataset._load_deidentify_settings(tmp_path)["small_checkbox_options"] == rules
+    (tmp_path / "deidentify_settings.json").write_text(json.dumps({"access_tier": "registered"}))
+    assert BIDSDataset._load_deidentify_settings(tmp_path)["small_checkbox_options"] == BIDSDataset._SMALL_CHECKBOX_OPTIONS
+
+

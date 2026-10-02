@@ -86,6 +86,13 @@ class DispositionLevel(enum.Enum):
     INTERNAL = "internal"
 
 
+class AccessTier(enum.Enum):
+    """Which published dataset a deidentify run builds. Field-map rows with
+    ``access_tier=controlled`` are kept only in the controlled tier (and in internal QA builds)."""
+    REGISTERED = "registered"
+    CONTROLLED = "controlled"
+
+
 class SessionLabels(enum.Enum):
     """How deidentify names released sessions (``ses-<label>``).
 
@@ -1685,10 +1692,13 @@ class BIDSDataset:
 
     @staticmethod
     def _names_to_drop_at_level(
-        field_map_df: pd.DataFrame, level: DispositionLevel, keep_date_shifted: bool = False
+        field_map_df: pd.DataFrame, level: DispositionLevel, keep_date_shifted: bool = False,
+        access_tier: AccessTier = AccessTier.REGISTERED,
     ) -> t.Set[str]:
         """Output names whose disposition is above *level* (RELEASE < REVIEW < INTERNAL), plus
-        every ``drop`` column.
+        every ``drop`` column, plus (below INTERNAL) ``access_tier=controlled`` columns when
+        *access_tier* is not controlled. The default tier is the narrower one, so a caller that
+        leaves it out withholds controlled-only columns.
 
         ``drop`` columns are removed at ingest, so a tree built now has none; one that reaches
         deidentify comes from an older tree or a later field-map edit, and is removed at every
@@ -1702,6 +1712,8 @@ class BIDSDataset:
             if keep_date_shifted and "date_shift" in field_map_df.columns:
                 ranked &= field_map_df["date_shift"].astype(str).str.upper() != "YES"
             drop_rows |= ranked
+            if access_tier != AccessTier.CONTROLLED and "access_tier" in field_map_df.columns:
+                drop_rows |= field_map_df["access_tier"].fillna("").astype(str).str.strip().str.lower().eq("controlled")
         return set(field_map_df.loc[drop_rows, "column_name"].dropna())
 
     @staticmethod
@@ -1711,8 +1723,10 @@ class BIDSDataset:
         level: DispositionLevel = DispositionLevel.RELEASE,
         schema_name: t.Optional[str] = None,
         keep_date_shifted: bool = False,
+        access_tier: AccessTier = AccessTier.REGISTERED,
     ) -> t.Tuple[pd.DataFrame, t.List[str]]:
-        """Drop columns above *level* in the disposition hierarchy.
+        """Drop columns above *level* in the disposition hierarchy (and controlled-only columns
+        outside the controlled tier; see ``_names_to_drop_at_level``).
 
         With *schema_name* (a phenotype table), only that table's field-map rows are consulted:
         output names are unique within a table but not across tables (e.g. ``self_reported_*`` is
@@ -1731,7 +1745,7 @@ class BIDSDataset:
         are kept.
         """
         field_map_df = BIDSDataset._field_map_rows_for_table(field_map_df, schema_name)
-        to_drop_names = BIDSDataset._names_to_drop_at_level(field_map_df, level, keep_date_shifted)
+        to_drop_names = BIDSDataset._names_to_drop_at_level(field_map_df, level, keep_date_shifted, access_tier)
 
         present = [c for c in df.columns if c in to_drop_names]
         if present:
@@ -3364,6 +3378,7 @@ class BIDSDataset:
         phenotype_dir: Path,
         level: DispositionLevel = DispositionLevel.RELEASE,
         keep_shifted_dates: bool = False,
+        access_tier: AccessTier = AccessTier.REGISTERED,
     ) -> t.Set[str]:
         """Session IDs with a row a questionnaire table will publish at *level*.
 
@@ -3384,6 +3399,7 @@ class BIDSDataset:
             ids = df[cols]
             reduced, _ = BIDSDataset._drop_columns_by_disposition(
                 df, level=level, schema_name=schema_name, keep_date_shifted=keep_shifted_dates,
+                access_tier=access_tier,
             )
             reduced = BIDSDataset._drop_rows_emptied_by_deidentify(reduced, schema_name)
             for col in cols:
@@ -3395,7 +3411,7 @@ class BIDSDataset:
     # reported as the question's Other option, its label is added to the "please specify" answer
     # (a review column, so it is published only once checked), and the option's column is removed.
     # Counted per deidentify run, over the participants it releases. A deidentify config file
-    # ``checkbox_small_options.json`` of the same shape replaces this default.
+    # ``small_checkbox_options`` in ``deidentify_settings.json``, of the same shape, replaces this default.
     _SMALL_CHECKBOX_OPTIONS = {
         "confounders": {
             "voice_activity_v2": {"other": "voice_activity_v2___other", "specify": "other_voice_activity",
@@ -3403,15 +3419,35 @@ class BIDSDataset:
         },
     }
 
+    _SETTINGS_KEYS = frozenset({"access_tier", "value_mappings", "small_checkbox_options"})
+
     @staticmethod
-    def _load_small_checkbox_options(config_dir: Path) -> t.Dict[str, t.Dict[str, dict]]:
-        path = Path(config_dir) / "checkbox_small_options.json"
+    def _load_deidentify_settings(config_dir: Path) -> t.Dict[str, t.Any]:
+        """Release settings from ``deidentify_settings.json`` in the deidentify config directory.
+
+        ``access_tier`` (registered/controlled) is required, so no run builds a tier by default.
+        ``value_mappings`` (see ``_apply_value_mappings``) and ``small_checkbox_options`` (same
+        shape as ``_SMALL_CHECKBOX_OPTIONS``, which applies when it is left out) are optional.
+        """
+        path = Path(config_dir) / "deidentify_settings.json"
         if not path.exists():
-            return BIDSDataset._SMALL_CHECKBOX_OPTIONS
+            raise FileNotFoundError(
+                f"{path} is required: it names the access tier this run builds "
+                '(e.g. {"access_tier": "registered"}).'
+            )
         with open(path) as f:
-            spec = json.load(f)
-        _LOGGER.info("Loaded small-option checkbox rules from %s.", path)
-        return spec
+            settings = json.load(f)
+        unknown = sorted(set(settings) - BIDSDataset._SETTINGS_KEYS)
+        if unknown:
+            raise ValueError(f"{path}: unknown setting(s) {unknown}; expected {sorted(BIDSDataset._SETTINGS_KEYS)}.")
+        tiers = [m.value for m in AccessTier]
+        if settings.get("access_tier") not in tiers:
+            raise ValueError(f"{path}: access_tier must be one of {tiers}, got {settings.get('access_tier')!r}.")
+        settings["access_tier"] = AccessTier(settings["access_tier"])
+        settings.setdefault("value_mappings", {})
+        settings.setdefault("small_checkbox_options", BIDSDataset._SMALL_CHECKBOX_OPTIONS)
+        _LOGGER.info("Deidentify settings from %s: access tier %s.", path, settings["access_tier"].value)
+        return settings
 
     @staticmethod
     def _fold_small_checkbox_options(
@@ -3460,28 +3496,16 @@ class BIDSDataset:
         return df, phenotype
 
     @staticmethod
-    def _load_value_mappings(config_dir: Path) -> t.Dict[str, t.Dict[str, dict]]:
-        """Value mappings for deidentify, from ``value_mapping.json`` in the config directory.
-
-        Shape: ``{schema: {source_column: {"values": {old: new}, "output_column": name,
-        "min_participants": n, "other": label}}}``. ``output_column`` writes the new values to a
-        separate column (its disposition comes from the field map) and leaves the source as it is;
-        without it the source is rewritten in place. The mapping lives only in the config, never in
-        code (e.g. the arbitrary site labels).
-        """
-        path = Path(config_dir) / "value_mapping.json"
-        if not path.exists():
-            return {}
-        with open(path) as f:
-            spec = json.load(f)
-        _LOGGER.info("Loaded value mappings from %s.", path)
-        return spec
-
-    @staticmethod
     def _apply_value_mappings(
         df: pd.DataFrame, phenotype: dict, schema_name: str, spec: t.Mapping[str, t.Mapping[str, dict]],
     ) -> t.Tuple[pd.DataFrame, dict]:
         """Map whole values of the configured columns to new values (e.g. a site to an arbitrary label).
+
+        *spec* is ``value_mappings`` from ``deidentify_settings.json``: ``{schema: {source_column:
+        {"values": {old: new}, "output_column": name, "min_participants": n, "other": label}}}``.
+        ``output_column`` writes the new values to a separate column (its disposition comes from
+        the field map) and leaves the source as it is; without it the source is rewritten in place.
+        The mapping lives only in the config, never in code (e.g. the arbitrary site labels).
 
         *df* holds only the participants being released. Every non-blank value must be in the map,
         so an unexpected value (a new site, a typo) stops the run instead of being published. With
@@ -3820,15 +3844,17 @@ class BIDSDataset:
         # level is for QA builds (e.g. INTERNAL keeps everything, REVIEW passes unreviewed
         # columns through unchecked) and must never be used for a release.
         column_value_verdicts = BIDSDataset._load_column_value_reviews(deidentify_config_dir)
-        small_checkbox_options = BIDSDataset._load_small_checkbox_options(deidentify_config_dir)
-        value_mappings = BIDSDataset._load_value_mappings(deidentify_config_dir)
+        settings = BIDSDataset._load_deidentify_settings(deidentify_config_dir)
+        access_tier = settings["access_tier"]
+        small_checkbox_options = settings["small_checkbox_options"]
+        value_mappings = settings["value_mappings"]
         has_review_verdicts = bool(column_value_verdicts)
         phenotype_level = disposition_level or (
             DispositionLevel.REVIEW if has_review_verdicts else DispositionLevel.RELEASE
         )
         BIDSDataset._check_phenotype_tables_in_field_map(self.data_path / "phenotype")
         sessions_with_data = BIDSDataset._sessions_with_questionnaire_data(
-            self.data_path / "phenotype", phenotype_level, keep_shifted_dates,
+            self.data_path / "phenotype", phenotype_level, keep_shifted_dates, access_tier,
         )
 
         configured_filestems = list(audio_filestems_to_remove)
@@ -3879,6 +3905,7 @@ class BIDSDataset:
                     _canonical_exclusions=canonical_exclusions,
                     disposition_level=disposition_level or DispositionLevel.RELEASE,
                     keep_shifted_dates=keep_shifted_dates,
+                    access_tier=access_tier,
                     session_labels=session_labels,
                     sessions_with_data=sessions_with_data,
                 )
@@ -4005,6 +4032,7 @@ class BIDSDataset:
                     level=phenotype_level,
                     schema_name=schema_name,
                     keep_date_shifted=keep_shifted_dates,
+                    access_tier=access_tier,
                 )
                 for col in dropped_cols:
                     phenotype_dict.pop(col, None)
@@ -4308,6 +4336,7 @@ class BIDSDataset:
         keep_shifted_dates: bool = False,
         session_labels: SessionLabels = SessionLabels.ORDINAL,
         sessions_with_data: t.AbstractSet[str] = frozenset(),
+        access_tier: AccessTier = AccessTier.REGISTERED,
     ) -> t.Tuple[t.Optional[t.Dict[str, str]], t.Optional[t.Dict[str, int]], t.Counter[str], t.Set[str]]:
         """Process one participant directory for deidentification.
 
@@ -4349,7 +4378,7 @@ class BIDSDataset:
         sidecar_table = BIDSDataset._field_map_rows_for_table(None, BIDSDataset._AUDIO_SIDECAR_SCHEMA)
         sidecar_keys_known = set(sidecar_table["column_name"].dropna())
         sidecar_keys_to_drop = BIDSDataset._names_to_drop_at_level(
-            sidecar_table, disposition_level, keep_shifted_dates,
+            sidecar_table, disposition_level, keep_shifted_dates, access_tier,
         )
         unknown_sidecar_keys: t.Counter[str] = Counter()
 
@@ -4502,7 +4531,7 @@ class BIDSDataset:
                          pid, len(withheld), ", ".join(withheld))
         df_ses, dropped_cols = BIDSDataset._drop_columns_by_disposition(
             df_ses, level=disposition_level, keep_date_shifted=keep_shifted_dates,
-            schema_name=BIDSDataset._SESSIONS_SCHEMA,
+            schema_name=BIDSDataset._SESSIONS_SCHEMA, access_tier=access_tier,
         )
         if dropped_cols:
             _LOGGER.debug("Participant %s sessions.tsv: dropped %d columns (%s).",

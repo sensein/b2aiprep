@@ -349,6 +349,7 @@ class TestEndToEndAllowlistFiltering:
         )
         # identity pseudonyms: deidentify refuses an allowlisted participant without one
         (config / "id_remapping.json").write_text(json.dumps({p: p for p in ("p1", "p2", "p3")}))
+        (config / "deidentify_settings.json").write_text(json.dumps({"access_tier": "registered"}))
         (config / "audio_filestems_to_remove.json").write_text(json.dumps([]))
         (config / "audio_tasks_to_include.json").write_text(
             json.dumps(["rainbow-passage"])
@@ -465,6 +466,7 @@ class TestReleasedSessions:
         config.mkdir(parents=True)
         (config / "participants_to_include.json").write_text(json.dumps(["p1"]))
         (config / "id_remapping.json").write_text(json.dumps({"p1": "900001"}))
+        (config / "deidentify_settings.json").write_text(json.dumps({"access_tier": "registered"}))
         (config / "audio_filestems_to_remove.json").write_text(json.dumps([]))
         (config / "audio_tasks_to_include.json").write_text(json.dumps(["rainbow-passage"]))
         audio_dir = bids / "sub-p1" / f"ses-{self.A}" / "audio"
@@ -589,6 +591,7 @@ class TestParticipantFailureStopsRun:
         config.mkdir()
         (config / "participants_to_include.json").write_text(json.dumps(["p1", "p2"]))
         (config / "id_remapping.json").write_text(json.dumps({"p1": "p1", "p2": "p2"}))
+        (config / "deidentify_settings.json").write_text(json.dumps({"access_tier": "registered"}))
         (config / "audio_filestems_to_remove.json").write_text(json.dumps([]))
         (config / "audio_tasks_to_include.json").write_text(json.dumps(["rainbow-passage"]))
         for pid in ("p1", "p2"):
@@ -646,6 +649,7 @@ class TestSidecarDispositions:
         config.mkdir(parents=True)
         (config / "participants_to_include.json").write_text(json.dumps(["p1"]))
         (config / "id_remapping.json").write_text(json.dumps({"p1": "p1"}))
+        (config / "deidentify_settings.json").write_text(json.dumps({"access_tier": "registered"}))
         (config / "audio_filestems_to_remove.json").write_text(json.dumps([]))
         (config / "audio_tasks_to_include.json").write_text(json.dumps(["rainbow-passage"]))
         audio_dir = bids / "sub-p1" / "ses-s1" / "audio"

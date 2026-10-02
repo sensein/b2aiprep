@@ -23,6 +23,7 @@ def setup_publish_config(tmp_path):
         "id_remapping.json": {},
         "participants_to_remove.json": [],
         "audio_tasks_to_include.json": ["test"],
+        "deidentify_settings.json": {"access_tier": "registered"},
     }
 
     for filename, content in defaults.items():
