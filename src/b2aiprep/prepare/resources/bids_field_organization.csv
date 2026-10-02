@@ -391,7 +391,7 @@ confounders_schema,confounders,asd_med_hist_psychological,asd_med_hist_psycholog
 confounders_schema,confounders,asthma_med_hist_lung,asthma_med_hist_lung,confounders,Asthma,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,ataxia,ataxia,confounders,Ataxia,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,atrial_fibrillation,atrial_fibrillation,confounders,Atrial fibrillation,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
-confounders_schema,confounders,average_number_of_uses_each_day,average_number_of_uses_each_day,confounders,Number of uses per day: Enter number,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
+confounders_schema,confounders,average_number_of_uses_each_day,average_number_of_uses_each_day,confounders,"Average number of times per day the participant used nicotine, over the whole time they used it. Filled in when they chose 'Number of uses per day' in average_used_nicotine_over_entire_time.",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,average_used_nicotine_over_entire_time,average_used_nicotine_over_entire_time,confounders,"On average, over the entire time that you used nicotine, how many times each day did you use nicotine?",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,bipolar_disorder,bipolar_disorder,confounders,Bipolar disorder,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,blood_pressure_medications,blood_pressure_medications,confounders,Blood pressure medications (anti-hypertensive),NO,release,VARIABLE,redcap,pre-v4,NO,NO,
@@ -561,7 +561,7 @@ confounders_schema,confounders,nose_surgery,nose_surgery,confounders,"Nose surge
 confounders_schema,confounders,nose_surgical,nose_surgical,,"[DEPRECATED]
 Nose",YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,nsaids,nsaids,confounders,NSAIDs,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
-confounders_schema,confounders,number_of_uses_per_day_now,number_of_uses_per_day_now,confounders,Number of uses per day,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
+confounders_schema,confounders,number_of_uses_per_day_now,number_of_uses_per_day_now,confounders,"Number of times per day the participant currently uses nicotine. Filled in when they chose 'Number of uses per day' in times_use_nicotine_per_day.",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,number_years_used_nicotine,number_years_used_nicotine,confounders,Number of years : Enter number,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,obesity,obesity,confounders,Obesity,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,obsessive_compulsive_disorder,obsessive_compulsive_disorder,confounders,Obsessive compulsive disorder (OCD),NO,release,VARIABLE,redcap,pre-v4,NO,NO,
