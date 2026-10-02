@@ -1035,6 +1035,12 @@
           "value": "non-lexical"
         }
       ]
+    },
+    "site": {
+      "datatype": "xsd:string",
+      "derivedFrom": [
+        "enrollment_institution"
+      ]
     }
   }
 }

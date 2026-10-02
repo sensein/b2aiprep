@@ -744,7 +744,8 @@ class RedCapDataset:
         # Postal codes are text: read as numbers they lose leading zeros (02139 -> 2139).
         header = pd.read_csv(file_path, nrows=0).columns
         text_columns = {c: str for c in ("zipcode", "peds_zipcode") if c in header}
-        data = pd.read_csv(file_path, low_memory=False, na_values="", dtype=text_columns)
+        # Only an empty cell is missing: a typed "NA", "N/A" or "None" is the participant's answer.
+        data = pd.read_csv(file_path, low_memory=False, keep_default_na=False, na_values=[""], dtype=text_columns)
         
         # Determine the repeat instrument column name
         if "redcap_repeat_instrument" in data.columns:

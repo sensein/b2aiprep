@@ -2851,7 +2851,11 @@ class BIDSDataset:
             schema-level key other than ``data_elements`` so a writer can rebuild the wrapper with
             ``{schema_name: {**header, "data_elements": ...}}``.
         """
-        df = pd.read_csv(phenotype_filepath.with_suffix(".tsv"), sep="\t")
+        # Read as written: as text, so an integer column with blanks is not turned into floats
+        # ("10" -> "10.0"), and only an empty cell is missing ("NA", "N/A" are answers).
+        df = pd.read_csv(
+            phenotype_filepath.with_suffix(".tsv"), sep="\t", dtype=str, keep_default_na=False, na_values=[""]
+        )
         with open(phenotype_filepath.with_suffix(".json"), "r") as f:
             raw = json.load(f)
 
@@ -3455,6 +3459,79 @@ class BIDSDataset:
         return df, phenotype
 
     @staticmethod
+    def _load_value_mappings(config_dir: Path) -> t.Dict[str, t.Dict[str, dict]]:
+        """Value mappings for deidentify, from ``value_mapping.json`` in the config directory.
+
+        Shape: ``{schema: {source_column: {"values": {old: new}, "output_column": name,
+        "min_participants": n, "other": label}}}``. ``output_column`` writes the new values to a
+        separate column (its disposition comes from the field map) and leaves the source as it is;
+        without it the source is rewritten in place. The mapping lives only in the config, never in
+        code (e.g. the arbitrary site labels).
+        """
+        path = Path(config_dir) / "value_mapping.json"
+        if not path.exists():
+            return {}
+        with open(path) as f:
+            spec = json.load(f)
+        _LOGGER.info("Loaded value mappings from %s.", path)
+        return spec
+
+    @staticmethod
+    def _apply_value_mappings(
+        df: pd.DataFrame, phenotype: dict, schema_name: str, spec: t.Mapping[str, t.Mapping[str, dict]],
+    ) -> t.Tuple[pd.DataFrame, dict]:
+        """Map whole values of the configured columns to new values (e.g. a site to an arbitrary label).
+
+        *df* holds only the participants being released. Every non-blank value must be in the map,
+        so an unexpected value (a new site, a typo) stops the run instead of being published. With
+        ``min_participants``, a new value held by fewer released participants becomes ``other``,
+        as the checkbox fold does for rare options.
+        """
+        rules = spec.get(schema_name) or {}
+        if not rules:
+            return df, phenotype
+        df = df.copy()
+        for source, rule in rules.items():
+            if source not in df.columns:
+                _LOGGER.warning("value_mapping.json: %s.%s is not in the table; nothing mapped.", schema_name, source)
+                continue
+            values = {str(k): str(v) for k, v in rule["values"].items()}
+            present = df[source].dropna().astype(str)
+            unmapped = sorted(set(present) - set(values))
+            if unmapped:
+                raise ValueError(
+                    f"value_mapping.json: {schema_name}.{source} has value(s) with no mapping: {unmapped}. "
+                    "Add them to the mapping before deidentifying."
+                )
+            mapped = df[source].map(lambda v: values[str(v)] if pd.notna(v) else v)
+            minimum = rule.get("min_participants")
+            if minimum and "participant_id" in df.columns:
+                held = df.loc[mapped.notna()].groupby(mapped[mapped.notna()])["participant_id"].nunique()
+                rare = sorted(held[held < int(minimum)].index)
+                if rare:
+                    other = rule.get("other", "other")
+                    mapped = mapped.where(~mapped.isin(rare), other)
+                    _LOGGER.info("%s.%s: %d value(s) held by fewer than %s released participants shown as %r.",
+                                 schema_name, source, len(rare), minimum, other)
+            out = rule.get("output_column") or source
+            if out == source:
+                df[source] = mapped
+            else:
+                df.insert(df.columns.get_loc(source) + 1, out, mapped)
+            element = dict(phenotype.get(out) or {})
+            if out != source and not element:
+                rows = BIDSDataset._field_map_rows_for_table(None, schema_name)
+                described = rows.loc[rows["column_name"] == out, "description"].dropna()
+                description = str(described.iloc[0]) if len(described) else ""
+                element = (_derived_data_element(out, description) if out in derived_field_specs()
+                           else {"description": description, "valueType": ["xsd:string"]})
+            element["choices"] = [{"name": {"en": v}, "value": v} for v in sorted(mapped.dropna().unique())]
+            phenotype[out] = element
+            _LOGGER.info("%s.%s: mapped %d value(s) to %s (%d distinct).", schema_name, source,
+                         int(mapped.notna().sum()), out, mapped.nunique())
+        return df, phenotype
+
+    @staticmethod
     def _keep_released_session_rows(
         df: pd.DataFrame,
         schema_name: str,
@@ -3743,6 +3820,7 @@ class BIDSDataset:
         # columns through unchecked) and must never be used for a release.
         column_value_verdicts = BIDSDataset._load_column_value_reviews(deidentify_config_dir)
         small_checkbox_options = BIDSDataset._load_small_checkbox_options(deidentify_config_dir)
+        value_mappings = BIDSDataset._load_value_mappings(deidentify_config_dir)
         has_review_verdicts = bool(column_value_verdicts)
         phenotype_level = disposition_level or (
             DispositionLevel.REVIEW if has_review_verdicts else DispositionLevel.RELEASE
@@ -3915,6 +3993,9 @@ class BIDSDataset:
                 # Counted over the released participants only, so after the exclusions above.
                 df_pheno, phenotype_dict = BIDSDataset._fold_small_checkbox_options(
                     df_pheno, phenotype_dict, schema_name, small_checkbox_options,
+                )
+                df_pheno, phenotype_dict = BIDSDataset._apply_value_mappings(
+                    df_pheno, phenotype_dict, schema_name, value_mappings,
                 )
 
                 # Drop internal columns (and review if no manifest)
