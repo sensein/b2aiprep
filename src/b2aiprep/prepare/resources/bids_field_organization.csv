@@ -1846,6 +1846,7 @@ subjectparticipant_basic_information_schema,participant,contact_participant,cont
 subjectparticipant_basic_information_schema,participant,enrolled,enrolled,,Enrolled,YES,drop,VARIABLE,redcap,v4,NO,NO
 subjectparticipant_basic_information_schema,participant,enrollment_institution,enrollment_institution,enrollment,Enrollment Institution,YES,internal,VARIABLE,redcap,v4,NO,NO
 subjectparticipant_basic_information_schema,participant,site,site,enrollment,"Site where the participant enrolled, as an arbitrary label (set at deidentify from enrollment_institution).",NO,release,VARIABLE,pipeline,v4,NO,NO
+subjectparticipant_basic_information_schema,participant,some_data_collected_remotely,some_data_collected_remotely,enrollment,"Whether any of the participant's data was collected remotely: Yes for every Prolific participant and for those on the sites' list of remote participants. Not recorded per session.",NO,release,VARIABLE,supplement,v4,NO,NO
 subjectparticipant_basic_information_schema,participant,enrollment_reason,enrollment_reason,,"Enrollment Reason
 
 To be completed when enrolling a person that declined initially.",YES,drop,VARIABLE,redcap,v4,NO,NO

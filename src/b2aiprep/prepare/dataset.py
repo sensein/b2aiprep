@@ -2153,7 +2153,7 @@ class BIDSDataset:
                 "definition and bids_field_organization.csv does not describe it."
             )
         output_name = updated_data.get("column_name", column)
-        if str(updated_data.get("source", "")).lower() == "pipeline" and output_name in derived_field_specs():
+        if str(updated_data.get("source", "")).lower() in ("pipeline", "supplement") and output_name in derived_field_specs():
             # Computed by b2aiprep: the spec gives its datatype, choices and range (still no termURL).
             return _derived_data_element(output_name, description)
         value_type = (
@@ -2290,8 +2290,8 @@ class BIDSDataset:
                         )
                         redcap_group_cols.add(col_norm)
                         continue
-                    if str(updated_data.get("source", "")).lower() == "pipeline":
-                        _LOGGER.debug(f'Pipeline-computed column "{column}" not in RedCap source.')
+                    if str(updated_data.get("source", "")).lower() in ("pipeline", "supplement"):
+                        _LOGGER.debug(f'Pipeline-computed or supplement column "{column}" not in RedCap source.')
                         pipeline_cols.add(col_norm)
                         continue
                     _LOGGER.warning(f'Requested output for "{column}", but this column was not found in the source df.')

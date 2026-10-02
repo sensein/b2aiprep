@@ -639,6 +639,41 @@ class RedCapDataset:
         self.source_type = source_type
         self.metadata = metadata if metadata is not None else {}
         
+    def add_supplement(self, csv_path: t.Union[str, Path]) -> None:
+        """Add columns from a supplementary CSV shaped like a RedCap export (``record_id`` first).
+
+        For fields RedCap does not hold yet (e.g. ``some_data_collected_remotely``, from a site's
+        list): rows match on ``record_id`` and ``redcap_repeat_instrument`` (blank or absent = the
+        participant row). A column RedCap already has stops the run, so the supplement cannot
+        silently override RedCap once the field is added there. Record IDs not in the export are
+        logged and ignored.
+        """
+        supplement = pd.read_csv(csv_path, dtype=str, keep_default_na=False, na_values=[""])
+        if "record_id" not in supplement.columns:
+            raise ValueError(f"Supplement {csv_path} has no record_id column.")
+        instrument = RepeatInstrument.PARTICIPANT.value.text
+        if "redcap_repeat_instrument" not in supplement.columns:
+            supplement["redcap_repeat_instrument"] = instrument
+        supplement["redcap_repeat_instrument"] = supplement["redcap_repeat_instrument"].fillna(instrument)
+        keys = ["record_id", "redcap_repeat_instrument"]
+        fields = [c for c in supplement.columns if c not in keys]
+        clash = [c for c in fields if c in self.df.columns]
+        if clash:
+            raise ValueError(f"Supplement {csv_path} adds column(s) RedCap already has: {clash}. "
+                             "Stop passing the supplement once RedCap holds the field.")
+        if supplement.duplicated(keys).any():
+            raise ValueError(f"Supplement {csv_path} has more than one row for the same record and instrument.")
+        unknown = sorted(set(supplement["record_id"]) - set(self.df["record_id"].astype(str)))
+        if unknown:
+            # IDs are listed for QA; this log lives with the job output, outside the BIDS tree.
+            _LOGGER.warning("Supplement %s: %d record_id(s) not in the RedCap export, ignored: %s",
+                            csv_path, len(unknown), ", ".join(unknown))
+        merged = self.df.merge(supplement, on=keys, how="left", validate="many_to_one")
+        merged.index = self.df.index
+        self.df = merged
+        _LOGGER.info("Supplement %s: added %s (%d row(s) matched).", csv_path, ", ".join(fields),
+                     int(supplement["record_id"].isin(set(self.df["record_id"].astype(str))).sum()))
+
     @classmethod
     def from_redcap(cls, csv_path: t.Union[str, Path]) -> 'RedCapDataset':
         """

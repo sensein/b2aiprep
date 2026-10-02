@@ -1,5 +1,5 @@
 {
-  "_comment": "Data dictionary details for the columns b2aiprep computes (source=pipeline in bids_field_organization.csv), keyed by output column_name. Their description comes from the field map; this file adds datatype, choices, minValue/maxValue, unit and derivedFrom (the columns each one is computed from). No termURL: they have no ReproSchema item.",
+  "_comment": "Data dictionary details for the columns b2aiprep computes (source=pipeline in bids_field_organization.csv) and the fields added from a RedCap supplement (source=supplement), keyed by output column_name. Their description comes from the field map; this file adds datatype, choices, minValue/maxValue, unit and derivedFrom (the columns each one is computed from). No termURL: they have no ReproSchema item.",
   "fields": {
     "sex_at_birth": {
       "datatype": "xsd:string",
@@ -1040,6 +1040,23 @@
       "datatype": "xsd:string",
       "derivedFrom": [
         "enrollment_institution"
+      ]
+    },
+    "some_data_collected_remotely": {
+      "datatype": "xsd:string",
+      "choices": [
+        {
+          "name": {
+            "en": "Yes"
+          },
+          "value": "Yes"
+        },
+        {
+          "name": {
+            "en": "No"
+          },
+          "value": "No"
+        }
       ]
     }
   }

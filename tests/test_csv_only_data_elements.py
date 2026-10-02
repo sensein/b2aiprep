@@ -257,7 +257,7 @@ def test_every_computed_column_has_a_derived_field_spec():
     field_map = pd.read_csv(
         files("b2aiprep").joinpath("prepare", "resources", "bids_field_organization.csv"), dtype=str
     )
-    computed = set(field_map.loc[(field_map["source"] == "pipeline")
+    computed = set(field_map.loc[(field_map["source"].isin(["pipeline", "supplement"]))
                                  & (field_map["schema_name"] != "audio_sidecar"), "column_name"])
     specs = derived_field_specs()
     assert computed == set(specs)

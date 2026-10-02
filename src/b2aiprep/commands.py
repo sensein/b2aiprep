@@ -131,6 +131,14 @@ def dashboard(bids_dir: str):
     help="Resolve source audio and write every sidecar and sessions.tsv, but copy no audio files. "
     "For metadata-only builds; not for a release.",
 )
+@click.option(
+    "--supplement",
+    "supplements",
+    type=click.Path(exists=True, dir_okay=False),
+    multiple=True,
+    help="CSV shaped like a RedCap export (record_id, optional redcap_repeat_instrument) adding "
+    "fields RedCap does not hold yet. May be given more than once.",
+)
 def redcap2bids(
     filename,
     outdir,
@@ -140,6 +148,7 @@ def redcap2bids(
     date_shift_anchor,
     date_shift_log,
     skip_audio_copy,
+    supplements,
 ):
     """Parses a RedCap CSV and a folder of audio files into the Brain Imaging Data Structure (BIDS) format.
 
@@ -167,7 +176,9 @@ def redcap2bids(
     if audiodir is not None:
         audiodir = Path(audiodir)
     redcap_dataset = RedCapDataset.from_redcap(filename)
-    
+    for supplement in supplements:
+        redcap_dataset.add_supplement(supplement)
+
     BIDSDataset.from_redcap(
         redcap_dataset,
         outdir=Path(outdir),
