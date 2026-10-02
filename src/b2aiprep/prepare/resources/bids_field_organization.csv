@@ -4104,16 +4104,16 @@ subjectparticipant_eligible_studies_schema,eligibility,essential_tremor,self_rep
 subjectparticipant_eligible_studies_schema,eligibility,neuro_ataxia,self_reported_neuro_ataxia,enrollment,Ataxia,NO,release,VARIABLE,redcap,v4,NO,NO
 enrollment_form_schema,enrollment,ef_ataxia,self_reported_ataxia,enrollment,Ataxia,YES,internal,VARIABLE,redcap,v4,NO,NO
 enrollment_form_schema,enrollment,ef_essential_tremor,self_reported_essential_tremor,enrollment,Essential Tremor,YES,internal,VARIABLE,redcap,v4,NO,NO
-recording_schema,recording,recording_browser,recording_browser,task,Recording - Browser,NO,internal,VARIABLE,redcap,v4,NO,NO
+recording_schema,recording,recording_browser,recording_browser,task,Recording - Browser,NO,release,VARIABLE,redcap,v4,NO,NO
 recording_schema,recording,recording_browser_version,recording_browser_version,task,Recording - Browser Version,NO,internal,VARIABLE,redcap,v4,NO,NO
-recording_schema,recording,recording_device_info,recording_device_info,task,Recording - Device Info,NO,internal,VARIABLE,redcap,v4,NO,NO
-recording_schema,recording,recording_device_type,recording_device_type,task,Recording - Device Type,NO,internal,VARIABLE,redcap,v4,NO,NO
-recording_schema,recording,recording_platform,recording_platform,task,Recording - Platform,NO,internal,VARIABLE,redcap,v4,NO,NO
+recording_schema,recording,recording_device_info,recording_device_info,task,Recording - Device Info,NO,release,VARIABLE,redcap,v4,NO,NO
+recording_schema,recording,recording_device_type,recording_device_type,task,Recording - Device Type,NO,release,VARIABLE,redcap,v4,NO,NO
+recording_schema,recording,recording_platform,recording_platform,task,Recording - Platform,NO,release,VARIABLE,redcap,v4,NO,NO
 recording_schema,recording,recording_platform_architecture,recording_platform_architecture,task,Recording - Platform Architecture,NO,internal,VARIABLE,redcap,v4,NO,NO
-recording_schema,recording,recording_platform_version,recording_platform_version,task,Recording - Platform Version,NO,internal,VARIABLE,redcap,v4,NO,NO
-recording_schema,recording,recording_screen_resolution,recording_screen_resolution,task,Recording - Screen Resolution,NO,internal,VARIABLE,redcap,v4,NO,NO
+recording_schema,recording,recording_platform_version,recording_platform_version,task,Recording - Platform Version,NO,release,VARIABLE,redcap,v4,NO,NO
+recording_schema,recording,recording_screen_resolution,recording_screen_resolution,task,Recording - Screen Resolution,NO,release,VARIABLE,redcap,v4,NO,NO
 recording_schema,recording,recording_touch_screen,recording_touch_screen,task,Recording - Touch Screen,NO,internal,VARIABLE,redcap,v4,NO,NO
-recording_schema,recording,recording_window_resolution,recording_window_resolution,task,Recording - Window Resolution,NO,internal,VARIABLE,redcap,v4,NO,NO
+recording_schema,recording,recording_window_resolution,recording_window_resolution,task,Recording - Window Resolution,NO,release,VARIABLE,redcap,v4,NO,NO
 prolific_information_schema,enrollment,is_prolific,recruited_via_prolific,enrollment,Is Prolific:,NO,internal,VARIABLE,redcap,v4,NO,NO
 prolific_information_schema,,prolific_id,prolific_id,,Prolific Id:,YES,drop,VARIABLE,redcap,v4,NO,NO
 prolific_information_schema,,show_prolific_study_id,show_prolific_study_id,,Show Prolific Study Id:,YES,drop,VARIABLE,redcap,v4,NO,NO
