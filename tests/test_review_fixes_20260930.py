@@ -173,6 +173,18 @@ def test_rare_checkbox_options_fold_into_other_counted_over_released_participant
     assert list(out["other_voice_activity"])[-2:] == ["Attorney", "Podcaster; Attorney"]
 
 
+def test_checkbox_fold_works_on_a_table_read_as_text():
+    """Deidentify reads tables as text, so the fold must write "1", not the integer 1."""
+    df = pd.DataFrame({
+        "participant_id": [f"p{i}" for i in range(3)],
+        "voice_activity_v2___attorney": ["1", "", ""],
+        "voice_activity_v2___other": ["", "", "1"],
+        "other_voice_activity": ["", "", "Podcaster"],
+    }, dtype=str).replace("", pd.NA)
+    out, _ = BIDSDataset._fold_small_checkbox_options(df, {}, "confounders", BIDSDataset._SMALL_CHECKBOX_OPTIONS)
+    assert out["voice_activity_v2___other"].tolist()[0::2] == ["1", "1"]
+
+
 def test_small_checkbox_rules_can_come_from_the_deidentify_config(tmp_path):
     (tmp_path / "checkbox_small_options.json").write_text(json.dumps({"t": {"q": {"other": "q___other", "min_participants": 5}}}))
     assert BIDSDataset._load_small_checkbox_options(tmp_path) == {"t": {"q": {"other": "q___other", "min_participants": 5}}}

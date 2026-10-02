@@ -3441,7 +3441,8 @@ class BIDSDataset:
                 if n >= minimum:
                     continue
                 if ticked.any():
-                    df.loc[ticked, other] = 1
+                    # tables are read as text at deidentify; a numeric column keeps a number
+                    df.loc[ticked, other] = "1" if isinstance(df[other].dtype, pd.StringDtype) else 1
                     if specify in df.columns:
                         choices = (elements.get(col) or {}).get("choices") or []
                         label = col.split("___", 1)[1]
