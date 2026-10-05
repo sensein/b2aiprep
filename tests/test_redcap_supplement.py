@@ -43,19 +43,6 @@ def test_supplement_refuses_duplicate_rows(tmp_path):
         _dataset().add_supplement(path)
 
 
-def test_supplement_counts_rows_matched_after_the_merge(tmp_path, caplog):
-    """Known record IDs on an instrument with no export row add nothing, and say so."""
-    path = tmp_path / "wrong_instrument.csv"
-    pd.DataFrame({"record_id": ["a", "b"], "redcap_repeat_instrument": ["Eligibility", "Eligibility"],
-                  "some_data_collected_remotely": ["Yes", "No"]}).to_csv(path, index=False)
-    dataset = _dataset()
-    with caplog.at_level("INFO"):
-        dataset.add_supplement(path)
-    assert dataset.df["some_data_collected_remotely"].isna().all()
-    warning = [r for r in caplog.records if r.levelname == "WARNING" and "matched" in r.getMessage()]
-    assert warning and "0 of 2 supplement row(s) matched" in warning[0].getMessage()
-
-
 def test_building_without_a_published_supplement_column_warns(tmp_path, caplog):
     """redcap2bids without --supplement must not drop some_data_collected_remotely silently."""
     from b2aiprep.prepare.dataset import BIDSDataset

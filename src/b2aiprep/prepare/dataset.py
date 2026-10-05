@@ -3334,7 +3334,7 @@ class BIDSDataset:
         df_list = []
         for session_file in session_files:
             try:
-                df_session = BIDSDataset._read_tsv_as_written(session_file)
+                df_session = pd.read_csv(session_file, sep="\t", dtype=str)
                 if 'record_id' in df_session.columns and 'session_id' in df_session.columns:
                     df_list.append(df_session[['record_id', 'session_id']])
                 elif 'participant_id' in df_session.columns and 'session_id' in df_session.columns:
@@ -3633,23 +3633,19 @@ class BIDSDataset:
     def _point_sidecar_sessions_at_released_ones(
         metadata: dict, folder_session: str, labels: t.Mapping[str, str], sidecar_name: str,
     ) -> None:
-        """Make every session ID in a sidecar one that is released, before IDs are remapped.
+        """Set a sidecar's ``session_id`` to the session the file is in when it names another one.
 
         ``remap_id`` leaves an ID it cannot map unchanged, so a sidecar naming a session that is
-        not released would publish the original session ID. ``session_id`` is set to the session
-        the file is in; any other ``*_session_id`` naming an unreleased session is blanked.
+        not released would publish the original session ID. (``session_id`` is the one session key
+        the audio_sidecar table releases; other keys are removed as unknown.)
         """
-        for key in list(metadata):
-            if key != "session_id" and not key.endswith("_session_id"):
-                continue
-            value = metadata[key]
-            if value is None or (isinstance(value, float) and pd.isna(value)) or str(value) in labels:
-                continue
-            replacement = folder_session if key == "session_id" else None
-            # IDs are listed for QA; this log lives with the job output, outside the release.
-            _LOGGER.warning("%s: %s %r is not a released session; written as %r.",
-                            sidecar_name, key, value, replacement)
-            metadata[key] = replacement
+        value = metadata.get("session_id")
+        if value is None or str(value) in labels:
+            return
+        # IDs are listed for QA; this log lives with the job output, outside the release.
+        _LOGGER.warning("%s: session_id %r is not a released session; written as the folder's %r.",
+                        sidecar_name, value, folder_session)
+        metadata["session_id"] = folder_session
 
     @staticmethod
     def _write_session_id_map(
@@ -4719,7 +4715,7 @@ class BIDSDataset:
             _LOGGER.info("No audio_quality_metrics.tsv found; skipping quality metrics deidentification.")
             return
 
-        df = BIDSDataset._read_tsv_as_written(quality_metrics_path)
+        df = pd.read_csv(quality_metrics_path, sep="\t", dtype=str)
 
         # Remove excluded participants
         if exclude_participant_ids and "participant_id" in df.columns:
