@@ -855,7 +855,7 @@
         "session_started_at"
       ]
     },
-    "session_seconds_since_first": {
+    "session_seconds_since_first_session": {
       "datatype": "xsd:integer",
       "minValue": 0,
       "unit": "seconds",
@@ -879,7 +879,7 @@
         "recording_created_at"
       ]
     },
-    "recording_seconds_since_first": {
+    "recording_seconds_since_first_session": {
       "datatype": "xsd:integer",
       "unit": "seconds",
       "derivedFrom": [

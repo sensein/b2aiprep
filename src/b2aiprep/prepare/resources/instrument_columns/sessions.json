@@ -2,7 +2,7 @@
     "session_id",
     "session_index",
     "session_local_hour",
-    "session_seconds_since_first",
+    "session_seconds_since_first_session",
     "session_status",
     "session_is_control_participant",
     "session_duration",
