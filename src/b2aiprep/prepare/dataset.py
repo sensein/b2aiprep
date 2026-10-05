@@ -1035,8 +1035,8 @@ class BIDSDataset:
         - ``recording_seconds_since_previous``: whole seconds from the previous dated recording's
           start in the same session. Blank for the first dated recording and for an undated one.
 
-        Values are strings, like ``session_index``. A recording without ``recording_session_id``
-        is placed in its acoustic task's session; one with neither is left unordered and logged.
+        Values are strings, like ``session_index``. Every recording has ``recording_session_id``;
+        one without would be left unordered and logged.
         """
         df = df.copy()
         for column in ("session_seconds_since_previous", "recording_order", "recording_seconds_since_previous"):
@@ -1064,12 +1064,6 @@ class BIDSDataset:
             is_recording = (df["redcap_repeat_instrument"] == RepeatInstrument.RECORDING.value.text) & df["recording_id"].notna()
             recordings = df.loc[is_recording, ["record_id", "recording_session_id", "recording_id"]].assign(
                 created=df.loc[is_recording, "recording_created_at"].map(parse_utc_timestamp))
-            # A recording without its own session ID belongs to its acoustic task's session.
-            if {"recording_acoustic_task_id", "acoustic_task_id", "acoustic_task_session_id"} <= set(df.columns):
-                is_task = df["redcap_repeat_instrument"] == RepeatInstrument.ACOUSTIC_TASK.value.text
-                task_session = dict(zip(df.loc[is_task, "acoustic_task_id"], df.loc[is_task, "acoustic_task_session_id"]))
-                recordings["recording_session_id"] = recordings["recording_session_id"].fillna(
-                    df.loc[is_recording, "recording_acoustic_task_id"].map(task_session))
             undated = recordings.loc[recordings["created"].isna(), "recording_id"].astype(str).tolist()
             no_session = recordings.loc[recordings["created"].notna() & recordings["recording_session_id"].isna(),
                                         "recording_id"].astype(str).tolist()

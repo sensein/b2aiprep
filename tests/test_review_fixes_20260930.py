@@ -106,26 +106,6 @@ def _na(values):
     return [v if isinstance(v, str) else None for v in values]
 
 
-def test_recording_without_session_id_uses_its_acoustic_tasks_session(caplog):
-    rows = [
-        {"redcap_repeat_instrument": "Acoustic Task", "acoustic_task_id": "T1", "acoustic_task_session_id": "s1"},
-        {"redcap_repeat_instrument": "Recording", "recording_id": "r1", "recording_session_id": "s1",
-         "recording_acoustic_task_id": "T1", "recording_created_at": "2024-07-01T15:01:00Z"},
-        {"redcap_repeat_instrument": "Recording", "recording_id": "r2", "recording_session_id": None,
-         "recording_acoustic_task_id": "T1", "recording_created_at": "2024-07-01T15:02:00Z"},
-        {"redcap_repeat_instrument": "Recording", "recording_id": "r3", "recording_session_id": None,
-         "recording_acoustic_task_id": "T9", "recording_created_at": "2024-07-01T15:02:30Z"},
-        {"redcap_repeat_instrument": "Recording", "recording_id": "r4", "recording_session_id": "s1",
-         "recording_acoustic_task_id": "T1", "recording_created_at": "2024-07-01T15:03:00Z"},
-    ]
-    df = pd.DataFrame([{"record_id": "p1", **r} for r in rows], dtype=object)
-    with caplog.at_level("WARNING"):
-        out = BIDSDataset._add_recording_order_and_gaps(df)
-    assert _na(out.recording_order) == [None, "1", "2", None, "3"]
-    assert _na(out.recording_seconds_since_previous) == [None, None, "60", None, "60"]
-    assert "1 recording(s) without a session, left unordered: r3" in caplog.text
-
-
 def test_date_only_start_has_no_local_hour():
     out = BIDSDataset._add_local_hours(pd.DataFrame({"session_started_at": ["2100-01-05", "2100-01-05T08:00:00-05:00"]}))
     assert _na(out.session_local_hour) == [None, "8"]
