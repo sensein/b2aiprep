@@ -470,7 +470,7 @@ class BIDSDataset:
                 fp = os.path.join(phenotype_dir, tsv_name)
                 if not os.path.isfile(fp):
                     continue
-                df_tsv = pd.read_csv(fp, sep="\t", dtype=str)
+                df_tsv = BIDSDataset._read_tsv_as_written(fp)
                 if id_col not in df_tsv.columns:
                     continue
                 before = len(df_tsv)
@@ -489,8 +489,8 @@ class BIDSDataset:
             recording_fp = os.path.join(phenotype_dir, "task/recording.tsv")
             acoustic_task_fp = os.path.join(phenotype_dir, "task/acoustic_task.tsv")
             if os.path.isfile(recording_fp) and os.path.isfile(acoustic_task_fp):
-                df_rec = pd.read_csv(recording_fp, sep="\t", dtype=str)
-                df_at = pd.read_csv(acoustic_task_fp, sep="\t", dtype=str)
+                df_rec = BIDSDataset._read_tsv_as_written(recording_fp)
+                df_at = BIDSDataset._read_tsv_as_written(acoustic_task_fp)
                 if (
                     "recording_acoustic_task_id" in df_rec.columns
                     and "acoustic_task_id" in df_at.columns
@@ -913,6 +913,15 @@ class BIDSDataset:
         df.index = df[index_col]
 
         return df.to_dict("index")
+
+    @staticmethod
+    def _read_tsv_as_written(path: t.Union[str, Path]) -> pd.DataFrame:
+        """Read a TSV the pipeline wrote, as text, with only an empty cell treated as missing.
+
+        pandas' default missing-value list would turn answers such as "None", "N/A" or "NA" into
+        blanks, and a table read that way and written back loses them.
+        """
+        return pd.read_csv(path, sep="\t", dtype=str, keep_default_na=False, na_values=[""])
 
     @staticmethod
     def _dataframe_to_tsv(df: pd.DataFrame, tsv_path: str) -> None:
@@ -1579,7 +1588,7 @@ class BIDSDataset:
         for name in ("sessions.tsv", f"sub-{pid}_sessions.tsv"):
             path = participant_dir / name
             if path.exists():
-                df = pd.read_csv(path, sep="\t", dtype=str)
+                df = BIDSDataset._read_tsv_as_written(path)
                 if "session_id" not in df.columns:
                     _LOGGER.warning("sessions.tsv for participant %s has no session_id column.", pid)
                     return None
@@ -1893,7 +1902,7 @@ class BIDSDataset:
                 if not fn.endswith(".tsv"):
                     continue
                 fp = os.path.join(dp, fn)
-                df = pd.read_csv(fp, sep="\t", dtype=str)
+                df = BIDSDataset._read_tsv_as_written(fp)
                 id_col = None
                 for candidate in ("participant_id", "record_id"):
                     if candidate in df.columns:
@@ -2868,9 +2877,7 @@ class BIDSDataset:
         """
         # Read as written: as text, so an integer column with blanks is not turned into floats
         # ("10" -> "10.0"), and only an empty cell is missing ("NA", "N/A" are answers).
-        df = pd.read_csv(
-            phenotype_filepath.with_suffix(".tsv"), sep="\t", dtype=str, keep_default_na=False, na_values=[""]
-        )
+        df = BIDSDataset._read_tsv_as_written(phenotype_filepath.with_suffix(".tsv"))
         with open(phenotype_filepath.with_suffix(".json"), "r") as f:
             raw = json.load(f)
 
@@ -3311,7 +3318,7 @@ class BIDSDataset:
         df_list = []
         for session_file in session_files:
             try:
-                df_session = pd.read_csv(session_file, sep="\t", dtype=str)
+                df_session = BIDSDataset._read_tsv_as_written(session_file)
                 if 'record_id' in df_session.columns and 'session_id' in df_session.columns:
                     df_list.append(df_session[['record_id', 'session_id']])
                 elif 'participant_id' in df_session.columns and 'session_id' in df_session.columns:
@@ -4601,7 +4608,7 @@ class BIDSDataset:
             _LOGGER.info("No audio_quality_metrics.tsv found; skipping quality metrics deidentification.")
             return
 
-        df = pd.read_csv(quality_metrics_path, sep="\t", dtype=str)
+        df = BIDSDataset._read_tsv_as_written(quality_metrics_path)
 
         # Remove excluded participants
         if exclude_participant_ids and "participant_id" in df.columns:
