@@ -7,6 +7,13 @@ import pytest
 
 from b2aiprep.prepare.dataset import BIDSDataset
 
+
+# the adult configs' small_checkbox_options (4.0-release/configs)
+VOICE_ACTIVITY_FOLD = {"confounders": {
+    "voice_activity_v2": {"other": "voice_activity_v2___other", "specify": "other_voice_activity",
+                          "keep": ["voice_activity_v2___none"], "min_participants": 10},
+    "voice_activity": {"other": "voice_activity___7", "min_participants": 10}}}
+
 SPEC = {"participant": {"enrollment_institution": {
     "output_column": "site", "values": {"MIT": "site_A", "USF": "site_B", "WCM": "site_C"}}}}
 
@@ -95,3 +102,14 @@ def test_bundle_validation_flags_controlled_only_columns_outside_the_controlled_
     tsv = tmp_path / "t.tsv"
     assert any("controlled-only" in i and "b" in i for i in _unreleasable_columns(tsv, ["participant_id", "a", "b"], fm))
     assert _unreleasable_columns(tsv, ["participant_id", "a", "b"], fm, AccessTier.CONTROLLED) == []
+
+
+def test_deprecated_voice_activity_folds_rare_options_into_its_other_option():
+    """The first version of the question has no 'please specify' box: rare options only tick Other."""
+    df = pd.DataFrame({"participant_id": [f"p{i}" for i in range(12)],
+                       "voice_activity___4": ["1"] * 10 + ["", ""],    # Teacher, 10 participants: kept
+                       "voice_activity___6": [""] * 10 + ["1", "1"],   # Cheerleading, 2: folded
+                       "voice_activity___7": [""] * 12}, dtype=str).replace("", pd.NA)
+    out, _ = BIDSDataset._fold_small_checkbox_options(df, {}, "confounders", VOICE_ACTIVITY_FOLD)
+    assert "voice_activity___6" not in out.columns and "voice_activity___4" in out.columns
+    assert out["voice_activity___7"].tolist()[-2:] == ["1", "1"]

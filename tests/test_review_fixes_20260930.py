@@ -10,6 +10,13 @@ from b2aiprep.commands import validate_bundled_dataset
 from b2aiprep.prepare.dataset import BIDSDataset, DispositionLevel
 
 
+# the adult configs' small_checkbox_options (4.0-release/configs)
+VOICE_ACTIVITY_FOLD = {"confounders": {
+    "voice_activity_v2": {"other": "voice_activity_v2___other", "specify": "other_voice_activity",
+                          "keep": ["voice_activity_v2___none"], "min_participants": 10},
+    "voice_activity": {"other": "voice_activity___7", "min_participants": 10}}}
+
+
 def _fm(rows):
     return pd.DataFrame(rows, columns=["schema_name", "column_name", "disposition", "date_shift"])
 
@@ -148,7 +155,7 @@ def test_rare_checkbox_options_fold_into_other_counted_over_released_participant
     }, dtype=object)
     elements = {c: {"description": c} for c in df.columns}
     elements["voice_activity_v2___attorney"]["choices"] = [{"name": {"en": "Attorney"}, "value": "attorney"}]
-    out, el = BIDSDataset._fold_small_checkbox_options(df, elements, "confounders", BIDSDataset._SMALL_CHECKBOX_OPTIONS)
+    out, el = BIDSDataset._fold_small_checkbox_options(df, elements, "confounders", VOICE_ACTIVITY_FOLD)
     assert "voice_activity_v2___attorney" not in out.columns and "voice_activity_v2___attorney" not in el
     assert "voice_activity_v2___teacher" in out.columns
     assert list(out["voice_activity_v2___other"])[-2:] == [1, 1]
@@ -163,7 +170,7 @@ def test_checkbox_fold_works_on_a_table_read_as_text():
         "voice_activity_v2___other": ["", "", "1"],
         "other_voice_activity": ["", "", "Podcaster"],
     }, dtype=str).replace("", pd.NA)
-    out, _ = BIDSDataset._fold_small_checkbox_options(df, {}, "confounders", BIDSDataset._SMALL_CHECKBOX_OPTIONS)
+    out, _ = BIDSDataset._fold_small_checkbox_options(df, {}, "confounders", VOICE_ACTIVITY_FOLD)
     assert out["voice_activity_v2___other"].tolist()[0::2] == ["1", "1"]
 
 
@@ -172,6 +179,6 @@ def test_small_checkbox_rules_can_come_from_the_deidentify_settings(tmp_path):
     (tmp_path / "deidentify_settings.json").write_text(json.dumps({"access_tier": "registered", "small_checkbox_options": rules}))
     assert BIDSDataset._load_deidentify_settings(tmp_path)["small_checkbox_options"] == rules
     (tmp_path / "deidentify_settings.json").write_text(json.dumps({"access_tier": "registered"}))
-    assert BIDSDataset._load_deidentify_settings(tmp_path)["small_checkbox_options"] == BIDSDataset._SMALL_CHECKBOX_OPTIONS
+    assert BIDSDataset._load_deidentify_settings(tmp_path)["small_checkbox_options"] == {}
 
 

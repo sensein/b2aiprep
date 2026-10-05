@@ -3459,19 +3459,6 @@ class BIDSDataset:
                 found.update(ids.loc[reduced.index, col].dropna().astype(str))
         return found
 
-    # Checkbox questions whose rare options are released only folded into "Other" (ethics,
-    # 2026-09-30): an option chosen by fewer than ``min_participants`` released participants is
-    # reported as the question's Other option, its label is added to the "please specify" answer
-    # (a review column, so it is published only once checked), and the option's column is removed.
-    # Counted per deidentify run, over the participants it releases. A deidentify config file
-    # ``small_checkbox_options`` in ``deidentify_settings.json``, of the same shape, replaces this default.
-    _SMALL_CHECKBOX_OPTIONS = {
-        "confounders": {
-            "voice_activity_v2": {"other": "voice_activity_v2___other", "specify": "other_voice_activity",
-                                  "keep": ["voice_activity_v2___none"], "min_participants": 10},
-        },
-    }
-
     _SETTINGS_KEYS = frozenset({"access_tier", "value_mappings", "small_checkbox_options", "relabel",
                                 "exclude_participants"})
 
@@ -3488,8 +3475,8 @@ class BIDSDataset:
 
         ``access_tier`` (registered/controlled) is required, so no run builds a tier by default.
         ``value_mappings`` (see ``_apply_value_mappings``), ``relabel`` (see ``_apply_relabels``),
-        ``exclude_participants`` (see ``_participants_excluded_by_answer``) and ``small_checkbox_options`` (same shape as ``_SMALL_CHECKBOX_OPTIONS``, which applies
-        when it is left out) are optional.
+        ``exclude_participants`` (see ``_participants_excluded_by_answer``) and ``small_checkbox_options`` (see ``_fold_small_checkbox_options``) are optional; nothing is
+        folded, mapped, relabelled or excluded unless the config says so.
         """
         path = Path(config_dir) / "deidentify_settings.json"
         if not path.exists():
@@ -3509,7 +3496,7 @@ class BIDSDataset:
         settings.setdefault("value_mappings", {})
         settings.setdefault("relabel", {})
         settings.setdefault("exclude_participants", [])
-        settings.setdefault("small_checkbox_options", BIDSDataset._SMALL_CHECKBOX_OPTIONS)
+        settings.setdefault("small_checkbox_options", {})
         _LOGGER.info("Deidentify settings from %s: access tier %s.", path, settings["access_tier"].value)
         return settings
 
@@ -3519,6 +3506,14 @@ class BIDSDataset:
         released_participants: t.Optional[t.AbstractSet[str]] = None,
     ) -> t.Tuple[pd.DataFrame, dict]:
         """Fold rarely chosen options of the configured checkbox questions into their Other option.
+
+        *spec* is ``small_checkbox_options`` from ``deidentify_settings.json``: ``{schema: {question:
+        {"other": option column, "specify": "please specify" column (optional), "keep": [option
+        columns never folded], "min_participants": n}}}``. An option chosen by fewer than
+        ``min_participants`` released participants is reported as the Other option, its label is
+        added as an answer to the specify column (a review column, so published only once checked),
+        and its column is removed. The rules live only in the config (ethics small-cell rule,
+        2026-09-30).
 
         Options are counted over *released_participants* (all rows when None). Checkbox option
         columns are named ``<question>___<code>`` and hold 1 when ticked. Run before the review

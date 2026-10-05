@@ -125,49 +125,49 @@ amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis
 amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis_als_treatment_and_management_yes_medications_other,diagnosis_als_treatment_and_management_yes_medications_other,diagnosis,"If you selected ""Other"", please specify:",NO,review,VARIABLE,redcap,v4,NO,NO,
 amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis_als_treatment_and_management_yes_supportive_care,diagnosis_als_treatment_and_management_yes_supportive_care,diagnosis,Supportive Care:,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis_als_treatment_and_management_yes_supportive_care_other,diagnosis_als_treatment_and_management_yes_supportive_care_other,diagnosis,"If you selected ""Other"", please specify:",NO,review,VARIABLE,redcap,v4,NO,NO,
-anxiety_disorder_schema,anxiety,diagnosis_ad_active_psy_med_prob_other,diagnosis_ad_active_psy_med_prob_other,,"[DEPRECATED]
+anxiety_disorder_schema,anxiety,diagnosis_ad_active_psy_med_prob_other,diagnosis_ad_active_psy_med_prob_other,diagnosis,"[DEPRECATED]
 Please specify
 
-MOVED IT TO ""Q - Mood - Participant History""",YES,drop,VARIABLE,redcap,v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",YES,review,VARIABLE,redcap,v4,NO,NO,
 anxiety_disorder_schema,anxiety,diagnosis_ad_active_psy_med_problems,diagnosis_ad_active_psy_med_problems,diagnosis,"[DEPRECATED]
 Please select any active psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 anxiety_disorder_schema,anxiety,diagnosis_ad_current_medication,diagnosis_ad_current_medication,diagnosis,"[DEPRECATED]
 Please list any current psychiatric medications (to the best of your recollection), including medication names, dosage,
 and how many times per day.
 
 
-MOVED IT TO ""Q - Mood - Participant History""",YES,internal,VARIABLE,redcap,v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",YES,review,VARIABLE,redcap,v4,NO,NO,
 anxiety_disorder_schema,anxiety,diagnosis_ad_describe_psychotherapy,diagnosis_ad_describe_psychotherapy,diagnosis,"[DEPRECATED]
 Please briefly describe your psychotherapy history (e.g.,
 dates, reasons for seeking therapy, etc.).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,VARIABLE,redcap,v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,review,VARIABLE,redcap,v4,NO,NO,
 anxiety_disorder_schema,anxiety,diagnosis_ad_hist_psy_med_prob_other,diagnosis_ad_hist_psy_med_prob_other,diagnosis,"[DEPRECATED]
 Please specify
 
-MOVED IT TO ""Q - Mood - Participant History""",YES,internal,VARIABLE,redcap,v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",YES,review,VARIABLE,redcap,v4,NO,NO,
 anxiety_disorder_schema,anxiety,diagnosis_ad_hist_psy_med_problems,diagnosis_ad_hist_psy_med_problems,diagnosis,"[DEPRECATED]
 Please select any historical psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 anxiety_disorder_schema,anxiety,diagnosis_ad_last_anxious_episode,diagnosis_ad_last_anxious_episode,diagnosis,"When was your last anxious episode (feeling anxious more days than not over
 two weeks)?",YES,internal,VARIABLE,redcap,v4,NO,YES,
 anxiety_disorder_schema,anxiety,diagnosis_ad_last_anxious_episode_days_since,diagnosis_ad_last_anxious_episode_days_since,diagnosis,"Days from the last anxious episode to the start of the participant's first session (computed from diagnosis_ad_last_anxious_episode; the date shift does not change it). Positive when the episode was before the first session, negative when it was after it (reported at a later session). Blank if either date is missing or the date did not pass the date checks.",NO,release,VARIABLE,pipeline,v4,NO,NO,
 anxiety_disorder_schema,anxiety,diagnosis_ad_prescribed_medication,diagnosis_ad_prescribed_medication,diagnosis,"[DEPRECATED]
 Have you ever been prescribed medication for mental or emotional problems (e.g., antidepressants, anxiolytics, antipsychotics, mood stabilizers, etc.)?
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,VARIABLE,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 anxiety_disorder_schema,anxiety,diagnosis_ad_previous_medication,diagnosis_ad_previous_medication,diagnosis,"[DEPRECATED]
 Please list any previous psychiatric medications (to the best of your recollection), including medication names,
 approximate dates you were taking them, and why they were discontinued.
 
-MOVED IT TO ""Q - Mood - Participant History""",YES,internal,VARIABLE,redcap,v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",YES,review,VARIABLE,redcap,v4,NO,NO,
 anxiety_disorder_schema,anxiety,diagnosis_ad_see_mental_health_professional,diagnosis_ad_see_mental_health_professional,diagnosis,"[DEPRECATED]
 Have you ever seen a mental health professional for talk therapy (could include social workers, psychiatrists, etc.)?
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,VARIABLE,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 anxiety_disorder_schema,anxiety,diagnosis_diagnosed_ad,diagnosis_ad_gold_standard_diagnosis,diagnosis,Have you been diagnosed with an anxiety disorder?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 anxiety_disorder_schema,anxiety,diagnosis_diagnosed_ad_selection,diagnosis_ad_selection,diagnosis,Anxiety Disorder,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 benign_lesions_schema,benign_lesions,diagnois_bl_gsd,diagnois_bl_gold_standard_diagnosis,diagnosis,Does the participant have a benign lesion confirmed by laryngoscopy/stroboscopy?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
@@ -205,48 +205,48 @@ benign_lesions_schema,benign_lesions,diagnosis_bl_treatment_lm,diagnosis_bl_trea
 benign_lesions_schema,benign_lesions,diagnosis_bl_treatment_other,diagnosis_bl_treatment_other,diagnosis,"Other, please specify",NO,review,VARIABLE,redcap,v4,NO,NO,
 benign_lesions_schema,benign_lesions,diagnosis_bl_treatment_select,diagnosis_bl_treatment_select,diagnosis,Select all that apply:,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,diagnosis_bipolar_active_problems,diagnosis_bipolar_active_problems,diagnosis,"[DEPRECATED]
-Enter list of active problems",YES,internal,VARIABLE,redcap,v4,NO,NO,
+Enter list of active problems",YES,review,VARIABLE,redcap,v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,diagnosis_bipolar_current_med_therapies,diagnosis_bipolar_current_med_therapies,diagnosis,"[DEPRECATED]
-List any current medications/therapies",YES,internal,VARIABLE,redcap,v4,NO,NO,
+List any current medications/therapies",YES,review,VARIABLE,redcap,v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,diagnosis_bipolar_etiology,diagnosis_bipolar_etiology,diagnosis,"[DEPRECATED]
-Describe life events that may relate to the diagnosis",YES,internal,VARIABLE,redcap,v4,NO,NO,
-bipolar_disorder_schema,bipolar_disorder,diagnosis_bipolar_former_med_therapies,diagnosis_bipolar_former_med_therapies,,"[DEPRECATED]
-List any former medications/therapies",YES,drop,VARIABLE,redcap,v4,NO,NO,
+Describe life events that may relate to the diagnosis",YES,review,VARIABLE,redcap,v4,NO,NO,
+bipolar_disorder_schema,bipolar_disorder,diagnosis_bipolar_former_med_therapies,diagnosis_bipolar_former_med_therapies,diagnosis,"[DEPRECATED]
+List any former medications/therapies",YES,review,VARIABLE,redcap,v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,diagnosis_bipolar_gsd,diagnosis_bipolar_gold_standard_diagnosis,diagnosis,"[DEPRECATED]
-Diagnosis",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Diagnosis",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,diagnosis_bipolar_gsd_interview,diagnosis_bipolar_gold_standard_diagnosis_interview,diagnosis,"[DEPRECATED]
-Was a structured clinical interview done?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Was a structured clinical interview done?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,diagnosis_bipolar_gsd_oqu,diagnosis_bipolar_gold_standard_diagnosis_oqu,diagnosis,"[DEPRECATED]
-Was an objective questionnaire used?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Was an objective questionnaire used?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,diagnosis_bipolar_gsd_oqu_other,diagnosis_bipolar_gold_standard_diagnosis_oqu_other,diagnosis,"[DEPRECATED]
-Please specify",YES,internal,VARIABLE,redcap,v4,NO,NO,
+Please specify",YES,review,VARIABLE,redcap,v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,diagnosis_bipolar_gsd_oquw,diagnosis_bipolar_gold_standard_diagnosis_oquw,diagnosis,"[DEPRECATED]
-Which objective questionnaire was used?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Which objective questionnaire was used?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,diagnosis_bipolar_history_problems,diagnosis_bipolar_history_problems,diagnosis,"[DEPRECATED]
-Enter any history of problems",YES,internal,VARIABLE,redcap,v4,NO,NO,
+Enter any history of problems",YES,review,VARIABLE,redcap,v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,diagnosis_bipolar_psychotic,diagnosis_bipolar_psychotic,diagnosis,"[DEPRECATED]
-Psychotic Symptoms",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Psychotic Symptoms",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,diagnosis_bipolar_severity,diagnosis_bipolar_severity,diagnosis,"[DEPRECATED]
-Disease Severity",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Disease Severity",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,diagnosis_bipolar_subtype_active,diagnosis_bipolar_subtype_active,diagnosis,"[DEPRECATED]
-Disease Subtype",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Disease Subtype",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,mbd_active_psy_med_prob_other,mbd_active_psy_med_prob_other,diagnosis,"[DEPRECATED]
 Please specify
 
-MOVED IT TO ""Q - Mood - Participant History""",YES,internal,VARIABLE,redcap,v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",YES,review,VARIABLE,redcap,v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,mbd_active_psy_med_problems,mbd_active_psy_med_problems,diagnosis,"[DEPRECATED]
 Please select any active psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,mbd_current_medication,mbd_current_medication,diagnosis,"[DEPRECATED]
 Please list any current psychiatric medications (to the best of your recollection), including medication names, dosage, and how many times per day.
 
-MOVED IT TO ""Q - Mood - Participant History""",YES,internal,VARIABLE,redcap,v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",YES,review,VARIABLE,redcap,v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,mbd_describe_psychotherapy,mbd_describe_psychotherapy,diagnosis,"[DEPRECATED]
 Please briefly describe your psychotherapy history (e.g.,
 dates, reasons for seeking therapy, etc.).
 
-MOVED IT TO ""Q - Mood - Participant History""",YES,internal,VARIABLE,redcap,v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",YES,review,VARIABLE,redcap,v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,mbd_diagnosed_bipolar_i_ii_other,diagnosis_mbd_bipolar_i_ii_other,diagnosis,"Were you diagnosed with Bipolar I, Bipolar II, or Other/unspecified?",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,mbd_diagnosed_bm,diagnosis_mbd_gold_standard_diagnosis,diagnosis,Have you been diagnosed with Bipolar Disorder?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,mbd_diagnosed_bm_selection,diagnosis_mbd_selection,diagnosis,Bipolar I and II Disorders,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
@@ -256,11 +256,11 @@ bipolar_disorder_schema,bipolar_disorder,mbd_had_manic_episode,diagnosis_mbd_had
 bipolar_disorder_schema,bipolar_disorder,mbd_hist_psy_med_prob_other,mbd_hist_psy_med_prob_other,diagnosis,"[DEPRECATED]
 Please specify
 
-MOVED IT TO ""Q - Mood - Participant History""",YES,internal,VARIABLE,redcap,v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",YES,review,VARIABLE,redcap,v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,mbd_hist_psy_med_problems,mbd_hist_psy_med_problems,diagnosis,"[DEPRECATED]
 Please select any historical psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,mbd_last_depressive_episode,diagnosis_mbd_last_depressive_episode,diagnosis,When was your last depressive episode (feeling down and depressed more days than not over two weeks)?,YES,internal,VARIABLE,redcap,v4,NO,YES,
 bipolar_disorder_schema,bipolar_disorder,mbd_last_depressive_episode_days_since,mbd_last_depressive_episode_days_since,diagnosis,"Days from the last depressive episode to the start of the participant's first session (computed from mbd_last_depressive_episode; the date shift does not change it). Positive when the episode was before the first session, negative when it was after it (reported at a later session). Blank if either date is missing or the date did not pass the date checks.",NO,release,VARIABLE,pipeline,v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,mbd_last_manic_episode,diagnosis_mbd_last_manic_episode,diagnosis,When was your last manic episode?,YES,internal,VARIABLE,redcap,v4,NO,YES,
@@ -270,16 +270,16 @@ bipolar_disorder_schema,bipolar_disorder,mbd_many_manic_episodes,diagnosis_mbd_m
 bipolar_disorder_schema,bipolar_disorder,mbd_prescribed_medication,diagnosis_mbd_prescribed_medication,diagnosis,"[DEPRECATED]
 Have you ever been prescribed medication for mental or emotional problems (e.g., antidepressants, anxiolytics, antipsychotics, mood stabilizers, etc.)?
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,VARIABLE,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,mbd_previous_medication,mbd_previous_medication,diagnosis,"[DEPRECATED]
 Please list any previous psychiatric medications (to the best of your recollection), including medication names,
 approximate dates you were taking them, and why they were discontinued.
 
-MOVED IT TO ""Q - Mood - Participant History""",YES,internal,VARIABLE,redcap,v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",YES,review,VARIABLE,redcap,v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,mbd_see_mental_health_professional,mbd_see_mental_health_professional,diagnosis,"[DEPRECATED]
 Have you ever seen a mental health professional for talk therapy (could include social workers, psychiatrists, etc.)?
 
-MOVED IT TO ""Q - Mood - Participant History""",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 bridge2ai_econsent_mit_english_schema,,consent_mit_p1,consent_mit_p1,,"Participant's response to the first MIT e-consent question, recording whether they agreed to participate (Yes/No).",YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
 bridge2ai_econsent_mit_english_schema,,mit_icf_date_en,mit_icf_date_en,,Date,YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
 bridge2ai_econsent_mit_english_schema,,mit_icf_name_en,mit_icf_name_en,,Printed Name of Person Taking Part in Study,YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
@@ -348,27 +348,27 @@ bridge2ai_paper_consent_all_sites_english_schema,,paper_consent_uploaded_by,pape
 confounders_schema,confounders,acid_reflux,acid_reflux,confounders,"Acid reflux (e.g. heart burn, GERD, etc.)",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,adhd_med_hist_psychological,adhd_med_hist_psychological,confounders,Attention deficit/hyperactivity disorder (ADHD),NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,age_start_smoking,age_start_smoking,confounders,"[DEPRECATED]
-At what age did you start smoking?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+At what age did you start smoking?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,age_started_using_nicotine_products,age_started_using_nicotine_products,confounders,Age: Enter age,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,age_stop_smoking,age_stop_smoking,confounders,"[DEPRECATED]
-At what age did you stop?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+At what age did you stop?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,age_stopped_using_nicotine_products,age_stopped_using_nicotine_products,confounders,Age when you stopped using: Enter age,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,airway_stenosis_med_hist_throat,airway_stenosis_med_hist_throat,confounders,"Airway stenosis (e.g. glottal, subglottal, tracheal, etc.)",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,airway_surgery_reconstruction,airway_surgery_reconstruction,confounders,"Airway surgery/reconstruction BELOW the vocal folds (e.g. tracheal reconstruction, balloon dilation, etc.)",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,alcohol_amt,alcohol_amt,confounders,"[DEPRECATED]
 How many drinks containing alcohol do you have on a typical day when you are drinking?
-One drink is 12 oz. or 330 mL of beer, 5 oz. or 150 mL of wine, 1.5 oz. or 45mL (one shot) of liquor",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+One drink is 12 oz. or 330 mL of beer, 5 oz. or 150 mL of wine, 1.5 oz. or 45mL (one shot) of liquor",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,alcohol_amt_v2,alcohol_amt_v2,confounders,"How many drinks containing alcohol do you have on a typical day when you are drinking?
 One drink is 12 oz. or 330 mL of beer, 5 oz. or 150 mL of wine, 1.5 oz. or 45mL (one shot) of liquor",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,alcohol_drinks,alcohol_drinks,confounders,How often did you have six or more drinks on one occasion in the past year?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,alcohol_freq,alcohol_freq,confounders,"[DEPRECATED]
-How often do you have at least one drink containing alcohol?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+How often do you have at least one drink containing alcohol?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,alcohol_freq_v2,alcohol_freq_v2,confounders,How often do you have at least one drink containing alcohol?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,alcohol_rehab,alcohol_rehab,confounders,"[DEPRECATED]
 Have you ever been in rehab or counseling for heavy alcohol use?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,controlled
 confounders_schema,confounders,alcohol_substance_use_disorder,alcohol_substance_use_disorder,confounders,Alcohol or substance use disorder,NO,release,VARIABLE,redcap,pre-v4,NO,NO,controlled
 confounders_schema,confounders,alcohol_today,alcohol_today,confounders,"[DEPRECATED]
-Have you drunk alcohol today?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Have you drunk alcohol today?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,alcohol_today_v2,alcohol_today_v2,confounders,Have you drunk alcohol today?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,alcohol_yn,alcohol_yn,confounders,"Do you drink alcohol?
 (Drinks can be beer, wine, shots of liquor, cocktails containing a shot of liquor)",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
@@ -400,16 +400,16 @@ confounders_schema,confounders,bpd_med_hist_psychological,bpd_med_hist_psycholog
 confounders_schema,confounders,brain_cancer,brain_cancer,confounders,Brain cancer,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,brain_tumor,brain_tumor,confounders,Brain tumor,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,breathe_today,breathe_today,confounders,"[DEPRECATED]
-Are you having difficulty breathing today?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Are you having difficulty breathing today?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,breathe_today_difficulty,breathe_today_difficulty,confounders,"[DEPRECATED]
-Please specify the level of difficulty",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Please specify the level of difficulty",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,bronchiectasis,bronchiectasis,confounders,Bronchiectasis,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,c_pap,c_pap,confounders,C-Pap,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,caffeine_intake,caffeine_intake,confounders,"On a typical day, how many servings of these caffeinated products do you typically consume? 
 One serving is 8 oz or 240 mL of coffee, tea, or energy drinks, 1 oz or 30 mL of espresso, 12 oz or 360 mL of soda",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,caffeine_intake_today,caffeine_intake_today,confounders,How many servings of these caffeinated products have you had today?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,cardiac_condition,cardiac_condition,confounders,"[DEPRECATED]
-Cardiac condition",YES,internal,VARIABLE,redcap,v4,NO,NO,
+Cardiac condition",YES,review,VARIABLE,redcap,v4,NO,NO,
 confounders_schema,confounders,chemotherapy,chemotherapy,confounders,Chemotherapy,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,chest_surgery,chest_surgery,confounders,"Chest surgery (e.g. bronchoscopy, thoracic surgery, etc.)",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,chest_wall_trauma,chest_wall_trauma,confounders,Chest wall trauma,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
@@ -418,10 +418,10 @@ confounders_schema,confounders,chronic_ear_infections,chronic_ear_infections,con
 confounders_schema,confounders,chronic_ear_surgery,chronic_ear_surgery,confounders,"Chronic ear surgery (e.g. mastoid surgery, etc.)",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,chronic_kidney_disease,chronic_kidney_disease,confounders,Chronic kidney disease,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,chronic_pericarditis,chronic_pericarditis,confounders,Chronic pericarditis,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
-confounders_schema,confounders,circulatory_conditions,circulatory_conditions,,"[DEPRECATED]
-Have you been diagnosed with any of these circulatory or heart conditions by a clinician? (check all that apply)",YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
+confounders_schema,confounders,circulatory_conditions,circulatory_conditions,confounders,"[DEPRECATED]
+Have you been diagnosed with any of these circulatory or heart conditions by a clinician? (check all that apply)",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,circulatory_med_history,circulatory_med_history,confounders,"[DEPRECATED]
-Some other conditions can affect the sound of your voice. Have you been diagnosed with any of these conditions by a clinician? (check all that apply)",NO,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Some other conditions can affect the sound of your voice. Have you been diagnosed with any of these conditions by a clinician? (check all that apply)",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,cleft_lip,cleft_lip,confounders,Cleft lip,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,cleft_palate,cleft_palate,confounders,Cleft palate,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,club_drugs,club_drugs,confounders,Club drugs (like ecstasy),NO,internal,VARIABLE,redcap,v4,NO,NO,
@@ -441,21 +441,21 @@ confounders_schema,confounders,copd_med_hist_lung,copd_med_hist_lung,confounders
 confounders_schema,confounders,cordotomy_arytenoidectomy_arytenoid_tie_back,cordotomy_arytenoidectomy_arytenoid_tie_back,confounders,"Cordotomy, arytenoidectomy, arytenoid tie back, etc.",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,coronary_heart_disease,coronary_heart_disease,confounders,Coronary heart disease,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,cough_today,cough_today,confounders,"[DEPRECATED]
-Are you coughing today?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Are you coughing today?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,cough_today_severity,cough_today_severity,confounders,"[DEPRECATED]
-What is the severity of your cough?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+What is the severity of your cough?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,coughing_clearing_throat,coughing_clearing_throat,confounders,Coughing or clearing your throat,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
-confounders_schema,confounders,covid,covid,,"[DEPRECATED]
-Have you had COVID recently, or are you currently experiencing the effects of long COVID? (check all that apply)",YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
+confounders_schema,confounders,covid,covid,confounders,"[DEPRECATED]
+Have you had COVID recently, or are you currently experiencing the effects of long COVID? (check all that apply)",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,covid_med_hist_lung,covid_med_hist_lung,confounders,COVID,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,covid_past,covid_past,confounders,"[DEPRECATED]
-Have you had COVID in the past month?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Have you had COVID in the past month?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,covid_tested_positive_last_10_days,covid_tested_positive_last_10_days,confounders,Have you tested positive for COVID in the last 10 days?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
-confounders_schema,confounders,cpap_conditions,cpap_conditions,,"[DEPRECATED]
-Are you currently using CPAP or supplemental oxygen? (check all that apply)",YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
+confounders_schema,confounders,cpap_conditions,cpap_conditions,confounders,"[DEPRECATED]
+Are you currently using CPAP or supplemental oxygen? (check all that apply)",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,craniofacial_trauma,craniofacial_trauma,confounders,Craniofacial trauma,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,current_neuro_dx,current_neuro_dx,confounders,"[DEPRECATED]
-Do you currently have these conditions or currently experience symptoms as a result of having had these conditions?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Do you currently have these conditions or currently experience symptoms as a result of having had these conditions?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,current_recovery_alcohol,current_recovery_alcohol,confounders,"[DEPRECATED]
 Are you currently in recovery for alcohol use?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,controlled
 confounders_schema,confounders,current_recovery_alcohol_v2,current_recovery_alcohol_v2,confounders,Are you currently in recovery for alcohol use?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,controlled
@@ -468,9 +468,9 @@ confounders_schema,confounders,daily_env_pollution_affects_your_breathing_voice,
 confounders_schema,confounders,decongestants,decongestants,confounders,Decongestants,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,deep_brain_stimulator,deep_brain_stimulator,confounders,Deep brain stimulator,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,dental_problems,dental_problems,confounders,"[DEPRECATED]
-Do you have any dental problems that might affect speech?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Do you have any dental problems that might affect speech?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,dental_tx,dental_tx,confounders,"[DEPRECATED]
-Do you currently have any tooth loss, dentures, retainers or braces?",YES,internal,VARIABLE,redcap,v4,NO,NO,
+Do you currently have any tooth loss, dentures, retainers or braces?",YES,review,VARIABLE,redcap,v4,NO,NO,
 confounders_schema,confounders,depression_major_depressive_disorder,depression_major_depressive_disorder,confounders,Depression or major depressive disorder,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,diabetes_type,diabetes_type,confounders,Which type of diabetes do you have?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,diuretics,diuretics,confounders,Diuretics,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
@@ -478,10 +478,10 @@ confounders_schema,confounders,dizziness,dizziness,confounders,Dizziness,NO,rele
 confounders_schema,confounders,drinks_today_number,drinks_today_number,confounders,How many drinks have you had today?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,dysarthria,dysarthria,confounders,Dysarthria,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,ear_cancer,ear_cancer,confounders,Ear cancer,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
-confounders_schema,confounders,ear_med_history,ear_med_history,,"[DEPRECATED]
-Ear",YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
-confounders_schema,confounders,ear_surgical,ear_surgical,,"[DEPRECATED]
-Ear",YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
+confounders_schema,confounders,ear_med_history,ear_med_history,confounders,"[DEPRECATED]
+Ear",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
+confounders_schema,confounders,ear_surgical,ear_surgical,confounders,"[DEPRECATED]
+Ear",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,ear_tubes,ear_tubes,confounders,Ear tubes,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,eating_disorder,eating_disorder,confounders,Eating disorder (ED),NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,edible_substance_in_past_three_months,edible_substance_in_past_three_months,confounders,"In the PAST THREE MONTHS, how often have you taken marijuana  as an EDIBLE either recreationally or as prescribed by a doctor?",NO,release,VARIABLE,redcap,v4,NO,NO,controlled
@@ -496,19 +496,19 @@ confounders_schema,confounders,experimental_treatment,experimental_treatment,con
 confounders_schema,confounders,experimental_treatment_current_specify,experimental_treatment_current_specify,confounders,Please specify what experimental treatment (e.g. clinical trial) you are currently receiving.,NO,review,VARIABLE,redcap,v4,NO,NO,
 confounders_schema,confounders,experimental_treatment_past_specify,experimental_treatment_past_specify,confounders,Please specify what experimental treatment (e.g. clinical trial) you received in the past.,NO,review,VARIABLE,redcap,v4,NO,NO,
 confounders_schema,confounders,exposed_environmental_pollution,exposed_environmental_pollution,confounders,"[DEPRECATED]
-Have you been exposed to environmental pollution that may affect your breathing or voice?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Have you been exposed to environmental pollution that may affect your breathing or voice?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,glottic_insufficiency_med_hist_throat,glottic_insufficiency_med_hist_throat,confounders,"Glottic insufficiency, presbyphonia",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,hallucinogens,hallucinogens,confounders,Hallucinogens (like LSD),NO,internal,VARIABLE,redcap,v4,NO,NO,
-confounders_schema,confounders,head_med_history,head_med_history,,"[DEPRECATED]
-Head",YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
-confounders_schema,confounders,head_surgical,head_surgical,,"[DEPRECATED]
-Head",YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
+confounders_schema,confounders,head_med_history,head_med_history,confounders,"[DEPRECATED]
+Head",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
+confounders_schema,confounders,head_surgical,head_surgical,confounders,"[DEPRECATED]
+Head",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,headache_migraine,headache_migraine,confounders,Headache or migraine,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,hearing_loss,hearing_loss,confounders,Hearing loss,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,height,height,confounders,Height,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,heroin,heroin,confounders,"Heroin or other opioids, including synthetic opioids like fentanyl",NO,internal,VARIABLE,redcap,v4,NO,NO,
-confounders_schema,confounders,hormone_use,hormone_use,,"[DEPRECATED]
-Hormone use",YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
+confounders_schema,confounders,hormone_use,hormone_use,confounders,"[DEPRECATED]
+Hormone use",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,hormones,hormones,confounders,Hormones,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,hours_voice_activity,hours_voice_activity,confounders,"How many hours per day do you do this activity with a loud voice or in a loud environment that requires elevating your voice (for instance, a noisy bar or a noisy classroom)?",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,hrt,hrt,confounders,Hormonal replacement therapy (HRT),NO,release,VARIABLE,redcap,pre-v4,NO,NO,
@@ -517,30 +517,30 @@ confounders_schema,confounders,hydration_today,hydration_today,confounders,"Toda
 confounders_schema,confounders,immune_suppressors,immune_suppressors,confounders,Immune suppressors,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,immunotherapy,immunotherapy,confounders,Immunotherapy,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,infection_disease,infection_disease,confounders,"[DEPRECATED]
-Infectious disease",YES,internal,VARIABLE,redcap,v4,NO,NO,
+Infectious disease",YES,review,VARIABLE,redcap,v4,NO,NO,
 confounders_schema,confounders,inhalants,inhalants,confounders,Inhalants or solvents (like glue),NO,internal,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,inhaled_corticosteroids,inhaled_corticosteroids,confounders,Inhaled corticosteroids,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,injection_implant_to_vocal_folds,injection_implant_to_vocal_folds,confounders,Injection/implant to the vocal folds,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,insulin,insulin,confounders,Insulin,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,interstitial_lung_disease,interstitial_lung_disease,confounders,"Interstitial lung disease (e.g. sarcoidosis, pulmonary fibrosis)",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
-confounders_schema,confounders,is_regular_smoker,is_regular_smoker,,"[DEPRECATED]
-Have you been a regular smoker or not within the last 3 years?",YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
+confounders_schema,confounders,is_regular_smoker,is_regular_smoker,confounders,"[DEPRECATED]
+Have you been a regular smoker or not within the last 3 years?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,laryngeal_cancer,laryngeal_cancer,confounders,"Laryngeal cancer (e.g. vocal folds, epiglottis, etc.)",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,laryngitis_med_hist_throat,laryngitis_med_hist_throat,confounders,Laryngitis,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,laryngospasm_irritable_larynx,laryngospasm_irritable_larynx,confounders,"Laryngospasm, irritable larynx",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,lesions_vocal_cord,lesions_vocal_cord,confounders,Lesions of the vocal cord,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,lobectomy,lobectomy,confounders,Lobectomy,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,lung_cancer,lung_cancer,confounders,Lung cancer,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
-confounders_schema,confounders,lung_or_metastatic,lung_or_metastatic,,"[DEPRECATED]
-Cancer (lung or metastatic)",YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
+confounders_schema,confounders,lung_or_metastatic,lung_or_metastatic,confounders,"[DEPRECATED]
+Cancer (lung or metastatic)",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,marijuana,marijuana,confounders,Marijuana,NO,internal,VARIABLE,redcap,v4,NO,NO,
 confounders_schema,confounders,medication_enmt,medication_enmt,confounders,Medication,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,medication_med_hist_cancer,medication_med_hist_cancer,confounders,Medication,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,medication_med_hist_lung,medication_med_hist_lung,confounders,Medication,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,medication_med_history_neuro,medication_med_history_neuro,confounders,Medication,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,medication_med_history_psychological,medication_med_history_psychological,confounders,Medication,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
-confounders_schema,confounders,medications,medications,,"[DEPRECATED]
-Do you currently take or use any of these medications or substances? Please check all that apply",YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
+confounders_schema,confounders,medications,medications,confounders,"[DEPRECATED]
+Do you currently take or use any of these medications or substances? Please check all that apply",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,menstrual_cycle_status,menstrual_cycle_status,confounders,Where in your cycle are you? We ask because this may affect your voice.,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,menstruate,menstruate,confounders,Do you currently have periods (with regular or irregular cycles)?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,menstruate_no,menstruate_no,confounders,Please explain,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
@@ -551,15 +551,15 @@ confounders_schema,confounders,muscle_relaxants,muscle_relaxants,confounders,Mus
 confounders_schema,confounders,muscle_tension_dysphonia,muscle_tension_dysphonia,confounders,Muscle tension dysphonia,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,nasal_congestion_obstruction,nasal_congestion_obstruction,confounders,Nasal congestion or obstruction,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,neuro_modulators,neuro_modulators,confounders,Neuro-modulators,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
-confounders_schema,confounders,neurological_history,neurological_history,,"[DEPRECATED]
-Neurological Medical History",YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
+confounders_schema,confounders,neurological_history,neurological_history,confounders,"[DEPRECATED]
+Neurological Medical History",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,non_surgical_treatment_enmt_speech_cond,non_surgical_treatment_enmt_speech_cond,confounders,"Other non-surgical treatment for an ear, nose, mouth, throat, or speech condition",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,non_surgical_treatment_enmt_speech_cond_specify,non_surgical_treatment_enmt_speech_cond_specify,confounders,"Please specify what other non-surgical treatment(s) you are currently receiving for your ear, nose, mouth, throat, or speech condition(s).",NO,review,VARIABLE,redcap,v4,NO,NO,
-confounders_schema,confounders,nose_med_history,nose_med_history,,"[DEPRECATED]
-Nose",YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
+confounders_schema,confounders,nose_med_history,nose_med_history,confounders,"[DEPRECATED]
+Nose",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,nose_surgery,nose_surgery,confounders,"Nose surgery (e.g. septoplasty, rhinoplasty, etc.)",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
-confounders_schema,confounders,nose_surgical,nose_surgical,,"[DEPRECATED]
-Nose",YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
+confounders_schema,confounders,nose_surgical,nose_surgical,confounders,"[DEPRECATED]
+Nose",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,nsaids,nsaids,confounders,NSAIDs,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,number_of_uses_per_day_now,number_of_uses_per_day_now,confounders,Number of uses per day,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,number_years_used_nicotine,number_years_used_nicotine,confounders,Number of years : Enter number,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
@@ -590,7 +590,7 @@ confounders_schema,confounders,other_neurological_condition_specify,other_neurol
 confounders_schema,confounders,other_neurological_treatment,other_neurological_treatment,confounders,Other treatment for a neurological condition,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,other_neurological_treatment_specify,other_neurological_treatment_specify,confounders,Please specify what other treatment(s) you are currently receiving for your neurological condition(s).,NO,review,VARIABLE,redcap,v4,NO,NO,
 confounders_schema,confounders,other_smoking_specify,other_smoking_specify,confounders,"[DEPRECATED]
-If you selected ""other"" for smoking type, please specify:",YES,internal,VARIABLE,redcap,v4,NO,NO,
+If you selected ""other"" for smoking type, please specify:",YES,review,VARIABLE,redcap,v4,NO,NO,
 confounders_schema,confounders,other_speech_condition,other_speech_condition,confounders,Other speech condition,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,other_speech_conditions_specify,other_speech_conditions_specify,confounders,Please specify what other speech condition(s) you have.,NO,review,VARIABLE,redcap,v4,NO,NO,
 confounders_schema,confounders,other_surgical_treatment_enmt_speech_cond_specify,other_surgical_treatment_enmt_speech_cond_specify,confounders,"Please specify what other surgical treatment(s) you have received for your ear, nose, mouth, throat, or speech condition(s).",NO,review,VARIABLE,redcap,v4,NO,NO,
@@ -601,8 +601,8 @@ confounders_schema,confounders,other_treatment_cancer_current_specify,other_trea
 confounders_schema,confounders,other_treatment_psychological_condition,other_treatment_psychological_condition,confounders,Other treatment for a psychological condition,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,other_treatment_psychological_condition_specify,other_treatment_psychological_condition_specify,confounders,Please specify what other treatment(s) you are currently receiving for your psychological condition(s).,NO,review,VARIABLE,redcap,v4,NO,NO,
 confounders_schema,confounders,other_voice_activity,other_voice_activity,confounders,Please specify what other job or hobby you have that requires you to use your voice loudly for many hours a day.,NO,review,VARIABLE,redcap,v4,NO,NO,
-confounders_schema,confounders,pain_medication,pain_medication,,"[DEPRECATED]
-Chronic Pain medication",YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
+confounders_schema,confounders,pain_medication,pain_medication,confounders,"[DEPRECATED]
+Chronic Pain medication",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,pain_medications,pain_medications,confounders,Pain medications,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,painkillers,painkillers,confounders,Painkillers (like Vicodin),NO,internal,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,panic_disorder,panic_disorder,confounders,Panic disorder,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
@@ -641,18 +641,18 @@ More than one",NO,internal,VARIABLE,redcap,v4,NO,NO,
 confounders_schema,confounders,recurrent_bronchitis,recurrent_bronchitis,confounders,Recurrent bronchitis,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,reflux_medications,reflux_medications,confounders,Reflux medications,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,rehab_counseling_substance_use,rehab_counseling_substance_use,confounders,Have you ever been in rehab  or counseling for heavy substance use?,NO,internal,VARIABLE,redcap,v4,NO,NO,
-confounders_schema,confounders,resp_medical_history,resp_medical_history,,"[DEPRECATED]
-Respiratory medical history",YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
-confounders_schema,confounders,respiratory_conditions,respiratory_conditions,,"[DEPRECATED]
-Respiratory Conditions",YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
+confounders_schema,confounders,resp_medical_history,resp_medical_history,confounders,"[DEPRECATED]
+Respiratory medical history",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
+confounders_schema,confounders,respiratory_conditions,respiratory_conditions,confounders,"[DEPRECATED]
+Respiratory Conditions",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,schizophrenia_med_hist_psychological,schizophrenia_med_hist_psychological,confounders,Schizophrenia,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,scoliosis,scoliosis,confounders,Scoliosis,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,scratchy_sore_throat,scratchy_sore_throat,confounders,Scratchy or sore throat,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,seasonal_allergies,seasonal_allergies,confounders,"[DEPRECATED]
-Do you currently have seasonal allergies, cold-like symptoms or other conditions that may affect your voice today?",NO,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Do you currently have seasonal allergies, cold-like symptoms or other conditions that may affect your voice today?",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,seasonal_allergies_med_hist_enm,seasonal_allergies_med_hist_enm,confounders,Seasonal allergies,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
-confounders_schema,confounders,seasonal_allergies_options,seasonal_allergies_options,,"[DEPRECATED]
-Check all that apply:",YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
+confounders_schema,confounders,seasonal_allergies_options,seasonal_allergies_options,confounders,"[DEPRECATED]
+Check all that apply:",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,sedatives,sedatives,confounders,Sedatives or tranquilizers (like sleeping pills or Valium),NO,internal,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,shortness_breath,shortness_breath,confounders,Shortness of breath,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,sinus_cancer,sinus_cancer,confounders,Sinus cancer,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
@@ -663,45 +663,45 @@ confounders_schema,confounders,sleep_disturbance,sleep_disturbance,confounders,S
 confounders_schema,confounders,sleep_surgery,sleep_surgery,confounders,"Sleep surgery (e.g. implantable device for sleep apnea, etc.)",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,smoked_substance_in_past_three_months,smoked_substance_in_past_three_months,confounders,"In the PAST THREE MONTHS, how often have you  SMOKED marijuana  (e.g. cannabis, pot, grass, hash, weed, etc.) either recreationally or as prescribed by a doctor?",NO,release,VARIABLE,redcap,v4,NO,NO,controlled
 confounders_schema,confounders,smoking_age_regular_cigarette_smoking,smoking_age_regular_cigarette_smoking,confounders,"[DEPRECATED]
-How old were you when you first started regular cigarette smoking?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+How old were you when you first started regular cigarette smoking?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,smoking_age_regular_cigarette_smoking_age,smoking_age_regular_cigarette_smoking_age,confounders,"[DEPRECATED]
-Age:",NO,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Age:",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,smoking_age_stopped,smoking_age_stopped,confounders,"[DEPRECATED]
-If you have completely stopped smoking cigarettes, about how old were you when you stopped?",NO,internal,VARIABLE,redcap,pre-v4,NO,NO,
+If you have completely stopped smoking cigarettes, about how old were you when you stopped?",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,smoking_age_stopped_age,smoking_age_stopped_age,confounders,"[DEPRECATED]
-Age when you stopped smoking:",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Age when you stopped smoking:",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,smoking_cigarettes_day_current_avg,smoking_cigarettes_day_current_avg,confounders,"[DEPRECATED]
-On average, how many cigarettes do you smoke per day now? (There are 20 cigarettes in a pack.)",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+On average, how many cigarettes do you smoke per day now? (There are 20 cigarettes in a pack.)",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,smoking_cigarettes_day_current_avg_number,smoking_cigarettes_day_current_avg_number,confounders,"[DEPRECATED]
-Number of cigarettes per day:",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Number of cigarettes per day:",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,smoking_cigarettes_day_past_avg,smoking_cigarettes_day_past_avg,confounders,"[DEPRECATED]
-On average, over the entire time that you smoked, how many cigarettes did you smoke each day? (There are 20 cigarettes in a pack.)",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+On average, over the entire time that you smoked, how many cigarettes did you smoke each day? (There are 20 cigarettes in a pack.)",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,smoking_cigarettes_day_past_avg_number,smoking_cigarettes_day_past_avg_number,confounders,"[DEPRECATED]
-Number of cigarettes per day:",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Number of cigarettes per day:",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,smoking_electronic,smoking_electronic,confounders,"[DEPRECATED]
 Have you ever used an electronic nicotine product, even one or two times?
-(Electronic nicotine products include e- cigarettes, vape pens, hookah pens, personal vaporizers and mods, e-cigars, e-pipes, and e-hookahs.)",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+(Electronic nicotine products include e- cigarettes, vape pens, hookah pens, personal vaporizers and mods, e-cigars, e-pipes, and e-hookahs.)",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,smoking_electronic_current_occurence,smoking_electronic_current_occurence,confounders,"[DEPRECATED]
-Do you now use electronic nicotine products?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Do you now use electronic nicotine products?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,smoking_entire_life,smoking_entire_life,confounders,"[DEPRECATED]
-Have you smoked at least 100 cigarettes in your entire life? (There are 20 cigarettes in a pack.)?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Have you smoked at least 100 cigarettes in your entire life? (There are 20 cigarettes in a pack.)?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,smoking_freq,smoking_freq,confounders,"[DEPRECATED]
-How often do/did you smoke?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+How often do/did you smoke?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,smoking_hx,smoking_hx,confounders,"[DEPRECATED]
 Have you ever smoked regularly (more than a few times a month for at least two months)?
-This includes tobacco, cannabis, vapes, e-cigarettes, hookah, or pipes.",YES,internal,VARIABLE,redcap,v4,NO,NO,
+This includes tobacco, cannabis, vapes, e-cigarettes, hookah, or pipes.",YES,release,VARIABLE,redcap,v4,NO,NO,
 confounders_schema,confounders,smoking_marijuana,smoking_marijuana,confounders,"[DEPRECATED]
 In the PAST THREE MONTHS, how often have you used marijuana (cannabis, pot, grass, hash, etc.)?",NO,release,VARIABLE,redcap,v4,NO,NO,controlled
 confounders_schema,confounders,smoking_occurrence,smoking_occurrence,confounders,"[DEPRECATED]
-Do you now smoke cigarettes every day, some days, or not at all?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
-confounders_schema,confounders,smoking_types,smoking_types,,"[DEPRECATED]
-Checklist of different types (choose all that apply):",YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
+Do you now smoke cigarettes every day, some days, or not at all?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
+confounders_schema,confounders,smoking_types,smoking_types,confounders,"[DEPRECATED]
+Checklist of different types (choose all that apply):",YES,release,VARIABLE,redcap,pre-v4,NO,NO,controlled
 confounders_schema,confounders,smoking_years_cigarettes,smoking_years_cigarettes,confounders,"[DEPRECATED]
-How many years have you or did you smoke cigarettes?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+How many years have you or did you smoke cigarettes?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,smoking_years_cigarettes_years,smoking_years_cigarettes_years,confounders,"[DEPRECATED]
-Number of years:",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Number of years:",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,specify_current_neuro,specify_current_neuro,confounders,"[DEPRECATED]
-Which ones do you currently have?",YES,internal,VARIABLE,redcap,v4,NO,NO,
+Which ones do you currently have?",YES,review,VARIABLE,redcap,v4,NO,NO,
 confounders_schema,confounders,speech_difficulty,speech_difficulty,confounders,Speech difficulty,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,speech_voice_swallowing_therapy,speech_voice_swallowing_therapy,confounders,"Speech, voice, or swallowing therapy",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,started_using_nicotine_products,started_using_nicotine_products,confounders,How old were you when you first started regularly using nicotine products?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
@@ -715,14 +715,14 @@ Are you currently in recovery for substance use?",YES,internal,VARIABLE,redcap,v
 confounders_schema,confounders,supplemental_oxygen,supplemental_oxygen,confounders,Supplemental oxygen,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,surgery,surgery,confounders,Surgery,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,swallowing_disorder,swallowing_disorder,confounders,Swallowing disorder/dysphagia,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
-confounders_schema,confounders,symptoms,symptoms,,"[DEPRECATED]
-There are some symptoms that can affect your voice. Are you currently experiencing any of these symptoms? Check all that apply.",YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
+confounders_schema,confounders,symptoms,symptoms,confounders,"[DEPRECATED]
+There are some symptoms that can affect your voice. Are you currently experiencing any of these symptoms? Check all that apply.",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,talk_therapy_mental_health_prof,talk_therapy_mental_health_prof,confounders,"Talk therapy with a mental health professional (e.g. social worker, psychiatrist, etc.)",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,tell_us_about_you_health_header,tell_us_about_you_health_header,confounders,"TELL US ABOUT YOUR HEALTHMEDICAL HISTORYThere are some medical conditions that could have long term effects on your voice. In the following questions you will be asked about your CURRENT conditions as well as those you may have had in the PAST. Please read each set of questions carefully.NOTE:[All fields will be pre-populated to NO/NEVER unless the person noted the condition at enrollment. E.g. if the person enrolled with chronic cough, then ""Chronic cough"" will be pre-populated to YES/CURRENT.]",YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
-confounders_schema,confounders,throat_med_history,throat_med_history,,"[DEPRECATED]
-Throat",YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
-confounders_schema,confounders,throat_surgical,throat_surgical,,"[DEPRECATED]
-Throat",YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
+confounders_schema,confounders,throat_med_history,throat_med_history,confounders,"[DEPRECATED]
+Throat",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
+confounders_schema,confounders,throat_surgical,throat_surgical,confounders,"[DEPRECATED]
+Throat",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,thyroid_cancer,thyroid_cancer,confounders,Thyroid cancer,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,thyroid_disease,thyroid_disease,confounders,"Thyroid disease (e.g. thyroid polyp, Hashimoto's Grave's disease, hypo/hyperthyroidism, etc.)",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,thyroid_replacement,thyroid_replacement,confounders,Thyroid replacement,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
@@ -749,8 +749,8 @@ confounders_schema,confounders,vfp_bilateral,vfp_bilateral,confounders,Vocal fol
 confounders_schema,confounders,vfp_unilateral,vfp_unilateral,confounders,Vocal fold paralysis (unilateral),YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,vocal_cord_dysfunction,vocal_cord_dysfunction,confounders,Vocal cord dysfunction/paradoxical vocal fold motion,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,vocal_fold_hemorrhage,vocal_fold_hemorrhage,confounders,Vocal fold hemorrhage or bleed,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
-confounders_schema,confounders,voice_activity,voice_activity,,"[DEPRECATED]
-Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply",YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
+confounders_schema,confounders,voice_activity,voice_activity,confounders,"[DEPRECATED]
+Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,voice_activity_v2,voice_activity_v2,confounders,Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,weight,weight,confounders,Weight,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,years_used_nicotine,years_used_nicotine,confounders,For how many years have you used nicotine?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
@@ -798,7 +798,7 @@ copd_and_asthma_schema,copd_and_asthma,diagnosis_ca_spirometry_verification,diag
 
 If both are available, please select ATS/ERS",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 copd_and_asthma_schema,copd_and_asthma,part_asthmaeosinop_hil,part_asthmaeosinop_hil,diagnosis,"[DEPRECATED]
-Absolute eosinophil count in last 12 months (highest value - cells per microliter (µL)?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Absolute eosinophil count in last 12 months (highest value - cells per microliter (µL)?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 copd_and_asthma_schema,copd_and_asthma,part_copd,part_copd,diagnosis,Check all that are present:,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 custom_affect_scale_schema,custom_affect_scale,agitated,agitated,questionnaire,"Agitated (restless, fidgety, pacing, cannot sit still)",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 custom_affect_scale_schema,custom_affect_scale,concentrated,concentrated,questionnaire,Concentrated (not distracted or inattentive),NO,release,VARIABLE,redcap,pre-v4,NO,NO,
@@ -828,10 +828,10 @@ data_dissemination_schema,data_dissemination,exclude_reason_other,exclude_reason
 data_dissemination_schema,,exclusion_date,exclusion_date,,Date Data Exclusion was requested,YES,drop,VARIABLE,redcap,v4,NO,NO,
 data_dissemination_schema,,inclusion_date,inclusion_date,,Date Data Inclusion was requested,YES,drop,VARIABLE,redcap,v4,NO,NO,
 demographics_schema,demographics,asian_race,asian_race,demographics,Asian,NO,internal,VARIABLE,redcap,pre-v4,NO,NO,
-demographics_schema,demographics,assistance_programs_ca,assistance_programs_ca,,"[DEPRECATED]
-Do you take advantage of any of the following programs? Choose all that apply",YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
-demographics_schema,demographics,assistance_programs_usa,assistance_programs_usa,,"[DEPRECATED]
-Do you take advantage of any of the following programs? Choose all that apply",YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
+demographics_schema,demographics,assistance_programs_ca,assistance_programs_ca,demographics,"[DEPRECATED]
+Do you take advantage of any of the following programs? Choose all that apply",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+demographics_schema,demographics,assistance_programs_usa,assistance_programs_usa,demographics,"[DEPRECATED]
+Do you take advantage of any of the following programs? Choose all that apply",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
 demographics_schema,demographics,black_race,black_race,demographics,Black or African American,NO,internal,VARIABLE,redcap,pre-v4,NO,NO,
 demographics_schema,demographics,canadian_race,canadian_race,demographics,Canadian Indigenous or Aboriginal,NO,internal,VARIABLE,redcap,pre-v4,NO,NO,
 demographics_schema,demographics,children,children,demographics,One or more children,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
@@ -843,8 +843,8 @@ demographics_schema,demographics,cognition,cognition,demographics,"Because of a 
 demographics_schema,demographics,colorblind,colorblind,demographics,Are you colorblind?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 demographics_schema,demographics,country,country,demographics,Country,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 demographics_schema,demographics,demographics_completed_at,demographics_completed_at,demographics,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES,
-demographics_schema,demographics,demographics_completed_by,demographics_completed_by,,"[DEPRECATED]
-Who is completing this survey?",YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
+demographics_schema,demographics,demographics_completed_by,demographics_completed_by,demographics,"[DEPRECATED]
+Who is completing this survey?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
 demographics_schema,demographics,demographics_duration,demographics_duration,demographics,Questionnaire Duration (seconds),NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 demographics_schema,demographics,demographics_language,demographics_language,demographics,Demographics - Language,NO,drop,VARIABLE,redcap,v4,NO,NO,
 demographics_schema,demographics,demographics_origin,demographics_origin,demographics,Demographics - origin,NO,internal,VARIABLE,redcap,v4,NO,NO,
@@ -859,14 +859,14 @@ demographics_schema,demographics,financial_assistance_usa,financial_assistance_u
 demographics_schema,demographics,gender_identity,gender_identity,demographics,What is your gender identity?,NO,internal,VARIABLE,redcap,pre-v4,NO,NO,
 demographics_schema,demographics,grandparent,grandparent,demographics,One or more grandparent,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 demographics_schema,demographics,hearing,hearing,demographics,Are you deaf or do you have serious difficulty hearing?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
-demographics_schema,demographics,hispanic_latino_selection,hispanic_latino_selection,,"Check all that apply
+demographics_schema,demographics,hispanic_latino_selection,hispanic_latino_selection,demographics,"Check all that apply
 
 NOTE: Once the options completed map to new options, the following options [Deprecated in Protocol v4]
 2, Mexican
 5, Latin American
 6, Puerto Rican
 7, Cuban
-8, Dominican",YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
+8, Dominican",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 demographics_schema,demographics,household_count,household_count,demographics,How many people live with you?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 demographics_schema,demographics,household_income_ca,household_income_ca,demographics,"What was your total household income last year (CAD)? Please include all sources of income, including pensions, dividends, alimony, child support, etc.",NO,release,VARIABLE,redcap,v4,NO,NO,
 demographics_schema,demographics,household_income_usa,household_income_usa,demographics,"What was your total household income last year (USD)? Please include all sources of income, including pensions, dividends, alimony, child support, etc.",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
@@ -902,67 +902,67 @@ demographics_schema,demographics,state_province_standardized,state_province,demo
 demographics_schema,demographics,tone_deaf,tone_deaf,demographics,Are you tone deaf?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 demographics_schema,demographics,transportation,transportation,demographics,Do you have a reliable mode of transportation?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 demographics_schema,demographics,transportation_yn,transportation_yn,demographics,"[DEPRECATED]
-Do you have a reliable mode of transportation?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Do you have a reliable mode of transportation?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 demographics_schema,demographics,veteran,veteran,demographics,Are you a veteran?,NO,internal,VARIABLE,redcap,v4,NO,NO,
 demographics_schema,demographics,vision,vision,demographics,"Are you blind or do you have serious difficulty seeing, even when wearing glasses?",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 demographics_schema,demographics,white_race,white_race,demographics,White,NO,internal,VARIABLE,redcap,pre-v4,NO,NO,
 demographics_schema,demographics,zipcode,zipcode,demographics,Zipcode,YES,internal,VARIABLE,redcap,v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,diagnosis_bipolar_active_problems_depression,diagnosis_bipolar_active_problems_depression,diagnosis,"[DEPRECATED]
-Enter list of active problems",YES,internal,VARIABLE,redcap,v4,NO,NO,
+Enter list of active problems",YES,review,VARIABLE,redcap,v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,diagnosis_bipolar_current_med_therapies_depression,diagnosis_bipolar_current_med_therapies_depression,diagnosis,"[DEPRECATED]
-List any current medications/therapies",YES,internal,VARIABLE,redcap,v4,NO,NO,
+List any current medications/therapies",YES,review,VARIABLE,redcap,v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,diagnosis_bipolar_etiology_depression,diagnosis_bipolar_etiology_depression,diagnosis,"[DEPRECATED]
-Describe life events that may relate to the diagnosis",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Describe life events that may relate to the diagnosis",YES,review,VARIABLE,redcap,pre-v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,diagnosis_bipolar_former_med_therapies_depression,diagnosis_bipolar_former_med_therapies_depression,diagnosis,"[DEPRECATED]
-List any former medications/therapies",YES,internal,VARIABLE,redcap,v4,NO,NO,
+List any former medications/therapies",YES,review,VARIABLE,redcap,v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,diagnosis_bipolar_history_problems_depression,diagnosis_bipolar_history_problems_depression,diagnosis,"[DEPRECATED]
-Enter any history of problems",YES,internal,VARIABLE,redcap,v4,NO,NO,
+Enter any history of problems",YES,review,VARIABLE,redcap,v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,diagnosis_bipolar_psychotic_depression,diagnosis_bipolar_psychotic_depression,diagnosis,"[DEPRECATED]
-Psychotic Symptoms",YES,internal,VARIABLE,redcap,v4,NO,NO,
+Psychotic Symptoms",YES,release,VARIABLE,redcap,v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,diagnosis_bipolar_severity_depression,diagnosis_bipolar_severity_depression,diagnosis,"[DEPRECATED]
-Disease Severity",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Disease Severity",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,diagnosis_bipolar_subtype_active_depression,diagnosis_bipolar_subtype_active_depression,diagnosis,"[DEPRECATED]
-Disease Subtype",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Disease Subtype",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,diagnosis_depression_clinical_subcategory,diagnosis_depression_clinical_subcategory,diagnosis,"[DEPRECATED]
-Clinical depression (major depressive disorder) Subcategory",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Clinical depression (major depressive disorder) Subcategory",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,diagnosis_depression_gsd,diagnosis_depression_gold_standard_diagnosis,diagnosis,"[DEPRECATED]
-Diagnosis",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Diagnosis",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,diagnosis_depression_gsd_interview,diagnosis_depression_gold_standard_diagnosis_interview,diagnosis,"[DEPRECATED]
-Was a structured clinical interview done?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Was a structured clinical interview done?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,diagnosis_depression_gsd_oqu,diagnosis_depression_gold_standard_diagnosis_oqu,diagnosis,"[DEPRECATED]
-Was an objective questionnaire used?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Was an objective questionnaire used?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,diagnosis_depression_gsd_oqu_other,diagnosis_depression_gold_standard_diagnosis_oqu_other,diagnosis,"[DEPRECATED]
-Please specify",YES,internal,VARIABLE,redcap,v4,NO,NO,
+Please specify",YES,review,VARIABLE,redcap,v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,diagnosis_depression_gsd_oquw,diagnosis_depression_gold_standard_diagnosis_oquw,diagnosis,"[DEPRECATED]
-Which objective questionnaire was used?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Which objective questionnaire was used?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,dmdd_active_psy_med_prob_other,dmdd_active_psy_med_prob_other,diagnosis,"[DEPRECATED]
 Please specify
 
-MOVED IT TO ""Q - Mood - Participant History""",YES,internal,VARIABLE,redcap,v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",YES,review,VARIABLE,redcap,v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,dmdd_active_psy_med_problems,dmdd_active_psy_med_problems,diagnosis,"[DEPRECATED]
 Please select any active psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,VARIABLE,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,dmdd_current_medication,dmdd_current_medication,diagnosis,"[DEPRECATED]
 Please list any current psychiatric medications (to the best of your recollection), including medication names, dosage,
 and how many times per day.
 
-MOVED IT TO ""Q - Mood - Participant History""",YES,internal,VARIABLE,redcap,v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",YES,review,VARIABLE,redcap,v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,dmdd_describe_psychotherapy,dmdd_describe_psychotherapy,diagnosis,"[DEPRECATED]
 Please briefly describe your psychotherapy history (e.g.,
 dates, reasons for seeking therapy, etc.).
 
-MOVED IT TO ""Q - Mood - Participant History""",YES,internal,VARIABLE,redcap,v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",YES,review,VARIABLE,redcap,v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,dmdd_diagnosed_dd,diagnosis_dmdd_gold_standard_diagnosis,diagnosis,Have you been diagnosed with a depressive disorder?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,dmdd_diagnosed_dd_selection,diagnosis_dmdd_selection,diagnosis,Major Depressive Disorder,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,dmdd_hist_psy_med_prob_other,dmdd_hist_psy_med_prob_other,diagnosis,"[DEPRECATED]
 Please specify
 
-MOVED IT TO ""Q - Mood - Participant History""",YES,internal,VARIABLE,redcap,v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",YES,review,VARIABLE,redcap,v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,dmdd_hist_psy_med_problems,dmdd_hist_psy_med_problems,diagnosis,"[DEPRECATED]
 Please select any historical psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,dmdd_how_many_depressive_episodes,diagnosis_dmdd_how_many_depressive_episodes,diagnosis,Approximately how many depressive episodes have you had in your life (feeling down and depressed more days than not over two weeks)?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,dmdd_last_depressive_episode,diagnosis_dmdd_last_depressive_episode,diagnosis,"When was your last depressive episode (feeling depressed more days than not over
 two weeks)?",YES,internal,VARIABLE,redcap,v4,NO,YES,
@@ -970,16 +970,16 @@ depression_or_major_depressive_disorder_schema,depression,dmdd_last_depressive_e
 depression_or_major_depressive_disorder_schema,depression,dmdd_prescribed_medication,dmdd_prescribed_medication,diagnosis,"[DEPRECATED]
 Have you ever been prescribed medication for mental or emotional problems (e.g., antidepressants, anxiolytics, antipsychotics, mood stabilizers, etc.)?
 
-MOVED IT TO ""Q - Mood - Participant History""",YES,internal,VARIABLE,redcap,v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",YES,release,VARIABLE,redcap,v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,dmdd_previous_medication,dmdd_previous_medication,diagnosis,"[DEPRECATED]
 Please list any previous psychiatric medications (to the best of your recollection), including medication names,
 approximate dates you were taking them, and why they were discontinued.
 
-MOVED IT TO ""Q - Mood - Participant History""",YES,internal,VARIABLE,redcap,v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",YES,review,VARIABLE,redcap,v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,dmdd_see_mental_health_professional,dmdd_see_mental_health_professional,diagnosis,"[DEPRECATED]
 Have you ever seen a mental health professional for talk therapy (could include social workers, psychiatrists, etc.)?
 
-MOVED IT TO ""Q - Mood - Participant History""",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 dsm5_adult_schema,dsm5_adult,avoiding_situations,avoiding_situations,questionnaire,Avoiding situations that make you anxious?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 dsm5_adult_schema,dsm5_adult,drinking_more,drinking_more,questionnaire,Drinking at least 4 drinks of any kind of alcohol in a single day?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 dsm5_adult_schema,dsm5_adult,dsm_5_completed_at,dsm_5_completed_at,questionnaire,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES,
@@ -1062,7 +1062,7 @@ enrollment_form_schema,enrollment_form,ef_cognitive_a11y_options,ef_cognitive_a1
 enrollment_form_schema,enrollment_form,ef_completed_at,ef_completed_at,enrollment,Enrollment Form Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES,
 enrollment_form_schema,enrollment_form,ef_completed_by,ef_completed_by,enrollment,Check all that apply,NO,internal,VARIABLE,redcap,pre-v4,NO,NO,
 enrollment_form_schema,enrollment_form,ef_cond_prompt,ef_cond_prompt,enrollment,(Check all that apply if you currently have the condition),YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
-enrollment_form_schema,enrollment,ef_contact_info_stored,ef_contact_info_stored,,[DEPRECATED] I want my contact information to be kept in a repository for this study which can be used to contact me to ask me to enroll in further studies or return important results. My information will not be shared with third parties.,YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
+enrollment_form_schema,enrollment,ef_contact_info_stored,ef_contact_info_stored,enrollment,[DEPRECATED] I want my contact information to be kept in a repository for this study which can be used to contact me to ask me to enroll in further studies or return important results. My information will not be shared with third parties.,YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
 enrollment_form_schema,enrollment,ef_copd,self_reported_copd,enrollment,COPD,YES,internal,VARIABLE,redcap,v4,NO,NO,
 enrollment_form_schema,enrollment,ef_depression,self_reported_depression,enrollment,Depression or Major Depressive Disorder,YES,internal,VARIABLE,redcap,v4,NO,NO,
 enrollment_form_schema,enrollment_form,ef_dob,ef_dob,enrollment,What is your date of birth?,YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
@@ -1377,11 +1377,11 @@ huntingtons_disease_schema,huntingtons_disease,hd_any_treatment,hd_any_treatment
 huntingtons_disease_schema,huntingtons_disease,hd_cag_repeat_length,hd_cag_repeat_length,diagnosis,What is the CAG repeat length?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 huntingtons_disease_schema,huntingtons_disease,hd_cag_repeat_length_known,hd_cag_repeat_length_known,diagnosis,Is the CAG repeat length known?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 huntingtons_disease_schema,huntingtons_disease,hd_care_level,hd_care_level,diagnosis,Care level:,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
-huntingtons_disease_schema,,hd_confirmed_by_consistent_clinical_presentation,hd_confirmed_by_consistent_clinical_presentation,,"[DEPRECATED]
+huntingtons_disease_schema,huntingtons_disease,hd_confirmed_by_consistent_clinical_presentation,hd_confirmed_by_consistent_clinical_presentation,diagnosis,"[DEPRECATED]
 Does the participant have Huntington's disease confirmed by consistent clinical presentation with genetically
-confirmed family history?",YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
-huntingtons_disease_schema,,hd_confirmed_by_genetic_testing,hd_confirmed_by_genetic_testing,,"[DEPRECATED]
-Does the participant have Huntington's disease (HD) confirmed by genetic testing?",YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
+confirmed family history?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
+huntingtons_disease_schema,huntingtons_disease,hd_confirmed_by_genetic_testing,hd_confirmed_by_genetic_testing,diagnosis,"[DEPRECATED]
+Does the participant have Huntington's disease (HD) confirmed by genetic testing?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 huntingtons_disease_schema,huntingtons_disease,hd_dcl,hd_dcl,diagnosis,DCL (Diagnostic Confidence Level),NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 huntingtons_disease_schema,huntingtons_disease,hd_disease_subtype,hd_disease_subtype,diagnosis,Disease Subtype,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 huntingtons_disease_schema,huntingtons_disease,hd_domestic_chores,hd_domestic_chores,diagnosis,Domestic chores:,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
@@ -1399,7 +1399,7 @@ huntingtons_disease_schema,huntingtons_disease,hd_uhdrs_total_chorea_score,hd_uh
 huntingtons_disease_schema,huntingtons_disease,hd_uhdrs_total_motor_score,hd_uhdrs_total_motor_score,diagnosis,UHDRS total motor score,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 huntingtons_disease_schema,huntingtons_disease,hd_vmat2_inhibitor_specify,hd_vmat2_inhibitor_specify,diagnosis,VMAT2 inhibitor selected. Please specify,NO,review,VARIABLE,redcap,v4,NO,NO,
 laryngeal_cancer_schema,laryngeal_cancer,diagnois_lc_gsd_sll,diagnois_lc_gold_standard_diagnosis_sll,diagnosis,"[DEPRECATED]
-Did the participant get a laryngoscopy/stroboscopy confirming the presence of a suspicious laryngeal lesion?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Did the participant get a laryngoscopy/stroboscopy confirming the presence of a suspicious laryngeal lesion?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_as_ds_ccsr,diagnosis_as_ds_ccsr,diagnosis,Is the cancer causing stridor at rest?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_degree_b_1,diagnosis_lc_degree_b_1,diagnosis,Breathiness,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_degree_b_2,diagnosis_lc_degree_b_2,diagnosis,Breathiness,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
@@ -1438,7 +1438,7 @@ laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_etiology,diagnosis_lc_etio
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_etiology_other,diagnosis_lc_etiology_other,diagnosis,Please specify:,NO,review,VARIABLE,redcap,v4,NO,NO,
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_gsd,diagnosis_lc_gold_standard_diagnosis,diagnosis,Does the participant have Laryngeal Cancer?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_gsd_bpr,diagnosis_lc_gold_standard_diagnosis_bpr,diagnosis,"[DEPRECATED]
-Does the participant have laryngeal cancer confirmed by biopsy/pathology report?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Does the participant have laryngeal cancer confirmed by biopsy/pathology report?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_gsd_confirmation_method,diagnosis_lc_gold_standard_diagnosis_confirmation_method,diagnosis,How was this confirmed? Check all that apply,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 laryngeal_cancer_schema,laryngeal_cancer,diagnosis_lc_gsd_uots,diagnosis_lc_gold_standard_diagnosis_uots,diagnosis,"Did the participant undergo other types of scans?
 (Select all that apply).",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
@@ -1482,7 +1482,7 @@ laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_etiology_other,diagnos
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_gsd,diagnosis_ld_gold_standard_diagnosis,diagnosis,Does the participant have laryngeal dystonia as determined by qualitative expert team evaluation?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_qete,diagnosis_ld_qete,diagnosis,"[DEPRECATED]
 Does the participant have laryngeal dystonia as determined by qualitative expert team evaluation?
-(Select all that apply).",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+(Select all that apply).",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_treatment,diagnosis_ld_treatment,diagnosis,Has the participant undergone any treatment for this condition?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_treatment_bi_li,diagnosis_ld_treatment_bi_li,diagnosis,When was the last injection?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_treatment_other,diagnosis_ld_treatment_other,diagnosis,"Other, please specify",NO,review,VARIABLE,redcap,v4,NO,NO,
@@ -1586,7 +1586,7 @@ muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_etiol
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_gsd,diagnosis_mtd_gold_standard_diagnosis,diagnosis,Does the participant have Muscle Tension Dysphonia (MTD)?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_gsd_assessments,diagnosis_mtd_gold_standard_diagnosis_assessments,diagnosis,Did the participant have any of the following assessments? (Select all that apply),NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_gsd_evaluations,diagnosis_mtd_gold_standard_diagnosis_evaluations,diagnosis,"[DEPRECATED]
-Determined by (Select all that apply):",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Determined by (Select all that apply):",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_gsd_evaluations_2,diagnosis_mtd_gold_standard_diagnosis_evaluations_2,diagnosis,How was this confirmed? Select all that apply:,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_treatment,diagnosis_mtd_treatment,diagnosis,Has the participant undergone any treatment for this condition?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_treatment_other,diagnosis_mtd_treatment_other,diagnosis,Please specify,NO,review,VARIABLE,redcap,v4,NO,NO,
@@ -1641,17 +1641,17 @@ parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_ma_uprds,diagn
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_non_motor_symptoms,diagnosis_parkinsons_non_motor_symptoms,diagnosis,Are there significant non-motor symptoms associated with Parkinson's disease in the participant?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_non_motor_symptoms_yes,diagnosis_parkinsons_non_motor_symptoms_yes,diagnosis,"If you selected ""Yes"", please specify:",NO,review,VARIABLE,redcap,v4,NO,NO,
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_treatment_obtained,diagnosis_parkinsons_treatment_obtained,diagnosis,"[DEPRECATED]
-Has the participant undergone any treatment for Parkinson's disease?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Has the participant undergone any treatment for Parkinson's disease?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_treatment_obtained_yes,diagnosis_parkinsons_treatment_obtained_yes,diagnosis,"[DEPRECATED]
-Yes",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Yes",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_treatment_obtained_yes_medications,diagnosis_parkinsons_treatment_obtained_yes_medications,diagnosis,"[DEPRECATED]
-Medications:",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Medications:",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_treatment_obtained_yes_medications_other,diagnosis_parkinsons_treatment_obtained_yes_medications_other,diagnosis,"[DEPRECATED]
-If you selected ""Other"", please specify:",YES,internal,VARIABLE,redcap,v4,NO,NO,
+If you selected ""Other"", please specify:",YES,review,VARIABLE,redcap,v4,NO,NO,
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_treatment_obtained_yes_npi,diagnosis_parkinsons_treatment_obtained_yes_npi,diagnosis,"[DEPRECATED]
-Non-pharmacological interventions:",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
-parkinsons_disease_schema,,diagnosis_parkinsons_treatment_obtained_yes_npi_other,diagnosis_parkinsons_treatment_obtained_yes_npi_other,,"[DEPRECATED]
-If you selected ""Other"", please specify:",YES,drop,VARIABLE,redcap,v4,NO,NO,
+Non-pharmacological interventions:",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
+parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_treatment_obtained_yes_npi_other,diagnosis_parkinsons_treatment_obtained_yes_npi_other,diagnosis,"[DEPRECATED]
+If you selected ""Other"", please specify:",YES,review,VARIABLE,redcap,v4,NO,NO,
 participant_history_schema,psychiatric_history,mph_active_psy_medical_problems,mph_active_psy_medical_problems,questionnaire,Please list any active psychiatric problems and medical problems.,NO,review,VARIABLE,redcap,v4,NO,NO,
 participant_history_schema,psychiatric_history,mph_completed_at,mph_completed_at,questionnaire,Questionnaire Completed At,YES,internal,VARIABLE,redcap,v4,NO,YES,
 participant_history_schema,psychiatric_history,mph_current_medication,mph_current_medication,questionnaire,"Please list any current psychiatric medications (to the best of your recollection), including medication names, dosage, and how many times per day.",NO,review,VARIABLE,redcap,v4,NO,NO,
@@ -1685,9 +1685,9 @@ patient_health_questionnaire9_schema,phq9,thoughts_death,thoughts_death,question
 patient_health_questionnaire9_schema,phq9,trouble_concentrate,trouble_concentrate,questionnaire,"Trouble concentrating on things, such as reading the newspaper or watching television.",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 patient_health_questionnaire9_schema,phq9,trouble_sleeping,trouble_sleeping,questionnaire,"Trouble falling or staying asleep, or sleeping too much.",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 precancerous_lesions_schema,precancerous_lesions,diagnois_pl_gsd_bp,diagnois_pl_gold_standard_diagnosis_bp,diagnosis,"[DEPRECATED]
-Does the participant have a precancerous vocal fold lesion confirmed by biopsy/pathology?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Does the participant have a precancerous vocal fold lesion confirmed by biopsy/pathology?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 precancerous_lesions_schema,precancerous_lesions,diagnois_pl_gsd_ls,diagnois_pl_gold_standard_diagnosis_ls,diagnosis,"[DEPRECATED]
-Does the participant have a precancerous vocal fold lesion confirmed by laryngoscopy/stroboscopy?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Does the participant have a precancerous vocal fold lesion confirmed by laryngoscopy/stroboscopy?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,
 precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_degree_b_1,diagnosis_pl_degree_b_1,diagnosis,Breathiness,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_degree_b_2,diagnosis_pl_degree_b_2,diagnosis,Breathiness,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_degree_comments,diagnosis_pl_degree_comments,diagnosis,Comments about resonance,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
@@ -2469,67 +2469,67 @@ amyotrophic_lateral_sclerosis_als_schema,amyotrophic_lateral_sclerosis,diagnosis
 anxiety_disorder_schema,anxiety,diagnosis_ad_active_psy_med_problems___adhd,diagnosis_ad_active_psy_med_problems___adhd,diagnosis,"[DEPRECATED]
 Please select any active psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 anxiety_disorder_schema,anxiety,diagnosis_ad_active_psy_med_problems___anxiety,diagnosis_ad_active_psy_med_problems___anxiety,diagnosis,"[DEPRECATED]
 Please select any active psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 anxiety_disorder_schema,anxiety,diagnosis_ad_active_psy_med_problems___epilepsy,diagnosis_ad_active_psy_med_problems___epilepsy,diagnosis,"[DEPRECATED]
 Please select any active psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 anxiety_disorder_schema,anxiety,diagnosis_ad_active_psy_med_problems___laryngeal_cancer,diagnosis_ad_active_psy_med_problems___laryngeal_cancer,diagnosis,"[DEPRECATED]
 Please select any active psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 anxiety_disorder_schema,anxiety,diagnosis_ad_active_psy_med_problems___ocd,diagnosis_ad_active_psy_med_problems___ocd,diagnosis,"[DEPRECATED]
 Please select any active psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 anxiety_disorder_schema,anxiety,diagnosis_ad_active_psy_med_problems___other,diagnosis_ad_active_psy_med_problems___other,diagnosis,"[DEPRECATED]
 Please select any active psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 anxiety_disorder_schema,anxiety,diagnosis_ad_active_psy_med_problems___seasonal_allergies,diagnosis_ad_active_psy_med_problems___seasonal_allergies,diagnosis,"[DEPRECATED]
 Please select any active psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 anxiety_disorder_schema,anxiety,diagnosis_ad_active_psy_med_problems___stroke,diagnosis_ad_active_psy_med_problems___stroke,diagnosis,"[DEPRECATED]
 Please select any active psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 anxiety_disorder_schema,anxiety,diagnosis_ad_hist_psy_med_problems___adhd,diagnosis_ad_hist_psy_med_problems___adhd,diagnosis,"[DEPRECATED]
 Please select any historical psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 anxiety_disorder_schema,anxiety,diagnosis_ad_hist_psy_med_problems___anxiety,diagnosis_ad_hist_psy_med_problems___anxiety,diagnosis,"[DEPRECATED]
 Please select any historical psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 anxiety_disorder_schema,anxiety,diagnosis_ad_hist_psy_med_problems___epilepsy,diagnosis_ad_hist_psy_med_problems___epilepsy,diagnosis,"[DEPRECATED]
 Please select any historical psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 anxiety_disorder_schema,anxiety,diagnosis_ad_hist_psy_med_problems___laryngeal_cancer,diagnosis_ad_hist_psy_med_problems___laryngeal_cancer,diagnosis,"[DEPRECATED]
 Please select any historical psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 anxiety_disorder_schema,anxiety,diagnosis_ad_hist_psy_med_problems___ocd,diagnosis_ad_hist_psy_med_problems___ocd,diagnosis,"[DEPRECATED]
 Please select any historical psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 anxiety_disorder_schema,anxiety,diagnosis_ad_hist_psy_med_problems___other,diagnosis_ad_hist_psy_med_problems___other,diagnosis,"[DEPRECATED]
 Please select any historical psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 anxiety_disorder_schema,anxiety,diagnosis_ad_hist_psy_med_problems___seasonal_allergies,diagnosis_ad_hist_psy_med_problems___seasonal_allergies,diagnosis,"[DEPRECATED]
 Please select any historical psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 anxiety_disorder_schema,anxiety,diagnosis_ad_hist_psy_med_problems___stroke,diagnosis_ad_hist_psy_med_problems___stroke,diagnosis,"[DEPRECATED]
 Please select any historical psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 benign_lesions_schema,benign_lesions,diagnosis_bl_treatment_select___laryngeal_microsurgery,diagnosis_bl_treatment_select___laryngeal_microsurgery,diagnosis,Select all that apply:,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 benign_lesions_schema,benign_lesions,diagnosis_bl_treatment_select___other,diagnosis_bl_treatment_select___other,diagnosis,Select all that apply:,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 benign_lesions_schema,benign_lesions,diagnosis_bl_treatment_select___voice_or_speech_therapy,diagnosis_bl_treatment_select___voice_or_speech_therapy,diagnosis,Select all that apply:,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
@@ -2537,67 +2537,67 @@ benign_lesions_schema,benign_lesions,diagnosis_bl_treatment_select___voice_rest,
 bipolar_disorder_schema,bipolar_disorder,mbd_active_psy_med_problems___adhd,mbd_active_psy_med_problems___adhd,diagnosis,"[DEPRECATED]
 Please select any active psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,mbd_active_psy_med_problems___anxiety,mbd_active_psy_med_problems___anxiety,diagnosis,"[DEPRECATED]
 Please select any active psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,mbd_active_psy_med_problems___epilepsy,mbd_active_psy_med_problems___epilepsy,diagnosis,"[DEPRECATED]
 Please select any active psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,mbd_active_psy_med_problems___laryngeal_cancer,mbd_active_psy_med_problems___laryngeal_cancer,diagnosis,"[DEPRECATED]
 Please select any active psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,mbd_active_psy_med_problems___ocd,mbd_active_psy_med_problems___ocd,diagnosis,"[DEPRECATED]
 Please select any active psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,mbd_active_psy_med_problems___other,mbd_active_psy_med_problems___other,diagnosis,"[DEPRECATED]
 Please select any active psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,mbd_active_psy_med_problems___seasonal_allergies,mbd_active_psy_med_problems___seasonal_allergies,diagnosis,"[DEPRECATED]
 Please select any active psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,mbd_active_psy_med_problems___stroke,mbd_active_psy_med_problems___stroke,diagnosis,"[DEPRECATED]
 Please select any active psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,mbd_hist_psy_med_problems___adhd,mbd_hist_psy_med_problems___adhd,diagnosis,"[DEPRECATED]
 Please select any historical psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,mbd_hist_psy_med_problems___anxiety,mbd_hist_psy_med_problems___anxiety,diagnosis,"[DEPRECATED]
 Please select any historical psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,mbd_hist_psy_med_problems___epilepsy,mbd_hist_psy_med_problems___epilepsy,diagnosis,"[DEPRECATED]
 Please select any historical psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,mbd_hist_psy_med_problems___laryngeal_cancer,mbd_hist_psy_med_problems___laryngeal_cancer,diagnosis,"[DEPRECATED]
 Please select any historical psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,mbd_hist_psy_med_problems___ocd,mbd_hist_psy_med_problems___ocd,diagnosis,"[DEPRECATED]
 Please select any historical psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,mbd_hist_psy_med_problems___other,mbd_hist_psy_med_problems___other,diagnosis,"[DEPRECATED]
 Please select any historical psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,mbd_hist_psy_med_problems___seasonal_allergies,mbd_hist_psy_med_problems___seasonal_allergies,diagnosis,"[DEPRECATED]
 Please select any historical psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 bipolar_disorder_schema,bipolar_disorder,mbd_hist_psy_med_problems___stroke,mbd_hist_psy_med_problems___stroke,diagnosis,"[DEPRECATED]
 Please select any historical psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,acid_reflux___current,acid_reflux___current,confounders,"Acid reflux (e.g. heart burn, GERD, etc.)",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,acid_reflux___never,acid_reflux___never,confounders,"Acid reflux (e.g. heart burn, GERD, etc.)",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,acid_reflux___no_answer,acid_reflux___no_answer,confounders,"Acid reflux (e.g. heart burn, GERD, etc.)",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
@@ -2651,35 +2651,35 @@ confounders_schema,confounders,chronic_cough_med_hist_throat___never,chronic_cou
 confounders_schema,confounders,chronic_cough_med_hist_throat___no_answer,chronic_cough_med_hist_throat___no_answer,confounders,Chronic cough,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,chronic_cough_med_hist_throat___past,chronic_cough_med_hist_throat___past,confounders,Chronic cough,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,circulatory_conditions___1,circulatory_conditions___1,confounders,"[DEPRECATED]
-Have you been diagnosed with any of these circulatory or heart conditions by a clinician? (check all that apply)",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Have you been diagnosed with any of these circulatory or heart conditions by a clinician? (check all that apply)",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,circulatory_conditions___2,circulatory_conditions___2,confounders,"[DEPRECATED]
-Have you been diagnosed with any of these circulatory or heart conditions by a clinician? (check all that apply)",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Have you been diagnosed with any of these circulatory or heart conditions by a clinician? (check all that apply)",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,circulatory_conditions___3,circulatory_conditions___3,confounders,"[DEPRECATED]
-Have you been diagnosed with any of these circulatory or heart conditions by a clinician? (check all that apply)",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Have you been diagnosed with any of these circulatory or heart conditions by a clinician? (check all that apply)",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,circulatory_conditions___4,circulatory_conditions___4,confounders,"[DEPRECATED]
-Have you been diagnosed with any of these circulatory or heart conditions by a clinician? (check all that apply)",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Have you been diagnosed with any of these circulatory or heart conditions by a clinician? (check all that apply)",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,circulatory_conditions___5,circulatory_conditions___5,confounders,"[DEPRECATED]
-Have you been diagnosed with any of these circulatory or heart conditions by a clinician? (check all that apply)",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Have you been diagnosed with any of these circulatory or heart conditions by a clinician? (check all that apply)",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,circulatory_conditions___6,circulatory_conditions___6,confounders,"[DEPRECATED]
-Have you been diagnosed with any of these circulatory or heart conditions by a clinician? (check all that apply)",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Have you been diagnosed with any of these circulatory or heart conditions by a clinician? (check all that apply)",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,circulatory_med_history___1,circulatory_med_history___1,confounders,"[DEPRECATED]
-Some other conditions can affect the sound of your voice. Have you been diagnosed with any of these conditions by a clinician? (check all that apply)",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Some other conditions can affect the sound of your voice. Have you been diagnosed with any of these conditions by a clinician? (check all that apply)",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,circulatory_med_history___2,circulatory_med_history___2,confounders,"[DEPRECATED]
-Some other conditions can affect the sound of your voice. Have you been diagnosed with any of these conditions by a clinician? (check all that apply)",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Some other conditions can affect the sound of your voice. Have you been diagnosed with any of these conditions by a clinician? (check all that apply)",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,circulatory_med_history___3,circulatory_med_history___3,confounders,"[DEPRECATED]
-Some other conditions can affect the sound of your voice. Have you been diagnosed with any of these conditions by a clinician? (check all that apply)",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Some other conditions can affect the sound of your voice. Have you been diagnosed with any of these conditions by a clinician? (check all that apply)",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,circulatory_med_history___4,circulatory_med_history___4,confounders,"[DEPRECATED]
-Some other conditions can affect the sound of your voice. Have you been diagnosed with any of these conditions by a clinician? (check all that apply)",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Some other conditions can affect the sound of your voice. Have you been diagnosed with any of these conditions by a clinician? (check all that apply)",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,circulatory_med_history___5,circulatory_med_history___5,confounders,"[DEPRECATED]
-Some other conditions can affect the sound of your voice. Have you been diagnosed with any of these conditions by a clinician? (check all that apply)",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Some other conditions can affect the sound of your voice. Have you been diagnosed with any of these conditions by a clinician? (check all that apply)",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,covid___long,covid___long,confounders,"[DEPRECATED]
-Have you had COVID recently, or are you currently experiencing the effects of long COVID? (check all that apply)",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Have you had COVID recently, or are you currently experiencing the effects of long COVID? (check all that apply)",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,covid___past_year,covid___past_year,confounders,"[DEPRECATED]
-Have you had COVID recently, or are you currently experiencing the effects of long COVID? (check all that apply)",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Have you had COVID recently, or are you currently experiencing the effects of long COVID? (check all that apply)",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,cpap_conditions___1,cpap_conditions___1,confounders,"[DEPRECATED]
-Are you currently using CPAP or supplemental oxygen? (check all that apply)",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Are you currently using CPAP or supplemental oxygen? (check all that apply)",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,cpap_conditions___2,cpap_conditions___2,confounders,"[DEPRECATED]
-Are you currently using CPAP or supplemental oxygen? (check all that apply)",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Are you currently using CPAP or supplemental oxygen? (check all that apply)",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,deep_brain_stimulator___current,deep_brain_stimulator___current,confounders,Deep brain stimulator,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,deep_brain_stimulator___never,deep_brain_stimulator___never,confounders,Deep brain stimulator,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,deep_brain_stimulator___no_answer,deep_brain_stimulator___no_answer,confounders,Deep brain stimulator,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
@@ -2693,15 +2693,15 @@ confounders_schema,confounders,ear_cancer___never,ear_cancer___never,confounders
 confounders_schema,confounders,ear_cancer___no_answer,ear_cancer___no_answer,confounders,Ear cancer,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,ear_cancer___past,ear_cancer___past,confounders,Ear cancer,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,ear_med_history___1,ear_med_history___1,confounders,"[DEPRECATED]
-Ear",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Ear",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,ear_med_history___2,ear_med_history___2,confounders,"[DEPRECATED]
-Ear",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Ear",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,ear_med_history___3,ear_med_history___3,confounders,"[DEPRECATED]
-Ear",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Ear",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,ear_surgical___1,ear_surgical___1,confounders,"[DEPRECATED]
-Ear",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Ear",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,ear_surgical___2,ear_surgical___2,confounders,"[DEPRECATED]
-Ear",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Ear",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,eating_disorder___current,eating_disorder___current,confounders,Eating disorder (ED),NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,eating_disorder___never,eating_disorder___never,confounders,Eating disorder (ED),NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,eating_disorder___no_answer,eating_disorder___no_answer,confounders,Eating disorder (ED),NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
@@ -2725,21 +2725,21 @@ confounders_schema,confounders,glottic_insufficiency_med_hist_throat___never,glo
 confounders_schema,confounders,glottic_insufficiency_med_hist_throat___no_answer,glottic_insufficiency_med_hist_throat___no_answer,confounders,"Glottic insufficiency, presbyphonia",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,glottic_insufficiency_med_hist_throat___past,glottic_insufficiency_med_hist_throat___past,confounders,"Glottic insufficiency, presbyphonia",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,head_med_history___1,head_med_history___1,confounders,"[DEPRECATED]
-Head",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Head",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,head_med_history___2,head_med_history___2,confounders,"[DEPRECATED]
-Head",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Head",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,head_surgical___1,head_surgical___1,confounders,"[DEPRECATED]
-Head",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Head",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,head_surgical___2,head_surgical___2,confounders,"[DEPRECATED]
-Head",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Head",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,hormone_use___1,hormone_use___1,confounders,"[DEPRECATED]
-Hormone use",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
+Hormone use",NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO,
 confounders_schema,confounders,hormone_use___2,hormone_use___2,confounders,"[DEPRECATED]
-Hormone use",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
+Hormone use",NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO,
 confounders_schema,confounders,hormone_use___3,hormone_use___3,confounders,"[DEPRECATED]
-Hormone use",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
+Hormone use",NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO,
 confounders_schema,confounders,hormone_use___4,hormone_use___4,confounders,"[DEPRECATED]
-Hormone use",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
+Hormone use",NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO,
 confounders_schema,confounders,immunotherapy___current,immunotherapy___current,confounders,Immunotherapy,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,immunotherapy___never,immunotherapy___never,confounders,Immunotherapy,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,immunotherapy___no_answer,immunotherapy___no_answer,confounders,Immunotherapy,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
@@ -2769,9 +2769,9 @@ confounders_schema,confounders,lung_cancer___never,lung_cancer___never,confounde
 confounders_schema,confounders,lung_cancer___no_answer,lung_cancer___no_answer,confounders,Lung cancer,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,lung_cancer___past,lung_cancer___past,confounders,Lung cancer,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,lung_or_metastatic___1,lung_or_metastatic___1,confounders,"[DEPRECATED]
-Cancer (lung or metastatic)",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Cancer (lung or metastatic)",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,lung_or_metastatic___2,lung_or_metastatic___2,confounders,"[DEPRECATED]
-Cancer (lung or metastatic)",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Cancer (lung or metastatic)",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,medication_enmt___current,medication_enmt___current,confounders,Medication,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,medication_enmt___never,medication_enmt___never,confounders,Medication,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,medication_enmt___no_answer,medication_enmt___no_answer,confounders,Medication,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
@@ -2789,41 +2789,41 @@ confounders_schema,confounders,medication_med_history_psychological___never,medi
 confounders_schema,confounders,medication_med_history_psychological___no_answer,medication_med_history_psychological___no_answer,confounders,Medication,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,medication_med_history_psychological___past,medication_med_history_psychological___past,confounders,Medication,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,medications___1,medications___1,confounders,"[DEPRECATED]
-Do you currently take or use any of these medications or substances? Please check all that apply",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Do you currently take or use any of these medications or substances? Please check all that apply",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,medications___10,medications___10,confounders,"[DEPRECATED]
-Do you currently take or use any of these medications or substances? Please check all that apply",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Do you currently take or use any of these medications or substances? Please check all that apply",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,medications___11,medications___11,confounders,"[DEPRECATED]
-Do you currently take or use any of these medications or substances? Please check all that apply",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Do you currently take or use any of these medications or substances? Please check all that apply",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,medications___12,medications___12,confounders,"[DEPRECATED]
-Do you currently take or use any of these medications or substances? Please check all that apply",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Do you currently take or use any of these medications or substances? Please check all that apply",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,medications___13,medications___13,confounders,"[DEPRECATED]
-Do you currently take or use any of these medications or substances? Please check all that apply",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Do you currently take or use any of these medications or substances? Please check all that apply",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,medications___14,medications___14,confounders,"[DEPRECATED]
-Do you currently take or use any of these medications or substances? Please check all that apply",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Do you currently take or use any of these medications or substances? Please check all that apply",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,medications___15,medications___15,confounders,"[DEPRECATED]
-Do you currently take or use any of these medications or substances? Please check all that apply",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Do you currently take or use any of these medications or substances? Please check all that apply",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,medications___16,medications___16,confounders,"[DEPRECATED]
-Do you currently take or use any of these medications or substances? Please check all that apply",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Do you currently take or use any of these medications or substances? Please check all that apply",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,medications___17,medications___17,confounders,"[DEPRECATED]
-Do you currently take or use any of these medications or substances? Please check all that apply",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Do you currently take or use any of these medications or substances? Please check all that apply",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,medications___18,medications___18,confounders,"[DEPRECATED]
-Do you currently take or use any of these medications or substances? Please check all that apply",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Do you currently take or use any of these medications or substances? Please check all that apply",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,medications___2,medications___2,confounders,"[DEPRECATED]
-Do you currently take or use any of these medications or substances? Please check all that apply",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Do you currently take or use any of these medications or substances? Please check all that apply",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,medications___3,medications___3,confounders,"[DEPRECATED]
-Do you currently take or use any of these medications or substances? Please check all that apply",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Do you currently take or use any of these medications or substances? Please check all that apply",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,medications___4,medications___4,confounders,"[DEPRECATED]
-Do you currently take or use any of these medications or substances? Please check all that apply",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Do you currently take or use any of these medications or substances? Please check all that apply",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,medications___5,medications___5,confounders,"[DEPRECATED]
-Do you currently take or use any of these medications or substances? Please check all that apply",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Do you currently take or use any of these medications or substances? Please check all that apply",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,medications___6,medications___6,confounders,"[DEPRECATED]
-Do you currently take or use any of these medications or substances? Please check all that apply",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Do you currently take or use any of these medications or substances? Please check all that apply",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,medications___7,medications___7,confounders,"[DEPRECATED]
-Do you currently take or use any of these medications or substances? Please check all that apply",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Do you currently take or use any of these medications or substances? Please check all that apply",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,medications___8,medications___8,confounders,"[DEPRECATED]
-Do you currently take or use any of these medications or substances? Please check all that apply",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Do you currently take or use any of these medications or substances? Please check all that apply",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,medications___9,medications___9,confounders,"[DEPRECATED]
-Do you currently take or use any of these medications or substances? Please check all that apply",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Do you currently take or use any of these medications or substances? Please check all that apply",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,mindfulness_meditation___current,mindfulness_meditation___current,confounders,"Mindfulness, meditation",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,mindfulness_meditation___never,mindfulness_meditation___never,confounders,"Mindfulness, meditation",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,mindfulness_meditation___no_answer,mindfulness_meditation___no_answer,confounders,"Mindfulness, meditation",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
@@ -2833,27 +2833,27 @@ confounders_schema,confounders,muscle_tension_dysphonia___never,muscle_tension_d
 confounders_schema,confounders,muscle_tension_dysphonia___no_answer,muscle_tension_dysphonia___no_answer,confounders,Muscle tension dysphonia,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,muscle_tension_dysphonia___past,muscle_tension_dysphonia___past,confounders,Muscle tension dysphonia,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,neurological_history___1,neurological_history___1,confounders,"[DEPRECATED]
-Neurological Medical History",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Neurological Medical History",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,neurological_history___2,neurological_history___2,confounders,"[DEPRECATED]
-Neurological Medical History",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Neurological Medical History",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,neurological_history___3,neurological_history___3,confounders,"[DEPRECATED]
-Neurological Medical History",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Neurological Medical History",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,neurological_history___4,neurological_history___4,confounders,"[DEPRECATED]
-Neurological Medical History",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Neurological Medical History",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,neurological_history___5,neurological_history___5,confounders,"[DEPRECATED]
-Neurological Medical History",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Neurological Medical History",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,neurological_history___6,neurological_history___6,confounders,"[DEPRECATED]
-Neurological Medical History",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Neurological Medical History",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,non_surgical_treatment_enmt_speech_cond___current,non_surgical_treatment_enmt_speech_cond___current,confounders,"Other non-surgical treatment for an ear, nose, mouth, throat, or speech condition",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,non_surgical_treatment_enmt_speech_cond___never,non_surgical_treatment_enmt_speech_cond___never,confounders,"Other non-surgical treatment for an ear, nose, mouth, throat, or speech condition",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,non_surgical_treatment_enmt_speech_cond___no_answer,non_surgical_treatment_enmt_speech_cond___no_answer,confounders,"Other non-surgical treatment for an ear, nose, mouth, throat, or speech condition",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,non_surgical_treatment_enmt_speech_cond___past,non_surgical_treatment_enmt_speech_cond___past,confounders,"Other non-surgical treatment for an ear, nose, mouth, throat, or speech condition",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,nose_med_history___1,nose_med_history___1,confounders,"[DEPRECATED]
-Nose",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Nose",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,nose_surgical___1,nose_surgical___1,confounders,"[DEPRECATED]
-Nose",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Nose",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,nose_surgical___2,nose_surgical___2,confounders,"[DEPRECATED]
-Nose",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Nose",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,obsessive_compulsive_disorder___current,obsessive_compulsive_disorder___current,confounders,Obsessive compulsive disorder (OCD),NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,obsessive_compulsive_disorder___never,obsessive_compulsive_disorder___never,confounders,Obsessive compulsive disorder (OCD),NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,obsessive_compulsive_disorder___no_answer,obsessive_compulsive_disorder___no_answer,confounders,Obsessive compulsive disorder (OCD),NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
@@ -2883,11 +2883,11 @@ confounders_schema,confounders,other_treatment_psychological_condition___never,o
 confounders_schema,confounders,other_treatment_psychological_condition___no_answer,other_treatment_psychological_condition___no_answer,confounders,Other treatment for a psychological condition,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,other_treatment_psychological_condition___past,other_treatment_psychological_condition___past,confounders,Other treatment for a psychological condition,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,pain_medication___1,pain_medication___1,confounders,"[DEPRECATED]
-Chronic Pain medication",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Chronic Pain medication",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,pain_medication___2,pain_medication___2,confounders,"[DEPRECATED]
-Chronic Pain medication",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Chronic Pain medication",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,pain_medication___3,pain_medication___3,confounders,"[DEPRECATED]
-Chronic Pain medication",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Chronic Pain medication",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,panic_disorder___current,panic_disorder___current,confounders,Panic disorder,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,panic_disorder___never,panic_disorder___never,confounders,Panic disorder,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,panic_disorder___no_answer,panic_disorder___no_answer,confounders,Panic disorder,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
@@ -2913,61 +2913,61 @@ confounders_schema,confounders,radioactive_iodine___never,radioactive_iodine___n
 confounders_schema,confounders,radioactive_iodine___no_answer,radioactive_iodine___no_answer,confounders,Radioactive Iodine,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,radioactive_iodine___past,radioactive_iodine___past,confounders,Radioactive Iodine,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,resp_medical_history___1,resp_medical_history___1,confounders,"[DEPRECATED]
-Respiratory medical history",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Respiratory medical history",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,resp_medical_history___2,resp_medical_history___2,confounders,"[DEPRECATED]
-Respiratory medical history",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Respiratory medical history",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,resp_medical_history___3,resp_medical_history___3,confounders,"[DEPRECATED]
-Respiratory medical history",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Respiratory medical history",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,resp_medical_history___4,resp_medical_history___4,confounders,"[DEPRECATED]
-Respiratory medical history",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Respiratory medical history",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,respiratory_conditions___1,respiratory_conditions___1,confounders,"[DEPRECATED]
-Respiratory Conditions",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Respiratory Conditions",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,respiratory_conditions___2,respiratory_conditions___2,confounders,"[DEPRECATED]
-Respiratory Conditions",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Respiratory Conditions",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,respiratory_conditions___3,respiratory_conditions___3,confounders,"[DEPRECATED]
-Respiratory Conditions",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Respiratory Conditions",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,respiratory_conditions___4,respiratory_conditions___4,confounders,"[DEPRECATED]
-Respiratory Conditions",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Respiratory Conditions",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,respiratory_conditions___5,respiratory_conditions___5,confounders,"[DEPRECATED]
-Respiratory Conditions",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Respiratory Conditions",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,respiratory_conditions___6,respiratory_conditions___6,confounders,"[DEPRECATED]
-Respiratory Conditions",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Respiratory Conditions",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,respiratory_conditions___7,respiratory_conditions___7,confounders,"[DEPRECATED]
-Respiratory Conditions",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Respiratory Conditions",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,respiratory_conditions___8,respiratory_conditions___8,confounders,"[DEPRECATED]
-Respiratory Conditions",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Respiratory Conditions",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,schizophrenia_med_hist_psychological___current,schizophrenia_med_hist_psychological___current,confounders,Schizophrenia,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,schizophrenia_med_hist_psychological___never,schizophrenia_med_hist_psychological___never,confounders,Schizophrenia,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,schizophrenia_med_hist_psychological___no_answer,schizophrenia_med_hist_psychological___no_answer,confounders,Schizophrenia,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,schizophrenia_med_hist_psychological___past,schizophrenia_med_hist_psychological___past,confounders,Schizophrenia,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,seasonal_allergies_options___1,seasonal_allergies_options___1,confounders,"[DEPRECATED]
-Check all that apply:",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Check all that apply:",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,seasonal_allergies_options___2,seasonal_allergies_options___2,confounders,"[DEPRECATED]
-Check all that apply:",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Check all that apply:",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,seasonal_allergies_options___3,seasonal_allergies_options___3,confounders,"[DEPRECATED]
-Check all that apply:",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Check all that apply:",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,seasonal_allergies_options___4,seasonal_allergies_options___4,confounders,"[DEPRECATED]
-Check all that apply:",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Check all that apply:",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,sinus_cancer___current,sinus_cancer___current,confounders,Sinus cancer,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,sinus_cancer___never,sinus_cancer___never,confounders,Sinus cancer,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,sinus_cancer___no_answer,sinus_cancer___no_answer,confounders,Sinus cancer,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,sinus_cancer___past,sinus_cancer___past,confounders,Sinus cancer,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,smoking_types___1,smoking_types___1,confounders,"[DEPRECATED]
-Checklist of different types (choose all that apply):",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
+Checklist of different types (choose all that apply):",NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO,controlled
 confounders_schema,confounders,smoking_types___2,smoking_types___2,confounders,"[DEPRECATED]
-Checklist of different types (choose all that apply):",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
+Checklist of different types (choose all that apply):",NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO,controlled
 confounders_schema,confounders,smoking_types___3,smoking_types___3,confounders,"[DEPRECATED]
-Checklist of different types (choose all that apply):",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
+Checklist of different types (choose all that apply):",NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO,controlled
 confounders_schema,confounders,smoking_types___4,smoking_types___4,confounders,"[DEPRECATED]
-Checklist of different types (choose all that apply):",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
+Checklist of different types (choose all that apply):",NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO,controlled
 confounders_schema,confounders,smoking_types___5,smoking_types___5,confounders,"[DEPRECATED]
-Checklist of different types (choose all that apply):",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
+Checklist of different types (choose all that apply):",NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO,controlled
 confounders_schema,confounders,smoking_types___6,smoking_types___6,confounders,"[DEPRECATED]
-Checklist of different types (choose all that apply):",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
+Checklist of different types (choose all that apply):",NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO,controlled
 confounders_schema,confounders,smoking_types___7,smoking_types___7,confounders,"[DEPRECATED]
-Checklist of different types (choose all that apply):",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
+Checklist of different types (choose all that apply):",NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO,controlled
 confounders_schema,confounders,smoking_types___8,smoking_types___8,confounders,"[DEPRECATED]
-Checklist of different types (choose all that apply):",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
+Checklist of different types (choose all that apply):",NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO,controlled
 confounders_schema,confounders,speech_voice_swallowing_therapy___current,speech_voice_swallowing_therapy___current,confounders,"Speech, voice, or swallowing therapy",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,speech_voice_swallowing_therapy___never,speech_voice_swallowing_therapy___never,confounders,"Speech, voice, or swallowing therapy",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,speech_voice_swallowing_therapy___no_answer,speech_voice_swallowing_therapy___no_answer,confounders,"Speech, voice, or swallowing therapy",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
@@ -2981,55 +2981,55 @@ confounders_schema,confounders,swallowing_disorder___never,swallowing_disorder__
 confounders_schema,confounders,swallowing_disorder___no_answer,swallowing_disorder___no_answer,confounders,Swallowing disorder/dysphagia,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,swallowing_disorder___past,swallowing_disorder___past,confounders,Swallowing disorder/dysphagia,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,symptoms___1,symptoms___1,confounders,"[DEPRECATED]
-There are some symptoms that can affect your voice. Are you currently experiencing any of these symptoms? Check all that apply.",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+There are some symptoms that can affect your voice. Are you currently experiencing any of these symptoms? Check all that apply.",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,symptoms___2,symptoms___2,confounders,"[DEPRECATED]
-There are some symptoms that can affect your voice. Are you currently experiencing any of these symptoms? Check all that apply.",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+There are some symptoms that can affect your voice. Are you currently experiencing any of these symptoms? Check all that apply.",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,symptoms___3,symptoms___3,confounders,"[DEPRECATED]
-There are some symptoms that can affect your voice. Are you currently experiencing any of these symptoms? Check all that apply.",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+There are some symptoms that can affect your voice. Are you currently experiencing any of these symptoms? Check all that apply.",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,symptoms___4,symptoms___4,confounders,"[DEPRECATED]
-There are some symptoms that can affect your voice. Are you currently experiencing any of these symptoms? Check all that apply.",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+There are some symptoms that can affect your voice. Are you currently experiencing any of these symptoms? Check all that apply.",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,symptoms___5,symptoms___5,confounders,"[DEPRECATED]
-There are some symptoms that can affect your voice. Are you currently experiencing any of these symptoms? Check all that apply.",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+There are some symptoms that can affect your voice. Are you currently experiencing any of these symptoms? Check all that apply.",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,symptoms___6,symptoms___6,confounders,"[DEPRECATED]
-There are some symptoms that can affect your voice. Are you currently experiencing any of these symptoms? Check all that apply.",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+There are some symptoms that can affect your voice. Are you currently experiencing any of these symptoms? Check all that apply.",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,symptoms___7,symptoms___7,confounders,"[DEPRECATED]
-There are some symptoms that can affect your voice. Are you currently experiencing any of these symptoms? Check all that apply.",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+There are some symptoms that can affect your voice. Are you currently experiencing any of these symptoms? Check all that apply.",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,talk_therapy_mental_health_prof___current,talk_therapy_mental_health_prof___current,confounders,"Talk therapy with a mental health professional (e.g. social worker, psychiatrist, etc.)",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,talk_therapy_mental_health_prof___never,talk_therapy_mental_health_prof___never,confounders,"Talk therapy with a mental health professional (e.g. social worker, psychiatrist, etc.)",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,talk_therapy_mental_health_prof___no_answer,talk_therapy_mental_health_prof___no_answer,confounders,"Talk therapy with a mental health professional (e.g. social worker, psychiatrist, etc.)",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,talk_therapy_mental_health_prof___past,talk_therapy_mental_health_prof___past,confounders,"Talk therapy with a mental health professional (e.g. social worker, psychiatrist, etc.)",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,throat_med_history___1,throat_med_history___1,confounders,"[DEPRECATED]
-Throat",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Throat",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,throat_med_history___10,throat_med_history___10,confounders,"[DEPRECATED]
-Throat",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Throat",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,throat_med_history___11,throat_med_history___11,confounders,"[DEPRECATED]
-Throat",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Throat",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,throat_med_history___12,throat_med_history___12,confounders,"[DEPRECATED]
-Throat",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Throat",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,throat_med_history___2,throat_med_history___2,confounders,"[DEPRECATED]
-Throat",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Throat",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,throat_med_history___3,throat_med_history___3,confounders,"[DEPRECATED]
-Throat",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Throat",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,throat_med_history___4,throat_med_history___4,confounders,"[DEPRECATED]
-Throat",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Throat",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,throat_med_history___5,throat_med_history___5,confounders,"[DEPRECATED]
-Throat",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Throat",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,throat_med_history___6,throat_med_history___6,confounders,"[DEPRECATED]
-Throat",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Throat",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,throat_med_history___7,throat_med_history___7,confounders,"[DEPRECATED]
-Throat",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Throat",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,throat_med_history___8,throat_med_history___8,confounders,"[DEPRECATED]
-Throat",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Throat",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,throat_med_history___9,throat_med_history___9,confounders,"[DEPRECATED]
-Throat",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Throat",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,throat_surgical___1,throat_surgical___1,confounders,"[DEPRECATED]
-Throat",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Throat",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,throat_surgical___2,throat_surgical___2,confounders,"[DEPRECATED]
-Throat",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Throat",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,throat_surgical___3,throat_surgical___3,confounders,"[DEPRECATED]
-Throat",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Throat",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,throat_surgical___4,throat_surgical___4,confounders,"[DEPRECATED]
-Throat",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Throat",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,thyroid_cancer___current,thyroid_cancer___current,confounders,Thyroid cancer,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,thyroid_cancer___never,thyroid_cancer___never,confounders,Thyroid cancer,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,thyroid_cancer___no_answer,thyroid_cancer___no_answer,confounders,Thyroid cancer,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
@@ -3071,19 +3071,19 @@ confounders_schema,confounders,vocal_fold_hemorrhage___never,vocal_fold_hemorrha
 confounders_schema,confounders,vocal_fold_hemorrhage___no_answer,vocal_fold_hemorrhage___no_answer,confounders,Vocal fold hemorrhage or bleed,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,vocal_fold_hemorrhage___past,vocal_fold_hemorrhage___past,confounders,Vocal fold hemorrhage or bleed,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,voice_activity___1,voice_activity___1,confounders,"[DEPRECATED]
-Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,voice_activity___2,voice_activity___2,confounders,"[DEPRECATED]
-Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,voice_activity___3,voice_activity___3,confounders,"[DEPRECATED]
-Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,voice_activity___4,voice_activity___4,confounders,"[DEPRECATED]
-Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,voice_activity___5,voice_activity___5,confounders,"[DEPRECATED]
-Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,voice_activity___6,voice_activity___6,confounders,"[DEPRECATED]
-Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,voice_activity___7,voice_activity___7,confounders,"[DEPRECATED]
-Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,voice_activity_v2___administrative_assistant,voice_activity_v2___administrative_assistant,confounders,Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,voice_activity_v2___attorney,voice_activity_v2___attorney,confounders,Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,voice_activity_v2___barista,voice_activity_v2___barista,confounders,Do you do one of these jobs or hobbies that requires using your voice for many hours a day? Check all that apply,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
@@ -3178,15 +3178,15 @@ demographics_schema,demographics,asian_race___2050_3,asian_race___2050_3,demogra
 demographics_schema,demographics,asian_race___2051_1,asian_race___2051_1,demographics,Asian,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
 demographics_schema,demographics,asian_race___2052_9,asian_race___2052_9,demographics,Asian,YES,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
 demographics_schema,demographics,assistance_programs_ca___1,assistance_programs_ca___1,demographics,"[DEPRECATED]
-Do you take advantage of any of the following programs? Choose all that apply",NO,drop,CHECKBOX_OPTION,redcap,v4,NO,NO,
+Do you take advantage of any of the following programs? Choose all that apply",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
 demographics_schema,demographics,assistance_programs_ca___2,assistance_programs_ca___2,demographics,"[DEPRECATED]
-Do you take advantage of any of the following programs? Choose all that apply",NO,drop,CHECKBOX_OPTION,redcap,v4,NO,NO,
+Do you take advantage of any of the following programs? Choose all that apply",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
 demographics_schema,demographics,assistance_programs_ca___3,assistance_programs_ca___3,demographics,"[DEPRECATED]
-Do you take advantage of any of the following programs? Choose all that apply",NO,drop,CHECKBOX_OPTION,redcap,v4,NO,NO,
+Do you take advantage of any of the following programs? Choose all that apply",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
 demographics_schema,demographics,assistance_programs_ca___4,assistance_programs_ca___4,demographics,"[DEPRECATED]
-Do you take advantage of any of the following programs? Choose all that apply",NO,drop,CHECKBOX_OPTION,redcap,v4,NO,NO,
+Do you take advantage of any of the following programs? Choose all that apply",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
 demographics_schema,demographics,assistance_programs_ca___5,assistance_programs_ca___5,demographics,"[DEPRECATED]
-Do you take advantage of any of the following programs? Choose all that apply",NO,drop,CHECKBOX_OPTION,redcap,v4,NO,NO,
+Do you take advantage of any of the following programs? Choose all that apply",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
 demographics_schema,demographics,assistance_programs_usa___1,assistance_programs_usa___1,demographics,"[DEPRECATED]
 Do you take advantage of any of the following programs? Choose all that apply",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
 demographics_schema,demographics,assistance_programs_usa___2,assistance_programs_usa___2,demographics,"[DEPRECATED]
@@ -3238,7 +3238,7 @@ NOTE: Once the options completed map to new options, the following options [Depr
 5, Latin American
 6, Puerto Rican
 7, Cuban
-8, Dominican",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
+8, Dominican",NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO,
 demographics_schema,demographics,hispanic_latino_selection___2,hispanic_latino_selection___2,demographics,"Check all that apply
 
 NOTE: Once the options completed map to new options, the following options [Deprecated in Protocol v4]
@@ -3246,7 +3246,7 @@ NOTE: Once the options completed map to new options, the following options [Depr
 5, Latin American
 6, Puerto Rican
 7, Cuban
-8, Dominican",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
+8, Dominican",NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO,
 demographics_schema,demographics,hispanic_latino_selection___3,hispanic_latino_selection___3,demographics,"Check all that apply
 
 NOTE: Once the options completed map to new options, the following options [Deprecated in Protocol v4]
@@ -3254,7 +3254,7 @@ NOTE: Once the options completed map to new options, the following options [Depr
 5, Latin American
 6, Puerto Rican
 7, Cuban
-8, Dominican",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
+8, Dominican",NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO,
 demographics_schema,demographics,hispanic_latino_selection___4,hispanic_latino_selection___4,demographics,"Check all that apply
 
 NOTE: Once the options completed map to new options, the following options [Deprecated in Protocol v4]
@@ -3262,7 +3262,7 @@ NOTE: Once the options completed map to new options, the following options [Depr
 5, Latin American
 6, Puerto Rican
 7, Cuban
-8, Dominican",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
+8, Dominican",NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO,
 demographics_schema,demographics,hispanic_latino_selection___5,hispanic_latino_selection___5,demographics,"Check all that apply
 
 NOTE: Once the options completed map to new options, the following options [Deprecated in Protocol v4]
@@ -3270,7 +3270,7 @@ NOTE: Once the options completed map to new options, the following options [Depr
 5, Latin American
 6, Puerto Rican
 7, Cuban
-8, Dominican",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
+8, Dominican",NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO,
 demographics_schema,demographics,hispanic_latino_selection___6,hispanic_latino_selection___6,demographics,"Check all that apply
 
 NOTE: Once the options completed map to new options, the following options [Deprecated in Protocol v4]
@@ -3278,7 +3278,7 @@ NOTE: Once the options completed map to new options, the following options [Depr
 5, Latin American
 6, Puerto Rican
 7, Cuban
-8, Dominican",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
+8, Dominican",NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO,
 demographics_schema,demographics,hispanic_latino_selection___7,hispanic_latino_selection___7,demographics,"Check all that apply
 
 NOTE: Once the options completed map to new options, the following options [Deprecated in Protocol v4]
@@ -3286,7 +3286,7 @@ NOTE: Once the options completed map to new options, the following options [Depr
 5, Latin American
 6, Puerto Rican
 7, Cuban
-8, Dominican",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
+8, Dominican",NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO,
 demographics_schema,demographics,hispanic_latino_selection___8,hispanic_latino_selection___8,demographics,"Check all that apply
 
 NOTE: Once the options completed map to new options, the following options [Deprecated in Protocol v4]
@@ -3294,7 +3294,7 @@ NOTE: Once the options completed map to new options, the following options [Depr
 5, Latin American
 6, Puerto Rican
 7, Cuban
-8, Dominican",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
+8, Dominican",NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO,
 demographics_schema,demographics,hispanic_latino_selection___9,hispanic_latino_selection___9,demographics,"Check all that apply
 
 NOTE: Once the options completed map to new options, the following options [Deprecated in Protocol v4]
@@ -3302,7 +3302,7 @@ NOTE: Once the options completed map to new options, the following options [Depr
 5, Latin American
 6, Puerto Rican
 7, Cuban
-8, Dominican",NO,internal,CHECKBOX_OPTION,redcap,v4,NO,NO,
+8, Dominican",NO,release,CHECKBOX_OPTION,redcap,v4,NO,NO,
 demographics_schema,demographics,marital_status___1,marital_status___1,demographics,What is your marital status? Choose all that apply,NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 demographics_schema,demographics,marital_status___2,marital_status___2,demographics,What is your marital status? Choose all that apply,NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 demographics_schema,demographics,marital_status___3,marital_status___3,demographics,What is your marital status? Choose all that apply,NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
@@ -3330,67 +3330,67 @@ demographics_schema,demographics,white_race___2129_5,white_race___2129_5,demogra
 depression_or_major_depressive_disorder_schema,depression,dmdd_active_psy_med_problems___adhd,dmdd_active_psy_med_problems___adhd,diagnosis,"[DEPRECATED]
 Please select any active psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,dmdd_active_psy_med_problems___anxiety,dmdd_active_psy_med_problems___anxiety,diagnosis,"[DEPRECATED]
 Please select any active psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,dmdd_active_psy_med_problems___epilepsy,dmdd_active_psy_med_problems___epilepsy,diagnosis,"[DEPRECATED]
 Please select any active psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,dmdd_active_psy_med_problems___laryngeal_cancer,dmdd_active_psy_med_problems___laryngeal_cancer,diagnosis,"[DEPRECATED]
 Please select any active psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,dmdd_active_psy_med_problems___ocd,dmdd_active_psy_med_problems___ocd,diagnosis,"[DEPRECATED]
 Please select any active psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,dmdd_active_psy_med_problems___other,dmdd_active_psy_med_problems___other,diagnosis,"[DEPRECATED]
 Please select any active psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,dmdd_active_psy_med_problems___seasonal_allergies,dmdd_active_psy_med_problems___seasonal_allergies,diagnosis,"[DEPRECATED]
 Please select any active psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,dmdd_active_psy_med_problems___stroke,dmdd_active_psy_med_problems___stroke,diagnosis,"[DEPRECATED]
 Please select any active psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,dmdd_hist_psy_med_problems___adhd,dmdd_hist_psy_med_problems___adhd,diagnosis,"[DEPRECATED]
 Please select any historical psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,dmdd_hist_psy_med_problems___anxiety,dmdd_hist_psy_med_problems___anxiety,diagnosis,"[DEPRECATED]
 Please select any historical psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,dmdd_hist_psy_med_problems___epilepsy,dmdd_hist_psy_med_problems___epilepsy,diagnosis,"[DEPRECATED]
 Please select any historical psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,dmdd_hist_psy_med_problems___laryngeal_cancer,dmdd_hist_psy_med_problems___laryngeal_cancer,diagnosis,"[DEPRECATED]
 Please select any historical psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,dmdd_hist_psy_med_problems___ocd,dmdd_hist_psy_med_problems___ocd,diagnosis,"[DEPRECATED]
 Please select any historical psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,dmdd_hist_psy_med_problems___other,dmdd_hist_psy_med_problems___other,diagnosis,"[DEPRECATED]
 Please select any historical psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,dmdd_hist_psy_med_problems___seasonal_allergies,dmdd_hist_psy_med_problems___seasonal_allergies,diagnosis,"[DEPRECATED]
 Please select any historical psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 depression_or_major_depressive_disorder_schema,depression,dmdd_hist_psy_med_problems___stroke,dmdd_hist_psy_med_problems___stroke,diagnosis,"[DEPRECATED]
 Please select any historical psychiatric problems and medical problems (select all that apply).
 
-MOVED IT TO ""Q - Mood - Participant History""",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+MOVED IT TO ""Q - Mood - Participant History""",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 enrollment_form_schema,enrollment_form,ef_cognitive_a11y_options___1,ef_cognitive_a11y_options___1,enrollment,"Yes, I would like to use some of the accessibility features of the app",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 enrollment_form_schema,enrollment_form,ef_cognitive_a11y_options___2,ef_cognitive_a11y_options___2,enrollment,"Yes, I would like to use some of the accessibility features of the app",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 enrollment_form_schema,enrollment_form,ef_cognitive_a11y_options___3,ef_cognitive_a11y_options___3,enrollment,"Yes, I would like to use some of the accessibility features of the app",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
@@ -3584,13 +3584,13 @@ laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_etiology_cc___other_ty
 (Select all that apply).",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_qete___laryngologist,diagnosis_ld_qete___laryngologist,diagnosis,"[DEPRECATED]
 Does the participant have laryngeal dystonia as determined by qualitative expert team evaluation?
-(Select all that apply).",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+(Select all that apply).",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_qete___neurologist_specializing_disorders,diagnosis_ld_qete___neurologist_specializing_disorders,diagnosis,"[DEPRECATED]
 Does the participant have laryngeal dystonia as determined by qualitative expert team evaluation?
-(Select all that apply).",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+(Select all that apply).",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_qete___speech_language_pathology,diagnosis_ld_qete___speech_language_pathology,diagnosis,"[DEPRECATED]
 Does the participant have laryngeal dystonia as determined by qualitative expert team evaluation?
-(Select all that apply).",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+(Select all that apply).",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_treatment_select___botox_injections,diagnosis_ld_treatment_select___botox_injections,diagnosis,What treatments did the participant undergo? (Select all that apply):,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_treatment_select___deep_brain_stimulation,diagnosis_ld_treatment_select___deep_brain_stimulation,diagnosis,What treatments did the participant undergo? (Select all that apply):,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 laryngeal_dystonia_schema,laryngeal_dystonia,diagnosis_ld_treatment_select___mrgfus,diagnosis_ld_treatment_select___mrgfus,diagnosis,What treatments did the participant undergo? (Select all that apply):,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
@@ -3641,9 +3641,9 @@ muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_gsd_a
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_gsd_evaluations_2___laryngoscopy_stroboscopy,diagnosis_mtd_gold_standard_diagnosis_evaluations_2___laryngoscopy_stroboscopy,diagnosis,How was this confirmed? Select all that apply:,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_gsd_evaluations_2___voice_evaluation,diagnosis_mtd_gold_standard_diagnosis_evaluations_2___voice_evaluation,diagnosis,How was this confirmed? Select all that apply:,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_gsd_evaluations___laryngologist,diagnosis_mtd_gold_standard_diagnosis_evaluations___laryngologist,diagnosis,"[DEPRECATED]
-Determined by (Select all that apply):",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Determined by (Select all that apply):",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_gsd_evaluations___speech_language_pathology,diagnosis_mtd_gold_standard_diagnosis_evaluations___speech_language_pathology,diagnosis,"[DEPRECATED]
-Determined by (Select all that apply):",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Determined by (Select all that apply):",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_treatment_select___circumlaryngeal_manual_therapy,diagnosis_mtd_treatment_select___circumlaryngeal_manual_therapy,diagnosis,Select all that apply:,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_treatment_select___other,diagnosis_mtd_treatment_select___other,diagnosis,Select all that apply:,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 muscle_tension_dysphonia_mtd_schema,muscle_tension_dysphonia,diagnosis_mtd_treatment_select___surgery_for_secondary_organic_lesions,diagnosis_mtd_treatment_select___surgery_for_secondary_organic_lesions,diagnosis,Select all that apply:,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
@@ -3686,29 +3686,29 @@ parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_gsd_category_3
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_ma___other,diagnosis_parkinsons_ma___other,diagnosis,Please provide scores or results from validated cognitive assessment tools:,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_ma___updrs,diagnosis_parkinsons_ma___updrs,diagnosis,Please provide scores or results from validated cognitive assessment tools:,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_treatment_obtained_yes___medications,diagnosis_parkinsons_treatment_obtained_yes___medications,diagnosis,"[DEPRECATED]
-Yes",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Yes",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_treatment_obtained_yes___npi,diagnosis_parkinsons_treatment_obtained_yes___npi,diagnosis,"[DEPRECATED]
-Yes",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Yes",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_treatment_obtained_yes_medications___amantadine,diagnosis_parkinsons_treatment_obtained_yes_medications___amantadine,diagnosis,"[DEPRECATED]
-Medications:",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Medications:",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_treatment_obtained_yes_medications___dopamine_agonists,diagnosis_parkinsons_treatment_obtained_yes_medications___dopamine_agonists,diagnosis,"[DEPRECATED]
-Medications:",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Medications:",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_treatment_obtained_yes_medications___levodopa,diagnosis_parkinsons_treatment_obtained_yes_medications___levodopa,diagnosis,"[DEPRECATED]
-Medications:",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Medications:",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_treatment_obtained_yes_medications___mao_b,diagnosis_parkinsons_treatment_obtained_yes_medications___mao_b,diagnosis,"[DEPRECATED]
-Medications:",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Medications:",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_treatment_obtained_yes_medications___other,diagnosis_parkinsons_treatment_obtained_yes_medications___other,diagnosis,"[DEPRECATED]
-Medications:",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Medications:",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_treatment_obtained_yes_npi___dbs,diagnosis_parkinsons_treatment_obtained_yes_npi___dbs,diagnosis,"[DEPRECATED]
-Non-pharmacological interventions:",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Non-pharmacological interventions:",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_treatment_obtained_yes_npi___occupational_therapy,diagnosis_parkinsons_treatment_obtained_yes_npi___occupational_therapy,diagnosis,"[DEPRECATED]
-Non-pharmacological interventions:",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Non-pharmacological interventions:",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_treatment_obtained_yes_npi___other,diagnosis_parkinsons_treatment_obtained_yes_npi___other,diagnosis,"[DEPRECATED]
-Non-pharmacological interventions:",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Non-pharmacological interventions:",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_treatment_obtained_yes_npi___physical_therapy,diagnosis_parkinsons_treatment_obtained_yes_npi___physical_therapy,diagnosis,"[DEPRECATED]
-Non-pharmacological interventions:",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Non-pharmacological interventions:",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 parkinsons_disease_schema,parkinsons_disease,diagnosis_parkinsons_treatment_obtained_yes_npi___speech_therapy,diagnosis_parkinsons_treatment_obtained_yes_npi___speech_therapy,diagnosis,"[DEPRECATED]
-Non-pharmacological interventions:",NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+Non-pharmacological interventions:",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_ds___erythroplakia,diagnosis_pl_ds___erythroplakia,diagnosis,"What is the diagnosis?
 (Select all that apply).",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 precancerous_lesions_schema,precancerous_lesions,diagnosis_pl_ds___keratosis,diagnosis_pl_ds___keratosis,diagnosis,"What is the diagnosis?

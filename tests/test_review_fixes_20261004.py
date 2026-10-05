@@ -118,6 +118,9 @@ def test_rare_checkbox_label_is_not_published_without_a_review_verdict(tmp_path)
     bids, config = _tree(tmp_path, ["p1", "p2"], {"confounders/confounders": confounders}, [
         ("column_value_reviews.json",
          {"verdicts": [{"participant_id": "p2", "column_name": "other_voice_activity", "verdict": "safe"}]}),
+        ("deidentify_settings.json", {"access_tier": "registered", "small_checkbox_options": {"confounders": {
+            "voice_activity_v2": {"other": "voice_activity_v2___other", "specify": "other_voice_activity",
+                                  "min_participants": 10}}}}),
     ])
     out = tmp_path / "out"
     BIDSDataset(bids).deidentify(outdir=out, deidentify_config_dir=config)
