@@ -855,7 +855,7 @@
         "session_started_at"
       ]
     },
-    "session_seconds_since_previous": {
+    "session_seconds_since_first": {
       "datatype": "xsd:integer",
       "minValue": 0,
       "unit": "seconds",
@@ -879,12 +879,12 @@
         "recording_created_at"
       ]
     },
-    "recording_seconds_since_previous": {
+    "recording_seconds_since_first": {
       "datatype": "xsd:integer",
-      "minValue": 0,
       "unit": "seconds",
       "derivedFrom": [
-        "recording_created_at"
+        "recording_created_at",
+        "session_started_at"
       ]
     },
     "peds_mc_tonsillectomy_days_since": {

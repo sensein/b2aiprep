@@ -1021,25 +1021,29 @@ class BIDSDataset:
 
     @staticmethod
     def _add_recording_order_and_gaps(df: pd.DataFrame) -> pd.DataFrame:
-        """Add ``session_seconds_since_previous``, ``recording_order`` and ``recording_seconds_since_previous``.
+        """Add ``session_seconds_since_first``, ``recording_order`` and ``recording_seconds_since_first``.
 
         Computed on the real start times, before dates are shifted; the shift moves all of a
         participant's times by the same whole weeks, so the intervals would be the same after it.
+        Sessions and recordings share one timeline per participant, whose zero is the start of the
+        participant's first dated session (as the ``*_days_since`` fields do, in days); the time
+        between any two released sessions or recordings is the difference of their values.
 
-        - ``session_seconds_since_previous``: whole seconds from the participant's previous dated
-          session's start. Blank for the first dated session and for a session without a start time.
+        - ``session_seconds_since_first``: whole seconds from the start of the participant's first
+          dated session to this session's start (0 for the first). Blank without a start time.
         - ``recording_order``: order of the recording within its session by start time (1 = first),
           ties broken by recording ID. Blank for a recording without a start time: nothing says
           when it happened. Numbers are kept as computed here, so removing a recording later
           leaves a gap rather than renumbering the rest.
-        - ``recording_seconds_since_previous``: whole seconds from the previous dated recording's
-          start in the same session. Blank for the first dated recording and for an undated one.
+        - ``recording_seconds_since_first``: whole seconds from the start of the participant's first
+          dated session to the recording's start. Blank for an undated recording or a participant
+          with no dated session.
 
         Values are strings, like ``session_index``. Every recording has ``recording_session_id``;
         one without would be left unordered and logged.
         """
         df = df.copy()
-        for column in ("session_seconds_since_previous", "recording_order", "recording_seconds_since_previous"):
+        for column in ("session_seconds_since_first", "recording_order", "recording_seconds_since_first"):
             df[column] = pd.Series(pd.NA, index=df.index, dtype="object")
         if "redcap_repeat_instrument" not in df.columns:
             return df
@@ -1047,17 +1051,19 @@ class BIDSDataset:
         def seconds(later: datetime.datetime, earlier: datetime.datetime) -> str:
             return str(int(round((later - earlier).total_seconds())))
 
+        first_start: t.Dict[str, datetime.datetime] = {}  # participant -> first dated session start
         if {"session_id", "session_started_at"} <= set(df.columns):
             is_session = (df["redcap_repeat_instrument"] == RepeatInstrument.SESSION.value.text) & df["session_id"].notna()
             sessions = df.loc[is_session, ["record_id", "session_id"]].assign(
                 started=df.loc[is_session, "session_started_at"].map(parse_utc_timestamp))
-            gap: t.Dict[t.Tuple[str, str], str] = {}
+            since_first: t.Dict[t.Tuple[str, str], str] = {}
             for record_id, rows in sessions.dropna(subset=["started"]).groupby("record_id", sort=False):
-                first = rows.groupby("session_id")["started"].min().sort_values(kind="stable")
-                for (_, prev), (session_id, ts) in zip(first.items(), list(first.items())[1:]):
-                    gap[(record_id, session_id)] = seconds(ts, prev)
-            df.loc[is_session, "session_seconds_since_previous"] = [
-                gap.get((r, s), pd.NA) for r, s in zip(sessions["record_id"], sessions["session_id"])
+                starts = rows.groupby("session_id")["started"].min()
+                first_start[record_id] = starts.min()
+                for session_id, ts in starts.items():
+                    since_first[(record_id, session_id)] = seconds(ts, first_start[record_id])
+            df.loc[is_session, "session_seconds_since_first"] = [
+                since_first.get((r, s), pd.NA) for r, s in zip(sessions["record_id"], sessions["session_id"])
             ]
 
         if {"recording_id", "recording_session_id", "recording_created_at"} <= set(df.columns):
@@ -1070,16 +1076,14 @@ class BIDSDataset:
             dated = recordings.dropna(subset=["created", "recording_session_id"]).sort_values(
                 ["created", "recording_id"], kind="stable")
             order: t.Dict[t.Any, str] = {}
-            gap_rec: t.Dict[t.Any, str] = {}
             for _, rows in dated.groupby(["record_id", "recording_session_id"], sort=False):
-                previous = None
-                for number, (row_index, ts) in enumerate(rows["created"].items(), start=1):
+                for number, row_index in enumerate(rows.index, start=1):
                     order[row_index] = str(number)
-                    if previous is not None:
-                        gap_rec[row_index] = seconds(ts, previous)
-                    previous = ts
             df.loc[is_recording, "recording_order"] = [order.get(i, pd.NA) for i in recordings.index]
-            df.loc[is_recording, "recording_seconds_since_previous"] = [gap_rec.get(i, pd.NA) for i in recordings.index]
+            df.loc[is_recording, "recording_seconds_since_first"] = [
+                seconds(ts, first_start[r]) if ts is not None and not pd.isna(ts) and r in first_start else pd.NA
+                for r, ts in zip(recordings["record_id"], recordings["created"])
+            ]
             _LOGGER.info("recording_order: ordered %d of %d recording(s).", len(order), len(recordings))
             if undated:
                 # IDs are listed for QA; this log lives with the job output, outside the BIDS tree.

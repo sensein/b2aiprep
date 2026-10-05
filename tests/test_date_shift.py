@@ -510,9 +510,10 @@ def test_recording_order_and_gaps_use_real_times_and_leave_undated_blank(caplog)
     df = pd.DataFrame([{"record_id": "p1", "redcap_repeat_instrument": i, **v} for i, v in rows], dtype=object)
     with caplog.at_level("WARNING"):
         out = BIDSDataset._add_recording_order_and_gaps(df)
-    assert _na(out.session_seconds_since_previous) == ["3600", None, None, None] + [None] * 5
+    # one timeline from the first session's start (S1, 16:00Z); a repeated undated row of S1 gets S1's value
+    assert _na(out.session_seconds_since_first) == ["3600", "0", "0", None] + [None] * 5
     assert _na(out.recording_order) == [None] * 4 + ["2", "1", None, "3", "1"]
-    assert _na(out.recording_seconds_since_previous) == [None] * 4 + ["0", None, None, "30", None]
+    assert _na(out.recording_seconds_since_first) == [None] * 4 + ["60", "60", None, "90", "3720"]
     assert "1 recording(s) without a start time, left unordered: R4" in caplog.text
     assert "recording_order" not in df.columns  # input untouched
 
@@ -534,7 +535,8 @@ def test_ingest_adds_derived_session_and_recording_fields(tmp_path):
     # 20:00Z and 20:05Z on 2024-07-01 are 16:00 and 16:05 in Cambridge, MA (EDT)
     assert out.df.loc[0, "session_local_hour"] == "16" and out.df.loc[1, "recording_local_hour"] == "16"
     assert out.df.loc[1, "recording_order"] == "1"
-    assert _na([out.df.loc[0, "session_seconds_since_previous"], out.df.loc[1, "recording_seconds_since_previous"]]) == [None, None]
+    # 20:00Z session, 20:05Z recording
+    assert _na([out.df.loc[0, "session_seconds_since_first"], out.df.loc[1, "recording_seconds_since_first"]]) == ["0", "300"]
 
 
 def test_session_hour_check_lists_in_clinic_sessions_outside_clinic_hours(caplog):
