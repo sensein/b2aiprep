@@ -159,3 +159,16 @@ def test_bundle_validation_passes_a_review_column_with_verdicts(tmp_path):
 def test_bundle_validation_fails_on_a_record_id_column(tmp_path):
     result = _bundle_with_confounders(tmp_path, ["record_id"])
     assert result.exit_code != 0 and "record_id" in result.output
+
+
+def test_sidecar_never_keeps_an_unreleased_session_id(tmp_path):
+    bids, config = _tree(tmp_path, ["p1"], {})
+    sidecar = bids / "sub-p1" / "ses-s1" / "audio" / "sub-p1_ses-s1_task-rainbow-passage_recording-metadata.json"
+    sidecar.write_text(json.dumps({"record_id": "p1", "session_id": "s2-unreleased"}))
+    out = tmp_path / "out"
+    BIDSDataset(bids).deidentify(outdir=out, deidentify_config_dir=config)
+    (written,) = [p for p in out.rglob("*.json") if "task-rainbow-passage" in p.name]
+    text = written.read_text()
+    assert "s2-unreleased" not in text
+    session_dir = written.parent.parent.name  # ses-<label>
+    assert json.loads(text)["session_id"] == session_dir[len("ses-"):]
