@@ -625,6 +625,9 @@ def test_episode_and_trauma_dates_measure_to_the_first_session(caplog):
     assert _na(out.mbd_last_manic_episode_days_since) == ["30", None, None, None, "-55", None]  # b: after enrollment (2100 is not a leap year)
     # reported at S2 (2100-02-01), measured to the first session S1 (2100-01-05): 20 days after it
     assert _na(out.traumatic_event_days_since) == [None, None, None, "-20", None, None]
+    # b's diagnosis form has no session to check against: kept, and flagged for QA
+    assert "1 episode date(s) on a form with no session fall after the participant's first session" in caplog.text
+    assert "b mbd_last_manic_episode (55 days after)" in caplog.text
 
 
 def test_episode_after_enrollment_is_kept_negative_and_trauma_on_session_day_is_not_given(caplog):

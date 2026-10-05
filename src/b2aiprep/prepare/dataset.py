@@ -465,47 +465,9 @@ class BIDSDataset:
         # recording. Recordings whose source was missing or truncated were
         # skipped; their rows would otherwise reference nonexistent files.
         if audio_files_by_recording is not None and all_recording_ids_with_sidecar:
-            phenotype_dir = os.path.join(outdir, "phenotype")
-            for tsv_name, id_col in [("task/recording.tsv", "recording_id")]:
-                fp = os.path.join(phenotype_dir, tsv_name)
-                if not os.path.isfile(fp):
-                    continue
-                df_tsv = BIDSDataset._read_tsv_as_written(fp)
-                if id_col not in df_tsv.columns:
-                    continue
-                before = len(df_tsv)
-                df_tsv = df_tsv.loc[df_tsv[id_col].isin(all_recording_ids_with_sidecar)]
-                after = len(df_tsv)
-                if before != after:
-                    df_tsv.to_csv(fp, sep="\t", index=False)
-                    _LOGGER.info(
-                        "phenotype/%s: %d -> %d rows after removing recordings/tasks "
-                        "without a sidecar on disk.",
-                        tsv_name, before, after,
-                    )
-
-            # acoustic_task.tsv rows whose recordings were all filtered out above
-            # are orphans — no file on disk references their acoustic_task_id.
-            recording_fp = os.path.join(phenotype_dir, "task/recording.tsv")
-            acoustic_task_fp = os.path.join(phenotype_dir, "task/acoustic_task.tsv")
-            if os.path.isfile(recording_fp) and os.path.isfile(acoustic_task_fp):
-                df_rec = BIDSDataset._read_tsv_as_written(recording_fp)
-                df_at = BIDSDataset._read_tsv_as_written(acoustic_task_fp)
-                if (
-                    "recording_acoustic_task_id" in df_rec.columns
-                    and "acoustic_task_id" in df_at.columns
-                ):
-                    surviving_task_ids = set(df_rec["recording_acoustic_task_id"].dropna())
-                    before_at = len(df_at)
-                    df_at = df_at.loc[df_at["acoustic_task_id"].isin(surviving_task_ids)]
-                    after_at = len(df_at)
-                    if before_at != after_at:
-                        df_at.to_csv(acoustic_task_fp, sep="\t", index=False)
-                        _LOGGER.info(
-                            "phenotype/task/acoustic_task.tsv: %d -> %d rows after "
-                            "removing tasks with no surviving recordings.",
-                            before_at, after_at,
-                        )
+            BIDSDataset._filter_task_tables_to_recordings(
+                os.path.join(outdir, "phenotype"), all_recording_ids_with_sidecar,
+            )
 
         # QA report: participants with no distributed audio
         participants_without_audio = {p["record_id"] for p in participants} - participants_with_audio
@@ -915,6 +877,51 @@ class BIDSDataset:
         return df.to_dict("index")
 
     @staticmethod
+    def _filter_task_tables_to_recordings(phenotype_dir: str, recording_ids: t.AbstractSet[str]) -> None:
+        """Keep recording.tsv rows of *recording_ids* (those with a sidecar), then acoustic_task.tsv
+        rows that still have a recording. Tables are read and written back as written."""
+        for tsv_name, id_col in [("task/recording.tsv", "recording_id")]:
+            fp = os.path.join(phenotype_dir, tsv_name)
+            if not os.path.isfile(fp):
+                continue
+            df_tsv = BIDSDataset._read_tsv_as_written(fp)
+            if id_col not in df_tsv.columns:
+                continue
+            before = len(df_tsv)
+            df_tsv = df_tsv.loc[df_tsv[id_col].isin(recording_ids)]
+            after = len(df_tsv)
+            if before != after:
+                df_tsv.to_csv(fp, sep="\t", index=False)
+                _LOGGER.info(
+                    "phenotype/%s: %d -> %d rows after removing recordings/tasks "
+                    "without a sidecar on disk.",
+                    tsv_name, before, after,
+                )
+
+        # acoustic_task.tsv rows whose recordings were all filtered out above
+        # are orphans — no file on disk references their acoustic_task_id.
+        recording_fp = os.path.join(phenotype_dir, "task/recording.tsv")
+        acoustic_task_fp = os.path.join(phenotype_dir, "task/acoustic_task.tsv")
+        if os.path.isfile(recording_fp) and os.path.isfile(acoustic_task_fp):
+            df_rec = BIDSDataset._read_tsv_as_written(recording_fp)
+            df_at = BIDSDataset._read_tsv_as_written(acoustic_task_fp)
+            if (
+                "recording_acoustic_task_id" in df_rec.columns
+                and "acoustic_task_id" in df_at.columns
+            ):
+                surviving_task_ids = set(df_rec["recording_acoustic_task_id"].dropna())
+                before_at = len(df_at)
+                df_at = df_at.loc[df_at["acoustic_task_id"].isin(surviving_task_ids)]
+                after_at = len(df_at)
+                if before_at != after_at:
+                    df_at.to_csv(acoustic_task_fp, sep="\t", index=False)
+                    _LOGGER.info(
+                        "phenotype/task/acoustic_task.tsv: %d -> %d rows after "
+                        "removing tasks with no surviving recordings.",
+                        before_at, after_at,
+                    )
+
+    @staticmethod
     def _read_tsv_as_written(path: t.Union[str, Path]) -> pd.DataFrame:
         """Read a TSV the pipeline wrote, as text, with only an empty cell treated as missing.
 
@@ -1210,13 +1217,15 @@ class BIDSDataset:
                 if pd.notna(a):
                     age.setdefault(r, a)
         after_session: t.List[str] = []
+        no_session_after_first: t.List[str] = []
         before_birth: t.List[str] = []
         same_day: t.List[str] = []
         unchecked: t.List[str] = []
         no_reference = 0
         for src, out in columns.items():
             values: t.List[t.Any] = []
-            for record_id, value, ref, own_day, undated in zip(df["record_id"], df[src], reference, own, undated_own):
+            for record_id, value, ref, own_day, undated, has_session in zip(
+                    df["record_id"], df[src], reference, own, undated_own, row_session.notna()):
                 if not isinstance(value, str) or not value.strip():
                     values.append(pd.NA)
                     continue
@@ -1244,6 +1253,9 @@ class BIDSDataset:
                 elif undated:
                     unchecked.append(f"{record_id} {src}")
                 days = (ref - when).days
+                if days < 0 and not has_session:
+                    # a clinician-filled form with no session of its own: kept, for QA to confirm
+                    no_session_after_first.append(f"{record_id} {src} ({-days} days after)")
                 if record_id in age and days > (age[record_id] + 1) * 365.25:
                     before_birth.append(f"{record_id} {src} ({days} days, age {age[record_id]:g})")
                     values.append(pd.NA)
@@ -1259,6 +1271,10 @@ class BIDSDataset:
         if after_session:
             _LOGGER.warning(f"QA check: days since {what}: %d {what} date(s) after the session they were reported "
                             "in, left blank: %s", len(after_session), "; ".join(after_session))
+        if no_session_after_first:
+            _LOGGER.warning(f"QA check: days since {what}: %d {what} date(s) on a form with no session fall after "
+                            "the participant's first session; kept as negative values: %s",
+                            len(no_session_after_first), "; ".join(no_session_after_first))
         if unchecked:
             _LOGGER.warning(f"QA check: days since {what}: %d {what} date(s) on a form whose session has no date "
                             "could not be checked against it; kept: %s", len(unchecked), "; ".join(unchecked))
@@ -3565,13 +3581,20 @@ class BIDSDataset:
             paths = sorted(phenotype_dir.rglob(f"{table}.tsv"))
             if len(paths) != 1:
                 raise ValueError(f"exclude_participants: expected one phenotype table {table!r}, found {len(paths)}.")
-            df = BIDSDataset._read_tsv_as_written(paths[0])
+            df, _, _, elements = BIDSDataset.load_phenotype_file(paths[0].with_suffix(".json"))
             if column not in df.columns:
                 raise ValueError(f"exclude_participants: {table} has no column {column!r}.")
+            choices = (elements.get(column) or {}).get("choices") or []
+            labels = {c["name"].get("en") if isinstance(c.get("name"), dict) else c.get("name") for c in choices}
+            if choices and not values <= labels:
+                # a typo ("other", "Other ") would silently exclude no one
+                raise ValueError(f"exclude_participants: {table}.{column} has no choice labelled "
+                                 f"{sorted(values - labels)}; its choices are {sorted(labels)}.")
             id_col = "participant_id" if "participant_id" in df.columns else "record_id"
             matched = set(df.loc[df[column].isin(values), id_col].dropna().astype(str))
-            _LOGGER.info("exclude_participants: %d participant(s) with %s.%s in %s not released.",
-                         len(matched), table, column, sorted(values))
+            _LOGGER.log(logging.INFO if matched else logging.WARNING,
+                        "exclude_participants: %d participant(s) with %s.%s in %s not released.",
+                        len(matched), table, column, sorted(values))
             excluded |= matched
         return excluded
 

@@ -865,16 +865,13 @@ def validate_bundled_dataset(dataset_path, config_dir):
     if phenotype_dir.exists():
         for tsv_file in phenotype_dir.rglob("*.tsv"):
             try:
-                df = BIDSDataset._read_tsv_as_written(tsv_file)
+                if tsv_file.with_suffix(".json").exists():
+                    df, _, _, elements = BIDSDataset.load_phenotype_file(tsv_file.with_suffix(".json"))
+                else:
+                    df, elements = BIDSDataset._read_tsv_as_written(tsv_file), {}
                 issues.extend(_unreleasable_columns(tsv_file, df.columns, field_map, access_tier, reviewed_columns))
                 # An answer choice a default TSV reader takes for missing would be lost by users
                 # (relabel it). Free text is left as typed: a typed "N/A" means no answer anyway.
-                sidecar = tsv_file.with_suffix(".json")
-                elements = {}
-                if sidecar.exists():
-                    meta = json.loads(sidecar.read_text())
-                    wrapped = [v for v in meta.values() if isinstance(v, dict) and "data_elements" in v]
-                    elements = wrapped[0]["data_elements"] if wrapped else meta
                 choice_columns = [c for c in df.columns if isinstance(elements.get(c), dict) and elements[c].get("choices")]
                 words = df[choice_columns].apply(lambda col: col.str.strip().isin(BIDSDataset._MISSING_VALUE_WORDS)).sum()
                 words = words[words > 0]

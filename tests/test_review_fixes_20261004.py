@@ -327,3 +327,65 @@ def test_exclude_participants_refuses_a_column_that_is_not_there(tmp_path):
         "exclude_participants": [{"table": "pediatric_demographics", "column": "peds_gender_identiy", "values": ["Other"]}]}))
     with pytest.raises(ValueError, match="no column 'peds_gender_identiy'"):
         BIDSDataset(bids).deidentify(outdir=tmp_path / "out", deidentify_config_dir=config)
+
+
+def test_ingest_task_table_filter_keeps_typed_na_like_answers(tmp_path):
+    """The recording / acoustic_task filters at ingest re-read and rewrite the tables."""
+    task = tmp_path / "task"
+    task.mkdir()
+    (task / "recording.tsv").write_text("recording_id\trecording_acoustic_task_id\trecording_microphone\n"
+                                        "r1\tt1\tNone\nr2\tt2\tN/A\n")
+    (task / "acoustic_task.tsv").write_text("acoustic_task_id\tacoustic_task_notes\nt1\tNA\nt2\tnull\n")
+    BIDSDataset._filter_task_tables_to_recordings(str(tmp_path), {"r1"})
+    rec = BIDSDataset._read_tsv_as_written(task / "recording.tsv")
+    at = BIDSDataset._read_tsv_as_written(task / "acoustic_task.tsv")
+    assert rec.to_dict("list") == {"recording_id": ["r1"], "recording_acoustic_task_id": ["t1"],
+                                   "recording_microphone": ["None"]}
+    assert at.to_dict("list") == {"acoustic_task_id": ["t1"], "acoustic_task_notes": ["NA"]}
+
+
+def test_exclude_participants_refuses_a_value_that_is_not_an_answer_choice(tmp_path):
+    demographics = pd.DataFrame({"participant_id": ["p1"], "peds_gender_identity": ["Other"]})
+    bids, config = _tree(tmp_path, ["p1"], {"pediatric/pediatric_demographics": demographics})
+    sidecar = bids / "phenotype" / "pediatric" / "pediatric_demographics.json"
+    meta = json.loads(sidecar.read_text())
+    meta["pediatric_demographics"]["data_elements"]["peds_gender_identity"]["choices"] = [
+        {"name": {"en": "Female gender identity"}, "value": "female"}, {"name": {"en": "Other"}, "value": "other"}]
+    sidecar.write_text(json.dumps(meta))
+    (config / "deidentify_settings.json").write_text(json.dumps({
+        "access_tier": "registered",
+        "exclude_participants": [{"table": "pediatric_demographics", "column": "peds_gender_identity",
+                                  "values": ["other"]}]}))
+    with pytest.raises(ValueError, match=r"no choice labelled \['other'\]"):
+        BIDSDataset(bids).deidentify(outdir=tmp_path / "out", deidentify_config_dir=config)
+
+
+def test_session_labels_agree_between_tiers_when_a_session_has_only_controlled_data(tmp_path, monkeypatch):
+    """A registered build numbers labels over what the controlled tier could release too."""
+    field_map = BIDSDataset._load_reorganization_file(exclude_dropped=False).copy()
+    field_map["access_tier"] = field_map["access_tier"].astype(object)
+    field_map.loc[(field_map["schema_name"] == "confounders") & (field_map["column_name"] == "ph_walking"),
+                  "access_tier"] = "controlled"
+    monkeypatch.setattr(BIDSDataset, "_load_reorganization_file",
+                        staticmethod(lambda exclude_dropped=True: field_map if not exclude_dropped
+                                     else field_map.loc[field_map["disposition"] != "drop"]))
+    monkeypatch.setattr(BIDSDataset, "_cached_field_map_df", None)
+    labels = {}
+    for tier in ("registered", "controlled"):
+        confounders = pd.DataFrame({"participant_id": ["p1"], "confounders_session_id": ["s2"],
+                                    "ph_walking": ["Mild"]})
+        bids, config = _tree(tmp_path / tier, ["p1"], {"confounders/confounders": confounders})
+        audio = bids / "sub-p1" / "ses-s3" / "audio"
+        audio.mkdir(parents=True)
+        stem = "sub-p1_ses-s3_task-rainbow-passage"
+        (audio / f"{stem}.wav").write_bytes(b"RIFF" + b"\x00" * 8192)
+        (audio / f"{stem}_recording-metadata.json").write_text(json.dumps({"record_id": "p1", "session_id": "s3"}))
+        pd.DataFrame({"record_id": ["p1"] * 3, "session_id": ["s1", "s2", "s3"],
+                      "session_index": ["1", "2", "3"]}).to_csv(bids / "sub-p1" / "sessions.tsv", sep="\t", index=False)
+        (config / "deidentify_settings.json").write_text(json.dumps({"access_tier": tier}))
+        out = tmp_path / tier / "out"
+        BIDSDataset(bids).deidentify(outdir=out, deidentify_config_dir=config)
+        (sessions,) = list((out / "sub-900000").glob("*sessions.tsv"))
+        labels[tier] = list(BIDSDataset._read_tsv_as_written(sessions)["session_id"])
+    assert labels["registered"] == ["01", "03"]  # s2 is controlled-only: withheld, but s3 keeps 03
+    assert labels["controlled"] == ["01", "02", "03"]
