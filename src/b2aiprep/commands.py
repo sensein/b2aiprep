@@ -685,9 +685,14 @@ def create_bundled_dataset(bids_path, outdir, skip_audio, skip_audio_features):
     )
 
 
-def _unreleasable_columns(tsv_file, columns, field_map, access_tier=AccessTier.REGISTERED):
-    """Issues for columns a release must not contain: internal, drop, date-shifted, unknown, or
-    (outside the controlled tier) ``access_tier=controlled``.
+def _unreleasable_columns(tsv_file, columns, field_map, access_tier=AccessTier.REGISTERED,
+                          reviewed_columns=frozenset()):
+    """Issues for columns a release must not contain: internal, drop, date-shifted, unknown,
+    (outside the controlled tier) ``access_tier=controlled``, a review column with no verdict in
+    the config's ``column_value_reviews.json`` (*reviewed_columns*), or ``record_id``.
+
+    Deidentify drops a review column that has no verdicts, so one in a bundle came from a QA
+    build (``--disposition-level review``) and holds unreviewed values.
 
     A table is matched to its field-map rows by file name (``demographics.tsv`` -> table
     ``demographics``), as deidentify writes it. Nothing on disk marks a QA build
@@ -698,19 +703,20 @@ def _unreleasable_columns(tsv_file, columns, field_map, access_tier=AccessTier.R
     rows = field_map.loc[field_map["schema_name"] == table]
     if rows.empty:
         return [f"{tsv_file.name}: table {table!r} is not in the field map"]
-    published = rows["disposition"].isin(["release", "review"]) & (
-        rows["date_shift"].astype(str).str.upper() != "YES"
-    )
+    published = (
+        rows["disposition"].eq("release")
+        | (rows["disposition"].eq("review") & rows["column_name"].isin(set(reviewed_columns)))
+    ) & (rows["date_shift"].astype(str).str.upper() != "YES")
     if access_tier != AccessTier.CONTROLLED and "access_tier" in rows.columns:
         published &= ~rows["access_tier"].fillna("").astype(str).str.strip().str.lower().eq("controlled")
     allowed = set(rows.loc[published, "column_name"].dropna())
     known = set(rows["column_name"].dropna())
-    ids = set(BIDSDataset._PIPELINE_ID_COLUMNS)
+    ids = {"participant_id"}  # record_id is the original ID; deidentify writes participant_id
     withheld = sorted(c for c in columns if c in known and c not in allowed and c not in ids)
     unknown = sorted(c for c in columns if c not in known and c not in ids)
     issues = []
     if withheld:
-        issues.append(f"{tsv_file.name}: {len(withheld)} internal/drop/date/controlled-only column(s) present: {', '.join(withheld)}")
+        issues.append(f"{tsv_file.name}: {len(withheld)} internal/drop/date/controlled-only/unreviewed column(s) present: {', '.join(withheld)}")
     if unknown:
         issues.append(f"{tsv_file.name}: {len(unknown)} column(s) not in the field map: {', '.join(unknown)}")
     return issues
@@ -739,6 +745,9 @@ def validate_bundled_dataset(dataset_path, config_dir):
         BIDSDataset._load_deidentify_settings(config_dir)["access_tier"]
         if (config_dir / "deidentify_settings.json").exists() else AccessTier.REGISTERED
     )
+
+    # Review columns may be published only where the config's review manifest has verdicts.
+    reviewed_columns = {col for _, col in BIDSDataset._load_column_value_reviews(config_dir)}
 
     click.echo(f"Validating bundled dataset at {dataset_path} (access tier: {access_tier.value})")
 
@@ -852,8 +861,8 @@ def validate_bundled_dataset(dataset_path, config_dir):
     if phenotype_dir.exists():
         for tsv_file in phenotype_dir.rglob("*.tsv"):
             try:
-                df = pd.read_csv(tsv_file, sep="\t", dtype=str)
-                issues.extend(_unreleasable_columns(tsv_file, df.columns, field_map, access_tier))
+                df = BIDSDataset._read_tsv_as_written(tsv_file)
+                issues.extend(_unreleasable_columns(tsv_file, df.columns, field_map, access_tier, reviewed_columns))
                 if "participant_id" in df.columns:
                     present_participants = set(df["participant_id"].dropna().unique())
                     removed_present = _unexpected_participants(present_participants)

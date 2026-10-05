@@ -127,3 +127,35 @@ def test_rare_checkbox_label_is_not_published_without_a_review_verdict(tmp_path)
     assert by_id.loc["900000", "voice_activity_v2___other"] == "1"
     assert pd.isna(by_id.loc["900000", "other_voice_activity"])  # no verdict: no label
     assert by_id.loc["900001", "other_voice_activity"] == "Podcaster"
+
+
+def _bundle_with_confounders(tmp_path, columns, verdicts=None):
+    from click.testing import CliRunner
+    from b2aiprep.commands import validate_bundled_dataset
+    from test_review_fixes_20260930 import _bundle, _config
+
+    _bundle(tmp_path / "bundle", ["session_status"])
+    folder = tmp_path / "bundle" / "phenotype" / "confounders"
+    folder.mkdir(parents=True)
+    pd.DataFrame({"participant_id": ["005009"], **{c: ["x"] for c in columns}}).to_csv(
+        folder / "confounders.tsv", sep="\t", index=False)
+    config = _config(tmp_path / "cfg")
+    if verdicts is not None:
+        (config / "column_value_reviews.json").write_text(json.dumps({"verdicts": verdicts}))
+    return CliRunner().invoke(validate_bundled_dataset, [str(tmp_path / "bundle"), str(config)])
+
+
+def test_bundle_validation_fails_on_an_unreviewed_review_column(tmp_path):
+    result = _bundle_with_confounders(tmp_path, ["other_voice_activity"])
+    assert result.exit_code != 0 and "other_voice_activity" in result.output
+
+
+def test_bundle_validation_passes_a_review_column_with_verdicts(tmp_path):
+    result = _bundle_with_confounders(tmp_path, ["other_voice_activity"], [
+        {"participant_id": "p1", "column_name": "other_voice_activity", "verdict": "safe"}])
+    assert result.exit_code == 0, result.output
+
+
+def test_bundle_validation_fails_on_a_record_id_column(tmp_path):
+    result = _bundle_with_confounders(tmp_path, ["record_id"])
+    assert result.exit_code != 0 and "record_id" in result.output
