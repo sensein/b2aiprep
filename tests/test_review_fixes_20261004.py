@@ -253,8 +253,23 @@ def test_bundle_validation_fails_on_cells_readers_take_for_missing(tmp_path):
     folder.mkdir(parents=True)
     pd.DataFrame({"participant_id": ["005009"], "ph_walking": ["None"]}).to_csv(
         folder / "confounders.tsv", sep="\t", index=False)
+    (folder / "confounders.json").write_text(json.dumps({"confounders": {"data_elements": {
+        "ph_walking": {"choices": [{"name": {"en": "None"}, "value": "none"}]}}}}))
     result = CliRunner().invoke(validate_bundled_dataset, [str(tmp_path / "bundle"), str(_config(tmp_path / "cfg"))])
     assert result.exit_code != 0 and "ph_walking (1)" in result.output
+
+
+def test_bundle_validation_leaves_typed_na_in_free_text(tmp_path):
+    result = _bundle_with_confounders(tmp_path, ["other_voice_activity"], [
+        {"participant_id": "p1", "column_name": "other_voice_activity", "verdict": "safe"}])
+    assert result.exit_code == 0, result.output
+    folder = tmp_path / "bundle" / "phenotype" / "confounders"
+    pd.DataFrame({"participant_id": ["005009"], "other_voice_activity": ["N/A"]}).to_csv(
+        folder / "confounders.tsv", sep="\t", index=False)
+    from click.testing import CliRunner
+    from b2aiprep.commands import validate_bundled_dataset
+    result = CliRunner().invoke(validate_bundled_dataset, [str(tmp_path / "bundle"), str(tmp_path / "cfg")])
+    assert result.exit_code == 0, result.output
 
 
 def test_relabelled_answers_and_their_choices_reach_the_released_json(tmp_path):
