@@ -255,3 +255,27 @@ def test_bundle_validation_fails_on_cells_readers_take_for_missing(tmp_path):
         folder / "confounders.tsv", sep="\t", index=False)
     result = CliRunner().invoke(validate_bundled_dataset, [str(tmp_path / "bundle"), str(_config(tmp_path / "cfg"))])
     assert result.exit_code != 0 and "ph_walking (1)" in result.output
+
+
+def test_relabelled_answers_and_their_choices_reach_the_released_json(tmp_path):
+    choices = [{"name": {"en": "None"}, "value": "none"}, {"name": {"en": "Mild"}, "value": "mild"},
+               {"name": {"en": "Extreme or cannot do"}, "value": "extreme"}]
+    confounders = pd.DataFrame({"participant_id": ["p1", "p2"], "ph_walking": ["None", "Mild"]})
+    bids, config = _tree(tmp_path, ["p1", "p2"], {"confounders/confounders": confounders})
+    sidecar = bids / "phenotype" / "confounders" / "confounders.json"
+    meta = json.loads(sidecar.read_text())
+    meta["confounders"]["data_elements"]["ph_walking"]["choices"] = choices
+    sidecar.write_text(json.dumps(meta))
+    (config / "deidentify_settings.json").write_text(json.dumps({
+        "access_tier": "registered",
+        "relabel": {"confounders": {"ph_walking": {"None": "No difficulty"}}}}))
+    out = tmp_path / "out"
+    BIDSDataset(bids).deidentify(outdir=out, deidentify_config_dir=config)
+    released = out / "phenotype" / "confounders"
+    tsv = BIDSDataset._read_tsv_as_written(released / "confounders.tsv")
+    assert sorted(tsv["ph_walking"]) == ["Mild", "No difficulty"]
+    written = json.loads((released / "confounders.json").read_text())
+    element = written["confounders"]["data_elements"]["ph_walking"]
+    assert element["choices"] == [{"name": {"en": "No difficulty"}, "value": "none"},
+                                  {"name": {"en": "Mild"}, "value": "mild"},
+                                  {"name": {"en": "Extreme or cannot do"}, "value": "extreme"}]
