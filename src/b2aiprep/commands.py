@@ -867,6 +867,12 @@ def validate_bundled_dataset(dataset_path, config_dir):
             try:
                 df = BIDSDataset._read_tsv_as_written(tsv_file)
                 issues.extend(_unreleasable_columns(tsv_file, df.columns, field_map, access_tier, reviewed_columns))
+                # A cell a default TSV reader takes for missing would be lost by users (relabel it).
+                words = df.apply(lambda col: col.str.strip().isin(BIDSDataset._MISSING_VALUE_WORDS)).sum()
+                words = words[words > 0]
+                if not words.empty:
+                    issues.append(f"{tsv_file.name}: cells that TSV readers read as missing (e.g. 'None', 'N/A'): "
+                                  + ", ".join(f"{c} ({n})" for c, n in words.items()))
                 if "participant_id" in df.columns:
                     present_participants = set(df["participant_id"].dropna().unique())
                     removed_present = _unexpected_participants(present_participants)

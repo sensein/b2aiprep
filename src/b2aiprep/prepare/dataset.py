@@ -3460,15 +3460,23 @@ class BIDSDataset:
         },
     }
 
-    _SETTINGS_KEYS = frozenset({"access_tier", "value_mappings", "small_checkbox_options"})
+    _SETTINGS_KEYS = frozenset({"access_tier", "value_mappings", "small_checkbox_options", "relabel"})
+
+    # Cell values that common TSV readers (pandas, R, readr) read as missing by default. A released
+    # answer must not be one of them, or a user loading the table loses it; see ``relabel``.
+    _MISSING_VALUE_WORDS = frozenset({
+        "#N/A", "#N/A N/A", "#NA", "-1.#IND", "-1.#QNAN", "-NaN", "-nan", "1.#IND", "1.#QNAN", "<NA>",
+        "N/A", "NA", "NULL", "NaN", "None", "n/a", "nan", "null",
+    })
 
     @staticmethod
     def _load_deidentify_settings(config_dir: Path) -> t.Dict[str, t.Any]:
         """Release settings from ``deidentify_settings.json`` in the deidentify config directory.
 
         ``access_tier`` (registered/controlled) is required, so no run builds a tier by default.
-        ``value_mappings`` (see ``_apply_value_mappings``) and ``small_checkbox_options`` (same
-        shape as ``_SMALL_CHECKBOX_OPTIONS``, which applies when it is left out) are optional.
+        ``value_mappings`` (see ``_apply_value_mappings``), ``relabel`` (see ``_apply_relabels``)
+        and ``small_checkbox_options`` (same shape as ``_SMALL_CHECKBOX_OPTIONS``, which applies
+        when it is left out) are optional.
         """
         path = Path(config_dir) / "deidentify_settings.json"
         if not path.exists():
@@ -3486,6 +3494,7 @@ class BIDSDataset:
             raise ValueError(f"{path}: access_tier must be one of {tiers}, got {settings.get('access_tier')!r}.")
         settings["access_tier"] = AccessTier(settings["access_tier"])
         settings.setdefault("value_mappings", {})
+        settings.setdefault("relabel", {})
         settings.setdefault("small_checkbox_options", BIDSDataset._SMALL_CHECKBOX_OPTIONS)
         _LOGGER.info("Deidentify settings from %s: access tier %s.", path, settings["access_tier"].value)
         return settings
@@ -3538,6 +3547,42 @@ class BIDSDataset:
             if folded:
                 _LOGGER.info("%s.%s: %d option(s) chosen by fewer than %d released participants folded into "
                              "%s: %s", schema_name, question, len(folded), minimum, other, ", ".join(folded))
+        return df, phenotype
+
+    @staticmethod
+    def _apply_relabels(
+        df: pd.DataFrame, phenotype: dict, schema_name: str, spec: t.Mapping[str, t.Mapping[str, t.Mapping[str, str]]],
+    ) -> t.Tuple[pd.DataFrame, dict]:
+        """Rename answer labels of the configured columns, in the cells and in the data dictionary.
+
+        *spec* is ``relabel`` from ``deidentify_settings.json``: ``{schema: {column: {old label: new
+        label}}}``. Only the listed labels change; other answers, each choice's code and the choice
+        order stay. For labels such as "None" that TSV readers take for missing by default. A listed
+        label that is not one of the column's choices stops the run (a typo would change nothing).
+        """
+        rules = spec.get(schema_name) or {}
+        if not rules:
+            return df, phenotype
+        df = df.copy()
+        for column, labels in rules.items():
+            if column not in df.columns:
+                continue
+            element = phenotype.get(column) or {}
+            choices = element.get("choices") or []
+            names = [c.get("name", {}) for c in choices]
+            known = {n.get("en") if isinstance(n, dict) else n for n in names}
+            missing = sorted(set(labels) - known)
+            if missing:
+                raise ValueError(f"relabel: {schema_name}.{column} has no choice labelled {missing}.")
+            df[column] = df[column].map(lambda v: labels.get(v, v) if isinstance(v, str) else v)
+            for choice in choices:
+                name = choice.get("name")
+                if isinstance(name, dict) and name.get("en") in labels:
+                    choice["name"] = {**name, "en": labels[name["en"]]}
+                elif isinstance(name, str) and name in labels:
+                    choice["name"] = labels[name]
+            _LOGGER.info("%s.%s: relabelled %s.", schema_name, column,
+                         ", ".join(f"{old!r} -> {new!r}" for old, new in labels.items()))
         return df, phenotype
 
     @staticmethod
@@ -3928,6 +3973,7 @@ class BIDSDataset:
         access_tier = settings["access_tier"]
         small_checkbox_options = settings["small_checkbox_options"]
         value_mappings = settings["value_mappings"]
+        relabels = settings["relabel"]
         has_review_verdicts = bool(column_value_verdicts)
         phenotype_level = disposition_level or (
             DispositionLevel.REVIEW if has_review_verdicts else DispositionLevel.RELEASE
@@ -4123,6 +4169,9 @@ class BIDSDataset:
                 )
                 df_pheno, phenotype_dict = BIDSDataset._apply_value_mappings(
                     df_pheno, phenotype_dict, schema_name, value_mappings,
+                )
+                df_pheno, phenotype_dict = BIDSDataset._apply_relabels(
+                    df_pheno, phenotype_dict, schema_name, relabels,
                 )
 
                 # Drop internal columns (and review if no manifest)

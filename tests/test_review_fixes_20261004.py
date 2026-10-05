@@ -223,3 +223,35 @@ def test_bundle_validation_compares_sessions_per_participant(tmp_path):
     (config / "participants_to_include.json").write_text(json.dumps(["p1", "p2"]))
     result = CliRunner().invoke(validate_bundled_dataset, [str(tmp_path / "bundle"), str(config)])
     assert result.exit_code != 0 and "torchaudio_mfcc.parquet not found in session.tsv" in result.output
+
+
+def test_relabel_changes_only_the_listed_labels_in_cells_and_choices():
+    df = pd.DataFrame({"participant_id": ["1", "2", "3"], "ph_walking": ["None", "Mild", pd.NA]})
+    choices = [{"name": {"en": "None"}, "value": "none"}, {"name": {"en": "Mild"}, "value": "mild"}]
+    elements = {"ph_walking": {"choices": choices}}
+    out, el = BIDSDataset._apply_relabels(df, elements, "confounders",
+                                         {"confounders": {"ph_walking": {"None": "No difficulty"}}})
+    assert out["ph_walking"].tolist()[:2] == ["No difficulty", "Mild"] and pd.isna(out["ph_walking"].iloc[2])
+    assert el["ph_walking"]["choices"] == [{"name": {"en": "No difficulty"}, "value": "none"},
+                                           {"name": {"en": "Mild"}, "value": "mild"}]
+
+
+def test_relabel_refuses_a_label_the_column_does_not_have():
+    df = pd.DataFrame({"participant_id": ["1"], "ph_walking": ["None"]})
+    elements = {"ph_walking": {"choices": [{"name": {"en": "None"}, "value": "none"}]}}
+    with pytest.raises(ValueError, match="no choice labelled"):
+        BIDSDataset._apply_relabels(df, elements, "confounders", {"confounders": {"ph_walking": {"Nome": "x"}}})
+
+
+def test_bundle_validation_fails_on_cells_readers_take_for_missing(tmp_path):
+    from click.testing import CliRunner
+    from b2aiprep.commands import validate_bundled_dataset
+    from test_review_fixes_20260930 import _bundle, _config
+
+    _bundle(tmp_path / "bundle", ["session_status"])
+    folder = tmp_path / "bundle" / "phenotype" / "confounders"
+    folder.mkdir(parents=True)
+    pd.DataFrame({"participant_id": ["005009"], "ph_walking": ["None"]}).to_csv(
+        folder / "confounders.tsv", sep="\t", index=False)
+    result = CliRunner().invoke(validate_bundled_dataset, [str(tmp_path / "bundle"), str(_config(tmp_path / "cfg"))])
+    assert result.exit_code != 0 and "ph_walking (1)" in result.output
