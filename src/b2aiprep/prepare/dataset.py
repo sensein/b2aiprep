@@ -1157,18 +1157,23 @@ class BIDSDataset:
 
     @staticmethod
     def _add_days_since_dates(df: pd.DataFrame, date_columns: t.Mapping[str, str], what: str) -> pd.DataFrame:
-        """Add one ``*_days_since`` column per date in *date_columns*: days from the date to the session.
+        """Add one ``*_days_since`` column per date in *date_columns*: days from the date to the
+        participant's first session.
 
-        The reference is the local start date of the session the row belongs to; a row with no
-        session (e.g. a diagnosis form on the participant row) uses the participant's first
-        session (such a value can be negative: an episode recorded at a later visit). Both dates are read
-        after the shift, which moves all of a participant's dates by the same whole weeks, so the
+        Every value is on the participant's one timeline, whose zero is the local start date of
+        their first session (MIMIC-style): positive = before the first session, negative = after
+        it (e.g. a surgery between two visits, reported at the second). Both dates are read after
+        the shift, which moves all of a participant's dates by the same whole weeks, so the
         difference is the real one. Blank when either date is missing (including dates the shift
-        blanked). A row with no session (a clinician-filled diagnosis form) is never blanked for its
-        timing; one after the first session is logged. Left blank and logged for QA until the site
-        corrects it: a date after the session the row belongs to, a date
-        earlier than the participant's numeric ``age`` + 1 years allows, and, for the fields in
-        ``_DATE_NOT_GIVEN_ON_SESSION_DAY``, a date equal to the session date.
+        blanked).
+
+        The session the row belongs to is used only to check the date. Left blank and logged for
+        QA until the site corrects it: a date after that session, a date earlier than the
+        participant's numeric ``age`` + 1 years allows, and, for the fields in
+        ``_DATE_NOT_GIVEN_ON_SESSION_DAY``, a date equal to that session's date (the date box
+        defaults to today). A row with no session of its own (a clinician-filled diagnosis form)
+        or whose session has no date cannot be checked against it; its value is kept, and the
+        undated case is logged.
         """
         df = df.copy()
         columns = {src: out for src, out in date_columns.items() if src in df.columns}
@@ -1190,24 +1195,24 @@ class BIDSDataset:
                     session_date[session_id] = day
                 if record_id not in first_session or day < first_session[record_id]:
                     first_session[record_id] = day
-        own = row_sessions(df).map(session_date)
-        # A row with no session (a diagnosis form has no date of its own) is measured to the first session.
-        reference = own.where(own.notna(), df["record_id"].map(first_session))
-        has_session = own.notna()
+        row_session = row_sessions(df)
+        own = row_session.map(session_date)
+        reference = df["record_id"].map(first_session)
+        undated_own = row_session.notna() & own.isna()
         age: t.Dict[str, float] = {}
         if "age" in df.columns:
             numeric_age = pd.to_numeric(df["age"], errors="coerce")
             for r, a in zip(df["record_id"], numeric_age):
                 if pd.notna(a):
                     age.setdefault(r, a)
-        negative: t.List[str] = []
+        after_session: t.List[str] = []
         before_birth: t.List[str] = []
         same_day: t.List[str] = []
-        after_first: t.List[str] = []
+        unchecked: t.List[str] = []
         no_reference = 0
         for src, out in columns.items():
             values: t.List[t.Any] = []
-            for record_id, value, ref, in_session in zip(df["record_id"], df[src], reference, has_session):
+            for record_id, value, ref, own_day, undated in zip(df["record_id"], df[src], reference, own, undated_own):
                 if not isinstance(value, str) or not value.strip():
                     values.append(pd.NA)
                     continue
@@ -1220,22 +1225,21 @@ class BIDSDataset:
                 except ValueError:
                     values.append(pd.NA)
                     continue
+                if isinstance(own_day, datetime.date):
+                    if src in BIDSDataset._DATE_NOT_GIVEN_ON_SESSION_DAY and when == own_day:
+                        # the form's date box defaults to today: a date equal to the session is not an answer
+                        same_day.append(f"{record_id} {src}")
+                        values.append(pd.NA)
+                        continue
+                    if when > own_day:
+                        # An impossible date is left blank for now (the source date stays, internal)
+                        # and logged so the site can correct it.
+                        after_session.append(f"{record_id} {src}")
+                        values.append(pd.NA)
+                        continue
+                elif undated:
+                    unchecked.append(f"{record_id} {src}")
                 days = (ref - when).days
-                if src in BIDSDataset._DATE_NOT_GIVEN_ON_SESSION_DAY and days == 0:
-                    # the form's date box defaults to today: a date equal to the session is not an answer
-                    same_day.append(f"{record_id} {src}")
-                    values.append(pd.NA)
-                    continue
-                # An impossible interval is left blank for now (the source date stays, internal) and
-                # logged so the site can correct the date.
-                if days < 0 and not in_session:
-                    # a clinician-filled form with no date of its own, possibly filled at a later
-                    # visit: kept (negative = after enrollment) and logged
-                    after_first.append(f"{record_id} {src} ({-days} days after)")
-                elif days < 0:
-                    negative.append(f"{record_id} {src}")
-                    values.append(pd.NA)
-                    continue
                 if record_id in age and days > (age[record_id] + 1) * 365.25:
                     before_birth.append(f"{record_id} {src} ({days} days, age {age[record_id]:g})")
                     values.append(pd.NA)
@@ -1245,16 +1249,15 @@ class BIDSDataset:
         _LOGGER.info(f"days since {what}: %d value(s) computed over %d {what} date column(s).",
                      int(sum(df[out].notna().sum() for out in columns.values())), len(columns))
         if no_reference:
-            _LOGGER.warning(f"days since {what}: %d {what} date(s) with no dated session to measure from; left blank.",
+            _LOGGER.warning(f"days since {what}: %d {what} date(s) of participants with no dated session; left blank.",
                             no_reference)
-        if negative:
-            # IDs are listed for QA; this log lives with the job output, outside the BIDS tree.
-            _LOGGER.warning(f"QA check: days since {what}: %d {what} date(s) after the session, left blank: %s",
-                            len(negative), "; ".join(negative))
-        if after_first:
-            _LOGGER.warning(f"QA check: days since {what}: %d {what} date(s) on a form with no session fall after "
-                            "the participant's first session; kept as negative values: %s",
-                            len(after_first), "; ".join(after_first))
+        # IDs are listed for QA; this log lives with the job output, outside the BIDS tree.
+        if after_session:
+            _LOGGER.warning(f"QA check: days since {what}: %d {what} date(s) after the session they were reported "
+                            "in, left blank: %s", len(after_session), "; ".join(after_session))
+        if unchecked:
+            _LOGGER.warning(f"QA check: days since {what}: %d {what} date(s) on a form whose session has no date "
+                            "could not be checked against it; kept: %s", len(unchecked), "; ".join(unchecked))
         if same_day:
             _LOGGER.warning(f"QA check: days since {what}: %d {what} date(s) equal to the session date, treated as "
                             "not given (the date box defaults to today): %s", len(same_day), "; ".join(same_day))

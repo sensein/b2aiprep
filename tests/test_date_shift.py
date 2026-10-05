@@ -552,7 +552,7 @@ def test_session_hour_check_lists_in_clinic_sessions_outside_clinic_hours(caplog
     assert "p1 S1 (02h)" in caplog.text and "S3" not in caplog.text
 
 
-def test_days_since_surgery_measures_to_the_forms_session(caplog):
+def test_days_since_surgery_measures_to_the_first_session_and_checks_the_forms_session(caplog):
     mc = "Q - Pediatric - Generic Medical Conditions"
     df = pd.DataFrame([
         {"record_id": "c1", "redcap_repeat_instrument": "Session", "session_id": "S1",
@@ -572,8 +572,8 @@ def test_days_since_surgery_measures_to_the_forms_session(caplog):
     assert _na(out.peds_mc_tonsillectomy_days_since) == [None, "7", None, None, None, None]  # before birth: blank
     assert _na(out.peds_mc_etp_procedure_days_since) == [None, None, None, None, None, "730"]  # after the session: blank
     assert "peds_mc_adenoidectomy_days_since" not in out.columns  # source column absent
-    assert "1 surgery date(s) after the session, left blank: c1 peds_mc_etp_procedure_date" in caplog.text
-    assert "1 surgery date(s) with no dated session" in caplog.text
+    assert "1 surgery date(s) after the session they were reported in, left blank: c1 peds_mc_etp_procedure_date" in caplog.text
+    assert "1 surgery date(s) of participants with no dated session" in caplog.text
     assert "1 surgery date(s) before the participant was born" in caplog.text
     assert "c3 peds_mc_tonsillectomy_date (3652 days, age 4)" in caplog.text
 
@@ -605,7 +605,7 @@ def test_session_hour_check_skips_sessions_self_administered_in_dropped_rows(cap
     assert "session hours" not in caplog.text
 
 
-def test_episode_dates_without_a_session_measure_to_the_first_session(caplog):
+def test_episode_and_trauma_dates_measure_to_the_first_session(caplog):
     df = pd.DataFrame([
         {"record_id": "a", "redcap_repeat_instrument": None, "mbd_last_manic_episode": "2099-12-06", "age": "30"},
         {"record_id": "a", "redcap_repeat_instrument": "Session", "session_id": "S2",
@@ -620,10 +620,9 @@ def test_episode_dates_without_a_session_measure_to_the_first_session(caplog):
     ], dtype=object)
     with caplog.at_level("WARNING"):
         out = BIDSDataset._add_days_since_episodes(df)
-    assert _na(out.mbd_last_manic_episode_days_since) == ["30", None, None, None, "-55", None]  # b: kept, logged (2100 is not a leap year)
-    assert _na(out.traumatic_event_days_since) == [None, None, None, "7", None, None]
-    assert "1 episode date(s) on a form with no session fall after the participant's first session" in caplog.text
-    assert "b mbd_last_manic_episode (55 days after)" in caplog.text
+    assert _na(out.mbd_last_manic_episode_days_since) == ["30", None, None, None, "-55", None]  # b: after enrollment (2100 is not a leap year)
+    # reported at S2 (2100-02-01), measured to the first session S1 (2100-01-05): 20 days after it
+    assert _na(out.traumatic_event_days_since) == [None, None, None, "-20", None, None]
 
 
 def test_episode_after_enrollment_is_kept_negative_and_trauma_on_session_day_is_not_given(caplog):
@@ -642,7 +641,20 @@ def test_episode_after_enrollment_is_kept_negative_and_trauma_on_session_day_is_
     assert _na(out.mbd_last_manic_episode_days_since) == ["-10", None, None, None]
     assert _na(out.traumatic_event_days_since) == [None] * 4
     assert "1 episode date(s) equal to the session date, treated as not given" in caplog.text
-    assert "a mbd_last_manic_episode (10 days after)" in caplog.text
+
+
+def test_a_form_on_an_undated_session_keeps_its_value_unchecked(caplog):
+    df = pd.DataFrame([
+        {"record_id": "a", "redcap_repeat_instrument": "Session", "session_id": "S1",
+         "session_started_at": "2100-01-05T10:00:00-05:00"},
+        {"record_id": "a", "redcap_repeat_instrument": "Session", "session_id": "S2", "session_started_at": None},
+        {"record_id": "a", "redcap_repeat_instrument": "Q - Mood - PTSD Adult", "ptsd_session_id": "S2",
+         "traumatic_event_date": "2100-01-25"},
+    ], dtype=object)
+    with caplog.at_level("WARNING"):
+        out = BIDSDataset._add_days_since_episodes(df)
+    assert _na(out.traumatic_event_days_since) == [None, None, "-20"]
+    assert "1 episode date(s) on a form whose session has no date could not be checked against it; kept: a traumatic_event_date" in caplog.text
 
 
 def test_postal_code_region_uses_prefix_rules_and_exceptions():
