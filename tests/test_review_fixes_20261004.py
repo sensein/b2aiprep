@@ -216,3 +216,23 @@ def test_field_map_refuses_an_access_tier_typo(monkeypatch, tmp_path):
     monkeypatch.setattr(dataset_module, "files", lambda _: tmp_path)
     with pytest.raises(ValueError, match="access_tier must be blank or 'controlled'.*controled"):
         BIDSDataset._load_reorganization_file(exclude_dropped=False)
+
+
+def test_bundle_validation_compares_sessions_per_participant(tmp_path):
+    """Ordinal labels repeat across participants: (P, '02') must fail even if Q has a session 02."""
+    from click.testing import CliRunner
+    from b2aiprep.commands import validate_bundled_dataset
+    from test_review_fixes_20260930 import _bundle, _config
+
+    _bundle(tmp_path / "bundle", ["session_status"])
+    task = tmp_path / "bundle" / "phenotype" / "task"
+    pd.DataFrame({"participant_id": ["005009", "005010"], "session_id": ["01", "02"],
+                  "session_status": ["x", "x"]}).to_csv(task / "session.tsv", sep="\t", index=False)
+    features = tmp_path / "bundle" / "features"
+    pd.DataFrame({"participant_id": ["005009"], "task_name": ["test"], "session_id": ["02"]}).to_parquet(
+        features / "torchaudio_mfcc.parquet")
+    config = _config(tmp_path / "cfg")
+    (config / "id_remapping.json").write_text(json.dumps({"p1": "005009", "p2": "005010"}))
+    (config / "participants_to_include.json").write_text(json.dumps(["p1", "p2"]))
+    result = CliRunner().invoke(validate_bundled_dataset, [str(tmp_path / "bundle"), str(config)])
+    assert result.exit_code != 0 and "torchaudio_mfcc.parquet not found in session.tsv" in result.output

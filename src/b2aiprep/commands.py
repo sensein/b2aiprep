@@ -817,14 +817,18 @@ def validate_bundled_dataset(dataset_path, config_dir):
     if not parquet_files:
         issues.append("No parquet files found in features directory")
 
-    # Capture parquet session IDs for cross-checks (best-effort).
-    parquet_sessions_all: set[str] = set()
+    # Sessions are compared as (participant_id, session_id): ordinal labels (01, 02, ...) repeat
+    # across participants, so bare session IDs would match almost anything.
+    def _session_keys(df: pd.DataFrame) -> set:
+        df = df.dropna(subset=["session_id"])
+        return set(zip(df["participant_id"].astype(str), df["session_id"].astype(str)))
+
+    # Capture parquet sessions for cross-checks (best-effort).
+    parquet_sessions_all: set = set()
     for parquet_file in parquet_files:
         try:
-            df_sessions = pd.read_parquet(parquet_file, columns=["session_id"])
             parquet_sessions_all.update(
-                [str(v) for v in df_sessions.get("session_id", pd.Series(dtype=str)).dropna().unique()]
-            )
+                _session_keys(pd.read_parquet(parquet_file, columns=["participant_id", "session_id"])))
         except Exception:
             continue
 
@@ -889,15 +893,13 @@ def validate_bundled_dataset(dataset_path, config_dir):
             if "session_id" not in sessions_df.columns:
                 issues.append(f"Sessions file missing required column session_id: {sessions_file.as_posix()}")
             else:
-                phenotype_sessions = set(sessions_df["session_id"].dropna().astype(str).unique())
+                phenotype_sessions = _session_keys(sessions_df)
 
                 for parquet_file in parquet_files:
                     try:
-                        df = pd.read_parquet(parquet_file, columns=["session_id"])
-                        parquet_sessions = set(df["session_id"].dropna().astype(str).unique())
-
-                        if not parquet_sessions.issubset(phenotype_sessions):
-                            extra = parquet_sessions - phenotype_sessions
+                        df = pd.read_parquet(parquet_file, columns=["participant_id", "session_id"])
+                        extra = _session_keys(df) - phenotype_sessions
+                        if extra:
                             issues.append(
                                 f"Sessions in {parquet_file.name} not found in {sessions_file.name}: {len(extra)} sessions"
                             )
@@ -916,10 +918,9 @@ def validate_bundled_dataset(dataset_path, config_dir):
             if "session_id" not in static_df.columns:
                 issues.append("static_features.tsv missing required column session_id")
             else:
-                static_sessions = set(static_df["session_id"].dropna().astype(str).unique())
                 reference_sessions = phenotype_sessions if phenotype_sessions is not None else parquet_sessions_all
-                if reference_sessions and not static_sessions.issubset(reference_sessions):
-                    extra = static_sessions - reference_sessions
+                extra = _session_keys(static_df) - (reference_sessions or set())
+                if reference_sessions and extra:
                     issues.append(
                         f"Sessions in static_features.tsv not found in reference sessions: {len(extra)} sessions"
                     )
