@@ -172,3 +172,34 @@ def test_sidecar_never_keeps_an_unreleased_session_id(tmp_path):
     assert "s2-unreleased" not in text
     session_dir = written.parent.parent.name  # ses-<label>
     assert json.loads(text)["session_id"] == session_dir[len("ses-"):]
+
+
+def _three_session_tree(tmp_path, verdicts):
+    """p1: audio in s1 and s3; s2 has only a review-column answer (other_voice_activity)."""
+    confounders = pd.DataFrame({"participant_id": ["p1"], "confounders_session_id": ["s2"],
+                                "other_voice_activity": ["Podcaster"]})
+    extra = [("column_value_reviews.json", {"verdicts": verdicts})] if verdicts else []
+    bids, config = _tree(tmp_path, ["p1"], {"confounders/confounders": confounders}, extra)
+    audio = bids / "sub-p1" / "ses-s3" / "audio"
+    audio.mkdir(parents=True)
+    stem = "sub-p1_ses-s3_task-rainbow-passage"
+    (audio / f"{stem}.wav").write_bytes(b"RIFF" + b"\x00" * 8192)
+    (audio / f"{stem}_recording-metadata.json").write_text(json.dumps({"record_id": "p1", "session_id": "s3"}))
+    pd.DataFrame({"record_id": ["p1"] * 3, "session_id": ["s1", "s2", "s3"],
+                  "session_index": ["1", "2", "3"]}).to_csv(bids / "sub-p1" / "sessions.tsv", sep="\t", index=False)
+    return bids, config
+
+
+def test_session_labels_do_not_depend_on_which_columns_a_run_publishes(tmp_path):
+    """A session holding only review (or controlled-only) data must not shift later labels."""
+    labels = {}
+    for name, verdicts in (("unreviewed", None),
+                           ("reviewed", [{"participant_id": "p1", "column_name": "other_voice_activity",
+                                          "verdict": "safe"}])):
+        bids, config = _three_session_tree(tmp_path / name, verdicts)
+        out = tmp_path / name / "out"
+        BIDSDataset(bids).deidentify(outdir=out, deidentify_config_dir=config)
+        (sessions,) = list((out / "sub-900000").glob("*sessions.tsv"))
+        labels[name] = list(BIDSDataset._read_tsv_as_written(sessions)["session_id"])
+    assert labels["unreviewed"] == ["01", "03"]  # s2 withheld here, but s3 keeps its label
+    assert labels["reviewed"] == ["01", "02", "03"]

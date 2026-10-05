@@ -3949,6 +3949,13 @@ class BIDSDataset:
         sessions_with_data = BIDSDataset._sessions_with_questionnaire_data(
             self.data_path / "phenotype", phenotype_level, keep_shifted_dates, access_tier,
         )
+        # Labels are numbered over the sessions any release could publish (controlled tier, with
+        # reviewed columns), whatever this run's tier and manifest, so both tiers share labels.
+        widest = (DispositionLevel.REVIEW, False, AccessTier.CONTROLLED)
+        sessions_with_labelable_data = sessions_with_data | (
+            BIDSDataset._sessions_with_questionnaire_data(self.data_path / "phenotype", *widest)
+            if (phenotype_level, keep_shifted_dates, access_tier) != widest else set()
+        )
 
         configured_filestems = list(audio_filestems_to_remove)
         # Recording IDs are resolved to this tree's filestems, so audio, sidecars, features and
@@ -4003,6 +4010,7 @@ class BIDSDataset:
                     access_tier=access_tier,
                     session_labels=session_labels,
                     sessions_with_data=sessions_with_data,
+                    sessions_with_labelable_data=sessions_with_labelable_data,
                     _removed_recording_ids=removed_recording_ids,
                 )
                 matched_exclusion_keys.update(matched)
@@ -4442,13 +4450,15 @@ class BIDSDataset:
         sessions_with_data: t.AbstractSet[str] = frozenset(),
         access_tier: AccessTier = AccessTier.REGISTERED,
         _removed_recording_ids: t.Optional[t.Set[str]] = None,
+        sessions_with_labelable_data: t.Optional[t.AbstractSet[str]] = None,
     ) -> t.Tuple[t.Optional[t.Dict[str, str]], t.Optional[t.Dict[str, int]], t.Counter[str], t.Set[str]]:
         """Process one participant directory for deidentification.
 
         The participant's recordings and feature files are filtered first; its released sessions
         are those with a file to publish or a row in *sessions_with_data*. Labels are assigned by
-        *session_labels* over the sessions any tier could release (see ``SessionLabels``) before
-        anything is written.
+        *session_labels* over the sessions any tier could release (see ``SessionLabels``): those
+        with a file, or a row in *sessions_with_labelable_data* (questionnaire rows any tier or
+        review manifest could publish; *sessions_with_data* when None), before anything is written.
 
         Returns ``({session_id: label}, {session_id: released order}, removed sidecar keys,
         matched removal keys)`` for the released sessions, where the third counts sidecar keys
@@ -4599,7 +4609,9 @@ class BIDSDataset:
             )
         with_data = set(sessions["session_id"]) & set(sessions_with_data)
         released = with_files | with_data
-        labels, order = BIDSDataset._session_labels(sessions, session_labels, labelable | with_data)
+        labelable_data = set(sessions["session_id"]) & set(
+            sessions_with_data if sessions_with_labelable_data is None else sessions_with_labelable_data)
+        labels, order = BIDSDataset._session_labels(sessions, session_labels, labelable | with_data | labelable_data)
         labels = {s: labels[s] for s in released}
         order = {s: order[s] for s in released}
 
