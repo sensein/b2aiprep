@@ -3477,11 +3477,13 @@ class BIDSDataset:
     @staticmethod
     def _fold_small_checkbox_options(
         df: pd.DataFrame, phenotype: dict, schema_name: str, spec: t.Mapping[str, t.Mapping[str, dict]],
+        released_participants: t.Optional[t.AbstractSet[str]] = None,
     ) -> t.Tuple[pd.DataFrame, dict]:
         """Fold rarely chosen options of the configured checkbox questions into their Other option.
 
-        *df* holds only the participants being released. Checkbox option columns are named
-        ``<question>___<code>`` and hold 1 when ticked.
+        Options are counted over *released_participants* (all rows when None). Checkbox option
+        columns are named ``<question>___<code>`` and hold 1 when ticked. Run before the review
+        verdicts, so the folded label in the specify column is judged with the text around it.
         """
         rules = spec.get(schema_name) or {}
         if not rules or "participant_id" not in df.columns:
@@ -3498,7 +3500,9 @@ class BIDSDataset:
             folded = []
             for col in options:
                 ticked = pd.to_numeric(df[col], errors="coerce").eq(1)
-                n = df.loc[ticked, "participant_id"].nunique()
+                counted = ticked if released_participants is None else (
+                    ticked & df["participant_id"].astype(str).isin(released_participants))
+                n = df.loc[counted, "participant_id"].nunique()
                 if n >= minimum:
                     continue
                 if ticked.any():
@@ -4065,6 +4069,17 @@ class BIDSDataset:
                     df_pheno, phenotype_filepath.stem, removed_recording_ids, removed_task_ids,
                 )
 
+                # A released row names a released session, so no original session ID survives.
+                df_pheno = BIDSDataset._keep_released_session_rows(
+                    df_pheno, schema_name, participant_session_id_to_remap, participants_with_output,
+                )
+                # Counted over the released participants. Before the verdicts: a label folded into
+                # a specify column is then blanked or redacted with that column's text.
+                df_pheno, phenotype_dict = BIDSDataset._fold_small_checkbox_options(
+                    df_pheno, phenotype_dict, schema_name, small_checkbox_options,
+                    released_participants=participants_with_output,
+                )
+
                 # Apply per-value verdicts BEFORE ID remapping (verdicts use original IDs). An
                 # explicit QA level shows the values unchecked, so verdicts are not applied.
                 if has_review_verdicts and disposition_level is None:
@@ -4074,11 +4089,6 @@ class BIDSDataset:
                     )
                     for col in review_dropped:
                         phenotype_dict.pop(col, None)
-
-                # A released row names a released session, so no original session ID survives.
-                df_pheno = BIDSDataset._keep_released_session_rows(
-                    df_pheno, schema_name, participant_session_id_to_remap, participants_with_output,
-                )
                 if schema_name == BIDSDataset._SESSIONS_SCHEMA and "session_index" in df_pheno.columns:
                     df_pheno["session_index"] = df_pheno["session_id"].map(released_session_order).astype("Int64")
                 df_pheno, phenotype_dict = BIDSDataset._deidentify_phenotype(
@@ -4086,10 +4096,6 @@ class BIDSDataset:
                     participant_ids_to_exclude,
                     participant_ids_to_remap,
                     participant_session_id_to_remap,
-                )
-                # Counted over the released participants only, so after the exclusions above.
-                df_pheno, phenotype_dict = BIDSDataset._fold_small_checkbox_options(
-                    df_pheno, phenotype_dict, schema_name, small_checkbox_options,
                 )
                 df_pheno, phenotype_dict = BIDSDataset._apply_value_mappings(
                     df_pheno, phenotype_dict, schema_name, value_mappings,

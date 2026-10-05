@@ -74,3 +74,56 @@ def test_removed_recordings_leave_recording_and_acoustic_task_tables(tmp_path, r
     assert list(rec["recording_id"]) == ["r1"]
     assert list(at["acoustic_task_id"]) == ["t1"]
     assert len(list(out.rglob("*.wav"))) == 1
+
+
+def _tree(tmp_path, participants, tables, config_files=()):
+    """A tree where each participant has one rainbow-passage recording in session s1.
+
+    *tables* maps "group/name" to a DataFrame; *config_files* are extra (name, object) pairs.
+    """
+    bids, config = tmp_path / "bids", tmp_path / "config"
+    config.mkdir(parents=True)
+    (config / "participants_to_include.json").write_text(json.dumps(participants))
+    (config / "id_remapping.json").write_text(json.dumps({p: f"90000{i}" for i, p in enumerate(participants)}))
+    (config / "deidentify_settings.json").write_text(json.dumps({"access_tier": "registered"}))
+    (config / "audio_tasks_to_include.json").write_text(json.dumps(["rainbow-passage"]))
+    (config / "audio_filestems_to_remove.json").write_text(json.dumps([]))
+    for name, obj in config_files:
+        (config / name).write_text(json.dumps(obj))
+    for p in participants:
+        audio = bids / f"sub-{p}" / "ses-s1" / "audio"
+        audio.mkdir(parents=True)
+        stem = f"sub-{p}_ses-s1_task-rainbow-passage"
+        (audio / f"{stem}.wav").write_bytes(b"RIFF" + b"\x00" * 8192)
+        (audio / f"{stem}_recording-metadata.json").write_text(json.dumps({"record_id": p, "session_id": "s1"}))
+        pd.DataFrame({"record_id": [p], "session_id": ["s1"], "session_index": ["1"]}).to_csv(
+            bids / f"sub-{p}" / "sessions.tsv", sep="\t", index=False)
+    (bids / "phenotype").mkdir(exist_ok=True)
+    for path, df in tables.items():
+        group, name = path.split("/")
+        _write_table(bids / "phenotype" / group, name, df)
+    (bids / "dataset_description.json").write_text(json.dumps({"Name": "test"}))
+    return bids, config
+
+
+def test_rare_checkbox_label_is_not_published_without_a_review_verdict(tmp_path):
+    """The fold runs before the verdicts: a label folded into other_voice_activity for a participant
+    with no verdict is blanked with the rest of that cell, not published unreviewed."""
+    confounders = pd.DataFrame({
+        "participant_id": ["p1", "p2"],
+        "voice_activity_v2___attorney": ["1", ""],
+        "voice_activity_v2___other": ["", "1"],
+        "other_voice_activity": ["", "Podcaster"],
+    })
+    bids, config = _tree(tmp_path, ["p1", "p2"], {"confounders/confounders": confounders}, [
+        ("column_value_reviews.json",
+         {"verdicts": [{"participant_id": "p2", "column_name": "other_voice_activity", "verdict": "safe"}]}),
+    ])
+    out = tmp_path / "out"
+    BIDSDataset(bids).deidentify(outdir=out, deidentify_config_dir=config)
+    df = BIDSDataset._read_tsv_as_written(out / "phenotype" / "confounders" / "confounders.tsv")
+    by_id = df.set_index("participant_id")
+    assert "voice_activity_v2___attorney" not in df.columns
+    assert by_id.loc["900000", "voice_activity_v2___other"] == "1"
+    assert pd.isna(by_id.loc["900000", "other_voice_activity"])  # no verdict: no label
+    assert by_id.loc["900001", "other_voice_activity"] == "Podcaster"
