@@ -203,3 +203,16 @@ def test_session_labels_do_not_depend_on_which_columns_a_run_publishes(tmp_path)
         labels[name] = list(BIDSDataset._read_tsv_as_written(sessions)["session_id"])
     assert labels["unreviewed"] == ["01", "03"]  # s2 withheld here, but s3 keeps its label
     assert labels["reviewed"] == ["01", "02", "03"]
+
+
+def test_field_map_refuses_an_access_tier_typo(monkeypatch, tmp_path):
+    from b2aiprep.prepare import dataset as dataset_module
+
+    real = dataset_module.files("b2aiprep.prepare.resources").joinpath("bids_field_organization.csv")
+    df = pd.read_csv(real, dtype={"access_tier": str})
+    assert BIDSDataset._load_reorganization_file(exclude_dropped=False) is not None  # the shipped map is valid
+    df.loc[df.index[0], "access_tier"] = "controled"
+    (tmp_path / "bids_field_organization.csv").write_text(df.to_csv(index=False))
+    monkeypatch.setattr(dataset_module, "files", lambda _: tmp_path)
+    with pytest.raises(ValueError, match="access_tier must be blank or 'controlled'.*controled"):
+        BIDSDataset._load_reorganization_file(exclude_dropped=False)

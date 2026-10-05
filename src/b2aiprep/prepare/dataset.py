@@ -1470,6 +1470,15 @@ class BIDSDataset:
         """
         reorganization_file = files("b2aiprep.prepare.resources").joinpath("bids_field_organization.csv")
         df = pd.read_csv(reorganization_file, sep=',', header=0)
+        if "access_tier" in df.columns:
+            # Anything but "controlled" means every tier, so a typo would publish a field to both.
+            tier = df["access_tier"].fillna("").astype(str).str.strip().str.lower()
+            invalid = df.loc[~tier.isin(["", AccessTier.CONTROLLED.value]), ["column_name", "access_tier"]]
+            if not invalid.empty:
+                raise ValueError(
+                    "bids_field_organization.csv: access_tier must be blank or 'controlled'; got "
+                    + ", ".join(f"{r.column_name}={r.access_tier!r}" for r in invalid.itertuples())
+                )
         if exclude_dropped:
             df = df.loc[df['disposition'] != 'drop']
         return df
