@@ -668,11 +668,16 @@ class RedCapDataset:
             # IDs are listed for QA; this log lives with the job output, outside the BIDS tree.
             _LOGGER.warning("Supplement %s: %d record_id(s) not in the RedCap export, ignored: %s",
                             csv_path, len(unknown), ", ".join(unknown))
-        merged = self.df.merge(supplement, on=keys, how="left", validate="many_to_one")
+        merged = self.df.merge(supplement, on=keys, how="left", validate="many_to_one", indicator=True)
+        matched = int(merged["_merge"].eq("both").sum())
+        merged = merged.drop(columns="_merge")
         merged.index = self.df.index
         self.df = merged
-        _LOGGER.info("Supplement %s: added %s (%d row(s) matched).", csv_path, ", ".join(fields),
-                     int(supplement["record_id"].isin(set(self.df["record_id"].astype(str))).sum()))
+        # Counted after the merge: a supplement whose record IDs exist but whose instrument names
+        # match no row adds nothing.
+        _LOGGER.log(logging.WARNING if matched == 0 else logging.INFO,
+                    "Supplement %s: added %s (%d of %d supplement row(s) matched an export row).",
+                    csv_path, ", ".join(fields), matched, len(supplement))
 
     @classmethod
     def from_redcap(cls, csv_path: t.Union[str, Path]) -> 'RedCapDataset':

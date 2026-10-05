@@ -2313,8 +2313,15 @@ class BIDSDataset:
                         )
                         redcap_group_cols.add(col_norm)
                         continue
-                    if str(updated_data.get("source", "")).lower() in ("pipeline", "supplement"):
-                        _LOGGER.debug(f'Pipeline-computed or supplement column "{column}" not in RedCap source.')
+                    source = str(updated_data.get("source", "")).lower()
+                    if source in ("pipeline", "supplement"):
+                        if source == "supplement" and str(updated_data.get("disposition", "")).lower() in (
+                                "release", "review"):
+                            # e.g. redcap2bids run without --supplement: the published field would be missing
+                            _LOGGER.warning(f'Supplement column "{column}" is published but not in the input; '
+                                            'pass its CSV with --supplement.')
+                        else:
+                            _LOGGER.debug(f'Pipeline-computed or supplement column "{column}" not in RedCap source.')
                         pipeline_cols.add(col_norm)
                         continue
                     _LOGGER.warning(f'Requested output for "{column}", but this column was not found in the source df.')
