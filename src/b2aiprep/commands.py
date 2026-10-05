@@ -890,8 +890,9 @@ def validate_bundled_dataset(dataset_path, config_dir):
     if sessions_file is not None:
         try:
             sessions_df = pd.read_csv(sessions_file, sep="\t", dtype=str)
-            if "session_id" not in sessions_df.columns:
-                issues.append(f"Sessions file missing required column session_id: {sessions_file.as_posix()}")
+            missing = [c for c in ("participant_id", "session_id") if c not in sessions_df.columns]
+            if missing:
+                issues.append(f"Sessions file missing required column(s) {', '.join(missing)}: {sessions_file.as_posix()}")
             else:
                 phenotype_sessions = _session_keys(sessions_df)
 
@@ -915,8 +916,9 @@ def validate_bundled_dataset(dataset_path, config_dir):
     if static_features_path.exists():
         try:
             static_df = pd.read_csv(static_features_path, sep="\t", dtype=str)
-            if "session_id" not in static_df.columns:
-                issues.append("static_features.tsv missing required column session_id")
+            missing = [c for c in ("participant_id", "session_id") if c not in static_df.columns]
+            if missing:
+                issues.append(f"static_features.tsv missing required column(s) {', '.join(missing)}")
             else:
                 reference_sessions = phenotype_sessions if phenotype_sessions is not None else parquet_sessions_all
                 extra = _session_keys(static_df) - (reference_sessions or set())

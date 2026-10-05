@@ -552,10 +552,10 @@ def test_validate_bundled_dataset_cli(setup_publish_config):
         df.to_parquet(features_dir / "torchaudio_spectrogram.parquet")
         df.to_parquet(features_dir / "torchaudio_mfcc.parquet")
         
-        (features_dir / "static_features.tsv").write_text("participant_id\tsession_id\ntest\tses-01")
+        (features_dir / "static_features.tsv").write_text("participant_id\tsession_id\nsub-01\tses-01")
         (features_dir / "static_features.json").write_text('{"participant_id": "test"}')
         
-        (task_dir / "session.tsv").write_text("session_id\nses-01")
+        (task_dir / "session.tsv").write_text("participant_id\tsession_id\nsub-01\tses-01")
 
         command = ["b2aiprep-cli", "validate-bundled-dataset", str(dataset_dir), str(setup_publish_config)]
 
@@ -581,7 +581,7 @@ def test_validate_bundled_dataset_cli_missing_static_features_fails(setup_publis
 
         # Intentionally omit static_features.tsv
         (features_dir / "static_features.json").write_text('{"participant_id": "test"}')
-        (task_dir / "session.tsv").write_text("session_id\nses-01")
+        (task_dir / "session.tsv").write_text("participant_id\tsession_id\nsub-01\tses-01")
 
         command = [
             "b2aiprep-cli",
