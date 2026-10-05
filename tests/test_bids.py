@@ -387,6 +387,35 @@ def test_construct_phenotype():
         assert columns[0] in {'record_id', 'participant_id'}, "First column should be record_id or participant_id"
         assert columns[1] == "acoustic_task_name", "Second column should be acoustic_task_name"
 
+def test_construct_phenotype_demographics_has_one_row_per_participant():
+    """sex_at_birth must not turn other forms' rows into demographics rows.
+
+    The adult demographics table is built from every REDCap row; giving "Unknown" to rows from
+    other forms made them count as data, and with age back-filled they survived (100k+ rows).
+    """
+    nan = float("nan")
+    df = pd.DataFrame({
+        "record_id": ["r01", "r01", "r01", "r01", "r02", "r02", "r02"],
+        "redcap_repeat_instrument": [nan, "Q - Generic - Demographics", "Acoustic Task", "Acoustic Task",
+                                     nan, "Q - Generic - Demographics", "Acoustic Task"],
+        "age": ["41", nan, nan, nan, "52", nan, nan],
+        "gender_identity": [nan, "Female gender identity", nan, nan, nan, nan, nan],
+        "specify_gender_identity": [nan, "Cis: same gender as the sex assigned at birth", nan, nan, nan, nan, nan],
+        "children": [nan, "No", nan, nan, nan, "Yes", nan],
+        "acoustic_task_name": [nan, nan, "A", "B", nan, nan, "C"],
+    })
+    with tempfile.TemporaryDirectory() as temp_dir:
+        BIDSDataset._construct_phenotype_from_reproschema(df, output_dir=temp_dir)
+        tsv = [p for p in Path(temp_dir).rglob("demographics.tsv")]
+        assert len(tsv) == 1
+        out = pd.read_csv(tsv[0], sep="\t", dtype=str, keep_default_na=False, na_values=[""])
+    assert sorted(out["participant_id"]) == ["r01", "r02"]
+    by_id = out.set_index("participant_id")
+    assert by_id.loc["r01", "sex_at_birth"] == "Female"
+    assert by_id.loc["r02", "sex_at_birth"] == "Unknown"  # answered neither question
+    assert list(by_id["age"]) == ["41", "52"]
+
+
 def test_get_paths_subject_extraction_edge_cases():
     """Test edge cases in subject ID extraction from filenames."""
     with TemporaryDirectory() as temp_dir:

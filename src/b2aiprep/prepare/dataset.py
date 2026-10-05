@@ -2473,6 +2473,7 @@ class BIDSDataset:
                 if selected_df.empty:
                     _LOGGER.warning(f"No data remaining after dropping empty rows for {schema_name}")
                     continue
+            BIDSDataset._fill_unknown_sex_at_birth(selected_df)
 
             # Output to a TSV/JSON file.
             filename = f'{schema_name}.json'
@@ -3185,7 +3186,9 @@ class BIDSDataset:
           them, a male/female gender identity specified as "Cis" (same as the sex assigned at birth)
           gives the sex at birth; any other gender answer gives "Unknown". Nothing is inferred from a
           "Trans" or other answer.
-        - Someone who answered neither question is also "Unknown".
+        - Someone who answered neither question is also "Unknown", but that is filled in by
+          ``_fill_unknown_sex_at_birth`` once the rows without data are dropped: the table is built
+          from every REDCap row, and a blank row given "Unknown" here would count as data and survive.
 
         "Unknown" is shared by everyone whose sex at birth is not stated (decliners, cis or not, and
         those who cannot be verified), so it does not show that a participant is not cis, which is
@@ -3201,10 +3204,9 @@ class BIDSDataset:
         never_asked = stated.isna()
         for sex_at_birth in ["Male", "Female"]:
             df.loc[never_asked & cis & identity.str.startswith(sex_at_birth), "sex_at_birth"] = sex_at_birth
-        unknown = df["sex_at_birth"].isna()  # declined, not verifiable, or nothing answered
-        df.loc[unknown, "sex_at_birth"] = BIDSDataset._SEX_UNKNOWN_LABEL
-        # a count only: the IDs would name participants who are not cis
-        _LOGGER.info("sex_at_birth: %d participant row(s) set to %r.", int(unknown.sum()), BIDSDataset._SEX_UNKNOWN_LABEL)
+        answered = stated.notna() | identity.str.strip().ne("")
+        # declined or not verifiable; rows that answered neither question wait for _fill_unknown_sex_at_birth
+        df.loc[answered & df["sex_at_birth"].isna(), "sex_at_birth"] = BIDSDataset._SEX_UNKNOWN_LABEL
 
         # Re-order columns to place sex_at_birth after gender_identity
         phenotype_reordered = deepcopy(phenotype)
@@ -3233,6 +3235,22 @@ class BIDSDataset:
 
         df = df[columns]
         return df, phenotype_reordered
+
+    @staticmethod
+    def _fill_unknown_sex_at_birth(df: pd.DataFrame) -> None:
+        """Set sex_at_birth to "Unknown" on rows still blank (neither question answered).
+
+        Run after the rows without data are dropped, so only rows that hold demographics answers
+        get it (see ``_add_sex_at_birth_column``).
+        """
+        if "sex_at_birth" not in df.columns:
+            return
+        blank = df["sex_at_birth"].isna()
+        df.loc[blank, "sex_at_birth"] = BIDSDataset._SEX_UNKNOWN_LABEL
+        # a count only: the IDs would name participants who are not cis
+        _LOGGER.info("sex_at_birth: %d of %d row(s) are %r.",
+                     int(df["sex_at_birth"].eq(BIDSDataset._SEX_UNKNOWN_LABEL).sum()), len(df),
+                     BIDSDataset._SEX_UNKNOWN_LABEL)
 
     @staticmethod
     def _reduce_id_length(df: pd.DataFrame, id_name: str) -> pd.DataFrame:

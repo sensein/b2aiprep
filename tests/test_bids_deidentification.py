@@ -414,7 +414,8 @@ class TestBIDSDatasetClean:
 
         # A Male/Female sex_assigned_at_birth is kept; "Prefer not to answer" becomes "Unknown";
         # without an answer, a Cis answer gives the sex at birth and any other gender answer gives
-        # "Unknown", as does a participant who answered neither question.
+        # "Unknown". A row that answered neither question stays blank here and gets "Unknown" from
+        # _fill_unknown_sex_at_birth once rows without data are dropped.
         df = pd.DataFrame(
             {
                 "record_id": ["p1", "p2", "p3", "p4", "p5", "p6", "p7"],
@@ -445,7 +446,9 @@ class TestBIDSDatasetClean:
         assert "sex_at_birth" in df_sex.columns
         assert "sex_at_birth" in phenotype_sex["place_holder_schema"]["data_elements"]
         assert [v if pd.notna(v) else None for v in df_sex["sex_at_birth"]] == [
-            "Male", "Unknown", "Female", "Unknown", "Unknown", "Unknown", "Male"]  # p7: stated sex kept for a trans participant
+            "Male", "Unknown", "Female", "Unknown", "Unknown", None, "Male"]  # p7: stated sex kept for a trans participant
+        BIDSDataset._fill_unknown_sex_at_birth(df_sex)
+        assert df_sex["sex_at_birth"].iloc[5] == "Unknown"
 
         # Check that specify_gender_identity was removed
         assert "specify_gender_identity" not in df_sex.columns
