@@ -279,3 +279,11 @@ def test_relabelled_answers_and_their_choices_reach_the_released_json(tmp_path):
     assert element["choices"] == [{"name": {"en": "No difficulty"}, "value": "none"},
                                   {"name": {"en": "Mild"}, "value": "mild"},
                                   {"name": {"en": "Extreme or cannot do"}, "value": "extreme"}]
+
+
+def test_a_row_whose_only_released_value_is_derived_is_kept():
+    """Only REDCap-generated columns are bookkeeping; a derived column such as state_province is data."""
+    df = pd.DataFrame({"participant_id": ["900000", "900001"], "demographics_session_id": ["01", "01"],
+                       "state_province": ["Ontario", pd.NA], "demographics_duration": ["120", "95"]})
+    out = BIDSDataset._drop_rows_emptied_by_deidentify(df, "demographics")
+    assert list(out["participant_id"]) == ["900000"]

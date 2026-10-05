@@ -2124,15 +2124,10 @@ class BIDSDataset:
             BIDSDataset._cached_field_map_df = BIDSDataset._load_reorganization_file(exclude_dropped=False)
         rows = BIDSDataset._cached_field_map_df
         rows = rows.loc[rows["schema_name"] == schema_name]
-        # Shifted dates are timing metadata, not data: kept for discussion in some builds, but a
-        # row holding only a date has nothing to publish.
-        bookkeeping = set(
-            rows.loc[
-                rows["source"].isin(["redcap_generated", "pipeline"])
-                | (rows.get("date_shift", pd.Series("", index=rows.index)).astype(str).str.upper() == "YES"),
-                "column_name",
-            ].dropna()
-        )
+        # Only columns REDCap generates (form timestamps, status) are bookkeeping. A shifted date is
+        # its REDCap field, transformed, and a pipeline-derived column (site, sex_at_birth,
+        # *_days_since, ...) is released data, so a row holding one of them is kept.
+        bookkeeping = set(rows.loc[rows["source"].eq("redcap_generated"), "column_name"].dropna())
         calculated = set(
             rows.loc[rows["is_redcap_calculation"].astype(str).str.upper() == "YES", "column_name"].dropna()
         )
