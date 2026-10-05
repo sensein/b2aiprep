@@ -3760,6 +3760,41 @@ class BIDSDataset:
             )
 
     @staticmethod
+    def _acoustic_tasks_left_without_recordings(
+        recording_tsv: Path, removed_recording_ids: t.AbstractSet[str],
+    ) -> t.Set[str]:
+        """Acoustic task IDs (lower-cased) whose every recording is in *removed_recording_ids*."""
+        if not removed_recording_ids or not recording_tsv.is_file():
+            return set()
+        df = BIDSDataset._read_tsv_as_written(recording_tsv)
+        if not {"recording_id", "recording_acoustic_task_id"} <= set(df.columns):
+            return set()
+        removed = df["recording_id"].str.strip().str.lower().isin(removed_recording_ids)
+        task = df["recording_acoustic_task_id"].str.strip().str.lower()
+        return set(task[removed].dropna()) - set(task[~removed].dropna())
+
+    @staticmethod
+    def _drop_removed_recording_rows(
+        df: pd.DataFrame,
+        table: str,
+        removed_recording_ids: t.AbstractSet[str],
+        removed_task_ids: t.AbstractSet[str],
+    ) -> pd.DataFrame:
+        """Remove recording.tsv rows of removed recordings, and acoustic_task.tsv rows left with none.
+
+        A recording removed by ``audio_recording_ids_to_remove.json`` or the filestem list loses its
+        audio, sidecar, features and quality-metric row; its phenotype rows go too.
+        """
+        column = {"recording": "recording_id", "acoustic_task": "acoustic_task_id"}.get(table)
+        ids = removed_recording_ids if table == "recording" else removed_task_ids
+        if column is None or not ids or column not in df.columns:
+            return df
+        removed = df[column].astype("string").str.strip().str.lower().isin(ids).fillna(False).astype(bool)
+        if removed.any():
+            _LOGGER.info("phenotype/%s: %d row(s) of removed recordings dropped.", table, int(removed.sum()))
+        return df.loc[~removed]
+
+    @staticmethod
     def load_audio_recording_ids_to_remove(publish_config_dir: Path) -> t.Set[str]:
         """Recording IDs to remove (optional ``audio_recording_ids_to_remove.json``), lowercased.
 
@@ -3917,6 +3952,8 @@ class BIDSDataset:
         # stops rather than publish a dataset silently missing them.
         failed_participants: t.List[str] = []
         matched_exclusion_keys: t.Set[str] = set()
+        # Recordings a removal list matched; their recording.tsv rows are removed below.
+        removed_recording_ids: t.Set[str] = {str(r).strip().lower() for r in recording_ids_to_remove}
 
         def _process_one(pdir: Path) -> t.Optional[t.Tuple[str, t.Dict[str, str], t.Dict[str, int], t.Counter[str]]]:
             pid = pdir.name[4:]
@@ -3933,6 +3970,7 @@ class BIDSDataset:
                     access_tier=access_tier,
                     session_labels=session_labels,
                     sessions_with_data=sessions_with_data,
+                    _removed_recording_ids=removed_recording_ids,
                 )
                 matched_exclusion_keys.update(matched)
                 if labels is not None:
@@ -4017,9 +4055,15 @@ class BIDSDataset:
             phenotype_output_path.mkdir(parents=True, exist_ok=True)
 
             phenotype_files = sorted(phenotype_base_path.rglob("*.tsv"))
+            removed_task_ids = BIDSDataset._acoustic_tasks_left_without_recordings(
+                phenotype_base_path / "task" / "recording.tsv", removed_recording_ids,
+            )
 
             def _process_one_phenotype(phenotype_filepath: Path) -> str:
                 df_pheno, schema_name, header, phenotype_dict = BIDSDataset.load_phenotype_file(phenotype_filepath)
+                df_pheno = BIDSDataset._drop_removed_recording_rows(
+                    df_pheno, phenotype_filepath.stem, removed_recording_ids, removed_task_ids,
+                )
 
                 # Apply per-value verdicts BEFORE ID remapping (verdicts use original IDs). An
                 # explicit QA level shows the values unchecked, so verdicts are not applied.
@@ -4362,6 +4406,7 @@ class BIDSDataset:
         session_labels: SessionLabels = SessionLabels.ORDINAL,
         sessions_with_data: t.AbstractSet[str] = frozenset(),
         access_tier: AccessTier = AccessTier.REGISTERED,
+        _removed_recording_ids: t.Optional[t.Set[str]] = None,
     ) -> t.Tuple[t.Optional[t.Dict[str, str]], t.Optional[t.Dict[str, int]], t.Counter[str], t.Set[str]]:
         """Process one participant directory for deidentification.
 
@@ -4375,7 +4420,8 @@ class BIDSDataset:
         removed for not being in the audio_sidecar table and the last holds the removal-list
         keys that matched a file here; or ``(None, None, Counter(), matched removal keys)`` when
         no audio or feature file survives filtering (any partially-created output directory is
-        removed).
+        removed). The ``recording_id`` of each recording a removal list matched is added to
+        *_removed_recording_ids* (lower-cased), so its phenotype rows can be removed too.
         """
         pid = participant_dir.name[4:]
         new_pid = participant_ids_to_remap.get(pid, pid)
@@ -4435,6 +4481,14 @@ class BIDSDataset:
             if _excluded(wav_path.stem):
                 n_skipped += 1
                 _LOGGER.debug("Skipping excluded filestem: %s", wav_path.name)
+                if _removed_recording_ids is not None:
+                    removed_sidecar = wav_path.parent / f"{wav_path.stem}_recording-metadata.json"
+                    try:
+                        rid = json.loads(removed_sidecar.read_text()).get("recording_id")
+                    except (OSError, json.JSONDecodeError):
+                        rid = None
+                    if rid:
+                        _removed_recording_ids.add(str(rid).strip().lower())
                 continue
 
             # Sidecar must exist before we copy the wav (match old behavior)
