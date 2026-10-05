@@ -365,8 +365,8 @@ confounders_schema,confounders,alcohol_freq,alcohol_freq,confounders,"[DEPRECATE
 How often do you have at least one drink containing alcohol?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,alcohol_freq_v2,alcohol_freq_v2,confounders,How often do you have at least one drink containing alcohol?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,alcohol_rehab,alcohol_rehab,confounders,"[DEPRECATED]
-Have you ever been in rehab or counseling for heavy alcohol use?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
-confounders_schema,confounders,alcohol_substance_use_disorder,alcohol_substance_use_disorder,confounders,Alcohol or substance use disorder,NO,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Have you ever been in rehab or counseling for heavy alcohol use?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,controlled
+confounders_schema,confounders,alcohol_substance_use_disorder,alcohol_substance_use_disorder,confounders,Alcohol or substance use disorder,NO,release,VARIABLE,redcap,pre-v4,NO,NO,controlled
 confounders_schema,confounders,alcohol_today,alcohol_today,confounders,"[DEPRECATED]
 Have you drunk alcohol today?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,alcohol_today_v2,alcohol_today_v2,confounders,Have you drunk alcohol today?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
@@ -457,8 +457,8 @@ confounders_schema,confounders,craniofacial_trauma,craniofacial_trauma,confounde
 confounders_schema,confounders,current_neuro_dx,current_neuro_dx,confounders,"[DEPRECATED]
 Do you currently have these conditions or currently experience symptoms as a result of having had these conditions?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,current_recovery_alcohol,current_recovery_alcohol,confounders,"[DEPRECATED]
-Are you currently in recovery for alcohol use?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
-confounders_schema,confounders,current_recovery_alcohol_v2,current_recovery_alcohol_v2,confounders,Are you currently in recovery for alcohol use?,NO,internal,VARIABLE,redcap,pre-v4,NO,NO,
+Are you currently in recovery for alcohol use?",YES,release,VARIABLE,redcap,pre-v4,NO,NO,controlled
+confounders_schema,confounders,current_recovery_alcohol_v2,current_recovery_alcohol_v2,confounders,Are you currently in recovery for alcohol use?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,controlled
 confounders_schema,confounders,current_substance_use_recovery,current_substance_use_recovery,confounders,Are you currently in recovery  for substance use?,NO,internal,VARIABLE,redcap,v4,NO,NO,
 confounders_schema,confounders,current_use_nicotine_products,current_use_nicotine_products,confounders,"Do you currently use any nicotine products every day, some days, or not at all?",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,currently_considered_obese,currently_considered_obese,confounders,Are you currently considered obese?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
@@ -484,12 +484,12 @@ confounders_schema,confounders,ear_surgical,ear_surgical,,"[DEPRECATED]
 Ear",YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,ear_tubes,ear_tubes,confounders,Ear tubes,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,eating_disorder,eating_disorder,confounders,Eating disorder (ED),NO,release,VARIABLE,redcap,pre-v4,NO,NO,
-confounders_schema,confounders,edible_substance_in_past_three_months,edible_substance_in_past_three_months,confounders,"In the PAST THREE MONTHS, how often have you taken marijuana  as an EDIBLE either recreationally or as prescribed by a doctor?",NO,internal,VARIABLE,redcap,v4,NO,NO,
+confounders_schema,confounders,edible_substance_in_past_three_months,edible_substance_in_past_three_months,confounders,"In the PAST THREE MONTHS, how often have you taken marijuana  as an EDIBLE either recreationally or as prescribed by a doctor?",NO,release,VARIABLE,redcap,v4,NO,NO,controlled
 confounders_schema,confounders,emphysema,emphysema,confounders,Emphysema,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,epilepsy,epilepsy,confounders,Epilepsy,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,esophageal_cancer,esophageal_cancer,confounders,Esophageal cancer,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,esophageal_dilation,esophageal_dilation,confounders,Esophageal dilation,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
-confounders_schema,confounders,ever_alcohol_rehab,ever_alcohol_rehab,confounders,Have you ever been in rehab  or counseling for heavy alcohol use?,NO,internal,VARIABLE,redcap,pre-v4,NO,NO,
+confounders_schema,confounders,ever_alcohol_rehab,ever_alcohol_rehab,confounders,Have you ever been in rehab  or counseling for heavy alcohol use?,NO,release,VARIABLE,redcap,pre-v4,NO,NO,controlled
 confounders_schema,confounders,ever_used_nicotine_products,ever_used_nicotine_products,confounders,Have you ever used any of the following nicotine (tobacco) products? Please check all that apply.,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,ever_used_nicotine_products_specify,ever_used_nicotine_products_specify,confounders,Please specify,NO,review,VARIABLE,redcap,v4,NO,NO,
 confounders_schema,confounders,experimental_treatment,experimental_treatment,confounders,Experimental treatment / clinical trial,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
@@ -661,7 +661,7 @@ confounders_schema,confounders,sinusitis,sinusitis,confounders,Sinusitis (rhinit
 confounders_schema,confounders,sjogrens_syndrome,sjogrens_syndrome,confounders,Sjögren's syndrome,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,sleep_disturbance,sleep_disturbance,confounders,Sleep disturbance,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,sleep_surgery,sleep_surgery,confounders,"Sleep surgery (e.g. implantable device for sleep apnea, etc.)",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
-confounders_schema,confounders,smoked_substance_in_past_three_months,smoked_substance_in_past_three_months,confounders,"In the PAST THREE MONTHS, how often have you  SMOKED marijuana  (e.g. cannabis, pot, grass, hash, weed, etc.) either recreationally or as prescribed by a doctor?",NO,internal,VARIABLE,redcap,v4,NO,NO,
+confounders_schema,confounders,smoked_substance_in_past_three_months,smoked_substance_in_past_three_months,confounders,"In the PAST THREE MONTHS, how often have you  SMOKED marijuana  (e.g. cannabis, pot, grass, hash, weed, etc.) either recreationally or as prescribed by a doctor?",NO,release,VARIABLE,redcap,v4,NO,NO,controlled
 confounders_schema,confounders,smoking_age_regular_cigarette_smoking,smoking_age_regular_cigarette_smoking,confounders,"[DEPRECATED]
 How old were you when you first started regular cigarette smoking?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,smoking_age_regular_cigarette_smoking_age,smoking_age_regular_cigarette_smoking_age,confounders,"[DEPRECATED]
@@ -691,7 +691,7 @@ confounders_schema,confounders,smoking_hx,smoking_hx,confounders,"[DEPRECATED]
 Have you ever smoked regularly (more than a few times a month for at least two months)?
 This includes tobacco, cannabis, vapes, e-cigarettes, hookah, or pipes.",YES,internal,VARIABLE,redcap,v4,NO,NO,
 confounders_schema,confounders,smoking_marijuana,smoking_marijuana,confounders,"[DEPRECATED]
-In the PAST THREE MONTHS, how often have you used marijuana (cannabis, pot, grass, hash, etc.)?",NO,internal,VARIABLE,redcap,v4,NO,NO,
+In the PAST THREE MONTHS, how often have you used marijuana (cannabis, pot, grass, hash, etc.)?",NO,release,VARIABLE,redcap,v4,NO,NO,controlled
 confounders_schema,confounders,smoking_occurrence,smoking_occurrence,confounders,"[DEPRECATED]
 Do you now smoke cigarettes every day, some days, or not at all?",YES,internal,VARIABLE,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,smoking_types,smoking_types,,"[DEPRECATED]
@@ -1044,7 +1044,7 @@ dyspnea_index_di_schema,dyspnea_index,dyspnea_index_started_at,dyspnea_index_sta
 dyspnea_index_di_schema,dyspnea_index,dyspnea_index_via,dyspnea_index_via,questionnaire,Dyspnea Index (DI) - via,NO,internal,VARIABLE,redcap,v4,NO,NO,
 enrollment_form_schema,enrollment,ef_add_adhd,self_reported_add_adhd,enrollment,Attention-Deficit / Hyperactivity Disorder (ADHD),YES,internal,VARIABLE,redcap,v4,NO,NO,
 enrollment_form_schema,enrollment,ef_airway_stenosis,self_reported_airway_stenosis,enrollment,Airway Stenosis (for example: bilateral vocal fold paralysis; laryngeal stenosis),YES,internal,VARIABLE,redcap,v4,NO,NO,
-enrollment_form_schema,enrollment,ef_alcohol_subst_abuse,self_reported_alcohol_subst_abuse,enrollment,Alcohol or Substance Use Disorder,YES,internal,VARIABLE,redcap,v4,NO,NO,
+enrollment_form_schema,enrollment,ef_alcohol_subst_abuse,self_reported_alcohol_subst_abuse,enrollment,Alcohol or Substance Use Disorder,YES,release,VARIABLE,redcap,v4,NO,NO,controlled
 enrollment_form_schema,enrollment,ef_als,self_reported_als,enrollment,Amyotrophic Lateral Sclerosis (ALS),YES,internal,VARIABLE,redcap,v4,NO,NO,
 enrollment_form_schema,enrollment,ef_alz_dementia_mci,self_reported_alz_dementia_mci,enrollment,"Alzheimer's, Dementia, or Mild Cognitive Impairment",YES,internal,VARIABLE,redcap,v4,NO,NO,
 enrollment_form_schema,enrollment_form,ef_any_cognitive_challeges,ef_any_cognitive_challeges,enrollment,"This application requires you to read text, answer questions, and follow directions. Do you have any cognitive challenges, including difficulty reading, that we can assist with?",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
@@ -1870,7 +1870,7 @@ subjectparticipant_contact_information_schema,,participant_study_id,participant_
 subjectparticipant_contact_information_schema,,phone_number,phone_number,,Phone Number,YES,drop,VARIABLE,redcap,pre-v4,NO,NO,
 subjectparticipant_eligible_studies_schema,eligibility,add_adhd,self_reported_add_adhd,enrollment,Attention-Deficit / Hyperactivity Disorder (ADHD),NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 subjectparticipant_eligible_studies_schema,eligibility,airway_stenosis,self_reported_airway_stenosis,enrollment,Airway Stenosis (for example: bilateral vocal fold paralysis; laryngeal stenosis),NO,release,VARIABLE,redcap,pre-v4,NO,NO,
-subjectparticipant_eligible_studies_schema,eligibility,alcohol_subst_abuse,self_reported_alcohol_subst_abuse,enrollment,Alcohol or Substance Use Disorder,NO,release,VARIABLE,redcap,pre-v4,NO,NO,
+subjectparticipant_eligible_studies_schema,eligibility,alcohol_subst_abuse,self_reported_alcohol_subst_abuse,enrollment,Alcohol or Substance Use Disorder,NO,release,VARIABLE,redcap,pre-v4,NO,NO,controlled
 subjectparticipant_eligible_studies_schema,eligibility,als,self_reported_als,enrollment,Amyotrophic Lateral Sclerosis (ALS),NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 subjectparticipant_eligible_studies_schema,eligibility,alz_dementia_mci,self_reported_alz_dementia_mci,enrollment,"Alzheimer's, Dementia, or Mild Cognitive Impairment",NO,release,VARIABLE,redcap,pre-v4,NO,NO,
 subjectparticipant_eligible_studies_schema,eligibility,asd,self_reported_asd,enrollment,Autism Spectrum Disorder (ASD),NO,release,VARIABLE,redcap,pre-v4,NO,NO,
@@ -2610,10 +2610,10 @@ confounders_schema,confounders,airway_stenosis_med_hist_throat___current,airway_
 confounders_schema,confounders,airway_stenosis_med_hist_throat___never,airway_stenosis_med_hist_throat___never,confounders,"Airway stenosis (e.g. glottal, subglottal, tracheal, etc.)",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,airway_stenosis_med_hist_throat___no_answer,airway_stenosis_med_hist_throat___no_answer,confounders,"Airway stenosis (e.g. glottal, subglottal, tracheal, etc.)",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,airway_stenosis_med_hist_throat___past,airway_stenosis_med_hist_throat___past,confounders,"Airway stenosis (e.g. glottal, subglottal, tracheal, etc.)",NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
-confounders_schema,confounders,alcohol_substance_use_disorder___current,alcohol_substance_use_disorder___current,confounders,Alcohol or substance use disorder,NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
-confounders_schema,confounders,alcohol_substance_use_disorder___never,alcohol_substance_use_disorder___never,confounders,Alcohol or substance use disorder,NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
-confounders_schema,confounders,alcohol_substance_use_disorder___no_answer,alcohol_substance_use_disorder___no_answer,confounders,Alcohol or substance use disorder,NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
-confounders_schema,confounders,alcohol_substance_use_disorder___past,alcohol_substance_use_disorder___past,confounders,Alcohol or substance use disorder,NO,internal,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
+confounders_schema,confounders,alcohol_substance_use_disorder___current,alcohol_substance_use_disorder___current,confounders,Alcohol or substance use disorder,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,controlled
+confounders_schema,confounders,alcohol_substance_use_disorder___never,alcohol_substance_use_disorder___never,confounders,Alcohol or substance use disorder,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,controlled
+confounders_schema,confounders,alcohol_substance_use_disorder___no_answer,alcohol_substance_use_disorder___no_answer,confounders,Alcohol or substance use disorder,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,controlled
+confounders_schema,confounders,alcohol_substance_use_disorder___past,alcohol_substance_use_disorder___past,confounders,Alcohol or substance use disorder,NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,controlled
 confounders_schema,confounders,anxiety_disorder___current,anxiety_disorder___current,confounders,Anxiety disorder (e.g. generalized or social anxiety disorder),NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,anxiety_disorder___never,anxiety_disorder___never,confounders,Anxiety disorder (e.g. generalized or social anxiety disorder),NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
 confounders_schema,confounders,anxiety_disorder___no_answer,anxiety_disorder___no_answer,confounders,Anxiety disorder (e.g. generalized or social anxiety disorder),NO,release,CHECKBOX_OPTION,redcap,pre-v4,NO,NO,
