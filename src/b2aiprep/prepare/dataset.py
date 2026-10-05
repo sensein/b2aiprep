@@ -3449,7 +3449,8 @@ class BIDSDataset:
         },
     }
 
-    _SETTINGS_KEYS = frozenset({"access_tier", "value_mappings", "small_checkbox_options", "relabel"})
+    _SETTINGS_KEYS = frozenset({"access_tier", "value_mappings", "small_checkbox_options", "relabel",
+                                "exclude_participants"})
 
     # Cell values that common TSV readers (pandas, R, readr) read as missing by default. A released
     # answer must not be one of them, or a user loading the table loses it; see ``relabel``.
@@ -3463,8 +3464,8 @@ class BIDSDataset:
         """Release settings from ``deidentify_settings.json`` in the deidentify config directory.
 
         ``access_tier`` (registered/controlled) is required, so no run builds a tier by default.
-        ``value_mappings`` (see ``_apply_value_mappings``), ``relabel`` (see ``_apply_relabels``)
-        and ``small_checkbox_options`` (same shape as ``_SMALL_CHECKBOX_OPTIONS``, which applies
+        ``value_mappings`` (see ``_apply_value_mappings``), ``relabel`` (see ``_apply_relabels``),
+        ``exclude_participants`` (see ``_participants_excluded_by_answer``) and ``small_checkbox_options`` (same shape as ``_SMALL_CHECKBOX_OPTIONS``, which applies
         when it is left out) are optional.
         """
         path = Path(config_dir) / "deidentify_settings.json"
@@ -3484,6 +3485,7 @@ class BIDSDataset:
         settings["access_tier"] = AccessTier(settings["access_tier"])
         settings.setdefault("value_mappings", {})
         settings.setdefault("relabel", {})
+        settings.setdefault("exclude_participants", [])
         settings.setdefault("small_checkbox_options", BIDSDataset._SMALL_CHECKBOX_OPTIONS)
         _LOGGER.info("Deidentify settings from %s: access tier %s.", path, settings["access_tier"].value)
         return settings
@@ -3537,6 +3539,34 @@ class BIDSDataset:
                 _LOGGER.info("%s.%s: %d option(s) chosen by fewer than %d released participants folded into "
                              "%s: %s", schema_name, question, len(folded), minimum, other, ", ".join(folded))
         return df, phenotype
+
+    @staticmethod
+    def _participants_excluded_by_answer(
+        phenotype_dir: Path, rules: t.Sequence[t.Mapping[str, t.Any]],
+    ) -> t.Set[str]:
+        """Participants removed from the release, whole, because of one answer.
+
+        *rules* is ``exclude_participants`` from ``deidentify_settings.json``: a list of ``{"table":
+        ..., "column": ..., "values": [...]}``; a participant with any of *values* in that column (any
+        row) is not released at all. A table or column that is not there stops the run, so a typo
+        cannot silently exclude no one. Only counts are logged: the IDs would tie participants to
+        the answer.
+        """
+        excluded: t.Set[str] = set()
+        for rule in rules:
+            table, column, values = rule["table"], rule["column"], {str(v) for v in rule["values"]}
+            paths = sorted(phenotype_dir.rglob(f"{table}.tsv"))
+            if len(paths) != 1:
+                raise ValueError(f"exclude_participants: expected one phenotype table {table!r}, found {len(paths)}.")
+            df = BIDSDataset._read_tsv_as_written(paths[0])
+            if column not in df.columns:
+                raise ValueError(f"exclude_participants: {table} has no column {column!r}.")
+            id_col = "participant_id" if "participant_id" in df.columns else "record_id"
+            matched = set(df.loc[df[column].isin(values), id_col].dropna().astype(str))
+            _LOGGER.info("exclude_participants: %d participant(s) with %s.%s in %s not released.",
+                         len(matched), table, column, sorted(values))
+            excluded |= matched
+        return excluded
 
     @staticmethod
     def _apply_relabels(
@@ -3941,6 +3971,10 @@ class BIDSDataset:
         participant_allowlist = BIDSDataset._load_participant_allowlist(
             deidentify_config_dir, input_tree_participants
         )
+        settings = BIDSDataset._load_deidentify_settings(deidentify_config_dir)
+        participant_allowlist -= BIDSDataset._participants_excluded_by_answer(
+            self.data_path / "phenotype", settings["exclude_participants"],
+        )
         # A participant without a pseudonym would be published under the raw record ID.
         no_pseudonym = sorted(p for p in participant_allowlist if p not in participant_ids_to_remap)
         if no_pseudonym:
@@ -3958,7 +3992,6 @@ class BIDSDataset:
         # level is for QA builds (e.g. INTERNAL keeps everything, REVIEW passes unreviewed
         # columns through unchecked) and must never be used for a release.
         column_value_verdicts = BIDSDataset._load_column_value_reviews(deidentify_config_dir)
-        settings = BIDSDataset._load_deidentify_settings(deidentify_config_dir)
         access_tier = settings["access_tier"]
         small_checkbox_options = settings["small_checkbox_options"]
         value_mappings = settings["value_mappings"]

@@ -287,3 +287,28 @@ def test_a_row_whose_only_released_value_is_derived_is_kept():
                        "state_province": ["Ontario", pd.NA], "demographics_duration": ["120", "95"]})
     out = BIDSDataset._drop_rows_emptied_by_deidentify(df, "demographics")
     assert list(out["participant_id"]) == ["900000"]
+
+
+def test_exclude_participants_removes_a_participant_by_one_answer(tmp_path):
+    demographics = pd.DataFrame({"participant_id": ["p1", "p2"],
+                                 "peds_gender_identity": ["Female gender identity", "Other"]})
+    bids, config = _tree(tmp_path, ["p1", "p2"], {"pediatric/pediatric_demographics": demographics})
+    (config / "deidentify_settings.json").write_text(json.dumps({
+        "access_tier": "registered",
+        "exclude_participants": [{"table": "pediatric_demographics", "column": "peds_gender_identity",
+                                  "values": ["Other"]}]}))
+    out = tmp_path / "out"
+    BIDSDataset(bids).deidentify(outdir=out, deidentify_config_dir=config)
+    assert sorted(p.name for p in out.glob("sub-*")) == ["sub-900000"]
+    released = BIDSDataset._read_tsv_as_written(out / "phenotype" / "pediatric" / "pediatric_demographics.tsv")
+    assert list(released["participant_id"]) == ["900000"]
+
+
+def test_exclude_participants_refuses_a_column_that_is_not_there(tmp_path):
+    demographics = pd.DataFrame({"participant_id": ["p1"], "peds_gender_identity": ["Other"]})
+    bids, config = _tree(tmp_path, ["p1"], {"pediatric/pediatric_demographics": demographics})
+    (config / "deidentify_settings.json").write_text(json.dumps({
+        "access_tier": "registered",
+        "exclude_participants": [{"table": "pediatric_demographics", "column": "peds_gender_identiy", "values": ["Other"]}]}))
+    with pytest.raises(ValueError, match="no column 'peds_gender_identiy'"):
+        BIDSDataset(bids).deidentify(outdir=tmp_path / "out", deidentify_config_dir=config)
