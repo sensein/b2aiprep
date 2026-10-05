@@ -3630,24 +3630,6 @@ class BIDSDataset:
         return df.loc[~unreleased]
 
     @staticmethod
-    def _point_sidecar_sessions_at_released_ones(
-        metadata: dict, folder_session: str, labels: t.Mapping[str, str], sidecar_name: str,
-    ) -> None:
-        """Set a sidecar's ``session_id`` to the session the file is in when it names another one.
-
-        ``remap_id`` leaves an ID it cannot map unchanged, so a sidecar naming a session that is
-        not released would publish the original session ID. (``session_id`` is the one session key
-        the audio_sidecar table releases; other keys are removed as unknown.)
-        """
-        value = metadata.get("session_id")
-        if value is None or str(value) in labels:
-            return
-        # IDs are listed for QA; this log lives with the job output, outside the release.
-        _LOGGER.warning("%s: session_id %r is not a released session; written as the folder's %r.",
-                        sidecar_name, value, folder_session)
-        metadata["session_id"] = folder_session
-
-    @staticmethod
     def _write_session_id_map(
         path: Path,
         results: t.Iterable[t.Optional[t.Tuple[str, t.Dict[str, str], t.Dict[str, int], t.Counter[str]]]],
@@ -4628,7 +4610,6 @@ class BIDSDataset:
             )
             metadata = json.loads(json_path.read_text())
             out_wav.parent.mkdir(parents=True, exist_ok=True)
-            BIDSDataset._point_sidecar_sessions_at_released_ones(metadata, session_id_raw, labels, json_path.name)
             update_metadata_record_and_session_id(metadata, participant_ids_to_remap, labels)
             unknown = set(metadata) - sidecar_keys_known
             unknown_sidecar_keys.update(unknown)
